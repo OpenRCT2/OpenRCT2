@@ -25,6 +25,15 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+//Glitches to fix
+//Gentle to steep slope over diagonal bank
+//Flickering on steep slopes
+
+//Sloped turns
+//S bend clipping
+
+
+
 static uint32_t hybrid_rc_get_track_colour(paint_session* session)
 {
         if(session->TrackColours[SCHEME_TRACK] == 0x21600000)return 0x21600000; //TODO dirty hack
@@ -76,7 +85,7 @@ static void hybrid_rc_track_flat(paint_session * session, uint16_t rideIndex, ui
     }
 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -122,19 +131,19 @@ static void hybrid_rc_track_25_deg_up(paint_session * session, uint16_t rideInde
         {
         case 0:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 8), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 9), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 10), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         case 3:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 11), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         }
     }
@@ -144,19 +153,19 @@ static void hybrid_rc_track_25_deg_up(paint_session * session, uint16_t rideInde
         {
         case 0:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 8), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 9), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 10), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         case 3:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 11), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         }
     }
@@ -169,7 +178,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
@@ -230,7 +239,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 21 + direction, height, se
     {
         paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 104, 0x20);
 }
@@ -291,7 +300,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 1 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
@@ -308,14 +317,14 @@ static void hybrid_rc_track_25_deg_up_to_60_deg_up(paint_session * session, uint
                                height);
             break;
         case 1:
-            session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 1), 0, 0, 2, 24, 43, height, 28, 4,
-                               height + 2);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 1), 0, 0, 32, 20, 3, height, 0, 3,
+                               height+3);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 2), 0, 0, 32, 2, 43, height, 0, 4,
                                height);
             break;
         case 2:
-            session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 3), 0, 0, 2, 24, 43, height, 28, 4,
-                               height+2);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 3), 0, 0, 32, 20, 3, height, 0, 3,
+                               height+3);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 4), 0, 0, 32, 2, 43, height, 0, 4,
                                height);
             break;
@@ -334,14 +343,14 @@ static void hybrid_rc_track_25_deg_up_to_60_deg_up(paint_session * session, uint
                                height);
             break;
         case 1:
-            session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 1), 0, 0, 2, 24, 43, height, 28, 4,
-                               height + 2);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 1), 0, 0, 32, 20, 3, height, 0, 6,
+                               height+3);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 2), 0, 0, 32, 2, 43, height, 0, 4,
                                height);
             break;
         case 2:
-            session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 3), 0, 0, 2, 24, 43, height, 28, 4,
-                               height + 2);
+            session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 3), 0, 0, 32, 20, 3, height, 0, 6,
+                               height+3);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 4), 0, 0, 32, 2, 43, height, 0, 4,
                                height);
             break;
@@ -360,7 +369,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 13 + direction, height, se
     {
         paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 72, 0x20);
 }
@@ -429,7 +438,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 17 + direction, height, se
     {
         paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 72, 0x20);
 }
@@ -465,19 +474,19 @@ static void hybrid_rc_track_25_deg_up_to_flat(paint_session * session, uint16_t 
         {
         case 0:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 4), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 5), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 6), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         case 3:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 7), 0, 0, 32, 20, 2, height, 0, 6,
-                               height+2);
+                               height+3);
             break;
         }
     }
@@ -490,7 +499,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
@@ -558,7 +567,7 @@ static void hybrid_rc_track_90_deg_up(paint_session * session, uint16_t rideInde
         }
         paint_util_set_vertical_tunnel(session, height + 32);
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -604,7 +613,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackC
         }
         paint_util_set_vertical_tunnel(session, height + 56);
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
@@ -649,7 +658,7 @@ static void hybrid_rc_track_90_deg_up_to_60_deg_up(paint_session * session, uint
         paint_util_push_tunnel_left(session, height + 48, TUNNEL_SQUARE_8);
         break;
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 80, 0x20);
 }
@@ -684,7 +693,7 @@ static void hybrid_rc_track_60_deg_down_to_90_deg_down(paint_session * session, 
             paint_util_push_tunnel_rotated(session, direction, height + 48, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 80, 0x20);
         break;
     case 1:
@@ -726,7 +735,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -794,7 +803,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -842,10 +851,12 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
 	paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
+	paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction+1) & 3), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -867,15 +878,13 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE+16), 0, 0, 32, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE+16), 0, 0, 32, 14, 3, height, 0, 18,
                                height);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         }
         paint_util_set_segment_support_height(
-            session,
-            paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-            0xFFFF, 0);
+            session,paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, (direction+1) & 3), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
@@ -903,10 +912,12 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, (direction+1) & 3), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 4:
+	paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction+1) & 3), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 5:
@@ -928,15 +939,13 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE+18), 0, 0, 16, 32, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE+18), 0, 0, 14, 32, 3, height, 18, 0,
                                height);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         }
         paint_util_set_segment_support_height(
-            session,
-            paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-            0xFFFF, 0);
+            session,paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, (direction+1) & 3), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 6:
@@ -973,7 +982,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -1020,7 +1029,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -1049,7 +1058,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
         }
         paint_util_set_segment_support_height(
             session,
-            paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -1078,7 +1087,7 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -1099,7 +1108,7 @@ wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEM
                     break;
             }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 4:
@@ -1124,7 +1133,7 @@ wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEM
         }
         paint_util_set_segment_support_height(
             session,
-            paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -1165,7 +1174,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -1194,7 +1203,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
         }
         paint_util_set_segment_support_height(
             session,
-            paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -1223,7 +1232,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -1244,7 +1253,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
                     break;
             }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 4:
@@ -1269,7 +1278,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
         }
         paint_util_set_segment_support_height(
             session,
-            paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -1358,7 +1367,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -1398,7 +1407,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
@@ -1423,7 +1432,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -1456,7 +1465,7 @@ static void hybrid_rc_track_diag_25_deg_up(paint_session * session, uint16_t rid
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
@@ -1496,7 +1505,7 @@ static void hybrid_rc_track_diag_25_deg_up(paint_session * session, uint16_t rid
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
@@ -1536,7 +1545,7 @@ static void hybrid_rc_track_diag_25_deg_up(paint_session * session, uint16_t rid
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
@@ -1561,7 +1570,7 @@ static void hybrid_rc_track_diag_25_deg_up(paint_session * session, uint16_t rid
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     }
@@ -1594,7 +1603,7 @@ static void hybrid_rc_track_diag_25_deg_up_to_flat(paint_session * session, uint
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
@@ -1621,20 +1630,20 @@ static void hybrid_rc_track_diag_25_deg_up_to_flat(paint_session * session, uint
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
@@ -1661,20 +1670,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
@@ -1699,7 +1708,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     }
@@ -1732,7 +1741,7 @@ static void hybrid_rc_track_diag_flat_to_25_deg_up(paint_session * session, uint
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
@@ -1759,20 +1768,20 @@ static void hybrid_rc_track_diag_flat_to_25_deg_up(paint_session * session, uint
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 1:
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 2:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 3:
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
@@ -1799,20 +1808,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 1:
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 2:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 3:
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
@@ -1837,7 +1846,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
@@ -1870,7 +1879,7 @@ static void hybrid_rc_track_diag_25_deg_down(paint_session * session, uint16_t r
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
@@ -1897,20 +1906,20 @@ static void hybrid_rc_track_diag_25_deg_down(paint_session * session, uint16_t r
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
@@ -1937,20 +1946,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
@@ -1975,7 +1984,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     }
@@ -2008,7 +2017,7 @@ static void hybrid_rc_track_diag_flat_to_25_deg_down(paint_session * session, ui
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     case 1:
         if (tileElement->AsTrack()->HasChain())
@@ -2034,20 +2043,20 @@ static void hybrid_rc_track_diag_flat_to_25_deg_down(paint_session * session, ui
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     case 2:
         if (tileElement->AsTrack()->HasChain())
@@ -2073,20 +2082,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     case 3:
         if (tileElement->AsTrack()->HasChain())
@@ -2110,7 +2119,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     }
 
@@ -2144,7 +2153,7 @@ static void hybrid_rc_track_diag_25_deg_down_to_flat(paint_session * session, ui
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
@@ -2171,20 +2180,20 @@ static void hybrid_rc_track_diag_25_deg_down_to_flat(paint_session * session, ui
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 1:
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 2:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 3:
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
@@ -2211,20 +2220,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 1:
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 2:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
         case 3:
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
@@ -2249,7 +2258,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             }
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
@@ -2282,7 +2291,7 @@ static void hybrid_rc_track_diag_60_deg_up(paint_session * session, uint16_t rid
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 104, 0x20);
         break;
     case 1:
@@ -2309,20 +2318,20 @@ static void hybrid_rc_track_diag_60_deg_up(paint_session * session, uint16_t rid
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 104, 0x20);
         break;
     case 2:
@@ -2349,20 +2358,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 104, 0x20);
         break;
     case 3:
@@ -2387,7 +2396,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 104, 0x20);
         break;
     }
@@ -2420,7 +2429,7 @@ static void hybrid_rc_track_diag_25_deg_up_to_60_deg_up(paint_session * session,
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
@@ -2447,20 +2456,20 @@ static void hybrid_rc_track_diag_25_deg_up_to_60_deg_up(paint_session * session,
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
@@ -2487,20 +2496,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 3:
@@ -2525,7 +2534,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -2558,7 +2567,7 @@ static void hybrid_rc_track_diag_60_deg_up_to_25_deg_up(paint_session * session,
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
@@ -2585,20 +2594,20 @@ static void hybrid_rc_track_diag_60_deg_up_to_25_deg_up(paint_session * session,
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
@@ -2625,20 +2634,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 3:
@@ -2663,7 +2672,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -2696,7 +2705,7 @@ static void hybrid_rc_track_diag_60_deg_down(paint_session * session, uint16_t r
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 104, 0x20);
         break;
     case 1:
@@ -2723,20 +2732,20 @@ static void hybrid_rc_track_diag_60_deg_down(paint_session * session, uint16_t r
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 104, 0x20);
         break;
     case 2:
@@ -2763,20 +2772,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 104, 0x20);
         break;
     case 3:
@@ -2801,7 +2810,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 104, 0x20);
         break;
     }
@@ -2834,7 +2843,7 @@ static void hybrid_rc_track_diag_25_deg_down_to_60_deg_down(paint_session * sess
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
@@ -2861,20 +2870,20 @@ static void hybrid_rc_track_diag_25_deg_down_to_60_deg_down(paint_session * sess
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
@@ -2901,20 +2910,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 3:
@@ -2939,7 +2948,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -2972,7 +2981,7 @@ static void hybrid_rc_track_diag_60_deg_down_to_25_deg_down(paint_session * sess
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
@@ -2999,20 +3008,20 @@ static void hybrid_rc_track_diag_60_deg_down_to_25_deg_down(paint_session * sess
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
@@ -3039,20 +3048,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 3:
@@ -3077,7 +3086,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
 		}
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -3114,7 +3123,7 @@ static void hybrid_rc_track_flat_to_left_bank(paint_session * session, uint16_t 
     }
 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -3147,7 +3156,7 @@ static void hybrid_rc_track_flat_to_right_bank(paint_session * session, uint16_t
     }
 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -3200,7 +3209,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 1 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
@@ -3240,7 +3249,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 1 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
@@ -3252,23 +3261,23 @@ static void hybrid_rc_track_25_deg_up_to_left_bank(paint_session * session, uint
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+24), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+25), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+26), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+27), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+28), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+29), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     }
 wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -3280,7 +3289,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
@@ -3292,21 +3301,21 @@ static void hybrid_rc_track_25_deg_up_to_right_bank(paint_session * session, uin
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+30), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+31), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+32), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+33), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+34), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION+35), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
@@ -3320,7 +3329,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
@@ -3377,7 +3386,7 @@ static void hybrid_rc_track_left_bank(paint_session * session, uint16_t rideInde
     }
 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -3387,6 +3396,8 @@ static void hybrid_rc_track_right_bank(paint_session * session, uint16_t rideInd
 {
     hybrid_rc_track_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
+
+
 
 static void hybrid_rc_track_diag_flat_to_left_bank(paint_session * session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction,
                                                  int32_t height, const TileElement * tileElement)
@@ -3402,7 +3413,7 @@ static void hybrid_rc_track_diag_flat_to_left_bank(paint_session * session, uint
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -3412,26 +3423,26 @@ static void hybrid_rc_track_diag_flat_to_left_bank(paint_session * session, uint
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+0), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+1), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 27);
+                               -16, -16, height + 28);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -3445,20 +3456,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
@@ -3470,7 +3481,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -3490,7 +3501,7 @@ static void hybrid_rc_track_diag_flat_to_right_bank(paint_session * session, uin
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -3504,20 +3515,20 @@ static void hybrid_rc_track_diag_flat_to_right_bank(paint_session * session, uin
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -3527,26 +3538,26 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+7), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+8), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 27);
+                               -16, -16, height + 28);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
@@ -3558,7 +3569,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -3578,7 +3589,7 @@ static void hybrid_rc_track_diag_left_bank_to_flat(paint_session * session, uint
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -3588,26 +3599,26 @@ static void hybrid_rc_track_diag_left_bank_to_flat(paint_session * session, uint
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+7), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+8), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 27);
+                               -16, -16, height + 28);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -3621,20 +3632,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
@@ -3646,7 +3657,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -3666,7 +3677,7 @@ static void hybrid_rc_track_diag_right_bank_to_flat(paint_session * session, uin
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -3680,20 +3691,20 @@ static void hybrid_rc_track_diag_right_bank_to_flat(paint_session * session, uin
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -3703,26 +3714,26 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+0), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+1), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 27);
+                               -16, -16, height + 28);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
@@ -3734,7 +3745,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -3754,7 +3765,7 @@ static void hybrid_rc_track_diag_left_bank_to_25_deg_up(paint_session * session,
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
@@ -3770,20 +3781,20 @@ static void hybrid_rc_track_diag_left_bank_to_25_deg_up(paint_session * session,
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
@@ -3797,20 +3808,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
@@ -3822,7 +3833,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
@@ -3842,7 +3853,7 @@ static void hybrid_rc_track_diag_right_bank_to_25_deg_up(paint_session * session
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
@@ -3856,20 +3867,20 @@ static void hybrid_rc_track_diag_right_bank_to_25_deg_up(paint_session * session
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
@@ -3885,20 +3896,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
@@ -3910,7 +3921,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
@@ -3930,7 +3941,7 @@ static void hybrid_rc_track_diag_25_deg_up_to_left_bank(paint_session * session,
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
@@ -3940,26 +3951,26 @@ static void hybrid_rc_track_diag_25_deg_up_to_left_bank(paint_session * session,
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+20), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+21), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 35);
+                               -16, -16, height + 38);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
@@ -3973,20 +3984,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
@@ -3998,7 +4009,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     }
@@ -4018,7 +4029,7 @@ static void hybrid_rc_track_diag_25_deg_up_to_right_bank(paint_session * session
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
@@ -4032,20 +4043,20 @@ static void hybrid_rc_track_diag_25_deg_up_to_right_bank(paint_session * session
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
@@ -4055,26 +4066,26 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+27), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+28), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 35);
+                               -16, -16, height + 38);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
@@ -4086,7 +4097,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     }
@@ -4106,7 +4117,7 @@ static void hybrid_rc_track_diag_left_bank_to_25_deg_down(paint_session * sessio
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     case 1:
         switch (direction)
@@ -4115,26 +4126,26 @@ static void hybrid_rc_track_diag_left_bank_to_25_deg_down(paint_session * sessio
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+27), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+28), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 35);
+                               -16, -16, height + 38);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     case 2:
         switch (direction)
@@ -4147,20 +4158,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     case 3:
         switch (direction)
@@ -4171,7 +4182,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     }
 
@@ -4192,7 +4203,7 @@ static void hybrid_rc_track_diag_right_bank_to_25_deg_down(paint_session * sessi
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     case 1:
         switch (direction)
@@ -4205,20 +4216,20 @@ static void hybrid_rc_track_diag_right_bank_to_25_deg_down(paint_session * sessi
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     case 2:
         switch (direction)
@@ -4227,26 +4238,26 @@ wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+20), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+21), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 35);
+                               -16, -16, height + 38);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 1:                                                     
-wooden_a_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 2:                                                     
-wooden_a_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                                  
         case 3:                                                     
-wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     case 3:
         switch (direction)
@@ -4257,7 +4268,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height + 16, session->TrackColours[
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         break;
     }
 
@@ -4278,7 +4289,7 @@ static void hybrid_rc_track_diag_25_deg_down_to_left_bank(paint_session * sessio
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
@@ -4288,26 +4299,26 @@ static void hybrid_rc_track_diag_25_deg_down_to_left_bank(paint_session * sessio
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+17), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+18), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 35);
+                               -16, -16, height + 38);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
@@ -4321,20 +4332,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
@@ -4346,7 +4357,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
@@ -4366,7 +4377,7 @@ static void hybrid_rc_track_diag_25_deg_down_to_right_bank(paint_session * sessi
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
@@ -4380,20 +4391,20 @@ static void hybrid_rc_track_diag_25_deg_down_to_right_bank(paint_session * sessi
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
@@ -4403,26 +4414,26 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+10), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+11), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 35);
+                               -16, -16, height + 38);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
@@ -4434,7 +4445,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
@@ -4454,7 +4465,7 @@ static void hybrid_rc_track_diag_left_bank(paint_session * session, uint16_t rid
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -4464,26 +4475,26 @@ static void hybrid_rc_track_diag_left_bank(paint_session * session, uint16_t rid
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+30), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+31), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 27);
+                               -16, -16, height + 28);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -4497,20 +4508,20 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
@@ -4522,7 +4533,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -4542,7 +4553,7 @@ static void hybrid_rc_track_diag_right_bank(paint_session * session, uint16_t ri
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -4556,20 +4567,20 @@ static void hybrid_rc_track_diag_right_bank(paint_session * session, uint16_t ri
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -4579,26 +4590,26 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+30), -16, -16, 32, 32, 3, height,
                                -16, -16, height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BANK_TRANSITION_DIAGONAL+31), -16, -16, 32, 32, 0, height,
-                               -16, -16, height + 27);
+                               -16, -16, height + 28);
             break;
         }
         switch(direction)
 	{
         case 0:
-wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 1:                                                
-wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 2:                                                
-wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;                                             
         case 3:                                                
-wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+wooden_b_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     	    break;
 	}
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
@@ -4610,7 +4621,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -4658,7 +4669,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -4674,7 +4685,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SMALL_CURVE_BANKED+6), 0, 0, 16, 16, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -4730,7 +4741,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -4781,10 +4792,12 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction+1) & 3), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -4797,7 +4810,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE_BANKED+8), 0, 0, 48, 16, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -4806,15 +4819,13 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE_BANKED+21), 0, 0, 32, 16, 3, height, 0, 16,
+            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE_BANKED+21), 0, 0, 32, 14, 3, height, 0, 18,
                                height);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         }
         paint_util_set_segment_support_height(
-            session,
-            paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-            0xFFFF, 0);
+            session,paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, (direction+1) & 3), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
@@ -4829,7 +4840,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE_BANKED+9), 0, 0, 38, 38, 3, height, 0, 0,
                                height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE_BANKED+10), 0, 0, 16, 16, 1, height, 16, 16,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -4844,10 +4855,12 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, (direction+1) & 3), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 4:
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, (direction+1) & 3), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 5:
@@ -4860,7 +4873,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE_BANKED+11), 0, 0, 16, 48, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -4869,15 +4882,13 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE_BANKED+23), 0, 0, 16, 32, 3, height, 16, 0,
+            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE_BANKED+23), 0, 0, 14, 32, 3, height, 18, 0,
                                height);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         }
         paint_util_set_segment_support_height(
-            session,
-            paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-            0xFFFF, 0);
+            session,paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, (direction+1) & 3), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 6:
@@ -4918,7 +4929,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -4969,7 +4980,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -4984,7 +4995,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+7), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+8), 0, 0, 34, 16, 0, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -5000,7 +5011,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
         }
         paint_util_set_segment_support_height(
             session,
-            paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -5014,7 +5025,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+9), 0, 0, 16, 16, 0, height, 16, 16,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -5029,7 +5040,7 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -5050,7 +5061,7 @@ wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEM
         break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 4:
@@ -5064,7 +5075,7 @@ wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+10), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+11), 0, 0, 16, 18, 0, height, 0, 16,
-                               height + 27);
+                               height + 28);
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+15), 0, 0, 16, 16, 3, height, 0, 0,
@@ -5077,7 +5088,7 @@ wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEM
         }
         paint_util_set_segment_support_height(
             session,
-            paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -5122,7 +5133,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -5142,7 +5153,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+30), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+31), 0, 0, 34, 16, 0, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -5153,7 +5164,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
         }
         paint_util_set_segment_support_height(
             session,
-            paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -5172,7 +5183,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+32), 0, 0, 28, 28, 0, height, 4, 4,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -5182,7 +5193,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -5203,14 +5214,14 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
                     break;
             }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 4:
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+23), 0, 0, 16, 16, 3, height, 16, 16,//TODO
+            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+23), 0, 0, 16, 16, 3, height, 16, 0,//TODO
                                height);
             break;
         case 1:
@@ -5221,7 +5232,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+33), 0, 0, 32, 20, 3, height, 0, 6,
                                height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+34), 0, 0, 16, 18, 0, height, 0, 16,
-                               height + 27);
+                               height + 28);
             break;
         case 3:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE_BANKED+39), 0, 0, 16, 16, 3, height, 16, 16,
@@ -5230,7 +5241,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
         }
         paint_util_set_segment_support_height(
             session,
-            paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -5281,7 +5292,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
@@ -5303,6 +5314,8 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         }
+        paint_util_set_segment_support_height(
+            session,paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
@@ -5335,7 +5348,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -5371,7 +5384,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
@@ -5393,6 +5406,8 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         }
+        paint_util_set_segment_support_height(
+            session,paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
@@ -5425,7 +5440,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -5444,6 +5459,13 @@ static void hybrid_rc_track_right_quarter_turn_3_25_deg_down(paint_session * ses
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     hybrid_rc_track_left_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
+
+
+
+
+
+
+
 
 static void hybrid_rc_track_left_quarter_turn_5_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
                                                         uint8_t direction, int32_t height, const TileElement * tileElement)
@@ -5479,10 +5501,12 @@ wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHE
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
+        paint_util_set_segment_support_height(
+            session,paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
@@ -5508,9 +5532,7 @@ wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session,
-            paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
-            0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 3:
@@ -5537,10 +5559,12 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 4:
+        paint_util_set_segment_support_height(
+            session,paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 5:
@@ -5566,9 +5590,7 @@ wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session,
-            paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-            0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 6:
@@ -5605,11 +5627,12 @@ wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHE
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
 }
+
 
 static void hybrid_rc_track_right_quarter_turn_5_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
                                                          uint8_t direction, int32_t height, const TileElement * tileElement)
@@ -5645,10 +5668,12 @@ wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHE
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
+        paint_util_set_segment_support_height(
+            session,paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
@@ -5703,10 +5728,12 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 4:
+        paint_util_set_segment_support_height(
+            session,paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 5:
@@ -5732,9 +5759,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session,
-            paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
-            0xFFFF, 0);
+          session,  paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 6:
@@ -5771,7 +5796,7 @@ wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -5912,7 +5937,7 @@ static void hybrid_rc_track_left_quarter_turn_1_90_deg_up(paint_session * sessio
         }
         paint_util_set_vertical_tunnel(session, height + 96);
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 96, 0x20);
         break;
     case 1:
@@ -5951,7 +5976,7 @@ static void hybrid_rc_track_right_quarter_turn_1_90_deg_up(paint_session * sessi
         }
         paint_util_set_vertical_tunnel(session, height + 96);
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 96, 0x20);
         break;
     case 1:
@@ -5978,21 +6003,21 @@ static void hybrid_rc_track_25_deg_up_to_left_banked_25_deg_up(paint_session * s
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+0), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+1), 0, 0, 32, 20, 2, height, 0, 6,
                            height);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+2), 0, 0, 32, 1, 34, height, 0, 27,
-                           height+2);
+                           height+3);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+3), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+4), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     }
 wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -6004,7 +6029,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
@@ -6016,21 +6041,21 @@ static void hybrid_rc_track_25_deg_up_to_right_banked_25_deg_up(paint_session * 
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+5), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+6), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+7), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+8), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+9), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     }
 wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -6042,7 +6067,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
@@ -6054,21 +6079,21 @@ static void hybrid_rc_track_left_banked_25_deg_up_to_25_deg_up(paint_session * s
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+10), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+11), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+12), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+13), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+14), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     }
 wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -6080,7 +6105,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
@@ -6092,21 +6117,21 @@ static void hybrid_rc_track_right_banked_25_deg_up_to_25_deg_up(paint_session * 
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+15), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+16), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+17), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+18), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+19), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     }
 wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -6118,7 +6143,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
@@ -6187,7 +6212,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 1 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
@@ -6228,7 +6253,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 1 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
@@ -6241,23 +6266,23 @@ static void hybrid_rc_track_left_banked_25_deg_up_to_left_banked_flat(paint_sess
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+32), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+33), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+34), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+35), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+36), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+37), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     }
 wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -6269,7 +6294,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
@@ -6282,21 +6307,21 @@ static void hybrid_rc_track_right_banked_25_deg_up_to_right_banked_flat(paint_se
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+38), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+39), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+40), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+41), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+42), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+43), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
@@ -6310,7 +6335,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
@@ -6354,7 +6379,7 @@ static void hybrid_rc_track_25_deg_up_left_banked(paint_session * session, uint1
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+44), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+45), 0, 0, 32, 1, 34, height, 0, 27,
@@ -6362,11 +6387,11 @@ static void hybrid_rc_track_25_deg_up_left_banked(paint_session * session, uint1
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+46), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+47), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     }
 wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -6378,7 +6403,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
@@ -6390,11 +6415,11 @@ static void hybrid_rc_track_25_deg_up_right_banked(paint_session * session, uint
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+48), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+49), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+50), 0, 0, 32, 1, 34, height, 0, 27,
@@ -6402,7 +6427,7 @@ static void hybrid_rc_track_25_deg_up_right_banked(paint_session * session, uint
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+51), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     }
 wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -6414,7 +6439,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
@@ -6464,7 +6489,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 1 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
@@ -6502,7 +6527,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 1 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
@@ -6514,21 +6539,21 @@ static void hybrid_rc_track_left_banked_25_deg_up_to_flat(paint_session * sessio
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+62), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+63), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+64), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+65), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+66), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     }
 wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -6540,7 +6565,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
@@ -6552,21 +6577,21 @@ static void hybrid_rc_track_right_banked_25_deg_up_to_flat(paint_session * sessi
     {
     case 0:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+67), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 1:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+68), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+69), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+70), 0, 0, 32, 1, 34, height, 0, 27,
                            height);
         break;
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SLOPE_BANK_TRANSITION+71), 0, 0, 32, 20, 2, height, 0, 6,
-                           height+2);
+                           height+3);
         break;
     }
 wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -6578,7 +6603,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, ses
     {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     }
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 40, 0x20);
 }
@@ -6606,20 +6631,6 @@ static void hybrid_rc_track_right_banked_25_deg_down_to_flat(paint_session * ses
 {
     hybrid_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
-
-
-
-
-
-
-
-
-
-/*
-static void wooden_rc_track_left_quarter_turn_5_25_deg_up(
-
-static void wooden_rc_track_right_quarter_turn_5_25_deg_up(
-*/
 
 static void hybrid_rc_track_left_banked_quarter_turn_3_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
                                                                uint8_t direction, int32_t height, const TileElement * tileElement)
@@ -6653,7 +6664,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
@@ -6675,6 +6686,8 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         }
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
@@ -6711,7 +6724,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -6749,7 +6762,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
@@ -6771,6 +6784,8 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         }
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
@@ -6807,7 +6822,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -6828,6 +6843,7 @@ static void hybrid_rc_track_right_banked_quarter_turn_3_25_deg_down(paint_sessio
     hybrid_rc_track_left_banked_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height,
                                                        tileElement);
 }
+            
 
 static void hybrid_rc_track_left_banked_quarter_turn_5_25_deg_up(paint_session * session, uint16_t rideIndex, uint8_t trackSequence,
                                                                uint8_t direction, int32_t height, const TileElement * tileElement)
@@ -6865,10 +6881,12 @@ wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHE
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
+        paint_util_set_segment_support_height(
+            session,paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
@@ -6927,10 +6945,12 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 4:
+        paint_util_set_segment_support_height(
+            session,paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 5:
@@ -7003,7 +7023,7 @@ wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHE
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -7045,10 +7065,12 @@ wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHE
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
+        paint_util_set_segment_support_height(
+            session,paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
@@ -7108,10 +7130,12 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 4:
+        paint_util_set_segment_support_height(
+            session,paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 5:
@@ -7184,7 +7208,7 @@ wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
@@ -7233,7 +7257,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+7), 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+7), 0, 0, 32, 32, 3, height, 0, 6,
                                height);
 wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
@@ -7243,7 +7267,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -7254,7 +7278,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 1:
-            sub_98196C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+5), 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+5), 0, 0, 34, 26, 3, height);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -7292,7 +7316,7 @@ wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
-            sub_98196C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+5), 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+5), 0, 0, 34, 26, 3, height);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         }
@@ -7311,7 +7335,7 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 1:
-            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+7), 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+7), 0, 0, 32, 32, 3, height, 0, 6,
                                height);
 wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
@@ -7336,7 +7360,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -7351,7 +7375,7 @@ static void hybrid_rc_track_s_bend_right(paint_session * session, uint16_t rideI
         switch (direction)
         {
         case 0:
-            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+8), 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+8), 0, 0, 32, 32, 3, height, 0, 6,
                                height);
 wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
@@ -7376,7 +7400,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
@@ -7393,7 +7417,7 @@ wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
-            sub_98196C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+10), 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+10), 0, 0, 34, 26, 3, height);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -7411,7 +7435,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
         switch (direction)
         {
         case 0:
-            sub_98196C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+10), 0, 0, 32, 26, 3, height);
+            sub_98196C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+10), 0, 0, 34, 26, 3, height);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 1:
@@ -7449,7 +7473,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
 wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
-            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+8), 0, 0, 32, 20, 3, height, 0, 6,
+            sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_S_BEND+8), 0, 0, 32, 32, 3, height, 0, 6,
                                height);
 wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
@@ -7469,7 +7493,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     }
@@ -7515,7 +7539,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -7547,7 +7571,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+6), 0, 0, 16, 16, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -7603,7 +7627,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -7645,7 +7669,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -7682,7 +7706,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+6), 0, 0, 16, 16, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -7728,7 +7752,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -7773,7 +7797,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -7810,7 +7834,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+25), 0, 0, 16, 16, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -7861,7 +7885,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -7903,7 +7927,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -7935,7 +7959,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_SMALL_HELIX+25), 0, 0, 16, 16, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -7986,7 +8010,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -8055,11 +8079,13 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -8072,7 +8098,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+8), 0, 0, 33, 16, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -8104,7 +8130,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+9), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+10), 0, 0, 16, 16, 1, height, 16, 16,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -8119,10 +8145,12 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_B4 | SEGMENT_C0 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 4:
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 5:
@@ -8135,7 +8163,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+11), 0, 0, 16, 33, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -8193,7 +8221,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -8235,11 +8263,13 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 8:
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 9:
@@ -8257,7 +8287,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+8), 0, 0, 16, 32, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -8289,7 +8319,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+9), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+10), 0, 0, 16, 16, 1, height, 16, 16,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -8299,10 +8329,12 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 11:
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 12:
@@ -8320,7 +8352,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+11), 0, 0, 32, 16, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -8368,7 +8400,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -8413,11 +8445,13 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
@@ -8435,7 +8469,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+38), 0, 0, 33, 16, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -8467,7 +8501,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+39), 0, 0, 16, 32, 3, height, 0, 16,
                                height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+40), 0, 0, 16, 16, 1, height, 16, 16,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -8477,10 +8511,12 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 4:
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 5:
@@ -8498,7 +8534,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 2:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+41), 0, 0, 16, 33, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 3:
@@ -8551,7 +8587,7 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -8593,11 +8629,13 @@ wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 8:
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 9:
@@ -8610,7 +8648,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+38), 0, 0, 16, 32, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -8642,7 +8680,7 @@ wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEM
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+39), 0, 0, 16, 16, 3, height, 0, 16,
                                height);
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+40), 0, 0, 16, 16, 1, height, 16, 16,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -8657,10 +8695,12 @@ wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEM
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4 | SEGMENT_B4 | SEGMENT_C0 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 11:
+        paint_util_set_segment_support_height(
+            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 12:
@@ -8673,7 +8713,7 @@ wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEM
             break;
         case 1:
             sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX+41), 0, 0, 32, 16, 1, height, 0, 0,
-                               height + 27);
+                               height + 28);
 wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 2:
@@ -8726,7 +8766,7 @@ wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEM
             paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -8798,7 +8838,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackC
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -8833,7 +8873,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackC
 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_set_segment_support_height(
             session,
-            paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
@@ -8876,7 +8916,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackC
         }
 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
@@ -8922,7 +8962,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackC
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
@@ -8957,7 +8997,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackC
 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_set_segment_support_height(
             session,
-            paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
@@ -9000,7 +9040,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackC
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
             0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
@@ -9064,7 +9104,7 @@ static void hybrid_rc_track_90_deg_to_inverted_flat_quarter_loop_up(
                     break;
             }
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 88, 0x20);
             break;
         case 1:
@@ -9105,7 +9145,7 @@ static void hybrid_rc_track_90_deg_to_inverted_flat_quarter_loop_up(
             }
 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
         case 2:
@@ -9150,7 +9190,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackC
                 paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_0);
             }
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
     }
@@ -9184,7 +9224,7 @@ static void hybrid_rc_track_brakes(paint_session * session, uint16_t rideIndex, 
     }
 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -9255,7 +9295,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 50 + direction, height, se
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
@@ -9280,7 +9320,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 50 + direction, height, se
         }
 wooden_a_supports_paint_setup(session, direction & 1, 54 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
@@ -9305,7 +9345,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 54 + direction, height, se
         }
 wooden_a_supports_paint_setup(session, direction & 1, 58 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 3:
@@ -9339,7 +9379,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 62 + direction, height, se
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 80, 0x20);
         break;
     }
@@ -9377,7 +9417,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 66 + direction, height, se
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_7);
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 80, 0x20);
         break;
     case 1:
@@ -9402,7 +9442,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 66 + direction, height, se
         }
 wooden_a_supports_paint_setup(session, direction & 1, 70 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 80, 0x20);
         break;
     case 2:
@@ -9427,7 +9467,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 70 + direction, height, se
         }
 wooden_a_supports_paint_setup(session, direction & 1, 74 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
@@ -9461,7 +9501,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 78 + direction, height, se
             break;
         }
         paint_util_set_segment_support_height(
-            session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 40, 0x20);
         break;
     }
@@ -9499,7 +9539,7 @@ static void hybrid_rc_track_block_brakes(paint_session * session, uint16_t rideI
     }
 wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -9528,7 +9568,7 @@ static void hybrid_rc_track_booster(paint_session * session, uint16_t rideIndex,
         break;
     }
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction),
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -9566,7 +9606,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, ses
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
     paint_util_set_segment_support_height(
-        session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
@@ -9821,7 +9861,6 @@ static void hybrid_rc_track_right_corkscrew_down(
     hybrid_rc_track_left_corkscrew_up(session, rideIndex, 2 - trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
-//010152341010
 static void hybrid_rc_left_bank_to_left_quarter_turn_3_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
@@ -9857,10 +9896,10 @@ static void hybrid_rc_left_bank_to_left_quarter_turn_3_25_deg_up(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
         case 1:
@@ -9882,6 +9921,8 @@ static void hybrid_rc_left_bank_to_left_quarter_turn_3_25_deg_up(
                    wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                    break;
             }
+            paint_util_set_segment_support_height(
+                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 3:
@@ -9911,14 +9952,14 @@ static void hybrid_rc_left_bank_to_left_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_8);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_8);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
                     break;
             }
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
     }
@@ -9959,10 +10000,10 @@ static void hybrid_rc_right_bank_to_right_quarter_turn_3_25_deg_up(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
         case 1:
@@ -9984,6 +10025,8 @@ static void hybrid_rc_right_bank_to_right_quarter_turn_3_25_deg_up(
                    wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                    break;
             }
+            paint_util_set_segment_support_height(
+                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 3:
@@ -10013,14 +10056,14 @@ static void hybrid_rc_right_bank_to_right_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_8);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_8);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
                     break;
             }
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
     }
@@ -10058,10 +10101,10 @@ static void hybrid_rc_left_quarter_turn_3_25_deg_down_to_left_bank(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
             }
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
         case 1:
@@ -10083,6 +10126,8 @@ static void hybrid_rc_left_quarter_turn_3_25_deg_down_to_left_bank(
                    wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                    break;
             }
+            paint_util_set_segment_support_height(
+                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 3:
@@ -10115,14 +10160,14 @@ static void hybrid_rc_left_quarter_turn_3_25_deg_down_to_left_bank(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
     }
@@ -10160,10 +10205,10 @@ static void hybrid_rc_right_quarter_turn_3_25_deg_down_to_right_bank(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
             }
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
         case 1:
@@ -10185,6 +10230,8 @@ static void hybrid_rc_right_quarter_turn_3_25_deg_down_to_right_bank(
                    wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                    break;
             }
+            paint_util_set_segment_support_height(
+                session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
         case 3:
@@ -10217,14 +10264,14 @@ static void hybrid_rc_right_quarter_turn_3_25_deg_down_to_right_bank(
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
-                session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D4, direction), 0xFFFF, 0);
+                session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 64, 0x20);
             break;
     }
