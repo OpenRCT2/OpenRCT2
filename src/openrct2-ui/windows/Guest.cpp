@@ -1799,7 +1799,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     screenCoords.y += LIST_ROW_HEIGHT * 2;
     gfx_fill_rect_inset(
-        dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1], 
+        dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Paid to enter

@@ -1114,7 +1114,7 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, STR_COMMA16, &_simplex_low, textColour,
         w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_LOW].left + 1, w->widgets[WIDX_SIMPLEX_LOW].top + 1 });
     gfx_draw_string_left(
-        dpi, STR_COMMA16, &_simplex_high, textColour,   
+        dpi, STR_COMMA16, &_simplex_high, textColour,
         w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_HIGH].left + 1, w->widgets[WIDX_SIMPLEX_HIGH].top + 1 });
     gfx_draw_string_left(
         dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &_simplex_base_freq, textColour,
@@ -1329,7 +1329,8 @@ static void window_mapgen_heightmap_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(
         dpi, STR_COMMA16, &waterLevel, labelColour,
         w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].left + 1, w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 });
+            + ScreenCoordsXY{ w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].left + 1,
+                              w->widgets[WIDX_HEIGHTMAP_WATER_LEVEL].top + 1 });
 }
 
 #pragma endregion
