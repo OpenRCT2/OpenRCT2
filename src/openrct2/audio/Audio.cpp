@@ -427,13 +427,13 @@ void audio_stop_vehicle_sounds()
         if (vehicleSound.id != SOUND_ID_NULL)
         {
             vehicleSound.id = SOUND_ID_NULL;
-            if (vehicleSound.Sound1.Id != SoundId::Null)
+            if (vehicleSound.TrackSound.Id != SoundId::Null)
             {
-                Mixer_Stop_Channel(vehicleSound.Sound1.Channel);
+                Mixer_Stop_Channel(vehicleSound.TrackSound.Channel);
             }
-            if (vehicleSound.Sound2.Id != SoundId::Null)
+            if (vehicleSound.OtherSound.Id != SoundId::Null)
             {
-                Mixer_Stop_Channel(vehicleSound.Sound2.Channel);
+                Mixer_Stop_Channel(vehicleSound.OtherSound.Channel);
             }
         }
     }

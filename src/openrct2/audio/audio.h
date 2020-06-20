@@ -68,8 +68,8 @@ struct rct_vehicle_sound
 {
     uint16_t id;
     int16_t volume;
-    Sound Sound1;
-    Sound Sound2;
+    Sound TrackSound;
+    Sound OtherSound;
 };
 
 struct rct_vehicle_sound_params

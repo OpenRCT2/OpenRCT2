@@ -1164,8 +1164,8 @@ static rct_vehicle_sound* vehicle_sounds_update_get_vehicle_sound(rct_vehicle_so
             if (vehicleSound->id == SOUND_ID_NULL)
             {
                 vehicleSound->id = sound_params->id;
-                vehicleSound->Sound1.Id = SoundId::Null;
-                vehicleSound->Sound2.Id = SoundId::Null;
+                vehicleSound->TrackSound.Id = SoundId::Null;
+                vehicleSound->OtherSound.Id = SoundId::Null;
                 vehicleSound->volume = 0x30;
                 return vehicleSound;
             }
@@ -1299,13 +1299,13 @@ void vehicle_sounds_update()
             if (keepPlaying)
                 continue;
 
-            if (vehicle_sound.Sound1.Id != SoundId::Null)
+            if (vehicle_sound.TrackSound.Id != SoundId::Null)
             {
-                Mixer_Stop_Channel(vehicle_sound.Sound1.Channel);
+                Mixer_Stop_Channel(vehicle_sound.TrackSound.Channel);
             }
-            if (vehicle_sound.Sound2.Id != SoundId::Null)
+            if (vehicle_sound.OtherSound.Id != SoundId::Null)
             {
-                Mixer_Stop_Channel(vehicle_sound.Sound2.Channel);
+                Mixer_Stop_Channel(vehicle_sound.OtherSound.Channel);
             }
             vehicle_sound.id = SOUND_ID_NULL;
         }
@@ -1338,9 +1338,9 @@ void vehicle_sounds_update()
 
         Vehicle* vehicle = GET_VEHICLE(vehicleSoundParams.id);
         UpdateSound<SoundType::TrackNoises>(
-            vehicle->sound1_id, vehicle->sound1_volume, &vehicleSoundParams, vehicleSound->Sound1, panVol);
+            vehicle->sound1_id, vehicle->sound1_volume, &vehicleSoundParams, vehicleSound->TrackSound, panVol);
         UpdateSound<SoundType::OtherNoises>(
-            vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->Sound2, panVol);
+            vehicle->sound2_id, vehicle->sound2_volume, &vehicleSoundParams, vehicleSound->OtherSound, panVol);
     }
 }
 
