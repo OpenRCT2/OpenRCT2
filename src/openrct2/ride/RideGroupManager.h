@@ -32,6 +32,8 @@ class RideGroupManager
 {
 public:
     static const RideGroup* GetRideGroup(const uint8_t trackType, const rct_ride_entry* rideEntry);
+    /** Will fall back to 0 if there is none found. */
+    static uint8_t GetRideGroupIndex(const uint8_t trackType, const rct_ride_entry* rideEntry);
     static const RideGroup* RideGroupFind(const uint8_t rideType, const uint8_t index);
 };
 
