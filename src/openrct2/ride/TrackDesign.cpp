@@ -205,7 +205,6 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
 
     CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->z_begin };
     _trackPreviewOrigin = startPos;
-
     do
     {
         TrackDesignTrackElement track{};
@@ -317,11 +316,15 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
             z -= _trackPreviewOrigin.z;
             z /= 8;
 
+            // hack : check for invalid height
+            if (z % 2 != 0)
+            {
+                z++;
+            }
             if (z > 127 || z < -126)
             {
                 return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
             }
-
             entrance.z = z;
 
             // If this is the exit version

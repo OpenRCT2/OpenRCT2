@@ -1177,7 +1177,7 @@ std::optional<CoordsXYZ> sub_6C683D(
     const CoordsXYZD& location, int32_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
-    auto trackElement = map_get_track_element_at_of_type_seq(location, type, 0);
+    auto trackElement = map_get_track_element_at_of_type_seq(location, type, 0, true);
     if (trackElement == nullptr)
     {
         trackElement = map_get_track_element_at_of_type(location, type);
@@ -1214,7 +1214,13 @@ std::optional<CoordsXYZ> sub_6C683D(
         map_invalidate_tile_full(cur);
 
         trackElement = map_get_track_element_at_of_type_seq(
-            { cur, cur_z, static_cast<Direction>(location.direction) }, type, trackBlock[i].index);
+            { cur, cur_z, static_cast<Direction>(location.direction) }, type, trackBlock[i].index, false);
+        if (trackElement == nullptr)
+        {
+            // try with correct invalid heights
+            trackElement = map_get_track_element_at_of_type_seq(
+                { cur, cur_z, static_cast<Direction>(location.direction) }, type, trackBlock[i].index, true);
+        }
         if (trackElement == nullptr)
         {
             return std::nullopt;

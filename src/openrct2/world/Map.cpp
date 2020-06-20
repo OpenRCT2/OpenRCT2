@@ -2283,7 +2283,8 @@ TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, int32
     return nullptr;
 }
 
-TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, int32_t trackType, int32_t sequence)
+TrackElement* map_get_track_element_at_of_type_seq(
+    const CoordsXYZD& location, int32_t trackType, int32_t sequence, bool correctInvalidHeight)
 {
     auto tileElement = map_get_first_element_at(location);
     if (tileElement != nullptr)
@@ -2293,7 +2294,46 @@ TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, i
             auto trackElement = tileElement->AsTrack();
             if (trackElement != nullptr)
             {
-                if (trackElement->GetBaseZ() != location.z)
+                auto zLocation0 = trackElement->GetBaseZ();
+                auto zLocation1 = location.z;
+
+                // check for invalid zLocation for helixes
+                if (correctInvalidHeight)
+                {
+                    switch (trackType)
+                    {
+                        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
+                        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
+                        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE:
+                        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE:
+                            if ((zLocation0 / COORDS_Z_STEP) % 2 != 0)
+                            {
+                                // correct the zLocation up a step
+                                zLocation0 += COORDS_Z_STEP;
+                            }
+                            if ((zLocation1 / COORDS_Z_STEP) % 2 != 0)
+                            {
+                                zLocation1 -= COORDS_Z_STEP;
+                            }
+                            break;
+                        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL:
+                        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL:
+                        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE:
+                        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE:
+                            if ((zLocation0 / COORDS_Z_STEP) % 2 != 0)
+                            {
+                                // correct the zLocation down a step
+                                zLocation0 -= COORDS_Z_STEP;
+                            }
+                            if ((zLocation1 / COORDS_Z_STEP) % 2 != 0)
+                            {
+                                zLocation1 += COORDS_Z_STEP;
+                            }
+                            break;
+                    }
+                }
+
+                if (zLocation0 != zLocation1)
                     continue;
                 if (trackElement->GetDirection() != location.direction)
                     continue;
@@ -2301,6 +2341,7 @@ TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, i
                     continue;
                 if (trackElement->GetSequenceIndex() != sequence)
                     continue;
+
                 return trackElement;
             }
         } while (!(tileElement++)->IsLastForTile());
