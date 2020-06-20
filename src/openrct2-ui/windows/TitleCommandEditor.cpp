@@ -757,8 +757,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4);
 
     // Label (e.g. "Location:")
-    gfx_draw_string_left(
-        dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY2 - 14 });
+    gfx_draw_string_left(dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY2 - 14 });
 
     if (command.Type == TITLE_SCRIPT_SPEED)
     {

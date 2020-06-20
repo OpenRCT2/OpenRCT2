@@ -1862,7 +1862,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
                 // Raised corners
                 screenCoords = w->windowPos
-                    + ScreenCoordsXY{ w->widgets[WIDX_GROUPBOX_DETAILS].left + 7,w->widgets[WIDX_SURFACE_CHECK_CORNER_E].top };
+                    + ScreenCoordsXY{ w->widgets[WIDX_GROUPBOX_DETAILS].left + 7, w->widgets[WIDX_SURFACE_CHECK_CORNER_E].top };
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_CORNERS, nullptr, COLOUR_WHITE, screenCoords);
                 break;
             }
@@ -2071,7 +2071,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     // Ride ID
                     int16_t rideId = tileElement->AsEntrance()->GetRideIndex();
                     gfx_draw_string_left(
-                        dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, COLOUR_WHITE,screenCoords + ScreenCoordsXY{ 0, 22 });
+                        dpi, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, &rideId, COLOUR_WHITE,
+                        screenCoords + ScreenCoordsXY{ 0, 22 });
                     // Station index
                     int16_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
                     auto ft = Formatter::Common();
