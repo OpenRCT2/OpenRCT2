@@ -122,9 +122,9 @@ SpriteBase* GetEntity(size_t sprite_idx)
     return GetEntity<SpriteBase>(sprite_idx);
 }
 
-uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y)
+uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)
 {
-    return gSpriteSpatialIndex[GetSpatialIndexOffset(x, y)];
+    return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
 }
 
 static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)

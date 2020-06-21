@@ -224,7 +224,7 @@ void litter_remove_at(int32_t x, int32_t y, int32_t z);
 uint16_t remove_floating_sprites();
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos);
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos);
-uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y);
+uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos);
 void sprite_position_tween_store_a();
 void sprite_position_tween_store_b();
 void sprite_position_tween_all(float nudge);
@@ -326,7 +326,7 @@ private:
 
 public:
     EntityTileList(const CoordsXY& loc)
-        : FirstEntity(sprite_get_first_in_quadrant(loc.x, loc.y))
+        : FirstEntity(sprite_get_first_in_quadrant(loc))
     {
     }
 
