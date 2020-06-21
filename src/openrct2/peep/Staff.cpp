@@ -187,7 +187,7 @@ bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
     return IsPatrolAreaSet(loc);
 }
 
-bool staff_is_location_on_patrol_edge(Peep* mechanic, int32_t x, int32_t y)
+bool staff_is_location_on_patrol_edge(Peep* mechanic, const CoordsXY& loc)
 {
     // Check whether the location x,y is inside and on the edge of the
     // patrol zone for mechanic.
@@ -195,9 +195,8 @@ bool staff_is_location_on_patrol_edge(Peep* mechanic, int32_t x, int32_t y)
     int32_t neighbourDir = 0;
     while (!onZoneEdge && neighbourDir <= 7)
     {
-        int32_t neighbourX = x + CoordsDirectionDelta[neighbourDir].x;
-        int32_t neighbourY = y + CoordsDirectionDelta[neighbourDir].y;
-        onZoneEdge = !mechanic->AsStaff()->IsLocationInPatrol({ neighbourX, neighbourY });
+        auto neighbourPos = loc + CoordsDirectionDelta[neighbourDir];
+        onZoneEdge = !mechanic->AsStaff()->IsLocationInPatrol(neighbourPos);
         neighbourDir++;
     }
     return onZoneEdge;
@@ -229,7 +228,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
     if (staff->AssignedPeepType != PEEP_TYPE_STAFF)
         return false;
 
-    if (!staff_is_location_on_patrol_edge(staff, x, y))
+    if (!staff_is_location_on_patrol_edge(staff, { x, y }))
     {
         return false;
     }
@@ -241,16 +240,14 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
     uint8_t widecount = 0;
     for (Direction adjac_dir : ALL_DIRECTIONS)
     {
-        int32_t adjac_x = x + CoordsDirectionDelta[adjac_dir].x;
-        int32_t adjac_y = y + CoordsDirectionDelta[adjac_dir].y;
-        uint8_t adjac_z = z;
+        auto adjacPos = CoordsXYZ{ x + CoordsDirectionDelta[adjac_dir].x, y + CoordsDirectionDelta[adjac_dir].y, z };
 
         /* Ignore adjacent tiles outside the patrol zone. */
-        if (!staff->AsStaff()->IsLocationInPatrol({ adjac_x, adjac_y }))
+        if (!staff->AsStaff()->IsLocationInPatrol(adjacPos))
             continue;
 
         /* Ignore adjacent tiles on the patrol zone edge. */
-        if (staff_is_location_on_patrol_edge(staff, adjac_x, adjac_y))
+        if (staff_is_location_on_patrol_edge(staff, adjacPos))
             continue;
 
         /* Adjacent tile is inside the patrol zone but not on the
@@ -267,12 +264,12 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
         {
             if (path->AsPath()->GetSlopeDirection() == adjac_dir)
             {
-                adjac_z = z + 2;
+                adjacPos.z = z + 2;
             }
         }
 
         /* Search through all adjacent map elements */
-        TileElement* test_element = map_get_first_element_at({ adjac_x, adjac_y });
+        TileElement* test_element = map_get_first_element_at(adjacPos);
         if (test_element == nullptr)
             return false;
         bool pathfound = false;
@@ -285,7 +282,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
             }
 
             /* test_element is a path */
-            if (!is_valid_path_z_and_direction(test_element, adjac_z, adjac_dir))
+            if (!is_valid_path_z_and_direction(test_element, adjacPos.z, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
