@@ -427,10 +427,9 @@ bool title_is_previewing_sequence()
     return false;
 }
 
-void DrawOpenRCT2(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
+void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
 {
     utf8 buffer[256];
-    ScreenCoordsXY screenCoords(x, y);
 
     // Write format codes
     utf8* ch = buffer;
@@ -444,7 +443,9 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
 
     // Invalidate screen area
     int16_t width = static_cast<int16_t>(gfx_get_string_width(buffer));
-    gfx_set_dirty_blocks(x, y, x + width, y + 30); // 30 is an arbitrary height to catch both strings
+    gfx_set_dirty_blocks(
+        screenCoords.x, screenCoords.y, screenCoords.x + width,
+        screenCoords.y + 30); // 30 is an arbitrary height to catch both strings
 
     // Write platform information
     snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
