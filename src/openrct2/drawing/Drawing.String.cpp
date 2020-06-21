@@ -496,15 +496,14 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo* dpi, int32_t codepoint,
 
     if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
     {
-        int32_t x = info->x;
-        int32_t y = info->y;
+        auto screenCoords = ScreenCoordsXY{ info->x, info->y };
         if (info->flags & TEXT_DRAW_FLAG_Y_OFFSET_EFFECT)
         {
-            y += *info->y_offset++;
+            screenCoords.y += *info->y_offset++;
         }
 
         PaletteMap paletteMap(info->palette);
-        gfx_draw_glyph(dpi, sprite, x, y, paletteMap);
+        gfx_draw_glyph(dpi, sprite, screenCoords, paletteMap);
     }
 
     info->x += characterWidth;
