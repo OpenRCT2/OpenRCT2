@@ -3574,7 +3574,7 @@ void Vehicle::UpdateCollisionSetup()
 
         for (int32_t i = 0; i < 10; i++)
         {
-            crashed_vehicle_particle_create(train->colours, train->x, train->y, train->z);
+            crashed_vehicle_particle_create(train->colours, { train->x, train->y, train->z });
         }
 
         train->flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
@@ -5300,7 +5300,7 @@ void Vehicle::CrashOnLand()
     uint8_t numParticles = std::min(sprite_width, static_cast<uint8_t>(7));
 
     while (numParticles-- != 0)
-        crashed_vehicle_particle_create(colours, x, y, z);
+        crashed_vehicle_particle_create(colours, { x, y, z });
 
     flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
     animation_frame = 0;
@@ -5364,7 +5364,7 @@ void Vehicle::CrashOnWater()
     crash_splash_create(x - 4, y + 8, z);
 
     for (int32_t i = 0; i < 10; ++i)
-        crashed_vehicle_particle_create(colours, x - 4, y + 8, z);
+        crashed_vehicle_particle_create(colours, { x - 4, y + 8, z });
 
     flags |= SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
     animation_frame = 0;

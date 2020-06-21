@@ -27,7 +27,7 @@ template<> bool SpriteBase::Is<CrashSplashParticle>() const
  *
  *  rct2: 0x006735A1
  */
-void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int32_t y, int32_t z)
+void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos)
 {
     VehicleCrashParticle* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->crashed_vehicle_particle;
     if (sprite != nullptr)
@@ -38,7 +38,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int3
         sprite->sprite_height_negative = 8;
         sprite->sprite_height_positive = 8;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite->MoveTo({ x, y, z });
+        sprite->MoveTo(vehiclePos);
         sprite->type = SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
 
         sprite->frame = (scenario_rand() & 0xFF) * 12;
