@@ -522,17 +522,16 @@ static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t
     attached_paint_struct* attached_ps = ps->attached_ps;
     for (; attached_ps; attached_ps = attached_ps->next)
     {
-        int16_t x = attached_ps->x + ps->x;
-        int16_t y = attached_ps->y + ps->y;
+        auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 
         uint32_t imageId = paint_ps_colourify_image(attached_ps->image_id, ps->sprite_type, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
         {
-            gfx_draw_sprite_raw_masked(dpi, x, y, imageId, attached_ps->colour_image_id);
+            gfx_draw_sprite_raw_masked(dpi, screenCoords.x, screenCoords.y, imageId, attached_ps->colour_image_id);
         }
         else
         {
-            gfx_draw_sprite(dpi, imageId, x, y, ps->tertiary_colour);
+            gfx_draw_sprite(dpi, imageId, screenCoords.x, screenCoords.y, ps->tertiary_colour);
         }
     }
 }
@@ -636,7 +635,7 @@ static void paint_ps_image(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t im
         return gfx_draw_sprite_raw_masked(dpi, x, y, imageId, ps->colour_image_id);
     }
 
-    gfx_draw_sprite(dpi, imageId, x, y, ps->tertiary_colour);
+    gfx_draw_sprite(dpi, imageId, { x, y }, ps->tertiary_colour);
 }
 
 static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags)

@@ -776,7 +776,7 @@ static const utf8* ttf_process_format_code(rct_drawpixelinfo* dpi, const utf8* t
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
                 {
-                    gfx_draw_sprite(dpi, imageId, info->x, info->y, 0);
+                    gfx_draw_sprite(dpi, imageId, { info->x, info->y }, 0);
                 }
                 info->x += g1->width;
             }

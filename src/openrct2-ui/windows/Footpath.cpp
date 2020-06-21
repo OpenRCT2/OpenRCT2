@@ -623,7 +623,7 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
             w->windowPos.x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2,
             w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60
         };
-        gfx_draw_sprite(dpi, image, screenCoords.x, screenCoords.y, 0);
+        gfx_draw_sprite(dpi, image, screenCoords, 0);
 
         // Draw build this... label
         screenCoords = {

@@ -116,8 +116,7 @@ static void widget_frame_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
+    auto leftTop = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
     int32_t r = w->windowPos.x + widget->right;
     int32_t b = w->windowPos.y + widget->bottom;
 
@@ -128,7 +127,7 @@ static void widget_frame_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     uint8_t colour = w->colours[widget->colour];
 
     // Draw the frame
-    gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
+    gfx_fill_rect_inset(dpi, leftTop.x, leftTop.y, r, b, colour, press);
 
     // Check if the window can be resized
     if (!(w->flags & WF_RESIZABLE))
@@ -137,9 +136,8 @@ static void widget_frame_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         return;
 
     // Draw the resize sprite at the bottom right corner
-    l = w->windowPos.x + widget->right - 18;
-    t = w->windowPos.y + widget->bottom - 18;
-    gfx_draw_sprite(dpi, SPR_RESIZE | IMAGE_TYPE_REMAP | ((colour & 0x7F) << 19), l, t, 0);
+    leftTop = w->windowPos + ScreenCoordsXY{ widget->right - 18, widget->bottom - 18 };
+    gfx_draw_sprite(dpi, SPR_RESIZE | IMAGE_TYPE_REMAP | ((colour & 0x7F) << 19), leftTop, 0);
 }
 
 /**
@@ -152,8 +150,7 @@ static void widget_resize_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
+    auto leftTop = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
     int32_t r = w->windowPos.x + widget->right;
     int32_t b = w->windowPos.y + widget->bottom;
 
@@ -161,7 +158,7 @@ static void widget_resize_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     uint8_t colour = w->colours[widget->colour];
 
     // Draw the panel
-    gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0);
+    gfx_fill_rect_inset(dpi, leftTop.x, leftTop.y, r, b, colour, 0);
 
     // Check if the window can be resized
     if (!(w->flags & WF_RESIZABLE))
@@ -170,9 +167,8 @@ static void widget_resize_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
         return;
 
     // Draw the resize sprite at the bottom right corner
-    l = w->windowPos.x + widget->right - 18;
-    t = w->windowPos.y + widget->bottom - 18;
-    gfx_draw_sprite(dpi, SPR_RESIZE | IMAGE_TYPE_REMAP | ((colour & 0x7F) << 19), l, t, 0);
+    leftTop = w->windowPos + ScreenCoordsXY{ widget->right - 18, widget->bottom - 18 };
+    gfx_draw_sprite(dpi, SPR_RESIZE | IMAGE_TYPE_REMAP | ((colour & 0x7F) << 19), leftTop, 0);
 }
 
 /**
@@ -240,15 +236,14 @@ static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     }
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
+    auto leftTop = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     // Get the colour and disabled image
     uint8_t colour = w->colours[widget->colour] & 0x7F;
     uint32_t image = widget->image + 2;
 
     // Draw disabled image
-    gfx_draw_sprite(dpi, image | (colour << 19), l, t, 0);
+    gfx_draw_sprite(dpi, image | (colour << 19), leftTop, 0);
 }
 
 /**
@@ -803,7 +798,7 @@ static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         return;
 
     // Resolve the absolute ltrb
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    auto leftTop = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     // Get the colour
     uint8_t colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
@@ -817,12 +812,12 @@ static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         // Draw greyed out (light border bottom right shadow)
         colour = w->colours[widget->colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-        gfx_draw_sprite_solid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
+        gfx_draw_sprite_solid(dpi, image, leftTop + ScreenCoordsXY{ 1, 1 }, colour);
 
         // Draw greyed out (dark)
         colour = w->colours[widget->colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-        gfx_draw_sprite_solid(dpi, image, screenCoords, colour);
+        gfx_draw_sprite_solid(dpi, image, leftTop, colour);
     }
     else
     {
@@ -836,7 +831,7 @@ static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         else
             image |= colour << 19;
 
-        gfx_draw_sprite(dpi, image, screenCoords.x, screenCoords.y, 0);
+        gfx_draw_sprite(dpi, image, leftTop, 0);
     }
 }
 

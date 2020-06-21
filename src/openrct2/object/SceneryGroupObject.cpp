@@ -60,11 +60,10 @@ void SceneryGroupObject::Unload()
 
 void SceneryGroupObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     uint32_t imageId = _legacyType.image + 0x20600001;
-    gfx_draw_sprite(dpi, imageId, x - 15, y - 14, 0);
+    gfx_draw_sprite(dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 }, 0);
 }
 
 void SceneryGroupObject::UpdateEntryIndexes()

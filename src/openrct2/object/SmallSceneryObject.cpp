@@ -107,17 +107,16 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
         }
     }
 
-    int32_t x = width / 2;
-    int32_t y = (height / 2) + (_legacyType.small_scenery.height / 2);
-    y = std::min(y, height - 16);
+    auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + (_legacyType.small_scenery.height / 2) };
+    screenCoords.y = std::min(screenCoords.y, height - 16);
 
     if ((scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_FULL_TILE))
         && (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_VOFFSET_CENTRE)))
     {
-        y -= 12;
+        screenCoords.y -= 12;
     }
 
-    gfx_draw_sprite(dpi, imageId, x, y, 0);
+    gfx_draw_sprite(dpi, imageId, screenCoords, 0);
 
     if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_GLASS))
     {
@@ -126,7 +125,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
         {
             imageId |= 0x92000000;
         }
-        gfx_draw_sprite(dpi, imageId, x, y, 0);
+        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
     }
 
     if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_ANIMATED_FG))
@@ -136,7 +135,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
         {
             imageId |= 0x92000000;
         }
-        gfx_draw_sprite(dpi, imageId, x, y, 0);
+        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
     }
 }
 

@@ -69,11 +69,10 @@ void WallObject::Unload()
 
 void WallObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
-    x += 14;
-    y += (_legacyType.wall.height * 2) + 16;
+    screenCoords.x += 14;
+    screenCoords.y += (_legacyType.wall.height * 2) + 16;
 
     uint32_t imageId = 0x20D00000 | _legacyType.image;
     if (_legacyType.wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
@@ -81,17 +80,17 @@ void WallObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t heig
         imageId |= 0x92000000;
     }
 
-    gfx_draw_sprite(dpi, imageId, x, y, 0);
+    gfx_draw_sprite(dpi, imageId, screenCoords, 0);
 
     if (_legacyType.wall.flags & WALL_SCENERY_HAS_GLASS)
     {
         imageId = _legacyType.image + 0x44500006;
-        gfx_draw_sprite(dpi, imageId, x, y, 0);
+        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
     }
     else if (_legacyType.wall.flags & WALL_SCENERY_IS_DOOR)
     {
         imageId++;
-        gfx_draw_sprite(dpi, imageId, x, y, 0);
+        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
     }
 }
 
