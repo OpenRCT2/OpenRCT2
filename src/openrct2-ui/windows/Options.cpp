@@ -2164,8 +2164,7 @@ static void window_options_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w,
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
     rct_widget* widget = &w->widgets[widgetIndex];
 
-    int16_t l = w->windowPos.x + widget->left;
-    int16_t t = w->windowPos.y + widget->top;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     if (!(w->disabled_widgets & (1LL << widgetIndex)))
     {
@@ -2176,7 +2175,7 @@ static void window_options_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w,
         }
 
         // Draw normal, enabled sprite.
-        gfx_draw_sprite(dpi, spriteIndex, l, t, 0);
+        gfx_draw_sprite(dpi, spriteIndex, screenCoords.x, screenCoords.y, 0);
     }
     else
     {
@@ -2184,10 +2183,10 @@ static void window_options_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w,
         uint8_t window_colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
 
         // Draw greyed out (light border bottom right shadow)
-        gfx_draw_sprite_solid(dpi, spriteIndex, l + 1, t + 1, ColourMapA[window_colour].lighter);
+        gfx_draw_sprite_solid(dpi, spriteIndex, screenCoords + ScreenCoordsXY{ 1, 1 }, ColourMapA[window_colour].lighter);
 
         // Draw greyed out (dark)
-        gfx_draw_sprite_solid(dpi, spriteIndex, l, t, ColourMapA[window_colour].mid_light);
+        gfx_draw_sprite_solid(dpi, spriteIndex, screenCoords, ColourMapA[window_colour].mid_light);
     }
 }
 
