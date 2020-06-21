@@ -836,13 +836,13 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
  *
  *  rct2: 0x006738E1
  */
-void litter_remove_at(int32_t x, int32_t y, int32_t z)
+void litter_remove_at(const CoordsXYZ& litterPos)
 {
-    for (auto litter : EntityTileList<Litter>({ x, y }))
+    for (auto litter : EntityTileList<Litter>(litterPos))
     {
-        if (abs(litter->z - z) <= 16)
+        if (abs(litter->z - litterPos.z) <= 16)
         {
-            if (abs(litter->x - x) <= 8 && abs(litter->y - y) <= 8)
+            if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
             {
                 litter->Invalidate0();
                 sprite_remove(litter);
