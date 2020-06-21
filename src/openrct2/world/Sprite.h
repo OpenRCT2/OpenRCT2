@@ -217,7 +217,7 @@ void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
 void sprite_misc_update_all();
-void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);
+void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);
 void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
 void litter_remove_at(int32_t x, int32_t y, int32_t z);

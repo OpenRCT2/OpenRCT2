@@ -715,22 +715,21 @@ void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
     }
     else
     {
-        sprite_set_coordinates(loc.x, loc.y, loc.z, this);
+        sprite_set_coordinates(loc, this);
     }
 }
 
-void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
+void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite)
 {
-    CoordsXYZ coords3d = { x, y, z };
-    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
+    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), spritePos);
 
     sprite->sprite_left = screenCoords.x - sprite->sprite_width;
     sprite->sprite_right = screenCoords.x + sprite->sprite_width;
     sprite->sprite_top = screenCoords.y - sprite->sprite_height_negative;
     sprite->sprite_bottom = screenCoords.y + sprite->sprite_height_positive;
-    sprite->x = x;
-    sprite->y = y;
-    sprite->z = z;
+    sprite->x = spritePos.x;
+    sprite->y = spritePos.y;
+    sprite->z = spritePos.z;
 }
 
 /**
@@ -938,8 +937,10 @@ void sprite_position_tween_all(float alpha)
                 continue;
             }
             sprite_set_coordinates(
-                std::round(posB.x * alpha + posA.x * inv), std::round(posB.y * alpha + posA.y * inv),
-                std::round(posB.z * alpha + posA.z * inv), sprite);
+                { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
+                  static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
+                  static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) },
+                sprite);
             sprite->Invalidate2();
         }
     }
@@ -958,7 +959,7 @@ void sprite_position_tween_restore()
             sprite->Invalidate2();
 
             auto pos = _spritelocations2[i];
-            sprite_set_coordinates(pos.x, pos.y, pos.z, sprite);
+            sprite_set_coordinates(pos, sprite);
         }
     }
 }
