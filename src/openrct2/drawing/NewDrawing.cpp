@@ -264,13 +264,14 @@ void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image, const Screen
     }
 }
 
-void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
+void FASTCALL
+    gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t maskImage, int32_t colourImage)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawSpriteRawMasked(x, y, maskImage, colourImage);
+        dc->DrawSpriteRawMasked(coords.x, coords.y, maskImage, colourImage);
     }
 }
 

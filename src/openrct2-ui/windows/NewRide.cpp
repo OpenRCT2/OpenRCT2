@@ -867,7 +867,7 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
                 imageId++;
         }
 
-        gfx_draw_sprite_raw_masked(dpi, x + 2, y + 2, SPR_NEW_RIDE_MASK, imageId);
+        gfx_draw_sprite_raw_masked(dpi, { x + 2, y + 2 }, SPR_NEW_RIDE_MASK, imageId);
 
         // Next position
         x += 116;
