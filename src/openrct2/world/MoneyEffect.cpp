@@ -64,8 +64,9 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
  *
  *  rct2: 0x0069C5D0
  */
-void MoneyEffect::Create(money32 value, CoordsXYZ loc)
+void MoneyEffect::Create(money32 value, const CoordsXYZ& loc)
 {
+    auto offsetLoc = loc;
     if (loc.isNull())
     {
         // If game actions return no valid location of the action we can not use the screen
@@ -86,10 +87,10 @@ void MoneyEffect::Create(money32 value, CoordsXYZ loc)
         if (!mapPositionXY)
             return;
 
-        loc = { *mapPositionXY, tile_element_height(*mapPositionXY) };
+        offsetLoc = { *mapPositionXY, tile_element_height(*mapPositionXY) };
     }
-    loc.z += 10;
-    CreateAt(-value, loc, false);
+    offsetLoc.z += 10;
+    CreateAt(-value, offsetLoc, false);
 }
 
 /**
