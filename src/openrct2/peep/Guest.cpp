@@ -714,7 +714,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             {
                 audio_play_sound_at_location(SoundId::Crash, { x, y, z });
 
-                sprite_misc_explosion_cloud_create(x, y, z + 16);
+                sprite_misc_explosion_cloud_create({ x, y, z + 16 });
                 sprite_misc_explosion_flare_create(x, y, z + 16);
 
                 Remove();

@@ -3570,7 +3570,7 @@ void Vehicle::UpdateCollisionSetup()
 
         audio_play_sound_at_location(SoundId::Crash, { train->x, train->y, train->z });
 
-        sprite_misc_explosion_cloud_create(train->x, train->y, train->z);
+        sprite_misc_explosion_cloud_create({ train->x, train->y, train->z });
 
         for (int32_t i = 0; i < 10; i++)
         {
@@ -5294,7 +5294,7 @@ void Vehicle::CrashOnLand()
     sub_state = 2;
     audio_play_sound_at_location(SoundId::Crash, { x, y, z });
 
-    sprite_misc_explosion_cloud_create(x, y, z);
+    sprite_misc_explosion_cloud_create({ x, y, z });
     sprite_misc_explosion_flare_create(x, y, z);
 
     uint8_t numParticles = std::min(sprite_width, static_cast<uint8_t>(7));
@@ -5397,9 +5397,9 @@ void Vehicle::UpdateCrash()
                 curVehicle->crash_z++;
                 if ((scenario_rand() & 0xFFFF) <= 0x1555)
                 {
-                    auto xOffset = (scenario_rand() & 2) - 1;
-                    auto yOffset = (scenario_rand() & 2) - 1;
-                    sprite_misc_explosion_cloud_create(curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z);
+                    int32_t xOffset = (scenario_rand() & 2) - 1;
+                    int32_t yOffset = (scenario_rand() & 2) - 1;
+                    sprite_misc_explosion_cloud_create({ curVehicle->x + xOffset, curVehicle->y + yOffset, curVehicle->z });
                 }
             }
             if (curVehicle->var_C8 + 7281 > 0xFFFF)

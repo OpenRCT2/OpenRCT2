@@ -521,7 +521,7 @@ static void sprite_steam_particle_update(SteamParticle* steam)
  *
  *  rct2: 0x0067363D
  */
-void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
+void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
 {
     SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
@@ -530,7 +530,7 @@ void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
         sprite->sprite_height_negative = 32;
         sprite->sprite_height_positive = 34;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite->MoveTo({ x, y, z + 4 });
+        sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
         sprite->type = SPRITE_MISC_EXPLOSION_CLOUD;
         sprite->frame = 0;
     }
