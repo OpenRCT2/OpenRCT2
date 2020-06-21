@@ -93,7 +93,7 @@ static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* pa
             break;
     }
 
-    ttf_draw_string(dpi, text, paint->Colour, x, y);
+    ttf_draw_string(dpi, text, paint->Colour, { x, y });
 
     if (paint->UnderlineText)
     {

@@ -934,7 +934,7 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
     }
 }
 
-void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, int32_t x, int32_t y)
+void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords)
 {
     if (text == nullptr)
         return;
@@ -942,10 +942,10 @@ void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colo
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
     info.flags = gCurrentFontFlags;
-    info.startX = x;
-    info.startY = x;
-    info.x = x;
-    info.y = y;
+    info.startX = coords.x;
+    info.startY = coords.y;
+    info.x = coords.x;
+    info.y = coords.y;
 
     if (LocalisationService_UseTrueTypeFont())
     {

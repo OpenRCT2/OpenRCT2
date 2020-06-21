@@ -685,7 +685,7 @@ int32_t gfx_get_string_width_new_lined(char* buffer);
 int32_t string_get_height_raw(char* buffer);
 int32_t gfx_clip_string(char* buffer, int32_t width);
 void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth);
-void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, int32_t x, int32_t y);
+void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords);
 
 // scrolling text
 void scrolling_text_initialise_bitmaps();
