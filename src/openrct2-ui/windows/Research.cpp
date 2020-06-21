@@ -348,14 +348,12 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
         stringId = STR_RESEARCH_UNKNOWN;
-        gfx_draw_string_left_wrapped(
-            dpi, &stringId, screenCoords.x, screenCoords.y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &stringId, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
         screenCoords.y += 25;
 
         // Progress
         stringId = STR_RESEARCH_COMPLETED_AL;
-        gfx_draw_string_left_wrapped(
-            dpi, &stringId, screenCoords.x, screenCoords.y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &stringId, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
         screenCoords.y += 15;
 
         auto ft = Formatter::Common();
@@ -391,13 +389,12 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
                 }
             }
         }
-        gfx_draw_string_left_wrapped(dpi, &strings, screenCoords.x, screenCoords.y, 296, label, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &strings, screenCoords, 296, label, COLOUR_BLACK);
         screenCoords.y += 25;
 
         // Progress
         stringId = ResearchStageNames[gResearchProgressStage];
-        gfx_draw_string_left_wrapped(
-            dpi, &stringId, screenCoords.x, screenCoords.y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &stringId, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
         screenCoords.y += 15;
 
         // Expected
@@ -446,7 +443,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
             }
         }
 
-        gfx_draw_string_left_wrapped(dpi, &strings, screenCoords.x, screenCoords.y, 266, lastDevelopmentFormat, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &strings, screenCoords, 266, lastDevelopmentFormat, COLOUR_BLACK);
     }
 }
 

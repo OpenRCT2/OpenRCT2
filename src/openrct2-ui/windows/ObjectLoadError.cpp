@@ -561,7 +561,7 @@ static void window_object_load_error_paint(rct_window* w, rct_drawpixelinfo* dpi
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
     gfx_draw_string_left_wrapped(
-        dpi, gCommonFormatArgs, { w->windowPos.x + 5, w->windowPos.y + 18 }, WW - 10, STR_BLACK_STRING, COLOUR_BLACK);
+        dpi, gCommonFormatArgs, w->windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Draw file name
     ft = Formatter::Common();

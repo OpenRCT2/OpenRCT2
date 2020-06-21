@@ -1080,7 +1080,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         width = w->windowPos.x + w->width - screenPos.x - 4;
 
         gfx_draw_string_left_wrapped(
-            dpi, gCommonFormatArgs, screenPos.x, screenPos.y + 5, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
+            dpi, gCommonFormatArgs, screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
     }
 
     auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (12 * 4) };
