@@ -275,7 +275,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
         Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
         vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
 
-        rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+        rct_ride_entry* rideEntry = vehicle->GetRideEntry();
 
         vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].powered_max_speed;
 

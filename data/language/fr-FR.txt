@@ -3682,6 +3682,9 @@ STR_6371    :Le chemin spécifié contient une installation de RollerCoaster Tyc
 STR_6372    :Le chemin spécifié contient une installation de RollerCoaster Tycoon 1, mais cette version n'est pas compatible. OpenRCT2 a besoin d'une installation Looping En Folie ou RCT Deluxe pour pouvoir utiliser les données de RollerCoaster Tycoon 1.
 STR_6373    :Activer/désactiver les collisions
 STR_6374    :C
+STR_6375    :Attraction inconnue
+STR_6376    :{WINDOW_COLOUR_2}Véhicule : {NEWLINE}{BLACK}{STRINGID} pour {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Type : {BLACK}{STRINGID} pour {STRINGID}
 
 #############
 # Scenarios #

@@ -17,6 +17,19 @@
 
 struct rct_ride_entry;
 
+enum
+{
+    RESEARCH_ENTRY_TYPE_SCENERY = 0,
+    RESEARCH_ENTRY_TYPE_RIDE = 1,
+};
+
+enum
+{
+    RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE = (1 << 0),
+    RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED = (1 << 5),
+    RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED = (1 << 6),
+};
+
 struct ResearchItem
 {
     union
@@ -67,7 +80,7 @@ struct ResearchItem
             retItem.entryIndex = OpenRCT2EntryIndexToRCTEntryIndex(entryIndex);
             retItem.baseRideType = baseRideType;
             retItem.type = type;
-            retItem.flags = flags;
+            retItem.flags = (flags & ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE);
             retItem.category = category;
         }
 
@@ -93,18 +106,6 @@ struct ResearchItem
             category = oldResearchItem.category;
         }
     }
-};
-
-enum
-{
-    RESEARCH_ENTRY_TYPE_SCENERY = 0,
-    RESEARCH_ENTRY_TYPE_RIDE = 1,
-};
-
-enum
-{
-    RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED = (1 << 5),
-    RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED = (1 << 6),
 };
 
 // Only used to mark as null nowadays. Deprecated. TODO: remove.
@@ -192,3 +193,8 @@ void research_fix();
 void research_items_make_all_unresearched();
 void research_items_make_all_researched();
 void research_items_shuffle();
+/**
+ * Determines if a newly invented ride entry should be listed as a new ride
+ * or as a new vehicle for a pre-existing ride.
+ */
+void research_determine_first_of_type();

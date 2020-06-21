@@ -31,6 +31,7 @@ constexpr const RideTypeDescriptor FirstAidRTD =
     SET_FIELD(OperatingSettings, { 8, 8, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FIRST_AID, STR_RIDE_DESCRIPTION_FIRST_AID }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_FIRST_AID)),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 12, 48, 0, 0, }),
     SET_FIELD(MaxMass, 255),
@@ -44,5 +45,6 @@ constexpr const RideTypeDescriptor FirstAidRTD =
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 5),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
+    SET_FIELD(ColourKey, RideColourKey::FirstAid),
 };
 // clang-format on

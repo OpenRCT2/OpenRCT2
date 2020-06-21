@@ -637,7 +637,7 @@ static void window_title_command_editor_tool_down(
             auto vehicle = GET_VEHICLE(spriteIndex);
             if (vehicle != nullptr)
             {
-                auto ride = get_ride(vehicle->ride);
+                auto ride = vehicle->GetRide();
                 if (ride != nullptr)
                 {
                     uint8_t formatArgs[32]{};
@@ -748,7 +748,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
 
     // "Command:" label
     gfx_draw_string_left(
-        dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->windowPos.x + WS, w->windowPos.y + BY - 14);
+        dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY - 14 });
 
     // Command dropdown name
     gfx_draw_string_left_clipped(
@@ -757,8 +757,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4);
 
     // Label (e.g. "Location:")
-    gfx_draw_string_left(
-        dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos.x + WS, w->windowPos.y + BY2 - 14);
+    gfx_draw_string_left(dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY2 - 14 });
 
     if (command.Type == TITLE_SCRIPT_SPEED)
     {

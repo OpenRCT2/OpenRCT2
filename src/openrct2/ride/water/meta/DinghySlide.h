@@ -43,6 +43,7 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_DINGHY_SLIDE, STR_RIDE_DESCRIPTION_DINGHY_SLIDE }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BOAT, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_DINGHY_SLIDE)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 15, 24, 5, 7, }),
     SET_FIELD(MaxMass, 5),
@@ -60,5 +61,6 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
         { COLOUR_TEAL, COLOUR_BORDEAUX_RED, COLOUR_TEAL },
         { COLOUR_BRIGHT_RED, COLOUR_GREY, COLOUR_SATURATED_RED },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

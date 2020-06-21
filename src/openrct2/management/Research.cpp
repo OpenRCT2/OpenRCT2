@@ -201,20 +201,7 @@ void research_finish_item(ResearchItem* researchItem)
 
         if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
         {
-            bool ride_group_was_invented_before = false;
-            bool ride_type_was_invented_before = ride_type_is_invented(base_ride_type);
             rct_string_id availabilityString;
-
-            // Determine if the ride group this entry belongs to was invented before.
-            if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-            {
-                const RideGroup* rideGroup = RideGroupManager::GetRideGroup(base_ride_type, rideEntry);
-
-                if (rideGroup->IsInvented())
-                {
-                    ride_group_was_invented_before = true;
-                }
-            }
 
             ride_type_set_invented(base_ride_type);
             openrct2_assert(base_ride_type < RIDE_TYPE_COUNT, "Invalid base_ride_type = %d", base_ride_type);
@@ -256,17 +243,10 @@ void research_finish_item(ResearchItem* researchItem)
 
             auto ft = Formatter::Common();
 
-            // If a vehicle should be listed separately (maze, mini golf, flat rides, shops)
-            if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
-            {
-                availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
-                ft.Add<rct_string_id>(rideEntry->naming.Name);
-            }
-            // If a vehicle is the first to be invented for its ride group, show the ride group name.
-            else if (
-                !ride_type_was_invented_before
-                || (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS)
-                    && !ride_group_was_invented_before))
+            // If a vehicle is the first to be invented for its ride type or group, show the ride type/group name.
+            // Independently listed vehicles (like all flat rides and shops) should always be announced as such.
+            if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+                || researchItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
             {
                 RideNaming naming = get_ride_naming(base_ride_type, rideEntry);
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
@@ -740,11 +720,11 @@ void research_remove_flags()
 {
     for (auto& researchItem : gResearchItemsUninvented)
     {
-        researchItem.flags = 0;
+        researchItem.flags &= ~(RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED);
     }
     for (auto& researchItem : gResearchItemsInvented)
     {
-        researchItem.flags = 0;
+        researchItem.flags &= ~(RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED);
     }
 }
 
@@ -909,4 +889,122 @@ bool ResearchItem::Exists() const
         }
     }
     return false;
+}
+
+static std::bitset<RIDE_TYPE_COUNT> _seenRideType = {};
+static std::bitset<RIDE_TYPE_COUNT* MAX_RIDE_GROUPS_PER_RIDE_TYPE> _seenRideGroup = {};
+
+static void research_update_first_of_type(ResearchItem* researchItem)
+{
+    if (researchItem->IsNull())
+        return;
+
+    if (researchItem->type != RESEARCH_ENTRY_TYPE_RIDE)
+        return;
+
+    auto rideType = researchItem->baseRideType;
+    if (rideType >= RIDE_TYPE_COUNT)
+    {
+        log_error("Research item has non-existant ride type index %d", rideType);
+        return;
+    }
+
+    const auto& rtd = RideTypeDescriptors[rideType];
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    {
+        researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
+        return;
+    }
+
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
+    {
+        if (!_seenRideType[rideType])
+            researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
+
+        _seenRideType[rideType] = true;
+    }
+    else
+    {
+        const auto& entry = get_ride_entry(researchItem->entryIndex);
+        if (entry != nullptr)
+        {
+            auto rideGroupIndex = RideGroupManager::GetRideGroupIndex(rideType, entry);
+            assert(rideGroupIndex < MAX_RIDE_GROUPS_PER_RIDE_TYPE);
+
+            if (!_seenRideGroup[rideType * rideGroupIndex])
+                researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
+
+            _seenRideGroup[rideType * rideGroupIndex] = true;
+        }
+    }
+}
+
+static void research_mark_ride_type_as_seen(const ResearchItem& researchItem)
+{
+    auto rideType = researchItem.baseRideType;
+    if (rideType >= RIDE_TYPE_COUNT)
+        return;
+
+    const auto& rtd = RideTypeDescriptors[rideType];
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
+    {
+        _seenRideType[rideType] = true;
+    }
+    else
+    {
+        const auto& entry = get_ride_entry(researchItem.entryIndex);
+        if (entry != nullptr)
+        {
+            auto rideGroupIndex = RideGroupManager::GetRideGroupIndex(rideType, entry);
+            assert(rideGroupIndex < MAX_RIDE_GROUPS_PER_RIDE_TYPE);
+            _seenRideGroup[rideType * rideGroupIndex] = true;
+        }
+    }
+}
+
+void research_determine_first_of_type()
+{
+    _seenRideType.reset();
+    _seenRideGroup.reset();
+
+    for (const auto& researchItem : gResearchItemsInvented)
+    {
+        if (researchItem.type != RESEARCH_ENTRY_TYPE_RIDE)
+            continue;
+
+        auto rideType = researchItem.baseRideType;
+        if (rideType >= RIDE_TYPE_COUNT)
+            continue;
+
+        const auto& rtd = RideTypeDescriptors[rideType];
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            continue;
+
+        // The last research item will also be present in gResearchItemsInvented.
+        // Avoid marking its ride type as "invented" prematurely.
+        if (gResearchLastItem.has_value() && !gResearchLastItem->IsNull() && researchItem.Equals(&gResearchLastItem.value()))
+            continue;
+
+        // The next research item is also present in gResearchItemsInvented, even though it isn't invented yet(!)
+        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem.Equals(&gResearchNextItem.value()))
+            continue;
+
+        research_mark_ride_type_as_seen(researchItem);
+    }
+
+    if (gResearchLastItem.has_value())
+    {
+        research_update_first_of_type(&gResearchLastItem.value());
+        research_mark_ride_type_as_seen(gResearchLastItem.value());
+    }
+    if (gResearchNextItem.has_value())
+    {
+        research_update_first_of_type(&gResearchNextItem.value());
+        research_mark_ride_type_as_seen(gResearchNextItem.value());
+    }
+
+    for (auto& researchItem : gResearchItemsUninvented)
+    {
+        research_update_first_of_type(&researchItem);
+    }
 }

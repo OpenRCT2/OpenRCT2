@@ -1208,8 +1208,6 @@ bool ride_has_adjacent_station(Ride* ride);
 bool ride_has_station_shelter(Ride* ride);
 bool ride_has_ratings(const Ride* ride);
 
-const char* ride_type_get_enum_name(int32_t rideType);
-
 uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry);
 int32_t get_booster_speed(uint8_t rideType, int32_t rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();

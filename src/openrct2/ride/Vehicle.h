@@ -187,6 +187,17 @@ struct GForces
     int32_t LateralG{};
 };
 
+// Size: 0x09
+struct rct_vehicle_info
+{
+    int16_t x;                   // 0x00
+    int16_t y;                   // 0x02
+    int16_t z;                   // 0x04
+    uint8_t direction;           // 0x06
+    uint8_t vehicle_sprite_type; // 0x07
+    uint8_t bank_rotation;       // 0x08
+};
+
 struct Vehicle : SpriteBase
 {
     uint8_t vehicle_sprite_type;
@@ -319,7 +330,9 @@ struct Vehicle : SpriteBase
     GForces GetGForces() const;
     void SetMapToolbar() const;
     int32_t IsUsedInPairs() const;
+    rct_ride_entry* GetRideEntry() const;
     rct_ride_entry_vehicle* Entry() const;
+    Ride* GetRide() const;
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
 
@@ -344,6 +357,8 @@ struct Vehicle : SpriteBase
 private:
     bool SoundCanPlay() const;
     uint16_t GetSoundPriority() const;
+    const rct_vehicle_info* GetMoveInfo() const;
+    uint16_t GetTrackProgress() const;
     rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
     void CableLiftUpdate();
     bool CableLiftUpdateTrackMotionForwards();
@@ -353,6 +368,7 @@ private:
     void CableLiftUpdateDeparting();
     void CableLiftUpdateTravelling();
     void CableLiftUpdateArriving();
+    void Sub6DBF3E();
     void UpdateMeasurements();
     void UpdateMovingToEndOfStation();
     void UpdateWaitingForPassengers();
@@ -426,23 +442,14 @@ private:
     bool UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* curRide, uint16_t* progress);
     void UpdateGoKartAttemptSwitchLanes();
+    void UpdateSceneryDoor() const;
+    void UpdateSceneryDoorBackwards() const;
 };
 
 struct train_ref
 {
     Vehicle* head;
     Vehicle* tail;
-};
-
-// Size: 0x09
-struct rct_vehicle_info
-{
-    int16_t x;                   // 0x00
-    int16_t y;                   // 0x02
-    int16_t z;                   // 0x04
-    uint8_t direction;           // 0x06
-    uint8_t vehicle_sprite_type; // 0x07
-    uint8_t bank_rotation;       // 0x08
 };
 
 enum : uint32_t
@@ -615,8 +622,6 @@ enum
 Vehicle* try_get_vehicle(uint16_t spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset);
-uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection);
 
 extern Vehicle* gCurrentVehicle;
 extern StationIndex _vehicleStationIndex;

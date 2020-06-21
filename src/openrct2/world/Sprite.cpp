@@ -122,9 +122,9 @@ SpriteBase* GetEntity(size_t sprite_idx)
     return GetEntity<SpriteBase>(sprite_idx);
 }
 
-uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y)
+uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)
 {
-    return gSpriteSpatialIndex[GetSpatialIndexOffset(x, y)];
+    return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
 }
 
 static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
@@ -521,7 +521,7 @@ static void sprite_steam_particle_update(SteamParticle* steam)
  *
  *  rct2: 0x0067363D
  */
-void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
+void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
 {
     SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
@@ -530,7 +530,7 @@ void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z)
         sprite->sprite_height_negative = 32;
         sprite->sprite_height_positive = 34;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite->MoveTo({ x, y, z + 4 });
+        sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
         sprite->type = SPRITE_MISC_EXPLOSION_CLOUD;
         sprite->frame = 0;
     }
@@ -554,7 +554,7 @@ static void sprite_misc_explosion_cloud_update(rct_sprite* sprite)
  *
  *  rct2: 0x0067366B
  */
-void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
+void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
 {
     SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
@@ -563,7 +563,7 @@ void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
         sprite->sprite_height_negative = 85;
         sprite->sprite_height_positive = 8;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite->MoveTo({ x, y, z + 4 });
+        sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
         sprite->type = SPRITE_MISC_EXPLOSION_FLARE;
         sprite->frame = 0;
     }
@@ -715,22 +715,21 @@ void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
     }
     else
     {
-        sprite_set_coordinates(loc.x, loc.y, loc.z, this);
+        sprite_set_coordinates(loc, this);
     }
 }
 
-void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite)
+void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite)
 {
-    CoordsXYZ coords3d = { x, y, z };
-    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords3d);
+    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), spritePos);
 
     sprite->sprite_left = screenCoords.x - sprite->sprite_width;
     sprite->sprite_right = screenCoords.x + sprite->sprite_width;
     sprite->sprite_top = screenCoords.y - sprite->sprite_height_negative;
     sprite->sprite_bottom = screenCoords.y + sprite->sprite_height_positive;
-    sprite->x = x;
-    sprite->y = y;
-    sprite->z = z;
+    sprite->x = spritePos.x;
+    sprite->y = spritePos.y;
+    sprite->z = spritePos.z;
 }
 
 /**
@@ -759,14 +758,14 @@ void sprite_remove(SpriteBase* sprite)
     *spriteIndex = sprite->next_in_quadrant;
 }
 
-static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
+static bool litter_can_be_at(const CoordsXYZ& mapPos)
 {
     TileElement* tileElement;
 
-    if (!map_is_location_owned({ x, y, z }))
+    if (!map_is_location_owned(mapPos))
         return false;
 
-    tileElement = map_get_first_element_at({ x, y });
+    tileElement = map_get_first_element_at(mapPos);
     if (tileElement == nullptr)
         return false;
     do
@@ -775,7 +774,7 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
             continue;
 
         int32_t pathZ = tileElement->GetBaseZ();
-        if (pathZ < z || pathZ >= z + 32)
+        if (pathZ < mapPos.z || pathZ >= mapPos.z + 32)
             continue;
 
         return !tile_element_is_underground(tileElement);
@@ -787,15 +786,16 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x0067375D
  */
-void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type)
+void litter_create(const CoordsXYZD& litterPos, int32_t type)
 {
     if (gCheatsDisableLittering)
         return;
 
-    x += CoordsDirectionDelta[direction >> 3].x / 8;
-    y += CoordsDirectionDelta[direction >> 3].y / 8;
+    auto offsetLitterPos = litterPos
+        + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
+                    CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
 
-    if (!litter_can_be_at(x, y, z))
+    if (!litter_can_be_at(offsetLitterPos))
         return;
 
     if (gSpriteListCount[SPRITE_LIST_LITTER] >= 500)
@@ -822,13 +822,13 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
     if (litter == nullptr)
         return;
 
-    litter->sprite_direction = direction;
+    litter->sprite_direction = offsetLitterPos.direction;
     litter->sprite_width = 6;
     litter->sprite_height_negative = 6;
     litter->sprite_height_positive = 3;
     litter->sprite_identifier = SPRITE_IDENTIFIER_LITTER;
     litter->type = type;
-    litter->MoveTo({ x, y, z });
+    litter->MoveTo(offsetLitterPos);
     litter->Invalidate0();
     litter->creationTick = gScenarioTicks;
 }
@@ -837,13 +837,13 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
  *
  *  rct2: 0x006738E1
  */
-void litter_remove_at(int32_t x, int32_t y, int32_t z)
+void litter_remove_at(const CoordsXYZ& litterPos)
 {
-    for (auto litter : EntityTileList<Litter>({ x, y }))
+    for (auto litter : EntityTileList<Litter>(litterPos))
     {
-        if (abs(litter->z - z) <= 16)
+        if (abs(litter->z - litterPos.z) <= 16)
         {
-            if (abs(litter->x - x) <= 8 && abs(litter->y - y) <= 8)
+            if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
             {
                 litter->Invalidate0();
                 sprite_remove(litter);
@@ -938,8 +938,10 @@ void sprite_position_tween_all(float alpha)
                 continue;
             }
             sprite_set_coordinates(
-                std::round(posB.x * alpha + posA.x * inv), std::round(posB.y * alpha + posA.y * inv),
-                std::round(posB.z * alpha + posA.z * inv), sprite);
+                { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
+                  static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
+                  static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) },
+                sprite);
             sprite->Invalidate2();
         }
     }
@@ -958,7 +960,7 @@ void sprite_position_tween_restore()
             sprite->Invalidate2();
 
             auto pos = _spritelocations2[i];
-            sprite_set_coordinates(pos.x, pos.y, pos.z, sprite);
+            sprite_set_coordinates(pos, sprite);
         }
     }
 }

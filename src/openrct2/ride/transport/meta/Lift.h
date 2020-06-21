@@ -32,6 +32,7 @@ constexpr const RideTypeDescriptor LiftRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_LIFT, STR_RIDE_DESCRIPTION_LIFT }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CABIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_LIFT)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 255, 32, 3, 2, }),
     SET_FIELD(MaxMass, 15),
@@ -49,5 +50,6 @@ constexpr const RideTypeDescriptor LiftRTD =
         { COLOUR_DARK_GREEN, COLOUR_DARK_GREEN, COLOUR_GREY },
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_GREY },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

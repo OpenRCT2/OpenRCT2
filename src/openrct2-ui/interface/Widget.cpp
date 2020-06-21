@@ -485,7 +485,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
         uint8_t args[sizeof(uintptr_t)] = { 0 };
         format_string(buffer, sizeof(buffer), stringId, formatArgs);
         Formatter(args).Add<utf8*>(buffer);
-        gfx_draw_string_left(dpi, STR_STRING, args, colour, l, t);
+        gfx_draw_string_left(dpi, STR_STRING, args, colour, { l, t });
         textRight = l + gfx_get_string_width(buffer) + 1;
     }
 
@@ -803,8 +803,7 @@ static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         return;
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     // Get the colour
     uint8_t colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
@@ -818,12 +817,12 @@ static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         // Draw greyed out (light border bottom right shadow)
         colour = w->colours[widget->colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
-        gfx_draw_sprite_solid(dpi, image, l + 1, t + 1, colour);
+        gfx_draw_sprite_solid(dpi, image, screenCoords + ScreenCoordsXY{ 1, 1 }, colour);
 
         // Draw greyed out (dark)
         colour = w->colours[widget->colour];
         colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
-        gfx_draw_sprite_solid(dpi, image, l, t, colour);
+        gfx_draw_sprite_solid(dpi, image, screenCoords, colour);
     }
     else
     {
@@ -837,7 +836,7 @@ static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         else
             image |= colour << 19;
 
-        gfx_draw_sprite(dpi, image, l, t, 0);
+        gfx_draw_sprite(dpi, image, screenCoords.x, screenCoords.y, 0);
     }
 }
 

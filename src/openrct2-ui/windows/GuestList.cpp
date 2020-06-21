@@ -674,7 +674,7 @@ static void window_guest_list_invalidate(rct_window* w)
  */
 static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t i, x, y;
+    int32_t i;
     rct_string_id format;
 
     // Widgets
@@ -694,8 +694,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         window_guest_list_widgets[WIDX_TAB_2].top + w->windowPos.y, 0);
 
     // Filter description
-    x = w->windowPos.x + 6;
-    y = w->windowPos.y + window_guest_list_widgets[WIDX_TAB_CONTENT_PANEL].top + 3;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ 6, window_guest_list_widgets[WIDX_TAB_CONTENT_PANEL].top + 3 };
     if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
     {
         if (_window_guest_list_selected_filter != -1)
@@ -718,18 +717,17 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         format = STR_ALL_GUESTS_SUMMARISED;
     }
-    gfx_draw_string_left_clipped(dpi, format, _window_guest_list_filter_arguments.args, COLOUR_BLACK, { x, y }, 310);
+    gfx_draw_string_left_clipped(dpi, format, _window_guest_list_filter_arguments.args, COLOUR_BLACK, screenCoords, 310);
 
     // Number of guests (list items)
     if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
     {
-        x = w->windowPos.x + 4;
-        y = w->windowPos.y + window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2;
+        screenCoords = w->windowPos + ScreenCoordsXY{ 4, window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2 };
         auto ft = Formatter::Common();
         ft.Add<int32_t>(static_cast<int32_t>(GuestList.size()));
         gfx_draw_string_left(
             dpi, (GuestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,
-            COLOUR_BLACK, x, y);
+            COLOUR_BLACK, screenCoords);
     }
 }
 

@@ -31,6 +31,7 @@ constexpr const RideTypeDescriptor SpiralRollerCoasterRTD =
     SET_FIELD(OperatingSettings, { 10, 27, 30, 17, 17, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SPIRAL_ROLLER_COASTER, STR_RIDE_DESCRIPTION_SPIRAL_ROLLER_COASTER }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_SPIRAL_ROLLER_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 19, 24, 9, 11, }),
     SET_FIELD(MaxMass, 31),
@@ -47,5 +48,6 @@ constexpr const RideTypeDescriptor SpiralRollerCoasterRTD =
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_DARK_GREEN },
         { COLOUR_GREY, COLOUR_GREY, COLOUR_BORDEAUX_RED },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

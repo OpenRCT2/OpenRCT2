@@ -731,8 +731,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw name button indicator.
     rct_widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
     gfx_draw_string_left(
-        dpi, STR_NAME, &id, COLOUR_GREY, w->windowPos.x + sort_name_widget.left + 11,
-        w->windowPos.y + sort_name_widget.top + 1);
+        dpi, STR_NAME, &id, COLOUR_GREY, w->windowPos + ScreenCoordsXY{ sort_name_widget.left + 11, sort_name_widget.top + 1 });
 
     // Date button text
     if (gConfigGeneral.load_save_sort == SORT_DATE_ASCENDING)
@@ -744,7 +743,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     rct_widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
     gfx_draw_string_left(
-        dpi, STR_DATE, &id, COLOUR_GREY, w->windowPos.x + sort_date_widget.left + 5, w->windowPos.y + sort_date_widget.top + 1);
+        dpi, STR_DATE, &id, COLOUR_GREY, w->windowPos + ScreenCoordsXY{ sort_date_widget.left + 5, sort_date_widget.top + 1 });
 }
 
 static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -775,7 +774,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         {
             auto ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_RIGHTGUILLEMET);
-            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y);
+            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { 0, y });
         }
 
         // Print filename

@@ -487,6 +487,8 @@ public:
                 OWNERSHIP_OWNED);
             // clang-format on
         }
+
+        research_determine_first_of_type();
     }
 
     void ImportRides()

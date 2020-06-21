@@ -714,8 +714,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
             {
                 audio_play_sound_at_location(SoundId::Crash, { x, y, z });
 
-                sprite_misc_explosion_cloud_create(x, y, z + 16);
-                sprite_misc_explosion_flare_create(x, y, z + 16);
+                sprite_misc_explosion_cloud_create({ x, y, z + 16 });
+                sprite_misc_explosion_flare_create({ x, y, z + 16 });
 
                 Remove();
                 return;
@@ -2357,7 +2357,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
         //      needing to be synchronised
         if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
         {
-            MoneyEffect::CreateAt(amount, x, y, z, true);
+            MoneyEffect::CreateAt(amount, { x, y, z }, true);
         }
     }
 
@@ -3623,7 +3623,7 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
     uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
 
     auto vehicle = GET_VEHICLE(ride->vehicles[peep->CurrentTrain]);
-    auto ride_entry = get_ride_entry(vehicle->ride_subtype);
+    auto ride_entry = vehicle->GetRideEntry();
     auto vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
     peep->Var37 = (direction_entrance | peep_get_waypointed_seat_location(peep, ride, vehicle_type, direction_track) * 4) * 4;
@@ -3739,7 +3739,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         }
     }
 
-    ride_entry = get_ride_entry(vehicle->ride_subtype);
+    ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
     {
         return;
@@ -3960,7 +3960,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
     }
 
-    rct_ride_entry* ride_entry = get_ride_entry(vehicle->ride_subtype);
+    rct_ride_entry* ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
     {
         return;
@@ -4144,7 +4144,7 @@ void Guest::UpdateRideLeaveVehicle()
         ride_station = bestStationIndex;
     }
     CurrentRideStation = ride_station;
-    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    rct_ride_entry* rideEntry = vehicle->GetRideEntry();
     if (rideEntry == nullptr)
     {
         return;
@@ -4270,7 +4270,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
 
-    rideEntry = get_ride_entry(vehicle->ride_subtype);
+    rideEntry = vehicle->GetRideEntry();
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
     Var37 = ((exitLocation.direction | peep_get_waypointed_seat_location(this, ride, vehicleEntry, station_direction) * 4) * 4)
@@ -4463,7 +4463,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         targetLoc.y = vehicle->y;
     }
 
-    rct_ride_entry* ride_entry = get_ride_entry(vehicle->ride_subtype);
+    rct_ride_entry* ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
     {
         return;
@@ -4531,7 +4531,7 @@ void Guest::UpdateRideApproachExitWaypoints()
             targetLoc.y = vehicle->y;
         }
 
-        rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+        rct_ride_entry* rideEntry = vehicle->GetRideEntry();
         rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
         Guard::Assert((Var37 & 3) < 3);
@@ -5314,9 +5314,9 @@ void Guest::UpdateWalking()
                 int32_t litterType = litter_types[scenario_rand() & 0x3];
                 int32_t litterX = x + (scenario_rand() & 0x7) - 3;
                 int32_t litterY = y + (scenario_rand() & 0x7) - 3;
-                int32_t litterDirection = (scenario_rand() & 0x3);
+                Direction litterDirection = (scenario_rand() & 0x3);
 
-                litter_create(litterX, litterY, z, litterDirection, litterType);
+                litter_create({ litterX, litterY, z, litterDirection }, litterType);
             }
         }
     }
@@ -5352,9 +5352,9 @@ void Guest::UpdateWalking()
 
             int32_t litterX = x + (scenario_rand() & 0x7) - 3;
             int32_t litterY = y + (scenario_rand() & 0x7) - 3;
-            int32_t litterDirection = (scenario_rand() & 0x3);
+            Direction litterDirection = (scenario_rand() & 0x3);
 
-            litter_create(litterX, litterY, z, litterDirection, litterType);
+            litter_create({ litterX, litterY, z, litterDirection }, litterType);
         }
     }
 
@@ -5917,7 +5917,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
-                litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
+                litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
                 ItemStandardFlags &= ~(1 << cur_container);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -5951,7 +5951,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
-                litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
+                litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
                 ItemExtraFlags &= ~(1 << cur_container);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -6831,7 +6831,7 @@ void Guest::UpdateSpriteType()
                 isBalloonPopped = true;
                 audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
             }
-            create_balloon(x, y, z + 9, BalloonColour, isBalloonPopped);
+            create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
         ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;

@@ -58,6 +58,18 @@ enum RIDE_COMPONENT_TYPE
     RIDE_COMPONENT_TYPE_COUNT
 };
 
+enum class RideColourKey : uint8_t
+{
+    Ride,
+    Food,
+    Drink,
+    Shop,
+    InfoKiosk,
+    FirstAid,
+    CashMachine,
+    Toilets
+};
+
 struct RideNameConvention
 {
     RIDE_COMPONENT_TYPE vehicle;
@@ -129,6 +141,7 @@ struct RideTypeDescriptor
     RideOperatingSettings OperatingSettings;
     RideNaming Naming;
     RideNameConvention NameConvention;
+    const char* EnumName;
     uint8_t AvailableBreakdowns;
     /** rct2: 0x0097D218 */
     RideHeights Heights;
@@ -149,6 +162,7 @@ struct RideTypeDescriptor
     /** rct2: 0x0097D21E */
     uint8_t BonusValue;
     track_colour_preset_list ColourPresets;
+    RideColourKey ColourKey;
 
     bool HasFlag(uint64_t flag) const;
     uint64_t GetAvailableTrackPieces() const;
@@ -305,6 +319,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, "(INVALID)"),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 12, 64, 0, 0, }),
     SET_FIELD(MaxMass, 255),
@@ -318,6 +333,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
+    SET_FIELD(ColourKey, RideColourKey::Ride)
 };
 // clang-format on
 

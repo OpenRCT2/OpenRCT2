@@ -55,20 +55,21 @@ struct rct_ride_music_params
     uint16_t frequency;
 };
 
+struct Sound
+{
+    SoundId Id;
+    int16_t Volume;
+    int16_t Pan;
+    uint16_t Frequency;
+    void* Channel;
+};
+
 struct rct_vehicle_sound
 {
     uint16_t id;
     int16_t volume;
-    SoundId sound1_id;
-    int16_t sound1_volume;
-    int16_t sound1_pan;
-    uint16_t sound1_freq;
-    SoundId sound2_id;
-    int16_t sound2_volume;
-    int16_t sound2_pan;
-    uint16_t sound2_freq;
-    void* sound1_channel;
-    void* sound2_channel;
+    Sound TrackSound;
+    Sound OtherSound;
 };
 
 struct rct_vehicle_sound_params

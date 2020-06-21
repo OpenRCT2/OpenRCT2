@@ -31,6 +31,7 @@ constexpr const RideTypeDescriptor InvertedHairpinCoasterRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_INVERTED_HAIRPIN_COASTER, STR_RIDE_DESCRIPTION_INVERTED_HAIRPIN_COASTER }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_INVERTED_HAIRPIN_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 16, 24, 24, 7, }),
     SET_FIELD(MaxMass, 4),
@@ -48,5 +49,6 @@ constexpr const RideTypeDescriptor InvertedHairpinCoasterRTD =
         { COLOUR_BLACK, COLOUR_ICY_BLUE, COLOUR_BLACK },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_YELLOW },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

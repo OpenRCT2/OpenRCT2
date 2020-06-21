@@ -16,6 +16,7 @@
 #include <openrct2/management/Finance.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/management/Research.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
@@ -340,44 +341,61 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
 {
     baseWidgetIndex = baseWidgetIndex - WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP;
 
-    int32_t x = w->windowPos.x + 10;
-    int32_t y = w->windowPos.y + w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
+    auto screenCoords = w->windowPos
+        + ScreenCoordsXY{ 10, w->widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
     rct_string_id stringId;
 
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
         stringId = STR_RESEARCH_UNKNOWN;
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
-        y += 25;
+        gfx_draw_string_left_wrapped(dpi, &stringId, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
+        screenCoords.y += 25;
 
         // Progress
         stringId = STR_RESEARCH_COMPLETED_AL;
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
-        y += 15;
+        gfx_draw_string_left_wrapped(dpi, &stringId, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
+        screenCoords.y += 15;
 
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
     }
     else
     {
         // Research type
-        stringId = STR_RESEARCH_UNKNOWN;
+        std::array<rct_string_id, 2> strings = { STR_RESEARCH_UNKNOWN, 0 };
+        rct_string_id label = STR_RESEARCH_TYPE_LABEL;
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH)
         {
-            stringId = ResearchCategoryNames[gResearchNextItem->category];
+            strings[0] = ResearchCategoryNames[gResearchNextItem->category];
             if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING)
             {
-                stringId = gResearchNextItem->GetName();
+                strings[0] = gResearchNextItem->GetName();
+                if (gResearchNextItem->type == RESEARCH_ENTRY_TYPE_RIDE)
+                {
+                    auto rtd = RideTypeDescriptors[gResearchNextItem->baseRideType];
+                    if (!rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+                    {
+                        if (gResearchNextItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                        {
+                            strings[0] = rtd.Naming.Name;
+                        }
+                        else
+                        {
+                            strings[1] = rtd.Naming.Name;
+                            label = STR_RESEARCH_TYPE_LABEL_VEHICLE;
+                        }
+                    }
+                }
             }
         }
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
-        y += 25;
+        gfx_draw_string_left_wrapped(dpi, &strings, screenCoords, 296, label, COLOUR_BLACK);
+        screenCoords.y += 25;
 
         // Progress
         stringId = ResearchStageNames[gResearchProgressStage];
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
-        y += 15;
+        gfx_draw_string_left_wrapped(dpi, &stringId, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
+        screenCoords.y += 15;
 
         // Expected
         auto ft = Formatter::Common();
@@ -392,21 +410,40 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         {
             ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
         }
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
     }
 
     // Last development
-    x = w->windowPos.x + 10;
-    y = w->windowPos.y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
+    screenCoords = w->windowPos + ScreenCoordsXY{ 10, w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12 };
 
-    rct_string_id lastDevelopmentFormat;
     if (gResearchLastItem.has_value())
     {
-        stringId = gResearchLastItem->GetName();
+        rct_string_id lastDevelopmentFormat = STR_EMPTY;
+        std::array<rct_string_id, 2> strings = { gResearchLastItem->GetName(), 0 };
         uint8_t type = gResearchLastItem->type;
-        lastDevelopmentFormat = (type == RESEARCH_ENTRY_TYPE_RIDE) ? STR_RESEARCH_RIDE_LABEL : STR_RESEARCH_SCENERY_LABEL;
+        if (type == RESEARCH_ENTRY_TYPE_SCENERY)
+        {
+            lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
+        }
+        else
+        {
+            lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
+            auto rtd = RideTypeDescriptors[gResearchLastItem->baseRideType];
+            if (!rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            {
+                if (gResearchLastItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
+                {
+                    strings[0] = rtd.Naming.Name;
+                }
+                else
+                {
+                    strings[1] = rtd.Naming.Name;
+                    lastDevelopmentFormat = STR_RESEARCH_VEHICLE_LABEL;
+                }
+            }
+        }
 
-        gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);
+        gfx_draw_string_left_wrapped(dpi, &strings, screenCoords, 266, lastDevelopmentFormat, COLOUR_BLACK);
     }
 }
 
@@ -575,7 +612,7 @@ void window_research_funding_page_paint(rct_window* w, rct_drawpixelinfo* dpi, r
     int32_t currentResearchLevel = gResearchFundingLevel;
     money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
     gfx_draw_string_left(
-        dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK, w->windowPos.x + 10, w->windowPos.y + 77);
+        dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 10, 77 });
 }
 
 #pragma endregion

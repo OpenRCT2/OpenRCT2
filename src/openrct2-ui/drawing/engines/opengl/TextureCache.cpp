@@ -13,6 +13,7 @@
 
 #    include <algorithm>
 #    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/world/Location.hpp>
 #    include <stdexcept>
 #    include <vector>
 
@@ -185,7 +186,7 @@ void TextureCache::GeneratePaletteTexture()
         if (g1Index)
         {
             auto element = gfx_get_g1_element(*g1Index);
-            gfx_draw_sprite_software(&dpi, ImageId(*g1Index), -element->x_offset, y - element->y_offset);
+            gfx_draw_sprite_software(&dpi, ImageId(*g1Index), { -element->x_offset, y - element->y_offset });
         }
     }
 
@@ -309,7 +310,7 @@ rct_drawpixelinfo TextureCache::GetImageAsDPI(uint32_t image, uint32_t tertiaryC
     int32_t height = g1Element->height;
 
     rct_drawpixelinfo dpi = CreateDPI(width, height);
-    gfx_draw_sprite_software(&dpi, ImageId::FromUInt32(image, tertiaryColour), -g1Element->x_offset, -g1Element->y_offset);
+    gfx_draw_sprite_software(&dpi, ImageId::FromUInt32(image, tertiaryColour), { -g1Element->x_offset, -g1Element->y_offset });
     return dpi;
 }
 
@@ -320,7 +321,9 @@ rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32_t image, const PaletteMap& 
     int32_t height = g1Element->height;
 
     rct_drawpixelinfo dpi = CreateDPI(width, height);
-    gfx_draw_sprite_palette_set_software(&dpi, ImageId::FromUInt32(image), -g1Element->x_offset, -g1Element->y_offset, palette);
+
+    const auto glyphCoords = ScreenCoordsXY{ -g1Element->x_offset, -g1Element->y_offset };
+    gfx_draw_sprite_palette_set_software(&dpi, ImageId::FromUInt32(image), glyphCoords, palette);
     return dpi;
 }
 

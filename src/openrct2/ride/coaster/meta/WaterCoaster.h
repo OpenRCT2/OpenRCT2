@@ -33,6 +33,7 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
     SET_FIELD(OperatingSettings, { 0, 0, 0, 17, 16, -1 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_WATER_COASTER, STR_RIDE_DESCRIPTION_WATER_COASTER }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BOAT, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_WATER_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 18, 24, 4, 7, }),
     SET_FIELD(MaxMass, 13),
@@ -50,5 +51,6 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BORDEAUX_RED },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_DARK_PURPLE },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

@@ -33,6 +33,7 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(OperatingSettings, { 1, 4, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_CHAIRLIFT)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 40, 32, 28, 2, }),
     SET_FIELD(MaxMass, 18),
@@ -50,5 +51,6 @@ constexpr const RideTypeDescriptor ChairliftRTD =
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_OLIVE_GREEN },
         { COLOUR_LIGHT_BROWN, COLOUR_LIGHT_BROWN, COLOUR_WHITE },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

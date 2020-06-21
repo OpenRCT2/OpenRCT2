@@ -33,6 +33,7 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(OperatingSettings, { 7, 15, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_MAGIC_CARPET)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 15, 176, 7, 11, }),
     SET_FIELD(MaxMass, 255),
@@ -50,5 +51,6 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
         { COLOUR_YELLOW, COLOUR_WHITE, COLOUR_BLACK },
         { COLOUR_BRIGHT_RED, COLOUR_YELLOW, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

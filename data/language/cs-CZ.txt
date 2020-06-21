@@ -3688,6 +3688,11 @@ STR_6369    :Povolit stavbu trati v jakémkoliv výšce
 STR_6370    :{SMALLFONT}{BLACK}Umožní stavět dráhu v neplatné výšce
 STR_6371    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale chybí soubor „csg1i.dat“. Tento soubor je nutné překopírovat z RollerCoaster Tycoon 1 instalačního CD do složky „Data“ ve vaší složce s RollerCoaster Tycoon 1. 
 STR_6372    :Vybraná složka obsahuje RollerCoaster Tycoon 1, ale nelze použít jeho verzi. OpenRCT2 potřebuje buď Loopy Landscapes nebo RCT Deluxe verzi, aby bylo možné převzít grafiku.
+STR_6373    :Přepnout kontroly křížení
+STR_6374    :K
+STR_6375    :Neznámá atrakce
+STR_6376    :{WINDOW_COLOUR_2}Vozy atrakce:{NEWLINE}{BLACK}{STRINGID} pro {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} pro {STRINGID}
 
 ###############################################################################
 ## RCT2 Scenarios

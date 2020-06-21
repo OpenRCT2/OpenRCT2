@@ -103,7 +103,7 @@ public:
     void FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
     void DrawLine(uint32_t colour, int32_t x1, int32_t y1, int32_t x2, int32_t y2) override;
     void DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) override;
-    void DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) override;
+    void DrawSpriteRawMasked(const ScreenCoordsXY& scrCoords, uint32_t maskImage, uint32_t colourImage) override;
     void DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour) override;
     void DrawGlyph(uint32_t image, int32_t x, int32_t y, const PaletteMap& palette) override;
 
@@ -764,7 +764,7 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
     }
 }
 
-void OpenGLDrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage)
+void OpenGLDrawingContext::DrawSpriteRawMasked(const ScreenCoordsXY& scrCoords, uint32_t maskImage, uint32_t colourImage)
 {
     auto g1ElementMask = gfx_get_g1_element(maskImage & 0x7FFFF);
     auto g1ElementColour = gfx_get_g1_element(colourImage & 0x7FFFF);
@@ -781,8 +781,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t ma
     int32_t drawWidth = std::min(g1ElementMask->width, g1ElementColour->width);
     int32_t drawHeight = std::min(g1ElementMask->height, g1ElementColour->height);
 
-    int32_t left = x + drawOffsetX;
-    int32_t top = y + drawOffsetY;
+    int32_t left = scrCoords.x + drawOffsetX;
+    int32_t top = scrCoords.y + drawOffsetY;
     int32_t right = left + drawWidth;
     int32_t bottom = top + drawHeight;
 

@@ -814,10 +814,9 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_map_draw_tab_images(w, dpi);
 
-    auto screenCoords = ScreenCoordsXY{
-        w->windowPos.x + (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2,
-        w->windowPos.y + (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2
-    };
+    auto screenCoords = w->windowPos
+        + ScreenCoordsXY{ (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2,
+                          (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2 };
 
     // Draw land tool size
     if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
@@ -830,8 +829,9 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // People starting position (scenario editor only)
     if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WWT_EMPTY)
     {
-        screenCoords = { w->windowPos.x + w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
-                         w->windowPos.y + w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
+                              w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
         gfx_draw_sprite(
             dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410,
             screenCoords.x, screenCoords.y, 0);
@@ -842,7 +842,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Render the map legend
         if (w->selected_tab == PAGE_RIDES)
         {
-            screenCoords = { w->windowPos.x + 4, w->windowPos.y + w->widgets[WIDX_MAP].bottom + 2 };
+            screenCoords = w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP].bottom + 2 };
 
             static rct_string_id mapLabels[] = {
                 STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
@@ -853,12 +853,11 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 gfx_fill_rect(
                     dpi, screenCoords.x, screenCoords.y + 2, screenCoords.x + 6, screenCoords.y + 8, RideKeyColours[i]);
-                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, screenCoords.x + LIST_ROW_HEIGHT, screenCoords.y);
+                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 });
                 screenCoords.y += LIST_ROW_HEIGHT;
                 if (i == 3)
                 {
-                    screenCoords.x += 118;
-                    screenCoords.y -= LIST_ROW_HEIGHT * 4;
+                    screenCoords += { 118, -(LIST_ROW_HEIGHT * 4) };
                 }
             }
         }
@@ -866,8 +865,8 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     else if (!widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
     {
         gfx_draw_string_left(
-            dpi, STR_MAP_SIZE, nullptr, w->colours[1], w->windowPos.x + 4,
-            w->windowPos.y + w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1);
+            dpi, STR_MAP_SIZE, nullptr, w->colours[1],
+            w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 });
     }
 }
 
@@ -1433,115 +1432,6 @@ static constexpr const uint16_t ElementTypeAddColour[] = {
     MAP_COLOUR(PALETTE_INDEX_68),                     // TILE_ELEMENT_TYPE_CORRUPT
 };
 
-enum
-{
-    COLOUR_KEY_RIDE,
-    COLOUR_KEY_FOOD,
-    COLOUR_KEY_DRINK,
-    COLOUR_KEY_SOUVENIR,
-    COLOUR_KEY_KIOSK,
-    COLOUR_KEY_FIRST_AID,
-    COLOUR_KEY_CASH_MACHINE,
-    COLOUR_KEY_TOILETS
-};
-
-static constexpr const uint8_t RideColourKey[] = {
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_SPIRAL_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_STAND_UP_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_INVERTED_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_JUNIOR_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MINIATURE_RAILWAY
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MONORAIL
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_BOAT_HIRE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_WOODEN_WILD_MOUSE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_STEEPLECHASE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_CAR_RIDE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_LAUNCHED_FREEFALL
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_BOBSLEIGH_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_OBSERVATION_TOWER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_LOOPING_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_DINGHY_SLIDE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MINE_TRAIN_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_CHAIRLIFT
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_CORKSCREW_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MAZE = 20
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_SPIRAL_SLIDE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_GO_KARTS
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_LOG_FLUME
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_RIVER_RAPIDS
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_DODGEMS
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_SWINGING_SHIP
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_SWINGING_INVERTER_SHIP
-    COLOUR_KEY_FOOD,         // RIDE_TYPE_FOOD_STALL
-    COLOUR_KEY_FOOD,         // RIDE_TYPE_1D
-    COLOUR_KEY_DRINK,        // RIDE_TYPE_DRINK_STALL
-    COLOUR_KEY_DRINK,        // RIDE_TYPE_1F
-    COLOUR_KEY_SOUVENIR,     // RIDE_TYPE_SHOP
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MERRY_GO_ROUND
-    COLOUR_KEY_SOUVENIR,     // RIDE_TYPE_22
-    COLOUR_KEY_KIOSK,        // RIDE_TYPE_INFORMATION_KIOSK
-    COLOUR_KEY_TOILETS,      // RIDE_TYPE_TOILETS
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_FERRIS_WHEEL
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MOTION_SIMULATOR
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_3D_CINEMA
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_TOP_SPIN
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_SPACE_RINGS
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_REVERSE_FREEFALL_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_LIFT
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER
-    COLOUR_KEY_CASH_MACHINE, // RIDE_TYPE_CASH_MACHINE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_TWIST
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_HAUNTED_HOUSE
-    COLOUR_KEY_FIRST_AID,    // RIDE_TYPE_FIRST_AID
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_CIRCUS
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_GHOST_TRAIN
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_TWISTER_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_WOODEN_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_STEEL_WILD_MOUSE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_FLYING_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_FLYING_ROLLER_COASTER_ALT
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_VIRGINIA_REEL
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_SPLASH_BOATS
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MINI_HELICOPTERS
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_SUSPENDED_MONORAIL
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_REVERSER_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_HEARTLINE_TWISTER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MINI_GOLF
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_GIGA_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_ROTO_DROP
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_FLYING_SAUCERS
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_CROOKED_HOUSE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MONORAIL_CYCLES
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_COMPACT_INVERTED_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_WATER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_INVERTED_HAIRPIN_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MAGIC_CARPET
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_SUBMARINE_RIDE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_RIVER_RAFTS
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_50
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_ENTERPRISE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_52
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_53
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_54
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_55
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_INVERTED_IMPULSE_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MINI_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_MINE_RIDE
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_59
-    COLOUR_KEY_RIDE,         // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
-    COLOUR_KEY_RIDE,         //
-    COLOUR_KEY_RIDE,         //
-    COLOUR_KEY_RIDE,         //
-};
-
 static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
 {
     auto* surfaceElement = map_get_surface_element_at(c);
@@ -1612,12 +1502,19 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
                     break;
                 ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
                 if (ride != nullptr)
-                    colourA = RideKeyColours[RideColourKey[ride->type]];
+                {
+                    const auto& colourKey = RideTypeDescriptors[ride->type].ColourKey;
+                    colourA = RideKeyColours[static_cast<size_t>(colourKey)];
+                }
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
                 ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                 if (ride != nullptr)
-                    colourA = RideKeyColours[RideColourKey[ride->type]];
+                {
+                    const auto& colourKey = RideTypeDescriptors[ride->type].ColourKey;
+                    colourA = RideKeyColours[static_cast<size_t>(colourKey)];
+                }
+
                 break;
         }
     } while (!(tileElement++)->IsLastForTile());

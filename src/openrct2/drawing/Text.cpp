@@ -151,9 +151,10 @@ void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t co
 }
 
 // Basic
-void gfx_draw_string_left(rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, int32_t x, int32_t y)
+void gfx_draw_string_left(
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
 {
-    DrawTextCompat(dpi, x, y, format, args, colour, TextAlignment::LEFT);
+    DrawTextCompat(dpi, coords.x, coords.y, format, args, colour, TextAlignment::LEFT);
 }
 
 void gfx_draw_string_centred(
@@ -206,12 +207,6 @@ void gfx_draw_string_right_clipped(
 }
 
 // Wrapping
-int32_t gfx_draw_string_left_wrapped(
-    rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
-{
-    return gfx_draw_string_left_wrapped(dpi, args, { x, y }, width, format, colour);
-}
-
 int32_t gfx_draw_string_left_wrapped(
     rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)
 {

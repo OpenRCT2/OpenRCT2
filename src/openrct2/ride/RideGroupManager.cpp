@@ -245,3 +245,30 @@ const RideGroup* RideGroupManager::RideGroupFind(const uint8_t rideType, const u
             return nullptr;
     }
 }
+
+uint8_t RideGroupManager::GetRideGroupIndex(const uint8_t rideType, const rct_ride_entry* rideEntry)
+{
+    uint8_t rideGroupIndex = 0;
+
+    const RideGroup* rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
+
+    // If the ride group is nullptr, the track type does not have ride groups.
+    if (rideGroup != nullptr)
+    {
+        for (uint8_t i = rideGroupIndex + 1; i < MAX_RIDE_GROUPS_PER_RIDE_TYPE; i++)
+        {
+            const RideGroup* irg = RideGroupManager::RideGroupFind(rideType, i);
+
+            if (irg != nullptr)
+            {
+                if (irg->Equals(rideGroup))
+                {
+                    rideGroupIndex = i;
+                    break;
+                }
+            }
+        }
+    }
+
+    return rideGroupIndex;
+}

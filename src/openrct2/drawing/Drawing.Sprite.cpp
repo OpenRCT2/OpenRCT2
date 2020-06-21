@@ -401,7 +401,7 @@ static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId im
     }
 }
 
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& spriteCoords)
 {
     if (imageId.HasValue())
     {
@@ -410,7 +410,7 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
         {
             palette = PaletteMap::GetDefault();
         }
-        gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, *palette);
+        gfx_draw_sprite_palette_set_software(dpi, imageId, spriteCoords, *palette);
     }
 }
 
@@ -424,8 +424,11 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
  * y (dx)
  */
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, const PaletteMap& paletteMap)
+    rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
+    int32_t x = coords.x;
+    int32_t y = coords.y;
+
     const auto* g1 = gfx_get_g1_element(imageId);
     if (g1 == nullptr)
     {
@@ -442,8 +445,10 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         zoomed_dpi.width = dpi->width >> 1;
         zoomed_dpi.pitch = dpi->pitch;
         zoomed_dpi.zoom_level = dpi->zoom_level - 1;
+
+        const auto spriteCoords = ScreenCoordsXY{ x >> 1, y >> 1 };
         gfx_draw_sprite_palette_set_software(
-            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), x >> 1, y >> 1, paletteMap);
+            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
         return;
     }
 
@@ -590,10 +595,10 @@ void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args)
  *
  *  rct2: 0x00681DE2
  */
-void FASTCALL
-    gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
+void FASTCALL gfx_draw_sprite_raw_masked_software(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, int32_t maskImage, int32_t colourImage)
 {
-    int32_t left, top, right, bottom, width, height;
+    int32_t left, top, right, bottom, width, height, x = scrCoords.x, y = scrCoords.y;
     auto imgMask = gfx_get_g1_element(maskImage & 0x7FFFF);
     auto imgColour = gfx_get_g1_element(colourImage & 0x7FFFF);
     if (imgMask == nullptr || imgColour == nullptr)
@@ -604,7 +609,7 @@ void FASTCALL
     // Only BMP format is supported for masking
     if (!(imgMask->flags & G1_FLAG_BMP) || !(imgColour->flags & G1_FLAG_BMP))
     {
-        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), x, y);
+        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), { x, y });
         return;
     }
 
