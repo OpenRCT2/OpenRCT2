@@ -245,13 +245,13 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
  * Draws text that is left aligned and vertically centred.
  */
 void gfx_draw_string_left_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, int32_t x, int32_t y)
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, const ScreenCoordsXY& coords)
 {
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
     int32_t height = string_get_height_raw(buffer);
-    gfx_draw_string(dpi, buffer, colour, { x, y - (height / 2) });
+    gfx_draw_string(dpi, buffer, colour, coords - ScreenCoordsXY{ 0, (height / 2) });
 }
 
 /**

@@ -670,7 +670,7 @@ int32_t gfx_draw_string_centred_wrapped(
     rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour);
 
 void gfx_draw_string_left_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, int32_t x, int32_t y);
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, const ScreenCoordsXY& coords);
 void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t numLines, char* text);
 void gfx_draw_string_centred_wrapped_partial(
     rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t colour, rct_string_id format, void* args,
