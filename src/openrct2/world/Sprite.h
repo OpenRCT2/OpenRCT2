@@ -81,7 +81,7 @@ struct MoneyEffect : SpriteBase
     int16_t OffsetX;
     uint16_t Wiggle;
 
-    static void CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical);
+    static void CreateAt(money32 value, const CoordsXYZ& effectPos, bool vertical);
     static void Create(money32 value, CoordsXYZ loc);
     void Update();
     std::pair<rct_string_id, money32> GetStringId() const;

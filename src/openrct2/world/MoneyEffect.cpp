@@ -27,7 +27,7 @@ template<> bool SpriteBase::Is<MoneyEffect>() const
  *
  *  rct2: 0x0067351F
  */
-void MoneyEffect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical)
+void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool vertical)
 {
     if (value == MONEY(0, 00))
         return;
@@ -42,7 +42,7 @@ void MoneyEffect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool 
     moneyEffect->sprite_height_negative = 20;
     moneyEffect->sprite_height_positive = 30;
     moneyEffect->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-    moneyEffect->MoveTo({ x, y, z });
+    moneyEffect->MoveTo(effectPos);
     moneyEffect->type = SPRITE_MISC_MONEY_EFFECT;
     moneyEffect->NumMovements = 0;
     moneyEffect->MoveDelay = 0;
@@ -89,7 +89,7 @@ void MoneyEffect::Create(money32 value, CoordsXYZ loc)
         loc = { *mapPositionXY, tile_element_height(*mapPositionXY) };
     }
     loc.z += 10;
-    CreateAt(-value, loc.x, loc.y, loc.z, false);
+    CreateAt(-value, loc, false);
 }
 
 /**

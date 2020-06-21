@@ -2357,7 +2357,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
         //      needing to be synchronised
         if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
         {
-            MoneyEffect::CreateAt(amount, x, y, z, true);
+            MoneyEffect::CreateAt(amount, { x, y, z }, true);
         }
     }
 
