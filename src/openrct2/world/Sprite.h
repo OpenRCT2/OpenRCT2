@@ -251,7 +251,7 @@ uint32_t duck_get_frame_image(const Duck* duck, int32_t direction);
 ///////////////////////////////////////////////////////////////
 void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos);
 void crashed_vehicle_particle_update(VehicleCrashParticle* particle);
-void crash_splash_create(int32_t x, int32_t y, int32_t z);
+void crash_splash_create(const CoordsXYZ& splashPos);
 void crash_splash_update(CrashSplashParticle* splash);
 
 rct_sprite_checksum sprite_checksum();

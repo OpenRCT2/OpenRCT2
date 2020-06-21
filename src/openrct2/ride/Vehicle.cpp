@@ -5357,11 +5357,11 @@ void Vehicle::CrashOnWater()
     sub_state = 2;
     audio_play_sound_at_location(SoundId::Water1, { x, y, z });
 
-    crash_splash_create(x, y, z);
-    crash_splash_create(x - 8, y - 9, z);
-    crash_splash_create(x + 11, y - 9, z);
-    crash_splash_create(x + 11, y + 8, z);
-    crash_splash_create(x - 4, y + 8, z);
+    crash_splash_create({ x, y, z });
+    crash_splash_create({ x - 8, y - 9, z });
+    crash_splash_create({ x + 11, y - 9, z });
+    crash_splash_create({ x + 11, y + 8, z });
+    crash_splash_create({ x - 4, y + 8, z });
 
     for (int32_t i = 0; i < 10; ++i)
         crashed_vehicle_particle_create(colours, { x - 4, y + 8, z });

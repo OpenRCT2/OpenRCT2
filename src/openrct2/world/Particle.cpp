@@ -96,7 +96,7 @@ void crashed_vehicle_particle_update(VehicleCrashParticle* particle)
     {
         // Splash
         audio_play_sound_at_location(SoundId::Water2, { particle->x, particle->y, waterZ });
-        crash_splash_create(particle->x, particle->y, waterZ);
+        crash_splash_create({ particle->x, particle->y, waterZ });
         sprite_remove(particle);
         return;
     }
@@ -121,7 +121,7 @@ void crashed_vehicle_particle_update(VehicleCrashParticle* particle)
  *
  *  rct2: 0x00673699
  */
-void crash_splash_create(int32_t x, int32_t y, int32_t z)
+void crash_splash_create(const CoordsXYZ& splashPos)
 {
     SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
@@ -130,7 +130,7 @@ void crash_splash_create(int32_t x, int32_t y, int32_t z)
         sprite->sprite_height_negative = 51;
         sprite->sprite_height_positive = 16;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite->MoveTo({ x, y, z + 3 });
+        sprite->MoveTo(splashPos + CoordsXYZ{ 0, 0, 3 });
         sprite->type = SPRITE_MISC_CRASH_SPLASH;
         sprite->frame = 0;
     }
