@@ -5295,7 +5295,7 @@ void Vehicle::CrashOnLand()
     audio_play_sound_at_location(SoundId::Crash, { x, y, z });
 
     sprite_misc_explosion_cloud_create({ x, y, z });
-    sprite_misc_explosion_flare_create(x, y, z);
+    sprite_misc_explosion_flare_create({ x, y, z });
 
     uint8_t numParticles = std::min(sprite_width, static_cast<uint8_t>(7));
 

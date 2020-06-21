@@ -554,7 +554,7 @@ static void sprite_misc_explosion_cloud_update(rct_sprite* sprite)
  *
  *  rct2: 0x0067366B
  */
-void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
+void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
 {
     SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
     if (sprite != nullptr)
@@ -563,7 +563,7 @@ void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z)
         sprite->sprite_height_negative = 85;
         sprite->sprite_height_positive = 8;
         sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite->MoveTo({ x, y, z + 4 });
+        sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
         sprite->type = SPRITE_MISC_EXPLOSION_FLARE;
         sprite->frame = 0;
     }
