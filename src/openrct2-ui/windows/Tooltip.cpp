@@ -211,5 +211,5 @@ static void window_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Text
     left = w->windowPos.x + ((w->width + 1) / 2) - 1;
     top = w->windowPos.y + 1;
-    draw_string_centred_raw(dpi, left, top, _tooltipNumLines, _tooltipText);
+    draw_string_centred_raw(dpi, { left, top }, _tooltipNumLines, _tooltipText);
 }

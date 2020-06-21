@@ -309,12 +309,12 @@ static void colour_char_window(uint8_t colour, const uint16_t* current_font_flag
  * text     : esi
  * dpi      : edi
  */
-void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t numLines, char* text)
+void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text)
 {
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_draw_string(dpi, "", COLOUR_BLACK, screenCoords);
-    screenCoords = { x, y };
+    screenCoords = coords;
     gCurrentFontFlags = 0;
 
     for (int32_t i = 0; i <= numLines; i++)
