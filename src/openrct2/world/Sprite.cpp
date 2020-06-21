@@ -786,15 +786,16 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
  *
  *  rct2: 0x0067375D
  */
-void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type)
+void litter_create(const CoordsXYZD& litterPos, int32_t type)
 {
     if (gCheatsDisableLittering)
         return;
 
-    x += CoordsDirectionDelta[direction >> 3].x / 8;
-    y += CoordsDirectionDelta[direction >> 3].y / 8;
+    auto offsetLitterPos = litterPos
+        + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
+                    CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
 
-    if (!litter_can_be_at(x, y, z))
+    if (!litter_can_be_at(offsetLitterPos.x, offsetLitterPos.y, offsetLitterPos.z))
         return;
 
     if (gSpriteListCount[SPRITE_LIST_LITTER] >= 500)
@@ -821,13 +822,13 @@ void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t t
     if (litter == nullptr)
         return;
 
-    litter->sprite_direction = direction;
+    litter->sprite_direction = offsetLitterPos.direction;
     litter->sprite_width = 6;
     litter->sprite_height_negative = 6;
     litter->sprite_height_positive = 3;
     litter->sprite_identifier = SPRITE_IDENTIFIER_LITTER;
     litter->type = type;
-    litter->MoveTo({ x, y, z });
+    litter->MoveTo(offsetLitterPos);
     litter->Invalidate0();
     litter->creationTick = gScenarioTicks;
 }

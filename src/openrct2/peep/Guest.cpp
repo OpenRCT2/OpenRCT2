@@ -5314,9 +5314,9 @@ void Guest::UpdateWalking()
                 int32_t litterType = litter_types[scenario_rand() & 0x3];
                 int32_t litterX = x + (scenario_rand() & 0x7) - 3;
                 int32_t litterY = y + (scenario_rand() & 0x7) - 3;
-                int32_t litterDirection = (scenario_rand() & 0x3);
+                Direction litterDirection = (scenario_rand() & 0x3);
 
-                litter_create(litterX, litterY, z, litterDirection, litterType);
+                litter_create({ litterX, litterY, z, litterDirection }, litterType);
             }
         }
     }
@@ -5352,9 +5352,9 @@ void Guest::UpdateWalking()
 
             int32_t litterX = x + (scenario_rand() & 0x7) - 3;
             int32_t litterY = y + (scenario_rand() & 0x7) - 3;
-            int32_t litterDirection = (scenario_rand() & 0x3);
+            Direction litterDirection = (scenario_rand() & 0x3);
 
-            litter_create(litterX, litterY, z, litterDirection, litterType);
+            litter_create({ litterX, litterY, z, litterDirection }, litterType);
         }
     }
 
@@ -5917,7 +5917,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
-                litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
+                litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
                 ItemStandardFlags &= ~(1 << cur_container);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -5951,7 +5951,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
-                litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
+                litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
                 ItemExtraFlags &= ~(1 << cur_container);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
