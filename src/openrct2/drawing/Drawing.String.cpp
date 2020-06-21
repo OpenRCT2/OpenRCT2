@@ -421,7 +421,7 @@ int32_t string_get_height_raw(char* buffer)
  * ticks    : ebp >> 16
  */
 void gfx_draw_string_centred_wrapped_partial(
-    rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t colour, rct_string_id format, void* args,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, int32_t colour, rct_string_id format, void* args,
     int32_t ticks)
 {
     int32_t numLines, fontSpriteBase, lineHeight, lineY;
@@ -440,7 +440,7 @@ void gfx_draw_string_centred_wrapped_partial(
     int32_t numCharactersToDraw = ticks;
 
     gCurrentFontFlags = 0;
-    lineY = y - ((numLines * lineHeight) / 2);
+    lineY = coords.y - ((numLines * lineHeight) / 2);
     for (int32_t line = 0; line <= numLines; line++)
     {
         int32_t halfWidth = gfx_get_string_width(buffer) / 2;
@@ -462,7 +462,7 @@ void gfx_draw_string_centred_wrapped_partial(
             ch = nextCh;
         }
 
-        screenCoords = { x - halfWidth, lineY };
+        screenCoords = { coords.x - halfWidth, lineY };
         gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, screenCoords);
 
         if (numCharactersDrawn > numCharactersToDraw)
