@@ -234,7 +234,7 @@ void sprite_position_tween_reset();
 ///////////////////////////////////////////////////////////////
 // Balloon
 ///////////////////////////////////////////////////////////////
-void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped);
+void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
 void balloon_update(Balloon* balloon);
 
 ///////////////////////////////////////////////////////////////

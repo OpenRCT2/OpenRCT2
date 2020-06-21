@@ -6831,7 +6831,7 @@ void Guest::UpdateSpriteType()
                 isBalloonPopped = true;
                 audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
             }
-            create_balloon(x, y, z + 9, BalloonColour, isBalloonPopped);
+            create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
         ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
