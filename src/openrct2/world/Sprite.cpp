@@ -758,14 +758,14 @@ void sprite_remove(SpriteBase* sprite)
     *spriteIndex = sprite->next_in_quadrant;
 }
 
-static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
+static bool litter_can_be_at(const CoordsXYZ& mapPos)
 {
     TileElement* tileElement;
 
-    if (!map_is_location_owned({ x, y, z }))
+    if (!map_is_location_owned(mapPos))
         return false;
 
-    tileElement = map_get_first_element_at({ x, y });
+    tileElement = map_get_first_element_at(mapPos);
     if (tileElement == nullptr)
         return false;
     do
@@ -774,7 +774,7 @@ static bool litter_can_be_at(int32_t x, int32_t y, int32_t z)
             continue;
 
         int32_t pathZ = tileElement->GetBaseZ();
-        if (pathZ < z || pathZ >= z + 32)
+        if (pathZ < mapPos.z || pathZ >= mapPos.z + 32)
             continue;
 
         return !tile_element_is_underground(tileElement);
@@ -795,7 +795,7 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
         + CoordsXY{ CoordsDirectionDelta[litterPos.direction >> 3].x / 8,
                     CoordsDirectionDelta[litterPos.direction >> 3].y / 8 };
 
-    if (!litter_can_be_at(offsetLitterPos.x, offsetLitterPos.y, offsetLitterPos.z))
+    if (!litter_can_be_at(offsetLitterPos))
         return;
 
     if (gSpriteListCount[SPRITE_LIST_LITTER] >= 500)
