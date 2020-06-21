@@ -479,7 +479,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_draw_string_centred_clipped(
                 dpi, STR_SCENARIO_LOCKED, nullptr, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 85, 0 }, 170);
             gfx_draw_string_left_wrapped(
-                dpi, nullptr, screenPos.x, screenPos.y + 15, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK);
+                dpi, nullptr, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK);
         }
         return;
     }
@@ -513,9 +513,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->details);
-    screenPos.y += gfx_draw_string_left_wrapped(
-                       dpi, gCommonFormatArgs, screenPos.x, screenPos.y, 170, STR_BLACK_STRING, COLOUR_BLACK)
-        + 5;
+    screenPos.y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenPos, 170, STR_BLACK_STRING, COLOUR_BLACK) + 5;
 
     // Scenario objective
     ft = Formatter::Common();
@@ -523,9 +521,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<int16_t>(scenario->objective_arg_3);
     ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
     ft.Add<int32_t>(scenario->objective_arg_2);
-    screenPos.y += gfx_draw_string_left_wrapped(
-                       dpi, gCommonFormatArgs, screenPos.x, screenPos.y, 170, STR_OBJECTIVE, COLOUR_BLACK)
-        + 5;
+    screenPos.y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenPos, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
 
     // Scenario score
     if (scenario->highscore != nullptr)
@@ -541,7 +537,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<const char*>(completedByName);
         ft.Add<money32>(scenario->highscore->company_value);
         screenPos.y += gfx_draw_string_left_wrapped(
-            dpi, gCommonFormatArgs, screenPos.x, screenPos.y, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
+            dpi, gCommonFormatArgs, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
     }
 }
 

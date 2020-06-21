@@ -208,12 +208,6 @@ void gfx_draw_string_right_clipped(
 
 // Wrapping
 int32_t gfx_draw_string_left_wrapped(
-    rct_drawpixelinfo* dpi, void* args, int32_t x, int32_t y, int32_t width, rct_string_id format, uint8_t colour)
-{
-    return gfx_draw_string_left_wrapped(dpi, args, { x, y }, width, format, colour);
-}
-
-int32_t gfx_draw_string_left_wrapped(
     rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)
 {
     utf8 buffer[512];

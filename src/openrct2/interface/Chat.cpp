@@ -142,12 +142,11 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
             INSET_RECT_FLAG_BORDER_INSET); // Textbox
     }
 
-    int32_t x = _chatLeft + 5;
-    int32_t y = _chatBottom - inputLineHeight - 20;
+    auto screenCoords = ScreenCoordsXY{ _chatLeft + 5, _chatBottom - inputLineHeight - 20 };
     int32_t stringHeight = 0;
 
     // Draw chat history
-    for (int32_t i = 0; i < CHAT_HISTORY_SIZE; i++, y -= stringHeight)
+    for (int32_t i = 0; i < CHAT_HISTORY_SIZE; i++, screenCoords.y -= stringHeight)
     {
         uint32_t expireTime = chat_history_get_time(i) + 10000;
         if (!gChatOpen && platform_get_ticks() > expireTime)
@@ -157,10 +156,10 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
         safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
 
-        stringHeight = chat_history_draw_string(dpi, static_cast<void*>(&lineCh), ScreenCoordsXY(x, y), _chatWidth - 10) + 5;
-        gfx_set_dirty_blocks(x, y - stringHeight, x + _chatWidth, y + 20);
+        stringHeight = chat_history_draw_string(dpi, static_cast<void*>(&lineCh), screenCoords, _chatWidth - 10) + 5;
+        gfx_set_dirty_blocks(screenCoords.x, screenCoords.y - stringHeight, screenCoords.x + _chatWidth, screenCoords.y + 20);
 
-        if ((y - stringHeight) < 50)
+        if ((screenCoords.y - stringHeight) < 50)
         {
             break;
         }
@@ -173,20 +172,22 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
 
         safe_strcpy(lineCh, _chatCurrentLine, sizeof(_chatCurrentLine));
-        y = _chatBottom - inputLineHeight - 5;
+        screenCoords.y = _chatBottom - inputLineHeight - 5;
 
         lineCh = lineBuffer;
         inputLineHeight = gfx_draw_string_left_wrapped(
-            dpi, static_cast<void*>(&lineCh), x, y + 3, _chatWidth - 10, STR_STRING, TEXT_COLOUR_255);
-        gfx_set_dirty_blocks(x, y, x + _chatWidth, y + inputLineHeight + 15);
+            dpi, static_cast<void*>(&lineCh), screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING,
+            TEXT_COLOUR_255);
+        gfx_set_dirty_blocks(
+            screenCoords.x, screenCoords.y, screenCoords.x + _chatWidth, screenCoords.y + inputLineHeight + 15);
 
         // TODO: Show caret if the input text has multiple lines
         if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer) < (_chatWidth - 10))
         {
             std::memcpy(lineBuffer, _chatCurrentLine, _chatTextInputSession->SelectionStart);
             lineBuffer[_chatTextInputSession->SelectionStart] = 0;
-            int32_t caretX = x + gfx_get_string_width(lineBuffer);
-            int32_t caretY = y + 14;
+            int32_t caretX = screenCoords.x + gfx_get_string_width(lineBuffer);
+            int32_t caretY = screenCoords.y + 14;
 
             gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, PALETTE_INDEX_56);
         }

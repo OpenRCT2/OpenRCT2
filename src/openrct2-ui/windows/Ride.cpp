@@ -3192,7 +3192,7 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Description
     screenCoords.y += gfx_draw_string_left_wrapped(
-        dpi, &rideEntry->naming.Description, screenCoords.x, screenCoords.y, 300, STR_BLACK_STRING, COLOUR_BLACK);
+        dpi, &rideEntry->naming.Description, screenCoords, 300, STR_BLACK_STRING, COLOUR_BLACK);
     screenCoords.y += 2;
 
     // Capacity
@@ -4399,7 +4399,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             if (stringId == STR_CALLING_MECHANIC || stringId == STR_NO_MECHANICS_ARE_HIRED_MESSAGE)
             {
-                gfx_draw_string_left_wrapped(dpi, nullptr, screenCoords.x + 4, screenCoords.y, 280, stringId, COLOUR_BLACK);
+                gfx_draw_string_left_wrapped(dpi, nullptr, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, COLOUR_BLACK);
             }
             else
             {
@@ -4408,7 +4408,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     peep->FormatNameTo(gCommonFormatArgs);
                     gfx_draw_string_left_wrapped(
-                        dpi, gCommonFormatArgs, screenCoords.x + 4, screenCoords.y, 280, stringId, COLOUR_BLACK);
+                        dpi, gCommonFormatArgs, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, COLOUR_BLACK);
                 }
             }
         }
@@ -7106,8 +7106,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         queueTime = ride->GetMaxQueueTime();
         stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
-        screenCoords.y += gfx_draw_string_left_wrapped(
-            dpi, &queueTime, screenCoords.x, screenCoords.y, 308, stringId, COLOUR_BLACK);
+        screenCoords.y += gfx_draw_string_left_wrapped(dpi, &queueTime, screenCoords, 308, stringId, COLOUR_BLACK);
         screenCoords.y += 5;
     }
 
