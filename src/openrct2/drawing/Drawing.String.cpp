@@ -992,16 +992,16 @@ static int32_t ttf_get_string_width(const utf8* text)
  *  rct2: 0x00682F28
  */
 void gfx_draw_string_with_y_offsets(
-    rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, int32_t x, int32_t y, const int8_t* yOffsets,
+    rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont)
 {
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
     info.flags = gCurrentFontFlags;
-    info.startX = x;
-    info.startY = x;
-    info.x = x;
-    info.y = y;
+    info.startX = coords.x;
+    info.startY = coords.y;
+    info.x = coords.x;
+    info.y = coords.y;
     info.y_offset = yOffsets;
 
     info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;

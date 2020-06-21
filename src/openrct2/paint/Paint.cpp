@@ -1152,6 +1152,6 @@ void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
         }
 
         gfx_draw_string_with_y_offsets(
-            &dpi2, buffer, COLOUR_BLACK, ps->x, ps->y, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont);
+            &dpi2, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont);
     } while ((ps = ps->next) != nullptr);
 }

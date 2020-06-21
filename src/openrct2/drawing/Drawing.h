@@ -676,7 +676,7 @@ void gfx_draw_string_centred_wrapped_partial(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, int32_t colour, rct_string_id format, void* args,
     int32_t ticks);
 void gfx_draw_string_with_y_offsets(
-    rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, int32_t x, int32_t y, const int8_t* yOffsets,
+    rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont);
 
 int32_t gfx_wrap_string(char* buffer, int32_t width, int32_t* num_lines, int32_t* font_height);
