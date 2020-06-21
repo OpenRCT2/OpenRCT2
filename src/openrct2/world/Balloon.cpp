@@ -79,7 +79,7 @@ void Balloon::Pop()
     audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
 }
 
-void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped)
+void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
 {
     rct_sprite* sprite = create_sprite(SPRITE_IDENTIFIER_MISC);
     if (sprite != nullptr)
@@ -88,7 +88,7 @@ void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopp
         sprite->balloon.sprite_height_negative = 22;
         sprite->balloon.sprite_height_positive = 11;
         sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite->balloon.MoveTo({ x, y, z });
+        sprite->balloon.MoveTo(balloonPos);
         sprite->balloon.type = SPRITE_MISC_BALLOON;
         sprite->balloon.time_to_move = 0;
         sprite->balloon.frame = 0;

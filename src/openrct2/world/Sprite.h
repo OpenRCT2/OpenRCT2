@@ -81,8 +81,8 @@ struct MoneyEffect : SpriteBase
     int16_t OffsetX;
     uint16_t Wiggle;
 
-    static void CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical);
-    static void Create(money32 value, CoordsXYZ loc);
+    static void CreateAt(money32 value, const CoordsXYZ& effectPos, bool vertical);
+    static void Create(money32 value, const CoordsXYZ& loc);
     void Update();
     std::pair<rct_string_id, money32> GetStringId() const;
 };
@@ -217,14 +217,14 @@ void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
 void sprite_misc_update_all();
-void sprite_set_coordinates(int16_t x, int16_t y, int16_t z, SpriteBase* sprite);
+void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);
-void litter_create(int32_t x, int32_t y, int32_t z, int32_t direction, int32_t type);
-void litter_remove_at(int32_t x, int32_t y, int32_t z);
+void litter_create(const CoordsXYZD& litterPos, int32_t type);
+void litter_remove_at(const CoordsXYZ& litterPos);
 uint16_t remove_floating_sprites();
-void sprite_misc_explosion_cloud_create(int32_t x, int32_t y, int32_t z);
-void sprite_misc_explosion_flare_create(int32_t x, int32_t y, int32_t z);
-uint16_t sprite_get_first_in_quadrant(int32_t x, int32_t y);
+void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos);
+void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos);
+uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos);
 void sprite_position_tween_store_a();
 void sprite_position_tween_store_b();
 void sprite_position_tween_all(float nudge);
@@ -234,7 +234,7 @@ void sprite_position_tween_reset();
 ///////////////////////////////////////////////////////////////
 // Balloon
 ///////////////////////////////////////////////////////////////
-void create_balloon(int32_t x, int32_t y, int32_t z, int32_t colour, bool isPopped);
+void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped);
 void balloon_update(Balloon* balloon);
 
 ///////////////////////////////////////////////////////////////
@@ -249,9 +249,9 @@ uint32_t duck_get_frame_image(const Duck* duck, int32_t direction);
 ///////////////////////////////////////////////////////////////
 // Crash particles
 ///////////////////////////////////////////////////////////////
-void crashed_vehicle_particle_create(rct_vehicle_colour colours, int32_t x, int32_t y, int32_t z);
+void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos);
 void crashed_vehicle_particle_update(VehicleCrashParticle* particle);
-void crash_splash_create(int32_t x, int32_t y, int32_t z);
+void crash_splash_create(const CoordsXYZ& splashPos);
 void crash_splash_update(CrashSplashParticle* splash);
 
 rct_sprite_checksum sprite_checksum();
@@ -326,7 +326,7 @@ private:
 
 public:
     EntityTileList(const CoordsXY& loc)
-        : FirstEntity(sprite_get_first_in_quadrant(loc.x, loc.y))
+        : FirstEntity(sprite_get_first_in_quadrant(loc))
     {
     }
 

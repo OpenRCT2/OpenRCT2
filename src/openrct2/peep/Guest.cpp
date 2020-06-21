@@ -714,8 +714,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
             {
                 audio_play_sound_at_location(SoundId::Crash, { x, y, z });
 
-                sprite_misc_explosion_cloud_create(x, y, z + 16);
-                sprite_misc_explosion_flare_create(x, y, z + 16);
+                sprite_misc_explosion_cloud_create({ x, y, z + 16 });
+                sprite_misc_explosion_flare_create({ x, y, z + 16 });
 
                 Remove();
                 return;
@@ -2357,7 +2357,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
         //      needing to be synchronised
         if (network_get_mode() == NETWORK_MODE_NONE && !gOpenRCT2Headless)
         {
-            MoneyEffect::CreateAt(amount, x, y, z, true);
+            MoneyEffect::CreateAt(amount, { x, y, z }, true);
         }
     }
 
@@ -5314,9 +5314,9 @@ void Guest::UpdateWalking()
                 int32_t litterType = litter_types[scenario_rand() & 0x3];
                 int32_t litterX = x + (scenario_rand() & 0x7) - 3;
                 int32_t litterY = y + (scenario_rand() & 0x7) - 3;
-                int32_t litterDirection = (scenario_rand() & 0x3);
+                Direction litterDirection = (scenario_rand() & 0x3);
 
-                litter_create(litterX, litterY, z, litterDirection, litterType);
+                litter_create({ litterX, litterY, z, litterDirection }, litterType);
             }
         }
     }
@@ -5352,9 +5352,9 @@ void Guest::UpdateWalking()
 
             int32_t litterX = x + (scenario_rand() & 0x7) - 3;
             int32_t litterY = y + (scenario_rand() & 0x7) - 3;
-            int32_t litterDirection = (scenario_rand() & 0x3);
+            Direction litterDirection = (scenario_rand() & 0x3);
 
-            litter_create(litterX, litterY, z, litterDirection, litterType);
+            litter_create({ litterX, litterY, z, litterDirection }, litterType);
         }
     }
 
@@ -5917,7 +5917,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
-                litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
+                litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
                 ItemStandardFlags &= ~(1 << cur_container);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -5951,7 +5951,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
-                litter_create(litterX, litterY, z, scenario_rand() & 3, litterType);
+                litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
                 ItemExtraFlags &= ~(1 << cur_container);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
@@ -6831,7 +6831,7 @@ void Guest::UpdateSpriteType()
                 isBalloonPopped = true;
                 audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
             }
-            create_balloon(x, y, z + 9, BalloonColour, isBalloonPopped);
+            create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
         ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
