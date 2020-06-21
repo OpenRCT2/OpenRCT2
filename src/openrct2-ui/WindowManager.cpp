@@ -391,7 +391,7 @@ public:
                 if (w == nullptr)
                     return;
 
-                auto ride = get_ride(vehicle->ride);
+                auto ride = vehicle->GetRide();
                 auto viewVehicleIndex = w->ride.view - 1;
                 if (ride == nullptr || viewVehicleIndex < 0 || viewVehicleIndex >= ride->num_vehicles)
                     return;

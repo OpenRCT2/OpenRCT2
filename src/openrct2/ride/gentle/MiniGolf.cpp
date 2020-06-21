@@ -17,6 +17,7 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
 #include <iterator>
@@ -1208,7 +1209,7 @@ void vehicle_visual_mini_golf_player(
         return;
     }
 
-    auto ride = get_ride(vehicle->ride);
+    auto ride = vehicle->GetRide();
     if (ride == nullptr)
         return;
 
@@ -1250,7 +1251,7 @@ void vehicle_visual_mini_golf_ball(
         return;
     }
 
-    auto ride = get_ride(vehicle->ride);
+    auto ride = vehicle->GetRide();
     if (ride == nullptr)
         return;
 

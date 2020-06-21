@@ -215,7 +215,7 @@ void Vehicle::CableLiftUpdateArriving()
 
 bool Vehicle::CableLiftUpdateTrackMotionForwards()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return false;
 
@@ -287,7 +287,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
 bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return false;
 

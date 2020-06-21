@@ -1422,7 +1422,7 @@ void vehicle_update_all()
  */
 bool Vehicle::CloseRestraints()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return true;
 
@@ -1486,7 +1486,7 @@ bool Vehicle::OpenRestraints()
         vehicle->SwingSpeed = 0;
         vehicle->SwingSprite = 0;
 
-        auto curRide = get_ride(vehicle->ride);
+        auto curRide = vehicle->GetRide();
         if (curRide == nullptr)
             continue;
 
@@ -1585,7 +1585,7 @@ bool Vehicle::OpenRestraints()
  */
 void Vehicle::UpdateMeasurements()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -2008,7 +2008,7 @@ void Vehicle::Update()
     if (rideEntry == nullptr)
         return;
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -2110,7 +2110,7 @@ void Vehicle::Update()
  */
 void Vehicle::UpdateMovingToEndOfStation()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -2223,7 +2223,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     if (num_peeps_on_train != num_used_seats)
         return;
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -2299,7 +2299,7 @@ void Vehicle::UpdateWaitingForPassengers()
 {
     velocity = 0;
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -2470,7 +2470,7 @@ void Vehicle::UpdateWaitingForPassengers()
  */
 void Vehicle::UpdateDodgemsMode()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -2513,7 +2513,7 @@ void Vehicle::UpdateDodgemsMode()
  */
 void Vehicle::UpdateWaitingToDepart()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -2841,16 +2841,12 @@ static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
  *  The vehicle flag VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT is cleared for those
  *  vehicles that depart in sync with the vehicle in the param.
  */
-static bool ride_station_can_depart_synchronised(ride_id_t curRideId, StationIndex station)
+static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex station)
 {
-    auto ride = get_ride(curRideId);
-    if (ride == nullptr)
-        return false;
-
-    auto location = ride->stations[station].GetStart();
+    auto location = ride.stations[station].GetStart();
     int32_t x = location.x;
     int32_t y = location.y;
-    int32_t z = ride->stations[station].Height;
+    int32_t z = ride.stations[station].Height;
 
     auto tileElement = map_get_track_element_at(location);
     if (tileElement == nullptr)
@@ -2942,12 +2938,12 @@ static bool ride_station_can_depart_synchronised(ride_id_t curRideId, StationInd
                         }
 
                         /* Here all the of sync-ed stations are from the same ride */
-                        ride = get_ride(rideId);
-                        if (ride != nullptr)
+                        auto curRide = get_ride(rideId);
+                        if (curRide != nullptr)
                         {
-                            for (int32_t i = 0; i < ride->num_vehicles; i++)
+                            for (int32_t i = 0; i < curRide->num_vehicles; i++)
                             {
-                                Vehicle* v = GET_VEHICLE(ride->vehicles[i]);
+                                Vehicle* v = GET_VEHICLE(curRide->vehicles[i]);
                                 if (v->status != VEHICLE_STATUS_WAITING_TO_DEPART && v->velocity != 0)
                                 {
                                     // Here at least one vehicle on the ride is moving.
@@ -2970,7 +2966,7 @@ static bool ride_station_can_depart_synchronised(ride_id_t curRideId, StationInd
                         return false;
                     }
                     ride_id_t someRideIndex = _synchronisedVehicles[0].ride_id;
-                    if (someRideIndex != curRideId)
+                    if (someRideIndex != ride.id)
                     {
                         // Sync condition: the first station to sync is a different ride
                         return false;
@@ -3040,7 +3036,10 @@ static bool ride_station_can_depart_synchronised(ride_id_t curRideId, StationInd
 
 bool Vehicle::CanDepartSynchronised() const
 {
-    return ride_station_can_depart_synchronised(ride, current_station);
+    auto curRide = GetRide();
+    if (curRide == nullptr)
+        return false;
+    return ride_station_can_depart_synchronised(*curRide, current_station);
 }
 
 /**
@@ -3069,46 +3068,42 @@ void Vehicle::PeepEasterEggHereWeAre() const
  * Performed when vehicle has completed a full circuit
  *  rct2: 0x006D7338
  */
-static bool test_finish(ride_id_t rideId)
+static void test_finish(Ride& ride)
 {
-    auto ride = get_ride(rideId);
-    if (ride == nullptr)
-        return false;
+    ride.lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
+    ride.lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
 
-    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
-
-    for (int32_t i = ride->num_stations - 1; i >= 1; i--)
+    for (int32_t i = ride.num_stations - 1; i >= 1; i--)
     {
-        if (ride->stations[i - 1].SegmentTime != 0)
+        if (ride.stations[i - 1].SegmentTime != 0)
             continue;
 
-        uint16_t oldTime = ride->stations[i - 1].SegmentTime;
-        ride->stations[i - 1].SegmentTime = ride->stations[i].SegmentTime;
-        ride->stations[i].SegmentTime = oldTime;
+        uint16_t oldTime = ride.stations[i - 1].SegmentTime;
+        ride.stations[i - 1].SegmentTime = ride.stations[i].SegmentTime;
+        ride.stations[i].SegmentTime = oldTime;
 
-        int32_t oldLength = ride->stations[i - 1].SegmentLength;
-        ride->stations[i - 1].SegmentLength = ride->stations[i].SegmentLength;
-        ride->stations[i].SegmentLength = oldLength;
+        int32_t oldLength = ride.stations[i - 1].SegmentLength;
+        ride.stations[i - 1].SegmentLength = ride.stations[i].SegmentLength;
+        ride.stations[i].SegmentLength = oldLength;
     }
 
     uint32_t totalTime = 0;
-    for (uint8_t i = 0; i < ride->num_stations; ++i)
+    for (uint8_t i = 0; i < ride.num_stations; ++i)
     {
-        totalTime += ride->stations[i].SegmentTime;
+        totalTime += ride.stations[i].SegmentTime;
     }
 
     totalTime = std::max(totalTime, 1u);
-    ride->average_speed = ride->average_speed / totalTime;
-    window_invalidate_by_number(WC_RIDE, rideId);
-    return true;
+    ride.average_speed = ride.average_speed / totalTime;
+    window_invalidate_by_number(WC_RIDE, ride.id);
 }
 
 void Vehicle::UpdateTestFinish()
 {
-    if (!test_finish(ride))
+    auto curRide = GetRide();
+    if (curRide == nullptr)
         return;
-
+    test_finish(*curRide);
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
 }
 
@@ -3116,51 +3111,50 @@ void Vehicle::UpdateTestFinish()
  *
  *  rct2: 0x006D6BE7
  */
-static void test_reset(ride_id_t rideId, StationIndex curStation)
+static void test_reset(Ride& ride, StationIndex curStation)
 {
-    auto ride = get_ride(rideId);
-    if (ride == nullptr)
-        return;
-
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_TEST_IN_PROGRESS;
-    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_NO_RAW_STATS;
-    ride->max_speed = 0;
-    ride->average_speed = 0;
-    ride->current_test_segment = 0;
-    ride->average_speed_test_timeout = 0;
-    ride->max_positive_vertical_g = FIXED_2DP(1, 0);
-    ride->max_negative_vertical_g = FIXED_2DP(1, 0);
-    ride->max_lateral_g = 0;
-    ride->previous_vertical_g = 0;
-    ride->previous_lateral_g = 0;
-    ride->testing_flags = 0;
-    ride->CurTestTrackLocation.setNull();
-    ride->turn_count_default = 0;
-    ride->turn_count_banked = 0;
-    ride->turn_count_sloped = 0;
-    ride->inversions = 0;
-    ride->holes = 0;
-    ride->sheltered_eighths = 0;
-    ride->drops = 0;
-    ride->sheltered_length = 0;
-    ride->var_11C = 0;
-    ride->num_sheltered_sections = 0;
-    ride->highest_drop_height = 0;
-    ride->special_track_elements = 0;
-    for (auto& station : ride->stations)
+    ride.lifecycle_flags |= RIDE_LIFECYCLE_TEST_IN_PROGRESS;
+    ride.lifecycle_flags &= ~RIDE_LIFECYCLE_NO_RAW_STATS;
+    ride.max_speed = 0;
+    ride.average_speed = 0;
+    ride.current_test_segment = 0;
+    ride.average_speed_test_timeout = 0;
+    ride.max_positive_vertical_g = FIXED_2DP(1, 0);
+    ride.max_negative_vertical_g = FIXED_2DP(1, 0);
+    ride.max_lateral_g = 0;
+    ride.previous_vertical_g = 0;
+    ride.previous_lateral_g = 0;
+    ride.testing_flags = 0;
+    ride.CurTestTrackLocation.setNull();
+    ride.turn_count_default = 0;
+    ride.turn_count_banked = 0;
+    ride.turn_count_sloped = 0;
+    ride.inversions = 0;
+    ride.holes = 0;
+    ride.sheltered_eighths = 0;
+    ride.drops = 0;
+    ride.sheltered_length = 0;
+    ride.var_11C = 0;
+    ride.num_sheltered_sections = 0;
+    ride.highest_drop_height = 0;
+    ride.special_track_elements = 0;
+    for (auto& station : ride.stations)
     {
         station.SegmentLength = 0;
         station.SegmentTime = 0;
     }
-    ride->total_air_time = 0;
-    ride->current_test_station = curStation;
-    window_invalidate_by_number(WC_RIDE, rideId);
+    ride.total_air_time = 0;
+    ride.current_test_station = curStation;
+    window_invalidate_by_number(WC_RIDE, ride.id);
 }
 
 void Vehicle::TestReset()
 {
     SetUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
-    test_reset(ride, current_station);
+    auto curRide = GetRide();
+    if (curRide == nullptr)
+        return;
+    test_reset(*curRide, current_station);
 }
 
 bool Vehicle::CurrentTowerElementIsTop()
@@ -3212,7 +3206,7 @@ void Vehicle::UpdateDepartingBoatHire()
 {
     lost_time_out = 0;
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -3229,7 +3223,7 @@ void Vehicle::UpdateDepartingBoatHire()
  */
 void Vehicle::UpdateDeparting()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -3467,7 +3461,7 @@ void Vehicle::UpdateDeparting()
  */
 void Vehicle::FinishDeparting()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -3512,7 +3506,7 @@ void Vehicle::FinishDeparting()
  */
 void Vehicle::CheckIfMissing()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -3558,7 +3552,7 @@ void Vehicle::CheckIfMissing()
 
 void Vehicle::SimulateCrash() const
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide != nullptr)
     {
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_CRASHED;
@@ -3573,7 +3567,7 @@ void Vehicle::SimulateCrash() const
  */
 void Vehicle::UpdateCollisionSetup()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -3658,7 +3652,7 @@ static constexpr const CoordsXY stru_9A3AC4[] = {
  */
 void Vehicle::UpdateCrashSetup()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide != nullptr && curRide->status == RIDE_STATUS_SIMULATING)
     {
         SimulateCrash();
@@ -3720,7 +3714,7 @@ void Vehicle::UpdateTravelling()
 {
     CheckIfMissing();
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr || (_vehicleBreakdown == 0 && curRide->mode == RIDE_MODE_ROTATING_LIFT))
         return;
 
@@ -3895,7 +3889,7 @@ void Vehicle::UpdateTravelling()
  */
 void Vehicle::UpdateArriving()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -4112,7 +4106,7 @@ void Vehicle::UpdateUnloadingPassengers()
         }
     }
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -4197,7 +4191,7 @@ void Vehicle::UpdateUnloadingPassengers()
  */
 void Vehicle::UpdateWaitingForCableLift()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -4216,7 +4210,7 @@ void Vehicle::UpdateWaitingForCableLift()
  */
 void Vehicle::UpdateTravellingCableLift()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -4319,7 +4313,7 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
 
         auto trackElement = map_get_track_element_at(TrackLocation);
 
-        auto curRide = get_ride(ride);
+        auto curRide = GetRide();
         if (curRide != nullptr)
         {
             track_type = (trackElement->GetTrackType() << 2) | (curRide->boat_hire_return_direction & 3);
@@ -4496,7 +4490,7 @@ void Vehicle::UpdateMotionBoatHire()
                 if (!vehicle_boat_is_location_accessible(CoordsXYZ{ curX, curY, TrackLocation.z }))
                 {
                     // loc_6DA939:
-                    auto curRide = get_ride(ride);
+                    auto curRide = GetRide();
                     if (curRide == nullptr)
                         return;
 
@@ -4630,7 +4624,7 @@ void Vehicle::UpdateMotionBoatHire()
  */
 void Vehicle::UpdateBoatLocation()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -4735,7 +4729,7 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
  */
 void Vehicle::UpdateSwinging()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -4812,7 +4806,7 @@ void Vehicle::UpdateFerrisWheelRotating()
     if (_vehicleBreakdown == 0)
         return;
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -4930,7 +4924,7 @@ void Vehicle::UpdateRotating()
     if (_vehicleBreakdown == 0)
         return;
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -5262,7 +5256,7 @@ static void ride_train_crash(Ride* ride, uint16_t numFatalities)
  */
 void Vehicle::KillAllPassengersInTrain()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -5303,7 +5297,7 @@ void Vehicle::KillPassengers(Ride* curRide)
 
 void Vehicle::CrashOnLand()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -5366,7 +5360,7 @@ void Vehicle::CrashOnLand()
 
 void Vehicle::CrashOnWater()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -5530,7 +5524,7 @@ void Vehicle::UpdateSound()
     SoundId screamId = SoundId::Null;
     uint8_t screamVolume = 255;
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -6248,7 +6242,7 @@ GForces Vehicle::GetGForces() const
 
 void Vehicle::SetMapToolbar() const
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide != nullptr)
     {
         const Vehicle* vehicle = GetHead();
@@ -6313,7 +6307,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 {
     _vehicleMotionTrackFlags = 0;
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return _vehicleMotionTrackFlags;
 
@@ -6668,7 +6662,7 @@ void Vehicle::ApplyStopBlockBrake()
  */
 void Vehicle::CheckAndApplyBlockSectionStopSite()
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return;
 
@@ -7286,7 +7280,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 ah &= 0x02;
                 if (al != ah)
                 {
-                    auto curRide = get_ride(ride);
+                    auto curRide = GetRide();
                     if (curRide != nullptr)
                     {
                         if (!ride_has_station_shelter(curRide)
@@ -9196,7 +9190,7 @@ static constexpr int32_t GetAccelerationDecrease2(const int32_t velocity, const 
 
 int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
 {
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return 0;
 
@@ -9434,7 +9428,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 {
     registers regs = {};
 
-    auto curRide = get_ride(ride);
+    auto curRide = GetRide();
     if (curRide == nullptr)
         return 0;
 
@@ -9685,6 +9679,11 @@ rct_ride_entry_vehicle* Vehicle::Entry() const
     return &rideEntry->vehicles[vehicle_type];
 }
 
+Ride* Vehicle::GetRide() const
+{
+    return get_ride(ride);
+}
+
 int32_t Vehicle::NumPeepsUntilTrainTail() const
 {
     int32_t numPeeps = 0;
@@ -9760,7 +9759,7 @@ void Vehicle::UpdateCrossings() const
         while (true)
         {
             auto* pathElement = map_get_path_element_at(TileCoordsXYZ(CoordsXYZ{ xyElement, xyElement.element->GetBaseZ() }));
-            auto curRide = get_ride(ride);
+            auto curRide = GetRide();
 
             // Many New Element parks have invisible rides hacked into the path.
             // Limit path blocking to rides actually supporting level crossings to prevent peeps getting stuck everywhere.
@@ -9888,6 +9887,6 @@ void Vehicle::SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState)
 
 bool Vehicle::IsGhost() const
 {
-    auto r = get_ride(ride);
+    auto r = GetRide();
     return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
 }

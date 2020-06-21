@@ -637,7 +637,7 @@ static void window_title_command_editor_tool_down(
             auto vehicle = GET_VEHICLE(spriteIndex);
             if (vehicle != nullptr)
             {
-                auto ride = get_ride(vehicle->ride);
+                auto ride = vehicle->GetRide();
                 if (ride != nullptr)
                 {
                     uint8_t formatArgs[32]{};
