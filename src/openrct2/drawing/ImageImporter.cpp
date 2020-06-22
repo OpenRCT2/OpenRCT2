@@ -353,5 +353,6 @@ int32_t ImageImporter::GetClosestPaletteIndex(const GamePalette& palette, const 
             }
         }
     }
+    //work
     return bestMatch;
 }
