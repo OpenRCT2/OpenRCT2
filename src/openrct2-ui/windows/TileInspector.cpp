@@ -2110,7 +2110,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     if (banner != nullptr && !banner->IsNull())
                     {
                         uint8_t args[32]{};
-                        banner->FormatTextTo(args);
+                        Formatter ft(args);
+                        banner->FormatTextTo(ft);
                         gfx_draw_string_left(
                             dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE,
                             screenCoords + ScreenCoordsXY{ 0, 11 });
@@ -2176,7 +2177,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     if (banner != nullptr && !banner->IsNull())
                     {
                         uint8_t args[32]{};
-                        banner->FormatTextTo(args);
+                        Formatter ft(args);
+                        banner->FormatTextTo(ft);
                         gfx_draw_string_left(
                             dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE,
                             screenCoords + ScreenCoordsXY{ 0, 22 });
@@ -2209,7 +2211,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (banner != nullptr && !banner->IsNull())
                 {
                     uint8_t args[32]{};
-                    banner->FormatTextTo(args);
+                    Formatter ft(args);
+                    banner->FormatTextTo(ft);
                     gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE, screenCoords);
                 }
 

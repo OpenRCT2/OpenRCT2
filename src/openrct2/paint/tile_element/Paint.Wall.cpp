@@ -434,7 +434,8 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     auto banner = tile_element->AsWall()->GetBanner();
     if (banner != nullptr && !banner->IsNull())
     {
-        banner->FormatTextTo(gCommonFormatArgs);
+        auto ft = Formatter::Common();
+        banner->FormatTextTo(ft);
         utf8 signString[256];
         if (gConfigGeneral.upper_case_banners)
         {
