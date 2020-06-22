@@ -401,7 +401,7 @@ static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId im
     }
 }
 
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& spriteCoords)
 {
     if (imageId.HasValue())
     {
@@ -410,8 +410,6 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
         {
             palette = PaletteMap::GetDefault();
         }
-
-        const auto spriteCoords = ScreenCoordsXY{ x, y };
         gfx_draw_sprite_palette_set_software(dpi, imageId, spriteCoords, *palette);
     }
 }
@@ -611,7 +609,7 @@ void FASTCALL
     // Only BMP format is supported for masking
     if (!(imgMask->flags & G1_FLAG_BMP) || !(imgColour->flags & G1_FLAG_BMP))
     {
-        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), x, y);
+        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), { x, y });
         return;
     }
 
