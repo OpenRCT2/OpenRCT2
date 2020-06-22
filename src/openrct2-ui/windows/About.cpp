@@ -322,7 +322,7 @@ static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_centred(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, screenCoords, COLOUR_BLACK, nullptr);
 
     // Images
-    gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->windowPos + ScreenCoordsXY{ 92, yPage + 24 }, 0);
+    gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, { w->windowPos.x + 92, yPage + 24 }, 0);
 
     // Licence
 }

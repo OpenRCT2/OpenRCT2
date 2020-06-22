@@ -47,7 +47,7 @@ void EntranceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t 
 
     uint32_t imageId = _legacyType.image_id;
     gfx_draw_sprite(dpi, imageId + 1, screenCoords + ScreenCoordsXY{ -32, 14 }, 0);
-    gfx_draw_sprite(dpi, imageId + 0, screenCoords + ScreenCoordsXY{ -0, 28 }, 0);
+    gfx_draw_sprite(dpi, imageId + 0, screenCoords + ScreenCoordsXY{ 0, 28 }, 0);
     gfx_draw_sprite(dpi, imageId + 2, screenCoords + ScreenCoordsXY{ 32, 44 }, 0);
 }
 
