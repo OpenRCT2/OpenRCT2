@@ -1646,7 +1646,7 @@ uint8_t* Network::save_for_network(size_t& out_size, const std::vector<const Obj
     else
     {
         log_warning("Failed to compress the data, falling back to non-compressed sv6.");
-        header = static_cast<uint8_t*>(malloc(size));
+        header = std::make_unique<uint8_t>(size).get();
         if (header == nullptr)
         {
             log_error("Failed to allocate %u bytes.", size);

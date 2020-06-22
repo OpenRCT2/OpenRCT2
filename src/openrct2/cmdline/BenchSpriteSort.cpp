@@ -32,8 +32,8 @@
 #    include <benchmark/benchmark.h>
 #    include <cstdint>
 #    include <iterator>
+#    include <memory>
 #    include <vector>
-
 static void fixup_pointers(paint_session* s, size_t paint_session_entries, size_t paint_struct_entries, size_t quadrant_entries)
 {
     for (size_t i = 0; i < paint_session_entries; i++)
@@ -120,8 +120,7 @@ static std::vector<paint_session> extract_paint_session(const std::string parkFi
         dpi.width = resolutionWidth;
         dpi.height = resolutionHeight;
         dpi.pitch = 0;
-        dpi.bits = static_cast<uint8_t*>(malloc(dpi.width * dpi.height));
-
+        dpi.bits = std::make_unique<uint8_t>(dpi.width * dpi.height).get();
         log_info("Obtaining sprite data...");
         viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height, &sessions);
 

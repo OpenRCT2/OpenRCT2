@@ -15,6 +15,7 @@
 
 #    include <SDL.h>
 #    include <jni.h>
+#    include <memory>
 
 class ZipArchive final : public IZipArchive
 {
@@ -74,7 +75,7 @@ public:
 
         const char* jniChars = env->GetStringUTFChars(jniString, nullptr);
 
-        utf8* string = (char*)malloc(strlen(jniChars) + 1);
+        auto string = std::make_unique<char>(strlen(jniChars) + 1);
         std::memcpy((void*)string, jniChars, strlen(jniChars));
         string[strlen(jniChars)] = 0x00;
 

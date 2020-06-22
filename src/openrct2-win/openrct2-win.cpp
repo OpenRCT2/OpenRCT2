@@ -17,12 +17,13 @@
     "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 // Then the rest
+#include <memory>
 #include <openrct2-ui/Ui.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-static char** GetCommandLineArgs(int argc, wchar_t** argvW);
-static void FreeCommandLineArgs(int argc, char** argv);
+static std::unique_ptr<char*[]> GetCommandLineArgs(int argc, wchar_t** argvW);
+
 static char* ConvertWideChartoUTF8(const wchar_t* src);
 
 /**
@@ -39,16 +40,16 @@ int wmain(int argc, wchar_t** argvW, [[maybe_unused]] wchar_t* envp)
 
     SetConsoleCP(CP_UTF8);
     SetConsoleOutputCP(CP_UTF8);
-    auto exitCode = NormalisedMain(argc, const_cast<const char**>(argv));
+    auto exitCode = NormalisedMain(argc, const_cast<const char**>(argv.get()));
 
-    FreeCommandLineArgs(argc, argv);
     return exitCode;
 }
+static std::unique_ptr<char* []> GetCommandLineArgs(int argc, wchar_t** argvW)
 
-static char** GetCommandLineArgs(int argc, wchar_t** argvW)
 {
     // Allocate UTF-8 strings
-    auto argv = static_cast<char**>(malloc(argc * sizeof(char*)));
+    auto argv = std::make_unique<char*[]>(argc);
+
     if (argv != nullptr)
     {
         // Convert to UTF-8
@@ -58,19 +59,7 @@ static char** GetCommandLineArgs(int argc, wchar_t** argvW)
         }
     }
     return argv;
-}
-
-static void FreeCommandLineArgs(int argc, char** argv)
-{
-    // Free argv
-    for (int i = 0; i < argc; i++)
-    {
-        free(argv[i]);
-    }
-    free(argv);
-}
-
-static char* ConvertWideChartoUTF8(const wchar_t* src)
+} static char* ConvertWideChartoUTF8(const wchar_t* src)
 {
     auto srcLen = lstrlenW(src);
     auto sizeReq = WideCharToMultiByte(CP_UTF8, 0, src, srcLen, nullptr, 0, nullptr, nullptr);
