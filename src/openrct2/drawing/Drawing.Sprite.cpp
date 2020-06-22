@@ -425,7 +425,6 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
  * x (cx)
  * y (dx)
  */
-
 void FASTCALL gfx_draw_sprite_palette_set_software(
     rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
