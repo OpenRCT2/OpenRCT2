@@ -344,7 +344,7 @@ bool platform_file_copy(const utf8* srcPath, const utf8* dstPath, bool overwrite
     size_t file_offset = 0;
 
     // Copy file in FILE_BUFFER_SIZE-d chunks
-    char* buffer = static_cast<char*>(malloc(FILE_BUFFER_SIZE));
+    auto buffer = std::make_unique<char>(FILE_BUFFER_SIZE);
     while ((amount_read = fread(buffer, FILE_BUFFER_SIZE, 1, srcFile)))
     {
         fwrite(buffer, amount_read, 1, dstFile);

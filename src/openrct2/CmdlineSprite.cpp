@@ -27,6 +27,7 @@
 #include <cmath>
 #include <cstring>
 #include <jansson.h>
+#include <memory>
 
 #ifdef _WIN32
 #    include "core/String.hpp"
@@ -105,7 +106,7 @@ static bool sprite_file_open(const utf8* path)
             return false;
         }
 
-        spriteFileData = static_cast<uint8_t*>(malloc(spriteFileHeader.total_size));
+        spriteFileData = std::make_unique<uint8_t>(spriteFileHeader.total_size).get();
         if (fread(spriteFileData, spriteFileHeader.total_size, 1, file) != 1)
         {
             free(spriteFileData);
@@ -154,6 +155,7 @@ static bool sprite_file_save(const char* path)
     {
         int32_t saveEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
         rct_g1_element_32bit* saveElements = static_cast<rct_g1_element_32bit*>(malloc(saveEntryTableSize));
+
         if (saveElements == nullptr)
         {
             fclose(file);

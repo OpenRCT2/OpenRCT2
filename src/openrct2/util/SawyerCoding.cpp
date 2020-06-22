@@ -70,8 +70,10 @@ size_t sawyercoding_write_chunk_buffer(uint8_t* dst_file, const uint8_t* buffer,
             free(encode_buffer);
             break;
         case CHUNK_ENCODING_RLECOMPRESSED:
-            encode_buffer = static_cast<uint8_t*>(malloc(chunkHeader.length * 2));
-            encode_buffer2 = static_cast<uint8_t*>(malloc(0x600000));
+            // encode_buffer = static_cast<uint8_t*>(malloc(chunkHeader.length * 2));
+            encode_buffer = std::make_unique<uint8_t>(chunkHeader.length * 2).get();
+            // encode_buffer2 = static_cast<uint8_t*>(malloc(0x600000));
+            encode_buffer2 = std::make_unique<uint8_t>(0x600000).get();
             chunkHeader.length = static_cast<uint32_t>(encode_chunk_repeat(buffer, encode_buffer, chunkHeader.length));
             chunkHeader.length = static_cast<uint32_t>(encode_chunk_rle(encode_buffer, encode_buffer2, chunkHeader.length));
             std::memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));

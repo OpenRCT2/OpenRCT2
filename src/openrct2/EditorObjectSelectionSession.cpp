@@ -26,6 +26,7 @@
 #include "world/LargeScenery.h"
 
 #include <iterator>
+#include <memory>
 #include <vector>
 
 bool _maxObjectsWasHit;
@@ -321,8 +322,7 @@ void unload_unselected_objects()
     const ObjectRepositoryItem* items = object_repository_get_items();
 
     size_t numObjectsToUnload = 0;
-    rct_object_entry* objectsToUnload = static_cast<rct_object_entry*>(malloc(numItems * sizeof(rct_object_entry)));
-
+    auto objectsToUnload = std::make_unique<rct_object_entry[]>(numItems);
     for (int32_t i = 0; i < numItems; i++)
     {
         if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED))
@@ -334,8 +334,7 @@ void unload_unselected_objects()
         }
     }
 
-    object_manager_unload_objects(objectsToUnload, numObjectsToUnload);
-    free(objectsToUnload);
+    object_manager_unload_objects(objectsToUnload.get(), numObjectsToUnload);
 }
 
 /**
