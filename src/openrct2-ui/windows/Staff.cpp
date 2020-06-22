@@ -776,7 +776,8 @@ void window_staff_stats_invalidate(rct_window* w)
 
     Peep* peep = GET_PEEP(w->number);
 
-    peep->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    peep->FormatNameTo(ft);
 
     window_staff_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_staff_stats_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -809,8 +810,8 @@ void window_staff_options_invalidate(rct_window* w)
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
     Peep* peep = GET_PEEP(w->number);
-
-    peep->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    peep->FormatNameTo(ft);
 
     switch (peep->StaffType)
     {
@@ -885,8 +886,8 @@ void window_staff_overview_invalidate(rct_window* w)
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
     Peep* peep = GET_PEEP(w->number);
-
-    peep->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    peep->FormatNameTo(ft);
 
     window_staff_overview_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_staff_overview_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -948,7 +949,8 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw the centred label
     Peep* peep = GET_PEEP(w->number);
-    peep->FormatActionTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    peep->FormatActionTo(ft);
     rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top };
     int32_t width = widget->right - widget->left;

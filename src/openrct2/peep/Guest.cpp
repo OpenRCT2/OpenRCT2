@@ -538,7 +538,8 @@ int32_t Guest::GetEasterEggNameId() const
     uint8_t args[32]{};
     char buffer[256]{};
 
-    FormatNameTo(args);
+    Formatter ft(args);
+    FormatNameTo(ft);
     format_string(buffer, sizeof(buffer), STR_STRINGID, args);
 
     for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
@@ -685,7 +686,8 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
     uint8_t args[32]{};
     char buffer[256]{};
 
-    FormatNameTo(args);
+    Formatter ft(args);
+    FormatNameTo(ft);
     format_string(buffer, sizeof(buffer), STR_STRINGID, args);
 
     return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
@@ -3881,8 +3883,9 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
     {
-        auto nameArgLen = FormatNameTo(gCommonFormatArgs);
-        ride->FormatNameTo(gCommonFormatArgs + nameArgLen);
+        auto ft = Formatter::Common();
+        FormatNameTo(ft);
+        ride->FormatNameTo(ft);
 
         rct_string_id msg_string;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE))
@@ -4987,8 +4990,9 @@ void Guest::UpdateRideLeaveExit()
 
     if (ride != nullptr && (PeepFlags & PEEP_FLAGS_TRACKING))
     {
-        auto nameArgLen = FormatNameTo(gCommonFormatArgs);
-        ride->FormatNameTo(gCommonFormatArgs + nameArgLen);
+        auto ft = Formatter::Common();
+        FormatNameTo(ft);
+        ride->FormatNameTo(ft);
 
         if (gConfigNotifications.guest_left_ride)
         {

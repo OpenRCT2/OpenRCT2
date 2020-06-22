@@ -767,7 +767,8 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
 
                     // Guest name
                     auto peep = GET_PEEP(spriteIndex);
-                    peep->FormatNameTo(gCommonFormatArgs);
+                    auto ft = Formatter::Common();
+                    peep->FormatNameTo(ft);
                     gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, 113);
 
                     switch (_window_guest_list_selected_view)
@@ -781,7 +782,8 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                 gfx_draw_sprite(dpi, STR_ENTER_SELECTION_SIZE, 112, y + 1, 0);
 
                             // Action
-                            peep->FormatActionTo(gCommonFormatArgs);
+                            ft = Formatter::Common();
+                            peep->FormatActionTo(ft);
                             gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 133, y }, 314);
                             break;
                         case VIEW_THOUGHTS:
@@ -900,10 +902,11 @@ static int32_t window_guest_list_is_peep_in_filter(Peep* peep)
 static FilterArguments get_arguments_from_peep(const Peep* peep)
 {
     FilterArguments result;
+    Formatter ft(result.args);
     switch (_window_guest_list_selected_view)
     {
         case VIEW_ACTIONS:
-            peep->FormatActionTo(result.args);
+            peep->FormatActionTo(ft);
             break;
         case VIEW_THOUGHTS:
         {
@@ -1050,7 +1053,9 @@ static bool guest_should_be_visible(Peep* peep)
     {
         char name[256]{};
         uint8_t args[32]{};
-        peep->FormatNameTo(args);
+
+        Formatter ft(args);
+        peep->FormatNameTo(ft);
         format_string(name, sizeof(name), STR_STRINGID, args);
         if (strcasestr(name, _window_guest_list_filter_name) == nullptr)
         {

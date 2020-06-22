@@ -697,10 +697,12 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
                 format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
             }
 
-            peep->FormatNameTo(gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            peep->FormatNameTo(ft);
             gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, nameColumnSize);
 
-            peep->FormatActionTo(gCommonFormatArgs);
+            ft = Formatter::Common();
+            peep->FormatActionTo(ft);
             gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { actionOffset, y }, actionColumnSize);
 
             // True if a patrol path is set for the worker

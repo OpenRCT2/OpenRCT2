@@ -627,7 +627,8 @@ static void window_title_command_editor_tool_down(
             if (peep != nullptr)
             {
                 uint8_t formatArgs[32]{};
-                peep->FormatNameTo(formatArgs);
+                Formatter ft(formatArgs);
+                peep->FormatNameTo(ft);
                 format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->Id);
             }
         }
