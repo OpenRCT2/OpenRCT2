@@ -730,7 +730,7 @@ void X8DrawingContext::DrawLine(uint32_t colour, int32_t x1, int32_t y1, int32_t
 
 void X8DrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour)
 {
-    gfx_draw_sprite_software(_dpi, ImageId::FromUInt32(image, tertiaryColour), x, y);
+    gfx_draw_sprite_software(_dpi, ImageId::FromUInt32(image, tertiaryColour), { x, y });
 }
 
 void X8DrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage)
