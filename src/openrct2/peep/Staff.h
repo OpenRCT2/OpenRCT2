@@ -78,7 +78,7 @@ void staff_set_name(uint16_t spriteIndex, const char* name);
 bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainerType);
 void staff_update_greyed_patrol_areas();
 bool staff_is_location_on_patrol_edge(Peep* mechanic, const CoordsXY& loc);
-bool staff_can_ignore_wide_flag(Peep* mechanic, int32_t x, int32_t y, uint8_t z, TileElement* path);
+bool staff_can_ignore_wide_flag(Peep* mechanic, const CoordsXYZ& staffPos, TileElement* path);
 void staff_reset_stats();
 bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords);
 void staff_set_patrol_area(int32_t staffIndex, int32_t x, int32_t y, bool value);

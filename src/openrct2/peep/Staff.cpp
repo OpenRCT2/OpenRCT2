@@ -202,7 +202,7 @@ bool staff_is_location_on_patrol_edge(Peep* mechanic, const CoordsXY& loc)
     return onZoneEdge;
 }
 
-bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, TileElement* path)
+bool staff_can_ignore_wide_flag(Peep* staff, const CoordsXYZ& staffPos, TileElement* path)
 {
     /* Wide flags can potentially wall off parts of a staff patrol zone
      * for the heuristic search.
@@ -228,7 +228,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
     if (staff->AssignedPeepType != PEEP_TYPE_STAFF)
         return false;
 
-    if (!staff_is_location_on_patrol_edge(staff, { x, y }))
+    if (!staff_is_location_on_patrol_edge(staff, staffPos))
     {
         return false;
     }
@@ -240,7 +240,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
     uint8_t widecount = 0;
     for (Direction adjac_dir : ALL_DIRECTIONS)
     {
-        auto adjacPos = CoordsXYZ{ x + CoordsDirectionDelta[adjac_dir].x, y + CoordsDirectionDelta[adjac_dir].y, z };
+        auto adjacPos = staffPos + CoordsXYZ{ CoordsDirectionDelta[adjac_dir].x, CoordsDirectionDelta[adjac_dir].y, 0 };
 
         /* Ignore adjacent tiles outside the patrol zone. */
         if (!staff->AsStaff()->IsLocationInPatrol(adjacPos))
@@ -264,7 +264,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
         {
             if (path->AsPath()->GetSlopeDirection() == adjac_dir)
             {
-                adjacPos.z = z + 2;
+                adjacPos.z += PATH_HEIGHT_STEP;
             }
         }
 
@@ -282,7 +282,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, int32_t x, int32_t y, uint8_t z, Ti
             }
 
             /* test_element is a path */
-            if (!is_valid_path_z_and_direction(test_element, adjacPos.z, adjac_dir))
+            if (!is_valid_path_z_and_direction(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
