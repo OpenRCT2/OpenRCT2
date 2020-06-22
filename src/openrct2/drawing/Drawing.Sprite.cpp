@@ -410,7 +410,9 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
         {
             palette = PaletteMap::GetDefault();
         }
-        gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, *palette);
+
+        const auto spriteCoords = ScreenCoordsXY{ x, y };
+        gfx_draw_sprite_palette_set_software(dpi, imageId, spriteCoords, *palette);
     }
 }
 
@@ -424,8 +426,11 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
  * y (dx)
  */
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, const PaletteMap& paletteMap)
+    rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
+    int32_t x = coords.x;
+    int32_t y = coords.y;
+
     const auto* g1 = gfx_get_g1_element(imageId);
     if (g1 == nullptr)
     {
@@ -442,8 +447,10 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         zoomed_dpi.width = dpi->width >> 1;
         zoomed_dpi.pitch = dpi->pitch;
         zoomed_dpi.zoom_level = dpi->zoom_level - 1;
+
+        const auto spriteCoords = ScreenCoordsXY{ x >> 1, y >> 1 };
         gfx_draw_sprite_palette_set_software(
-            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), x >> 1, y >> 1, paletteMap);
+            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
         return;
     }
 

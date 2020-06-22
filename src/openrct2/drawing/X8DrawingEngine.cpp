@@ -743,13 +743,15 @@ void X8DrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uin
     uint8_t palette[256];
     std::fill_n(palette, sizeof(palette), colour);
     palette[0] = 0;
+
+    const auto spriteCoords = ScreenCoordsXY{ x, y };
     gfx_draw_sprite_palette_set_software(
-        _dpi, ImageId::FromUInt32((image & 0x7FFFF) | IMAGE_TYPE_REMAP), x, y, PaletteMap(palette));
+        _dpi, ImageId::FromUInt32((image & 0x7FFFF) | IMAGE_TYPE_REMAP), spriteCoords, PaletteMap(palette));
 }
 
 void X8DrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
-    gfx_draw_sprite_palette_set_software(_dpi, ImageId::FromUInt32(image), x, y, paletteMap);
+    gfx_draw_sprite_palette_set_software(_dpi, ImageId::FromUInt32(image), { x, y }, paletteMap);
 }
 
 void X8DrawingContext::SetDPI(rct_drawpixelinfo* dpi)
