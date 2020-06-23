@@ -1716,7 +1716,7 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ride = get_ride(peep->FavouriteRide);
         if (ride != nullptr)
         {
-            ride->FormatNameTo(gCommonFormatArgs);
+            ride->FormatNameTo(ft);
         }
     }
     gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, COLOUR_BLACK, screenCoords, w->width - 14);
@@ -1749,7 +1749,8 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
         auto ride = get_ride(w->list_item_positions[list_index]);
         if (ride != nullptr)
         {
-            ride->FormatNameTo(gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            ride->FormatNameTo(ft);
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { 0, y - 1 });
         }
     }
@@ -1973,7 +1974,12 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
         case SHOP_ITEM_PHOTO:
             ride = get_ride(peep->Photo1RideRef);
             if (ride != nullptr)
-                ride->FormatNameTo(gCommonFormatArgs + 6);
+            {
+                ft.Rewind();
+                ft.Increment(6);
+                ride->FormatNameTo(ft);
+            }
+
             break;
         case SHOP_ITEM_UMBRELLA:
             ft.Rewind();
@@ -1996,7 +2002,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                         ft.Rewind();
                         ft.Increment(6);
                         ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
-                        ride->FormatNameTo(gCommonFormatArgs + 8);
+                        ride->FormatNameTo(ft);
                     }
                     break;
                 case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
@@ -2025,17 +2031,29 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
         case SHOP_ITEM_PHOTO2:
             ride = get_ride(peep->Photo2RideRef);
             if (ride != nullptr)
-                ride->FormatNameTo(gCommonFormatArgs + 6);
+            {
+                ft.Rewind();
+                ft.Increment(6);
+                ride->FormatNameTo(ft);
+            }
             break;
         case SHOP_ITEM_PHOTO3:
             ride = get_ride(peep->Photo3RideRef);
             if (ride != nullptr)
-                ride->FormatNameTo(gCommonFormatArgs + 6);
+            {
+                ft.Rewind();
+                ft.Increment(6);
+                ride->FormatNameTo(ft);
+            }
             break;
         case SHOP_ITEM_PHOTO4:
             ride = get_ride(peep->Photo4RideRef);
             if (ride != nullptr)
-                ride->FormatNameTo(gCommonFormatArgs + 6);
+            {
+                ft.Rewind();
+                ft.Increment(6);
+                ride->FormatNameTo(ft);
+            }
             break;
     }
 

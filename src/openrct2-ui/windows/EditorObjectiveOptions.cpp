@@ -1172,8 +1172,10 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
             }
 
             // Ride name
-            uint32_t args[32]{};
-            ride->FormatNameTo(args);
+            uint8_t args[32]{};
+
+            Formatter ft(args);
+            ride->FormatNameTo(ft);
             gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, { 15, y });
         }
     }

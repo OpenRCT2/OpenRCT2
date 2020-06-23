@@ -642,7 +642,8 @@ static void window_title_command_editor_tool_down(
                 if (ride != nullptr)
                 {
                     uint8_t formatArgs[32]{};
-                    ride->FormatNameTo(formatArgs);
+                    Formatter ft(formatArgs);
+                    ride->FormatNameTo(ft);
                     format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, formatArgs);
                 }
             }

@@ -292,7 +292,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
 
                 _window_guest_list_selected_filter = 0;
                 _window_guest_list_highlighted_index = 0xFFFF;
@@ -307,7 +307,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(STR_QUEUING_FOR);
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
 
                 _window_guest_list_selected_filter = 0;
                 _window_guest_list_highlighted_index = 0xFFFF;
@@ -322,7 +322,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(STR_NONE);
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
 
                 _window_guest_list_selected_filter = 1;
                 _window_guest_list_highlighted_index = 0xFFFF;

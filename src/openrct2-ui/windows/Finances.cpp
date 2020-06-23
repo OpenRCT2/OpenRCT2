@@ -1207,7 +1207,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
                 auto ride = get_ride(campaign->RideId);
                 if (ride != nullptr)
                 {
-                    ride->FormatNameTo(gCommonFormatArgs);
+                    ride->FormatNameTo(ft);
                 }
                 else
                 {

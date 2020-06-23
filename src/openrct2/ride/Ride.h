@@ -422,7 +422,6 @@ public:
     void SetNameToDefault();
     std::string GetName() const;
     void FormatNameTo(Formatter&) const;
-    size_t FormatNameTo(void* args) const;
     void FormatStatusTo(Formatter&) const;
     size_t FormatStatusTo(void* args) const;
 

@@ -942,14 +942,18 @@ static int32_t ride_check_if_construction_allowed(Ride* ride)
     }
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        ride->FormatNameTo(gCommonFormatArgs + 6);
+        auto ft = Formatter::Common();
+        ft.Increment(6);
+        ride->FormatNameTo(ft);
         context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
         return 0;
     }
 
     if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
     {
-        ride->FormatNameTo(gCommonFormatArgs + 6);
+        auto ft = Formatter::Common();
+        ft.Increment(6);
+        ride->FormatNameTo(ft);
         context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);
         return 0;
     }
@@ -1807,7 +1811,9 @@ bool ride_modify(CoordsXYE* input)
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
     {
-        ride->FormatNameTo(gCommonFormatArgs + 6);
+        auto ft = Formatter::Common();
+        ft.Increment(6);
+        ride->FormatNameTo(ft);
         context_show_error(
             STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
         return false;
@@ -2516,7 +2522,8 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
  */
 void ride_breakdown_add_news_item(Ride* ride)
 {
-    ride->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    ride->FormatNameTo(ft);
     if (gConfigNotifications.ride_broken_down)
     {
         news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_BROKEN_DOWN, ride->id);
@@ -2542,7 +2549,8 @@ static void ride_breakdown_status_update(Ride* ride)
         if (!(ride->not_fixed_timeout & 15) && ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING
             && ride->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            ride->FormatNameTo(gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
                 news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_IS_STILL_NOT_FIXED, ride->id);
@@ -3192,7 +3200,8 @@ static void ride_entrance_exit_connected(Ride* ride)
         if (!entrance.isNull() && !ride_entrance_exit_is_reachable(entrance))
         {
             // name of ride is parameter of the format string
-            ride->FormatNameTo(gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
                 news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride->id);
@@ -3203,7 +3212,8 @@ static void ride_entrance_exit_connected(Ride* ride)
         if (!exit.isNull() && !ride_entrance_exit_is_reachable(exit))
         {
             // name of ride is parameter of the format string
-            ride->FormatNameTo(gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
                 news_item_add_to_queue(1, STR_EXIT_NOT_CONNECTED, ride->id);
@@ -3278,7 +3288,8 @@ static void ride_shop_connected(Ride* ride)
     }
 
     // Name of ride is parameter of the format string
-    ride->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    ride->FormatNameTo(ft);
     if (gConfigNotifications.ride_warnings)
     {
         news_item_add_to_queue(1, STR_ENTRANCE_NOT_CONNECTED, ride->id);
@@ -5516,13 +5527,14 @@ static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour*
 bool Ride::NameExists(const std::string_view& name, ride_id_t excludeRideId)
 {
     char buffer[256]{};
-    uint32_t formatArgs[32]{};
+    uint8_t formatArgs[32]{};
 
     for (auto& ride : GetRideManager())
     {
         if (ride.id != excludeRideId)
         {
-            ride.FormatNameTo(formatArgs);
+            Formatter ft(formatArgs);
+            ride.FormatNameTo(ft);
             format_string(buffer, 256, STR_STRINGID, formatArgs);
             if (std::string_view(buffer) == name && ride_has_any_track_elements(&ride))
             {
@@ -5615,7 +5627,8 @@ void Ride::SetNameToDefault()
     do
     {
         default_name_number++;
-        FormatNameTo(rideNameArgs);
+        Formatter ft(rideNameArgs);
+        FormatNameTo(ft);
         format_string(rideNameBuffer, 256, STR_STRINGID, &rideNameArgs);
     } while (Ride::NameExists(rideNameBuffer, id));
 }
@@ -7087,7 +7100,8 @@ void Ride::Crash(uint8_t vehicleIndex)
         }
     }
 
-    FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    FormatNameTo(ft);
     if (gConfigNotifications.ride_crashed)
     {
         news_item_add_to_queue(NEWS_ITEM_RIDE, STR_RIDE_HAS_CRASHED, id);
@@ -7610,24 +7624,19 @@ void ride_clear_leftover_entrances(Ride* ride)
 std::string Ride::GetName() const
 {
     uint8_t args[32]{};
-    FormatNameTo(args);
+
+    Formatter ft(args);
+    FormatNameTo(ft);
     return format_string(STR_STRINGID, args);
 }
 
 void Ride::FormatNameTo(Formatter& ft) const
 {
-    ft.Increment(FormatNameTo(ft.Buf()));
-}
-
-size_t Ride::FormatNameTo(void* argsV) const
-{
-    Formatter ft(static_cast<uint8_t*>(argsV));
     if (!custom_name.empty())
     {
         auto str = custom_name.c_str();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<void*>(str);
-        return ft.NumBytes();
     }
     else
     {
@@ -7653,7 +7662,6 @@ size_t Ride::FormatNameTo(void* argsV) const
             }
         }
         ft.Add<rct_string_id>(1).Add<rct_string_id>(rideTypeName).Add<uint16_t>(default_name_number);
-        return ft.NumBytes();
     }
 }
 
