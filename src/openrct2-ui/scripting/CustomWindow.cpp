@@ -696,7 +696,7 @@ namespace OpenRCT2::Ui::Windows
             auto widget = &w->widgets[widgetIndex];
             if (widget_is_enabled(w, widgetIndex))
             {
-                auto leftTop  = w->windowPos + tab.offset + ScreenCoordsXY{ widget->left, widget->top };
+                auto leftTop = w->windowPos + tab.offset + ScreenCoordsXY{ widget->left, widget->top };
                 auto image = tab.imageFrameBase;
                 if (static_cast<size_t>(w->page) == tabIndex && tab.imageFrameDuration != 0 && tab.imageFrameCount != 0)
                 {
