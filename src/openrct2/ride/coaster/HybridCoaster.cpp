@@ -9554,25 +9554,20 @@ wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackC
 static void hybrid_rc_track_booster(paint_session * session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
                                   const TileElement * tileElement)
 {
-    // These offsets could be moved to the g2.dat file when that supports offsets.
-    int8_t ne_sw_offsetX = 7;
-    int8_t ne_sw_offsetY = -15;
-    int8_t nw_se_offsetX = -15;
-    int8_t nw_se_offsetY = 7;
-
     switch (direction)
     {
     case 0:
     case 2:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BOOSTER+0),
-                           ne_sw_offsetX, ne_sw_offsetY, 32, 20, 3, height, 0, 6, height);
+                           0, 0, 32, 20, 3, height, 0, 6, height);
         break;
     case 1:
     case 3:
         sub_98197C_rotated(session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BOOSTER+1),
-                           nw_se_offsetX, nw_se_offsetY, 32, 20, 3, height, 0, 6, height);
+                           0, 0, 32, 20, 3, height, 0, 6, height);
         break;
     }
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction),
                                           0xFFFF, 0);
