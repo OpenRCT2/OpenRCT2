@@ -531,7 +531,7 @@ static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t
         }
         else
         {
-            gfx_draw_sprite(dpi, imageId, screenCoords.x, screenCoords.y, ps->tertiary_colour);
+            gfx_draw_sprite(dpi, imageId, screenCoords, ps->tertiary_colour);
         }
     }
 }
