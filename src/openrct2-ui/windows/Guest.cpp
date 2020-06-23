@@ -584,7 +584,8 @@ static void window_guest_common_invalidate(rct_window* w)
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
     auto peep = GET_PEEP(w->number);
-    peep->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    peep->FormatNameTo(ft);
 
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -1085,7 +1086,9 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw the centred label
     Peep* peep = GET_PEEP(w->number);
-    peep->FormatActionTo(gCommonFormatArgs);
+
+    auto ft = Formatter::Common();
+    peep->FormatActionTo(ft);
     rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top - 1 };
     int32_t width = widget->right - widget->left;

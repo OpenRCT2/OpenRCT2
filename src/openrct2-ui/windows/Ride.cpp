@@ -4406,7 +4406,8 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 auto peep = GetEntity<Peep>(ride->mechanic)->AsStaff();
                 if (peep != nullptr && peep->IsMechanic())
                 {
-                    peep->FormatNameTo(gCommonFormatArgs);
+                    auto ft = Formatter::Common();
+                    peep->FormatNameTo(ft);
                     gfx_draw_string_left_wrapped(
                         dpi, gCommonFormatArgs, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, COLOUR_BLACK);
                 }
