@@ -60,59 +60,46 @@ static constexpr CodePointToUtf8<FORMAT_COLOUR_CODE_START, FORMAT_COLOUR_CODE_EN
 std::string Banner::GetText() const
 {
     uint8_t args[32]{};
-    FormatTextTo(args);
+    Formatter ft(args);
+    FormatTextTo(ft);
     return format_string(STR_STRINGID, args);
 }
 
 void Banner::FormatTextTo(Formatter& ft, bool addColour) const
 {
-    ft.Increment(FormatTextTo(ft.Buf(), addColour));
-}
-
-size_t Banner::FormatTextTo(void* argsV, bool addColour) const
-{
-    Formatter ft(static_cast<uint8_t*>(argsV));
-
     if (addColour)
     {
         ft.Add<rct_string_id>(STR_STRING_STRINGID).Add<const char*>(colourToUtf8(text_colour));
     }
 
-    return ft.NumBytes() + FormatTextTo(ft.Buf());
+    FormatTextTo(ft);
 }
 
 void Banner::FormatTextTo(Formatter& ft) const
 {
-    ft.Increment(FormatTextTo(ft.Buf()));
-}
-
-size_t Banner::FormatTextTo(void* argsV) const
-{
-    Formatter ft(static_cast<uint8_t*>(argsV));
-
     if (flags & BANNER_FLAG_NO_ENTRY)
     {
-        return ft.Add<rct_string_id>(STR_NO_ENTRY).NumBytes();
+        ft.Add<rct_string_id>(STR_NO_ENTRY).NumBytes();
     }
     else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
         auto ride = get_ride(ride_index);
         if (ride != nullptr)
         {
-            return ride->FormatNameTo(ft.Buf());
+            ride->FormatNameTo(ft);
         }
         else
         {
-            return ft.Add<rct_string_id>(STR_DEFAULT_SIGN).NumBytes();
+            ft.Add<rct_string_id>(STR_DEFAULT_SIGN).NumBytes();
         }
     }
     else if (text.empty())
     {
-        return ft.Add<rct_string_id>(STR_DEFAULT_SIGN).NumBytes();
+        ft.Add<rct_string_id>(STR_DEFAULT_SIGN).NumBytes();
     }
     else
     {
-        return ft.Add<rct_string_id>(STR_STRING).Add<const char*>(text.c_str()).NumBytes();
+        ft.Add<rct_string_id>(STR_STRING).Add<const char*>(text.c_str()).NumBytes();
     }
 }
 

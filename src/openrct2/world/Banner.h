@@ -45,8 +45,6 @@ struct Banner
     std::string GetText() const;
     void FormatTextTo(Formatter&, bool addColour) const;
     void FormatTextTo(Formatter&) const;
-    size_t FormatTextTo(void* args, bool addColour) const;
-    size_t FormatTextTo(void* args) const;
 };
 
 enum BANNER_FLAGS
