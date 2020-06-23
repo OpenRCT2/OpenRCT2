@@ -21,6 +21,7 @@
 #include "../network/network.h"
 #include "../object/ObjectRepository.h"
 #include "../platform/Crash.h"
+#include "../platform/Platform2.h"
 #include "../platform/platform.h"
 #include "CommandLine.hpp"
 
@@ -423,7 +424,7 @@ static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnum
 
     if (!_removeShell)
     {
-        platform_setup_file_associations();
+        Platform::SetUpFileAssociations();
     }
     else
     {

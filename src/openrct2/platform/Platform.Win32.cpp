@@ -13,6 +13,8 @@
 #    include <windows.h>
 
 // Then the rest
+#    include "../Version.h"
+
 #    include <datetimeapi.h>
 #    include <memory>
 #    include <shlobj.h>
@@ -34,6 +36,8 @@
 #    include "platform.h"
 
 #    include <iterator>
+
+constexpr wchar_t SOFTWARE_CLASSES[] = L"Software\\Classes";
 
 namespace Platform
 {
@@ -345,6 +349,127 @@ namespace Platform
     uintptr_t StrDecompToPrecomp(utf8* input)
     {
         return reinterpret_cast<uintptr_t>(input);
+    }
+
+    void SetUpFileAssociations()
+    {
+        // Setup file extensions
+        SetUpFileAssociation(".sc4", "RCT1 Scenario (.sc4)", "Play", "\"%1\"", 0);
+        SetUpFileAssociation(".sc6", "RCT2 Scenario (.sc6)", "Play", "\"%1\"", 0);
+        SetUpFileAssociation(".sv4", "RCT1 Saved Game (.sc4)", "Play", "\"%1\"", 0);
+        SetUpFileAssociation(".sv6", "RCT2 Saved Game (.sv6)", "Play", "\"%1\"", 0);
+        SetUpFileAssociation(".sv7", "RCT Modified Saved Game (.sv7)", "Play", "\"%1\"", 0);
+        SetUpFileAssociation(".td4", "RCT1 Track Design (.td4)", "Install", "\"%1\"", 0);
+        SetUpFileAssociation(".td6", "RCT2 Track Design (.td6)", "Install", "\"%1\"", 0);
+
+        // Refresh explorer
+        SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
+    }
+
+    static HMODULE _dllModule = nullptr;
+    static HMODULE GetDLLModule()
+    {
+        if (_dllModule == nullptr)
+        {
+            _dllModule = GetModuleHandle(nullptr);
+        }
+        return _dllModule;
+    }
+
+    static std::wstring get_progIdName(const std::string_view& extension)
+    {
+        auto progIdName = std::string(OPENRCT2_NAME) + std::string(extension);
+        auto progIdNameW = String::ToWideChar(progIdName);
+        return progIdNameW;
+    }
+
+    bool SetUpFileAssociation(
+        const std::string extension, const std::string fileTypeText, const std::string commandText,
+        const std::string commandArgs, const uint32_t iconIndex)
+    {
+        wchar_t exePathW[MAX_PATH];
+        wchar_t dllPathW[MAX_PATH];
+
+        [[maybe_unused]] int32_t printResult;
+
+        GetModuleFileNameW(nullptr, exePathW, static_cast<DWORD>(std::size(exePathW)));
+        GetModuleFileNameW(GetDLLModule(), dllPathW, static_cast<DWORD>(std::size(dllPathW)));
+
+        auto extensionW = String::ToWideChar(extension);
+        auto fileTypeTextW = String::ToWideChar(fileTypeText);
+        auto commandTextW = String::ToWideChar(commandText);
+        auto commandArgsW = String::ToWideChar(commandArgs);
+        auto progIdNameW = get_progIdName(extension);
+
+        HKEY hKey = nullptr;
+        HKEY hRootKey = nullptr;
+
+        // [HKEY_CURRENT_USER\Software\Classes]
+        if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) != ERROR_SUCCESS)
+        {
+            RegCloseKey(hRootKey);
+            return false;
+        }
+
+        // [hRootKey\.ext]
+        if (RegSetValueW(hRootKey, extensionW.c_str(), REG_SZ, progIdNameW.c_str(), 0) != ERROR_SUCCESS)
+        {
+            RegCloseKey(hRootKey);
+            return false;
+        }
+
+        if (RegCreateKeyW(hRootKey, progIdNameW.c_str(), &hKey) != ERROR_SUCCESS)
+        {
+            RegCloseKey(hKey);
+            RegCloseKey(hRootKey);
+            return false;
+        }
+
+        // [hRootKey\OpenRCT2.ext]
+        if (RegSetValueW(hKey, nullptr, REG_SZ, fileTypeTextW.c_str(), 0) != ERROR_SUCCESS)
+        {
+            RegCloseKey(hKey);
+            RegCloseKey(hRootKey);
+            return false;
+        }
+        // [hRootKey\OpenRCT2.ext\DefaultIcon]
+        wchar_t szIconW[MAX_PATH];
+        printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
+        assert(printResult >= 0);
+        if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS)
+        {
+            RegCloseKey(hKey);
+            RegCloseKey(hRootKey);
+            return false;
+        }
+
+        // [hRootKey\OpenRCT2.sv6\shell]
+        if (RegSetValueW(hKey, L"shell", REG_SZ, L"open", 0) != ERROR_SUCCESS)
+        {
+            RegCloseKey(hKey);
+            RegCloseKey(hRootKey);
+            return false;
+        }
+
+        // [hRootKey\OpenRCT2.sv6\shell\open]
+        if (RegSetValueW(hKey, L"shell\\open", REG_SZ, commandTextW.c_str(), 0) != ERROR_SUCCESS)
+        {
+            RegCloseKey(hKey);
+            RegCloseKey(hRootKey);
+            return false;
+        }
+
+        // [hRootKey\OpenRCT2.sv6\shell\open\command]
+        wchar_t szCommandW[MAX_PATH];
+        printResult = swprintf_s(szCommandW, MAX_PATH, L"\"%s\" %s", exePathW, commandArgsW.c_str());
+        assert(printResult >= 0);
+        if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS)
+        {
+            RegCloseKey(hKey);
+            RegCloseKey(hRootKey);
+            return false;
+        }
+        return true;
     }
 
     bool HandleSpecialCommandLineArgument(const char* argument)
