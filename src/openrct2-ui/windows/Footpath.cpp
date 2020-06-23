@@ -619,24 +619,24 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image += pathType->image;
 
         // Draw construction image
-        screenCoords = {
-            w->windowPos.x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2,
-            w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60
-        };
-        gfx_draw_sprite(dpi, image, screenCoords.x, screenCoords.y, 0);
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right)
+                                  / 2,
+                              window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60 };
+        gfx_draw_sprite(dpi, image, screenCoords, 0);
 
         // Draw build this... label
-        screenCoords = {
-            w->windowPos.x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2,
-            w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23
-        };
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right)
+                                  / 2,
+                              window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23 };
         gfx_draw_string_centred(dpi, STR_BUILD_THIS, screenCoords, COLOUR_BLACK, nullptr);
     }
 
     // Draw cost
-    screenCoords.x = w->windowPos.x
-        + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
-    screenCoords.y = w->windowPos.y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
+    screenCoords = w->windowPos
+        + ScreenCoordsXY{ (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2,
+                          window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
     if (_window_footpath_cost != MONEY32_UNDEFINED)
     {
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))

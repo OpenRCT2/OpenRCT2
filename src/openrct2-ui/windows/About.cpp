@@ -237,7 +237,7 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
         + lineHeight;
 
     logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
-    gfx_draw_sprite(dpi, SPR_G2_LOGO, aboutCoords.x - (logoSize.width / 2), aboutCoords.y, 0);
+    gfx_draw_sprite(dpi, SPR_G2_LOGO, aboutCoords - ScreenCoordsXY{ logoSize.width / 2, 0 }, 0);
     aboutCoords.y += logoSize.height + lineHeight * 2;
 
     // About OpenRCT2 text
@@ -322,7 +322,7 @@ static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_centred(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, screenCoords, COLOUR_BLACK, nullptr);
 
     // Images
-    gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, w->windowPos.x + 92, yPage + 24, 0);
+    gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, { w->windowPos.x + 92, yPage + 24 }, 0);
 
     // Licence
 }

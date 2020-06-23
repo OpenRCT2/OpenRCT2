@@ -81,9 +81,8 @@ void FootpathItemObject::Unload()
 
 void FootpathItemObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
-    gfx_draw_sprite(dpi, _legacyType.image, x - 22, y - 24, 0);
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+    gfx_draw_sprite(dpi, _legacyType.image, screenCoords - ScreenCoordsXY{ 22, 24 }, 0);
 }
 
 static uint8_t ParseDrawType(const std::string& s)

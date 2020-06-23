@@ -696,8 +696,7 @@ namespace OpenRCT2::Ui::Windows
             auto widget = &w->widgets[widgetIndex];
             if (widget_is_enabled(w, widgetIndex))
             {
-                auto l = w->windowPos.x + widget->left + tab.offset.x;
-                auto t = w->windowPos.y + widget->top + tab.offset.y;
+                auto leftTop = w->windowPos + tab.offset + ScreenCoordsXY{ widget->left, widget->top };
                 auto image = tab.imageFrameBase;
                 if (static_cast<size_t>(w->page) == tabIndex && tab.imageFrameDuration != 0 && tab.imageFrameCount != 0)
                 {
@@ -705,7 +704,7 @@ namespace OpenRCT2::Ui::Windows
                     auto imageOffset = frame % tab.imageFrameCount;
                     image = image.WithIndex(image.GetIndex() + imageOffset);
                 }
-                gfx_draw_sprite(dpi, image.ToUInt32(), l, t, image.GetTertiary());
+                gfx_draw_sprite(dpi, image.ToUInt32(), leftTop, image.GetTertiary());
             }
             tabIndex++;
         }

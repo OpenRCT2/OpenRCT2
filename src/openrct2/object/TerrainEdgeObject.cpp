@@ -37,12 +37,11 @@ void TerrainEdgeObject::Unload()
 
 void TerrainEdgeObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     uint32_t imageId = BaseImageId;
-    gfx_draw_sprite(dpi, imageId + 5, x + 8, y - 8, 0);
-    gfx_draw_sprite(dpi, imageId + 5, x + 8, y + 8, 0);
+    gfx_draw_sprite(dpi, imageId + 5, screenCoords + ScreenCoordsXY{ 8, -8 }, 0);
+    gfx_draw_sprite(dpi, imageId + 5, screenCoords + ScreenCoordsXY{ 8, 8 }, 0);
 }
 
 void TerrainEdgeObject::ReadJson(IReadObjectContext* context, const json_t* root)
