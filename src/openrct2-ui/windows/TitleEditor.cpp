@@ -1053,8 +1053,7 @@ static void window_title_editor_draw_tab_images(rct_drawpixelinfo* dpi, rct_wind
 {
     for (int32_t i = 0; i < WINDOW_TITLE_EDITOR_TAB_COUNT; i++)
     {
-        int32_t x = 0;
-        int32_t y = 0;
+        auto screenCoords = ScreenCoordsXY{ 0, 0 };
         int32_t spriteId = window_title_editor_tab_sprites[i];
         if (w->selected_tab == i)
         {
@@ -1062,12 +1061,14 @@ static void window_title_editor_draw_tab_images(rct_drawpixelinfo* dpi, rct_wind
         }
         if (i == 1)
         {
-            x = 4;
-            y = 1;
+            screenCoords = ScreenCoordsXY{ 4, 1 };
         }
         gfx_draw_sprite(
-            dpi, spriteId, w->windowPos.x + w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].left + x,
-            w->windowPos.y + w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].top + y, 0);
+            dpi, spriteId,
+            w->windowPos + screenCoords
+                + ScreenCoordsXY{ w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].left,
+                                  w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].top },
+            0);
     }
 }
 

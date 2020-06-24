@@ -97,8 +97,7 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
  */
 static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x = 2;
-    int32_t y = 2;
-    gfx_draw_sprite(dpi, SPR_G2_LOGO, w->windowPos.x + x, w->windowPos.y + y, 0);
-    gfx_draw_sprite(dpi, SPR_G2_TITLE, w->windowPos.x + x + 104, w->windowPos.y + y + 18, 0);
+    auto screenCoords = ScreenCoordsXY{ 2, 2 };
+    gfx_draw_sprite(dpi, SPR_G2_LOGO, w->windowPos + screenCoords, 0);
+    gfx_draw_sprite(dpi, SPR_G2_TITLE, w->windowPos + screenCoords + ScreenCoordsXY{ 104, 18 }, 0);
 }

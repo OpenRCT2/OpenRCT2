@@ -2175,7 +2175,7 @@ static void window_options_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w,
         }
 
         // Draw normal, enabled sprite.
-        gfx_draw_sprite(dpi, spriteIndex, screenCoords.x, screenCoords.y, 0);
+        gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
     }
     else
     {

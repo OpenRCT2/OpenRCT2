@@ -615,7 +615,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 if (isCompleted)
                 {
                     // Draw completion tick
-                    gfx_draw_sprite(dpi, SPR_MENU_CHECKMARK, wide ? 500 : 395, y + 1, 0);
+                    gfx_draw_sprite(dpi, SPR_MENU_CHECKMARK, { wide ? 500 : 395, y + 1 }, 0);
 
                     // Draw completion score
                     const utf8* completedByName = "???";
