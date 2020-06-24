@@ -27,7 +27,6 @@
 #    include "../localisation/Language.h"
 #    include "../rct2/RCT2.h"
 #    include "../util/Util.h"
-#    include "Platform2.h"
 #    include "platform.h"
 
 #    include <algorithm>
@@ -54,6 +53,17 @@
 #    if _WIN32_WINNT < 0x600
 #        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
 #    endif
+
+static HMODULE _dllModule = nullptr;
+
+static HMODULE plaform_get_dll_module()
+{
+    if (_dllModule == nullptr)
+    {
+        _dllModule = GetModuleHandle(nullptr);
+    }
+    return _dllModule;
+}
 
 void platform_get_date_local(rct2_date* out_date)
 {
@@ -198,9 +208,8 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
         RegCloseKey(hKey);
         return false;
     }
-
-    wSteamPath = std::make_unique<wchar_t>(size).get();
-
+    auto wSteamPath_mem = std::make_unique<wchar_t>(size);
+    wSteamPath = wSteamPath_mem.get();
     result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, (LPBYTE)wSteamPath, &size);
     if (result == ERROR_SUCCESS)
     {
@@ -542,6 +551,86 @@ static std::wstring get_progIdName(const std::string_view& extension)
     return progIdNameW;
 }
 
+static bool windows_setup_file_association(
+    const utf8* extension, const utf8* fileTypeText, const utf8* commandText, const utf8* commandArgs, const uint32_t iconIndex)
+{
+    wchar_t exePathW[MAX_PATH];
+    wchar_t dllPathW[MAX_PATH];
+
+    [[maybe_unused]] int32_t printResult;
+
+    GetModuleFileNameW(nullptr, exePathW, (DWORD)std::size(exePathW));
+    GetModuleFileNameW(plaform_get_dll_module(), dllPathW, (DWORD)std::size(dllPathW));
+
+    auto extensionW = String::ToWideChar(extension);
+    auto fileTypeTextW = String::ToWideChar(fileTypeText);
+    auto commandTextW = String::ToWideChar(commandText);
+    auto commandArgsW = String::ToWideChar(commandArgs);
+    auto progIdNameW = get_progIdName(extension);
+
+    bool result = false;
+    HKEY hKey = nullptr;
+    HKEY hRootKey = nullptr;
+
+    // [HKEY_CURRENT_USER\Software\Classes]
+    if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) != ERROR_SUCCESS)
+    {
+        goto fail;
+    }
+
+    // [hRootKey\.ext]
+    if (RegSetValueW(hRootKey, extensionW.c_str(), REG_SZ, progIdNameW.c_str(), 0) != ERROR_SUCCESS)
+    {
+        goto fail;
+    }
+
+    if (RegCreateKeyW(hRootKey, progIdNameW.c_str(), &hKey) != ERROR_SUCCESS)
+    {
+        goto fail;
+    }
+
+    // [hRootKey\OpenRCT2.ext]
+    if (RegSetValueW(hKey, nullptr, REG_SZ, fileTypeTextW.c_str(), 0) != ERROR_SUCCESS)
+    {
+        goto fail;
+    }
+    // [hRootKey\OpenRCT2.ext\DefaultIcon]
+    wchar_t szIconW[MAX_PATH];
+    printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
+    assert(printResult >= 0);
+    if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS)
+    {
+        goto fail;
+    }
+
+    // [hRootKey\OpenRCT2.sv6\shell]
+    if (RegSetValueW(hKey, L"shell", REG_SZ, L"open", 0) != ERROR_SUCCESS)
+    {
+        goto fail;
+    }
+
+    // [hRootKey\OpenRCT2.sv6\shell\open]
+    if (RegSetValueW(hKey, L"shell\\open", REG_SZ, commandTextW.c_str(), 0) != ERROR_SUCCESS)
+    {
+        goto fail;
+    }
+
+    // [hRootKey\OpenRCT2.sv6\shell\open\command]
+    wchar_t szCommandW[MAX_PATH];
+    printResult = swprintf_s(szCommandW, MAX_PATH, L"\"%s\" %s", exePathW, commandArgsW.c_str());
+    assert(printResult >= 0);
+    if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS)
+    {
+        goto fail;
+    }
+
+    result = true;
+fail:
+    RegCloseKey(hKey);
+    RegCloseKey(hRootKey);
+    return result;
+}
+
 static void windows_remove_file_association(const utf8* extension)
 {
 #    if _WIN32_WINNT >= 0x0600
@@ -559,6 +648,21 @@ static void windows_remove_file_association(const utf8* extension)
         RegCloseKey(hRootKey);
     }
 #    endif
+}
+
+void platform_setup_file_associations()
+{
+    // Setup file extensions
+    windows_setup_file_association(".sc4", "RCT1 Scenario (.sc4)", "Play", "\"%1\"", 0);
+    windows_setup_file_association(".sc6", "RCT2 Scenario (.sc6)", "Play", "\"%1\"", 0);
+    windows_setup_file_association(".sv4", "RCT1 Saved Game (.sc4)", "Play", "\"%1\"", 0);
+    windows_setup_file_association(".sv6", "RCT2 Saved Game (.sv6)", "Play", "\"%1\"", 0);
+    windows_setup_file_association(".sv7", "RCT Modified Saved Game (.sv7)", "Play", "\"%1\"", 0);
+    windows_setup_file_association(".td4", "RCT1 Track Design (.td4)", "Install", "\"%1\"", 0);
+    windows_setup_file_association(".td6", "RCT2 Track Design (.td6)", "Install", "\"%1\"", 0);
+
+    // Refresh explorer
+    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
 }
 
 void platform_remove_file_associations()
