@@ -949,8 +949,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (window_top_toolbar_widgets[WIDX_NEWS].type != WWT_EMPTY)
     {
         screenPos = w->windowPos
-            + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NEWS].left + 3,
-                              window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
+            + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NEWS].left + 3, window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
         if (widget_is_pressed(w, WIDX_NEWS))
             screenPos.y++;
         imgId = SPR_G2_TAB_NEWS;
