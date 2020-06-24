@@ -842,7 +842,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     for (uint32_t j = 0; j < 56 && j < numGuests; j++)
                         gfx_draw_sprite(
                             dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY,
-                            { j * 8, y + 12 }, 0);
+                            { static_cast<int32_t>(j) * 8, y + 12 }, 0);
 
                     // Draw action
                     std::memcpy(
