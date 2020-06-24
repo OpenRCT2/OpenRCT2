@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <mutex>
 #include <vector>
 
 using namespace OpenRCT2;
@@ -53,6 +54,8 @@ std::string GetNameFromTrackPath(const std::string& path)
     return name;
 }
 
+static std::mutex _objectLookupMutex;
+
 class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
 {
 private:
@@ -78,10 +81,15 @@ public:
         auto td6 = track_design_open(path.c_str());
         if (td6 != nullptr)
         {
-            auto* rawObject = object_repository_load_object(&td6->vehicle_object);
-            const auto* rideEntry = static_cast<const rct_ride_entry*>(static_cast<RideObject*>(rawObject)->GetLegacyData());
-            auto rideType = RCT2RideTypeToOpenRCT2RideType(td6->type, rideEntry);
-            object_delete(rawObject);
+            ObjectEntryIndex rideType = RIDE_TYPE_NULL;
+            {
+                std::scoped_lock<std::mutex> lock(_objectLookupMutex);
+                auto* rawObject = object_repository_load_object(&td6->vehicle_object);
+                const auto* rideEntry = static_cast<const rct_ride_entry*>(
+                    static_cast<RideObject*>(rawObject)->GetLegacyData());
+                rideType = RCT2RideTypeToOpenRCT2RideType(td6->type, rideEntry);
+                object_delete(rawObject);
+            }
 
             TrackRepositoryItem item;
             item.Name = GetNameFromTrackPath(path);
