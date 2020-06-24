@@ -829,8 +829,8 @@ void window_guest_viewport_init(rct_window* w)
         {
             auto view_widget = &w->widgets[WIDX_VIEWPORT];
             auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };
-            int32_t width = view_widget->right - view_widget->left - 1;
-            int32_t height = view_widget->bottom - view_widget->top - 1;
+            int32_t width = view_widget->width() - 1;
+            int32_t height = view_widget->height() - 1;
 
             viewport_create(
                 w, screenPos, width, height, 0,
@@ -858,8 +858,8 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_1];
-    int32_t width = widget->right - widget->left - 1;
-    int32_t height = widget->bottom - widget->top - 1;
+    int32_t width = widget->width() - 1;
+    int32_t height = widget->height() - 1;
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     if (w->page == WINDOW_GUEST_OVERVIEW)
         height++;
@@ -1083,15 +1083,15 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     peep->FormatActionTo(ft);
     rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top - 1 };
-    int32_t width = widget->right - widget->left;
+    int32_t width = widget->width();
     gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
 
     // Draw the marquee thought
     widget = &w->widgets[WIDX_MARQUEE];
-    width = widget->right - widget->left - 3;
+    width = widget->width() - 3;
     int32_t left = widget->left + 2 + w->windowPos.x;
     int32_t top = widget->top + w->windowPos.y;
-    int32_t height = widget->bottom - widget->top;
+    int32_t height = widget->height();
     rct_drawpixelinfo dpi_marquee;
     if (!clip_drawpixelinfo(&dpi_marquee, dpi, left, top, width, height))
     {
@@ -1117,7 +1117,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    screenPos.x = widget->right - widget->left - w->list_information_type;
+    screenPos.x = widget->width() - w->list_information_type;
     peep_thought_set_format_args(&peep->Thoughts[i]);
     gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { screenPos.x, 0 });
 }
@@ -2054,7 +2054,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         rct_widget* pageBackgroundWidget = &window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND];
         auto screenCoords = w->windowPos + ScreenCoordsXY{ pageBackgroundWidget->left + 4, pageBackgroundWidget->top + 2 };
-        int32_t itemNameWidth = pageBackgroundWidget->right - pageBackgroundWidget->left - 8;
+        int32_t itemNameWidth = pageBackgroundWidget->width() - 8;
 
         int32_t maxY = w->windowPos.y + w->height - 22;
         int32_t numItems = 0;

@@ -1141,8 +1141,8 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
                     gDropdownItemsArgs[1] = STR_TILE_INSPECTOR_WALL_SLOPED_LEFT;
                     gDropdownItemsArgs[2] = STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT;
                     window_dropdown_show_text_custom_width(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
-                        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3, widget->right - widget->left - 3);
+                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+                        DROPDOWN_FLAG_STAY_OPEN, 3, widget->width() - 3);
 
                     // Set current value as checked
                     TileElement* const tileElement = window_tile_inspector_get_selected_element(w);
@@ -1755,31 +1755,31 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         gfx_draw_string_left_clipped(
             dpi, STR_TILE_INSPECTOR_ELEMENT_TYPE, gCommonFormatArgs, w->colours[1],
-            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->right - widget->left);
+            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width());
     }
     if ((widget = &w->widgets[WIDX_COLUMN_BASEHEIGHT])->type != WWT_EMPTY)
     {
         gfx_draw_string_left_clipped(
             dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, gCommonFormatArgs, w->colours[1],
-            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->right - widget->left);
+            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width());
     }
     if ((widget = &w->widgets[WIDX_COLUMN_CLEARANCEHEIGHT])->type != WWT_EMPTY)
     {
         gfx_draw_string_left_clipped(
             dpi, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, gCommonFormatArgs, w->colours[1],
-            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->right - widget->left);
+            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width());
     }
     if ((widget = &w->widgets[WIDX_COLUMN_GHOSTFLAG])->type != WWT_EMPTY)
     {
         gfx_draw_string_left_clipped(
             dpi, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, gCommonFormatArgs, w->colours[1],
-            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->right - widget->left);
+            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width());
     }
     if ((widget = &w->widgets[WIDX_COLUMN_LASTFLAG])->type != WWT_EMPTY)
     {
         gfx_draw_string_left_clipped(
             dpi, STR_TILE_INSPECTOR_FLAG_LAST_SHORT, gCommonFormatArgs, w->colours[1],
-            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->right - widget->left);
+            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width());
     }
 
     ScreenCoordsXY screenCoords(w->windowPos.x, w->windowPos.y);
@@ -2252,7 +2252,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    const int32_t listWidth = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+    const int32_t listWidth = w->widgets[WIDX_LIST].width();
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
     ScreenCoordsXY screenCoords{};

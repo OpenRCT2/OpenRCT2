@@ -620,7 +620,7 @@ static void window_finances_summary_scrollgetsize(rct_window* w, int32_t scrollI
 static void window_finances_summary_invertscroll(rct_window* w)
 {
     rct_widget summary = w->widgets[WIDX_SUMMARY_SCROLL];
-    w->scrolls[0].h_left = std::max(0, w->scrolls[0].h_right - ((summary.right - summary.left) - 2));
+    w->scrolls[0].h_left = std::max(0, w->scrolls[0].h_right - (summary.width() - 2));
     widget_scroll_update_thumbs(w, WIDX_SUMMARY_SCROLL);
 }
 
@@ -727,7 +727,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
     auto screenCoords = ScreenCoordsXY{ 0, TABLE_CELL_HEIGHT + 2 };
 
     rct_widget self = w->widgets[WIDX_SUMMARY_SCROLL];
-    int32_t row_width = std::max<uint16_t>(w->scrolls[0].h_right, self.right - self.left);
+    int32_t row_width = std::max<uint16_t>(w->scrolls[0].h_right, self.width());
 
     // Expenditure / Income row labels
     for (int32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
@@ -1326,9 +1326,8 @@ static void window_finances_research_mousedown(rct_window* w, rct_widgetindex wi
         gDropdownItemsArgs[i] = ResearchFundingLevelNames[i];
     }
     window_dropdown_show_text_custom_width(
-        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4,
-        dropdownWidget->right - dropdownWidget->left - 3);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, dropdownWidget->width() - 3);
 
     int32_t currentResearchLevel = gResearchFundingLevel;
     dropdown_set_checked(currentResearchLevel, true);

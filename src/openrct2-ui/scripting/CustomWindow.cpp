@@ -529,8 +529,8 @@ namespace OpenRCT2::Ui::Windows
                     std::memcpy(&gDropdownItemsArgs[i], &sz, sizeof(const char*));
                 }
                 window_dropdown_show_text_custom_width(
-                    { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
-                    w->colours[widget->colour], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
+                    { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1,
+                    w->colours[widget->colour], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
             }
             else if (widgetDesc->Type == "spinner")
             {
@@ -669,8 +669,8 @@ namespace OpenRCT2::Ui::Windows
             if (widget->type == WWT_SCROLL)
             {
                 auto& listView = info.ListViews[scrollIndex];
-                auto width = widget->right - widget->left + 1 - 2;
-                auto height = widget->bottom - widget->top + 1 - 2;
+                auto width = widget->width() + 1 - 2;
+                auto height = widget->height() + 1 - 2;
                 if (listView.GetScrollbars() == ScrollbarType::Horizontal || listView.GetScrollbars() == ScrollbarType::Both)
                 {
                     height -= SCROLLBAR_WIDTH + 1;
@@ -755,8 +755,8 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto left = w->windowPos.x + viewportWidget->left + 1;
                 auto top = w->windowPos.y + viewportWidget->top + 1;
-                auto width = (viewportWidget->right - viewportWidget->left) - 1;
-                auto height = (viewportWidget->bottom - viewportWidget->top) - 1;
+                auto width = viewportWidget->width() - 1;
+                auto height = viewportWidget->height() - 1;
                 auto viewport = w->viewport;
                 if (viewport == nullptr)
                 {

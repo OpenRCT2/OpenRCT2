@@ -302,7 +302,7 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
     int32_t hoverButtonIndex = -1;
     if (index != -1)
     {
-        int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+        int32_t width = w->widgets[WIDX_LIST].width();
         int32_t sy = index * ITEM_HEIGHT;
         for (int32_t i = 0; i < 2; i++)
         {
@@ -317,7 +317,7 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
         }
     }
 
-    int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+    int32_t width = w->widgets[WIDX_LIST].width();
     int32_t right = width - 3 - 14 - 10;
     if (screenCoords.x < right)
     {
@@ -429,7 +429,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+    int32_t width = w->widgets[WIDX_LIST].width();
 
     ScreenCoordsXY screenCoords;
     screenCoords.y = 0;

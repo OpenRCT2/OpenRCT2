@@ -460,7 +460,7 @@ void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t drop
 
     // Show dropdown
     window_dropdown_show_image(
-        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, dropdownColour,
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
         DROPDOWN_FLAG_STAY_OPEN, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
 
     gDropdownIsColour = true;

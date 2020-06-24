@@ -346,7 +346,7 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
 
     if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
     {
-        int32_t height = (widget->bottom - widget->top);
+        int32_t height = widget->height();
         if (height >= 10)
             topLeft.y += std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
         else
@@ -363,7 +363,7 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         formatArgs = &widget->string;
     }
     gfx_draw_string_centred_clipped(
-        dpi, stringId, formatArgs, colour, { (topLeft.x + r + 1) / 2 - 1, topLeft.y }, widget->right - widget->left - 2);
+        dpi, stringId, formatArgs, colour, { (topLeft.x + r + 1) / 2 - 1, topLeft.y }, widget->width() - 2);
 }
 
 /**
@@ -391,7 +391,7 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
     if (widget->type == WWT_BUTTON || widget->type == WWT_DROPDOWN || widget->type == WWT_SPINNER
         || widget->type == WWT_TABLE_HEADER)
     {
-        int32_t height = (widget->bottom - widget->top);
+        int32_t height = widget->height();
         if (height >= 10)
             t = w->windowPos.y + std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
         else
@@ -548,7 +548,7 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         return;
 
     topLeft = w->windowPos + ScreenCoordsXY{ widget->left + 2, widget->top + 1 };
-    int32_t width = widget->right - widget->left - 4;
+    int32_t width = widget->width() - 4;
     if ((widget + 1)->type == WWT_CLOSEBOX)
     {
         width -= 10;
@@ -595,7 +595,7 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget_is_disabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
-    gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, colour, topLeft, widget->right - widget->left - 2);
+    gfx_draw_string_centred_clipped(dpi, widget->text, gCommonFormatArgs, colour, topLeft, widget->width() - 2);
 }
 
 /**

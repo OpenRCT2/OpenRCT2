@@ -596,8 +596,8 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     {
         rct_drawpixelinfo clipDPI;
         screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        width = widget->right - widget->left - 1;
-        int32_t height = widget->bottom - widget->top - 1;
+        width = widget->width() - 1;
+        int32_t height = widget->height() - 1;
         if (clip_drawpixelinfo(&clipDPI, dpi, screenPos.x, screenPos.y, width, height))
         {
             object_draw_preview(object, &clipDPI, width, height);
@@ -628,7 +628,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    int16_t boxWidth = (w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left);
+    int16_t boxWidth = w->widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
     int16_t columnSplitOffset = boxWidth / 2;
     int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
 

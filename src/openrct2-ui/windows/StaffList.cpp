@@ -458,7 +458,7 @@ void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
         w->Invalidate();
     }
 
-    *width = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15;
+    *width = w->widgets[WIDX_STAFF_LIST_LIST].width() - 15;
 }
 
 /**
@@ -675,7 +675,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
     // How much space do we have for the name and action columns? (Discount scroll area and icons.)
-    const int32_t nonIconSpace = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15 - 68;
+    const int32_t nonIconSpace = w->widgets[WIDX_STAFF_LIST_LIST].width() - 15 - 68;
     const int32_t nameColumnSize = nonIconSpace * 0.42;
     const int32_t actionColumnSize = nonIconSpace * 0.58;
     const int32_t actionOffset = w->widgets[WIDX_STAFF_LIST_LIST].right - actionColumnSize - 15;
