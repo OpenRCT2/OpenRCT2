@@ -1043,8 +1043,7 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
 
     // Guest initial happiness value
     screenCoords = w->windowPos
-        + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1,
-                          w->windowPos.y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
+        + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
     arg = (gGuestInitialHappiness * 100) / 255;
     gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
 
