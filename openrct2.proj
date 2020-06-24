@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Main msbuild project for OpenRCT2 -->
+<!-- Inputs (/p: or environment variables)
+       - OPENRCT2_BUILD_SERVER
+       - OPENRCT2_BRANCH
+       - OPENRCT2_SHA1
+       - OPENRCT2_SHA1_SHORT
+       - OPENRCT2_DESCRIBE
+  -->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <!-- Import custom build tasks -->
+  <Import Project="openrct2.targets" />
+
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)'==''">Debug</Configuration>
+    <Platform Condition="'$(Platform)'==''">x64</Platform>
+
+    <!-- Set dynamic OpenRCT2 #defines -->
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_BUILD_SERVER)'!=''">/D "OPENRCT2_BUILD_SERVER=\"$(OPENRCT2_BUILD_SERVER)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_BRANCH)'!=''">/D "OPENRCT2_BRANCH=\"$(OPENRCT2_BRANCH)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_SHA1)'!=''">/D "OPENRCT2_COMMIT_SHA1=\"$(OPENRCT2_SHA1)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_SHA1_SHORT)'!=''">/D "OPENRCT2_COMMIT_SHA1_SHORT=\"$(OPENRCT2_SHA1_SHORT)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_DESCRIBE)'!=''">/D "OPENRCT2_VERSION_TAG=\"$(OPENRCT2_DESCRIBE)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(Configuration)'=='Release'">/D "USE_BREAKPAD" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+
+    <RootDir>$(MsBuildThisFileDirectory)</RootDir>
+    <TargetDir>$(RootDir)bin\</TargetDir>
+
+    <OutputExe>$(TargetDir)openrct2.exe</OutputExe>
+    <g2Output>$(TargetDir)data\g2.dat</g2Output>
+
+    <!-- Set openrct2.sln properties -->
+    <SlnProperties>$(SlnProperties);Platform=$(Platform)</SlnProperties>
+    <SlnProperties Condition="'$(OPENRCT2_BUILD_SERVER)'!=''">$(SlnProperties);OPENRCT2_CL_ADDITIONALOPTIONS=$(OPENRCT2_CL_ADDITIONALOPTIONS)</SlnProperties>
+  </PropertyGroup>
+
+  <!-- 3rd party libraries / dependencies -->
+  <PropertyGroup>
+    <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v24/openrct2-libs-v21-x86-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">21eef7db74fd1c886f3a1ef3f7989721e42a726b</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v24/openrct2-libs-v21-x64-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">6367d76f6b95859f8b45cbf03b222b8b5200d8b5</LibsSha1>
+    <GtestVersion>2fe3bd994b3189899d93f1d5a881e725e046fdc2</GtestVersion>
+    <GtestUrl>https://github.com/google/googletest/archive/$(GtestVersion).zip</GtestUrl>
+    <GtestSha1>058b9df80244c03f1633cb06e9f70471a29ebb8e</GtestSha1>
+    <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip</TitleSequencesUrl>
+    <TitleSequencesSha1>304d13a126c15bf2c86ff13b81a2f2cc1856ac8d</TitleSequencesSha1>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.15/objects.zip</ObjectsUrl>
+    <ObjectsSha1>dfd5864cf7d0449c0fb280c5c6b902a24816df6c</ObjectsSha1>
+    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.13/replays.zip</ReplaysUrl>
+    <ReplaysSha1>75598ff319fa18da782e38feb69b65d6d69d1458</ReplaysSha1>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <g2Inputs Include="$(RootDir)resources\g2\*" />
+  </ItemGroup>
+
+  <Target Name="DownloadLibs">
+    <!-- libs -->
+    <DownloadDependency Name="Libs"
+                        Url="$(LibsUrl)"
+                        Sha1="$(LibsSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(RootDir)lib\$(Platform)" />
+
+    <!-- googletest -->
+    <DownloadDependency Name="googletest"
+                        Url="$(GtestUrl)"
+                        Sha1="$(GtestSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(RootDir)lib" />
+    <PropertyGroup>
+      <GtestSrc>$(RootDir)lib\googletest-$(GtestVersion)</GtestSrc>
+      <GtestDst>$(RootDir)lib\googletest</GtestDst>
+    </PropertyGroup>
+    <Exec Command="cmd /c &quot;if exist &quot;$(GtestSrc)&quot; ( rmdir /S /Q &quot;$(GtestDst)&quot; 2> nul &amp; move &quot;$(GtestSrc)&quot; &quot;$(GtestDst)&quot; )&quot;" />
+  </Target>
+
+  <Target Name="Clean">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
+    <Delete Files="@(CleanItems)" />
+    <RemoveDir Directories="$(TargetDir)data" />
+    <MSBuild Projects="openrct2.sln" Targets="Clean" Properties="$(SlnProperties)" />
+  </Target>
+
+  <Target Name="BeforeBuild" BeforeTargets="Build;Rebuild" DependsOnTargets="DownloadLibs">
+    <PropertyGroup>
+      <BuildString Condition="'$(OPENRCT2_SHA1_SHORT)'!=''">$(OPENRCT2_SHA1_SHORT)</BuildString>
+      <BuildString Condition="'$(OPENRCT2_BRANCH)'!=''">$(BuildString) ($(OPENRCT2_BRANCH))</BuildString>
+      <BuildString Condition="'$(OPENRCT2_DESCRIBE)'!=''">$(BuildString) ($(OPENRCT2_DESCRIBE))</BuildString>
+    </PropertyGroup>
+    <ItemGroup>
+      <DataItems Include="$(RootDir)data\**\*" />
+    </ItemGroup>
+    <Message Condition="'$(BuildString)'!=''" Text="Building $(BuildString)" Importance="high" />
+    <Copy SourceFiles="@(CopyItems)" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(DataItems)" DestinationFolder="$(TargetDir)data\%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="Build">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
+    <Message Text="SlnProperties: $(SlnProperties)" />
+    <MSBuild Projects="openrct2.sln" Targets="Build" Properties="$(SlnProperties)" />
+  </Target>
+  <Target Name="Rebuild">
+    <PropertyGroup>
+      <SlnProperties>$(SlnProperties);Configuration=$(Configuration)</SlnProperties>
+    </PropertyGroup>
+    <Message Text="SlnProperties: $(SlnProperties)" />
+    <MSBuild Projects="openrct2.sln" Targets="Rebuild" Properties="$(SlnProperties)" />
+  </Target>
+
+  <!-- Target to build g2.dat containing OpenRCT2 sprites -->
+  <Target Name="g2" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
+          Condition="'$(TestConfig)'!='true'">
+    <Message Text="Building g2.dat..." Importance="high" />
+    <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
+          StandardOutputImportance="normal" />
+  </Target>
+
+  <!-- Target to download the title sequences -->
+  <Target Name="DownloadTitleSequences" AfterTargets="Build">
+    <DownloadDependency Name="TitleSequences"
+                        Url="$(TitleSequencesUrl)"
+                        Sha1="$(TitleSequencesSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data\sequence" />
+  </Target>
+
+  <!-- Target to download the objects -->
+  <Target Name="DownloadObjects" AfterTargets="Build">
+    <DownloadDependency Name="Objects"
+                        Url="$(ObjectsUrl)"
+                        Sha1="$(ObjectsSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)data\object" />
+  </Target>
+
+  <!-- Target to download replays -->
+  <Target Name="DownloadReplays" AfterTargets="Build">
+    <DownloadDependency Name="Replays"
+                        Url="$(ReplaysUrl)"
+                        Sha1="$(ReplaysSha1)"
+                        CheckFile="$(DependenciesCheckFile)"
+                        OutputDirectory="$(TargetDir)testdata\replays" />
+  </Target>
+</Project>

@@ -1,0 +1,23 @@
+#!/bin/bash
+set -e
+
+# Create a Windows symbols archive for OpenRCT2
+basedir="$(readlink -f `dirname $0`/..)"
+cd $basedir/bin
+
+destination=../artifacts/openrct2-symbols-$CONFIGURATION-$PLATFORM.zip
+
+# Check 7z is available
+if ! [ -x "$(command -v 7z)" ]; then
+    echo -e >&2 "\033[0;7z not found\033[0m"
+    exit 1
+fi
+
+echo -e "\033[0;36mCreating symbols archive for OpenRCT2...\033[0m"
+if [[ -f $destination ]]; then
+    rm $destination
+fi
+7z a $destination openrct2.exe openrct2.com openrct2-win.pdb
+
+destination=$(cygpath -w $(readlink -f $destination))
+printf '\033[0;32m%s\033[0m\n' "${destination} created successfully"

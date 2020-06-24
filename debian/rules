@@ -1,0 +1,6 @@
+#!/usr/bin/make -f
+
+BUILDDIR=build_dir
+
+%:
+	dh $@
