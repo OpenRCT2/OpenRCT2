@@ -967,7 +967,6 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     int32_t image_id = SPR_TAB_STAFF_OPTIONS_0;
 
@@ -976,6 +975,7 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 2) % 7;
     }
 
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
     gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
@@ -989,7 +989,6 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
-    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     int32_t image_id = SPR_TAB_STATS_0;
 
@@ -998,6 +997,7 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 4) % 7;
     }
 
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
     gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 

@@ -614,13 +614,12 @@ static void window_player_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widget* widget;
     int32_t imageId;
-    ScreenCoordsXY screenCoords;
 
     // Tab 1
     if (!widget_is_disabled(w, WIDX_TAB_1))
     {
         widget = &w->widgets[WIDX_TAB_1];
-        screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+        auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
         imageId = SPR_PEEP_LARGE_FACE_NORMAL;
         gfx_draw_sprite(dpi, imageId, screenCoords, 0);
     }
@@ -629,7 +628,7 @@ static void window_player_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
     if (!widget_is_disabled(w, WIDX_TAB_2))
     {
         widget = &w->widgets[WIDX_TAB_2];
-        screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+        auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
         imageId = SPR_TAB_FINANCES_SUMMARY_0;
 
         if (w->page == WINDOW_PLAYER_PAGE_STATISTICS)
