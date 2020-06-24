@@ -1057,6 +1057,13 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gCurrentFontFlags = 0;
 
+    // Figure out where the text should be positioned vertically.
+    int32_t height = (widget->bottom - widget->top);
+    if (height >= 10)
+        t = w->windowPos.y + std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
+    else
+        t = w->windowPos.y + widget->top - 1;
+
     if (!active || gTextInput == nullptr)
     {
         if (w->widgets[widgetIndex].text != 0)
@@ -1074,7 +1081,7 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     // +13 for cursor when max length.
     gfx_wrap_string(wrapped_string, r - l - 5 - 6, &no_lines, &font_height);
 
-    gfx_draw_string(dpi, wrapped_string, w->colours[1], { l + 2, t });
+    gfx_draw_string(dpi, wrapped_string, w->colours[1], { l + 2, t + 1 });
 
     size_t string_length = get_string_size(wrapped_string) - 1;
 
@@ -1096,6 +1103,6 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (gTextBoxFrameNo <= 15)
     {
         colour = ColourMapA[w->colours[1]].mid_light;
-        gfx_fill_rect(dpi, cur_x, t + 9, cur_x + width, t + 9, colour + 5);
+        gfx_fill_rect(dpi, cur_x, t + (height - 1), cur_x + width, t + (height - 1), colour + 5);
     }
 }
