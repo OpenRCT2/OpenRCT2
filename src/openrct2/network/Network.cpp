@@ -14,6 +14,7 @@
 #include "../GameStateSnapshots.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../actions/GameSetSimulationSpeed.hpp"
 #include "../actions/LoadOrQuitAction.hpp"
 #include "../actions/NetworkModifyGroupAction.hpp"
 #include "../actions/PeepPickupAction.hpp"
@@ -2884,8 +2885,10 @@ void Network::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connection, 
         auto ms = MemoryStream(data, data_size);
         if (LoadMap(&ms))
         {
+            auto gameSpeed = gGameSpeed;
             game_load_init();
             game_load_scripts();
+            gGameSpeed = gameSpeed;
             _serverState.tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
             _serverState.state = NETWORK_SERVER_STATE_OK;
@@ -2930,7 +2933,15 @@ bool Network::LoadMap(IStream* stream)
         [[maybe_unused]] uint32_t checksum = stream->ReadValue<uint32_t>();
 
         // Read other data not in normal save files
-        gGamePaused = stream->ReadValue<uint32_t>();
+        uint32_t gamePaused = stream->ReadValue<uint32_t>();
+        if (gamePaused == 1)
+        {
+            pause_toggle();
+        }
+        gGamePaused = gamePaused;
+        gGameSpeed = stream->ReadValue<uint32_t>();
+        window_invalidate_by_class(WC_TOP_TOOLBAR);
+
         _guestGenerationProbability = stream->ReadValue<uint32_t>();
         _suggestedGuestMaximum = stream->ReadValue<uint32_t>();
         gCheatsAllowTrackPlaceInvalidHeights = stream->ReadValue<uint8_t>() != 0;
@@ -2980,6 +2991,7 @@ bool Network::SaveMap(IStream* stream, const std::vector<const ObjectRepositoryI
 
         // Write other data not in normal save files
         stream->WriteValue<uint32_t>(gGamePaused);
+        stream->WriteValue<uint32_t>(gGameSpeed);
         stream->WriteValue<uint32_t>(_guestGenerationProbability);
         stream->WriteValue<uint32_t>(_suggestedGuestMaximum);
         stream->WriteValue<uint8_t>(gCheatsAllowTrackPlaceInvalidHeights);
@@ -3122,7 +3134,15 @@ void Network::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& conn
         }
     }
 
-    GameActions::Enqueue(std::move(action), tick);
+    // if it's a game toggle pause or simulation speed, force it to run immediately
+    if (actionType == GAME_COMMAND_TOGGLE_PAUSE || actionType == GAME_COMMAND_SET_SIMULATION_SPEED)
+    {
+        GameActions::Execute(action.get());
+    }
+    else
+    {
+        GameActions::Enqueue(std::move(action), tick);
+    }
 }
 
 void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
@@ -3139,7 +3159,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     packet >> tick >> actionType;
 
     // Don't let clients send pause or quit
-    if (actionType == GAME_COMMAND_TOGGLE_PAUSE || actionType == GAME_COMMAND_LOAD_OR_QUIT)
+    if (actionType == GAME_COMMAND_LOAD_OR_QUIT)
     {
         return;
     }
@@ -3699,6 +3719,7 @@ GameActionResult::Ptr network_set_player_group(
         }
 
         window_invalidate_by_number(WC_PLAYER, playerId);
+        window_invalidate_by_class(WC_TOP_TOOLBAR);
 
         // Log set player group event
         NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(actionPlayerId);

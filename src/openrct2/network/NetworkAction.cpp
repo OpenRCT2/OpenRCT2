@@ -78,9 +78,7 @@ const std::array<NetworkAction, NETWORK_PERMISSION_COUNT> NetworkActions::Action
     NetworkAction{
         STR_ACTION_TOGGLE_PAUSE,
         "PERMISSION_TOGGLE_PAUSE",
-        {
-            GAME_COMMAND_TOGGLE_PAUSE,
-        },
+        { GAME_COMMAND_TOGGLE_PAUSE, GAME_COMMAND_SET_SIMULATION_SPEED },
     },
     NetworkAction{
         STR_ACTION_CREATE_RIDE,

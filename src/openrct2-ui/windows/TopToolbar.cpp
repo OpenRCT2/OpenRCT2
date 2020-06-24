@@ -30,6 +30,7 @@
 #include <openrct2/actions/BannerSetColourAction.hpp>
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
+#include <openrct2/actions/GameSetSimulationSpeed.hpp>
 #include <openrct2/actions/LandLowerAction.hpp>
 #include <openrct2/actions/LandRaiseAction.hpp>
 #include <openrct2/actions/LandSmoothAction.hpp>
@@ -50,6 +51,7 @@
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
+#include <openrct2/network/NetworkAction.h>
 #include <openrct2/network/network.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/peep/Staff.h>
@@ -357,15 +359,12 @@ rct_window* window_top_toolbar_open()
 static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     rct_window* mainWindow;
+    auto pauseToggleAction = PauseToggleAction();
 
     switch (widgetIndex)
     {
         case WIDX_PAUSE:
-            if (network_get_mode() != NETWORK_MODE_CLIENT)
-            {
-                auto pauseToggleAction = PauseToggleAction();
-                GameActions::Execute(&pauseToggleAction);
-            }
+            GameActions::Execute(&pauseToggleAction);
             break;
         case WIDX_ZOOM_OUT:
             if ((mainWindow = window_get_main()) != nullptr)
@@ -734,11 +733,21 @@ static void window_top_toolbar_invalidate(rct_window* w)
                 window_top_toolbar_widgets[WIDX_CHAT].type = WWT_EMPTY;
                 break;
             case NETWORK_MODE_CLIENT:
-                window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
-                [[fallthrough]];
-            case NETWORK_MODE_SERVER:
-                window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
-                break;
+                // get player permissions and check if he can pause
+                int32_t playerGroup = network_get_current_player_group_index();
+                if (playerGroup != -1)
+                {
+                    if (!network_can_perform_action(playerGroup, NETWORK_PERMISSION_TOGGLE_PAUSE))
+                    {
+                        window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
+                        window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+                    }
+                    else
+                    {
+                        window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_TRNBTN;
+                        window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_TRNBTN;
+                    }
+                }
         }
     }
 
@@ -3423,9 +3432,9 @@ static void top_toolbar_fastforward_menu_dropdown(int16_t dropdownIndex)
     {
         if (dropdownIndex >= 0 && dropdownIndex <= 5)
         {
-            gGameSpeed = dropdownIndex + 1;
-            if (gGameSpeed >= 5)
-                gGameSpeed = 8;
+            GameSetSimulationSpeedAction action(dropdownIndex + 1);
+            GameActions::Execute(&action);
+
             w->Invalidate();
         }
     }

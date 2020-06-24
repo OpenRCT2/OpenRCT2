@@ -159,6 +159,12 @@ void GameState::Update()
         }
     }
 
+    isPaused = game_is_paused();
+    if (isPaused)
+    {
+        numUpdates = 0;
+    }
+
     // Update the game one or more times
     for (uint32_t i = 0; i < numUpdates; i++)
     {

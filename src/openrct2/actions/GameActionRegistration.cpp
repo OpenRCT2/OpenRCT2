@@ -22,6 +22,7 @@
 #include "FootpathSceneryPlaceAction.hpp"
 #include "FootpathSceneryRemoveAction.hpp"
 #include "GameAction.h"
+#include "GameSetSimulationSpeed.hpp"
 #include "GuestSetFlagsAction.hpp"
 #include "GuestSetNameAction.hpp"
 #include "LandBuyRightsAction.hpp"
@@ -172,6 +173,7 @@ namespace GameActions
         Register<GuestSetFlagsAction>();
         Register<ParkSetDateAction>();
         Register<SetCheatAction>();
+        Register<GameSetSimulationSpeedAction>();
 #ifdef ENABLE_SCRIPTING
         Register<CustomAction>();
 #endif
