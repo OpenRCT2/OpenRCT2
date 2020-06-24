@@ -50,7 +50,7 @@ void Painter::Paint(IDrawingEngine& de)
 
         if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !title_should_hide_version_info())
         {
-            DrawOpenRCT2(dpi, 0, _uiContext->GetHeight() - 20);
+            DrawOpenRCT2(dpi, { 0, _uiContext->GetHeight() - 20 });
         }
 
         gfx_draw_pickedup_peep(dpi);
