@@ -629,7 +629,6 @@ size_t ImageListGetMaximum();
 void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args);
 void FASTCALL gfx_bmp_sprite_to_buffer(DrawSpriteArgs& args);
 void FASTCALL gfx_rle_sprite_to_buffer(DrawSpriteArgs& args);
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, uint32_t tertiary_colour);
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, const ScreenCoordsXY& coords, uint32_t tertiary_colour);
 void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image_id, int32_t x, int32_t y, const PaletteMap& paletteMap);
 void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage);

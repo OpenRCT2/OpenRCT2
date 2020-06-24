@@ -659,7 +659,7 @@ static void window_new_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w
         spriteIndex |= w->colours[1] << 19;
 
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos.x + w->widgets[widgetIndex].left, w->windowPos.y + w->widgets[widgetIndex].top, 0);
+            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top }, 0);
     }
 }
 

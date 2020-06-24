@@ -489,14 +489,14 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             bool correctVersion = serverDetails.Version == network_get_version();
             compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
         }
-        gfx_draw_sprite(dpi, compatibilitySpriteId, right, screenCoords.y + 1, 0);
+        gfx_draw_sprite(dpi, compatibilitySpriteId, { right, screenCoords.y + 1 }, 0);
         right -= 4;
 
         // Draw lock icon
         right -= 8;
         if (serverDetails.RequiresPassword)
         {
-            gfx_draw_sprite(dpi, SPR_G2_LOCKED, right, screenCoords.y + 4, 0);
+            gfx_draw_sprite(dpi, SPR_G2_LOCKED, { right, screenCoords.y + 4 }, 0);
         }
         right -= 6;
 

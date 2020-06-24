@@ -745,7 +745,7 @@ void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi)
 {
     if (gPickupPeepImage != UINT32_MAX)
     {
-        gfx_draw_sprite(dpi, gPickupPeepImage, gPickupPeepX, gPickupPeepY, 0);
+        gfx_draw_sprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY }, 0);
     }
 }
 

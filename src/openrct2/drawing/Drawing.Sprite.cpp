@@ -410,8 +410,6 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
         {
             palette = PaletteMap::GetDefault();
         }
-
-        const auto spriteCoords = ScreenCoordsXY{ x, y };
         gfx_draw_sprite_palette_set_software(dpi, imageId, spriteCoords, *palette);
     }
 }

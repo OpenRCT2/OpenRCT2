@@ -632,28 +632,28 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
             uint32_t image_id = image_id_base;
             image_id |= SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
 
-            gfx_draw_sprite(&cliped_dpi, image_id, { clip_x, clip_y }, 0);
+            gfx_draw_sprite(&cliped_dpi, image_id, clipCoords, 0);
 
             if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
             {
                 image_id_base += 32;
                 image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
 
-                gfx_draw_sprite(&cliped_dpi, image_id_base, { clip_x, clip_y }, 0);
+                gfx_draw_sprite(&cliped_dpi, image_id_base, clipCoords, 0);
             }
             else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
             {
                 image_id_base += 32;
                 image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour);
 
-                gfx_draw_sprite(&cliped_dpi, image_id_base, { clip_x, clip_y }, 0);
+                gfx_draw_sprite(&cliped_dpi, image_id_base, clipCoords, 0);
             }
             else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
             {
                 image_id_base += 32;
                 image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour);
 
-                gfx_draw_sprite(&cliped_dpi, image_id_base, { clip_x, clip_y }, 0);
+                gfx_draw_sprite(&cliped_dpi, image_id_base, clipCoords, 0);
             }
             break;
         }
@@ -661,8 +661,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
             gfx_draw_sprite(dpi, SPR_FINANCE, screenCoords, 0);
             break;
         case NEWS_ITEM_RESEARCH:
-            gfx_draw_sprite(
-                dpi, (newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords.x, screenCoords.y, 0);
+            gfx_draw_sprite(dpi, (newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords, 0);
             break;
         case NEWS_ITEM_PEEPS:
             gfx_draw_sprite(dpi, SPR_GUESTS, screenCoords, 0);

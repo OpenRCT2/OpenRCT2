@@ -613,24 +613,23 @@ static void window_player_set_page(rct_window* w, int32_t page)
 static void window_player_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widget* widget;
-    int32_t x, y, imageId;
+    int32_t imageId;
+    ScreenCoordsXY screenCoords;
 
     // Tab 1
     if (!widget_is_disabled(w, WIDX_TAB_1))
     {
         widget = &w->widgets[WIDX_TAB_1];
-        x = widget->left + w->windowPos.x;
-        y = widget->top + w->windowPos.y;
+        screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
         imageId = SPR_PEEP_LARGE_FACE_NORMAL;
-        gfx_draw_sprite(dpi, imageId, x, y, 0);
+        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
     }
 
     // Tab 2
     if (!widget_is_disabled(w, WIDX_TAB_2))
     {
         widget = &w->widgets[WIDX_TAB_2];
-        x = widget->left + w->windowPos.x;
-        y = widget->top + w->windowPos.y;
+        screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
         imageId = SPR_TAB_FINANCES_SUMMARY_0;
 
         if (w->page == WINDOW_PLAYER_PAGE_STATISTICS)
@@ -638,7 +637,7 @@ static void window_player_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
             imageId += (w->frame_no / 2) & 7;
         }
 
-        gfx_draw_sprite(dpi, imageId, x, y, 0);
+        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
     }
 }
 

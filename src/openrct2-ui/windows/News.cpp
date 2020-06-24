@@ -271,8 +271,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
         // Subject button
         if ((news_type_properties[newsItem.Type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem.Flags & NEWS_FLAG_HAS_BUTTON))
         {
-            int32_t x = 328;
-            int32_t yy = y + lineHeight + 4;
+            auto screenCoords = ScreenCoordsXY{ 328, y + lineHeight + 4 };
 
             int32_t press = 0;
             if (w->news.var_480 != -1)
@@ -281,18 +280,19 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                 if (i == w->news.var_480 && w->news.var_482 == 1)
                     press = INSET_RECT_FLAG_BORDER_INSET;
             }
-            gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
+            gfx_fill_rect_inset(
+                dpi, screenCoords.x, screenCoords.y, screenCoords.x + 23, screenCoords.y + 23, w->colours[2], press);
 
             switch (newsItem.Type)
             {
                 case NEWS_ITEM_RIDE:
-                    gfx_draw_sprite(dpi, SPR_RIDE, x, yy, 0);
+                    gfx_draw_sprite(dpi, SPR_RIDE, screenCoords, 0);
                     break;
                 case NEWS_ITEM_PEEP:
                 case NEWS_ITEM_PEEP_ON_RIDE:
                 {
                     rct_drawpixelinfo cliped_dpi;
-                    if (!clip_drawpixelinfo(&cliped_dpi, dpi, x + 1, yy + 1, 22, 22))
+                    if (!clip_drawpixelinfo(&cliped_dpi, dpi, screenCoords.x + 1, screenCoords.y + 1, 22, 22))
                     {
                         break;
                     }
@@ -305,7 +305,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                     if (peep == nullptr)
                         break;
 
-                    int32_t clip_x = 10, clip_y = 19;
+                    auto clipCoords = ScreenCoordsXY{ 10, 19 };
 
                     // If normal peep set sprite to normal (no food)
                     // If staff set sprite to staff sprite
@@ -315,7 +315,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                         sprite_type = peep->SpriteType;
                         if (peep->StaffType == STAFF_TYPE_ENTERTAINER)
                         {
-                            clip_y += 3;
+                            clipCoords.y += 3;
                         }
                     }
 
@@ -323,23 +323,23 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                     image_id += 0xA0000001;
                     image_id |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24);
 
-                    gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
+                    gfx_draw_sprite(&cliped_dpi, image_id, clipCoords, 0);
                     break;
                 }
                 case NEWS_ITEM_MONEY:
-                    gfx_draw_sprite(dpi, SPR_FINANCE, x, yy, 0);
+                    gfx_draw_sprite(dpi, SPR_FINANCE, screenCoords, 0);
                     break;
                 case NEWS_ITEM_RESEARCH:
-                    gfx_draw_sprite(dpi, newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, x, yy, 0);
+                    gfx_draw_sprite(dpi, newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, screenCoords, 0);
                     break;
                 case NEWS_ITEM_PEEPS:
-                    gfx_draw_sprite(dpi, SPR_GUESTS, x, yy, 0);
+                    gfx_draw_sprite(dpi, SPR_GUESTS, screenCoords, 0);
                     break;
                 case NEWS_ITEM_AWARD:
-                    gfx_draw_sprite(dpi, SPR_AWARD, x, yy, 0);
+                    gfx_draw_sprite(dpi, SPR_AWARD, screenCoords, 0);
                     break;
                 case NEWS_ITEM_GRAPH:
-                    gfx_draw_sprite(dpi, SPR_GRAPH, x, yy, 0);
+                    gfx_draw_sprite(dpi, SPR_GRAPH, screenCoords, 0);
                     break;
             }
         }
@@ -347,8 +347,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
         // Location button
         if ((news_type_properties[newsItem.Type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem.Flags & NEWS_FLAG_HAS_BUTTON))
         {
-            int32_t x = 352;
-            int32_t yy = y + lineHeight + 4;
+            auto screenCoords = ScreenCoordsXY{ 352, y + lineHeight + 4 };
 
             int32_t press = 0;
             if (w->news.var_480 != -1)
@@ -357,8 +356,9 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                 if (i == w->news.var_480 && w->news.var_482 == 2)
                     press = 0x20;
             }
-            gfx_fill_rect_inset(dpi, x, yy, x + 23, yy + 23, w->colours[2], press);
-            gfx_draw_sprite(dpi, SPR_LOCATE, x, yy, 0);
+            gfx_fill_rect_inset(
+                dpi, screenCoords.x, screenCoords.y, screenCoords.x + 23, screenCoords.y + 23, w->colours[2], press);
+            gfx_draw_sprite(dpi, SPR_LOCATE, screenCoords, 0);
         }
 
         y += itemHeight;

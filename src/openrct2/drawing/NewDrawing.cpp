@@ -254,11 +254,6 @@ void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, const Scree
     }
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint32_t tertiary_colour)
-{
-    gfx_draw_sprite(dpi, image, { x, y }, tertiary_colour);
-}
-
 void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap)
 {
     auto drawingEngine = dpi->DrawingEngine;
