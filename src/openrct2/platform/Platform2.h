@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "platform.h"
 
 #include <ctime>
 #include <string>
@@ -32,6 +33,8 @@ namespace Platform
     std::string GetInstallPath();
     std::string GetDocsPath();
     std::string GetCurrentExecutablePath();
+    rct2_time GetTimeLocal();
+    rct2_date GetDateLocal();
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
     std::string GetEnvironmentPath(const char* name);

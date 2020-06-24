@@ -20,6 +20,7 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
+#include "../platform/Platform2.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
@@ -106,11 +107,8 @@ static std::string screenshot_get_directory()
 
 static std::pair<rct2_date, rct2_time> screenshot_get_date_time()
 {
-    rct2_date date;
-    platform_get_date_local(&date);
-
-    rct2_time time;
-    platform_get_time_local(&time);
+    auto date = Platform::GetDateLocal();
+    auto time = Platform::GetTimeLocal();
 
     return { date, time };
 }

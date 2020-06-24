@@ -88,8 +88,6 @@ void platform_toggle_windowed_mode();
 void platform_refresh_video(bool recreate_window);
 void platform_get_date_utc(rct2_date* out_date);
 void platform_get_time_utc(rct2_time* out_time);
-void platform_get_date_local(rct2_date* out_date);
-void platform_get_time_local(rct2_time* out_time);
 
 // Platform specific definitions
 bool platform_file_exists(const utf8* path);
