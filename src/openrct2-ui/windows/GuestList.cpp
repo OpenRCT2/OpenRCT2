@@ -684,14 +684,18 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     i += g_peep_animation_entries[PEEP_SPRITE_TYPE_NORMAL].sprite_animation->base_image + 1;
     i |= 0xA1600000;
     gfx_draw_sprite(
-        dpi, i, (window_guest_list_widgets[WIDX_TAB_1].left + window_guest_list_widgets[WIDX_TAB_1].right) / 2 + w->windowPos.x,
-        window_guest_list_widgets[WIDX_TAB_1].bottom - 6 + w->windowPos.y, 0);
+        dpi, i,
+        w->windowPos
+            + ScreenCoordsXY{ (window_guest_list_widgets[WIDX_TAB_1].left + window_guest_list_widgets[WIDX_TAB_1].right) / 2,
+                              window_guest_list_widgets[WIDX_TAB_1].bottom - 6 },
+        0);
 
     // Tab 2 image
     i = (_window_guest_list_selected_tab == 1 ? w->list_information_type / 4 : 0);
     gfx_draw_sprite(
-        dpi, SPR_TAB_GUESTS_0 + i, window_guest_list_widgets[WIDX_TAB_2].left + w->windowPos.x,
-        window_guest_list_widgets[WIDX_TAB_2].top + w->windowPos.y, 0);
+        dpi, SPR_TAB_GUESTS_0 + i,
+        w->windowPos + ScreenCoordsXY{ window_guest_list_widgets[WIDX_TAB_2].left, window_guest_list_widgets[WIDX_TAB_2].top },
+        0);
 
     // Filter description
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 6, window_guest_list_widgets[WIDX_TAB_CONTENT_PANEL].top + 3 };
@@ -775,11 +779,11 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     {
                         case VIEW_ACTIONS:
                             // Guest face
-                            gfx_draw_sprite(dpi, get_peep_face_sprite_small(peep), 118, y + 1, 0);
+                            gfx_draw_sprite(dpi, get_peep_face_sprite_small(peep), { 118, y + 1 }, 0);
 
                             // Tracking icon
                             if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
-                                gfx_draw_sprite(dpi, STR_ENTER_SELECTION_SIZE, 112, y + 1, 0);
+                                gfx_draw_sprite(dpi, STR_ENTER_SELECTION_SIZE, { 112, y + 1 }, 0);
 
                             // Action
                             ft = Formatter::Common();
@@ -838,7 +842,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     for (uint32_t j = 0; j < 56 && j < numGuests; j++)
                         gfx_draw_sprite(
                             dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY,
-                            j * 8, y + 12, 0);
+                            { static_cast<int32_t>(j) * 8, y + 12 }, 0);
 
                     // Draw action
                     std::memcpy(

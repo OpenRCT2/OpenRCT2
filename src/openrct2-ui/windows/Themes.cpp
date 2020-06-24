@@ -316,8 +316,10 @@ static void window_themes_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
         if (_selected_tab == i)
             sprite_idx += w->frame_no / window_themes_tab_animation_divisor[_selected_tab];
         gfx_draw_sprite(
-            dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].left,
-            w->windowPos.y + w->widgets[WIDX_THEMES_SETTINGS_TAB + i].top, 0);
+            dpi, sprite_idx,
+            w->windowPos
+                + ScreenCoordsXY{ w->widgets[WIDX_THEMES_SETTINGS_TAB + i].left, w->widgets[WIDX_THEMES_SETTINGS_TAB + i].top },
+            0);
     }
 }
 
@@ -913,7 +915,7 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                 {
                     image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | SPR_PALETTE_BTN_PRESSED;
                 }
-                gfx_draw_sprite(dpi, image, _button_offset_x + 12 * j, screenCoords.y + _button_offset_y, 0);
+                gfx_draw_sprite(dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y }, 0);
 
                 gfx_fill_rect_inset(
                     dpi, _button_offset_x + 12 * j, screenCoords.y + _check_offset_y, _button_offset_x + 12 * j + 9,

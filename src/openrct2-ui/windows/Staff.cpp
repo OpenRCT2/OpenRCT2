@@ -943,7 +943,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         rct_viewport* viewport = w->viewport;
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos.x + 2, w->windowPos.y + 2, 0);
+            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos + ScreenCoordsXY{ 2, 2 }, 0);
         }
     }
 
@@ -967,8 +967,6 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_STAFF_OPTIONS_0;
 
@@ -977,7 +975,8 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 2) % 7;
     }
 
-    gfx_draw_sprite(dpi, image_id, x, y, 0);
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
 /**
@@ -990,8 +989,6 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_STATS_0;
 
@@ -1000,7 +997,8 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 4) % 7;
     }
 
-    gfx_draw_sprite(dpi, image_id, x, y, 0);
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
 /**
@@ -1014,24 +1012,22 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &w->widgets[WIDX_TAB_1];
     int32_t width = widget->right - widget->left - 1;
     int32_t height = widget->bottom - widget->top - 1;
-    int32_t x = widget->left + 1 + w->windowPos.x;
-    int32_t y = widget->top + 1 + w->windowPos.y;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     if (w->page == WINDOW_STAFF_OVERVIEW)
         height++;
 
     rct_drawpixelinfo clip_dpi;
-    if (!clip_drawpixelinfo(&clip_dpi, dpi, x, y, width, height))
+    if (!clip_drawpixelinfo(&clip_dpi, dpi, screenCoords.x, screenCoords.y, width, height))
     {
         return;
     }
 
-    x = 14;
-    y = 20;
+    screenCoords = ScreenCoordsXY{ 20, 14 };
 
     Peep* peep = GET_PEEP(w->number);
 
     if (peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
-        y++;
+        screenCoords.y++;
 
     int32_t ebx = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
 
@@ -1045,14 +1041,14 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ebx += eax;
 
     int32_t sprite_id = ebx | SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
-    gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
+    gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords, 0);
 
     // If holding a balloon
     if (ebx >= 0x2A1D && ebx < 0x2A3D)
     {
         ebx += 32;
         ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
-        gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
+        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
     }
 
     // If holding umbrella
@@ -1060,7 +1056,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ebx += 32;
         ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour);
-        gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
+        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
     }
 
     // If wearing hat
@@ -1068,7 +1064,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ebx += 32;
         ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour);
-        gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
+        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
     }
 }
 

@@ -1258,7 +1258,7 @@ static void window_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, in
         }
 
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos.x + w->widgets[widgetIndex].left, w->windowPos.y + w->widgets[widgetIndex].top, 0);
+            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top }, 0);
     }
 }
 
@@ -1294,7 +1294,7 @@ static void window_ride_draw_tab_main(rct_drawpixelinfo* dpi, rct_window* w)
                     break;
             }
             gfx_draw_sprite(
-                dpi, spriteIndex, w->windowPos.x + w->widgets[widgetIndex].left, w->windowPos.y + w->widgets[widgetIndex].top,
+                dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top },
                 0);
         }
     }
@@ -1311,24 +1311,21 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
 
     if (!(w->disabled_widgets & (1LL << widgetIndex)))
     {
-        int32_t x = widget->left + 1;
-        int32_t y = widget->top + 1;
-        int32_t width = widget->right - x;
-        int32_t height = widget->bottom - 3 - y;
+        auto screenCoords = ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
+        int32_t width = widget->right - screenCoords.x;
+        int32_t height = widget->bottom - 3 - screenCoords.y;
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             height += 4;
 
-        x += w->windowPos.x;
-        y += w->windowPos.y;
+        screenCoords += w->windowPos;
 
         rct_drawpixelinfo clipDPI;
-        if (!clip_drawpixelinfo(&clipDPI, dpi, x, y, width, height))
+        if (!clip_drawpixelinfo(&clipDPI, dpi, screenCoords.x, screenCoords.y, width, height))
         {
             return;
         }
 
-        x = (widget->right - widget->left) / 2;
-        y = (widget->bottom - widget->top) - 12;
+        screenCoords = ScreenCoordsXY{ (widget->right - widget->left) / 2, (widget->bottom - widget->top) - 12 };
 
         auto ride = get_ride(w->number);
         if (ride == nullptr)
@@ -1343,8 +1340,8 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
             clipDPI.zoom_level = 1;
             clipDPI.width *= 2;
             clipDPI.height *= 2;
-            x *= 2;
-            y *= 2;
+            screenCoords.x *= 2;
+            screenCoords.y *= 2;
             clipDPI.x *= 2;
             clipDPI.y *= 2;
         }
@@ -1352,7 +1349,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
         // For any suspended rides, move image higher in the vehicle tab on the rides window
         if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SUSPENDED))
         {
-            y /= 4;
+            screenCoords.y /= 4;
         }
 
         const uint8_t vehicle = ride_entry_get_vehicle_at_position(
@@ -1371,7 +1368,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
         spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
         spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
-        gfx_draw_sprite(&clipDPI, spriteIndex, x, y, vehicleColour.additional_2);
+        gfx_draw_sprite(&clipDPI, spriteIndex, screenCoords, vehicleColour.additional_2);
     }
 }
 
@@ -1395,7 +1392,7 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo* dpi, rct_window* w)
         spriteIndex |= 0xA9E00000;
 
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos.x + (widget->left + widget->right) / 2, w->windowPos.y + widget->bottom - 6, 0);
+            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->bottom - 6 }, 0);
     }
 }
 
@@ -2916,7 +2913,7 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         window_draw_viewport(dpi, w);
         if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos.x + 2, w->windowPos.y + 2, 0);
+            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos + ScreenCoordsXY{ 2, 2 }, 0);
     }
 
     // View dropdown
@@ -3324,7 +3321,7 @@ static void window_ride_vehicle_scrollpaint(rct_window* w, rct_drawpixelinfo* dp
 
         rct_vehicle_paintinfo* current = nextSpriteToDraw;
         while (--current >= _sprites_to_draw)
-            gfx_draw_sprite(dpi, current->sprite_index, current->x, current->y, current->tertiary_colour);
+            gfx_draw_sprite(dpi, current->sprite_index, { current->x, current->y }, current->tertiary_colour);
 
         startX += 36;
     }
@@ -4317,8 +4314,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &window_ride_maintenance_widgets[WIDX_LOCATE_MECHANIC];
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
     gfx_draw_sprite(
-        dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, screenCoords.x,
-        screenCoords.y, 0);
+        dpi, (gStaffMechanicColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | SPR_MECHANIC, screenCoords, 0);
 
     // Inspection label
     widget = &window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL];
@@ -5069,14 +5065,13 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto rideEntry = ride->GetRideEntry();
     if (rideEntry == nullptr || rideEntry->shop_item[0] == SHOP_ITEM_NONE)
     {
-        int32_t x = w->windowPos.x + widget->left;
-        int32_t y = w->windowPos.y + widget->top;
+        auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
         // Track
         if (ride->type == RIDE_TYPE_MAZE)
         {
             int32_t spriteIndex = MazeOptions[trackColour.supports].sprite;
-            gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+            gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
         }
         else
         {
@@ -5084,7 +5079,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             if (spriteIndex != 0)
             {
                 spriteIndex |= SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);
-                gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+                gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
             }
 
             // Supports
@@ -5092,20 +5087,20 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             if (spriteIndex != 0)
             {
                 spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(trackColour.supports);
-                gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+                gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
             }
         }
     }
     else
     {
-        int32_t x = w->windowPos.x + (widget->left + widget->right) / 2 - 8;
-        int32_t y = w->windowPos.y + (widget->bottom + widget->top) / 2 - 6;
+        auto screenCoords = w->windowPos
+            + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 8, (widget->bottom + widget->top) / 2 - 6 };
 
         uint8_t shopItem = rideEntry->shop_item[1] == SHOP_ITEM_NONE ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
         int32_t spriteIndex = ShopItems[shopItem].Image;
         spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[0].main);
 
-        gfx_draw_sprite(dpi, spriteIndex, x, y, 0);
+        gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
     }
 
     // Entrance preview
@@ -5132,14 +5127,14 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 spriteIndex += stationObj->BaseImageId;
 
                 // Back
-                gfx_draw_sprite(&clippedDpi, spriteIndex, 34, 20, terniaryColour);
+                gfx_draw_sprite(&clippedDpi, spriteIndex, { 34, 20 }, terniaryColour);
 
                 // Front
-                gfx_draw_sprite(&clippedDpi, spriteIndex + 4, 34, 20, terniaryColour);
+                gfx_draw_sprite(&clippedDpi, spriteIndex + 4, { 34, 20 }, terniaryColour);
 
                 // Glass
                 if (terniaryColour != 0)
-                    gfx_draw_sprite(&clippedDpi, ((spriteIndex + 20) & 0x7FFFF) + terniaryColour, 34, 20, terniaryColour);
+                    gfx_draw_sprite(&clippedDpi, ((spriteIndex + 20) & 0x7FFFF) + terniaryColour, { 34, 20 }, terniaryColour);
             }
         }
 
@@ -5169,8 +5164,8 @@ static void window_ride_colour_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, PALETTE_INDEX_12);
 
     // ?
-    int32_t x = (vehiclePreviewWidget->right - vehiclePreviewWidget->left) / 2;
-    int32_t y = vehiclePreviewWidget->bottom - vehiclePreviewWidget->top - 15;
+    auto screenCoords = ScreenCoordsXY{ (vehiclePreviewWidget->right - vehiclePreviewWidget->left) / 2,
+                                        vehiclePreviewWidget->bottom - vehiclePreviewWidget->top - 15 };
 
     // ?
     auto trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR ? w->vehicleIndex
@@ -5179,7 +5174,7 @@ static void window_ride_colour_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(
         ride->subtype, ride->num_cars_per_train, trainCarIndex)];
 
-    y += rideVehicleEntry->tab_height;
+    screenCoords.y += rideVehicleEntry->tab_height;
 
     // Draw the coloured spinning vehicle
     uint32_t spriteIndex = (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_11) ? w->frame_no / 4 : w->frame_no / 2;
@@ -5188,7 +5183,7 @@ static void window_ride_colour_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     spriteIndex += rideVehicleEntry->base_image_id;
     spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
     spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
-    gfx_draw_sprite(dpi, spriteIndex, x, y, vehicleColour.additional_2);
+    gfx_draw_sprite(dpi, spriteIndex, screenCoords, vehicleColour.additional_2);
 }
 
 #pragma endregion

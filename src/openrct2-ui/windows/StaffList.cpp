@@ -574,11 +574,12 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffHandymanColour);
     gfx_draw_sprite(
         dpi, i,
-        (window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].left
-         + window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].right)
-                / 2
-            + w->windowPos.x,
-        window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].bottom - 6 + w->windowPos.y, 0);
+        w->windowPos
+            + ScreenCoordsXY{ (window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].left
+                               + window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].right)
+                                  / 2,
+                              window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].bottom - 6 },
+        0);
 
     // Mechanic tab image
     i = (selectedTab == 1 ? (w->list_information_type & ~3) : 0);
@@ -586,11 +587,12 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffMechanicColour);
     gfx_draw_sprite(
         dpi, i,
-        (window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].left
-         + window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].right)
-                / 2
-            + w->windowPos.x,
-        window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].bottom - 6 + w->windowPos.y, 0);
+        w->windowPos
+            + ScreenCoordsXY{ (window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].left
+                               + window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].right)
+                                  / 2,
+                              window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].bottom - 6 },
+        0);
 
     // Security tab image
     i = (selectedTab == 2 ? (w->list_information_type & ~3) : 0);
@@ -598,11 +600,12 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffSecurityColour);
     gfx_draw_sprite(
         dpi, i,
-        (window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].left
-         + window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].right)
-                / 2
-            + w->windowPos.x,
-        window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].bottom - 6 + w->windowPos.y, 0);
+        w->windowPos
+            + ScreenCoordsXY{ (window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].left
+                               + window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].right)
+                                  / 2,
+                              window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].bottom - 6 },
+        0);
 
     rct_drawpixelinfo sprite_dpi;
     if (clip_drawpixelinfo(
@@ -616,7 +619,7 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Entertainers tab image
         i = (selectedTab == 3 ? (w->list_information_type & ~3) : 0);
         i += g_peep_animation_entries[PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT].sprite_animation->base_image + 1;
-        gfx_draw_sprite(&sprite_dpi, i, 0x0F, 0x17, 0);
+        gfx_draw_sprite(&sprite_dpi, i, { 0x0F, 0x17 }, 0);
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -708,7 +711,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             // True if a patrol path is set for the worker
             if (gStaffModes[peep->StaffId] & 2)
             {
-                gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, nameColumnSize + 5, y, 0);
+                gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, { nameColumnSize + 5, y }, 0);
             }
 
             auto staffOrderIcon_x = nameColumnSize + 20;
@@ -721,7 +724,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
                 {
                     if (staffOrders & 1)
                     {
-                        gfx_draw_sprite(dpi, staffOrderSprite, staffOrderIcon_x, y, 0);
+                        gfx_draw_sprite(dpi, staffOrderSprite, { staffOrderIcon_x, y }, 0);
                     }
                     staffOrders = staffOrders >> 1;
                     staffOrderIcon_x += 9;
@@ -731,7 +734,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             }
             else
             {
-                gfx_draw_sprite(dpi, staffCostumeSprites[peep->SpriteType - 4], staffOrderIcon_x, y, 0);
+                gfx_draw_sprite(dpi, staffCostumeSprites[peep->SpriteType - 4], { staffOrderIcon_x, y }, 0);
             }
         }
 

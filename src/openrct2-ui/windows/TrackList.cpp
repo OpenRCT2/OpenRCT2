@@ -549,7 +549,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     g1temp.flags = G1_FLAG_BMP;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     drawing_engine_invalidate_image(SPR_TEMP);
-    gfx_draw_sprite(dpi, SPR_TEMP, trackPreview.x, trackPreview.y, 0);
+    gfx_draw_sprite(dpi, SPR_TEMP, trackPreview, 0);
 
     screenPos.y = w->windowPos.y + widget->bottom - 12;
 
