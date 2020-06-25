@@ -684,20 +684,12 @@ void save_game_as()
     delete intent;
 }
 
-static int32_t compare_autosave_file_paths(const void* a, const void* b)
-{
-    return strcmp(static_cast<const char*>(a), static_cast<const char*>(b));
-}
-
 static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processLandscapeFolder)
 {
     size_t autosavesCount = 0;
     size_t numAutosavesToDelete = 0;
 
     utf8 filter[MAX_PATH];
-
-    utf8** autosaveFiles = nullptr;
-
     if (processLandscapeFolder)
     {
         platform_get_user_directory(filter, "landscape", sizeof(filter));
@@ -726,47 +718,39 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
         return;
     }
 
-    autosaveFiles = static_cast<utf8**>(malloc(sizeof(utf8*) * autosavesCount));
-
+    auto autosaveFiles = std::vector<std::string>(autosavesCount);
     {
         auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
         for (size_t i = 0; i < autosavesCount; i++)
         {
-            autosaveFiles[i] = static_cast<utf8*>(malloc(sizeof(utf8) * MAX_PATH));
-            std::memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
-
+            autosaveFiles[i].resize(MAX_PATH, 0);
             if (scanner->Next())
             {
                 if (processLandscapeFolder)
                 {
-                    platform_get_user_directory(autosaveFiles[i], "landscape", sizeof(utf8) * MAX_PATH);
+                    platform_get_user_directory(autosaveFiles[i].data(), "landscape", sizeof(utf8) * MAX_PATH);
                 }
                 else
                 {
-                    platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
+                    platform_get_user_directory(autosaveFiles[i].data(), "save", sizeof(utf8) * MAX_PATH);
                 }
-                safe_strcat_path(autosaveFiles[i], "autosave", sizeof(utf8) * MAX_PATH);
-                safe_strcat_path(autosaveFiles[i], scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
+                safe_strcat_path(autosaveFiles[i].data(), "autosave", sizeof(utf8) * MAX_PATH);
+                safe_strcat_path(autosaveFiles[i].data(), scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
             }
         }
     }
 
-    qsort(autosaveFiles, autosavesCount, sizeof(char*), compare_autosave_file_paths);
+    std::sort(autosaveFiles.begin(), autosaveFiles.end(), [](const auto& saveFile0, const auto& saveFile1) {
+        return saveFile0.compare(saveFile1) < 0;
+    });
 
     // Calculate how many saves we need to delete.
     numAutosavesToDelete = autosavesCount - numberOfFilesToKeep;
 
     for (size_t i = 0; numAutosavesToDelete > 0; i++, numAutosavesToDelete--)
     {
-        platform_file_delete(autosaveFiles[i]);
+        platform_file_delete(autosaveFiles[i].data());
     }
-
-    for (size_t i = 0; i < autosavesCount; i++)
-    {
-        free(autosaveFiles[i]);
-    }
-
-    free(autosaveFiles);
 }
 
 void game_autosave()
