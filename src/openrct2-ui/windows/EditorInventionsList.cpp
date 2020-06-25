@@ -605,7 +605,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     }
 
     // Item name
-    screenPos = w->windowPos + ScreenCoordsXY{ ((widget->left + widget->right) / 2) + 1, widget->bottom + 3 };
+    screenPos = w->windowPos + ScreenCoordsXY{ widget->midX() + 1, widget->bottom + 3 };
     width = w->width - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
 
     rct_string_id drawString = window_editor_inventions_list_prepare_name(researchItem, false);

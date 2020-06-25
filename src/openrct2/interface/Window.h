@@ -108,6 +108,16 @@ struct rct_widget
     {
         return bottom - top;
     }
+
+    int16_t midX() const
+    {
+        return (left + right) / 2;
+    }
+
+    int16_t midY() const
+    {
+        return (top + bottom) / 2;
+    }
 };
 
 /**

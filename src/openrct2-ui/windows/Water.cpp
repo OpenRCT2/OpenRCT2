@@ -211,10 +211,8 @@ static void window_water_invalidate(rct_window* w)
  */
 static void window_water_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    auto screenCoords = ScreenCoordsXY{
-        w->windowPos.x + (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2,
-        w->windowPos.y + (window_water_widgets[WIDX_PREVIEW].top + window_water_widgets[WIDX_PREVIEW].bottom) / 2
-    };
+    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + window_water_widgets[WIDX_PREVIEW].midX(),
+                                        w->windowPos.y + window_water_widgets[WIDX_PREVIEW].midY() };
 
     window_draw_widgets(w, dpi);
     // Draw number for tool sizes bigger than 7
@@ -227,8 +225,7 @@ static void window_water_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Draw raise cost amount
-        screenCoords = { (window_water_widgets[WIDX_PREVIEW].left + window_water_widgets[WIDX_PREVIEW].right) / 2
-                             + w->windowPos.x,
+        screenCoords = { window_water_widgets[WIDX_PREVIEW].midX() + w->windowPos.x,
                          window_water_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5 };
         if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
             gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gWaterToolRaiseCost);

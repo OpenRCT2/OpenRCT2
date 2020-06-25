@@ -346,9 +346,8 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
 
     if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
     {
-        int32_t height = widget->height();
-        if (height >= 10)
-            topLeft.y += std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
+        if (widget->height() >= 10)
+            topLeft.y += std::max<int32_t>(widget->top, widget->top + (widget->height() / 2) - 5);
         else
             topLeft.y += widget->top - 1;
     }
@@ -391,9 +390,8 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
     if (widget->type == WWT_BUTTON || widget->type == WWT_DROPDOWN || widget->type == WWT_SPINNER
         || widget->type == WWT_TABLE_HEADER)
     {
-        int32_t height = widget->height();
-        if (height >= 10)
-            t = w->windowPos.y + std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
+        if (widget->height() >= 10)
+            t = w->windowPos.y + std::max<int32_t>(widget->top, widget->top + (widget->height() / 2) - 5);
         else
             t = w->windowPos.y + widget->top - 1;
     }
@@ -588,9 +586,7 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget->text == STR_NONE)
         return;
 
-    topLeft = w->windowPos
-        + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 1,
-                          std::max<int32_t>(widget->top, (widget->top + widget->bottom) / 2 - 5) };
+    topLeft = w->windowPos + ScreenCoordsXY{ widget->midX() - 1, std::max<int32_t>(widget->top, widget->midY() - 5) };
 
     if (widget_is_disabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
@@ -1058,9 +1054,8 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     gCurrentFontFlags = 0;
 
     // Figure out where the text should be positioned vertically.
-    int32_t height = (widget->bottom - widget->top);
-    if (height >= 10)
-        t = w->windowPos.y + std::max<int32_t>(widget->top, widget->top + (height / 2) - 5);
+    if (widget->height() >= 10)
+        t = w->windowPos.y + std::max<int32_t>(widget->top, widget->top + (widget->height() / 2) - 5);
     else
         t = w->windowPos.y + widget->top - 1;
 
@@ -1103,6 +1098,6 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (gTextBoxFrameNo <= 15)
     {
         colour = ColourMapA[w->colours[1]].mid_light;
-        gfx_fill_rect(dpi, cur_x, t + (height - 1), cur_x + width, t + (height - 1), colour + 5);
+        gfx_fill_rect(dpi, cur_x, t + (widget->height() - 1), cur_x + width, t + (widget->height() - 1), colour + 5);
     }
 }

@@ -876,7 +876,7 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
     gfx_draw_string_centred_clipped(
         dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK,
-        w->windowPos + ScreenCoordsXY{ (labelWidget->left + labelWidget->right) / 2, labelWidget->top }, labelWidget->width());
+        w->windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width());
 }
 
 /**
@@ -1861,10 +1861,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 
         sprite_idx |= 0xA9E00000;
         gfx_draw_sprite(
-            dpi, sprite_idx,
-            w->windowPos
-                + ScreenCoordsXY{ (w->widgets[WIDX_TAB_3].left + w->widgets[WIDX_TAB_3].right) / 2,
-                                  w->widgets[WIDX_TAB_3].bottom - 9 },
+            dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_3].midX(), w->widgets[WIDX_TAB_3].bottom - 9 },
             0);
     }
 

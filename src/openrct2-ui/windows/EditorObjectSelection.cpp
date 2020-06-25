@@ -1058,7 +1058,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
     // Draw name of object
     {
-        auto screenPos = w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2 + 1, widget->bottom + 3 };
+        auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX() + 1, widget->bottom + 3 };
         width = w->width - w->widgets[WIDX_LIST].right - 6;
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_STRING);

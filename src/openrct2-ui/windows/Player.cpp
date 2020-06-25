@@ -378,8 +378,8 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<const char*>(buffer);
 
         gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top }, widget->width() - 8);
+            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top },
+            widget->width() - 8);
     }
 
     // Draw ping

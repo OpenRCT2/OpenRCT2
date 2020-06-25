@@ -238,7 +238,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     drawing_engine_invalidate_image(SPR_TEMP);
     gfx_draw_sprite(dpi, SPR_TEMP, screenPos, 0);
 
-    screenPos = w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->bottom - 12 };
+    screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 12 };
 
     // Warnings
     const TrackDesign* td6 = _trackDesign.get();

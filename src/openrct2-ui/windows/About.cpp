@@ -204,7 +204,7 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
     const auto& aboutOpenRCT2 = w->widgets[WIDX_TAB_ABOUT_OPENRCT2];
     const auto& aboutRCT2 = w->widgets[WIDX_TAB_ABOUT_RCT2];
 
-    int32_t y = w->windowPos.y + ((aboutOpenRCT2.top + aboutOpenRCT2.bottom) / 2) - 3;
+    int32_t y = w->windowPos.y + aboutOpenRCT2.midY() - 3;
     ScreenCoordsXY aboutOpenRCT2Coords(w->windowPos.x + aboutOpenRCT2.left + 45, y);
     ScreenCoordsXY aboutRCT2Coords(w->windowPos.x + aboutRCT2.left + 45, y);
 
