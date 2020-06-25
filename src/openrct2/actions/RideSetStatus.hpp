@@ -88,7 +88,10 @@ public:
         }
 
         res->ErrorTitle = _StatusErrorTitles[_status];
-        ride->FormatNameTo(res->ErrorMessageArgs.data() + 6);
+
+        Formatter ft(res->ErrorMessageArgs.data());
+        ft.Increment(6);
+        ride->FormatNameTo(ft);
         if (_status != ride->status)
         {
             if (_status == RIDE_STATUS_SIMULATING && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
@@ -136,7 +139,10 @@ public:
         }
 
         res->ErrorTitle = _StatusErrorTitles[_status];
-        ride->FormatNameTo(res->ErrorMessageArgs.data() + 6);
+
+        Formatter ft(res->ErrorMessageArgs.data());
+        ft.Increment(6);
+        ride->FormatNameTo(ft);
         if (!ride->overall_view.isNull())
         {
             auto location = ride->overall_view.ToTileCentre();

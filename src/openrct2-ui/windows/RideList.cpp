@@ -605,11 +605,12 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             continue;
 
         // Ride name
-        ride->FormatNameTo(gCommonFormatArgs);
+        auto ft = Formatter::Common();
+        ride->FormatNameTo(ft);
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y - 1 }, 159);
 
         // Ride information
-        auto ft = Formatter::Common();
+        ft.Rewind();
         ft.Increment(2);
         auto formatSecondaryEnabled = true;
         rct_string_id formatSecondary = 0;

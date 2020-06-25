@@ -266,7 +266,7 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                         Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItemsArgs[numItems]));
                         if (ride->custom_name.empty())
                         {
-                            ride->FormatNameTo(ft.Buf());
+                            ride->FormatNameTo(ft);
                         }
                         else
                         {
@@ -343,7 +343,9 @@ static void window_new_campaign_invalidate(rct_window* w)
                 if (ride != nullptr)
                 {
                     window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
-                    ride->FormatNameTo(gCommonFormatArgs);
+
+                    auto ft = Formatter::Common();
+                    ride->FormatNameTo(ft);
                 }
             }
             break;

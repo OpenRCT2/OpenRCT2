@@ -426,13 +426,14 @@ static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex wid
 static void window_maze_construction_invalidate(rct_window* w)
 {
     auto ride = get_ride(_currentRideIndex);
+    auto ft = Formatter::Common();
     if (ride != nullptr)
     {
-        ride->FormatNameTo(gCommonFormatArgs + 4);
+        ft.Increment(4);
+        ride->FormatNameTo(ft);
     }
     else
     {
-        auto ft = Formatter::Common();
         ft.Increment(4);
         ft.Add<rct_string_id>(STR_NONE);
     }

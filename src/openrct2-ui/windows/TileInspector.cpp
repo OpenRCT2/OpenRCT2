@@ -1925,7 +1925,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 11 });
                 if (ride != nullptr)
                 {
-                    ride->FormatNameTo(gCommonFormatArgs);
+                    auto ft = Formatter::Common();
+                    ride->FormatNameTo(ft);
                     gfx_draw_string_left(
                         dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_WHITE,
                         screenCoords + ScreenCoordsXY{ 0, 22 });

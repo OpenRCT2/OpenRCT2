@@ -1241,7 +1241,9 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& 
             if (ride != nullptr)
             {
                 res.ErrorMessage = STR_X_IN_THE_WAY;
-                ride->FormatNameTo(res.ErrorMessageArgs.data());
+
+                Formatter ft(res.ErrorMessageArgs.data());
+                ride->FormatNameTo(ft);
             }
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:

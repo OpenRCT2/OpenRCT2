@@ -1778,7 +1778,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             else
             {
@@ -1792,7 +1792,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             else
             {
@@ -1808,7 +1808,7 @@ void Peep::FormatActionTo(Formatter& ft) const
                 if (ride != nullptr)
                 {
                     ft.Add<rct_string_id>(STR_HEADING_FOR);
-                    ride->FormatNameTo(ft.Buf());
+                    ride->FormatNameTo(ft);
                 }
             }
             else
@@ -1823,7 +1823,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(STR_QUEUING_FOR);
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             break;
         }
@@ -1837,7 +1837,7 @@ void Peep::FormatActionTo(Formatter& ft) const
                 if (ride != nullptr)
                 {
                     ft.Add<rct_string_id>((StandingFlags & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
-                    ride->FormatNameTo(ft.Buf());
+                    ride->FormatNameTo(ft);
                 }
             }
             else
@@ -1880,7 +1880,7 @@ void Peep::FormatActionTo(Formatter& ft) const
                 auto ride = get_ride(CurrentRide);
                 if (ride != nullptr)
                 {
-                    ride->FormatNameTo(ft.Buf());
+                    ride->FormatNameTo(ft);
                 }
                 else
                 {
@@ -1894,7 +1894,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             else
             {
@@ -1908,7 +1908,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             else
             {
@@ -1922,7 +1922,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             else
             {

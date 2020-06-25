@@ -2303,7 +2303,9 @@ static void window_ride_construction_invalidate(rct_window* w)
     }
 
     // Set window title arguments
-    ride->FormatNameTo(gCommonFormatArgs + 4);
+    ft = Formatter::Common();
+    ft.Increment(4);
+    ride->FormatNameTo(ft);
 }
 
 /**

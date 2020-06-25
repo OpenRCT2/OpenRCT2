@@ -2641,7 +2641,8 @@ static void window_ride_main_invalidate(rct_window* w)
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK))
         w->disabled_widgets |= (1 << WIDX_DEMOLISH);
 
-    ride->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    ride->FormatNameTo(ft);
 
     uint32_t spriteIds[] = {
         SPR_CLOSED,
@@ -3091,7 +3092,6 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     rideEntry = ride->GetRideEntry();
 
     w->widgets[WIDX_TITLE].text = STR_ARG_20_STRINGID;
-    ride->FormatNameTo(gCommonFormatArgs + 20);
 
     // Widget setup
     carsPerTrain = ride->num_cars_per_train - rideEntry->zero_cars;
@@ -3154,6 +3154,7 @@ static void window_ride_vehicle_invalidate(rct_window* w)
         stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].plural;
     }
     ft.Add<rct_string_id>(stringId);
+    ride->FormatNameTo(ft);
 
     window_ride_anchor_border_widgets(w);
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
@@ -3670,7 +3671,8 @@ static void window_ride_operating_invalidate(rct_window* w)
     if (ride == nullptr)
         return;
 
-    ride->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    ride->FormatNameTo(ft);
 
     // Widget setup
     w->pressed_widgets &= ~(
@@ -3688,7 +3690,7 @@ static void window_ride_operating_invalidate(rct_window* w)
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_DECREASE].type = WWT_BUTTON;
-        auto ft = Formatter::Common();
+        ft.Rewind();
         ft.Increment(20);
         ft.Add<uint16_t>(ride->lift_hill_speed);
     }
@@ -3707,7 +3709,7 @@ static void window_ride_operating_invalidate(rct_window* w)
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WWT_BUTTON;
-        auto ft = Formatter::Common();
+        ft.Rewind();
         ft.Increment(22);
         ft.Add<uint16_t>(ride->num_circuits);
     }
@@ -3773,7 +3775,7 @@ static void window_ride_operating_invalidate(rct_window* w)
         window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_MAXIMUM_LENGTH_DECREASE].type = WWT_BUTTON;
 
-        auto ft = Formatter::Common();
+        ft.Rewind();
         ft.Increment(10);
         ft.Add<rct_string_id>(STR_FORMAT_SECONDS);
         ft.Add<uint16_t>(ride->min_waiting_time);
@@ -3810,7 +3812,7 @@ static void window_ride_operating_invalidate(rct_window* w)
         w->pressed_widgets |= (1 << WIDX_MAXIMUM_LENGTH_CHECKBOX);
 
     // Mode specific functionality
-    auto ft = Formatter::Common();
+    ft.Rewind();
     ft.Increment(18);
     ft.Add<uint16_t>(ride->operation_option);
     switch (ride->mode)
@@ -4269,7 +4271,8 @@ static void window_ride_maintenance_invalidate(rct_window* w)
     if (ride == nullptr)
         return;
 
-    ride->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    ride->FormatNameTo(ft);
 
     window_ride_maintenance_widgets[WIDX_INSPECTION_INTERVAL].text = RideInspectionIntervalNames[ride->inspection_interval];
 
@@ -4829,7 +4832,9 @@ static void window_ride_colour_invalidate(rct_window* w)
         return;
 
     w->widgets[WIDX_TITLE].text = STR_ARG_16_STRINGID;
-    ride->FormatNameTo(gCommonFormatArgs + 16);
+    auto ft = Formatter::Common();
+    ft.Increment(16);
+    ride->FormatNameTo(ft);
 
     // Track colours
     int32_t colourScheme = w->ride_colour;
@@ -4993,7 +4998,7 @@ static void window_ride_colour_invalidate(rct_window* w)
             window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WWT_EMPTY;
             window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WWT_EMPTY;
         }
-        auto ft = Formatter::Common();
+        ft.Rewind();
         ft.Increment(6);
         ft.Add<rct_string_id>(VehicleColourSchemeNames[vehicleColourSchemeType]);
         ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular);
@@ -5027,7 +5032,7 @@ static void window_ride_colour_invalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WWT_EMPTY;
     }
 
-    auto ft = Formatter::Common();
+    ft.Rewind();
     ft.Increment(14);
     ft.Add<rct_string_id>(ColourSchemeNames[colourScheme]);
 
@@ -5349,7 +5354,8 @@ static void window_ride_music_invalidate(rct_window* w)
     if (ride == nullptr)
         return;
 
-    ride->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    ride->FormatNameTo(ft);
 
     // Set selected music
     window_ride_music_widgets[WIDX_MUSIC].text = MusicStyleNames[ride->music];
@@ -5715,7 +5721,8 @@ static void window_ride_measurements_invalidate(rct_window* w)
     if (ride == nullptr)
         return;
 
-    ride->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    ride->FormatNameTo(ft);
 
     window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].tooltip = STR_SAVE_TRACK_DESIGN_NOT_POSSIBLE;
     window_ride_measurements_widgets[WIDX_SAVE_TRACK_DESIGN].type = WWT_EMPTY;
@@ -6184,7 +6191,8 @@ static void window_ride_graphs_invalidate(rct_window* w)
     if (ride == nullptr)
         return;
 
-    ride->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    ride->FormatNameTo(ft);
 
     // Set pressed graph button type
     w->pressed_widgets &= ~(1 << WIDX_GRAPH_VELOCITY);
@@ -6735,7 +6743,10 @@ static void window_ride_income_invalidate(rct_window* w)
         return;
 
     w->widgets[WIDX_TITLE].text = STR_ARG_14_STRINGID;
-    ride->FormatNameTo(gCommonFormatArgs + 14);
+
+    auto ft = Formatter::Common();
+    ft.Increment(14);
+    ride->FormatNameTo(ft);
 
     auto rideEntry = ride->GetRideEntry();
     if (rideEntry == nullptr)
@@ -6762,7 +6773,7 @@ static void window_ride_income_invalidate(rct_window* w)
 
     window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_ARG_6_CURRENCY2DP;
     money16 ridePrimaryPrice = ride_get_price(ride);
-    auto ft = Formatter::Common();
+    ft.Rewind();
     ft.Increment(6);
     ft.Add<money32>(ridePrimaryPrice);
     if (ridePrimaryPrice == 0)
@@ -7015,7 +7026,8 @@ static void window_ride_customer_invalidate(rct_window* w)
     auto ride = get_ride(w->number);
     if (ride != nullptr)
     {
-        ride->FormatNameTo(gCommonFormatArgs);
+        auto ft = Formatter::Common();
+        ride->FormatNameTo(ft);
 
         window_ride_customer_widgets[WIDX_SHOW_GUESTS_THOUGHTS].type = WWT_FLATBTN;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
