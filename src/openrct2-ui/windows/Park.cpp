@@ -699,8 +699,7 @@ static void window_park_entrance_mousedown(rct_window* w, rct_widgetindex widget
         gDropdownItemsArgs[0] = STR_CLOSE_PARK;
         gDropdownItemsArgs[1] = STR_OPEN_PARK;
         window_dropdown_show_text(
-            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[1], 0,
-            2);
+            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
 
         if (park_is_open())
         {
@@ -877,8 +876,7 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
     gfx_draw_string_centred_clipped(
         dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK,
-        w->windowPos + ScreenCoordsXY{ (labelWidget->left + labelWidget->right) / 2, labelWidget->top },
-        labelWidget->right - labelWidget->left);
+        w->windowPos + ScreenCoordsXY{ (labelWidget->left + labelWidget->right) / 2, labelWidget->top }, labelWidget->width());
 }
 
 /**
@@ -935,8 +933,8 @@ static void window_park_init_viewport(rct_window* w)
             rct_widget* viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
             viewport_create(
                 w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-                (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
-                { x, y, z }, w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK, SPRITE_INDEX_NULL);
+                viewportWidget->width() - 1, viewportWidget->height() - 1, 0, { x, y, z },
+                w->viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_MASK, SPRITE_INDEX_NULL);
             w->flags |= (1 << 2);
             w->Invalidate();
         }

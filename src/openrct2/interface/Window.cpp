@@ -1692,7 +1692,7 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
 void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id)
 {
     int32_t i, x = w->widgets[start_tab_id].left;
-    int32_t tab_width = w->widgets[start_tab_id].right - w->widgets[start_tab_id].left;
+    int32_t tab_width = w->widgets[start_tab_id].width();
 
     for (i = start_tab_id; i <= end_tab_id; i++)
     {
@@ -2137,7 +2137,7 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
 
     if (scroll->flags & HSCROLLBAR_VISIBLE)
     {
-        int32_t view_size = widget->right - widget->left - 21;
+        int32_t view_size = widget->width() - 21;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             view_size -= 11;
         int32_t x = scroll->h_left * view_size;
@@ -2145,7 +2145,7 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
             x /= scroll->h_right;
         scroll->h_thumb_left = x + 11;
 
-        x = widget->right - widget->left - 2;
+        x = widget->width() - 2;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             x -= 11;
         x += scroll->h_left;
@@ -2166,7 +2166,7 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
 
     if (scroll->flags & VSCROLLBAR_VISIBLE)
     {
-        int32_t view_size = widget->bottom - widget->top - 21;
+        int32_t view_size = widget->height() - 21;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             view_size -= 11;
         int32_t y = scroll->v_top * view_size;
@@ -2174,7 +2174,7 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
             y /= scroll->v_bottom;
         scroll->v_thumb_top = y + 11;
 
-        y = widget->bottom - widget->top - 2;
+        y = widget->height() - 2;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             y -= 11;
         y += scroll->v_top;

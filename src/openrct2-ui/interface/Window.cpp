@@ -366,7 +366,7 @@ static void window_scroll_wheel_input(rct_window* w, int32_t scrollIndex, int32_
 
     if (scroll->flags & VSCROLLBAR_VISIBLE)
     {
-        int32_t size = widget->bottom - widget->top - 1;
+        int32_t size = widget->height() - 1;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             size -= 11;
         size = std::max(0, scroll->v_bottom - size);
@@ -374,7 +374,7 @@ static void window_scroll_wheel_input(rct_window* w, int32_t scrollIndex, int32_
     }
     else
     {
-        int32_t size = widget->right - widget->left - 1;
+        int32_t size = widget->width() - 1;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             size -= 11;
         size = std::max(0, scroll->h_right - size);

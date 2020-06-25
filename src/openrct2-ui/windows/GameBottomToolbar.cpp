@@ -585,7 +585,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
     utf8* newsItemText = newsItem->Text;
     auto screenCoords = w->windowPos
         + ScreenCoordsXY{ (middleOutsetWidget->left + middleOutsetWidget->right) / 2, middleOutsetWidget->top + 11 };
-    width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
+    width = middleOutsetWidget->width() - 62;
     gfx_draw_string_centred_wrapped_partial(
         dpi, screenCoords.x, screenCoords.y, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText,
         newsItem->Ticks);
@@ -690,7 +690,7 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
     ScreenCoordsXY middleWidgetCoords(
         w->windowPos.x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2,
         w->windowPos.y + middleOutsetWidget->top + line_height + 1);
-    int32_t width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
+    int32_t width = middleOutsetWidget->width() - 62;
 
     // Check if there is a map tooltip to draw
     rct_string_id stringId;

@@ -938,8 +938,8 @@ static void window_map_centre_on_view_point()
 
     // calculate width and height of minimap
 
-    ax = w_map->widgets[WIDX_MAP].right - w_map->widgets[WIDX_MAP].left - 11;
-    bx = w_map->widgets[WIDX_MAP].bottom - w_map->widgets[WIDX_MAP].top - 11;
+    ax = w_map->widgets[WIDX_MAP].width() - 11;
+    bx = w_map->widgets[WIDX_MAP].height() - 11;
     bp = ax;
     di = bx;
 

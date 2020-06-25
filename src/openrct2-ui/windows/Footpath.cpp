@@ -685,8 +685,8 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
 
     auto itemsPerRow = dropdown_get_appropriate_image_dropdown_items_per_row(numPathTypes);
     window_dropdown_show_image(
-        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, w->colours[1], 0,
-        numPathTypes, 47, 36, itemsPerRow);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, w->colours[1], 0, numPathTypes, 47,
+        36, itemsPerRow);
 }
 
 /**

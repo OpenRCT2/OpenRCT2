@@ -250,8 +250,7 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
     viewport_create(
         window, window->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-        viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, { 0, 0, 0 }, 0,
-        SPRITE_INDEX_NULL);
+        viewportWidget->width() - 1, viewportWidget->height() - 1, 0, { 0, 0, 0 }, 0, SPRITE_INDEX_NULL);
 
     _window_title_command_editor_index = index;
     _window_title_command_editor_insert = insert;
@@ -394,8 +393,8 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
             }
 
             window_dropdown_show_text_custom_width(
-                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+                DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
 
             dropdown_set_checked(get_command_info_index(command.Type), true);
             break;
@@ -411,8 +410,8 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
                 }
 
                 window_dropdown_show_text_custom_width(
-                    { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
-                    w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
+                    { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
 
                 dropdown_set_checked(command.Speed - 1, true);
             }
@@ -426,8 +425,8 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
                 }
 
                 window_dropdown_show_text_custom_width(
-                    { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
-                    w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
+                    { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
 
                 dropdown_set_checked(command.SaveIndex, true);
             }
@@ -789,7 +788,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         gfx_draw_string_left_clipped(
             dpi, spriteString, gCommonFormatArgs, colour,
             { w->windowPos.x + w->widgets[WIDX_VIEWPORT].left + 2, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top + 1 },
-            w->widgets[WIDX_VIEWPORT].right - w->widgets[WIDX_VIEWPORT].left - 2);
+            w->widgets[WIDX_VIEWPORT].width() - 2);
     }
     else if (command.Type == TITLE_SCRIPT_LOAD)
     {

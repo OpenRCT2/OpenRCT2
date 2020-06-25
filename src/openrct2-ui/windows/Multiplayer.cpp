@@ -367,8 +367,8 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window* w, rct_wid
     numItems = network_get_num_groups();
 
     window_dropdown_show_text_custom_width(
-        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
     for (i = 0; i < network_get_num_groups(); i++)
     {
@@ -916,8 +916,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         ft.Add<const char*>(buffer);
         gfx_draw_string_centred_clipped(
             dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top },
-            widget->right - widget->left - 8);
+            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top }, widget->width() - 8);
     }
 
     auto screenPos = w->windowPos
@@ -944,8 +943,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         ft.Add<const char*>(buffer);
         gfx_draw_string_centred_clipped(
             dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top },
-            widget->right - widget->left - 8);
+            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top }, widget->width() - 8);
     }
 }
 

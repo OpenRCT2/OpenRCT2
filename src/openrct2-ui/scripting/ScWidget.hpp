@@ -201,7 +201,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
-                return widget->right - widget->left;
+                return widget->width();
             }
             return 0;
         }
@@ -244,7 +244,7 @@ namespace OpenRCT2::Scripting
             auto widget = GetWidget();
             if (widget != nullptr)
             {
-                return widget->bottom - widget->top;
+                return widget->height();
             }
             return 0;
         }

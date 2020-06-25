@@ -1223,8 +1223,8 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     }
 
                     window_dropdown_show_text_custom_width(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
-                        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
+                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+                        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
 
                     dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
                     widget_invalidate(w, WIDX_THEMES_DROPDOWN);
@@ -1244,8 +1244,8 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     }
 
                     window_dropdown_show_text(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
-                        w->colours[1], DROPDOWN_FLAG_STAY_OPEN, num_items);
+                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
+                        DROPDOWN_FLAG_STAY_OPEN, num_items);
 
                     dropdown_set_checked(static_cast<int32_t>(title_get_current_sequence()), true);
                     break;
@@ -1258,8 +1258,8 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
 
                     window_dropdown_show_text_custom_width(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
-                        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
+                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+                        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
 
                     dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
                     break;
@@ -1577,7 +1577,7 @@ static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_ind
     rct_widget* widget = &window_options_audio_widgets[widget_index];
     rct_scroll* scroll = &w->scrolls[scroll_id];
 
-    int widget_size = scroll->h_right - (widget->right - widget->left - 1);
+    int widget_size = scroll->h_right - (widget->width() - 1);
     scroll->h_left = ceil(volume / 100.0f * widget_size);
 
     widget_scroll_update_thumbs(w, widget_index);
@@ -1918,7 +1918,7 @@ static void window_options_invalidate(rct_window* w)
 
 static uint8_t get_scroll_percentage(rct_widget* widget, rct_scroll* scroll)
 {
-    uint8_t width = widget->right - widget->left - 1;
+    uint8_t width = widget->width() - 1;
     return static_cast<float>(scroll->h_left) / (scroll->h_right - width) * 100;
 }
 
@@ -2099,8 +2099,8 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
 {
     window_dropdown_show_text_custom_width(
-        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[1], 0,
-        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->right - widget->left - 3);
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
 }
 
 static void window_options_update_height_markers()

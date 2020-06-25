@@ -609,7 +609,7 @@ void window_editor_object_selection_mousedown(rct_window* w, rct_widgetindex wid
             }
 
             window_dropdown_show_text(
-                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1,
                 w->colours[widget->colour], DROPDOWN_FLAG_STAY_OPEN, _numSourceGameItems + numSelectionItems);
 
             for (int32_t i = 0; i < _numSourceGameItems; i++)
@@ -916,7 +916,7 @@ static void window_editor_object_selection_invalidate(rct_window* w)
         for (int32_t i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
             w->widgets[i].type = WWT_TAB;
 
-        int32_t width_limit = (w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - 15) / 2;
+        int32_t width_limit = (w->widgets[WIDX_LIST].width() - 15) / 2;
 
         w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_TABLE_HEADER;
         w->widgets[WIDX_LIST_SORT_TYPE].top = w->widgets[WIDX_FILTER_TEXT_BOX].bottom + 3;
@@ -1027,8 +1027,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                    : STR_NONE;
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        gfx_draw_string_left_clipped(
-            dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], screenPos, widget->right - widget->left);
+        gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], screenPos, widget->width());
     }
     widget = &w->widgets[WIDX_LIST_SORT_RIDE];
     if (widget->type != WWT_EMPTY)
@@ -1036,8 +1035,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                    : STR_NONE;
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        gfx_draw_string_left_clipped(
-            dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], screenPos, widget->right - widget->left);
+        gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], screenPos, widget->width());
     }
 
     if (w->selected_list_item == -1 || _loadedObject == nullptr)
@@ -1050,8 +1048,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         rct_drawpixelinfo clipDPI;
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        width = widget->right - widget->left - 1;
-        int32_t height = widget->bottom - widget->top - 1;
+        width = widget->width() - 1;
+        int32_t height = widget->height() - 1;
         if (clip_drawpixelinfo(&clipDPI, dpi, screenPos.x, screenPos.y, width, height))
         {
             object_draw_preview(_loadedObject, &clipDPI, width, height);
@@ -1168,7 +1166,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
             }
 
-            int32_t width_limit = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left - screenCoords.x;
+            int32_t width_limit = w->widgets[WIDX_LIST].width() - screenCoords.x;
 
             if (ridePage)
             {

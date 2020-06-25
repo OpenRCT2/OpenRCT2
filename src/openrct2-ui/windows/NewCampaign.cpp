@@ -249,8 +249,8 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
 
                     window_dropdown_show_text_custom_width(
                         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-                        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
-                        dropdownWidget->right - dropdownWidget->left - 3);
+                        dropdownWidget->height() + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
+                        dropdownWidget->width() - 3);
                 }
             }
             else
@@ -279,8 +279,8 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
 
                 window_dropdown_show_text_custom_width(
                     { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-                    dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
-                    dropdownWidget->right - dropdownWidget->left - 3);
+                    dropdownWidget->height() + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
+                    dropdownWidget->width() - 3);
             }
             break;
         // In RCT2, the maximum was 6 weeks

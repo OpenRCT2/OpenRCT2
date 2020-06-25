@@ -239,8 +239,8 @@ static void window_player_overview_show_group_dropdown(rct_window* w, rct_widget
     numItems = network_get_num_groups();
 
     window_dropdown_show_text_custom_width(
-        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
     for (i = 0; i < network_get_num_groups(); i++)
     {
@@ -379,8 +379,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         gfx_draw_string_centred_clipped(
             dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top },
-            widget->right - widget->left - 8);
+            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top }, widget->width() - 8);
     }
 
     // Draw ping
@@ -448,7 +447,7 @@ void window_player_overview_invalidate(rct_window* w)
     w->widgets[WIDX_VIEWPORT].right = w->width - 26;
     w->widgets[WIDX_VIEWPORT].bottom = w->height - 14;
 
-    int32_t groupDropdownWidth = w->widgets[WIDX_GROUP].right - w->widgets[WIDX_GROUP].left;
+    int32_t groupDropdownWidth = w->widgets[WIDX_GROUP].width();
     w->widgets[WIDX_GROUP].left = (w->width - groupDropdownWidth) / 2;
     w->widgets[WIDX_GROUP].right = w->widgets[WIDX_GROUP].left + groupDropdownWidth;
     w->widgets[WIDX_GROUP_DROPDOWN].left = w->widgets[WIDX_GROUP].right - 10;
@@ -462,8 +461,8 @@ void window_player_overview_invalidate(rct_window* w)
         rct_widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
 
         viewport->pos = w->windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
-        viewport->width = viewportWidget->right - viewportWidget->left;
-        viewport->height = viewportWidget->bottom - viewportWidget->top;
+        viewport->width = viewportWidget->width();
+        viewport->height = viewportWidget->height();
         viewport->view_width = viewport->width * viewport->zoom;
         viewport->view_height = viewport->height * viewport->zoom;
     }
