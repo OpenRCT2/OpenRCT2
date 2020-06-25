@@ -942,6 +942,25 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint8_t direction_get() const
+        {
+            if (_element != nullptr)
+            {
+                return _element->GetDirection();
+            }
+
+            return 0;
+        }
+        void direction_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            if (_element != nullptr)
+            {
+                _element->SetDirection(value);
+                Invalidate();
+            }
+        }
+
         void Invalidate()
         {
             map_invalidate_tile_full(_coords);
@@ -1013,6 +1032,7 @@ namespace OpenRCT2::Scripting
                 ctx, &ScTileElement::isAdditionBroken_get, &ScTileElement::isAdditionBroken_set, "isAdditionBroken");
             dukglue_register_property(
                 ctx, &ScTileElement::isAdditionGhost_get, &ScTileElement::isAdditionGhost_set, "isAdditionGhost");
+            dukglue_register_property(ctx, &ScTileElement::direction_get, &ScTileElement::direction_set, "direction");
 
             // Entrance only
             dukglue_register_property(

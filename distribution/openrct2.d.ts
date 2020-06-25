@@ -420,6 +420,7 @@ declare global {
         baseHeight: number;
         clearanceHeight: number;
         isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
+        direction: 0 | 1 | 2 | 3;
     }
 
     interface SurfaceElement extends BaseTileElement {
