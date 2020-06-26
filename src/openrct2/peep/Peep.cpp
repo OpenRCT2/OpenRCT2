@@ -846,7 +846,7 @@ void Peep::Remove()
 {
     if (AssignedPeepType == PEEP_TYPE_GUEST)
     {
-        if (OutsideOfPark == 0)
+        if (!OutsideOfPark)
         {
             decrement_guests_in_park();
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
@@ -1178,7 +1178,7 @@ void peep_problem_warnings_update()
 
     for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
-        if (peep->OutsideOfPark != 0 || peep->Thoughts[0].freshness > 5)
+        if (peep->OutsideOfPark || peep->Thoughts[0].freshness > 5)
             continue;
 
         switch (peep->Thoughts[0].type)
@@ -1419,7 +1419,7 @@ void peep_applause()
 {
     for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
-        if (peep->OutsideOfPark != 0)
+        if (peep->OutsideOfPark)
             continue;
 
         // Release balloon
@@ -1447,7 +1447,7 @@ void peep_update_days_in_queue()
 {
     for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
-        if (peep->OutsideOfPark == 0 && peep->State == PEEP_STATE_QUEUING)
+        if (!peep->OutsideOfPark && peep->State == PEEP_STATE_QUEUING)
         {
             if (peep->DaysInQueue < 255)
             {
@@ -1593,7 +1593,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     Peep* peep = &create_sprite(SPRITE_IDENTIFIER_PEEP)->peep;
     peep->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
     peep->SpriteType = PEEP_SPRITE_TYPE_NORMAL;
-    peep->OutsideOfPark = 1;
+    peep->OutsideOfPark = true;
     peep->State = PEEP_STATE_FALLING;
     peep->Action = PEEP_ACTION_NONE_2;
     peep->SpecialSprite = 0;
@@ -2752,7 +2752,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
     int16_t z = tile_element->GetBaseZ();
     if (map_is_location_owned({ x, y, z }))
     {
-        if (peep->OutsideOfPark == 1)
+        if (peep->OutsideOfPark)
         {
             peep_return_to_centre_of_tile(peep);
             return;
@@ -2760,7 +2760,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
     }
     else
     {
-        if (peep->OutsideOfPark == 0)
+        if (!peep->OutsideOfPark)
         {
             peep_return_to_centre_of_tile(peep);
             return;
@@ -3043,7 +3043,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
     if (map_is_edge(newLoc))
     {
-        if (OutsideOfPark == 1)
+        if (OutsideOfPark)
         {
             pathing_result |= PATHING_OUTSIDE_PARK;
         }
