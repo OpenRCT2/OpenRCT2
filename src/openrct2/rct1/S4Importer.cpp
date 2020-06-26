@@ -1414,7 +1414,7 @@ private:
             dst->SetName(GetUserString(src->name_string_idx));
         }
 
-        dst->OutsideOfPark = src->outside_of_park;
+        dst->OutsideOfPark = static_cast<bool>(src->outside_of_park);
 
         dst->State = static_cast<PeepState>(src->state);
         dst->SubState = src->sub_state;

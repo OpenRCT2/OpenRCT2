@@ -1418,7 +1418,7 @@ public:
         }
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * COORDS_Z_STEP };
         dst->NextFlags = src->next_flags;
-        dst->OutsideOfPark = src->outside_of_park;
+        dst->OutsideOfPark = static_cast<bool>(src->outside_of_park);
         dst->State = static_cast<PeepState>(src->state);
         dst->SubState = src->sub_state;
         dst->SpriteType = static_cast<PeepSpriteType>(src->sprite_type);
