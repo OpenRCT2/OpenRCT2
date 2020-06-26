@@ -565,7 +565,7 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
 
     auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
-    int32_t extray = widget->bottom - widget->top + 1;
+    int32_t extray = widget->height() + 1;
     window_dropdown_show_text(dropdownPos, extray, w->colours[1], 0, 2);
     gDropdownDefaultIndex = 0;
 
@@ -776,7 +776,8 @@ void window_staff_stats_invalidate(rct_window* w)
 
     Peep* peep = GET_PEEP(w->number);
 
-    peep->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    peep->FormatNameTo(ft);
 
     window_staff_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_staff_stats_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -809,8 +810,8 @@ void window_staff_options_invalidate(rct_window* w)
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
     Peep* peep = GET_PEEP(w->number);
-
-    peep->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    peep->FormatNameTo(ft);
 
     switch (peep->StaffType)
     {
@@ -885,8 +886,8 @@ void window_staff_overview_invalidate(rct_window* w)
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
     Peep* peep = GET_PEEP(w->number);
-
-    peep->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    peep->FormatNameTo(ft);
 
     window_staff_overview_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_staff_overview_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -942,16 +943,17 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         rct_viewport* viewport = w->viewport;
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos.x + 2, w->windowPos.y + 2, 0);
+            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos + ScreenCoordsXY{ 2, 2 }, 0);
         }
     }
 
     // Draw the centred label
     Peep* peep = GET_PEEP(w->number);
-    peep->FormatActionTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    peep->FormatActionTo(ft);
     rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top };
-    int32_t width = widget->right - widget->left;
+    int32_t width = widget->width();
     gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
 }
 
@@ -965,8 +967,6 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_STAFF_OPTIONS_0;
 
@@ -975,7 +975,8 @@ void window_staff_options_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 2) % 7;
     }
 
-    gfx_draw_sprite(dpi, image_id, x, y, 0);
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
 /**
@@ -988,8 +989,6 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
 
     int32_t image_id = SPR_TAB_STATS_0;
 
@@ -998,7 +997,8 @@ void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 4) % 7;
     }
 
-    gfx_draw_sprite(dpi, image_id, x, y, 0);
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
 /**
@@ -1010,26 +1010,24 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_1];
-    int32_t width = widget->right - widget->left - 1;
-    int32_t height = widget->bottom - widget->top - 1;
-    int32_t x = widget->left + 1 + w->windowPos.x;
-    int32_t y = widget->top + 1 + w->windowPos.y;
+    int32_t width = widget->width() - 1;
+    int32_t height = widget->height() - 1;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     if (w->page == WINDOW_STAFF_OVERVIEW)
         height++;
 
     rct_drawpixelinfo clip_dpi;
-    if (!clip_drawpixelinfo(&clip_dpi, dpi, x, y, width, height))
+    if (!clip_drawpixelinfo(&clip_dpi, dpi, screenCoords.x, screenCoords.y, width, height))
     {
         return;
     }
 
-    x = 14;
-    y = 20;
+    screenCoords = ScreenCoordsXY{ 20, 14 };
 
     Peep* peep = GET_PEEP(w->number);
 
     if (peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
-        y++;
+        screenCoords.y++;
 
     int32_t ebx = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
 
@@ -1043,14 +1041,14 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ebx += eax;
 
     int32_t sprite_id = ebx | SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
-    gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
+    gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords, 0);
 
     // If holding a balloon
     if (ebx >= 0x2A1D && ebx < 0x2A3D)
     {
         ebx += 32;
         ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
-        gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
+        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
     }
 
     // If holding umbrella
@@ -1058,7 +1056,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ebx += 32;
         ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour);
-        gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
+        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
     }
 
     // If wearing hat
@@ -1066,7 +1064,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ebx += 32;
         ebx |= SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour);
-        gfx_draw_sprite(&clip_dpi, ebx, x, y, 0);
+        gfx_draw_sprite(&clip_dpi, ebx, screenCoords, 0);
     }
 }
 
@@ -1383,8 +1381,8 @@ void window_staff_viewport_init(rct_window* w)
             rct_widget* view_widget = &w->widgets[WIDX_VIEWPORT];
 
             auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };
-            int32_t width = view_widget->right - view_widget->left - 1;
-            int32_t height = view_widget->bottom - view_widget->top - 1;
+            int32_t width = view_widget->width() - 1;
+            int32_t height = view_widget->height() - 1;
 
             viewport_create(
                 w, screenPos, width, height, 0, { 0, 0, 0 }, focus.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite_id);
@@ -1430,8 +1428,8 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     widget--;
 
     auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
-    int32_t extray = widget->bottom - widget->top + 1;
-    int32_t width = widget->right - widget->left - 3;
+    int32_t extray = widget->height() + 1;
+    int32_t width = widget->width() - 3;
     window_dropdown_show_text_custom_width(dropdownPos, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
 
     // See above note.

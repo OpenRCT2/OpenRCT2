@@ -102,11 +102,10 @@ void LargeSceneryObject::Unload()
 
 void LargeSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = (height / 2) - 39;
+    auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) - 39 };
 
     uint32_t imageId = 0xB2D00000 | _legacyType.image;
-    gfx_draw_sprite(dpi, imageId, x, y, 0);
+    gfx_draw_sprite(dpi, imageId, screenCoords, 0);
 }
 
 std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(IStream* stream)

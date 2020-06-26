@@ -244,13 +244,13 @@ void gfx_draw_dashed_line(
     }
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint32_t tertiary_colour)
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint32_t tertiary_colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawSprite(image, x, y, tertiary_colour);
+        dc->DrawSprite(image, coords.x, coords.y, tertiary_colour);
     }
 }
 

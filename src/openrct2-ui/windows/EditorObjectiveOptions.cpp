@@ -304,7 +304,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
     if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
         spriteIndex += (w->frame_no / 4) % 16;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
+    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
 
     // Tab 2
     if (!(w->disabled_widgets & (1 << WIDX_TAB_2)))
@@ -314,7 +314,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
         if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
             spriteIndex += (w->frame_no / 4) % 16;
 
-        gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
+        gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
     }
 }
 
@@ -486,9 +486,8 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
     numItems++;
 
     window_dropdown_show_text_custom_width(
-        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
-        dropdownWidget->right - dropdownWidget->left - 3);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, dropdownWidget->width() - 3);
 
     objectiveType = gScenarioObjectiveType;
     for (int32_t j = 0; j < numItems; j++)
@@ -514,9 +513,8 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
         gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
     }
     window_dropdown_show_text_custom_width(
-        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5,
-        dropdownWidget->right - dropdownWidget->left - 3);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5, dropdownWidget->width() - 3);
     dropdown_set_checked(gS6Info.category, true);
 }
 
@@ -1172,8 +1170,10 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
             }
 
             // Ride name
-            uint32_t args[32]{};
-            ride->FormatNameTo(args);
+            uint8_t args[32]{};
+
+            Formatter ft(args);
+            ride->FormatNameTo(ft);
             gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, { 15, y });
         }
     }

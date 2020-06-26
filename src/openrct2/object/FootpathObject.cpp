@@ -70,10 +70,9 @@ void FootpathObject::Unload()
 
 void FootpathObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
-    gfx_draw_sprite(dpi, _pathSurfaceEntry.preview, x - 49, y - 17, 0);
-    gfx_draw_sprite(dpi, _queueEntry.preview, x + 4, y - 17, 0);
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+    gfx_draw_sprite(dpi, _pathSurfaceEntry.preview, screenCoords - ScreenCoordsXY{ 49, 17 }, 0);
+    gfx_draw_sprite(dpi, _queueEntry.preview, screenCoords + ScreenCoordsXY{ 4, -17 }, 0);
 }
 
 static RailingEntrySupportType ParseSupportType(const std::string& s)

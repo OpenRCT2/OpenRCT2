@@ -776,9 +776,7 @@ public: // Peep
     void RemoveFromRide();
     void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
     void FormatActionTo(Formatter&) const;
-    void FormatActionTo(void* args) const;
     void FormatNameTo(Formatter&) const;
-    size_t FormatNameTo(void* args) const;
     std::string GetName() const;
     bool SetName(const std::string_view& value);
 

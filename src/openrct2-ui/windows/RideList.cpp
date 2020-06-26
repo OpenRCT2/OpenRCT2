@@ -322,7 +322,7 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
         gDropdownItemsFormat[0] = STR_CLOSE_ALL;
         gDropdownItemsFormat[1] = STR_OPEN_ALL;
         window_dropdown_show_text(
-            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top, w->colours[1], 0, 2);
+            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height(), w->colours[1], 0, 2);
     }
     else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
     {
@@ -357,8 +357,8 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
         }
 
         window_dropdown_show_text_custom_width(
-            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top, w->colours[1], 0,
-            DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - widget->left - 3);
+            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height(), w->colours[1], 0,
+            DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
         if (selectedIndex != -1)
         {
             dropdown_set_checked(selectedIndex, true);
@@ -605,11 +605,12 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             continue;
 
         // Ride name
-        ride->FormatNameTo(gCommonFormatArgs);
+        auto ft = Formatter::Common();
+        ride->FormatNameTo(ft);
         gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y - 1 }, 159);
 
         // Ride information
-        auto ft = Formatter::Common();
+        ft.Rewind();
         ft.Increment(2);
         auto formatSecondaryEnabled = true;
         rct_string_id formatSecondary = 0;
@@ -765,21 +766,21 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window*
     if (w->page == PAGE_RIDES)
         sprite_idx += w->frame_no / 4;
     gfx_draw_sprite(
-        dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_1].left, w->windowPos.y + w->widgets[WIDX_TAB_1].top, 0);
+        dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_1].left, w->widgets[WIDX_TAB_1].top }, 0);
 
     // Shops and stalls tab
     sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
     if (w->page == PAGE_SHOPS_AND_STALLS)
         sprite_idx += w->frame_no / 4;
     gfx_draw_sprite(
-        dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_2].left, w->windowPos.y + w->widgets[WIDX_TAB_2].top, 0);
+        dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_2].left, w->widgets[WIDX_TAB_2].top }, 0);
 
     // Information kiosks and facilities tab
     sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
     if (w->page == PAGE_KIOSKS_AND_FACILITIES)
         sprite_idx += (w->frame_no / 4) % 8;
     gfx_draw_sprite(
-        dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_3].left, w->windowPos.y + w->widgets[WIDX_TAB_3].top, 0);
+        dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_3].left, w->widgets[WIDX_TAB_3].top }, 0);
 }
 
 /**

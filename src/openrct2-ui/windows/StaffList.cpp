@@ -458,7 +458,7 @@ void window_staff_list_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
         w->Invalidate();
     }
 
-    *width = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15;
+    *width = w->widgets[WIDX_STAFF_LIST_LIST].width() - 15;
 }
 
 /**
@@ -574,11 +574,12 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffHandymanColour);
     gfx_draw_sprite(
         dpi, i,
-        (window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].left
-         + window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].right)
-                / 2
-            + w->windowPos.x,
-        window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].bottom - 6 + w->windowPos.y, 0);
+        w->windowPos
+            + ScreenCoordsXY{ (window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].left
+                               + window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].right)
+                                  / 2,
+                              window_staff_list_widgets[WIDX_STAFF_LIST_HANDYMEN_TAB].bottom - 6 },
+        0);
 
     // Mechanic tab image
     i = (selectedTab == 1 ? (w->list_information_type & ~3) : 0);
@@ -586,11 +587,12 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffMechanicColour);
     gfx_draw_sprite(
         dpi, i,
-        (window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].left
-         + window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].right)
-                / 2
-            + w->windowPos.x,
-        window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].bottom - 6 + w->windowPos.y, 0);
+        w->windowPos
+            + ScreenCoordsXY{ (window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].left
+                               + window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].right)
+                                  / 2,
+                              window_staff_list_widgets[WIDX_STAFF_LIST_MECHANICS_TAB].bottom - 6 },
+        0);
 
     // Security tab image
     i = (selectedTab == 2 ? (w->list_information_type & ~3) : 0);
@@ -598,11 +600,12 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffSecurityColour);
     gfx_draw_sprite(
         dpi, i,
-        (window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].left
-         + window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].right)
-                / 2
-            + w->windowPos.x,
-        window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].bottom - 6 + w->windowPos.y, 0);
+        w->windowPos
+            + ScreenCoordsXY{ (window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].left
+                               + window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].right)
+                                  / 2,
+                              window_staff_list_widgets[WIDX_STAFF_LIST_SECURITY_TAB].bottom - 6 },
+        0);
 
     rct_drawpixelinfo sprite_dpi;
     if (clip_drawpixelinfo(
@@ -616,7 +619,7 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Entertainers tab image
         i = (selectedTab == 3 ? (w->list_information_type & ~3) : 0);
         i += g_peep_animation_entries[PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT].sprite_animation->base_image + 1;
-        gfx_draw_sprite(&sprite_dpi, i, 0x0F, 0x17, 0);
+        gfx_draw_sprite(&sprite_dpi, i, { 0x0F, 0x17 }, 0);
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -672,7 +675,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
     // How much space do we have for the name and action columns? (Discount scroll area and icons.)
-    const int32_t nonIconSpace = w->widgets[WIDX_STAFF_LIST_LIST].right - w->widgets[WIDX_STAFF_LIST_LIST].left - 15 - 68;
+    const int32_t nonIconSpace = w->widgets[WIDX_STAFF_LIST_LIST].width() - 15 - 68;
     const int32_t nameColumnSize = nonIconSpace * 0.42;
     const int32_t actionColumnSize = nonIconSpace * 0.58;
     const int32_t actionOffset = w->widgets[WIDX_STAFF_LIST_LIST].right - actionColumnSize - 15;
@@ -697,16 +700,18 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
                 format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
             }
 
-            peep->FormatNameTo(gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            peep->FormatNameTo(ft);
             gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, nameColumnSize);
 
-            peep->FormatActionTo(gCommonFormatArgs);
+            ft = Formatter::Common();
+            peep->FormatActionTo(ft);
             gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { actionOffset, y }, actionColumnSize);
 
             // True if a patrol path is set for the worker
             if (gStaffModes[peep->StaffId] & 2)
             {
-                gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, nameColumnSize + 5, y, 0);
+                gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, { nameColumnSize + 5, y }, 0);
             }
 
             auto staffOrderIcon_x = nameColumnSize + 20;
@@ -719,7 +724,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
                 {
                     if (staffOrders & 1)
                     {
-                        gfx_draw_sprite(dpi, staffOrderSprite, staffOrderIcon_x, y, 0);
+                        gfx_draw_sprite(dpi, staffOrderSprite, { staffOrderIcon_x, y }, 0);
                     }
                     staffOrders = staffOrders >> 1;
                     staffOrderIcon_x += 9;
@@ -729,7 +734,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             }
             else
             {
-                gfx_draw_sprite(dpi, staffCostumeSprites[peep->SpriteType - 4], staffOrderIcon_x, y, 0);
+                gfx_draw_sprite(dpi, staffCostumeSprites[peep->SpriteType - 4], { staffOrderIcon_x, y }, 0);
             }
         }
 

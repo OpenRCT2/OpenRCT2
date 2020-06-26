@@ -72,5 +72,3 @@ constexpr const uint8_t LandSlopeToWallSlope[][NumOrthogonalDirections] = {
 // clang-format on
 
 #pragma endregion
-
-money32 wall_remove(int16_t x, int16_t y, uint8_t baseHeight, uint8_t direction, uint8_t flags);

@@ -440,7 +440,7 @@ static void window_editor_scenario_options_draw_tab_images(rct_window* w, rct_dr
     if (w->page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
         spriteIndex += (w->frame_no / 2) % 8;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
+    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
 
     // Tab 2
     widget = &w->widgets[WIDX_TAB_2];
@@ -448,12 +448,12 @@ static void window_editor_scenario_options_draw_tab_images(rct_window* w, rct_dr
     if (w->page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
         spriteIndex += (w->frame_no / 4) % 8;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
+    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
 
     // Tab 3
     widget = &w->widgets[WIDX_TAB_3];
     spriteIndex = SPR_TAB_PARK;
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
+    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
 }
 
 /**
@@ -548,9 +548,8 @@ static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
         gDropdownItemsArgs[i] = ClimateNames[i];
     }
     window_dropdown_show_text_custom_width(
-        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, CLIMATE_COUNT,
-        dropdownWidget->right - dropdownWidget->left - 3);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, CLIMATE_COUNT, dropdownWidget->width() - 3);
     dropdown_set_checked(gClimate, true);
 }
 
@@ -1043,8 +1042,7 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
 
     // Guest initial happiness value
     screenCoords = w->windowPos
-        + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1,
-                          w->windowPos.y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
+        + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
     arg = (gGuestInitialHappiness * 100) / 255;
     gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
 
@@ -1241,9 +1239,8 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             gDropdownItemsArgs[2] = STR_PAID_ENTRY_PAID_RIDES;
 
             window_dropdown_show_text_custom_width(
-                { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-                dropdownWidget->bottom - dropdownWidget->top - 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3,
-                dropdownWidget->right - dropdownWidget->left - 3);
+                { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3, dropdownWidget->width() - 3);
 
             if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
                 dropdown_set_checked(2, true);

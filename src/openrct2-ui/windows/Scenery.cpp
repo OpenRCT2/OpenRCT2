@@ -1124,8 +1124,10 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     uint32_t imageId = ((w->colours[1] << 19) | window_scenery_widgets[selectedWidgetId].image) + 1ul;
 
     gfx_draw_sprite(
-        dpi, imageId, w->windowPos.x + window_scenery_widgets[selectedWidgetId].left,
-        w->windowPos.y + window_scenery_widgets[selectedWidgetId].top, selectedWidgetId);
+        dpi, imageId,
+        w->windowPos
+            + ScreenCoordsXY{ window_scenery_widgets[selectedWidgetId].left, window_scenery_widgets[selectedWidgetId].top },
+        selectedWidgetId);
 
     ScenerySelection selectedSceneryEntry = w->scenery.SelectedScenery;
     if (selectedSceneryEntry.IsUndefined())
@@ -1245,8 +1247,8 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                 uint32_t imageId = sceneryEntry->image + gWindowSceneryRotation * 2;
                 imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
-                gfx_draw_sprite(&clipdpi, imageId, 0x21, 0x28, w->colours[1]);
-                gfx_draw_sprite(&clipdpi, imageId + 1, 0x21, 0x28, w->colours[1]);
+                gfx_draw_sprite(&clipdpi, imageId, { 0x21, 0x28 }, w->colours[1]);
+                gfx_draw_sprite(&clipdpi, imageId + 1, { 0x21, 0x28 }, w->colours[1]);
             }
             else if (currentSceneryGlobal.SceneryType == SCENERY_TYPE_LARGE)
             {
@@ -1255,7 +1257,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                 imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
                 imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
 
-                gfx_draw_sprite(&clipdpi, imageId, 0x21, 0, w->colours[1]);
+                gfx_draw_sprite(&clipdpi, imageId, { 0x21, 0 }, w->colours[1]);
             }
             else if (currentSceneryGlobal.SceneryType == SCENERY_TYPE_WALL)
             {
@@ -1272,10 +1274,10 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                     {
                         imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
                     }
-                    gfx_draw_sprite(&clipdpi, imageId, 0x2F, spriteTop, tertiaryColour);
+                    gfx_draw_sprite(&clipdpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
 
                     imageId = (sceneryEntry->image + 0x40000006) | (GlassPaletteIds[gWindowSceneryPrimaryColour] << 19);
-                    gfx_draw_sprite(&clipdpi, imageId, 0x2F, spriteTop, tertiaryColour);
+                    gfx_draw_sprite(&clipdpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
                 }
                 else
                 {
@@ -1291,11 +1293,11 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                             tertiaryColour = gWindowSceneryTertiaryColour;
                         }
                     }
-                    gfx_draw_sprite(&clipdpi, imageId, 0x2F, spriteTop, tertiaryColour);
+                    gfx_draw_sprite(&clipdpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
 
                     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR)
                     {
-                        gfx_draw_sprite(&clipdpi, imageId + 1, 0x2F, spriteTop, tertiaryColour);
+                        gfx_draw_sprite(&clipdpi, imageId + 1, { 0x2F, spriteTop }, tertiaryColour);
                     }
                 }
             }
@@ -1304,7 +1306,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                 sceneryEntry = get_footpath_item_entry(currentSceneryGlobal.EntryIndex);
                 uint32_t imageId = sceneryEntry->image;
 
-                gfx_draw_sprite(&clipdpi, imageId, 0x0B, 0x10, w->colours[1]);
+                gfx_draw_sprite(&clipdpi, imageId, { 0x0B, 0x10 }, w->colours[1]);
             }
             else
             {
@@ -1329,20 +1331,20 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                     spriteTop -= 0x0C;
                 }
 
-                gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
+                gfx_draw_sprite(&clipdpi, imageId, { 0x20, spriteTop }, w->colours[1]);
 
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_GLASS))
                 {
                     imageId = ((sceneryEntry->image + gWindowSceneryRotation) + 0x40000004)
                         + (GlassPaletteIds[gWindowSceneryPrimaryColour] << 19);
 
-                    gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
+                    gfx_draw_sprite(&clipdpi, imageId, { 0x20, spriteTop }, w->colours[1]);
                 }
 
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED_FG))
                 {
                     imageId = (sceneryEntry->image + gWindowSceneryRotation) + 4;
-                    gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
+                    gfx_draw_sprite(&clipdpi, imageId, { 0x20, spriteTop }, w->colours[1]);
                 }
             }
         }

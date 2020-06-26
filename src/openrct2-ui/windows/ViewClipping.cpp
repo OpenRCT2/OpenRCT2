@@ -128,8 +128,7 @@ static void window_view_clipping_set_clipheight(rct_window* w, const uint8_t cli
     gClipHeight = clipheight;
     rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
     const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
-    w->scrolls[0].h_left = static_cast<int16_t>(
-        std::ceil(clip_height_ratio * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1))));
+    w->scrolls[0].h_left = static_cast<int16_t>(std::ceil(clip_height_ratio * (w->scrolls[0].h_right - (widget->width() - 1))));
 }
 
 rct_window* window_view_clipping_open()
@@ -285,7 +284,7 @@ static void window_view_clipping_update(rct_window* w)
 {
     const rct_widget* const widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
     const rct_scroll* const scroll = &w->scrolls[0];
-    const int16_t scroll_width = widget->right - widget->left - 1;
+    const int16_t scroll_width = widget->width() - 1;
     const uint8_t clip_height = static_cast<uint8_t>(
         (static_cast<float>(scroll->h_left) / (scroll->h_right - scroll_width)) * 255);
     if (clip_height != gClipHeight)

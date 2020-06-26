@@ -584,7 +584,8 @@ static void window_guest_common_invalidate(rct_window* w)
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
     auto peep = GET_PEEP(w->number);
-    peep->FormatNameTo(gCommonFormatArgs);
+    auto ft = Formatter::Common();
+    peep->FormatNameTo(ft);
 
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -828,8 +829,8 @@ void window_guest_viewport_init(rct_window* w)
         {
             auto view_widget = &w->widgets[WIDX_VIEWPORT];
             auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };
-            int32_t width = view_widget->right - view_widget->left - 1;
-            int32_t height = view_widget->bottom - view_widget->top - 1;
+            int32_t width = view_widget->width() - 1;
+            int32_t height = view_widget->height() - 1;
 
             viewport_create(
                 w, screenPos, width, height, 0,
@@ -857,26 +858,24 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_1];
-    int32_t width = widget->right - widget->left - 1;
-    int32_t height = widget->bottom - widget->top - 1;
-    int32_t x = widget->left + 1 + w->windowPos.x;
-    int32_t y = widget->top + 1 + w->windowPos.y;
+    int32_t width = widget->width() - 1;
+    int32_t height = widget->height() - 1;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     if (w->page == WINDOW_GUEST_OVERVIEW)
         height++;
 
     rct_drawpixelinfo clip_dpi;
-    if (!clip_drawpixelinfo(&clip_dpi, dpi, x, y, width, height))
+    if (!clip_drawpixelinfo(&clip_dpi, dpi, screenCoords.x, screenCoords.y, width, height))
     {
         return;
     }
 
-    x = 14;
-    y = 20;
+    screenCoords = ScreenCoordsXY{ 14, 20 };
 
     Peep* peep = GET_PEEP(w->number);
 
     if (peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_ENTERTAINER)
-        y++;
+        screenCoords.y++;
 
     int32_t animationFrame = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
 
@@ -890,14 +889,14 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     animationFrame += animationFrameOffset;
 
     int32_t sprite_id = animationFrame | SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
-    gfx_draw_sprite(&clip_dpi, sprite_id, x, y, 0);
+    gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords, 0);
 
     // If holding a balloon
     if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
     {
         animationFrame += 32;
         animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
-        gfx_draw_sprite(&clip_dpi, animationFrame, x, y, 0);
+        gfx_draw_sprite(&clip_dpi, animationFrame, screenCoords, 0);
     }
 
     // If holding umbrella
@@ -905,7 +904,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     {
         animationFrame += 32;
         animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour);
-        gfx_draw_sprite(&clip_dpi, animationFrame, x, y, 0);
+        gfx_draw_sprite(&clip_dpi, animationFrame, screenCoords, 0);
     }
 
     // If wearing hat
@@ -913,7 +912,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     {
         animationFrame += 32;
         animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour);
-        gfx_draw_sprite(&clip_dpi, animationFrame, x, y, 0);
+        gfx_draw_sprite(&clip_dpi, animationFrame, screenCoords, 0);
     }
 }
 
@@ -927,8 +926,7 @@ static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_2];
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     Peep* peep = GET_PEEP(w->number);
     int32_t image_id = get_peep_face_sprite_large(peep);
@@ -949,7 +947,7 @@ static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
         }
     }
-    gfx_draw_sprite(dpi, image_id, x, y, 0);
+    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
 /**
@@ -962,8 +960,7 @@ static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_3];
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     int32_t image_id = SPR_TAB_RIDE_0;
 
@@ -972,7 +969,7 @@ static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 4) & 0xF;
     }
 
-    gfx_draw_sprite(dpi, image_id, x, y, 0);
+    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
 /**
@@ -985,8 +982,7 @@ static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_4];
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     int32_t image_id = SPR_TAB_FINANCES_SUMMARY_0;
 
@@ -995,7 +991,7 @@ static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi
         image_id += (w->frame_no / 2) & 0x7;
     }
 
-    gfx_draw_sprite(dpi, image_id, x, y, 0);
+    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
 /**
@@ -1008,8 +1004,7 @@ static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_5];
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     int32_t image_id = SPR_TAB_THOUGHTS_0;
 
@@ -1018,7 +1013,7 @@ static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         image_id += (w->frame_no / 2) & 0x7;
     }
 
-    gfx_draw_sprite(dpi, image_id, x, y, 0);
+    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
 /**
@@ -1031,12 +1026,11 @@ static void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* d
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_6];
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     int32_t image_id = SPR_TAB_GUEST_INVENTORY;
 
-    gfx_draw_sprite(dpi, image_id, x, y, 0);
+    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
 static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -1045,8 +1039,7 @@ static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
 
     rct_widget* widget = &w->widgets[WIDX_TAB_7];
-    int32_t x = widget->left + w->windowPos.x;
-    int32_t y = widget->top + w->windowPos.y;
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
     int32_t image_id = SPR_TAB_GEARS_0;
     if (w->page == WINDOW_GUEST_DEBUG)
@@ -1054,7 +1047,7 @@ static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 2) & 0x3;
     }
 
-    gfx_draw_sprite(dpi, image_id, x, y, 0);
+    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
 }
 
 /**
@@ -1079,24 +1072,26 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         rct_viewport* viewport = w->viewport;
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos.x + 2, w->windowPos.y + 2, 0);
+            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos + ScreenCoordsXY{ 2, 2 }, 0);
         }
     }
 
     // Draw the centred label
     Peep* peep = GET_PEEP(w->number);
-    peep->FormatActionTo(gCommonFormatArgs);
+
+    auto ft = Formatter::Common();
+    peep->FormatActionTo(ft);
     rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top - 1 };
-    int32_t width = widget->right - widget->left;
+    int32_t width = widget->width();
     gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
 
     // Draw the marquee thought
     widget = &w->widgets[WIDX_MARQUEE];
-    width = widget->right - widget->left - 3;
+    width = widget->width() - 3;
     int32_t left = widget->left + 2 + w->windowPos.x;
     int32_t top = widget->top + w->windowPos.y;
-    int32_t height = widget->bottom - widget->top;
+    int32_t height = widget->height();
     rct_drawpixelinfo dpi_marquee;
     if (!clip_drawpixelinfo(&dpi_marquee, dpi, left, top, width, height))
     {
@@ -1122,7 +1117,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    screenPos.x = widget->right - widget->left - w->list_information_type;
+    screenPos.x = widget->width() - w->list_information_type;
     peep_thought_set_format_args(&peep->Thoughts[i]);
     gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { screenPos.x, 0 });
 }
@@ -1713,7 +1708,7 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ride = get_ride(peep->FavouriteRide);
         if (ride != nullptr)
         {
-            ride->FormatNameTo(gCommonFormatArgs);
+            ride->FormatNameTo(ft);
         }
     }
     gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, COLOUR_BLACK, screenCoords, w->width - 14);
@@ -1746,7 +1741,8 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
         auto ride = get_ride(w->list_item_positions[list_index]);
         if (ride != nullptr)
         {
-            ride->FormatNameTo(gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            ride->FormatNameTo(ft);
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { 0, y - 1 });
         }
     }
@@ -1970,7 +1966,12 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
         case SHOP_ITEM_PHOTO:
             ride = get_ride(peep->Photo1RideRef);
             if (ride != nullptr)
-                ride->FormatNameTo(gCommonFormatArgs + 6);
+            {
+                ft.Rewind();
+                ft.Increment(6);
+                ride->FormatNameTo(ft);
+            }
+
             break;
         case SHOP_ITEM_UMBRELLA:
             ft.Rewind();
@@ -1993,7 +1994,7 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
                         ft.Rewind();
                         ft.Increment(6);
                         ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_RIDE_FREE);
-                        ride->FormatNameTo(gCommonFormatArgs + 8);
+                        ride->FormatNameTo(ft);
                     }
                     break;
                 case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
@@ -2022,17 +2023,29 @@ static rct_string_id window_guest_inventory_format_item(Peep* peep, int32_t item
         case SHOP_ITEM_PHOTO2:
             ride = get_ride(peep->Photo2RideRef);
             if (ride != nullptr)
-                ride->FormatNameTo(gCommonFormatArgs + 6);
+            {
+                ft.Rewind();
+                ft.Increment(6);
+                ride->FormatNameTo(ft);
+            }
             break;
         case SHOP_ITEM_PHOTO3:
             ride = get_ride(peep->Photo3RideRef);
             if (ride != nullptr)
-                ride->FormatNameTo(gCommonFormatArgs + 6);
+            {
+                ft.Rewind();
+                ft.Increment(6);
+                ride->FormatNameTo(ft);
+            }
             break;
         case SHOP_ITEM_PHOTO4:
             ride = get_ride(peep->Photo4RideRef);
             if (ride != nullptr)
-                ride->FormatNameTo(gCommonFormatArgs + 6);
+            {
+                ft.Rewind();
+                ft.Increment(6);
+                ride->FormatNameTo(ft);
+            }
             break;
     }
 
@@ -2059,7 +2072,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         rct_widget* pageBackgroundWidget = &window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND];
         auto screenCoords = w->windowPos + ScreenCoordsXY{ pageBackgroundWidget->left + 4, pageBackgroundWidget->top + 2 };
-        int32_t itemNameWidth = pageBackgroundWidget->right - pageBackgroundWidget->left - 8;
+        int32_t itemNameWidth = pageBackgroundWidget->width() - 8;
 
         int32_t maxY = w->windowPos.y + w->height - 22;
         int32_t numItems = 0;

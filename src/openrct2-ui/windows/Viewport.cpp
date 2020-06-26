@@ -210,8 +210,8 @@ static void window_viewport_invalidate(rct_window* w)
         w->disabled_widgets |= 1 << WIDX_ZOOM_OUT;
 
     viewport->pos = w->windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
-    viewport->width = viewportWidget->right - viewportWidget->left;
-    viewport->height = viewportWidget->bottom - viewportWidget->top;
+    viewport->width = viewportWidget->width();
+    viewport->height = viewportWidget->height();
     viewport->view_width = viewport->width * viewport->zoom;
     viewport->view_height = viewport->height * viewport->zoom;
 }

@@ -54,21 +54,22 @@ void TerrainSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, in
         imageId |= SPRITE_ID_PALETTE_COLOUR_1(Colour);
     }
 
+    ScreenCoordsXY screenCoords{};
     int32_t x0 = 0;
-    int32_t y = -16;
+    screenCoords.y = -16;
     for (int32_t i = 0; i < 8; i++)
     {
-        int32_t x = x0;
+        screenCoords.x = x0;
         if (i % 2 == 0)
         {
-            x -= 32;
+            screenCoords.x -= 32;
         }
         for (int32_t j = 0; j < 4; j++)
         {
-            gfx_draw_sprite(dpi, imageId, x, y, 0);
-            x += 64;
+            gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+            screenCoords.x += 64;
         }
-        y += 16;
+        screenCoords.y += 16;
     }
 }
 

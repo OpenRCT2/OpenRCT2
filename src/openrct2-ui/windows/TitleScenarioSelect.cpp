@@ -558,7 +558,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor;
 
     rct_widget* listWidget = &w->widgets[WIDX_SCENARIOLIST];
-    int32_t listWidth = listWidget->right - listWidget->left - 12;
+    int32_t listWidth = listWidget->width() - 12;
 
     const int32_t scenarioItemHeight = get_scenario_list_item_size();
 
@@ -615,7 +615,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 if (isCompleted)
                 {
                     // Draw completion tick
-                    gfx_draw_sprite(dpi, SPR_MENU_CHECKMARK, wide ? 500 : 395, y + 1, 0);
+                    gfx_draw_sprite(dpi, SPR_MENU_CHECKMARK, { wide ? 500 : 395, y + 1 }, 0);
 
                     // Draw completion score
                     const utf8* completedByName = "???";

@@ -1762,12 +1762,6 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
 
 void Peep::FormatActionTo(Formatter& ft) const
 {
-    FormatActionTo(ft.Buf());
-}
-
-void Peep::FormatActionTo(void* argsV) const
-{
-    Formatter ft(static_cast<uint8_t*>(argsV));
     switch (State)
     {
         case PEEP_STATE_FALLING:
@@ -1784,7 +1778,7 @@ void Peep::FormatActionTo(void* argsV) const
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             else
             {
@@ -1798,7 +1792,7 @@ void Peep::FormatActionTo(void* argsV) const
             auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             else
             {
@@ -1814,7 +1808,7 @@ void Peep::FormatActionTo(void* argsV) const
                 if (ride != nullptr)
                 {
                     ft.Add<rct_string_id>(STR_HEADING_FOR);
-                    ride->FormatNameTo(ft.Buf());
+                    ride->FormatNameTo(ft);
                 }
             }
             else
@@ -1829,7 +1823,7 @@ void Peep::FormatActionTo(void* argsV) const
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(STR_QUEUING_FOR);
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             break;
         }
@@ -1843,7 +1837,7 @@ void Peep::FormatActionTo(void* argsV) const
                 if (ride != nullptr)
                 {
                     ft.Add<rct_string_id>((StandingFlags & 0x1) ? STR_WATCHING_CONSTRUCTION_OF : STR_WATCHING_RIDE);
-                    ride->FormatNameTo(ft.Buf());
+                    ride->FormatNameTo(ft);
                 }
             }
             else
@@ -1886,7 +1880,7 @@ void Peep::FormatActionTo(void* argsV) const
                 auto ride = get_ride(CurrentRide);
                 if (ride != nullptr)
                 {
-                    ride->FormatNameTo(ft.Buf());
+                    ride->FormatNameTo(ft);
                 }
                 else
                 {
@@ -1900,7 +1894,7 @@ void Peep::FormatActionTo(void* argsV) const
             auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             else
             {
@@ -1914,7 +1908,7 @@ void Peep::FormatActionTo(void* argsV) const
             auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             else
             {
@@ -1928,7 +1922,7 @@ void Peep::FormatActionTo(void* argsV) const
             auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
-                ride->FormatNameTo(ft.Buf());
+                ride->FormatNameTo(ft);
             }
             else
             {
@@ -1941,12 +1935,6 @@ void Peep::FormatActionTo(void* argsV) const
 
 void Peep::FormatNameTo(Formatter& ft) const
 {
-    ft.Increment(FormatNameTo(ft.Buf()));
-}
-
-size_t Peep::FormatNameTo(void* argsV) const
-{
-    Formatter ft(static_cast<uint8_t*>(argsV));
     if (Name == nullptr)
     {
         if (AssignedPeepType == PeepType::PEEP_TYPE_STAFF)
@@ -1966,28 +1954,29 @@ size_t Peep::FormatNameTo(void* argsV) const
 
             ft.Add<rct_string_id>(staffNames[staffNameIndex]);
             ft.Add<uint32_t>(Id);
-            return ft.NumBytes();
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {
             auto realNameStringId = get_real_name_string_id_from_id(Id);
-            return ft.Add<rct_string_id>(realNameStringId).NumBytes();
+            ft.Add<rct_string_id>(realNameStringId);
         }
         else
         {
-            return ft.Add<rct_string_id>(STR_GUEST_X).Add<uint32_t>(Id).NumBytes();
+            ft.Add<rct_string_id>(STR_GUEST_X).Add<uint32_t>(Id);
         }
     }
     else
     {
-        return ft.Add<rct_string_id>(STR_STRING).Add<const char*>(Name).NumBytes();
+        ft.Add<rct_string_id>(STR_STRING).Add<const char*>(Name);
     }
 }
 
 std::string Peep::GetName() const
 {
     uint8_t args[32]{};
-    FormatNameTo(args);
+
+    Formatter ft(args);
+    FormatNameTo(ft);
     return format_string(STR_STRINGID, args);
 }
 
@@ -3243,11 +3232,13 @@ int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_
     uint8_t args[32]{};
 
     char nameA[256]{};
-    peep_a->FormatNameTo(args);
+    Formatter ft(args);
+    peep_a->FormatNameTo(ft);
     format_string(nameA, sizeof(nameA), STR_STRINGID, args);
 
     char nameB[256]{};
-    peep_b->FormatNameTo(args);
+    ft = Formatter(args);
+    peep_b->FormatNameTo(ft);
     format_string(nameB, sizeof(nameB), STR_STRINGID, args);
     return strlogicalcmp(nameA, nameB);
 }

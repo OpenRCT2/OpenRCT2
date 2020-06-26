@@ -302,7 +302,7 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
     int32_t hoverButtonIndex = -1;
     if (index != -1)
     {
-        int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+        int32_t width = w->widgets[WIDX_LIST].width();
         int32_t sy = index * ITEM_HEIGHT;
         for (int32_t i = 0; i < 2; i++)
         {
@@ -317,7 +317,7 @@ static void window_server_list_scroll_mouseover(rct_window* w, int32_t scrollInd
         }
     }
 
-    int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+    int32_t width = w->widgets[WIDX_LIST].width();
     int32_t right = width - 3 - 14 - 10;
     if (screenCoords.x < right)
     {
@@ -429,7 +429,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    int32_t width = w->widgets[WIDX_LIST].right - w->widgets[WIDX_LIST].left;
+    int32_t width = w->widgets[WIDX_LIST].width();
 
     ScreenCoordsXY screenCoords;
     screenCoords.y = 0;
@@ -489,14 +489,14 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             bool correctVersion = serverDetails.Version == network_get_version();
             compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
         }
-        gfx_draw_sprite(dpi, compatibilitySpriteId, right, screenCoords.y + 1, 0);
+        gfx_draw_sprite(dpi, compatibilitySpriteId, { right, screenCoords.y + 1 }, 0);
         right -= 4;
 
         // Draw lock icon
         right -= 8;
         if (serverDetails.RequiresPassword)
         {
-            gfx_draw_sprite(dpi, SPR_G2_LOCKED, right, screenCoords.y + 4, 0);
+            gfx_draw_sprite(dpi, SPR_G2_LOCKED, { right, screenCoords.y + 4 }, 0);
         }
         right -= 6;
 

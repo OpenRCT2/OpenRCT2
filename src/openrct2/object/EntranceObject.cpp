@@ -43,13 +43,12 @@ void EntranceObject::Unload()
 
 void EntranceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     uint32_t imageId = _legacyType.image_id;
-    gfx_draw_sprite(dpi, imageId + 1, x - 32, y + 14, 0);
-    gfx_draw_sprite(dpi, imageId + 0, x + 0, y + 28, 0);
-    gfx_draw_sprite(dpi, imageId + 2, x + 32, y + 44, 0);
+    gfx_draw_sprite(dpi, imageId + 1, screenCoords + ScreenCoordsXY{ -32, 14 }, 0);
+    gfx_draw_sprite(dpi, imageId + 0, screenCoords + ScreenCoordsXY{ 0, 28 }, 0);
+    gfx_draw_sprite(dpi, imageId + 2, screenCoords + ScreenCoordsXY{ 32, 44 }, 0);
 }
 
 void EntranceObject::ReadJson(IReadObjectContext* context, const json_t* root)

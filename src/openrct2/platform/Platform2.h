@@ -43,6 +43,10 @@ namespace Platform
 
 #ifdef _WIN32
     bool IsOSVersionAtLeast(uint32_t major, uint32_t minor, uint32_t build);
+    void SetUpFileAssociations();
+    bool SetUpFileAssociation(
+        const std::string extension, const std::string fileTypeText, const std::string commandText,
+        const std::string commandArgs, const uint32_t iconIndex);
 #endif
 
     bool IsRunningInWine();

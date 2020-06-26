@@ -153,9 +153,8 @@ rct_window* window_banner_open(rct_windownumber number)
     // Create viewport
     viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-        (viewportWidget->right - viewportWidget->left) - 2, (viewportWidget->bottom - viewportWidget->top) - 2, 0,
-        { bannerViewPos, view_z }, 0, SPRITE_INDEX_NULL);
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 2,
+        viewportWidget->height() - 2, 0, { bannerViewPos, view_z }, 0, SPRITE_INDEX_NULL);
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     w->Invalidate();
@@ -235,8 +234,8 @@ static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             widget--;
 
             window_dropdown_show_text_custom_width(
-                { widget->left + w->windowPos.x, widget->top + w->windowPos.y }, widget->bottom - widget->top + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 13, widget->right - widget->left - 3);
+                { widget->left + w->windowPos.x, widget->top + w->windowPos.y }, widget->height() + 1, w->colours[1], 0,
+                DROPDOWN_FLAG_STAY_OPEN, 13, widget->width() - 3);
 
             dropdown_set_checked(banner->text_colour - 1, true);
             break;
@@ -348,9 +347,8 @@ static void window_banner_viewport_rotate(rct_window* w)
     // Create viewport
     rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
     viewport_create(
-        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
-        (viewportWidget->right - viewportWidget->left) - 1, (viewportWidget->bottom - viewportWidget->top) - 1, 0,
-        bannerViewPos, 0, SPRITE_INDEX_NULL);
+        w, w->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, (viewportWidget->width()) - 1,
+        (viewportWidget->height()) - 1, 0, bannerViewPos, 0, SPRITE_INDEX_NULL);
 
     if (w->viewport != nullptr)
         w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;

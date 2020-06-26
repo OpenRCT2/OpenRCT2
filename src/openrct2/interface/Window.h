@@ -98,6 +98,16 @@ struct rct_widget
     // New properties
     WidgetFlags flags{};
     utf8* sztooltip{};
+
+    int16_t width() const
+    {
+        return right - left;
+    }
+
+    int16_t height() const
+    {
+        return bottom - top;
+    }
 };
 
 /**

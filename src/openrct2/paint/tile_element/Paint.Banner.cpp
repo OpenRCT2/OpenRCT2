@@ -101,7 +101,8 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     scrollingMode += direction;
 
-    banner->FormatTextTo(gCommonFormatArgs, /*addColour*/ true);
+    auto ft = Formatter::Common();
+    banner->FormatTextTo(ft, /*addColour*/ true);
 
     if (gConfigGeneral.upper_case_banners)
     {

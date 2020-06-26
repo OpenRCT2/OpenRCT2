@@ -372,8 +372,9 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     image++;
 
                 gfx_draw_sprite(
-                    dpi, image, w->windowPos.x + 2 + (cell_x * _dropdown_item_width),
-                    w->windowPos.y + 2 + (cell_y * _dropdown_item_height), 0);
+                    dpi, image,
+                    w->windowPos + ScreenCoordsXY{ 2 + (cell_x * _dropdown_item_width), 2 + (cell_y * _dropdown_item_height) },
+                    0);
             }
             else
             {
@@ -459,7 +460,7 @@ void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t drop
 
     // Show dropdown
     window_dropdown_show_image(
-        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1, dropdownColour,
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
         DROPDOWN_FLAG_STAY_OPEN, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
 
     gDropdownIsColour = true;

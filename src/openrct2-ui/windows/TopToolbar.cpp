@@ -491,8 +491,8 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 numItems = 12;
             }
             window_dropdown_show_text(
-                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1,
-                w->colours[0] | 0x80, DROPDOWN_FLAG_STAY_OPEN, numItems);
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
+                DROPDOWN_FLAG_STAY_OPEN, numItems);
             break;
         case WIDX_CHEATS:
             top_toolbar_init_cheats_menu(w, widget);
@@ -761,7 +761,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
         if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
             continue;
 
-        widgetWidth = widget->right - widget->left;
+        widgetWidth = widget->width();
         widget->left = x;
         x += widgetWidth;
         widget->right = x;
@@ -783,7 +783,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
         if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
             continue;
 
-        widgetWidth = widget->right - widget->left;
+        widgetWidth = widget->width();
         x -= 1;
         widget->right = x;
         x -= widgetWidth;
@@ -856,7 +856,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (widget_is_pressed(w, WIDX_STAFF))
             imgId++;
         imgId |= SPRITE_ID_PALETTE_COLOUR_2(gStaffHandymanColour, gStaffMechanicColour);
-        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos, 0);
     }
 
     // Draw fast forward button
@@ -867,27 +867,28 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (widget_is_pressed(w, WIDX_FASTFORWARD))
             screenPos.y++;
         imgId = SPR_G2_FASTFORWARD;
-        gfx_draw_sprite(dpi, imgId, screenPos.x + 6, screenPos.y + 3, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos + ScreenCoordsXY{ 6, 3 }, 0);
 
         for (int32_t i = 0; i < gGameSpeed && gGameSpeed <= 4; i++)
         {
-            gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, screenPos.x + 5 + i * 5, screenPos.y + 15, 0);
+            gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, screenPos + ScreenCoordsXY{ 5 + i * 5, 15 }, 0);
         }
         for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++)
         {
-            gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, screenPos.x + 5 + i * 6, screenPos.y + 15, 0);
+            gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, screenPos + ScreenCoordsXY{ 5 + i * 6, 15 }, 0);
         }
     }
 
     // Draw cheats button
     if (window_top_toolbar_widgets[WIDX_CHEATS].type != WWT_EMPTY)
     {
-        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_CHEATS].left - 1,
-                      w->windowPos.y + window_top_toolbar_widgets[WIDX_CHEATS].top - 1 };
+        screenPos = w->windowPos
+            + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHEATS].left - 1,
+                              window_top_toolbar_widgets[WIDX_CHEATS].top - 1 };
         if (widget_is_pressed(w, WIDX_CHEATS))
             screenPos.y++;
         imgId = SPR_G2_SANDBOX;
-        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 3);
+        gfx_draw_sprite(dpi, imgId, screenPos, 3);
 
         // Draw an overlay if clearance checks are disabled
         if (gCheatsDisableClearanceChecks)
@@ -901,69 +902,72 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw chat button
     if (window_top_toolbar_widgets[WIDX_CHAT].type != WWT_EMPTY)
     {
-        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_CHAT].left,
-                      w->windowPos.y + window_top_toolbar_widgets[WIDX_CHAT].top - 2 };
+        screenPos = w->windowPos
+            + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHAT].left, window_top_toolbar_widgets[WIDX_CHAT].top - 2 };
         if (widget_is_pressed(w, WIDX_CHAT))
             screenPos.y++;
         imgId = SPR_G2_CHAT;
-        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 3);
+        gfx_draw_sprite(dpi, imgId, screenPos, 3);
     }
 
     // Draw debug button
     if (window_top_toolbar_widgets[WIDX_DEBUG].type != WWT_EMPTY)
     {
-        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_DEBUG].left,
-                      w->windowPos.y + window_top_toolbar_widgets[WIDX_DEBUG].top - 1 };
+        screenPos = w->windowPos
+            + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_DEBUG].left, window_top_toolbar_widgets[WIDX_DEBUG].top - 1 };
         if (widget_is_pressed(w, WIDX_DEBUG))
             screenPos.y++;
         imgId = SPR_TAB_GEARS_0;
-        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 3);
+        gfx_draw_sprite(dpi, imgId, screenPos, 3);
     }
 
     // Draw research button
     if (window_top_toolbar_widgets[WIDX_RESEARCH].type != WWT_EMPTY)
     {
-        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_RESEARCH].left - 1,
-                      w->windowPos.y + window_top_toolbar_widgets[WIDX_RESEARCH].top };
+        screenPos = w->windowPos
+            + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_RESEARCH].left - 1,
+                              window_top_toolbar_widgets[WIDX_RESEARCH].top };
         if (widget_is_pressed(w, WIDX_RESEARCH))
             screenPos.y++;
         imgId = SPR_TAB_FINANCES_RESEARCH_0;
-        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos, 0);
     }
 
     // Draw finances button
     if (window_top_toolbar_widgets[WIDX_FINANCES].type != WWT_EMPTY)
     {
-        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_FINANCES].left + 3,
-                      w->windowPos.y + window_top_toolbar_widgets[WIDX_FINANCES].top + 1 };
+        screenPos = w->windowPos
+            + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_FINANCES].left + 3,
+                              window_top_toolbar_widgets[WIDX_FINANCES].top + 1 };
         if (widget_is_pressed(w, WIDX_FINANCES))
             screenPos.y++;
         imgId = SPR_FINANCE;
-        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos, 0);
     }
 
     // Draw news button
     if (window_top_toolbar_widgets[WIDX_NEWS].type != WWT_EMPTY)
     {
-        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_NEWS].left + 3,
-                      w->windowPos.y + window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
+        screenPos = w->windowPos
+            + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NEWS].left + 3, window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
         if (widget_is_pressed(w, WIDX_NEWS))
             screenPos.y++;
         imgId = SPR_G2_TAB_NEWS;
-        gfx_draw_sprite(dpi, imgId, screenPos.x, screenPos.y, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos, 0);
     }
 
     // Draw network button
     if (window_top_toolbar_widgets[WIDX_NETWORK].type != WWT_EMPTY)
     {
-        screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_NETWORK].left + 3,
-                      w->windowPos.y + window_top_toolbar_widgets[WIDX_NETWORK].top + 0 };
+        screenPos = w->windowPos
+            + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NETWORK].left + 3,
+                              window_top_toolbar_widgets[WIDX_NETWORK].top + 0 };
         if (widget_is_pressed(w, WIDX_NETWORK))
             screenPos.y++;
 
         // Draw (de)sync icon.
         imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
-        gfx_draw_sprite(dpi, imgId, screenPos.x + 3, screenPos.y + 11, 0);
+        gfx_draw_sprite(dpi, imgId, screenPos + ScreenCoordsXY{ 3, 11 }, 0);
 
         // Draw number of players.
         int32_t player_count = network_get_num_players();
@@ -3327,8 +3331,7 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
 #endif
 
     window_dropdown_show_text(
-        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[1] | 0x80,
-        0, i);
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0, i);
     gDropdownDefaultIndex = DDIDX_SHOW_MAP;
 }
 
@@ -3389,8 +3392,8 @@ static void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[3] = STR_SPEED_TURBO;
 
     window_dropdown_show_text(
-        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
-        0, num_items);
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
+        num_items);
 
     // Set checkmarks
     if (gGameSpeed <= 4)
@@ -3437,8 +3440,7 @@ static void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsFormat[1] = STR_ROTATE_ANTI_CLOCKWISE;
 
     window_dropdown_show_text(
-        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[1] | 0x80,
-        0, 2);
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0, 2);
 
     gDropdownDefaultIndex = DDIDX_ROTATE_CLOCKWISE;
 }
@@ -3490,8 +3492,8 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_DISABLE_SUPPORT_LIMITS;
 
     window_dropdown_show_text(
-        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
-        0, TOP_TOOLBAR_CHEATS_COUNT);
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
+        TOP_TOOLBAR_CHEATS_COUNT);
 
     // Disable items that are not yet available in multiplayer
     if (network_get_mode() != NETWORK_MODE_NONE)
@@ -3568,7 +3570,7 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
 
     window_dropdown_show_text(
-        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
         DROPDOWN_FLAG_STAY_OPEN, TOP_TOOLBAR_DEBUG_COUNT);
 
     dropdown_set_checked(DDIDX_DEBUG_PAINT, window_find_by_class(WC_DEBUG_PAINT) != nullptr);
@@ -3581,8 +3583,8 @@ static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsFormat[DDIDX_MULTIPLAYER_RECONNECT] = STR_MULTIPLAYER_RECONNECT;
 
     window_dropdown_show_text(
-        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[0] | 0x80,
-        0, TOP_TOOLBAR_NETWORK_COUNT);
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
+        TOP_TOOLBAR_NETWORK_COUNT);
 
     dropdown_set_disabled(DDIDX_MULTIPLAYER_RECONNECT, !network_is_desynchronised());
 
@@ -3674,8 +3676,8 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_HIGHLIGHT_PATH_ISSUES_MENU;
 
     window_dropdown_show_text(
-        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->bottom - widget->top + 1, w->colours[1] | 0x80,
-        0, TOP_TOOLBAR_VIEW_MENU_COUNT);
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0,
+        TOP_TOOLBAR_VIEW_MENU_COUNT);
 
     // Set checkmarks
     rct_viewport* mainViewport = window_get_main()->viewport;

@@ -370,7 +370,7 @@ void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t wi
             imageId++;
     }
 
-    gfx_draw_sprite(dpi, imageId, 0, 0, 0);
+    gfx_draw_sprite(dpi, imageId, { 0, 0 }, 0);
 }
 
 std::string RideObject::GetDescription() const
