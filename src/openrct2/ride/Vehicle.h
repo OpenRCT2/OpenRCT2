@@ -407,6 +407,9 @@ private:
     bool CurrentTowerElementIsTop();
     bool UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    bool VehicleColision(
+        Vehicle* currentVehicle, Vehicle* otherVehicle, rct_ride_entry_vehicle* vehicleEntry,
+        rct_ride_entry* rideEntry, uint32_t MotionTrackFlag);
     int32_t UpdateTrackMotionPoweredRideAcceleration(
         rct_ride_entry_vehicle* vehicleEntry, uint32_t totalMass, const int32_t curAcceleration);
     int32_t NumPeepsUntilTrainTail() const;
