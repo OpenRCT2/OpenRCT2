@@ -8128,233 +8128,199 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
  */
 bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
-    registers regs = {};
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
-loc_6DAEB9:
-    regs.cx = GetTrackType();
-    int32_t trackType = GetTrackType();
-    if (trackType == TRACK_ELEM_HEARTLINE_TRANSFER_UP || trackType == TRACK_ELEM_HEARTLINE_TRANSFER_DOWN)
+    do
     {
-        if (track_progress == 80)
+        int32_t trackType = GetTrackType();
+        if (trackType == TRACK_ELEM_HEARTLINE_TRANSFER_UP || trackType == TRACK_ELEM_HEARTLINE_TRANSFER_DOWN)
         {
-            vehicle_type ^= 1;
-            vehicleEntry = Entry();
-        }
-        if (_vehicleVelocityF64E08 >= 0x40000)
-        {
-            acceleration = -_vehicleVelocityF64E08 * 8;
-        }
-        else if (_vehicleVelocityF64E08 < 0x20000)
-        {
-            acceleration = 0x50000;
-        }
-    }
-    else if (trackType == TRACK_ELEM_BRAKES)
-    {
-        if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN
-              && curRide->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE
-              && curRide->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES))
-        {
-            regs.eax = brake_speed << 16;
-            if (regs.eax < _vehicleVelocityF64E08)
+            if (track_progress == 80)
             {
-                acceleration = -_vehicleVelocityF64E08 * 16;
+                vehicle_type ^= 1;
+                vehicleEntry = Entry();
             }
-            else if (!(gCurrentTicks & 0x0F))
+            if (_vehicleVelocityF64E08 >= 0x40000)
             {
-                if (_vehicleF64E2C == 0)
-                {
-                    _vehicleF64E2C++;
-                    audio_play_sound_at_location(SoundId::BrakeRelease, { x, y, z });
-                }
+                acceleration = -_vehicleVelocityF64E08 * 8;
+            }
+            else if (_vehicleVelocityF64E08 < 0x20000)
+            {
+                acceleration = 0x50000;
             }
         }
-    }
-    else if (track_element_is_booster(curRide->type, trackType))
-    {
-        regs.eax = get_booster_speed(curRide->type, (brake_speed << 16));
-
-        if (regs.eax > _vehicleVelocityF64E08)
+        else if (trackType == TRACK_ELEM_BRAKES)
         {
-            acceleration = RideTypeDescriptors[curRide->type].OperatingSettings.BoosterAcceleration
-                << 16; //_vehicleVelocityF64E08 * 1.2;
-        }
-    }
-
-    if ((trackType == TRACK_ELEM_FLAT && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
-        || (trackType == TRACK_ELEM_POWERED_LIFT))
-    {
-        acceleration = RideTypeDescriptors[curRide->type].OperatingSettings.PoweredLiftAcceleration << 16;
-    }
-    if (trackType == TRACK_ELEM_BRAKE_FOR_DROP)
-    {
-        if (IsHead())
-        {
-            if (!HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP))
+            if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN
+                  && curRide->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE
+                  && curRide->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES))
             {
-                if (track_progress >= 8)
+                //regs.eax = brake_speed << 16;
+                int32_t breaksAcceleration = brake_speed << 16;
+                if (breaksAcceleration < _vehicleVelocityF64E08)
                 {
                     acceleration = -_vehicleVelocityF64E08 * 16;
-                    if (track_progress >= 24)
+                }
+                else if (!(gCurrentTicks & 0x0F))
+                {
+                    if (_vehicleF64E2C == 0)
                     {
-                        SetUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP);
-                        vertical_drop_countdown = 90;
+                        _vehicleF64E2C++;
+                        audio_play_sound_at_location(SoundId::BrakeRelease, { x, y, z });
                     }
                 }
             }
         }
-    }
-    if (trackType == TRACK_ELEM_LOG_FLUME_REVERSER)
-    {
-        if (track_progress != 16 || velocity < 0x40000)
+        else if (track_element_is_booster(curRide->type, trackType))
         {
-            if (track_progress == 32)
+            int32_t boostersAcceleration = get_booster_speed(curRide->type, (brake_speed << 16));
+
+            if (boostersAcceleration > _vehicleVelocityF64E08)
             {
-                vehicle_type = vehicleEntry->log_flume_reverser_vehicle_type;
-                vehicleEntry = Entry();
+                acceleration = RideTypeDescriptors[curRide->type].OperatingSettings.BoosterAcceleration
+                    << 16; //_vehicleVelocityF64E08 * 1.2;
             }
         }
-        else
+        else if ((trackType == TRACK_ELEM_FLAT && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+            || (trackType == TRACK_ELEM_POWERED_LIFT))
         {
-            track_progress += 17;
+            acceleration = RideTypeDescriptors[curRide->type].OperatingSettings.PoweredLiftAcceleration << 16;
         }
-    }
-
-    regs.ax = track_progress + 1;
-
-    // Track Total Progress is in the two bytes before the move info list
-    uint16_t trackTotalProgress = GetTrackProgress();
-    if (regs.ax >= trackTotalProgress)
-    {
-        UpdateCrossings();
-
-        if (!UpdateTrackMotionForwardsGetNewTrack(trackType, curRide, rideEntry))
+        else if (trackType == TRACK_ELEM_BRAKE_FOR_DROP)
         {
-            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-            _vehicleVelocityF64E0C -= remaining_distance + 1;
-            remaining_distance = -1;
-            return false;
-        }
-        regs.ax = 0;
-    }
-
-    track_progress = regs.ax;
-    UpdateHandleWaterSplash();
-
-    // loc_6DB706
-    const auto moveInfo = GetMoveInfo();
-    trackType = GetTrackType();
-    {
-        int16_t curX = TrackLocation.x + moveInfo->x;
-        int16_t curY = TrackLocation.y + moveInfo->y;
-        int16_t curZ = TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
-
-        regs.ebx = 0;
-        if (curX != unk_F64E20.x)
-        {
-            regs.ebx |= 1;
-        }
-        if (curY != unk_F64E20.y)
-        {
-            regs.ebx |= 2;
-        }
-        if (curZ != unk_F64E20.z)
-        {
-            regs.ebx |= 4;
-        }
-
-        if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE
-            && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress >= 30
-            && track_progress <= 66)
-        {
-            regs.ebx |= 8;
-        }
-
-        if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE
-            && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress == 96)
-        {
-            ReverseReverserCar();
-
-            const rct_vehicle_info* moveInfo2 = GetMoveInfo();
-            curX = x + moveInfo2->x;
-            curY = y + moveInfo2->y;
-        }
-
-        // loc_6DB8A5
-        regs.ebx = dword_9A2930[regs.ebx];
-        remaining_distance -= regs.ebx;
-        unk_F64E20.x = curX;
-        unk_F64E20.y = curY;
-        unk_F64E20.z = curZ;
-        sprite_direction = moveInfo->direction;
-        bank_rotation = moveInfo->bank_rotation;
-        vehicle_sprite_type = moveInfo->vehicle_sprite_type;
-
-        regs.ebx = moveInfo->vehicle_sprite_type;
-
-        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && moveInfo->vehicle_sprite_type != 0)
-        {
-            SwingSprite = 0;
-            SwingPosition = 0;
-            SwingSpeed = 0;
-        }
-
-        // this == frontVehicle
-        if (this == _vehicleFrontVehicle)
-        {
-            if (_vehicleVelocityF64E08 >= 0)
+            if (IsHead())
             {
-                otherVehicleIndex = prev_vehicle_on_ride;
-                if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, &otherVehicleIndex))
+                if (!HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP))
                 {
-                    goto loc_6DB967;
+                    if (track_progress >= 8)
+                    {
+                        acceleration = -_vehicleVelocityF64E08 * 16;
+                        if (track_progress >= 24)
+                        {
+                            SetUpdateFlag(VEHICLE_UPDATE_FLAG_ON_BRAKE_FOR_DROP);
+                            vertical_drop_countdown = 90;
+                        }
+                    }
                 }
             }
         }
-    }
-
-    // loc_6DB928
-    if (remaining_distance < 0x368A)
-    {
-        return true;
-    }
-
-    regs.ebx = dword_9A2970[regs.ebx];
-    acceleration += regs.ebx;
-    _vehicleUnkF64E10++;
-    goto loc_6DAEB9;
-
-loc_6DB967:
-    _vehicleVelocityF64E0C -= remaining_distance + 1;
-    remaining_distance = -1;
-
-    // Might need to be bp rather than this, but hopefully not
-    auto head = (GET_VEHICLE(otherVehicleIndex))->TrainHead();
-
-    regs.eax = abs(velocity - head->velocity);
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
-    {
-        if (regs.eax > 0xE0000)
+        else if (trackType == TRACK_ELEM_LOG_FLUME_REVERSER)
         {
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+            if (track_progress != 16 || velocity < 0x40000)
             {
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+                if (track_progress == 32)
+                {
+                    vehicle_type = vehicleEntry->log_flume_reverser_vehicle_type;
+                    vehicleEntry = Entry();
+                }
+            }
+            else
+            {
+                track_progress += 17;
             }
         }
-    }
 
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
-    {
-        velocity -= velocity >> 2;
-    }
-    else
-    {
-        int32_t newHeadVelocity = velocity >> 1;
-        velocity = head->velocity >> 1;
-        head->velocity = newHeadVelocity;
-    }
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
-    return false;
+        int16_t track = track_progress + 1;
+
+        // Track Total Progress is in the two bytes before the move info list
+        uint16_t trackTotalProgress = GetTrackProgress();
+        if (track >= trackTotalProgress)
+        {
+            UpdateCrossings();
+
+            if (!UpdateTrackMotionForwardsGetNewTrack(trackType, curRide, rideEntry))
+            {
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                _vehicleVelocityF64E0C -= remaining_distance + 1;
+                remaining_distance = -1;
+                return false;
+            }
+            track = 0;
+        }
+
+        track_progress = track;
+        UpdateHandleWaterSplash();
+
+        // loc_6DB706
+        int32_t sprite;
+        trackType = GetTrackType();
+        {
+            const auto moveInfo = GetMoveInfo();
+            int16_t curX = TrackLocation.x + moveInfo->x;
+            int16_t curY = TrackLocation.y + moveInfo->y;
+            int16_t curZ = TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
+
+            int32_t position = 0;
+            if (curX != unk_F64E20.x)
+            {
+                position |= 1;
+            }
+            if (curY != unk_F64E20.y)
+            {
+                position |= 2;
+            }
+            if (curZ != unk_F64E20.z)
+            {
+                position |= 4;
+            }
+
+            if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE
+                && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress >= 30
+                && track_progress <= 66)
+            {
+                position |= 8;
+            }
+
+            if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE
+                && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress == 96)
+            {
+                ReverseReverserCar();
+
+                const rct_vehicle_info* moveInfo2 = GetMoveInfo();
+                curX = x + moveInfo2->x;
+                curY = y + moveInfo2->y;
+            }
+
+            // loc_6DB8A5
+            remaining_distance -= dword_9A2930[position];
+            unk_F64E20.x = curX;
+            unk_F64E20.y = curY;
+            unk_F64E20.z = curZ;
+            sprite_direction = moveInfo->direction;
+            bank_rotation = moveInfo->bank_rotation;
+            vehicle_sprite_type = moveInfo->vehicle_sprite_type;
+
+            sprite = moveInfo->vehicle_sprite_type;
+
+            if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && moveInfo->vehicle_sprite_type != 0)
+            {
+                SwingSprite = 0;
+                SwingPosition = 0;
+                SwingSpeed = 0;
+            }
+
+            if (this == _vehicleFrontVehicle)
+            {
+                if (_vehicleVelocityF64E08 >= 0)
+                {
+                    otherVehicleIndex = prev_vehicle_on_ride;
+                    if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, &otherVehicleIndex))
+                    {
+                        _vehicleVelocityF64E0C -= remaining_distance + 1;
+                        remaining_distance = -1;
+                        // Might need to be bp rather than this, but hopefully not
+                        auto head = (GET_VEHICLE(otherVehicleIndex))->TrainHead();
+                        return VehicleColision(this, head, vehicleEntry, rideEntry, VEHICLE_UPDATE_MOTION_TRACK_FLAG_1);
+                    }
+                }
+            }
+        }
+
+        sprite = dword_9A2970[sprite];
+        acceleration += sprite;
+        _vehicleUnkF64E10++;
+    } while (remaining_distance >= 0x368A);
+
+    return true;
 }
 
 /**
@@ -8519,85 +8485,85 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
  */
 bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
-    registers regs = {};
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
-
-loc_6DBA33:;
-    uint16_t trackType = GetTrackType();
-    if (trackType == TRACK_ELEM_FLAT && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+    do
     {
-        int32_t unkVelocity = _vehicleVelocityF64E08;
-        if (unkVelocity < -524288)
+        uint16_t trackType = GetTrackType();
+        if (trackType == TRACK_ELEM_FLAT && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
         {
-            unkVelocity = abs(unkVelocity);
-            acceleration = unkVelocity * 2;
+            int32_t unkVelocity = _vehicleVelocityF64E08;
+            if (unkVelocity < -524288)
+            {
+                unkVelocity = abs(unkVelocity);
+                acceleration = unkVelocity * 2;
+            }
         }
-    }
-
-    if (trackType == TRACK_ELEM_BRAKES)
-    {
-        regs.eax = -(brake_speed << 16);
-        if (regs.eax > _vehicleVelocityF64E08)
+        else if (trackType == TRACK_ELEM_BRAKES)
         {
-            regs.eax = _vehicleVelocityF64E08 * -16;
-            acceleration = regs.eax;
+            int16_t breaksAcceleration = -(brake_speed << 16);
+            if (breaksAcceleration > _vehicleVelocityF64E08)
+            {
+                breaksAcceleration = _vehicleVelocityF64E08 * -16;
+                acceleration = breaksAcceleration;
+            }
         }
-    }
-
-    if (track_element_is_booster(curRide->type, trackType))
-    {
-        regs.eax = get_booster_speed(curRide->type, (brake_speed << 16));
-
-        if (regs.eax < _vehicleVelocityF64E08)
+        else if (track_element_is_booster(curRide->type, trackType))
         {
-            regs.eax = RideTypeDescriptors[curRide->type].OperatingSettings.BoosterAcceleration << 16;
-            acceleration = regs.eax;
+            int32_t boostersAcceleration = get_booster_speed(curRide->type, (brake_speed << 16));
+
+            if (boostersAcceleration < _vehicleVelocityF64E08)
+            {
+                acceleration = RideTypeDescriptors[curRide->type].OperatingSettings.BoosterAcceleration << 16;
+            }
         }
-    }
 
-    regs.ax = track_progress - 1;
-    if (regs.ax == -1)
-    {
-        UpdateCrossings();
-
-        if (!UpdateTrackMotionBackwardsGetNewTrack(trackType, curRide, reinterpret_cast<uint16_t*>(&regs.ax)))
+        int16_t track = track_progress - 1;
+        if (track == -1)
         {
-            goto loc_6DBE5E;
-        }
-    }
+            UpdateCrossings();
 
-    // loc_6DBD42
-    track_progress = regs.ax;
-    {
+            if (!UpdateTrackMotionBackwardsGetNewTrack(trackType, curRide, reinterpret_cast<uint16_t*>(&track)))
+            {
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+                _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+                remaining_distance = 0x368A;
+                return false;
+            }
+        }
+
+        // loc_6DBD42
+        track_progress = track;
+        int32_t sprite;
         const rct_vehicle_info* moveInfo = GetMoveInfo();
         int16_t curX = TrackLocation.x + moveInfo->x;
         int16_t curY = TrackLocation.y + moveInfo->y;
         int16_t curZ = TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
 
-        regs.ebx = 0;
+        int32_t position = 0;
         if (curX != unk_F64E20.x)
         {
-            regs.ebx |= 1;
+            position |= 1;
         }
         if (curY != unk_F64E20.y)
         {
-            regs.ebx |= 2;
+            position |= 2;
         }
         if (curZ != unk_F64E20.z)
         {
-            regs.ebx |= 4;
+            position |= 4;
         }
-        remaining_distance += dword_9A2930[regs.ebx];
+        remaining_distance += dword_9A2930[position];
 
         unk_F64E20.x = curX;
         unk_F64E20.y = curY;
         unk_F64E20.z = curZ;
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
-        regs.ebx = moveInfo->vehicle_sprite_type;
-        vehicle_sprite_type = regs.bl;
+        sprite = moveInfo->vehicle_sprite_type;
+        char sprite_type = sprite & 0x0000FFFF;
+        vehicle_sprite_type = sprite_type;
 
-        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && regs.bl != 0)
+        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && sprite_type != 0)
         {
             SwingSprite = 0;
             SwingPosition = 0;
@@ -8611,38 +8577,34 @@ loc_6DBA33:;
                 otherVehicleIndex = next_vehicle_on_ride;
                 if (vehicle_update_motion_collision_detection(this, curX, curY, curZ, &otherVehicleIndex))
                 {
-                    goto loc_6DBE7F;
+                    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+                    remaining_distance = 0x368A;
+                    return VehicleColision(
+                        gCurrentVehicle, GET_VEHICLE(otherVehicleIndex), vehicleEntry, rideEntry,
+                        VEHICLE_UPDATE_MOTION_TRACK_FLAG_2);
                 }
             }
         }
-    }
 
-    // loc_6DBE3F
-    if (remaining_distance >= 0)
-    {
-        return true;
-    }
-    regs.ebx = dword_9A2970[regs.ebx];
-    acceleration += regs.ebx;
-    _vehicleUnkF64E10++;
-    goto loc_6DBA33;
+        sprite = dword_9A2970[sprite];
+        acceleration += sprite;
+        _vehicleUnkF64E10++;
+    } while (remaining_distance < 0);
 
-loc_6DBE5E:
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
-    remaining_distance = 0x368A;
-    return false;
+    return true;
+}
 
-loc_6DBE7F:
-    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
-    remaining_distance = 0x368A;
-
-    Vehicle* v3 = GET_VEHICLE(otherVehicleIndex);
-    Vehicle* v4 = gCurrentVehicle;
-
+/*
+ *
+ */
+bool Vehicle::VehicleColision(
+    Vehicle* currentVehicle, Vehicle* otherVehicle, rct_ride_entry_vehicle* vehicleEntry, rct_ride_entry* rideEntry,
+    uint32_t MotionTrackFlag)
+{
+    int32_t delta_velocity = abs(currentVehicle->velocity - otherVehicle->velocity);
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
     {
-        if (abs(v4->velocity - v3->velocity) > 0xE0000)
+        if (delta_velocity > 0xE0000)
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
             {
@@ -8654,16 +8616,14 @@ loc_6DBE7F:
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
     {
         velocity -= velocity >> 2;
-        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
     }
     else
     {
-        int32_t v3Velocity = v3->velocity;
-        v3->velocity = v4->velocity >> 1;
-        v4->velocity = v3Velocity >> 1;
-        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+        int32_t newOtherVelocity = currentVehicle->velocity >> 1;
+        currentVehicle->velocity = otherVehicle->velocity >> 1;
+        otherVehicle->velocity = newOtherVelocity;
     }
-
+    _vehicleMotionTrackFlags |= MotionTrackFlag;
     return false;
 }
 
