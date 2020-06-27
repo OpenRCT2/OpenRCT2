@@ -422,8 +422,8 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
-        auto screenCoords = ScreenCoordsXY{ w->windowPos.x + (widget.left + widget.right) / 2,
-                                            w->windowPos.y + (widget.top + widget.bottom) / 2 - (line_height == 10 ? 5 : 6) };
+        auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(),
+                                            w->windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
         auto ft = Formatter::Common();
         ft.Add<money32>(gCash);
@@ -450,8 +450,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
     // Draw guests
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
-        auto screenCoords = ScreenCoordsXY{ w->windowPos.x + (widget.left + widget.right) / 2,
-                                            w->windowPos.y + (widget.top + widget.bottom) / 2 - 6 };
+        auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(), w->windowPos.y + widget.midY() - 6 };
 
         gfx_draw_string_centred(
             dpi,
@@ -467,7 +466,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
         int32_t x = w->windowPos.x + widget.left + 11;
-        int32_t y = w->windowPos.y + (widget.top + widget.bottom) / 2 - 5;
+        int32_t y = w->windowPos.y + widget.midY() - 5;
 
         window_game_bottom_toolbar_draw_park_rating(dpi, w, w->colours[3], x, y, std::max(10, ((gParkRating / 4) * 263) / 256));
     }
@@ -583,8 +582,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
 
     // Text
     utf8* newsItemText = newsItem->Text;
-    auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ (middleOutsetWidget->left + middleOutsetWidget->right) / 2, middleOutsetWidget->top + 11 };
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ middleOutsetWidget->midX(), middleOutsetWidget->top + 11 };
     width = middleOutsetWidget->width() - 62;
     gfx_draw_string_centred_wrapped_partial(
         dpi, screenCoords.x, screenCoords.y, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText,
@@ -688,8 +686,7 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     ScreenCoordsXY middleWidgetCoords(
-        w->windowPos.x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2,
-        w->windowPos.y + middleOutsetWidget->top + line_height + 1);
+        w->windowPos.x + middleOutsetWidget->midX(), w->windowPos.y + middleOutsetWidget->top + line_height + 1);
     int32_t width = middleOutsetWidget->width() - 62;
 
     // Check if there is a map tooltip to draw

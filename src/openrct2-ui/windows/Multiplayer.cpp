@@ -915,8 +915,8 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         auto ft = Formatter::Common();
         ft.Add<const char*>(buffer);
         gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top }, widget->width() - 8);
+            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top },
+            widget->width() - 8);
     }
 
     auto screenPos = w->windowPos
@@ -942,8 +942,8 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         auto ft = Formatter::Common();
         ft.Add<const char*>(buffer);
         gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ (widget->left + widget->right - 11) / 2, widget->top }, widget->width() - 8);
+            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top },
+            widget->width() - 8);
     }
 }
 

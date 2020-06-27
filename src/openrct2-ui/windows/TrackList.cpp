@@ -540,7 +540,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     auto trackPreview = screenPos;
-    screenPos = w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, (widget->top + widget->bottom) / 2 };
+    screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->midY() };
 
     rct_g1_element g1temp = {};
     g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);

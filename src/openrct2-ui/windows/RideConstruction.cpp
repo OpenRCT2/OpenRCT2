@@ -2341,7 +2341,7 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     }
 
     // Draw cost
-    screenCoords = { w->windowPos.x + (widget->left + widget->right) / 2, w->windowPos.y + widget->bottom - 23 };
+    screenCoords = { w->windowPos.x + widget->midX(), w->windowPos.y + widget->bottom - 23 };
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_PLACE)
         gfx_draw_string_centred(dpi, STR_BUILD_THIS, screenCoords, COLOUR_BLACK, w);
 

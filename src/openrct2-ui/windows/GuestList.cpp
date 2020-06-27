@@ -686,8 +686,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_sprite(
         dpi, i,
         w->windowPos
-            + ScreenCoordsXY{ (window_guest_list_widgets[WIDX_TAB_1].left + window_guest_list_widgets[WIDX_TAB_1].right) / 2,
-                              window_guest_list_widgets[WIDX_TAB_1].bottom - 6 },
+            + ScreenCoordsXY{ window_guest_list_widgets[WIDX_TAB_1].midX(), window_guest_list_widgets[WIDX_TAB_1].bottom - 6 },
         0);
 
     // Tab 2 image

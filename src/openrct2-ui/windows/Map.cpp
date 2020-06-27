@@ -815,8 +815,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_map_draw_tab_images(w, dpi);
 
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ (window_map_widgets[WIDX_LAND_TOOL].left + window_map_widgets[WIDX_LAND_TOOL].right) / 2,
-                          (window_map_widgets[WIDX_LAND_TOOL].top + window_map_widgets[WIDX_LAND_TOOL].bottom) / 2 };
+        + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
 
     // Draw land tool size
     if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)

@@ -238,12 +238,8 @@ static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
 
     // Draw number for tool sizes bigger than 7
-    ScreenCoordsXY screenCoords = {
-        w->windowPos.x
-            + (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2,
-        w->windowPos.y
-            + (window_clear_scenery_widgets[WIDX_PREVIEW].top + window_clear_scenery_widgets[WIDX_PREVIEW].bottom) / 2
-    };
+    ScreenCoordsXY screenCoords = { w->windowPos.x + window_clear_scenery_widgets[WIDX_PREVIEW].midX(),
+                                    w->windowPos.y + window_clear_scenery_widgets[WIDX_PREVIEW].midY() };
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
         gfx_draw_string_centred(
@@ -253,9 +249,7 @@ static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw cost amount
     if (gClearSceneryCost != MONEY32_UNDEFINED && gClearSceneryCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        screenCoords.x = (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right)
-                / 2
-            + w->windowPos.x;
+        screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + w->windowPos.x;
         screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5 + 27;
         gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gClearSceneryCost);
     }

@@ -1391,8 +1391,7 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo* dpi, rct_window* w)
         spriteIndex += 1;
         spriteIndex |= 0xA9E00000;
 
-        gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->bottom - 6 }, 0);
+        gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 6 }, 0);
     }
 }
 
