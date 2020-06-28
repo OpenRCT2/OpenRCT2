@@ -1912,7 +1912,7 @@ int32_t guest_path_finding(Guest* peep)
         return guest_surface_path_finding(peep);
     }
 
-    if (peep->OutsideOfPark == 0 && peep->HeadingForRideOrParkExit())
+    if (!peep->OutsideOfPark && peep->HeadingForRideOrParkExit())
     {
         /* If this tileElement is adjacent to any non-wide paths,
          * remove all of the edges to wide paths. */
@@ -1970,7 +1970,7 @@ int32_t guest_path_finding(Guest* peep)
 
     // Peep is outside the park.
     // loc_694F19:
-    if (peep->OutsideOfPark != 0)
+    if (peep->OutsideOfPark)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)

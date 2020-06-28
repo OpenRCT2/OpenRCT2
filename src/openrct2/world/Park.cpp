@@ -387,7 +387,7 @@ int32_t Park::CalculateParkRating() const
         uint32_t lostGuestCount = 0;
         for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
-            if (peep->OutsideOfPark == 0)
+            if (!peep->OutsideOfPark)
             {
                 if (peep->Happiness > 128)
                 {

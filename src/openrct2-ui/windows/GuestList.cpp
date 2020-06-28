@@ -251,7 +251,7 @@ void window_guest_list_refresh_list()
     for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
         sprite_set_flashing(peep, false);
-        if (peep->OutsideOfPark != 0)
+        if (peep->OutsideOfPark)
             continue;
         if (_window_guest_list_selected_filter != -1)
         {
@@ -950,7 +950,7 @@ static void window_guest_list_find_groups()
     {
         for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
-            if (peep->OutsideOfPark == 0)
+            if (!peep->OutsideOfPark)
             {
                 peep->flags |= SPRITE_FLAGS_PEEP_VISIBLE;
             }
@@ -959,7 +959,7 @@ static void window_guest_list_find_groups()
     // For each guest / group
     for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
     {
-        if (peep->OutsideOfPark != 0 || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
+        if (peep->OutsideOfPark || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
             continue;
 
         // New group, cap at 240 though
@@ -982,7 +982,7 @@ static void window_guest_list_find_groups()
         // Find more peeps that belong to same group
         for (auto peep2 : EntityList<Guest>(SPRITE_LIST_PEEP))
         {
-            if (peep2->OutsideOfPark != 0 || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
+            if (peep2->OutsideOfPark || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
                 continue;
 
             // Get and check if in same group
