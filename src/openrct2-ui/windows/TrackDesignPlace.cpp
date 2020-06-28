@@ -129,7 +129,7 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc);
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(TrackDesign* td6);
 static void window_track_place_draw_mini_preview_track(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY min, CoordsXY max);
+    TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max);
 static void window_track_place_draw_mini_preview_maze(
     TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max);
 static ScreenCoordsXY draw_mini_preview_get_pixel_position(const CoordsXY& location);
@@ -565,12 +565,13 @@ static void window_track_place_draw_mini_preview(TrackDesign* td6)
 }
 
 static void window_track_place_draw_mini_preview_track(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY min, CoordsXY max)
+    TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
 {
     uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 
     const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
                                                                                                           : FlatRideTrackBlocks;
+    CoordsXY curTrackStart = origin;
     for (const auto& trackElement : td6->track_elements)
     {
         int32_t trackType = trackElement.type;
@@ -583,7 +584,7 @@ static void window_track_place_draw_mini_preview_track(
         const rct_preview_track* trackBlock = trackBlockArray[trackType];
         while (trackBlock->index != 255)
         {
-            auto rotatedAndOffsetTrackBlock = origin + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
+            auto rotatedAndOffsetTrackBlock = curTrackStart + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
 
             if (pass == 0)
             {
@@ -627,7 +628,7 @@ static void window_track_place_draw_mini_preview_track(
         const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
 
         trackType *= 10;
-        auto rotatedAndOfffsetTrack = origin + CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(rotation);
+        auto rotatedAndOfffsetTrack = curTrackStart + CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(rotation);
         rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
         rotation &= 3;
         if (track_coordinate->rotation_end & 4)
@@ -636,7 +637,7 @@ static void window_track_place_draw_mini_preview_track(
         }
         if (!(rotation & 4))
         {
-            origin = rotatedAndOfffsetTrack + CoordsDirectionDelta[rotation];
+            curTrackStart = rotatedAndOfffsetTrack + CoordsDirectionDelta[rotation];
         }
     }
 
