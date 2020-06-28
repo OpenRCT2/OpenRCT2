@@ -414,7 +414,6 @@ namespace ObjectJsonHelpers
                 auto importResult = importer.Import(image, 0, 0, ImageImporter::IMPORT_FLAGS::RLE);
 
                 result.push_back(std::make_unique<RequiredImage>(importResult.Element));
-                std::free(importResult.Buffer);
             }
             catch (const std::exception& e)
             {
@@ -450,7 +449,6 @@ namespace ObjectJsonHelpers
             g1Element.x_offset = x;
             g1Element.y_offset = y;
             result.push_back(std::make_unique<RequiredImage>(g1Element));
-            std::free(importResult.Buffer);
         }
         catch (const std::exception& e)
         {

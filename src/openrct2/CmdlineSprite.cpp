@@ -244,9 +244,8 @@ static bool sprite_file_export(rct_g1_element* spriteHeader, const char* outPath
     }
 }
 
-static bool sprite_file_import(
-    const char* path, int16_t x_offset, int16_t y_offset, bool keep_palette, bool forceBmp, rct_g1_element* outElement,
-    uint8_t** outBuffer, int* outBufferLength, int32_t mode)
+static std::optional<ImageImporter::ImportResult> sprite_file_import(
+    const char* path, int16_t x_offset, int16_t y_offset, bool keep_palette, bool forceBmp, int32_t mode)
 {
     try
     {
@@ -266,17 +265,13 @@ static bool sprite_file_import(
 
         ImageImporter importer;
         auto image = Imaging::ReadFromFile(path, format);
-        auto result = importer.Import(image, x_offset, y_offset, flags, static_cast<ImageImporter::IMPORT_MODE>(mode));
 
-        *outElement = result.Element;
-        *outBuffer = static_cast<uint8_t*>(result.Buffer);
-        *outBufferLength = static_cast<int>(result.BufferLength);
-        return true;
+        return importer.Import(image, x_offset, y_offset, flags, static_cast<ImageImporter::IMPORT_MODE>(mode));
     }
     catch (const std::exception& e)
     {
         fprintf(stderr, "%s\n", e.what());
-        return false;
+        return std::nullopt;
     }
 }
 
@@ -643,12 +638,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             }
         }
 
-        rct_g1_element spriteElement;
-        uint8_t* buffer;
-
-        int32_t bufferLength;
-        if (!sprite_file_import(
-                imagePath, x_offset, y_offset, false, false, &spriteElement, &buffer, &bufferLength, gSpriteMode))
+        auto importResult = sprite_file_import(imagePath, x_offset, y_offset, false, false, gSpriteMode);
+        if (importResult == std::nullopt)
             return -1;
 
         if (!sprite_file_open(spriteFilePath))
@@ -658,7 +649,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
 
         spriteFileHeader.num_entries++;
-        spriteFileHeader.total_size += bufferLength;
+        spriteFileHeader.total_size += static_cast<uint32_t>(importResult->Buffer.size());
         spriteFileEntries = static_cast<rct_g1_element*>(
             realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element)));
 
@@ -666,12 +657,13 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         spriteFileData = static_cast<uint8_t*>(realloc(spriteFileData, spriteFileHeader.total_size));
         sprite_entries_make_absolute();
 
-        spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
-        std::memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
-        spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData
-            + (spriteFileHeader.total_size - bufferLength);
+        spriteFileEntries[spriteFileHeader.num_entries - 1] = importResult->Element;
 
-        free(buffer);
+        const auto& buffer = importResult->Buffer;
+        std::memcpy(spriteFileData + (spriteFileHeader.total_size - buffer.size()), buffer.data(), buffer.size());
+        spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData
+            + (spriteFileHeader.total_size - buffer.size());
+
         if (!sprite_file_save(spriteFilePath))
             return -1;
 
@@ -768,14 +760,10 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             // Resolve absolute sprite path
             auto imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
 
-            rct_g1_element spriteElement;
-            uint8_t* buffer;
-            int bufferLength;
-
-            if (!sprite_file_import(
-                    imagePath.c_str(), x_offset == nullptr ? 0 : json_integer_value(x_offset),
-                    y_offset == nullptr ? 0 : json_integer_value(y_offset), keep_palette, forceBmp, &spriteElement, &buffer,
-                    &bufferLength, gSpriteMode))
+            auto importResult = sprite_file_import(
+                imagePath.c_str(), x_offset == nullptr ? 0 : json_integer_value(x_offset),
+                y_offset == nullptr ? 0 : json_integer_value(y_offset), keep_palette, forceBmp, gSpriteMode);
+            if (importResult == std::nullopt)
             {
                 fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath.c_str());
                 json_decref(sprite_list);
@@ -790,7 +778,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             }
 
             spriteFileHeader.num_entries++;
-            spriteFileHeader.total_size += bufferLength;
+            spriteFileHeader.total_size += static_cast<uint32_t>(importResult->Buffer.size());
             spriteFileEntries = static_cast<rct_g1_element*>(
                 realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element)));
 
@@ -798,12 +786,12 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             spriteFileData = static_cast<uint8_t*>(realloc(spriteFileData, spriteFileHeader.total_size));
             sprite_entries_make_absolute();
 
-            spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
-            std::memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
-            spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData
-                + (spriteFileHeader.total_size - bufferLength);
+            spriteFileEntries[spriteFileHeader.num_entries - 1] = importResult->Element;
 
-            free(buffer);
+            const auto& buffer = importResult->Buffer;
+            std::memcpy(spriteFileData + (spriteFileHeader.total_size - buffer.size()), buffer.data(), buffer.size());
+            spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData
+                + (spriteFileHeader.total_size - buffer.size());
 
             if (!sprite_file_save(spriteFilePath))
             {
