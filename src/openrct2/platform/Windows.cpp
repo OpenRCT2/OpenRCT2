@@ -55,28 +55,6 @@
 #        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
 #    endif
 
-void platform_get_date_local(rct2_date* out_date)
-{
-    assert(out_date != nullptr);
-    SYSTEMTIME systime;
-
-    GetLocalTime(&systime);
-    out_date->day = systime.wDay;
-    out_date->month = systime.wMonth;
-    out_date->year = systime.wYear;
-    out_date->day_of_week = systime.wDayOfWeek;
-}
-
-void platform_get_time_local(rct2_time* out_time)
-{
-    assert(out_time != nullptr);
-    SYSTEMTIME systime;
-    GetLocalTime(&systime);
-    out_time->hour = systime.wHour;
-    out_time->minute = systime.wMinute;
-    out_time->second = systime.wSecond;
-}
-
 bool platform_file_exists(const utf8* path)
 {
     auto wPath = String::ToWideChar(path);

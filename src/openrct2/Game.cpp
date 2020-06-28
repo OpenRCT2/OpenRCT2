@@ -38,6 +38,7 @@
 #include "object/ObjectList.h"
 #include "peep/Peep.h"
 #include "peep/Staff.h"
+#include "platform/Platform2.h"
 #include "platform/platform.h"
 #include "rct1/RCT1.h"
 #include "ride/Ride.h"
@@ -766,10 +767,8 @@ void game_autosave()
     }
 
     // Retrieve current time
-    rct2_date currentDate;
-    platform_get_date_local(&currentDate);
-    rct2_time currentTime;
-    platform_get_time_local(&currentTime);
+    auto currentDate = Platform::GetDateLocal();
+    auto currentTime = Platform::GetTimeLocal();
 
     utf8 timeName[44];
     snprintf(
