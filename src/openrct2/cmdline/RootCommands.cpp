@@ -22,7 +22,6 @@
 #include "../object/ObjectRepository.h"
 #include "../platform/Crash.h"
 #include "../platform/Platform2.h"
-#include "../platform/platform.h"
 #include "CommandLine.hpp"
 
 #include <ctime>
@@ -368,7 +367,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     String::Set(pathG1Check, sizeof(pathG1Check), path);
     Path::Append(pathG1Check, sizeof(pathG1Check), "Data");
     Path::Append(pathG1Check, sizeof(pathG1Check), "g1.dat");
-    if (!platform_file_exists(pathG1Check))
+    if (Platform::FileExists(pathG1Check))
     {
         Console::Error::WriteLine("RCT2 path not valid.");
         Console::Error::WriteLine("Unable to find %s.", pathG1Check);

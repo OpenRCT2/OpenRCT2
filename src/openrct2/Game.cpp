@@ -39,7 +39,6 @@
 #include "peep/Peep.h"
 #include "peep/Staff.h"
 #include "platform/Platform2.h"
-#include "platform/platform.h"
 #include "rct1/RCT1.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
@@ -789,7 +788,7 @@ void game_autosave()
     safe_strcat(backupPath, fileExtension, sizeof(backupPath));
     safe_strcat(backupPath, ".bak", sizeof(backupPath));
 
-    if (platform_file_exists(path))
+    if (Platform::FileExists(path))
     {
         platform_file_copy(path, backupPath, true);
     }

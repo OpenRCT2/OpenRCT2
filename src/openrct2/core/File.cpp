@@ -14,7 +14,7 @@
 #    include <sys/stat.h>
 #endif
 
-#include "../platform/platform.h"
+#include "../platform/Platform2.h"
 #include "../util/Util.h"
 #include "File.h"
 #include "FileStream.hpp"
@@ -26,7 +26,7 @@ namespace File
 {
     bool Exists(const std::string& path)
     {
-        return platform_file_exists(path.c_str());
+        return Platform::FileExists(path);
     }
 
     bool Copy(const std::string& srcPath, const std::string& dstPath, bool overwrite)

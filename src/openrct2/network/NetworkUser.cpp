@@ -15,7 +15,7 @@
 #    include "../core/Json.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../platform/platform.h"
+#    include "../platform/Platform2.h"
 
 #    include <unordered_set>
 
@@ -86,7 +86,7 @@ void NetworkUserManager::Load()
     utf8 path[MAX_PATH];
     GetStorePath(path, sizeof(path));
 
-    if (platform_file_exists(path))
+    if (Platform::FileExists(path))
     {
         DisposeUsers();
 
@@ -120,7 +120,7 @@ void NetworkUserManager::Save()
     json_t* jsonUsers = nullptr;
     try
     {
-        if (platform_file_exists(path))
+        if (Platform::FileExists(path))
         {
             jsonUsers = Json::ReadFromFile(path);
         }

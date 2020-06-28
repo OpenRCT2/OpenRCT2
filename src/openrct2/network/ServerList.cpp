@@ -20,7 +20,7 @@
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../platform/platform.h"
+#    include "../platform/Platform2.h"
 #    include "Socket.h"
 #    include "network.h"
 
@@ -156,7 +156,7 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
     {
         auto env = GetContext()->GetPlatformEnvironment();
         auto path = env->GetFilePath(PATHID::NETWORK_SERVERS);
-        if (platform_file_exists(path.c_str()))
+        if (Platform::FileExists(path))
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             auto numEntries = fs.ReadValue<uint32_t>();

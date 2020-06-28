@@ -22,7 +22,7 @@
 #    include "../interface/Viewport.h"
 #    include "../localisation/Localisation.h"
 #    include "../paint/Paint.h"
-#    include "../platform/platform.h"
+#    include "../platform/Platform2.h"
 #    include "../util/Util.h"
 #    include "../world/Climate.h"
 #    include "../world/Map.h"
@@ -180,7 +180,7 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
     // Extract file names from argument list. If there is no such file, consider it benchmark option.
     for (int i = 0; i < argc; i++)
     {
-        if (platform_file_exists(argv[i]))
+        if (Platform::FileExists(argv[i]))
         {
             // Register benchmark for sv6 if valid
             std::vector<paint_session> sessions = extract_paint_session(argv[i]);

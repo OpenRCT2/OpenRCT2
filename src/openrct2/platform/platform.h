@@ -90,7 +90,6 @@ void platform_get_date_utc(rct2_date* out_date);
 void platform_get_time_utc(rct2_time* out_time);
 
 // Platform specific definitions
-bool platform_file_exists(const utf8* path);
 bool platform_directory_exists(const utf8* path);
 bool platform_original_game_data_exists(const utf8* path);
 time_t platform_file_get_modified_time(const utf8* path);
