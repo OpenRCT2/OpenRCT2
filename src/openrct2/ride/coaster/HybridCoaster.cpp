@@ -117,7 +117,7 @@ wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackC
    
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
-        track_paint_util_draw_station_platform(session, ride, direction, height, 9, tileElement);
+        track_paint_util_draw_station_platform(session, ride, direction, height, 10, tileElement);
     
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

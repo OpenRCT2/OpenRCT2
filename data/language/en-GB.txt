@@ -174,7 +174,7 @@ STR_0598    :Inverted roller coaster trains are accelerated out of the station t
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :TODO add description
+STR_0603    :A wooden style roller coaster with a steel track, allowing for steep drops and inversions.
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
