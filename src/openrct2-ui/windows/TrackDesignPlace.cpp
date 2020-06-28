@@ -567,11 +567,12 @@ static void window_track_place_draw_mini_preview(TrackDesign* td6)
 static void window_track_place_draw_mini_preview_track(
     TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
 {
-    uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
+    const uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 
     const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
                                                                                                           : FlatRideTrackBlocks;
     CoordsXY curTrackStart = origin;
+    uint8_t curTrackRotation = rotation;
     for (const auto& trackElement : td6->track_elements)
     {
         int32_t trackType = trackElement.type;
@@ -584,7 +585,7 @@ static void window_track_place_draw_mini_preview_track(
         const rct_preview_track* trackBlock = trackBlockArray[trackType];
         while (trackBlock->index != 255)
         {
-            auto rotatedAndOffsetTrackBlock = curTrackStart + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
+            auto rotatedAndOffsetTrackBlock = curTrackStart + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(curTrackRotation);
 
             if (pass == 0)
             {
@@ -600,7 +601,7 @@ static void window_track_place_draw_mini_preview_track(
                 {
                     uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
-                    auto bits = trackBlock->var_08.Rotate(rotation & 3).GetBaseQuarterOccupied();
+                    auto bits = trackBlock->var_08.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                     // Station track is a lighter colour
                     uint8_t colour = (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
@@ -624,20 +625,19 @@ static void window_track_place_draw_mini_preview_track(
         }
 
         // Change rotation and next position based on track curvature
-        rotation &= 3;
+        curTrackRotation &= 3;
         const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
 
-        trackType *= 10;
-        auto rotatedAndOfffsetTrack = curTrackStart + CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(rotation);
-        rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
-        rotation &= 3;
+        curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);
+        curTrackRotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
+        curTrackRotation &= 3;
         if (track_coordinate->rotation_end & 4)
         {
-            rotation |= 4;
+            curTrackRotation |= 4;
         }
-        if (!(rotation & 4))
+        if (!(curTrackRotation & 4))
         {
-            curTrackStart = rotatedAndOfffsetTrack + CoordsDirectionDelta[rotation];
+            curTrackStart += CoordsDirectionDelta[curTrackRotation];
         }
     }
 
