@@ -595,8 +595,8 @@ void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args)
  *
  *  rct2: 0x00681DE2
  */
-void FASTCALL
-    gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, int32_t maskImage, int32_t colourImage)
+void FASTCALL gfx_draw_sprite_raw_masked_software(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, int32_t maskImage, int32_t colourImage)
 {
     int32_t left, top, right, bottom, width, height;
     auto imgMask = gfx_get_g1_element(maskImage & 0x7FFFF);
