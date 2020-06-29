@@ -522,7 +522,8 @@ static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t
     attached_paint_struct* attached_ps = ps->attached_ps;
     for (; attached_ps; attached_ps = attached_ps->next)
     {
-        auto screenCoords = ScreenCoordsXY{ attached_ps->x + static_cast<int16_t>(ps->x), attached_ps->y + static_cast<int16_t>(ps->y) };
+        auto screenCoords = ScreenCoordsXY{ attached_ps->x + static_cast<int16_t>(ps->x),
+                                            attached_ps->y + static_cast<int16_t>(ps->y) };
 
         uint32_t imageId = paint_ps_colourify_image(attached_ps->image_id, ps->sprite_type, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
