@@ -596,7 +596,7 @@ void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args)
  *  rct2: 0x00681DE2
  */
 void FASTCALL
-    gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
+    gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, int32_t maskImage, int32_t colourImage)
 {
     int32_t left, top, right, bottom, width, height;
     auto imgMask = gfx_get_g1_element(maskImage & 0x7FFFF);
@@ -609,7 +609,7 @@ void FASTCALL
     // Only BMP format is supported for masking
     if (!(imgMask->flags & G1_FLAG_BMP) || !(imgColour->flags & G1_FLAG_BMP))
     {
-        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), { x, y });
+        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), scrCoords);
         return;
     }
 
@@ -623,21 +623,20 @@ void FASTCALL
     width = std::min(imgMask->width, imgColour->width);
     height = std::min(imgMask->height, imgColour->height);
 
-    x += imgMask->x_offset;
-    y += imgMask->y_offset;
+    auto offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->x_offset, imgMask->y_offset };
 
-    left = std::max<int32_t>(dpi->x, x);
-    top = std::max<int32_t>(dpi->y, y);
-    right = std::min(dpi->x + dpi->width, x + width);
-    bottom = std::min(dpi->y + dpi->height, y + height);
+    left = std::max<int32_t>(dpi->x, offsetCoords.x);
+    top = std::max<int32_t>(dpi->y, offsetCoords.y);
+    right = std::min(dpi->x + dpi->width, offsetCoords.x + width);
+    bottom = std::min(dpi->y + dpi->height, offsetCoords.y + height);
 
     width = right - left;
     height = bottom - top;
     if (width < 0 || height < 0)
         return;
 
-    int32_t skipX = left - x;
-    int32_t skipY = top - y;
+    int32_t skipX = left - offsetCoords.x;
+    int32_t skipY = top - offsetCoords.y;
 
     uint8_t const* maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
     uint8_t const* colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
