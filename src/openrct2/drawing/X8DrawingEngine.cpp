@@ -735,7 +735,7 @@ void X8DrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t
 
 void X8DrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage)
 {
-    gfx_draw_sprite_raw_masked_software(_dpi, x, y, maskImage, colourImage);
+    gfx_draw_sprite_raw_masked_software(_dpi, {x, y}, maskImage, colourImage);
 }
 
 void X8DrawingContext::DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour)
