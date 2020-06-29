@@ -637,8 +637,8 @@ void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, const
 void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& spriteCoords);
 void FASTCALL gfx_draw_sprite_palette_set_software(
     rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
-void FASTCALL
-    gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage);
+void FASTCALL gfx_draw_sprite_raw_masked_software(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, int32_t maskImage, int32_t colourImage);
 
 // string
 void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords);
