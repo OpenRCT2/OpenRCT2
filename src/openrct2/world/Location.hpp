@@ -647,25 +647,31 @@ template<class T> struct CoordsRange
     }
 };
 
+template<class T> struct RectRange : public CoordsRange<T>
+{
+    using CoordsRange<T>::CoordsRange;
+
+    RectRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
+        : RectRange({ left, top }, { right, bottom })
+    {
+    }
+
+    RectRange(const T& leftTop, const T& rightBottom)
+        : CoordsRange<T>(leftTop, rightBottom)
+    {
+        // Make sure it's a rectangle
+        assert(std::abs(CoordsRange<T>::GetLeft() - CoordsRange<T>::GetRight()) > 0);
+        assert(std::abs(CoordsRange<T>::GetTop() - CoordsRange<T>::GetBottom()) > 0);
+    }
+};
+
 /**
  * Represents a rectangular range of the map using regular coordinates (32 per tile).
  */
 
-struct MapRange : public CoordsRange<CoordsXY>
+struct MapRange : public RectRange<CoordsXY>
 {
-    using CoordsRange::CoordsRange;
-    MapRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
-        : MapRange({ left, top }, { right, bottom })
-    {
-    }
-
-    MapRange(const CoordsXY& leftTop, const CoordsXY& rightBottom)
-        : CoordsRange<CoordsXY>(leftTop, rightBottom)
-    {
-        // Make sure it's a rectangle
-        assert(std::abs(GetLeft() - GetRight()) > 0);
-        assert(std::abs(GetTop() - GetBottom()) > 0);
-    }
+    using RectRange::RectRange;
 
     MapRange Normalise() const
     {
@@ -694,16 +700,10 @@ struct ScreenLine : public CoordsRange<ScreenCoordsXY>
  * Represents a rectangular range on the screen
  */
 
-struct ScreenRect : public CoordsRange<ScreenCoordsXY>
+struct ScreenRect : public RectRange<ScreenCoordsXY>
 {
-    ScreenRect(const ScreenCoordsXY& leftTop, const ScreenCoordsXY& rightBottom)
-        : CoordsRange<ScreenCoordsXY>(leftTop, rightBottom)
-    {
-        // Make sure it's a rectangle
-        assert(std::abs(GetLeft() - GetRight()) > 0);
-        assert(std::abs(GetTop() - GetBottom()) > 0);
-    }
-    
+    using RectRange::RectRange;
+
     int32_t GetWidth() const
     {
         return RightBottom.x - LeftTop.x;
