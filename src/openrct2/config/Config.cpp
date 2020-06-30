@@ -66,6 +66,7 @@ namespace Config
         ConfigEnumEntry<int32_t>("HKD", CURRENCY_HKD),
         ConfigEnumEntry<int32_t>("TWD", CURRENCY_TWD),
         ConfigEnumEntry<int32_t>("CNY", CURRENCY_YUAN),
+        ConfigEnumEntry<int32_t>("HUF", CURRENCY_FORINT),
         ConfigEnumEntry<int32_t>("CUSTOM", CURRENCY_CUSTOM),
     });
 
