@@ -81,7 +81,8 @@ public:
         auto td6 = track_design_open(path.c_str());
         if (td6 != nullptr)
         {
-            ObjectEntryIndex rideType = RIDE_TYPE_NULL;
+            ObjectEntryIndex rideType = td6->type;
+            if (RCT2RideTypeNeedsConversion(td6->type))
             {
                 std::scoped_lock<std::mutex> lock(_objectLookupMutex);
                 auto* rawObject = object_repository_load_object(&td6->vehicle_object);

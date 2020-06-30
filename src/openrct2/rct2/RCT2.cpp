@@ -48,6 +48,22 @@ ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_
     }
 }
 
+bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType)
+{
+    switch (rct2RideType)
+    {
+        case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
+        case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
+        case RIDE_TYPE_CAR_RIDE:
+        case RIDE_TYPE_TWISTER_ROLLER_COASTER:
+        case RIDE_TYPE_STEEL_WILD_MOUSE:
+            return true;
+
+        default:
+            return false;
+    }
+}
+
 uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type)
 {
     switch (openrct2Type)

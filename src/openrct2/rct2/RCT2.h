@@ -766,4 +766,5 @@ assert_struct_size(RCT2RideRatingCalculationData, 76);
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);
 ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
+bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
 uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);
