@@ -689,3 +689,31 @@ struct ScreenLine : public CoordsRange<ScreenCoordsXY>
         assert((std::abs(GetLeft() - GetRight()) > 0) || (std::abs(GetTop() - GetBottom()) > 0));
     }
 };
+
+/**
+ * Represents a rectangular range on the screen
+ */
+
+struct ScreenRect : public CoordsRange<ScreenCoordsXY>
+{
+    ScreenRect(const ScreenCoordsXY& leftTop, const ScreenCoordsXY& rightBottom)
+        : CoordsRange<ScreenCoordsXY>(leftTop, rightBottom)
+    {
+        // Make sure it's a rectangle
+        assert(std::abs(GetLeft() - GetRight()) > 0);
+        assert(std::abs(GetTop() - GetBottom()) > 0);
+    }
+    
+    int32_t GetWidth() const
+    {
+        return RightBottom.x - LeftTop.x;
+    }
+    int32_t GetHeight() const
+    {
+        return RightBottom.y - LeftTop.y;
+    }
+    bool Contains(const ScreenCoordsXY& coords) const
+    {
+        return coords.x >= GetLeft() && coords.x <= GetRight() && coords.y >= GetTop() && coords.y <= GetBottom();
+    }
+};
