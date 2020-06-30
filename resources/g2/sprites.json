@@ -469,6 +469,16 @@
         "path": "tool/scenery_scatter_high.png"
     },
     {
+        "path": "track/wooden/booster_1.png",
+        "x_offset": -33,
+        "y_offset": -16
+    },
+    {
+        "path": "track/wooden/booster_2.png",
+        "x_offset": -28,
+        "y_offset": -15
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
