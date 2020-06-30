@@ -245,13 +245,13 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
  * Draws text that is left aligned and vertically centred.
  */
 void gfx_draw_string_left_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, int32_t x, int32_t y)
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, const ScreenCoordsXY& coords)
 {
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
     int32_t height = string_get_height_raw(buffer);
-    gfx_draw_string(dpi, buffer, colour, { x, y - (height / 2) });
+    gfx_draw_string(dpi, buffer, colour, coords - ScreenCoordsXY{ 0, (height / 2) });
 }
 
 /**
@@ -309,12 +309,12 @@ static void colour_char_window(uint8_t colour, const uint16_t* current_font_flag
  * text     : esi
  * dpi      : edi
  */
-void draw_string_centred_raw(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t numLines, char* text)
+void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text)
 {
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_draw_string(dpi, "", COLOUR_BLACK, screenCoords);
-    screenCoords = { x, y };
+    screenCoords = coords;
     gCurrentFontFlags = 0;
 
     for (int32_t i = 0; i <= numLines; i++)
@@ -421,7 +421,7 @@ int32_t string_get_height_raw(char* buffer)
  * ticks    : ebp >> 16
  */
 void gfx_draw_string_centred_wrapped_partial(
-    rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t width, int32_t colour, rct_string_id format, void* args,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, int32_t colour, rct_string_id format, void* args,
     int32_t ticks)
 {
     int32_t numLines, fontSpriteBase, lineHeight, lineY;
@@ -440,7 +440,7 @@ void gfx_draw_string_centred_wrapped_partial(
     int32_t numCharactersToDraw = ticks;
 
     gCurrentFontFlags = 0;
-    lineY = y - ((numLines * lineHeight) / 2);
+    lineY = coords.y - ((numLines * lineHeight) / 2);
     for (int32_t line = 0; line <= numLines; line++)
     {
         int32_t halfWidth = gfx_get_string_width(buffer) / 2;
@@ -462,7 +462,7 @@ void gfx_draw_string_centred_wrapped_partial(
             ch = nextCh;
         }
 
-        screenCoords = { x - halfWidth, lineY };
+        screenCoords = { coords.x - halfWidth, lineY };
         gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, screenCoords);
 
         if (numCharactersDrawn > numCharactersToDraw)
@@ -496,15 +496,14 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo* dpi, int32_t codepoint,
 
     if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
     {
-        int32_t x = info->x;
-        int32_t y = info->y;
+        auto screenCoords = ScreenCoordsXY{ info->x, info->y };
         if (info->flags & TEXT_DRAW_FLAG_Y_OFFSET_EFFECT)
         {
-            y += *info->y_offset++;
+            screenCoords.y += *info->y_offset++;
         }
 
         PaletteMap paletteMap(info->palette);
-        gfx_draw_glyph(dpi, sprite, x, y, paletteMap);
+        gfx_draw_glyph(dpi, sprite, screenCoords, paletteMap);
     }
 
     info->x += characterWidth;
@@ -934,7 +933,7 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
     }
 }
 
-void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, int32_t x, int32_t y)
+void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords)
 {
     if (text == nullptr)
         return;
@@ -942,10 +941,10 @@ void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colo
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
     info.flags = gCurrentFontFlags;
-    info.startX = x;
-    info.startY = x;
-    info.x = x;
-    info.y = y;
+    info.startX = coords.x;
+    info.startY = coords.y;
+    info.x = coords.x;
+    info.y = coords.y;
 
     if (LocalisationService_UseTrueTypeFont())
     {
@@ -992,16 +991,16 @@ static int32_t ttf_get_string_width(const utf8* text)
  *  rct2: 0x00682F28
  */
 void gfx_draw_string_with_y_offsets(
-    rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, int32_t x, int32_t y, const int8_t* yOffsets,
+    rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont)
 {
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
     info.flags = gCurrentFontFlags;
-    info.startX = x;
-    info.startY = x;
-    info.x = x;
-    info.y = y;
+    info.startX = coords.x;
+    info.startY = coords.y;
+    info.x = coords.x;
+    info.y = coords.y;
     info.y_offset = yOffsets;
 
     info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;

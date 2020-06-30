@@ -194,5 +194,5 @@ static void window_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     l = w->windowPos.x + (w->width + 1) / 2 - 1;
     t = w->windowPos.y + 1;
-    draw_string_centred_raw(dpi, l, t, _window_error_num_lines, _window_error_text.data());
+    draw_string_centred_raw(dpi, { l, t }, _window_error_num_lines, _window_error_text.data());
 }

@@ -528,7 +528,7 @@ static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t
         uint32_t imageId = paint_ps_colourify_image(attached_ps->image_id, ps->sprite_type, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
         {
-            gfx_draw_sprite_raw_masked(dpi, screenCoords.x, screenCoords.y, imageId, attached_ps->colour_image_id);
+            gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->colour_image_id);
         }
         else
         {
@@ -633,7 +633,7 @@ static void paint_ps_image(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t im
 {
     if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
     {
-        return gfx_draw_sprite_raw_masked(dpi, x, y, imageId, ps->colour_image_id);
+        return gfx_draw_sprite_raw_masked(dpi, { x, y }, imageId, ps->colour_image_id);
     }
 
     gfx_draw_sprite(dpi, imageId, { x, y }, ps->tertiary_colour);
@@ -1153,6 +1153,6 @@ void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
         }
 
         gfx_draw_string_with_y_offsets(
-            &dpi2, buffer, COLOUR_BLACK, ps->x, ps->y, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont);
+            &dpi2, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont);
     } while ((ps = ps->next) != nullptr);
 }

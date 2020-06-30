@@ -254,23 +254,24 @@ void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, const Scree
     }
 }
 
-void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap)
+void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawGlyph(image, x, y, paletteMap);
+        dc->DrawGlyph(image, coords.x, coords.y, paletteMap);
     }
 }
 
-void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
+void FASTCALL
+    gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t maskImage, int32_t colourImage)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawSpriteRawMasked(x, y, maskImage, colourImage);
+        dc->DrawSpriteRawMasked(coords.x, coords.y, maskImage, colourImage);
     }
 }
 

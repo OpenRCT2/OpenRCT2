@@ -624,7 +624,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
         return;
 
     auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
-    gfx_draw_string_left_centred(dpi, stringId, formatArgs, colour, l + 14, yMid);
+    gfx_draw_string_left_centred(dpi, stringId, formatArgs, colour, { l + 14, yMid });
 }
 
 /**
