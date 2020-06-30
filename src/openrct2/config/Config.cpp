@@ -53,7 +53,7 @@ namespace Config
         ConfigEnumEntry<int32_t>("GBP", CURRENCY_POUNDS),
         ConfigEnumEntry<int32_t>("USD", CURRENCY_DOLLARS),
         ConfigEnumEntry<int32_t>("FRF", CURRENCY_FRANC),
-        ConfigEnumEntry<int32_t>("DEM", CURRENCY_DEUTSCHMARK),
+        ConfigEnumEntry<int32_t>("DEM", CURRENCY_DEUTSCHE_MARK),
         ConfigEnumEntry<int32_t>("JPY", CURRENCY_YEN),
         ConfigEnumEntry<int32_t>("ESP", CURRENCY_PESETA),
         ConfigEnumEntry<int32_t>("ITL", CURRENCY_LIRA),

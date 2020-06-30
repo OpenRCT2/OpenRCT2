@@ -15,23 +15,23 @@
 // List of currencies
 enum CURRENCY_TYPE
 {
-    CURRENCY_POUNDS,       // British Pound
-    CURRENCY_DOLLARS,      // US Dollar
-    CURRENCY_FRANC,        // French Franc
-    CURRENCY_DEUTSCHMARK,  // Deutsche Mark
-    CURRENCY_YEN,          // Japanese Yen
-    CURRENCY_PESETA,       // Spanish Peseta
-    CURRENCY_LIRA,         // Italian Lira
-    CURRENCY_GUILDERS,     // Dutch Gilder
-    CURRENCY_KRONA,        // Swedish Krona
-    CURRENCY_EUROS,        // Euro
-    CURRENCY_WON,          // South Korean Won
-    CURRENCY_ROUBLE,       // Russian Rouble
-    CURRENCY_CZECH_KORUNA, // Czech koruna
-    CURRENCY_HKD,          // Hong Kong Dollar
-    CURRENCY_TWD,          // New Taiwan Dollar
-    CURRENCY_YUAN,         // Chinese Yuan
-    CURRENCY_FORINT,       // Hungarian Forint
+    CURRENCY_POUNDS,        // British Pound
+    CURRENCY_DOLLARS,       // US Dollar
+    CURRENCY_FRANC,         // French Franc
+    CURRENCY_DEUTSCHE_MARK, // Deutsche Mark
+    CURRENCY_YEN,           // Japanese Yen
+    CURRENCY_PESETA,        // Spanish Peseta
+    CURRENCY_LIRA,          // Italian Lira
+    CURRENCY_GUILDERS,      // Dutch Gilder
+    CURRENCY_KRONA,         // Swedish Krona
+    CURRENCY_EUROS,         // Euro
+    CURRENCY_WON,           // South Korean Won
+    CURRENCY_ROUBLE,        // Russian Rouble
+    CURRENCY_CZECH_KORUNA,  // Czech koruna
+    CURRENCY_HKD,           // Hong Kong Dollar
+    CURRENCY_TWD,           // New Taiwan Dollar
+    CURRENCY_YUAN,          // Chinese Yuan
+    CURRENCY_FORINT,        // Hungarian Forint
 
     CURRENCY_CUSTOM, // Custom currency
 
