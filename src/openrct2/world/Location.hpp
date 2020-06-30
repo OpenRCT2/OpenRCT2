@@ -666,12 +666,26 @@ struct MapRange : public CoordsRange<CoordsXY>
         assert(std::abs(GetLeft() - GetRight()) > 0);
         assert(std::abs(GetTop() - GetBottom()) > 0);
     }
-    
+
     MapRange Normalise() const
     {
         auto result = MapRange(
             std::min(GetLeft(), GetRight()), std::min(GetTop(), GetBottom()), std::max(GetLeft(), GetRight()),
             std::max(GetTop(), GetBottom()));
         return result;
+    }
+};
+
+/**
+ * Represents a line on the screen
+ */
+
+struct ScreenLine : public CoordsRange<ScreenCoordsXY>
+{
+    ScreenLine(const ScreenCoordsXY& leftTop, const ScreenCoordsXY& rightBottom)
+        : CoordsRange<ScreenCoordsXY>(leftTop, rightBottom)
+    {
+        // Make sure one of the point coords change
+        assert((std::abs(GetLeft() - GetRight()) > 0) || (std::abs(GetTop() - GetBottom()) > 0));
     }
 };
