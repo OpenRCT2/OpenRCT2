@@ -636,8 +636,13 @@ template<class T> struct CoordsRange
 
     CoordsRange() = default;
     CoordsRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
-        : LeftTop(left, top)
-        , RightBottom(right, bottom)
+        : CoordsRange({ left, top }, { right, bottom })
+    {
+    }
+
+    CoordsRange(const T& leftTop, const T& rightBottom)
+        : LeftTop(leftTop)
+        , RightBottom(rightBottom)
     {
     }
 };
@@ -650,7 +655,12 @@ struct MapRange : public CoordsRange<CoordsXY>
 {
     using CoordsRange::CoordsRange;
     MapRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
-        : CoordsRange<CoordsXY>(left, top, right, bottom)
+        : MapRange({ left, top }, { right, bottom })
+    {
+    }
+
+    MapRange(const CoordsXY& leftTop, const CoordsXY& rightBottom)
+        : CoordsRange<CoordsXY>(leftTop, rightBottom)
     {
         // Make sure it's a rectangle
         assert(std::abs(GetLeft() - GetRight()) > 0);
