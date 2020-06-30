@@ -610,12 +610,12 @@ struct TileCoordsXYZD : public TileCoordsXYZ
 };
 
 /**
- * Represents a rectangular range of the map using regular coordinates (32 per tile).
+ * Represents a range of the map using regular coordinates.
  */
-struct MapRange
+template<class T> struct CoordsRange
 {
-    CoordsXY LeftTop;
-    CoordsXY RightBottom;
+    T LeftTop{ 0, 0 };
+    T RightBottom{ 0, 0 };
 
     int32_t GetLeft() const
     {
@@ -634,16 +634,29 @@ struct MapRange
         return RightBottom.y;
     }
 
-    MapRange()
-        : MapRange(0, 0, 0, 0)
-    {
-    }
-    MapRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
+    CoordsRange() = default;
+    CoordsRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
         : LeftTop(left, top)
         , RightBottom(right, bottom)
     {
     }
+};
 
+/**
+ * Represents a rectangular range of the map using regular coordinates (32 per tile).
+ */
+
+struct MapRange : public CoordsRange<CoordsXY>
+{
+    using CoordsRange::CoordsRange;
+    MapRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
+        : CoordsRange<CoordsXY>(left, top, right, bottom)
+    {
+        // Make sure it's a rectangle
+        assert(std::abs(GetLeft() - GetRight()) > 0);
+        assert(std::abs(GetTop() - GetBottom()) > 0);
+    }
+    
     MapRange Normalise() const
     {
         auto result = MapRange(
