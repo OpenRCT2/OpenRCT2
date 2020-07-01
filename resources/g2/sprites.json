@@ -470,12 +470,12 @@
     },
     {
         "path": "track/wooden/booster_1.png",
-        "x_offset": -33,
-        "y_offset": -16
+        "x_offset": -34,
+        "y_offset": -15
     },
     {
         "path": "track/wooden/booster_2.png",
-        "x_offset": -28,
+        "x_offset": -30,
         "y_offset": -15
     },
     {
