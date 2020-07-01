@@ -196,24 +196,57 @@ static void flying_rc_track_25_deg_up(
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
-        switch (direction)
+        if (tileElement->AsTrack()->HasChain())
         {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17204, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17205, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17206, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17207, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17498, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17499, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17500, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17501, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+            }
+        }
+        else
+        {
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17204, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17205, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17206, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17207, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+            }
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
         {
@@ -413,24 +446,57 @@ static void flying_rc_track_flat_to_25_deg_up(
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
-        switch (direction)
+        if (tileElement->AsTrack()->HasChain())
         {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17196, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17197, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17198, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17199, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17490, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17491, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17492, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17493, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+            }
+        }
+        else
+        {
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17196, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17197, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17198, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17199, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+            }
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
         {
@@ -756,24 +822,49 @@ static void flying_rc_track_25_deg_up_to_flat(
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
-        switch (direction)
+        if (tileElement->AsTrack()->HasChain())
         {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17200, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17201, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17202, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17203, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17494, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17495, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17496, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17497, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+            }
+        }
+        else
+        {
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17200, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17201, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17202, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17203, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+            }
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
         {
