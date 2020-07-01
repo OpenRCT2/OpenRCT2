@@ -52,4 +52,3 @@ constexpr const RideTypeDescriptor HybridCoasterRTD =
   SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on
-   
