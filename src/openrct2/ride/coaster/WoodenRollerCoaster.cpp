@@ -13104,6 +13104,31 @@ static void wooden_rc_track_right_banked_25_deg_down_to_flat(
     wooden_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
+static void wooden_rc_track_booster(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    static constexpr const uint32_t imageIds[4] = {
+        SPR_G2_WOODEN_RC_BOOSTER_SW_NE,
+        SPR_G2_WOODEN_RC_BOOSTER_NW_SE,
+        SPR_G2_WOODEN_RC_BOOSTER_SW_NE,
+        SPR_G2_WOODEN_RC_BOOSTER_NW_SE,
+    };
+    static constexpr const uint32_t railsImageIds[4] = {
+        SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SW_NE,
+        SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NW_SE,
+        SPR_WOODEN_RC_FLAT_CHAIN_RAILS_NE_SW,
+        SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SE_NW,
+    };
+
+    wooden_rc_track_paint(
+        session, imageIds[direction], railsImageIds[direction], direction, 0, 2, 32, 25, 2, height, 0, 3, height);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_wooden_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
@@ -13388,6 +13413,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wooden_rc(int32_t trackType, int32
             return wooden_rc_track_left_banked_25_deg_down_to_flat;
         case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
             return wooden_rc_track_right_banked_25_deg_down_to_flat;
+        case TRACK_ELEM_BOOSTER:
+            return wooden_rc_track_booster;
     }
     return nullptr;
 }
