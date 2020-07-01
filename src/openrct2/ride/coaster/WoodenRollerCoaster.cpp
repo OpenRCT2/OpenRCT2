@@ -13121,7 +13121,8 @@ static void wooden_rc_track_booster(
         SPR_WOODEN_RC_FLAT_CHAIN_RAILS_SE_NW,
     };
 
-    wooden_rc_track_paint(session, imageIds[direction], railsImageIds[direction], direction, 0, 2, 32, 25, 2, height, 0, 3, height);
+    wooden_rc_track_paint(
+        session, imageIds[direction], railsImageIds[direction], direction, 0, 2, 32, 25, 2, height, 0, 3, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
