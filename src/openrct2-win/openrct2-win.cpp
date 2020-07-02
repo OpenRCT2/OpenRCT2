@@ -17,64 +17,40 @@
     "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 // Then the rest
+#include <algorithm>
 #include <openrct2-ui/Ui.h>
+#include <openrct2/core/String.hpp>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+#include <vector>
 
-static char** GetCommandLineArgs(int argc, wchar_t** argvW);
-static void FreeCommandLineArgs(int argc, char** argv);
-static char* ConvertWideChartoUTF8(const wchar_t* src);
+static std::vector<std::string> GetCommandLineArgs(int argc, wchar_t** argvW);
 
 /**
  * Windows entry point to OpenRCT2 with a console window using a traditional C main function.
  */
 int wmain(int argc, wchar_t** argvW, [[maybe_unused]] wchar_t* envp)
 {
-    auto argv = GetCommandLineArgs(argc, argvW);
-    if (argv == nullptr)
-    {
-        puts("Unable to fetch command line arguments.");
-        return -1;
-    }
+    auto argvStrings = GetCommandLineArgs(argc, argvW);
 
-    SetConsoleCP(CP_UTF8);
-    SetConsoleOutputCP(CP_UTF8);
-    auto exitCode = NormalisedMain(argc, const_cast<const char**>(argv));
+    SetConsoleCP(CODE_PAGE::CP_UTF8);
+    SetConsoleOutputCP(CODE_PAGE::CP_UTF8);
 
-    FreeCommandLineArgs(argc, argv);
+    std::vector<const char*> argv;
+    std::transform(
+        argvStrings.begin(), argvStrings.end(), std::back_inserter(argv), [](const auto& string) { return string.c_str(); });
+    auto exitCode = NormalisedMain(argc, argv.data());
     return exitCode;
 }
 
-static char** GetCommandLineArgs(int argc, wchar_t** argvW)
+static std::vector<std::string> GetCommandLineArgs(int argc, wchar_t** argvW)
 {
     // Allocate UTF-8 strings
-    auto argv = static_cast<char**>(malloc(argc * sizeof(char*)));
-    if (argv != nullptr)
-    {
-        // Convert to UTF-8
-        for (int i = 0; i < argc; i++)
-        {
-            argv[i] = ConvertWideChartoUTF8(argvW[i]);
-        }
-    }
-    return argv;
-}
-
-static void FreeCommandLineArgs(int argc, char** argv)
-{
-    // Free argv
+    std::vector<std::string> argv;
     for (int i = 0; i < argc; i++)
     {
-        free(argv[i]);
+        argv.push_back(String::ToUtf8(argvW[i]));
     }
-    free(argv);
-}
-
-static char* ConvertWideChartoUTF8(const wchar_t* src)
-{
-    auto srcLen = lstrlenW(src);
-    auto sizeReq = WideCharToMultiByte(CP_UTF8, 0, src, srcLen, nullptr, 0, nullptr, nullptr);
-    auto result = static_cast<char*>(calloc(1, static_cast<size_t>(sizeReq) + 1));
-    WideCharToMultiByte(CP_UTF8, 0, src, srcLen, result, sizeReq, nullptr, nullptr);
-    return result;
+    return argv;
 }
