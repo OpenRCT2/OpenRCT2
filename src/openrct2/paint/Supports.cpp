@@ -10,8 +10,8 @@
 #include "Supports.h"
 
 #include "../interface/Viewport.h"
-#include "../world/Surface.h"
 #include "../sprites.h"
+#include "../world/Surface.h"
 #include "Paint.h"
 #include "tile_element/Paint.TileElement.h"
 
@@ -522,8 +522,10 @@ bool wooden_a_supports_paint_setup(
         special = (special - 1) & 0xFFFF;
 
         int32_t imageId;
-		if(special <= 48)imageId = WoodenCurveSupportImageIds[supportType];
-		else imageId = WoodenCurveSupportImageIdsG2[supportType];
+        if (special <= 48)
+            imageId = WoodenCurveSupportImageIds[supportType];
+        else
+            imageId = WoodenCurveSupportImageIdsG2[supportType];
 
         if (imageId != 0 && byte_97B23C[special].var_7 != 0)
         {
@@ -705,8 +707,10 @@ bool wooden_b_supports_paint_setup(
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
         int32_t imageId;
-		if(specialIndex <= 48)imageId = WoodenCurveSupportImageIds[supportType];
-		else imageId = WoodenCurveSupportImageIdsG2[supportType];
+        if (specialIndex <= 48)
+            imageId = WoodenCurveSupportImageIds[supportType];
+        else
+            imageId = WoodenCurveSupportImageIdsG2[supportType];
 
         unk_supports_desc supportsDesc = byte_97B23C[specialIndex];
 
