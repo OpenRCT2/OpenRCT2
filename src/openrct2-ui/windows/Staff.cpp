@@ -1022,7 +1022,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    screenCoords = ScreenCoordsXY{ 20, 14 };
+    screenCoords = ScreenCoordsXY{ 14, 20 };
 
     Peep* peep = GET_PEEP(w->number);
 
@@ -1035,7 +1035,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (w->page == WINDOW_STAFF_OVERVIEW)
     {
-        eax = w->highlighted_item >> 16;
+        eax = w->var_496;
         eax &= 0xFFFC;
     }
     ebx += eax;
