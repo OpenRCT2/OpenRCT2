@@ -16,6 +16,7 @@
 #include "../localisation/StringIds.h"
 #include "../paint/Painter.h"
 #include "../ui/UiContext.h"
+#include "../world/Location.hpp"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 
@@ -157,12 +158,12 @@ void drawing_engine_set_vsync(bool vsync)
     }
 }
 
-void gfx_set_dirty_blocks(int16_t left, int16_t top, int16_t right, int16_t bottom)
+void gfx_set_dirty_blocks(const ScreenRect& rect)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        drawingEngine->Invalidate(left, top, right, bottom);
+        drawingEngine->Invalidate(rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
     }
 }
 

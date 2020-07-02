@@ -783,8 +783,8 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         }
 
         gfx_set_dirty_blocks(
-            w->windowPos.x + w->widgets[WIDX_VIEWPORT].left, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top,
-            w->windowPos.x + w->widgets[WIDX_VIEWPORT].right, w->windowPos.y + w->widgets[WIDX_VIEWPORT].bottom);
+            { { w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_VIEWPORT].left, w->widgets[WIDX_VIEWPORT].top } },
+              { w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_VIEWPORT].right, w->widgets[WIDX_VIEWPORT].bottom } } });
         gfx_draw_string_left_clipped(
             dpi, spriteString, gCommonFormatArgs, colour,
             { w->windowPos.x + w->widgets[WIDX_VIEWPORT].left + 2, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top + 1 },

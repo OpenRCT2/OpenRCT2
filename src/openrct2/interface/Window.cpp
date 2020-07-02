@@ -523,9 +523,8 @@ void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
     if (widget->left == -2)
         return;
 
-    gfx_set_dirty_blocks(
-        w->windowPos.x + widget->left, w->windowPos.y + widget->top, w->windowPos.x + widget->right + 1,
-        w->windowPos.y + widget->bottom + 1);
+    gfx_set_dirty_blocks({ { w->windowPos + ScreenCoordsXY{ widget->left, widget->top } },
+                           { w->windowPos + ScreenCoordsXY{ widget->right + 1, widget->bottom + 1 } } });
 }
 
 template<typename _TPred> static void widget_invalidate_by_condition(_TPred pred)
