@@ -420,7 +420,6 @@ declare global {
         baseHeight: number;
         clearanceHeight: number;
         isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
-        direction: 0 | 1 | 2 | 3;
     }
 
     interface SurfaceElement extends BaseTileElement {
@@ -450,6 +449,8 @@ declare global {
 
         addition: number | null;
         isAdditionBroken: boolean;
+
+        direction: 0 | 1 | 2 | 3;
     }
 
     interface TrackElement extends BaseTileElement {
@@ -458,12 +459,14 @@ declare global {
         ride: number;
         station: number;
         hasChainLift: boolean;
+        direction: 0 | 1 | 2 | 3;
     }
 
     interface SmallSceneryElement extends BaseTileElement {
         object: number;
         primaryColour: number;
         secondaryColour: number;
+        direction: 0 | 1 | 2 | 3;
     }
 
     interface EntranceElement extends BaseTileElement {
@@ -475,6 +478,7 @@ declare global {
 
     interface WallElement extends BaseTileElement {
         object: number;
+        direction: 0 | 1 | 2 | 3;
     }
 
     interface LargeSceneryElement extends BaseTileElement {
