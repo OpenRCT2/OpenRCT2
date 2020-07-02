@@ -2337,6 +2337,18 @@
         "y_offset": -17
     },
     {
+        "path": "track/rmc/preview_track.png",
+        "x_offset": 1,
+        "y_offset": 1,
+        "palette": "keep"
+    },
+    {
+        "path": "track/rmc/preview_support.png",
+        "x_offset": 1,
+        "y_offset": 1,
+        "palette": "keep"
+    },
+    {
         "path": "track/rmc/flat_1.png",
         "x_offset": -34,
         "y_offset": -12,
