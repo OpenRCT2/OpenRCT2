@@ -80,10 +80,7 @@ struct rct_window
         ResearchItem* research_item;
         rct_object_entry* object_entry;
         const scenario_index_entry* highlighted_scenario;
-        struct
-        {
-            uint16_t var_496;
-        };
+        uint16_t var_496;
     };
     int16_t selected_tab;
     int16_t var_4AE;
