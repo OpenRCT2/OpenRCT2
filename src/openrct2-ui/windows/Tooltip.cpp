@@ -203,10 +203,10 @@ static void window_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_filter_rect(dpi, left + 2, top + 0, right - 2, top + 0, PALETTE_DARKEN_3);
 
     // Corners
-    gfx_filter_pixel(dpi, left + 1, top + 1, PALETTE_DARKEN_3);
-    gfx_filter_pixel(dpi, right - 1, top + 1, PALETTE_DARKEN_3);
-    gfx_filter_pixel(dpi, left + 1, bottom - 1, PALETTE_DARKEN_3);
-    gfx_filter_pixel(dpi, right - 1, bottom - 1, PALETTE_DARKEN_3);
+    gfx_filter_pixel(dpi, { left + 1, top + 1 }, PALETTE_DARKEN_3);
+    gfx_filter_pixel(dpi, { right - 1, top + 1 }, PALETTE_DARKEN_3);
+    gfx_filter_pixel(dpi, { left + 1, bottom - 1 }, PALETTE_DARKEN_3);
+    gfx_filter_pixel(dpi, { right - 1, bottom - 1 }, PALETTE_DARKEN_3);
 
     // Text
     left = w->windowPos.x + ((w->width + 1) / 2) - 1;
