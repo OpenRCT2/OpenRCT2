@@ -578,9 +578,9 @@ void mask_init()
     }
 }
 
-void gfx_draw_pixel(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t colour)
+void gfx_draw_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t colour)
 {
-    gfx_fill_rect(dpi, x, y, x, y, colour);
+    gfx_fill_rect(dpi, coords.x, coords.y, coords.x, coords.y, colour);
 }
 
 void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FILTER_PALETTE_ID palette)
