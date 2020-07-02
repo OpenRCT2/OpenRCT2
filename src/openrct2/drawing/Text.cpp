@@ -98,11 +98,12 @@ static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextP
     if (paint->UnderlineText)
     {
         gfx_fill_rect(
-            dpi, alignedCoords.x, alignedCoords.y + 11, alignedCoords.x + width, alignedCoords.y + 11, text_palette[1]);
+            dpi, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
+            text_palette[1]);
         if (text_palette[2] != 0)
         {
             gfx_fill_rect(
-                dpi, alignedCoords.x + 1, alignedCoords.y + 12, alignedCoords.x + width + 1, alignedCoords.y + 12,
+                dpi, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },
                 text_palette[2]);
         }
     }

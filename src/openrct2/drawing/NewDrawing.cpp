@@ -183,11 +183,16 @@ void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
 
 void gfx_fill_rect(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t colour)
 {
+    gfx_fill_rect(dpi, { { left, top }, { right, bottom } }, colour);
+}
+
+void gfx_fill_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour)
+{
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->FillRect(colour, left, top, right, bottom);
+        dc->FillRect(colour, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
     }
 }
 

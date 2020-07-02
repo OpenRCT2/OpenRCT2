@@ -9,6 +9,7 @@
 
 #include "../common.h"
 #include "../interface/Colour.h"
+#include "../world/Location.hpp"
 #include "Drawing.h"
 
 /**
@@ -90,15 +91,15 @@ void gfx_fill_rect_inset(
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
         {
-            gfx_fill_rect(dpi, left, top, right, bottom, fill);
+            gfx_fill_rect(dpi, { { left, top }, { right, bottom } }, fill);
         }
         else if (flags & INSET_RECT_FLAG_BORDER_INSET)
         {
             // Draw outline of box
-            gfx_fill_rect(dpi, left, top, left, bottom, shadow);
-            gfx_fill_rect(dpi, left + 1, top, right, top, shadow);
-            gfx_fill_rect(dpi, right, top + 1, right, bottom - 1, hilight);
-            gfx_fill_rect(dpi, left + 1, bottom, right, bottom, hilight);
+            gfx_fill_rect(dpi, { { left, top }, { left, bottom } }, shadow);
+            gfx_fill_rect(dpi, { { left + 1, top }, { right, top } }, shadow);
+            gfx_fill_rect(dpi, { { right, top + 1 }, { right, bottom - 1 } }, hilight);
+            gfx_fill_rect(dpi, { { left + 1, bottom }, { right, bottom } }, hilight);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
@@ -113,16 +114,16 @@ void gfx_fill_rect_inset(
                         fill = ColourMapA[colour].lighter;
                     }
                 }
-                gfx_fill_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, fill);
+                gfx_fill_rect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, fill);
             }
         }
         else
         {
             // Draw outline of box
-            gfx_fill_rect(dpi, left, top, left, bottom - 1, hilight);
-            gfx_fill_rect(dpi, left + 1, top, right - 1, top, hilight);
-            gfx_fill_rect(dpi, right, top, right, bottom - 1, shadow);
-            gfx_fill_rect(dpi, left, bottom, right, bottom, shadow);
+            gfx_fill_rect(dpi, { { left, top }, { left, bottom - 1 } }, hilight);
+            gfx_fill_rect(dpi, { { left + 1, top }, { right - 1, top } }, hilight);
+            gfx_fill_rect(dpi, { { right, top }, { right, bottom - 1 } }, shadow);
+            gfx_fill_rect(dpi, { { left, bottom }, { right, bottom } }, shadow);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
@@ -130,7 +131,7 @@ void gfx_fill_rect_inset(
                 {
                     fill = ColourMapA[COLOUR_BLACK].light;
                 }
-                gfx_fill_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, fill);
+                gfx_fill_rect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, fill);
             }
         }
     }

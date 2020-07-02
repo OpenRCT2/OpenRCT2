@@ -179,8 +179,10 @@ void intro_draw(rct_drawpixelinfo* dpi)
 
             // Draw a white rectangle for the logo background (gives a bit of white margin)
             gfx_fill_rect(
-                dpi, (screenWidth / 2) - 320 + 50, _introStateCounter + 50, (screenWidth / 2) - 320 + 50 + 540,
-                _introStateCounter + 50 + 425, BORDER_COLOUR_PUBLISHER);
+                dpi,
+                { { (screenWidth / 2) - 320 + 50, _introStateCounter + 50 },
+                  { (screenWidth / 2) - 320 + 50 + 540, _introStateCounter + 50 + 425 } },
+                BORDER_COLOUR_PUBLISHER);
 
             // Draw Infogrames logo
             gfx_draw_sprite(dpi, SPR_INTRO_INFOGRAMES_00, { (screenWidth / 2) - 320 + 69, _introStateCounter + 69 }, 0);
