@@ -856,3 +856,7 @@ void ride_ratings_calculate_lim_launched_roller_coaster([[maybe_unused]] Ride* r
 void ride_ratings_calculate_drink_stall([[maybe_unused]] Ride* ride)
 {
 }
+
+void ride_ratings_calculate_hybrid_coaster([[maybe_unused]] Ride* ride)
+{
+}
