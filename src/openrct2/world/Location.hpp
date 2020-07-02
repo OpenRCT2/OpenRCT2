@@ -610,12 +610,12 @@ struct TileCoordsXYZD : public TileCoordsXYZ
 };
 
 /**
- * Represents a rectangular range of the map using regular coordinates (32 per tile).
+ * Represents a range of the map using regular coordinates.
  */
-struct MapRange
+template<class T> struct CoordsRange
 {
-    CoordsXY LeftTop;
-    CoordsXY RightBottom;
+    T LeftTop{ 0, 0 };
+    T RightBottom{ 0, 0 };
 
     int32_t GetLeft() const
     {
@@ -634,15 +634,44 @@ struct MapRange
         return RightBottom.y;
     }
 
-    MapRange()
-        : MapRange(0, 0, 0, 0)
+    CoordsRange() = default;
+    CoordsRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
+        : CoordsRange({ left, top }, { right, bottom })
     {
     }
-    MapRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
-        : LeftTop(left, top)
-        , RightBottom(right, bottom)
+
+    CoordsRange(const T& leftTop, const T& rightBottom)
+        : LeftTop(leftTop)
+        , RightBottom(rightBottom)
     {
     }
+};
+
+template<class T> struct RectRange : public CoordsRange<T>
+{
+    using CoordsRange<T>::CoordsRange;
+
+    RectRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
+        : RectRange({ left, top }, { right, bottom })
+    {
+    }
+
+    RectRange(const T& leftTop, const T& rightBottom)
+        : CoordsRange<T>(leftTop, rightBottom)
+    {
+        // Make sure it's a rectangle
+        assert(std::abs(CoordsRange<T>::GetLeft() - CoordsRange<T>::GetRight()) > 0);
+        assert(std::abs(CoordsRange<T>::GetTop() - CoordsRange<T>::GetBottom()) > 0);
+    }
+};
+
+/**
+ * Represents a rectangular range of the map using regular coordinates (32 per tile).
+ */
+
+struct MapRange : public RectRange<CoordsXY>
+{
+    using RectRange::RectRange;
 
     MapRange Normalise() const
     {
@@ -650,5 +679,41 @@ struct MapRange
             std::min(GetLeft(), GetRight()), std::min(GetTop(), GetBottom()), std::max(GetLeft(), GetRight()),
             std::max(GetTop(), GetBottom()));
         return result;
+    }
+};
+
+/**
+ * Represents a line on the screen
+ */
+
+struct ScreenLine : public CoordsRange<ScreenCoordsXY>
+{
+    ScreenLine(const ScreenCoordsXY& leftTop, const ScreenCoordsXY& rightBottom)
+        : CoordsRange<ScreenCoordsXY>(leftTop, rightBottom)
+    {
+        // Make sure one of the point coords change
+        assert((std::abs(GetLeft() - GetRight()) > 0) || (std::abs(GetTop() - GetBottom()) > 0));
+    }
+};
+
+/**
+ * Represents a rectangular range on the screen
+ */
+
+struct ScreenRect : public RectRange<ScreenCoordsXY>
+{
+    using RectRange::RectRange;
+
+    int32_t GetWidth() const
+    {
+        return RightBottom.x - LeftTop.x;
+    }
+    int32_t GetHeight() const
+    {
+        return RightBottom.y - LeftTop.y;
+    }
+    bool Contains(const ScreenCoordsXY& coords) const
+    {
+        return coords.x >= GetLeft() && coords.x <= GetRight() && coords.y >= GetTop() && coords.y <= GetBottom();
     }
 };
