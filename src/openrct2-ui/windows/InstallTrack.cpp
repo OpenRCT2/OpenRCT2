@@ -14,7 +14,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform2.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
@@ -428,7 +428,7 @@ static void window_install_track_design(rct_window* w)
     safe_strcat_path(destPath, _trackName.c_str(), sizeof(destPath));
     path_append_extension(destPath, ".td6", sizeof(destPath));
 
-    if (platform_file_exists(destPath))
+    if (Platform::FileExists(destPath))
     {
         log_info("%s already exists, prompting user for a different track design name", destPath);
         context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE);

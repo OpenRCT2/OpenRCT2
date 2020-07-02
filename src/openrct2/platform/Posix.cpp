@@ -25,7 +25,7 @@
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
 #    include "../util/Util.h"
-#    include "platform.h"
+#    include "Platform2.h"
 
 #    include <libgen.h>
 #    include <locale.h>
@@ -71,13 +71,6 @@ void platform_get_time_utc(rct2_time* out_time)
     out_time->hour = timeinfo->tm_hour;
 }
 
-bool platform_file_exists(const utf8* path)
-{
-    bool exists = access(path, F_OK) != -1;
-    log_verbose("file '%s' exists = %i", path, exists);
-    return exists;
-}
-
 bool platform_directory_exists(const utf8* path)
 {
     struct stat dirinfo;
@@ -92,7 +85,7 @@ bool platform_original_game_data_exists(const utf8* path)
     safe_strcpy(checkPath, path, MAX_PATH);
     safe_strcat_path(checkPath, "Data", MAX_PATH);
     safe_strcat_path(checkPath, "g1.dat", MAX_PATH);
-    return platform_file_exists(checkPath);
+    return Platform::FileExists(checkPath);
 }
 
 // Implement our own version of getumask(), as it is documented being

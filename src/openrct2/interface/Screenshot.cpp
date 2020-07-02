@@ -21,7 +21,6 @@
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Localisation.h"
 #include "../platform/Platform2.h"
-#include "../platform/platform.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
@@ -146,7 +145,7 @@ static std::optional<std::string> screenshot_get_next_path()
     for (int tries = 0; tries < 100; tries++)
     {
         auto path = pathComposer(tries);
-        if (!platform_file_exists(path.c_str()))
+        if (!Platform::FileExists(path))
         {
             return path;
         }

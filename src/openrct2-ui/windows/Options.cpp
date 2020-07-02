@@ -33,7 +33,6 @@
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/Platform2.h>
-#include <openrct2/platform/platform.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/title/TitleScreen.h>
@@ -1493,7 +1492,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     break;
                 case WIDX_TITLE_MUSIC_DROPDOWN:
                     if ((dropdownIndex == 1 || dropdownIndex == 3)
-                        && !platform_file_exists(context_get_path_legacy(PATH_ID_CSS50)))
+                        && !Platform::FileExists(context_get_path_legacy(PATH_ID_CSS50)))
                     {
                         context_show_error(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT);
                     }

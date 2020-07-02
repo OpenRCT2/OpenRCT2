@@ -33,6 +33,7 @@ namespace Platform
     std::string GetInstallPath();
     std::string GetDocsPath();
     std::string GetCurrentExecutablePath();
+    bool FileExists(const std::string path);
     rct2_time GetTimeLocal();
     rct2_date GetDateLocal();
 

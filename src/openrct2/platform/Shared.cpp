@@ -20,6 +20,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
+#include "../core/FileSystem.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../localisation/Currency.h"
@@ -89,6 +90,12 @@ namespace Platform
         outTime.minute = localTime->tm_min;
         outTime.second = localTime->tm_sec;
         return outTime;
+    }
+
+    bool FileExists(const std::string path)
+    {
+        fs::path file = path;
+        return fs::exists(file);
     }
 } // namespace Platform
 

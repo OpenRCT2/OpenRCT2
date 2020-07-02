@@ -55,14 +55,6 @@
 #        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
 #    endif
 
-bool platform_file_exists(const utf8* path)
-{
-    auto wPath = String::ToWideChar(path);
-    DWORD result = GetFileAttributesW(wPath.c_str());
-    DWORD error = GetLastError();
-    return !(result == INVALID_FILE_ATTRIBUTES && (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND));
-}
-
 bool platform_directory_exists(const utf8* path)
 {
     auto wPath = String::ToWideChar(path);
@@ -76,7 +68,7 @@ bool platform_original_game_data_exists(const utf8* path)
     safe_strcpy(checkPath, path, MAX_PATH);
     safe_strcat_path(checkPath, "Data", MAX_PATH);
     safe_strcat_path(checkPath, "g1.dat", MAX_PATH);
-    return platform_file_exists(checkPath);
+    return Platform::FileExists(checkPath);
 }
 
 bool platform_ensure_directory_exists(const utf8* path)

@@ -18,7 +18,7 @@
 #include "../actions/NetworkModifyGroupAction.hpp"
 #include "../actions/PeepPickupAction.hpp"
 #include "../core/Guard.hpp"
-#include "../platform/platform.h"
+#include "../platform/Platform2.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
@@ -503,7 +503,7 @@ bool Network::BeginClient(const std::string& host, uint16_t port)
 
     utf8 keyPath[MAX_PATH];
     network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
-    if (!platform_file_exists(keyPath))
+    if (!Platform::FileExists(keyPath))
     {
         Console::WriteLine("Generating key... This may take a while");
         Console::WriteLine("Need to collect enough entropy from the system");
@@ -1242,7 +1242,7 @@ void Network::LoadGroups()
     safe_strcat_path(path, "groups.json", sizeof(path));
 
     json_t* json = nullptr;
-    if (platform_file_exists(path))
+    if (Platform::FileExists(path))
     {
         try
         {
@@ -2356,7 +2356,7 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
 {
     utf8 keyPath[MAX_PATH];
     network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
-    if (!platform_file_exists(keyPath))
+    if (!Platform::FileExists(keyPath))
     {
         log_error("Key file (%s) was not found. Restart client to re-generate it.", keyPath);
         return;
@@ -4031,7 +4031,7 @@ void network_send_password(const std::string& password)
 {
     utf8 keyPath[MAX_PATH];
     network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
-    if (!platform_file_exists(keyPath))
+    if (!Platform::FileExists(keyPath))
     {
         log_error("Private key %s missing! Restart the game to generate it.", keyPath);
         return;

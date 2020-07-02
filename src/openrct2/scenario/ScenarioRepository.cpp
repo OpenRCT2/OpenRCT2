@@ -23,7 +23,7 @@
 #include "../localisation/Language.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
-#include "../platform/platform.h"
+#include "../platform/Platform2.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "Scenario.h"
 #include "ScenarioSources.h"
@@ -579,7 +579,7 @@ private:
     void LoadScores()
     {
         std::string path = _env->GetFilePath(PATHID::SCORES);
-        if (!platform_file_exists(path.c_str()))
+        if (!Platform::FileExists(path))
         {
             return;
         }
@@ -626,7 +626,7 @@ private:
 
     void LoadLegacyScores(const std::string& path)
     {
-        if (!platform_file_exists(path.c_str()))
+        if (!Platform::FileExists(path))
         {
             return;
         }
