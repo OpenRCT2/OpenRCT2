@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -49,6 +50,7 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
         { COLOUR_WHITE, COLOUR_BRIGHT_RED, COLOUR_LIGHT_PURPLE },
         { COLOUR_DARK_GREEN, COLOUR_YELLOW, COLOUR_WHITE },
     )),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LAUNCHED_FREEFALL_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAUNCHED_FREEFALL_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

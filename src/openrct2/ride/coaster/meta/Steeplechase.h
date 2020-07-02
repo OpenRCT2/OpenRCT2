@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -53,6 +54,7 @@ constexpr const RideTypeDescriptor SteeplechaseRTD =
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_BLACK },
         { COLOUR_BRIGHT_PINK, COLOUR_BRIGHT_PINK, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_STEEPLECHASE_TRACK, SPR_RIDE_DESIGN_PREVIEW_STEEPLECHASE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -49,6 +50,7 @@ constexpr const RideTypeDescriptor LayDownRollerCoasterRTD =
         { COLOUR_DARK_PURPLE, COLOUR_DARK_PURPLE, COLOUR_YELLOW },
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_DARK_GREEN },
     )),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 
@@ -86,6 +88,7 @@ constexpr const RideTypeDescriptor LayDownRollerCoasterAltRTD =
         { COLOUR_DARK_PURPLE, COLOUR_DARK_PURPLE, COLOUR_YELLOW },
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_DARK_GREEN },
     )),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LAY_DOWN_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

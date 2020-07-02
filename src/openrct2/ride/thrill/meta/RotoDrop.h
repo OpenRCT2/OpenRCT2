@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -50,6 +51,7 @@ constexpr const RideTypeDescriptor RotoDropRTD =
         { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_GREY },
         { COLOUR_BLACK, COLOUR_LIGHT_BLUE, COLOUR_GREY },
     )),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_TRACK, SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

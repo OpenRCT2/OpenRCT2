@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -49,6 +50,7 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
         { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_BLACK },
         { COLOUR_BLACK, COLOUR_SATURATED_BROWN, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_TRACK, SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

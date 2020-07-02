@@ -47,6 +47,7 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 45),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
+    SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on
