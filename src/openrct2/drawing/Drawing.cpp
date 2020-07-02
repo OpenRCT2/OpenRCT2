@@ -585,7 +585,13 @@ void gfx_draw_pixel(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t colour
 
 void gfx_filter_pixel(rct_drawpixelinfo* dpi, int32_t x, int32_t y, FILTER_PALETTE_ID palette)
 {
-    gfx_filter_rect(dpi, x, y, x, y, palette);
+    ScreenCoordsXY coords = ScreenCoordsXY(x, y); 
+    gfx_filter_pixel(dpi, coords, palette);       
+}
+
+void gfx_filter_pixel(rct_drawpixelinfo* dpi, ScreenCoordsXY& coords, FILTER_PALETTE_ID palette)
+{
+    gfx_filter_rect(dpi, coords.x, coords.y, coords.x, coords.y, palette);
 }
 
 /**

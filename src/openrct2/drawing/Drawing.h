@@ -594,6 +594,7 @@ void load_palette();
 void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex);
 void gfx_draw_pixel(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t colour);
 void gfx_filter_pixel(rct_drawpixelinfo* dpi, int32_t x, int32_t y, FILTER_PALETTE_ID palette);
+void gfx_filter_pixel(rct_drawpixelinfo* dpi, ScreenCoordsXY& coords, FILTER_PALETTE_ID palette);
 void gfx_invalidate_pickedup_peep();
 void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi);
 
