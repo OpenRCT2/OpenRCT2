@@ -1625,9 +1625,10 @@ uint8_t* Network::save_for_network(size_t& out_size, const std::vector<const Obj
     const void* data = ms.GetData();
     int32_t size = ms.GetLength();
 
-    uint8_t* compressed = util_zlib_deflate(static_cast<const uint8_t*>(data), size, &out_size);
-    if (compressed != nullptr)
+    auto compressed = util_zlib_deflate(static_cast<const uint8_t*>(data), size);
+    if (compressed != std::nullopt)
     {
+        out_size = compressed->size();
         header = reinterpret_cast<uint8_t*>(_strdup("open2_sv6_zlib"));
         size_t header_len = strlen(reinterpret_cast<char*>(header)) + 1; // account for null terminator
         header = static_cast<uint8_t*>(realloc(header, header_len + out_size));
@@ -1637,11 +1638,10 @@ uint8_t* Network::save_for_network(size_t& out_size, const std::vector<const Obj
         }
         else
         {
-            std::memcpy(&header[header_len], compressed, out_size);
+            std::memcpy(&header[header_len], compressed->data(), out_size);
             out_size += header_len;
             log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
         }
-        free(compressed);
     }
     else
     {
