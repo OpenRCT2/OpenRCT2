@@ -580,8 +580,8 @@ extern bool gTinyFontAntiAliased;
 extern rct_drawpixelinfo gScreenDPI;
 extern rct_drawpixelinfo gWindowDPI;
 
-//
-bool clip_drawpixelinfo(rct_drawpixelinfo* dst, rct_drawpixelinfo* src, int32_t x, int32_t y, int32_t width, int32_t height);
+bool clip_drawpixelinfo(
+    rct_drawpixelinfo* dst, rct_drawpixelinfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
 void gfx_set_dirty_blocks(int16_t left, int16_t top, int16_t right, int16_t bottom);
 void gfx_draw_all_dirty_blocks();
 void gfx_invalidate_screen();

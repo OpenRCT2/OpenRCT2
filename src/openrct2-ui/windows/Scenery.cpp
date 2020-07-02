@@ -1239,7 +1239,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
 
         rct_scenery_entry* sceneryEntry;
         rct_drawpixelinfo clipdpi;
-        if (clip_drawpixelinfo(&clipdpi, dpi, left + 1, top + 1, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
+        if (clip_drawpixelinfo(&clipdpi, dpi, { left + 1, top + 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
         {
             if (currentSceneryGlobal.SceneryType == SCENERY_TYPE_BANNER)
             {

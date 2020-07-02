@@ -1320,7 +1320,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
         screenCoords += w->windowPos;
 
         rct_drawpixelinfo clipDPI;
-        if (!clip_drawpixelinfo(&clipDPI, dpi, screenCoords.x, screenCoords.y, width, height))
+        if (!clip_drawpixelinfo(&clipDPI, dpi, screenCoords, width, height))
         {
             return;
         }
@@ -5104,7 +5104,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (widget->type != WWT_EMPTY)
     {
         if (clip_drawpixelinfo(
-                &clippedDpi, dpi, w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1, widget->width(),
+                &clippedDpi, dpi, w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 }, widget->width(),
                 widget->height()))
         {
             gfx_clear(&clippedDpi, PALETTE_INDEX_12);
