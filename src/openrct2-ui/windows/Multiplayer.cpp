@@ -485,7 +485,7 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
     window_multiplayer_draw_tab_images(w, dpi);
 
     rct_drawpixelinfo clippedDPI;
-    if (clip_drawpixelinfo(&clippedDPI, dpi, w->windowPos.x, w->windowPos.y, w->width, w->height))
+    if (clip_drawpixelinfo(&clippedDPI, dpi, w->windowPos, w->width, w->height))
     {
         dpi = &clippedDPI;
 

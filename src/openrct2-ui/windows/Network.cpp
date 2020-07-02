@@ -323,7 +323,7 @@ static void window_network_draw_graph(
     height = height - 2;
 
     rct_drawpixelinfo clippedDPI;
-    if (!clip_drawpixelinfo(&clippedDPI, dpi, x, y, width, height))
+    if (!clip_drawpixelinfo(&clippedDPI, dpi, { x, y }, width, height))
         return;
 
     dpi = &clippedDPI;
@@ -391,7 +391,7 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
     const int32_t graphHeight = (totalHeight - totalHeightText - heightTab) / 2;
 
     rct_drawpixelinfo clippedDPI;
-    if (clip_drawpixelinfo(&clippedDPI, dpi, w->windowPos.x, w->windowPos.y, w->width, w->height))
+    if (clip_drawpixelinfo(&clippedDPI, dpi, w->windowPos, w->width, w->height))
     {
         dpi = &clippedDPI;
 

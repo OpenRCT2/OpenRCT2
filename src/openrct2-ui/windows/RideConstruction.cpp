@@ -2334,7 +2334,7 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 };
     width = widget->width() - 1;
     height = widget->height() - 1;
-    if (clip_drawpixelinfo(&clipdpi, dpi, screenCoords.x, screenCoords.y, width, height))
+    if (clip_drawpixelinfo(&clipdpi, dpi, screenCoords, width, height))
     {
         window_ride_construction_draw_track_piece(
             w, &clipdpi, rideIndex, trackType, trackDirection, liftHillAndInvertedState, width, height);

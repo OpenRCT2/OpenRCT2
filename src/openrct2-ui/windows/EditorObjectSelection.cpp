@@ -1050,7 +1050,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
         width = widget->width() - 1;
         int32_t height = widget->height() - 1;
-        if (clip_drawpixelinfo(&clipDPI, dpi, screenPos.x, screenPos.y, width, height))
+        if (clip_drawpixelinfo(&clipDPI, dpi, screenPos, width, height))
         {
             object_draw_preview(_loadedObject, &clipDPI, width, height);
         }

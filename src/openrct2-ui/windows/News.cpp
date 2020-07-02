@@ -292,7 +292,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                 case NEWS_ITEM_PEEP_ON_RIDE:
                 {
                     rct_drawpixelinfo cliped_dpi;
-                    if (!clip_drawpixelinfo(&cliped_dpi, dpi, screenCoords.x + 1, screenCoords.y + 1, 22, 22))
+                    if (!clip_drawpixelinfo(&cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
                     {
                         break;
                     }

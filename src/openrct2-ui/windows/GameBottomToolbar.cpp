@@ -602,7 +602,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
                 break;
 
             rct_drawpixelinfo cliped_dpi;
-            if (!clip_drawpixelinfo(&cliped_dpi, dpi, screenCoords.x + 1, screenCoords.y + 1, 22, 22))
+            if (!clip_drawpixelinfo(&cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
             {
                 break;
             }

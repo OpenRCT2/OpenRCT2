@@ -609,8 +609,10 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     rct_drawpixelinfo sprite_dpi;
     if (clip_drawpixelinfo(
-            &sprite_dpi, dpi, window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].left + w->windowPos.x + 1,
-            window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].top + w->windowPos.y + 1,
+            &sprite_dpi, dpi,
+            w->windowPos
+                + ScreenCoordsXY{ window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].left + 1,
+                                  window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].top + 1 },
             window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].right
                 - window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].left - 1,
             window_staff_list_widgets[WIDX_STAFF_LIST_ENTERTAINERS_TAB].bottom

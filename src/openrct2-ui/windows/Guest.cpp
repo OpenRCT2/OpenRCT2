@@ -865,7 +865,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         height++;
 
     rct_drawpixelinfo clip_dpi;
-    if (!clip_drawpixelinfo(&clip_dpi, dpi, screenCoords.x, screenCoords.y, width, height))
+    if (!clip_drawpixelinfo(&clip_dpi, dpi, screenCoords, width, height))
     {
         return;
     }
@@ -1093,7 +1093,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t top = widget->top + w->windowPos.y;
     int32_t height = widget->height();
     rct_drawpixelinfo dpi_marquee;
-    if (!clip_drawpixelinfo(&dpi_marquee, dpi, left, top, width, height))
+    if (!clip_drawpixelinfo(&dpi_marquee, dpi, { left, top }, width, height))
     {
         return;
     }
