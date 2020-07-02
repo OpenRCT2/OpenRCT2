@@ -33,6 +33,8 @@ jobs:
   windows:
     name: Windows
     runs-on: windows-latest
+    needs: [lint-commit, check-code-formatting]
+    if: needs.lint-commit.result == 'success' && needs.check-code-formatting.result == 'success'
     strategy:
       fail-fast: false
       matrix:
@@ -76,6 +78,8 @@ jobs:
   windows-mingw:
     name: Windows (win32) using mingw
     runs-on: ubuntu-latest
+    needs: [lint-commit, check-code-formatting]
+    if: needs.lint-commit.result == 'success' && needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-mingw
     steps:
@@ -90,6 +94,8 @@ jobs:
   macos:
     name: macOS
     runs-on: macos-latest
+    needs: [lint-commit, check-code-formatting]
+    if: needs.lint-commit.result == 'success' && needs.check-code-formatting.result == 'success'
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -118,6 +124,8 @@ jobs:
   linux-portable:
     name: Linux (x64, portable)
     runs-on: ubuntu-latest
+    needs: [lint-commit, check-code-formatting]
+    if: needs.lint-commit.result == 'success' && needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-bionic
     steps:
@@ -152,6 +160,8 @@ jobs:
   linux-portable-32:
     name: Linux (i686, portable)
     runs-on: ubuntu-latest
+    needs: [lint-commit, check-code-formatting]
+    if: needs.lint-commit.result == 'success' && needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-bionic32
     steps:
@@ -191,6 +201,8 @@ jobs:
   linux-appimage:
     name: Linux (x64, AppImage)
     runs-on: ubuntu-latest
+    needs: [lint-commit, check-code-formatting]
+    if: needs.lint-commit.result == 'success' && needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-bionic
     steps:
@@ -212,7 +224,8 @@ jobs:
           path: artifacts
   linux-docker:
     name: Linux (docker)
-    if: github.repository == 'OpenRCT2/OpenRCT2'
+    needs: [lint-commit, check-code-formatting]
+    if: github.repository == 'OpenRCT2/OpenRCT2' && needs.lint-commit.result == 'success' && needs.check-code-formatting.result == 'success'
     runs-on: ubuntu-latest
     steps:
       - name: Build image
@@ -235,6 +248,8 @@ jobs:
   linux-clang:
     name: Linux (Debug, [http, network, OpenGL] disabled) using clang
     runs-on: ubuntu-latest
+    needs: [lint-commit, check-code-formatting]
+    if: needs.lint-commit.result == 'success' && needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-bionic
     steps:
@@ -246,6 +261,8 @@ jobs:
   android:
     name: Android
     runs-on: ubuntu-latest
+    needs: [lint-commit, check-code-formatting]
+    if: needs.lint-commit.result == 'success' && needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-android
     steps:
