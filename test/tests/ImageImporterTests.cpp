@@ -43,7 +43,7 @@ TEST_F(ImageImporterTests, Import_Logo)
     auto image = Imaging::ReadFromFile(logoPath, IMAGE_FORMAT::PNG_32);
     auto result = importer.Import(image, 3, 5, ImageImporter::IMPORT_FLAGS::RLE);
 
-    ASSERT_EQ(result.Buffer, result.Element.offset);
+    ASSERT_EQ(result.Buffer.data(), result.Element.offset);
     ASSERT_EQ(128, result.Element.width);
     ASSERT_EQ(128, result.Element.height);
     ASSERT_EQ(3, result.Element.x_offset);
@@ -52,8 +52,7 @@ TEST_F(ImageImporterTests, Import_Logo)
 
     // Check to ensure RLE data doesn't change unexpectedly.
     // Update expected hash if change is expected.
-    ASSERT_NE(nullptr, result.Buffer);
-    auto hash = GetHash(result.Buffer, result.BufferLength);
+    ASSERT_NE(nullptr, result.Buffer.data());
+    auto hash = GetHash(result.Buffer.data(), result.Buffer.size());
     ASSERT_EQ(0xCEF27C7D, hash);
-    free(result.Buffer);
 }
