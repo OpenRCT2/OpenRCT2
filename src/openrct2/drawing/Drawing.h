@@ -601,8 +601,6 @@ void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi);
 void gfx_draw_line(rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour);
 void gfx_draw_line_software(rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour);
 void gfx_draw_dashed_line(
-    rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t dashedLineSegmentLength, int32_t colour);
-void gfx_draw_dashed_line(
     rct_drawpixelinfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLenght, const int32_t color)
 
 // rect
