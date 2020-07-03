@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -49,6 +50,7 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
         { COLOUR_BLACK, COLOUR_ICY_BLUE, COLOUR_BLACK },
         { COLOUR_WHITE, COLOUR_WHITE, COLOUR_YELLOW },
     )),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_INVERTED_IMPULSE_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_INVERTED_IMPULSE_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

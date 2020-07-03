@@ -110,8 +110,8 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
-        const track_colour_preset_list* colourPresets = &RideTypeDescriptors[_rideType].ColourPresets;
-        if (_colour1 >= colourPresets->count)
+        const auto& colourPresets = RideTypeDescriptors[_rideType].ColourPresets;
+        if (_colour1 >= colourPresets.count)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }

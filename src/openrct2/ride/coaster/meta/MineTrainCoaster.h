@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -48,6 +49,7 @@ constexpr const RideTypeDescriptor MineTrainCoasterRTD =
         { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_DARK_BROWN },
         { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_BLACK },
     )),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MINE_TRAIN_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINE_TRAIN_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

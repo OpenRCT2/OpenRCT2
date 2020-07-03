@@ -22,6 +22,7 @@
 
 #include "../common.h"
 #include "../localisation/StringIds.h"
+#include "../sprites.h"
 #include "Ride.h"
 #include "ShopItem.h"
 #include "Track.h"
@@ -99,6 +100,12 @@ struct rct_ride_lift_data
     uint8_t maximum_speed;
 };
 
+struct RideColourPreview
+{
+    uint32_t Track;
+    uint32_t Supports;
+};
+
 struct UpkeepCostsDescriptor
 {
     /**
@@ -162,6 +169,7 @@ struct RideTypeDescriptor
     /** rct2: 0x0097D21E */
     uint8_t BonusValue;
     track_colour_preset_list ColourPresets;
+    RideColourPreview ColourPreview;
     RideColourKey ColourKey;
 
     bool HasFlag(uint64_t flag) const;
@@ -333,6 +341,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
+    SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride)
 };
 // clang-format on

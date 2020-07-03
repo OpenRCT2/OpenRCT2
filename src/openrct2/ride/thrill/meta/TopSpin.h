@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -50,6 +51,7 @@ constexpr const RideTypeDescriptor TopSpinRTD =
         { COLOUR_TEAL, COLOUR_WHITE, COLOUR_WHITE },
         { COLOUR_DARK_GREEN, COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED },
     )),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_TOP_SPIN_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on

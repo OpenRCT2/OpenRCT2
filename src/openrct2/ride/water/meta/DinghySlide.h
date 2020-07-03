@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
@@ -61,6 +62,7 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
         { COLOUR_TEAL, COLOUR_BORDEAUX_RED, COLOUR_TEAL },
         { COLOUR_BRIGHT_RED, COLOUR_GREY, COLOUR_SATURATED_RED },
     )),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_DINGHY_SLIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_DINGHY_SLIDE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
 };
 // clang-format on
