@@ -212,18 +212,18 @@ void gfx_draw_line(rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int32_t x2, i
 }
 
 void gfx_draw_dashed_line(
-    rct_drawpixelinfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLenght, const int32_t color)
+    rct_drawpixelinfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
 {
-    assert(dashedLineSegmentLenght > 0);
+    assert(dashedLineSegmentLength > 0);
 
     const auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         constexpr int32_t precisionFactor = 1000;
 
-        const int32_t dashedLineLenght = std::hypot(
-            screenLine.GetRight() - screenLine.GetLeft(), screenLine.GetBottom() - screenLine.GetRight());
-        const int32_t lineSegmentCount = dashedLineLenght / dashedLineSegmentLenght / 2;
+        const int32_t dashedLineLength = std::hypot(
+            screenLine.GetRight() - screenLine.GetLeft(), screenLine.GetBottom() - screenLine.GetTop());
+        const int32_t lineSegmentCount = dashedLineLength / dashedLineSegmentLength / 2;
         if (lineSegmentCount == 0)
         {
             return;
