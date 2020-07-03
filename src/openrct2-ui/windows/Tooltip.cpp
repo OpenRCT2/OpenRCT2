@@ -193,14 +193,14 @@ static void window_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t bottom = w->windowPos.y + w->height - 1;
 
     // Background
-    gfx_filter_rect(dpi, { left + 1, top + 1, right - 1, bottom - 1 }, PALETTE_45);
-    gfx_filter_rect(dpi, { left + 1, top + 1, right - 1, bottom - 1 }, PALETTE_GLASS_LIGHT_ORANGE);
+    gfx_filter_rect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, PALETTE_45);
+    gfx_filter_rect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, PALETTE_GLASS_LIGHT_ORANGE);
 
     // Sides
-    gfx_filter_rect(dpi, { left + 0, top + 2, left + 0, bottom - 2 }, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, { right + 0, top + 2, right + 0, bottom - 2 }, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, { left + 2, bottom + 0, right - 2, bottom + 0 }, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, { left + 2, top + 0, right - 2, top + 0 }, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, PALETTE_DARKEN_3);
 
     // Corners
     gfx_filter_pixel(dpi, { left + 1, top + 1 }, PALETTE_DARKEN_3);

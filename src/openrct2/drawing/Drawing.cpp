@@ -585,7 +585,7 @@ void gfx_draw_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_
 
 void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FILTER_PALETTE_ID palette)
 {
-    gfx_filter_rect(dpi, { coords.x, coords.y, coords.x, coords.y }, palette);
+    gfx_filter_rect(dpi, { coords, coords }, palette);
 }
 
 /**
