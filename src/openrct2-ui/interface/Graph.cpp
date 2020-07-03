@@ -248,12 +248,12 @@ static void graph_draw_hovered_value(
     {
         return;
     }
-    gfx_draw_dashed_line(dpi, {{info.coords.x, chartFrame.GetTop()}, info.coords}, DEFAULT_DASHED_LENGTH, 0);
-    gfx_draw_dashed_line(dpi, {{chartFrame.GetLeft() - 10, info.coords.y}, info.coords}, DEFAULT_DASHED_LENGTH, 0);
+    gfx_draw_dashed_line(dpi, { { info.coords.x, chartFrame.GetTop() }, info.coords }, DEFAULT_DASHED_LENGTH, 0);
+    gfx_draw_dashed_line(dpi, { { chartFrame.GetLeft() - 10, info.coords.y }, info.coords }, DEFAULT_DASHED_LENGTH, 0);
 
     if (cursorPosition.y > info.coords.y)
     {
-        gfx_draw_dashed_line(dpi, {info.coords, {info.coords.x, cursorPosition.y}}, DEFAULT_DASHED_LENGTH, 0);
+        gfx_draw_dashed_line(dpi, { info.coords, { info.coords.x, cursorPosition.y } }, DEFAULT_DASHED_LENGTH, 0);
     }
 
     gfx_draw_string_centred(

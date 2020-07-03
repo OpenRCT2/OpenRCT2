@@ -238,7 +238,7 @@ void gfx_draw_dashed_line(
         for (int32_t i = 0, x, y; i < lineSegmentCount; ++i)
         {
             x = screenLine.GetLeft() + dxPrecise * i * 2 / precisionFactor;
-            y = screenLine.GetTop()  + dyPrecise * i * 2 / precisionFactor;
+            y = screenLine.GetTop() + dyPrecise * i * 2 / precisionFactor;
             dc->DrawLine(color, x, y, x + dxPrecise / precisionFactor, y + dyPrecise / precisionFactor);
         }
     }
