@@ -659,9 +659,6 @@ template<class T> struct RectRange : public CoordsRange<T>
     RectRange(const T& leftTop, const T& rightBottom)
         : CoordsRange<T>(leftTop, rightBottom)
     {
-        // Make sure it's a rectangle
-        assert(std::abs(CoordsRange<T>::GetLeft() - CoordsRange<T>::GetRight()) > 0);
-        assert(std::abs(CoordsRange<T>::GetTop() - CoordsRange<T>::GetBottom()) > 0);
     }
 };
 
