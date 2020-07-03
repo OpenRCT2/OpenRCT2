@@ -415,6 +415,8 @@ declare global {
         /** This only exist to retrieve the types for existing corrupt elements. For hiding elements, use the isHidden field instead. */
         | "openrct2_corrupt_deprecated";
 
+    type Direction = 0 | 1 | 2 | 3;
+
     interface BaseTileElement {
         type: TileElementType;
         baseHeight: number;
@@ -450,7 +452,7 @@ declare global {
         addition: number | null;
         isAdditionBroken: boolean;
 
-        direction: 0 | 1 | 2 | 3;
+        direction: Direction;
     }
 
     interface TrackElement extends BaseTileElement {
@@ -459,14 +461,14 @@ declare global {
         ride: number;
         station: number;
         hasChainLift: boolean;
-        direction: 0 | 1 | 2 | 3;
+        direction: Direction;
     }
 
     interface SmallSceneryElement extends BaseTileElement {
         object: number;
         primaryColour: number;
         secondaryColour: number;
-        direction: 0 | 1 | 2 | 3;
+        direction: Direction;
     }
 
     interface EntranceElement extends BaseTileElement {
@@ -478,7 +480,7 @@ declare global {
 
     interface WallElement extends BaseTileElement {
         object: number;
-        direction: 0 | 1 | 2 | 3;
+        direction: Direction;
     }
 
     interface LargeSceneryElement extends BaseTileElement {

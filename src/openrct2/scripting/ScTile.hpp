@@ -974,6 +974,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTileElement::baseHeight_get, &ScTileElement::baseHeight_set, "baseHeight");
             dukglue_register_property(
                 ctx, &ScTileElement::clearanceHeight_get, &ScTileElement::clearanceHeight_set, "clearanceHeight");
+            dukglue_register_property(ctx, &ScTileElement::direction_get, &ScTileElement::direction_set, "direction");
 
             // Some
             dukglue_register_property(ctx, &ScTileElement::object_get, &ScTileElement::object_set, "object");
@@ -1032,7 +1033,6 @@ namespace OpenRCT2::Scripting
                 ctx, &ScTileElement::isAdditionBroken_get, &ScTileElement::isAdditionBroken_set, "isAdditionBroken");
             dukglue_register_property(
                 ctx, &ScTileElement::isAdditionGhost_get, &ScTileElement::isAdditionGhost_set, "isAdditionGhost");
-            dukglue_register_property(ctx, &ScTileElement::direction_get, &ScTileElement::direction_set, "direction");
 
             // Entrance only
             dukglue_register_property(
