@@ -560,6 +560,16 @@ const rct_trackdefinition FlatRideTrackDefinitions[256] =
 };
 // clang-format on
 
+PitchAndRoll TrackPitchAndRollStart(uint8_t trackType)
+{
+    return { TrackDefinitions[trackType].vangle_start, TrackDefinitions[trackType].bank_start };
+}
+
+PitchAndRoll TrackPitchAndRollEnd(uint8_t trackType)
+{
+    return { TrackDefinitions[trackType].vangle_end, TrackDefinitions[trackType].bank_end };
+}
+
 /**
  * Helper method to determine if a connects to b by its bank and angle, not location.
  */
@@ -1120,7 +1130,7 @@ bool track_element_is_block_start(TileElement* trackElement)
     return false;
 }
 
-int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank)
+roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank)
 {
     auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     if (ride != nullptr)
@@ -1131,7 +1141,7 @@ int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank)
     return bank;
 }
 
-int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
+roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank)
 {
     if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
     {
@@ -1150,7 +1160,7 @@ int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
     return bank;
 }
 
-int32_t track_get_actual_bank_3(Vehicle* vehicle, TileElement* tileElement)
+roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     auto bankStart = TrackDefinitions[trackType].bank_start;
@@ -1158,7 +1168,7 @@ int32_t track_get_actual_bank_3(Vehicle* vehicle, TileElement* tileElement)
     if (ride == nullptr)
         return bankStart;
 
-    bool isInverted = vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) ^ tileElement->AsTrack()->IsInverted();
+    bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
     return track_get_actual_bank_2(ride->type, isInverted, bankStart);
 }
 

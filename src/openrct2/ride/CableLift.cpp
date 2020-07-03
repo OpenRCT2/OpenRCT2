@@ -232,8 +232,6 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         uint16_t trackTotalProgress = GetTrackProgress();
         if (trackProgress >= trackTotalProgress)
         {
-            _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
-            _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_end;
             TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
             CoordsXYE output;
@@ -245,8 +243,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
             if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
                 return false;
 
-            if (TrackDefinitions[output.element->AsTrack()->GetTrackType()].vangle_start != _vehicleVAngleEndF64E36
-                || TrackDefinitions[output.element->AsTrack()->GetTrackType()].bank_start != _vehicleBankEndF64E37)
+            if (TrackPitchAndRollEnd(trackType) != TrackPitchAndRollStart(output.element->AsTrack()->GetTrackType()))
                 return false;
 
             TrackLocation = { output, outputZ };
@@ -298,9 +295,6 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         if (static_cast<int16_t>(trackProgress) == -1)
         {
             uint8_t trackType = GetTrackType();
-            _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
-            _vehicleBankEndF64E37 = TrackDefinitions[trackType].bank_start;
-
             TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
             auto input = CoordsXYE{ TrackLocation, trackElement };
@@ -309,8 +303,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             if (!track_block_get_previous(input, &output))
                 return false;
 
-            if (TrackDefinitions[output.begin_element->AsTrack()->GetTrackType()].vangle_end != _vehicleVAngleEndF64E36
-                || TrackDefinitions[output.begin_element->AsTrack()->GetTrackType()].bank_end != _vehicleBankEndF64E37)
+            if (TrackPitchAndRollStart(trackType) != TrackPitchAndRollEnd(output.begin_element->AsTrack()->GetTrackType()))
                 return false;
 
             TrackLocation = { output.begin_x, output.begin_y, output.begin_z };

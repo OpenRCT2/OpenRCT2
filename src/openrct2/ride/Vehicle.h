@@ -629,8 +629,6 @@ extern uint32_t _vehicleMotionTrackFlags;
 extern int32_t _vehicleVelocityF64E08;
 extern int32_t _vehicleVelocityF64E0C;
 extern int32_t _vehicleUnkF64E10;
-extern uint8_t _vehicleVAngleEndF64E36;
-extern uint8_t _vehicleBankEndF64E37;
 extern uint8_t _vehicleF64E2C;
 extern Vehicle* _vehicleFrontVehicle;
 extern CoordsXYZ unk_F64E20;

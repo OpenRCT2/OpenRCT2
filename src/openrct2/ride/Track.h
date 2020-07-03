@@ -18,20 +18,36 @@ constexpr const uint16_t RideConstructionSpecialPieceSelected = 0x100;
 constexpr const int32_t BLOCK_BRAKE_BASE_SPEED = 0x20364;
 
 using track_type_t = uint16_t;
+using roll_type_t = uint8_t;
+using pitch_type_t = uint8_t;
 
 #pragma pack(push, 1)
 struct rct_trackdefinition
 {
     uint8_t type;
-    uint8_t vangle_end;
-    uint8_t vangle_start;
-    uint8_t bank_end;
-    uint8_t bank_start;
+    pitch_type_t vangle_end;
+    pitch_type_t vangle_start;
+    roll_type_t bank_end;
+    roll_type_t bank_start;
     int8_t preview_z_offset;
     uint8_t pad[2] = {};
 };
 assert_struct_size(rct_trackdefinition, 8);
 #pragma pack(pop)
+
+struct PitchAndRoll
+{
+    pitch_type_t Pitch;
+    roll_type_t Roll;
+};
+constexpr bool operator==(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
+{
+    return vb1.Pitch == vb2.Pitch && vb1.Roll == vb2.Roll;
+}
+constexpr bool operator!=(const PitchAndRoll& vb1, const PitchAndRoll& vb2)
+{
+    return !(vb1 == vb2);
+}
 
 /* size 0x0A */
 struct rct_preview_track
@@ -538,6 +554,9 @@ struct track_circuit_iterator
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
 
+PitchAndRoll TrackPitchAndRollStart(uint8_t trackType);
+PitchAndRoll TrackPitchAndRollEnd(uint8_t trackType);
+
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 
 const rct_preview_track* get_track_def_from_ride(Ride* ride, int32_t trackType);
@@ -556,9 +575,9 @@ bool track_element_is_block_start(TileElement* trackElement);
 bool track_element_is_covered(int32_t trackElementType);
 bool track_type_is_station(track_type_t trackType);
 
-int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank);
-int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank);
-int32_t track_get_actual_bank_3(Vehicle* vehicle, TileElement* tileElement);
+roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank);
+roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank);
+roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement);
 
 bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flags, bool fromTrackDesign);
 bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex, int32_t flags);
