@@ -19,6 +19,7 @@
 struct ScreenCoordsXY;
 
 struct ScreenCoordsXY;
+struct ScreenLine;
 namespace OpenRCT2
 {
     interface IPlatformEnvironment;
