@@ -20,6 +20,7 @@ struct ScreenCoordsXY;
 
 struct ScreenCoordsXY;
 struct ScreenLine;
+struct ScreenRect;
 namespace OpenRCT2
 {
     interface IPlatformEnvironment;
@@ -610,6 +611,8 @@ void gfx_fill_rect_inset(
     rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom, int32_t colour, uint8_t flags);
 void gfx_filter_rect(
     rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FILTER_PALETTE_ID palette);
+void gfx_filter_rect(
+    rct_drawpixelinfo* dpi, const ScreenRect& rect, FILTER_PALETTE_ID palette);
 
 // sprite
 bool gfx_load_g1(const OpenRCT2::IPlatformEnvironment& env);
