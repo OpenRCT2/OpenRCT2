@@ -130,7 +130,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
             _chatHeight = 150;
         }
 
-        gfx_set_dirty_blocks(_chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5);             // Background area + Textbox
+        gfx_set_dirty_blocks(_chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5); // Background area + Textbox
         gfx_filter_rect(
             dpi, { { _chatLeft, _chatTop - 5 }, { _chatRight, _chatBottom + 5 } }, PALETTE_51); // Opaque gray background
         gfx_fill_rect_inset(
