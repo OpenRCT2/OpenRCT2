@@ -463,17 +463,29 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
         screenCoords.x = 3;
 
-        // Draw server information
+        // Before we draw the server info, we need to know how much room we'll need for player info.
+        char players[32];
+        players[0] = 0;
+        if (serverDetails.MaxPlayers > 0)
+        {
+            snprintf(players, sizeof(players), "%d/%d", serverDetails.Players, serverDetails.MaxPlayers);
+        }
+        const int16_t numPlayersStringWidth = gfx_get_string_width(players);
+
+        // How much space we have for the server info depends on the size of everything rendered after.
+        const int16_t spaceAvailableForInfo = width - numPlayersStringWidth - SCROLLBAR_WIDTH - 35;
+
+        // Are we showing the server's name or description?
+        const char* serverInfoToShow = serverDetails.Name.c_str();
         if (highlighted && !serverDetails.Description.empty())
         {
-            gfx_draw_string(dpi, serverDetails.Description.c_str(), colour, screenCoords + ScreenCoordsXY{ 0, 3 });
-        }
-        else
-        {
-            gfx_draw_string(dpi, serverDetails.Name.c_str(), colour, screenCoords + ScreenCoordsXY{ 0, 3 });
+            serverInfoToShow = serverDetails.Description.c_str();
         }
 
-        int32_t right = width - 3 - 14;
+        // Finally, draw the server information.
+        gfx_draw_string_left_clipped(dpi, STR_STRING, &serverInfoToShow, colour, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo);
+
+        int32_t right = width - 7 - SCROLLBAR_WIDTH;
 
         // Draw compatibility icon
         right -= 10;
@@ -501,13 +513,6 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         right -= 6;
 
         // Draw number of players
-        char players[32];
-        players[0] = 0;
-        if (serverDetails.MaxPlayers > 0)
-        {
-            snprintf(players, 32, "%d/%d", serverDetails.Players, serverDetails.MaxPlayers);
-        }
-        int32_t numPlayersStringWidth = gfx_get_string_width(players);
         screenCoords.x = right - numPlayersStringWidth;
         gfx_draw_string(dpi, players, w->colours[1], screenCoords + ScreenCoordsXY{ 0, 3 });
 
