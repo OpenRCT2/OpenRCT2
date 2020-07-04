@@ -464,8 +464,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         screenCoords.x = 3;
 
         // Before we draw the server info, we need to know how much room we'll need for player info.
-        char players[32];
-        players[0] = 0;
+        char players[32] = { 0 };
         if (serverDetails.MaxPlayers > 0)
         {
             snprintf(players, sizeof(players), "%d/%d", serverDetails.Players, serverDetails.MaxPlayers);
