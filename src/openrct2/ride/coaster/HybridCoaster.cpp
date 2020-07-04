@@ -1016,7 +1016,7 @@ static void hybrid_rc_track_left_quarter_turn_5(
                 case 1:
                     sub_98197C_rotated(
                         session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_MEDIUM_CURVE + 7), 0, 0,
-                        20, 20, 3, height, 16, 16, height);
+                        16, 16, 3, height, 16, 16, height);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
@@ -1215,7 +1215,7 @@ static void hybrid_rc_track_left_eighth_to_diag(
                 case 1:
                     sub_98197C_rotated(
                         session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_LARGE_CURVE + 6), 0, 0,
-                        16, 16, 3, height, 16, 16, height);
+                        32, 16, 3, height, 0, 16, height);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
