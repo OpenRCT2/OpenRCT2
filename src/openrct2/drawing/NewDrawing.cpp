@@ -190,16 +190,6 @@ void gfx_fill_rect(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t ri
     }
 }
 
-void gfx_fill_rect(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t colour)
-{
-    auto drawingEngine = dpi->DrawingEngine;
-    if (drawingEngine != nullptr)
-    {
-        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->FillRect(colour, left, top, right, bottom);
-    }
-}
-
 void gfx_filter_rect(
     rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FILTER_PALETTE_ID palette)
 {
