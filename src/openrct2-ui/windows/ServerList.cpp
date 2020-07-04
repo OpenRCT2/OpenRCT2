@@ -483,7 +483,8 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         }
 
         // Finally, draw the server information.
-        gfx_draw_string_left_clipped(dpi, STR_STRING, &serverInfoToShow, colour, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo);
+        gfx_draw_string_left_clipped(
+            dpi, STR_STRING, &serverInfoToShow, colour, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo);
 
         int32_t right = width - 7 - SCROLLBAR_WIDTH;
 
