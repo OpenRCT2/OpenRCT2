@@ -310,8 +310,7 @@ static void window_editor_bottom_toolbar_mouseup([[maybe_unused]] rct_window* w,
     if (widgetIndex == WIDX_PREVIOUS_STEP_BUTTON)
     {
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-            || (gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] == MAX_SPRITES
-                && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
+            || (GetEntityListCount(EntityListId::Free) == MAX_SPRITES && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
         {
             previous_button_mouseup_events[gS6Info.editor_step]();
         }
@@ -371,8 +370,7 @@ void window_editor_bottom_toolbar_invalidate(rct_window* w)
         }
         else if (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER))
         {
-            if (gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] != MAX_SPRITES
-                || gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
+            if (GetEntityListCount(EntityListId::Free) != MAX_SPRITES || gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
             {
                 hide_previous_step_button();
             }
@@ -397,7 +395,7 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         drawPreviousButton = true;
     }
-    else if (gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] != MAX_SPRITES)
+    else if (GetEntityListCount(EntityListId::Free) != MAX_SPRITES)
     {
         drawNextButton = true;
     }

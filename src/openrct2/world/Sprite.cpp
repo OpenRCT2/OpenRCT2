@@ -78,6 +78,11 @@ template<> bool SpriteBase::Is<ExplosionCloud>() const
     return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_CLOUD;
 }
 
+uint16_t GetEntityListCount(EntityListId list)
+{
+    return gSpriteListCount[static_cast<uint8_t>(list)];
+}
+
 std::string rct_sprite_checksum::ToString() const
 {
     std::string result;
@@ -380,7 +385,7 @@ static constexpr uint16_t MAX_MISC_SPRITES = 300;
 
 rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linkedListIndex)
 {
-    if (gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] == 0)
+    if (GetEntityListCount(EntityListId::Free) == 0)
     {
         // No free sprites.
         return nullptr;
@@ -391,8 +396,8 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linke
         // Misc sprites are commonly used for effects, if there are less than MAX_MISC_SPRITES
         // free it will fail to keep slots for more relevant sprites.
         // Also there can't be more than MAX_MISC_SPRITES sprites in this list.
-        uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - gSpriteListCount[static_cast<uint8_t>(EntityListId::Misc)];
-        if (miscSlotsRemaining >= gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)])
+        uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - GetEntityListCount(EntityListId::Misc);
+        if (miscSlotsRemaining >= GetEntityListCount(EntityListId::Free))
         {
             return nullptr;
         }
@@ -800,7 +805,7 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
     if (!litter_can_be_at(offsetLitterPos))
         return;
 
-    if (gSpriteListCount[static_cast<uint8_t>(EntityListId::Litter)] >= 500)
+    if (GetEntityListCount(EntityListId::Litter) >= 500)
     {
         Litter* newestLitter = nullptr;
         uint32_t newestLitterCreationTick = 0;

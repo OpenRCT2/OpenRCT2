@@ -202,6 +202,7 @@ template<typename T> T* GetEntity(size_t sprite_idx)
 }
 
 SpriteBase* GetEntity(size_t sprite_idx);
+uint16_t GetEntityListCount(EntityListId list);
 
 extern uint16_t gSpriteListHead[static_cast<uint8_t>(EntityListId::Count)];
 extern uint16_t gSpriteListCount[static_cast<uint8_t>(EntityListId::Count)];

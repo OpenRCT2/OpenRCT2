@@ -1587,7 +1587,7 @@ void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgument
  */
 Peep* Peep::Generate(const CoordsXYZ& coords)
 {
-    if (gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] < 400)
+    if (GetEntityListCount(EntityListId::Free) < 400)
         return nullptr;
 
     Peep* peep = &create_sprite(SPRITE_IDENTIFIER_PEEP)->peep;

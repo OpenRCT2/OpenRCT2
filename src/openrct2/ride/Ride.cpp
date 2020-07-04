@@ -4299,8 +4299,8 @@ static void ride_set_start_finish_points(ride_id_t rideIndex, CoordsXYE* startEl
  */
 static int32_t count_free_misc_sprite_slots()
 {
-    int32_t miscSpriteCount = gSpriteListCount[static_cast<uint8_t>(EntityListId::Misc)];
-    int32_t remainingSpriteCount = gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)];
+    int32_t miscSpriteCount = GetEntityListCount(EntityListId::Misc);
+    int32_t remainingSpriteCount = GetEntityListCount(EntityListId::Free);
     return std::max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
 

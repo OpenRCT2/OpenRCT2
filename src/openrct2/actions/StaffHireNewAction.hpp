@@ -105,7 +105,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        if (gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] < 400)
+        if (GetEntityListCount(EntityListId::Free) < 400)
         {
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
