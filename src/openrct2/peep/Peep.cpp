@@ -812,16 +812,14 @@ void peep_sprite_remove(Peep* peep)
 
     window_close_by_number(WC_FIRE_PROMPT, peep->sprite_identifier);
 
+    // Needed for invalidations after sprite removal
+    bool wasGuest = peep->AssignedPeepType == PEEP_TYPE_GUEST;
     if (peep->AssignedPeepType == PEEP_TYPE_GUEST)
     {
-        window_invalidate_by_class(WC_GUEST_LIST);
-
         news_item_disable_news(NEWS_ITEM_PEEP_ON_RIDE, peep->sprite_index);
     }
     else
     {
-        window_invalidate_by_class(WC_STAFF_LIST);
-
         gStaffModes[peep->StaffId] = 0;
         peep->AssignedPeepType = PEEP_TYPE_INVALID;
         staff_update_greyed_patrol_areas();
@@ -830,6 +828,9 @@ void peep_sprite_remove(Peep* peep)
         news_item_disable_news(NEWS_ITEM_PEEP, peep->sprite_index);
     }
     sprite_remove(peep);
+
+    auto intent = Intent(wasGuest ? INTENT_ACTION_REFRESH_GUEST_LIST : INTENT_ACTION_REFRESH_STAFF_LIST);
+    context_broadcast_intent(&intent);
 }
 
 /**
