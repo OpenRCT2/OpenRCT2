@@ -175,8 +175,16 @@ void viewport_create(
     if (flags & VIEWPORT_FOCUS_TYPE_SPRITE)
     {
         w->viewport_target_sprite = sprite;
-        auto* centre_sprite = GetEntity(sprite);
-        centrePos = { centre_sprite->x, centre_sprite->y, centre_sprite->z };
+        auto* centreEntity = GetEntity(sprite);
+        if (centreEntity != nullptr)
+        {
+            centrePos = { centreEntity->x, centreEntity->y, centreEntity->z };
+        }
+        else
+        {
+            log_error("Invalid entity for viewport.");
+            return;
+        }
     }
     else
     {
@@ -620,7 +628,10 @@ void viewport_update_sprite_follow(rct_window* window)
     if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport)
     {
         auto* sprite = GetEntity(window->viewport_target_sprite);
-
+        if (sprite == nullptr)
+        {
+            return;
+        }
         int32_t height = (tile_element_height({ sprite->x, sprite->y })) - 16;
         int32_t underground = sprite->z < height;
 
