@@ -522,14 +522,14 @@ bool wooden_a_supports_paint_setup(
         special = (special - 1) & 0xFFFF;
 
         int32_t imageId;
-        if (special <= 48)
+        if (special < NumVanillaWoodenSupportTypes)
             imageId = WoodenCurveSupportImageIds[supportType];
         else
             imageId = WoodenCurveSupportImageIdsG2[supportType];
 
         if (imageId != 0 && byte_97B23C[special].var_7 != 0)
         {
-            imageId += special % 49;
+            imageId += special % NumVanillaWoodenSupportTypes;
             imageId |= imageColourFlags;
 
             unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
@@ -707,7 +707,7 @@ bool wooden_b_supports_paint_setup(
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
         int32_t imageId;
-        if (specialIndex <= 48)
+        if (specialIndex < NumVanillaWoodenSupportTypes)
             imageId = WoodenCurveSupportImageIds[supportType];
         else
             imageId = WoodenCurveSupportImageIdsG2[supportType];
@@ -716,7 +716,7 @@ bool wooden_b_supports_paint_setup(
 
         if (imageId != 0 && supportsDesc.var_7 != 0)
         { // byte_97B23C[special].var_7 is never 0
-            imageId += specialIndex % 49;
+            imageId += specialIndex % NumVanillaWoodenSupportTypes;
             imageId |= imageColourFlags;
 
             unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
