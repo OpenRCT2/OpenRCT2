@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "Drawing.h"
+#include "../world/Location.hpp"
 
 #include <cmath>
 #include <cstdlib>
@@ -74,6 +75,28 @@ static void gfx_draw_line_on_buffer(rct_drawpixelinfo* dpi, char colour, int32_t
  */
 void gfx_draw_line_software(rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour)
 {
+    const ScreenCoordsXY leftTop     = ScreenCoordsXY(x1, y1);
+    const ScreenCoordsXY rightBottom = ScreenCoordsXY(x2, y2);
+    const ScreenLine line            = ScreenLine(leftTop, rightBottom);
+
+    gfx_draw_line_software(dpi, line, colour);
+}
+
+
+/**
+ * Draws a line on dpi if within dpi boundaries
+ *  rct2: 0x00684466
+ * dpi (edi)
+ * line (eax)
+ * colour (ebp)
+ */
+void gfx_draw_line_software(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour)
+{
+    int32_t x1 = line.LeftTop.x;
+    int32_t x2 = line.RightBottom.x;
+    int32_t y1 = line.LeftTop.y;
+    int32_t y2 = line.RightBottom.y;
+
     // Check to make sure the line is within the drawing area
     if ((x1 < dpi->x) && (x2 < dpi->x))
     {

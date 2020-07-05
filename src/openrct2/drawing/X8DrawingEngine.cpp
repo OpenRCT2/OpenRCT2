@@ -725,7 +725,10 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32
 
 void X8DrawingContext::DrawLine(uint32_t colour, int32_t x1, int32_t y1, int32_t x2, int32_t y2)
 {
-    gfx_draw_line_software(_dpi, x1, y1, x2, y2, colour);
+    const ScreenCoordsXY leftTop     = ScreenCoordsXY(x1, y1);
+    const ScreenCoordsXY rightBottom = ScreenCoordsXY(x2, y2);
+    const ScreenLine line            = ScreenLine(leftTop, rightBottom);
+    gfx_draw_line_software(_dpi, line, colour);
 }
 
 void X8DrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour)
