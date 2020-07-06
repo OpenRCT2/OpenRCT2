@@ -43,6 +43,7 @@
 #include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2/world/Location.hpp>
 #include <vector>
 
 using namespace OpenRCT2;

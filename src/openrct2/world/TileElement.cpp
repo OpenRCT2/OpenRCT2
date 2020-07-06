@@ -15,6 +15,7 @@
 #include "../ride/Track.h"
 #include "Banner.h"
 #include "LargeScenery.h"
+#include "Location.hpp"
 #include "Scenery.h"
 
 uint8_t TileElementBase::GetType() const

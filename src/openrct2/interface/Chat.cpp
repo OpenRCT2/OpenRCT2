@@ -17,6 +17,7 @@
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
+#include "../world/Location.hpp"
 
 #include <algorithm>
 

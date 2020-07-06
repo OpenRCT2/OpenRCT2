@@ -14,6 +14,7 @@
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
 #include "../sprites.h"
+#include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "Paint.h"
 #include "VirtualFloor.h"
