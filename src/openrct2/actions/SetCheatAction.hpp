@@ -427,7 +427,7 @@ private:
 
     void RemoveLitter() const
     {
-        for (auto litter : EntityList<Litter>(SPRITE_LIST_LITTER))
+        for (auto litter : EntityList<Litter>(EntityListId::Litter))
         {
             sprite_remove(litter);
         }
@@ -570,7 +570,7 @@ private:
 
     void SetGuestParameter(int32_t parameter, int32_t value) const
     {
-        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Guest>(EntityListId::Peep))
         {
             switch (parameter)
             {
@@ -614,7 +614,7 @@ private:
 
     void GiveObjectToGuests(int32_t object) const
     {
-        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Guest>(EntityListId::Peep))
         {
             switch (object)
             {
@@ -686,7 +686,7 @@ private:
 
         // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
         // will be fetched on a deleted peep.
-        for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Peep>(EntityListId::Peep))
         {
             if (peep->AssignedPeepType == PEEP_TYPE_GUEST)
             {
@@ -700,7 +700,7 @@ private:
 
     void ExplodeGuests() const
     {
-        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Guest>(EntityListId::Peep))
         {
             if (scenario_rand_max(6) == 0)
             {
@@ -711,7 +711,7 @@ private:
 
     void SetStaffSpeed(uint8_t value) const
     {
-        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
             peep->Energy = value;
             peep->EnergyTarget = value;

@@ -636,7 +636,7 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
 
     Peep* closestPeep = nullptr;
     auto closestDistance = std::numeric_limits<int32_t>::max();
-    for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Peep>(EntityListId::Peep))
     {
         if (peep->sprite_left == LOCATION_NULL)
             continue;

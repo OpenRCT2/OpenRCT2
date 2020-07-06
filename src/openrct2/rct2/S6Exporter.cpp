@@ -151,10 +151,8 @@ void S6Exporter::Save(IStream* stream, bool isScenario)
 
 void S6Exporter::Export()
 {
-    int32_t spatial_cycle = check_for_spatial_index_cycles(false);
     int32_t regular_cycle = check_for_sprite_list_cycles(false);
     int32_t disjoint_sprites_count = fix_disjoint_sprites();
-    openrct2_assert(spatial_cycle == -1, "Sprite cycle exists in spatial list %d", spatial_cycle);
     openrct2_assert(regular_cycle == -1, "Sprite cycle exists in regular list %d", regular_cycle);
     // This one is less harmful, no need to assert for it ~janisozaur
     if (disjoint_sprites_count > 0)
@@ -948,7 +946,7 @@ void S6Exporter::ExportSprites()
         ExportSprite(&_s6.sprites[i], reinterpret_cast<const rct_sprite*>(GetEntity(i)));
     }
 
-    for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
+    for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
     {
         _s6.sprite_lists_head[i] = gSpriteListHead[i];
         _s6.sprite_lists_count[i] = gSpriteListCount[i];
@@ -989,7 +987,7 @@ void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const Sprite
     dst->next_in_quadrant = src->next_in_quadrant;
     dst->next = src->next;
     dst->previous = src->previous;
-    dst->linked_list_type_offset = src->linked_list_index * 2;
+    dst->linked_list_type_offset = static_cast<uint8_t>(src->linked_list_index) * 2;
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
     dst->flags = src->flags;

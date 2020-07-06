@@ -1124,7 +1124,7 @@ private:
                 if (srcVehicle->x != LOCATION_NULL)
                 {
                     // If vehicle is the first car on a train add to train list
-                    auto llt = srcVehicle->type == VEHICLE_TYPE_HEAD ? SPRITE_LIST_TRAIN_HEAD : SPRITE_LIST_VEHICLE;
+                    auto llt = srcVehicle->type == VEHICLE_TYPE_HEAD ? EntityListId::TrainHead : EntityListId::Vehicle;
 
                     Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SPRITE_IDENTIFIER_VEHICLE, llt));
                     spriteIndexMap[i] = vehicle->sprite_index;
@@ -1355,7 +1355,7 @@ private:
         }
 
         {
-            for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+            for (auto peep : EntityList<Guest>(EntityListId::Peep))
             {
                 FixPeepNextInQueue(peep, spriteIndexMap);
             }
@@ -1377,7 +1377,7 @@ private:
 
         std::copy(std::begin(_s4.staff_modes), std::end(_s4.staff_modes), gStaffModes);
 
-        for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
             ImportStaffPatrolArea(peep);
         }
@@ -2999,7 +2999,7 @@ private:
         if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
         {
             // First, make the queuing peep exit
-            for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+            for (auto peep : EntityList<Guest>(EntityListId::Peep))
             {
                 if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
                 {

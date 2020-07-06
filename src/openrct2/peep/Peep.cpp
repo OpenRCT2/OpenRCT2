@@ -387,7 +387,7 @@ Peep* try_get_guest(uint16_t spriteIndex)
 
 int32_t peep_get_staff_count()
 {
-    auto list = EntityList<Staff>(SPRITE_LIST_PEEP);
+    auto list = EntityList<Staff>(EntityListId::Peep);
     auto count = std::distance(list.begin(), list.end());
 
     return count;
@@ -404,7 +404,7 @@ void peep_update_all()
 
     int32_t i = 0;
     // Warning this loop can delete peeps
-    for (auto peep : EntityList<Peep>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Peep>(EntityListId::Peep))
     {
         if (static_cast<uint32_t>(i & 0x7F) != (gCurrentTicks & 0x7F))
         {
@@ -1176,7 +1176,7 @@ void peep_problem_warnings_update()
              disgust_counter = 0, toilet_counter = 0, vandalism_counter = 0;
     uint8_t* warning_throttle = gPeepWarningThrottle;
 
-    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         if (peep->OutsideOfPark || peep->Thoughts[0].freshness > 5)
             continue;
@@ -1354,7 +1354,7 @@ void peep_update_crowd_noise()
     // Count the number of peeps visible
     auto visiblePeeps = 0;
 
-    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         if (peep->sprite_left == LOCATION_NULL)
             continue;
@@ -1417,7 +1417,7 @@ void peep_update_crowd_noise()
  */
 void peep_applause()
 {
-    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         if (peep->OutsideOfPark)
             continue;
@@ -1445,7 +1445,7 @@ void peep_applause()
  */
 void peep_update_days_in_queue()
 {
-    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         if (!peep->OutsideOfPark && peep->State == PEEP_STATE_QUEUING)
         {
@@ -1587,7 +1587,7 @@ void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgument
  */
 Peep* Peep::Generate(const CoordsXYZ& coords)
 {
-    if (gSpriteListCount[SPRITE_LIST_FREE] < 400)
+    if (GetEntityListCount(EntityListId::Free) < 400)
         return nullptr;
 
     Peep* peep = &create_sprite(SPRITE_IDENTIFIER_PEEP)->peep;

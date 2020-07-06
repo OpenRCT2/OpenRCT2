@@ -3,6 +3,7 @@
 #include "../common.h"
 
 struct CoordsXYZ;
+enum class EntityListId : uint8_t;
 
 struct SpriteBase
 {
@@ -11,8 +12,8 @@ struct SpriteBase
     uint16_t next_in_quadrant;
     uint16_t next;
     uint16_t previous;
-    // Valid values are SPRITE_LINKEDLIST_OFFSET_...
-    uint8_t linked_list_index;
+    // Valid values are EntityListId::...
+    EntityListId linked_list_index;
     // Height from centre of sprite to bottom
     uint8_t sprite_height_negative;
     uint16_t sprite_index;

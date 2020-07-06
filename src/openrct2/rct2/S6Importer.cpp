@@ -465,7 +465,6 @@ public:
 
         // We try to fix the cycles on import, hence the 'true' parameter
         check_for_sprite_list_cycles(true);
-        check_for_spatial_index_cycles(true);
         int32_t disjoint_sprites_count = fix_disjoint_sprites();
         // This one is less harmful, no need to assert for it ~janisozaur
         if (disjoint_sprites_count > 0)
@@ -1288,13 +1287,13 @@ public:
             ImportSprite(reinterpret_cast<rct_sprite*>(dst), src);
         }
 
-        for (int32_t i = 0; i < SPRITE_LIST_COUNT; i++)
+        for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
         {
             gSpriteListHead[i] = _s6.sprite_lists_head[i];
             gSpriteListCount[i] = _s6.sprite_lists_count[i];
         }
         // This list contains the number of free slots. Increase it according to our own sprite limit.
-        gSpriteListCount[SPRITE_LIST_FREE] += (MAX_SPRITES - RCT2_MAX_SPRITES);
+        gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] += (MAX_SPRITES - RCT2_MAX_SPRITES);
     }
 
     void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
@@ -1628,7 +1627,7 @@ public:
         dst->next_in_quadrant = src->next_in_quadrant;
         dst->next = src->next;
         dst->previous = src->previous;
-        dst->linked_list_index = src->linked_list_type_offset >> 1;
+        dst->linked_list_index = static_cast<EntityListId>(src->linked_list_type_offset >> 1);
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;
         dst->flags = src->flags;

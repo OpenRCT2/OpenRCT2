@@ -4266,7 +4266,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 stringId = STR_NO_MECHANICS_ARE_HIRED_MESSAGE;
 
-                for (auto peep : EntityList<Staff>(SPRITE_LIST_PEEP))
+                for (auto peep : EntityList<Staff>(EntityListId::Peep))
                 {
                     if (peep->StaffType == STAFF_TYPE_MECHANIC)
                     {

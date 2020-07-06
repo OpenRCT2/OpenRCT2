@@ -248,7 +248,7 @@ void window_guest_list_refresh_list()
     }
 
     GuestList.clear();
-    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         sprite_set_flashing(peep, false);
         if (peep->OutsideOfPark)
@@ -948,7 +948,7 @@ static void window_guest_list_find_groups()
 
     // Set all guests to unassigned
     {
-        for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+        for (auto peep : EntityList<Guest>(EntityListId::Peep))
         {
             if (!peep->OutsideOfPark)
             {
@@ -957,7 +957,7 @@ static void window_guest_list_find_groups()
         }
     }
     // For each guest / group
-    for (auto peep : EntityList<Guest>(SPRITE_LIST_PEEP))
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         if (peep->OutsideOfPark || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
             continue;
@@ -980,7 +980,7 @@ static void window_guest_list_find_groups()
             - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
 
         // Find more peeps that belong to same group
-        for (auto peep2 : EntityList<Guest>(SPRITE_LIST_PEEP))
+        for (auto peep2 : EntityList<Guest>(EntityListId::Peep))
         {
             if (peep2->OutsideOfPark || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
                 continue;

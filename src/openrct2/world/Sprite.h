@@ -28,15 +28,15 @@ enum SPRITE_IDENTIFIER
     SPRITE_IDENTIFIER_NULL = 255
 };
 
-enum SPRITE_LIST
+enum class EntityListId : uint8_t
 {
-    SPRITE_LIST_FREE,
-    SPRITE_LIST_TRAIN_HEAD,
-    SPRITE_LIST_PEEP,
-    SPRITE_LIST_MISC,
-    SPRITE_LIST_LITTER,
-    SPRITE_LIST_VEHICLE,
-    SPRITE_LIST_COUNT,
+    Free,
+    TrainHead,
+    Peep,
+    Misc,
+    Litter,
+    Vehicle,
+    Count,
 };
 
 struct Litter : SpriteBase
@@ -202,9 +202,10 @@ template<typename T> T* GetEntity(size_t sprite_idx)
 }
 
 SpriteBase* GetEntity(size_t sprite_idx);
+uint16_t GetEntityListCount(EntityListId list);
 
-extern uint16_t gSpriteListHead[SPRITE_LIST_COUNT];
-extern uint16_t gSpriteListCount[SPRITE_LIST_COUNT];
+extern uint16_t gSpriteListHead[static_cast<uint8_t>(EntityListId::Count)];
+extern uint16_t gSpriteListCount[static_cast<uint8_t>(EntityListId::Count)];
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 extern uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
@@ -212,7 +213,7 @@ extern uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 extern const rct_string_id litterNames[12];
 
 rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier);
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, SPRITE_LIST linkedListIndex);
+rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linkedListIndex);
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
@@ -259,7 +260,6 @@ rct_sprite_checksum sprite_checksum();
 void sprite_set_flashing(SpriteBase* sprite, bool flashing);
 bool sprite_get_flashing(SpriteBase* sprite);
 int32_t check_for_sprite_list_cycles(bool fix);
-int32_t check_for_spatial_index_cycles(bool fix);
 int32_t fix_disjoint_sprites();
 
 template<typename T, uint16_t SpriteBase::*NextList> class EntityIterator
@@ -347,8 +347,8 @@ private:
     using EntityListIterator = EntityIterator<T, &SpriteBase::next>;
 
 public:
-    EntityList(SPRITE_LIST type)
-        : FirstEntity(gSpriteListHead[type])
+    EntityList(EntityListId type)
+        : FirstEntity(gSpriteListHead[static_cast<uint8_t>(type)])
     {
     }
 

@@ -105,7 +105,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        if (gSpriteListCount[SPRITE_LIST_FREE] < 400)
+        if (GetEntityListCount(EntityListId::Free) < 400)
         {
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
@@ -182,7 +182,7 @@ private:
             {
                 bool found = false;
                 ++newStaffId;
-                for (auto searchPeep : EntityList<Staff>(SPRITE_LIST_PEEP))
+                for (auto searchPeep : EntityList<Staff>(EntityListId::Peep))
                 {
                     if (searchPeep->StaffType != _staffType)
                         continue;
@@ -267,7 +267,7 @@ private:
 
         // Count number of walking guests
         {
-            for (auto guest : EntityList<Guest>(SPRITE_LIST_PEEP))
+            for (auto guest : EntityList<Guest>(EntityListId::Peep))
             {
                 if (guest->State == PEEP_STATE_WALKING)
                 {
@@ -286,7 +286,7 @@ private:
             uint32_t rand = scenario_rand_max(count);
             Guest* chosenGuest = nullptr;
 
-            for (auto guest : EntityList<Guest>(SPRITE_LIST_PEEP))
+            for (auto guest : EntityList<Guest>(EntityListId::Peep))
             {
                 if (guest->State == PEEP_STATE_WALKING)
                 {
