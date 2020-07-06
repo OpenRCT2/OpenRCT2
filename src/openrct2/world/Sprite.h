@@ -196,17 +196,13 @@ rct_sprite* get_sprite(size_t sprite_idx);
 template<typename T = SpriteBase> T* GetEntity(size_t sprite_idx)
 {
     auto spr = reinterpret_cast<SpriteBase*>(get_sprite(sprite_idx));
-    if (spr == nullptr)
-        return nullptr;
-    return spr->As<T>();
+    return spr != nullptr ? spr->As<T>() : nullptr;
 }
 
 template<typename T = SpriteBase> T* TryGetEntity(size_t sprite_idx)
 {
     auto spr = reinterpret_cast<SpriteBase*>(try_get_sprite(sprite_idx));
-    if (spr == nullptr)
-        return nullptr;
-    return spr->As<T>();
+    return spr != nullptr ? spr->As<T>() : nullptr;
 }
 
 uint16_t GetEntityListCount(EntityListId list);
