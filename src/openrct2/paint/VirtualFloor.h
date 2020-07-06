@@ -10,7 +10,8 @@
 #pragma once
 
 #include "../common.h"
-#include "../world/Location.hpp"
+
+struct CoordsXY;
 
 enum VirtualFloorStyles
 {

@@ -11,7 +11,6 @@
 
 #include <memory>
 #include <openrct2/common.h>
-#include <openrct2/world/Location.hpp>
 
 #define SHIFT 0x100
 #define CTRL 0x200
@@ -22,6 +21,8 @@
 #else
 #    define PLATFORM_MODIFIER CTRL
 #endif
+
+struct ScreenCoordsXY;
 
 enum KeyboardShortcut
 {

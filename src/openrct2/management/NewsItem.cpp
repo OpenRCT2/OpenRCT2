@@ -21,6 +21,7 @@
 #include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../world/Location.hpp"
 #include "../world/Sprite.h"
 
 NewsItemQueues gNewsItems;

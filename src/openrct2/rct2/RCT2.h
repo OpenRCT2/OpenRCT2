@@ -14,7 +14,6 @@
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
 #include "../ride/Vehicle.h"
-#include "../world/Location.hpp"
 
 constexpr const uint8_t RCT2_MAX_STAFF = 200;
 constexpr const uint8_t RCT2_MAX_BANNERS_IN_PARK = 250;

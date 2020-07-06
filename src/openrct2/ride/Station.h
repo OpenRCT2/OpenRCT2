@@ -10,9 +10,9 @@
 #pragma once
 
 #include "../common.h"
-#include "../world/Location.hpp"
 
 struct Ride;
+struct TileCoordsXYZD;
 
 using StationIndex = uint8_t;
 
