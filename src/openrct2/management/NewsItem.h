@@ -11,6 +11,7 @@
 
 #include "../common.h"
 
+#include <algorithm>
 #include <array>
 #include <iterator>
 #include <optional>
