@@ -13,7 +13,6 @@
 
 #include "../common.h"
 #include "../object/Object.h"
-#include "../world/Location.hpp"
 
 #include <string>
 #include <string_view>
