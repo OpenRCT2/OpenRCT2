@@ -12,12 +12,12 @@
 #include "../Context.h"
 #include "../common.h"
 #include "../interface/Cursors.h"
-#include "../world/Location.hpp"
 
 #include <memory>
 #include <string>
 #include <vector>
 
+struct ScreenCoordsXY;
 struct rct_drawpixelinfo;
 interface ITitleSequencePlayer;
 

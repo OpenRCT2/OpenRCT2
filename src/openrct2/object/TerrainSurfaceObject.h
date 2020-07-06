@@ -9,8 +9,9 @@
 
 #pragma once
 
-#include "../world/Location.hpp"
 #include "Object.h"
+
+struct CoordsXY;
 
 enum TERRAIN_SURFACE_FLAGS
 {

@@ -14,9 +14,9 @@
 #include "../ride/Station.h"
 #include "Banner.h"
 #include "Footpath.h"
-#include "Location.hpp"
 
 struct Banner;
+struct CoordsXY;
 struct rct_scenery_entry;
 struct rct_footpath_entry;
 using track_type_t = uint16_t;

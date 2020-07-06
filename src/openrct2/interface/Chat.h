@@ -11,7 +11,6 @@
 #define _CHAT_H_
 
 #include "../common.h"
-#include "../world/Location.hpp"
 
 #define CHAT_HISTORY_SIZE 10
 #define CHAT_INPUT_SIZE 1024
@@ -19,6 +18,7 @@
 #define CHAT_MAX_WINDOW_WIDTH 600
 
 struct rct_drawpixelinfo;
+struct ScreenCoordsXY;
 
 enum CHAT_INPUT
 {

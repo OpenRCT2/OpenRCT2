@@ -11,6 +11,7 @@
 
 #include "../Game.h"
 #include "../scenario/Scenario.h"
+#include "../world/Location.hpp"
 #include "../world/Sprite.h"
 #include "Track.h"
 

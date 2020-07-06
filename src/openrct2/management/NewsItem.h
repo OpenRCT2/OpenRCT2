@@ -10,11 +10,12 @@
 #pragma once
 
 #include "../common.h"
-#include "../world/Location.hpp"
 
 #include <array>
 #include <iterator>
 #include <optional>
+
+struct CoordsXYZ;
 
 enum
 {

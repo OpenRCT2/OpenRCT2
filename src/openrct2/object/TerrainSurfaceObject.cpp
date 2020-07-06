@@ -15,6 +15,7 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
+#include "../world/Location.hpp"
 #include "ObjectJsonHelpers.h"
 
 void TerrainSurfaceObject::Load()
