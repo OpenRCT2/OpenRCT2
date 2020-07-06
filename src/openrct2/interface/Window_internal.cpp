@@ -10,7 +10,7 @@ void rct_window::SetLocation(int32_t newX, int32_t newY, int32_t newZ)
 
 void rct_window::ScrollToViewport()
 {
-    int32_t newX, newY, newZ;
+    int32_t newX = LOCATION_NULL, newY = LOCATION_NULL, newZ = LOCATION_NULL;
     rct_window* mainWindow;
 
     // In original checked to make sure x and y were not -1 as well.
@@ -20,6 +20,10 @@ void rct_window::ScrollToViewport()
     if (viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_SPRITE)
     {
         auto* sprite = GetEntity(viewport_focus_sprite.sprite_id);
+        if (sprite == nullptr)
+        {
+            return;
+        }
         newX = sprite->x;
         newY = sprite->y;
         newZ = sprite->z;

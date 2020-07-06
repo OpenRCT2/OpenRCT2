@@ -122,11 +122,6 @@ rct_sprite* get_sprite(size_t sprite_idx)
     return &_spriteList[sprite_idx];
 }
 
-SpriteBase* GetEntity(size_t sprite_idx)
-{
-    return GetEntity<SpriteBase>(sprite_idx);
-}
-
 uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)
 {
     return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
@@ -195,6 +190,11 @@ void reset_sprite_list()
     for (int32_t i = 0; i < MAX_SPRITES; ++i)
     {
         auto* spr = GetEntity(i);
+        if (spr == nullptr)
+        {
+            continue;
+        }
+
         spr->sprite_identifier = SPRITE_IDENTIFIER_NULL;
         spr->sprite_index = i;
         spr->next = SPRITE_INDEX_NULL;
@@ -231,7 +231,7 @@ void reset_sprite_spatial_index()
     for (size_t i = 0; i < MAX_SPRITES; i++)
     {
         auto* spr = GetEntity(i);
-        if (spr->sprite_identifier != SPRITE_IDENTIFIER_NULL)
+        if (spr != nullptr && spr->sprite_identifier != SPRITE_IDENTIFIER_NULL)
         {
             size_t index = GetSpatialIndexOffset(spr->x, spr->y);
             uint32_t nextSpriteId = gSpriteSpatialIndex[index];
@@ -404,7 +404,10 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linke
     }
 
     auto* sprite = GetEntity(gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)]);
-
+    if (sprite == nullptr)
+    {
+        return nullptr;
+    }
     move_sprite_to_list(sprite, linkedListIndex);
 
     // Need to reset all sprite data, as the uninitialised values
@@ -473,13 +476,29 @@ static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex)
     else
     {
         // Hook up sprite->previous->next to sprite->next, removing the sprite from its old list
-        GetEntity(sprite->previous)->next = sprite->next;
+        auto previous = GetEntity(sprite->previous);
+        if (previous == nullptr)
+        {
+            log_error("Broken previous entity id. Entity list corrupted!");
+        }
+        else
+        {
+            previous->next = sprite->next;
+        }
     }
 
     // Similarly, hook up sprite->next->previous to sprite->previous
     if (sprite->next != SPRITE_INDEX_NULL)
     {
-        GetEntity(sprite->next)->previous = sprite->previous;
+        auto next = GetEntity(sprite->next);
+        if (next == nullptr)
+        {
+            log_error("Broken next entity id. Entity list corrupted!");
+        }
+        else
+        {
+            next->previous = sprite->previous;
+        }
     }
 
     sprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
@@ -493,7 +512,15 @@ static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex)
     if (sprite->next != SPRITE_INDEX_NULL)
     {
         // Fix the chain by settings sprite->next->previous to sprite_index
-        GetEntity(sprite->next)->previous = sprite->sprite_index;
+        auto next = GetEntity(sprite->next);
+        if (next == nullptr)
+        {
+            log_error("Broken next entity id. Entity list corrupted!");
+        }
+        else
+        {
+            next->previous = sprite->sprite_index;
+        }
     }
 
     // These globals are probably counters for each sprite list?
@@ -936,7 +963,7 @@ void sprite_position_tween_all(float alpha)
     for (uint16_t i = 0; i < MAX_SPRITES; i++)
     {
         auto* sprite = GetEntity(i);
-        if (sprite_should_tween(sprite))
+        if (sprite != nullptr && sprite_should_tween(sprite))
         {
             auto posA = _spritelocations1[i];
             auto posB = _spritelocations2[i];
@@ -962,7 +989,7 @@ void sprite_position_tween_restore()
     for (uint16_t i = 0; i < MAX_SPRITES; i++)
     {
         auto* sprite = GetEntity(i);
-        if (sprite_should_tween(sprite))
+        if (sprite != nullptr && sprite_should_tween(sprite))
         {
             sprite->Invalidate2();
 
@@ -977,6 +1004,11 @@ void sprite_position_tween_reset()
     for (uint16_t i = 0; i < MAX_SPRITES; i++)
     {
         auto* sprite = GetEntity(i);
+        if (sprite == nullptr)
+        {
+            continue;
+        }
+
         _spritelocations1[i].x = _spritelocations2[i].x = sprite->x;
         _spritelocations1[i].y = _spritelocations2[i].y = sprite->y;
         _spritelocations1[i].z = _spritelocations2[i].z = sprite->z;
@@ -1054,7 +1086,13 @@ int32_t check_for_sprite_list_cycles(bool fix)
             {
                 // Fix head list, but only in reverse order
                 // This is likely not needed, but just in case
-                GetEntity(gSpriteListHead[i])->previous = SPRITE_INDEX_NULL;
+                auto head = GetEntity(gSpriteListHead[i]);
+                if (head == nullptr)
+                {
+                    log_error("SpriteListHead is corrupted!");
+                    return -1;
+                }
+                head->previous = SPRITE_INDEX_NULL;
 
                 // Store the leftover part of cycle to be fixed
                 uint16_t cycle_next = cycle_start->next;
@@ -1067,7 +1105,11 @@ int32_t check_for_sprite_list_cycles(bool fix)
                 while (!index_is_in_list(cycle_next, static_cast<EntityListId>(i)))
                 {
                     auto* spr = GetEntity(cycle_next);
-
+                    if (spr == nullptr)
+                    {
+                        log_error("EntityList is corrupted!");
+                        return -1;
+                    }
                     cycle_start->next = cycle_next;
                     spr->previous = cycle_start->sprite_index;
                     cycle_next = spr->next;
@@ -1097,6 +1139,12 @@ int32_t fix_disjoint_sprites()
         reachable[sprite_idx] = true;
         // cache the tail, so we don't have to walk the list twice
         null_list_tail = GetEntity(sprite_idx);
+        if (null_list_tail == nullptr)
+        {
+            log_error("Broken Entity list");
+            sprite_idx = SPRITE_INDEX_NULL;
+            return 0;
+        }
         sprite_idx = null_list_tail->next;
     }
 
@@ -1106,16 +1154,24 @@ int32_t fix_disjoint_sprites()
     for (uint16_t sprite_idx = 0; sprite_idx < MAX_SPRITES; sprite_idx++)
     {
         auto* spr = GetEntity(sprite_idx);
-        if (spr->sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        if (spr != nullptr && spr->sprite_identifier == SPRITE_IDENTIFIER_NULL)
         {
             openrct2_assert(null_list_tail != nullptr, "Null list is empty, yet found null sprites");
             spr->sprite_index = sprite_idx;
             if (!reachable[sprite_idx])
             {
                 // Add the sprite directly to the list
-                null_list_tail->next = sprite_idx;
+                if (null_list_tail == nullptr)
+                {
+                    gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)] = sprite_idx;
+                    spr->previous = SPRITE_INDEX_NULL;
+                }
+                else
+                {
+                    null_list_tail->next = sprite_idx;
+                    spr->previous = null_list_tail->sprite_index;
+                }
                 spr->next = SPRITE_INDEX_NULL;
-                spr->previous = null_list_tail->sprite_index;
                 null_list_tail = spr;
                 count++;
                 reachable[sprite_idx] = true;

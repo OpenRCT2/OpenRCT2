@@ -162,11 +162,6 @@ rct_sprite* get_sprite(size_t sprite_idx)
     return &sprite_list[sprite_idx];
 }
 
-SpriteBase* GetEntity(size_t sprite_idx)
-{
-    return GetEntity<SpriteBase>(sprite_idx);
-}
-
 bool TileElementBase::IsLastForTile() const
 {
     return (this->Flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
