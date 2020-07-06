@@ -55,8 +55,12 @@ static void graph_draw_line_a_uint8_t(
 
             if (lastX != -1)
             {
-                gfx_draw_line(dpi, lastX + 1, lastY + 1, x + 1, y + 1, PALETTE_INDEX_10);
-                gfx_draw_line(dpi, lastX, lastY + 1, x, y + 1, PALETTE_INDEX_10);
+                auto leftTop1 = ScreenCoordsXY{ lastX + 1, lastY + 1 };
+                auto rightBottom1 = ScreenCoordsXY{ x + 1, y + 1 };
+                auto leftTop2 = ScreenCoordsXY{ lastX, lastY + 1 };
+                auto rightBottom2 = ScreenCoordsXY{ x, y + 1 };
+                gfx_draw_line(dpi, {leftTop1, rightBottom1}, PALETTE_INDEX_10);
+                gfx_draw_line(dpi, {leftTop2, rightBottom2}, PALETTE_INDEX_10);
             }
             if (i == 0)
                 gfx_fill_rect(dpi, { { x, y }, { x + 2, y + 2 } }, PALETTE_INDEX_10);
@@ -83,7 +87,11 @@ static void graph_draw_line_b_uint8_t(
             y = baseY + ((255 - history[i]) * 100) / 256;
 
             if (lastX != -1)
-                gfx_draw_line(dpi, lastX, lastY, x, y, PALETTE_INDEX_21);
+            {
+                auto leftTop = ScreenCoordsXY{ lastX, lastY };
+                auto rightBottom = ScreenCoordsXY{ x, y };
+                gfx_draw_line(dpi, {leftTop, rightBottom}, PALETTE_INDEX_21);
+            }
             if (i == 0)
                 gfx_fill_rect(dpi, { { x - 1, y - 1 }, { x + 1, y + 1 } }, PALETTE_INDEX_21);
 
@@ -143,8 +151,12 @@ static void graph_draw_line_a_money32(
 
             if (lastX != -1)
             {
-                gfx_draw_line(dpi, lastX + 1, lastY + 1, x + 1, y + 1, PALETTE_INDEX_10);
-                gfx_draw_line(dpi, lastX, lastY + 1, x, y + 1, PALETTE_INDEX_10);
+                auto leftTop1 = ScreenCoordsXY{ lastX + 1, lastY + 1 };
+                auto rightBottom1 = ScreenCoordsXY{ x + 1, y + 1 };
+                auto leftTop2 = ScreenCoordsXY{ lastX, lastY + 1 };
+                auto rightBottom2 = ScreenCoordsXY{ x, y + 1 };
+                gfx_draw_line(dpi, {leftTop1, rightBottom1}, PALETTE_INDEX_10);
+                gfx_draw_line(dpi, {leftTop2, rightBottom2}, PALETTE_INDEX_10);
             }
             if (i == 0)
                 gfx_fill_rect(dpi, { { x, y }, { x + 2, y + 2 } }, PALETTE_INDEX_10);
@@ -172,7 +184,11 @@ static void graph_draw_line_b_money32(
             y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
             if (lastX != -1)
-                gfx_draw_line(dpi, lastX, lastY, x, y, PALETTE_INDEX_21);
+            {
+                auto leftTop = ScreenCoordsXY{ lastX, lastY };
+                auto rightBottom = ScreenCoordsXY{ x, y };
+                gfx_draw_line(dpi, {leftTop, rightBottom}, PALETTE_INDEX_21);
+            }
             if (i == 0)
                 gfx_fill_rect(dpi, { { x - 1, y - 1 }, { x + 1, y + 1 } }, PALETTE_INDEX_21);
 
