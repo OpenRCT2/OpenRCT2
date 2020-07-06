@@ -629,19 +629,57 @@ bool Staff::DoHandymanPathFinding()
         else
         {
             auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ NextLoc });
+            uint8_t pathDirections = (pathElement->GetEdges() & validDirections) & 0xF;
+                
+            // Directions that do not lead to queue entrances
+            uint8_t noQueueDirections = 0;
+            for (uint8_t dir = 0; dir < 4; dir++)
+            {
+                uint8_t proposedDirection = (1 << dir);
+                // Check if proposed direction is a valid path
+                if ((pathDirections & proposedDirection) != 0)
+                {
+                    // Calculate coordinates for next path element in proposed direction
+                    CoordsXY pathXY = CoordsXY{ NextLoc } + CoordsDirectionDelta[dir];
+                    int16_t nextZ = ((this->z) & 0xFFF0) / COORDS_Z_STEP;
+                    TileCoordsXYZ pathCoords = TileCoordsXYZ{ pathXY, nextZ };
 
+                    auto* nextPathElement = map_get_path_element_at(pathCoords);
+                    if (nextPathElement == nullptr)
+                        continue;
+
+                    // Check if path is a queue
+                    if (!nextPathElement->IsQueue())
+                    {
+                        // If not a queue then it is always valid
+                        noQueueDirections |= proposedDirection;
+                    }
+                    // Check if queue path has a banner
+                    else if (!nextPathElement->HasQueueBanner())
+                    {
+                        // If there is not a banner in the queue path it is still valid
+                        noQueueDirections |= proposedDirection;
+                    }
+                    // Check if banner is not facing handyman 
+                    else if ((nextPathElement->GetQueueBannerDirection() != direction_reverse(dir)))
+                    {
+                        // Banner is not facing handyman so it is still a valid direction
+                        // such that they can still exit a queue line shoud they end up inside one
+                        noQueueDirections |= proposedDirection;
+                    }
+                }
+            }
+            
             if (pathElement == nullptr)
                 return true;
-
-            uint8_t pathDirections = (pathElement->GetEdges() & validDirections) & 0xF;
-            if (pathDirections == 0)
+            if (noQueueDirections == 0)
             {
                 newDirection = HandymanDirectionRandSurface(validDirections);
             }
             else
             {
                 bool chooseRandom = true;
-                if (litterDirection != INVALID_DIRECTION && pathDirections & (1 << litterDirection))
+                if (litterDirection != INVALID_DIRECTION && noQueueDirections & (1 << litterDirection))
                 {
                     if ((scenario_rand() & 0xFFFF) >= 0x1999)
                     {
@@ -651,10 +689,10 @@ bool Staff::DoHandymanPathFinding()
                 }
                 else
                 {
-                    pathDirections &= ~(1 << direction_reverse(PeepDirection));
-                    if (pathDirections == 0)
+                    noQueueDirections &= ~(1 << direction_reverse(PeepDirection));
+                    if (noQueueDirections == 0)
                     {
-                        pathDirections |= 1 << direction_reverse(PeepDirection);
+                        noQueueDirections |= 1 << direction_reverse(PeepDirection);
                     }
                 }
 
@@ -663,7 +701,7 @@ bool Staff::DoHandymanPathFinding()
                     do
                     {
                         newDirection = scenario_rand() & 3;
-                    } while ((pathDirections & (1 << newDirection)) == 0);
+                    } while ((noQueueDirections & (1 << newDirection)) == 0);
                 }
             }
         }
