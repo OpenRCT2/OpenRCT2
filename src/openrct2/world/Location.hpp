@@ -614,24 +614,24 @@ struct TileCoordsXYZD : public TileCoordsXYZ
  */
 template<class T> struct CoordsRange
 {
-    T PointOne{ 0, 0 };
-    T PointTwo{ 0, 0 };
+    T Point1{ 0, 0 };
+    T Point2{ 0, 0 };
 
-    int32_t GetXOne() const
+    int32_t GetX1() const
     {
-        return PointOne.x;
+        return Point1.x;
     }
-    int32_t GetYOne() const
+    int32_t GetY1() const
     {
-        return PointOne.y;
+        return Point1.y;
     }
-    int32_t GetXTwo() const
+    int32_t GetX2() const
     {
-        return PointTwo.x;
+        return Point2.x;
     }
-    int32_t GetYTwo() const
+    int32_t GetY2() const
     {
-        return PointTwo.y;
+        return Point2.y;
     }
 
     CoordsRange() = default;
@@ -641,8 +641,8 @@ template<class T> struct CoordsRange
     }
 
     CoordsRange(const T& pointOne, const T& pointTwo)
-        : PointOne(pointOne)
-        , PointTwo(pointTwo)
+        : Point1(pointOne)
+        , Point2(pointTwo)
     {
     }
 };
@@ -653,19 +653,19 @@ template<class T> struct RectRange : public CoordsRange<T>
 
     int32_t GetLeft() const
     {
-        return CoordsRange<T>::GetXOne();
+        return CoordsRange<T>::GetX1();
     }
     int32_t GetTop() const
     {
-        return CoordsRange<T>::GetYOne();
+        return CoordsRange<T>::GetY1();
     }
     int32_t GetRight() const
     {
-        return CoordsRange<T>::GetXTwo();
+        return CoordsRange<T>::GetX2();
     }
     int32_t GetBottom() const
     {
-        return CoordsRange<T>::GetYTwo();
+        return CoordsRange<T>::GetY2();
     }
 
     RectRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
@@ -706,7 +706,7 @@ struct ScreenLine : public CoordsRange<ScreenCoordsXY>
         : CoordsRange<ScreenCoordsXY>(leftTop, rightBottom)
     {
         // Make sure one of the point coords change
-        assert((std::abs(GetXOne() - GetXTwo()) > 0) || (std::abs(GetYOne() - GetYTwo()) > 0));
+        assert((std::abs(GetX1() - GetX2()) > 0) || (std::abs(GetY1() - GetY2()) > 0));
     }
 };
 
