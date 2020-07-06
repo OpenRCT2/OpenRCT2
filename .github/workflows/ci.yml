@@ -34,7 +34,6 @@ jobs:
     name: Windows
     runs-on: windows-latest
     needs: [check-code-formatting]
-    if: needs.check-code-formatting.result == 'success'
     strategy:
       fail-fast: false
       matrix:
@@ -79,7 +78,6 @@ jobs:
     name: Windows (win32) using mingw
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
-    if: needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-mingw
     steps:
@@ -95,7 +93,6 @@ jobs:
     name: macOS
     runs-on: macos-latest
     needs: [check-code-formatting]
-    if: needs.check-code-formatting.result == 'success'
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -125,7 +122,6 @@ jobs:
     name: Linux (x64, portable)
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
-    if: needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-bionic
     steps:
@@ -161,7 +157,6 @@ jobs:
     name: Linux (i686, portable)
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
-    if: needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-bionic32
     steps:
@@ -202,7 +197,6 @@ jobs:
     name: Linux (x64, AppImage)
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
-    if: needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-bionic
     steps:
@@ -225,7 +219,7 @@ jobs:
   linux-docker:
     name: Linux (docker)
     needs: [check-code-formatting]
-    if: github.repository == 'OpenRCT2/OpenRCT2' && needs.check-code-formatting.result == 'success'
+    if: github.repository == 'OpenRCT2/OpenRCT2'
     runs-on: ubuntu-latest
     steps:
       - name: Build image
@@ -249,7 +243,6 @@ jobs:
     name: Linux (Debug, [http, network, OpenGL] disabled) using clang
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
-    if: needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-bionic
     steps:
@@ -262,7 +255,6 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
-    if: needs.check-code-formatting.result == 'success'
     container:
       image: openrct2/openrct2-build:0.2.4-android
     steps:
