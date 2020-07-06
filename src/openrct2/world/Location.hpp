@@ -614,35 +614,35 @@ struct TileCoordsXYZD : public TileCoordsXYZ
  */
 template<class T> struct CoordsRange
 {
-    T LeftTop{ 0, 0 };
-    T RightBottom{ 0, 0 };
+    T Point1{ 0, 0 };
+    T Point2{ 0, 0 };
 
-    int32_t GetLeft() const
+    int32_t GetX1() const
     {
-        return LeftTop.x;
+        return Point1.x;
     }
-    int32_t GetTop() const
+    int32_t GetY1() const
     {
-        return LeftTop.y;
+        return Point1.y;
     }
-    int32_t GetRight() const
+    int32_t GetX2() const
     {
-        return RightBottom.x;
+        return Point2.x;
     }
-    int32_t GetBottom() const
+    int32_t GetY2() const
     {
-        return RightBottom.y;
+        return Point2.y;
     }
 
     CoordsRange() = default;
-    CoordsRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
-        : CoordsRange({ left, top }, { right, bottom })
+    CoordsRange(int32_t x1, int32_t y1, int32_t x2, int32_t y2)
+        : CoordsRange({ x1, y1 }, { x2, y2 })
     {
     }
 
-    CoordsRange(const T& leftTop, const T& rightBottom)
-        : LeftTop(leftTop)
-        , RightBottom(rightBottom)
+    CoordsRange(const T& pointOne, const T& pointTwo)
+        : Point1(pointOne)
+        , Point2(pointTwo)
     {
     }
 };
@@ -650,6 +650,23 @@ template<class T> struct CoordsRange
 template<class T> struct RectRange : public CoordsRange<T>
 {
     using CoordsRange<T>::CoordsRange;
+
+    int32_t GetLeft() const
+    {
+        return CoordsRange<T>::GetX1();
+    }
+    int32_t GetTop() const
+    {
+        return CoordsRange<T>::GetY1();
+    }
+    int32_t GetRight() const
+    {
+        return CoordsRange<T>::GetX2();
+    }
+    int32_t GetBottom() const
+    {
+        return CoordsRange<T>::GetY2();
+    }
 
     RectRange(int32_t left, int32_t top, int32_t right, int32_t bottom)
         : RectRange({ left, top }, { right, bottom })
@@ -689,7 +706,7 @@ struct ScreenLine : public CoordsRange<ScreenCoordsXY>
         : CoordsRange<ScreenCoordsXY>(leftTop, rightBottom)
     {
         // Make sure one of the point coords change
-        assert((std::abs(GetLeft() - GetRight()) > 0) || (std::abs(GetTop() - GetBottom()) > 0));
+        assert((std::abs(GetX1() - GetX2()) > 0) || (std::abs(GetY1() - GetY2()) > 0));
     }
 };
 
@@ -703,11 +720,11 @@ struct ScreenRect : public RectRange<ScreenCoordsXY>
 
     int32_t GetWidth() const
     {
-        return RightBottom.x - LeftTop.x;
+        return GetRight() - GetLeft();
     }
     int32_t GetHeight() const
     {
-        return RightBottom.y - LeftTop.y;
+        return GetBottom() - GetTop();
     }
     bool Contains(const ScreenCoordsXY& coords) const
     {
