@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../world/Location.hpp"
 #include "../world/Scenery.h"
 #include "SceneryObject.h"
 
