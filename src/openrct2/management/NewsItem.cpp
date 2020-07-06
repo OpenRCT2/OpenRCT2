@@ -263,7 +263,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             {
                 sprite = TryGetEntity<Vehicle>(sprite->next_vehicle_on_train);
             }
-            if (sprite)
+            if (sprite != nullptr)
             {
                 subjectLoc = CoordsXYZ{ sprite->x, sprite->y, sprite->z };
             }
@@ -272,7 +272,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
         case NEWS_ITEM_PEEP:
         {
             auto peep = TryGetEntity<Peep>(subject);
-            if (peep)
+            if (peep != nullptr)
             {
                 subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
             }
@@ -360,11 +360,11 @@ void news_item_open_subject(int32_t type, int32_t subject)
         case NEWS_ITEM_PEEP:
         {
             auto peep = TryGetEntity<Peep>(subject);
-            if (peep)
+            if (peep != nullptr)
             {
                 auto intent = Intent(WC_PEEP);
                 intent.putExtra(INTENT_EXTRA_PEEP, peep);
-                context_open_intent(&intent);  
+                context_open_intent(&intent);
             }
             break;
         }
