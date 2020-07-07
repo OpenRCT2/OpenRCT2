@@ -643,9 +643,9 @@ bool Staff::DoHandymanPathFinding()
                 bool chooseRandom = true;
                 if (litterDirection != INVALID_DIRECTION && pathDirections & (1 << litterDirection))
                 {
-                    /// When in a queue path make the probability of following litter much lower
+                    /// When in a queue path make the probability of following litter much lower (10% instead of 90%)
                     /// as handymen often get stuck when there is litter on a normal path next to a queue they are in
-                    uint32_t chooseRandomProbability = pathElement->IsQueue() ? (0xFFFF - 0x1999) : 0x1999;
+                    uint32_t chooseRandomProbability = pathElement->IsQueue() ? 0xE666 : 0x1999;
                     if ((scenario_rand() & 0xFFFF) >= chooseRandomProbability)
                     {
                         chooseRandom = false;
