@@ -234,11 +234,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
         }
         case NEWS_ITEM_PEEP_ON_RIDE:
         {
-            auto sprite = try_get_sprite(subject);
-            if (sprite == nullptr)
-                break;
-
-            auto peep = sprite->generic.As<Peep>();
+            auto peep = TryGetEntity<Peep>(subject);
             if (peep == nullptr)
                 break;
 
@@ -261,28 +257,24 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             }
 
             // Find the first car of the train peep is on
-            sprite = try_get_sprite(ride->vehicles[peep->CurrentTrain]);
+            auto sprite = TryGetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
             // Find the actual car peep is on
             for (int32_t i = 0; i < peep->CurrentCar && sprite != nullptr; i++)
             {
-                sprite = try_get_sprite(sprite->vehicle.next_vehicle_on_train);
+                sprite = TryGetEntity<Vehicle>(sprite->next_vehicle_on_train);
             }
             if (sprite != nullptr)
             {
-                subjectLoc = CoordsXYZ{ sprite->vehicle.x, sprite->vehicle.y, sprite->vehicle.z };
+                subjectLoc = CoordsXYZ{ sprite->x, sprite->y, sprite->z };
             }
             break;
         }
         case NEWS_ITEM_PEEP:
         {
-            auto sprite = try_get_sprite(subject);
-            if (sprite != nullptr)
+            auto peep = TryGetEntity<Peep>(subject);
+            if (peep != nullptr)
             {
-                auto peep = sprite->generic.As<Peep>();
-                if (peep != nullptr)
-                {
-                    subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
-                }
+                subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
             }
             break;
         }
@@ -367,16 +359,12 @@ void news_item_open_subject(int32_t type, int32_t subject)
         case NEWS_ITEM_PEEP_ON_RIDE:
         case NEWS_ITEM_PEEP:
         {
-            auto sprite = try_get_sprite(subject);
-            if (sprite != nullptr)
+            auto peep = TryGetEntity<Peep>(subject);
+            if (peep != nullptr)
             {
-                auto peep = sprite->generic.As<Peep>();
-                if (peep != nullptr)
-                {
-                    auto intent = Intent(WC_PEEP);
-                    intent.putExtra(INTENT_EXTRA_PEEP, peep);
-                    context_open_intent(&intent);
-                }
+                auto intent = Intent(WC_PEEP);
+                intent.putExtra(INTENT_EXTRA_PEEP, peep);
+                context_open_intent(&intent);
             }
             break;
         }

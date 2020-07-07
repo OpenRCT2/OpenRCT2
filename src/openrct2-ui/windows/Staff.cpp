@@ -1215,15 +1215,10 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         if (destCoords.isNull())
             return;
 
-        rct_sprite* sprite = try_get_sprite(w->number);
-        if (sprite == nullptr || !sprite->generic.Is<Peep>())
+        auto staff = TryGetEntity<Staff>(w->number);
+        if (staff == nullptr)
             return;
 
-        Peep& peep = sprite->peep;
-        if (peep.AssignedPeepType != PEEP_TYPE_STAFF)
-            return;
-
-        auto staff = peep.AsStaff();
         if (staff->IsPatrolAreaSet(destCoords))
         {
             _staffPatrolAreaPaintValue = PatrolAreaValue::UNSET;
@@ -1256,15 +1251,11 @@ void window_staff_overview_tool_drag(rct_window* w, rct_widgetindex widgetIndex,
     if (destCoords.isNull())
         return;
 
-    rct_sprite* sprite = try_get_sprite(w->number);
-    if (sprite == nullptr || !sprite->generic.Is<Peep>())
+    auto staff = TryGetEntity<Staff>(w->number);
+    if (staff == nullptr)
         return;
 
-    Peep& peep = sprite->peep;
-    if (peep.AssignedPeepType != PEEP_TYPE_STAFF)
-        return;
-
-    bool patrolAreaValue = peep.AsStaff()->IsPatrolAreaSet(destCoords);
+    bool patrolAreaValue = staff->IsPatrolAreaSet(destCoords);
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::SET && patrolAreaValue)
         return; // Since area is already the value we want, skip...
     if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && !patrolAreaValue)

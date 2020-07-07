@@ -375,14 +375,7 @@ void Peep::SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface)
 
 Peep* try_get_guest(uint16_t spriteIndex)
 {
-    rct_sprite* sprite = try_get_sprite(spriteIndex);
-    if (sprite == nullptr)
-        return nullptr;
-    if (!sprite->generic.Is<Peep>())
-        return nullptr;
-    if (sprite->peep.AssignedPeepType != PEEP_TYPE_GUEST)
-        return nullptr;
-    return &sprite->peep;
+    return TryGetEntity<Guest>(spriteIndex);
 }
 
 int32_t peep_get_staff_count()

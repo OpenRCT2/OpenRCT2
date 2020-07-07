@@ -809,12 +809,7 @@ uint16_t Vehicle::GetTrackProgress() const
 
 Vehicle* try_get_vehicle(uint16_t spriteIndex)
 {
-    rct_sprite* sprite = try_get_sprite(spriteIndex);
-    if (sprite == nullptr)
-        return nullptr;
-    if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
-        return nullptr;
-    return &sprite->vehicle;
+    return TryGetEntity<Vehicle>(spriteIndex);
 }
 
 void Vehicle::Invalidate()
