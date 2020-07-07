@@ -650,7 +650,7 @@ static void window_title_command_editor_tool_down(
         else if (spriteIdentifier == SPRITE_IDENTIFIER_LITTER)
         {
             Litter* litter = GetEntity<Litter>(spriteIndex);
-            if (litter->type < std::size(litterNames))
+            if (litter != nullptr && litter->type < std::size(litterNames))
             {
                 validSprite = true;
                 format_string(command.SpriteName, USER_STRING_MAX_LENGTH, litterNames[litter->type], nullptr);
