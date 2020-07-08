@@ -5,7 +5,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Ted John (IntelOrca) - Owner
 * Duncan Frost (duncanspumpkin)
 * Michael Steenbeek (Gymnasiast) - translation management
-* Michał Janiszewski (janisozaur) - CI, Linux management
+* Michał Janiszewski (janisozaur)
 * Hielke Morsink (Broxzier)
 * Aaron van Geffen (AaronVanGeffen)
 * Matthias Moninger (ZehMatt)
