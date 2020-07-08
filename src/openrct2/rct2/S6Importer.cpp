@@ -796,9 +796,7 @@ public:
         const auto& src = _s6.ride_ratings_calc_data;
         auto& dst = gRideRatingsCalcData;
         dst = {};
-        dst.proximity_x = src.proximity_x;
-        dst.proximity_y = src.proximity_y;
-        dst.proximity_z = src.proximity_z;
+        dst.proximity = { src.proximity_x, src.proximity_y, src.proximity_z };
         dst.proximity_start_x = src.proximity_start_x;
         dst.proximity_start_y = src.proximity_start_y;
         dst.proximity_start_z = src.proximity_start_z;
