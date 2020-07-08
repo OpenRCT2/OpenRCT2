@@ -337,7 +337,7 @@ rct_window* window_staff_open(Peep* peep)
     window_init_scroll_widgets(w);
     window_staff_viewport_init(w);
 
-    if (GetEntity<Peep>(w->number)->State == PEEP_STATE_PICKED)
+    if (peep->State == PEEP_STATE_PICKED)
         window_event_mouse_up_call(w, WIDX_CHECKBOX_3);
 
     return w;
@@ -352,7 +352,7 @@ void window_staff_disable_widgets(rct_window* w)
     Peep* peep = GetEntity<Peep>(w->number);
     uint64_t disabled_widgets = (1 << WIDX_TAB_4);
 
-    if (peep->StaffType == STAFF_TYPE_SECURITY)
+    if (peep != nullptr && peep->StaffType == STAFF_TYPE_SECURITY)
     {
         disabled_widgets |= (1 << WIDX_TAB_2);
     }

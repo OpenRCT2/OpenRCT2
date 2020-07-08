@@ -2474,9 +2474,10 @@ static void window_ride_main_update(rct_window* w)
                     return;
 
                 Vehicle* vehicle = GetEntity<Vehicle>(vehicleSpriteIndex);
-                if (vehicle->status != VEHICLE_STATUS_TRAVELLING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT
-                    && vehicle->status != VEHICLE_STATUS_TRAVELLING_DODGEMS
-                    && vehicle->status != VEHICLE_STATUS_TRAVELLING_BOAT)
+                if (vehicle == nullptr
+                    || (vehicle->status != VEHICLE_STATUS_TRAVELLING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT
+                        && vehicle->status != VEHICLE_STATUS_TRAVELLING_DODGEMS
+                        && vehicle->status != VEHICLE_STATUS_TRAVELLING_BOAT))
                 {
                     return;
                 }
@@ -2683,14 +2684,17 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
 {
     auto ride = get_ride(w->number);
     if (ride == nullptr)
-        return 0;
+        return STR_EMPTY;
 
     auto vehicleIndex = w->ride.view - 1;
     auto vehicleSpriteIndex = ride->vehicles[vehicleIndex];
     if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
-        return 0;
+        return STR_EMPTY;
 
     auto vehicle = GetEntity<Vehicle>(vehicleSpriteIndex);
+    if (vehicle == nullptr)
+        return STR_EMPTY;
+
     if (vehicle->status != VEHICLE_STATUS_CRASHING && vehicle->status != VEHICLE_STATUS_CRASHED)
     {
         int32_t trackType = vehicle->GetTrackType();
@@ -4063,7 +4067,11 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                             uint16_t spriteId = ride->vehicles[i];
                             while (spriteId != SPRITE_INDEX_NULL)
                             {
-                                vehicle = GET_VEHICLE(spriteId);
+                                vehicle = GetEntity<Vehicle>(spriteId);
+                                if (vehicle == nullptr)
+                                {
+                                    break;
+                                }
                                 vehicle->ClearUpdateFlag(
                                     VEHICLE_UPDATE_FLAG_BROKEN_CAR | VEHICLE_UPDATE_FLAG_ZERO_VELOCITY
                                     | VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
@@ -4076,11 +4084,17 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                     case BREAKDOWN_DOORS_STUCK_CLOSED:
                     case BREAKDOWN_DOORS_STUCK_OPEN:
                         vehicle = GetEntity<Vehicle>(ride->vehicles[ride->broken_vehicle]);
-                        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
+                        if (vehicle != nullptr)
+                        {
+                            vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
+                        }
                         break;
                     case BREAKDOWN_VEHICLE_MALFUNCTION:
                         vehicle = GetEntity<Vehicle>(ride->vehicles[ride->broken_vehicle]);
-                        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
+                        if (vehicle != nullptr)
+                        {
+                            vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
+                        }
                         break;
                 }
                 ride->lifecycle_flags &= ~(RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN);
