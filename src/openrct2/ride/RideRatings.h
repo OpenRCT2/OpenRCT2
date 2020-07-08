@@ -41,9 +41,7 @@ enum
 struct RideRatingCalculationData
 {
     CoordsXYZ proximity;
-    uint16_t proximity_start_x;
-    uint16_t proximity_start_y;
-    uint16_t proximity_start_z;
+    CoordsXYZ proximity_start;
     ride_id_t current_ride;
     uint8_t state;
     uint8_t proximity_track_type;

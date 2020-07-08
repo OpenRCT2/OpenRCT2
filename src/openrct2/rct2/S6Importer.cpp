@@ -797,9 +797,7 @@ public:
         auto& dst = gRideRatingsCalcData;
         dst = {};
         dst.proximity = { src.proximity_x, src.proximity_y, src.proximity_z };
-        dst.proximity_start_x = src.proximity_start_x;
-        dst.proximity_start_y = src.proximity_start_y;
-        dst.proximity_start_z = src.proximity_start_z;
+        dst.proximity_start = { src.proximity_start_x, src.proximity_start_y, src.proximity_start_z };
         dst.current_ride = src.current_ride;
         dst.state = src.state;
         dst.proximity_track_type = src.proximity_track_type;

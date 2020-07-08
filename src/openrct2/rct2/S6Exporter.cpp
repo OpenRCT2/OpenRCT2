@@ -775,9 +775,9 @@ void S6Exporter::ExportRideRatingsCalcData()
     dst.proximity_x = src.proximity.x;
     dst.proximity_y = src.proximity.y;
     dst.proximity_z = src.proximity.z;
-    dst.proximity_start_x = src.proximity_start_x;
-    dst.proximity_start_y = src.proximity_start_y;
-    dst.proximity_start_z = src.proximity_start_z;
+    dst.proximity_start_x = src.proximity_start.x;
+    dst.proximity_start_y = src.proximity_start.y;
+    dst.proximity_start_z = src.proximity_start.z;
     dst.current_ride = src.current_ride;
     dst.state = src.state;
     dst.proximity_track_type = src.proximity_track_type;
