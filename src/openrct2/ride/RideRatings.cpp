@@ -251,8 +251,7 @@ static void ride_ratings_update_state_2()
 
             loc = { nextTrackElement, nextTrackElement.element->GetBaseZ() };
             tileElement = nextTrackElement.element;
-            if (loc.x == gRideRatingsCalcData.proximity_start_x && loc.y == gRideRatingsCalcData.proximity_start_y
-                && loc.z == gRideRatingsCalcData.proximity_start_z)
+            if (loc == gRideRatingsCalcData.proximity_start)
             {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
                 return;
@@ -347,8 +346,7 @@ static void ride_ratings_update_state_5()
             loc.x = trackBeginEnd.begin_x;
             loc.y = trackBeginEnd.begin_y;
             loc.z = trackBeginEnd.begin_z;
-            if (loc.x == gRideRatingsCalcData.proximity_start_x && loc.y == gRideRatingsCalcData.proximity_start_y
-                && loc.z == gRideRatingsCalcData.proximity_start_z)
+            if (loc == gRideRatingsCalcData.proximity_start)
             {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
                 return;
@@ -395,9 +393,7 @@ static void ride_ratings_begin_proximity_loop()
 
             gRideRatingsCalcData.proximity = location;
             gRideRatingsCalcData.proximity_track_type = 255;
-            gRideRatingsCalcData.proximity_start_x = location.x;
-            gRideRatingsCalcData.proximity_start_y = location.y;
-            gRideRatingsCalcData.proximity_start_z = location.z;
+            gRideRatingsCalcData.proximity_start = location;
             return;
         }
     }
