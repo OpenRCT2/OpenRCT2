@@ -11,6 +11,7 @@
 
 #include "../common.h"
 
+struct ScreenCoordsXY;
 struct rct_drawpixelinfo;
 
 enum class TextAlignment
@@ -42,7 +43,7 @@ private:
 
 public:
     StaticLayout(utf8string source, TextPaint paint, int32_t width);
-    void Draw(rct_drawpixelinfo* dpi, int32_t x, int32_t y);
+    void Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords);
     int32_t GetHeight();
     int32_t GetWidth();
     int32_t GetLineCount();

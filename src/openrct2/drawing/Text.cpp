@@ -31,7 +31,7 @@ StaticLayout::StaticLayout(utf8string source, TextPaint paint, int32_t width)
     LineHeight = font_get_line_height(fontSpriteBase);
 }
 
-void StaticLayout::Draw(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
+void StaticLayout::Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)
 {
     gCurrentFontFlags = 0;
     gCurrentFontSpriteBase = Paint.SpriteBase;
@@ -39,27 +39,25 @@ void StaticLayout::Draw(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
     TextPaint tempPaint = Paint;
 
     gCurrentFontFlags = 0;
-    int32_t lineY = y;
-    int32_t lineX = x;
+    auto lineCoords = coords;
     switch (Paint.Alignment)
     {
         case TextAlignment::LEFT:
-            lineX = x;
             break;
         case TextAlignment::CENTRE:
-            lineX = x + MaxWidth / 2;
+            lineCoords.x += MaxWidth / 2;
             break;
         case TextAlignment::RIGHT:
-            lineX = x + MaxWidth;
+            lineCoords.x += MaxWidth;
             break;
     }
     utf8* buffer = Buffer;
     for (int32_t line = 0; line < LineCount; ++line)
     {
-        DrawText(dpi, { lineX, lineY }, &tempPaint, buffer);
+        DrawText(dpi, lineCoords, &tempPaint, buffer);
         tempPaint.Colour = TEXT_COLOUR_254;
         buffer = get_string_end(buffer) + 1;
-        lineY += LineHeight;
+        lineCoords.y += LineHeight;
     }
 }
 
@@ -227,7 +225,7 @@ int32_t gfx_draw_string_left_wrapped(
     _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
 
     StaticLayout layout(buffer, _legacyPaint, width);
-    layout.Draw(dpi, coords.x, coords.y);
+    layout.Draw(dpi, coords);
 
     return layout.GetHeight();
 }
@@ -252,7 +250,7 @@ int32_t gfx_draw_string_centred_wrapped(
     int32_t lineHeight = layout.GetHeight() / lineCount;
     int32_t yOffset = (lineCount - 1) * lineHeight / 2;
 
-    layout.Draw(dpi, coords.x - layout.GetWidth() / 2, coords.y - yOffset);
+    layout.Draw(dpi, coords - ScreenCoordsXY{ layout.GetWidth() / 2, yOffset });
 
     return layout.GetHeight();
 }
