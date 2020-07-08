@@ -14,8 +14,9 @@
 
 static TextPaint _legacyPaint;
 
-static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* paint, const_utf8string text);
-static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* paint, rct_string_id format, const void* args);
+static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextPaint* paint, const_utf8string text);
+static void DrawText(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextPaint* paint, rct_string_id format, const void* args);
 
 StaticLayout::StaticLayout(utf8string source, TextPaint paint, int32_t width)
 {
@@ -55,7 +56,7 @@ void StaticLayout::Draw(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
     utf8* buffer = Buffer;
     for (int32_t line = 0; line < LineCount; ++line)
     {
-        DrawText(dpi, lineX, lineY, &tempPaint, buffer);
+        DrawText(dpi, { lineX, lineY }, &tempPaint, buffer);
         tempPaint.Colour = TEXT_COLOUR_254;
         buffer = get_string_end(buffer) + 1;
         lineY += LineHeight;
@@ -77,39 +78,44 @@ int32_t StaticLayout::GetLineCount()
     return LineCount;
 }
 
-static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* paint, const_utf8string text)
+static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextPaint* paint, const_utf8string text)
 {
     int32_t width = gfx_get_string_width(text);
 
+    auto alignedCoords = coords;
     switch (paint->Alignment)
     {
         case TextAlignment::LEFT:
             break;
         case TextAlignment::CENTRE:
-            x -= (width - 1) / 2;
+            alignedCoords.x -= (width - 1) / 2;
             break;
         case TextAlignment::RIGHT:
-            x -= width;
+            alignedCoords.x -= width;
             break;
     }
 
-    ttf_draw_string(dpi, text, paint->Colour, { x, y });
+    ttf_draw_string(dpi, text, paint->Colour, alignedCoords);
 
     if (paint->UnderlineText)
     {
-        gfx_fill_rect(dpi, x, y + 11, x + width, y + 11, text_palette[1]);
+        gfx_fill_rect(
+            dpi, alignedCoords.x, alignedCoords.y + 11, alignedCoords.x + width, alignedCoords.y + 11, text_palette[1]);
         if (text_palette[2] != 0)
         {
-            gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
+            gfx_fill_rect(
+                dpi, alignedCoords.x + 1, alignedCoords.y + 12, alignedCoords.x + width + 1, alignedCoords.y + 12,
+                text_palette[2]);
         }
     }
 }
 
-static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* paint, rct_string_id format, const void* args)
+static void DrawText(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextPaint* paint, rct_string_id format, const void* args)
 {
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
-    DrawText(dpi, x, y, paint, buffer);
+    DrawText(dpi, coords, paint, buffer);
 }
 
 static void DrawTextCompat(
@@ -121,7 +127,7 @@ static void DrawTextCompat(
     _legacyPaint.Alignment = alignment;
     _legacyPaint.SpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    DrawText(dpi, x, y, &_legacyPaint, format, args);
+    DrawText(dpi, { x, y }, &_legacyPaint, format, args);
 }
 
 static void DrawTextEllipsisedCompat(
@@ -138,7 +144,7 @@ static void DrawTextEllipsisedCompat(
     format_string(buffer, sizeof(buffer), format, args);
     gfx_clip_string(buffer, width);
 
-    DrawText(dpi, x, y, &_legacyPaint, buffer);
+    DrawText(dpi, { x, y }, &_legacyPaint, buffer);
 }
 
 void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)
@@ -147,7 +153,7 @@ void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t co
     _legacyPaint.Colour = colour;
     _legacyPaint.Alignment = TextAlignment::LEFT;
     _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
-    DrawText(dpi, coords.x, coords.y, &_legacyPaint, buffer);
+    DrawText(dpi, coords, &_legacyPaint, buffer);
 }
 
 // Basic
