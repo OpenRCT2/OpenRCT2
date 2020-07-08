@@ -1738,7 +1738,8 @@ void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int3
         top += viewport->pos.y;
         right += viewport->pos.x;
         bottom += viewport->pos.y;
-        gfx_set_dirty_blocks(left, top, right, bottom);
+
+        gfx_set_dirty_blocks({ { left, top }, { right, bottom } });
     }
 }
 

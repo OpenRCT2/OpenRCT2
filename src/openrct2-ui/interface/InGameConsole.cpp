@@ -223,7 +223,7 @@ void InGameConsole::WriteLine(const std::string& input, uint32_t colourFormat)
 
 void InGameConsole::Invalidate() const
 {
-    gfx_set_dirty_blocks(_consoleLeft, _consoleTop, _consoleRight, _consoleBottom);
+    gfx_set_dirty_blocks({ { _consoleLeft, _consoleTop }, { _consoleRight, _consoleBottom } });
 }
 
 void InGameConsole::Update()

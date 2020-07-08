@@ -664,7 +664,7 @@ static void window_invalidate_pressed_image_buttons(rct_window* w)
             continue;
 
         if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
-            gfx_set_dirty_blocks(w->windowPos.x, w->windowPos.y, w->windowPos.x + w->width, w->windowPos.y + w->height);
+            gfx_set_dirty_blocks({ w->windowPos, w->windowPos + ScreenCoordsXY{ w->width, w->height } });
     }
 }
 
