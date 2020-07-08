@@ -191,7 +191,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
             int32_t caretX = screenCoords.x + gfx_get_string_width(lineBuffer);
             int32_t caretY = screenCoords.y + 14;
 
-            gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, PALETTE_INDEX_56);
+            gfx_fill_rect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PALETTE_INDEX_56);
         }
     }
 }
