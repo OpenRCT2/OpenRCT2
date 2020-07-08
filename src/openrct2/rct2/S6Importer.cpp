@@ -796,24 +796,20 @@ public:
         const auto& src = _s6.ride_ratings_calc_data;
         auto& dst = gRideRatingsCalcData;
         dst = {};
-        dst.proximity_x = src.proximity_x;
-        dst.proximity_y = src.proximity_y;
-        dst.proximity_z = src.proximity_z;
-        dst.proximity_start_x = src.proximity_start_x;
-        dst.proximity_start_y = src.proximity_start_y;
-        dst.proximity_start_z = src.proximity_start_z;
-        dst.current_ride = src.current_ride;
-        dst.state = src.state;
-        dst.proximity_track_type = src.proximity_track_type;
-        dst.proximity_base_height = src.proximity_base_height;
-        dst.proximity_total = src.proximity_total;
+        dst.Proximity = { src.proximity_x, src.proximity_y, src.proximity_z };
+        dst.ProximityStart = { src.proximity_start_x, src.proximity_start_y, src.proximity_start_z };
+        dst.CurrentRide = src.current_ride;
+        dst.State = src.state;
+        dst.ProximityTrackType = src.proximity_track_type;
+        dst.ProximityBaseHeight = src.proximity_base_height;
+        dst.ProximityTotal = src.proximity_total;
         for (size_t i = 0; i < std::size(src.proximity_scores); i++)
         {
-            dst.proximity_scores[i] = src.proximity_scores[i];
+            dst.ProximityScores[i] = src.proximity_scores[i];
         }
-        dst.num_brakes = src.num_brakes;
-        dst.num_reversers = src.num_reversers;
-        dst.station_flags = src.station_flags;
+        dst.AmountOfBrakes = src.num_brakes;
+        dst.AmountOfReversers = src.num_reversers;
+        dst.StationFlags = src.station_flags;
     }
 
     void ImportRideMeasurements()

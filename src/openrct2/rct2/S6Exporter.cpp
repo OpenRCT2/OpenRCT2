@@ -772,24 +772,24 @@ void S6Exporter::ExportRideRatingsCalcData()
 {
     const auto& src = gRideRatingsCalcData;
     auto& dst = _s6.ride_ratings_calc_data;
-    dst.proximity_x = src.proximity_x;
-    dst.proximity_y = src.proximity_y;
-    dst.proximity_z = src.proximity_z;
-    dst.proximity_start_x = src.proximity_start_x;
-    dst.proximity_start_y = src.proximity_start_y;
-    dst.proximity_start_z = src.proximity_start_z;
-    dst.current_ride = src.current_ride;
-    dst.state = src.state;
-    dst.proximity_track_type = src.proximity_track_type;
-    dst.proximity_base_height = src.proximity_base_height;
-    dst.proximity_total = src.proximity_total;
+    dst.proximity_x = src.Proximity.x;
+    dst.proximity_y = src.Proximity.y;
+    dst.proximity_z = src.Proximity.z;
+    dst.proximity_start_x = src.ProximityStart.x;
+    dst.proximity_start_y = src.ProximityStart.y;
+    dst.proximity_start_z = src.ProximityStart.z;
+    dst.current_ride = src.CurrentRide;
+    dst.state = src.State;
+    dst.proximity_track_type = src.ProximityTrackType;
+    dst.proximity_base_height = src.ProximityBaseHeight;
+    dst.proximity_total = src.ProximityTotal;
     for (size_t i = 0; i < std::size(dst.proximity_scores); i++)
     {
-        dst.proximity_scores[i] = src.proximity_scores[i];
+        dst.proximity_scores[i] = src.ProximityScores[i];
     }
-    dst.num_brakes = src.num_brakes;
-    dst.num_reversers = src.num_reversers;
-    dst.station_flags = src.station_flags;
+    dst.num_brakes = src.AmountOfBrakes;
+    dst.num_reversers = src.AmountOfReversers;
+    dst.station_flags = src.StationFlags;
 }
 
 void S6Exporter::ExportRideMeasurements()

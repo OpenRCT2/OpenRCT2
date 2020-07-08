@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../world/Location.hpp"
 #include "RideTypes.h"
 
 using ride_rating = fixed16_2dp;
@@ -39,21 +40,17 @@ enum
 
 struct RideRatingCalculationData
 {
-    uint16_t proximity_x;
-    uint16_t proximity_y;
-    uint16_t proximity_z;
-    uint16_t proximity_start_x;
-    uint16_t proximity_start_y;
-    uint16_t proximity_start_z;
-    ride_id_t current_ride;
-    uint8_t state;
-    uint8_t proximity_track_type;
-    uint8_t proximity_base_height;
-    uint16_t proximity_total;
-    uint16_t proximity_scores[26];
-    uint16_t num_brakes;
-    uint16_t num_reversers;
-    uint16_t station_flags;
+    CoordsXYZ Proximity;
+    CoordsXYZ ProximityStart;
+    ride_id_t CurrentRide;
+    uint8_t State;
+    uint8_t ProximityTrackType;
+    uint8_t ProximityBaseHeight;
+    uint16_t ProximityTotal;
+    uint16_t ProximityScores[26];
+    uint16_t AmountOfBrakes;
+    uint16_t AmountOfReversers;
+    uint16_t StationFlags;
 };
 
 extern RideRatingCalculationData gRideRatingsCalcData;
