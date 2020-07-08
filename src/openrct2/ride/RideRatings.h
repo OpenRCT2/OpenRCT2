@@ -48,8 +48,8 @@ struct RideRatingCalculationData
     uint8_t ProximityBaseHeight;
     uint16_t ProximityTotal;
     uint16_t ProximityScores[26];
-    uint16_t NumBrakes;
-    uint16_t NumReversers;
+    uint16_t AmountOfBrakes;
+    uint16_t AmountOfReversers;
     uint16_t StationFlags;
 };
 

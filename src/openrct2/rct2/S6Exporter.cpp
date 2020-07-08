@@ -787,8 +787,8 @@ void S6Exporter::ExportRideRatingsCalcData()
     {
         dst.proximity_scores[i] = src.ProximityScores[i];
     }
-    dst.num_brakes = src.NumBrakes;
-    dst.num_reversers = src.NumReversers;
+    dst.num_brakes = src.AmountOfBrakes;
+    dst.num_reversers = src.AmountOfReversers;
     dst.station_flags = src.StationFlags;
 }
 
