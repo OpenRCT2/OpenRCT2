@@ -487,9 +487,9 @@ static void ride_ratings_score_close_proximity_in_direction(TileElement* inputTi
     } while (!(tileElement++)->IsLastForTile());
 }
 
-static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTileElement, int32_t x, int32_t y)
+static void ride_ratings_score_close_proximity_loops_helper(const CoordsXYE& coordsElement)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(coordsElement);
     if (tileElement == nullptr)
         return;
     do
@@ -502,7 +502,7 @@ static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTi
             case TILE_ELEMENT_TYPE_PATH:
             {
                 int32_t zDiff = static_cast<int32_t>(tileElement->base_height)
-                    - static_cast<int32_t>(inputTileElement->base_height);
+                    - static_cast<int32_t>(coordsElement.element->base_height);
                 if (zDiff >= 0 && zDiff <= 16)
                 {
                     proximity_score_increment(PROXIMITY_PATH_TROUGH_VERTICAL_LOOP);
@@ -512,11 +512,11 @@ static void ride_ratings_score_close_proximity_loops_helper(TileElement* inputTi
 
             case TILE_ELEMENT_TYPE_TRACK:
             {
-                bool elementsAreAt90DegAngle = ((tileElement->GetDirection() ^ inputTileElement->GetDirection()) & 1) != 0;
+                bool elementsAreAt90DegAngle = ((tileElement->GetDirection() ^ coordsElement.element->GetDirection()) & 1) != 0;
                 if (elementsAreAt90DegAngle)
                 {
                     int32_t zDiff = static_cast<int32_t>(tileElement->base_height)
-                        - static_cast<int32_t>(inputTileElement->base_height);
+                        - static_cast<int32_t>(coordsElement.element->base_height);
                     if (zDiff >= 0 && zDiff <= 16)
                     {
                         proximity_score_increment(PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
@@ -544,12 +544,12 @@ static void ride_ratings_score_close_proximity_loops(TileElement* inputTileEleme
     {
         int32_t x = gRideRatingsCalcData.proximity_x;
         int32_t y = gRideRatingsCalcData.proximity_y;
-        ride_ratings_score_close_proximity_loops_helper(inputTileElement, x, y);
+        ride_ratings_score_close_proximity_loops_helper({ x, y, inputTileElement });
 
         int32_t direction = inputTileElement->GetDirection();
         x = gRideRatingsCalcData.proximity_x + CoordsDirectionDelta[direction].x;
         y = gRideRatingsCalcData.proximity_y + CoordsDirectionDelta[direction].y;
-        ride_ratings_score_close_proximity_loops_helper(inputTileElement, x, y);
+        ride_ratings_score_close_proximity_loops_helper({ x, y, inputTileElement });
     }
 }
 
