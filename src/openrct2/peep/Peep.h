@@ -15,6 +15,7 @@
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
+#include "../ride/ShopItem.h"
 #include "../world/Location.hpp"
 #include "../world/SpriteBase.h"
 
@@ -49,6 +50,7 @@ class Formatter;
 struct TileElement;
 struct Ride;
 class GameActionResult;
+using ParkEntranceIndex = uint8_t;
 
 enum PeepType : uint8_t
 {
@@ -633,10 +635,14 @@ struct Peep : SpriteBase
     money16 PaidOnDrink;
     uint8_t RideTypesBeenOn[16];
     uint32_t ItemExtraFlags;
-    uint8_t Photo2RideRef;
-    uint8_t Photo3RideRef;
-    uint8_t Photo4RideRef;
-    uint8_t CurrentRide;
+    ride_id_t Photo2RideRef;
+    ride_id_t Photo3RideRef;
+    ride_id_t Photo4RideRef;
+    union
+    {
+        ride_id_t CurrentRide;
+        ParkEntranceIndex ChosenParkEntrance;
+    };
     StationIndex CurrentRideStation;
     uint8_t CurrentTrain;
     union
@@ -690,14 +696,14 @@ struct Peep : SpriteBase
     union
     {
         uint8_t StaffId;
-        uint8_t GuestHeadingToRideId;
+        ride_id_t GuestHeadingToRideId;
     };
     union
     {
         uint8_t StaffOrders;
         uint8_t GuestIsLostCountdown;
     };
-    uint8_t Photo1RideRef;
+    ride_id_t Photo1RideRef;
     uint32_t PeepFlags;
     rct12_xyzd8 PathfindGoal;
     rct12_xyzd8 PathfindHistory[4];
@@ -738,7 +744,11 @@ struct Peep : SpriteBase
     uint8_t AmountOfSouvenirs;
     uint8_t VandalismSeen; // 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
     uint8_t VoucherType;
-    uint8_t VoucherArguments; // ride_id or string_offset_id
+    union
+    {
+        ride_id_t VoucherRideId;
+        ShopItemIndex VoucherShopItem;
+    };
     uint8_t SurroundingsThoughtTimeout;
     uint8_t Angriness;
     uint8_t TimeLost; // the time the peep has been lost when it reaches 254 generates the lost thought
@@ -746,7 +756,7 @@ struct Peep : SpriteBase
     uint8_t BalloonColour;
     uint8_t UmbrellaColour;
     uint8_t HatColour;
-    uint8_t FavouriteRide;
+    ride_id_t FavouriteRide;
     uint8_t FavouriteRideRating;
     uint32_t ItemStandardFlags;
 

@@ -1510,7 +1510,7 @@ public:
         dst->AmountOfSouvenirs = src->no_of_souvenirs;
         dst->VandalismSeen = src->vandalism_seen;
         dst->VoucherType = src->voucher_type;
-        dst->VoucherArguments = src->voucher_arguments;
+        dst->VoucherRideId = src->voucher_arguments;
         dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
         dst->Angriness = src->angriness;
         dst->TimeLost = src->time_lost;

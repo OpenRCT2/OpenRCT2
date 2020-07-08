@@ -12,6 +12,7 @@
 #include "../Cheats.h"
 #include "../common.h"
 #include "../peep/Peep.h"
+#include "../ride/ShopItem.h"
 
 #include <vector>
 
@@ -48,7 +49,7 @@ struct MarketingCampaign
     union
     {
         ride_id_t RideId{};
-        uint8_t ShopItemType;
+        ShopItemIndex ShopItemType;
     };
 };
 

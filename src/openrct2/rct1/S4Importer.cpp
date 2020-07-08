@@ -1493,7 +1493,7 @@ private:
         dst->PaidOnFood = src->paid_on_food;
         dst->PaidOnSouvenirs = src->paid_on_souvenirs;
 
-        dst->VoucherArguments = src->voucher_arguments;
+        dst->VoucherRideId = src->voucher_arguments;
         dst->VoucherType = src->voucher_type;
 
         dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;

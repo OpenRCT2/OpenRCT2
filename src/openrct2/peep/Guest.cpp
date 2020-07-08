@@ -1483,7 +1483,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
     bool hasVoucher = false;
 
     if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
-        && (VoucherArguments == shopItem))
+        && (VoucherShopItem == shopItem))
     {
         hasVoucher = true;
     }
@@ -2415,7 +2415,7 @@ void Guest::ReadMap()
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
     return peep->ItemStandardFlags & PEEP_ITEM_VOUCHER && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
-        && peep->VoucherArguments == ride->id;
+        && peep->VoucherRideId == ride->id;
 }
 
 /**
@@ -2636,7 +2636,7 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
     if ((peep->ItemStandardFlags & PEEP_ITEM_VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
-        && peep->VoucherArguments == peep->CurrentRide)
+        && peep->VoucherRideId == peep->CurrentRide)
         return true;
 
     if (peep->CashInPocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -3856,7 +3856,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     if (ridePrice != 0)
     {
         if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
-            && (VoucherArguments == CurrentRide))
+            && (VoucherRideId == CurrentRide))
         {
             ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -6925,5 +6925,5 @@ void Guest::UpdateSpriteType()
 
 bool Guest::HeadingForRideOrParkExit() const
 {
-    return (PeepFlags & PEEP_FLAGS_LEAVING_PARK) || (GuestHeadingToRideId != 0xFF);
+    return (PeepFlags & PEEP_FLAGS_LEAVING_PARK) || (GuestHeadingToRideId != RIDE_ID_NULL);
 }

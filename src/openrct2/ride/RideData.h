@@ -165,7 +165,7 @@ struct RideTypeDescriptor
     money16 DefaultPrices[NUM_SHOP_ITEMS_PER_RIDE];
     uint8_t DefaultMusic;
     /** rct2: 0x0097D7CB */
-    uint8_t PhotoItem;
+    ShopItemIndex PhotoItem;
     /** rct2: 0x0097D21E */
     uint8_t BonusValue;
     track_colour_preset_list ColourPresets;
