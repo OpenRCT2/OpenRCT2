@@ -7173,10 +7173,10 @@ void Vehicle::UpdateSpinningCar()
  *
  *  rct2: 0x006734B2
  */
-static void steam_particle_create(int16_t x, int16_t y, int16_t z)
+static void steam_particle_create(const CoordsXYZ& coords)
 {
-    auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
-    if (surfaceElement != nullptr && z > surfaceElement->GetBaseZ())
+    auto surfaceElement = map_get_surface_element_at(coords);
+    if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
     {
         SteamParticle* steam = &create_sprite(SPRITE_IDENTIFIER_MISC)->steam_particle;
         if (steam == nullptr)
@@ -7189,7 +7189,7 @@ static void steam_particle_create(int16_t x, int16_t y, int16_t z)
         steam->type = SPRITE_MISC_STEAM_PARTICLE;
         steam->frame = 256;
         steam->time_to_move = 0;
-        steam->MoveTo({ x, y, z });
+        steam->MoveTo(coords);
     }
 }
 
@@ -7243,7 +7243,7 @@ void Vehicle::UpdateAdditionalAnimation()
                             }();
                             int32_t directionIndex = sprite_direction >> 1;
                             auto offset = SteamParticleOffsets[typeIndex][directionIndex];
-                            steam_particle_create(x + offset.x, y + offset.y, z + offset.z);
+                            steam_particle_create({ x + offset.x, y + offset.y, z + offset.z });
                         }
                     }
                 }
