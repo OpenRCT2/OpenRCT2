@@ -423,7 +423,6 @@ public:
     std::string GetName() const;
     void FormatNameTo(Formatter&) const;
     void FormatStatusTo(Formatter&) const;
-    size_t FormatStatusTo(void* args) const;
 
     static void UpdateAll();
     static bool NameExists(const std::string_view& name, ride_id_t excludeRideId = RIDE_ID_NULL);
