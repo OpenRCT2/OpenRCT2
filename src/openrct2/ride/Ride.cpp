@@ -4392,7 +4392,7 @@ static Vehicle* vehicle_create_car(
         // loc_6DDCA4:
         vehicle->TrackSubposition = VEHICLE_TRACK_SUBPOSITION_0;
         int32_t direction = tileElement->GetDirection();
-        auto dodgemPos = CoordsXYZ{ CoordsXY{ carPosition } + word_9A3AB4[direction], tileElement->GetBaseZ() };
+        auto dodgemPos = carPosition + CoordsXYZ{ word_9A3AB4[direction], 0 };
         vehicle->TrackLocation = dodgemPos;
         vehicle->current_station = tileElement->AsTrack()->GetStationIndex();
 
@@ -4451,7 +4451,7 @@ static Vehicle* vehicle_create_car(
         }
         vehicle->TrackSubposition = subposition;
 
-        auto chosenLoc = CoordsXYZ{ CoordsXY{ carPosition }, tileElement->GetBaseZ() };
+        auto chosenLoc = carPosition;
         vehicle->TrackLocation = chosenLoc;
 
         int32_t direction = tileElement->GetDirection();
@@ -4546,7 +4546,7 @@ static train_ref vehicle_create_train(
     return train;
 }
 
-static void vehicle_create_trains(ride_id_t rideIndex, int32_t x, int32_t y, int32_t z, TileElement* tileElement)
+static void vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPos, TileElement* tileElement)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -4562,7 +4562,7 @@ static void vehicle_create_trains(ride_id_t rideIndex, int32_t x, int32_t y, int
         {
             remainingDistance = 0;
         }
-        train_ref train = vehicle_create_train(rideIndex, { x, y, z }, vehicleIndex, &remainingDistance, tileElement);
+        train_ref train = vehicle_create_train(rideIndex, trainsPos, vehicleIndex, &remainingDistance, tileElement);
         if (vehicleIndex == 0)
         {
             firstTrain = train;
@@ -4697,24 +4697,21 @@ static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApply
     }
 
     TileElement* tileElement = element->element;
-    int32_t x = element->x;
-    int32_t y = element->y;
-    int32_t z = element->element->base_height;
+    auto vehiclePos = CoordsXYZ{ *element, element->element->GetBaseZ() };
     int32_t direction = tileElement->GetDirection();
 
     //
     if (ride->mode == RIDE_MODE_STATION_TO_STATION)
     {
-        x = element->x - CoordsDirectionDelta[direction].x;
-        y = element->y - CoordsDirectionDelta[direction].y;
+        vehiclePos -= CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
 
-        tileElement = reinterpret_cast<TileElement*>(map_get_track_element_at({ x, y, z << 3 }));
+        tileElement = reinterpret_cast<TileElement*>(map_get_track_element_at(vehiclePos));
 
-        z = tileElement->base_height;
+        vehiclePos.z = tileElement->GetBaseZ();
         direction = tileElement->GetDirection();
     }
 
-    vehicle_create_trains(ride->id, x, y, z, tileElement);
+    vehicle_create_trains(ride->id, vehiclePos, tileElement);
     // return true;
 
     // Initialise station departs
