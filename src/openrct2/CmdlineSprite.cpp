@@ -100,7 +100,6 @@ static bool sprite_file_open(const utf8* path)
 
         if (fread(openElements.get(), openEntryTableSize, 1, file) != 1)
         {
-            openElements.reset();
             fclose(file);
             return false;
         }
@@ -109,7 +108,6 @@ static bool sprite_file_open(const utf8* path)
         if (fread(spriteFileData, spriteFileHeader.total_size, 1, file) != 1)
         {
             free(spriteFileData);
-            openElements.reset();
             fclose(file);
             return false;
         }
@@ -130,8 +128,6 @@ static bool sprite_file_open(const utf8* path)
             outElement->flags = inElement->flags;
             outElement->zoomed_offset = inElement->zoomed_offset;
         }
-
-        openElements.reset();
     }
 
     fclose(file);
@@ -177,11 +173,9 @@ static bool sprite_file_save(const char* path)
 
         if (fwrite(saveElements.get(), saveEntryTableSize, 1, file) != 1)
         {
-            saveElements.reset();
             fclose(file);
             return false;
         }
-        saveElements.reset();
 
         if (fwrite(spriteFileData, spriteFileHeader.total_size, 1, file) != 1)
         {

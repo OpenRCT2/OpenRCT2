@@ -321,7 +321,7 @@ void unload_unselected_objects()
     const ObjectRepositoryItem* items = object_repository_get_items();
 
     size_t numObjectsToUnload = 0;
-    std::unique_ptr<rct_object_entry[]> objectsToUnload = std::make_unique<rct_object_entry[]>(numItems);
+    std::vector<rct_object_entry> objectsToUnload;
 
     for (int32_t i = 0; i < numItems; i++)
     {
@@ -334,8 +334,7 @@ void unload_unselected_objects()
         }
     }
 
-    object_manager_unload_objects(objectsToUnload.get(), numObjectsToUnload);
-    objectsToUnload.reset();
+    object_manager_unload_objects(objectsToUnload, numObjectsToUnload);
 }
 
 /**

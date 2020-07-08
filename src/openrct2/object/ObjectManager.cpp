@@ -147,7 +147,7 @@ public:
         log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
     }
 
-    void UnloadObjects(const rct_object_entry* entries, size_t count) override
+    void UnloadObjects(const std::vector<rct_object_entry> entries, size_t count) override
     {
         // TODO there are two performance issues here:
         //        - FindObject for every entry which is a dictionary lookup
@@ -747,7 +747,7 @@ void* object_manager_load_object(const rct_object_entry* entry)
     return static_cast<void*>(loadedObject);
 }
 
-void object_manager_unload_objects(const rct_object_entry* entries, size_t count)
+void object_manager_unload_objects(const std::vector<rct_object_entry> entries, size_t count)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     objectManager.UnloadObjects(entries, count);
