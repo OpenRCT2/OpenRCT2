@@ -4675,7 +4675,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
  *
  *  rct2: 0x006DD84C
  */
-static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApplying)
+static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t isApplying)
 {
     ride->UpdateMaxVehicles();
     if (ride->subtype == RIDE_ENTRY_INDEX_NULL)
@@ -4696,8 +4696,8 @@ static bool ride_create_vehicles(Ride* ride, CoordsXYE* element, int32_t isApply
         return true;
     }
 
-    TileElement* tileElement = element->element;
-    auto vehiclePos = CoordsXYZ{ *element, element->element->GetBaseZ() };
+    TileElement* tileElement = element.element;
+    auto vehiclePos = CoordsXYZ{ element, element.element->GetBaseZ() };
     int32_t direction = tileElement->GetDirection();
 
     //
@@ -5217,7 +5217,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
-        if (!ride_create_vehicles(ride, &trackElement, isApplying))
+        if (!ride_create_vehicles(ride, trackElement, isApplying))
         {
             return 0;
         }
@@ -5351,7 +5351,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES) && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
-        if (!ride_create_vehicles(ride, &trackElement, isApplying))
+        if (!ride_create_vehicles(ride, trackElement, isApplying))
         {
             return 0;
         }
