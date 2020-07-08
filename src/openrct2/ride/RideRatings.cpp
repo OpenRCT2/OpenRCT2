@@ -181,8 +181,8 @@ static void ride_ratings_update_state_1()
     {
         gRideRatingsCalcData.ProximityScores[i] = 0;
     }
-    gRideRatingsCalcData.NumBrakes = 0;
-    gRideRatingsCalcData.NumReversers = 0;
+    gRideRatingsCalcData.AmountOfBrakes = 0;
+    gRideRatingsCalcData.AmountOfReversers = 0;
     gRideRatingsCalcData.State = RIDE_RATINGS_STATE_2;
     gRideRatingsCalcData.StationFlags = 0;
     ride_ratings_begin_proximity_loop();
@@ -710,11 +710,11 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
     switch (gRideRatingsCalcData.ProximityTrackType)
     {
         case TRACK_ELEM_BRAKES:
-            gRideRatingsCalcData.NumBrakes++;
+            gRideRatingsCalcData.AmountOfBrakes++;
             break;
         case TRACK_ELEM_LEFT_REVERSER:
         case TRACK_ELEM_RIGHT_REVERSER:
-            gRideRatingsCalcData.NumReversers++;
+            gRideRatingsCalcData.AmountOfReversers++;
             break;
     }
 }
@@ -902,10 +902,10 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     {
         reverserMaintenanceCost = 10;
     }
-    upkeep += reverserMaintenanceCost * gRideRatingsCalcData.NumReversers;
+    upkeep += reverserMaintenanceCost * gRideRatingsCalcData.AmountOfReversers;
 
     // Add maintenance cost for brake track pieces
-    upkeep += 20 * gRideRatingsCalcData.NumBrakes;
+    upkeep += 20 * gRideRatingsCalcData.AmountOfBrakes;
 
     // these seem to be adhoc adjustments to a ride's upkeep/cost, times
     // various variables set on the ride itself.
@@ -3369,7 +3369,7 @@ void ride_ratings_calculate_reverser_roller_coaster(Ride* ride)
     ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
     ride_ratings_apply_average_speed(&ratings, ride, 364088, 655360);
 
-    int32_t numReversers = std::min<uint16_t>(gRideRatingsCalcData.NumReversers, 6);
+    int32_t numReversers = std::min<uint16_t>(gRideRatingsCalcData.AmountOfReversers, 6);
     ride_rating reverserRating = numReversers * RIDE_RATING(0, 20);
     ride_ratings_add(&ratings, reverserRating, reverserRating, reverserRating);
 
@@ -3381,7 +3381,7 @@ void ride_ratings_calculate_reverser_roller_coaster(Ride* ride)
     ride_ratings_apply_proximity(&ratings, 22367);
     ride_ratings_apply_scenery(&ratings, ride, 11155);
 
-    if (gRideRatingsCalcData.NumReversers < 1)
+    if (gRideRatingsCalcData.AmountOfReversers < 1)
     {
         ratings.Excitement /= 8;
     }

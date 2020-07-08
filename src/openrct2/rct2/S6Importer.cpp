@@ -807,8 +807,8 @@ public:
         {
             dst.ProximityScores[i] = src.proximity_scores[i];
         }
-        dst.NumBrakes = src.num_brakes;
-        dst.NumReversers = src.num_reversers;
+        dst.AmountOfBrakes = src.num_brakes;
+        dst.AmountOfReversers = src.num_reversers;
         dst.StationFlags = src.station_flags;
     }
 
