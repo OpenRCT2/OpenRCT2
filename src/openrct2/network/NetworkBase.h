@@ -69,7 +69,7 @@ public: // Server
     void UpdateServer();
     void ServerClientDisconnected(std::unique_ptr<NetworkConnection>& connection);
     bool SaveMap(OpenRCT2::IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
-    uint8_t* save_for_network(size_t& out_size, const std::vector<const ObjectRepositoryItem*>& objects) const;
+    std::vector<uint8_t> save_for_network(const std::vector<const ObjectRepositoryItem*>& objects) const;
     std::string MakePlayerNameUnique(const std::string& name);
 
     // Packet dispatchers.
