@@ -19,62 +19,62 @@ static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* pa
 
 StaticLayout::StaticLayout(utf8string source, TextPaint paint, int32_t width)
 {
-    _buffer = source;
-    _paint = paint;
+    Buffer = source;
+    Paint = paint;
 
     int32_t fontSpriteBase;
 
     gCurrentFontSpriteBase = paint.SpriteBase;
-    _maxWidth = gfx_wrap_string(_buffer, width, &_lineCount, &fontSpriteBase);
-    _lineCount += 1;
-    _lineHeight = font_get_line_height(fontSpriteBase);
+    MaxWidth = gfx_wrap_string(Buffer, width, &LineCount, &fontSpriteBase);
+    LineCount += 1;
+    LineHeight = font_get_line_height(fontSpriteBase);
 }
 
 void StaticLayout::Draw(rct_drawpixelinfo* dpi, int32_t x, int32_t y)
 {
     gCurrentFontFlags = 0;
-    gCurrentFontSpriteBase = _paint.SpriteBase;
+    gCurrentFontSpriteBase = Paint.SpriteBase;
 
-    TextPaint tempPaint = _paint;
+    TextPaint tempPaint = Paint;
 
     gCurrentFontFlags = 0;
     int32_t lineY = y;
     int32_t lineX = x;
-    switch (_paint.Alignment)
+    switch (Paint.Alignment)
     {
         case TextAlignment::LEFT:
             lineX = x;
             break;
         case TextAlignment::CENTRE:
-            lineX = x + _maxWidth / 2;
+            lineX = x + MaxWidth / 2;
             break;
         case TextAlignment::RIGHT:
-            lineX = x + _maxWidth;
+            lineX = x + MaxWidth;
             break;
     }
-    utf8* buffer = _buffer;
-    for (int32_t line = 0; line < _lineCount; ++line)
+    utf8* buffer = Buffer;
+    for (int32_t line = 0; line < LineCount; ++line)
     {
         DrawText(dpi, lineX, lineY, &tempPaint, buffer);
         tempPaint.Colour = TEXT_COLOUR_254;
         buffer = get_string_end(buffer) + 1;
-        lineY += _lineHeight;
+        lineY += LineHeight;
     }
 }
 
 int32_t StaticLayout::GetHeight()
 {
-    return _lineHeight * _lineCount;
+    return LineHeight * LineCount;
 }
 
 int32_t StaticLayout::GetWidth()
 {
-    return _maxWidth;
+    return MaxWidth;
 }
 
 int32_t StaticLayout::GetLineCount()
 {
-    return _lineCount;
+    return LineCount;
 }
 
 static void DrawText(rct_drawpixelinfo* dpi, int32_t x, int32_t y, TextPaint* paint, const_utf8string text)

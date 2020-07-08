@@ -31,11 +31,11 @@ struct TextPaint
 class StaticLayout
 {
 private:
-    utf8string _buffer;
-    TextPaint _paint;
-    int32_t _lineCount = 0;
-    int32_t _lineHeight;
-    int32_t _maxWidth;
+    utf8string Buffer;
+    TextPaint Paint;
+    int32_t LineCount = 0;
+    int32_t LineHeight;
+    int32_t MaxWidth;
 
     StaticLayout();
     StaticLayout(const StaticLayout&);
