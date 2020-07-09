@@ -1619,7 +1619,7 @@ private:
                 x <<= 7;
                 int32_t y = val & 0x3E0;
                 y <<= 2;
-                staff_set_patrol_area(staffmember->StaffId, x, y, true);
+                staff_set_patrol_area(staffmember->StaffId, { x, y }, true);
             }
         }
     }

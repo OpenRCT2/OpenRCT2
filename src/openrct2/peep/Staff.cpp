@@ -400,14 +400,13 @@ bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords)
     return staff_is_patrol_area_set(STAFF_MAX_COUNT + type, coords.x, coords.y);
 }
 
-void staff_set_patrol_area(int32_t staffIndex, int32_t x, int32_t y, bool value)
+void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool value)
 {
-    x = (x & 0x1F80) >> 7;
-    y = (y & 0x1F80) >> 1;
+    auto offsetCoords = CoordsXY{ (coords.x & 0x1F80) >> 7, (coords.y & 0x1F80) >> 1 };
 
     int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
-    int32_t offset = (x | y) >> 5;
-    int32_t bitIndex = (x | y) & 0x1F;
+    int32_t offset = (offsetCoords.x | offsetCoords.y) >> 5;
+    int32_t bitIndex = (offsetCoords.x | offsetCoords.y) & 0x1F;
     uint32_t* addr = &gStaffPatrolAreas[peepOffset + offset];
     if (value)
     {
