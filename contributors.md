@@ -87,7 +87,7 @@ The following people are not part of the development team, but have been contrib
 * Chad Ian Anderson (pizza2004) - Added New Game option, bug fixes, misc.
 * Peter Ryszkiewicz (pRizz) - Added horizontal grid lines to finance charts.
 * Hudson Oliveira (hdpoliveira) - Misc.
-* Jim Verheijde (Jimver) - Make handymen less likely to get stuck in queue lines.
+* Jim Verheijde (Jimver) - Make handymen less likely to get stuck in queue lines, misc.
 
 ## Bug fixes
 * (halfbro)
