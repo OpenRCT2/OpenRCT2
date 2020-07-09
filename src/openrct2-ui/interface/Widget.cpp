@@ -485,24 +485,24 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     uint8_t colour = w->colours[widget->colour] & 0x7F;
 
     // Border left of text
-    gfx_fill_rect(dpi, l, t, l + 4, t, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 1, t + 1, l + 4, t + 1, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { l, t }, { l + 4, t } }, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { l + 1, t + 1 }, { l + 4, t + 1 } }, ColourMapA[colour].lighter);
 
     // Border right of text
-    gfx_fill_rect(dpi, textRight, t, r - 1, t, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, textRight, t + 1, r - 2, t + 1, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { textRight, t }, { r - 1, t } }, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { textRight, t + 1 }, { r - 2, t + 1 } }, ColourMapA[colour].lighter);
 
     // Border right
-    gfx_fill_rect(dpi, r - 1, t + 1, r - 1, b - 1, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, r, t, r, b, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { r - 1, t + 1 }, { r - 1, b - 1 } }, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { r, t }, { r, b } }, ColourMapA[colour].lighter);
 
     // Border bottom
-    gfx_fill_rect(dpi, l, b - 1, r - 2, b - 1, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l, b, r - 1, b, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { l, b - 1 }, { r - 2, b - 1 } }, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { l, b }, { r - 1, b } }, ColourMapA[colour].lighter);
 
     // Border left
-    gfx_fill_rect(dpi, l, t + 1, l, b - 2, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 1, t + 2, l + 1, b - 2, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { l, t + 1 }, { l, b - 2 } }, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { l + 1, t + 2 }, { l + 1, b - 2 } }, ColourMapA[colour].lighter);
 }
 
 /**
@@ -529,7 +529,8 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
 
     // Black caption bars look slightly green, this fixes that
     if (colour == 0)
-        gfx_fill_rect(dpi, topLeft.x + 1, topLeft.y + 1, bottomRight.x - 1, bottomRight.y - 1, ColourMapA[colour].dark);
+        gfx_fill_rect(
+            dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } }, ColourMapA[colour].dark);
     else
         gfx_filter_rect(dpi, topLeft.x + 1, topLeft.y + 1, bottomRight.x - 1, bottomRight.y - 1, PALETTE_DARKEN_3);
 
@@ -707,12 +708,12 @@ static void widget_hscrollbar_draw(
 {
     colour &= 0x7F;
     // Trough
-    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t, r - SCROLLBAR_WIDTH, b, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t, r - SCROLLBAR_WIDTH, b, 0x1000000 | ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t + 2, r - SCROLLBAR_WIDTH, t + 2, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t + 3, r - SCROLLBAR_WIDTH, t + 3, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t + 7, r - SCROLLBAR_WIDTH, t + 7, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + SCROLLBAR_WIDTH, t + 8, r - SCROLLBAR_WIDTH, t + 8, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t }, { r - SCROLLBAR_WIDTH, b } }, 0x1000000 | ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 2 }, { r - SCROLLBAR_WIDTH, t + 2 } }, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 3 }, { r - SCROLLBAR_WIDTH, t + 3 } }, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 7 }, { r - SCROLLBAR_WIDTH, t + 7 } }, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { l + SCROLLBAR_WIDTH, t + 8 }, { r - SCROLLBAR_WIDTH, t + 8 } }, ColourMapA[colour].lighter);
 
     // Left button
     {
@@ -745,12 +746,12 @@ static void widget_vscrollbar_draw(
 {
     colour &= 0x7F;
     // Trough
-    gfx_fill_rect(dpi, l, t + SCROLLBAR_WIDTH, r, b - SCROLLBAR_WIDTH, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, l, t + SCROLLBAR_WIDTH, r, b - SCROLLBAR_WIDTH, 0x1000000 | ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 2, t + SCROLLBAR_WIDTH, l + 2, b - SCROLLBAR_WIDTH, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 3, t + SCROLLBAR_WIDTH, l + 3, b - SCROLLBAR_WIDTH, ColourMapA[colour].lighter);
-    gfx_fill_rect(dpi, l + 7, t + SCROLLBAR_WIDTH, l + 7, b - SCROLLBAR_WIDTH, ColourMapA[colour].mid_dark);
-    gfx_fill_rect(dpi, l + 8, t + SCROLLBAR_WIDTH, l + 8, b - SCROLLBAR_WIDTH, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { l, t + SCROLLBAR_WIDTH }, { r, b - SCROLLBAR_WIDTH } }, 0x1000000 | ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { l + 2, t + SCROLLBAR_WIDTH }, { l + 2, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { l + 3, t + SCROLLBAR_WIDTH }, { l + 3, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
+    gfx_fill_rect(dpi, { { l + 7, t + SCROLLBAR_WIDTH }, { l + 7, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].mid_dark);
+    gfx_fill_rect(dpi, { { l + 8, t + SCROLLBAR_WIDTH }, { l + 8, b - SCROLLBAR_WIDTH } }, ColourMapA[colour].lighter);
 
     // Up button
     gfx_fill_rect_inset(
@@ -1088,6 +1089,6 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     {
         colour = ColourMapA[w->colours[1]].mid_light;
         auto y = t + (widget->height() - 1);
-        gfx_fill_rect(dpi, cur_x, y, cur_x + width, y, colour + 5);
+        gfx_fill_rect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
     }
 }
