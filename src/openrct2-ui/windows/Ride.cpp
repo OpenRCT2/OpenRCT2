@@ -2664,7 +2664,8 @@ static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* ar
     auto ride = get_ride(w->number);
     if (ride != nullptr)
     {
-        ride->FormatStatusTo(arguments);
+        auto ft = Formatter(static_cast<uint8_t*>(arguments));
+        ride->FormatStatusTo(ft);
         stringId = STR_BLACK_STRING;
         if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
         {
