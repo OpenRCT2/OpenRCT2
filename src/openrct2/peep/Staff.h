@@ -82,7 +82,7 @@ bool staff_can_ignore_wide_flag(Peep* mechanic, const CoordsXYZ& staffPos, TileE
 void staff_reset_stats();
 bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords);
 void staff_set_patrol_area(int32_t staffIndex, int32_t x, int32_t y, bool value);
-void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y);
+void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords);
 colour_t staff_get_colour(uint8_t staffType);
 bool staff_set_colour(uint8_t staffType, colour_t value);
 uint32_t staff_get_available_entertainer_costumes();
