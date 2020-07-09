@@ -2658,13 +2658,13 @@ static void window_ride_main_invalidate(rct_window* w)
  *
  *  rct2: 0x006AF10A
  */
-static rct_string_id window_ride_get_status_overall_view(rct_window* w)
+static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* arguments)
 {
     auto stringId = STR_NONE;
     auto ride = get_ride(w->number);
     if (ride != nullptr)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter(static_cast<uint8_t*>(arguments));
         ride->FormatStatusTo(ft);
         stringId = STR_BLACK_STRING;
         if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
@@ -2788,11 +2788,11 @@ static rct_string_id window_ride_get_status(rct_window* w, void* arguments)
 {
     auto ride = get_ride(w->number);
     if (w->ride.view == 0)
-        return window_ride_get_status_overall_view(w);
+        return window_ride_get_status_overall_view(w, arguments);
     if (ride != nullptr && w->ride.view <= ride->num_vehicles)
         return window_ride_get_status_vehicle(w, arguments);
     if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-        return window_ride_get_status_overall_view(w);
+        return window_ride_get_status_overall_view(w, arguments);
     return window_ride_get_status_station(w, arguments);
 }
 
