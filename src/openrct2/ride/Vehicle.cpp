@@ -5130,34 +5130,34 @@ void Vehicle::UpdateDoingCircusShow()
  *  rct2: 0x0068B8BD
  * @returns the map element that the vehicle will collide with or NULL if no collisions.
  */
-static TileElement* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
+static TileElement* vehicle_check_collision(const CoordsXYZ& vehiclePosition)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(vehiclePosition);
     if (tileElement == nullptr)
     {
         return nullptr;
     }
 
     uint8_t quadrant;
-    if ((x & 0x1F) >= 16)
+    if ((vehiclePosition.x & 0x1F) >= 16)
     {
         quadrant = 1;
-        if ((y & 0x1F) < 16)
+        if ((vehiclePosition.y & 0x1F) < 16)
             quadrant = 2;
     }
     else
     {
         quadrant = 4;
-        if ((y & 0x1F) >= 16)
+        if ((vehiclePosition.y & 0x1F) >= 16)
             quadrant = 8;
     }
 
     do
     {
-        if (z < tileElement->GetBaseZ())
+        if (vehiclePosition.z < tileElement->GetBaseZ())
             continue;
 
-        if (z >= tileElement->GetClearanceZ())
+        if (vehiclePosition.z >= tileElement->GetClearanceZ())
             continue;
 
         if (tileElement->GetOccupiedQuadrants() & quadrant)
@@ -5398,7 +5398,7 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        TileElement* collideElement = vehicle_check_collision(curVehicle->x, curVehicle->y, curVehicle->z);
+        TileElement* collideElement = vehicle_check_collision({ curVehicle->x, curVehicle->y, curVehicle->z });
         if (collideElement == nullptr)
         {
             curVehicle->sub_state = 1;
