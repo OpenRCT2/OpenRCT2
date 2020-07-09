@@ -2690,15 +2690,15 @@ static rct_synchronised_vehicle* _lastSynchronisedVehicle = nullptr;
  * to synchronise to the vehicle synchronisation list.
  *  rct2: 0x006DE1A4
  */
-static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
+static bool try_add_synchronised_station(const CoordsXYZ& coords)
 {
     // make sure we are in map bounds
-    if (!map_is_location_valid({ x, y }))
+    if (!map_is_location_valid(coords))
     {
         return false;
     }
 
-    TileElement* tileElement = get_station_platform(x, y, z, 2);
+    TileElement* tileElement = get_station_platform(coords.x, coords.y, coords.z, 2);
     if (tileElement == nullptr)
     {
         /* No station platform element found,
@@ -2819,7 +2819,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     {
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
-        if (try_add_synchronised_station(x, y, z))
+        if (try_add_synchronised_station({ x, y, z }))
         {
             spaceBetween = maxCheckDistance;
             continue;
@@ -2841,7 +2841,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     {
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
-        if (try_add_synchronised_station(x, y, z))
+        if (try_add_synchronised_station({ x, y, z }))
         {
             spaceBetween = maxCheckDistance;
             continue;
@@ -5130,34 +5130,34 @@ void Vehicle::UpdateDoingCircusShow()
  *  rct2: 0x0068B8BD
  * @returns the map element that the vehicle will collide with or NULL if no collisions.
  */
-static TileElement* vehicle_check_collision(int16_t x, int16_t y, int16_t z)
+static TileElement* vehicle_check_collision(const CoordsXYZ& vehiclePosition)
 {
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(vehiclePosition);
     if (tileElement == nullptr)
     {
         return nullptr;
     }
 
     uint8_t quadrant;
-    if ((x & 0x1F) >= 16)
+    if ((vehiclePosition.x & 0x1F) >= 16)
     {
         quadrant = 1;
-        if ((y & 0x1F) < 16)
+        if ((vehiclePosition.y & 0x1F) < 16)
             quadrant = 2;
     }
     else
     {
         quadrant = 4;
-        if ((y & 0x1F) >= 16)
+        if ((vehiclePosition.y & 0x1F) >= 16)
             quadrant = 8;
     }
 
     do
     {
-        if (z < tileElement->GetBaseZ())
+        if (vehiclePosition.z < tileElement->GetBaseZ())
             continue;
 
-        if (z >= tileElement->GetClearanceZ())
+        if (vehiclePosition.z >= tileElement->GetClearanceZ())
             continue;
 
         if (tileElement->GetOccupiedQuadrants() & quadrant)
@@ -5398,7 +5398,7 @@ void Vehicle::UpdateCrash()
             continue;
         }
 
-        TileElement* collideElement = vehicle_check_collision(curVehicle->x, curVehicle->y, curVehicle->z);
+        TileElement* collideElement = vehicle_check_collision({ curVehicle->x, curVehicle->y, curVehicle->z });
         if (collideElement == nullptr)
         {
             curVehicle->sub_state = 1;
@@ -7173,10 +7173,10 @@ void Vehicle::UpdateSpinningCar()
  *
  *  rct2: 0x006734B2
  */
-static void steam_particle_create(int16_t x, int16_t y, int16_t z)
+static void steam_particle_create(const CoordsXYZ& coords)
 {
-    auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
-    if (surfaceElement != nullptr && z > surfaceElement->GetBaseZ())
+    auto surfaceElement = map_get_surface_element_at(coords);
+    if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
     {
         SteamParticle* steam = &create_sprite(SPRITE_IDENTIFIER_MISC)->steam_particle;
         if (steam == nullptr)
@@ -7189,7 +7189,7 @@ static void steam_particle_create(int16_t x, int16_t y, int16_t z)
         steam->type = SPRITE_MISC_STEAM_PARTICLE;
         steam->frame = 256;
         steam->time_to_move = 0;
-        steam->MoveTo({ x, y, z });
+        steam->MoveTo(coords);
     }
 }
 
@@ -7243,7 +7243,7 @@ void Vehicle::UpdateAdditionalAnimation()
                             }();
                             int32_t directionIndex = sprite_direction >> 1;
                             auto offset = SteamParticleOffsets[typeIndex][directionIndex];
-                            steam_particle_create(x + offset.x, y + offset.y, z + offset.z);
+                            steam_particle_create({ x + offset.x, y + offset.y, z + offset.z });
                         }
                     }
                 }
