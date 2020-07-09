@@ -373,6 +373,13 @@ void staff_reset_stats()
     }
 }
 
+static std::pair<int32_t, int32_t> getPatrolAreaOffsetIndex(const CoordsXY& coords)
+{
+    // Patrol areas are 4 * 4 tiles (32 * 4) = 128 = 2^^7
+    auto hash = ((coords.x & 0x1F80) >> 7) | ((coords.y & 0x1F80) >> 1);
+    return { hash >> 5, hash & 0x1F };
+}
+
 static bool staff_is_patrol_area_set(int32_t staffIndex, const CoordsXY& coords)
 {
     // Patrol quads are stored in a bit map (8 patrol quads per byte).
@@ -381,11 +388,8 @@ static bool staff_is_patrol_area_set(int32_t staffIndex, const CoordsXY& coords)
     // At the end of the array (after the slots for individual staff members),
     // there are slots that save the combined patrol area for every staff type.
 
-    auto offsetCoords = CoordsXY{ (coords.x & 0x1F80) >> 7, (coords.y & 0x1F80) >> 1 };
-
     int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
-    int32_t offset = (offsetCoords.x | offsetCoords.y) >> 5;
-    int32_t bitIndex = (offsetCoords.x | offsetCoords.y) & 0x1F;
+    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
     return gStaffPatrolAreas[peepOffset + offset] & (1UL << bitIndex);
 }
 
@@ -401,11 +405,8 @@ bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords)
 
 void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool value)
 {
-    auto offsetCoords = CoordsXY{ (coords.x & 0x1F80) >> 7, (coords.y & 0x1F80) >> 1 };
-
     int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
-    int32_t offset = (offsetCoords.x | offsetCoords.y) >> 5;
-    int32_t bitIndex = (offsetCoords.x | offsetCoords.y) & 0x1F;
+    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
     uint32_t* addr = &gStaffPatrolAreas[peepOffset + offset];
     if (value)
     {
@@ -419,10 +420,8 @@ void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool valu
 
 void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords)
 {
-    auto offsetCoords = CoordsXY{ (coords.x & 0x1F80) >> 7, (coords.y & 0x1F80) >> 1 };
     int32_t peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
-    int32_t offset = (offsetCoords.x | offsetCoords.y) >> 5;
-    int32_t bitIndex = (offsetCoords.x | offsetCoords.y) & 0x1F;
+    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
     gStaffPatrolAreas[peepOffset + offset] ^= (1 << bitIndex);
 }
 
