@@ -76,7 +76,7 @@ public:
 
         int32_t patrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
 
-        staff_toggle_patrol_area(peep->StaffId, _loc.x, _loc.y);
+        staff_toggle_patrol_area(peep->StaffId, _loc);
 
         bool isPatrolling = false;
         for (int32_t i = 0; i < 128; i++)
