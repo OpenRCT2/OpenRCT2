@@ -2690,15 +2690,15 @@ static rct_synchronised_vehicle* _lastSynchronisedVehicle = nullptr;
  * to synchronise to the vehicle synchronisation list.
  *  rct2: 0x006DE1A4
  */
-static bool try_add_synchronised_station(int32_t x, int32_t y, int32_t z)
+static bool try_add_synchronised_station(const CoordsXYZ& coords)
 {
     // make sure we are in map bounds
-    if (!map_is_location_valid({ x, y }))
+    if (!map_is_location_valid(coords))
     {
         return false;
     }
 
-    TileElement* tileElement = get_station_platform(x, y, z, 2);
+    TileElement* tileElement = get_station_platform(coords.x, coords.y, coords.z, 2);
     if (tileElement == nullptr)
     {
         /* No station platform element found,
@@ -2819,7 +2819,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     {
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
-        if (try_add_synchronised_station(x, y, z))
+        if (try_add_synchronised_station({ x, y, z }))
         {
             spaceBetween = maxCheckDistance;
             continue;
@@ -2841,7 +2841,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     {
         x += CoordsDirectionDelta[direction].x;
         y += CoordsDirectionDelta[direction].y;
-        if (try_add_synchronised_station(x, y, z))
+        if (try_add_synchronised_station({ x, y, z }))
         {
             spaceBetween = maxCheckDistance;
             continue;
