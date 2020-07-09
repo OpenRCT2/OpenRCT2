@@ -782,13 +782,6 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
 
 void Ride::FormatStatusTo(Formatter& ft) const
 {
-    ft.Increment(FormatStatusTo(ft.Buf()));
-}
-
-size_t Ride::FormatStatusTo(void* argsV) const
-{
-    Formatter ft(static_cast<uint8_t*>(argsV));
-
     if (lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
     {
         ft.Add<rct_string_id>(STR_CRASHED);
@@ -849,7 +842,6 @@ size_t Ride::FormatStatusTo(void* argsV) const
     {
         ft.Add<rct_string_id>(STR_OPEN);
     }
-    return ft.NumBytes();
 }
 
 int32_t ride_get_total_length(const Ride* ride)

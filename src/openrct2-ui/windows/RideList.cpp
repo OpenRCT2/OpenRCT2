@@ -618,7 +618,8 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         {
             case INFORMATION_TYPE_STATUS:
                 formatSecondaryEnabled = false;
-                ride->FormatStatusTo(gCommonFormatArgs);
+                ft.Rewind();
+                ride->FormatStatusTo(ft);
 
                 // Make test red and bold if broken down or crashed
                 if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
