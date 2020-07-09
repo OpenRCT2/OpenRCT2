@@ -31,6 +31,7 @@ void bolliger_mabillard_track_flat(
         sub_98197C_rotated(
             session, direction, session->TrackColours[SCHEME_TRACK] | imageIds[direction], 0, 0, 32, 20, 3, height, 0, 6,
             height);
+
         if (track_paint_util_should_paint_supports(session->MapPosition))
         {
             metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
