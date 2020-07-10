@@ -334,24 +334,24 @@ void create_duck(const CoordsXY& pos)
     sprite->duck.frame = 0;
 }
 
-void duck_update(Duck* duck)
+void Duck::Update()
 {
-    switch (static_cast<DUCK_STATE>(duck->state))
+    switch (static_cast<DUCK_STATE>(state))
     {
         case DUCK_STATE::FLY_TO_WATER:
-            duck->UpdateFlyToWater();
+            UpdateFlyToWater();
             break;
         case DUCK_STATE::SWIM:
-            duck->UpdateSwim();
+            UpdateSwim();
             break;
         case DUCK_STATE::DRINK:
-            duck->UpdateDrink();
+            UpdateDrink();
             break;
         case DUCK_STATE::DOUBLE_DRINK:
-            duck->UpdateDoubleDrink();
+            UpdateDoubleDrink();
             break;
         case DUCK_STATE::FLY_AWAY:
-            duck->UpdateFlyAway();
+            UpdateFlyAway();
             break;
     }
 }
