@@ -44,32 +44,32 @@ void gfx_fill_rect_inset(
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
         {
-            gfx_filter_rect(dpi, left, top, right, bottom, palette.base);
+            gfx_filter_rect(dpi, { { left, top }, { right, bottom } }, palette.base);
         }
         else if (flags & INSET_RECT_FLAG_BORDER_INSET)
         {
             // Draw outline of box
-            gfx_filter_rect(dpi, left, top, left, bottom, palette.highlight);
-            gfx_filter_rect(dpi, left, top, right, top, palette.highlight);
-            gfx_filter_rect(dpi, right, top, right, bottom, palette.shadow);
-            gfx_filter_rect(dpi, left, bottom, right, bottom, palette.shadow);
+            gfx_filter_rect(dpi, { { left, top }, { left, bottom } }, palette.highlight);
+            gfx_filter_rect(dpi, { { left, top }, { right, top } }, palette.highlight);
+            gfx_filter_rect(dpi, { { right, top }, { right, bottom } }, palette.shadow);
+            gfx_filter_rect(dpi, { { left, bottom }, { right, bottom } }, palette.shadow);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
-                gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, palette.base);
+                gfx_filter_rect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, palette.base);
             }
         }
         else
         {
             // Draw outline of box
-            gfx_filter_rect(dpi, left, top, left, bottom, palette.shadow);
-            gfx_filter_rect(dpi, left, top, right, top, palette.shadow);
-            gfx_filter_rect(dpi, right, top, right, bottom, palette.highlight);
-            gfx_filter_rect(dpi, left, bottom, right, bottom, palette.highlight);
+            gfx_filter_rect(dpi, { { left, top }, { left, bottom } }, palette.shadow);
+            gfx_filter_rect(dpi, { { left, top }, { right, top } }, palette.shadow);
+            gfx_filter_rect(dpi, { { right, top }, { right, bottom } }, palette.highlight);
+            gfx_filter_rect(dpi, { { left, bottom }, { right, bottom } }, palette.highlight);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
-                gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, palette.base);
+                gfx_filter_rect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, palette.base);
             }
         }
     }
