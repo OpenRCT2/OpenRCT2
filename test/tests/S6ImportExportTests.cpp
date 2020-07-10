@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Crypt.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/MemoryStream.h>
 #include <openrct2/core/Path.hpp>
@@ -565,4 +566,14 @@ TEST(S6ImportExportAdvanceTicks, all)
     CompareStates(importBuffer, exportBuffer, importedState, exportedState);
 
     SUCCEED();
+}
+
+TEST(SeaDecrypt, DecryptSea)
+{
+    auto path = TestData::GetParkPath("volcania.sea");
+    auto decrypted = DecryptSea(path);
+    auto sha1 = Crypt::SHA1(decrypted.data(), decrypted.size());
+    std::array<uint8_t, 20> expected = { 0x1B, 0x85, 0xFC, 0xC0, 0xE8, 0x9B, 0xBE, 0x72, 0xD9, 0x1F,
+                                         0x6E, 0xC8, 0xB1, 0xFF, 0xEC, 0x70, 0x2A, 0x72, 0x05, 0xBB };
+    ASSERT_EQ(sha1, expected);
 }
