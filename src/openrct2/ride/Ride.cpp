@@ -123,7 +123,7 @@ Direction gRideEntranceExitPlaceDirection;
 uint8_t gLastEntranceStyle;
 
 // Static function declarations
-Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection);
+Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection);
 static void ride_breakdown_status_update(Ride* ride);
 static void ride_breakdown_update(Ride* ride);
 static void ride_call_closest_mechanic(Ride* ride);
@@ -2670,7 +2670,7 @@ Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
     // Set x,y to centre of the station exit for the mechanic search.
     auto centreMapLocation = mapLocation.ToTileCentre();
 
-    return find_closest_mechanic(centreMapLocation.x, centreMapLocation.y, forInspection);
+    return find_closest_mechanic(centreMapLocation, forInspection);
 }
 
 /**
@@ -2678,7 +2678,7 @@ Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
  *  rct2: 0x006B774B (forInspection = 0)
  *  rct2: 0x006B78C3 (forInspection = 1)
  */
-Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
+Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection)
 {
     Peep* closestMechanic = nullptr;
     uint32_t closestDistance = std::numeric_limits<uint32_t>::max();
@@ -2707,7 +2707,7 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
                 continue;
         }
 
-        auto location = CoordsXY(x, y).ToTileStart();
+        auto location = entrancePosition.ToTileStart();
         if (map_is_location_in_park(location))
             if (!peep->AsStaff()->IsLocationInPatrol(location))
                 continue;
@@ -2716,7 +2716,7 @@ Peep* find_closest_mechanic(int32_t x, int32_t y, int32_t forInspection)
             continue;
 
         // Manhattan distance
-        uint32_t distance = std::abs(peep->x - x) + std::abs(peep->y - y);
+        uint32_t distance = std::abs(peep->x - entrancePosition.x) + std::abs(peep->y - entrancePosition.y);
         if (distance < closestDistance)
         {
             closestDistance = distance;
