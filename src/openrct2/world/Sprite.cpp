@@ -533,21 +533,21 @@ static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex)
  *
  *  rct2: 0x00673200
  */
-static void sprite_steam_particle_update(SteamParticle* steam)
+void SteamParticle::Update()
 {
-    steam->Invalidate2();
+    Invalidate2();
 
     // Move up 1 z every 3 ticks (Starts after 4 ticks)
-    steam->time_to_move++;
-    if (steam->time_to_move >= 4)
+    time_to_move++;
+    if (time_to_move >= 4)
     {
-        steam->time_to_move = 1;
-        steam->MoveTo({ steam->x, steam->y, steam->z + 1 });
+        time_to_move = 1;
+        MoveTo({ x, y, z + 1 });
     }
-    steam->frame += 64;
-    if (steam->frame >= (56 * 64))
+    frame += 64;
+    if (frame >= (56 * 64))
     {
-        sprite_remove(steam);
+        sprite_remove(this);
     }
 }
 
@@ -574,13 +574,13 @@ void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
  *
  *  rct2: 0x00673385
  */
-static void sprite_misc_explosion_cloud_update(ExplosionCloud* sprite)
+void ExplosionCloud::Update()
 {
-    sprite->Invalidate2();
-    sprite->frame += 128;
-    if (sprite->frame >= (36 * 128))
+    Invalidate2();
+    frame += 128;
+    if (frame >= (36 * 128))
     {
-        sprite_remove(sprite);
+        sprite_remove(this);
     }
 }
 
@@ -607,13 +607,13 @@ void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
  *
  *  rct2: 0x006733B4
  */
-static void sprite_misc_explosion_flare_update(ExplosionFlare* sprite)
+void ExplosionFlare::Update()
 {
-    sprite->Invalidate2();
-    sprite->frame += 64;
-    if (sprite->frame >= (124 * 64))
+    Invalidate2();
+    frame += 64;
+    if (frame >= (124 * 64))
     {
-        sprite_remove(sprite);
+        sprite_remove(this);
     }
 }
 
@@ -626,22 +626,22 @@ static void sprite_misc_update(SpriteBase* sprite)
     switch (sprite->type)
     {
         case SPRITE_MISC_STEAM_PARTICLE:
-            sprite_steam_particle_update(sprite->As<SteamParticle>());
+            sprite->As<SteamParticle>()->Update();
             break;
         case SPRITE_MISC_MONEY_EFFECT:
             sprite->As<MoneyEffect>()->Update();
             break;
         case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
-            crashed_vehicle_particle_update(sprite->As<VehicleCrashParticle>());
+            sprite->As<VehicleCrashParticle>()->Update();
             break;
         case SPRITE_MISC_EXPLOSION_CLOUD:
-            sprite_misc_explosion_cloud_update(sprite->As<ExplosionCloud>());
+            sprite->As<ExplosionCloud>()->Update();
             break;
         case SPRITE_MISC_CRASH_SPLASH:
-            crash_splash_update(sprite->As<CrashSplashParticle>());
+            sprite->As<CrashSplashParticle>()->Update();
             break;
         case SPRITE_MISC_EXPLOSION_FLARE:
-            sprite_misc_explosion_flare_update(sprite->As<ExplosionFlare>());
+            sprite->As<ExplosionFlare>()->Update();
             break;
         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
         case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
@@ -651,7 +651,7 @@ static void sprite_misc_update(SpriteBase* sprite)
             sprite->As<Balloon>()->Update();
             break;
         case SPRITE_MISC_DUCK:
-            duck_update(sprite->As<Duck>());
+            sprite->As<Duck>()->Update();
             break;
     }
 }

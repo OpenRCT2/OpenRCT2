@@ -61,15 +61,18 @@ struct Duck : SpriteGeneric
     int16_t target_y;
     uint8_t state;
 
+    void Update();
+    uint32_t GetFrameImage(int32_t direction) const;
+    void Invalidate();
+    bool IsFlying();
+    void Remove();
+
+private:
     void UpdateFlyToWater();
     void UpdateSwim();
     void UpdateDrink();
     void UpdateDoubleDrink();
     void UpdateFlyAway();
-    uint32_t GetFrameImage(int32_t direction) const;
-    void Invalidate();
-    bool IsFlying();
-    void Remove();
 };
 
 struct MoneyEffect : SpriteBase
@@ -98,23 +101,30 @@ struct VehicleCrashParticle : SpriteGeneric
     int32_t acceleration_x;
     int32_t acceleration_y;
     int32_t acceleration_z;
+
+    void Update();
 };
 
 struct ExplosionFlare : SpriteGeneric
 {
+    void Update();
 };
 
 struct ExplosionCloud : SpriteGeneric
 {
+    void Update();
 };
 
 struct CrashSplashParticle : SpriteGeneric
 {
+    void Update();
 };
 
 struct SteamParticle : SpriteGeneric
 {
     uint16_t time_to_move;
+
+    void Update();
 };
 
 #pragma pack(push, 1)
