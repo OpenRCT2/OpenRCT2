@@ -7211,10 +7211,10 @@ money16 ride_get_price(const Ride* ride)
  * Return the tile_element of an adjacent station at x,y,z(+-2).
  * Returns nullptr if no suitable tile_element is found.
  */
-TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tolerance)
+TileElement* get_station_platform(const CoordsXYRangedZ& coords)
 {
     bool foundTileElement = false;
-    TileElement* tileElement = map_get_first_element_at({ x, y });
+    TileElement* tileElement = map_get_first_element_at(coords);
     if (tileElement != nullptr)
     {
         do
@@ -7225,7 +7225,7 @@ TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tol
             if (!tileElement->AsTrack()->IsStation())
                 continue;
 
-            if (z - z_tolerance > tileElement->GetBaseZ() || z + z_tolerance < tileElement->GetBaseZ())
+            if (coords.baseZ > tileElement->GetBaseZ() || coords.clearanceZ < tileElement->GetBaseZ())
             {
                 /* The base height if tileElement is not within
                  * the z tolerance. */
@@ -7256,7 +7256,7 @@ static bool check_for_adjacent_station(int32_t x, int32_t y, int32_t z, uint8_t 
     {
         adjX += CoordsDirectionDelta[direction].x;
         adjY += CoordsDirectionDelta[direction].y;
-        TileElement* stationElement = get_station_platform(adjX, adjY, z, 2 * COORDS_Z_STEP);
+        TileElement* stationElement = get_station_platform({ { adjX, adjY, z }, z + 2 * COORDS_Z_STEP });
         if (stationElement != nullptr)
         {
             auto rideIndex = stationElement->AsTrack()->GetRideIndex();
@@ -7285,7 +7285,7 @@ bool ride_has_adjacent_station(Ride* ride)
         if (!stationStart.isNull())
         {
             /* Get the map element for the station start. */
-            TileElement* stationElement = get_station_platform(stationStart.x, stationStart.y, stationStart.z, 0);
+            TileElement* stationElement = get_station_platform({ stationStart, stationStart.z + 0 });
             if (stationElement == nullptr)
             {
                 continue;

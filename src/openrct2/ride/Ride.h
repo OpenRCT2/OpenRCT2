@@ -1201,7 +1201,7 @@ void window_ride_construction_do_entrance_exit_check();
 
 money16 ride_get_price(const Ride* ride);
 
-TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tolerance);
+TileElement* get_station_platform(const CoordsXYRangedZ& coords);
 bool ride_has_adjacent_station(Ride* ride);
 bool ride_has_station_shelter(Ride* ride);
 bool ride_has_ratings(const Ride* ride);
