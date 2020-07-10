@@ -660,7 +660,7 @@ namespace OpenRCT2::Ui::Windows
 
         const auto& desc = GetInfo(w).Desc;
         auto ft = Formatter::Common();
-        ft.Add<void*>(desc.Title.c_str());
+        ft.Add<const char*>(desc.Title.c_str());
 
         auto& info = GetInfo(w);
         size_t scrollIndex = 0;
