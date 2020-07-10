@@ -7225,7 +7225,7 @@ TileElement* get_station_platform(int32_t x, int32_t y, int32_t z, int32_t z_tol
             if (!tileElement->AsTrack()->IsStation())
                 continue;
 
-            if (z - z_tolerance > tileElement->base_height || z + z_tolerance < tileElement->base_height)
+            if (z - z_tolerance > tileElement->GetBaseZ() || z + z_tolerance < tileElement->GetBaseZ())
             {
                 /* The base height if tileElement is not within
                  * the z tolerance. */
@@ -7256,7 +7256,7 @@ static bool check_for_adjacent_station(int32_t x, int32_t y, int32_t z, uint8_t 
     {
         adjX += CoordsDirectionDelta[direction].x;
         adjY += CoordsDirectionDelta[direction].y;
-        TileElement* stationElement = get_station_platform(adjX, adjY, z, 2);
+        TileElement* stationElement = get_station_platform(adjX, adjY, z, 2 * COORDS_Z_STEP);
         if (stationElement != nullptr)
         {
             auto rideIndex = stationElement->AsTrack()->GetRideIndex();
@@ -7281,25 +7281,23 @@ bool ride_has_adjacent_station(Ride* ride)
      * adjacent station on either side. */
     for (StationIndex stationNum = 0; stationNum < MAX_STATIONS; stationNum++)
     {
-        auto stationStart = ride->stations[stationNum].Start;
+        auto stationStart = ride->stations[stationNum].GetStart();
         if (!stationStart.isNull())
         {
             /* Get the map element for the station start. */
-            auto stationZ = ride->stations[stationNum].Height;
-
-            TileElement* stationElement = get_station_platform(stationStart.x, stationStart.y, stationZ, 0);
+            TileElement* stationElement = get_station_platform(stationStart.x, stationStart.y, stationStart.z, 0);
             if (stationElement == nullptr)
             {
                 continue;
             }
             /* Check the first side of the station */
             int32_t direction = stationElement->GetDirectionWithOffset(1);
-            found = check_for_adjacent_station(stationStart.x, stationStart.y, stationZ, direction);
+            found = check_for_adjacent_station(stationStart.x, stationStart.y, stationStart.z, direction);
             if (found)
                 break;
             /* Check the other side of the station */
             direction = direction_reverse(direction);
-            found = check_for_adjacent_station(stationStart.x, stationStart.y, stationZ, direction);
+            found = check_for_adjacent_station(stationStart.x, stationStart.y, stationStart.z, direction);
             if (found)
                 break;
         }
