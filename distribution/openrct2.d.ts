@@ -226,6 +226,7 @@ declare global {
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
         subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
+        subscribe(hook: "key.pressed", callback: (e: KeyArgs) => void): IDisposable;
     }
 
     interface Configuration {
@@ -360,6 +361,10 @@ declare global {
         readonly isClientOnly: boolean;
         result: boolean;
     }
+	
+	interface KeyArgs {
+		readonly key: string;
+	}
 
     /**
      * APIs for the in-game date.

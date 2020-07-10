@@ -9,6 +9,7 @@
 
 #include "Input.h"
 
+#include "../../openrct2/Context.h"
 #include "../UiContext.h"
 #include "../interface/InGameConsole.h"
 #include "KeyboardShortcuts.h"
@@ -24,8 +25,12 @@
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/paint/VirtualFloor.h>
+#include <openrct2/scripting/Duktape.hpp>
+#include <openrct2/scripting/ScriptEngine.h>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
+using namespace OpenRCT2::Scripting;
 
 static void input_handle_console(int32_t key)
 {
@@ -178,10 +183,27 @@ void input_handle_keyboard(bool isTitle)
             virtual_floor_disable();
     }
 
+#ifdef ENABLE_SCRIPTING
+    auto& scriptingEngine = GetContext()->GetScriptEngine();
+    auto& hookEngine = scriptingEngine.GetHookEngine();
+    auto ctx = scriptingEngine.GetContext();
+#endif
+
     // Handle key input
     int32_t key;
+
     while (!gOpenRCT2Headless && (key = get_next_key()) != 0)
     {
+#ifdef ENABLE_SCRIPTING
+        // Create event args object
+        auto obj = DukObject(ctx);
+        std::string keyname = SDL_GetScancodeName(static_cast<SDL_Scancode>(key));
+        obj.Set("key", keyname);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(HOOK_TYPE::KEY_PRESSED, e, true);
+#endif
         if (key == 255)
             continue;
 

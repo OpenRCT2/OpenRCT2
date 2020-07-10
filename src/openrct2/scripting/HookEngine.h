@@ -30,6 +30,7 @@ namespace OpenRCT2::Scripting
     {
         ACTION_QUERY,
         ACTION_EXECUTE,
+        KEY_PRESSED,
         INTERVAL_TICK,
         INTERVAL_DAY,
         NETWORK_CHAT,
