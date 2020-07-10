@@ -2698,7 +2698,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
         return false;
     }
 
-    TileElement* tileElement = get_station_platform(coords.x, coords.y, coords.z, 2);
+    TileElement* tileElement = get_station_platform(coords.x, coords.y, coords.z, 2 * COORDS_Z_STEP);
     if (tileElement == nullptr)
     {
         /* No station platform element found,
@@ -2792,9 +2792,6 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
 static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex station)
 {
     auto location = ride.stations[station].GetStart();
-    int32_t x = location.x;
-    int32_t y = location.y;
-    int32_t z = ride.stations[station].Height;
 
     auto tileElement = map_get_track_element_at(location);
     if (tileElement == nullptr)
@@ -2817,9 +2814,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
-        x += CoordsDirectionDelta[direction].x;
-        y += CoordsDirectionDelta[direction].y;
-        if (try_add_synchronised_station({ x, y, z }))
+        if (try_add_synchronised_station(location + CoordsXYZ{ CoordsDirectionDelta[direction], 0 }))
         {
             spaceBetween = maxCheckDistance;
             continue;
@@ -2830,18 +2825,12 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
         }
     }
 
-    // Reset back to starting tile.
-    x = location.x;
-    y = location.y;
-
     // Other search direction.
     direction = direction_reverse(direction) & 3;
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
-        x += CoordsDirectionDelta[direction].x;
-        y += CoordsDirectionDelta[direction].y;
-        if (try_add_synchronised_station({ x, y, z }))
+        if (try_add_synchronised_station(location + CoordsXYZ{ CoordsDirectionDelta[direction], 0 }))
         {
             spaceBetween = maxCheckDistance;
             continue;
