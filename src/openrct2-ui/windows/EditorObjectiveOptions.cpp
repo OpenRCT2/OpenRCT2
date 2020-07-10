@@ -1138,7 +1138,7 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
 static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t colour = ColourMapA[w->colours[1]].mid_light;
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, colour);
+    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
 
     for (int32_t i = 0; i < w->no_list_items; i++)
     {

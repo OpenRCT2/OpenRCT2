@@ -32,7 +32,7 @@ static void graph_draw_months_uint8_t(
                 dpi, STR_GRAPH_LABEL, screenCoords - ScreenCoordsXY{ 0, 10 }, COLOUR_BLACK, gCommonFormatArgs);
 
             // Draw month mark
-            gfx_fill_rect(dpi, screenCoords.x, screenCoords.y, screenCoords.x, screenCoords.y + 3, PALETTE_INDEX_10);
+            gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
         }
 
         yearOver32 = (yearOver32 + 1) % 32;
@@ -59,7 +59,7 @@ static void graph_draw_line_a_uint8_t(
                 gfx_draw_line(dpi, lastX, lastY + 1, x, y + 1, PALETTE_INDEX_10);
             }
             if (i == 0)
-                gfx_fill_rect(dpi, x, y, x + 2, y + 2, PALETTE_INDEX_10);
+                gfx_fill_rect(dpi, { { x, y }, { x + 2, y + 2 } }, PALETTE_INDEX_10);
 
             lastX = x;
             lastY = y;
@@ -85,7 +85,7 @@ static void graph_draw_line_b_uint8_t(
             if (lastX != -1)
                 gfx_draw_line(dpi, lastX, lastY, x, y, PALETTE_INDEX_21);
             if (i == 0)
-                gfx_fill_rect(dpi, x - 1, y - 1, x + 1, y + 1, PALETTE_INDEX_21);
+                gfx_fill_rect(dpi, { { x - 1, y - 1 }, { x + 1, y + 1 } }, PALETTE_INDEX_21);
 
             lastX = x;
             lastY = y;
@@ -119,7 +119,7 @@ static void graph_draw_months_money32(
             gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, screenCoords - ScreenCoordsXY{ 0, 10 }, COLOUR_BLACK, &monthFormat);
 
             // Draw month mark
-            gfx_fill_rect(dpi, screenCoords.x, screenCoords.y, screenCoords.x, screenCoords.y + 3, PALETTE_INDEX_10);
+            gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
         }
 
         yearOver32 = (yearOver32 + 1) % 32;
@@ -147,7 +147,7 @@ static void graph_draw_line_a_money32(
                 gfx_draw_line(dpi, lastX, lastY + 1, x, y + 1, PALETTE_INDEX_10);
             }
             if (i == 0)
-                gfx_fill_rect(dpi, x, y, x + 2, y + 2, PALETTE_INDEX_10);
+                gfx_fill_rect(dpi, { { x, y }, { x + 2, y + 2 } }, PALETTE_INDEX_10);
 
             lastX = x;
             lastY = y;
@@ -174,7 +174,7 @@ static void graph_draw_line_b_money32(
             if (lastX != -1)
                 gfx_draw_line(dpi, lastX, lastY, x, y, PALETTE_INDEX_21);
             if (i == 0)
-                gfx_fill_rect(dpi, x - 1, y - 1, x + 1, y + 1, PALETTE_INDEX_21);
+                gfx_fill_rect(dpi, { { x - 1, y - 1 }, { x + 1, y + 1 } }, PALETTE_INDEX_21);
 
             lastX = x;
             lastY = y;
@@ -259,8 +259,9 @@ static void graph_draw_hovered_value(
     gfx_draw_string_centred(
         dpi, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, info.coords - ScreenCoordsXY{ 0, 16 }, COLOUR_BLACK, &info.money);
 
-    gfx_fill_rect(dpi, info.coords.x - 2, info.coords.y - 2, info.coords.x + 2, info.coords.y + 2, PALETTE_INDEX_10);
-    gfx_fill_rect(dpi, info.coords.x - 1, info.coords.y - 1, info.coords.x + 1, info.coords.y + 1, PALETTE_INDEX_21);
+    gfx_fill_rect(dpi, { { info.coords - ScreenCoordsXY{ 2, 2 } }, info.coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
+    gfx_fill_rect(
+        dpi, { { info.coords - ScreenCoordsXY{ 1, 1 } }, { info.coords + ScreenCoordsXY{ 1, 1 } } }, PALETTE_INDEX_21);
 }
 
 void graph_draw_money32(

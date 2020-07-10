@@ -567,8 +567,10 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     // Preview background
     widget = &w->widgets[WIDX_PREVIEW];
     gfx_fill_rect(
-        dpi, w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1, w->windowPos.x + widget->right - 1,
-        w->windowPos.y + widget->bottom - 1, ColourMapA[w->colours[1]].darkest);
+        dpi,
+        { w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 },
+          w->windowPos + ScreenCoordsXY{ widget->right - 1, widget->bottom - 1 } },
+        ColourMapA[w->colours[1]].darkest);
 
     researchItem = &_editorInventionsListDraggedItem;
     if (researchItem->IsNull())

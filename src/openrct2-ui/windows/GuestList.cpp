@@ -745,7 +745,9 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
     rct_peep_thought* thought;
 
     // Background fill
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+    gfx_fill_rect(
+        dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } },
+        ColourMapA[w->colours[1]].mid_light);
     switch (_window_guest_list_selected_tab)
     {
         case PAGE_INDIVIDUAL:
