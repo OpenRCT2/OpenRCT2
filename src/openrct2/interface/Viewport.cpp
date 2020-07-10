@@ -406,17 +406,17 @@ static void viewport_shift_pixels(
     viewport_redraw_after_shift(dpi, window, viewport, x_diff, y_diff);
 }
 
-static void viewport_move(int16_t x, int16_t y, rct_window* w, rct_viewport* viewport)
+static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewport* viewport)
 {
     auto zoom = viewport->zoom;
 
     // Note: do not do the subtraction and then divide!
     // Note: Due to arithmetic shift != /zoom a shift will have to be used
     // hopefully when 0x006E7FF3 is finished this can be converted to /zoom.
-    int16_t x_diff = (viewport->viewPos.x / viewport->zoom) - (x / viewport->zoom);
-    int16_t y_diff = (viewport->viewPos.y / viewport->zoom) - (y / viewport->zoom);
+    int16_t x_diff = (viewport->viewPos.x / viewport->zoom) - (coords.x / viewport->zoom);
+    int16_t y_diff = (viewport->viewPos.y / viewport->zoom) - (coords.y / viewport->zoom);
 
-    viewport->viewPos = { x, y };
+    viewport->viewPos = coords;
 
     // If no change in viewing area
     if ((!x_diff) && (!y_diff))
@@ -543,10 +543,10 @@ void viewport_update_position(rct_window* window)
 
     viewport_set_underground_flag(0, window, viewport);
 
-    int16_t x = window->savedViewPos.x + viewport->view_width / 2;
-    int16_t y = window->savedViewPos.y + viewport->view_height / 2;
+    auto viewportMidPoint = ScreenCoordsXY{ window->savedViewPos.x + viewport->view_width / 2,
+                                            window->savedViewPos.y + viewport->view_height / 2 };
 
-    auto mapCoord = viewport_coord_to_map_coord(x, y, 0);
+    auto mapCoord = viewport_coord_to_map_coord(viewportMidPoint.x, viewportMidPoint.y, 0);
 
     // Clamp to the map minimum value
     int32_t at_map_edge = 0;
@@ -582,45 +582,44 @@ void viewport_update_position(rct_window* window)
         }
     }
 
-    x = window->savedViewPos.x;
-    y = window->savedViewPos.y;
+    auto windowCoords = window->savedViewPos;
     if (window->flags & WF_SCROLLING_TO_LOCATION)
     {
         // Moves the viewport if focusing in on an item
         uint8_t flags = 0;
-        x -= viewport->viewPos.x;
-        if (x < 0)
+        windowCoords.x -= viewport->viewPos.x;
+        if (windowCoords.x < 0)
         {
-            x = -x;
+            windowCoords.x = -windowCoords.x;
             flags |= 1;
         }
-        y -= viewport->viewPos.y;
-        if (y < 0)
+        windowCoords.y -= viewport->viewPos.y;
+        if (windowCoords.y < 0)
         {
-            y = -y;
+            windowCoords.y = -windowCoords.y;
             flags |= 2;
         }
-        x = (x + 7) / 8;
-        y = (y + 7) / 8;
+        windowCoords.x = (windowCoords.x + 7) / 8;
+        windowCoords.y = (windowCoords.y + 7) / 8;
 
         // If we are at the final zoom position
-        if (!x && !y)
+        if (!windowCoords.x && !windowCoords.y)
         {
             window->flags &= ~WF_SCROLLING_TO_LOCATION;
         }
         if (flags & 1)
         {
-            x = -x;
+            windowCoords.x = -windowCoords.x;
         }
         if (flags & 2)
         {
-            y = -y;
+            windowCoords.y = -windowCoords.y;
         }
-        x += viewport->viewPos.x;
-        y += viewport->viewPos.y;
+        windowCoords.x += viewport->viewPos.x;
+        windowCoords.y += viewport->viewPos.y;
     }
 
-    viewport_move(x, y, window, viewport);
+    viewport_move(windowCoords, window, viewport);
 }
 
 void viewport_update_sprite_follow(rct_window* window)
@@ -641,7 +640,7 @@ void viewport_update_sprite_follow(rct_window* window)
         if (centreLoc)
         {
             window->savedViewPos = *centreLoc;
-            viewport_move(centreLoc->x, centreLoc->y, window, window->viewport);
+            viewport_move(*centreLoc, window, window->viewport);
         }
     }
 }
