@@ -57,63 +57,61 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ
  *
  *  rct2: 0x00673298
  */
-void crashed_vehicle_particle_update(VehicleCrashParticle* particle)
+void VehicleCrashParticle::Update()
 {
-    particle->Invalidate0();
-    particle->time_to_live--;
-    if (particle->time_to_live == 0)
+    Invalidate0();
+    time_to_live--;
+    if (time_to_live == 0)
     {
-        sprite_remove(particle);
+        sprite_remove(this);
         return;
     }
 
     // Apply gravity
-    particle->acceleration_z -= 5041;
+    acceleration_z -= 5041;
 
     // Apply air resistance
-    particle->acceleration_x -= (particle->acceleration_x / 256);
-    particle->acceleration_y -= (particle->acceleration_y / 256);
-    particle->acceleration_z -= (particle->acceleration_z / 256);
+    acceleration_x -= (acceleration_x / 256);
+    acceleration_y -= (acceleration_y / 256);
+    acceleration_z -= (acceleration_z / 256);
 
     // Update velocity and position
-    int32_t vx = particle->velocity_x + particle->acceleration_x;
-    int32_t vy = particle->velocity_y + particle->acceleration_y;
-    int32_t vz = particle->velocity_z + particle->acceleration_z;
+    int32_t vx = velocity_x + acceleration_x;
+    int32_t vy = velocity_y + acceleration_y;
+    int32_t vz = velocity_z + acceleration_z;
 
-    int16_t x = particle->x + (vx >> 16);
-    int16_t y = particle->y + (vy >> 16);
-    int16_t z = particle->z + (vz >> 16);
+    CoordsXYZ newLoc = { x + (vx >> 16), y + (vy >> 16), z + (vz >> 16) };
 
-    particle->velocity_x = vx & 0xFFFF;
-    particle->velocity_y = vy & 0xFFFF;
-    particle->velocity_z = vz & 0xFFFF;
+    velocity_x = vx & 0xFFFF;
+    velocity_y = vy & 0xFFFF;
+    velocity_z = vz & 0xFFFF;
 
     // Check collision with land / water
-    int16_t landZ = tile_element_height({ x, y });
-    int16_t waterZ = tile_element_water_height({ x, y });
+    int16_t landZ = tile_element_height(newLoc);
+    int16_t waterZ = tile_element_water_height(newLoc);
 
-    if (waterZ != 0 && particle->z >= waterZ && z <= waterZ)
+    if (waterZ != 0 && z >= waterZ && newLoc.z <= waterZ)
     {
         // Splash
-        audio_play_sound_at_location(SoundId::Water2, { particle->x, particle->y, waterZ });
-        crash_splash_create({ particle->x, particle->y, waterZ });
-        sprite_remove(particle);
+        audio_play_sound_at_location(SoundId::Water2, { x, y, waterZ });
+        crash_splash_create({ x, y, waterZ });
+        sprite_remove(this);
         return;
     }
 
-    if (particle->z >= landZ && z <= landZ)
+    if (z >= landZ && newLoc.z <= landZ)
     {
         // Bounce
-        particle->acceleration_z *= -1;
-        z = landZ;
+        acceleration_z *= -1;
+        newLoc.z = landZ;
     }
-    particle->MoveTo({ x, y, z });
-    particle->Invalidate0();
+    MoveTo(newLoc);
+    Invalidate0();
 
-    particle->frame += 85;
-    if (particle->frame >= 3072)
+    frame += 85;
+    if (frame >= 3072)
     {
-        particle->frame = 0;
+        frame = 0;
     }
 }
 
@@ -140,12 +138,12 @@ void crash_splash_create(const CoordsXYZ& splashPos)
  *
  *  rct2: 0x0067339D
  */
-void crash_splash_update(CrashSplashParticle* splash)
+void CrashSplashParticle::Update()
 {
-    splash->Invalidate2();
-    splash->frame += 85;
-    if (splash->frame >= 7168)
+    Invalidate2();
+    frame += 85;
+    if (frame >= 7168)
     {
-        sprite_remove(splash);
+        sprite_remove(this);
     }
 }
