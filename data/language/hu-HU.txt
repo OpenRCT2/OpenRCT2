@@ -2674,7 +2674,7 @@ STR_5336    :Játék kijárata
 STR_5337    :Park bejárata
 STR_5338    :Elem típusa
 STR_5339    :{SMALLFONT}{BLACK}Alapmagasság
-STR_5340    :{SMALLFONT}{BLACK}Felszín feletti magasság
+STR_5340    :{SMALLFONT}{BLACK}Űrszelvénymagasság
 STR_5343    :Alkalmazottak automatikus lerakása
 STR_5344    :Változási napló
 STR_5345    :Pénzügyi csalások
@@ -2697,7 +2697,7 @@ STR_5361    :Minden vendég kapjon:
 STR_5362    :{BLACK}A vendégek preferált játékintenzitása:
 STR_5363    :Több mint 1
 STR_5364    :Kevesebb mint 15
-STR_5365    :{BLACK}Személyzet gyors.:
+STR_5365    :{BLACK}Dolgozók sebessége:
 STR_5366    :Normál
 STR_5367    :Gyors
 STR_5368    :Ütközés törlése
@@ -2785,7 +2785,7 @@ STR_5452    :Eszköztárak megjelenítése be/ki
 STR_5453    :Másik játék választása
 STR_5454    :Korlátlan FPS
 STR_5455    :Homokozó mód be
-STR_5456    :Távolság-ellenőrzés ki
+STR_5456    :Űrszelvény-ellenőrzés ki
 STR_5457    :Állványzatlimitek ki
 STR_5458    :Forgatás órajárás szerint
 STR_5459    :Forgatás órajárással ellentétesen
@@ -2934,6 +2934,15 @@ STR_5604    :A vendég vett valamit
 STR_5605    :A vendég használt egy létesítményt
 STR_5606    :A vendég meghalt
 STR_5607    :{SMALLFONT}{BLACK}A kiválasztott térképelem kényszerített eltávolítása.
+STR_5608    :AM
+STR_5609    :ŰM
+STR_5610    :{SMALLFONT}{BLACK}A jelenleg kiválasztott térképelem eltávolítása. Erővel távolítja el, így nem kapsz/veszítesz pénzt. Óvatosan használd.
+STR_5611    :S
+STR_5612    :{SMALLFONT}{BLACK}Szellem zászló
+STR_5613    :T
+STR_5614    :{SMALLFONT}{BLACK}Törött zászló
+STR_5615    :U
+STR_5616    :{SMALLFONT}{BLACK}Utolsó elem a mezőn zászló
 STR_5617    :{SMALLFONT}{BLACK}A kiválasztott elem felfelé mozgatása.
 STR_5618    :{SMALLFONT}{BLACK}A kiválasztott elem lefelé mozgatása.
 STR_5619    :RollerCoaster Tycoon
@@ -3134,12 +3143,15 @@ STR_5862    :Ismeretlen játékosok blokkolása.
 STR_5863    :{SMALLFONT}{BLACK}Csak az ismert kulcsokkal rendelkező játékosok csatlakozhassanak.
 STR_5864    :Ehhez a szerverhez csak fehérlistás játékosok csatlakozhatnak.
 STR_5865    :Chat előzmények naplózása
+STR_5866    :{SMALLFONT}{BLACK}Minden chat előzményt naplóz a felhasználói mappádban lévő fájlokba.
 STR_5867    :{WINDOW_COLOUR_2}Szolgáltató neve: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Szolgáltató e-mail címe: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Szolgáltató weboldala: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Szerver információ
 STR_5871    :Nem öregedő növények
 STR_5872    :{SMALLFONT}{BLACK}A növények öregedésének kikapcsolása, hogy ne hervadjanak el
+STR_5873    :Minden pályarész lehet láncos felvonó
+STR_5874    :{SMALLFONT}{BLACK}Lehetővé teszi, hogy bármelyik pályarészből lehessen láncos felvonót csinálni
 STR_5875    :Grafikus motor:
 STR_5876    :{SMALLFONT}{BLACK}A játék grafikus megjelenítő motorja.
 STR_5877    :Szoftveres
@@ -3233,7 +3245,7 @@ STR_5970    :{WINDOW_COLOUR_2}Bejárat ID: {BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}Kijárat ID: {BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}Játék ID: {BLACK}{COMMA16}
 STR_5973    :Következőhöz erősítés
-STR_5974    :{SMALLFONT}{BLACK}Megváltoztatja az alap- és a felszín feletti magasságot, hogy megegyezzen a jelenlegi mező következő elemével. Ez megkönnyíti az építkezést ezen a mezőn
+STR_5974    :{SMALLFONT}{BLACK}Megváltoztatja az alap- és az űrszelvénymagasságot, hogy megegyezzen a jelenlegi mező következő elemével. Ez megkönnyíti az építkezést ezen a mezőn
 STR_5975    :Elhajlás:
 STR_5976    :Egyenes
 STR_5977    :Jobbról felfelé
@@ -3621,6 +3633,11 @@ STR_6369    :Pályaépítés érvénytelen magasságokban
 STR_6370    :{SMALLFONT}{BLACK}Lehetővé teszi, hogy bármely köztes magasságban lehessen pályarészeket elhelyezni
 STR_6371    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de a „csg1i.dat” fájl hiányzik. Ezt a fájlt át kell másolni a RollerCoaster Tycoon 1 CD-ről a merevlemezedre telepített RollerCoaster Tycoon 1 „Data” mappájába.
 STR_6372    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de ez a verzió nem megfelelő. Az OpenRCT2-nek egy Loopy Landscapes, vagy RCT Deluxe telepítésre van szüksége a RollerCoaster Tycoon 1 fájljainak használatához.
+STR_6373    :Űrszelvény-ellenőrzés be/ki
+STR_6374    :Ű
+STR_6375    :Ismeretlen játék
+STR_6376    :{WINDOW_COLOUR_2}Jármű egy játékhoz:{NEWLINE}{BLACK}{STRINGID} a(z) {STRINGID} számára
+STR_6377    :{WINDOW_COLOUR_2}Típus: {BLACK}{STRINGID} a(z) {STRINGID} számára
 
 #############
 # Scenarios #
