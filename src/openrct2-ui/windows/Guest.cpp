@@ -1720,13 +1720,8 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t left = dpi->x;
-    int32_t right = dpi->x + dpi->width - 1;
-    int32_t top = dpi->y;
-    int32_t bottom = dpi->y + dpi->height - 1;
-
     auto colour = ColourMapA[w->colours[1]].mid_light;
-    gfx_fill_rect(dpi, left, top, right, bottom, colour);
+    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
 
     for (int32_t list_index = 0; list_index < w->no_list_items; list_index++)
     {

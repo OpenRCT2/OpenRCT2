@@ -679,7 +679,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Darken every even row
         if (i % 2 == 0)
             gfx_fill_rect(
-                dpi, screenCoords.x, screenCoords.y - 1, screenCoords.x + 121, screenCoords.y + (TABLE_CELL_HEIGHT - 2),
+                dpi, { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
                 ColourMapA[w->colours[1]].lighter | 0x1000000);
 
         gfx_draw_string_left(
@@ -735,7 +735,8 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         // Darken every even row
         if (i % 2 == 0)
             gfx_fill_rect(
-                dpi, screenCoords.x, screenCoords.y - 1, screenCoords.x + row_width, screenCoords.y + (TABLE_CELL_HEIGHT - 2),
+                dpi,
+                { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ row_width, (TABLE_CELL_HEIGHT - 2) } },
                 ColourMapA[w->colours[1]].lighter | 0x1000000);
 
         screenCoords.y += TABLE_CELL_HEIGHT;
@@ -781,7 +782,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
             dpi, profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE, &profit, COLOUR_BLACK,
             screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
         gfx_fill_rect(
-            dpi, screenCoords.x + 10, screenCoords.y - 2, screenCoords.x + EXPENDITURE_COLUMN_WIDTH, screenCoords.y - 2,
+            dpi, { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
             PALETTE_INDEX_10);
 
         screenCoords.x += EXPENDITURE_COLUMN_WIDTH;

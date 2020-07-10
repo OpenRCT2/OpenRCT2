@@ -748,7 +748,9 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+    gfx_fill_rect(
+        dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } },
+        ColourMapA[w->colours[1]].mid_light);
     const int32_t listWidth = w->widgets[WIDX_SCROLL].width();
     const int32_t dateAnchor = w->widgets[WIDX_SORT_DATE].left + maxDateWidth + DATE_TIME_GAP;
 

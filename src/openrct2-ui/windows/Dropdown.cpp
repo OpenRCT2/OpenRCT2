@@ -347,8 +347,8 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
             else
             {
-                gfx_fill_rect(dpi, l, t, r, b, ColourMapA[w->colours[0]].mid_dark);
-                gfx_fill_rect(dpi, l, t + 1, r, b + 1, ColourMapA[w->colours[0]].lightest);
+                gfx_fill_rect(dpi, { { l, t }, { r, b } }, ColourMapA[w->colours[0]].mid_dark);
+                gfx_fill_rect(dpi, { { l, t + 1 }, { r, b + 1 } }, ColourMapA[w->colours[0]].lightest);
             }
         }
         else

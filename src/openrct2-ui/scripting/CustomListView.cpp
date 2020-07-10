@@ -535,7 +535,7 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
 void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scroll* scroll) const
 {
     auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, paletteIndex);
+    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, paletteIndex);
 
     int32_t y = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
     for (size_t i = 0; i < Items.size(); i++)
@@ -566,7 +566,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
             else if (isStriped)
             {
                 gfx_fill_rect(
-                    dpi, dpi->x, y, dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1),
+                    dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
                     ColourMapA[w->colours[1]].lighter | 0x1000000);
             }
 
@@ -608,7 +608,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
         y = scroll->v_top;
 
         auto bgColour = ColourMapA[w->colours[1]].mid_light;
-        gfx_fill_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + 12, bgColour);
+        gfx_fill_rect(dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + 12 } }, bgColour);
 
         int32_t x = 0;
         for (int32_t j = 0; j < static_cast<int32_t>(Columns.size()); j++)
