@@ -855,14 +855,12 @@ static void track_design_add_selection_tile(int16_t x, int16_t y)
     gMapSelectionTiles.push_back(CoordsXY(x, y));
 }
 
-static void track_design_update_max_min_coordinates(int16_t x, int16_t y, int16_t z)
+static void track_design_update_max_min_coordinates(const CoordsXYZ& coords)
 {
-    _trackPreviewMin.x = std::min(_trackPreviewMin.x, static_cast<int32_t>(x));
-    _trackPreviewMax.x = std::max(_trackPreviewMax.x, static_cast<int32_t>(x));
-    _trackPreviewMin.y = std::min(_trackPreviewMin.y, static_cast<int32_t>(y));
-    _trackPreviewMax.y = std::max(_trackPreviewMax.y, static_cast<int32_t>(y));
-    _trackPreviewMin.z = std::min(_trackPreviewMin.z, static_cast<int32_t>(z));
-    _trackPreviewMax.z = std::max(_trackPreviewMax.z, static_cast<int32_t>(z));
+    _trackPreviewMin = { std::min(_trackPreviewMin.x, coords.x), std::min(_trackPreviewMin.y, coords.y),
+                         std::min(_trackPreviewMin.z, coords.z) };
+    _trackPreviewMax = { std::max(_trackPreviewMax.x, coords.x), std::max(_trackPreviewMax.y, coords.y),
+                         std::max(_trackPreviewMax.z, coords.z) };
 }
 
 static bool TrackDesignPlaceSceneryElementGetEntry(
@@ -1289,8 +1287,8 @@ static int32_t track_design_place_all_scenery(
             TileCoordsXY offsets = { scenery.x, scenery.y };
             tileCoords += offsets.Rotate(rotation);
 
-            CoordsXY mapCoord = tileCoords.ToCoordsXY();
-            track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, originZ);
+            auto mapCoord = CoordsXYZ{ tileCoords.ToCoordsXY(), originZ };
+            track_design_update_max_min_coordinates(mapCoord);
 
             if (!TrackDesignPlaceSceneryElement(mapCoord, mode, scenery, rotation, originZ))
             {
@@ -1321,7 +1319,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
         mapCoord.x += x;
         mapCoord.y += y;
 
-        track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, z);
+        track_design_update_max_min_coordinates({ mapCoord, z });
 
         if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
         {
@@ -1534,7 +1532,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
             trackType = TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP;
         }
 
-        track_design_update_max_min_coordinates(x, y, z);
+        track_design_update_max_min_coordinates({ x, y, z });
 
         switch (_trackDesignPlaceOperation)
         {
@@ -1542,7 +1540,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 for (const rct_preview_track* trackBlock = trackBlockArray[trackType]; trackBlock->index != 0xFF; trackBlock++)
                 {
                     auto tile = CoordsXY{ x, y } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
-                    track_design_update_max_min_coordinates(tile.x, tile.y, z);
+                    track_design_update_max_min_coordinates({ tile, z });
                     track_design_add_selection_tile(tile.x, tile.y);
                 }
                 break;
@@ -1688,7 +1686,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
         x = rotatedEntranceMapPos.x + _trackPreviewOrigin.x;
         y = rotatedEntranceMapPos.y + _trackPreviewOrigin.y;
 
-        track_design_update_max_min_coordinates(x, y, z);
+        track_design_update_max_min_coordinates({ x, y, z });
 
         switch (_trackDesignPlaceOperation)
         {
