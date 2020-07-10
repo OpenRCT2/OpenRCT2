@@ -2698,7 +2698,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
         return false;
     }
 
-    TileElement* tileElement = get_station_platform(coords.x, coords.y, coords.z, 2 * COORDS_Z_STEP);
+    TileElement* tileElement = get_station_platform({ coords, coords.z + 2 * COORDS_Z_STEP });
     if (tileElement == nullptr)
     {
         /* No station platform element found,

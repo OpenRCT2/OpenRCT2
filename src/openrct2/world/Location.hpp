@@ -218,6 +218,49 @@ struct CoordsXY
     }
 };
 
+struct CoordsXYZ : public CoordsXY
+{
+    int32_t z = 0;
+
+    CoordsXYZ() = default;
+    constexpr CoordsXYZ(int32_t _x, int32_t _y, int32_t _z)
+        : CoordsXY(_x, _y)
+        , z(_z)
+    {
+    }
+
+    constexpr CoordsXYZ(const CoordsXY& c, int32_t _z)
+        : CoordsXY(c)
+        , z(_z)
+    {
+    }
+
+    const CoordsXYZ operator+(const CoordsXYZ& rhs) const
+    {
+        return { x + rhs.x, y + rhs.y, z + rhs.z };
+    }
+
+    const CoordsXYZ operator-(const CoordsXYZ& rhs) const
+    {
+        return { x - rhs.x, y - rhs.y, z - rhs.z };
+    }
+
+    bool operator==(const CoordsXYZ& other) const
+    {
+        return x == other.x && y == other.y && z == other.z;
+    }
+
+    CoordsXYZ ToTileStart() const
+    {
+        return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP), z };
+    }
+
+    CoordsXYZ ToTileCentre() const
+    {
+        return ToTileStart() + CoordsXYZ{ COORDS_XY_HALF_TILE, COORDS_XY_HALF_TILE, 0 };
+    }
+};
+
 struct CoordsXYRangedZ : public CoordsXY
 {
     int32_t baseZ = 0;
@@ -234,6 +277,13 @@ struct CoordsXYRangedZ : public CoordsXY
     constexpr CoordsXYRangedZ(const CoordsXY& _c, int32_t _baseZ, int32_t _clearanceZ)
         : CoordsXY(_c)
         , baseZ(_baseZ)
+        , clearanceZ(_clearanceZ)
+    {
+    }
+
+    constexpr CoordsXYRangedZ(const CoordsXYZ& _c, int32_t _clearanceZ)
+        : CoordsXY(_c)
+        , baseZ(_c.z)
         , clearanceZ(_clearanceZ)
     {
     }
@@ -334,49 +384,6 @@ struct TileCoordsXY
     {
         x = COORDS_NULL;
         y = 0;
-    }
-};
-
-struct CoordsXYZ : public CoordsXY
-{
-    int32_t z = 0;
-
-    CoordsXYZ() = default;
-    constexpr CoordsXYZ(int32_t _x, int32_t _y, int32_t _z)
-        : CoordsXY(_x, _y)
-        , z(_z)
-    {
-    }
-
-    constexpr CoordsXYZ(const CoordsXY& c, int32_t _z)
-        : CoordsXY(c)
-        , z(_z)
-    {
-    }
-
-    const CoordsXYZ operator+(const CoordsXYZ& rhs) const
-    {
-        return { x + rhs.x, y + rhs.y, z + rhs.z };
-    }
-
-    const CoordsXYZ operator-(const CoordsXYZ& rhs) const
-    {
-        return { x - rhs.x, y - rhs.y, z - rhs.z };
-    }
-
-    bool operator==(const CoordsXYZ& other) const
-    {
-        return x == other.x && y == other.y && z == other.z;
-    }
-
-    CoordsXYZ ToTileStart() const
-    {
-        return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP), z };
-    }
-
-    CoordsXYZ ToTileCentre() const
-    {
-        return ToTileStart() + CoordsXYZ{ COORDS_XY_HALF_TILE, COORDS_XY_HALF_TILE, 0 };
     }
 };
 
