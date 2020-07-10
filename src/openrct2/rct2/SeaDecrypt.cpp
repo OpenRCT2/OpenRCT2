@@ -42,33 +42,22 @@ static EncryptionKey GetEncryptionKey(const std::string_view& fileName)
     return EncryptionKey{ s0, s1 };
 }
 
-static std::unique_ptr<uint8_t[]> CreateMask(const EncryptionKey& key)
+static std::vector<uint8_t> CreateMask(const EncryptionKey& key)
 {
-    auto result = std::make_unique<uint8_t[]>(MASK_SIZE);
-    auto dst8 = result.get();
+    std::vector<uint8_t> result;
+    result.resize(MASK_SIZE);
     uint32_t seed0 = key.Seed0;
     uint32_t seed1 = key.Seed1;
-    int32_t i = MASK_SIZE;
-    while (i > 0)
+    for (size_t i = 0; i < MASK_SIZE; i += 4)
     {
         uint32_t s0 = seed0;
         uint32_t s1 = seed1 ^ 0xF7654321;
         seed0 = rol32(s1, 25) + s0;
         seed1 = rol32(s0, 29);
-        *dst8++ = (s0 >> 3) & 0xFF;
-        if (i >= 2)
-        {
-            *dst8++ = (s0 >> 11) & 0xFF;
-            if (i >= 3)
-            {
-                *dst8++ = (s0 >> 19) & 0xFF;
-                if (i >= 4)
-                {
-                    *dst8++ = (seed1 >> 24) & 0xFF;
-                    i -= 4;
-                }
-            }
-        }
+        result[i + 0] = (s0 >> 3) & 0xFF;
+        result[i + 1] = (s0 >> 11) & 0xFF;
+        result[i + 2] = (s0 >> 19) & 0xFF;
+        result[i + 3] = (seed1 >> 24) & 0xFF;
     }
     return result;
 }
@@ -76,8 +65,6 @@ static std::unique_ptr<uint8_t[]> CreateMask(const EncryptionKey& key)
 static void Decrypt(std::vector<uint8_t>& data, const EncryptionKey& key)
 {
     auto mask = CreateMask(key);
-    const uint8_t* mask8 = (const uint8_t*)mask.get();
-
     uint32_t b = 0;
     uint32_t c = 0;
     for (size_t i = 0; i < data.size(); i++)
@@ -86,7 +73,7 @@ static void Decrypt(std::vector<uint8_t>& data, const EncryptionKey& key)
         c = c % MASK_SIZE;
         b = (a + 1) % MASK_SIZE;
 
-        data[i] = (((data[i] - mask8[b]) ^ mask8[c]) + mask8[a]) & 0xFF;
+        data[i] = (((data[i] - mask[b]) ^ mask[c]) + mask[a]) & 0xFF;
 
         c += 3;
         b = a + 7;
