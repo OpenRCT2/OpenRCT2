@@ -1010,7 +1010,7 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
     auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
     if (paletteId != PALETTE_NULL)
     {
-        gfx_filter_rect(dpi, dpi->x, dpi->y, dpi->width + dpi->x - 1, dpi->height + dpi->y - 1, paletteId);
+        gfx_filter_rect(dpi, { { dpi->x, dpi->y }, { dpi->width + dpi->x - 1, dpi->height + dpi->y - 1 } }, paletteId);
     }
 }
 
