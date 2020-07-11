@@ -1835,7 +1835,7 @@ static void window_options_invalidate(rct_window* w)
             size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
             const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
             auto ft = Formatter::Common();
-            ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(activeThemeName));
+            ft.Add<utf8*>(activeThemeName);
 
             break;
         }
@@ -1844,7 +1844,7 @@ static void window_options_invalidate(rct_window* w)
         {
             const utf8* name = title_sequence_manager_get_name(title_get_config_sequence());
             auto ft = Formatter::Common();
-            ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(name));
+            ft.Add<utf8*>(name);
 
             // The real name setting of clients is fixed to that of the server
             // and the server cannot change the setting during gameplay to prevent desyncs
