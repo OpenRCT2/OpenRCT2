@@ -996,7 +996,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 }
                 else
                 {
-                    ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(command->SpriteName));
+                    ft.Add<utf8*>(command->SpriteName);
                 }
                 break;
             case TITLE_SCRIPT_WAIT:
