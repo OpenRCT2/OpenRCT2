@@ -1835,7 +1835,7 @@ static void window_options_invalidate(rct_window* w)
             size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
             const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
             auto ft = Formatter::Common();
-            ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(activeThemeName));
+            ft.Add<utf8*>(activeThemeName);
 
             break;
         }
@@ -1844,7 +1844,7 @@ static void window_options_invalidate(rct_window* w)
         {
             const utf8* name = title_sequence_manager_get_name(title_get_config_sequence());
             auto ft = Formatter::Common();
-            ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(name));
+            ft.Add<utf8*>(name);
 
             // The real name setting of clients is fixed to that of the server
             // and the server cannot change the setting during gameplay to prevent desyncs
@@ -2078,7 +2078,7 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     + ScreenCoordsXY{ w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
 
             auto ft = Formatter::Common();
-            ft.Add<uintptr_t>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
+            ft.Add<utf8*>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
 
             rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];
 
@@ -2128,7 +2128,7 @@ static void window_options_tooltip(rct_window* w, rct_widgetindex widgetIndex, r
         else
         {
             auto ft = Formatter::Common();
-            ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(gConfigGeneral.rct1_path));
+            ft.Add<utf8*>(gConfigGeneral.rct1_path);
         }
     }
 }

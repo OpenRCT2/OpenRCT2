@@ -45,9 +45,9 @@ namespace Platform
         return std::string();
     }
 
-    uintptr_t StrDecompToPrecomp(utf8* input)
+    utf8* StrDecompToPrecomp(utf8* input)
     {
-        return reinterpret_cast<uintptr_t>(input);
+        return input;
     }
 
     bool HandleSpecialCommandLineArgument(const char* argument)

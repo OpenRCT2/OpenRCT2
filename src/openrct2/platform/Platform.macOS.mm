@@ -104,7 +104,7 @@ namespace Platform
         }
     }
 
-    uintptr_t StrDecompToPrecomp(utf8* input)
+    utf8* StrDecompToPrecomp(utf8* input)
     {
         @autoreleasepool
         {
@@ -114,8 +114,7 @@ namespace Platform
             }
 
             NSString* inputDecomp = [NSString stringWithUTF8String:input];
-            return reinterpret_cast<uintptr_t>(
-                strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]));
+            return strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
         }
     }
 

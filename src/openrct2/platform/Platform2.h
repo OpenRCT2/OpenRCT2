@@ -56,5 +56,5 @@ namespace Platform
     bool IsRunningInWine();
     bool IsColourTerminalSupported();
     bool HandleSpecialCommandLineArgument(const char* argument);
-    uintptr_t StrDecompToPrecomp(utf8* input);
+    utf8* StrDecompToPrecomp(utf8* input);
 } // namespace Platform

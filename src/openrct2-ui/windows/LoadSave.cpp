@@ -717,7 +717,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw path text
     auto ft = Formatter::Common();
-    ft.Add<uintptr_t>(Platform::StrDecompToPrecomp(buffer));
+    ft.Add<utf8*>(Platform::StrDecompToPrecomp(buffer));
     gfx_draw_string_left_clipped(
         dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8);
 
