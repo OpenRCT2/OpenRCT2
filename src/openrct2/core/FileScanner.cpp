@@ -73,8 +73,8 @@ private:
     std::stack<DirectoryState> _directoryStack;
 
     // Current
-    FileInfo* _currentFileInfo;
-    utf8* _currentPath;
+    FileInfo _currentFileInfo;
+    std::string _currentPath;
 
 public:
     FileScannerBase(const std::string& pattern, bool recurse)
@@ -83,32 +83,28 @@ public:
         _recurse = recurse;
         _patterns = GetPatterns(Path::GetFileName(pattern));
 
-        _currentPath = Memory::Allocate<utf8>(MAX_PATH);
-        _currentFileInfo = Memory::Allocate<FileInfo>();
+        _currentPath.resize(MAX_PATH);
 
         Reset();
     }
 
     ~FileScannerBase() override
     {
-        Memory::Free(_currentPath);
-        Memory::Free(_currentFileInfo);
     }
 
     const FileInfo* GetFileInfo() const override
     {
-        return _currentFileInfo;
+        return &_currentFileInfo;
     }
 
     const utf8* GetPath() const override
     {
-        return _currentPath;
+        return _currentPath.c_str();
     }
 
     const utf8* GetPathRelative() const override
     {
-        // +1 to remove the path separator
-        return _currentPath + _rootPath.size() + 1;
+        return _currentPath.substr(_rootPath.size()).c_str();
     }
 
     void Reset() override
@@ -150,12 +146,12 @@ public:
                 }
                 else if (PatternMatch(child->Name))
                 {
-                    String::Set(_currentPath, MAX_PATH, state->Path.c_str());
-                    Path::Append(_currentPath, MAX_PATH, child->Name.c_str());
+                    _currentPath = state->Path;
+                    Path::Append(_currentPath.data(), MAX_PATH, child->Name.c_str());
 
-                    _currentFileInfo->Name = child->Name.c_str();
-                    _currentFileInfo->Size = child->Size;
-                    _currentFileInfo->LastModified = child->LastModified;
+                    _currentFileInfo.Name = child->Name.c_str();
+                    _currentFileInfo.Size = child->Size;
+                    _currentFileInfo.LastModified = child->LastModified;
                     return true;
                 }
             }
@@ -318,15 +314,13 @@ private:
             result.Type = DIRECTORY_CHILD_TYPE::DC_FILE;
 
             // Get the full path of the file
-            size_t pathSize = String::SizeOf(directory) + 1 + String::SizeOf(node->d_name) + 1;
-            utf8* path = Memory::Allocate<utf8>(pathSize);
-            String::Set(path, pathSize, directory);
-            Path::Append(path, pathSize, node->d_name);
+            std::string path = directory;
+            path += node->d_name;
 
             struct stat statInfo
             {
             };
-            int32_t statRes = stat(path, &statInfo);
+            int32_t statRes = stat(path.c_str(), &statInfo);
             if (statRes != -1)
             {
                 result.Size = statInfo.st_size;
@@ -337,8 +331,6 @@ private:
                     result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;
                 }
             }
-
-            Memory::Free(path);
         }
         return result;
     }
