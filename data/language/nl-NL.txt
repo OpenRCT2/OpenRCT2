@@ -1523,7 +1523,7 @@ STR_2160    :Koekjes
 STR_2161    :Lege kommen
 STR_2162    :Lege drinkkartons
 STR_2163    :Lege sapbekers
-STR_2164    :gebraden worsten
+STR_2164    :Gebraden worsten
 STR_2165    :Lege kommen
 STR_2169    :een krakeling
 STR_2170    :warme chocolademelk
