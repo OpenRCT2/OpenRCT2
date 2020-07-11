@@ -787,7 +787,8 @@ static void window_mapgen_base_paint(rct_window* w, rct_drawpixelinfo* dpi)
         w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_FLOOR_TEXTURE].top + 1 });
 
     // The practical map size is 2 lower than the technical map size
-    TileCoordsXY mapSizeArgs = { _mapSize - 2, _mapSize - 2 };
+    // This needs to be cast down to a uint16_t because that's what the STR_RESOLUTION_X_BY_Y string takes.
+    uint16_t mapSizeArgs[] = { static_cast<uint16_t>(_mapSize - 2), static_cast<uint16_t>(_mapSize - 2) };
     gfx_draw_string_left(
         dpi, STR_RESOLUTION_X_BY_Y, &mapSizeArgs, w->colours[1],
         w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_MAP_SIZE].left + 1, w->widgets[WIDX_MAP_SIZE].top + 1 });
@@ -1130,8 +1131,9 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, STR_MAPGEN_OPTION_PLACE_TREES, nullptr, textColour,
         w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1 });
 
-    // The practical map size is 2 lower than the technical map size
-    TileCoordsXY mapSizeArgs = { _mapSize - 2, _mapSize - 2 };
+    // The practical map size is 2 lower than the technical map size.
+    // This needs to be cast down to a uint16_t because that's what the STR_RESOLUTION_X_BY_Y string takes.
+    uint16_t mapSizeArgs[] = { static_cast<uint16_t>(_mapSize - 2), static_cast<uint16_t>(_mapSize - 2) };
     gfx_draw_string_left(
         dpi, STR_RESOLUTION_X_BY_Y, &mapSizeArgs, textColour,
         w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_MAP_SIZE].left + 1, w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1 });
