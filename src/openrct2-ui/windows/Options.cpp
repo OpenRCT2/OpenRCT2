@@ -2128,7 +2128,7 @@ static void window_options_tooltip(rct_window* w, rct_widgetindex widgetIndex, r
         else
         {
             auto ft = Formatter::Common();
-            ft.Add<uintptr_t>(reinterpret_cast<uintptr_t>(gConfigGeneral.rct1_path));
+            ft.Add<utf8*>(gConfigGeneral.rct1_path);
         }
     }
 }
