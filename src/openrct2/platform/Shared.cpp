@@ -94,7 +94,8 @@ namespace Platform
 
     bool FileExists(const std::string path)
     {
-        fs::path file = path;
+        fs::path file = fs::u8path(path);
+        log_verbose("Checking if file exists: %s", path.c_str());
         return fs::exists(file);
     }
 } // namespace Platform
