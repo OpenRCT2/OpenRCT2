@@ -1558,7 +1558,8 @@ static bool is_sprite_interacted_with_palette_set(
  *
  *  rct2: 0x00679023
  */
-static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, int32_t x, int32_t y)
+
+static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, const ScreenCoordsXY& coords)
 {
     auto paletteMap = PaletteMap::GetDefault();
     imageId &= ~IMAGE_TYPE_TRANSPARENT;
@@ -1579,7 +1580,7 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, i
     {
         _currentImageType = 0;
     }
-    return is_sprite_interacted_with_palette_set(dpi, imageId, x, y, paletteMap);
+    return is_sprite_interacted_with_palette_set(dpi, imageId, coords.x, coords.y, paletteMap);
 }
 
 /**
@@ -1599,7 +1600,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
         while (next_ps != nullptr)
         {
             ps = next_ps;
-            if (is_sprite_interacted_with(dpi, ps->image_id, ps->x, ps->y))
+            if (is_sprite_interacted_with(dpi, ps->image_id, { ps->x, ps->y }))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter))
                 {
@@ -1612,7 +1613,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
         for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
             if (is_sprite_interacted_with(
-                    dpi, attached_ps->image_id, (attached_ps->x + ps->x) & 0xFFFF, (attached_ps->y + ps->y) & 0xFFFF))
+                    dpi, attached_ps->image_id, { (attached_ps->x + ps->x) & 0xFFFF, (attached_ps->y + ps->y) & 0xFFFF }))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter))
                 {
