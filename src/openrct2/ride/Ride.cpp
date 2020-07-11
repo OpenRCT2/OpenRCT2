@@ -7627,7 +7627,7 @@ void Ride::FormatNameTo(Formatter& ft) const
     {
         auto str = custom_name.c_str();
         ft.Add<rct_string_id>(STR_STRING);
-        ft.Add<void*>(str);
+        ft.Add<const char*>(str);
     }
     else
     {
