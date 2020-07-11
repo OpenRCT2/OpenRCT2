@@ -2296,8 +2296,9 @@ static void peep_return_to_centre_of_tile(Peep* peep)
  *
  *  rct2: 0x00693f2C
  */
-static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileElement* tile_element, uint8_t& pathing_result)
+static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uint8_t& pathing_result)
 {
+    auto tile_element = coords.element;
     uint8_t entranceType = tile_element->AsEntrance()->GetEntranceType();
 
     // Store some details to determine when to override the default
@@ -2446,7 +2447,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
             peep->DestinationX += CoordsDirectionDelta[peep->PeepDirection].x;
             peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
             peep->DestinationTolerance = 9;
-            peep->MoveTo({ x, y, peep->z });
+            peep->MoveTo({ coords, peep->z });
             peep->SetState(PEEP_STATE_LEAVING_PARK);
 
             peep->Var37 = 0;
@@ -2481,19 +2482,16 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         }
 
         bool found = false;
-        auto entrance = std::find_if(gParkEntrances.begin(), gParkEntrances.end(), [x, y](const auto& e) {
-            return e.x == floor2(x, 32) && e.y == floor2(y, 32);
-        });
+        auto entrance = std::find_if(
+            gParkEntrances.begin(), gParkEntrances.end(), [coords](const auto& e) { return coords.ToTileStart() == e; });
         if (entrance != gParkEntrances.end())
         {
             int16_t z = entrance->z / 8;
             entranceDirection = entrance->direction;
-
-            int16_t next_x = (x & 0xFFE0) + CoordsDirectionDelta[entranceDirection].x;
-            int16_t next_y = (y & 0xFFE0) + CoordsDirectionDelta[entranceDirection].y;
+            auto nextLoc = coords.ToTileStart() + CoordsDirectionDelta[entranceDirection];
 
             // Make sure there is a path right behind the entrance, otherwise turn around
-            TileElement* nextTileElement = map_get_first_element_at({ next_x, next_y });
+            TileElement* nextTileElement = map_get_first_element_at(nextLoc);
             do
             {
                 if (nextTileElement == nullptr)
@@ -2587,7 +2585,7 @@ static void peep_interact_with_entrance(Peep* peep, int16_t x, int16_t y, TileEl
         peep->DestinationX += CoordsDirectionDelta[peep->PeepDirection].x;
         peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
         peep->DestinationTolerance = 7;
-        peep->MoveTo({ x, y, peep->z });
+        peep->MoveTo({ coords, peep->z });
     }
 }
 
@@ -3076,7 +3074,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         }
         else if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
         {
-            peep_interact_with_entrance(this, newLoc.x, newLoc.y, tileElement, pathing_result);
+            peep_interact_with_entrance(this, { newLoc, tileElement }, pathing_result);
             tile_result = tileElement;
             return;
         }
