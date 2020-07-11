@@ -843,16 +843,13 @@ void track_design_mirror(TrackDesign* td6)
     track_design_mirror_scenery(td6);
 }
 
-static void track_design_add_selection_tile(int16_t x, int16_t y)
+static void track_design_add_selection_tile(const CoordsXY& coords)
 {
-    for (const auto& tile : gMapSelectionTiles)
+    auto tileIterator = std::find(gMapSelectionTiles.begin(), gMapSelectionTiles.end(), coords);
+    if (tileIterator == gMapSelectionTiles.end())
     {
-        if (tile.x == x && tile.y == y)
-        {
-            return;
-        }
+        gMapSelectionTiles.push_back(coords);
     }
-    gMapSelectionTiles.push_back(CoordsXY(x, y));
 }
 
 static void track_design_update_max_min_coordinates(const CoordsXYZ& coords)
@@ -981,7 +978,7 @@ static bool TrackDesignPlaceSceneryElement(
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
     {
-        track_design_add_selection_tile(mapCoord.x, mapCoord.y);
+        track_design_add_selection_tile(mapCoord);
         return true;
     }
 
@@ -1323,7 +1320,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
 
         if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
         {
-            track_design_add_selection_tile(mapCoord.x, mapCoord.y);
+            track_design_add_selection_tile(mapCoord);
         }
 
         if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY || _trackDesignPlaceOperation == PTD_OPERATION_PLACE
@@ -1541,7 +1538,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 {
                     auto tile = CoordsXY{ x, y } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     track_design_update_max_min_coordinates({ tile, z });
-                    track_design_add_selection_tile(tile.x, tile.y);
+                    track_design_add_selection_tile(tile);
                 }
                 break;
             case PTD_OPERATION_REMOVE_GHOST:
@@ -1691,7 +1688,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
         switch (_trackDesignPlaceOperation)
         {
             case PTD_OPERATION_DRAW_OUTLINES:
-                track_design_add_selection_tile(x, y);
+                track_design_add_selection_tile({ x, y });
                 break;
             case PTD_OPERATION_PLACE_QUERY:
             case PTD_OPERATION_PLACE:
