@@ -543,8 +543,8 @@ void viewport_update_position(rct_window* window)
 
     viewport_set_underground_flag(0, window, viewport);
 
-    auto viewportMidPoint = ScreenCoordsXY{ window->savedViewPos.x + viewport->view_width / 2,
-                                            window->savedViewPos.y + viewport->view_height / 2 };
+    auto viewportMidPoint = ScreenCoordsXY{ static_cast<int16_t>(window->savedViewPos.x + viewport->view_width / 2),
+                                            static_cast<int16_t>(window->savedViewPos.y + viewport->view_height / 2) };
 
     auto mapCoord = viewport_coord_to_map_coord(viewportMidPoint.x, viewportMidPoint.y, 0);
 
