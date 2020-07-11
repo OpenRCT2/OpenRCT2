@@ -44,6 +44,7 @@
 - Fix: [#12068] Incorrect Entrance/Exit location on track design preview. Incorrect track design previews with track that contain diagonal track elements.
 - Fix: [#12093] Staff window tab animation was no longer updating.
 - Fix: [#12123] Long server descriptions are not cut off properly.
+- Fix: [#12211] Map Generator shows incorrect map sizes (e.g. "150 x 0").
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
 - Improved: [#6530] Allow water and land height changes on park borders.
 - Improved: [#11390] Build hash written to screenshot metadata.
