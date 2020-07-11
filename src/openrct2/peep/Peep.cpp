@@ -2732,9 +2732,10 @@ static void peep_footpath_move_forward(Peep* peep, int16_t x, int16_t y, TileEle
  *
  *  rct2: 0x0069455E
  */
-static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElement* tile_element)
+static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
 {
     // 0x00F1AEE2
+    auto tile_element = coords.element;
     bool vandalism_present = false;
     if (tile_element->AsPath()->HasAddition() && (tile_element->AsPath()->IsBroken())
         && (tile_element->AsPath()->GetEdges()) != 0xF)
@@ -2743,7 +2744,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
     }
 
     int16_t z = tile_element->GetBaseZ();
-    if (map_is_location_owned({ x, y, z }))
+    if (map_is_location_owned({ coords, z }))
     {
         if (peep->OutsideOfPark)
         {
@@ -2771,7 +2772,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
             // the queue, rebuilt the ride, etc.
             if (peep->CurrentRide == rideIndex)
             {
-                peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+                peep_footpath_move_forward(peep, coords.x, coords.y, tile_element, vandalism_present);
             }
             else
             {
@@ -2779,7 +2780,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                 peep->InteractionRideIndex = 0xFF;
                 guest->RemoveFromQueue();
                 peep->SetState(PEEP_STATE_1);
-                peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+                peep_footpath_move_forward(peep, coords.x, coords.y, tile_element, vandalism_present);
             }
         }
         else
@@ -2829,7 +2830,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
                         }
                     }
 
-                    peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+                    peep_footpath_move_forward(peep, coords.x, coords.y, tile_element, vandalism_present);
                 }
                 else
                 {
@@ -2841,7 +2842,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
             {
                 /* Peep is approaching a queue tile without a ride
                  * sign facing the peep. */
-                peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+                peep_footpath_move_forward(peep, coords.x, coords.y, tile_element, vandalism_present);
             }
         }
     }
@@ -2853,7 +2854,7 @@ static void peep_interact_with_path(Peep* peep, int16_t x, int16_t y, TileElemen
             peep->RemoveFromQueue();
             peep->SetState(PEEP_STATE_1);
         }
-        peep_footpath_move_forward(peep, x, y, tile_element, vandalism_present);
+        peep_footpath_move_forward(peep, coords.x, coords.y, tile_element, vandalism_present);
     }
 }
 
@@ -3061,7 +3062,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
         {
-            peep_interact_with_path(this, newLoc.x, newLoc.y, tileElement);
+            peep_interact_with_path(this, { newLoc, tileElement });
             tile_result = tileElement;
             return;
         }
