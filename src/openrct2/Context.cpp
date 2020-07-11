@@ -545,7 +545,12 @@ namespace OpenRCT2
                 {
                     auto data = DecryptSea(fs::u8path(path));
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
-                    return LoadParkFromStream(&ms, path, loadTitleScreenOnFail);
+                    if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail))
+                    {
+                        Console::Error::WriteLine(".sea file may have been renamed.");
+                        return false;
+                    }
+                    return true;
                 }
                 else
                 {
