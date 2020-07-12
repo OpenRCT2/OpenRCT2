@@ -660,21 +660,21 @@ static void draw_category_heading(
     int32_t lineY = y + 4;
     auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY };
     auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-    gfx_draw_line(dpi, {lightLineLeftTop1, lightLineRightBottom1}, lightColour);
+    gfx_draw_line(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
 
     auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
     auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-    gfx_draw_line(dpi, {lightLineLeftTop2, lightLineRightBottom2}, lightColour);
+    gfx_draw_line(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
 
     // Draw dark horizontal rule
     lineY++;
     auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY };
     auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY };
-    gfx_draw_line(dpi, {darkLineLeftTop1, darkLineRightBottom1}, darkColour);
+    gfx_draw_line(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
 
     auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY };
     auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY };
-    gfx_draw_line(dpi, {darkLineLeftTop2, darkLineRightBottom2}, darkColour);
+    gfx_draw_line(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
 }
 
 static void initialise_list_items(rct_window* w)

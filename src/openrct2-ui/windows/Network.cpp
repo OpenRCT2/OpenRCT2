@@ -312,19 +312,19 @@ static void window_network_draw_graph(
     // Draw box.
     auto right1 = ScreenCoordsXY{ x, y };
     auto right2 = ScreenCoordsXY{ x, y + height };
-    gfx_draw_line(dpi, {right1, right2}, COLOUR_BLACK);
+    gfx_draw_line(dpi, { right1, right2 }, COLOUR_BLACK);
 
     auto left1 = ScreenCoordsXY{ x, y + height };
     auto left2 = ScreenCoordsXY{ x + width, y + height };
-    gfx_draw_line(dpi, {left1, left2}, COLOUR_BLACK);
+    gfx_draw_line(dpi, { left1, left2 }, COLOUR_BLACK);
 
     auto bottom1 = ScreenCoordsXY{ x, y };
     auto bottom2 = ScreenCoordsXY{ x + width, y };
-    gfx_draw_line(dpi, {bottom1, bottom2}, COLOUR_BLACK);
+    gfx_draw_line(dpi, { bottom1, bottom2 }, COLOUR_BLACK);
 
     auto top1 = ScreenCoordsXY{ x + width, y };
     auto top2 = ScreenCoordsXY{ x + width, y + height };
-    gfx_draw_line(dpi, {top1, top2}, COLOUR_BLACK);
+    gfx_draw_line(dpi, { top1, top2 }, COLOUR_BLACK);
 
     // Draw graph inside box
     x = x + 1;

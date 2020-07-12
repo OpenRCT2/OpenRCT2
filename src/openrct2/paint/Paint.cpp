@@ -599,28 +599,28 @@ static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo* dpi, paint_str
     const auto screenCoordBackBottom = translate_3d_to_2d_with_z(rotation, backBottom);
 
     // bottom square
-    gfx_draw_line(dpi, {screenCoordFrontBottom, screenCoordLeftBottom}, colour);
-    gfx_draw_line(dpi, {screenCoordBackBottom, screenCoordLeftBottom}, colour);
-    gfx_draw_line(dpi, {screenCoordBackBottom, screenCoordRightBottom}, colour);
-    gfx_draw_line(dpi, {screenCoordFrontBottom, screenCoordRightBottom}, colour);
+    gfx_draw_line(dpi, { screenCoordFrontBottom, screenCoordLeftBottom }, colour);
+    gfx_draw_line(dpi, { screenCoordBackBottom, screenCoordLeftBottom }, colour);
+    gfx_draw_line(dpi, { screenCoordBackBottom, screenCoordRightBottom }, colour);
+    gfx_draw_line(dpi, { screenCoordFrontBottom, screenCoordRightBottom }, colour);
 
     // vertical back + sides
-    gfx_draw_line(dpi, {screenCoordBackTop, screenCoordBackBottom}, colour);
-    gfx_draw_line(dpi, {screenCoordLeftTop, screenCoordLeftBottom}, colour);
-    gfx_draw_line(dpi, {screenCoordRightTop, screenCoordRightBottom}, colour);
+    gfx_draw_line(dpi, { screenCoordBackTop, screenCoordBackBottom }, colour);
+    gfx_draw_line(dpi, { screenCoordLeftTop, screenCoordLeftBottom }, colour);
+    gfx_draw_line(dpi, { screenCoordRightTop, screenCoordRightBottom }, colour);
 
     // top square back
-    gfx_draw_line(dpi, {screenCoordBackTop, screenCoordLeftTop}, colour);
-    gfx_draw_line(dpi, {screenCoordBackTop, screenCoordRightTop}, colour);
+    gfx_draw_line(dpi, { screenCoordBackTop, screenCoordLeftTop }, colour);
+    gfx_draw_line(dpi, { screenCoordBackTop, screenCoordRightTop }, colour);
 
     paint_ps_image(dpi, ps, imageId, x, y);
 
     // vertical front
-    gfx_draw_line(dpi, {screenCoordFrontTop, screenCoordFrontBottom}, colour);
+    gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordFrontBottom }, colour);
 
     // top square
-    gfx_draw_line(dpi, {screenCoordFrontTop, screenCoordLeftTop}, colour);
-    gfx_draw_line(dpi, {screenCoordFrontTop, screenCoordRightTop}, colour);
+    gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordLeftTop }, colour);
+    gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
 }
 
 static void paint_ps_image(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y)
