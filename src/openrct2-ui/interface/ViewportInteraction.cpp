@@ -694,7 +694,7 @@ CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords)
         {
             z = tile_element_height(mapPos);
         }
-        mapPos = viewport_coord_to_map_coord(initialVPPos.x, initialVPPos.y, z);
+        mapPos = viewport_coord_to_map_coord(initialVPPos, z);
         mapPos.x = std::clamp(mapPos.x, initialPos.x, initialPos.x + 31);
         mapPos.y = std::clamp(mapPos.y, initialPos.y, initialPos.y + 31);
     }
