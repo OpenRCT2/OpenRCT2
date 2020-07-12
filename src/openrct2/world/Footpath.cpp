@@ -288,7 +288,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
         {
             z = tile_element_height(position);
         }
-        position = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+        position = viewport_coord_to_map_coord(start_vp_pos, z);
         position.x = std::clamp(position.x, minPosition.x, maxPosition.x);
         position.y = std::clamp(position.y, minPosition.y, maxPosition.y);
     }

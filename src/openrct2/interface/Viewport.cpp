@@ -215,7 +215,7 @@ CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
     CoordsXY pos{};
     for (int32_t i = 0; i < 6; i++)
     {
-        pos = viewport_coord_to_map_coord(startCoords.x, startCoords.y, height);
+        pos = viewport_coord_to_map_coord(startCoords, height);
         height = tile_element_height(pos);
 
         // HACK: This is to prevent the x and y values being set to values outside
@@ -547,7 +547,7 @@ void viewport_update_position(rct_window* window)
     auto viewportMidPoint = ScreenCoordsXY{ static_cast<int16_t>(window->savedViewPos.x + viewport->view_width / 2),
                                             static_cast<int16_t>(window->savedViewPos.y + viewport->view_height / 2) };
 
-    auto mapCoord = viewport_coord_to_map_coord(viewportMidPoint.x, viewportMidPoint.y, 0);
+    auto mapCoord = viewport_coord_to_map_coord(viewportMidPoint, 0);
 
     // Clamp to the map minimum value
     int32_t at_map_edge = 0;
@@ -1072,26 +1072,26 @@ ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, const Scre
     return ret;
 }
 
-CoordsXY viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z)
+CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z)
 {
     CoordsXY ret{};
     switch (get_current_rotation())
     {
         case 0:
-            ret.x = -x / 2 + y + z;
-            ret.y = x / 2 + y + z;
+            ret.x = -coords.x / 2 + coords.y + z;
+            ret.y = coords.x / 2 + coords.y + z;
             break;
         case 1:
-            ret.x = -x / 2 - y - z;
-            ret.y = -x / 2 + y + z;
+            ret.x = -coords.x / 2 - coords.y - z;
+            ret.y = -coords.x / 2 + coords.y + z;
             break;
         case 2:
-            ret.x = x / 2 - y - z;
-            ret.y = -x / 2 - y - z;
+            ret.x = coords.x / 2 - coords.y - z;
+            ret.y = -coords.x / 2 - coords.y - z;
             break;
         case 3:
-            ret.x = x / 2 + y + z;
-            ret.y = x / 2 - y - z;
+            ret.x = coords.x / 2 + coords.y + z;
+            ret.y = coords.x / 2 - coords.y - z;
             break;
     }
     return ret;
@@ -1794,7 +1794,7 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
     for (int32_t i = 0; i < 5; i++)
     {
         int32_t z = tile_element_height(cursorMapPos);
-        cursorMapPos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
+        cursorMapPos = viewport_coord_to_map_coord(start_vp_pos, z);
         cursorMapPos.x = std::clamp(cursorMapPos.x, tileLoc.x, tileLoc.x + 31);
         cursorMapPos.y = std::clamp(cursorMapPos.y, tileLoc.y, tileLoc.y + 31);
     }
@@ -1818,7 +1818,7 @@ std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoo
     }
 
     auto vpCoords = screen_coord_to_viewport_coord(viewport, screenCoords);
-    auto mapPosition = viewport_coord_to_map_coord(vpCoords.x, vpCoords.y, z);
+    auto mapPosition = viewport_coord_to_map_coord(vpCoords, z);
     if (!map_is_location_valid(mapPosition))
     {
         return std::nullopt;

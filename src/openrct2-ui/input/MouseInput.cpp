@@ -1604,8 +1604,8 @@ void input_scroll_viewport(const ScreenCoordsXY& scrollScreenCoords)
         int32_t y = mainWindow->savedViewPos.y + viewport->view_height / 2;
         int32_t y_dy = mainWindow->savedViewPos.y + viewport->view_height / 2 + dy;
 
-        auto mapCoord = viewport_coord_to_map_coord(x, y, 0);
-        auto mapCoord_dy = viewport_coord_to_map_coord(x, y_dy, 0);
+        auto mapCoord = viewport_coord_to_map_coord({ x, y }, 0);
+        auto mapCoord_dy = viewport_coord_to_map_coord({ x, y_dy }, 0);
 
         // Check if we're crossing the boundary
         // Clamp to the map minimum value
