@@ -1296,12 +1296,12 @@ static int32_t track_design_place_all_scenery(
     return 1;
 }
 
-static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, int16_t z, Ride* ride)
+static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords, Ride* ride)
 {
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
         gMapSelectionTiles.clear();
-        gMapSelectArrowPosition = CoordsXYZ{ x, y, tile_element_height({ x, y }) };
+        gMapSelectArrowPosition = CoordsXYZ{ coords, tile_element_height(coords) };
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -1313,10 +1313,9 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
         uint8_t rotation = _currentTrackPieceDirection & 3;
         CoordsXY mazeMapPos = TileCoordsXY(maze_element.x, maze_element.y).ToCoordsXY();
         auto mapCoord = mazeMapPos.Rotate(rotation);
-        mapCoord.x += x;
-        mapCoord.y += y;
+        mapCoord += coords;
 
-        track_design_update_max_min_coordinates({ mapCoord, z });
+        track_design_update_max_min_coordinates({ mapCoord, coords.z });
 
         if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
         {
@@ -1342,7 +1341,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
 
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
-                        auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord.x, mapCoord.y, z }, false);
+                        auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord, coords.z }, false);
                         cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     }
                     else
@@ -1381,7 +1380,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
 
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
-                        auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord.x, mapCoord.y, z }, true);
+                        auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord, coords.z }, true);
                         cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
                     }
                     else
@@ -1436,7 +1435,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
                     }
                     gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
 
-                    auto mazePlace = MazePlaceTrackAction({ mapCoord, z }, ride->id, maze_entry);
+                    auto mazePlace = MazePlaceTrackAction({ mapCoord, coords.z }, ride->id, maze_entry);
                     mazePlace.SetFlags(flags);
                     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
                                                                : GameActions::QueryNested(&mazePlace);
@@ -1479,7 +1478,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
                 surfaceZ = waterZ;
             }
 
-            int16_t temp_z = z + _trackDesignPlaceZ - surfaceZ;
+            int16_t temp_z = coords.z + _trackDesignPlaceZ - surfaceZ;
             if (temp_z < 0)
             {
                 _trackDesignPlaceZ -= temp_z;
@@ -1495,9 +1494,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, int16_t x, int16_t y, i
                 | GAME_COMMAND_FLAG_GHOST);
     }
 
-    _trackPreviewOrigin.x = x;
-    _trackPreviewOrigin.y = y;
-    _trackPreviewOrigin.z = z;
+    _trackPreviewOrigin = coords;
     return 1;
 }
 
@@ -1829,7 +1826,7 @@ int32_t place_virtual_track(
     uint8_t track_place_success = 0;
     if (td6->type == RIDE_TYPE_MAZE)
     {
-        track_place_success = track_design_place_maze(td6, x, y, z, ride);
+        track_place_success = track_design_place_maze(td6, { x, y, z }, ride);
     }
     else
     {
