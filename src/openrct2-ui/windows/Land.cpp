@@ -43,16 +43,13 @@ enum WINDOW_LAND_WIDGET_IDX {
 
 static rct_widget window_land_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-
-    { WWT_FLATBTN,  1,  19, 42, 19, 42,         SPR_RIDE_CONSTRUCTION_SLOPE_UP,         STR_ENABLE_MOUNTAIN_TOOL_TIP }, // mountain mode
-    { WWT_FLATBTN,  1,  55, 78, 19, 42,         SPR_PAINTBRUSH,                         STR_DISABLE_ELEVATION },        // paint mode
-
-    { WWT_IMGBTN,   0,  27, 70, 48, 79,         SPR_LAND_TOOL_SIZE_0,                   STR_NONE },                     // preview box
-    { WWT_TRNBTN,   1,  28, 43, 49, 64,         IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,    STR_ADJUST_SMALLER_LAND_TIP },  // decrement size
-    { WWT_TRNBTN,   1,  54, 69, 63, 78,         IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,    STR_ADJUST_LARGER_LAND_TIP },   // increment size
-
-    { WWT_FLATBTN,  1,  2,  48, 106,    141,    0xFFFFFFFF,                             STR_CHANGE_BASE_LAND_TIP },     // floor texture
-    { WWT_FLATBTN,  1,  49, 95, 106,    141,    0xFFFFFFFF,                             STR_CHANGE_VERTICAL_LAND_TIP }, // wall texture
+    MakeWidget     ({19,  19}, {24, 24}, WWT_FLATBTN, 1, SPR_RIDE_CONSTRUCTION_SLOPE_UP, STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
+    MakeWidget     ({55,  19}, {24, 24}, WWT_FLATBTN, 1, SPR_PAINTBRUSH,                 STR_DISABLE_ELEVATION),        // paint mode
+    MakeWidget     ({27,  48}, {44, 32}, WWT_IMGBTN,  0, SPR_LAND_TOOL_SIZE_0,           STR_NONE),                     // preview box
+    MakeRemapWidget({28,  49}, {16, 16}, WWT_TRNBTN,  1, SPR_LAND_TOOL_DECREASE,         STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
+    MakeRemapWidget({54,  63}, {16, 16}, WWT_TRNBTN,  1, SPR_LAND_TOOL_INCREASE,         STR_ADJUST_LARGER_LAND_TIP),   // increment size
+    MakeWidget     ({ 2, 106}, {47, 36}, WWT_FLATBTN, 1, 0xFFFFFFFF,                     STR_CHANGE_BASE_LAND_TIP),     // floor texture
+    MakeWidget     ({49, 106}, {47, 36}, WWT_FLATBTN, 1, 0xFFFFFFFF,                     STR_CHANGE_VERTICAL_LAND_TIP), // wall texture
     { WIDGETS_END },
 };
 

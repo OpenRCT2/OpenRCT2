@@ -35,12 +35,12 @@ static constexpr const int32_t WH = 94;
 
 static rct_widget window_clear_scenery_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                       STR_NONE },                         // preview box
-    { WWT_TRNBTN,   1,  28, 43, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP },      // decrement size
-    { WWT_TRNBTN,   1,  54, 69, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP },       // increment size
-    { WWT_FLATBTN,  1,  7,  30, 53, 76, IMAGE_TYPE_REMAP | SPR_G2_BUTTON_TREES,           STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP }, // small scenery
-    { WWT_FLATBTN,  1,  37, 60, 53, 76, IMAGE_TYPE_REMAP | SPR_G2_BUTTON_LARGE_SCENERY,   STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP }, // large scenery
-    { WWT_FLATBTN,  1,  67, 90, 53, 76, IMAGE_TYPE_REMAP | SPR_G2_BUTTON_FOOTPATH,        STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP }, // footpaths
+    MakeWidget     ({27, 17}, {44, 32}, WWT_IMGBTN,  0, SPR_LAND_TOOL_SIZE_0,        STR_NONE),                                   // preview box
+    MakeRemapWidget({28, 18}, {16, 16}, WWT_TRNBTN,  1, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP),                // decrement size
+    MakeRemapWidget({54, 32}, {16, 16}, WWT_TRNBTN,  1, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP),                 // increment size
+    MakeRemapWidget({ 7, 53}, {24, 24}, WWT_FLATBTN, 1, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
+    MakeRemapWidget({37, 53}, {24, 24}, WWT_FLATBTN, 1, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
+    MakeRemapWidget({67, 53}, {24, 24}, WWT_FLATBTN, 1, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP),     // footpaths
     { WIDGETS_END },
 };
 
