@@ -582,7 +582,11 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
             {
                 if (i == 0)
                 {
-                    window_guest_open(GET_PEEP(spriteIndex));
+                    auto guest = GetEntity<Guest>(spriteIndex);
+                    if (guest != nullptr)
+                    {
+                        window_guest_open(guest);
+                    }
                     break;
                 }
                 i--;
@@ -771,7 +775,11 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     }
 
                     // Guest name
-                    auto peep = GET_PEEP(spriteIndex);
+                    auto peep = GetEntity<Guest>(spriteIndex);
+                    if (peep == nullptr)
+                    {
+                        continue;
+                    }
                     auto ft = Formatter::Common();
                     peep->FormatNameTo(ft);
                     gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, 113);

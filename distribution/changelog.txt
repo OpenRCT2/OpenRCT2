@@ -42,6 +42,7 @@
 - Fix: [#11953] Incorrect banner text shade colour on wall text.
 - Fix: [#12062] Inconsistent lift hill sprites on Flying Coaster while inverted (original bug).
 - Fix: [#12068] Incorrect Entrance/Exit location on track design preview. Incorrect track design previews with track that contain diagonal track elements.
+- Fix: [#12071] Crash in Guest List when a guest dies.
 - Fix: [#12093] Staff window tab animation was no longer updating.
 - Fix: [#12123] Long server descriptions are not cut off properly.
 - Fix: [#12211] Map Generator shows incorrect map sizes (e.g. "150 x 0").
