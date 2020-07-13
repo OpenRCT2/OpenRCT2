@@ -2262,7 +2262,7 @@ static void window_ride_construction_invalidate(rct_window* w)
     rct_string_id stringId = STR_RIDE_CONSTRUCTION_SPECIAL;
     if (_currentTrackCurve & RideConstructionSpecialPieceSelected)
     {
-        stringId = RideConfigurationStringIds[_currentTrackCurve & 0xFF];
+        stringId = RideConfigurationStringIds[_currentTrackCurve & ~RideConstructionSpecialPieceSelected];
         if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_CAR_RIDE)
             stringId = STR_LOG_BUMPS;
         if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
@@ -2942,7 +2942,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     }
 
     int32_t x;
-    if ((is_track_enabled(TRACK_LIFT_HILL) && _currentTrackCurve < 256)
+    if ((is_track_enabled(TRACK_LIFT_HILL) && (_currentTrackCurve & RideConstructionSpecialPieceSelected) == 0)
         || (gCheatsEnableChainLiftOnAllTrack && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)))
     {
         window_ride_construction_widgets[WIDX_CHAIN_LIFT].type = WWT_FLATBTN;
