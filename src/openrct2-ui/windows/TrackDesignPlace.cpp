@@ -287,8 +287,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     // Check if tool map position has changed since last update
     if (mapCoords.x == _window_track_place_last_x && mapCoords.y == _window_track_place_last_y)
     {
-        place_virtual_track(
-            _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), mapCoords.x, mapCoords.y, 0);
+        place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { mapCoords, 0 });
         return;
     }
 
@@ -331,8 +330,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    place_virtual_track(
-        _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), trackLoc.x, trackLoc.y, trackLoc.z);
+    place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), trackLoc);
 }
 
 /**
@@ -436,8 +434,8 @@ static void window_track_place_clear_provisional()
         if (ride != nullptr)
         {
             place_virtual_track(
-                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _window_track_place_last_valid_x,
-                _window_track_place_last_valid_y, _window_track_place_last_valid_z);
+                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride,
+                { _window_track_place_last_valid_x, _window_track_place_last_valid_y, _window_track_place_last_valid_z });
             _window_track_place_last_was_valid = false;
         }
     }
@@ -451,8 +449,8 @@ void TrackPlaceClearProvisionalTemporarily()
         if (ride != nullptr)
         {
             place_virtual_track(
-                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _window_track_place_last_valid_x,
-                _window_track_place_last_valid_y, _window_track_place_last_valid_z);
+                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride,
+                { _window_track_place_last_valid_x, _window_track_place_last_valid_y, _window_track_place_last_valid_z });
         }
     }
 }
@@ -500,7 +498,7 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc)
     if (surfaceElement->GetWaterHeight() > 0)
         z = std::max(z, surfaceElement->GetWaterHeight());
 
-    return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), loc.x, loc.y, z);
+    return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), { loc, z });
 }
 
 /**

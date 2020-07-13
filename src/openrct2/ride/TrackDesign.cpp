@@ -333,7 +333,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         }
     }
 
-    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), 4096, 4096, 0);
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { 4096, 4096, 0 });
 
     // Resave global vars for scenery reasons.
     _trackPreviewOrigin = startPos;
@@ -452,7 +452,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(const Ride& ride)
 
     // Save global vars as they are still used by scenery????
     int32_t startZ = _trackPreviewOrigin.z;
-    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), 4096, 4096, 0);
+    place_virtual_track(this, PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { 4096, 4096, 0 });
     _trackPreviewOrigin = { startLoc.x, startLoc.y, startZ };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -1793,8 +1793,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
  * bl == 6, Clear white outlined track.
  *  rct2: 0x006D01B3
  */
-int32_t place_virtual_track(
-    TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, int16_t x, int16_t y, int16_t z)
+int32_t place_virtual_track(TrackDesign* td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& coords)
 {
     // Previously byte_F4414E was cleared here
     _trackDesignPlaceStatePlaceScenery = placeScenery;
@@ -1811,22 +1810,18 @@ int32_t place_virtual_track(
     }
     _currentRideIndex = ride->id;
 
-    _trackPreviewMin.x = x;
-    _trackPreviewMin.y = y;
-    _trackPreviewMin.z = z;
-    _trackPreviewMax.x = x;
-    _trackPreviewMax.y = y;
-    _trackPreviewMax.z = z;
+    _trackPreviewMin = coords;
+    _trackPreviewMax = coords;
 
     _trackDesignPlaceSceneryZ = 0;
     uint8_t track_place_success = 0;
     if (td6->type == RIDE_TYPE_MAZE)
     {
-        track_place_success = track_design_place_maze(td6, { x, y, z }, ride);
+        track_place_success = track_design_place_maze(td6, coords, ride);
     }
     else
     {
-        track_place_success = track_design_place_ride(td6, { x, y, z }, ride);
+        track_place_success = track_design_place_ride(td6, coords, ride);
     }
 
     // Scenery elements
@@ -1935,7 +1930,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     int32_t mapSize = gMapSize << 4;
 
     _currentTrackPieceDirection = 0;
-    int32_t z = place_virtual_track(td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), mapSize, mapSize, 16);
+    int32_t z = place_virtual_track(td6, PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), { mapSize, mapSize, 16 });
 
     if (_trackDesignPlaceStateHasScenery)
     {
@@ -1951,7 +1946,8 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         *flags |= TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE;
     }
 
-    money32 resultCost = place_virtual_track(td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, ride, mapSize, mapSize, z);
+    money32 resultCost = place_virtual_track(
+        td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, ride, { mapSize, mapSize, z });
     gParkFlags = backup_park_flags;
 
     if (resultCost != MONEY32_UNDEFINED)
