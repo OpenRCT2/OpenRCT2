@@ -638,9 +638,6 @@ enum
 
 #define TILE_ELEMENT_COLOUR_MASK 0b00011111
 
-#define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
-#define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
-
 BannerIndex tile_element_get_banner_index(TileElement* tileElement);
 bool tile_element_is_underground(TileElement* tileElement);
 
