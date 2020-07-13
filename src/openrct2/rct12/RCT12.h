@@ -54,6 +54,8 @@ constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK = 0xE0;   // 
 constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK = 0x1F; // in RCT12TileElement.properties.surface.terrain
 constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // in RCT12TileElement.properties.surface.terrain
 
+constexpr const uint16_t RCT12_TILE_ELEMENT_LARGE_TYPE_MASK = 0x3FF;
+
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
 
 using RCT12ObjectEntryIndex = uint8_t;
@@ -67,6 +69,8 @@ constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
 constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
 
 constexpr const uint8_t RCT12_MAX_ELEMENT_HEIGHT = 255;
+
+constexpr const uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
 
 enum class RCT12TrackDesignVersion : uint8_t
 {

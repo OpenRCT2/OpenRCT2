@@ -967,14 +967,14 @@ public:
             || String::Equals(_s6.scenario_filename, "South America - Rio Carnival.SC6"))
         {
             _s6.peep_spawns[0] = { 2160, 3167, 6, 1 };
-            _s6.peep_spawns[1].x = PEEP_SPAWN_UNDEFINED;
+            _s6.peep_spawns[1].x = RCT12_PEEP_SPAWN_UNDEFINED;
         }
         // In this park, peep_spawns[0] is correct. Just clear the other.
         else if (
             String::Equals(_s6.scenario_filename, "Great Wall of China Tourism Enhancement.SC6")
             || String::Equals(_s6.scenario_filename, "Asia - Great Wall of China Tourism Enhancement.SC6"))
         {
-            _s6.peep_spawns[1].x = PEEP_SPAWN_UNDEFINED;
+            _s6.peep_spawns[1].x = RCT12_PEEP_SPAWN_UNDEFINED;
         }
         // Amity Airfield has peeps entering from the corner of the tile, instead of the middle.
         else if (String::Equals(_s6.scenario_filename, "Amity Airfield.SC6"))
@@ -991,7 +991,7 @@ public:
         gPeepSpawns.clear();
         for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
         {
-            if (_s6.peep_spawns[i].x != PEEP_SPAWN_UNDEFINED)
+            if (_s6.peep_spawns[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
             {
                 PeepSpawn spawn = { _s6.peep_spawns[i].x, _s6.peep_spawns[i].y, _s6.peep_spawns[i].z * 16,
                                     _s6.peep_spawns[i].direction };

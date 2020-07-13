@@ -339,7 +339,7 @@ bool RCT12SmallSceneryElement::NeedsSupports() const
 
 uint32_t RCT12LargeSceneryElement::GetEntryIndex() const
 {
-    return entryIndex & TILE_ELEMENT_LARGE_TYPE_MASK;
+    return entryIndex & RCT12_TILE_ELEMENT_LARGE_TYPE_MASK;
 }
 
 uint16_t RCT12LargeSceneryElement::GetSequenceIndex() const
@@ -448,7 +448,7 @@ uint8_t RCT12EntranceElement::GetRideIndex() const
 
 uint8_t RCT12EntranceElement::GetStationIndex() const
 {
-    return (index & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    return (index & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
 uint8_t RCT12EntranceElement::GetSequenceIndex() const
@@ -523,13 +523,13 @@ void RCT12TileElement::ClearAs(uint8_t newType)
 
 void RCT12LargeSceneryElement::SetEntryIndex(uint32_t newIndex)
 {
-    entryIndex &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
-    entryIndex |= (newIndex & TILE_ELEMENT_LARGE_TYPE_MASK);
+    entryIndex &= ~RCT12_TILE_ELEMENT_LARGE_TYPE_MASK;
+    entryIndex |= (newIndex & RCT12_TILE_ELEMENT_LARGE_TYPE_MASK);
 }
 
 void RCT12LargeSceneryElement::SetSequenceIndex(uint16_t sequence)
 {
-    entryIndex &= TILE_ELEMENT_LARGE_TYPE_MASK;
+    entryIndex &= RCT12_TILE_ELEMENT_LARGE_TYPE_MASK;
     entryIndex |= (sequence << 10);
 }
 
@@ -974,7 +974,7 @@ void RCT12EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
 
 void RCT12EntranceElement::SetStationIndex(uint8_t stationIndex)
 {
-    index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    index &= ~RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK;
     index |= (stationIndex << 4);
 }
 
