@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "KeyboardShortcuts.h"
+#include "ShortcutManager.h"
 
 #include <iterator>
 #include <openrct2-ui/interface/Viewport.h>
@@ -1131,3 +1132,57 @@ namespace
 } // anonymous namespace
 
 #pragma endregion
+
+void ShortcutManager::RegisterDefaultShortcuts()
+{
+    // clang-format off
+    RegisterShortcut(RegisteredShortcut("interface.close_top", STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW, "BACKSPACE", []() { window_close_top(); }));
+    RegisterShortcut(RegisteredShortcut("interface.close_all", STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS, "SHIFT+BACKSPACE", []() {
+        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
+            window_close_all();
+        else if (gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+            window_close_top();
+    }));
+    RegisterShortcut(RegisteredShortcut("interface.cancel_construction", STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE, "ESCAPE", []() {
+        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+            return;
+
+        rct_window* window = window_find_by_class(WC_ERROR);
+        if (window != nullptr)
+            window_close(window);
+        else if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+            tool_cancel();
+    }));
+    RegisterShortcut(RegisteredShortcut("interface.pause", STR_SHORTCUT_PAUSE_GAME, "PAUSE", []() {
+        if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
+        {
+            rct_window* window = window_find_by_class(WC_TOP_TOOLBAR);
+            if (window != nullptr)
+            {
+                window->Invalidate();
+                window_event_mouse_up_call(window, WC_TOP_TOOLBAR__WIDX_PAUSE);
+            }
+        }
+    }));
+    RegisterShortcut(RegisteredShortcut("interface.zoom_out", STR_SHORTCUT_ZOOM_VIEW_OUT, "PAGEUP", []() {
+        main_window_zoom(false, false);
+    }));
+    RegisterShortcut(RegisteredShortcut("interface.zoom_in", STR_SHORTCUT_ZOOM_VIEW_IN, "PAGEDOWN", []() {
+        main_window_zoom(true, false);
+    }));
+    RegisterShortcut(RegisteredShortcut("interface.rotate_clockwise", STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE, "RETURN", []() {
+        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+            return;
+
+        rct_window* w = window_get_main();
+        window_rotate_camera(w, 1);
+    }));
+    RegisterShortcut(RegisteredShortcut("interface.rotate_anticlockwise", STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE, "SHIFT+RETURN", []() {
+        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+            return;
+
+        rct_window* w = window_get_main();
+        window_rotate_camera(w, -1);
+    }));
+    // clang-format on
+}

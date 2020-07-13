@@ -42,6 +42,7 @@
     <ClInclude Include="drawing\engines\opengl\TransparencyDepth.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="input\KeyboardShortcuts.h" />
+    <ClInclude Include="input\ShortcutManager.h" />
     <ClInclude Include="interface\Dropdown.h" />
     <ClInclude Include="interface\Graph.h" />
     <ClInclude Include="interface\InGameConsole.h" />
@@ -94,6 +95,7 @@
     <ClCompile Include="input\KeyboardShortcut.cpp" />
     <ClCompile Include="input\KeyboardShortcuts.cpp" />
     <ClCompile Include="input\MouseInput.cpp" />
+    <ClCompile Include="input\ShortcutManager.cpp" />
     <ClCompile Include="interface\Graph.cpp" />
     <ClCompile Include="interface\InGameConsole.cpp" />
     <ClCompile Include="interface\LandTool.cpp" />
