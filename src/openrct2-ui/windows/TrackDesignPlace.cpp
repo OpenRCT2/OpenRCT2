@@ -111,8 +111,7 @@ static rct_window_event_list window_track_place_events = {
 // clang-format on
 
 static std::vector<uint8_t> _window_track_place_mini_preview;
-static int16_t _window_track_place_last_x;
-static int16_t _window_track_place_last_y;
+static CoordsXY _windowTrackPlaceLast;
 
 static uint8_t _window_track_place_ride_index;
 static bool _window_track_place_last_was_valid;
@@ -171,7 +170,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
     window_push_others_right(w);
     show_gridlines();
     _window_track_place_last_cost = MONEY32_UNDEFINED;
-    _window_track_place_last_x = -1;
+    _windowTrackPlaceLast.setNull();
     _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 
     window_track_place_clear_mini_preview();
@@ -212,14 +211,14 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_track_place_clear_provisional();
             _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
             w->Invalidate();
-            _window_track_place_last_x = -1;
+            _windowTrackPlaceLast.setNull();
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_MIRROR:
             track_design_mirror(_trackDesign.get());
             _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
             w->Invalidate();
-            _window_track_place_last_x = -1;
+            _windowTrackPlaceLast.setNull();
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_SELECT_DIFFERENT_DESIGN:
@@ -285,7 +284,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     }
 
     // Check if tool map position has changed since last update
-    if (mapCoords.x == _window_track_place_last_x && mapCoords.y == _window_track_place_last_y)
+    if (mapCoords == _windowTrackPlaceLast)
     {
         place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { mapCoords, 0 });
         return;
@@ -322,8 +321,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         }
     }
 
-    _window_track_place_last_x = trackLoc.x;
-    _window_track_place_last_y = trackLoc.y;
+    _windowTrackPlaceLast = trackLoc;
     if (cost != _window_track_place_last_cost)
     {
         _window_track_place_last_cost = cost;
