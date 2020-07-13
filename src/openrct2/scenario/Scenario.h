@@ -256,8 +256,8 @@ struct rct_s6_data
     uint32_t game_ticks_1;
     rct2_ride rides[RCT12_MAX_RIDES_IN_PARK];
     uint16_t saved_age;
-    uint16_t saved_view_x;
-    uint16_t saved_view_y;
+    int16_t saved_view_x;
+    int16_t saved_view_y;
     uint8_t saved_view_zoom;
     uint8_t saved_view_rotation;
     RCT12MapAnimation map_animations[RCT2_MAX_ANIMATED_OBJECTS];
