@@ -25,7 +25,7 @@
 static int32_t place_virtual_track(
     const TrackDesign& td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& loc)
 {
-    return place_virtual_track(const_cast<TrackDesign*>(&td6), ptdOperation, placeScenery, ride, loc.x, loc.y, loc.z);
+    return place_virtual_track(const_cast<TrackDesign*>(&td6), ptdOperation, placeScenery, ride, loc);
 }
 
 GameActionResult::Ptr TrackDesignAction::Query() const
