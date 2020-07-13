@@ -13,6 +13,7 @@
 #include "RCT2.h"
 
 #include <cstdint>
+#include <cstring>
 #include <memory>
 #include <string_view>
 
