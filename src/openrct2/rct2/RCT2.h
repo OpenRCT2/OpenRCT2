@@ -10,10 +10,13 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/FileSystem.hpp"
 #include "../object/Object.h"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
 #include "../ride/Vehicle.h"
+
+#include <vector>
 
 constexpr const uint8_t RCT2_MAX_STAFF = 200;
 constexpr const uint8_t RCT2_MAX_BANNERS_IN_PARK = 250;
@@ -760,3 +763,5 @@ struct RCT2RideRatingCalculationData
 assert_struct_size(RCT2RideRatingCalculationData, 76);
 
 #pragma pack(pop)
+
+std::vector<uint8_t> DecryptSea(const fs::path& path);

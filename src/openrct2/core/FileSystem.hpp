@@ -43,6 +43,7 @@ namespace fs = std::filesystem;
 #            define WIN32_LEAN_AND_MEAN
 #        endif
 #        define BITMAP WIN32_BITMAP
+#        define PATTERN WIN32_PATTERN
 #    endif
 #    include <filesystem.hpp>
 #    ifdef _WIN32
@@ -50,6 +51,7 @@ namespace fs = std::filesystem;
 #        undef CreateWindow
 #        undef GetMessage
 #        undef BITMAP
+#        undef PATTERN
 #    endif
 namespace fs = ghc::filesystem;
 #endif

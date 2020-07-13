@@ -18,6 +18,7 @@
 
 // Then the rest
 #include <algorithm>
+#include <iterator>
 #include <openrct2-ui/Ui.h>
 #include <openrct2/core/String.hpp>
 #include <stdio.h>

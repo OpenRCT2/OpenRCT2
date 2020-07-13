@@ -541,8 +541,22 @@ namespace OpenRCT2
             log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
             try
             {
-                auto fs = FileStream(path, FILE_MODE_OPEN);
-                return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
+                if (String::Equals(Path::GetExtension(path), ".sea", true))
+                {
+                    auto data = DecryptSea(fs::u8path(path));
+                    auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
+                    if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail))
+                    {
+                        Console::Error::WriteLine(".sea file may have been renamed.");
+                        return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    auto fs = FileStream(path, FILE_MODE_OPEN);
+                    return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
+                }
             }
             catch (const std::exception& e)
             {

@@ -1205,7 +1205,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     if (customWidgetInfo->Name == name)
                     {
-                        return i;
+                        return static_cast<rct_widgetindex>(i);
                     }
                 }
             }
