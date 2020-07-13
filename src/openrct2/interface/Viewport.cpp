@@ -1417,7 +1417,7 @@ static bool is_pixel_present_rle(const uint8_t* esi, int16_t x_start_point, int1
  * @return value originally stored in 0x00141F569
  */
 static bool is_sprite_interacted_with_palette_set(
-    rct_drawpixelinfo* dpi, int32_t imageId, int16_t x, int16_t y, const PaletteMap& paletteMap)
+    rct_drawpixelinfo* dpi, int32_t imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     const rct_g1_element* g1 = gfx_get_g1_element(imageId & 0x7FFFF);
     if (g1 == nullptr)
@@ -1445,18 +1445,20 @@ static bool is_sprite_interacted_with_palette_set(
                 /* .zoom_level = */ dpi->zoom_level - 1,
             };
 
-            return is_sprite_interacted_with_palette_set(&zoomed_dpi, imageId - g1->zoomed_offset, x / 2, y / 2, paletteMap);
+            return is_sprite_interacted_with_palette_set(
+                &zoomed_dpi, imageId - g1->zoomed_offset, { coords.x / 2, coords.y / 2 }, paletteMap);
         }
     }
 
     int32_t round = std::max(1, 1 * dpi->zoom_level);
+    auto origin = coords;
 
     if (g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
-        y -= (round - 1);
+        origin.y -= (round - 1);
     }
 
-    y += g1->y_offset;
+    origin.y += g1->y_offset;
     int16_t yStartPoint = 0;
     int16_t height = g1->height;
     if (dpi->zoom_level != 0)
@@ -1482,26 +1484,26 @@ static bool is_sprite_interacted_with_palette_set(
         }
     }
 
-    y = floor2(y, round);
+    origin.y = floor2(origin.y, round);
     int16_t yEndPoint = height;
-    y -= dpi->y;
-    if (y < 0)
+    origin.y -= dpi->y;
+    if (origin.y < 0)
     {
-        yEndPoint += y;
+        yEndPoint += origin.y;
         if (yEndPoint <= 0)
         {
             return false;
         }
 
-        yStartPoint -= y;
-        y = 0;
+        yStartPoint -= origin.y;
+        origin.y = 0;
     }
 
-    y += yEndPoint;
-    y--;
-    if (y > 0)
+    origin.y += yEndPoint;
+    origin.y--;
+    if (origin.y > 0)
     {
-        yEndPoint -= y;
+        yEndPoint -= origin.y;
         if (yEndPoint <= 0)
         {
             return false;
@@ -1511,26 +1513,26 @@ static bool is_sprite_interacted_with_palette_set(
     int16_t xStartPoint = 0;
     int16_t xEndPoint = g1->width;
 
-    x += g1->x_offset;
-    x = floor2(x, round);
-    x -= dpi->x;
-    if (x < 0)
+    origin.x += g1->x_offset;
+    origin.x = floor2(origin.x, round);
+    origin.x -= dpi->x;
+    if (origin.x < 0)
     {
-        xEndPoint += x;
+        xEndPoint += origin.x;
         if (xEndPoint <= 0)
         {
             return false;
         }
 
-        xStartPoint -= x;
-        x = 0;
+        xStartPoint -= origin.x;
+        origin.x = 0;
     }
 
-    x += xEndPoint;
-    x--;
-    if (x > 0)
+    origin.x += xEndPoint;
+    origin.x--;
+    if (origin.x > 0)
     {
-        xEndPoint -= x;
+        xEndPoint -= origin.x;
         if (xEndPoint <= 0)
         {
             return false;
@@ -1580,7 +1582,7 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, c
     {
         _currentImageType = 0;
     }
-    return is_sprite_interacted_with_palette_set(dpi, imageId, coords.x, coords.y, paletteMap);
+    return is_sprite_interacted_with_palette_set(dpi, imageId, coords, paletteMap);
 }
 
 /**
