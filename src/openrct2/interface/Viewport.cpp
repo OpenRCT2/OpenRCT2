@@ -236,7 +236,7 @@ CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
  *  rct2: 0x006E7FF3
  */
 static void viewport_redraw_after_shift(
-    rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x, int32_t y)
+    rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, const ScreenCoordsXY& coords)
 {
     // sub-divide by intersecting windows
     if (window != nullptr)
@@ -250,7 +250,7 @@ static void viewport_redraw_after_shift(
             auto itWindowPos = window_get_iterator(window);
             auto itNextWindow = itWindowPos != g_window_list.end() ? std::next(itWindowPos) : g_window_list.end();
             viewport_redraw_after_shift(
-                dpi, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), viewport, x, y);
+                dpi, itNextWindow == g_window_list.end() ? nullptr : itNextWindow->get(), viewport, coords);
             return;
         }
 
@@ -261,49 +261,49 @@ static void viewport_redraw_after_shift(
         {
             viewport->width = window->windowPos.x - viewport->pos.x;
             viewport->view_width = viewport->width * viewport->zoom;
-            viewport_redraw_after_shift(dpi, window, viewport, x, y);
+            viewport_redraw_after_shift(dpi, window, viewport, coords);
 
             viewport->pos.x += viewport->width;
             viewport->viewPos.x += viewport->width * viewport->zoom;
             viewport->width = view_copy.width - viewport->width;
             viewport->view_width = viewport->width * viewport->zoom;
-            viewport_redraw_after_shift(dpi, window, viewport, x, y);
+            viewport_redraw_after_shift(dpi, window, viewport, coords);
         }
         else if (viewport->pos.x + viewport->width > window->windowPos.x + window->width)
         {
             viewport->width = window->windowPos.x + window->width - viewport->pos.x;
             viewport->view_width = viewport->width * viewport->zoom;
-            viewport_redraw_after_shift(dpi, window, viewport, x, y);
+            viewport_redraw_after_shift(dpi, window, viewport, coords);
 
             viewport->pos.x += viewport->width;
             viewport->viewPos.x += viewport->width * viewport->zoom;
             viewport->width = view_copy.width - viewport->width;
             viewport->view_width = viewport->width * viewport->zoom;
-            viewport_redraw_after_shift(dpi, window, viewport, x, y);
+            viewport_redraw_after_shift(dpi, window, viewport, coords);
         }
         else if (viewport->pos.y < window->windowPos.y)
         {
             viewport->height = window->windowPos.y - viewport->pos.y;
             viewport->view_width = viewport->width * viewport->zoom;
-            viewport_redraw_after_shift(dpi, window, viewport, x, y);
+            viewport_redraw_after_shift(dpi, window, viewport, coords);
 
             viewport->pos.y += viewport->height;
             viewport->viewPos.y += viewport->height * viewport->zoom;
             viewport->height = view_copy.height - viewport->height;
             viewport->view_width = viewport->width * viewport->zoom;
-            viewport_redraw_after_shift(dpi, window, viewport, x, y);
+            viewport_redraw_after_shift(dpi, window, viewport, coords);
         }
         else if (viewport->pos.y + viewport->height > window->windowPos.y + window->height)
         {
             viewport->height = window->windowPos.y + window->height - viewport->pos.y;
             viewport->view_width = viewport->width * viewport->zoom;
-            viewport_redraw_after_shift(dpi, window, viewport, x, y);
+            viewport_redraw_after_shift(dpi, window, viewport, coords);
 
             viewport->pos.y += viewport->height;
             viewport->viewPos.y += viewport->height * viewport->zoom;
             viewport->height = view_copy.height - viewport->height;
             viewport->view_width = viewport->width * viewport->zoom;
-            viewport_redraw_after_shift(dpi, window, viewport, x, y);
+            viewport_redraw_after_shift(dpi, window, viewport, coords);
         }
 
         // restore viewport
@@ -317,36 +317,36 @@ static void viewport_redraw_after_shift(
         int16_t bottom = viewport->pos.y + viewport->height;
 
         // if moved more than the viewport size
-        if (abs(x) < viewport->width && abs(y) < viewport->height)
+        if (abs(coords.x) < viewport->width && abs(coords.y) < viewport->height)
         {
             // update whole block ?
-            drawing_engine_copy_rect(viewport->pos.x, viewport->pos.y, viewport->width, viewport->height, x, y);
+            drawing_engine_copy_rect(viewport->pos.x, viewport->pos.y, viewport->width, viewport->height, coords.x, coords.y);
 
-            if (x > 0)
+            if (coords.x > 0)
             {
                 // draw left
-                int16_t _right = viewport->pos.x + x;
+                int16_t _right = viewport->pos.x + coords.x;
                 window_draw_all(dpi, left, top, _right, bottom);
-                left += x;
+                left += coords.x;
             }
-            else if (x < 0)
+            else if (coords.x < 0)
             {
                 // draw right
-                int16_t _left = viewport->pos.x + viewport->width + x;
+                int16_t _left = viewport->pos.x + viewport->width + coords.x;
                 window_draw_all(dpi, _left, top, right, bottom);
-                right += x;
+                right += coords.x;
             }
 
-            if (y > 0)
+            if (coords.y > 0)
             {
                 // draw top
-                bottom = viewport->pos.y + y;
+                bottom = viewport->pos.y + coords.y;
                 window_draw_all(dpi, left, top, right, bottom);
             }
-            else if (y < 0)
+            else if (coords.y < 0)
             {
                 // draw bottom
-                top = viewport->pos.y + viewport->height + y;
+                top = viewport->pos.y + viewport->height + coords.y;
                 window_draw_all(dpi, left, top, right, bottom);
             }
         }
@@ -403,7 +403,7 @@ static void viewport_shift_pixels(
         window_draw_all(dpi, left, top, right, bottom);
     }
 
-    viewport_redraw_after_shift(dpi, window, viewport, x_diff, y_diff);
+    viewport_redraw_after_shift(dpi, window, viewport, { x_diff, y_diff });
 }
 
 static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewport* viewport)
