@@ -349,7 +349,7 @@ static void mapgen_place_trees()
 
         int32_t type = -1;
         auto* surfaceElement = map_get_surface_element_at(pos.ToCoordsXY());
-        if (surfaceElement != nullptr)
+        if (surfaceElement == nullptr)
             continue;
         switch (surfaceElement->GetSurfaceStyle())
         {
