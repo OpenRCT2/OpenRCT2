@@ -1498,18 +1498,16 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
     return 1;
 }
 
-static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int16_t z, Ride* ride)
+static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, Ride* ride)
 {
     const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
                                                                                                           : FlatRideTrackBlocks;
 
-    _trackPreviewOrigin.x = x;
-    _trackPreviewOrigin.y = y;
-    _trackPreviewOrigin.z = z;
+    _trackPreviewOrigin = origin;
     if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES)
     {
         gMapSelectionTiles.clear();
-        gMapSelectArrowPosition = CoordsXYZ{ x, y, tile_element_height({ x, y }) };
+        gMapSelectArrowPosition = CoordsXYZ{ origin, tile_element_height(origin) };
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -1518,6 +1516,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
     uint8_t rotation = _currentTrackPieceDirection;
 
     // Track elements
+    auto newCoords = origin;
     for (const auto& track : td6->track_elements)
     {
         uint8_t trackType = track.type;
@@ -1526,15 +1525,15 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
             trackType = TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP;
         }
 
-        track_design_update_max_min_coordinates({ x, y, z });
+        track_design_update_max_min_coordinates(newCoords);
 
         switch (_trackDesignPlaceOperation)
         {
             case PTD_OPERATION_DRAW_OUTLINES:
                 for (const rct_preview_track* trackBlock = trackBlockArray[trackType]; trackBlock->index != 0xFF; trackBlock++)
                 {
-                    auto tile = CoordsXY{ x, y } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
-                    track_design_update_max_min_coordinates({ tile, z });
+                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
+                    track_design_update_max_min_coordinates({ tile, newCoords.z });
                     track_design_add_selection_tile(tile);
                 }
                 break;
@@ -1542,8 +1541,9 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
             {
                 const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
                 const rct_preview_track* trackBlock = trackBlockArray[trackType];
-                int32_t tempZ = z - trackCoordinates->z_begin + trackBlock->z;
-                auto trackRemoveAction = TrackRemoveAction(trackType, 0, { x, y, tempZ, static_cast<Direction>(rotation & 3) });
+                int32_t tempZ = newCoords.z - trackCoordinates->z_begin + trackBlock->z;
+                auto trackRemoveAction = TrackRemoveAction(
+                    trackType, 0, { newCoords, tempZ, static_cast<Direction>(rotation & 3) });
                 trackRemoveAction.SetFlags(
                     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                 GameActions::ExecuteNested(&trackRemoveAction);
@@ -1557,7 +1557,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
 
                 // di
-                int16_t tempZ = z - trackCoordinates->z_begin;
+                int16_t tempZ = newCoords.z - trackCoordinates->z_begin;
                 uint32_t trackColour = (track.flags >> 4) & 0x3;
                 uint32_t brakeSpeed = (track.flags & 0x0F) * 2;
                 uint32_t seatRotation = track.flags & 0x0F;
@@ -1594,7 +1594,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 }
                 gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                 auto trackPlaceAction = TrackPlaceAction(
-                    _currentRideIndex, trackType, { x, y, tempZ, static_cast<uint8_t>(rotation) }, brakeSpeed, trackColour,
+                    _currentRideIndex, trackType, { newCoords, tempZ, static_cast<uint8_t>(rotation) }, brakeSpeed, trackColour,
                     seatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
 
@@ -1612,10 +1612,10 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
             }
             case PTD_OPERATION_GET_PLACE_Z:
             {
-                int32_t tempZ = z - TrackCoordinates[trackType].z_begin;
+                int32_t tempZ = newCoords.z - TrackCoordinates[trackType].z_begin;
                 for (const rct_preview_track* trackBlock = trackBlockArray[trackType]; trackBlock->index != 0xFF; trackBlock++)
                 {
-                    auto tile = CoordsXY{ x, y } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
+                    auto tile = CoordsXY{ newCoords } + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
                     if (!map_is_location_valid(tile))
                     {
                         continue;
@@ -1653,12 +1653,10 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
         }
 
         const rct_track_coordinates* track_coordinates = &TrackCoordinates[trackType];
-        auto offsetAndRotatedTrack = CoordsXY{ x, y } + CoordsXY{ track_coordinates->x, track_coordinates->y }.Rotate(rotation);
-        x = offsetAndRotatedTrack.x;
-        y = offsetAndRotatedTrack.y;
-        z -= track_coordinates->z_begin;
-        z += track_coordinates->z_end;
+        auto offsetAndRotatedTrack = CoordsXY{ newCoords }
+            + CoordsXY{ track_coordinates->x, track_coordinates->y }.Rotate(rotation);
 
+        newCoords = { offsetAndRotatedTrack, newCoords.z - track_coordinates->z_begin + track_coordinates->z_end };
         rotation = (rotation + track_coordinates->rotation_end - track_coordinates->rotation_begin) & 3;
         if (track_coordinates->rotation_end & (1 << 2))
         {
@@ -1666,8 +1664,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
         }
         else
         {
-            x += CoordsDirectionDelta[rotation].x;
-            y += CoordsDirectionDelta[rotation].y;
+            newCoords += CoordsDirectionDelta[rotation];
         }
     }
 
@@ -1677,15 +1674,14 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
         rotation = _currentTrackPieceDirection & 3;
         CoordsXY entranceMapPos{ entrance.x, entrance.y };
         auto rotatedEntranceMapPos = entranceMapPos.Rotate(rotation);
-        x = rotatedEntranceMapPos.x + _trackPreviewOrigin.x;
-        y = rotatedEntranceMapPos.y + _trackPreviewOrigin.y;
+        newCoords = { rotatedEntranceMapPos + _trackPreviewOrigin, newCoords.z };
 
-        track_design_update_max_min_coordinates({ x, y, z });
+        track_design_update_max_min_coordinates(newCoords);
 
         switch (_trackDesignPlaceOperation)
         {
             case PTD_OPERATION_DRAW_OUTLINES:
-                track_design_add_selection_tile({ x, y });
+                track_design_add_selection_tile(newCoords);
                 break;
             case PTD_OPERATION_PLACE_QUERY:
             case PTD_OPERATION_PLACE:
@@ -1695,10 +1691,10 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 rotation = (rotation + entrance.direction) & 3;
                 if (_trackDesignPlaceOperation != PTD_OPERATION_PLACE_QUERY)
                 {
-                    auto tile = CoordsXY{ x, y } + CoordsDirectionDelta[rotation];
+                    auto tile = CoordsXY{ newCoords } + CoordsDirectionDelta[rotation];
                     TileElement* tile_element = map_get_first_element_at(tile);
-                    z = _trackPreviewOrigin.z / COORDS_Z_STEP;
-                    z += entrance.z;
+                    newCoords.z = _trackPreviewOrigin.z / COORDS_Z_STEP;
+                    newCoords.z += entrance.z;
                     if (tile_element == nullptr)
                     {
                         _trackDesignPlaceCost = MONEY32_UNDEFINED;
@@ -1711,7 +1707,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                         {
                             continue;
                         }
-                        if (tile_element->base_height != z)
+                        if (tile_element->base_height != newCoords.z)
                         {
                             continue;
                         }
@@ -1738,7 +1734,7 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                         }
                         gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-                            { x, y }, rotation, ride->id, stationIndex, entrance.isExit);
+                            newCoords, rotation, ride->id, stationIndex, entrance.isExit);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideEntranceExitPlaceAction)
                                                                    : GameActions::QueryNested(&rideEntranceExitPlaceAction);
@@ -1756,10 +1752,10 @@ static bool track_design_place_ride(TrackDesign* td6, int16_t x, int16_t y, int1
                 }
                 else
                 {
-                    z = entrance.z * COORDS_Z_STEP;
-                    z += _trackPreviewOrigin.z;
+                    newCoords.z = entrance.z * COORDS_Z_STEP;
+                    newCoords.z += _trackPreviewOrigin.z;
 
-                    auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ x, y, z }, false);
+                    auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
                     if (res->Error != GA_ERROR::OK)
                     {
                         _trackDesignPlaceCost = MONEY32_UNDEFINED;
@@ -1830,7 +1826,7 @@ int32_t place_virtual_track(
     }
     else
     {
-        track_place_success = track_design_place_ride(td6, x, y, z, ride);
+        track_place_success = track_design_place_ride(td6, { x, y, z }, ride);
     }
 
     // Scenery elements
