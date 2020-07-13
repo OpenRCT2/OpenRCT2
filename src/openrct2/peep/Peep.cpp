@@ -2862,9 +2862,9 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
  *
  *  rct2: 0x00693F70
  */
-static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElement* tile_element)
+static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
 {
-    ride_id_t rideIndex = tile_element->AsTrack()->GetRideIndex();
+    ride_id_t rideIndex = coords.element->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
         return false;
@@ -2915,8 +2915,10 @@ static bool peep_interact_with_shop(Peep* peep, int16_t x, int16_t y, TileElemen
             money16 money = 0;
             guest->SpendMoney(money, cost, ExpenditureType::ParkRideTickets);
         }
-        peep->DestinationX = (x & 0xFFE0) + 16;
-        peep->DestinationY = (y & 0xFFE0) + 16;
+
+        auto coordsCentre = coords.ToTileCentre();
+        peep->DestinationX = coordsCentre.x;
+        peep->DestinationY = coordsCentre.y;
         peep->DestinationTolerance = 3;
 
         peep->CurrentRide = rideIndex;
@@ -3068,7 +3070,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         }
         else if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
         {
-            if (peep_interact_with_shop(this, newLoc.x, newLoc.y, tileElement))
+            if (peep_interact_with_shop(this, { newLoc, tileElement }))
             {
                 tile_result = tileElement;
                 return;
