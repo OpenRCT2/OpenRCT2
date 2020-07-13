@@ -2254,7 +2254,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     const int32_t listWidth = w->widgets[WIDX_LIST].width();
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+    gfx_fill_rect(
+        dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } },
+        ColourMapA[w->colours[1]].mid_light);
 
     ScreenCoordsXY screenCoords{};
     screenCoords.y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
@@ -2276,24 +2278,19 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         int32_t type = tileElement->GetType();
         const char* typeName = "";
 
+        auto fillRectangle = ScreenRect{ { 0, screenCoords.y }, { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
         if (selectedRow)
         {
-            gfx_fill_rect(
-                dpi, 0, screenCoords.y, listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
-                ColourMapA[w->colours[1]].mid_dark);
+            gfx_fill_rect(dpi, fillRectangle, ColourMapA[w->colours[1]].mid_dark);
         }
         else if (hoveredRow)
         {
-            gfx_fill_rect(
-                dpi, 0, screenCoords.y, listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
-                ColourMapA[w->colours[1]].mid_dark | 0x1000000);
+            gfx_fill_rect(dpi, fillRectangle, ColourMapA[w->colours[1]].mid_dark | 0x1000000);
         }
         else if (((windowTileInspectorElementCount - i) & 1) == 0)
         {
             // Zebra stripes
-            gfx_fill_rect(
-                dpi, 0, screenCoords.y, listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
-                ColourMapA[w->colours[1]].light | 0x1000000);
+            gfx_fill_rect(dpi, fillRectangle, ColourMapA[w->colours[1]].light | 0x1000000);
         }
 
         switch (type)
