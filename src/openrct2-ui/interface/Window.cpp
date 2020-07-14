@@ -182,25 +182,6 @@ rct_window* window_create_auto_pos(
     auto screenWidth = uiContext->GetWidth();
     auto screenHeight = uiContext->GetHeight();
 
-    // TODO dead code, looks like it is cascading the new window offset from an existing window
-    // we will have to re-implement this in our own way.
-    //
-    // if (cls & 0x80) {
-    //  cls &= ~0x80;
-    //  rct_window *w = window_find_by_number(0, 0);
-    //  if (w != nullptr) {
-    //      if (w->x > -60 && w->x < screenWidth - 20) {
-    //          if (w->y < screenHeight - 20) {
-    //              int32_t x = w->x;
-    //              if (w->x + width > screenWidth)
-    //                  x = screenWidth - 20 - width;
-    //              int32_t y = w->y;
-    //              return window_create(x + 10, y + 10, width, height, event_handlers, cls, flags);
-    //          }
-    //      }
-    //  }
-    // }
-
     ScreenCoordsXY screenPos{};
 
     // Place window in an empty corner of the screen
