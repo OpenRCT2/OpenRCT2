@@ -62,7 +62,7 @@ enum
 constexpr uint8_t SCROLLBAR_WIDTH = 10;
 
 constexpr rct_widget MakeWidget(
-    ScreenCoordsXY origin, ScreenSize size, uint8_t type, uint8_t colour, uint32_t content = 0xFFFFFFFF,
+    const ScreenCoordsXY& origin, const ScreenSize& size, uint8_t type, uint8_t colour, uint32_t content = 0xFFFFFFFF,
     rct_string_id tooltip = STR_NONE)
 {
     rct_widget out = {};
@@ -79,7 +79,7 @@ constexpr rct_widget MakeWidget(
 }
 
 constexpr rct_widget MakeRemapWidget(
-    ScreenCoordsXY origin, ScreenSize size, uint8_t type, uint8_t colour, uint32_t content = 0xFFFFFFFF,
+    const ScreenCoordsXY& origin, const ScreenSize& size, uint8_t type, uint8_t colour, uint32_t content = 0xFFFFFFFF,
     rct_string_id tooltip = STR_NONE)
 {
     return MakeWidget(origin, size, type, colour, IMAGE_TYPE_REMAP | content, tooltip);
@@ -89,7 +89,7 @@ constexpr rct_widget MakeRemapWidget(
     MakeWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__)
 
 constexpr rct_widget MakeSpinnerDecreaseWidget(
-    ScreenCoordsXY origin, ScreenSize size, [[maybe_unused]] uint8_t type, uint8_t colour,
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, uint8_t colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 25;
@@ -101,7 +101,7 @@ constexpr rct_widget MakeSpinnerDecreaseWidget(
 }
 
 constexpr rct_widget MakeSpinnerIncreaseWidget(
-    ScreenCoordsXY origin, ScreenSize size, [[maybe_unused]] uint8_t type, uint8_t colour,
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, uint8_t colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 13;
