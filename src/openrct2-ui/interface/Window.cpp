@@ -193,23 +193,18 @@ rct_window* window_create_auto_pos(
     auto screenWidth = uiContext->GetWidth();
     auto screenHeight = uiContext->GetHeight();
 
-    ScreenCoordsXY screenPos{};
-
     // Place window in an empty corner of the screen
-    {
-        const std::array cornerPositions = {
-            ScreenCoordsXY{ 0, 30 },                                          // topLeft
-            ScreenCoordsXY{ screenWidth - width, 30 },                        // topRight
-            ScreenCoordsXY{ 0, screenHeight - 34 - height },                  // bottomLeft
-            ScreenCoordsXY{ screenWidth - width, screenHeight - 34 - height } // bottomRight
-        };
+    const std::array cornerPositions = {
+        ScreenCoordsXY{ 0, 30 },                                          // topLeft
+        ScreenCoordsXY{ screenWidth - width, 30 },                        // topRight
+        ScreenCoordsXY{ 0, screenHeight - 34 - height },                  // bottomLeft
+        ScreenCoordsXY{ screenWidth - width, screenHeight - 34 - height } // bottomRight
+    };
 
-        for (const auto& cornerPos : cornerPositions)
-        {
-            screenPos = cornerPos;
-            if (window_fits_within_space(cornerPos, width, height))
-                goto foundSpace;
-        }
+    for (const auto& cornerPos : cornerPositions)
+    {
+        if (window_fits_within_space(cornerPos, width, height))
+            return window_create(ClampWindowToScreen(cornerPos, screenWidth, width), width, height, event_handlers, cls, flags);
     }
 
     // Place window next to another
@@ -227,9 +222,10 @@ rct_window* window_create_auto_pos(
                                      ScreenCoordsXY{ -w->width - 2, w->height + 2 } };
         for (const auto& offset : offsets)
         {
-            screenPos = w->windowPos + offset;
+            auto screenPos = w->windowPos + offset;
             if (window_fits_within_space(screenPos, width, height))
-                goto foundSpace;
+                return window_create(
+                    ClampWindowToScreen(screenPos, screenWidth, width), width, height, event_handlers, cls, flags);
         }
     }
 
@@ -248,14 +244,15 @@ rct_window* window_create_auto_pos(
 
         for (const auto& offset : offsets)
         {
-            screenPos = w->windowPos + offset;
+            auto screenPos = w->windowPos + offset;
             if (window_fits_on_screen(screenPos, width, height))
-                goto foundSpace;
+                return window_create(
+                    ClampWindowToScreen(screenPos, screenWidth, width), width, height, event_handlers, cls, flags);
         }
     }
 
     // Cascade
-    screenPos = { 0, 30 };
+    auto screenPos = ScreenCoordsXY{ 0, 30 };
     for (auto& w : g_window_list)
     {
         if (screenPos == w->windowPos)
@@ -265,10 +262,7 @@ rct_window* window_create_auto_pos(
         }
     }
 
-foundSpace:
-    screenPos = ClampWindowToScreen(screenPos, screenWidth, width);
-
-    return window_create(screenPos, width, height, event_handlers, cls, flags);
+    return window_create(ClampWindowToScreen(screenPos, screenWidth, width), width, height, event_handlers, cls, flags);
 }
 
 rct_window* window_create_centred(
