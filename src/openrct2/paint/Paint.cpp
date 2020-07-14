@@ -522,8 +522,7 @@ static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t
     attached_paint_struct* attached_ps = ps->attached_ps;
     for (; attached_ps; attached_ps = attached_ps->next)
     {
-        auto screenCoords = ScreenCoordsXY{ attached_ps->x + static_cast<int16_t>(ps->x),
-                                            attached_ps->y + static_cast<int16_t>(ps->y) };
+        auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 
         uint32_t imageId = paint_ps_colourify_image(attached_ps->image_id, ps->sprite_type, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
@@ -995,7 +994,7 @@ paint_struct* sub_98199C(
  * @param y (cx)
  * @return (!CF) success
  */
-bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, uint16_t x, uint16_t y)
+bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
 {
     if (session->UnkF1AD2C == nullptr)
     {
@@ -1032,7 +1031,7 @@ bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, 
  * @param y (cx)
  * @return (!CF) success
  */
-bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, uint16_t x, uint16_t y)
+bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
     {
