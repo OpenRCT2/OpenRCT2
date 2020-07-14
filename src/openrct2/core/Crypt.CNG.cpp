@@ -24,7 +24,7 @@
 #include <windows.h>
 #include <wincrypt.h>
 #include <bcrypt.h>
-#define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
+constexpr bool NT_SUCCESS(NTSTATUS status) {return status >= 0;}
 // clang-format on
 
 using namespace Crypt;
