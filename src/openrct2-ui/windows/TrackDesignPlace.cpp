@@ -115,9 +115,7 @@ static CoordsXY _windowTrackPlaceLast;
 
 static uint8_t _window_track_place_ride_index;
 static bool _window_track_place_last_was_valid;
-static int16_t _window_track_place_last_valid_x;
-static int16_t _window_track_place_last_valid_y;
-static int16_t _window_track_place_last_valid_z;
+static CoordsXYZ _windowTrackPlaceLastValid;
 static money32 _window_track_place_last_cost;
 
 static std::unique_ptr<TrackDesign> _trackDesign;
@@ -310,9 +308,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
                 if (result->Error == GA_ERROR::OK)
                 {
                     _window_track_place_ride_index = result->rideIndex;
-                    _window_track_place_last_valid_x = trackLoc.x;
-                    _window_track_place_last_valid_y = trackLoc.y;
-                    _window_track_place_last_valid_z = trackLoc.z;
+                    _windowTrackPlaceLastValid = trackLoc;
                     _window_track_place_last_was_valid = true;
                 }
             });
@@ -431,9 +427,7 @@ static void window_track_place_clear_provisional()
         auto ride = get_ride(_window_track_place_ride_index);
         if (ride != nullptr)
         {
-            place_virtual_track(
-                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride,
-                { _window_track_place_last_valid_x, _window_track_place_last_valid_y, _window_track_place_last_valid_z });
+            place_virtual_track(_trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _windowTrackPlaceLastValid);
             _window_track_place_last_was_valid = false;
         }
     }
@@ -446,9 +440,7 @@ void TrackPlaceClearProvisionalTemporarily()
         auto ride = get_ride(_window_track_place_ride_index);
         if (ride != nullptr)
         {
-            place_virtual_track(
-                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride,
-                { _window_track_place_last_valid_x, _window_track_place_last_valid_y, _window_track_place_last_valid_z });
+            place_virtual_track(_trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _windowTrackPlaceLastValid);
         }
     }
 }
@@ -457,10 +449,7 @@ void TrackPlaceRestoreProvisional()
 {
     if (_window_track_place_last_was_valid)
     {
-        auto tdAction = TrackDesignAction(
-            { _window_track_place_last_valid_x, _window_track_place_last_valid_y, _window_track_place_last_valid_z,
-              _currentTrackPieceDirection },
-            *_trackDesign);
+        auto tdAction = TrackDesignAction({ _windowTrackPlaceLastValid, _currentTrackPieceDirection }, *_trackDesign);
         tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         auto res = GameActions::Execute(&tdAction);
         if (res->Error != GA_ERROR::OK)
