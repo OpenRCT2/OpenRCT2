@@ -175,6 +175,17 @@ rct_window* window_create(
     return w;
 }
 
+static ScreenCoordsXY ClampWindowToScreen(const ScreenCoordsXY& pos, const int32_t screenWidth, const int32_t width)
+{
+    auto screenPos = pos;
+    if (screenPos.x < 0)
+        screenPos.x = 0;
+    if (screenPos.x + width > screenWidth)
+        screenPos.x = screenWidth - width;
+
+    return screenPos;
+}
+
 rct_window* window_create_auto_pos(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags)
 {
@@ -254,12 +265,8 @@ rct_window* window_create_auto_pos(
         }
     }
 
-    // Clamp to inside the screen
 foundSpace:
-    if (screenPos.x < 0)
-        screenPos.x = 0;
-    if (screenPos.x + width > screenWidth)
-        screenPos.x = screenWidth - width;
+    screenPos = ClampWindowToScreen(screenPos, screenWidth, width);
 
     return window_create(screenPos, width, height, event_handlers, cls, flags);
 }
