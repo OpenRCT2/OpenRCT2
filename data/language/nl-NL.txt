@@ -2911,7 +2911,7 @@ STR_5554    :{SMALLFONT}{BLACK}Overgangen met omringend land gladstrijken
 STR_5555    :Voertuigen van andere baantypen tonen
 STR_5556    :{SMALLFONT}{BLACK}Speler verwijderen
 STR_5557    :Verbinding behouden na desynchronisatie (multiplayer)
-STR_5558    :Om deze instelling van kracht te laten worden is een herstart vereist.
+STR_5558    :Deze instelling wordt pas van kracht nadat je OpenRCT2 opnieuw hebt gestart.
 STR_5559    :Elke 10 min. inspect.
 STR_5560    :{SMALLFONT}{BLACK}Stelt het inspectieinterval van alle attracties in op ‘Elke 10 minuten’.
 STR_5561    :Kon taal niet laden
