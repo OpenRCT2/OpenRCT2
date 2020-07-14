@@ -201,60 +201,44 @@ rct_window* window_create_auto_pos(
     //  }
     // }
 
+    ScreenCoordsXY screenPos{};
+
     // Place window in an empty corner of the screen
-    auto screenPos = ScreenCoordsXY{ 0, 30 };
-    if (window_fits_within_space(screenPos, width, height))
-        goto foundSpace;
+    {
+        const std::array cornerPositions = {
+            ScreenCoordsXY{ 0, 30 },                                          // topLeft
+            ScreenCoordsXY{ screenWidth - width, 30 },                        // topRight
+            ScreenCoordsXY{ 0, screenHeight - 34 - height },                  // bottomLeft
+            ScreenCoordsXY{ screenWidth - width, screenHeight - 34 - height } // bottomRight
+        };
 
-    screenPos = { screenWidth - width, 30 };
-    if (window_fits_within_space(screenPos, width, height))
-        goto foundSpace;
-
-    screenPos = { 0, screenHeight - 34 - height };
-    if (window_fits_within_space(screenPos, width, height))
-        goto foundSpace;
-
-    screenPos = { screenWidth - width, screenHeight - 34 - height };
-    if (window_fits_within_space(screenPos, width, height))
-        goto foundSpace;
+        for (const auto& cornerPos : cornerPositions)
+        {
+            screenPos = cornerPos;
+            if (window_fits_within_space(cornerPos, width, height))
+                goto foundSpace;
+        }
+    }
 
     // Place window next to another
     for (auto& w : g_window_list)
     {
         if (w->flags & WF_STICK_TO_BACK)
             continue;
-
-        screenPos = { w->windowPos.x + w->width + 2, w->windowPos.y };
-        if (window_fits_within_space(screenPos, width, height))
-            goto foundSpace;
-
-        screenPos = { w->windowPos.x - w->width - 2, w->windowPos.y };
-        if (window_fits_within_space(screenPos, width, height))
-            goto foundSpace;
-
-        screenPos = { w->windowPos.x, w->windowPos.y + w->height + 2 };
-        if (window_fits_within_space(screenPos, width, height))
-            goto foundSpace;
-
-        screenPos = { w->windowPos.x, w->windowPos.y - w->height - 2 };
-        if (window_fits_within_space(screenPos, width, height))
-            goto foundSpace;
-
-        screenPos = { w->windowPos.x + w->width + 2, w->windowPos.y - w->height - 2 };
-        if (window_fits_within_space(screenPos, width, height))
-            goto foundSpace;
-
-        screenPos = { w->windowPos.x - w->width - 2, w->windowPos.y - w->height - 2 };
-        if (window_fits_within_space(screenPos, width, height))
-            goto foundSpace;
-
-        screenPos = { w->windowPos.x + w->width + 2, w->windowPos.y + w->height + 2 };
-        if (window_fits_within_space(screenPos, width, height))
-            goto foundSpace;
-
-        screenPos = { w->windowPos.x - w->width - 2, w->windowPos.y + w->height + 2 };
-        if (window_fits_within_space(screenPos, width, height))
-            goto foundSpace;
+        const std::array offsets = { ScreenCoordsXY{ w->width + 2, 0 },
+                                     ScreenCoordsXY{ -w->width - 2, 0 },
+                                     ScreenCoordsXY{ 0, w->height + 2 },
+                                     ScreenCoordsXY{ 0, -w->height - 2 },
+                                     ScreenCoordsXY{ w->width + 2, -w->height - 2 },
+                                     ScreenCoordsXY{ -w->width - 2, -w->height - 2 },
+                                     ScreenCoordsXY{ w->width + 2, w->height + 2 },
+                                     ScreenCoordsXY{ -w->width - 2, w->height + 2 } };
+        for (const auto& offset : offsets)
+        {
+            screenPos = w->windowPos + offset;
+            if (window_fits_within_space(screenPos, width, height))
+                goto foundSpace;
+        }
     }
 
     // Overlap
@@ -263,21 +247,19 @@ rct_window* window_create_auto_pos(
         if (w->flags & WF_STICK_TO_BACK)
             continue;
 
-        screenPos = { w->windowPos.x + w->width + 2, w->windowPos.y };
-        if (window_fits_on_screen(screenPos, width, height))
-            goto foundSpace;
+        // clang-format off
+        const std::array offsets = { ScreenCoordsXY{ w->width + 2, 0 },
+                                     ScreenCoordsXY{ -w->width - 2, 0 },
+                                     ScreenCoordsXY{ 0, w->height + 2 },
+                                     ScreenCoordsXY{ 0, -w->height - 2 } };
+        // clang-format on
 
-        screenPos = { w->windowPos.x - w->width - 2, w->windowPos.y };
-        if (window_fits_on_screen(screenPos, width, height))
-            goto foundSpace;
-
-        screenPos = { w->windowPos.x, w->windowPos.y + w->height + 2 };
-        if (window_fits_on_screen(screenPos, width, height))
-            goto foundSpace;
-
-        screenPos = { w->windowPos.x, w->windowPos.y - w->height - 2 };
-        if (window_fits_on_screen(screenPos, width, height))
-            goto foundSpace;
+        for (const auto& offset : offsets)
+        {
+            screenPos = w->windowPos + offset;
+            if (window_fits_on_screen(screenPos, width, height))
+                goto foundSpace;
+        }
     }
 
     // Cascade
