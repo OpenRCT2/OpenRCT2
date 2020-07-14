@@ -199,7 +199,42 @@ namespace String
 
     bool Equals(const std::string& a, const std::string& b, bool ignoreCase)
     {
-        return Equals(a.c_str(), b.c_str(), ignoreCase);
+        if (a.size() != b.size())
+            return false;
+
+        if (ignoreCase)
+        {
+            for (size_t i = 0; i < a.size(); i++)
+            {
+                auto ai = a[i];
+                auto bi = b[i];
+
+                // Only do case insensitive comparison on ASCII characters
+                if ((ai & 0x80) != 0 || (bi & 0x80) != 0)
+                {
+                    if (a[i] != b[i])
+                    {
+                        return false;
+                    }
+                }
+                else if (tolower(ai) != tolower(bi))
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < a.size(); i++)
+            {
+                if (a[i] != b[i])
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase)

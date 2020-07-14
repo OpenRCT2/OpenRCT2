@@ -45,21 +45,23 @@ static rct_window_event_list window_shortcut_change_events([](auto& events)
 
 static rct_string_id CurrentShortcutKeyStringId{};
 
-rct_window* window_shortcut_change_open(OpenRCT2::Input::Shortcut shortcut, rct_string_id key_string_id)
+rct_window* window_shortcut_change_open(const std::string_view& shortcutId)
 {
-    // Move this to window_shortcut_change_open
-    window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+    return nullptr;
 
-    // Save the item we are selecting for new window
-    gKeyboardShortcutChangeId = shortcut;
-    CurrentShortcutKeyStringId = key_string_id;
-
-    rct_window* w = WindowCreateCentred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
-
-    w->widgets = window_shortcut_change_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE);
-    WindowInitScrollWidgets(w);
-    return w;
+//     // Move this to window_shortcut_change_open
+//     window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+// 
+//     // Save the item we are selecting for new window
+//     gKeyboardShortcutChangeId = selected_key;
+//     CurrentShortcutKeyStringId = key_string_id;
+// 
+//     rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+// 
+//     w->widgets = window_shortcut_change_widgets;
+//     w->enabled_widgets = (1ULL << WIDX_CLOSE);
+//     window_init_scroll_widgets(w);
+//     return w;
 }
 
 /**

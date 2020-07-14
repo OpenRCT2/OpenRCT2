@@ -64,7 +64,7 @@ rct_window* window_save_prompt_open();
 rct_window* window_server_list_open();
 rct_window* window_server_start_open();
 #endif
-rct_window* window_shortcut_change_open(OpenRCT2::Input::Shortcut shortcut, rct_string_id key_string_id);
+rct_window* window_shortcut_change_open(const std::string_view& shortcutId);
 rct_window* window_shortcut_keys_open();
 rct_window* window_staff_list_open();
 rct_window* window_staff_open(Peep* peep);

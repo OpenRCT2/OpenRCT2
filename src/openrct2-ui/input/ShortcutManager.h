@@ -16,35 +16,78 @@
 #include <string_view>
 #include <vector>
 
-class RegisteredShortcut
+namespace OpenRCT2::Ui
 {
-public:
-    std::string Id;
-    rct_string_id LocalisedName = STR_NONE;
-    uint32_t Modifiers{};
-    uint32_t Key{};
-    std::function<void()> Action;
-
-    RegisteredShortcut() = default;
-    RegisteredShortcut(
-        const std::string_view& id, rct_string_id localisedName, const std::string_view& shortcut,
-        const std::function<void()>& action)
-        : Id(id)
-        , LocalisedName(localisedName)
-        , Action(action)
+    enum class ShortcutInputKind
     {
-    }
+        Keyboard,
+        Mouse,
+    };
 
-    std::string GetKeyText();
+    struct ShortcutInput
+    {
+    public:
+        ShortcutInputKind Kind{};
+        uint32_t Modifiers{};
+        uint32_t Key{};
 
-private:
-    bool AppendModifier(std::string& s, const std::string_view& text, uint32_t left, uint32_t right);
-};
+        ShortcutInput() = default;
+        ShortcutInput(const std::string_view& value);
+        std::string ToString() const;
 
-class ShortcutManager
-{
-    std::vector<RegisteredShortcut> Shortcuts;
+    private:
+        bool AppendModifier(std::string& s, const std::string_view& text, uint32_t left, uint32_t right) const;
+    };
 
-    void RegisterShortcut(RegisteredShortcut&& shortcut);
-    void RegisterDefaultShortcuts();
-};
+    class RegisteredShortcut
+    {
+    public:
+        std::string Id;
+        rct_string_id LocalisedName = STR_NONE;
+        std::vector<ShortcutInput> Default;
+        std::vector<ShortcutInput> Current;
+        std::function<void()> Action;
+
+        RegisteredShortcut() = default;
+        RegisteredShortcut(
+            const std::string_view& id, rct_string_id localisedName, const std::string_view& defaultChord,
+            const std::function<void()>& action)
+            : Id(id)
+            , LocalisedName(localisedName)
+            , Default({ defaultChord })
+            , Current(Default)
+            , Action(action)
+        {
+        }
+
+        RegisteredShortcut(
+            const std::string_view& id, rct_string_id localisedName, const std::string_view& defaultChordA,
+            const std::string_view& defaultChordB, const std::function<void()>& action)
+            : Id(id)
+            , LocalisedName(localisedName)
+            , Default({ defaultChordA, defaultChordB })
+            , Current(Default)
+            , Action(action)
+        {
+        }
+
+        std::string_view GetGroup() const;
+
+    private:
+    };
+
+    class ShortcutManager
+    {
+    public:
+        std::vector<RegisteredShortcut> Shortcuts;
+
+        ShortcutManager();
+        ShortcutManager(const ShortcutManager&) = delete;
+
+        void RegisterShortcut(RegisteredShortcut&& shortcut);
+        void RegisterDefaultShortcuts();
+    };
+
+    ShortcutManager& GetShortcutManager();
+
+} // namespace OpenRCT2::Ui

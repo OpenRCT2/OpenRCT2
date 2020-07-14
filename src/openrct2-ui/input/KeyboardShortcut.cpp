@@ -1133,6 +1133,8 @@ namespace
 
 #pragma endregion
 
+using namespace OpenRCT2::Ui;
+
 void ShortcutManager::RegisterDefaultShortcuts()
 {
     // clang-format off
@@ -1170,19 +1172,28 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(RegisteredShortcut("interface.zoom_in", STR_SHORTCUT_ZOOM_VIEW_IN, "PAGEDOWN", []() {
         main_window_zoom(true, false);
     }));
-    RegisterShortcut(RegisteredShortcut("interface.rotate_clockwise", STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE, "RETURN", []() {
+    RegisterShortcut(RegisteredShortcut("interface.rotate_clockwise", STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE, "RETURN", "MOUSE:5", []() {
         if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
             return;
 
         rct_window* w = window_get_main();
         window_rotate_camera(w, 1);
     }));
-    RegisterShortcut(RegisteredShortcut("interface.rotate_anticlockwise", STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE, "SHIFT+RETURN", []() {
+    RegisterShortcut(RegisteredShortcut("interface.rotate_anticlockwise", STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE, "SHIFT+RETURN", "MOUSE:4", []() {
         if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
             return;
 
         rct_window* w = window_get_main();
         window_rotate_camera(w, -1);
+    }));
+    RegisterShortcut(RegisteredShortcut("interface.rotate_construction", STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT, "Z", []() {
+        ShortcutRotateConstructionObject();
+    }));
+    RegisterShortcut(RegisteredShortcut("view.underground_view_toggle", STR_SHORTCUT_UNDERGROUND_VIEW_TOGGLE, "1", []() {
+        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+            return;
+
+        ToggleViewFlag(VIEWPORT_FLAG_UNDERGROUND_INSIDE);
     }));
     // clang-format on
 }

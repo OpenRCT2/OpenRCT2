@@ -7,13 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../input/ShortcutManager.h"
 #include "Window.h"
 
 #include <openrct2-ui/input/KeyboardShortcuts.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+
+using namespace OpenRCT2::Ui;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SHORTCUTS_TITLE;
 static constexpr const int32_t WW = 420;
@@ -64,135 +68,67 @@ static rct_window_event_list window_shortcut_events([](auto& events)
 
 struct ShortcutStringPair
 {
-    Input::Shortcut ShortcutId;
-    rct_string_id StringId;
+    size_t ShortcutIndex;
+    std::string ShortcutId;
+    rct_string_id StringId = STR_NONE;
 };
 
-static const ShortcutStringPair ShortcutList[] =
+static std::vector<ShortcutStringPair> _shortcutList;
+
+static void InitialiseShortcutList()
 {
-    { Input::Shortcut::CloseTopMostWindow,                  STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW },
-    { Input::Shortcut::CloseAllFloatingWindows,             STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS },
-    { Input::Shortcut::CancelConstructionMode,              STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE },
-    { Input::Shortcut::RemoveTopBottomToolbarToggle,        STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS },
+    _shortcutList.clear();
 
-    { Input::Shortcut::Undefined,                           STR_NONE },
+    size_t index = 0;
+    std::string group;
+    auto& shortcutManager = GetShortcutManager();
+    for (auto& shortcut : shortcutManager.Shortcuts)
+    {
+        if (group.empty())
+        {
+            group = shortcut.GetGroup();
+        }
+        else
+        {
+            auto groupName = shortcut.GetGroup();
+            if (group != groupName)
+            {
+                // Add separator
+                group = groupName;
+                _shortcutList.emplace_back();
+            }
+        }
 
-    { Input::Shortcut::PauseGame,                           STR_SHORTCUT_PAUSE_GAME },
-    { Input::Shortcut::ReduceGameSpeed,                     STR_SHORTCUT_REDUCE_GAME_SPEED },
-    { Input::Shortcut::IncreaseGameSpeed,                   STR_SHORTCUT_INCREASE_GAME_SPEED },
-    { Input::Shortcut::LoadGame,                            STR_LOAD_GAME },
-    { Input::Shortcut::QuickSaveGame,                       STR_SHORTCUT_QUICK_SAVE_GAME },
-    { Input::Shortcut::ShowOptions,                         STR_SHORTCUT_SHOW_OPTIONS },
-    { Input::Shortcut::Screenshot,                          STR_SHORTCUT_SCREENSHOT },
-    { Input::Shortcut::MuteSound,                           STR_SHORTCUT_MUTE_SOUND },
+        ShortcutStringPair ssp;
+        ssp.ShortcutIndex = index;
+        ssp.ShortcutId = shortcut.Id;
+        ssp.StringId = shortcut.LocalisedName;
+        _shortcutList.push_back(std::move(ssp));
+        index++;
+    }
+}
 
-    { Input::Shortcut::Undefined,                           STR_NONE },
+static void FormatKeyChordsString(size_t index, char* dst, size_t dstLen)
+{
+    if (dstLen == 0)
+        return;
 
-    { Input::Shortcut::OpenCheatWindow,                     STR_SHORTCUT_OPEN_CHEATS_WINDOW },
-    { Input::Shortcut::ToggleClearanceChecks,               STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::ZoomViewOut,                         STR_SHORTCUT_ZOOM_VIEW_OUT },
-    { Input::Shortcut::ZoomViewIn,                          STR_SHORTCUT_ZOOM_VIEW_IN },
-    { Input::Shortcut::RotateViewClockwise,                 STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE },
-    { Input::Shortcut::RotateViewAnticlockwise,             STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE },
-    { Input::Shortcut::ShowMap,                             STR_SHORTCUT_SHOW_MAP },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::ClearScenery,                        STR_SHORTCUT_CLEAR_SCENERY },
-    { Input::Shortcut::AdjustLand,                          STR_SHORTCUT_ADJUST_LAND },
-    { Input::Shortcut::AdjustWater,                         STR_SHORTCUT_ADJUST_WATER },
-    { Input::Shortcut::BuildScenery,                        STR_SHORTCUT_BUILD_SCENERY },
-    { Input::Shortcut::BuildPaths,                          STR_SHORTCUT_BUILD_PATHS },
-    { Input::Shortcut::BuildNewRide,                        STR_SHORTCUT_BUILD_NEW_RIDE },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::ShowFinancialInformation,            STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION },
-    { Input::Shortcut::ShowResearchInformation,             STR_SHORTCUT_SHOW_RESEARCH_INFORMATION },
-    { Input::Shortcut::ShowRidesList,                       STR_SHORTCUT_SHOW_RIDES_LIST },
-    { Input::Shortcut::ShowParkInformation,                 STR_SHORTCUT_SHOW_PARK_INFORMATION },
-    { Input::Shortcut::ShowGuestList,                       STR_SHORTCUT_SHOW_GUEST_LIST },
-    { Input::Shortcut::ShowStaffList,                       STR_SHORTCUT_SHOW_STAFF_LIST },
-    { Input::Shortcut::ShowRecentMessages,                  STR_SHORTCUT_SHOW_RECENT_MESSAGES },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::ShowMultiplayer,                     STR_SHORTCUT_SHOW_MULTIPLAYER },
-    { Input::Shortcut::OpenChatWindow,                      STR_SEND_MESSAGE },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::UndergroundViewToggle,               STR_SHORTCUT_UNDERGROUND_VIEW_TOGGLE },
-    { Input::Shortcut::RemoveBaseLandToggle,                STR_SHORTCUT_REMOVE_BASE_LAND_TOGGLE },
-    { Input::Shortcut::RemoveVerticalLandToggle,            STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE },
-    { Input::Shortcut::SeeThroughRidesToggle,               STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE },
-    { Input::Shortcut::SeeThroughSceneryToggle,             STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE },
-    { Input::Shortcut::SeeThroughPathsToggle,               STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE },
-    { Input::Shortcut::InvisibleSupportsToggle,             STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE },
-    { Input::Shortcut::InvisiblePeopleToggle,               STR_SHORTCUT_INVISIBLE_PEOPLE_TOGGLE },
-    { Input::Shortcut::HeightMarksOnLandToggle,             STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE },
-    { Input::Shortcut::HeightMarksOnRideTracksToggle,       STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE },
-    { Input::Shortcut::HeightMarksOnPathsToggle,            STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE },
-    { Input::Shortcut::ViewClipping,                        STR_SHORTCUT_VIEW_CLIPPING },
-    { Input::Shortcut::HighlightPathIssuesToggle,           STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE },
-    { Input::Shortcut::GridlinesDisplayToggle,              STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::SceneryPicker,                       STR_SHORTCUT_OPEN_SCENERY_PICKER },
-    { Input::Shortcut::RotateConstructionObject,            STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT },
-    { Input::Shortcut::RideConstructionTurnLeft,            STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT },
-    { Input::Shortcut::RideConstructionTurnRight,           STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT },
-    { Input::Shortcut::RideConstructionUseTrackDefault,     STR_SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT },
-    { Input::Shortcut::RideConstructionSlopeDown,           STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN },
-    { Input::Shortcut::RideConstructionSlopeUp,             STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP },
-    { Input::Shortcut::RideConstructionChainLiftToggle,     STR_SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE },
-    { Input::Shortcut::RideConstructionBankLeft,            STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT },
-    { Input::Shortcut::RideConstructionBankRight,           STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT },
-    { Input::Shortcut::RideConstructionPreviousTrack,       STR_SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK },
-    { Input::Shortcut::RideConstructionNextTrack,           STR_SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK },
-    { Input::Shortcut::RideConstructionBuildCurrent,        STR_SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT },
-    { Input::Shortcut::RideConstructionDemolishCurrent,     STR_SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::ScrollMapUp,                         STR_SHORTCUT_SCROLL_MAP_UP },
-    { Input::Shortcut::ScrollMapLeft,                       STR_SHORTCUT_SCROLL_MAP_LEFT },
-    { Input::Shortcut::ScrollMapDown,                       STR_SHORTCUT_SCROLL_MAP_DOWN },
-    { Input::Shortcut::ScrollMapRight,                      STR_SHORTCUT_SCROLL_MAP_RIGHT },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::WindowedModeToggle,                  STR_SHORTCUT_WINDOWED_MODE_TOGGLE },
-    { Input::Shortcut::ScaleUp,                             STR_SHORTCUT_SCALE_UP },
-    { Input::Shortcut::ScaleDown,                           STR_SHORTCUT_SCALE_DOWN },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::TileInspector,                       STR_SHORTCUT_OPEN_TILE_INSPECTOR },
-    { Input::Shortcut::InsertCorruptElement,                STR_SHORTCUT_INSERT_CORRPUT_ELEMENT },
-    { Input::Shortcut::CopyElement,                         STR_SHORTCUT_COPY_ELEMENT },
-    { Input::Shortcut::PasteElement,                        STR_SHORTCUT_PASTE_ELEMENT },
-    { Input::Shortcut::RemoveElement,                       STR_SHORTCUT_REMOVE_ELEMENT },
-    { Input::Shortcut::MoveElementUp,                       STR_SHORTCUT_MOVE_ELEMENT_UP },
-    { Input::Shortcut::MoveElementDown,                     STR_SHORTCUT_MOVE_ELEMENT_DOWN },
-    { Input::Shortcut::IncreaseXCoord,                      STR_SHORTCUT_INCREASE_X_COORD },
-    { Input::Shortcut::DecreaseXCoord,                      STR_SHORTCUT_DECREASE_X_COORD },
-    { Input::Shortcut::IncreaseYCoord,                      STR_SHORTCUT_INCREASE_Y_COORD },
-    { Input::Shortcut::DecreaseYCoord,                      STR_SHORTCUT_DECREASE_Y_COORD },
-    { Input::Shortcut::IncreaseElementHeight,               STR_SHORTCUT_INCREASE_ELEM_HEIGHT },
-    { Input::Shortcut::DecreaseElementHeight,               STR_SHORTCUT_DECREASE_ELEM_HEIGHT },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::AdvanceToNextTick,                   STR_ADVANCE_TO_NEXT_TICK },
-    { Input::Shortcut::PaintOriginalToggle,                 STR_SHORTCUT_PAINT_ORIGINAL },
-    { Input::Shortcut::DebugPaintToggle,                    STR_SHORTCUT_DEBUG_PAINT_TOGGLE },
-};
-// clang-format on
+    auto& shortcutManager = GetShortcutManager();
+    auto shortcutIndex = _shortcutList[index].ShortcutIndex;
+    const auto& shortcut = shortcutManager.Shortcuts[shortcutIndex];
+    auto numChords = shortcut.Current.size();
+    *dst = '\0';
+    for (size_t i = 0; i < numChords; i++)
+    {
+        const auto &kc = shortcut.Current[i];
+        auto szkc = kc.ToString();
+        String::Append(dst, dstLen, szkc.c_str());
+        if (i < numChords - 1)
+        {
+            String::Append(dst, dstLen, " or ");
+        }
+    }
+}
 
 /**
  *
@@ -203,13 +139,15 @@ rct_window* window_shortcut_keys_open()
     rct_window* w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
     if (w == nullptr)
     {
+        InitialiseShortcutList();
+
         w = WindowCreateAutoPos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, WF_RESIZABLE);
 
         w->widgets = window_shortcut_widgets;
         w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
         WindowInitScrollWidgets(w);
 
-        w->no_list_items = static_cast<uint16_t>(std::size(ShortcutList));
+        w->no_list_items = static_cast<uint16_t>(_shortcutList.size());
         w->selected_list_item = -1;
         w->min_width = WW;
         w->min_height = WH;
@@ -285,11 +223,11 @@ static void window_shortcut_scrollmousedown(rct_window* w, int32_t scrollIndex, 
         return;
 
     // Is this a separator?
-    if (ShortcutList[selected_item].ShortcutId == Input::Shortcut::Undefined)
+    if (_shortcutList[selected_item].ShortcutId.empty())
         return;
 
-    auto& shortcut = ShortcutList[selected_item];
-    window_shortcut_change_open(shortcut.ShortcutId, shortcut.StringId);
+    auto& shortcut = _shortcutList[selected_item];
+    window_shortcut_change_open(shortcut.ShortcutId);
 }
 
 /**
@@ -335,7 +273,7 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         }
 
         // Is this a separator?
-        if (ShortcutList[i].ShortcutId == Input::Shortcut::Undefined)
+        if (_shortcutList[i].ShortcutId.empty())
         {
             const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
             gfx_fill_rect(dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[w->colours[0]].mid_dark);
@@ -353,11 +291,11 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         const int32_t bindingOffset = scrollWidth - 150;
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_SHORTCUT_ENTRY_FORMAT);
-        ft.Add<rct_string_id>(ShortcutList[i].StringId);
+        ft.Add<rct_string_id>(_shortcutList[i].StringId);
         DrawTextEllipsised(dpi, { 0, y - 1 }, bindingOffset, format, ft, COLOUR_BLACK);
 
         char keybinding[128];
-        KeyboardShortcutsFormatString(keybinding, 128, static_cast<int32_t>(ShortcutList[i].ShortcutId));
+        FormatKeyChordsString(i, keybinding, sizeof(keybinding));
 
         if (strlen(keybinding) > 0)
         {
