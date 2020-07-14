@@ -113,6 +113,8 @@ The program can also be built as a command line program using CMake. This type o
 - duktape (unless scripting is disabled)
 - cmake
 
+Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#required-packages-general for more information about installing the packages.
+
 ---
 
 ## 3.2 Compiling and running
@@ -156,7 +158,7 @@ ln -s ../data data
 Then you can run the game by running `./openrct2`.
 
 ### Linux:
-The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#mac--linux), then:
+The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#linux), then:
 ```
 mkdir build
 cd build
