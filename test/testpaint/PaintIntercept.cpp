@@ -371,7 +371,7 @@ paint_struct* sub_98199C(
         bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, session->CurrentRotation);
 }
 
-bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, uint16_t x, uint16_t y)
+bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
 {
     return false;
 }
