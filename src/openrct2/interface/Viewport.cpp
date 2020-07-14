@@ -1451,8 +1451,8 @@ static bool is_sprite_interacted_with_palette_set(
     }
 
     int32_t round = std::max(1, 1 * dpi->zoom_level);
-    auto origin = coords;
 
+    auto origin = coords;
     if (g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
         origin.y -= (round - 1);
@@ -1614,8 +1614,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
 
         for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
-            if (is_sprite_interacted_with(
-                    dpi, attached_ps->image_id, { (attached_ps->x + ps->x) & 0xFFFF, (attached_ps->y + ps->y) & 0xFFFF }))
+            if (is_sprite_interacted_with(dpi, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter))
                 {

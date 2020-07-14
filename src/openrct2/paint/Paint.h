@@ -27,8 +27,8 @@ struct attached_paint_struct
         // If masked image_id is masked_id
         uint32_t colour_image_id;
     };
-    uint16_t x;    // 0x08
-    uint16_t y;    // 0x0A
+    int32_t x;     // 0x08
+    int32_t y;     // 0x0A
     uint8_t flags; // 0x0C
     uint8_t pad_0D;
     attached_paint_struct* next; // 0x0E
@@ -66,8 +66,8 @@ struct paint_struct
         uint32_t colour_image_id; // 0x04
     };
     paint_struct_bound_box bounds; // 0x08
-    uint16_t x;                    // 0x14
-    uint16_t y;                    // 0x16
+    int32_t x;                     // 0x14
+    int32_t y;                     // 0x16*/
     uint16_t quadrant_index;
     uint8_t flags;
     uint8_t quadrant_flags;
