@@ -915,8 +915,8 @@ static std::vector<INTERFACE_INFO> GetNetworkInterfaces()
     {
         interfaces.resize(capacity);
         if (WSAIoctl(
-                sock, SIO_GET_INTERFACE_LIST, nullptr, 0, interfaces.data(), (DWORD)(capacity * sizeof(INTERFACE_INFO)), &len,
-                nullptr, nullptr)
+                sock, SIO_GET_INTERFACE_LIST, nullptr, 0, interfaces.data(),
+                static_cast<DWORD>(capacity * sizeof(INTERFACE_INFO)), &len, nullptr, nullptr)
             == 0)
         {
             break;
@@ -949,9 +949,10 @@ std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
         // iiBroadcast is unusable, because it always seems to be set to 255.255.255.255.
         sockaddr_storage address{};
         memcpy(&address, &ifo.iiAddress.Address, sizeof(sockaddr));
-        ((sockaddr_in*)&address)->sin_addr.s_addr = ifo.iiAddress.AddressIn.sin_addr.s_addr
+        (reinterpret_cast<sockaddr_in*>(&address))->sin_addr.s_addr = ifo.iiAddress.AddressIn.sin_addr.s_addr
             | ~ifo.iiNetmask.AddressIn.sin_addr.s_addr;
-        baddresses.push_back(std::make_unique<NetworkEndpoint>((const sockaddr*)&address, (socklen_t)sizeof(sockaddr)));
+        baddresses.push_back(std::make_unique<NetworkEndpoint>(
+            reinterpret_cast<const sockaddr*>(&address), static_cast<socklen_t>(sizeof(sockaddr))));
     }
 #    else
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
