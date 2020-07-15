@@ -404,9 +404,9 @@ void X8DrawingEngine::DrawAllDirtyBlocks()
 
             // Check rows
             uint32_t yy;
+            bool reachedEndOfRow = false;
             for (yy = y; yy < dirtyBlockRows; yy++)
             {
-                bool shouldBreak = false;
                 uint32_t yyOffset = yy * dirtyBlockColumns;
                 for (xx = x; xx < x + columns; xx++)
                 {
@@ -414,12 +414,18 @@ void X8DrawingEngine::DrawAllDirtyBlocks()
                     {
                         uint32_t rows = yy - y;
                         DrawDirtyBlocks(x, y, columns, rows);
-                        shouldBreak = true;
+                        reachedEndOfRow = true;
                         break;
                     }
                 }
-                if (shouldBreak)
+                if (reachedEndOfRow)
                     break;
+            }
+
+            if (!reachedEndOfRow)
+            {
+                uint32_t rows = yy - y;
+                DrawDirtyBlocks(x, y, columns, rows);
             }
         }
     }
