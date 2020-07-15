@@ -92,29 +92,11 @@ The program can also be built as a command line program using CMake. This type o
 - [Homebrew](http://brew.sh)
 - CMake (available through Homebrew)
 
-
-### Linux:
-- sdl2 (only for UI client)
-- freetype (can be disabled)
-- fontconfig (can be disabled)
-- libzip (>= 1.0)
-- libpng (>= 1.2)
-- speexdsp (only for UI client)
-- curl (only if building with http support)
-- jansson (>= 2.5)
-- openssl (>= 1.0; only if building with multiplayer support)
-- icu (>= 59.0)
-- zlib
-- gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
-- duktape (unless scripting is disabled)
-- cmake
-
-Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#required-packages-general for more information about installing the packages.
-
 ---
 
 ## 3.2 Compiling and running
 
+* [Building OpenRCT2 on Linux](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux)
 * [Building OpenRCT2 on Windows](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Windows)
 
 ### macOS:
@@ -136,22 +118,6 @@ make
 ln -s ../data data
 ```
 Then you can run the game by running `./openrct2`.
-
-### Linux:
-The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#linux), then:
-```
-mkdir build
-cd build
-cmake ../ # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
-make # you can parallelise your build job with e.g. -j8 or consider using ninja
-DESTDIR=. make install # the install target creates all the necessary files in places we expect them
-```
-
-You can also use Ninja in place of Make, if you prefer, see Wiki for details.
-
-Detailed instructions can be found on our [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
-
----
 
 # 4. Contributing
 OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to ```develop```. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. ```master``` only contains tagged releases, you should never branch off this.
