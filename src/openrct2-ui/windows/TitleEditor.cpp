@@ -855,7 +855,9 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_title_editor_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+    gfx_fill_rect(
+        dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } },
+        ColourMapA[w->colours[1]].mid_light);
     switch (w->selected_tab)
     {
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
@@ -878,25 +880,21 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
     {
         bool selected = false;
         bool hover = false;
+        auto fillRect = ScreenRect{ screenCoords,
+                                    screenCoords + ScreenCoordsXY{ SCROLL_WIDTH + 100, SCROLLABLE_ROW_HEIGHT - 1 } };
         if (i == w->selected_list_item)
         {
             selected = true;
-            gfx_fill_rect(
-                dpi, screenCoords.x, screenCoords.y, screenCoords.x + SCROLL_WIDTH + 100,
-                screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].dark);
+            gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].dark);
         }
         else if (i == _window_title_editor_highlighted_index || i == currentSaveIndex)
         {
             hover = true;
-            gfx_fill_rect(
-                dpi, screenCoords.x, screenCoords.y, screenCoords.x + SCROLL_WIDTH + 100,
-                screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
+            gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].mid_dark);
         }
         else if (i & 1)
         {
-            gfx_fill_rect(
-                dpi, screenCoords.x, screenCoords.y, screenCoords.x + SCROLL_WIDTH + 100,
-                screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
+            gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
         char buffer[256];
@@ -934,25 +932,22 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
         bool selected = false;
         bool hover = false;
         bool error = false;
+
+        auto fillRect = ScreenRect{ screenCoords,
+                                    screenCoords + ScreenCoordsXY{ SCROLL_WIDTH + 100, SCROLLABLE_ROW_HEIGHT - 1 } };
         if (i == w->selected_list_item)
         {
             selected = true;
-            gfx_fill_rect(
-                dpi, screenCoords.x, screenCoords.y, screenCoords.x + SCROLL_WIDTH + 100,
-                screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].dark);
+            gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].dark);
         }
         else if (i == static_cast<int32_t>(_window_title_editor_highlighted_index) || i == position)
         {
             hover = true;
-            gfx_fill_rect(
-                dpi, screenCoords.x, screenCoords.y, screenCoords.x + SCROLL_WIDTH + 100,
-                screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
+            gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].mid_dark);
         }
         else if (i & 1)
         {
-            gfx_fill_rect(
-                dpi, screenCoords.x, screenCoords.y, screenCoords.x + SCROLL_WIDTH + 100,
-                screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
+            gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
         auto ft = Formatter::Common();
