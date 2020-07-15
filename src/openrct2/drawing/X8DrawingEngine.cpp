@@ -403,32 +403,32 @@ void X8DrawingEngine::DrawAllDirtyBlocks()
             uint32_t columns = xx - x;
 
             // Check rows
-            uint32_t yy;
-            bool reachedEndOfRow = false;
-            for (yy = y; yy < dirtyBlockRows; yy++)
-            {
-                uint32_t yyOffset = yy * dirtyBlockColumns;
-                for (xx = x; xx < x + columns; xx++)
-                {
-                    if (dirtyBlocks[yyOffset + xx] == 0)
-                    {
-                        uint32_t rows = yy - y;
-                        DrawDirtyBlocks(x, y, columns, rows);
-                        reachedEndOfRow = true;
-                        break;
-                    }
-                }
-                if (reachedEndOfRow)
-                    break;
-            }
-
-            if (!reachedEndOfRow)
+            uint32_t yy = y;
+            if(CheckRows(yy, y, xx, x, dirtyBlockRows, dirtyBlockColumns, columns, dirtyBlocks))
             {
                 uint32_t rows = yy - y;
                 DrawDirtyBlocks(x, y, columns, rows);
             }
         }
     }
+}
+
+bool X8DrawingEngine::CheckRows(uint32_t yy, uint32_t y, uint32_t xx, uint32_t x, uint32_t dirtyBlockRows, uint32_t dirtyBlockColumns, uint32_t columns, uint8_t* dirtyBlocks)
+{
+    for (yy = y; yy < dirtyBlockRows; yy++)
+    {
+        uint32_t yyOffset = yy * dirtyBlockColumns;
+        for (xx = x; xx < x + columns; xx++)
+        {
+            if (dirtyBlocks[yyOffset + xx] == 0)
+            {
+                uint32_t rows = yy - y;
+                DrawDirtyBlocks(x, y, columns, rows);
+                return false;
+            }
+        }
+    }
+    return true;
 }
 
 void X8DrawingEngine::DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows)
