@@ -2396,6 +2396,25 @@ TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD&
     return nullptr;
 };
 
+WallElement* map_get_wall_element_at(const CoordsXYRangedZ& coords)
+{
+    auto tileElement = map_get_first_element_at(coords);
+
+    if (tileElement != nullptr)
+    {
+        do
+        {
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL && coords.baseZ < tileElement->GetClearanceZ()
+                && coords.clearanceZ > tileElement->GetBaseZ())
+            {
+                return tileElement->AsWall();
+            }
+        } while (!(tileElement++)->IsLastForTile());
+    }
+
+    return nullptr;
+}
+
 WallElement* map_get_wall_element_at(const CoordsXYZD& wallCoords)
 {
     auto tileWallCoords = TileCoordsXYZ(wallCoords);
