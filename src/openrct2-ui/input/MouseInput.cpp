@@ -1253,67 +1253,67 @@ void input_state_widget_pressed(
                     auto wClass = w->classification;
                     auto wNumber = w->number;
                     int32_t dropdown_index = 0;
+                    bool dropdownCleanup = false;
 
                     if (w->classification == WC_DROPDOWN)
                     {
                         dropdown_index = dropdown_index_from_point(screenCoords, w);
-                        if (dropdown_index == -1)
-                        {
-                            goto dropdown_cleanup;
-                        }
-
-                        if (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index))
-                        {
-                            goto dropdown_cleanup;
-                        }
-
-                        if (gDropdownItemsFormat[dropdown_index] == DROPDOWN_SEPARATOR)
-                        {
-                            goto dropdown_cleanup;
-                        }
+                        dropdownCleanup = dropdown_index == -1
+                            || (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index))
+                            || gDropdownItemsFormat[dropdown_index] == DROPDOWN_SEPARATOR;
                     }
                     else
                     {
                         if (cursor_w_class != w->classification || cursor_w_number != w->number
                             || widgetIndex != cursor_widgetIndex)
-                            goto dropdown_cleanup;
-                        dropdown_index = -1;
-                        if (_inputFlags & INPUT_FLAG_DROPDOWN_STAY_OPEN)
                         {
-                            if (!(_inputFlags & INPUT_FLAG_DROPDOWN_MOUSE_UP))
+                            dropdownCleanup = true;
+                        }
+                        else
+                        {
+                            dropdown_index = -1;
+                            if (_inputFlags & INPUT_FLAG_DROPDOWN_STAY_OPEN)
                             {
-                                _inputFlags |= INPUT_FLAG_DROPDOWN_MOUSE_UP;
-                                return;
+                                if (!(_inputFlags & INPUT_FLAG_DROPDOWN_MOUSE_UP))
+                                {
+                                    _inputFlags |= INPUT_FLAG_DROPDOWN_MOUSE_UP;
+                                    return;
+                                }
                             }
                         }
                     }
 
                     window_close_by_class(WC_DROPDOWN);
-                    cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
-                    if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
+
+                    if (dropdownCleanup)
                     {
-                        _inputFlags &= ~INPUT_FLAG_WIDGET_PRESSED;
-                        widget_invalidate_by_number(cursor_w_class, cursor_w_number, cursor_widgetIndex);
+                        // Update w as it will be invalid after closing the dropdown window
+                        w = window_find_by_number(wClass, wNumber);
                     }
-
-                    _inputState = INPUT_STATE_NORMAL;
-                    gTooltipTimeout = 0;
-                    gTooltipWidget.widget_index = cursor_widgetIndex;
-                    gTooltipWidget.window_classification = cursor_w_class;
-                    gTooltipWidget.window_number = cursor_w_number;
-
-                    if (dropdown_index == -1)
+                    else
                     {
-                        if (!dropdown_is_disabled(gDropdownDefaultIndex))
+                        cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
+                        if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
                         {
-                            dropdown_index = gDropdownDefaultIndex;
+                            _inputFlags &= ~INPUT_FLAG_WIDGET_PRESSED;
+                            widget_invalidate_by_number(cursor_w_class, cursor_w_number, cursor_widgetIndex);
                         }
+
+                        _inputState = INPUT_STATE_NORMAL;
+                        gTooltipTimeout = 0;
+                        gTooltipWidget.widget_index = cursor_widgetIndex;
+                        gTooltipWidget.window_classification = cursor_w_class;
+                        gTooltipWidget.window_number = cursor_w_number;
+
+                        if (dropdown_index == -1)
+                        {
+                            if (!dropdown_is_disabled(gDropdownDefaultIndex))
+                            {
+                                dropdown_index = gDropdownDefaultIndex;
+                            }
+                        }
+                        window_event_dropdown_call(cursor_w, cursor_widgetIndex, dropdown_index);
                     }
-                    window_event_dropdown_call(cursor_w, cursor_widgetIndex, dropdown_index);
-                dropdown_cleanup:
-                    window_close_by_class(WC_DROPDOWN);
-                    // Update w as it will be invalid after closing the dropdown window
-                    w = window_find_by_number(wClass, wNumber);
                 }
             }
 
