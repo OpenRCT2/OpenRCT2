@@ -219,7 +219,7 @@ namespace OpenRCT2::Scripting
                 auto coords = GetCoordsFromObject(position);
                 if (coords)
                 {
-                    window_scroll_to_location(w, coords->x, coords->y, coords->z);
+                    window_scroll_to_location(w, *coords);
                 }
             }
         }

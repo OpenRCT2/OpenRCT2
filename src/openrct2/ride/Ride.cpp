@@ -975,7 +975,7 @@ void ride_construct(Ride* ride)
 
         rct_window* w = window_get_main();
         if (w != nullptr && ride_modify(&trackElement))
-            window_scroll_to_location(w, trackElement.x, trackElement.y, trackElement.element->GetBaseZ());
+            window_scroll_to_location(w, { trackElement, trackElement.element->GetBaseZ() });
     }
     else
     {
@@ -5032,7 +5032,7 @@ static void loc_6B51C0(const Ride* ride)
     if (ride->type != RIDE_TYPE_MAZE)
     {
         auto location = ride->stations[i].GetStart();
-        window_scroll_to_location(w, location.x, location.y, location.z);
+        window_scroll_to_location(w, location);
 
         CoordsXYE trackElement;
         ride_try_get_origin_element(ride, &trackElement);
@@ -5058,7 +5058,7 @@ static void ride_scroll_to_track_error(CoordsXYE* trackElement)
     rct_window* w = window_get_main();
     if (w != nullptr)
     {
-        window_scroll_to_location(w, trackElement->x, trackElement->y, trackElement->element->GetBaseZ());
+        window_scroll_to_location(w, { *trackElement, trackElement->element->GetBaseZ() });
         ride_modify(trackElement);
     }
 }

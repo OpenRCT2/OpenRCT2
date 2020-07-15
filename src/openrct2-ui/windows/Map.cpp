@@ -568,14 +568,13 @@ static void window_map_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t
 static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     CoordsXY c = map_window_screen_to_map(screenCoords);
-    int32_t mapX = std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1);
-    int32_t mapY = std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_BIG - 1);
-    int32_t mapZ = tile_element_height({ mapX, mapY });
+    auto mapCoords = CoordsXY{ std::clamp(c.x, 0, MAXIMUM_MAP_SIZE_BIG - 1), std::clamp(c.y, 0, MAXIMUM_MAP_SIZE_BIG - 1) };
+    auto mapZ = tile_element_height(mapCoords);
 
     rct_window* mainWindow = window_get_main();
     if (mainWindow != nullptr)
     {
-        window_scroll_to_location(mainWindow, mapX, mapY, mapZ);
+        window_scroll_to_location(mainWindow, { mapCoords, mapZ });
     }
 
     if (land_tool_is_active())
@@ -584,16 +583,13 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, const
         int32_t landToolSize = std::max<int32_t>(1, gLandToolSize);
         int32_t size = (landToolSize * 32) - 32;
         int32_t radius = (landToolSize * 16) - 16;
-        mapX = (mapX - radius) & 0xFFE0;
-        mapY = (mapY - radius) & 0xFFE0;
 
+        mapCoords = (mapCoords - CoordsXY{ radius, radius }).ToTileStart();
         map_invalidate_selection_rect();
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        gMapSelectPositionA.x = mapX;
-        gMapSelectPositionA.y = mapY;
-        gMapSelectPositionB.x = mapX + size;
-        gMapSelectPositionB.y = mapY + size;
+        gMapSelectPositionA = mapCoords;
+        gMapSelectPositionB = mapCoords + CoordsXY{ size, size };
         map_invalidate_selection_rect();
 
         auto surfaceSetStyleAction = SurfaceSetStyleAction(
@@ -607,16 +603,13 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, const
         int32_t landRightsToolSize = std::max<int32_t>(1, _landRightsToolSize);
         int32_t size = (landRightsToolSize * 32) - 32;
         int32_t radius = (landRightsToolSize * 16) - 16;
-        mapX = (mapX - radius) & 0xFFE0;
-        mapY = (mapY - radius) & 0xFFE0;
+        mapCoords = (mapCoords - CoordsXY{ radius, radius }).ToTileStart();
 
         map_invalidate_selection_rect();
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        gMapSelectPositionA.x = mapX;
-        gMapSelectPositionA.y = mapY;
-        gMapSelectPositionB.x = mapX + size;
-        gMapSelectPositionB.y = mapY + size;
+        gMapSelectPositionA = mapCoords;
+        gMapSelectPositionB = mapCoords + CoordsXY{ size, size };
         map_invalidate_selection_rect();
 
         auto landSetRightsAction = LandSetRightsAction(

@@ -809,18 +809,14 @@ rct_window* window_get_main()
  * @param y (ecx)
  * @param z (edx)
  */
-void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
+void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
 {
-    CoordsXYZ location_3d = { x, y, z };
-
     assert(w != nullptr);
-
     window_unfollow_sprite(w);
-
     if (w->viewport)
     {
-        int16_t height = tile_element_height({ x, y });
-        if (z < height - 16)
+        int16_t height = tile_element_height(coords);
+        if (coords.z < height - 16)
         {
             if (!(w->viewport->flags & 1 << 0))
             {
@@ -837,7 +833,7 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             }
         }
 
-        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), location_3d);
+        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords);
 
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
