@@ -5615,13 +5615,11 @@ SoundId Vehicle::UpdateScreamSound()
 
 SoundId Vehicle::ProduceScreamSound(int32_t totalNumPeeps)
 {
-    SoundId scream_id = SoundId::Null;
-
     rct_ride_entry* rideEntry = GetRideEntry();
 
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
-    if (scream_id == SoundId::Null)
+    if (scream_sound_id == SoundId::Null)
     {
         auto r = scenario_rand();
         if (totalNumPeeps >= static_cast<int32_t>(r % 16))
@@ -5629,25 +5627,25 @@ SoundId Vehicle::ProduceScreamSound(int32_t totalNumPeeps)
             switch (vehicleEntry->sound_range)
             {
                 case SOUND_RANGE_SCREAMS_0:
-                    scream_id = byte_9A3A14[r % 2];
+                    scream_sound_id = byte_9A3A14[r % 2];
                     break;
                 case SOUND_RANGE_SCREAMS_1:
-                    scream_id = byte_9A3A18[r % 7];
+                    scream_sound_id = byte_9A3A18[r % 7];
                     break;
                 case SOUND_RANGE_SCREAMS_2:
-                    scream_id = byte_9A3A16[r % 2];
+                    scream_sound_id = byte_9A3A16[r % 2];
                     break;
                 default:
-                    scream_id = SoundId::NoScream;
+                    scream_sound_id = SoundId::NoScream;
                     break;
             }
         }
         else
         {
-            scream_id = SoundId::NoScream;
+            scream_sound_id = SoundId::NoScream;
         }
     }
-    return scream_id;
+    return scream_sound_id;
 }
 
 /**
