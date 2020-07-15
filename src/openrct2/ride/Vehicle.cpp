@@ -5560,10 +5560,6 @@ void Vehicle::UpdateSound()
  */
 SoundId Vehicle::UpdateScreamSound()
 {
-    rct_ride_entry* rideEntry = GetRideEntry();
-
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
-
     int32_t totalNumPeeps = NumPeepsUntilTrainTail();
     if (totalNumPeeps == 0)
         return SoundId::Null;
@@ -5585,11 +5581,11 @@ SoundId Vehicle::UpdateScreamSound()
             if (vehicle2->vehicle_sprite_type < 1)
                 continue;
             if (vehicle2->vehicle_sprite_type <= 4)
-                goto produceScream;
+                return ProduceScreamSound(totalNumPeeps);
             if (vehicle2->vehicle_sprite_type < 9)
                 continue;
             if (vehicle2->vehicle_sprite_type <= 15)
-                goto produceScream;
+                return ProduceScreamSound(totalNumPeeps);
         }
         return SoundId::Null;
     }
@@ -5608,15 +5604,21 @@ SoundId Vehicle::UpdateScreamSound()
         if (vehicle2->vehicle_sprite_type < 5)
             continue;
         if (vehicle2->vehicle_sprite_type <= 8)
-            goto produceScream;
+            return ProduceScreamSound(totalNumPeeps);
         if (vehicle2->vehicle_sprite_type < 17)
             continue;
         if (vehicle2->vehicle_sprite_type <= 23)
-            goto produceScream;
+            return ProduceScreamSound(totalNumPeeps);
     }
     return SoundId::Null;
+}
 
-produceScream:
+SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps)
+{
+    rct_ride_entry* rideEntry = GetRideEntry();
+
+    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
+
     if (scream_sound_id == SoundId::Null)
     {
         auto r = scenario_rand();
