@@ -27,25 +27,11 @@ void bolliger_mabillard_track_flat(
 {
     if (tileElement->AsTrack()->HasChain())
     {
-        switch (direction)
-        {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17486, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17487, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17488, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17489, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-        }
+        uint32_t imageIds[] = { 17486, 17487, 17488, 17489 };
+        sub_98197C_rotated(
+            session, direction, session->TrackColours[SCHEME_TRACK] | imageIds[direction], 0, 0, 32, 20, 3, height, 0, 6,
+            height);
+
         if (track_paint_util_should_paint_supports(session->MapPosition))
         {
             metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -53,19 +39,12 @@ void bolliger_mabillard_track_flat(
     }
     else
     {
-        switch (direction)
-        {
-            case 0:
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17146, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 1:
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17147, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-        }
+        uint32_t imageIds[] = { 17146, 17147, 17146, 17147 };
+
+        sub_98197C_rotated(
+            session, direction, session->TrackColours[SCHEME_TRACK] | imageIds[direction], 0, 0, 32, 20, 3, height, 0, 6,
+            height);
+
         if (track_paint_util_should_paint_supports(session->MapPosition))
         {
             metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
