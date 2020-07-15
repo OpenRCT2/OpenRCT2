@@ -39,10 +39,10 @@ void bolliger_mabillard_track_flat(
     }
     else
     {
-        uint32_t imageIDs[] = { 17146, 17147, 17146, 17147 };
+        uint32_t imageIds[] = { 17146, 17147, 17146, 17147 };
 
         sub_98197C_rotated(
-            session, direction, session->TrackColours[SCHEME_TRACK] | imageIDs[direction], 0, 0, 32, 20, 3, height, 0, 6,
+            session, direction, session->TrackColours[SCHEME_TRACK] | imageIds[direction], 0, 0, 32, 20, 3, height, 0, 6,
             height);
 
         if (track_paint_util_should_paint_supports(session->MapPosition))
