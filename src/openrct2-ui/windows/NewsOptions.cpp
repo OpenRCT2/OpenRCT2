@@ -67,21 +67,19 @@ enum WINDOW_NEWS_WIDGET_IDX {
 
 static rct_widget window_news_options_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,           1,  0,          399,    43,     299,    0xFFFFFFFF,                     STR_NONE },             // tab content panel
-    { WWT_TAB,              1,  3,          33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 1
-    { WWT_TAB,              1,  34,         64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 2
-    { WWT_TAB,              1,  65,         95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 2
-
-    { WWT_CHECKBOX,         2,  7,          349,    49,     62,     STR_NONE,                       STR_NONE },
-    { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
-    { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
-    { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
-    { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
-    { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
-    { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
-    { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
-    { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
-
+    MakeWidget     ({ 0, 43}, {400, 257}, WWT_RESIZE,   1),          // tab content panel
+    MakeRemapWidget({ 3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB), // tab 1
+    MakeRemapWidget({34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB), // tab 2
+    MakeRemapWidget({65, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB), // tab 2
+    MakeWidget     ({ 7, 49}, {343,  14}, WWT_CHECKBOX, 2),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
     { WIDGETS_END },
 };
 

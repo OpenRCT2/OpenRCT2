@@ -87,12 +87,12 @@ enum
 #pragma region Widgets
 
 #define TAB_WIDGETS \
-    { WWT_TAB,      1,  3,      33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_SUMMARY_TAB_TIP       }, \
-    { WWT_TAB,      1,  34,     64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_CASH_TAB_TIP          }, \
-    { WWT_TAB,      1,  65,     95,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP    }, \
-    { WWT_TAB,      1,  96,     126,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP }, \
-    { WWT_TAB,      1,  127,    157,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_MARKETING_TAB_TIP     }, \
-    { WWT_TAB,      1,  158,    188,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_RESEARCH_TIP               }
+    MakeRemapWidget({  3, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_SUMMARY_TAB_TIP      ), \
+    MakeRemapWidget({ 34, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_CASH_TAB_TIP         ), \
+    MakeRemapWidget({ 65, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP   ), \
+    MakeRemapWidget({ 96, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP), \
+    MakeRemapWidget({127, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_MARKETING_TAB_TIP    ), \
+    MakeRemapWidget({158, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_RESEARCH_TIP              )
 
 static rct_widget _windowFinancesSummaryWidgets[] =
 {
@@ -107,7 +107,7 @@ static rct_widget _windowFinancesSummaryWidgets[] =
 static rct_widget _windowFinancesCashWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
-    { WWT_RESIZE,           1,  0,      529,    43,     WH_OTHER_TABS - 1,    0xFFFFFFFF,             STR_NONE },
+    MakeWidget({0, 43}, {530, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     { WIDGETS_END },
 };
@@ -115,7 +115,7 @@ static rct_widget _windowFinancesCashWidgets[] =
 static rct_widget _windowFinancesParkValueWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
-    { WWT_RESIZE,           1,  0,      529,    43,     WH_OTHER_TABS - 1,    0xFFFFFFFF,             STR_NONE },
+    MakeWidget({0, 43}, {530, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     { WIDGETS_END },
 };
@@ -123,7 +123,7 @@ static rct_widget _windowFinancesParkValueWidgets[] =
 static rct_widget _windowFinancesProfitWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
-    { WWT_RESIZE,           1,  0,      529,    43,     WH_OTHER_TABS - 1,    0xFFFFFFFF,             STR_NONE },
+    MakeWidget({0, 43}, {530, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     { WIDGETS_END },
 };
@@ -131,16 +131,16 @@ static rct_widget _windowFinancesProfitWidgets[] =
 static rct_widget _windowFinancesMarketingWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
-    { WWT_RESIZE,           1,  0,      529,    43,     WH_OTHER_TABS - 1,    0xFFFFFFFF,                             STR_NONE },
+    MakeWidget({0, 43}, {530, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
-    { WWT_GROUPBOX,         2,  3,      526,    47,     91,     STR_MARKETING_CAMPAIGNS_IN_OPERATION,   STR_NONE },
-    { WWT_GROUPBOX,         2,  3,      526,    47,     252,    STR_MARKETING_CAMPAIGNS_AVAILABLE,      STR_NONE },
-    { WWT_IMGBTN,           1,  8,      521,    0,      13,     0xFFFFFFFF,                             STR_START_THIS_MARKETING_CAMPAIGN },
-    { WWT_IMGBTN,           1,  8,      521,    0,      13,     0xFFFFFFFF,                             STR_START_THIS_MARKETING_CAMPAIGN },
-    { WWT_IMGBTN,           1,  8,      521,    0,      13,     0xFFFFFFFF,                             STR_START_THIS_MARKETING_CAMPAIGN },
-    { WWT_IMGBTN,           1,  8,      521,    0,      13,     0xFFFFFFFF,                             STR_START_THIS_MARKETING_CAMPAIGN },
-    { WWT_IMGBTN,           1,  8,      521,    0,      13,     0xFFFFFFFF,                             STR_START_THIS_MARKETING_CAMPAIGN },
-    { WWT_IMGBTN,           1,  8,      521,    0,      13,     0xFFFFFFFF,                             STR_START_THIS_MARKETING_CAMPAIGN },
+    MakeWidget({3, 47}, {524,  45}, WWT_GROUPBOX, 2, STR_MARKETING_CAMPAIGNS_IN_OPERATION),
+    MakeWidget({3, 47}, {524, 206}, WWT_GROUPBOX, 2, STR_MARKETING_CAMPAIGNS_AVAILABLE),
+    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
     { WIDGETS_END },
 };
 
@@ -149,17 +149,17 @@ static rct_widget _windowFinancesResearchWidgets[] =
     WINDOW_SHIM(WINDOW_TITLE, WW_RESEARCH, WH_RESEARCH),
     { WWT_RESIZE,           1,  0,      319,    43,     206,    0xFFFFFFFF,                             STR_NONE },
     TAB_WIDGETS,
-    { WWT_GROUPBOX,         2,  3,      316,    47,     91,     STR_RESEARCH_FUNDING_,                  STR_NONE },
-    { WWT_DROPDOWN,         2,  8,      167,    59,     72,     0xFFFFFFFF,                             STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
-    { WWT_BUTTON,           2,  156,    166,    60,     71,     STR_DROPDOWN_GLYPH,                     STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
-    { WWT_GROUPBOX,         2,  3,      316,    96,     202,    STR_RESEARCH_PRIORITIES,                STR_NONE },
-    { WWT_CHECKBOX,         2,  8,      311,    108,    119,    STR_RESEARCH_NEW_TRANSPORT_RIDES,       STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    121,    132,    STR_RESEARCH_NEW_GENTLE_RIDES,          STR_RESEARCH_NEW_GENTLE_RIDES_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    134,    145,    STR_RESEARCH_NEW_ROLLER_COASTERS,       STR_RESEARCH_NEW_ROLLER_COASTERS_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    147,    158,    STR_RESEARCH_NEW_THRILL_RIDES,          STR_RESEARCH_NEW_THRILL_RIDES_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    160,    171,    STR_RESEARCH_NEW_WATER_RIDES,           STR_RESEARCH_NEW_WATER_RIDES_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    173,    184,    STR_RESEARCH_NEW_SHOPS_AND_STALLS,      STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP },
-    { WWT_CHECKBOX,         2,  8,      311,    186,    197,    STR_RESEARCH_NEW_SCENERY_AND_THEMING,   STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP },
+    MakeWidget({  3,  47}, {314,  45}, WWT_GROUPBOX, 2, STR_RESEARCH_FUNDING_),
+    MakeWidget({  8,  59}, {160,  14}, WWT_DROPDOWN, 2, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
+    MakeWidget({156,  60}, { 11,  12}, WWT_BUTTON,   2, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
+    MakeWidget({  3,  96}, {314, 107}, WWT_GROUPBOX, 2, STR_RESEARCH_PRIORITIES),
+    MakeWidget({  8, 108}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
+    MakeWidget({  8, 121}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
+    MakeWidget({  8, 134}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
+    MakeWidget({  8, 147}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
+    MakeWidget({  8, 160}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
+    MakeWidget({  8, 173}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
+    MakeWidget({  8, 186}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
     { WIDGETS_END },
 };
 

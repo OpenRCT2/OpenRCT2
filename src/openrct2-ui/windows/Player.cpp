@@ -48,20 +48,20 @@ enum WINDOW_PLAYER_WIDGET_IDX {
 };
 
 #define WINDOW_PLAYER_COMMON_WIDGETS                                                                                                    \
-    { WWT_FRAME,            0,  0,      191,    0,      156,    0xFFFFFFFF,             STR_NONE },             /* Panel / Background   */      \
-    { WWT_CAPTION,          0,  1,      190,    1,      14,     STR_STRING,             STR_WINDOW_TITLE_TIP }, /* Title                */      \
-    { WWT_CLOSEBOX,         0,  179,    189,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP }, /* Close x button       */      \
-    { WWT_RESIZE,           1,  0,      191,    43,     156,    0xFFFFFFFF,             STR_NONE },             /* Resize               */      \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE },             /* Tab 1                */      \
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE }              /* Tab 2                */
+    MakeWidget     ({  0,  0}, {192, 157}, WWT_FRAME,    0, 0xFFFFFFFF,  STR_NONE            ), /* Panel / Background */ \
+    MakeWidget     ({  1,  1}, {190,  14}, WWT_CAPTION,  0, STR_STRING,  STR_WINDOW_TITLE_TIP), /* Title              */ \
+    MakeWidget     ({179,  2}, { 11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), /* Close x button     */ \
+    MakeWidget     ({  0, 43}, {192, 114}, WWT_RESIZE,   1, 0xFFFFFFFF,  STR_NONE            ), /* Resize             */ \
+    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_NONE            ), /* Tab 1              */ \
+    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_NONE            )  /* Tab 2              */
 
 static rct_widget window_player_overview_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
-    { WWT_DROPDOWN,         1,  3,      177,    46,     57,     0xFFFFFFFF,         STR_NONE },                 // Permission group
-    { WWT_BUTTON,           1,  167,    177,    47,     56,     STR_DROPDOWN_GLYPH, STR_NONE },                 //
-    { WWT_FLATBTN,          1,  179,    190,    45,     68,     SPR_LOCATE,         STR_LOCATE_PLAYER_TIP },    // Locate button
-    { WWT_FLATBTN,          1,  179,    190,    69,     92,     SPR_DEMOLISH,       STR_KICK_PLAYER_TIP },      // Kick button
-    { WWT_VIEWPORT,         1,  3,      177,    60,     120,    0xFFFFFFFF,         STR_NONE },                 // Viewport
+    MakeWidget({  3, 46}, {175, 12}, WWT_DROPDOWN, 1),                                            // Permission group
+    MakeWidget({167, 47}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH),
+    MakeWidget({179, 45}, { 12, 24}, WWT_FLATBTN,  1, SPR_LOCATE,         STR_LOCATE_PLAYER_TIP), // Locate button
+    MakeWidget({179, 69}, { 12, 24}, WWT_FLATBTN,  1, SPR_DEMOLISH,       STR_KICK_PLAYER_TIP  ), // Kick button
+    MakeWidget({  3, 60}, {175, 61}, WWT_VIEWPORT, 1),                                            // Viewport
     { WIDGETS_END },
 };
 
