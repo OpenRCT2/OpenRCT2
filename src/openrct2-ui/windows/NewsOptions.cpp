@@ -67,19 +67,19 @@ enum WINDOW_NEWS_WIDGET_IDX {
 
 static rct_widget window_news_options_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({ 0, 43}, {400, 257}, WWT_RESIZE,   1),          // tab content panel
+    MakeWidget     ({ 0, 43}, {400, 257}, WWT_RESIZE,   1         ), // tab content panel
     MakeRemapWidget({ 3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB), // tab 1
     MakeRemapWidget({34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB), // tab 2
     MakeRemapWidget({65, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB), // tab 2
-    MakeWidget     ({ 7, 49}, {343,  14}, WWT_CHECKBOX, 2),
-    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
-    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
-    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
-    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
-    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
-    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
-    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
-    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2),
+    MakeWidget     ({ 7, 49}, {343,  14}, WWT_CHECKBOX, 2         ),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2         ),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2         ),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2         ),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2         ),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2         ),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2         ),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2         ),
+    MakeWidget     ({ 0,  0}, {343,  14}, WWT_CHECKBOX, 2         ),
     { WIDGETS_END },
 };
 

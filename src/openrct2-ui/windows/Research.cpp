@@ -63,24 +63,24 @@ enum {
 
 static rct_widget window_research_development_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW_DEVELOPMENT, WH_DEVELOPMENT),
-    MakeWidget     ({  0,  43}, {300, 153}, WWT_RESIZE,   1),
+    MakeWidget     ({  0,  43}, {300, 153}, WWT_RESIZE,   1                                                                ),
     MakeRemapWidget({  3,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_RESEARCH_AND_DEVELOPMENT_TIP),
     MakeRemapWidget({ 34,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_FINANCES_RESEARCH_TIP       ),
-    MakeWidget     ({  3,  47}, {290,  70}, WWT_GROUPBOX, 2, STR_CURRENTLY_IN_DEVELOPMENT),
-    MakeWidget     ({  3, 124}, {290,  65}, WWT_GROUPBOX, 2, STR_LAST_DEVELOPMENT),
+    MakeWidget     ({  3,  47}, {290,  70}, WWT_GROUPBOX, 2, STR_CURRENTLY_IN_DEVELOPMENT                                  ),
+    MakeWidget     ({  3, 124}, {290,  65}, WWT_GROUPBOX, 2, STR_LAST_DEVELOPMENT                                          ),
     MakeWidget     ({265, 161}, { 24,  24}, WWT_FLATBTN,  2, 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   ),
     { WIDGETS_END },
 };
 
 static rct_widget window_research_funding_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW_FUNDING, WH_FUNDING),
-    MakeWidget     ({  0,  43}, {320, 164}, WWT_RESIZE,   1),
+    MakeWidget     ({  0,  43}, {320, 164}, WWT_RESIZE,   1                                                                                    ),
     MakeRemapWidget({  3,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                              STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
     MakeRemapWidget({ 34,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                              STR_FINANCES_RESEARCH_TIP                   ),
-    MakeWidget     ({  3,  47}, {314,  45}, WWT_GROUPBOX, 2, STR_RESEARCH_FUNDING_),
+    MakeWidget     ({  3,  47}, {314,  45}, WWT_GROUPBOX, 2, STR_RESEARCH_FUNDING_                                                             ),
     MakeWidget     ({  8,  59}, {160,  14}, WWT_DROPDOWN, 2, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
     MakeWidget     ({156,  60}, { 11,  12}, WWT_BUTTON,   2, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-    MakeWidget     ({  3,  96}, {314, 107}, WWT_GROUPBOX, 2, STR_RESEARCH_PRIORITIES),
+    MakeWidget     ({  3,  96}, {314, 107}, WWT_GROUPBOX, 2, STR_RESEARCH_PRIORITIES                                                           ),
     MakeWidget     ({  8, 108}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
     MakeWidget     ({  8, 121}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
     MakeWidget     ({  8, 134}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),

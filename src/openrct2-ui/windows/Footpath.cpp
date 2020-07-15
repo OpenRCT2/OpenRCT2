@@ -74,19 +74,19 @@ static rct_widget window_footpath_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
 
     // Type group
-    MakeWidget({ 3,  17}, {100, 55}, WWT_GROUPBOX, 0, STR_TYPE),
+    MakeWidget({ 3,  17}, {100, 55}, WWT_GROUPBOX, 0, STR_TYPE                                                                          ),
     MakeWidget({ 6,  30}, { 47, 36}, WWT_FLATBTN,  1, 0xFFFFFFFF,                        STR_FOOTPATH_TIP                               ),
     MakeWidget({53,  30}, { 47, 36}, WWT_FLATBTN,  1, 0xFFFFFFFF,                        STR_QUEUE_LINE_PATH_TIP                        ),
 
     // Direction group
-    MakeWidget({ 3,  75}, {100, 77}, WWT_GROUPBOX, 0, STR_DIRECTION),
+    MakeWidget({ 3,  75}, {100, 77}, WWT_GROUPBOX, 0, STR_DIRECTION                                                                     ),
     MakeWidget({53,  87}, { 45, 29}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_DIRECTION_NE,     STR_DIRECTION_TIP                              ),
     MakeWidget({53, 116}, { 45, 29}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_DIRECTION_SE,     STR_DIRECTION_TIP                              ),
     MakeWidget({ 8, 116}, { 45, 29}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_DIRECTION_SW,     STR_DIRECTION_TIP                              ),
     MakeWidget({ 8,  87}, { 45, 29}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_DIRECTION_NW,     STR_DIRECTION_TIP                              ),
 
     // Slope group
-    MakeWidget({ 3, 155}, {100, 41}, WWT_GROUPBOX, 0, STR_SLOPE),
+    MakeWidget({ 3, 155}, {100, 41}, WWT_GROUPBOX, 0, STR_SLOPE                                                                         ),
     MakeWidget({17, 167}, { 24, 24}, WWT_FLATBTN,  1, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,  STR_SLOPE_DOWN_TIP                             ),
     MakeWidget({41, 167}, { 24, 24}, WWT_FLATBTN,  1, SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL, STR_LEVEL_TIP                                  ),
     MakeWidget({65, 167}, { 24, 24}, WWT_FLATBTN,  1, SPR_RIDE_CONSTRUCTION_SLOPE_UP,    STR_SLOPE_UP_TIP                               ),
@@ -94,7 +94,7 @@ static rct_widget window_footpath_widgets[] = {
     MakeWidget({30, 295}, { 46, 24}, WWT_FLATBTN,  1, SPR_DEMOLISH_CURRENT_SECTION,      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP       ),
 
     // Mode group
-    MakeWidget({ 3, 321}, {100, 54}, WWT_GROUPBOX, 0, 0xFFFFFFFF),
+    MakeWidget({ 3, 321}, {100, 54}, WWT_GROUPBOX, 0, 0xFFFFFFFF                                                                        ),
     MakeWidget({13, 332}, { 36, 36}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_FOOTPATH_LAND,    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
     MakeWidget({57, 332}, { 36, 36}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_FOOTPATH_BRIDGE,  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    ),
     {WIDGETS_END},

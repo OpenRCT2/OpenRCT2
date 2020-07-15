@@ -57,11 +57,11 @@ enum WINDOW_PLAYER_WIDGET_IDX {
 
 static rct_widget window_player_overview_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
-    MakeWidget({  3, 46}, {175, 12}, WWT_DROPDOWN, 1),                                            // Permission group
-    MakeWidget({167, 47}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH),
+    MakeWidget({  3, 46}, {175, 12}, WWT_DROPDOWN, 1                                           ), // Permission group
+    MakeWidget({167, 47}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                       ),
     MakeWidget({179, 45}, { 12, 24}, WWT_FLATBTN,  1, SPR_LOCATE,         STR_LOCATE_PLAYER_TIP), // Locate button
     MakeWidget({179, 69}, { 12, 24}, WWT_FLATBTN,  1, SPR_DEMOLISH,       STR_KICK_PLAYER_TIP  ), // Kick button
-    MakeWidget({  3, 60}, {175, 61}, WWT_VIEWPORT, 1),                                            // Viewport
+    MakeWidget({  3, 60}, {175, 61}, WWT_VIEWPORT, 1                                           ), // Viewport
     { WIDGETS_END },
 };
 
