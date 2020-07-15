@@ -508,9 +508,14 @@ public:
         *dst = {};
         dst->id = rideIndex;
 
+        ObjectEntryIndex rideType = src->type;
+        if (RCT2RideTypeNeedsConversion(src->type))
+        {
+            auto* rideEntry = get_ride_entry(src->subtype);
+            rideType = RCT2RideTypeToOpenRCT2RideType(src->type, rideEntry);
+        }
+        dst->type = rideType;
         dst->subtype = src->subtype;
-        auto* rideEntry = get_ride_entry(src->subtype);
-        dst->type = RCT2RideTypeToOpenRCT2RideType(src->type, rideEntry);
         // pad_002;
         dst->mode = src->mode;
         dst->colour_scheme_type = src->colour_scheme_type;
