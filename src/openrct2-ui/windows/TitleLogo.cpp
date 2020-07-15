@@ -23,7 +23,7 @@ enum
 };
 
 static rct_widget window_title_logo_widgets[] = {
-    { WWT_IMGBTN, 0, 0, WW, 0, WH, STR_NONE, STR_NONE },
+    MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WWT_IMGBTN, 0),
     { WIDGETS_END },
 };
 

@@ -31,10 +31,10 @@ enum {
 };
 
 static rct_widget window_title_menu_widgets[] = {
-    { WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_NEW_GAME,        STR_START_NEW_GAME_TIP          },
-    { WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_LOAD_GAME,       STR_CONTINUE_SAVED_GAME_TIP     },
-    { WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_G2_MENU_MULTIPLAYER,  STR_SHOW_MULTIPLAYER_TIP        },
-    { WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_TOOLBOX,         STR_GAME_TOOLS_TIP              },
+    MakeWidget({0, 0}, {82, 82}, WWT_IMGBTN, 2, SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
+    MakeWidget({0, 0}, {82, 82}, WWT_IMGBTN, 2, SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
+    MakeWidget({0, 0}, {82, 82}, WWT_IMGBTN, 2, SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
+    MakeWidget({0, 0}, {82, 82}, WWT_IMGBTN, 2, SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
     { WIDGETS_END },
 };
 

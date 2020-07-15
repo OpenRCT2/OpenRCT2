@@ -73,16 +73,16 @@ enum {
 
 static rct_widget window_scenarioselect_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_IMGBTN,   1,  0,      733,    50,     333,    0xFFFFFFFF,                 STR_NONE },             // tab content panel
-    { WWT_TAB,      1,  3,      93,     17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 1
-    { WWT_TAB,      1,  94,     184,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 2
-    { WWT_TAB,      1,  185,    275,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 3
-    { WWT_TAB,      1,  276,    366,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 4
-    { WWT_TAB,      1,  367,    457,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 5
-    { WWT_TAB,      1,  458,    593,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 6
-    { WWT_TAB,      1,  594,    684,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 7
-    { WWT_TAB,      1,  685,    775,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 8
-    { WWT_SCROLL,   1,  3,      555,    54,     329,    SCROLL_VERTICAL,            STR_NONE },             // level list
+    MakeWidget     ({  0, 50}, {734, 284}, WWT_IMGBTN, 1),                  // tab content panel
+    MakeRemapWidget({  3, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 1
+    MakeRemapWidget({ 94, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 2
+    MakeRemapWidget({185, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 3
+    MakeRemapWidget({276, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 4
+    MakeRemapWidget({367, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 5
+    MakeRemapWidget({458, 17}, {136,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 6
+    MakeRemapWidget({594, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 7
+    MakeRemapWidget({685, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 8
+    MakeWidget     ({  3, 54}, {553, 276}, WWT_SCROLL, 1, SCROLL_VERTICAL), // level list
     { WIDGETS_END },
 };
 

@@ -21,7 +21,7 @@ enum {
 };
 
 static rct_widget window_tooltip_widgets[] = {
-    { WWT_IMGBTN, 0, 0, 199, 0, 31, 0xFFFFFFFF, STR_NONE },
+    MakeWidget({0, 0}, {200, 32}, WWT_IMGBTN, 0),
     { WIDGETS_END },
 };
 
