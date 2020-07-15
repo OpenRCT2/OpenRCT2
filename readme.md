@@ -83,10 +83,6 @@ Some \*BSD operating systems offer native packages. These packages are usually t
 
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2).
 
-### Windows:
-- Visual Studio 2019 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
-  - Desktop development with C++
-
 ### macOS:
 - Xcode 8
 
@@ -118,24 +114,8 @@ Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#re
 ---
 
 ## 3.2 Compiling and running
-### Windows:
-1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
-2. Open a new Developer Command Prompt for VS 2019, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
-3. To build the 64-bit version, use `msbuild openrct2.proj /t:build /p:platform=x64`.
 
-   To build the 32-bit version, use `msbuild openrct2.proj /t:build /p:platform=Win32`.
-4. Run the game, `bin\openrct2`
-
-Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`. Make sure to select the correct target platform for which you ran the build in point #3 (`Win32` for the 32-bit version, `x64` for the 64-bit version), otherwise the build will fail in Visual Studio.
-
-Other examples:
-```
-set platform=x64
-msbuild openrct2.proj /t:clean
-msbuild openrct2.proj /t:rebuild /p:configuration=release
-msbuild openrct2.proj /t:g2
-msbuild openrct2.proj /t:PublishPortable
-```
+* [Building OpenRCT2 on Windows](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Windows)
 
 ### macOS:
 #### Xcode:
