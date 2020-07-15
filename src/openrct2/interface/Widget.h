@@ -86,7 +86,7 @@ constexpr rct_widget MakeRemapWidget(
 }
 
 #define MakeSpinnerWidgets(...)                                                                                                \
-    MakeWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__)
+    MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
 
 constexpr rct_widget MakeSpinnerDecreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, uint8_t colour,
