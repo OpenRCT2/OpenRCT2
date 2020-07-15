@@ -674,7 +674,9 @@ static constexpr const uint32_t staffCostumeSprites[] = {
  */
 void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+    auto dpiCoords = ScreenCoordsXY{ dpi->x, dpi->y };
+    gfx_fill_rect(
+        dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, ColourMapA[w->colours[1]].mid_light);
 
     // How much space do we have for the name and action columns? (Discount scroll area and icons.)
     const int32_t nonIconSpace = w->widgets[WIDX_STAFF_LIST_LIST].width() - 15 - 68;

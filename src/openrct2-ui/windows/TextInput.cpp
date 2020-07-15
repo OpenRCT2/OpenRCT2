@@ -315,7 +315,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 uint8_t colour = ColourMapA[w->colours[1]].mid_light;
                 // TODO: palette index addition
-                gfx_fill_rect(dpi, cursorX, screenCoords.y + 9, cursorX + width, screenCoords.y + 9, colour + 5);
+                gfx_fill_rect(dpi, { { cursorX, screenCoords.y + 9 }, { cursorX + width, screenCoords.y + 9 } }, colour + 5);
             }
 
             cur_drawn++;
@@ -431,7 +431,8 @@ static void draw_ime_composition(rct_drawpixelinfo* dpi, int cursorX, int cursor
     int height = 10;
 
     gfx_fill_rect(
-        dpi, screenCoords.x - 1, screenCoords.y - 1, screenCoords.x + width + 1, screenCoords.y + height + 1, PALETTE_INDEX_12);
-    gfx_fill_rect(dpi, screenCoords.x, screenCoords.y, screenCoords.x + width, screenCoords.y + height, PALETTE_INDEX_0);
+        dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
+        PALETTE_INDEX_12);
+    gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
     gfx_draw_string(dpi, static_cast<const char*>(gTextInput->ImeBuffer), COLOUR_DARK_GREEN, screenCoords);
 }

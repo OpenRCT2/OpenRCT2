@@ -894,12 +894,16 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                 {
                     colour = ColourMapA[w->colours[1]].mid_dark;
                     gfx_fill_rect(
-                        dpi, 0, screenCoords.y + _row_height - 2, window_themes_widgets[WIDX_THEMES_LIST].right,
-                        screenCoords.y + _row_height - 2, colour);
+                        dpi,
+                        { { 0, screenCoords.y + _row_height - 2 },
+                          { window_themes_widgets[WIDX_THEMES_LIST].right, screenCoords.y + _row_height - 2 } },
+                        colour);
                     colour = ColourMapA[w->colours[1]].lightest;
                     gfx_fill_rect(
-                        dpi, 0, screenCoords.y + _row_height - 1, window_themes_widgets[WIDX_THEMES_LIST].right,
-                        screenCoords.y + _row_height - 1, colour);
+                        dpi,
+                        { { 0, screenCoords.y + _row_height - 1 },
+                          { window_themes_widgets[WIDX_THEMES_LIST].right, screenCoords.y + _row_height - 1 } },
+                        colour);
                 }
             }
 

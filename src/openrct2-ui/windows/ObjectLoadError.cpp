@@ -573,7 +573,9 @@ static void window_object_load_error_paint(rct_window* w, rct_drawpixelinfo* dpi
 
 static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+    auto dpiCoords = ScreenCoordsXY{ dpi->x, dpi->y };
+    gfx_fill_rect(
+        dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, ColourMapA[w->colours[1]].mid_light);
     const int32_t list_width = w->widgets[WIDX_SCROLL].width();
 
     for (int32_t i = 0; i < w->no_list_items; i++)
@@ -586,19 +588,14 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
         if (screenCoords.y + SCROLLABLE_ROW_HEIGHT < dpi->y)
             continue;
 
+        auto screenRect = ScreenRect{ { 0, screenCoords.y }, { list_width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
         // If hovering over item, change the color and fill the backdrop.
         if (i == w->selected_list_item)
-            gfx_fill_rect(
-                dpi, 0, screenCoords.y, list_width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
-                ColourMapA[w->colours[1]].darker);
+            gfx_fill_rect(dpi, screenRect, ColourMapA[w->colours[1]].darker);
         else if (i == highlighted_index)
-            gfx_fill_rect(
-                dpi, 0, screenCoords.y, list_width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
-                ColourMapA[w->colours[1]].mid_dark);
+            gfx_fill_rect(dpi, screenRect, ColourMapA[w->colours[1]].mid_dark);
         else if ((i & 1) != 0) // odd / even check
-            gfx_fill_rect(
-                dpi, 0, screenCoords.y, list_width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
-                ColourMapA[w->colours[1]].light);
+            gfx_fill_rect(dpi, screenRect, ColourMapA[w->colours[1]].light);
 
         // Draw the actual object entry's name...
         screenCoords.x = NAME_COL_LEFT - 3;

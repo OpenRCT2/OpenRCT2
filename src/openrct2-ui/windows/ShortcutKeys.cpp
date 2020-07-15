@@ -330,7 +330,9 @@ static void window_shortcut_scrollmouseover(rct_window* w, int32_t scrollIndex, 
  */
 static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+    auto dpiCoords = ScreenCoordsXY{ dpi->x, dpi->y };
+    gfx_fill_rect(
+        dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, ColourMapA[w->colours[1]].mid_light);
 
     // TODO: the line below is a workaround for what is presumably a bug with dpi->width
     //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
@@ -353,8 +355,8 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (ShortcutList[i].ShortcutId == SHORTCUT_UNDEFINED)
         {
             const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
-            gfx_fill_rect(dpi, 0, top, scrollWidth, top, ColourMapA[w->colours[0]].mid_dark);
-            gfx_fill_rect(dpi, 0, top + 1, scrollWidth, top + 1, ColourMapA[w->colours[0]].lightest);
+            gfx_fill_rect(dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[w->colours[0]].mid_dark);
+            gfx_fill_rect(dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[w->colours[0]].lightest);
             continue;
         }
 
