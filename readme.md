@@ -86,38 +86,17 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 ### macOS:
 - Xcode 8
 
-The program can also be built as a command line program using CMake. This type of build requires:
-
-- Xcode Command Line Tools
-- [Homebrew](http://brew.sh)
-- CMake (available through Homebrew)
-
 ---
 
 ## 3.2 Compiling and running
 
 * [Building OpenRCT2 on Linux](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux)
+* [Building OpenRCT2 on macOS using CMake](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-macOS-using-CMake)
 * [Building OpenRCT2 on Windows](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Windows)
 
 ### macOS:
 #### Xcode:
 The recommended way of building OpenRCT2 for macOS is with Xcode. The Xcode build will create a self-contained application bundles which include all the necessary game files and dependencies. Open the project file OpenRCT2.xcodeproj in Xcode and build from there. Building this way will handle the dependencies for you automatically. You can also invoke an Xcode build from the command line using `xcodebuild`.
-
-#### CMake:
-A command line version of OpenRCT2 can be built using CMake. This type of build requires you to provide the dependencies yourself. The supported method of doing this is with [Homebrew](http://brew.sh). Once you have Homebrew installed, you can download all the required libraries with this command:
-```
-brew install cmake duktape freetype icu4c jansson libpng libzip openssl pkg-config sdl2 speexdsp
-```
-
-Once you have the dependencies installed, you can build the project using CMake using the following commands:
-```
-mkdir build
-cd build
-cmake ..
-make
-ln -s ../data data
-```
-Then you can run the game by running `./openrct2`.
 
 # 4. Contributing
 OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to ```develop```. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. ```master``` only contains tagged releases, you should never branch off this.
