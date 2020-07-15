@@ -5560,10 +5560,6 @@ void Vehicle::UpdateSound()
  */
 SoundId Vehicle::UpdateScreamSound()
 {
-    rct_ride_entry* rideEntry = GetRideEntry();
-
-    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
-
     int32_t totalNumPeeps = NumPeepsUntilTrainTail();
     if (totalNumPeeps == 0)
         return SoundId::Null;
@@ -5585,11 +5581,11 @@ SoundId Vehicle::UpdateScreamSound()
             if (vehicle2->vehicle_sprite_type < 1)
                 continue;
             if (vehicle2->vehicle_sprite_type <= 4)
-                goto produceScream;
+                return ProduceScreamSound(totalNumPeeps);
             if (vehicle2->vehicle_sprite_type < 9)
                 continue;
             if (vehicle2->vehicle_sprite_type <= 15)
-                goto produceScream;
+                return ProduceScreamSound(totalNumPeeps);
         }
         return SoundId::Null;
     }
@@ -5608,16 +5604,24 @@ SoundId Vehicle::UpdateScreamSound()
         if (vehicle2->vehicle_sprite_type < 5)
             continue;
         if (vehicle2->vehicle_sprite_type <= 8)
-            goto produceScream;
+            return ProduceScreamSound(totalNumPeeps);
         if (vehicle2->vehicle_sprite_type < 17)
             continue;
         if (vehicle2->vehicle_sprite_type <= 23)
-            goto produceScream;
+            return ProduceScreamSound(totalNumPeeps);
     }
     return SoundId::Null;
+}
 
-produceScream:
-    if (scream_sound_id == SoundId::Null)
+SoundId Vehicle::ProduceScreamSound(int32_t totalNumPeeps)
+{
+    SoundId scream_id = SoundId::Null;
+
+    rct_ride_entry* rideEntry = GetRideEntry();
+
+    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
+
+    if (scream_id == SoundId::Null)
     {
         auto r = scenario_rand();
         if (totalNumPeeps >= static_cast<int32_t>(r % 16))
@@ -5625,25 +5629,25 @@ produceScream:
             switch (vehicleEntry->sound_range)
             {
                 case SOUND_RANGE_SCREAMS_0:
-                    scream_sound_id = byte_9A3A14[r % 2];
+                    scream_id = byte_9A3A14[r % 2];
                     break;
                 case SOUND_RANGE_SCREAMS_1:
-                    scream_sound_id = byte_9A3A18[r % 7];
+                    scream_id = byte_9A3A18[r % 7];
                     break;
                 case SOUND_RANGE_SCREAMS_2:
-                    scream_sound_id = byte_9A3A16[r % 2];
+                    scream_id = byte_9A3A16[r % 2];
                     break;
                 default:
-                    scream_sound_id = SoundId::NoScream;
+                    scream_id = SoundId::NoScream;
                     break;
             }
         }
         else
         {
-            scream_sound_id = SoundId::NoScream;
+            scream_id = SoundId::NoScream;
         }
     }
-    return scream_sound_id;
+    return scream_id;
 }
 
 /**
