@@ -5613,7 +5613,7 @@ SoundId Vehicle::UpdateScreamSound()
     return SoundId::Null;
 }
 
-SoundId Vehicle::ProduceScreamSound(int32_t totalNumPeeps)
+SoundId Vehicle::ProduceScreamSound(const int32_t totalNumPeeps)
 {
     rct_ride_entry* rideEntry = GetRideEntry();
 

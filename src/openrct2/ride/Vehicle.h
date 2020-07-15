@@ -401,7 +401,7 @@ private:
     void UpdateCrossings() const;
     void UpdateSound();
     SoundId UpdateScreamSound();
-    SoundId ProduceScreamSound(int32_t totalNumPeeps);
+    SoundId ProduceScreamSound(const int32_t totalNumPeeps);
     void UpdateCrashSetup();
     void UpdateCollisionSetup();
     int32_t UpdateMotionDodgems();

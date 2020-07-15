@@ -144,6 +144,7 @@ The following people are not part of the development team, but have been contrib
 * Tomáš Žilínek (TomasZilinek)
 * Mustapha Elghoul (mustaphaelghoul)
 * Tyler Leamon (tylerleamon)
+* Michael Coates (outerwear)
 
 ## Toolchain
 * (Balletie) - macOS
