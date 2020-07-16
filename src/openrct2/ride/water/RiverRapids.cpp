@@ -239,15 +239,16 @@ void vehicle_visual_river_rapids(
         image_id = (baseImage_id + ((peeps + 1) * 72))
             | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
         sub_98199C(
-            session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z);
+            session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
+            { bb->offset_x, bb->offset_y, bb->offset_z + z });
         if (vehicle->num_peeps > 2)
         {
             peeps = ((ecx / 8) + 2) & 3;
             image_id = (baseImage_id + ((peeps + 1) * 72))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
             sub_98199C(
-                session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y,
-                bb->offset_z + z);
+                session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
+                { bb->offset_x, bb->offset_y, bb->offset_z + z });
         }
         if (vehicle->num_peeps > 4)
         {
@@ -255,8 +256,8 @@ void vehicle_visual_river_rapids(
             image_id = (baseImage_id + ((peeps + 1) * 72))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
             sub_98199C(
-                session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y,
-                bb->offset_z + z);
+                session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
+                { bb->offset_x, bb->offset_y, bb->offset_z + z });
         }
         if (vehicle->num_peeps > 6)
         {
@@ -264,8 +265,8 @@ void vehicle_visual_river_rapids(
             image_id = (baseImage_id + ((peeps + 1) * 72))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
             sub_98199C(
-                session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y,
-                bb->offset_z + z);
+                session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
+                { bb->offset_x, bb->offset_y, bb->offset_z + z });
         }
     }
 
@@ -684,7 +685,7 @@ static void paint_river_rapids_track_waterfall(
         sub_98197C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height);
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_BASE_NE_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height);
+        sub_98199C(session, imageId, { 0, 0, height }, { 24, 32, 11 }, { 4, 0, height });
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_TOP_NE_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 32, 27, height, 4, 0, height + 17);
@@ -694,7 +695,7 @@ static void paint_river_rapids_track_waterfall(
         sub_98197C(session, imageId, 0, 0, 1, 32, 27, height, 27, 0, height + 17);
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_SIDE_SW_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 1, 32, 27, height, 27, 0, height + 17);
+        sub_98199C(session, imageId, { 0, 0, height }, { 1, 32, 27 }, { 27, 0, height + 17 });
     }
     else
     {
@@ -703,7 +704,7 @@ static void paint_river_rapids_track_waterfall(
         sub_98197C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height);
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_BASE_NW_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height);
+        sub_98199C(session, imageId, { 0, 0, height }, { 32, 24, 11 }, { 0, 4, height });
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_TOP_NW_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 1, 27, height, 0, 4, height + 17);
@@ -713,7 +714,7 @@ static void paint_river_rapids_track_waterfall(
         sub_98197C(session, imageId, 0, 0, 32, 1, 27, height, 0, 27, height + 17);
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_SIDE_SE_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 32, 1, 27, height, 0, 27, height + 17);
+        sub_98199C(session, imageId, { 0, 0, height }, { 32, 1, 27 }, { 0, 27, height + 17 });
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -798,7 +799,7 @@ static void paint_river_rapids_track_whirlpool(
         sub_98197C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height);
 
         imageId = (SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height);
+        sub_98199C(session, imageId, { 0, 0, height }, { 24, 32, 11 }, { 4, 0, height });
 
         imageId = (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE : SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW)
             | session->TrackColours[SCHEME_TRACK];
@@ -811,7 +812,7 @@ static void paint_river_rapids_track_whirlpool(
         sub_98197C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height);
 
         imageId = (SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height);
+        sub_98199C(session, imageId, { 0, 0, height }, { 32, 24, 11 }, { 0, 4, height });
 
         imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW)
             | session->TrackColours[SCHEME_TRACK];
