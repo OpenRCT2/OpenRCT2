@@ -91,16 +91,15 @@ static bool sprite_file_open(const utf8* path)
     if (spriteFileHeader.num_entries > 0)
     {
         int32_t openEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
-        rct_g1_element_32bit* openElements = static_cast<rct_g1_element_32bit*>(malloc(openEntryTableSize));
+        std::unique_ptr<rct_g1_element_32bit[]> openElements = std::make_unique<rct_g1_element_32bit[]>(openEntryTableSize);
         if (openElements == nullptr)
         {
             fclose(file);
             return false;
         }
 
-        if (fread(openElements, openEntryTableSize, 1, file) != 1)
+        if (fread(openElements.get(), openEntryTableSize, 1, file) != 1)
         {
-            free(openElements);
             fclose(file);
             return false;
         }
@@ -109,7 +108,6 @@ static bool sprite_file_open(const utf8* path)
         if (fread(spriteFileData, spriteFileHeader.total_size, 1, file) != 1)
         {
             free(spriteFileData);
-            free(openElements);
             fclose(file);
             return false;
         }
@@ -130,8 +128,6 @@ static bool sprite_file_open(const utf8* path)
             outElement->flags = inElement->flags;
             outElement->zoomed_offset = inElement->zoomed_offset;
         }
-
-        free(openElements);
     }
 
     fclose(file);
@@ -153,7 +149,7 @@ static bool sprite_file_save(const char* path)
     if (spriteFileHeader.num_entries > 0)
     {
         int32_t saveEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
-        rct_g1_element_32bit* saveElements = static_cast<rct_g1_element_32bit*>(malloc(saveEntryTableSize));
+        std::unique_ptr<rct_g1_element_32bit[]> saveElements = std::make_unique<rct_g1_element_32bit[]>(saveEntryTableSize);
         if (saveElements == nullptr)
         {
             fclose(file);
@@ -175,13 +171,11 @@ static bool sprite_file_save(const char* path)
             outElement->zoomed_offset = inElement->zoomed_offset;
         }
 
-        if (fwrite(saveElements, saveEntryTableSize, 1, file) != 1)
+        if (fwrite(saveElements.get(), saveEntryTableSize, 1, file) != 1)
         {
-            free(saveElements);
             fclose(file);
             return false;
         }
-        free(saveElements);
 
         if (fwrite(spriteFileData, spriteFileHeader.total_size, 1, file) != 1)
         {

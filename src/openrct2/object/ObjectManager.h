@@ -33,7 +33,7 @@ interface IObjectManager
     virtual Object* LoadObject(const rct_object_entry* entry) abstract;
     virtual void LoadObjects(const rct_object_entry* entries, size_t count) abstract;
     virtual void LoadDefaultObjects() abstract;
-    virtual void UnloadObjects(const rct_object_entry* entries, size_t count) abstract;
+    virtual void UnloadObjects(const std::vector<rct_object_entry>& entries, size_t count) abstract;
     virtual void UnloadAll() abstract;
 
     virtual void ResetObjects() abstract;
@@ -48,6 +48,6 @@ void* object_manager_get_loaded_object_by_index(size_t index);
 void* object_manager_get_loaded_object(const rct_object_entry* entry);
 ObjectEntryIndex object_manager_get_loaded_object_entry_index(const void* loadedObject);
 void* object_manager_load_object(const rct_object_entry* entry);
-void object_manager_unload_objects(const rct_object_entry* entries, size_t count);
+void object_manager_unload_objects(const std::vector<rct_object_entry>& entries, size_t count);
 void object_manager_unload_all_objects();
 rct_string_id object_manager_get_source_game_string(const uint8_t sourceGame);
