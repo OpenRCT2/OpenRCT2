@@ -94,7 +94,7 @@ static rct_widget window_footpath_widgets[] = {
     MakeWidget({30, 295}, { 46, 24}, WWT_FLATBTN,  1, SPR_DEMOLISH_CURRENT_SECTION,      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP       ),
 
     // Mode group
-    MakeWidget({ 3, 321}, {100, 54}, WWT_GROUPBOX, 0, 0xFFFFFFFF                                                                        ),
+    MakeWidget({ 3, 321}, {100, 54}, WWT_GROUPBOX, 0,                                                                                   ),
     MakeWidget({13, 332}, { 36, 36}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_FOOTPATH_LAND,    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
     MakeWidget({57, 332}, { 36, 36}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_FOOTPATH_BRIDGE,  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    ),
     {WIDGETS_END},
