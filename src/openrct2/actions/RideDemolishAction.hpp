@@ -274,9 +274,9 @@ private:
         return res;
     }
 
-    money32 MazeRemoveTrack(uint16_t x, uint16_t y, uint16_t z, uint8_t direction) const
+    money32 MazeRemoveTrack(const CoordsXYZD& coords) const
     {
-        auto setMazeTrack = MazeSetTrackAction(CoordsXYZD{ x, y, z, direction }, false, _rideIndex, GC_SET_MAZE_TRACK_FILL);
+        auto setMazeTrack = MazeSetTrackAction(coords, false, _rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
 
         auto execRes = GameActions::ExecuteNested(&setMazeTrack);
@@ -339,8 +339,8 @@ private:
 
             for (Direction dir : ALL_DIRECTIONS)
             {
-                const CoordsXY& off = DirOffsets[dir];
-                money32 removePrice = MazeRemoveTrack(location.x + off.x, location.y + off.y, location.z, dir);
+                const CoordsXYZ off = { DirOffsets[dir], 0 };
+                money32 removePrice = MazeRemoveTrack({ location + off, dir });
                 if (removePrice != MONEY32_UNDEFINED)
                     refundPrice += removePrice;
                 else
