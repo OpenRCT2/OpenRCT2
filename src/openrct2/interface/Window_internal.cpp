@@ -2,9 +2,9 @@
 
 #include "../world/Sprite.h"
 
-void rct_window::SetLocation(int32_t newX, int32_t newY, int32_t newZ)
+void rct_window::SetLocation(const CoordsXYZ& coords)
 {
-    window_scroll_to_location(this, { newX, newY, newZ });
+    window_scroll_to_location(this, coords);
     flags &= ~WF_SCROLLING_TO_LOCATION;
 }
 

@@ -91,7 +91,7 @@ struct rct_window
     uint8_t visibility;
     uint16_t viewport_smart_follow_sprite; // Handles setting viewport target sprite etc
 
-    void SetLocation(int32_t x, int32_t y, int32_t z);
+    void SetLocation(const CoordsXYZ& coords);
     void ScrollToViewport();
     void Invalidate();
 };
