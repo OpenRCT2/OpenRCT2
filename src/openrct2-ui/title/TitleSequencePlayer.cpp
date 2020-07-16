@@ -478,7 +478,7 @@ private:
             // Prevent scroll adjustment due to window placement when in-game
             auto oldScreenFlags = gScreenFlags;
             gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
-            w->SetLocation(loc.x, loc.y, z);
+            w->SetLocation({ loc, z });
             gScreenFlags = oldScreenFlags;
 
             viewport_update_position(w);
