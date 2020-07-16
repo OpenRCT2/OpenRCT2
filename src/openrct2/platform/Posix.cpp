@@ -152,7 +152,7 @@ bool platform_directory_delete(const utf8* path)
     if ((ftsp = fts_open(patharray, FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR, NULL)) == nullptr)
     {
         log_error("fts_open returned NULL");
-        delete[] ourPath;
+        free(ourPath);
         return false;
     }
 
@@ -164,7 +164,7 @@ bool platform_directory_delete(const utf8* path)
         {
             log_error("Failed to remove %s, errno = %d", path, errno);
         }
-        delete[] ourPath;
+        free(ourPath);
         return true; // No files to traverse
     }
 
@@ -180,19 +180,19 @@ bool platform_directory_delete(const utf8* path)
                 {
                     log_error("Could not remove %s", p->fts_path);
                     fts_close(ftsp);
-                    delete[] ourPath;
+                    free(ourPath);
                     return false;
                 }
                 break;
             case FTS_ERR:
                 log_error("Error traversing %s", path);
                 fts_close(ftsp);
-                delete[] ourPath;
+                free(ourPath);
                 return false;
         }
     }
 
-    delete[] ourPath;
+    free(ourPath);
     fts_close(ftsp);
 
 #    else
@@ -220,7 +220,7 @@ std::string platform_get_absolute_path(const utf8* relative_path, const utf8* ba
         if (realpathResult != nullptr)
         {
             result = std::string(realpathResult);
-            delete[] realpathResult;
+            free(realpathResult);
         }
     }
     return result;
@@ -312,7 +312,7 @@ bool platform_file_copy(const utf8* srcPath, const utf8* dstPath, bool overwrite
     size_t file_offset = 0;
 
     // Copy file in FILE_BUFFER_SIZE-d chunks
-    char* buffer = new char[FILE_BUFFER_SIZE];
+    char* buffer = static_cast<char*>(malloc(FILE_BUFFER_SIZE));
     while ((amount_read = fread(buffer, FILE_BUFFER_SIZE, 1, srcFile)))
     {
         fwrite(buffer, amount_read, 1, dstFile);
@@ -327,7 +327,7 @@ bool platform_file_copy(const utf8* srcPath, const utf8* dstPath, bool overwrite
 
     fclose(srcFile);
     fclose(dstFile);
-    delete[] buffer;
+    free(buffer);
 
     return true;
 }
