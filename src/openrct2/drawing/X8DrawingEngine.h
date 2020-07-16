@@ -123,7 +123,7 @@ namespace OpenRCT2
             void ConfigureDirtyGrid();
             static void ResetWindowVisbilities();
             void DrawAllDirtyBlocks();
-            bool CheckRows(uint32_t yy, uint32_t y, uint32_t xx, uint32_t x, uint32_t dirtyBlockRows, uint32_t dirtyBlockColumns, uint32_t columns, uint8_t* dirtyBlocks);
+            uint32_t GetNumDirtyRows(const uint32_t x, const uint32_t y, const uint32_t columns);
             void DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows);
         };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
