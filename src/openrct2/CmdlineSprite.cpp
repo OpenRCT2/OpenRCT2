@@ -90,7 +90,8 @@ static bool sprite_file_open(const utf8* path)
 
     if (spriteFileHeader.num_entries > 0)
     {
-        std::unique_ptr<rct_g1_element_32bit[]> openElements = std::make_unique<rct_g1_element_32bit[]>(spriteFileHeader.num_entries);
+        std::unique_ptr<rct_g1_element_32bit[]> openElements = std::make_unique<rct_g1_element_32bit[]>(
+            spriteFileHeader.num_entries);
         if (openElements == nullptr)
         {
             fclose(file);
@@ -147,7 +148,8 @@ static bool sprite_file_save(const char* path)
 
     if (spriteFileHeader.num_entries > 0)
     {
-        std::unique_ptr<rct_g1_element_32bit[]> saveElements = std::make_unique<rct_g1_element_32bit[]>(spriteFileHeader.num_entries);
+        std::unique_ptr<rct_g1_element_32bit[]> saveElements = std::make_unique<rct_g1_element_32bit[]>(
+            spriteFileHeader.num_entries);
         if (saveElements == nullptr)
         {
             fclose(file);
