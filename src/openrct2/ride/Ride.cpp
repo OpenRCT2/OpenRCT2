@@ -397,8 +397,20 @@ money32 Ride::CalculateIncomePerHour() const
 
     if (currentShopItem != SHOP_ITEM_NONE)
     {
-        priceMinusCost += price[1];
-        priceMinusCost -= ShopItems[currentShopItem].Cost;
+        if (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
+        {
+            uint32_t photosSold = no_secondary_items_sold;
+            int32_t rideTicketsSold = total_customers - no_secondary_items_sold;
+
+            // for now, ratio is just using all-time values of tickets sold and photos sold instead of last 5 minutes'
+            float_t photosRatio = rideTicketsSold > 0 ? ((float_t)photosSold / rideTicketsSold) : 0;
+
+            priceMinusCost = priceMinusCost + (photosRatio * (price[1] - ShopItems[currentShopItem].Cost));
+        }
+        else
+        {
+            priceMinusCost = priceMinusCost + (price[1] - ShopItems[currentShopItem].Cost);
+        }
 
         if (entry->shop_item[0] != SHOP_ITEM_NONE)
             priceMinusCost /= 2;
