@@ -301,7 +301,8 @@ static void window_network_information_invalidate(rct_window* w)
 
 static void graph_draw_bar(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t height, int32_t width, int32_t colour)
 {
-    gfx_fill_rect(dpi, x, y, x + width, y + height, colour);
+    auto coords = ScreenCoordsXY{ x, y };
+    gfx_fill_rect(dpi, { coords, coords + ScreenCoordsXY{ width, height } }, colour);
 }
 
 static void window_network_draw_graph(
@@ -453,7 +454,7 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
 
                 // Draw color stripe.
                 gfx_fill_rect(
-                    dpi, screenCoords.x, screenCoords.y + 4, screenCoords.x + 4, screenCoords.y + 6,
+                    dpi, { screenCoords + ScreenCoordsXY{ 0, 4 }, screenCoords + ScreenCoordsXY{ 4, 6 } },
                     NetworkTrafficGroupColors[i]);
 
                 // Draw text.

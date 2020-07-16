@@ -519,7 +519,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
     auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     colour = ColourMapA[w->colours[0]].darkest;
-    gfx_fill_rect(dpi, screenPos.x, screenPos.y, screenPos.x + 369, screenPos.y + 216, colour);
+    gfx_fill_rect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
     if (_loadedTrackDesignIndex != trackIndex)
     {

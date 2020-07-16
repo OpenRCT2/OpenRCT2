@@ -951,7 +951,9 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
 {
     auto screenCoords = ScreenCoordsXY{ 0, 0 };
 
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
+    auto dpiCoords = ScreenCoordsXY{ dpi->x, dpi->y };
+    gfx_fill_rect(
+        dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, ColourMapA[w->colours[1]].mid_light);
 
     for (int32_t i = 0; i < network_get_num_actions(); i++)
     {
