@@ -107,7 +107,7 @@ static rct_widget _windowFinancesSummaryWidgets[] =
 static rct_widget _windowFinancesCashWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {530, 214}, WWT_RESIZE, 1),
+    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     { WIDGETS_END },
 };
@@ -115,7 +115,7 @@ static rct_widget _windowFinancesCashWidgets[] =
 static rct_widget _windowFinancesParkValueWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {530, 214}, WWT_RESIZE, 1),
+    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     { WIDGETS_END },
 };
@@ -123,7 +123,7 @@ static rct_widget _windowFinancesParkValueWidgets[] =
 static rct_widget _windowFinancesProfitWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {530, 214}, WWT_RESIZE, 1),
+    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     { WIDGETS_END },
 };
@@ -131,35 +131,35 @@ static rct_widget _windowFinancesProfitWidgets[] =
 static rct_widget _windowFinancesMarketingWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {530, 214}, WWT_RESIZE, 1),
+    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
-    MakeWidget({3, 47}, {524,  45}, WWT_GROUPBOX, 2, STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
-    MakeWidget({3, 47}, {524, 206}, WWT_GROUPBOX, 2, STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
-    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {514,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WWT_GROUPBOX, 2, STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
+    MakeWidget({3, 47}, { WW_OTHER_TABS - 6, 206}, WWT_GROUPBOX, 2, STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
     { WIDGETS_END },
 };
 
 static rct_widget _windowFinancesResearchWidgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW_RESEARCH, WH_RESEARCH),
-    MakeWidget({0, 43}, {320, 164}, WWT_RESIZE, 1),
+    MakeWidget({0, 43}, {WW_RESEARCH, 164}, WWT_RESIZE, 1),
     TAB_WIDGETS,
-    MakeWidget({  3,  47}, {314,  45}, WWT_GROUPBOX, 2, STR_RESEARCH_FUNDING_                                                             ),
-    MakeWidget({  8,  59}, {160,  14}, WWT_DROPDOWN, 2, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-    MakeWidget({156,  60}, { 11,  12}, WWT_BUTTON,   2, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-    MakeWidget({  3,  96}, {314, 107}, WWT_GROUPBOX, 2, STR_RESEARCH_PRIORITIES                                                           ),
-    MakeWidget({  8, 108}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
-    MakeWidget({  8, 121}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
-    MakeWidget({  8, 134}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
-    MakeWidget({  8, 147}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
-    MakeWidget({  8, 160}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
-    MakeWidget({  8, 173}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
-    MakeWidget({  8, 186}, {304,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
+    MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WWT_GROUPBOX, 2, STR_RESEARCH_FUNDING_                                                             ),
+    MakeWidget({  8,  59}, {             160,  14}, WWT_DROPDOWN, 2, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
+    MakeWidget({156,  60}, {              11,  12}, WWT_BUTTON,   2, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
+    MakeWidget({  3,  96}, { WW_RESEARCH - 6, 107}, WWT_GROUPBOX, 2, STR_RESEARCH_PRIORITIES                                                           ),
+    MakeWidget({  8, 108}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
+    MakeWidget({  8, 121}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
+    MakeWidget({  8, 134}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
+    MakeWidget({  8, 147}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
+    MakeWidget({  8, 160}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
+    MakeWidget({  8, 173}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
+    MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
     { WIDGETS_END },
 };
 
