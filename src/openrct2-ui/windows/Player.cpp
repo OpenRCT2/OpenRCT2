@@ -279,7 +279,7 @@ void window_player_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
                 auto coord = network_get_player_last_action_coord(player);
                 if (coord.x || coord.y || coord.z)
                 {
-                    window_scroll_to_location(mainWindow, coord.x, coord.y, coord.z);
+                    window_scroll_to_location(mainWindow, coord);
                 }
             }
         }

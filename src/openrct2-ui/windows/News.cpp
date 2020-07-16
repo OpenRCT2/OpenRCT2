@@ -163,7 +163,7 @@ static void window_news_update(rct_window* w)
         auto subjectLoc = news_item_get_subject_location(newsItem.Type, newsItem.Assoc);
         if (subjectLoc != std::nullopt && (w = window_get_main()) != nullptr)
         {
-            window_scroll_to_location(w, subjectLoc->x, subjectLoc->y, subjectLoc->z);
+            window_scroll_to_location(w, *subjectLoc);
         }
     }
 }

@@ -713,7 +713,7 @@ void window_push_others_below(rct_window* w1);
 
 rct_window* window_get_main();
 
-void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z);
+void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords);
 void window_rotate_camera(rct_window* w, int32_t direction);
 void window_viewport_get_map_coords_by_cursor(
     rct_window* w, int16_t* map_x, int16_t* map_y, int16_t* offset_x, int16_t* offset_y);

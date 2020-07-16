@@ -4,19 +4,17 @@
 
 void rct_window::SetLocation(int32_t newX, int32_t newY, int32_t newZ)
 {
-    window_scroll_to_location(this, newX, newY, newZ);
+    window_scroll_to_location(this, { newX, newY, newZ });
     flags &= ~WF_SCROLLING_TO_LOCATION;
 }
 
 void rct_window::ScrollToViewport()
 {
-    int32_t newX = LOCATION_NULL, newY = LOCATION_NULL, newZ = LOCATION_NULL;
-    rct_window* mainWindow;
-
     // In original checked to make sure x and y were not -1 as well.
     if (viewport == nullptr || viewport_focus_coordinates.y == -1)
         return;
 
+    CoordsXYZ newCoords = {};
     if (viewport_focus_sprite.type & VIEWPORT_FOCUS_TYPE_SPRITE)
     {
         auto* sprite = GetEntity(viewport_focus_sprite.sprite_id);
@@ -24,20 +22,20 @@ void rct_window::ScrollToViewport()
         {
             return;
         }
-        newX = sprite->x;
-        newY = sprite->y;
-        newZ = sprite->z;
+        newCoords.x = sprite->x;
+        newCoords.y = sprite->y;
+        newCoords.z = sprite->z;
     }
     else
     {
-        newX = viewport_focus_coordinates.x;
-        newY = viewport_focus_coordinates.y & VIEWPORT_FOCUS_Y_MASK;
-        newZ = viewport_focus_coordinates.z;
+        newCoords.x = viewport_focus_coordinates.x;
+        newCoords.y = viewport_focus_coordinates.y & VIEWPORT_FOCUS_Y_MASK;
+        newCoords.z = viewport_focus_coordinates.z;
     }
 
-    mainWindow = window_get_main();
+    auto mainWindow = window_get_main();
     if (mainWindow != nullptr)
-        window_scroll_to_location(mainWindow, newX, newY, newZ);
+        window_scroll_to_location(mainWindow, newCoords);
 }
 
 void rct_window::Invalidate()

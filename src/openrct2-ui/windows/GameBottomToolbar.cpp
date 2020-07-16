@@ -200,7 +200,7 @@ static void window_game_bottom_toolbar_mouseup(rct_window* w, rct_widgetindex wi
 
                 rct_window* mainWindow = window_get_main();
                 if (mainWindow != nullptr)
-                    window_scroll_to_location(mainWindow, subjectLoc->x, subjectLoc->y, subjectLoc->z);
+                    window_scroll_to_location(mainWindow, *subjectLoc);
             }
             break;
         case WIDX_RIGHT_OUTSET:
