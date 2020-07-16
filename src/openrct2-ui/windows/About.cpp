@@ -48,8 +48,8 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 #define WIDGETS_MAIN \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WWT_IMGBTN, 1               ), /* page background */       \
-    MakeRemapWidget({ 3,        17}, {91,             34}, WWT_TAB,    1, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
-    MakeRemapWidget({94,        17}, {91,             34}, WWT_TAB,    1, SPR_TAB_LARGE)  /* about RCT2 button */
+    MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WWT_TAB,    1, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
+    MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WWT_TAB,    1, SPR_TAB_LARGE)  /* about RCT2 button */
 
 static rct_widget window_about_openrct2_widgets[] = {
     WIDGETS_MAIN,
