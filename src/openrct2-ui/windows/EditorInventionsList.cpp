@@ -47,19 +47,19 @@ enum {
 
 static rct_widget window_editor_inventions_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,           1,  0,      599,    43,     399,    STR_NONE,               STR_NONE                },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE          },
-    { WWT_SCROLL,           1,  4,      371,    56,     216,    SCROLL_VERTICAL,        STR_NONE                },
-    { WWT_SCROLL,           1,  4,      371,    231,    387,    SCROLL_VERTICAL,        STR_NONE                },
-    { WWT_FLATBTN,          1,  431,    544,    106,    219,    0xFFFFFFFF,             STR_NONE                },
-    { WWT_BUTTON,           1,  375,    594,    343,    356,    STR_MOVE_ALL_TOP,       STR_NONE                },
-    { WWT_BUTTON,           1,  375,    594,    358,    371,    STR_MOVE_ALL_BOTTOM,    STR_NONE                },
-    { WWT_BUTTON,           1,  375,    594,    373,    386,    STR_RANDOM_SHUFFLE,     STR_RANDOM_SHUFFLE_TIP  },
+    MakeWidget     ({  0,  43}, {600, 357}, WWT_RESIZE,  1                                             ),
+    MakeRemapWidget({  3,  17}, { 31,  27}, WWT_TAB,     1, SPR_TAB                                    ),
+    MakeWidget     ({  4,  56}, {368, 161}, WWT_SCROLL,  1, SCROLL_VERTICAL                            ),
+    MakeWidget     ({  4, 231}, {368, 157}, WWT_SCROLL,  1, SCROLL_VERTICAL                            ),
+    MakeWidget     ({431, 106}, {114, 114}, WWT_FLATBTN, 1                                             ),
+    MakeWidget     ({375, 343}, {220,  14}, WWT_BUTTON,  1, STR_MOVE_ALL_TOP                           ),
+    MakeWidget     ({375, 358}, {220,  14}, WWT_BUTTON,  1, STR_MOVE_ALL_BOTTOM                        ),
+    MakeWidget     ({375, 373}, {220,  14}, WWT_BUTTON,  1, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_inventions_list_drag_widgets[] = {
-    { WWT_IMGBTN,           0,  0,      149,    0,      13,     STR_NONE,               STR_NONE                },
+    MakeWidget({0, 0}, {150, 14}, WWT_IMGBTN, 0),
     { WIDGETS_END }
 };
 
