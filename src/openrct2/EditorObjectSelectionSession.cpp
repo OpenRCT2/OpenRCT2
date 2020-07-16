@@ -319,8 +319,6 @@ void unload_unselected_objects()
 {
     int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
-
-    size_t numObjectsToUnload = 0;
     std::vector<rct_object_entry> objectsToUnload;
 
     for (int32_t i = 0; i < numItems; i++)
@@ -330,11 +328,10 @@ void unload_unselected_objects()
             const rct_object_entry* entry = &items[i].ObjectEntry;
 
             remove_selected_objects_from_research(entry);
-            objectsToUnload[numObjectsToUnload++] = *entry;
+            objectsToUnload.push_back(*entry);
         }
     }
-
-    object_manager_unload_objects(objectsToUnload, numObjectsToUnload);
+    object_manager_unload_objects(objectsToUnload);
 }
 
 /**
