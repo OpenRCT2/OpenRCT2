@@ -407,7 +407,7 @@ money32 Ride::CalculateIncomePerHour() const
             // for now, ratio is just using all-time values of tickets sold and photos sold instead of last 5 minutes'
             if (rideTicketsSold > 0)
             {
-                priceMinusCost = priceMinusCost + ((photosSold * photoProfit)/ rideTicketsSold);
+                priceMinusCost = priceMinusCost + ((photosSold * photoProfit) / rideTicketsSold);
             }
         }
         else
