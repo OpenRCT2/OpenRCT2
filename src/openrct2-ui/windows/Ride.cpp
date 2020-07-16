@@ -1247,7 +1247,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
         }
 
         // For any suspended rides, move image higher in the vehicle tab on the rides window
-        if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SUSPENDED))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SUSPENDED))
         {
             screenCoords.y /= 4;
         }
@@ -1339,7 +1339,7 @@ static void window_ride_disable_tabs(rct_window* w)
         && !ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL)
         && !ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS)
         && !ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS)
-        && !(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+        && !(ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
     {
         disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
     }
@@ -1347,7 +1347,7 @@ static void window_ride_disable_tabs(rct_window* w)
     if (ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_IS_SHOP))
         disabled_tabs |= (1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_7); // 0x4C0
 
-    if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_MUSIC))
+    if (!(ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_ALLOW_MUSIC))
     {
         disabled_tabs |= (1 << WIDX_TAB_6); // 0x200
     }
@@ -2046,7 +2046,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     int32_t currentItem = 1;
 
     // Vehicles
-    int32_t name = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number;
+    int32_t name = RideComponentNames[ride->GetRideTypeDescriptor().NameConvention.vehicle].number;
     for (int32_t i = 1; i <= ride->num_vehicles; i++)
     {
         gDropdownItemsFormat[currentItem] = STR_DROPDOWN_MENU_LABEL;
@@ -2055,7 +2055,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     }
 
     // Stations
-    name = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].number;
+    name = RideComponentNames[ride->GetRideTypeDescriptor().NameConvention.station].number;
     for (int32_t i = 1; i <= ride->num_stations; i++)
     {
         gDropdownItemsFormat[currentItem] = STR_DROPDOWN_MENU_LABEL;
@@ -2289,7 +2289,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
                 continue;
 
             // Skip if vehicle does not belong to the same ride group
-            if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) && !selectionShouldBeExpanded)
+            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) && !selectionShouldBeExpanded)
             {
                 const RideGroup* rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
                 const RideGroup* currentRideGroup = RideGroupManager::GetRideGroup(ride->type, currentRideEntry);
@@ -2597,7 +2597,7 @@ static void window_ride_main_invalidate(rct_window* w)
     else
     {
         window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_DROPDOWN;
-        window_ride_main_widgets[WIDX_RIDE_TYPE].text = RideTypeDescriptors[ride->type].Naming.Name;
+        window_ride_main_widgets[WIDX_RIDE_TYPE].text = ride->GetRideTypeDescriptor().Naming.Name;
         window_ride_main_widgets[WIDX_RIDE_TYPE_DROPDOWN].type = WWT_BUTTON;
     }
 
@@ -2702,7 +2702,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
             || trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT
             || trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
         {
-            if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
+            if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
             {
                 *reinterpret_cast<rct_string_id*>(reinterpret_cast<uintptr_t>(arguments)) = STR_STOPPED_BY_BLOCK_BRAKES;
                 return STR_BLACK_STRING;
@@ -2718,13 +2718,13 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
     if (ride->type == RIDE_TYPE_MINI_GOLF)
         return 0;
 
-    if ((RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_SINGLE_SESSION)
+    if ((ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_SINGLE_SESSION)
         && vehicle->status <= VEHICLE_STATUS_UNLOADING_PASSENGERS)
     {
         stringId = SingleSessionVehicleStatusNames[vehicle->status];
     }
 
-    const RideComponentName stationName = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station];
+    const RideComponentName stationName = RideComponentNames[ride->GetRideTypeDescriptor().NameConvention.station];
     *reinterpret_cast<rct_string_id*>(reinterpret_cast<uintptr_t>(arguments) + 4) = (ride->num_stations > 1)
         ? stationName.number
         : stationName.singular;
@@ -2829,12 +2829,12 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         if (w->ride.view > ride->num_vehicles)
         {
-            ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].number);
+            ft.Add<rct_string_id>(RideComponentNames[ride->GetRideTypeDescriptor().NameConvention.station].number);
             ft.Add<uint16_t>(w->ride.view - ride->num_vehicles);
         }
         else
         {
-            ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number);
+            ft.Add<rct_string_id>(RideComponentNames[ride->GetRideTypeDescriptor().NameConvention.vehicle].number);
             ft.Add<uint16_t>(w->ride.view);
         }
     }
@@ -3032,7 +3032,7 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     auto ft = Formatter::Common();
     ft.Increment(6);
     ft.Add<uint16_t>(carsPerTrain);
-    RIDE_COMPONENT_TYPE vehicleType = RideTypeDescriptors[ride->type].NameConvention.vehicle;
+    RIDE_COMPONENT_TYPE vehicleType = ride->GetRideTypeDescriptor().NameConvention.vehicle;
     stringId = RideComponentNames[vehicleType].count;
     if (ride->num_vehicles > 1)
     {
@@ -3244,7 +3244,7 @@ static void window_ride_mode_tweak_increase(rct_window* w)
     if (ride == nullptr)
         return;
 
-    const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+    const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
     uint8_t maxValue = operatingSettings.MaxValue;
     uint8_t minValue = gCheatsFastLiftHill ? 0 : operatingSettings.MinValue;
 
@@ -3269,7 +3269,7 @@ static void window_ride_mode_tweak_decrease(rct_window* w)
     if (ride == nullptr)
         return;
 
-    const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+    const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
     uint8_t maxValue = operatingSettings.MaxValue;
     uint8_t minValue = gCheatsFastLiftHill ? 0 : operatingSettings.MinValue;
     if (gCheatsFastLiftHill)
@@ -3426,8 +3426,8 @@ static void window_ride_operating_mousedown(rct_window* w, rct_widgetindex widge
             window_ride_mode_tweak_decrease(w);
             break;
         case WIDX_LIFT_HILL_SPEED_INCREASE:
-            upper_bound = gCheatsFastLiftHill ? 255 : RideTypeDescriptors[ride->type].LiftData.maximum_speed;
-            lower_bound = gCheatsFastLiftHill ? 0 : RideTypeDescriptors[ride->type].LiftData.minimum_speed;
+            upper_bound = gCheatsFastLiftHill ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
+            lower_bound = gCheatsFastLiftHill ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
             set_operating_setting(
                 w->number, RideSetSetting::LiftHillSpeed,
                 std::clamp<int16_t>(ride->lift_hill_speed + 1, lower_bound, upper_bound));

@@ -503,7 +503,7 @@ static bool is_track_enabled(int32_t trackFlagIndex)
 
 static int32_t ride_get_alternative_type(Ride* ride)
 {
-    return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideTypeDescriptors[ride->type].AlternateType
+    return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? ride->GetRideTypeDescriptor().AlternateType
                                                                          : ride->type;
 }
 
@@ -565,13 +565,13 @@ rct_window* window_ride_construction_open()
     _currentBrakeSpeed2 = 8;
     _currentSeatRotationAngle = 4;
 
-    _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | RideConstructionSpecialPieceSelected;
+    _currentTrackCurve = ride->GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
     _currentTrackSlopeEnd = 0;
     _currentTrackBankEnd = 0;
     _currentTrackLiftHill = 0;
     _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
-    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED)
+    if (ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED)
         _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
     _previousTrackBankEnd = 0;
@@ -775,7 +775,7 @@ static void window_ride_construction_resize(rct_window* w)
     }
     if (!is_track_enabled(TRACK_SLOPE) && !is_track_enabled(TRACK_SLOPE_STEEP))
     {
-        if (!RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+        if (!ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
         {
             // Disable all slopes
             disabledWidgets |= (1ULL << WIDX_SLOPE_GROUPBOX) | (1ULL << WIDX_SLOPE_DOWN_STEEP) | (1ULL << WIDX_SLOPE_DOWN)
@@ -1112,7 +1112,7 @@ static void window_ride_construction_resize(rct_window* w)
             disabledWidgets |= (1ULL << WIDX_SLOPE_UP_STEEP);
         }
         disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_LARGE) | (1ULL << WIDX_RIGHT_CURVE_LARGE);
-        if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+        if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
         {
             disabledWidgets |= (1ULL << WIDX_STRAIGHT) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
                 | (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE);
@@ -1125,7 +1125,7 @@ static void window_ride_construction_resize(rct_window* w)
             disabledWidgets |= (1ULL << WIDX_SLOPE_DOWN_STEEP);
         }
         disabledWidgets |= (1ULL << WIDX_LEFT_CURVE_LARGE) | (1ULL << WIDX_RIGHT_CURVE_LARGE);
-        if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+        if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
         {
             disabledWidgets |= (1ULL << WIDX_STRAIGHT) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
                 | (1ULL << WIDX_LEFT_CURVE_SMALL) | (1ULL << WIDX_LEFT_CURVE);
@@ -1437,7 +1437,7 @@ static void window_ride_construction_mousedown(rct_window* w, rct_widgetindex wi
             {
                 _currentTrackBankEnd = TRACK_BANK_NONE;
             }
-            if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+            if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
             {
                 if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT && _currentTrackCurve == TRACK_CURVE_NONE)
                 {
@@ -2430,7 +2430,7 @@ static void sub_6CBCE2(
         CoordsXY coords = originCoords + offsets.Rotate(trackDirection);
 
         int32_t baseZ = originZ + trackBlock->z;
-        int32_t clearanceZ = trackBlock->var_07 + RideTypeDescriptors[ride->type].Heights.ClearanceHeight + baseZ
+        int32_t clearanceZ = trackBlock->var_07 + ride->GetRideTypeDescriptor().Heights.ClearanceHeight + baseZ
             + (4 * COORDS_Z_STEP);
 
         auto centreTileCoords = TileCoordsXY{ coords };
@@ -2541,14 +2541,14 @@ void window_ride_construction_update_enabled_track_pieces()
 
     int32_t rideType = ride_get_alternative_type(ride);
 
-    if (!gCheatsEnableAllDrawableTrackPieces && RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
+    if (!gCheatsEnableAllDrawableTrackPieces && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
     {
         const RideGroup* rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
         _enabledRidePieces = rideGroup->AvailableTrackPieces;
     }
     else
     {
-        _enabledRidePieces = RideTypeDescriptors[rideType].GetAvailableTrackPieces();
+        _enabledRidePieces = ride->GetRideTypeDescriptor().GetAvailableTrackPieces();
     }
 }
 
@@ -2908,7 +2908,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
     window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP;
     window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
-    if (RideTypeDescriptors[rideType].SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
+    if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
     {
         window_ride_construction_widgets[WIDX_LEVEL].type = WWT_FLATBTN;
         window_ride_construction_widgets[WIDX_SLOPE_UP].type = WWT_FLATBTN;
