@@ -169,7 +169,7 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
         return false;
     }
 
-    wSteamPath = new wchar_t[size];
+    wSteamPath = (wchar_t*)malloc(size);
     result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, (LPBYTE)wSteamPath, &size);
     if (result == ERROR_SUCCESS)
     {
@@ -177,7 +177,7 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
         safe_strcpy(outPath, utf8SteamPath.c_str(), outSize);
         safe_strcat_path(outPath, "steamapps\\common", outSize);
     }
-    delete[] wSteamPath;
+    free(wSteamPath);
     RegCloseKey(hKey);
     return result == ERROR_SUCCESS;
 }

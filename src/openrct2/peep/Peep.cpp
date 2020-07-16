@@ -1978,18 +1978,18 @@ bool Peep::SetName(const std::string_view& value)
 {
     if (value.empty())
     {
-        delete[] Name;
+        std::free(Name);
         Name = nullptr;
         return true;
     }
     else
     {
-        auto newNameMemory = new char[value.size() + 1];
+        auto newNameMemory = static_cast<char*>(std::malloc(value.size() + 1));
         if (newNameMemory != nullptr)
         {
             std::memcpy(newNameMemory, value.data(), value.size());
             newNameMemory[value.size()] = '\0';
-            delete[] Name;
+            std::free(Name);
             Name = newNameMemory;
             return true;
         }
