@@ -86,10 +86,16 @@ public:
             {
                 std::scoped_lock<std::mutex> lock(_objectLookupMutex);
                 auto* rawObject = object_repository_load_object(&td6->vehicle_object);
-                const auto* rideEntry = static_cast<const rct_ride_entry*>(
-                    static_cast<RideObject*>(rawObject)->GetLegacyData());
-                rideType = RCT2RideTypeToOpenRCT2RideType(td6->type, rideEntry);
-                object_delete(rawObject);
+                if (rawObject != nullptr)
+                {
+                    const auto* rideEntry = static_cast<const rct_ride_entry*>(
+                        static_cast<RideObject*>(rawObject)->GetLegacyData());
+                    if (rideEntry != nullptr)
+                    {
+                        rideType = RCT2RideTypeToOpenRCT2RideType(td6->type, rideEntry);
+                    }
+                    object_delete(rawObject);
+                }
             }
 
             TrackRepositoryItem item;

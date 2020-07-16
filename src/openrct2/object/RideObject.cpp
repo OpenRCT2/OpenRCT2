@@ -34,6 +34,11 @@ using namespace OpenRCT2;
 
 static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
 {
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
+
     for (auto i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         auto oldRideType = rideEntry->ride_type[i];
