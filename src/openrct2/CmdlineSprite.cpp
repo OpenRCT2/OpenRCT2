@@ -98,7 +98,7 @@ static bool sprite_file_open(const utf8* path)
             return false;
         }
 
-        if (fread(openElements.get(), spriteFileHeader.num_entries, 1, file) != 1)
+        if (fread(openElements.get(), spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit), 1, file) != 1)
         {
             fclose(file);
             return false;
@@ -171,7 +171,7 @@ static bool sprite_file_save(const char* path)
             outElement->zoomed_offset = inElement->zoomed_offset;
         }
 
-        if (fwrite(saveElements.get(), spriteFileHeader.num_entries, 1, file) != 1)
+        if (fwrite(saveElements.get(), spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit), 1, file) != 1)
         {
             fclose(file);
             return false;
