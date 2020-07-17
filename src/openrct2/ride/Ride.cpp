@@ -403,7 +403,8 @@ money32 Ride::CalculateIncomePerHour() const
         {
             int32_t rideTicketsSold = total_customers - no_secondary_items_sold;
 
-            // Use the ratio between photo sold and total admissions to approximate the photo income(as not every guest will buy one).
+            // Use the ratio between photo sold and total admissions to approximate the photo income(as not every guest will buy
+            // one).
             // TODO: use data from the last 5 minutes instead of all-time values for a more accurate calculation
             if (rideTicketsSold > 0)
             {
