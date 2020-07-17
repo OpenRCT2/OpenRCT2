@@ -512,7 +512,7 @@ static void window_maze_construction_construct(int32_t direction)
             break;
     }
 
-    money32 cost = maze_set_track(x, y, z, flags, false, direction, _currentRideIndex, mode);
+    money32 cost = maze_set_track({ x, y, z, static_cast<Direction>(direction) }, flags, false, _currentRideIndex, mode);
     if (cost == MONEY32_UNDEFINED)
     {
         return;

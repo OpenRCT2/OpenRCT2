@@ -111,7 +111,8 @@ CoordsXYZ _previousTrackPiece;
 uint8_t _currentBrakeSpeed2;
 uint8_t _currentSeatRotationAngle;
 
-CoordsXYZD _unkF440C5;
+CoordsXYZ _unkF440C5;
+uint8_t _unkF440C5_Direction;
 
 uint8_t gRideEntranceExitPlaceType;
 ride_id_t gRideEntranceExitPlaceRideIndex;
@@ -1276,34 +1277,32 @@ void ride_remove_provisional_track_piece()
         return;
     }
 
-    int32_t x = _unkF440C5.x;
-    int32_t y = _unkF440C5.y;
-    int32_t z = _unkF440C5.z;
+    auto coords = _unkF440C5;
     if (ride->type == RIDE_TYPE_MAZE)
     {
         int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST;
-        maze_set_track(x, y, z, flags, false, 0, rideIndex, GC_SET_MAZE_TRACK_FILL);
-        maze_set_track(x, y + 16, z, flags, false, 1, rideIndex, GC_SET_MAZE_TRACK_FILL);
-        maze_set_track(x + 16, y + 16, z, flags, false, 2, rideIndex, GC_SET_MAZE_TRACK_FILL);
-        maze_set_track(x + 16, y, z, flags, false, 3, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track({ coords, 0 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track({ coords + CoordsXYZ{ 0, 16, 0 }, 1 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track({ coords + CoordsXYZ{ 16, 16, 0 }, 2 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track({ coords + CoordsXYZ{ 16, 0, 0 }, 3 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
     }
     else
     {
-        int32_t direction = _unkF440C5.direction;
-        if (!(direction & 4))
+        if (!(_unkF440C5_Direction & 4))
         {
-            x -= CoordsDirectionDelta[direction].x;
-            y -= CoordsDirectionDelta[direction].y;
+            coords -= CoordsDirectionDelta[_unkF440C5_Direction];
         }
         CoordsXYE next_track;
-        if (track_block_get_next_from_zero({ x, y, z }, ride, direction, &next_track, &z, &direction, true))
+        if (track_block_get_next_from_zero(
+                coords, ride, _unkF440C5_Direction, &next_track, &coords.z, reinterpret_cast<int32_t*>(&_unkF440C5_Direction),
+                true))
         {
             auto trackType = next_track.element->AsTrack()->GetTrackType();
             int32_t trackSequence = next_track.element->AsTrack()->GetSequenceIndex();
             auto trackRemoveAction = TrackRemoveAction{ trackType,
                                                         trackSequence,
-                                                        { next_track.x, next_track.y, z, static_cast<Direction>(direction) } };
+                                                        { next_track.x, next_track.y, coords.z, _unkF440C5_Direction } };
             trackRemoveAction.SetFlags(
                 GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&trackRemoveAction);

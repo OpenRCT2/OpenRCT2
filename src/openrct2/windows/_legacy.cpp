@@ -56,11 +56,11 @@ money32 place_provisional_track_piece(
     {
         int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST; // 105
-        result = maze_set_track(trackPos.x, trackPos.y, trackPos.z, flags, true, 0, rideIndex, GC_SET_MAZE_TRACK_BUILD);
+        result = maze_set_track({ trackPos, 0 }, flags, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
         if (result == MONEY32_UNDEFINED)
             return result;
 
-        _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
+        _unkF440C5 = trackPos;
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
         viewport_set_visibility(3);
         if (_currentTrackSlopeEnd != 0)
@@ -102,7 +102,8 @@ money32 place_provisional_track_piece(
             z_end = z_begin = coords->z_begin;
         }
 
-        _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
+        _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin };
+        _unkF440C5_Direction = static_cast<Direction>(trackDirection);
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
         viewport_set_visibility((tpar->GroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
         if (_currentTrackSlopeEnd != 0)

@@ -3782,8 +3782,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             gDisableErrorWindowSound = true;
 
             _trackPlaceCost = maze_set_track(
-                _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, GAME_COMMAND_FLAG_APPLY, true, 0,
-                _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
+                { _currentTrackBegin, 0 }, GAME_COMMAND_FLAG_APPLY, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
 
             gDisableErrorWindowSound = false;
 

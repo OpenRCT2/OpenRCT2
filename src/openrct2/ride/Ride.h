@@ -1071,7 +1071,8 @@ extern CoordsXYZ _previousTrackPiece;
 extern uint8_t _currentBrakeSpeed2;
 extern uint8_t _currentSeatRotationAngle;
 
-extern CoordsXYZD _unkF440C5;
+extern CoordsXYZ _unkF440C5;
+extern uint8_t _unkF440C5_Direction;
 
 extern uint8_t gRideEntranceExitPlaceType;
 extern ride_id_t gRideEntranceExitPlaceRideIndex;
