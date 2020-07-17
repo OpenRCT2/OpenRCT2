@@ -184,61 +184,61 @@ static constexpr const int32_t WH = 300;
 
 #define MAIN_CHEATS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    { WWT_IMGBTN,           1,  0,          WW - 1, 43,     WH - 1,     0xFFFFFFFF,             STR_NONE },                 /* tab content panel    */ \
-    { WWT_TAB,              1,  3,          33,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCIAL_CHEATS_TIP }, /* tab 1                */ \
-    { WWT_TAB,              1,  34,         64,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_GUEST_CHEATS_TIP },     /* tab 2                */ \
-    { WWT_TAB,              1,  65,         95,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_PARK_CHEATS_TIP },      /* tab 3                */ \
-    { WWT_TAB,              1,  96,         126,    17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_RIDE_CHEATS_TIP }       /* tab 4                */
+    MakeWidget     ({ 0, 43}, {WW, 257}, WWT_IMGBTN, 1                                      ), /* tab content panel */ \
+    MakeRemapWidget({ 3, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_FINANCIAL_CHEATS_TIP), /* tab 1 */ \
+    MakeRemapWidget({34, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_GUEST_CHEATS_TIP    ), /* tab 2 */ \
+    MakeRemapWidget({65, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_PARK_CHEATS_TIP     ), /* tab 3 */ \
+    MakeRemapWidget({96, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_RIDE_CHEATS_TIP     )  /* tab 4 */
 
 static rct_widget window_cheats_money_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    { WWT_CHECKBOX,    1,     11,    120,     48,     64,    STR_MAKE_PARK_NO_MONEY,    STR_NONE },    // No money
-    { WWT_GROUPBOX,    1,      5,    242,     69,    137,    STR_ADD_SET_MONEY,         STR_NONE },    // add / set money group frame
-      SPINNER_WIDGETS (1,     11,    236,     92,    103,    STR_NONE,                  STR_NONE),     // money value
-    {   WWT_BUTTON,    1,     11,    120,    111,    127,    STR_ADD_MONEY,             STR_NONE },    // add money
-    {   WWT_BUTTON,    1,    126,    236,    111,    127,    STR_SET_MONEY,             STR_NONE },    // set money
-    {   WWT_BUTTON,    1,     11,    120,    153,    169,    STR_CHEAT_CLEAR_LOAN,      STR_NONE },    // Clear loan
-    { WWT_GROUPBOX,    1,      5,    242,    184,    284,    STR_DATE_SET,              STR_NONE },    // Date group
-      SPINNER_WIDGETS (1,    120,    236,    197,    208,    STR_NONE,                  STR_NONE),     // Year box
-      SPINNER_WIDGETS (1,    120,    236,    218,    229,    STR_NONE,                  STR_NONE),     // Month box
-      SPINNER_WIDGETS (1,    120,    236,    239,    250,    STR_NONE,                  STR_NONE),     // Day box
-    {   WWT_BUTTON,    1,     11,    120,    258,    274,    STR_DATE_SET,              STR_NONE },    // Set Date
-    {   WWT_BUTTON,    1,    126,    236,    258,    274,    STR_DATE_RESET,            STR_NONE },    // Reset Date
+    MakeWidget        ({ 11,  48}, {110,  17}, WWT_CHECKBOX, 1, STR_MAKE_PARK_NO_MONEY), // No money
+    MakeWidget        ({  5,  69}, {238,  69}, WWT_GROUPBOX, 1, STR_ADD_SET_MONEY     ), // add / set money group frame
+    MakeSpinnerWidgets({ 11,  92}, {226,  12}, WWT_SPINNER,  1                        ), // money value
+    MakeWidget        ({ 11, 111}, {110,  17}, WWT_BUTTON,   1, STR_ADD_MONEY         ), // add money
+    MakeWidget        ({126, 111}, {111,  17}, WWT_BUTTON,   1, STR_SET_MONEY         ), // set money
+    MakeWidget        ({ 11, 153}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_CLEAR_LOAN  ), // Clear loan
+    MakeWidget        ({  5, 184}, {238, 101}, WWT_GROUPBOX, 1, STR_DATE_SET          ), // Date group
+    MakeSpinnerWidgets({120, 197}, {117,  12}, WWT_SPINNER,  1                        ), // Year box
+    MakeSpinnerWidgets({120, 218}, {117,  12}, WWT_SPINNER,  1                        ), // Month box
+    MakeSpinnerWidgets({120, 239}, {117,  12}, WWT_SPINNER,  1                        ), // Day box
+    MakeWidget        ({ 11, 258}, {110,  17}, WWT_BUTTON,   1, STR_DATE_SET          ), // Set Date
+    MakeWidget        ({126, 258}, {111,  17}, WWT_BUTTON,   1, STR_DATE_RESET        ), // Reset Date
     { WIDGETS_END },
 };
 
 static rct_widget window_cheats_guests_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    { WWT_GROUPBOX,    1,      5,    242,     48,    326,    STR_CHEAT_SET_GUESTS_PARAMETERS,    STR_NONE },                          // Guests parameters group frame
-    {   WWT_BUTTON,    1,    183,    236,     69,     85,    STR_MAX,                            STR_NONE },                          // happiness max
-    {   WWT_BUTTON,    1,    126,    181,     69,     85,    STR_MIN,                            STR_NONE },                          // happiness min
-    {   WWT_BUTTON,    1,    183,    236,     90,    106,    STR_MAX,                            STR_NONE },                          // energy max
-    {   WWT_BUTTON,    1,    126,    181,     90,    106,    STR_MIN,                            STR_NONE },                          // energy min
-    {   WWT_BUTTON,    1,    183,    236,    111,    127,    STR_MAX,                            STR_NONE },                          // hunger max
-    {   WWT_BUTTON,    1,    126,    181,    111,    127,    STR_MIN,                            STR_NONE },                          // hunger min
-    {   WWT_BUTTON,    1,    183,    236,    132,    148,    STR_MAX,                            STR_NONE },                          // thirst max
-    {   WWT_BUTTON,    1,    126,    181,    132,    148,    STR_MIN,                            STR_NONE },                          // thirst min
-    {   WWT_BUTTON,    1,    183,    236,    153,    169,    STR_MAX,                            STR_NONE },                          // nausea max
-    {   WWT_BUTTON,    1,    126,    181,    153,    169,    STR_MIN,                            STR_NONE },                          // nausea min
-    {   WWT_BUTTON,    1,    183,    236,    174,    190,    STR_MAX,                            STR_NONE },                          // nausea tolerance max
-    {   WWT_BUTTON,    1,    126,    181,    174,    190,    STR_MIN,                            STR_NONE },                          // nausea tolerance min
-    {   WWT_BUTTON,    1,    183,    236,    195,    211,    STR_MAX,                            STR_NONE },                          // toilet max
-    {   WWT_BUTTON,    1,    126,    181,    195,    211,    STR_MIN,                            STR_NONE },                          // toilet min
-    {   WWT_BUTTON,    1,    126,    236,    237,    253,    STR_CHEAT_MORE_THAN_1,              STR_NONE },                          // ride intensity > 1
-    {   WWT_BUTTON,    1,     11,    120,    237,    253,    STR_CHEAT_LESS_THAN_15,             STR_NONE },                          // ride intensity < 15
-    { WWT_CHECKBOX,    1,     11,    231,    258,    268,    STR_CHEAT_IGNORE_INTENSITY,         STR_CHEAT_IGNORE_INTENSITY_TIP },    // guests ignore intensity
-    { WWT_CHECKBOX,    1,     11,    231,    279,    289,    STR_CHEAT_DISABLE_VANDALISM,        STR_CHEAT_DISABLE_VANDALISM_TIP },   // disable vandalism
-    { WWT_CHECKBOX,    1,     11,    231,    300,    310,    STR_CHEAT_DISABLE_LITTERING,        STR_CHEAT_DISABLE_LITTERING_TIP },   // disable littering
-    { WWT_GROUPBOX,    1,      5,    242,    342,    410,    STR_CHEAT_GIVE_ALL_GUESTS,          STR_NONE },                          // Guests parameters group frame
-    {   WWT_BUTTON,    1,     11,    120,    363,    379,    STR_CHEAT_CURRENCY_FORMAT,          STR_NONE },                          // give guests money
-    {   WWT_BUTTON,    1,    126,    236,    363,    379,    STR_SHOP_ITEM_PLURAL_PARK_MAP,      STR_NONE },                          // give guests park maps
-    {   WWT_BUTTON,    1,     11,    120,    384,    400,    STR_SHOP_ITEM_PLURAL_BALLOON,       STR_NONE },                          // give guests balloons
-    {   WWT_BUTTON,    1,    126,    236,    384,    400,    STR_SHOP_ITEM_PLURAL_UMBRELLA,      STR_NONE },                          // give guests umbrellas
-    {   WWT_BUTTON,    1,     11,    120,    426,    442,    STR_CHEAT_LARGE_TRAM_GUESTS,        STR_CHEAT_LARGE_TRAM_GUESTS_TIP },   // large tram
-    {   WWT_BUTTON,    1,    126,    236,    426,    442,    STR_CHEAT_REMOVE_ALL_GUESTS,        STR_CHEAT_REMOVE_ALL_GUESTS_TIP },   // remove all guests
-    {   WWT_BUTTON,    1,     11,    120,    447,    463,    STR_CHEAT_EXPLODE,                  STR_CHEAT_EXPLODE_TIP },             // explode guests
+    MakeWidget({  5,  48}, {238, 279}, WWT_GROUPBOX, 1, STR_CHEAT_SET_GUESTS_PARAMETERS                                 ), // Guests parameters group frame
+    MakeWidget({183,  69}, { 54,  17}, WWT_BUTTON,   1, STR_MAX                                                         ), // happiness max
+    MakeWidget({126,  69}, { 56,  17}, WWT_BUTTON,   1, STR_MIN                                                         ), // happiness min
+    MakeWidget({183,  90}, { 54,  17}, WWT_BUTTON,   1, STR_MAX                                                         ), // energy max
+    MakeWidget({126,  90}, { 56,  17}, WWT_BUTTON,   1, STR_MIN                                                         ), // energy min
+    MakeWidget({183, 111}, { 54,  17}, WWT_BUTTON,   1, STR_MAX                                                         ), // hunger max
+    MakeWidget({126, 111}, { 56,  17}, WWT_BUTTON,   1, STR_MIN                                                         ), // hunger min
+    MakeWidget({183, 132}, { 54,  17}, WWT_BUTTON,   1, STR_MAX                                                         ), // thirst max
+    MakeWidget({126, 132}, { 56,  17}, WWT_BUTTON,   1, STR_MIN                                                         ), // thirst min
+    MakeWidget({183, 153}, { 54,  17}, WWT_BUTTON,   1, STR_MAX                                                         ), // nausea max
+    MakeWidget({126, 153}, { 56,  17}, WWT_BUTTON,   1, STR_MIN                                                         ), // nausea min
+    MakeWidget({183, 174}, { 54,  17}, WWT_BUTTON,   1, STR_MAX                                                         ), // nausea tolerance max
+    MakeWidget({126, 174}, { 56,  17}, WWT_BUTTON,   1, STR_MIN                                                         ), // nausea tolerance min
+    MakeWidget({183, 195}, { 54,  17}, WWT_BUTTON,   1, STR_MAX                                                         ), // toilet max
+    MakeWidget({126, 195}, { 56,  17}, WWT_BUTTON,   1, STR_MIN                                                         ), // toilet min
+    MakeWidget({126, 237}, {111,  17}, WWT_BUTTON,   1, STR_CHEAT_MORE_THAN_1                                           ), // ride intensity > 1
+    MakeWidget({ 11, 237}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_LESS_THAN_15                                          ), // ride intensity < 15
+    MakeWidget({ 11, 258}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_IGNORE_INTENSITY,      STR_CHEAT_IGNORE_INTENSITY_TIP ), // guests ignore intensity
+    MakeWidget({ 11, 279}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
+    MakeWidget({ 11, 300}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP), // disable littering
+    MakeWidget({  5, 342}, {238,  69}, WWT_GROUPBOX, 1, STR_CHEAT_GIVE_ALL_GUESTS                                       ), // Guests parameters group frame
+    MakeWidget({ 11, 363}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_CURRENCY_FORMAT                                       ), // give guests money
+    MakeWidget({126, 363}, {111,  17}, WWT_BUTTON,   1, STR_SHOP_ITEM_PLURAL_PARK_MAP                                   ), // give guests park maps
+    MakeWidget({ 11, 384}, {110,  17}, WWT_BUTTON,   1, STR_SHOP_ITEM_PLURAL_BALLOON                                    ), // give guests balloons
+    MakeWidget({126, 384}, {111,  17}, WWT_BUTTON,   1, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
+    MakeWidget({ 11, 426}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
+    MakeWidget({126, 426}, {111,  17}, WWT_BUTTON,   1, STR_CHEAT_REMOVE_ALL_GUESTS,     STR_CHEAT_REMOVE_ALL_GUESTS_TIP), // remove all guests
+    MakeWidget({ 11, 447}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_EXPLODE,               STR_CHEAT_EXPLODE_TIP          ), // explode guests
     { WIDGETS_END },
 };
 
@@ -246,56 +246,56 @@ static rct_widget window_cheats_guests_widgets[] =
 static rct_widget window_cheats_misc_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    { WWT_GROUPBOX,    1,      5,    242,     48,    216,    STR_CHEAT_GENERAL_GROUP,            STR_NONE },                              // General group
-    {   WWT_BUTTON,    1,     11,    120,     69,     85,    STR_CHEAT_OPEN_PARK,                STR_CHEAT_OPEN_PARK_TIP },               // open / close park
-    {   WWT_BUTTON,    1,     11,    120,     90,    106,    STR_CREATE_DUCKS,                   STR_CREATE_DUCKS_TIP },                  // Create ducks
-    {   WWT_BUTTON,    1,    126,    236,     69,     85,    STR_CHEAT_PARK_PARAMETERS,          STR_CHEAT_PARK_PARAMETERS_TIP },         // Park parameters
-    {   WWT_BUTTON,    1,    126,    236,     90,    106,    STR_REMOVE_DUCKS,                   STR_REMOVE_DUCKS_TIP },                  // Remove ducks
-    {   WWT_BUTTON,    1,     11,    120,    111,    127,    STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },            // Own all land
-    { WWT_CHECKBOX,    1,     11,    120,    153,    169,    STR_FORCE_PARK_RATING,              STR_NONE },                              // Force park rating
-      SPINNER_WIDGETS (1,    126,    236,    155,    166,    STR_NONE,                           STR_NONE),                               // park rating (3 widgets)
-    {   WWT_BUTTON,    1,     11,    120,    174,    190,    STR_CHEAT_WIN_SCENARIO,             STR_NONE },                              // Win scenario
-    {   WWT_BUTTON,    1,    126,    236,    174,    190,    STR_CHEAT_HAVE_FUN,                 STR_NONE },                              // Have fun!
-    { WWT_CHECKBOX,    1,     11,    231,    195,    211,    STR_CHEAT_NEVERENDING_MARKETING,    STR_CHEAT_NEVERENDING_MARKETING_TIP },   // never ending marketing campaigns
-    { WWT_GROUPBOX,    1,      5,    242,    221,    284,    STR_CHEAT_WEATHER_GROUP,            STR_NONE },                              // Weather group
-    {   WWT_BUTTON,    1,     11,    120,    237,    253,    STR_CHEAT_FREEZE_WEATHER,           STR_CHEAT_FREEZE_WEATHER_TIP },          // Freeze weather
-    { WWT_DROPDOWN,    1,    126,    236,    260,    271,    STR_NONE,                           STR_FORCE_WEATHER_TOOLTIP },             // Force weather
-    {   WWT_BUTTON,    1,    225,    235,    261,    270,    STR_DROPDOWN_GLYPH,                 STR_FORCE_WEATHER_TOOLTIP },             // Force weather
-    { WWT_GROUPBOX,    1,      5,    242,    300,    431,    STR_CHEAT_STAFF_GROUP,              STR_NONE },                              // Staff group
-    {   WWT_BUTTON,    1,     11,    120,    321,    337,    STR_CHEAT_CLEAR_GRASS,              STR_NONE },                              // Clear grass
-    {   WWT_BUTTON,    1,    126,    236,    321,    337,    STR_CHEAT_MOWED_GRASS,              STR_NONE },                              // Mowed grass
-    {   WWT_BUTTON,    1,     11,    120,    342,    358,    STR_CHEAT_WATER_PLANTS,             STR_NONE },                              // Water plants
-    {   WWT_BUTTON,    1,    126,    236,    342,    358,    STR_CHEAT_FIX_VANDALISM,            STR_NONE },                              // Fix vandalism
-    {   WWT_BUTTON,    1,     11,    120,    363,    379,    STR_CHEAT_REMOVE_LITTER,            STR_NONE },                              // Remove litter
-    { WWT_CHECKBOX,    1,     11,    120,    384,    400,    STR_CHEAT_DISABLE_PLANT_AGING,      STR_CHEAT_DISABLE_PLANT_AGING_TIP },     // Disable plant ageing
-    { WWT_DROPDOWN,    1,    126,    236,    407,    418,    STR_NONE,                           STR_NONE },                              // Staff speed
-    {   WWT_BUTTON,    1,    225,    235,    408,    417,    STR_DROPDOWN_GLYPH,                 STR_NONE },                              // Staff speed
+    MakeWidget        ({  5,  48}, {238, 169}, WWT_GROUPBOX, 1, STR_CHEAT_GENERAL_GROUP                                             ), // General group
+    MakeWidget        ({ 11,  69}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
+    MakeWidget        ({ 11,  90}, {110,  17}, WWT_BUTTON,   1, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP               ), // Create ducks
+    MakeWidget        ({126,  69}, {111,  17}, WWT_BUTTON,   1, STR_CHEAT_PARK_PARAMETERS,       STR_CHEAT_PARK_PARAMETERS_TIP      ), // Park parameters
+    MakeWidget        ({126,  90}, {111,  17}, WWT_BUTTON,   1, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP               ), // Remove ducks
+    MakeWidget        ({ 11, 111}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
+    MakeWidget        ({ 11, 153}, {110,  17}, WWT_CHECKBOX, 1, STR_FORCE_PARK_RATING                                               ), // Force park rating
+    MakeSpinnerWidgets({126, 155}, {111,  12}, WWT_SPINNER,  1                                                                      ), // park rating (3 widgets)
+    MakeWidget        ({ 11, 174}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
+    MakeWidget        ({126, 174}, {111,  17}, WWT_BUTTON,   1, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
+    MakeWidget        ({ 11, 195}, {221,  17}, WWT_CHECKBOX, 1, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
+    MakeWidget        ({  5, 221}, {238,  64}, WWT_GROUPBOX, 1, STR_CHEAT_WEATHER_GROUP                                             ), // Weather group
+    MakeWidget        ({ 11, 237}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP       ), // Freeze weather
+    MakeWidget        ({126, 260}, {111,  12}, WWT_DROPDOWN, 1, STR_NONE,                        STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
+    MakeWidget        ({225, 261}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,              STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
+    MakeWidget        ({  5, 300}, {238, 132}, WWT_GROUPBOX, 1, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
+    MakeWidget        ({ 11, 321}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
+    MakeWidget        ({126, 321}, {111,  17}, WWT_BUTTON,   1, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
+    MakeWidget        ({ 11, 342}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
+    MakeWidget        ({126, 342}, {111,  17}, WWT_BUTTON,   1, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
+    MakeWidget        ({ 11, 363}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
+    MakeWidget        ({ 11, 384}, {110,  17}, WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
+    MakeWidget        ({126, 407}, {111,  12}, WWT_DROPDOWN, 1                                                                      ), // Staff speed
+    MakeWidget        ({225, 408}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
     { WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    {   WWT_BUTTON,    1,     11,    120,     48,     64,    STR_CHEAT_FIX_ALL_RIDES,                          STR_CHEAT_FIX_ALL_RIDES_TIP },                       // Fix all rides
-    {   WWT_BUTTON,    1,    126,    236,     48,     64,    STR_CHEAT_RENEW_RIDES,                            STR_CHEAT_RENEW_RIDES_TIP },                         // Renew rides
-    {   WWT_BUTTON,    1,     11,    120,     69,     85,    STR_CHEAT_MAKE_DESTRUCTABLE,                      STR_CHEAT_MAKE_DESTRUCTABLE_TIP },                   // All destructible
-    {   WWT_BUTTON,    1,    126,    236,     69,     85,    STR_CHEAT_RESET_CRASH_STATUS,                     STR_CHEAT_RESET_CRASH_STATUS_TIP },                  // Reset crash status
-    {   WWT_BUTTON,    1,     11,    120,     90,    106,    STR_CHEAT_10_MINUTE_INSPECTIONS,                  STR_CHEAT_10_MINUTE_INSPECTIONS_TIP },               // 10 minute inspections
-    { WWT_GROUPBOX,    1,      5,    242,    116,    216,    STR_CHEAT_GROUP_CONSTRUCTION,                     STR_NONE },                                          // Construction group
-    { WWT_CHECKBOX,    1,     11,    231,    132,    142,    STR_CHEAT_BUILD_IN_PAUSE_MODE,                    STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP },                 // Build in pause mode
-    { WWT_CHECKBOX,    1,     11,    231,    153,    163,    STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,       STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP },    // Show all drawable track pieces
-    { WWT_CHECKBOX,    1,     11,    231,    174,    184,    STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,         STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP },      // Enable chain lift on all track
-    { WWT_CHECKBOX,    1,     11,    231,    195,    205,    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,      STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP },   // Allow track place at invalid heights
-    { WWT_GROUPBOX,    1,      5,    242,    221,    342,    STR_CHEAT_GROUP_OPERATION,                        STR_NONE },                                          // Construction group
-    { WWT_CHECKBOX,    1,     11,    231,    237,    247,    STR_CHEAT_SHOW_ALL_OPERATING_MODES,               STR_NONE },                                          // Show all operating modes
-    { WWT_CHECKBOX,    1,     11,    231,    258,    268,    STR_CHEAT_UNLOCK_OPERATING_LIMITS,                STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },             // 410 km/h lift hill etc.
-    { WWT_CHECKBOX,    1,     11,    231,    279,    289,    STR_CHEAT_DISABLE_BRAKES_FAILURE,                 STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP },              // Disable brakes failure
-    { WWT_CHECKBOX,    1,     11,    231,    300,    310,    STR_CHEAT_DISABLE_BREAKDOWNS,                     STR_CHEAT_DISABLE_BREAKDOWNS_TIP },                  // Disable all breakdowns
-    { WWT_CHECKBOX,    1,     11,    231,    321,    331,    STR_CHEAT_DISABLE_RIDE_VALUE_AGING,               STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP },            // Disable ride ageing
-    { WWT_GROUPBOX,    1,      5,    242,    347,    447,    STR_CHEAT_GROUP_AVAILABILITY,                     STR_NONE },                                          // Construction group
-    { WWT_CHECKBOX,    1,     11,    231,    363,    373,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,      STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP },   // Allow arbitrary ride type changes
-    { WWT_CHECKBOX,    1,     11,    231,    384,    394,    STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,   STR_NONE },                                          // Show vehicles from other track types
-    { WWT_CHECKBOX,    1,     11,    231,    405,    415,    STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,             STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP },          // Disable train length limits
-    { WWT_CHECKBOX,    1,     11,    231,    426,    436,    STR_CHEAT_IGNORE_RESEARCH_STATUS,                 STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP },              // Ignore Research Status
+    MakeWidget({ 11,  48}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_FIX_ALL_RIDES,                        STR_CHEAT_FIX_ALL_RIDES_TIP                    ), // Fix all rides
+    MakeWidget({126,  48}, {111,  17}, WWT_BUTTON,   1, STR_CHEAT_RENEW_RIDES,                          STR_CHEAT_RENEW_RIDES_TIP                      ), // Renew rides
+    MakeWidget({ 11,  69}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_MAKE_DESTRUCTABLE,                    STR_CHEAT_MAKE_DESTRUCTABLE_TIP                ), // All destructible
+    MakeWidget({126,  69}, {111,  17}, WWT_BUTTON,   1, STR_CHEAT_RESET_CRASH_STATUS,                   STR_CHEAT_RESET_CRASH_STATUS_TIP               ), // Reset crash status
+    MakeWidget({ 11,  90}, {110,  17}, WWT_BUTTON,   1, STR_CHEAT_10_MINUTE_INSPECTIONS,                STR_CHEAT_10_MINUTE_INSPECTIONS_TIP            ), // 10 minute inspections
+    MakeWidget({  5, 116}, {238, 101}, WWT_GROUPBOX, 1, STR_CHEAT_GROUP_CONSTRUCTION                                                                   ), // Construction group
+    MakeWidget({ 11, 132}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_BUILD_IN_PAUSE_MODE,                  STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP              ), // Build in pause mode
+    MakeWidget({ 11, 153}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP ), // Show all drawable track pieces
+    MakeWidget({ 11, 174}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP   ), // Enable chain lift on all track
+    MakeWidget({ 11, 195}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP), // Allow track place at invalid heights
+    MakeWidget({  5, 221}, {238, 122}, WWT_GROUPBOX, 1, STR_CHEAT_GROUP_OPERATION                                                                      ), // Construction group
+    MakeWidget({ 11, 237}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_SHOW_ALL_OPERATING_MODES                                                             ), // Show all operating modes
+    MakeWidget({ 11, 258}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_UNLOCK_OPERATING_LIMITS,              STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP          ), // 410 km/h lift hill etc.
+    MakeWidget({ 11, 279}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_BRAKES_FAILURE,               STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP           ), // Disable brakes failure
+    MakeWidget({ 11, 300}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_BREAKDOWNS,                   STR_CHEAT_DISABLE_BREAKDOWNS_TIP               ), // Disable all breakdowns
+    MakeWidget({ 11, 321}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_RIDE_VALUE_AGING,             STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP         ), // Disable ride ageing
+    MakeWidget({  5, 347}, {238, 101}, WWT_GROUPBOX, 1, STR_CHEAT_GROUP_AVAILABILITY                                                                   ), // Construction group
+    MakeWidget({ 11, 363}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP), // Allow arbitrary ride type changes
+    MakeWidget({ 11, 384}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
+    MakeWidget({ 11, 405}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
+    MakeWidget({ 11, 426}, {221,  11}, WWT_CHECKBOX, 1, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           ), // Ignore Research Status
     { WIDGETS_END },
 };
 
