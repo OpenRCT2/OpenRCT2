@@ -9,22 +9,20 @@
 
 #pragma once
 
-#include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
 
 // clang-format off
-constexpr const RideTypeDescriptor CorkscrewRollerCoasterRTD =
+constexpr const RideTypeDescriptor HypercoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL)
-                                  | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_VERTICAL_LOOP) | (1ULL << TRACK_SLOPE)
-                                  | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND)
-                                  | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HALF_LOOP) | (1ULL << TRACK_CORKSCREW)
+                                  | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE)
+                                  | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE)
                                   | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_BLOCK_BRAKES)
-                                  | (1ULL << TRACK_BOOSTER)),
+                                  | (1ULL << TRACK_SLOPE_STEEP_LONG)),
     SET_FIELD(ExtraTrackPieces, 0),
     SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TRACK_ELEM_END_STATION),
@@ -35,11 +33,11 @@ constexpr const RideTypeDescriptor CorkscrewRollerCoasterRTD =
     SET_FIELD(RideModes, (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT) | (1ULL << RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED) | (1ULL << RIDE_MODE_POWERED_LAUNCH_PASSTROUGH) | (1ULL << RIDE_MODE_POWERED_LAUNCH) | (1ULL << RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)),
     SET_FIELD(DefaultMode, RIDE_MODE_CONTINUOUS_CIRCUIT),
     SET_FIELD(OperatingSettings, { 10, 27, 30, 25, 25, 0 }),
-    SET_FIELD(Naming, { STR_RIDE_NAME_CORKSCREW_ROLLER_COASTER, STR_RIDE_DESCRIPTION_CORKSCREW_ROLLER_COASTER }),
+    SET_FIELD(Naming, { STR_RIDE_NAME_HYPERCOASTER, STR_RIDE_DESCRIPTION_HYPERCOASTER }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
-    SET_FIELD(EnumName, nameof(RIDE_TYPE_CORKSCREW_ROLLER_COASTER)),
+    SET_FIELD(EnumName, nameof(RIDE_TYPE_HYPERCOASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
-    SET_FIELD(Heights, { 28, 24, 8, 11, }),
+    SET_FIELD(Heights, { 55, 24, 8, 11, }),
     SET_FIELD(MaxMass, 18),
     SET_FIELD(LiftData, { SoundId::LiftArrow, 4, 6 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_corkscrew_roller_coaster),

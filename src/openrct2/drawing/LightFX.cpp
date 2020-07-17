@@ -727,6 +727,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
             break;
         case RIDE_TYPE_BOAT_HIRE:
         case RIDE_TYPE_CAR_RIDE:
+        case RIDE_TYPE_MONSTER_TRUCKS:
         case RIDE_TYPE_GO_KARTS:
         case RIDE_TYPE_DODGEMS:
         case RIDE_TYPE_MINI_HELICOPTERS:

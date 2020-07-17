@@ -27,7 +27,6 @@
 #include <openrct2/network/network.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
@@ -2263,9 +2262,11 @@ static void window_ride_construction_invalidate(rct_window* w)
     if (_currentTrackCurve & RideConstructionSpecialPieceSelected)
     {
         stringId = RideConfigurationStringIds[_currentTrackCurve & ~RideConstructionSpecialPieceSelected];
-        if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_CAR_RIDE)
+        if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_MONSTER_TRUCKS)
+        {
             stringId = STR_LOG_BUMPS;
-        if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
+        }
+        else if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE)
         {
             stringId = STR_BOOSTER;
         }
@@ -2540,16 +2541,7 @@ void window_ride_construction_update_enabled_track_pieces()
         return;
 
     int32_t rideType = ride_get_alternative_type(ride);
-
-    if (!gCheatsEnableAllDrawableTrackPieces && RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-    {
-        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
-        _enabledRidePieces = rideGroup->AvailableTrackPieces;
-    }
-    else
-    {
-        _enabledRidePieces = RideTypeDescriptors[rideType].GetAvailableTrackPieces();
-    }
+    _enabledRidePieces = RideTypeDescriptors[rideType].GetAvailableTrackPieces();
 }
 
 /**
@@ -3077,7 +3069,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES
         || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TRACK_ELEM_BRAKES);
     _boosterTrackSelected = track_element_is_booster(ride->type, _selectedTrackType)
-        || (ride->type != RIDE_TYPE_STEEL_WILD_MOUSE
+        || (ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE
             && _currentTrackCurve == (RideConstructionSpecialPieceSelected | TRACK_ELEM_BOOSTER));
 
     if (!brakesSelected && !_boosterTrackSelected)
@@ -3362,13 +3354,13 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
         if (trackPieceStringId == STR_RAPIDS)
         {
             auto ride = get_ride(_currentRideIndex);
-            if (ride != nullptr && ride->type == RIDE_TYPE_CAR_RIDE)
+            if (ride != nullptr && ride->type == RIDE_TYPE_MONSTER_TRUCKS)
                 trackPieceStringId = STR_LOG_BUMPS;
         }
         if (trackPieceStringId == STR_SPINNING_CONTROL_TOGGLE_TRACK)
         {
             auto ride = get_ride(_currentRideIndex);
-            if (ride != nullptr && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
+            if (ride != nullptr && ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE)
                 trackPieceStringId = STR_BOOSTER;
         }
         gDropdownItemsFormat[i] = trackPieceStringId;

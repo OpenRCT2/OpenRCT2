@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../management/Finance.h"
-#include "../ride/RideGroupManager.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
@@ -389,11 +389,6 @@ public:
                         && rideEntry->max_height != 0)
                     {
                         maxHeight = rideEntry->max_height;
-                    }
-                    else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-                    {
-                        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
-                        maxHeight = rideGroup->MaximumHeight;
                     }
                     else
                     {

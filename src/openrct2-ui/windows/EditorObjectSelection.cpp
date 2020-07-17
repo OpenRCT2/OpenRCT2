@@ -27,7 +27,7 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/platform/platform.h>
-#include <openrct2/ride/RideGroupManager.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -1500,16 +1500,7 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem* item)
         uint8_t rideType = item->RideInfo.RideType[i];
         if (rideType != RIDE_TYPE_NULL)
         {
-            if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-            {
-                const RideGroup* rideGroup = RideGroupManager::RideGroupFind(rideType, item->RideInfo.RideGroupIndex);
-                result = rideGroup->Naming.Name;
-            }
-            else
-            {
-                result = RideTypeDescriptors[rideType].Naming.Name;
-            }
-
+            result = RideTypeDescriptors[rideType].Naming.Name;
             break;
         }
     }

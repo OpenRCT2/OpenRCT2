@@ -26,7 +26,7 @@ namespace RCT1
     uint8_t GetTerrain(uint8_t terrain);
     uint8_t GetTerrainEdge(uint8_t terrainEdge);
 
-    uint8_t GetRideType(uint8_t rideType);
+    uint8_t GetRideType(uint8_t rideType, uint8_t vehicleType);
     RCT1VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8_t vehicleType);
     bool RideTypeUsesVehicles(uint8_t rideType);
     bool PathIsQueue(uint8_t pathType);

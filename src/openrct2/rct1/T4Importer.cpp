@@ -18,6 +18,7 @@
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/TrackDesignRepository.h"
 
@@ -136,7 +137,7 @@ private:
 
     std::unique_ptr<TrackDesign> ImportTD4Base(std::unique_ptr<TrackDesign> td, rct_track_td4& td4Base)
     {
-        td->type = RCT1::GetRideType(td4Base.type);
+        td->type = RCT1::GetRideType(td4Base.type, td4Base.vehicle_type);
 
         // All TD4s that use powered launch use the type that doesn't pass the station.
         td->ride_mode = td4Base.mode;

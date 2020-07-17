@@ -11,7 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
-#include "../ride/RideGroupManager.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
@@ -468,24 +468,7 @@ private:
             return false;
         }
 
-        if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-        {
-            auto rideEntry = get_ride_entry(ride->subtype);
-            if (rideEntry == nullptr)
-            {
-                return false;
-            }
-            auto rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
-            if (rideGroup == nullptr)
-            {
-                return false;
-            }
-            if (!(rideGroup->Flags & RIDE_GROUP_FLAG_ALLOW_DOORS_ON_TRACK))
-            {
-                return false;
-            }
-        }
-        else if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK))
+        if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK))
         {
             return false;
         }
