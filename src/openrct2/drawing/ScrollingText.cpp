@@ -1533,6 +1533,9 @@ static void scrolling_text_set_bitmap_for_sprite(
                 continue;
             }
 
+            if (scrollPositionOffsets == nullptr)
+                return;
+
             int16_t scrollPosition = *scrollPositionOffsets;
             if (scrollPosition == -1)
                 return;
