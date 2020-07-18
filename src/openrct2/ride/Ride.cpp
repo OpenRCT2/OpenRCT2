@@ -399,7 +399,7 @@ money32 Ride::CalculateIncomePerHour() const
     {
         money16 shopItemProfit = price[1] - ShopItems[currentShopItem].Cost;
 
-        if (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
+        if (ShopItems[currentShopItem].IsPhoto())
         {
             int32_t rideTicketsSold = total_customers - no_secondary_items_sold;
 
