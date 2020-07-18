@@ -24,7 +24,7 @@ constexpr const RideTypeDescriptor HyperTwisterRTD =
                                   | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO)
                                   | (1ULL << TRACK_SLOPE_CURVE_BANKED) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_SLOPE_ROLL_BANKING)
                                   | (1ULL << TRACK_SLOPE_STEEP_LONG) | (1ULL << TRACK_SLOPE_VERTICAL) | (1ULL << TRACK_CURVE_VERTICAL)),
-    SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_BRAKE_FOR_DROP)),
+    SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_BRAKE_FOR_DROP) | (1ULL << TRACK_BOOSTER) | (1ULL << TRACK_POWERED_LIFT)),
     SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TRACK_ELEM_END_STATION),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_twister_rc),
