@@ -2571,6 +2571,8 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
         for (int32_t i = 0; i < ride->num_vehicles; ++i)
         {
             Vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
+            if (vehicle == nullptr)
+                continue;
 
             if (vehicle->next_free_seat >= vehicle->num_seats)
                 continue;
