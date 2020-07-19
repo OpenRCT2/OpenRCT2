@@ -419,7 +419,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_go_karts(int32_t trackType, int32_
 TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int32_t trackType, int32_t direction);
-TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int32_t trackType, int32_t direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_swinging_ship(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int32_t trackType, int32_t direction);

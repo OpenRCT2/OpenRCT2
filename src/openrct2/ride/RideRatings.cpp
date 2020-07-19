@@ -2706,7 +2706,7 @@ void ride_ratings_calculate_dodgems(Ride* ride)
     ride->sheltered_eighths = 7;
 }
 
-void ride_ratings_calculate_pirate_ship(Ride* ride)
+void ride_ratings_calculate_swinging_ship(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;

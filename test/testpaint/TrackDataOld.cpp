@@ -6773,7 +6773,7 @@ static constexpr const uint32_t _OldDodgemsTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A83E0 */
-static constexpr const uint32_t _OldPirateShipTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSwingingShipTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -19289,7 +19289,7 @@ const uint32_t * RideTypeTrackPaintFunctionsOld[RCT2_RIDE_TYPE_COUNT] = {
     _OldLogFlumeTrackPaintFunctions,                        // RIDE_TYPE_LOG_FLUME
     _OldRiverRapidsTrackPaintFunctions,                     // RIDE_TYPE_RIVER_RAPIDS
     _OldDodgemsTrackPaintFunctions,                         // RIDE_TYPE_DODGEMS
-    _OldPirateShipTrackPaintFunctions,                      // RIDE_TYPE_SWINGING_SHIP
+    _OldSwingingShipTrackPaintFunctions,                    // RIDE_TYPE_SWINGING_SHIP
     _OldSwingingInverterShipTrackPaintFunctions,            // RIDE_TYPE_SWINGING_INVERTER_SHIP
     _OldShopTrackPaintFunctions,                            // RIDE_TYPE_FOOD_STALL
     _OldShopTrackPaintFunctions,                            // RIDE_TYPE_1D

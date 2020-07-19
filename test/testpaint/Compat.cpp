@@ -634,7 +634,7 @@ void ride_ratings_calculate_dodgems([[maybe_unused]] Ride* ride)
 {
 }
 
-void ride_ratings_calculate_pirate_ship([[maybe_unused]] Ride* ride)
+void ride_ratings_calculate_swinging_ship([[maybe_unused]] Ride* ride)
 {
 }
 

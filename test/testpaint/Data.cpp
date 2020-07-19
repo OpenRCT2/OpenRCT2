@@ -37,7 +37,7 @@ const_utf8string RideNames[RCT2_RIDE_TYPE_COUNT] = {
     "LogFlume",
     "RiverRapids",
     "Dodgems",
-    "PirateShip",
+    "SwingingShip",
     "SwingingInverterShip",
     "FoodStall",
     "1D",

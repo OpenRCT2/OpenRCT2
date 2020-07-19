@@ -87,7 +87,7 @@ void ride_ratings_calculate_go_karts(Ride* ride);
 void ride_ratings_calculate_log_flume(Ride* ride);
 void ride_ratings_calculate_river_rapids(Ride* ride);
 void ride_ratings_calculate_dodgems(Ride* ride);
-void ride_ratings_calculate_pirate_ship(Ride* ride);
+void ride_ratings_calculate_swinging_ship(Ride* ride);
 void ride_ratings_calculate_inverter_ship(Ride* ride);
 void ride_ratings_calculate_food_stall(Ride* ride);
 void ride_ratings_calculate_shop(Ride* ride);

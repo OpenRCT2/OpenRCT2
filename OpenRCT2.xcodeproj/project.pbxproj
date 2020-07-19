@@ -404,7 +404,7 @@
 		C688792120289B9B0084B384 /* LaunchedFreefall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1811F8B747A00A9330D /* LaunchedFreefall.cpp */; };
 		C688792220289B9B0084B384 /* MagicCarpet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1821F8B747A00A9330D /* MagicCarpet.cpp */; };
 		C688792320289B9B0084B384 /* MotionSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1831F8B747A00A9330D /* MotionSimulator.cpp */; };
-		C688792420289B9B0084B384 /* PirateShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1841F8B747A00A9330D /* PirateShip.cpp */; };
+		C688792420289B9B0084B384 /* SwingingShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1841F8B747A00A9330D /* SwingingShip.cpp */; };
 		C688792520289B9B0084B384 /* RotoDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1851F8B747A00A9330D /* RotoDrop.cpp */; };
 		C688792620289B9B0084B384 /* SwingingInverterShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1861F8B747A00A9330D /* SwingingInverterShip.cpp */; };
 		C688792720289B9B0084B384 /* TopSpin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1871F8B747A00A9330D /* TopSpin.cpp */; };
@@ -906,7 +906,7 @@
 		4C93F1811F8B747A00A9330D /* LaunchedFreefall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LaunchedFreefall.cpp; sourceTree = "<group>"; };
 		4C93F1821F8B747A00A9330D /* MagicCarpet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MagicCarpet.cpp; sourceTree = "<group>"; };
 		4C93F1831F8B747A00A9330D /* MotionSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MotionSimulator.cpp; sourceTree = "<group>"; };
-		4C93F1841F8B747A00A9330D /* PirateShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PirateShip.cpp; sourceTree = "<group>"; };
+		4C93F1841F8B747A00A9330D /* SwingingShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SwingingShip.cpp; sourceTree = "<group>"; };
 		4C93F1851F8B747A00A9330D /* RotoDrop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RotoDrop.cpp; sourceTree = "<group>"; };
 		4C93F1861F8B747A00A9330D /* SwingingInverterShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SwingingInverterShip.cpp; sourceTree = "<group>"; };
 		4C93F1871F8B747A00A9330D /* TopSpin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopSpin.cpp; sourceTree = "<group>"; };
@@ -3297,7 +3297,7 @@
 				4C93F1811F8B747A00A9330D /* LaunchedFreefall.cpp */,
 				4C93F1821F8B747A00A9330D /* MagicCarpet.cpp */,
 				4C93F1831F8B747A00A9330D /* MotionSimulator.cpp */,
-				4C93F1841F8B747A00A9330D /* PirateShip.cpp */,
+				4C93F1841F8B747A00A9330D /* SwingingShip.cpp */,
 				4C93F1851F8B747A00A9330D /* RotoDrop.cpp */,
 				4C93F1861F8B747A00A9330D /* SwingingInverterShip.cpp */,
 				4C93F1871F8B747A00A9330D /* TopSpin.cpp */,
@@ -4311,7 +4311,7 @@
 				C688791B20289B9B0084B384 /* SpiralSlide.cpp in Sources */,
 				C688786C20289A6F0084B384 /* TrackDesign.cpp in Sources */,
 				C68878F220289B9B0084B384 /* GigaCoaster.cpp in Sources */,
-				C688792420289B9B0084B384 /* PirateShip.cpp in Sources */,
+				C688792420289B9B0084B384 /* SwingingShip.cpp in Sources */,
 				C68878F420289B9B0084B384 /* InvertedHairpinCoaster.cpp in Sources */,
 				C68878A620289B2A0084B384 /* Finance.cpp in Sources */,
 				C688788720289ADE0084B384 /* TTFSDLPort.cpp in Sources */,
