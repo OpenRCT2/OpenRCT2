@@ -1175,6 +1175,9 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     window_cheats_draw_tab_images(dpi, w);
 
+    static constexpr int16_t X_LCOL = 14;
+    static constexpr int16_t X_RCOL = 208;
+
     if (w->page == WINDOW_CHEATS_PAGE_MONEY)
     {
         uint8_t colour = w->colours[1];
@@ -1185,35 +1188,38 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             colour |= COLOUR_FLAG_INSET;
         }
         int32_t actual_month = _monthSpinnerValue - 1;
-        gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->windowPos + ScreenCoordsXY{ 14, 93 });
-        gfx_draw_string_left(dpi, STR_YEAR, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 198 });
-        gfx_draw_string_left(dpi, STR_MONTH, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 219 });
-        gfx_draw_string_left(dpi, STR_DAY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 240 });
+        gfx_draw_string_left(
+            dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->windowPos + ScreenCoordsXY{ X_LCOL, 93 });
+        gfx_draw_string_left(dpi, STR_YEAR, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 198 });
+        gfx_draw_string_left(dpi, STR_MONTH, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 219 });
+        gfx_draw_string_left(dpi, STR_DAY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 240 });
         gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_yearSpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ 208, 198 });
-        gfx_draw_string_right(dpi, STR_FORMAT_MONTH, &actual_month, w->colours[1], w->windowPos + ScreenCoordsXY{ 208, 219 });
+            dpi, STR_FORMAT_INTEGER, &_yearSpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 198 });
         gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_daySpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ 208, 240 });
+            dpi, STR_FORMAT_MONTH, &actual_month, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 219 });
+        gfx_draw_string_right(
+            dpi, STR_FORMAT_INTEGER, &_daySpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 240 });
     }
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
-        gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 408 });
-        gfx_draw_string_left(dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 261 });
+        gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 408 });
+        gfx_draw_string_left(dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 261 });
         gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_parkRatingSpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ 208, 156 });
+            dpi, STR_FORMAT_INTEGER, &_parkRatingSpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 156 });
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
     {
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HAPPINESS, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 72 });
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_ENERGY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 93 });
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HUNGER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 114 });
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_THIRST, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 135 });
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 156 });
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 177 });
-        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_TOILET, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 198 });
+            dpi, STR_CHEAT_GUEST_HAPPINESS, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 72 });
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_ENERGY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 93 });
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HUNGER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 114 });
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_THIRST, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 135 });
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 156 });
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_PREFERRED_INTENSITY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 14, 219 });
+            dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 177 });
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_TOILET, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 198 });
+        gfx_draw_string_left(
+            dpi, STR_CHEAT_GUEST_PREFERRED_INTENSITY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 219 });
     }
 }
 
