@@ -406,21 +406,19 @@ void X8DrawingEngine::DrawAllDirtyBlocks()
             uint32_t yy;
             for (yy = y; yy < dirtyBlockRows; yy++)
             {
-                bool shouldBreak = false;
                 uint32_t yyOffset = yy * dirtyBlockColumns;
                 for (xx = x; xx < x + columns; xx++)
                 {
                     if (dirtyBlocks[yyOffset + xx] == 0)
                     {
-                        uint32_t rows = yy - y;
-                        DrawDirtyBlocks(x, y, columns, rows);
-                        shouldBreak = true;
-                        break;
+                        goto endRowCheck;
                     }
                 }
-                if (shouldBreak)
-                    break;
             }
+
+        endRowCheck:
+            uint32_t rows = yy - y;
+            DrawDirtyBlocks(x, y, columns, rows);
         }
     }
 }
