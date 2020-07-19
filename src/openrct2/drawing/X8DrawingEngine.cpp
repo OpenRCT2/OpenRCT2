@@ -418,7 +418,7 @@ void X8DrawingEngine::DrawAllDirtyBlocks()
                         break;
                     }
                 }
-                if(shouldBreak)
+                if (shouldBreak)
                     break;
             }
         }
