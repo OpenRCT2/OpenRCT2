@@ -597,8 +597,7 @@ namespace OpenRCT2
                     parkImporter = ParkImporter::CreateS6(*_objectRepository);
                 }
 
-                auto result = parkImporter->LoadFromStream(
-                    stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+                auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
                 _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                 parkImporter->Import();
                 gScenarioSavePath = path;
