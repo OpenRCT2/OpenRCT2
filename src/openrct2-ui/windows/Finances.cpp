@@ -27,7 +27,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH_SUMMARY = 309;
 static constexpr const int32_t WH_RESEARCH = 207;
 static constexpr const int32_t WH_OTHER_TABS = 257;
@@ -96,7 +95,7 @@ enum
 
 static rct_widget _windowFinancesSummaryWidgets[] =
 {
-    WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_SUMMARY),
+    WINDOW_SHIM(STR_FINANCIAL_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
     { WWT_RESIZE,           1,  0,      529,    43, WH_SUMMARY - 1,    0xFFFFFFFF,                 STR_NONE                                },
     TAB_WIDGETS,
     { WWT_SCROLL,           1,  130,    520,     50,    260,    SCROLL_HORIZONTAL,                  STR_NONE },
@@ -106,7 +105,7 @@ static rct_widget _windowFinancesSummaryWidgets[] =
 
 static rct_widget _windowFinancesCashWidgets[] =
 {
-    WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
+    WINDOW_SHIM(STR_FINANCIAL_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
     MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -114,7 +113,7 @@ static rct_widget _windowFinancesCashWidgets[] =
 
 static rct_widget _windowFinancesParkValueWidgets[] =
 {
-    WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
+    WINDOW_SHIM(STR_PARK_VALUE_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
     MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -122,7 +121,7 @@ static rct_widget _windowFinancesParkValueWidgets[] =
 
 static rct_widget _windowFinancesProfitWidgets[] =
 {
-    WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
+    WINDOW_SHIM(STR_PROFIT_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
     MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     { WIDGETS_END },
@@ -130,7 +129,7 @@ static rct_widget _windowFinancesProfitWidgets[] =
 
 static rct_widget _windowFinancesMarketingWidgets[] =
 {
-    WINDOW_SHIM(WINDOW_TITLE, WW_OTHER_TABS, WH_OTHER_TABS),
+    WINDOW_SHIM(STR_MARKETING, WW_OTHER_TABS, WH_OTHER_TABS),
     MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WWT_GROUPBOX, 2, STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
@@ -146,7 +145,7 @@ static rct_widget _windowFinancesMarketingWidgets[] =
 
 static rct_widget _windowFinancesResearchWidgets[] =
 {
-    WINDOW_SHIM(WINDOW_TITLE, WW_RESEARCH, WH_RESEARCH),
+    WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_RESEARCH, WH_RESEARCH),
     MakeWidget({0, 43}, {WW_RESEARCH, 164}, WWT_RESIZE, 1),
     TAB_WIDGETS,
     MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WWT_GROUPBOX, 2, STR_RESEARCH_FUNDING_                                                             ),

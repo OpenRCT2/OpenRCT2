@@ -21,7 +21,6 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH_DEVELOPMENT = 196;
 static constexpr const int32_t WW_DEVELOPMENT = 300;
 static constexpr const int32_t WH_FUNDING = 207;
@@ -62,7 +61,7 @@ enum {
 #pragma region Widgets
 
 static rct_widget window_research_development_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW_DEVELOPMENT, WH_DEVELOPMENT),
+    WINDOW_SHIM(STR_RESEARCH_AND_DEVELOPMENT, WW_DEVELOPMENT, WH_DEVELOPMENT),
     MakeWidget     ({  0,  43}, {     WW_DEVELOPMENT, 153}, WWT_RESIZE,   1                                                                ),
     MakeRemapWidget({  3,  17}, {                 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_RESEARCH_AND_DEVELOPMENT_TIP),
     MakeRemapWidget({ 34,  17}, {                 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_FINANCES_RESEARCH_TIP       ),
@@ -73,7 +72,7 @@ static rct_widget window_research_development_widgets[] = {
 };
 
 static rct_widget window_research_funding_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW_FUNDING, WH_FUNDING),
+    WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_FUNDING, WH_FUNDING),
     MakeWidget     ({  0,  43}, {     WW_FUNDING, 164}, WWT_RESIZE,   1                                                                                    ),
     MakeRemapWidget({  3,  17}, {             31,  27}, WWT_TAB,      1, SPR_TAB,                              STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
     MakeRemapWidget({ 34,  17}, {             31,  27}, WWT_TAB,      1, SPR_TAB,                              STR_FINANCES_RESEARCH_TIP                   ),
