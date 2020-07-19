@@ -710,7 +710,7 @@ void ride_ratings_calculate_first_aid([[maybe_unused]] Ride* ride)
 {
 }
 
-void ride_ratings_calculate_circus_show([[maybe_unused]] Ride* ride)
+void ride_ratings_calculate_circus([[maybe_unused]] Ride* ride)
 {
 }
 

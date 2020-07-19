@@ -60,7 +60,7 @@ const_utf8string RideNames[RCT2_RIDE_TYPE_COUNT] = {
     "Twist",
     "HauntedHouse",
     "FirstAid",
-    "CircusShow",
+    "Circus",
     "GhostTrain",
     "TwisterRollerCoaster",
     "WoodenRollerCoaster",

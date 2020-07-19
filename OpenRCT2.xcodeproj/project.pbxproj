@@ -381,7 +381,7 @@
 		C688790A20289B9B0084B384 /* WoodenRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1381F8B744400A9330D /* WoodenRollerCoaster.cpp */; };
 		C688790B20289B9B0084B384 /* WoodenWildMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1391F8B744400A9330D /* WoodenWildMouse.cpp */; };
 		C688790C20289B9B0084B384 /* CarRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15A1F8B745700A9330D /* CarRide.cpp */; };
-		C688790D20289B9B0084B384 /* CircusShow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15B1F8B745700A9330D /* CircusShow.cpp */; };
+		C688790D20289B9B0084B384 /* Circus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15B1F8B745700A9330D /* Circus.cpp */; };
 		C688790E20289B9B0084B384 /* CrookedHouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15C1F8B745700A9330D /* CrookedHouse.cpp */; };
 		C688790F20289B9B0084B384 /* Dodgems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15D1F8B745700A9330D /* Dodgems.cpp */; };
 		C688791020289B9B0084B384 /* FerrisWheel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15E1F8B745700A9330D /* FerrisWheel.cpp */; };
@@ -883,7 +883,7 @@
 		4C93F1381F8B744400A9330D /* WoodenRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WoodenRollerCoaster.cpp; sourceTree = "<group>"; };
 		4C93F1391F8B744400A9330D /* WoodenWildMouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WoodenWildMouse.cpp; sourceTree = "<group>"; };
 		4C93F15A1F8B745700A9330D /* CarRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CarRide.cpp; sourceTree = "<group>"; };
-		4C93F15B1F8B745700A9330D /* CircusShow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircusShow.cpp; sourceTree = "<group>"; };
+		4C93F15B1F8B745700A9330D /* Circus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Circus.cpp; sourceTree = "<group>"; };
 		4C93F15C1F8B745700A9330D /* CrookedHouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CrookedHouse.cpp; sourceTree = "<group>"; };
 		4C93F15D1F8B745700A9330D /* Dodgems.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dodgems.cpp; sourceTree = "<group>"; };
 		4C93F15E1F8B745700A9330D /* FerrisWheel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FerrisWheel.cpp; sourceTree = "<group>"; };
@@ -3260,7 +3260,7 @@
 			isa = PBXGroup;
 			children = (
 				4C93F15A1F8B745700A9330D /* CarRide.cpp */,
-				4C93F15B1F8B745700A9330D /* CircusShow.cpp */,
+				4C93F15B1F8B745700A9330D /* Circus.cpp */,
 				4C93F15C1F8B745700A9330D /* CrookedHouse.cpp */,
 				4C93F15D1F8B745700A9330D /* Dodgems.cpp */,
 				4C93F15E1F8B745700A9330D /* FerrisWheel.cpp */,
@@ -4327,7 +4327,7 @@
 				C688788220289ADE0084B384 /* Rect.cpp in Sources */,
 				93F9DA3920B46FB800D1BE92 /* ObjectJsonHelpers.cpp in Sources */,
 				C688787320289A780084B384 /* RideRatings.cpp in Sources */,
-				C688790D20289B9B0084B384 /* CircusShow.cpp in Sources */,
+				C688790D20289B9B0084B384 /* Circus.cpp in Sources */,
 				C688788F20289B140084B384 /* Chat.cpp in Sources */,
 				C688789A20289B200084B384 /* ConversionTables.cpp in Sources */,
 				C688791020289B9B0084B384 /* FerrisWheel.cpp in Sources */,

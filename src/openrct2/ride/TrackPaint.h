@@ -434,7 +434,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType, 
 TRACK_PAINT_FUNCTION get_track_paint_function_facility(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_twist(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType, int32_t direction);
-TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int32_t trackType, int32_t direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_circus(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_side_friction_rc(int32_t trackType, int32_t direction);

@@ -667,7 +667,7 @@
     <ClCompile Include="ride\coaster\WoodenRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\WoodenWildMouse.cpp" />
     <ClCompile Include="ride\gentle\CarRide.cpp" />
-    <ClCompile Include="ride\gentle\CircusShow.cpp" />
+    <ClCompile Include="ride\gentle\Circus.cpp" />
     <ClCompile Include="ride\gentle\CrookedHouse.cpp" />
     <ClCompile Include="ride\gentle\Dodgems.cpp" />
     <ClCompile Include="ride\gentle\FerrisWheel.cpp" />

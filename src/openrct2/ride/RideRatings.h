@@ -106,7 +106,7 @@ void ride_ratings_calculate_cash_machine(Ride* ride);
 void ride_ratings_calculate_twist(Ride* ride);
 void ride_ratings_calculate_haunted_house(Ride* ride);
 void ride_ratings_calculate_first_aid(Ride* ride);
-void ride_ratings_calculate_circus_show(Ride* ride);
+void ride_ratings_calculate_circus(Ride* ride);
 void ride_ratings_calculate_ghost_train(Ride* ride);
 void ride_ratings_calculate_twister_roller_coaster(Ride* ride);
 void ride_ratings_calculate_wooden_roller_coaster(Ride* ride);

@@ -10681,7 +10681,7 @@ static constexpr const uint32_t _OldHauntedHouseTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0076F8D4 */
-static constexpr const uint32_t _OldCircusShowTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldCircusTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -19312,7 +19312,7 @@ const uint32_t * RideTypeTrackPaintFunctionsOld[RCT2_RIDE_TYPE_COUNT] = {
     _OldTwistTrackPaintFunctions,                           // RIDE_TYPE_TWIST
     _OldHauntedHouseTrackPaintFunctions,                    // RIDE_TYPE_HAUNTED_HOUSE
     _OldFacilityTrackPaintFunctions,                        // RIDE_TYPE_FIRST_AID
-    _OldCircusShowTrackPaintFunctions,                      // RIDE_TYPE_CIRCUS
+    _OldCircusTrackPaintFunctions,                          // RIDE_TYPE_CIRCUS
     _OldGhostTrainTrackPaintFunctions,                      // RIDE_TYPE_GHOST_TRAIN
     _OldTwisterRollerCoasterTrackPaintFunctions,            // RIDE_TYPE_TWISTER_ROLLER_COASTER
     _OldWoodenRollerCoasterTrackPaintFunctions,             // RIDE_TYPE_WOODEN_ROLLER_COASTER
