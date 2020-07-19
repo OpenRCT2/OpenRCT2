@@ -38,10 +38,10 @@ enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 
 static rct_widget window_save_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_NONE, WW_SAVE, WH_SAVE),
-    { WWT_LABEL_CENTRED,    0,  2,      257,    19, 30, 0,                          STR_NONE },                 // question/label
-    { WWT_BUTTON,           0,  8,      85,     35, 48, STR_SAVE_PROMPT_SAVE,       STR_NONE },     // save
-    { WWT_BUTTON,           0,  91,     168,    35, 48, STR_SAVE_PROMPT_DONT_SAVE,  STR_NONE },     // don't save
-    { WWT_BUTTON,           0,  174,    251,    35, 48, STR_SAVE_PROMPT_CANCEL,     STR_NONE },     // cancel
+    MakeWidget({  2, 19}, {256, 12}, WWT_LABEL_CENTRED, 0, STR_EMPTY                ), // question/label
+    MakeWidget({  8, 35}, { 78, 14}, WWT_BUTTON,        0, STR_SAVE_PROMPT_SAVE     ), // save
+    MakeWidget({ 91, 35}, { 78, 14}, WWT_BUTTON,        0, STR_SAVE_PROMPT_DONT_SAVE), // don't save
+    MakeWidget({174, 35}, { 78, 14}, WWT_BUTTON,        0, STR_SAVE_PROMPT_CANCEL   ), // cancel
     { WIDGETS_END },
 };
 

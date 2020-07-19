@@ -35,18 +35,18 @@ ScatterToolDensity gWindowSceneryScatterDensity;
 
 // clang-format off
 static rct_widget window_scenery_scatter_widgets[] = {
-    { WWT_FRAME,    1,  0,  85, 0,  99, 0xFFFFFFFF,         STR_NONE },                     // panel / background
-    { WWT_CAPTION,  0,  1,  84, 1,  14, STR_SCENERY_SCATTER, STR_WINDOW_TITLE_TIP },        // title bar
-    { WWT_CLOSEBOX, 0,  73, 83, 2,  13, STR_CLOSE_X,         STR_CLOSE_WINDOW_TIP },        // close x button
+    MakeWidget     ({ 0,  0}, {86, 100}, WWT_FRAME,    1                                                                ), // panel / background
+    MakeWidget     ({ 1,  1}, {84,  14}, WWT_CAPTION,  0, STR_SCENERY_SCATTER,           STR_WINDOW_TITLE_TIP           ), // title bar
+    MakeWidget     ({73,  2}, {11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X,                   STR_CLOSE_WINDOW_TIP           ), // close x button
 
-    { WWT_IMGBTN,   1,  20, 63, 17, 48, SPR_LAND_TOOL_SIZE_0,                      STR_NONE },                         // preview box
-    { WWT_TRNBTN,   1,  21, 36, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_LAND_TIP },      // decrement size
-    { WWT_TRNBTN,   1,  47, 62, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_LAND_TIP },       // increment size
+    MakeWidget     ({20, 17}, {44,  32}, WWT_IMGBTN,   1, SPR_LAND_TOOL_SIZE_0                                          ), // preview box
+    MakeRemapWidget({21, 18}, {16,  16}, WWT_TRNBTN,   1, SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP    ), // decrement size
+    MakeRemapWidget({47, 32}, {16,  16}, WWT_TRNBTN,   1, SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP     ), // increment size
 
-    { WWT_GROUPBOX, 1,  3,  82, 55, 96, STR_SCATTER_TOOL_DENSITY,                         STR_NONE },
-    { WWT_FLATBTN,  1,  7,  30, 68, 91, IMAGE_TYPE_REMAP | SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW },     // low amount
-    { WWT_FLATBTN,  1,  31, 54, 68, 91, IMAGE_TYPE_REMAP | SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM },  // medium amount
-    { WWT_FLATBTN,  1,  55, 78, 68, 91, IMAGE_TYPE_REMAP | SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH },    // high amount
+    MakeWidget     ({ 3, 55}, {80,  42}, WWT_GROUPBOX, 1, STR_SCATTER_TOOL_DENSITY                                      ),
+    MakeRemapWidget({ 7, 68}, {24,  24}, WWT_FLATBTN,  1, SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW   ), // low amount
+    MakeRemapWidget({31, 68}, {24,  24}, WWT_FLATBTN,  1, SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM), // medium amount
+    MakeRemapWidget({55, 68}, {24,  24}, WWT_FLATBTN,  1, SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH  ), // high amount
     { WIDGETS_END },
 };
 // clang-format on
