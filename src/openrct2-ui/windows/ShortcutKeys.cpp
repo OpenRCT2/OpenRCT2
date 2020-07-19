@@ -208,6 +208,7 @@ static const ShortcutStringPair ShortcutList[] =
     { SHORTCUT_ADVANCE_TO_NEXT_TICK,                  STR_ADVANCE_TO_NEXT_TICK },
     { SHORTCUT_PAINT_ORIGINAL_TOGGLE,                 STR_SHORTCUT_PAINT_ORIGINAL },
     { SHORTCUT_DEBUG_PAINT_TOGGLE,                    STR_SHORTCUT_DEBUG_PAINT_TOGGLE },
+    { SHORTCUT_CHANGE_WALL_SLOPE,                     STR_SHORTCUT_CHANGE_WALL_SLOPE}
 };
 // clang-format on
 

@@ -235,6 +235,7 @@ extern ScenerySelection gSceneryPlaceObject;
 extern uint16_t gSceneryPlaceObjectEntryIndex;
 extern int16_t gSceneryPlaceZ;
 extern uint8_t gSceneryPlaceRotation;
+extern uint8_t gWallSlopeOverride;
 
 extern uint8_t gSceneryGhostType;
 extern CoordsXYZ gSceneryGhostPosition;

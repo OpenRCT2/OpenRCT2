@@ -476,6 +476,7 @@ rct_window* window_scenery_open()
     gSceneryGhostType = 0;
     gSceneryPlaceCost = MONEY32_UNDEFINED;
     gSceneryPlaceRotation = 0;
+    gWallSlopeOverride = 0;
     gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
     gWindowSceneryEyedropperEnabled = false;
 

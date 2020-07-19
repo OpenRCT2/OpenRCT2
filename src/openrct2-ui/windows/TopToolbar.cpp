@@ -1920,7 +1920,8 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             for (; zAttemptRange != 0; zAttemptRange--)
             {
                 auto wallPlaceAction = WallPlaceAction(
-                    selectedScenery, { gridPos, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+                    selectedScenery, { gridPos, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour,
+                    gWallSlopeOverride);
 
                 auto res = GameActions::Query(&wallPlaceAction);
                 if (res->Error == GA_ERROR::OK)
@@ -1943,7 +1944,8 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             }
 
             auto wallPlaceAction = WallPlaceAction(
-                selectedScenery, { gridPos, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+                selectedScenery, { gridPos, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour,
+                gWallSlopeOverride);
 
             wallPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
@@ -2580,8 +2582,8 @@ static money32 try_place_ghost_scenery(
             auto primaryColour = (parameter_2 >> 8) & 0xFF;
             auto edges = parameter_2 & 0xFF;
             auto wallPlaceAction = WallPlaceAction(
-                entryIndex, { map_tile.x, map_tile.y, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour,
-                _tertiaryColour);
+                entryIndex, { map_tile.x, map_tile.y, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour,
+                gWallSlopeOverride);
             wallPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {

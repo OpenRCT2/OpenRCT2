@@ -1027,6 +1027,16 @@ static void shortcut_toggle_clearance_checks()
     GameActions::Execute(&setCheatAction);
 }
 
+static void shortcut_change_slope()
+{
+    gWallSlopeOverride++;
+    if (gWallSlopeOverride > 2)
+        gWallSlopeOverride = 0;
+
+    // invalidate the ghost wall if there is any
+    scenery_remove_ghost_tool_placement();
+}
+
 namespace
 {
     const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
@@ -1117,6 +1127,7 @@ namespace
         shortcut_increase_element_height,
         shortcut_decrease_element_height,
         shortcut_toggle_clearance_checks,
+        shortcut_change_slope,
     };
 } // anonymous namespace
 

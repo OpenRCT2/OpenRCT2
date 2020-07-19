@@ -60,19 +60,21 @@ private:
     int32_t _secondaryColour{ COLOUR_BLACK };
     int32_t _tertiaryColour{ COLOUR_BLACK };
     BannerIndex _bannerId{ BANNER_INDEX_NULL };
+    uint8_t _edgeSlopeOverride;
 
 public:
     WallPlaceAction() = default;
 
     WallPlaceAction(
         int32_t wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
-        int32_t tertiaryColour)
+        int32_t tertiaryColour, uint8_t edgeSlopeOverride = 0)
         : _wallType(wallType)
         , _loc(loc)
         , _edge(edge)
         , _primaryColour(primaryColour)
         , _secondaryColour(secondaryColour)
         , _tertiaryColour(tertiaryColour)
+        , _edgeSlopeOverride(edgeSlopeOverride)
     {
         rct_scenery_entry* sceneryEntry = get_wall_entry(_wallType);
         if (sceneryEntry != nullptr)
@@ -94,7 +96,7 @@ public:
         GameAction::Serialise(stream);
 
         stream << DS_TAG(_wallType) << DS_TAG(_loc) << DS_TAG(_edge) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour)
-               << DS_TAG(_tertiaryColour) << DS_TAG(_bannerId);
+               << DS_TAG(_tertiaryColour) << DS_TAG(_bannerId) << DS_TAG(_edgeSlopeOverride);
     }
 
     GameActionResult::Ptr Query() const override
@@ -162,6 +164,10 @@ public:
                 targetHeight += 16;
                 edgeSlope &= ~EDGE_SLOPE_ELEVATED;
             }
+        }
+        if (_edgeSlopeOverride != 0)
+        {
+            edgeSlope = _edgeSlopeOverride;
         }
 
         auto* surfaceElement = map_get_surface_element_at(_loc);
@@ -336,6 +342,10 @@ public:
                 targetHeight += 16;
                 edgeSlope &= ~EDGE_SLOPE_ELEVATED;
             }
+        }
+        if (_edgeSlopeOverride != 0)
+        {
+            edgeSlope = _edgeSlopeOverride;
         }
         auto targetLoc = CoordsXYZ(_loc, targetHeight);
 

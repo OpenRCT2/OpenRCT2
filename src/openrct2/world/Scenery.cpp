@@ -37,6 +37,7 @@ money32 gSceneryPlaceCost;
 ScenerySelection gSceneryPlaceObject;
 int16_t gSceneryPlaceZ;
 uint8_t gSceneryPlaceRotation;
+uint8_t gWallSlopeOverride;
 
 uint8_t gSceneryGhostType;
 CoordsXYZ gSceneryGhostPosition;
