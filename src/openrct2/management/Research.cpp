@@ -191,7 +191,7 @@ void research_finish_item(ResearchItem* researchItem)
     gResearchLastItem = *researchItem;
     research_invalidate_related_windows();
 
-    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)
+    if (researchItem->type == ResearchEntryType::Ride)
     {
         // Ride
         uint32_t base_ride_type = researchItem->baseRideType;
@@ -493,7 +493,7 @@ bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, u
 {
     if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
-        auto tmpItem = ResearchItem(RESEARCH_ENTRY_TYPE_RIDE, entryIndex, rideType, category, 0);
+        auto tmpItem = ResearchItem(ResearchEntryType::Ride, entryIndex, rideType, category, 0);
         research_insert(tmpItem, researched);
         return true;
     }
@@ -518,8 +518,7 @@ bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool resea
 {
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
-        auto tmpItem = ResearchItem(
-            RESEARCH_ENTRY_TYPE_SCENERY, entryIndex, RIDE_TYPE_NULL, RESEARCH_CATEGORY_SCENERY_GROUP, 0);
+        auto tmpItem = ResearchItem(ResearchEntryType::Scenery, entryIndex, RIDE_TYPE_NULL, RESEARCH_CATEGORY_SCENERY_GROUP, 0);
         research_insert(tmpItem, researched);
         return true;
     }
@@ -683,7 +682,7 @@ void set_every_ride_entry_not_invented()
  */
 rct_string_id ResearchItem::GetName() const
 {
-    if (type == RESEARCH_ENTRY_TYPE_RIDE)
+    if (type == ResearchEntryType::Ride)
     {
         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
         if (rideEntry == nullptr)
@@ -733,7 +732,7 @@ void research_fix()
     for (auto it = gResearchItemsInvented.begin(); it != gResearchItemsInvented.end();)
     {
         auto& researchItem = *it;
-        if (researchItem.type == RESEARCH_ENTRY_TYPE_RIDE)
+        if (researchItem.type == ResearchEntryType::Ride)
         {
             rct_ride_entry* rideEntry = get_ride_entry(researchItem.entryIndex);
             if (rideEntry == nullptr)
@@ -761,7 +760,7 @@ void research_fix()
     for (auto it = gResearchItemsUninvented.begin(); it != gResearchItemsUninvented.end();)
     {
         auto& researchItem = *it;
-        if (researchItem.type == RESEARCH_ENTRY_TYPE_RIDE)
+        if (researchItem.type == ResearchEntryType::Ride)
         {
             rct_ride_entry* rideEntry = get_ride_entry(researchItem.entryIndex);
             if (rideEntry == nullptr)
@@ -897,7 +896,7 @@ static void research_update_first_of_type(ResearchItem* researchItem)
     if (researchItem->IsNull())
         return;
 
-    if (researchItem->type != RESEARCH_ENTRY_TYPE_RIDE)
+    if (researchItem->type != ResearchEntryType::Ride)
         return;
 
     auto rideType = researchItem->baseRideType;
@@ -935,7 +934,7 @@ void research_determine_first_of_type()
 
     for (const auto& researchItem : gResearchItemsInvented)
     {
-        if (researchItem.type != RESEARCH_ENTRY_TYPE_RIDE)
+        if (researchItem.type != ResearchEntryType::Ride)
             continue;
 
         auto rideType = researchItem.baseRideType;
