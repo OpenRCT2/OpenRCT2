@@ -667,7 +667,7 @@
     <ClCompile Include="ride\coaster\WoodenRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\WoodenWildMouse.cpp" />
     <ClCompile Include="ride\gentle\CarRide.cpp" />
-    <ClCompile Include="ride\gentle\CircusShow.cpp" />
+    <ClCompile Include="ride\gentle\Circus.cpp" />
     <ClCompile Include="ride\gentle\CrookedHouse.cpp" />
     <ClCompile Include="ride\gentle\Dodgems.cpp" />
     <ClCompile Include="ride\gentle\FerrisWheel.cpp" />
@@ -696,7 +696,7 @@
     <ClCompile Include="ride\thrill\LaunchedFreefall.cpp" />
     <ClCompile Include="ride\thrill\MagicCarpet.cpp" />
     <ClCompile Include="ride\thrill\MotionSimulator.cpp" />
-    <ClCompile Include="ride\thrill\PirateShip.cpp" />
+    <ClCompile Include="ride\thrill\SwingingShip.cpp" />
     <ClCompile Include="ride\thrill\RotoDrop.cpp" />
     <ClCompile Include="ride\thrill\SwingingInverterShip.cpp" />
     <ClCompile Include="ride\thrill\TopSpin.cpp" />

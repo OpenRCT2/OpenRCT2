@@ -2706,7 +2706,7 @@ void ride_ratings_calculate_dodgems(Ride* ride)
     ride->sheltered_eighths = 7;
 }
 
-void ride_ratings_calculate_pirate_ship(Ride* ride)
+void ride_ratings_calculate_swinging_ship(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -3485,7 +3485,7 @@ void ride_ratings_calculate_first_aid(Ride* ride)
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 }
 
-void ride_ratings_calculate_circus_show(Ride* ride)
+void ride_ratings_calculate_circus(Ride* ride)
 {
     ride->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
     ride->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
