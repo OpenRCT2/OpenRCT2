@@ -55,8 +55,8 @@ enum WINDOW_QUIT_PROMPT_WIDGET_IDX {
 
 static rct_widget window_quit_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
-    { WWT_BUTTON,           0,  8,      85,     19, 32, STR_OK,                     STR_NONE },     // ok
-    { WWT_BUTTON,           0,  91,     168,    19, 32, STR_CANCEL,                 STR_NONE },     // cancel
+    MakeWidget({ 8, 19}, {78, 14}, WWT_BUTTON, 0, STR_OK    ), // ok
+    MakeWidget({91, 19}, {78, 14}, WWT_BUTTON, 0, STR_CANCEL), // cancel
     { WIDGETS_END },
 };
 

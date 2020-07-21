@@ -18,7 +18,6 @@
 
 static constexpr const int32_t WW = 200;
 static constexpr const int32_t WH = 100;
-static constexpr const rct_string_id WINDOW_TITLE = STR_DEMOLISH_RIDE;
 
 static money32 _demolishRideCost;
 
@@ -34,18 +33,16 @@ enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
 
 // 0x009AEBA0
 static rct_widget window_ride_demolish_widgets[] = {
-    WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
-    { WWT_BUTTON,           0, 10,      94,         WH - 20,    WH - 9, STR_DEMOLISH,           STR_NONE },
-    { WWT_BUTTON,           0, WW - 95, WW - 11,    WH - 20,    WH - 9, STR_SAVE_PROMPT_CANCEL, STR_NONE },
+    WINDOW_SHIM_WHITE(STR_DEMOLISH_RIDE, WW, WH),
+    MakeWidget({     10, WH - 22}, {85, 14}, WWT_BUTTON, 0, STR_DEMOLISH          ),
+    MakeWidget({WW - 95, WH - 22}, {85, 14}, WWT_BUTTON, 0, STR_SAVE_PROMPT_CANCEL),
     { WIDGETS_END }
 };
 
 static rct_widget window_ride_refurbish_widgets[] = {
-    { WWT_FRAME,            0, 0,       WW - 1,     0,          WH - 1, STR_NONE,               STR_NONE },
-    { WWT_CAPTION,          0, 1,       WW - 2,     1,          14,     STR_REFURBISH_RIDE,     STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0, WW - 13, WW - 3,     2,          13,     STR_CLOSE_X_WHITE,      STR_CLOSE_WINDOW_TIP },
-    { WWT_BUTTON,           0, 10,      94,         WH - 20,    WH - 9, STR_REFURBISH,          STR_NONE },
-    { WWT_BUTTON,           0, WW - 95, WW - 11,    WH - 20,    WH - 9, STR_SAVE_PROMPT_CANCEL, STR_NONE },
+    WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
+    MakeWidget({     10, WH - 22}, {85, 14}, WWT_BUTTON, 0, STR_REFURBISH         ),
+    MakeWidget({WW - 95, WH - 22}, {85, 14}, WWT_BUTTON, 0, STR_SAVE_PROMPT_CANCEL),
     { WIDGETS_END }
 };
 

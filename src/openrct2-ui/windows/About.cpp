@@ -53,13 +53,13 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 
 static rct_widget window_about_openrct2_widgets[] = {
     WIDGETS_MAIN,
-    MakeWidget({100, WH - TABHEIGHT}, {200, 12}, WWT_BUTTON, 1, STR_CHANGELOG_ELLIPSIS), // changelog button
+    MakeWidget({100, WH - TABHEIGHT}, {200, 14}, WWT_BUTTON, 1, STR_CHANGELOG_ELLIPSIS), // changelog button
     { WIDGETS_END }
 };
 
 static rct_widget window_about_rct2_widgets[] = {
     WIDGETS_MAIN,
-    MakeWidget({100, WH - TABHEIGHT}, {200, 12}, WWT_BUTTON, 1, STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS), // music credits button
+    MakeWidget({100, WH - TABHEIGHT}, {200, 14}, WWT_BUTTON, 1, STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS), // music credits button
     { WIDGETS_END },
 };
 
