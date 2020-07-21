@@ -285,7 +285,7 @@ static rct_widget window_options_audio_widgets[] = {
 static rct_widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define CONTROLS_GROUP_START 53
-    MakeWidget({  5,  CONTROLS_GROUP_START + 0}, {300, 92}, WWT_GROUPBOX, 1, STR_CONTROLS_GROUP,          STR_NONE                       ), // Controls group
+    MakeWidget({  5,  CONTROLS_GROUP_START + 0}, {300, 92}, WWT_GROUPBOX, 1, STR_CONTROLS_GROUP                                          ), // Controls group
     MakeWidget({ 10, CONTROLS_GROUP_START + 13}, {290, 14}, WWT_CHECKBOX, 2, STR_SCREEN_EDGE_SCROLLING,   STR_SCREEN_EDGE_SCROLLING_TIP  ), // Edge scrolling
     MakeWidget({ 10, CONTROLS_GROUP_START + 30}, {290, 12}, WWT_CHECKBOX, 2, STR_TRAP_MOUSE,              STR_TRAP_MOUSE_TIP             ), // Trap mouse
     MakeWidget({ 10, CONTROLS_GROUP_START + 45}, {290, 12}, WWT_CHECKBOX, 2, STR_INVERT_RIGHT_MOUSE_DRAG, STR_INVERT_RIGHT_MOUSE_DRAG_TIP), // Invert right mouse dragging
@@ -293,8 +293,8 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     MakeWidget({155, CONTROLS_GROUP_START + 75}, {145, 13}, WWT_BUTTON,   1, STR_HOTKEY,                  STR_HOTKEY_TIP                 ), // Set hotkeys buttons
 #undef CONTROLS_GROUP_START
 #define THEMES_GROUP_START 148
-    MakeWidget({  5,  THEMES_GROUP_START + 0}, {300, 48}, WWT_GROUPBOX, 1, STR_THEMES_GROUP,       STR_NONE                  ), // Toolbar buttons group
-    MakeWidget({155, THEMES_GROUP_START + 14}, {145, 12}, WWT_DROPDOWN, 1, STR_STRING,             STR_NONE                  ), // Themes
+    MakeWidget({  5,  THEMES_GROUP_START + 0}, {300, 48}, WWT_GROUPBOX, 1, STR_THEMES_GROUP                                  ), // Toolbar buttons group
+    MakeWidget({155, THEMES_GROUP_START + 14}, {145, 12}, WWT_DROPDOWN, 1, STR_STRING                                        ), // Themes
     MakeWidget({288, THEMES_GROUP_START + 15}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,     STR_CURRENT_THEME_TIP     ),
     MakeWidget({155, THEMES_GROUP_START + 30}, {145, 13}, WWT_BUTTON,   1, STR_EDIT_THEMES_BUTTON, STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 #undef THEMES_GROUP_START
