@@ -59,13 +59,13 @@ static constexpr const rct_string_id BannerColouredTextFormats[] = {
 
 static rct_widget window_banner_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_VIEWPORT,         1,  3,          WW - 26,17,     WH - 20,    0x0FFFFFFFE,                STR_NONE},                          // tab content panel
-    { WWT_FLATBTN,          1,  WW - 25,    WW - 2, 19,     42,         SPR_RENAME,                 STR_CHANGE_BANNER_TEXT_TIP},        // change banner button
-    { WWT_FLATBTN,          1,  WW - 25,    WW - 2, 43,     66,         SPR_NO_ENTRY,               STR_SET_AS_NO_ENTRY_BANNER_TIP},    // no entry button
-    { WWT_FLATBTN,          1,  WW - 25,    WW - 2, 67,     90,         SPR_DEMOLISH,               STR_DEMOLISH_BANNER_TIP},           // demolish button
-    { WWT_COLOURBTN,        1,  5,          16,     WH - 16,WH - 5,     0xFFFFFFFF,                 STR_SELECT_MAIN_SIGN_COLOUR_TIP},   // high money
-    { WWT_DROPDOWN,         1,  43,         81,     WH - 16,WH - 5,     0xFFFFFFFF,                 STR_NONE},                          // high money
-    { WWT_BUTTON,           1,  70,         80,     WH - 15,WH - 6,     STR_DROPDOWN_GLYPH,         STR_SELECT_TEXT_COLOUR_TIP},        // high money
+    MakeWidget({      3,      17}, {85, 60}, WWT_VIEWPORT,  1, 0x0FFFFFFFE                                        ), // tab content panel
+    MakeWidget({WW - 25,      19}, {24, 24}, WWT_FLATBTN,   1, SPR_RENAME,         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
+    MakeWidget({WW - 25,      43}, {24, 24}, WWT_FLATBTN,   1, SPR_NO_ENTRY,       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
+    MakeWidget({WW - 25,      67}, {24, 24}, WWT_FLATBTN,   1, SPR_DEMOLISH,       STR_DEMOLISH_BANNER_TIP        ), // demolish button
+    MakeWidget({      5, WH - 16}, {12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,         STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
+    MakeWidget({     43, WH - 16}, {39, 12}, WWT_DROPDOWN,  1                                                     ), // high money
+    MakeWidget({     70, WH - 15}, {11, 10}, WWT_BUTTON,    1, STR_DROPDOWN_GLYPH, STR_SELECT_TEXT_COLOUR_TIP     ), // high money
     { WIDGETS_END },
 };
 
