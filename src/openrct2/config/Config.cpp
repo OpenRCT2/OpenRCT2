@@ -213,6 +213,7 @@ namespace Config
             model->show_real_names_of_guests = reader->GetBoolean("show_real_names_of_guests", true);
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
             model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", true);
+            model->last_version_check_time = reader->GetInt64("last_version_check_time", 0);
         }
     }
 
@@ -288,6 +289,7 @@ namespace Config
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
         writer->WriteEnum<int32_t>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
         writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
+        writer->WriteInt64("last_version_check_time", model->last_version_check_time);
     }
 
     static void ReadInterface(IIniReader* reader)

@@ -135,6 +135,8 @@ public:
                 return window_water_open();
             case WC_NETWORK:
                 return window_network_open();
+            case WC_NEW_VERSION:
+                return window_new_version_open();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;

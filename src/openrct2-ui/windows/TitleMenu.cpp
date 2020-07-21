@@ -209,11 +209,13 @@ static void window_title_menu_dropdown(rct_window* w, rct_widgetindex widgetInde
                 Editor::LoadTrackManager();
                 break;
             case 4:
+            {
                 auto context = OpenRCT2::GetContext();
                 auto env = context->GetPlatformEnvironment();
                 auto uiContext = context->GetUiContext();
                 uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER));
                 break;
+            }
         }
     }
 }

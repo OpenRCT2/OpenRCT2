@@ -11,6 +11,8 @@
 
 #include "common.h"
 
+#include <string>
+
 #define OPENRCT2_NAME "OpenRCT2"
 #define OPENRCT2_VERSION "0.2.6"
 
@@ -77,3 +79,13 @@
 #endif
 
 extern const char gVersionInfoFull[];
+extern const char gVersionInfoTag[];
+struct NewVersionInfo
+{
+    std::string tag;
+    std::string name;
+    std::string changelog;
+    std::string url;
+};
+
+NewVersionInfo get_latest_version();

@@ -101,6 +101,7 @@ struct GeneralConfiguration
     utf8* last_save_track_directory;
     utf8* last_run_version;
     bool use_native_browse_dialog;
+    int64_t last_version_check_time;
 };
 
 struct InterfaceConfiguration

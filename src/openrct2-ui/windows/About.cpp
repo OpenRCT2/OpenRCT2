@@ -15,9 +15,10 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
 
 static constexpr const int32_t WW = 400;
-static constexpr const int32_t WH = 350;
+static constexpr const int32_t WH = 385;
 static constexpr const rct_string_id WINDOW_TITLE = STR_ABOUT;
 constexpr int32_t TABHEIGHT = 50;
 
@@ -40,6 +41,8 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 
     // About OpenRCT2
     WIDX_CHANGELOG = WIDX_PAGE_START,
+    WIDX_JOIN_DISCORD,
+    WIDX_NEW_VERSION,
 
     // About RCT2
     WIDX_MUSIC_CREDITS = WIDX_PAGE_START,
@@ -53,7 +56,9 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 
 static rct_widget window_about_openrct2_widgets[] = {
     WIDGETS_MAIN,
-    MakeWidget({100, WH - TABHEIGHT}, {200, 14}, WWT_BUTTON, 1, STR_CHANGELOG_ELLIPSIS), // changelog button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 2}, {200, 14}, WWT_BUTTON, 1, STR_CHANGELOG_ELLIPSIS),          // changelog button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 1}, {200, 14}, WWT_BUTTON, 1, STR_JOIN_DISCORD),                 // "join discord" button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 0}, {200, 14}, WWT_PLACEHOLDER, 1, STR_UPDATE_AVAILABLE), // "new version" button
     { WIDGETS_END }
 };
 
@@ -72,12 +77,13 @@ static rct_widget *window_about_page_widgets[] = {
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_ABOUT_OPENRCT2) | (1ULL << WIDX_TAB_ABOUT_RCT2)
 
 static uint64_t window_about_page_enabled_widgets[] = {
-    DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_CHANGELOG),
+    DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_CHANGELOG) | (1 << WIDX_JOIN_DISCORD),
     DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_MUSIC_CREDITS),
 };
 
 static void window_about_openrct2_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_about_openrct2_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_about_openrct2_invalidate(rct_window *w);
 
 static void window_about_rct2_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -109,7 +115,7 @@ static rct_window_event_list window_about_openrct2_events = {
     nullptr,
     nullptr,
     nullptr,
-    nullptr,
+    window_about_openrct2_invalidate,
     window_about_openrct2_paint,
     nullptr
 };
@@ -191,8 +197,14 @@ static void window_about_openrct2_mouseup(rct_window* w, rct_widgetindex widgetI
         case WIDX_TAB_ABOUT_RCT2:
             window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
             break;
+        case WIDX_JOIN_DISCORD:
+            OpenRCT2::GetContext()->GetUiContext()->OpenURL("https://discord.gg/ZXZd8D8");
+            break;
         case WIDX_CHANGELOG:
             context_open_window(WC_CHANGELOG);
+            break;
+        case WIDX_NEW_VERSION:
+            context_open_window(WC_NEW_VERSION);
             break;
     }
 }
@@ -259,6 +271,16 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     aboutCoords.y = w->windowPos.y + WH - 25;
     gfx_draw_string_centred_wrapped(dpi, &ch, aboutCoords, width, STR_STRING, w->colours[2]);
+}
+
+static void window_about_openrct2_invalidate(rct_window* w)
+{
+    if (w->page == WINDOW_ABOUT_PAGE_OPENRCT2 && OpenRCT2::GetContext()->HasNewVersionInfo())
+    {
+        w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
+        w->widgets[WIDX_NEW_VERSION].type = WWT_BUTTON;
+        window_about_openrct2_widgets[WIDX_NEW_VERSION].type = WWT_BUTTON;
+    }
 }
 
 #pragma endregion OpenRCT2
