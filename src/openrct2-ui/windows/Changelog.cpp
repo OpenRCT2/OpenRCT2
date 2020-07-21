@@ -40,8 +40,8 @@ constexpr int32_t MIN_WH = 200;
 
 static rct_widget window_changelog_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({0, 14}, {500, 386}, WWT_RESIZE, 1, 0xFFFFFFFF,  STR_NONE), // content panel
-    MakeWidget({3, 16}, {495, 370}, WWT_SCROLL, 1, SCROLL_BOTH, STR_NONE), // scroll area
+    MakeWidget({0, 14}, {500, 386}, WWT_RESIZE, 1             ), // content panel
+    MakeWidget({3, 16}, {495, 370}, WWT_SCROLL, 1, SCROLL_BOTH), // scroll area
     { WIDGETS_END },
 };
 
