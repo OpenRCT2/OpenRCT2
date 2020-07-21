@@ -17,7 +17,7 @@
 
 struct rct_ride_entry;
 
-enum class ResearchEntryType
+enum class ResearchEntryType : uint8_t
 {
     Scenery = 0,
     Ride = 1,
@@ -104,7 +104,7 @@ struct ResearchItem
             auto* rideEntry = get_ride_entry(entryIndex);
             baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.type, rideEntry)
                                                 : oldResearchItem.baseRideType;
-            type = static_cast<ResearchEntryType>(oldResearchItem.type);
+            type = ResearchEntryType{ oldResearchItem.type };
             flags = oldResearchItem.flags;
             category = oldResearchItem.category;
         }
