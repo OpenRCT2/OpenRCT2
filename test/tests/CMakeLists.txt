@@ -86,6 +86,7 @@ set(COMMON_TEST_SOURCES
 
 # Create a re-usable library to save some compilation time
 add_library(test-common STATIC ${COMMON_TEST_SOURCES})
+set_target_properties(test-common PROPERTIES COMPILE_DEFINITIONS DISABLE_HTTP)
 
 # Setup testdata. It should be fine here, as the only way to reach here is by explicitly requesting tests.
 execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_LIST_DIR}/testdata" "${CMAKE_CURRENT_BINARY_DIR}/testdata")
