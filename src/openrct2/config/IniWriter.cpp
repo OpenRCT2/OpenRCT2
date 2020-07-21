@@ -48,6 +48,11 @@ public:
         WriteProperty(name, std::to_string(value));
     }
 
+    void WriteInt64(const std::string& name, int64_t value) override
+    {
+        WriteProperty(name, std::to_string(value));
+    }
+
     void WriteFloat(const std::string& name, float value) override
     {
         WriteProperty(name, std::to_string(value));
