@@ -96,10 +96,10 @@ enum
 static rct_widget _windowFinancesSummaryWidgets[] =
 {
     WINDOW_SHIM(STR_FINANCIAL_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
-    { WWT_RESIZE,           1,  0,      529,    43, WH_SUMMARY - 1,    0xFFFFFFFF,                 STR_NONE                                },
+    MakeWidget        ({  0,  43}, {530, 266}, WWT_RESIZE,  1),
     TAB_WIDGETS,
-    { WWT_SCROLL,           1,  130,    520,     50,    260,    SCROLL_HORIZONTAL,                  STR_NONE },
-      SPINNER_WIDGETS      (1,  64,     160,    279,    292,    STR_FINANCES_SUMMARY_LOAN_VALUE,    STR_NONE), // NB: 3 widgets.
+    MakeWidget        ({130,  50}, {391, 211}, WWT_SCROLL,  1, SCROLL_HORIZONTAL              ),
+    MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WWT_SPINNER, 1, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
     { WIDGETS_END },
 };
 
