@@ -15,6 +15,8 @@
 #include "../paint/tile_element/Paint.TileElement.h"
 #include "../world/Map.h"
 
+#include <array>
+
 class StationObject;
 
 extern const uint8_t track_map_2x2[][4];
@@ -27,6 +29,21 @@ extern const uint8_t track_map_4x4[][16];
 extern const uint8_t edges_4x4[];
 
 extern const uint8_t track_map_1x4[][4];
+
+namespace TrackPaint::Flat
+{
+    // Lift and No lift sprites
+    using BasicSprites = std::array<std::array<uint16_t, NumOrthogonalDirections>, 2>;
+
+    // No lift sprites
+    using NoLiftSprites = std::array<uint16_t, NumOrthogonalDirections>;
+
+    // Lift and No Lift (sprites * 2 {front, back})
+    using ComplexSprites = std::array<std::array<std::array<uint16_t, 2>, NumOrthogonalDirections>, 2>;
+
+    // Inverted and Not Inverted (Lift and No Lift) sprites
+    using InvertedSprites = std::array<std::array<std::array<uint16_t, NumOrthogonalDirections>, 2>, 2>;
+} // namespace TrackPaint::Flat
 
 enum
 {
