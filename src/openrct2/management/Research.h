@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -79,7 +79,7 @@ struct ResearchItem
         {
             retItem.entryIndex = OpenRCT2EntryIndexToRCTEntryIndex(entryIndex);
             retItem.baseRideType = baseRideType;
-            retItem.type = type;
+            retItem.type = OpenRCT2RideTypeToRCT2RideType(type);
             retItem.flags = (flags & ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE);
             retItem.category = category;
         }
@@ -101,7 +101,9 @@ struct ResearchItem
         {
             entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
             baseRideType = oldResearchItem.baseRideType;
-            type = oldResearchItem.type;
+            auto* rideEntry = get_ride_entry(entryIndex);
+            type = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.type, rideEntry)
+                                        : oldResearchItem.type;
             flags = oldResearchItem.flags;
             category = oldResearchItem.category;
         }

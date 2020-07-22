@@ -710,7 +710,7 @@ private:
         }
         else
         {
-            dst->type = RCT1::GetRideType(src->type);
+            dst->type = RCT1::GetRideType(src->type, src->vehicle_type);
         }
 
         if (RCT1::RideTypeUsesVehicles(src->type))

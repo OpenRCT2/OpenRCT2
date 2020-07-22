@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,10 +38,10 @@ enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
 
 static rct_widget window_save_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_NONE, WW_SAVE, WH_SAVE),
-    { WWT_LABEL_CENTRED,    0,  2,      257,    19, 30, 0,                          STR_NONE },                 // question/label
-    { WWT_BUTTON,           0,  8,      85,     35, 48, STR_SAVE_PROMPT_SAVE,       STR_NONE },     // save
-    { WWT_BUTTON,           0,  91,     168,    35, 48, STR_SAVE_PROMPT_DONT_SAVE,  STR_NONE },     // don't save
-    { WWT_BUTTON,           0,  174,    251,    35, 48, STR_SAVE_PROMPT_CANCEL,     STR_NONE },     // cancel
+    MakeWidget({  2, 19}, {256, 12}, WWT_LABEL_CENTRED, 0, STR_EMPTY                ), // question/label
+    MakeWidget({  8, 35}, { 78, 14}, WWT_BUTTON,        0, STR_SAVE_PROMPT_SAVE     ), // save
+    MakeWidget({ 91, 35}, { 78, 14}, WWT_BUTTON,        0, STR_SAVE_PROMPT_DONT_SAVE), // don't save
+    MakeWidget({174, 35}, { 78, 14}, WWT_BUTTON,        0, STR_SAVE_PROMPT_CANCEL   ), // cancel
     { WIDGETS_END },
 };
 
@@ -55,8 +55,8 @@ enum WINDOW_QUIT_PROMPT_WIDGET_IDX {
 
 static rct_widget window_quit_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
-    { WWT_BUTTON,           0,  8,      85,     19, 32, STR_OK,                     STR_NONE },     // ok
-    { WWT_BUTTON,           0,  91,     168,    19, 32, STR_CANCEL,                 STR_NONE },     // cancel
+    MakeWidget({ 8, 19}, {78, 14}, WWT_BUTTON, 0, STR_OK    ), // ok
+    MakeWidget({91, 19}, {78, 14}, WWT_BUTTON, 0, STR_CANCEL), // cancel
     { WIDGETS_END },
 };
 

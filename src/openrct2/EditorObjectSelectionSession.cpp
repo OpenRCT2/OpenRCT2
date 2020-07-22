@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -319,9 +319,7 @@ void unload_unselected_objects()
 {
     int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
-
-    size_t numObjectsToUnload = 0;
-    rct_object_entry* objectsToUnload = static_cast<rct_object_entry*>(malloc(numItems * sizeof(rct_object_entry)));
+    std::vector<rct_object_entry> objectsToUnload;
 
     for (int32_t i = 0; i < numItems; i++)
     {
@@ -330,12 +328,10 @@ void unload_unselected_objects()
             const rct_object_entry* entry = &items[i].ObjectEntry;
 
             remove_selected_objects_from_research(entry);
-            objectsToUnload[numObjectsToUnload++] = *entry;
+            objectsToUnload.push_back(*entry);
         }
     }
-
-    object_manager_unload_objects(objectsToUnload, numObjectsToUnload);
-    free(objectsToUnload);
+    object_manager_unload_objects(objectsToUnload);
 }
 
 /**

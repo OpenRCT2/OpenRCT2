@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -147,17 +147,16 @@ public:
         log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
     }
 
-    void UnloadObjects(const rct_object_entry* entries, size_t count) override
+    void UnloadObjects(const std::vector<rct_object_entry>& entries) override
     {
         // TODO there are two performance issues here:
         //        - FindObject for every entry which is a dictionary lookup
         //        - GetLoadedObjectIndex for every entry which enumerates _loadedList
 
         size_t numObjectsUnloaded = 0;
-        for (size_t i = 0; i < count; i++)
+        for (const auto& entry : entries)
         {
-            const rct_object_entry* entry = &entries[i];
-            const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
+            const ObjectRepositoryItem* ori = _objectRepository.FindObject(&entry);
             if (ori != nullptr)
             {
                 Object* loadedObject = ori->LoadedObject;
@@ -747,10 +746,10 @@ void* object_manager_load_object(const rct_object_entry* entry)
     return static_cast<void*>(loadedObject);
 }
 
-void object_manager_unload_objects(const rct_object_entry* entries, size_t count)
+void object_manager_unload_objects(const std::vector<rct_object_entry>& entries)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    objectManager.UnloadObjects(entries, count);
+    objectManager.UnloadObjects(entries);
 }
 
 void object_manager_unload_all_objects()

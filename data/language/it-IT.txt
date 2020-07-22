@@ -2905,7 +2905,7 @@ STR_5554    :{SMALLFONT}{BLACK}Attiva lo strumento montagna
 STR_5555    :Mostra i veicoli di altre attrazioni
 STR_5556    :{SMALLFONT}{BLACK}Caccia giocatore
 STR_5557    :Rimani connesso in caso di asincronia (multigiocatore)
-STR_5558    :È necessario riavviare il gioco per attivare questa opzione
+STR_5558    :Questa impostazione avrà effetto soltanto dopo aver riavviato OpenRCT2
 STR_5559    :Ispezioni ogni 10 min.
 STR_5560    :{SMALLFONT}{BLACK}Imposta l'intervallo di ispezione a “Ogni 10 minuti” su tutte le attrazioni
 STR_5561    :Caricamento lingua fallito
@@ -3682,6 +3682,9 @@ STR_6371    :La cartella specificata contiene un'installazione di RollerCoaster 
 STR_6372    :La cartella specificata contiene un'installazione di RollerCoaster Tycoon 1, ma la versione non è compatibile. OpenRCT2 necessita di un'installazione di Loopy Landscapes o di RCT Deluxe per poter utilizzare le risorse di RollerCoaster Tycoon 1.
 STR_6373    :Attiva controllo margini
 STR_6374    :M
+STR_6375    :Attrazione sconosciuta
+STR_6376    :{WINDOW_COLOUR_2}Veicolo attrazione:{NEWLINE}{BLACK}{STRINGID} per {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} per {STRINGID}
 
 #############
 # Scenarios #

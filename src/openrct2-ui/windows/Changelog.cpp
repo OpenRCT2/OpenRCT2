@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,8 +40,8 @@ constexpr int32_t MIN_WH = 200;
 
 static rct_widget window_changelog_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,           1,  0,          WW - 1, 14,     WH - 1,     0xFFFFFFFF,                     STR_NONE },             // content panel
-    { WWT_SCROLL,           1,  3,          WW - 3, 16,     WH - 15,    SCROLL_BOTH,                    STR_NONE },             // scroll area
+    MakeWidget({0, 14}, {500, 386}, WWT_RESIZE, 1             ), // content panel
+    MakeWidget({3, 16}, {495, 370}, WWT_SCROLL, 1, SCROLL_BOTH), // scroll area
     { WIDGETS_END },
 };
 

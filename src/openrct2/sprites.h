@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -601,8 +601,8 @@ enum
     SPR_RIDE_DESIGN_PREVIEW_RIVER_RAPIDS_SUPPORTS = 14271,
     SPR_RIDE_DESIGN_PREVIEW_DODGEMS_TRACK = 14272,
     SPR_RIDE_DESIGN_PREVIEW_DODGEMS_SUPPORTS = 14273,
-    SPR_RIDE_DESIGN_PREVIEW_PIRATE_SHIP_TRACK = 14274,
-    SPR_RIDE_DESIGN_PREVIEW_PIRATE_SHIP_SUPPORTS = 14275,
+    SPR_RIDE_DESIGN_PREVIEW_SWINGING_SHIP_TRACK = 14274,
+    SPR_RIDE_DESIGN_PREVIEW_SWINGING_SHIP_SUPPORTS = 14275,
     SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_TRACK = 14276,
     SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_SUPPORTS = 14277,
 

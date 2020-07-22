@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -34,8 +34,8 @@ enum WINDOW_SHORTCUT_WIDGET_IDX {
 // 0x9DE48C
 static rct_widget window_shortcut_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_SCROLL,           0,  4,      WW - 5, 18,     WH - 18,    SCROLL_VERTICAL,            STR_SHORTCUT_LIST_TIP },
-    { WWT_BUTTON,           0,  4,      153,    WH-15,  WH - 4,     STR_SHORTCUT_ACTION_RESET,  STR_SHORTCUT_ACTION_RESET_TIP },
+    MakeWidget({4,    18}, {412, 245}, WWT_SCROLL, 0, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
+    MakeWidget({4, WH-15}, {150,  12}, WWT_BUTTON, 0, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
     { WIDGETS_END }
 };
 

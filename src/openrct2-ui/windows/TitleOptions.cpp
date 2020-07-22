@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,7 @@ enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
 };
 
 static rct_widget window_title_options_widgets[] = {
-    { WWT_BUTTON, 2, 0, 79, 0, 14, STR_OPTIONS, STR_OPTIONS_TIP },
+    MakeWidget({0, 0}, {80, 15}, WWT_BUTTON, 2, STR_OPTIONS, STR_OPTIONS_TIP),
     { WIDGETS_END },
 };
 

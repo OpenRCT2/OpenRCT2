@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -712,8 +712,6 @@ struct ScreenLine : public CoordsRange<ScreenCoordsXY>
     ScreenLine(const ScreenCoordsXY& leftTop, const ScreenCoordsXY& rightBottom)
         : CoordsRange<ScreenCoordsXY>(leftTop, rightBottom)
     {
-        // Make sure one of the point coords change
-        assert((std::abs(GetX1() - GetX2()) > 0) || (std::abs(GetY1() - GetY2()) > 0));
     }
 };
 

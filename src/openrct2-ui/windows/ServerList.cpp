@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -58,14 +58,14 @@ enum {
 };
 
 static rct_widget window_server_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      340,    0,      90,     STR_NONE,                   STR_NONE },                 // panel / background
-    { WWT_CAPTION,          0,  1,      338,    1,      14,     STR_SERVER_LIST,            STR_WINDOW_TITLE_TIP },     // title bar
-    { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     // close x button
-    { WWT_TEXT_BOX,         1,  100,    344,    20,     31,     STR_NONE,                   STR_NONE },                 // player name text box
-    { WWT_SCROLL,           1,  6,      337,    37,     50,     STR_NONE,                   STR_NONE },                 // server list
-    { WWT_BUTTON,           1,  6,      106,    53,     66,     STR_FETCH_SERVERS,          STR_NONE },                 // fetch servers button
-    { WWT_BUTTON,           1,  112,    212,    53,     66,     STR_ADD_SERVER,             STR_NONE },                 // add server button
-    { WWT_BUTTON,           1,  218,    318,    53,     66,     STR_START_SERVER,           STR_NONE },                 // start server button
+    MakeWidget({  0,  0}, {341, 91}, WWT_FRAME,    0                                         ), // panel / background
+    MakeWidget({  1,  1}, {338, 14}, WWT_CAPTION,  0, STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
+    MakeWidget({327,  2}, { 11, 12}, WWT_CLOSEBOX, 0, STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
+    MakeWidget({100, 20}, {245, 12}, WWT_TEXT_BOX, 1                                         ), // player name text box
+    MakeWidget({  6, 37}, {332, 14}, WWT_SCROLL,   1                                         ), // server list
+    MakeWidget({  6, 53}, {101, 14}, WWT_BUTTON,   1, STR_FETCH_SERVERS                      ), // fetch servers button
+    MakeWidget({112, 53}, {101, 14}, WWT_BUTTON,   1, STR_ADD_SERVER                         ), // add server button
+    MakeWidget({218, 53}, {101, 14}, WWT_BUTTON,   1, STR_START_SERVER                       ), // start server button
     { WIDGETS_END },
 };
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,7 +87,7 @@ namespace Editor
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
-        mainWindow->SetLocation(2400, 2400, 112);
+        mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         load_palette();
         gScreenAge = 0;
         gScenarioName = language_get_string(STR_MY_NEW_SCENARIO);
@@ -163,7 +163,7 @@ namespace Editor
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
-        mainWindow->SetLocation(2400, 2400, 112);
+        mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         load_palette();
     }
 
@@ -184,7 +184,7 @@ namespace Editor
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
-        mainWindow->SetLocation(2400, 2400, 112);
+        mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         load_palette();
     }
 

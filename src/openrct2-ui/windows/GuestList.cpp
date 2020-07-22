@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -69,17 +69,17 @@ static constexpr const rct_string_id viewNames[VIEW_COUNT] = {
 
 static rct_widget window_guest_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,           1,  0,      349,    43, 329,    0xFFFFFFFF,             STR_NONE },                     // tab content panel
-    { WWT_DROPDOWN,         1,  5,      84,     59, 70,     STR_ARG_4_PAGE_X,       STR_NONE },                     // page dropdown
-    { WWT_BUTTON,           1,  73,     83,     60, 69,     STR_DROPDOWN_GLYPH,     STR_NONE },                     // page dropdown button
-    { WWT_DROPDOWN,         1,  120,    261,    59, 70,     0xFFFFFFFF,             STR_INFORMATION_TYPE_TIP },     // information type dropdown
-    { WWT_BUTTON,           1,  250,    260,    60, 69,     STR_DROPDOWN_GLYPH,     STR_INFORMATION_TYPE_TIP },     // information type dropdown button
-    { WWT_FLATBTN,          1,  273,    296,    46, 69,     SPR_MAP,                STR_SHOW_GUESTS_ON_MAP_TIP },   // map
-    { WWT_FLATBTN,          1,  297,    320,    46, 69,     SPR_G2_SEARCH,          STR_GUESTS_FILTER_BY_NAME_TIP },// filter by name
-    { WWT_FLATBTN,          1,  321,    344,    46, 69,     SPR_TRACK_PEEP,         STR_TRACKED_GUESTS_ONLY_TIP },  // tracking
-    { WWT_TAB,              1,  3,      33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_INDIVIDUAL_GUESTS_TIP },    // tab 1
-    { WWT_TAB,              1,  34,     64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_SUMMARISED_GUESTS_TIP },    // tab 2
-    { WWT_SCROLL,           1,  3,      346,    72, 326,    SCROLL_BOTH,            STR_NONE },                     // guest list
+    MakeWidget     ({  0, 43}, {350, 287}, WWT_RESIZE,   1                                                   ), // tab content panel
+    MakeWidget     ({  5, 59}, { 80,  12}, WWT_DROPDOWN, 1, STR_ARG_4_PAGE_X                                 ), // page dropdown
+    MakeWidget     ({ 73, 60}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                               ), // page dropdown button
+    MakeWidget     ({120, 59}, {142,  12}, WWT_DROPDOWN, 1, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
+    MakeWidget     ({250, 60}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
+    MakeWidget     ({273, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_MAP,            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
+    MakeWidget     ({297, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_G2_SEARCH,      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
+    MakeWidget     ({321, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_TRACK_PEEP,     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
+    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,            STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
+    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,            STR_SUMMARISED_GUESTS_TIP    ), // tab 2
+    MakeWidget     ({  3, 72}, {344, 255}, WWT_SCROLL,   1, SCROLL_BOTH                                      ), // guest list
     { WIDGETS_END },
 };
 

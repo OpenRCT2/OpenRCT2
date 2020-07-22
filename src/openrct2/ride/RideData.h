@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -254,7 +254,6 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY = (1ULL << 48),
     RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS = (1ULL << 49),
     RIDE_TYPE_FLAG_IS_SUSPENDED = (1ULL << 50),
-    RIDE_TYPE_FLAG_HAS_RIDE_GROUPS = (1ULL << 51),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.

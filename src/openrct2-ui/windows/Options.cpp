@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -194,118 +194,118 @@ static constexpr const int32_t WH = 332;
 
 #define MAIN_OPTIONS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    { WWT_RESIZE,           1,  0,      WW-1,   43,     WH-1,   0xFFFFFFFF,             STR_NONE }, \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_DISPLAY_TIP }, \
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_RENDERING_TIP }, \
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_CULTURE_TIP }, \
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_AUDIO_TIP }, \
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP }, \
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_MISCELLANEOUS_TIP }, \
-    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_ADVANCED }
+    MakeWidget     ({  0, 43}, {WW, 289}, WWT_RESIZE, 1), \
+    MakeRemapWidget({  3, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_OPTIONS_DISPLAY_TIP               ), \
+    MakeRemapWidget({ 34, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_OPTIONS_RENDERING_TIP             ), \
+    MakeRemapWidget({ 65, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_OPTIONS_CULTURE_TIP               ), \
+    MakeRemapWidget({ 96, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_OPTIONS_AUDIO_TIP                 ), \
+    MakeRemapWidget({127, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP), \
+    MakeRemapWidget({158, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_OPTIONS_MISCELLANEOUS_TIP         ), \
+    MakeRemapWidget({189, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_OPTIONS_ADVANCED                  )
 
 static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    { WWT_GROUPBOX,         1,  5,      304,    53,     207,    STR_HARDWARE_GROUP,     STR_NONE },                 // Hardware group
-    { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_NONE,               STR_NONE },                 // Fullscreen
-    { WWT_BUTTON,           1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_FULLSCREEN_MODE_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_ARG_16_RESOLUTION_X_BY_Y,   STR_NONE },             // Resolution
-    { WWT_BUTTON,           1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISPLAY_RESOLUTION_TIP },
-      SPINNER_WIDGETS      (1,  155,    299,    98,    109,     STR_NONE,               STR_WINDOW_SCALE_TIP), // Scale spinner (3 widgets)
-    { WWT_DROPDOWN,         1,  155,    299,    113,    124,    STR_NONE,               STR_NONE },
-    { WWT_BUTTON,           1,  288,    298,    114,    123,    STR_DROPDOWN_GLYPH,     STR_DRAWING_ENGINE_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,                       STR_NONE },                         // Scaling quality hint
-    { WWT_BUTTON,           1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,             STR_SCALE_QUALITY_TIP },
-    { WWT_CHECKBOX,         1,  25,     290,    144,    155,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
-    { WWT_CHECKBOX,         1,  11,     153,    161,    172,    STR_UNCAP_FPS,          STR_UNCAP_FPS_TIP },        // Uncap fps
-    { WWT_CHECKBOX,         1,  155,    290,    161,    172,    STR_SHOW_FPS,           STR_SHOW_FPS_TIP },         // Show fps
-    { WWT_CHECKBOX,         1,  155,    290,    176,    187,    STR_MULTITHREADING,           STR_MULTITHREADING_TIP },         // Multithreading
-    { WWT_CHECKBOX,         1,  11,     153,    176,    187,    STR_USE_VSYNC,          STR_USE_VSYNC_TIP },        // Use vsync
-    { WWT_CHECKBOX,         1,  11,     290,    191,    202,    STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS,  STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP },    // Minimise fullscreen focus loss
+    MakeWidget        ({  5,  53}, {300, 155}, WWT_GROUPBOX, 1, STR_HARDWARE_GROUP                                                              ), // Hardware group
+    MakeWidget        ({155,  68}, {145,  12}, WWT_DROPDOWN, 1                                                                                  ), // Fullscreen
+    MakeWidget        ({288,  69}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
+    MakeWidget        ({155,  83}, {145,  12}, WWT_DROPDOWN, 1, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ), // Resolution
+    MakeWidget        ({288,  84}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
+    MakeSpinnerWidgets({155,  98}, {145,  12}, WWT_SPINNER,  1, STR_NONE,                              STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
+    MakeWidget        ({155, 113}, {145,  12}, WWT_DROPDOWN, 1                                                                                  ),
+    MakeWidget        ({288, 114}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ),
+    MakeWidget        ({155, 128}, {145,  12}, WWT_DROPDOWN, 1                                                                                  ), // Scaling quality hint
+    MakeWidget        ({288, 129}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,                    STR_SCALE_QUALITY_TIP                    ),
+    MakeWidget        ({ 25, 144}, {266,  12}, WWT_CHECKBOX, 1, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
+    MakeWidget        ({ 11, 161}, {143,  12}, WWT_CHECKBOX, 1, STR_UNCAP_FPS,                         STR_UNCAP_FPS_TIP                        ), // Uncap fps
+    MakeWidget        ({155, 161}, {136,  12}, WWT_CHECKBOX, 1, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
+    MakeWidget        ({155, 176}, {136,  12}, WWT_CHECKBOX, 1, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
+    MakeWidget        ({ 11, 176}, {143,  12}, WWT_CHECKBOX, 1, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
+    MakeWidget        ({ 11, 191}, {280,  12}, WWT_CHECKBOX, 1, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
     { WIDGETS_END },
 };
 
 static rct_widget window_options_rendering_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    FRAME_RENDERING_START + 0,      FRAME_RENDERING_START + 107,    STR_RENDERING_GROUP,            STR_NONE },                             // Rendering group
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 15,     FRAME_RENDERING_START + 26,     STR_TILE_SMOOTHING,             STR_TILE_SMOOTHING_TIP },               // Landscape smoothing
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 30,     FRAME_RENDERING_START + 41,     STR_GRIDLINES,                  STR_GRIDLINES_TIP },                    // Gridlines
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 45,     FRAME_RENDERING_START + 56,     STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 60,     FRAME_RENDERING_START + 71,     STR_SHOW_GUEST_PURCHASES,       STR_SHOW_GUEST_PURCHASES_TIP },         // Guest purchases
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_TRANSPARENT_SCREENSHOT,     STR_TRANSPARENT_SCREENSHOT_TIP },       // Transparent screenshot
-    { WWT_LABEL,            1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_VIRTUAL_FLOOR_STYLE,        STR_NONE },                             // Virtual floor
-    { WWT_DROPDOWN,         1,  155,    299,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_NONE,                       STR_VIRTUAL_FLOOR_STYLE_TIP },          // Virtual floor dropdown
-    { WWT_BUTTON,           1,  288,    298,    FRAME_RENDERING_START + 91,     FRAME_RENDERING_START + 100,    STR_DROPDOWN_GLYPH,             STR_VIRTUAL_FLOOR_STYLE_TIP },          // Virtual floor dropdown
+    MakeWidget({  5,  FRAME_RENDERING_START + 0}, {300, 108}, WWT_GROUPBOX, 1, STR_RENDERING_GROUP                                       ), // Rendering group
+    MakeWidget({ 10, FRAME_RENDERING_START + 15}, {281,  12}, WWT_CHECKBOX, 1, STR_TILE_SMOOTHING,         STR_TILE_SMOOTHING_TIP        ), // Landscape smoothing
+    MakeWidget({ 10, FRAME_RENDERING_START + 30}, {281,  12}, WWT_CHECKBOX, 1, STR_GRIDLINES,              STR_GRIDLINES_TIP             ), // Gridlines
+    MakeWidget({ 10, FRAME_RENDERING_START + 45}, {281,  12}, WWT_CHECKBOX, 1, STR_UPPERCASE_BANNERS,      STR_UPPERCASE_BANNERS_TIP     ), // Uppercase banners
+    MakeWidget({ 10, FRAME_RENDERING_START + 60}, {281,  12}, WWT_CHECKBOX, 1, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
+    MakeWidget({ 10, FRAME_RENDERING_START + 75}, {281,  12}, WWT_CHECKBOX, 1, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
+    MakeWidget({ 10, FRAME_RENDERING_START + 90}, {281,  12}, WWT_LABEL,    1, STR_VIRTUAL_FLOOR_STYLE                                   ), // Virtual floor
+    MakeWidget({155, FRAME_RENDERING_START + 90}, {145,  12}, WWT_DROPDOWN, 1, STR_NONE,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+    MakeWidget({288, FRAME_RENDERING_START + 91}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
 #undef FRAME_RENDERING_START
 #define FRAME_EFFECTS_START 163
-    { WWT_GROUPBOX,         1,  5,      304,    FRAME_EFFECTS_START + 0,        FRAME_EFFECTS_START + 93,       STR_EFFECTS_GROUP,              STR_NONE },                             // Rendering group
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_EFFECTS_START + 15,       FRAME_EFFECTS_START + 26,       STR_CYCLE_DAY_NIGHT,            STR_CYCLE_DAY_NIGHT_TIP },              // Cycle day-night
-    { WWT_CHECKBOX,         1,  25,     290,    FRAME_EFFECTS_START + 30,       FRAME_EFFECTS_START + 41,       STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
-    { WWT_CHECKBOX,         1,  40,     290,    FRAME_EFFECTS_START + 45,       FRAME_EFFECTS_START + 56,       STR_ENABLE_LIGHTING_VEHICLES,   STR_ENABLE_LIGHTING_VEHICLES_TIP },     // Enable light fx for vehicles
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_EFFECTS_START + 60,       FRAME_EFFECTS_START + 71,       STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
-    { WWT_CHECKBOX,         1,  25,     290,    FRAME_EFFECTS_START + 75,       FRAME_EFFECTS_START + 86,       STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
+    MakeWidget({ 5,  FRAME_EFFECTS_START + 0}, {300, 94}, WWT_GROUPBOX, 1, STR_EFFECTS_GROUP                                             ), // Rendering group
+    MakeWidget({10, FRAME_EFFECTS_START + 15}, {281, 12}, WWT_CHECKBOX, 1, STR_CYCLE_DAY_NIGHT,          STR_CYCLE_DAY_NIGHT_TIP         ), // Cycle day-night
+    MakeWidget({25, FRAME_EFFECTS_START + 30}, {266, 12}, WWT_CHECKBOX, 1, STR_ENABLE_LIGHTING_EFFECTS,  STR_ENABLE_LIGHTING_EFFECTS_TIP ), // Enable light fx
+    MakeWidget({40, FRAME_EFFECTS_START + 45}, {251, 12}, WWT_CHECKBOX, 1, STR_ENABLE_LIGHTING_VEHICLES, STR_ENABLE_LIGHTING_VEHICLES_TIP), // Enable light fx for vehicles
+    MakeWidget({10, FRAME_EFFECTS_START + 60}, {281, 12}, WWT_CHECKBOX, 1, STR_RENDER_WEATHER_EFFECTS,   STR_RENDER_WEATHER_EFFECTS_TIP  ), // Render weather effects
+    MakeWidget({25, FRAME_EFFECTS_START + 75}, {266, 12}, WWT_CHECKBOX, 1, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP), // Disable lightning effect
 #undef FRAME_EFFECTS_START
     { WIDGETS_END },
 };
 
 static rct_widget window_options_culture_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    { WWT_DROPDOWN,         1,  155,    299,    53,     64,     STR_STRING,             STR_NONE }, // language
-    { WWT_BUTTON,           1,  288,    298,    54,     63,     STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_NONE,               STR_NONE }, // Currency
-    { WWT_BUTTON,           1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_CURRENCY_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_NONE,               STR_NONE }, // Distance and speed
-    { WWT_BUTTON,           1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISTANCE_AND_SPEED_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    98,     110,    STR_NONE,               STR_NONE }, // Temperature
-    { WWT_BUTTON,           1,  288,    298,    99,     108,    STR_DROPDOWN_GLYPH,     STR_TEMPERATURE_FORMAT_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    113,    124,    STR_NONE,               STR_NONE }, // Height labels
-    { WWT_BUTTON,           1,  288,    298,    114,    123,    STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP },
-    { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,               STR_NONE }, // Date format
-    { WWT_BUTTON,           1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP },
+    MakeWidget({155,  53}, {145, 12}, WWT_DROPDOWN, 1, STR_STRING                                     ), // language
+    MakeWidget({288,  54}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_LANGUAGE_TIP           ),
+    MakeWidget({155,  68}, {145, 12}, WWT_DROPDOWN, 1                                                 ), // Currency
+    MakeWidget({288,  69}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_CURRENCY_TIP           ),
+    MakeWidget({155,  83}, {145, 12}, WWT_DROPDOWN, 1                                                 ), // Distance and speed
+    MakeWidget({288,  84}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_DISTANCE_AND_SPEED_TIP ),
+    MakeWidget({155,  98}, {145, 13}, WWT_DROPDOWN, 1                                                 ), // Temperature
+    MakeWidget({288,  99}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_TEMPERATURE_FORMAT_TIP ),
+    MakeWidget({155, 113}, {145, 12}, WWT_DROPDOWN, 1                                                 ), // Height labels
+    MakeWidget({288, 114}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_HEIGHT_LABELS_UNITS_TIP),
+    MakeWidget({155, 128}, {145, 12}, WWT_DROPDOWN, 1                                                 ), // Date format
+    MakeWidget({288, 129}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_DATE_FORMAT_TIP        ),
     { WIDGETS_END },
 };
 
 static rct_widget window_options_audio_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    { WWT_DROPDOWN,         1,  10,     299,    53,     64,     STR_NONE,               STR_NONE },                     // Audio device
-    { WWT_BUTTON,           1,  288,    298,    54,     63,     STR_DROPDOWN_GLYPH,     STR_AUDIO_DEVICE_TIP },
-    { WWT_CHECKBOX,         1,  10,     229,    69,     80,     STR_MASTER_VOLUME,      STR_MASTER_VOLUME_TIP },        // Enable / disable master sound
-    { WWT_CHECKBOX,         1,  10,     229,    84,     95,     STR_SOUND_EFFECTS,      STR_SOUND_EFFECTS_TIP },        // Enable / disable sound effects
-    { WWT_CHECKBOX,         1,  10,     229,    99,     110,    STR_RIDE_MUSIC,         STR_RIDE_MUSIC_TIP },           // Enable / disable ride music
-    { WWT_CHECKBOX,         1,  10,     299,    113,    125,    STR_AUDIO_FOCUS,        STR_AUDIO_FOCUS_TIP },          // Enable / disable audio disabled on focus lost
-    { WWT_LABEL,            1,  10,     154,    128,    140,    STR_OPTIONS_MUSIC_LABEL,STR_NONE },                     // Title music label
-    { WWT_DROPDOWN,         1,  155,    299,    127,    139,    STR_NONE,               STR_NONE },                     // Title music
-    { WWT_BUTTON,           1,  288,    298,    128,    138,    STR_DROPDOWN_GLYPH,     STR_TITLE_MUSIC_TIP },
-    { WWT_SCROLL,           1,  155,    299,    68,     80,     SCROLL_HORIZONTAL,      STR_NONE },                     // Master volume
-    { WWT_SCROLL,           1,  155,    299,    83,     95,     SCROLL_HORIZONTAL,      STR_NONE },                     // Sound effect volume
-    { WWT_SCROLL,           1,  155,    299,    98,     110,    SCROLL_HORIZONTAL,      STR_NONE },                     // Music volume
+    MakeWidget({ 10,  53}, {290, 12}, WWT_DROPDOWN, 1                                                ), // Audio device
+    MakeWidget({288,  54}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
+    MakeWidget({ 10,  69}, {220, 12}, WWT_CHECKBOX, 1, STR_MASTER_VOLUME,       STR_MASTER_VOLUME_TIP), // Enable / disable master sound
+    MakeWidget({ 10,  84}, {220, 12}, WWT_CHECKBOX, 1, STR_SOUND_EFFECTS,       STR_SOUND_EFFECTS_TIP), // Enable / disable sound effects
+    MakeWidget({ 10,  99}, {220, 12}, WWT_CHECKBOX, 1, STR_RIDE_MUSIC,          STR_RIDE_MUSIC_TIP   ), // Enable / disable ride music
+    MakeWidget({ 10, 113}, {290, 13}, WWT_CHECKBOX, 1, STR_AUDIO_FOCUS,         STR_AUDIO_FOCUS_TIP  ), // Enable / disable audio disabled on focus lost
+    MakeWidget({ 10, 128}, {145, 13}, WWT_LABEL,    1, STR_OPTIONS_MUSIC_LABEL                       ), // Title music label
+    MakeWidget({155, 127}, {145, 13}, WWT_DROPDOWN, 1                                                ), // Title music
+    MakeWidget({288, 128}, { 11, 11}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
+    MakeWidget({155,  68}, {145, 13}, WWT_SCROLL,   1, SCROLL_HORIZONTAL                             ), // Master volume
+    MakeWidget({155,  83}, {145, 13}, WWT_SCROLL,   1, SCROLL_HORIZONTAL                             ), // Sound effect volume
+    MakeWidget({155,  98}, {145, 13}, WWT_SCROLL,   1, SCROLL_HORIZONTAL                             ), // Music volume
     { WIDGETS_END },
 };
 
 static rct_widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define CONTROLS_GROUP_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    CONTROLS_GROUP_START + 0,    CONTROLS_GROUP_START + 91,   STR_CONTROLS_GROUP,                     STR_NONE },                                 // Controls group
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 13,   CONTROLS_GROUP_START + 26,   STR_SCREEN_EDGE_SCROLLING,              STR_SCREEN_EDGE_SCROLLING_TIP },            // Edge scrolling
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 30,   CONTROLS_GROUP_START + 41,   STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 45,   CONTROLS_GROUP_START + 56,   STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
-    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 60,   CONTROLS_GROUP_START + 71,   STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },                   // Zoom to cursor
-    { WWT_BUTTON,           1,  155,    299,    CONTROLS_GROUP_START + 75,   CONTROLS_GROUP_START + 87,   STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
+    MakeWidget({  5,  CONTROLS_GROUP_START + 0}, {300, 92}, WWT_GROUPBOX, 1, STR_CONTROLS_GROUP                                          ), // Controls group
+    MakeWidget({ 10, CONTROLS_GROUP_START + 13}, {290, 14}, WWT_CHECKBOX, 2, STR_SCREEN_EDGE_SCROLLING,   STR_SCREEN_EDGE_SCROLLING_TIP  ), // Edge scrolling
+    MakeWidget({ 10, CONTROLS_GROUP_START + 30}, {290, 12}, WWT_CHECKBOX, 2, STR_TRAP_MOUSE,              STR_TRAP_MOUSE_TIP             ), // Trap mouse
+    MakeWidget({ 10, CONTROLS_GROUP_START + 45}, {290, 12}, WWT_CHECKBOX, 2, STR_INVERT_RIGHT_MOUSE_DRAG, STR_INVERT_RIGHT_MOUSE_DRAG_TIP), // Invert right mouse dragging
+    MakeWidget({ 10, CONTROLS_GROUP_START + 60}, {290, 12}, WWT_CHECKBOX, 2, STR_ZOOM_TO_CURSOR,          STR_ZOOM_TO_CURSOR_TIP         ), // Zoom to cursor
+    MakeWidget({155, CONTROLS_GROUP_START + 75}, {145, 13}, WWT_BUTTON,   1, STR_HOTKEY,                  STR_HOTKEY_TIP                 ), // Set hotkeys buttons
 #undef CONTROLS_GROUP_START
 #define THEMES_GROUP_START 148
-    { WWT_GROUPBOX,         1,  5,      304,    THEMES_GROUP_START + 0,      THEMES_GROUP_START + 47,     STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
-    { WWT_DROPDOWN,         1,  155,    299,    THEMES_GROUP_START + 14,     THEMES_GROUP_START + 25,     STR_STRING,                             STR_NONE },                                 // Themes
-    { WWT_BUTTON,           1,  288,    298,    THEMES_GROUP_START + 15,     THEMES_GROUP_START + 24,     STR_DROPDOWN_GLYPH,                     STR_CURRENT_THEME_TIP },
-    { WWT_BUTTON,           1,  155,    299,    THEMES_GROUP_START + 30,     THEMES_GROUP_START + 42,     STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
+    MakeWidget({  5,  THEMES_GROUP_START + 0}, {300, 48}, WWT_GROUPBOX, 1, STR_THEMES_GROUP                                  ), // Toolbar buttons group
+    MakeWidget({155, THEMES_GROUP_START + 14}, {145, 12}, WWT_DROPDOWN, 1, STR_STRING                                        ), // Themes
+    MakeWidget({288, THEMES_GROUP_START + 15}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,     STR_CURRENT_THEME_TIP     ),
+    MakeWidget({155, THEMES_GROUP_START + 30}, {145, 13}, WWT_BUTTON,   1, STR_EDIT_THEMES_BUTTON, STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 #undef THEMES_GROUP_START
 #define TOOLBAR_GROUP_START 200
-    { WWT_GROUPBOX,         1,  5,      304,    TOOLBAR_GROUP_START + 0,     TOOLBAR_GROUP_START + 75,    STR_TOOLBAR_BUTTONS_GROUP,              STR_NONE },                                 // Toolbar buttons group
-    { WWT_CHECKBOX,         2,  24,     145,    TOOLBAR_GROUP_START + 31,    TOOLBAR_GROUP_START + 42,    STR_FINANCES_BUTTON_ON_TOOLBAR,         STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },       // Finances
-    { WWT_CHECKBOX,         2,  24,     145,    TOOLBAR_GROUP_START + 46,    TOOLBAR_GROUP_START + 57,    STR_RESEARCH_BUTTON_ON_TOOLBAR,         STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },       // Research
-    { WWT_CHECKBOX,         2,  155,    299,    TOOLBAR_GROUP_START + 31,    TOOLBAR_GROUP_START + 42,    STR_CHEATS_BUTTON_ON_TOOLBAR,           STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },         // Cheats
-    { WWT_CHECKBOX,         2,  155,    299,    TOOLBAR_GROUP_START + 46,    TOOLBAR_GROUP_START + 57,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },  // Recent messages
-    { WWT_CHECKBOX,         2,  24,     185,    TOOLBAR_GROUP_START + 61,    TOOLBAR_GROUP_START + 72,    STR_MUTE_BUTTON_ON_TOOLBAR,             STR_MUTE_BUTTON_ON_TOOLBAR_TIP },           // Mute
-    { WWT_CHECKBOX,         2,  155,    299,    TOOLBAR_GROUP_START + 61,    TOOLBAR_GROUP_START + 72,    STR_CHAT_BUTTON_ON_TOOLBAR,             STR_CHAT_BUTTON_ON_TOOLBAR_TIP },           // Chat
+    MakeWidget({  5,  TOOLBAR_GROUP_START + 0}, {300, 76}, WWT_GROUPBOX, 1, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 31}, {122, 12}, WWT_CHECKBOX, 2, STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 46}, {122, 12}, WWT_CHECKBOX, 2, STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
+    MakeWidget({155, TOOLBAR_GROUP_START + 31}, {145, 12}, WWT_CHECKBOX, 2, STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
+    MakeWidget({155, TOOLBAR_GROUP_START + 46}, {145, 12}, WWT_CHECKBOX, 2, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {162, 12}, WWT_CHECKBOX, 2, STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
+    MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WWT_CHECKBOX, 2, STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
     { WIDGETS_END },
 #undef TOOLBAR_GROUP_START
 };
@@ -313,46 +313,46 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 static rct_widget window_options_misc_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define TITLE_SEQUENCE_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    TITLE_SEQUENCE_START + 0,       TITLE_SEQUENCE_START + 64,      STR_OPTIONS_TITLE_SEQUENCE,       STR_NONE },
-    { WWT_CHECKBOX,         2,  10,    299,    TITLE_SEQUENCE_START + 15,      TITLE_SEQUENCE_START + 30,  STR_OPTIONS_RANDOM_TITLE_SEQUENCE, STR_NONE},              //Random Title Sequence
-    { WWT_DROPDOWN,         1,  135,    299,    TITLE_SEQUENCE_START + 32,      TITLE_SEQUENCE_START + 43,      STR_STRING,                       STR_NONE },                             // Title sequence dropdown
-    { WWT_BUTTON,           1,  288,    298,    TITLE_SEQUENCE_START + 33,      TITLE_SEQUENCE_START + 44,      STR_DROPDOWN_GLYPH,               STR_TITLE_SEQUENCE_TIP },               // Title sequence dropdown button
-    { WWT_BUTTON,           1,  135,    299,    TITLE_SEQUENCE_START + 48,      TITLE_SEQUENCE_START + 60,      STR_EDIT_TITLE_SEQUENCES_BUTTON,  STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },  // Edit title sequences button
+    MakeWidget({  5,  TITLE_SEQUENCE_START + 0}, {300, 65}, WWT_GROUPBOX, 1, STR_OPTIONS_TITLE_SEQUENCE                                            ),
+    MakeWidget({ 10, TITLE_SEQUENCE_START + 15}, {290, 16}, WWT_CHECKBOX, 2, STR_OPTIONS_RANDOM_TITLE_SEQUENCE                                     ), // Random Title Sequence
+    MakeWidget({135, TITLE_SEQUENCE_START + 32}, {165, 12}, WWT_DROPDOWN, 1, STR_STRING                                                            ), // Title sequence dropdown
+    MakeWidget({288, TITLE_SEQUENCE_START + 33}, { 11, 12}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,                STR_TITLE_SEQUENCE_TIP             ), // Title sequence dropdown button
+    MakeWidget({135, TITLE_SEQUENCE_START + 48}, {165, 13}, WWT_BUTTON,   1, STR_EDIT_TITLE_SEQUENCES_BUTTON,   STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP), // Edit title sequences button
 #undef TITLE_SEQUENCE_START
 #define SCENARIO_START 122
-    { WWT_GROUPBOX,         1,  5,      304,    SCENARIO_START + 0,             SCENARIO_START + 50,            STR_OPTIONS_SCENARIO_SELECTION,   STR_NONE },
-    { WWT_DROPDOWN,         1,  175,    299,    SCENARIO_START + 15,            SCENARIO_START + 26,            STR_NONE,                         STR_NONE },                             // Scenario select mode
-    { WWT_BUTTON,           1,  288,    298,    SCENARIO_START + 16,            SCENARIO_START + 25,            STR_DROPDOWN_GLYPH,               STR_SCENARIO_GROUPING_TIP },
-    { WWT_CHECKBOX,         2,  25,     299,    SCENARIO_START + 30,            SCENARIO_START + 45,            STR_OPTIONS_SCENARIO_UNLOCKING,   STR_SCENARIO_UNLOCKING_TIP },           // Unlocking of scenarios
+    MakeWidget({  5,  SCENARIO_START + 0}, {300, 51}, WWT_GROUPBOX, 1, STR_OPTIONS_SCENARIO_SELECTION                            ),
+    MakeWidget({175, SCENARIO_START + 15}, {125, 12}, WWT_DROPDOWN, 1                                                            ), // Scenario select mode
+    MakeWidget({288, SCENARIO_START + 16}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,             STR_SCENARIO_GROUPING_TIP ),
+    MakeWidget({ 25, SCENARIO_START + 30}, {275, 16}, WWT_CHECKBOX, 2, STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
 #undef SCENARIO_START
 #define SCENARIO_OPTIONS_START 177
-    { WWT_GROUPBOX,         1,  5,      304,    SCENARIO_OPTIONS_START + 0,     SCENARIO_OPTIONS_START + 34,    STR_SCENARIO_OPTIONS,             STR_NONE },
-    { WWT_CHECKBOX,         2,  10,     299,    SCENARIO_OPTIONS_START + 15,    SCENARIO_OPTIONS_START + 29,    STR_ALLOW_EARLY_COMPLETION,       STR_EARLY_COMPLETION_TIP },             // Allow early scenario completion
+    MakeWidget({ 5,  SCENARIO_OPTIONS_START + 0}, {300, 35}, WWT_GROUPBOX, 1, STR_SCENARIO_OPTIONS                                ),
+    MakeWidget({10, SCENARIO_OPTIONS_START + 15}, {290, 15}, WWT_CHECKBOX, 2, STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
 #undef SCENARIO_OPTIONS_START
 #define TWEAKS_START 216
-    { WWT_GROUPBOX,         1,  5,      304,    TWEAKS_START + 0,               TWEAKS_START + 80,              STR_OPTIONS_TWEAKS,               STR_NONE },
-    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 15,              TWEAKS_START + 29,              STR_REAL_NAME,                    STR_REAL_NAME_TIP },                    // Show 'real' names of guests
-    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 30,              TWEAKS_START + 44,              STR_AUTO_STAFF_PLACEMENT,         STR_AUTO_STAFF_PLACEMENT_TIP },         // Auto staff placement
-    { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 45,              TWEAKS_START + 59,              STR_AUTO_OPEN_SHOPS,              STR_AUTO_OPEN_SHOPS_TIP },              // Automatically open shops & stalls
-    { WWT_DROPDOWN,         1,  175,    299,    TWEAKS_START + 61,              TWEAKS_START + 72,              STR_NONE,                         STR_NONE },                             // Default inspection time dropdown
-    { WWT_BUTTON,           1,  288,    298,    TWEAKS_START + 62,              TWEAKS_START + 71,              STR_DROPDOWN_GLYPH,               STR_DEFAULT_INSPECTION_INTERVAL_TIP },  // Default inspection time dropdown button
+    MakeWidget({  5,  TWEAKS_START + 0}, {300, 81}, WWT_GROUPBOX, 1, STR_OPTIONS_TWEAKS                                           ),
+    MakeWidget({ 10, TWEAKS_START + 15}, {290, 15}, WWT_CHECKBOX, 2, STR_REAL_NAME,            STR_REAL_NAME_TIP                  ), // Show 'real' names of guests
+    MakeWidget({ 10, TWEAKS_START + 30}, {290, 15}, WWT_CHECKBOX, 2, STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP       ), // Auto staff placement
+    MakeWidget({ 10, TWEAKS_START + 45}, {290, 15}, WWT_CHECKBOX, 2, STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP            ), // Automatically open shops & stalls
+    MakeWidget({175, TWEAKS_START + 61}, {125, 12}, WWT_DROPDOWN, 1                                                               ), // Default inspection time dropdown
+    MakeWidget({288, TWEAKS_START + 62}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP), // Default inspection time dropdown button
 #undef TWEAKS_START
     { WIDGETS_END },
 };
 
 static rct_widget window_options_advanced_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    { WWT_CHECKBOX,         2,  10,     299,    54,      65,    STR_ENABLE_DEBUGGING_TOOLS,                 STR_ENABLE_DEBUGGING_TOOLS_TIP },                   // Enable debugging tools
-    { WWT_CHECKBOX,         2,  10,     299,    69,      80,    STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,  STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },    // Allow loading with incorrect checksum
-    { WWT_CHECKBOX,         2,  10,     299,    84,      95,    STR_SAVE_PLUGIN_DATA,                       STR_SAVE_PLUGIN_DATA_TIP },                         // Export plug-in objects with saved games
-    { WWT_CHECKBOX,         2,  10,     299,    99,      110,   STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
-    { WWT_CHECKBOX,         1,  10,     299,    114,     125,   STR_ALWAYS_NATIVE_LOADSAVE,                 STR_ALWAYS_NATIVE_LOADSAVE_TIP },                   // Use native load/save window
-    { WWT_DROPDOWN,         1,  165,    299,    130,     142,   STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
-    { WWT_BUTTON,           1,  288,    298,    131,     141,   STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
-    SPINNER_WIDGETS        (1,  165,    299,    150,     161,   STR_NONE,                                   STR_AUTOSAVE_AMOUNT_TIP ),                          // Autosave amount spinner
-    { WWT_LABEL,            1,  23,     298,    169,     180,   STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
-    { WWT_BUTTON,           1,  24,     289,    184,     197,   STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
-    { WWT_BUTTON,           1,  289,    299,    184,     197,   STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
+    MakeWidget        ({ 10,  54}, {290, 12}, WWT_CHECKBOX, 2, STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
+    MakeWidget        ({ 10,  69}, {290, 12}, WWT_CHECKBOX, 2, STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP), // Allow loading with incorrect checksum
+    MakeWidget        ({ 10,  84}, {290, 12}, WWT_CHECKBOX, 2, STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
+    MakeWidget        ({ 10,  99}, {290, 12}, WWT_CHECKBOX, 2, STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
+    MakeWidget        ({ 10, 114}, {290, 12}, WWT_CHECKBOX, 1, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
+    MakeWidget        ({165, 130}, {135, 13}, WWT_DROPDOWN, 1                                                                                          ), // Autosave dropdown
+    MakeWidget        ({288, 131}, { 11, 11}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
+    MakeSpinnerWidgets({165, 150}, {135, 12}, WWT_SPINNER,  1, STR_NONE,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+    MakeWidget        ({ 23, 169}, {276, 12}, WWT_LABEL,    1, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
+    MakeWidget        ({ 24, 184}, {266, 14}, WWT_BUTTON,   1, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
+    MakeWidget        ({289, 184}, { 11, 14}, WWT_BUTTON,   1, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
     { WIDGETS_END },
 };
 

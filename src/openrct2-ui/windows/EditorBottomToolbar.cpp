@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,10 +36,10 @@ enum {
 };
 
 static rct_widget window_editor_bottom_toolbar_widgets[] = {
-    { WWT_IMGBTN, 0, 0, 199, 0, 33, 0xFFFFFFFF, 0xFFFF },           // 1        0x9A9958
-    { WWT_FLATBTN, 0, 2, 197, 2, 31, 0xFFFFFFFF, 0xFFFF },          // 2        0x9A9968
-    { WWT_IMGBTN, 0, 440, 639, 0, 33, 0xFFFFFFFF, 0xFFFF },         // 4        0x9A9978
-    { WWT_FLATBTN, 0, 442, 637, 2, 31, 0xFFFFFFFF, 0xFFFF },        // 8        0x9A9988
+    MakeWidget({  0, 0}, {200, 34}, WWT_IMGBTN,  0),
+    MakeWidget({  2, 2}, {196, 30}, WWT_FLATBTN, 0),
+    MakeWidget({440, 0}, {200, 34}, WWT_IMGBTN,  0),
+    MakeWidget({442, 2}, {196, 30}, WWT_FLATBTN, 0),
     { WIDGETS_END },
 };
 

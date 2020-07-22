@@ -345,7 +345,6 @@
     <ClInclude Include="ride\MusicList.h" />
     <ClInclude Include="ride\Ride.h" />
     <ClInclude Include="ride\RideData.h" />
-    <ClInclude Include="ride\RideGroupManager.h" />
     <ClInclude Include="ride\RideRatings.h" />
     <ClInclude Include="ride\RideTypes.h" />
     <ClInclude Include="ride\ShopItem.h" />
@@ -627,6 +626,7 @@
     <ClCompile Include="rct1\S4Importer.cpp" />
     <ClCompile Include="rct1\T4Importer.cpp" />
     <ClCompile Include="rct1\Tables.cpp" />
+    <ClCompile Include="rct2\RCT2.cpp" />
     <ClCompile Include="rct2\S6Exporter.cpp" />
     <ClCompile Include="rct2\S6Importer.cpp" />
     <ClCompile Include="rct2\SeaDecrypt.cpp" />
@@ -667,7 +667,7 @@
     <ClCompile Include="ride\coaster\WoodenRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\WoodenWildMouse.cpp" />
     <ClCompile Include="ride\gentle\CarRide.cpp" />
-    <ClCompile Include="ride\gentle\CircusShow.cpp" />
+    <ClCompile Include="ride\gentle\Circus.cpp" />
     <ClCompile Include="ride\gentle\CrookedHouse.cpp" />
     <ClCompile Include="ride\gentle\Dodgems.cpp" />
     <ClCompile Include="ride\gentle\FerrisWheel.cpp" />
@@ -685,7 +685,6 @@
     <ClCompile Include="ride\MusicList.cpp" />
     <ClCompile Include="ride\Ride.cpp" />
     <ClCompile Include="ride\RideData.cpp" />
-    <ClCompile Include="ride\RideGroupManager.cpp" />
     <ClCompile Include="ride\RideRatings.cpp" />
     <ClCompile Include="ride\ShopItem.cpp" />
     <ClCompile Include="ride\shops\Facility.cpp" />
@@ -697,7 +696,7 @@
     <ClCompile Include="ride\thrill\LaunchedFreefall.cpp" />
     <ClCompile Include="ride\thrill\MagicCarpet.cpp" />
     <ClCompile Include="ride\thrill\MotionSimulator.cpp" />
-    <ClCompile Include="ride\thrill\PirateShip.cpp" />
+    <ClCompile Include="ride\thrill\SwingingShip.cpp" />
     <ClCompile Include="ride\thrill\RotoDrop.cpp" />
     <ClCompile Include="ride\thrill\SwingingInverterShip.cpp" />
     <ClCompile Include="ride\thrill\TopSpin.cpp" />

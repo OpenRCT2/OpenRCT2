@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -91,7 +91,7 @@ struct rct_window
     uint8_t visibility;
     uint16_t viewport_smart_follow_sprite; // Handles setting viewport target sprite etc
 
-    void SetLocation(int32_t x, int32_t y, int32_t z);
+    void SetLocation(const CoordsXYZ& coords);
     void ScrollToViewport();
     void Invalidate();
 };

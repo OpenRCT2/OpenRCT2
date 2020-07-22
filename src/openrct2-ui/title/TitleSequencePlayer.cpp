@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -478,7 +478,7 @@ private:
             // Prevent scroll adjustment due to window placement when in-game
             auto oldScreenFlags = gScreenFlags;
             gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
-            w->SetLocation(loc.x, loc.y, z);
+            w->SetLocation({ loc, z });
             gScreenFlags = oldScreenFlags;
 
             viewport_update_position(w);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -727,6 +727,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
             break;
         case RIDE_TYPE_BOAT_HIRE:
         case RIDE_TYPE_CAR_RIDE:
+        case RIDE_TYPE_MONSTER_TRUCKS:
         case RIDE_TYPE_GO_KARTS:
         case RIDE_TYPE_DODGEMS:
         case RIDE_TYPE_MINI_HELICOPTERS:

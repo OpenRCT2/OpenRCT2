@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,7 +14,6 @@
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../ride/RideGroupManager.h"
 #include "../ride/TrackDesign.h"
 #include "RideCreateAction.hpp"
 #include "RideDemolishAction.hpp"
@@ -54,35 +53,6 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     else if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
     {
         entryIndex = OBJECT_ENTRY_INDEX_NULL;
-    }
-
-    // The rest of the cases are handled by the code in ride_create()
-    if (RideTypeDescriptors[_td.type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) && entryIndex == OBJECT_ENTRY_INDEX_NULL)
-    {
-        const ObjectRepositoryItem* ori = object_repository_find_object_by_name(rideEntryObject->name);
-        if (ori != nullptr)
-        {
-            uint8_t rideGroupIndex = ori->RideInfo.RideGroupIndex;
-            const RideGroup* td6RideGroup = RideGroupManager::RideGroupFind(_td.type, rideGroupIndex);
-
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-            auto& rideEntries = objManager.GetAllRideEntries(_td.type);
-            for (auto rideEntryIndex : rideEntries)
-            {
-                if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
-                {
-                    continue;
-                }
-
-                auto rideEntry = get_ride_entry(rideEntryIndex);
-                auto rideGroup = RideGroupManager::GetRideGroup(_td.type, rideEntry);
-                if (td6RideGroup->Equals(rideGroup))
-                {
-                    entryIndex = rideEntryIndex;
-                    break;
-                }
-            }
-        }
     }
 
     // Colours do not matter as will be overwritten
@@ -146,35 +116,6 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
     else if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
     {
         entryIndex = OBJECT_ENTRY_INDEX_NULL;
-    }
-
-    // The rest of the cases are handled by the code in ride_create()
-    if (RideTypeDescriptors[_td.type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) && entryIndex == OBJECT_ENTRY_INDEX_NULL)
-    {
-        const ObjectRepositoryItem* ori = object_repository_find_object_by_name(rideEntryObject->name);
-        if (ori != nullptr)
-        {
-            uint8_t rideGroupIndex = ori->RideInfo.RideGroupIndex;
-            const RideGroup* td6RideGroup = RideGroupManager::RideGroupFind(_td.type, rideGroupIndex);
-
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-            auto& rideEntries = objManager.GetAllRideEntries(_td.type);
-            for (auto rideEntryIndex : rideEntries)
-            {
-                if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
-                {
-                    continue;
-                }
-
-                auto rideEntry = get_ride_entry(rideEntryIndex);
-                auto rideGroup = RideGroupManager::GetRideGroup(_td.type, rideEntry);
-                if (td6RideGroup->Equals(rideGroup))
-                {
-                    entryIndex = rideEntryIndex;
-                    break;
-                }
-            }
-        }
     }
 
     // Colours do not matter as will be overwritten

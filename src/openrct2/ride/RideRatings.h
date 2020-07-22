@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,7 +87,7 @@ void ride_ratings_calculate_go_karts(Ride* ride);
 void ride_ratings_calculate_log_flume(Ride* ride);
 void ride_ratings_calculate_river_rapids(Ride* ride);
 void ride_ratings_calculate_dodgems(Ride* ride);
-void ride_ratings_calculate_pirate_ship(Ride* ride);
+void ride_ratings_calculate_swinging_ship(Ride* ride);
 void ride_ratings_calculate_inverter_ship(Ride* ride);
 void ride_ratings_calculate_food_stall(Ride* ride);
 void ride_ratings_calculate_shop(Ride* ride);
@@ -106,7 +106,7 @@ void ride_ratings_calculate_cash_machine(Ride* ride);
 void ride_ratings_calculate_twist(Ride* ride);
 void ride_ratings_calculate_haunted_house(Ride* ride);
 void ride_ratings_calculate_first_aid(Ride* ride);
-void ride_ratings_calculate_circus_show(Ride* ride);
+void ride_ratings_calculate_circus(Ride* ride);
 void ride_ratings_calculate_ghost_train(Ride* ride);
 void ride_ratings_calculate_twister_roller_coaster(Ride* ride);
 void ride_ratings_calculate_wooden_roller_coaster(Ride* ride);

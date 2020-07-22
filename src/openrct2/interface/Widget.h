@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -86,7 +86,7 @@ constexpr rct_widget MakeRemapWidget(
 }
 
 #define MakeSpinnerWidgets(...)                                                                                                \
-    MakeWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__)
+    MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
 
 constexpr rct_widget MakeSpinnerDecreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, uint8_t colour,

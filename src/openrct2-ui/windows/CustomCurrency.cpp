@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,10 +35,10 @@ enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
 
 static rct_widget window_custom_currency_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-      SPINNER_WIDGETS      (1,  100,    200,    30,     40, STR_CHEAT_CURRENCY_FORMAT,          STR_NONE), // NB: 3 widgets
-    { WWT_BUTTON,           1,  120,    200,    50,     60, 0,                                  STR_NONE },
-    { WWT_DROPDOWN,         1,  220,    350,    50,     60, STR_NONE,                           STR_NONE },
-    { WWT_BUTTON,           1,  339,    349,    51,     59, STR_DROPDOWN_GLYPH,                 STR_NONE },
+    MakeSpinnerWidgets({100, 30}, {101, 11}, WWT_SPINNER,  1, STR_CHEAT_CURRENCY_FORMAT), // NB: 3 widgets
+    MakeWidget        ({120, 50}, { 81, 11}, WWT_BUTTON,   1, STR_EMPTY                ),
+    MakeWidget        ({220, 50}, {131, 11}, WWT_DROPDOWN, 1                           ),
+    MakeWidget        ({339, 51}, { 11,  9}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH       ),
     { WIDGETS_END },
 };
 

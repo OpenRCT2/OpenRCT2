@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -72,30 +72,31 @@ enum WINDOW_FOOTPATH_WIDGET_IDX
 
 static rct_widget window_footpath_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+
     // Type group
-    {WWT_GROUPBOX, 0, 3,  102, 17,  71,  STR_TYPE,                          STR_NONE},
-    {WWT_FLATBTN,  1, 6,  52,  30,  65,  0xFFFFFFFF,                        STR_FOOTPATH_TIP},
-    {WWT_FLATBTN,  1, 53, 99,  30,  65,  0xFFFFFFFF,                        STR_QUEUE_LINE_PATH_TIP},
+    MakeWidget({ 3,  17}, {100, 55}, WWT_GROUPBOX, 0, STR_TYPE                                                                          ),
+    MakeWidget({ 6,  30}, { 47, 36}, WWT_FLATBTN,  1, 0xFFFFFFFF,                        STR_FOOTPATH_TIP                               ),
+    MakeWidget({53,  30}, { 47, 36}, WWT_FLATBTN,  1, 0xFFFFFFFF,                        STR_QUEUE_LINE_PATH_TIP                        ),
 
     // Direction group
-    {WWT_GROUPBOX, 0, 3,  102, 75,  151, STR_DIRECTION,                     STR_NONE},
-    {WWT_FLATBTN,  1, 53, 97,  87,  115, SPR_CONSTRUCTION_DIRECTION_NE,     STR_DIRECTION_TIP},
-    {WWT_FLATBTN,  1, 53, 97,  116, 144, SPR_CONSTRUCTION_DIRECTION_SE,     STR_DIRECTION_TIP},
-    {WWT_FLATBTN,  1, 8,  52,  116, 144, SPR_CONSTRUCTION_DIRECTION_SW,     STR_DIRECTION_TIP},
-    {WWT_FLATBTN,  1, 8,  52,  87,  115, SPR_CONSTRUCTION_DIRECTION_NW,     STR_DIRECTION_TIP},
+    MakeWidget({ 3,  75}, {100, 77}, WWT_GROUPBOX, 0, STR_DIRECTION                                                                     ),
+    MakeWidget({53,  87}, { 45, 29}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_DIRECTION_NE,     STR_DIRECTION_TIP                              ),
+    MakeWidget({53, 116}, { 45, 29}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_DIRECTION_SE,     STR_DIRECTION_TIP                              ),
+    MakeWidget({ 8, 116}, { 45, 29}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_DIRECTION_SW,     STR_DIRECTION_TIP                              ),
+    MakeWidget({ 8,  87}, { 45, 29}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_DIRECTION_NW,     STR_DIRECTION_TIP                              ),
 
     // Slope group
-    {WWT_GROUPBOX, 0, 3,  102, 155, 195, STR_SLOPE,                         STR_NONE},
-    {WWT_FLATBTN,  1, 17, 40,  167, 190, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,  STR_SLOPE_DOWN_TIP},
-    {WWT_FLATBTN,  1, 41, 64,  167, 190, SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL, STR_LEVEL_TIP},
-    {WWT_FLATBTN,  1, 65, 88,  167, 190, SPR_RIDE_CONSTRUCTION_SLOPE_UP,    STR_SLOPE_UP_TIP},
-    {WWT_FLATBTN,  1, 8,  97,  202, 291, 0xFFFFFFFF,                        STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP},
-    {WWT_FLATBTN,  1, 30, 75,  295, 318, SPR_DEMOLISH_CURRENT_SECTION,      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP},
+    MakeWidget({ 3, 155}, {100, 41}, WWT_GROUPBOX, 0, STR_SLOPE                                                                         ),
+    MakeWidget({17, 167}, { 24, 24}, WWT_FLATBTN,  1, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,  STR_SLOPE_DOWN_TIP                             ),
+    MakeWidget({41, 167}, { 24, 24}, WWT_FLATBTN,  1, SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL, STR_LEVEL_TIP                                  ),
+    MakeWidget({65, 167}, { 24, 24}, WWT_FLATBTN,  1, SPR_RIDE_CONSTRUCTION_SLOPE_UP,    STR_SLOPE_UP_TIP                               ),
+    MakeWidget({ 8, 202}, { 90, 90}, WWT_FLATBTN,  1, 0xFFFFFFFF,                        STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP),
+    MakeWidget({30, 295}, { 46, 24}, WWT_FLATBTN,  1, SPR_DEMOLISH_CURRENT_SECTION,      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP       ),
 
     // Mode group
-    {WWT_GROUPBOX, 0, 3,  102, 321, 374, 0xFFFFFFFF,                        STR_NONE},
-    {WWT_FLATBTN,  1, 13, 48,  332, 367, SPR_CONSTRUCTION_FOOTPATH_LAND,    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP},
-    {WWT_FLATBTN,  1, 57, 92,  332, 367, SPR_CONSTRUCTION_FOOTPATH_BRIDGE,  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP},
+    MakeWidget({ 3, 321}, {100, 54}, WWT_GROUPBOX, 0                                                                                    ),
+    MakeWidget({13, 332}, { 36, 36}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_FOOTPATH_LAND,    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
+    MakeWidget({57, 332}, { 36, 36}, WWT_FLATBTN,  1, SPR_CONSTRUCTION_FOOTPATH_BRIDGE,  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    ),
     {WIDGETS_END},
 };
 

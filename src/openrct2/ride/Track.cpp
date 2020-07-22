@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,7 +29,6 @@
 #include "../world/Surface.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "RideGroupManager.h"
 #include "RideRatings.h"
 #include "Station.h"
 #include "TrackData.h"
@@ -901,9 +900,9 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
             if (stationElement != nullptr)
             {
                 int32_t targetTrackType;
-                if (x == stationX1 && y == stationY1)
+                if ((x == stationX1 && y == stationY1)
+                    || (x + CoordsDirectionDelta[direction].x == removeX && y + CoordsDirectionDelta[direction].y == removeY))
                 {
-                loc_6C4BF5:;
                     auto stationIndex = ride_get_first_empty_station_start(ride);
                     if (stationIndex == STATION_INDEX_NULL)
                     {
@@ -924,27 +923,19 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
                 }
                 else
                 {
-                    if (x + CoordsDirectionDelta[direction].x == removeX && y + CoordsDirectionDelta[direction].y == removeY)
+                    if (x - CoordsDirectionDelta[direction].x == removeX && y - CoordsDirectionDelta[direction].y == removeY)
                     {
-                        goto loc_6C4BF5;
+                        targetTrackType = TRACK_ELEM_BEGIN_STATION;
                     }
                     else
                     {
-                        if (x - CoordsDirectionDelta[direction].x == removeX
-                            && y - CoordsDirectionDelta[direction].y == removeY)
+                        if (x == stationX0 && y == stationY0)
                         {
                             targetTrackType = TRACK_ELEM_BEGIN_STATION;
                         }
                         else
                         {
-                            if (x == stationX0 && y == stationY0)
-                            {
-                                targetTrackType = TRACK_ELEM_BEGIN_STATION;
-                            }
-                            else
-                            {
-                                targetTrackType = TRACK_ELEM_MIDDLE_STATION;
-                            }
+                            targetTrackType = TRACK_ELEM_MIDDLE_STATION;
                         }
                     }
                 }
@@ -1222,7 +1213,7 @@ bool track_element_is_covered(int32_t trackElementType)
 bool track_element_is_booster(uint8_t rideType, uint8_t trackType)
 {
     // Boosters share their ID with the Spinning Control track.
-    return rideType != RIDE_TYPE_STEEL_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER;
+    return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER;
 }
 
 bool track_element_has_speed_setting(uint8_t trackType)

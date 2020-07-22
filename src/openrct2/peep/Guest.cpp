@@ -19,6 +19,7 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
+#include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
@@ -2379,11 +2380,15 @@ bool Guest::HasRidden(const Ride* ride) const
 
 void Guest::SetHasRiddenRideType(int32_t rideType)
 {
+    // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
+    rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
     RideTypesBeenOn[rideType / 8] |= 1 << (rideType % 8);
 }
 
 bool Guest::HasRiddenRideType(int32_t rideType) const
 {
+    // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
+    rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
     return RideTypesBeenOn[rideType / 8] & (1 << (rideType % 8));
 }
 
@@ -2566,6 +2571,8 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
         for (int32_t i = 0; i < ride->num_vehicles; ++i)
         {
             Vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
+            if (vehicle == nullptr)
+                continue;
 
             if (vehicle->next_free_seat >= vehicle->num_seats)
                 continue;

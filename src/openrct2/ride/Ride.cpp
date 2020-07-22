@@ -56,7 +56,6 @@
 #include "CableLift.h"
 #include "MusicList.h"
 #include "RideData.h"
-#include "RideGroupManager.h"
 #include "ShopItem.h"
 #include "Station.h"
 #include "Track.h"
@@ -5639,12 +5638,7 @@ void Ride::SetNameToDefault()
  */
 RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
 {
-    if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-    {
-        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
-        return rideGroup->Naming;
-    }
-    else if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         return RideTypeDescriptors[rideType].Naming;
     }
@@ -7647,18 +7641,6 @@ void Ride::FormatNameTo(Formatter& ft) const
             if (rideEntry != nullptr)
             {
                 rideTypeName = rideEntry->naming.Name;
-            }
-        }
-        else if (RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-        {
-            auto rideEntry = GetRideEntry();
-            if (rideEntry != nullptr)
-            {
-                auto rideGroup = RideGroupManager::GetRideGroup(type, rideEntry);
-                if (rideGroup != nullptr)
-                {
-                    rideTypeName = rideGroup->Naming.Name;
-                }
             }
         }
         ft.Add<rct_string_id>(1).Add<rct_string_id>(rideTypeName).Add<uint16_t>(default_name_number);

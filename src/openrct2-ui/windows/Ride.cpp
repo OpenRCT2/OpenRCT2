@@ -43,7 +43,6 @@
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/ride/Station.h>
 #include <openrct2/ride/Track.h>
@@ -2287,16 +2286,6 @@ static void populate_vehicle_type_dropdown(Ride* ride)
             // Skip if vehicle type has not been invented yet
             if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                 continue;
-
-            // Skip if vehicle does not belong to the same ride group
-            if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) && !selectionShouldBeExpanded)
-            {
-                const RideGroup* rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
-                const RideGroup* currentRideGroup = RideGroupManager::GetRideGroup(ride->type, currentRideEntry);
-
-                if (!rideGroup->Equals(currentRideGroup))
-                    continue;
-            }
 
             VehicleTypeLabel label = { rideEntryIndex, currentRideEntry->naming.Name,
                                        ls.GetString(currentRideEntry->naming.Name) };

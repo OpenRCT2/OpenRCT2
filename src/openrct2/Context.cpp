@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -547,8 +547,7 @@ namespace OpenRCT2
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
                     if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail))
                     {
-                        Console::Error::WriteLine(".sea file may have been renamed.");
-                        return false;
+                        throw std::runtime_error(".sea file may have been renamed.");
                     }
                     return true;
                 }
@@ -561,132 +560,124 @@ namespace OpenRCT2
             catch (const std::exception& e)
             {
                 Console::Error::WriteLine(e.what());
+                if (loadTitleScreenOnFail)
+                {
+                    title_load();
+                }
+                auto windowManager = _uiContext->GetWindowManager();
+                windowManager->ShowError(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE);
             }
             return false;
         }
 
         bool LoadParkFromStream(IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail) final override
         {
-            ClassifiedFileInfo info;
-            if (TryClassifyFile(stream, &info))
+            try
             {
-                if (info.Type == FILE_TYPE::SAVED_GAME || info.Type == FILE_TYPE::SCENARIO)
+                ClassifiedFileInfo info;
+                if (!TryClassifyFile(stream, &info))
                 {
-                    std::unique_ptr<IParkImporter> parkImporter;
-                    if (info.Version <= FILE_TYPE_S4_CUTOFF)
-                    {
-                        // Save is an S4 (RCT1 format)
-                        parkImporter = ParkImporter::CreateS4();
-                    }
-                    else
-                    {
-                        // Save is an S6 (RCT2 format)
-                        parkImporter = ParkImporter::CreateS6(*_objectRepository);
-                    }
+                    throw std::runtime_error("Unable to detect file type");
+                }
 
-                    try
-                    {
-                        auto result = parkImporter->LoadFromStream(
-                            stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
-                        _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
-                        parkImporter->Import();
-                        gScenarioSavePath = path;
-                        gCurrentLoadedPath = path;
-                        gFirstTimeSaving = true;
-                        game_fix_save_vars();
-                        AutoCreateMapAnimations();
-                        sprite_position_tween_reset();
-                        gScreenAge = 0;
-                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+                if (info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
+                {
+                    throw std::runtime_error("Invalid file type.");
+                }
 
-                        bool sendMap = false;
-                        if (info.Type == FILE_TYPE::SAVED_GAME)
-                        {
-                            if (network_get_mode() == NETWORK_MODE_CLIENT)
-                            {
-                                network_close();
-                            }
-                            game_load_init();
-                            if (network_get_mode() == NETWORK_MODE_SERVER)
-                            {
-                                sendMap = true;
-                            }
-                        }
-                        else
-                        {
-                            scenario_begin();
-                            if (network_get_mode() == NETWORK_MODE_SERVER)
-                            {
-                                sendMap = true;
-                            }
-                            if (network_get_mode() == NETWORK_MODE_CLIENT)
-                            {
-                                network_close();
-                            }
-                        }
-                        // This ensures that the newly loaded save reflects the user's
-                        // 'show real names of guests' option, now that it's a global setting
-                        peep_update_names(gConfigGeneral.show_real_names_of_guests);
-                        if (sendMap)
-                        {
-                            network_send_map();
-                        }
-#ifdef USE_BREAKPAD
-                        if (network_get_mode() == NETWORK_MODE_NONE)
-                        {
-                            start_silent_record();
-                        }
-#endif
-                        return true;
-                    }
-                    catch (const ObjectLoadException& e)
-                    {
-                        // This option is used when loading parks from the command line
-                        // to ensure that the title sequence loads before the window
-                        if (loadTitleScreenFirstOnFail)
-                        {
-                            title_load();
-                        }
-                        // The path needs to be duplicated as it's a const here
-                        // which the window function doesn't like
-                        auto intent = Intent(WC_OBJECT_LOAD_ERROR);
-                        intent.putExtra(INTENT_EXTRA_PATH, path);
-                        intent.putExtra(INTENT_EXTRA_LIST, const_cast<rct_object_entry*>(e.MissingObjects.data()));
-                        intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
+                std::unique_ptr<IParkImporter> parkImporter;
+                if (info.Version <= FILE_TYPE_S4_CUTOFF)
+                {
+                    // Save is an S4 (RCT1 format)
+                    parkImporter = ParkImporter::CreateS4();
+                }
+                else
+                {
+                    // Save is an S6 (RCT2 format)
+                    parkImporter = ParkImporter::CreateS6(*_objectRepository);
+                }
 
-                        auto windowManager = _uiContext->GetWindowManager();
-                        windowManager->OpenIntent(&intent);
-                    }
-                    catch (const UnsupportedRCTCFlagException& e)
-                    {
-                        // This option is used when loading parks from the command line
-                        // to ensure that the title sequence loads before the window
-                        if (loadTitleScreenFirstOnFail)
-                        {
-                            title_load();
-                        }
+                auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+                _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                parkImporter->Import();
+                gScenarioSavePath = path;
+                gCurrentLoadedPath = path;
+                gFirstTimeSaving = true;
+                game_fix_save_vars();
+                AutoCreateMapAnimations();
+                sprite_position_tween_reset();
+                gScreenAge = 0;
+                gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 
-                        auto windowManager = _uiContext->GetWindowManager();
-                        Formatter::Common().Add<uint16_t>(e.Flag);
-                        windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE);
-                    }
-                    catch (const std::exception& e)
+                bool sendMap = false;
+                if (info.Type == FILE_TYPE::SAVED_GAME)
+                {
+                    if (network_get_mode() == NETWORK_MODE_CLIENT)
                     {
-                        // If loading the SV6 or SV4 failed for a reason other than invalid objects
-                        // the current park state will be corrupted so just go back to the title screen.
-                        title_load();
-                        Console::Error::WriteLine(e.what());
+                        network_close();
+                    }
+                    game_load_init();
+                    if (network_get_mode() == NETWORK_MODE_SERVER)
+                    {
+                        sendMap = true;
                     }
                 }
                 else
                 {
-                    Console::Error::WriteLine("Invalid file type.");
+                    scenario_begin();
+                    if (network_get_mode() == NETWORK_MODE_SERVER)
+                    {
+                        sendMap = true;
+                    }
+                    if (network_get_mode() == NETWORK_MODE_CLIENT)
+                    {
+                        network_close();
+                    }
                 }
+                // This ensures that the newly loaded save reflects the user's
+                // 'show real names of guests' option, now that it's a global setting
+                peep_update_names(gConfigGeneral.show_real_names_of_guests);
+                if (sendMap)
+                {
+                    network_send_map();
+                }
+#ifdef USE_BREAKPAD
+                if (network_get_mode() == NETWORK_MODE_NONE)
+                {
+                    start_silent_record();
+                }
+#endif
+                return true;
             }
-            else
+            catch (const ObjectLoadException& e)
             {
-                Console::Error::WriteLine("Unable to detect file type.");
+                // The path needs to be duplicated as it's a const here
+                // which the window function doesn't like
+                auto intent = Intent(WC_OBJECT_LOAD_ERROR);
+                intent.putExtra(INTENT_EXTRA_PATH, path);
+                intent.putExtra(INTENT_EXTRA_LIST, const_cast<rct_object_entry*>(e.MissingObjects.data()));
+                intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
+
+                auto windowManager = _uiContext->GetWindowManager();
+                windowManager->OpenIntent(&intent);
             }
+            catch (const UnsupportedRCTCFlagException& e)
+            {
+                auto windowManager = _uiContext->GetWindowManager();
+                Formatter::Common().Add<uint16_t>(e.Flag);
+                windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE);
+            }
+            catch (const std::exception& e)
+            {
+                Console::Error::WriteLine(e.what());
+            }
+
+            // If loading the SV6 or SV4 failed return to the title screen if requested.
+            if (loadTitleScreenFirstOnFail)
+            {
+                title_load();
+            }
+
             return false;
         }
 

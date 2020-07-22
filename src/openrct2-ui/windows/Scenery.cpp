@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -155,35 +155,35 @@ validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
 static rct_widget window_scenery_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT),
-    { WWT_RESIZE, 1, 0, 633, 43, 141, 0xFFFFFFFF, STR_NONE },                           // 8                0x009DE2C8
-    { WWT_TAB, 1, 3, 33, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                  // 10               0x009DE2D8
-    { WWT_TAB, 1, 34, 64, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                 // 20               0x009DE2E8
-    { WWT_TAB, 1, 65, 95, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                 // 40               0x009DE2F8
-    { WWT_TAB, 1, 96, 126, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                    // 80               0x009DE308
-    { WWT_TAB, 1, 127, 157, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 100              0x009DE318
-    { WWT_TAB, 1, 158, 188, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 200              0x009DE328
-    { WWT_TAB, 1, 189, 219, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 400              0x009DE338
-    { WWT_TAB, 1, 220, 250, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 800              0x009DE348
-    { WWT_TAB, 1, 251, 281, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 1000             0x009DE358
-    { WWT_TAB, 1, 282, 312, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 2000             0x009DE368
-    { WWT_TAB, 1, 313, 343, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 4000             0x009DE378
-    { WWT_TAB, 1, 344, 374, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 8000             0x009DE388
-    { WWT_TAB, 1, 375, 405, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 10000            0x009DE398
-    { WWT_TAB, 1, 406, 436, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 20000            0x009DE3A8
-    { WWT_TAB, 1, 437, 467, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 40000            0x009DE3B8
-    { WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 80000            0x009DE3C8
-    { WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 100000           0x009DE3D8
-    { WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 200000           0x009DE3E8
-    { WWT_TAB, 1, 468, 498, 17, 43, 0xFFFFFFFF, STR_STRING_DEFINED_TOOLTIP },                                   // 400000           0x009DE3F8
-    { WWT_TAB, 1, 468, 498, 17, 43, IMAGE_TYPE_REMAP | SPR_TAB_QUESTION, STR_STRING_DEFINED_TOOLTIP },                                    // 800000           0x009DE408
-    { WWT_SCROLL, 1, 2, 608, 47, 126, SCROLL_VERTICAL, STR_NONE },                                  // 1000000          0x009DE418
-    { WWT_FLATBTN, 1, 609, 632, 44, 67, SPR_ROTATE_ARROW, STR_ROTATE_OBJECTS_90 },                  // 2000000          0x009DE428
-    { WWT_FLATBTN, 1, 609, 632, 68, 91, SPR_PAINTBRUSH, STR_SCENERY_PAINTBRUSH_TIP },                                   // 4000000          0x009DE438
-    { WWT_COLOURBTN, 1, 615, 626, 93, 104, 0xFFFFFFFF, STR_SELECT_COLOUR },             // 8000000          0x009DE448
-    { WWT_COLOURBTN, 1, 615, 626, 105, 116, 0xFFFFFFFF, STR_SELECT_SECONDARY_COLOUR },  // 10000000         0x009DE458
-    { WWT_COLOURBTN, 1, 615, 626, 117, 128, 0xFFFFFFFF, STR_SELECT_TERNARY_COLOUR },        // 20000000         0x009DE468
-    { WWT_FLATBTN, 1, 609, 632, 130, 153, SPR_G2_EYEDROPPER, STR_SCENERY_EYEDROPPER_TIP },                                 // 40000000         0x009DE478
-    { WWT_FLATBTN, 1, 609, 632, 154, 177, SPR_SCENERY_CLUSTER, STR_SCENERY_CLUSTER_TIP },                                   // 40000000         0x009DE478
+    MakeWidget     ({  0,  43}, {634, 99}, WWT_RESIZE,    1                                                  ), // 8         0x009DE2C8
+    MakeWidget     ({  3,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 10        0x009DE2D8
+    MakeWidget     ({ 34,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 20        0x009DE2E8
+    MakeWidget     ({ 65,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 40        0x009DE2F8
+    MakeWidget     ({ 96,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 80        0x009DE308
+    MakeWidget     ({127,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 100       0x009DE318
+    MakeWidget     ({158,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 200       0x009DE328
+    MakeWidget     ({189,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 400       0x009DE338
+    MakeWidget     ({220,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 800       0x009DE348
+    MakeWidget     ({251,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 1000      0x009DE358
+    MakeWidget     ({282,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 2000      0x009DE368
+    MakeWidget     ({313,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 4000      0x009DE378
+    MakeWidget     ({344,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 8000      0x009DE388
+    MakeWidget     ({375,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 10000     0x009DE398
+    MakeWidget     ({406,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 20000     0x009DE3A8
+    MakeWidget     ({437,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 40000     0x009DE3B8
+    MakeWidget     ({468,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 80000     0x009DE3C8
+    MakeWidget     ({468,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 100000    0x009DE3D8
+    MakeWidget     ({468,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 200000    0x009DE3E8
+    MakeWidget     ({468,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 400000    0x009DE3F8
+    MakeRemapWidget({468,  17}, { 31, 27}, WWT_TAB,       1, SPR_TAB_QUESTION,    STR_STRING_DEFINED_TOOLTIP ), // 800000    0x009DE408
+    MakeWidget     ({  2,  47}, {607, 80}, WWT_SCROLL,    1, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
+    MakeWidget     ({609,  44}, { 24, 24}, WWT_FLATBTN,   1, SPR_ROTATE_ARROW,    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
+    MakeWidget     ({609,  68}, { 24, 24}, WWT_FLATBTN,   1, SPR_PAINTBRUSH,      STR_SCENERY_PAINTBRUSH_TIP ), // 4000000   0x009DE438
+    MakeWidget     ({615,  93}, { 12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,          STR_SELECT_COLOUR          ), // 8000000   0x009DE448
+    MakeWidget     ({615, 105}, { 12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,          STR_SELECT_SECONDARY_COLOUR), // 10000000  0x009DE458
+    MakeWidget     ({615, 117}, { 12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,          STR_SELECT_TERNARY_COLOUR  ), // 20000000  0x009DE468
+    MakeWidget     ({609, 130}, { 24, 24}, WWT_FLATBTN,   1, SPR_G2_EYEDROPPER,   STR_SCENERY_EYEDROPPER_TIP ), // 40000000  0x009DE478
+    MakeWidget     ({609, 154}, { 24, 24}, WWT_FLATBTN,   1, SPR_SCENERY_CLUSTER, STR_SCENERY_CLUSTER_TIP    ), // 40000000  0x009DE478
     { WIDGETS_END },
 };
 // clang-format on

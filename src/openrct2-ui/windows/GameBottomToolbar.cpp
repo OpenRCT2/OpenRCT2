@@ -48,20 +48,20 @@ enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX
 
 static rct_widget window_game_bottom_toolbar_widgets[] =
 {
-    { WWT_IMGBTN,   0,    0,   141,    0,   33,   0xFFFFFFFF,   STR_NONE },                               // Left outset panel
-    { WWT_IMGBTN,   0,    2,   139,    2,   31,   0xFFFFFFFF,   STR_NONE },                               // Left inset panel
-    { WWT_FLATBTN,  0,    2,   139,    1,   12,   0xFFFFFFFF,   STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP }, // Money window
-    { WWT_FLATBTN,  0,    2,   139,   11,   22,   0xFFFFFFFF,   STR_NONE },                               // Guests window
-    { WWT_FLATBTN,  0,    2,   139,   21,   31,   0xFFFFFFFF,   STR_PARK_RATING_TIP },                    // Park rating window
+    MakeWidget({  0,  0}, {142, 34}, WWT_IMGBTN,      0                                                    ), // Left outset panel
+    MakeWidget({  2,  2}, {138, 30}, WWT_IMGBTN,      0                                                    ), // Left inset panel
+    MakeWidget({  2,  1}, {138, 12}, WWT_FLATBTN,     0, 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
+    MakeWidget({  2, 11}, {138, 12}, WWT_FLATBTN,     0                                                    ), // Guests window
+    MakeWidget({  2, 21}, {138, 11}, WWT_FLATBTN,     0, 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
 
-    { WWT_IMGBTN,   2,  142,   497,    0,   33,   0xFFFFFFFF,   STR_NONE },               // Middle outset panel
-    { WWT_PLACEHOLDER,    2,  144,   495,    2,   31,   0xFFFFFFFF,   STR_NONE },         // Middle inset panel
-    { WWT_FLATBTN,  2,  147,   170,    5,   28,   0xFFFFFFFF,   STR_SHOW_SUBJECT_TIP },   // Associated news item window
-    { WWT_FLATBTN,  2,  469,   492,    5,   28,   SPR_LOCATE,   STR_LOCATE_SUBJECT_TIP }, // Scroll to news item target
+    MakeWidget({142,  0}, {356, 34}, WWT_IMGBTN,      2                                                    ), // Middle outset panel
+    MakeWidget({144,  2}, {352, 30}, WWT_PLACEHOLDER, 2                                                    ), // Middle inset panel
+    MakeWidget({147,  5}, { 24, 24}, WWT_FLATBTN,     2, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
+    MakeWidget({469,  5}, { 24, 24}, WWT_FLATBTN,     2, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
 
-    { WWT_IMGBTN,   0,  498,   639,    0,   33,   0xFFFFFFFF,   STR_NONE }, // Right outset panel
-    { WWT_IMGBTN,   0,  500,   637,    2,   31,   0xFFFFFFFF,   STR_NONE }, // Right inset panel
-    { WWT_FLATBTN,  0,  500,   637,    2,   13,   0xFFFFFFFF,   STR_NONE }, // Date
+    MakeWidget({498,  0}, {142, 34}, WWT_IMGBTN,      0                                                    ), // Right outset panel
+    MakeWidget({500,  2}, {138, 30}, WWT_IMGBTN,      0                                                    ), // Right inset panel
+    MakeWidget({500,  2}, {138, 12}, WWT_FLATBTN,     0                                                    ), // Date
     { WIDGETS_END },
 };
 

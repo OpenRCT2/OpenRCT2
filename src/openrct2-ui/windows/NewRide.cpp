@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,7 +26,6 @@
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/ride/RideData.h>
-#include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
@@ -65,16 +64,20 @@ static constexpr const char RideTypeViewOrder[] = {
     RIDE_TYPE_WOODEN_ROLLER_COASTER,
     RIDE_TYPE_WOODEN_WILD_MOUSE,
     RIDE_TYPE_STEEL_WILD_MOUSE,
+    RIDE_TYPE_SPINNING_WILD_MOUSE,
     RIDE_TYPE_INVERTED_HAIRPIN_COASTER,
     RIDE_TYPE_JUNIOR_ROLLER_COASTER,
+    RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,
     RIDE_TYPE_MINI_ROLLER_COASTER,
     RIDE_TYPE_SPIRAL_ROLLER_COASTER,
     RIDE_TYPE_MINE_TRAIN_COASTER,
     RIDE_TYPE_LOOPING_ROLLER_COASTER,
     RIDE_TYPE_STAND_UP_ROLLER_COASTER,
     RIDE_TYPE_CORKSCREW_ROLLER_COASTER,
+    RIDE_TYPE_HYPERCOASTER,
     RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER,
     RIDE_TYPE_TWISTER_ROLLER_COASTER,
+    RIDE_TYPE_HYPER_TWISTER,
     RIDE_TYPE_GIGA_COASTER,
     RIDE_TYPE_SUSPENDED_SWINGING_COASTER,
     RIDE_TYPE_COMPACT_INVERTED_COASTER,
@@ -102,6 +105,7 @@ static constexpr const char RideTypeViewOrder[] = {
     RIDE_TYPE_MINI_GOLF,
     RIDE_TYPE_OBSERVATION_TOWER,
     RIDE_TYPE_CAR_RIDE,
+    RIDE_TYPE_MONSTER_TRUCKS,
     RIDE_TYPE_MINI_HELICOPTERS,
     RIDE_TYPE_SPIRAL_SLIDE,
     RIDE_TYPE_DODGEMS,
@@ -268,8 +272,7 @@ static RideSelection window_new_ride_scroll_get_ride_list_item_at(rct_window* w,
 static void window_new_ride_paint_ride_information(
     rct_window* w, rct_drawpixelinfo* dpi, RideSelection item, const ScreenCoordsXY& screenPos, int32_t width);
 static void window_new_ride_select(rct_window* w);
-static RideSelection* window_new_ride_iterate_over_ride_group(
-    uint8_t rideType, uint8_t rideGroupIndex, RideSelection* nextListItem);
+static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, RideSelection* nextListItem);
 
 static RideSelection _lastTrackDesignCountRideType;
 static int32_t _lastTrackDesignCount;
@@ -321,28 +324,14 @@ static void window_new_ride_populate_list()
         if (RideTypeDescriptors[rideType].Category != currentCategory)
             continue;
 
-        if (ride_type_is_invented(rideType) || gCheatsIgnoreResearchStatus)
-        {
-            if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-            {
-                nextListItem = window_new_ride_iterate_over_ride_group(rideType, 0, nextListItem);
-            }
-            else
-            {
-                for (uint8_t j = 0; j < MAX_RIDE_GROUPS_PER_RIDE_TYPE; j++)
-                {
-                    nextListItem = window_new_ride_iterate_over_ride_group(rideType, j, nextListItem);
-                }
-            }
-        }
+        nextListItem = window_new_ride_iterate_over_ride_type(rideType, nextListItem);
     }
 
     nextListItem->Type = RIDE_TYPE_NULL;
     nextListItem->EntryIndex = RIDE_ENTRY_INDEX_NULL;
 }
 
-static RideSelection* window_new_ride_iterate_over_ride_group(
-    uint8_t rideType, uint8_t rideGroupIndex, RideSelection* nextListItem)
+static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, RideSelection* nextListItem)
 {
     bool buttonForRideTypeCreated = false;
     bool allowDrawingOverLastButton = false;
@@ -360,15 +349,6 @@ static RideSelection* window_new_ride_iterate_over_ride_group(
 
         // Ride entries
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
-
-        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-        {
-            const RideGroup* rideEntryRideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
-            const RideGroup* rideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
-
-            if (!rideEntryRideGroup->Equals(rideGroup))
-                continue;
-        }
 
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
         if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
@@ -535,21 +515,14 @@ void window_new_ride_focus(RideSelection rideItem)
     // In this case, select the first entry that belongs to the same ride group.
     if (!entryFound)
     {
-        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(rideTypeIndex, rideEntry);
-
         for (RideSelection* listItem = _windowNewRideListItems; listItem->Type != RIDE_TYPE_NULL; listItem++)
         {
             if (listItem->Type == rideItem.Type)
             {
-                const RideGroup* irg = RideGroupManager::GetRideGroup(rideTypeIndex, rideEntry);
-
-                if (!RideTypeDescriptors[rideTypeIndex].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS) || rideGroup->Equals(irg))
-                {
-                    _windowNewRideHighlightedItem[0] = rideItem;
-                    w->new_ride.HighlightedRide = rideItem;
-                    window_new_ride_scroll_to_focused_ride(w);
-                    break;
-                }
+                _windowNewRideHighlightedItem[0] = rideItem;
+                w->new_ride.HighlightedRide = rideItem;
+                window_new_ride_scroll_to_focused_ride(w);
+                break;
             }
         }
     }
@@ -916,11 +889,9 @@ static RideSelection window_new_ride_scroll_get_ride_list_item_at(rct_window* w,
 static int32_t get_num_track_designs(RideSelection item)
 {
     std::string entryName;
-    rct_ride_entry* rideEntry = nullptr;
 
     if (item.Type < 0x80)
     {
-        rideEntry = get_ride_entry(item.EntryIndex);
         if (RideTypeDescriptors[item.Type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             entryName = get_ride_entry_name(item.EntryIndex);
@@ -928,14 +899,6 @@ static int32_t get_num_track_designs(RideSelection item)
     }
 
     auto repo = OpenRCT2::GetContext()->GetTrackDesignRepository();
-    if (rideEntry != nullptr && RideTypeDescriptors[item.Type].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-    {
-        auto rideGroup = RideGroupManager::GetRideGroup(item.Type, rideEntry);
-        if (rideGroup != nullptr)
-        {
-            return static_cast<int32_t>(repo->GetCountForRideGroup(item.Type, rideGroup));
-        }
-    }
     return static_cast<int32_t>(repo->GetCountForObjectEntry(item.Type, entryName));
 }
 
@@ -1056,16 +1019,6 @@ static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_e
         // Skip if vehicle type is not invented yet
         if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
             continue;
-
-        // Skip if vehicle does not belong to the same ride group
-        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_RIDE_GROUPS))
-        {
-            auto rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
-            auto currentRideGroup = RideGroupManager::GetRideGroup(rideType, currentRideEntry);
-
-            if (!rideGroup->Equals(currentRideGroup))
-                continue;
-        }
 
         // Append comma if not the first iteration
         if (!isFirst)

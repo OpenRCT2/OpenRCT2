@@ -500,7 +500,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
 {
     std::memset(dst, 0, sizeof(rct2_ride));
 
-    dst->type = src->type;
+    dst->type = OpenRCT2RideTypeToRCT2RideType(src->type);
     dst->subtype = src->subtype;
     // pad_002;
     dst->mode = src->mode;
