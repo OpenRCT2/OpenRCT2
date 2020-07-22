@@ -105,7 +105,7 @@ struct ResearchItem
         {
             entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
             auto* rideEntry = get_ride_entry(entryIndex);
-            baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.type, rideEntry)
+            baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.baseRideType, rideEntry)
                                                 : oldResearchItem.baseRideType;
             type = Research::EntryType{ oldResearchItem.type };
             flags = oldResearchItem.flags;
