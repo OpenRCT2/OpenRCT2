@@ -32,7 +32,7 @@ enum
 };
 
 static rct_widget window_dropdown_widgets[] = {
-    { WWT_IMGBTN, 0, 0, 0, 0, 0, static_cast<uint32_t>(SPR_NONE), STR_NONE },
+    MakeWidget({ 0, 0 }, { 1, 1 }, WWT_IMGBTN, 0),
     { WIDGETS_END },
 };
 
