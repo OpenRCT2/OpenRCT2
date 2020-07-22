@@ -377,50 +377,50 @@ void X8DrawingEngine::ConfigureDirtyGrid()
 
 void X8DrawingEngine::DrawAllDirtyBlocks()
 {
-    uint32_t dirtyBlockColumns = _dirtyGrid.BlockColumns;
-    uint32_t dirtyBlockRows = _dirtyGrid.BlockRows;
-    uint8_t* dirtyBlocks = _dirtyGrid.Blocks;
-
-    for (uint32_t x = 0; x < dirtyBlockColumns; x++)
+    for (uint32_t x = 0; x < _dirtyGrid.BlockColumns; x++)
     {
-        for (uint32_t y = 0; y < dirtyBlockRows; y++)
+        for (uint32_t y = 0; y < _dirtyGrid.BlockRows; y++)
         {
-            uint32_t yOffset = y * dirtyBlockColumns;
-            if (dirtyBlocks[yOffset + x] == 0)
+            uint32_t yOffset = y * _dirtyGrid.BlockColumns;
+            if (_dirtyGrid.Blocks[yOffset + x] == 0)
             {
                 continue;
             }
 
             // Determine columns
             uint32_t xx;
-            for (xx = x; xx < dirtyBlockColumns; xx++)
+            for (xx = x; xx < _dirtyGrid.BlockColumns; xx++)
             {
-                if (dirtyBlocks[yOffset + xx] == 0)
+                if (_dirtyGrid.Blocks[yOffset + xx] == 0)
                 {
                     break;
                 }
             }
-            uint32_t columns = xx - x;
 
             // Check rows
-            uint32_t yy;
-            for (yy = y; yy < dirtyBlockRows; yy++)
-            {
-                uint32_t yyOffset = yy * dirtyBlockColumns;
-                for (xx = x; xx < x + columns; xx++)
-                {
-                    if (dirtyBlocks[yyOffset + xx] == 0)
-                    {
-                        goto endRowCheck;
-                    }
-                }
-            }
-
-        endRowCheck:
-            uint32_t rows = yy - y;
+            uint32_t columns = xx - x;
+            auto rows = GetNumDirtyRows(x, y, columns);
             DrawDirtyBlocks(x, y, columns, rows);
         }
     }
+}
+
+uint32_t X8DrawingEngine::GetNumDirtyRows(const uint32_t x, const uint32_t y, const uint32_t columns)
+{
+    uint32_t yy = y;
+
+    for (yy = y; yy < _dirtyGrid.BlockRows; yy++)
+    {
+        uint32_t yyOffset = yy * _dirtyGrid.BlockColumns;
+        for (uint32_t xx = x; xx < x + columns; xx++)
+        {
+            if (_dirtyGrid.Blocks[yyOffset + xx] == 0)
+            {
+                return yy - y;
+            }
+        }
+    }
+    return yy - y;
 }
 
 void X8DrawingEngine::DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows)
