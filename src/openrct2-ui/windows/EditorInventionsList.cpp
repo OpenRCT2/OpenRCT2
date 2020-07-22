@@ -581,7 +581,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
 
     // Preview image
     int32_t objectEntryType = OBJECT_TYPE_SCENERY_GROUP;
-    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)
+    if (researchItem->type == Research::EntryType::Ride)
         objectEntryType = OBJECT_TYPE_RIDE;
 
     auto chunk = object_entry_get_chunk(objectEntryType, researchItem->entryIndex);
@@ -688,7 +688,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
 
         rct_string_id itemNameId = researchItem.GetName();
 
-        if (researchItem.type == RESEARCH_ENTRY_TYPE_RIDE
+        if (researchItem.type == Research::EntryType::Ride
             && !RideTypeDescriptors[researchItem.baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             const auto rideEntry = get_ride_entry(researchItem.entryIndex);
@@ -734,7 +734,7 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
     rct_string_id stringId = researchItem->GetName();
 
     ptr = buffer;
-    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE
+    if (researchItem->type == Research::EntryType::Ride
         && !RideTypeDescriptors[researchItem->baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         const auto rideEntry = get_ride_entry(researchItem->entryIndex);
@@ -829,7 +829,7 @@ static rct_string_id window_editor_inventions_list_prepare_name(const ResearchIt
     rct_string_id stringId = researchItem->GetName();
     auto ft = Formatter::Common();
 
-    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE
+    if (researchItem->type == Research::EntryType::Ride
         && !RideTypeDescriptors[researchItem->baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;

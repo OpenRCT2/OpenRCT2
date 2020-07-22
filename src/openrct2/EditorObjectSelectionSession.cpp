@@ -296,7 +296,7 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
         for (auto rideType : rideEntry->ride_type)
         {
             ResearchItem tmp = {};
-            tmp.type = RESEARCH_ENTRY_TYPE_RIDE;
+            tmp.type = Research::EntryType::Ride;
             tmp.entryIndex = entry_index;
             tmp.baseRideType = rideType;
             research_remove(&tmp);
@@ -305,7 +305,7 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
     else if (entry_type == OBJECT_TYPE_SCENERY_GROUP)
     {
         ResearchItem tmp = {};
-        tmp.type = RESEARCH_ENTRY_TYPE_SCENERY;
+        tmp.type = Research::EntryType::Scenery;
         tmp.entryIndex = entry_index;
         research_remove(&tmp);
     }

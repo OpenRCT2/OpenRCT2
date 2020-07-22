@@ -773,10 +773,10 @@ static void window_new_ride_invalidate(rct_window* w)
         window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
         if (gResearchLastItem.has_value())
         {
-            uint8_t type = gResearchLastItem->type;
+            auto type = gResearchLastItem->type;
             window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
-            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == RESEARCH_ENTRY_TYPE_RIDE) ? SPR_NEW_RIDE
-                                                                                                             : SPR_NEW_SCENERY;
+            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == Research::EntryType::Ride) ? SPR_NEW_RIDE
+                                                                                                              : SPR_NEW_SCENERY;
         }
     }
 }

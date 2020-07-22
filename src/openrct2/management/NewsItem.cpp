@@ -374,7 +374,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
         case NEWS_ITEM_RESEARCH:
         {
             auto item = ResearchItem(subject, 0, 0);
-            if (item.type == RESEARCH_ENTRY_TYPE_RIDE)
+            if (item.type == Research::EntryType::Ride)
             {
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);
                 intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);
