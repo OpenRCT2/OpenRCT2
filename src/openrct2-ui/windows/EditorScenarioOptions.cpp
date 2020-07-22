@@ -28,7 +28,6 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SCENARIO_OPTIONS_FINANCIAL;
 static constexpr const int32_t WH = 149;
 static constexpr const int32_t WW = 280;
 
@@ -113,60 +112,53 @@ enum {
 };
 
 static rct_widget window_editor_scenario_options_financial_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_PARK_TIP               },
-
-    { WWT_CHECKBOX,         1,  8,      271,    48,     59,     STR_MAKE_PARK_NO_MONEY,                 STR_MAKE_PARK_NO_MONEY_TIP                  },
-      SPINNER_WIDGETS      (1,  168,    267,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  168,    267,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  168,    267,    99,     110,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  168,    237,    116,    127,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  8,      271,    133,    144,    STR_FORBID_MARKETING,                   STR_FORBID_MARKETING_TIP                    },
+    WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW, WH),
+    MakeWidget        ({  0,  43}, {280, 106}, WWT_RESIZE,   1),
+    MakeRemapWidget   ({  3,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+    MakeRemapWidget   ({ 34,  17}, { 31,  30}, WWT_TAB,      1, SPR_TAB,                STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+    MakeRemapWidget   ({ 65,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                STR_SCENARIO_OPTIONS_PARK_TIP     ),
+    MakeWidget        ({  8,  48}, {264,  12}, WWT_CHECKBOX, 1, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
+    MakeSpinnerWidgets({168,  65}, {100,  12}, WWT_SPINNER,  1                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168,  82}, {100,  12}, WWT_SPINNER,  1                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168,  99}, {100,  12}, WWT_SPINNER,  1                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168, 116}, { 70,  12}, WWT_SPINNER,  1                                                            ), // NB: 3 widgets
+    MakeWidget        ({  8, 133}, {264,  12}, WWT_CHECKBOX, 1, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_scenario_options_guests_widgets[] = {
-    { WWT_FRAME,            0,  0,      279,    0,      148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_GUESTS,            STR_WINDOW_TITLE_TIP                        },
-    { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
-    { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_PARK_TIP               },
-
-      SPINNER_WIDGETS      (1,  268,    337,    48,     59,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  268,    337,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  268,    337,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  268,    337,    99,     110,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  8,      371,    116,    127,    STR_GUESTS_PREFER_LESS_INTENSE_RIDES,   STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP    },
-    { WWT_CHECKBOX,         1,  8,      371,    133,    144,    STR_GUESTS_PREFER_MORE_INTENSE_RIDES,   STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP    },
+    WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, 380, 149),
+    MakeWidget        ({  0,  43}, {380, 106}, WWT_RESIZE,   1),
+    MakeRemapWidget   ({  3,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
+    MakeRemapWidget   ({ 34,  17}, { 31,  30}, WWT_TAB,      1, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP         ),
+    MakeRemapWidget   ({ 65,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP           ),
+    MakeSpinnerWidgets({268,  48}, { 70,  12}, WWT_SPINNER,  1                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  65}, { 70,  12}, WWT_SPINNER,  1                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  82}, { 70,  12}, WWT_SPINNER,  1                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  99}, { 70,  12}, WWT_SPINNER,  1                                                                                ), // NB: 3 widgets
+    MakeWidget        ({  8, 116}, {364,  12}, WWT_CHECKBOX, 1, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
+    MakeWidget        ({  8, 133}, {364,  12}, WWT_CHECKBOX, 1, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_scenario_options_park_widgets[] = {
-    { WWT_FRAME,            0,  0,      279,    0,      148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_PARK,              STR_WINDOW_TITLE_TIP                        },
-    { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
-    { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_PARK_TIP               },
-
-      SPINNER_WIDGETS      (1,  188,    257,    48,     59,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  188,    257,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-    { WWT_DROPDOWN,         1,  8,      217,    82,     93,     STR_NONE,                               STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP          },
-    { WWT_BUTTON,           1,  206,    216,    83,     92,     STR_DROPDOWN_GLYPH,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP          },
-      SPINNER_WIDGETS      (1,  328,    394,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-    { WWT_DROPDOWN,         1,  188,    394,    99,     110,    STR_NONE,                               STR_SELECT_CLIMATE_TIP                      },
-    { WWT_BUTTON,           1,  383,    393,    100,    109,    STR_DROPDOWN_GLYPH,                     STR_SELECT_CLIMATE_TIP                      },
-    { WWT_CHECKBOX,         1,  8,      391,    116,    127,    STR_FORBID_TREE_REMOVAL,                STR_FORBID_TREE_REMOVAL_TIP                 },
-    { WWT_CHECKBOX,         1,  8,      391,    133,    144,    STR_FORBID_LANDSCAPE_CHANGES,           STR_FORBID_LANDSCAPE_CHANGES_TIP            },
-    { WWT_CHECKBOX,         1,  8,      391,    150,    161,    STR_FORBID_HIGH_CONSTRUCTION,           STR_FORBID_HIGH_CONSTRUCTION_TIP            },
-    { WWT_CHECKBOX,         1,  8,      391,    167,    178,    STR_HARD_PARK_RATING,                   STR_HARD_PARK_RATING_TIP                    },
-    { WWT_CHECKBOX,         1,  8,      391,    184,    195,    STR_HARD_GUEST_GENERATION,              STR_HARD_GUEST_GENERATION_TIP               },
+    WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, 400, 200),
+    MakeWidget        ({  0,  43}, {400, 106}, WWT_RESIZE,   1                                                                  ),
+    MakeRemapWidget   ({  3,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+    MakeRemapWidget   ({ 34,  17}, { 31,  30}, WWT_TAB,      1, SPR_TAB,                      STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+    MakeRemapWidget   ({ 65,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_SCENARIO_OPTIONS_PARK_TIP     ),
+    MakeSpinnerWidgets({188,  48}, { 70,  12}, WWT_SPINNER,  1                                                                  ), // NB: 3 widgets
+    MakeSpinnerWidgets({188,  65}, { 70,  12}, WWT_SPINNER,  1                                                                  ), // NB: 3 widgets
+    MakeWidget        ({  8,  82}, {210,  12}, WWT_DROPDOWN, 1, STR_NONE,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+    MakeWidget        ({206,  83}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+    MakeSpinnerWidgets({328,  82}, { 67,  12}, WWT_SPINNER,  1                                                                  ), // NB: 3 widgets
+    MakeWidget        ({188,  99}, {207,  12}, WWT_DROPDOWN, 1, STR_NONE,                     STR_SELECT_CLIMATE_TIP            ),
+    MakeWidget        ({383, 100}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
+    MakeWidget        ({  8, 116}, {384,  12}, WWT_CHECKBOX, 1, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
+    MakeWidget        ({  8, 133}, {384,  12}, WWT_CHECKBOX, 1, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
+    MakeWidget        ({  8, 150}, {384,  12}, WWT_CHECKBOX, 1, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
+    MakeWidget        ({  8, 167}, {384,  12}, WWT_CHECKBOX, 1, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
+    MakeWidget        ({  8, 184}, {384,  12}, WWT_CHECKBOX, 1, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
     { WIDGETS_END }
 };
 
