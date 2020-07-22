@@ -775,8 +775,8 @@ static void window_new_ride_invalidate(rct_window* w)
         {
             auto type = gResearchLastItem->type;
             window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
-            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == ResearchEntryType::Ride) ? SPR_NEW_RIDE
-                                                                                                            : SPR_NEW_SCENERY;
+            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == Research::EntryType::Ride) ? SPR_NEW_RIDE
+                                                                                                              : SPR_NEW_SCENERY;
         }
     }
 }

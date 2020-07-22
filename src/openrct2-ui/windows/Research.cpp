@@ -318,7 +318,7 @@ static void window_research_development_invalidate(rct_window* w)
     {
         auto type = gResearchLastItem->type;
         window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
-        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = type == ResearchEntryType::Ride
+        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = type == Research::EntryType::Ride
             ? SPR_NEW_RIDE
             : SPR_NEW_SCENERY;
     }
@@ -370,7 +370,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
             if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING)
             {
                 strings[0] = gResearchNextItem->GetName();
-                if (gResearchNextItem->type == ResearchEntryType::Ride)
+                if (gResearchNextItem->type == Research::EntryType::Ride)
                 {
                     auto rtd = RideTypeDescriptors[gResearchNextItem->baseRideType];
                     if (!rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
@@ -420,7 +420,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         rct_string_id lastDevelopmentFormat = STR_EMPTY;
         std::array<rct_string_id, 2> strings = { gResearchLastItem->GetName(), 0 };
         auto type = gResearchLastItem->type;
-        if (type == ResearchEntryType::Scenery)
+        if (type == Research::EntryType::Scenery)
         {
             lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
         }

@@ -17,11 +17,14 @@
 
 struct rct_ride_entry;
 
-enum class ResearchEntryType : uint8_t
+namespace Research
 {
-    Scenery = 0,
-    Ride = 1,
-};
+    enum class EntryType : uint8_t
+    {
+        Scenery = 0,
+        Ride = 1,
+    };
+}
 
 enum
 {
@@ -39,7 +42,7 @@ struct ResearchItem
         {
             ObjectEntryIndex entryIndex;
             uint8_t baseRideType;
-            ResearchEntryType type; // 0: scenery entry, 1: ride entry
+            Research::EntryType type; // 0: scenery entry, 1: ride entry
         };
     };
     uint8_t flags;
@@ -60,7 +63,7 @@ struct ResearchItem
     {
     }
     ResearchItem(
-        ResearchEntryType _type, ObjectEntryIndex _entryIndex, uint8_t _baseRideType, uint8_t _category, uint8_t _flags)
+        Research::EntryType _type, ObjectEntryIndex _entryIndex, uint8_t _baseRideType, uint8_t _category, uint8_t _flags)
         : entryIndex(_entryIndex)
         , baseRideType(_baseRideType)
         , type(_type)
@@ -104,7 +107,7 @@ struct ResearchItem
             auto* rideEntry = get_ride_entry(entryIndex);
             baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.type, rideEntry)
                                                 : oldResearchItem.baseRideType;
-            type = ResearchEntryType{ oldResearchItem.type };
+            type = Research::EntryType{ oldResearchItem.type };
             flags = oldResearchItem.flags;
             category = oldResearchItem.category;
         }

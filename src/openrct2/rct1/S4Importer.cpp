@@ -2604,7 +2604,7 @@ private:
                     auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                     dst->entryIndex = entryIndex;
                     dst->baseRideType = rideType;
-                    dst->type = ResearchEntryType::Ride;
+                    dst->type = Research::EntryType::Ride;
                     dst->flags = 0;
                     dst->category = RideTypeDescriptors[rideType].Category;
                 }
@@ -2623,7 +2623,7 @@ private:
                     auto rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                     dst->entryIndex = entryIndex;
                     dst->baseRideType = rideType;
-                    dst->type = ResearchEntryType::Ride;
+                    dst->type = Research::EntryType::Ride;
                     dst->flags = 0;
                     dst->category = RideTypeDescriptors[rideType].Category;
                 }
@@ -2636,7 +2636,7 @@ private:
             if (entryIndex != OBJECT_ENTRY_INDEX_IGNORE && entryIndex != OBJECT_ENTRY_INDEX_NULL)
             {
                 dst->entryIndex = entryIndex;
-                dst->type = ResearchEntryType::Scenery;
+                dst->type = Research::EntryType::Scenery;
                 dst->category = RESEARCH_CATEGORY_SCENERY_GROUP;
                 dst->flags = 0;
             }
