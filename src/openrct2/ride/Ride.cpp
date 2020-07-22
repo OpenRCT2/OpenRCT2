@@ -397,11 +397,11 @@ money32 Ride::CalculateIncomePerHour() const
 
     if (currentShopItem != SHOP_ITEM_NONE)
     {
-        money16 shopItemProfit = price[1] - ShopItems[currentShopItem].Cost;
+        const money16 shopItemProfit = price[1] - ShopItems[currentShopItem].Cost;
 
         if (ShopItems[currentShopItem].IsPhoto())
         {
-            int32_t rideTicketsSold = total_customers - no_secondary_items_sold;
+            const int32_t rideTicketsSold = total_customers - no_secondary_items_sold;
 
             // Use the ratio between photo sold and total admissions to approximate the photo income(as not every guest will buy
             // one).
