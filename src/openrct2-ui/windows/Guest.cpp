@@ -76,24 +76,24 @@ static constexpr int32_t TabWidth = 30;
 
 #define MAIN_GUEST_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    { WWT_RESIZE,   1, 0,   191,            43,  156, 0xFFFFFFFF,                   STR_NONE },                         /* Resize */                \
-    { WWT_TAB,      1, 3,   TabWidth + 3,   17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_VIEW_TIP },          /* Tab 1 */                 \
-    { WWT_TAB,      1, 34,  TabWidth + 34,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_NEEDS_TIP },         /* Tab 2 */                 \
-    { WWT_TAB,      1, 65,  TabWidth + 65,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_VISITED_RIDES_TIP }, /* Tab 3 */                 \
-    { WWT_TAB,      1, 96,  TabWidth + 96,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_FINANCE_TIP },       /* Tab 4 */                 \
-    { WWT_TAB,      1, 127, TabWidth + 127, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_THOUGHTS_TIP },      /* Tab 5 */                 \
-    { WWT_TAB,      1, 158, TabWidth + 158, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_SHOW_GUEST_ITEMS_TIP },         /* Tab 6 */                 \
-    { WWT_TAB,      1, 189, TabWidth + 189, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB,   STR_DEBUG_TIP }                     /* Tab 7 */
+    MakeWidget     ({  0, 43}, {192, 114}, WWT_RESIZE, 1                                              ), /* Resize */ \
+    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_VIEW_TIP         ), /* Tab 1 */ \
+    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_NEEDS_TIP        ), /* Tab 2 */ \
+    MakeRemapWidget({ 65, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_VISITED_RIDES_TIP), /* Tab 3 */ \
+    MakeRemapWidget({ 96, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_FINANCE_TIP      ), /* Tab 4 */ \
+    MakeRemapWidget({127, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_THOUGHTS_TIP     ), /* Tab 5 */ \
+    MakeRemapWidget({158, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_ITEMS_TIP        ), /* Tab 6 */ \
+    MakeRemapWidget({189, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_DEBUG_TIP                   )  /* Tab 7 */
 
 static rct_widget window_guest_overview_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WWT_LABEL_CENTRED,    1, 3,   166, 45,  56,  0xFFFFFFFF,      STR_NONE                        },  // Label Thought marquee
-    { WWT_VIEWPORT,         1, 3,   166, 57,  143, 0xFFFFFFFF,      STR_NONE                        },  // Viewport
-    { WWT_LABEL_CENTRED,    1, 3,   166, 144, 154, 0xFFFFFFFF,      STR_NONE                        },  // Label Action
-    { WWT_FLATBTN,          1, 167, 190, 45,  68,  SPR_PICKUP_BTN,  STR_PICKUP_TIP                  },  // Pickup Button
-    { WWT_FLATBTN,          1, 167, 190, 69,  92,  SPR_RENAME,      STR_NAME_GUEST_TIP              },  // Rename Button
-    { WWT_FLATBTN,          1, 167, 190, 93,  116, SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP          },  // Locate Button
-    { WWT_FLATBTN,          1, 167, 190, 117, 140, SPR_TRACK_PEEP,  STR_TOGGLE_GUEST_TRACKING_TIP   },  // Track Button
+    MakeWidget({  3,  45}, {164, 12}, WWT_LABEL_CENTRED, 1                                               ), // Label Thought marquee
+    MakeWidget({  3,  57}, {164, 87}, WWT_VIEWPORT,      1                                               ), // Viewport
+    MakeWidget({  3, 144}, {164, 11}, WWT_LABEL_CENTRED, 1                                               ), // Label Action
+    MakeWidget({167,  45}, { 24, 24}, WWT_FLATBTN,       1, SPR_PICKUP_BTN, STR_PICKUP_TIP               ), // Pickup Button
+    MakeWidget({167,  69}, { 24, 24}, WWT_FLATBTN,       1, SPR_RENAME,     STR_NAME_GUEST_TIP           ), // Rename Button
+    MakeWidget({167,  93}, { 24, 24}, WWT_FLATBTN,       1, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
+    MakeWidget({167, 117}, { 24, 24}, WWT_FLATBTN,       1, SPR_TRACK_PEEP, STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
     { WIDGETS_END },
 };
 
@@ -104,7 +104,7 @@ static rct_widget window_guest_stats_widgets[] = {
 
 static rct_widget window_guest_rides_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    { WWT_SCROLL,           1, 3,   188, 57, 143, SCROLL_VERTICAL,  STR_NONE },
+    MakeWidget({3, 57}, {186, 87}, WWT_SCROLL, 1, SCROLL_VERTICAL),
     { WIDGETS_END },
 };
 
