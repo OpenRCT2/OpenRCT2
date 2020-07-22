@@ -78,8 +78,8 @@ struct ResearchItem
         else
         {
             retItem.entryIndex = OpenRCT2EntryIndexToRCTEntryIndex(entryIndex);
-            retItem.baseRideType = baseRideType;
-            retItem.type = OpenRCT2RideTypeToRCT2RideType(type);
+            retItem.baseRideType = OpenRCT2RideTypeToRCT2RideType(baseRideType);
+            retItem.type = type;
             retItem.flags = (flags & ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE);
             retItem.category = category;
         }
@@ -100,10 +100,10 @@ struct ResearchItem
         else
         {
             entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
-            baseRideType = oldResearchItem.baseRideType;
             auto* rideEntry = get_ride_entry(entryIndex);
-            type = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.type, rideEntry)
-                                        : oldResearchItem.type;
+            baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.type, rideEntry)
+                                                : oldResearchItem.baseRideType;
+            type = oldResearchItem.type;
             flags = oldResearchItem.flags;
             category = oldResearchItem.category;
         }
