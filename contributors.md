@@ -147,6 +147,7 @@ The following people are not part of the development team, but have been contrib
 * Michael Coates (outerwear)
 * Reid Baris (Rdbaris)
 * Deanna Baris (dbaris)
+* Chaitanya Thengdi (chaitanyathengdi)
 
 ## Toolchain
 * (Balletie) - macOS
