@@ -49,7 +49,7 @@ static rct_window_event_list window_editor_main_events = {
 };
 
 static rct_widget window_editor_main_widgets[] = {
-    { WWT_VIEWPORT, 0, 0, -1, 0, -1, STR_VIEWPORT, 0xFFFF },
+    MakeWidget({ 0, 0 }, { 0, 0 }, WWT_VIEWPORT, 0, STR_VIEWPORT),
     { WIDGETS_END },
 };
 
