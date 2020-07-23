@@ -672,8 +672,8 @@ struct rct1_s4
     uint32_t game_time_counter;
     rct1_ride rides[RCT12_MAX_RIDES_IN_PARK];
     uint16_t unk_game_time_counter;
-    uint16_t view_x;
-    uint16_t view_y;
+    int16_t view_x;
+    int16_t view_y;
     uint8_t view_zoom;
     uint8_t view_rotation;
     RCT12MapAnimation map_animations[RCT1_MAX_ANIMATED_OBJECTS];
