@@ -306,7 +306,7 @@ struct Vehicle : SpriteBase
     uint8_t var_D3;
     uint8_t mini_golf_current_animation;
     uint8_t mini_golf_flags;
-    uint8_t ride_subtype;
+    ObjectEntryIndex ride_subtype;
     uint8_t colours_extended;
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;

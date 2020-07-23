@@ -19,7 +19,7 @@
 #include <vector>
 
 using ObjectEntryIndex = uint16_t;
-constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = 255;
+constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 
 // First 0xF of rct_object_entry->flags
 enum OBJECT_TYPE

@@ -39,8 +39,8 @@ static uint16_t toolSizeSpriteIndices[] =
 uint16_t gLandToolSize;
 money32 gLandToolRaiseCost;
 money32 gLandToolLowerCost;
-uint8_t gLandToolTerrainSurface;
-uint8_t gLandToolTerrainEdge;
+ObjectEntryIndex gLandToolTerrainSurface;
+ObjectEntryIndex gLandToolTerrainEdge;
 money32 gWaterToolRaiseCost;
 money32 gWaterToolLowerCost;
 

@@ -656,9 +656,9 @@ void scenario_fix_ghosts(rct_s6_data* s6)
                     if (bannerIndex != RCT12_BANNER_INDEX_NULL)
                     {
                         auto banner = &s6->banners[bannerIndex];
-                        if (banner->type != BANNER_NULL)
+                        if (banner->type != RCT12_OBJECT_ENTRY_INDEX_NULL)
                         {
-                            banner->type = BANNER_NULL;
+                            banner->type = RCT12_OBJECT_ENTRY_INDEX_NULL;
                             if (is_user_string_id(banner->string_idx))
                                 s6->custom_strings[(banner->string_idx % RCT12_MAX_USER_STRINGS)][0] = 0;
                         }

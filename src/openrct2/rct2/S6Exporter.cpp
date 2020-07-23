@@ -501,7 +501,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     std::memset(dst, 0, sizeof(rct2_ride));
 
     dst->type = OpenRCT2RideTypeToRCT2RideType(src->type);
-    dst->subtype = src->subtype;
+    dst->subtype = OpenRCT2EntryIndexToRCTEntryIndex(src->subtype);
     // pad_002;
     dst->mode = src->mode;
     dst->colour_scheme_type = src->colour_scheme_type;
@@ -1083,7 +1083,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     dst->var_D3 = src->var_D3;
     dst->mini_golf_current_animation = src->mini_golf_current_animation;
     dst->mini_golf_flags = src->mini_golf_flags;
-    dst->ride_subtype = src->ride_subtype;
+    dst->ride_subtype = OpenRCT2EntryIndexToRCTEntryIndex(src->ride_subtype);
     dst->colours_extended = src->colours_extended;
     dst->seat_rotation = src->seat_rotation;
     dst->target_seat_rotation = src->target_seat_rotation;
@@ -1352,7 +1352,7 @@ void S6Exporter::ExportBanners()
 void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
 {
     dst = {};
-    dst.type = src.type;
+    dst.type = OpenRCT2EntryIndexToRCTEntryIndex(src.type);
 
     if (!src.IsNull())
     {

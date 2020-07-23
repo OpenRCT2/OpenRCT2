@@ -21,8 +21,8 @@
 extern uint16_t gLandToolSize;
 extern money32 gLandToolRaiseCost;
 extern money32 gLandToolLowerCost;
-extern uint8_t gLandToolTerrainSurface;
-extern uint8_t gLandToolTerrainEdge;
+extern ObjectEntryIndex gLandToolTerrainSurface;
+extern ObjectEntryIndex gLandToolTerrainEdge;
 extern money32 gWaterToolRaiseCost;
 extern money32 gWaterToolLowerCost;
 
