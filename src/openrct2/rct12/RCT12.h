@@ -820,5 +820,5 @@ assert_struct_size(RCT12ResearchItem, 5);
 
 #pragma pack(pop)
 
-ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(RCT12ObjectEntryIndex index);
-RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(ObjectEntryIndex index);
+ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
+RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex index);
