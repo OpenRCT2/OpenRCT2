@@ -193,7 +193,7 @@ public:
     void Server_Send_EVENT_PLAYER_JOINED(const char* playerName);
     void Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, const char* reason);
     void Client_Send_GAMEINFO();
-    void Client_Send_OBJECTS(const std::vector<std::string>& objects);
+    void Client_Send_RequestMap(const std::vector<std::string>& objects);
     void Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
     void Server_Send_SCRIPTS(NetworkConnection& connection) const;
 
@@ -310,10 +310,10 @@ private:
     void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_MAPREQUEST(NetworkConnection& connection, NetworkPacket& packet);
 
     uint8_t* save_for_network(size_t& out_size, const std::vector<const ObjectRepositoryItem*>& objects) const;
 
@@ -346,7 +346,7 @@ Network::Network()
     client_command_handlers[NETWORK_COMMAND_EVENT] = &Network::Client_Handle_EVENT;
     client_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Client_Handle_GAMEINFO;
     client_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Client_Handle_TOKEN;
-    client_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Client_Handle_OBJECTS;
+    client_command_handlers[NETWORK_COMMAND_OBJECTS_LIST] = &Network::Client_Handle_OBJECTS_LIST;
     client_command_handlers[NETWORK_COMMAND_SCRIPTS] = &Network::Client_Handle_SCRIPTS;
     client_command_handlers[NETWORK_COMMAND_GAMESTATE] = &Network::Client_Handle_GAMESTATE;
     server_command_handlers.resize(NETWORK_COMMAND_MAX, nullptr);
@@ -356,7 +356,7 @@ Network::Network()
     server_command_handlers[NETWORK_COMMAND_PING] = &Network::Server_Handle_PING;
     server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
     server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
-    server_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Server_Handle_OBJECTS;
+    server_command_handlers[NETWORK_COMMAND_MAP_REQUEST] = &Network::Server_Handle_MAPREQUEST;
     server_command_handlers[NETWORK_COMMAND_REQUEST_GAMESTATE] = &Network::Server_Handle_REQUEST_GAMESTATE;
 
     _chat_log_fs << std::unitbuf;
@@ -1449,11 +1449,11 @@ void Network::Client_Send_AUTH(
     _serverConnection->QueuePacket(std::move(packet));
 }
 
-void Network::Client_Send_OBJECTS(const std::vector<std::string>& objects)
+void Network::Client_Send_RequestMap(const std::vector<std::string>& objects)
 {
     log_verbose("client requests %u objects", uint32_t(objects.size()));
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << static_cast<uint32_t>(NETWORK_COMMAND_OBJECTS) << static_cast<uint32_t>(objects.size());
+    *packet << static_cast<uint32_t>(NETWORK_COMMAND_MAP_REQUEST) << static_cast<uint32_t>(objects.size());
     for (const auto& object : objects)
     {
         log_verbose("client requests object %s", object.c_str());
@@ -1474,7 +1474,7 @@ void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vect
 {
     log_verbose("Server sends objects list with %u items", objects.size());
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << static_cast<uint32_t>(NETWORK_COMMAND_OBJECTS) << static_cast<uint32_t>(objects.size());
+    *packet << static_cast<uint32_t>(NETWORK_COMMAND_OBJECTS_LIST) << static_cast<uint32_t>(objects.size());
     for (auto object : objects)
     {
         log_verbose("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
@@ -2529,7 +2529,7 @@ void Network::Server_Handle_TOKEN(NetworkConnection& connection, [[maybe_unused]
     Server_Send_TOKEN(connection);
 }
 
-void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkPacket& packet)
 {
     auto& repo = GetContext()->GetObjectRepository();
     uint32_t size;
@@ -2542,7 +2542,7 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         log_warning("Server sent invalid amount of objects");
         return;
     }
-    std::vector<std::string> requested_objects;
+    std::vector<std::string> missingObjects;
     for (uint32_t i = 0; i < size; i++)
     {
         const char* name = reinterpret_cast<const char*>(packet.Read(8));
@@ -2556,7 +2556,7 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
         if (ori == nullptr)
         {
             log_verbose("Requesting object %s with checksum %x from server", s.c_str(), checksum);
-            requested_objects.push_back(s);
+            missingObjects.push_back(s);
         }
         else if (ori->ObjectEntry.checksum != checksum || ori->ObjectEntry.flags != flags)
         {
@@ -2565,7 +2565,7 @@ void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket
                 ori->ObjectEntry.flags, checksum, flags);
         }
     }
-    Client_Send_OBJECTS(requested_objects);
+    Client_Send_RequestMap(missingObjects);
 }
 
 void Network::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet)
@@ -2660,7 +2660,7 @@ void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPack
     }
 }
 
-void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Server_Handle_MAPREQUEST(NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t size;
     packet >> size;
