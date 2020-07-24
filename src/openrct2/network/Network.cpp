@@ -196,6 +196,7 @@ public:
     void Client_Send_RequestMap(const std::vector<std::string>& objects);
     void Server_Send_OBJECTS_LIST(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
     void Server_Send_SCRIPTS(NetworkConnection& connection) const;
+    void Client_Send_HEARTBEAT(NetworkConnection& connection) const;
 
     NetworkStats_t GetStats() const;
     json_t* GetServerInfoAsJson() const;
@@ -275,6 +276,7 @@ private:
     uint32_t _actionId;
     uint32_t _lastUpdateTime = 0;
     uint32_t _currentDeltaTime = 0;
+    uint32_t _lastSentHeartbeat = 0;
     std::string _chatLogPath;
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _serverLogPath;
@@ -289,6 +291,7 @@ private:
     std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
     std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
     void Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_HEARTBEAT(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Client_Joined(const char* name, const std::string& keyhash, NetworkConnection& connection);
@@ -359,6 +362,7 @@ Network::Network()
     server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
     server_command_handlers[NETWORK_COMMAND_MAP_REQUEST] = &Network::Server_Handle_MAPREQUEST;
     server_command_handlers[NETWORK_COMMAND_REQUEST_GAMESTATE] = &Network::Server_Handle_REQUEST_GAMESTATE;
+    server_command_handlers[NETWORK_COMMAND_HEARTBEAT] = &Network::Server_Handle_HEARTBEAT;
 
     _chat_log_fs << std::unitbuf;
     _server_log_fs << std::unitbuf;
@@ -865,6 +869,16 @@ void Network::UpdateClient()
                 window_close_by_class(WC_MULTIPLAYER);
                 Close();
             }
+            else
+            {
+                uint32_t ticks = platform_get_ticks();
+                if (ticks - _lastSentHeartbeat >= 3000)
+                {
+                    Client_Send_HEARTBEAT(*_serverConnection);
+                    _lastSentHeartbeat = ticks;
+                }
+            }
+
             break;
         }
     }
@@ -1527,6 +1541,16 @@ void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
     connection.QueuePacket(std::move(packet));
 }
 
+void Network::Client_Send_HEARTBEAT(NetworkConnection& connection) const
+{
+    log_verbose("Sending heartbeat");
+
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    *packet << static_cast<uint32_t>(NETWORK_COMMAND_HEARTBEAT);
+
+    connection.QueuePacket(std::move(packet));
+}
+
 NetworkStats_t Network::GetStats() const
 {
     NetworkStats_t stats = {};
@@ -1595,7 +1619,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
         }
         return;
     }
-    size_t chunksize = 128; //CHUNK_SIZE;
+    size_t chunksize = CHUNK_SIZE;
     for (size_t i = 0; i < out_size; i += chunksize)
     {
         size_t datasize = std::min(chunksize, out_size - i);
@@ -2449,6 +2473,12 @@ void Network::Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, Net
             bytesSent += dataSize;
         }
     }
+}
+
+void Network::Server_Handle_HEARTBEAT(NetworkConnection& connection, NetworkPacket& packet)
+{
+    log_verbose("Client %s heartbeat", connection.Socket->GetHostName());
+    connection.ResetLastPacketTime();
 }
 
 void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
