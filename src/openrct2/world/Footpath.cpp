@@ -1529,6 +1529,8 @@ ObjectEntryIndex PathElement::GetAdditionEntryIndex() const
 
 rct_scenery_entry* PathElement::GetAdditionEntry() const
 {
+    if (!HasAddition())
+        return nullptr;
     return get_footpath_item_entry(GetAdditionEntryIndex());
 }
 
