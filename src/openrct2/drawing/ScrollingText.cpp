@@ -1462,7 +1462,10 @@ int32_t scrolling_text_setup(
     // Setup scrolling text
     auto scrollText = &_drawScrollTextList[scrollIndex];
     scrollText->string_id = stringId;
-    std::memcpy(scrollText->string_args, gCommonFormatArgs, sizeof(scrollText->string_args));
+
+    auto ft = Formatter::Common();
+    ft.CopyInto<uint8_t*>(scrollText->string_args, sizeof(scrollText->string_args));
+
     scrollText->colour = colour;
     scrollText->position = scroll;
     scrollText->mode = scrollingMode;

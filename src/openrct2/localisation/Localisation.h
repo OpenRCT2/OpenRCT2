@@ -127,6 +127,15 @@ public:
         return CurrentBuf - StartBuf;
     }
 
+    template<typename TSpecified, typename TDeduced> void CopyInto(TDeduced value, size_t numElements)
+    {
+        if (std::is_same_v<TSpecified, uint16_t*>)
+        {
+            numElements *= 2;
+        }
+        std::memcpy(value, CurrentBuf, numElements);
+    }
+
     template<typename TSpecified, typename TDeduced> Formatter& Add(TDeduced value)
     {
         static_assert(sizeof(TSpecified) <= sizeof(uintptr_t), "Type too large");
@@ -161,5 +170,4 @@ public:
         return *this;
     }
 };
-
 #endif

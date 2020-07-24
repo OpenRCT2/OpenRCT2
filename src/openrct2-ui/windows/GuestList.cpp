@@ -928,7 +928,9 @@ static FilterArguments get_arguments_from_peep(const Peep* peep)
             {
                 std::memset(gCommonFormatArgs, 0, sizeof(gCommonFormatArgs));
                 peep_thought_set_format_args(thought);
-                std::memcpy(result.args, gCommonFormatArgs, std::min(sizeof(gCommonFormatArgs), sizeof(result.args)));
+
+                ft = Formatter::Common();
+                ft.CopyInto<uint8_t*>(result.args, sizeof(result.args));
             }
             break;
         }
