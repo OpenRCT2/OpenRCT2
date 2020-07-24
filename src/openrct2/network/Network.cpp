@@ -193,7 +193,7 @@ public:
     void Server_Send_EVENT_PLAYER_JOINED(const char* playerName);
     void Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, const char* reason);
     void Client_Send_GAMEINFO();
-    void Client_Send_RequestMap(const std::vector<std::string>& objects);
+    void Client_Send_REQUESTMAP(const std::vector<std::string>& objects);
     void Server_Send_OBJECTS_LIST(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
     void Server_Send_SCRIPTS(NetworkConnection& connection) const;
     void Client_Send_HEARTBEAT(NetworkConnection& connection) const;
@@ -1464,7 +1464,7 @@ void Network::Client_Send_AUTH(
     _serverConnection->QueuePacket(std::move(packet));
 }
 
-void Network::Client_Send_RequestMap(const std::vector<std::string>& objects)
+void Network::Client_Send_REQUESTMAP(const std::vector<std::string>& objects)
 {
     log_verbose("client requests %u objects", uint32_t(objects.size()));
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
@@ -2624,7 +2624,7 @@ void Network::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkP
     if (_missingObjects.size() == totalObjects)
     {
         log_verbose("client received object list, it has %u entries", totalObjects);
-        Client_Send_RequestMap(_missingObjects);
+        Client_Send_REQUESTMAP(_missingObjects);
         _missingObjects.clear();
     }
 }
