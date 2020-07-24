@@ -92,9 +92,9 @@ constexpr rct_widget MakeSpinnerDecreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, uint8_t colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
-    const int16_t xPos = origin.x + size.width - 25;
+    const int16_t xPos = origin.x + size.width - 26;
     const int16_t yPos = origin.y + 1;
-    const uint16_t width = 12;
+    const uint16_t width = 13;
     const uint16_t height = size.height - 2;
 
     return MakeWidget({ xPos, yPos }, { width, height }, WWT_BUTTON, colour, STR_NUMERIC_DOWN, tooltip);

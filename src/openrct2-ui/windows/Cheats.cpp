@@ -265,7 +265,7 @@ static rct_widget window_cheats_misc_widgets[] =
     MakeWidget        ({  5, 221}, {238,  64},   WWT_GROUPBOX, 1, STR_CHEAT_WEATHER_GROUP                                             ), // Weather group
     MakeWidget        ({ 11, 237}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP       ), // Freeze weather
     MakeWidget        ({126, 258}, {111,  14},   WWT_DROPDOWN, 1, STR_NONE,                        STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
-    MakeWidget        ({225, 261}, { 11,  12},   WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,              STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
+    MakeWidget        ({225, 259}, { 11,  12},   WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,              STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
     MakeWidget        ({  5, 300}, {238, 132},   WWT_GROUPBOX, 1, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
     MakeWidget        ({ 11, 321}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
     MakeWidget        ({127, 321}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
@@ -274,7 +274,7 @@ static rct_widget window_cheats_misc_widgets[] =
     MakeWidget        ({ 11, 363}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
     MakeWidget        ({ 11, 384}, CHEAT_BUTTON, WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
     MakeWidget        ({126, 405}, {111,  14},   WWT_DROPDOWN, 1                                                                      ), // Staff speed
-    MakeWidget        ({225, 408}, { 11,  12},   WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
+    MakeWidget        ({225, 406}, { 11,  12},   WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
     { WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] =
