@@ -58,6 +58,7 @@ bool NetworkPacket::CommandRequiresAuth()
         case NETWORK_COMMAND_TOKEN:
         case NETWORK_COMMAND_GAMEINFO:
         case NETWORK_COMMAND_OBJECTS_LIST:
+        case NETWORK_COMMAND_MAP_REQUEST:
             return false;
         default:
             return true;
