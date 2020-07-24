@@ -879,6 +879,8 @@ private:
     void UpdateRideShopApproach();
     void UpdateRideShopInteract();
     void UpdateRideShopLeave();
+    void loc_68F9F3();
+    void loc_68FA89();
     using easter_egg_function = void (Guest::*)(Guest* otherGuest);
     int32_t CheckEasterEggName(int32_t index) const;
     void ApplyEasterEggToNearbyGuests(easter_egg_function easter_egg);

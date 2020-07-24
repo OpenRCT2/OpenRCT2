@@ -694,6 +694,182 @@ int32_t Guest::CheckEasterEggName(int32_t index) const
     return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
 }
 
+void Guest::loc_68F9F3()
+{
+    // Idle peep happiness tends towards 127 (50%).
+    if (HappinessTarget >= 128)
+        HappinessTarget--;
+    else
+        HappinessTarget++;
+
+    NauseaTarget = std::max(NauseaTarget - 2, 0);
+
+    if (Energy <= 50)
+    {
+        Energy = std::max(Energy - 2, 0);
+    }
+
+    if (Hunger < 10)
+    {
+        Hunger = std::max(Hunger - 1, 0);
+    }
+
+    if (Thirst < 10)
+    {
+        Thirst = std::max(Thirst - 1, 0);
+    }
+
+    if (Toilet >= 195)
+    {
+        Toilet--;
+    }
+
+    if (State == PEEP_STATE_WALKING && NauseaTarget >= 128)
+    {
+        if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
+        {
+            if (Action >= PEEP_ACTION_NONE_1)
+            {
+                Action = PEEP_ACTION_THROW_UP;
+                ActionFrame = 0;
+                ActionSpriteImageOffset = 0;
+                UpdateCurrentActionSpriteType();
+            }
+        }
+    }
+}
+
+void Guest::loc_68FA89()
+{
+    // 68FA89
+    if (TimeToConsume == 0 && HasFood())
+    {
+        TimeToConsume += 3;
+    }
+
+    if (TimeToConsume != 0 && State != PEEP_STATE_ON_RIDE)
+    {
+        TimeToConsume = std::max(TimeToConsume - 3, 0);
+
+        if (HasDrink())
+        {
+            Thirst = std::min(Thirst + 7, 255);
+        }
+        else
+        {
+            Hunger = std::min(Hunger + 7, 255);
+            Thirst = std::max(Thirst - 3, 0);
+            Toilet = std::min(Toilet + 2, 255);
+        }
+
+        if (TimeToConsume == 0)
+        {
+            int32_t chosen_food = bitscanforward(HasFoodStandardFlag());
+            if (chosen_food != -1)
+            {
+                ItemStandardFlags &= ~(1 << chosen_food);
+
+                uint8_t discard_container = peep_item_containers[chosen_food];
+                if (discard_container != 0xFF)
+                {
+                    ItemStandardFlags |= (1 << discard_container);
+                }
+
+                WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                UpdateSpriteType();
+            }
+            else
+            {
+                chosen_food = bitscanforward(HasFoodExtraFlag());
+                if (chosen_food != -1)
+                {
+                    ItemExtraFlags &= ~(1 << chosen_food);
+                    uint8_t discard_container = peep_extra_item_containers[chosen_food];
+                    if (discard_container != 0xFF)
+                    {
+                        if (discard_container >= 32)
+                            ItemExtraFlags |= (1 << (discard_container - 32));
+                        else
+                            ItemStandardFlags |= (1 << discard_container);
+                    }
+
+                    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
+                    UpdateSpriteType();
+                }
+            }
+        }
+    }
+
+    uint8_t newEnergy = Energy;
+    uint8_t newTargetEnergy = EnergyTarget;
+    if (newEnergy >= newTargetEnergy)
+    {
+        newEnergy -= 2;
+        if (newEnergy < newTargetEnergy)
+            newEnergy = newTargetEnergy;
+    }
+    else
+    {
+        newEnergy = std::min(PEEP_MAX_ENERGY_TARGET, newEnergy + 4);
+        if (newEnergy > newTargetEnergy)
+            newEnergy = newTargetEnergy;
+    }
+
+    if (newEnergy < PEEP_MIN_ENERGY)
+        newEnergy = PEEP_MIN_ENERGY;
+
+    /* Previous code here suggested maximum energy is 128. */
+    newEnergy = std::min(static_cast<uint8_t>(PEEP_MAX_ENERGY), newEnergy);
+
+    if (newEnergy != Energy)
+    {
+        Energy = newEnergy;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+    }
+
+    uint8_t newHappiness = Happiness;
+    uint8_t newHappinessGrowth = HappinessTarget;
+    if (newHappiness >= newHappinessGrowth)
+    {
+        newHappiness = std::max(newHappiness - 4, 0);
+        if (newHappiness < newHappinessGrowth)
+            newHappiness = newHappinessGrowth;
+    }
+    else
+    {
+        newHappiness = std::min(255, newHappiness + 4);
+        if (newHappiness > newHappinessGrowth)
+            newHappiness = newHappinessGrowth;
+    }
+
+    if (newHappiness != Happiness)
+    {
+        Happiness = newHappiness;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+    }
+
+    uint8_t newNausea = Nausea;
+    uint8_t newNauseaGrowth = NauseaTarget;
+    if (newNausea >= newNauseaGrowth)
+    {
+        newNausea = std::max(newNausea - 4, 0);
+        if (newNausea < newNauseaGrowth)
+            newNausea = newNauseaGrowth;
+    }
+    else
+    {
+        newNausea = std::min(255, newNausea + 4);
+        if (newNausea > newNauseaGrowth)
+            newNausea = newNauseaGrowth;
+    }
+
+    if (newNausea != Nausea)
+    {
+        Nausea = newNausea;
+        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
+    }
+}
+
 void Guest::Tick128UpdateGuest(int32_t index)
 {
     if (static_cast<uint32_t>(index & 0x1FF) == (gCurrentTicks & 0x1FF))
@@ -820,7 +996,9 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     HappinessTarget = std::max(HappinessTarget - 128, 0);
                     peep_leave_park(this);
                     peep_update_hunger(this);
-                    goto loc_68F9F3;
+                    loc_68F9F3();
+                    loc_68FA89();
+                    return;
                 }
             }
         }
@@ -1015,179 +1193,10 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 break;
         }
 
-    loc_68F9F3:
-        // Idle peep happiness tends towards 127 (50%).
-        if (HappinessTarget >= 128)
-            HappinessTarget--;
-        else
-            HappinessTarget++;
-
-        NauseaTarget = std::max(NauseaTarget - 2, 0);
-
-        if (Energy <= 50)
-        {
-            Energy = std::max(Energy - 2, 0);
-        }
-
-        if (Hunger < 10)
-        {
-            Hunger = std::max(Hunger - 1, 0);
-        }
-
-        if (Thirst < 10)
-        {
-            Thirst = std::max(Thirst - 1, 0);
-        }
-
-        if (Toilet >= 195)
-        {
-            Toilet--;
-        }
-
-        if (State == PEEP_STATE_WALKING && NauseaTarget >= 128)
-        {
-            if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
-            {
-                if (Action >= PEEP_ACTION_NONE_1)
-                {
-                    Action = PEEP_ACTION_THROW_UP;
-                    ActionFrame = 0;
-                    ActionSpriteImageOffset = 0;
-                    UpdateCurrentActionSpriteType();
-                }
-            }
-        }
+        loc_68F9F3();
     }
 
-    // Remaining content is executed every call.
-
-    // 68FA89
-    if (TimeToConsume == 0 && HasFood())
-    {
-        TimeToConsume += 3;
-    }
-
-    if (TimeToConsume != 0 && State != PEEP_STATE_ON_RIDE)
-    {
-        TimeToConsume = std::max(TimeToConsume - 3, 0);
-
-        if (HasDrink())
-        {
-            Thirst = std::min(Thirst + 7, 255);
-        }
-        else
-        {
-            Hunger = std::min(Hunger + 7, 255);
-            Thirst = std::max(Thirst - 3, 0);
-            Toilet = std::min(Toilet + 2, 255);
-        }
-
-        if (TimeToConsume == 0)
-        {
-            int32_t chosen_food = bitscanforward(HasFoodStandardFlag());
-            if (chosen_food != -1)
-            {
-                ItemStandardFlags &= ~(1 << chosen_food);
-
-                uint8_t discard_container = peep_item_containers[chosen_food];
-                if (discard_container != 0xFF)
-                {
-                    ItemStandardFlags |= (1 << discard_container);
-                }
-
-                WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                UpdateSpriteType();
-            }
-            else
-            {
-                chosen_food = bitscanforward(HasFoodExtraFlag());
-                if (chosen_food != -1)
-                {
-                    ItemExtraFlags &= ~(1 << chosen_food);
-                    uint8_t discard_container = peep_extra_item_containers[chosen_food];
-                    if (discard_container != 0xFF)
-                    {
-                        if (discard_container >= 32)
-                            ItemExtraFlags |= (1 << (discard_container - 32));
-                        else
-                            ItemStandardFlags |= (1 << discard_container);
-                    }
-
-                    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                    UpdateSpriteType();
-                }
-            }
-        }
-    }
-
-    uint8_t newEnergy = Energy;
-    uint8_t newTargetEnergy = EnergyTarget;
-    if (newEnergy >= newTargetEnergy)
-    {
-        newEnergy -= 2;
-        if (newEnergy < newTargetEnergy)
-            newEnergy = newTargetEnergy;
-    }
-    else
-    {
-        newEnergy = std::min(PEEP_MAX_ENERGY_TARGET, newEnergy + 4);
-        if (newEnergy > newTargetEnergy)
-            newEnergy = newTargetEnergy;
-    }
-
-    if (newEnergy < PEEP_MIN_ENERGY)
-        newEnergy = PEEP_MIN_ENERGY;
-
-    /* Previous code here suggested maximum energy is 128. */
-    newEnergy = std::min(static_cast<uint8_t>(PEEP_MAX_ENERGY), newEnergy);
-
-    if (newEnergy != Energy)
-    {
-        Energy = newEnergy;
-        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
-    }
-
-    uint8_t newHappiness = Happiness;
-    uint8_t newHappinessGrowth = HappinessTarget;
-    if (newHappiness >= newHappinessGrowth)
-    {
-        newHappiness = std::max(newHappiness - 4, 0);
-        if (newHappiness < newHappinessGrowth)
-            newHappiness = newHappinessGrowth;
-    }
-    else
-    {
-        newHappiness = std::min(255, newHappiness + 4);
-        if (newHappiness > newHappinessGrowth)
-            newHappiness = newHappinessGrowth;
-    }
-
-    if (newHappiness != Happiness)
-    {
-        Happiness = newHappiness;
-        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
-    }
-
-    uint8_t newNausea = Nausea;
-    uint8_t newNauseaGrowth = NauseaTarget;
-    if (newNausea >= newNauseaGrowth)
-    {
-        newNausea = std::max(newNausea - 4, 0);
-        if (newNausea < newNauseaGrowth)
-            newNausea = newNauseaGrowth;
-    }
-    else
-    {
-        newNausea = std::min(255, newNausea + 4);
-        if (newNausea > newNauseaGrowth)
-            newNausea = newNauseaGrowth;
-    }
-
-    if (newNausea != Nausea)
-    {
-        Nausea = newNausea;
-        WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
-    }
+    loc_68FA89();
 }
 
 /**
