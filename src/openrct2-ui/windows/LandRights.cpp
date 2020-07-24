@@ -38,11 +38,11 @@ enum WINDOW_WATER_WIDGET_IDX {
 
 static rct_widget window_land_rights_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                       STR_NONE },                             // preview box
-    { WWT_TRNBTN,   2,  28, 43, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_RIGHTS_TIP },   // decrement size
-    { WWT_TRNBTN,   2,  54, 69, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_RIGHTS_TIP },    // increment size
-    { WWT_FLATBTN,  2,  22, 45, 53, 76, IMAGE_TYPE_REMAP | SPR_BUY_LAND_RIGHTS,           STR_BUY_LAND_RIGHTS_TIP },              // land rights
-    { WWT_FLATBTN,  2,  52, 75, 53, 76, IMAGE_TYPE_REMAP | SPR_BUY_CONSTRUCTION_RIGHTS,   STR_BUY_CONSTRUCTION_RIGHTS_TIP },      // construction rights
+    MakeWidget     ({27, 17}, {44, 32}, WWT_IMGBTN,  0, SPR_LAND_TOOL_SIZE_0                                           ), // preview box
+    MakeRemapWidget({28, 18}, {16, 16}, WWT_TRNBTN,  2, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_RIGHTS_TIP), // decrement size
+    MakeRemapWidget({54, 32}, {16, 16}, WWT_TRNBTN,  2, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_RIGHTS_TIP ), // increment size
+    MakeRemapWidget({22, 53}, {24, 24}, WWT_FLATBTN, 2, SPR_BUY_LAND_RIGHTS,         STR_BUY_LAND_RIGHTS_TIP           ), // land rights
+    MakeRemapWidget({52, 53}, {24, 24}, WWT_FLATBTN, 2, SPR_BUY_CONSTRUCTION_RIGHTS, STR_BUY_CONSTRUCTION_RIGHTS_TIP   ), // construction rights
     { WIDGETS_END },
 };
 
