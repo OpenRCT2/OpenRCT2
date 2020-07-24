@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -141,38 +141,38 @@ STR_0558    :Passagerer sidder parvis i sæder der roterer omkring enderne af tr
 STR_0559    :Stor temabygning med uhyggelige gange og skræmmende rum
 STR_0560    :Et sted for syge gæster at gå hen for hurtigere at få det bedre
 STR_0561    :Cirkus show inde i et stort telt
-STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple wooden rutschebane capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual rutschebane cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
-STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
-STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
-STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyor belt, accelerating down steep slopes to soak the riders with a giant splash
-STR_0573    :Powered helicopter shaped cars running on a steel track, controlled by the pedalling of the riders
-STR_0574    :Riders are held in special harnesses in a lying-down position, travelling through twisted track and inversions either on their backs or facing the ground
-STR_0575    :Powered trains hanging from a single rail transport people around the park
-STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
-STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0562    :El-drevne vogne kører langs et flere-lags spor forbi uhyggeligt landskaber og specielle effekter
+STR_0563    :Siddende i komfortable vogne med forholdsvis simpel fastspænding, kan gæsterne nyde gigantiske fald og snoede spor samt masser af 'luft tid' over bakkerne
+STR_0564    :Kørende på træspor, denne forlystelse er hurtig, ru, støjende, og giver en 'ude af kontrol' tur med masser af 'luft tid'
+STR_0565    :En simpel trærutschebane er i stand til kun at bevæge sig på blide skråninger og sving, hvor bilerne kun holdes på sporet ved side friktion hjul og tyngdekraften
+STR_0566    :Individuelle rutschebanevogne suser rundt en trang zig-zag bane med skarpe hjørner og korte hurtige fald
+STR_0567    :Siddende i sæder suspenderet hver side af sporet, gæsterne er sat hoved-over-hæle, mens de styrter ned af stejle fald og kører gennem forskellige inversioner
+STR_0569    :placeret i særlige seler under sporet, gæsterne oplever følelsen af flyvning, imens de svinger gennem luften
+STR_0571    :Cirkulære vogne spinder rundt, imens de kører langs et zig-zag træspor
+STR_0572    :Både med stor kapacitet sejler langs en bred vandkanal, fremdrives på opad gående skråninger af et transportbånd, accelererer ned af stejle skråninger og gør gæsterne våde i et kæmpe vandplask
+STR_0573    :Motordrevne helikopterformede vogne, der kører på en stålbane, kontrolleret af gæster ved hjælp af pedaler
+STR_0574    :Gæster holdes i særlige seler i en liggende position, der rejser gennem snoet spor og inversioner, så de vender enten på ryggen eller med ansigtet mod jorden
+STR_0575    :Elektrisk tog hængende fra en enkelt jernbane skinne, der transporterer folk rundt i parken
+STR_0577    :Skinnevogne der kører på træspor, og drejer rundt på særlige vende sektioner
+STR_0578    :Vogne kører langs et spor omgivet af cirkulære bøjler, gennemkører stejle fald og 'heartline' drejninger
 STR_0579    :Et roligt spil mini golf
 STR_0580    :En gigantisk rutschebane der er i stand til fald og bakker på over 90 meter
 STR_0581    :En ring af sæder bliver trukket op i toppen af et højt tårn, imens den roterer roligt rundt, hvorefter af lave et fridt fald ned , og stopper roligt i bunden ved hjælp af magnetiske bremser
 STR_0582    :En kør-selv luftpudebåd
-STR_0583    :Building containing warped rooms and angled corridors to disorientate people walking through it
-STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
-STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
-STR_0586    :Boat shaped cars run on rutschebane track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
-STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
-STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
-STR_0589    :A large flying-carpet themed car which moves up and down cyclically on the ends of 4 arms
-STR_0590    :Riders ride in a submerged submarine through an underwater course
-STR_0591    :Raft-shaped boats gently meander around a river track
-STR_0593    :Rotating wheel with suspended passenger pods, which first starts spinning and is then tilted up by a supporting arm
-STR_0598    :Inverted rutschebane trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
-STR_0599    :A compact rutschebane with individual cars and smooth twisting drops
-STR_0600    :Powered mine trains career along a smooth and twisted track layout
-STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_0583    :Bygning med skæve rum og vinklede korridorer til at desorientere folk der går gennem det
+STR_0584    :Særlige cykler kører på et enkelt stålspor, fremdrives af gæsterne med pedalerne
+STR_0585    :Gæster sidder parvis i sæder suspenderet under sporet, imens de kører igennem loop og vrid med vilde inversioner
+STR_0586    :Bådformede vogne kører på rutschebane igennem snoede kurver og stejle fald, der sprøjter ned sektioner af vand og blide flodsektioner
+STR_0587    :Efter en spændende luft-dreven igangsætning, suser vognene op i ad et lodret spor, over toppen, og lodret ned på den anden side, og tilbage til stationen.
+STR_0588    :Individuelle vogne kører under en zig-zag'ende spor med hårnåle sving og stejle fald.
+STR_0589    :Et stor flyvende tæppe tema vogn, der bevæger sig op og ned cyklisk på enderne af 4 arme
+STR_0590    :Gæsterne sejler i en neddykket ubåd gennem en undervandsbane
+STR_0591    :Gummibåde der bugter sig igennem et flod spor
+STR_0593    :Roterende hjul med suspenderede passagerkapsler, som først begynder at dreje og derefter vippes op af en bærende arm
+STR_0598    :Omvendt rutschebane vogne accelerer ud af stationen til en lodret opad gående spir af spor, derefter kører tilbage gennem stationen for at køre baglæns op en anden lodret spir af spor
+STR_0599    :En kompakt rutschebane med individuelle vogne og rolige snoede fald
+STR_0600    :Selvkørende togvogne kører igennem en sen snoet bane af spor
+STR_0602    :Rutsjebanetog accelereres ud af stationen af lineære induktionsmotorer for at suse gennem snoede inversioner
 STR_0767    :Gæst {INT32}
 STR_0768    :Handymand {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -1184,7 +1184,6 @@ STR_1807    :Kontrolfejl
 STR_1808    :{WINDOW_COLOUR_2}Sidste nedbrud: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nuværende nedbrud: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Bærer:
-
 STR_1811    :Kan ikke bygge det her...
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Forskellige objekter
@@ -2920,7 +2919,7 @@ STR_5554    :{SMALLFONT}{BLACK}Aktiver bjergværktøj
 STR_5555    :Vis vogne fra andre spor type
 STR_5556    :{SMALLFONT}{BLACK}Smid spiller ud
 STR_5557    :Forbliv forbundet efter afbrudt forbindelse (Multiplayer)
-STR_5558    :En genstart er påkrævet før indstillingerne træder i kraft
+STR_5558    :Denne indstilling træder først i kraft, når du har genstartet OpenRCT2
 STR_5559    :10 min. inspektioner
 STR_5560    :{SMALLFONT}{BLACK}Sæt inspektions interval til 'hvert 10. minut' på alle forlystelser
 STR_5561    :Kan ikke indlæse sprog
@@ -3153,22 +3152,22 @@ STR_5822    :{SMALLFONT}{BLACK}Skift imellem dag og nat.{NEWLINE}Et døgn tager 
 STR_5823    :{SMALLFONT}{BLACK}Vis bannere med store bogstaver (RCT1 opførsel)
 STR_5824    :{SMALLFONT}{BLACK}Fjern lyn effekter{NEWLINE}under tordenvejr
 STR_5825    :{SMALLFONT}{BLACK}Hold musepilen inde i vinduet
-STR_5826    :{SMALLFONT}{BLACK}Invert right mouse dragging of the viewport
-STR_5827    :{SMALLFONT}{BLACK}Sets the colour scheme used for the GUI
-STR_5828    :{SMALLFONT}{BLACK}Changes what measurement format is used for distances, speed, etc.
-STR_5829    :{SMALLFONT}{BLACK}Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
+STR_5826    :{SMALLFONT}{BLACK}Inverter bevægelse ved træk med højre museknap i hovedvinduet
+STR_5827    :{SMALLFONT}{BLACK}Indstiller det farveskema, der bruges til GUI
+STR_5828    :{SMALLFONT}{BLACK}Ændrer hvilket måleformat der bruges til afstande, hastighed osv.
+STR_5829    :{SMALLFONT}{BLACK}Ændrer, hvilket valutaformat der bruges. Rent visuelt er det kune en anslået valutakurs
 STR_5830    :{SMALLFONT}{BLACK}Skifter sproget der bliver brugt
-STR_5831    :{SMALLFONT}{BLACK}Changes what format the{NEWLINE}temperature is displayed in
-STR_5832    :{SMALLFONT}{BLACK}Vis height as generic units instead of measurement format set under “Distance and Speed”
-STR_5833    :{SMALLFONT}{BLACK}Changes what date format is used
-STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
-STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
-STR_5836    :{SMALLFONT}{BLACK}Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder, or set the path to RCT1 in the Diverse tab.
-STR_5837    :{SMALLFONT}{BLACK}Create and manage custom UI themes
-STR_5838    :{SMALLFONT}{BLACK}Vis a separate button for the finance window in the toolbar
-STR_5839    :{SMALLFONT}{BLACK}Vis a separate button for the research and development window in the toolbar
-STR_5840    :{SMALLFONT}{BLACK}Vis a separate button for the cheats window in the toolbar
-STR_5841    :{SMALLFONT}{BLACK}Vis a separate button for the recent news window in the toolbar
+STR_5831    :{SMALLFONT}{BLACK}Ændrer hvilket måleformat der bruges {NEWLINE}til visning af temperatur
+STR_5832    :{SMALLFONT}{BLACK}Vis højde som generiske enheder i stedet for måleformat, der er under “Afstand og hastighed”
+STR_5833    :{SMALLFONT}{BLACK}Ændrer det datoformat, der bruges
+STR_5834    :{SMALLFONT}{BLACK}Vælg, hvilken lydenhed OpenRCT2 skal bruge
+STR_5835    :{SMALLFONT}{BLACK}Slå lyden fra for spillet, hvis vinduet mister fokus
+STR_5836    :{SMALLFONT}{BLACK}Vælg musik, der skal bruges i hovedmenuen. {NEWLINE} Hvis du vælger RCT1-tema, kræver det, at du kopierer 'data/css17.dat' fra din RCT1-spilmappe til 'data/css50.dat' i din RCT2-mappe eller angiver stien til RCT1 under fanen Diverse.
+STR_5837    :{SMALLFONT}{BLACK}Oprette og administrere brugerdefinerede brugergrænsefladetemaer
+STR_5838    :{SMALLFONT}{BLACK}Vis en separat knap til finansvinduet på værktøjslinjen
+STR_5839    :{SMALLFONT}{BLACK}Vis en separat knap til forsknings- og udviklingsvinduet på værktøjslinjen
+STR_5840    :{SMALLFONT}{BLACK}Vis en separat knap til snydevinduet på værktøjslinjen
+STR_5841    :{SMALLFONT}{BLACK}Vis en separat knap til nyhedsvinduet på værktøjslinjen
 STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
 STR_5843    :{SMALLFONT}{BLACK}Enables progressive unlocking of scenarios (RCT1 behaviour)
 STR_5844    :{SMALLFONT}{BLACK}Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
@@ -3697,6 +3696,9 @@ STR_6371    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation,
 STR_6372    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men denne version er ikke korrekt. OpenRCT2 har brug for, Loopy Landscapes eller RCT Deluxe installationen for at kunne bruge RollerCoaster Tycoon 1 aktiver.
 STR_6373    :Slå rydningskontrol til/fra
 STR_6374    :R
+STR_6375    :Ukendt forlystelse
+STR_6376    :{WINDOW_COLOUR_2}Vogn:{NEWLINE}{BLACK}{STRINGID} til {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} til {STRINGID}
 
 #############
 # Scenarios #
