@@ -194,7 +194,7 @@ public:
     void Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, const char* reason);
     void Client_Send_GAMEINFO();
     void Client_Send_RequestMap(const std::vector<std::string>& objects);
-    void Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
+    void Server_Send_OBJECTS_LIST(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
     void Server_Send_SCRIPTS(NetworkConnection& connection) const;
 
     NetworkStats_t GetStats() const;
@@ -280,6 +280,7 @@ private:
     std::string _serverLogPath;
     std::string _serverLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::shared_ptr<OpenRCT2::IPlatformEnvironment> _env;
+    std::vector<std::string> _missingObjects;
 
     void UpdateServer();
     void UpdateClient();
@@ -1470,18 +1471,24 @@ void Network::Server_Send_TOKEN(NetworkConnection& connection)
     connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const
+void Network::Server_Send_OBJECTS_LIST(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const
 {
     log_verbose("Server sends objects list with %u items", objects.size());
-    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << static_cast<uint32_t>(NETWORK_COMMAND_OBJECTS_LIST) << static_cast<uint32_t>(objects.size());
-    for (auto object : objects)
+
+    for (size_t i = 0; i < objects.size(); ++i)
     {
+        const auto* object = objects[i];
+
+        std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+        *packet << static_cast<uint32_t>(NETWORK_COMMAND_OBJECTS_LIST) << static_cast<uint32_t>(i)
+                << static_cast<uint32_t>(objects.size());
+
         log_verbose("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
         packet->Write(reinterpret_cast<const uint8_t*>(object->ObjectEntry.name), 8);
         *packet << object->ObjectEntry.checksum << object->ObjectEntry.flags;
+
+        connection.QueuePacket(std::move(packet));
     }
-    connection.QueuePacket(std::move(packet));
 }
 
 void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
@@ -1588,7 +1595,7 @@ void Network::Server_Send_MAP(NetworkConnection* connection)
         }
         return;
     }
-    size_t chunksize = CHUNK_SIZE;
+    size_t chunksize = 128; //CHUNK_SIZE;
     for (size_t i = 0; i < out_size; i += chunksize)
     {
         size_t datasize = std::min(chunksize, out_size - i);
@@ -2505,7 +2512,7 @@ void Network::Server_Client_Joined(const char* name, const std::string& keyhash,
         auto context = GetContext();
         auto& objManager = context->GetObjectManager();
         auto objects = objManager.GetPackableObjects();
-        Server_Send_OBJECTS(connection, objects);
+        Server_Send_OBJECTS_LIST(connection, objects);
         Server_Send_SCRIPTS(connection);
 
         // Log player joining event
@@ -2532,40 +2539,64 @@ void Network::Server_Handle_TOKEN(NetworkConnection& connection, [[maybe_unused]
 void Network::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkPacket& packet)
 {
     auto& repo = GetContext()->GetObjectRepository();
-    uint32_t size;
-    packet >> size;
-    log_verbose("client received object list, it has %u entries", size);
-    if (size > OBJECT_ENTRY_COUNT)
+
+    uint32_t index = 0;
+    uint32_t totalObjects = 0;
+    packet >> index >> totalObjects;
+
+    if (index == 0)
+    {
+        // Start of objects list.
+        _missingObjects.clear();
+    }
+
+    if (totalObjects > OBJECT_ENTRY_COUNT)
     {
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_INVALID_REQUEST);
         connection.Socket->Disconnect();
         log_warning("Server sent invalid amount of objects");
         return;
     }
-    std::vector<std::string> missingObjects;
-    for (uint32_t i = 0; i < size; i++)
+
+    char objectListMsg[256];
+    uint32_t args[] = {
+        index + 1,
+        totalObjects,
+    };
+    format_string(objectListMsg, 256, STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST, &args);
+
+    auto intent = Intent(WC_NETWORK_STATUS);
+    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ objectListMsg });
+    intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
+    context_open_intent(&intent);
+
+    const char* name = reinterpret_cast<const char*>(packet.Read(8));
+    // Required, as packet has no null terminators.
+    std::string s(name, name + 8);
+    uint32_t checksum, flags;
+    packet >> checksum >> flags;
+
+    const ObjectRepositoryItem* ori = repo.FindObject(s.c_str());
+    // This could potentially request the object if checksums don't match, but since client
+    // won't replace its version with server-provided one, we don't do that.
+    if (ori == nullptr)
     {
-        const char* name = reinterpret_cast<const char*>(packet.Read(8));
-        // Required, as packet has no null terminators.
-        std::string s(name, name + 8);
-        uint32_t checksum, flags;
-        packet >> checksum >> flags;
-        const ObjectRepositoryItem* ori = repo.FindObject(s.c_str());
-        // This could potentially request the object if checksums don't match, but since client
-        // won't replace its version with server-provided one, we don't do that.
-        if (ori == nullptr)
-        {
-            log_verbose("Requesting object %s with checksum %x from server", s.c_str(), checksum);
-            missingObjects.push_back(s);
-        }
-        else if (ori->ObjectEntry.checksum != checksum || ori->ObjectEntry.flags != flags)
-        {
-            log_warning(
-                "Object %s has different checksum/flags (%x/%x) than server (%x/%x).", s.c_str(), ori->ObjectEntry.checksum,
-                ori->ObjectEntry.flags, checksum, flags);
-        }
+        log_verbose("Requesting object %s with checksum %x from server", s.c_str(), checksum);
+        _missingObjects.push_back(s);
     }
-    Client_Send_RequestMap(missingObjects);
+    else if (ori->ObjectEntry.checksum != checksum || ori->ObjectEntry.flags != flags)
+    {
+        log_warning(
+            "Object %s has different checksum/flags (%x/%x) than server (%x/%x).", s.c_str(), ori->ObjectEntry.checksum,
+            ori->ObjectEntry.flags, checksum, flags);
+    }
+
+    if (_missingObjects.size() == totalObjects)
+    {
+        log_verbose("client received object list, it has %u entries", totalObjects);
+        Client_Send_RequestMap(_missingObjects);
+        _missingObjects.clear();
+    }
 }
 
 void Network::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet)
