@@ -1485,7 +1485,8 @@ void Network::Server_Send_TOKEN(NetworkConnection& connection)
     connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_OBJECTS_LIST(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const
+void Network::Server_Send_OBJECTS_LIST(
+    NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const
 {
     log_verbose("Server sends objects list with %u items", objects.size());
 
