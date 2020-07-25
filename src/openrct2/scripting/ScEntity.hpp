@@ -248,7 +248,7 @@ namespace OpenRCT2::Scripting
     private:
         Vehicle* GetVehicle() const
         {
-            return get_sprite(_id)->generic.As<Vehicle>();
+            return ::GetEntity<Vehicle>(_id);
         }
 
         uint8_t rideObject_get() const

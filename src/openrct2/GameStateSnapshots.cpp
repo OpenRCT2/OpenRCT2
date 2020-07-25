@@ -31,7 +31,8 @@ struct GameStateSnapshot_t
     MemoryStream storedSprites;
     MemoryStream parkParameters;
 
-    void SerialiseSprites(rct_sprite* sprites, const size_t numSprites, bool saving)
+    // Must pass a function that can access the sprite.
+    void SerialiseSprites(std::function<rct_sprite*(const size_t)> getEntity, const size_t numSprites, bool saving)
     {
         const bool loading = !saving;
 
@@ -47,7 +48,8 @@ struct GameStateSnapshot_t
         {
             for (size_t i = 0; i < numSprites; i++)
             {
-                if (sprites[i].generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+                auto entity = getEntity(i);
+                if (entity == nullptr || entity->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
                     continue;
                 indexTable.push_back(static_cast<uint32_t>(i));
             }
@@ -66,7 +68,13 @@ struct GameStateSnapshot_t
             ds << indexTable[i];
 
             const uint32_t spriteIdx = indexTable[i];
-            rct_sprite& sprite = sprites[spriteIdx];
+            rct_sprite* entity = getEntity(spriteIdx);
+            if (entity == nullptr)
+            {
+                log_error("Entity index corrupted!");
+                return;
+            }
+            auto& sprite = *entity;
 
             ds << sprite.generic.sprite_identifier;
 
@@ -132,8 +140,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
 
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
-        // TODO refactor to not use this as a proxy for getting a pointer to the sprite array
-        snapshot.SerialiseSprites(get_sprite(0), MAX_SPRITES, true);
+        snapshot.SerialiseSprites(
+            [](const size_t index) { return reinterpret_cast<rct_sprite*>(GetEntity(index)); }, MAX_SPRITES, true);
 
         // log_info("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
@@ -167,7 +175,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             sprite.generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
         }
 
-        snapshot.SerialiseSprites(spriteList.data(), MAX_SPRITES, false);
+        snapshot.SerialiseSprites([&spriteList](const size_t index) { return &spriteList[index]; }, MAX_SPRITES, false);
 
         return spriteList;
     }
