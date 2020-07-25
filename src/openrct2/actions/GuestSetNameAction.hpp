@@ -72,8 +72,8 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
-        auto peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PeepType::Guest)
+        auto guest = TryGetEntity<Guest>(_spriteIndex);
+        if (guest == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
@@ -84,31 +84,26 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        auto peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PeepType::Guest)
+        auto guest = TryGetEntity<Guest>(_spriteIndex);
+        if (guest == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
-        auto curName = peep->GetName();
+        auto curName = guest->GetName();
         if (curName == _name)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::OK, STR_NONE);
         }
 
-        if (!peep->SetName(_name))
+        if (!guest->SetName(_name))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
         // Easter egg functions are for guests only
-        Guest* guest = peep->AsGuest();
-
-        if (guest != nullptr)
-        {
-            guest->HandleEasterEggName();
-        }
+        guest->HandleEasterEggName();
 
         gfx_invalidate_screen();
 
@@ -116,9 +111,9 @@ public:
         context_broadcast_intent(&intent);
 
         auto res = std::make_unique<GameActionResult>();
-        res->Position.x = peep->x;
-        res->Position.y = peep->y;
-        res->Position.z = peep->z;
+        res->Position.x = guest->x;
+        res->Position.y = guest->y;
+        res->Position.z = guest->z;
         return res;
     }
 };

@@ -53,9 +53,8 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        Peep* peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PeepType::Staff
-            || (peep->StaffType != STAFF_TYPE_HANDYMAN && peep->StaffType != STAFF_TYPE_MECHANIC))
+        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr || (staff->StaffType != STAFF_TYPE_HANDYMAN && staff->StaffType != STAFF_TYPE_MECHANIC))
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -66,18 +65,22 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Peep* peep = GET_PEEP(_spriteIndex);
-
-        peep->StaffOrders = _ordersId;
+        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr)
+        {
+            log_warning("Invalid game command for sprite %u", _spriteIndex);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+        staff->StaffOrders = _ordersId;
 
         window_invalidate_by_number(WC_PEEP, _spriteIndex);
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
         context_broadcast_intent(&intent);
 
         auto res = std::make_unique<GameActionResult>();
-        res->Position.x = peep->x;
-        res->Position.y = peep->y;
-        res->Position.z = peep->z;
+        res->Position.x = staff->x;
+        res->Position.y = staff->y;
+        res->Position.z = staff->z;
         return res;
     }
 };

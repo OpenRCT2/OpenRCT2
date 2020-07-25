@@ -442,7 +442,12 @@ void window_staff_set_page(rct_window* w, int32_t page)
  */
 void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    Peep* peep = GET_PEEP(w->number);
+    auto* peep = GetEntity<Staff>(w->number);
+    if (peep == nullptr)
+    {
+        window_close(w);
+        return;
+    }
 
     switch (widgetIndex)
     {
