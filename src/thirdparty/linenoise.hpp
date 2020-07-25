@@ -1069,7 +1069,7 @@ static const char *unsupported_term[] = {"dumb","cons25","emacs",NULL};
 static CompletionCallback completionCallback;
 
 #ifndef _WIN32
-static struct termios orig_termios; /* In order to restore at exit.*/
+static struct termios raw_termios, orig_termios; /* In order to restore at exit.*/
 #endif
 static bool rawmode = false; /* For atexit() function to check if restore is needed*/
 static bool mlmode = false;  /* Multi line mode. Default is single line. */
@@ -1119,6 +1119,7 @@ enum KEY_ACTION {
 void linenoiseAtExit(void);
 bool AddHistory(const char *line);
 void refreshLine(struct linenoiseState *l);
+static ssize_t writeFixed(int fd, const void *buf, size_t n);
 
 /* ============================ UTF8 utilities ============================== */
 
@@ -1597,8 +1598,6 @@ inline bool isUnsupportedTerm(void) {
 /* Raw mode: 1960 magic shit. */
 inline bool enableRawMode(int fd) {
 #ifndef _WIN32
-    struct termios raw;
-
     if (!isatty(STDIN_FILENO)) goto fatal;
     if (!atexit_registered) {
         atexit(linenoiseAtExit);
@@ -1606,23 +1605,23 @@ inline bool enableRawMode(int fd) {
     }
     if (tcgetattr(fd,&orig_termios) == -1) goto fatal;
 
-    raw = orig_termios;  /* modify the original mode */
+    raw_termios = orig_termios;  /* modify the original mode */
     /* input modes: no break, no CR to NL, no parity check, no strip char,
      * no start/stop output control. */
-    raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-    /* output modes - disable post processing */
-    raw.c_oflag &= ~(OPOST);
+    raw_termios.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
+    /* output modes - keep post processing */
+    raw_termios.c_oflag |= (OPOST | ONLCR | OCRNL);
     /* control modes - set 8 bit chars */
-    raw.c_cflag |= (CS8);
+    raw_termios.c_cflag |= (CS8);
     /* local modes - choing off, canonical off, no extended functions,
      * no signal chars (^Z,^C) */
-    raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
+    raw_termios.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
     /* control chars - set return condition: min number of bytes and timer.
      * We want read to return every single byte, without timeout. */
-    raw.c_cc[VMIN] = 1; raw.c_cc[VTIME] = 0; /* 1 byte, no timer */
+    raw_termios.c_cc[VMIN] = 1; raw_termios.c_cc[VTIME] = 0; /* 1 byte, no timer */
 
     /* put terminal in raw mode after flushing */
-    if (tcsetattr(fd,TCSAFLUSH,&raw) < 0) goto fatal;
+    if (tcsetattr(fd,TCSAFLUSH,&raw_termios) < 0) goto fatal;
     rawmode = true;
 #else
     if (!atexit_registered) {
@@ -2334,9 +2333,36 @@ inline std::string Readline(const char *prompt) {
 
 /* ================================ History ================================= */
 
+// HLP Added enable/disableRawModeOutput()
+// These two functions enable/disable the raw output mode of the terminal
+static int enableRawModeOutput(int fd)
+{
+    raw_termios.c_oflag &= ~(OPOST);
+    /* put terminal in raw mode after flushing */
+    if (tcsetattr(fd, TCSADRAIN, &raw_termios) < 0)
+    {
+        errno = ENOTTY;
+        return -1;
+    }
+    return 0;
+}
+
+static int disableRawModeOutput(int fd)
+{
+    raw_termios.c_oflag |= (OPOST);
+    /* put terminal in raw mode after flushing */
+    if (tcsetattr(fd, TCSADRAIN, &raw_termios) < 0)
+    {
+        errno = ENOTTY;
+        return -1;
+    }
+    return 0;
+}
+
 /* At exit we'll try to fix the terminal to the initial conditions. */
 inline void linenoiseAtExit(void) {
     disableRawMode(STDIN_FILENO);
+    disableRawModeOutput(STDIN_FILENO);
 }
 
 /* This is the API call to add a new entry in the linenoise history.
@@ -2402,6 +2428,13 @@ inline bool LoadHistory(const char* path) {
 
 inline const std::vector<std::string>& GetHistory() {
     return history;
+}
+
+static ssize_t writeFixed(int fd, const void *buf, size_t n)
+{
+    enableRawModeOutput(fd);
+    write(fd, buf, n);
+    disableRawModeOutput(fd);
 }
 
 } // namespace linenoise
