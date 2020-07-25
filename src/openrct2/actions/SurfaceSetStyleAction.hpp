@@ -24,15 +24,15 @@ DEFINE_GAME_ACTION(SurfaceSetStyleAction, GAME_COMMAND_CHANGE_SURFACE_STYLE, Gam
 {
 private:
     MapRange _range;
-    uint8_t _surfaceStyle;
-    uint8_t _edgeStyle;
+    ObjectEntryIndex _surfaceStyle;
+    ObjectEntryIndex _edgeStyle;
 
 public:
     SurfaceSetStyleAction()
     {
     }
 
-    SurfaceSetStyleAction(MapRange range, uint8_t surfaceStyle, uint8_t edgeStyle)
+    SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle)
         : _range(range)
         , _surfaceStyle(surfaceStyle)
         , _edgeStyle(edgeStyle)

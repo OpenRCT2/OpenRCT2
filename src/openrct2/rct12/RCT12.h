@@ -773,7 +773,7 @@ assert_struct_size(RCT12RideMeasurement, 0x4B0C);
 
 struct RCT12Banner
 {
-    uint8_t type;
+    RCT12ObjectEntryIndex type;
     uint8_t flags;            // 0x01
     rct_string_id string_idx; // 0x02
     union
@@ -820,5 +820,5 @@ assert_struct_size(RCT12ResearchItem, 5);
 
 #pragma pack(pop)
 
-ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(RCT12ObjectEntryIndex index);
-RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(ObjectEntryIndex index);
+ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
+RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex index);

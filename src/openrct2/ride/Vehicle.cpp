@@ -1945,8 +1945,8 @@ static SoundIdVolume sub_6D7AC0(SoundId currentSoundId, uint8_t currentVolume, S
  */
 void Vehicle::Update()
 {
-    // The cable lift uses the ride type of NULL
-    if (ride_subtype == RIDE_TYPE_NULL)
+    // The cable lift uses a ride entry index of NULL
+    if (ride_subtype == RIDE_ENTRY_INDEX_NULL)
     {
         CableLiftUpdate();
         return;
@@ -7621,7 +7621,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* oth
             if (z_diff > 16)
                 continue;
 
-            if (vehicle2->ride_subtype == RIDE_TYPE_NULL)
+            if (vehicle2->ride_subtype == RIDE_ENTRY_INDEX_NULL)
                 continue;
 
             auto collideVehicleEntry = vehicle2->Entry();
