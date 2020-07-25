@@ -2176,8 +2176,11 @@ void Ride::UpdateSpiralSlide()
     {
         slide_in_use--;
 
-        Peep* peep = GET_PEEP(slide_peep);
-        peep->DestinationX++;
+        auto* peep = GetEntity<Guest>(slide_peep);
+        if (peep != nullptr)
+        {
+            peep->DestinationX++;
+        }
     }
 
     const uint8_t current_rotation = get_current_rotation();

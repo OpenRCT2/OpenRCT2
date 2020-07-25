@@ -112,8 +112,8 @@ static void paint_ferris_wheel_structure(
                 continue;
             }
 
-            Peep* peep = GET_PEEP(vehicle->peep[i]);
-            if (peep->State != PEEP_STATE_ON_RIDE)
+            auto* peep = GetEntity<Guest>(vehicle->peep[i]);
+            if (peep == nullptr || peep->State != PEEP_STATE_ON_RIDE)
             {
                 continue;
             }

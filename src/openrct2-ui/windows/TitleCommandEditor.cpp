@@ -622,7 +622,7 @@ static void window_title_command_editor_tool_down(
         if (info.sprite->generic.Is<Peep>())
         {
             validSprite = true;
-            auto peep = GET_PEEP(spriteIndex);
+            auto peep = GetEntity<Peep>(spriteIndex);
             if (peep != nullptr)
             {
                 uint8_t formatArgs[32]{};

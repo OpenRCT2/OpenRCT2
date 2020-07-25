@@ -901,12 +901,19 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
         if (!is_staff_list)
         {
-            Staff* staff = (GET_PEEP(staffIndex))->AsStaff();
-            if (!staff->IsPatrolAreaSet(session->MapPosition))
+            Staff* staff = GetEntity<Staff>(staffIndex);
+            if (staff == nullptr)
             {
-                patrolColour = COLOUR_GREY;
+                log_error("Invalid staff index for draw patrol areas!");
             }
-            staffType = staff->StaffType;
+            else
+            {
+                if (!staff->IsPatrolAreaSet(session->MapPosition))
+                {
+                    patrolColour = COLOUR_GREY;
+                }
+                staffType = staff->StaffType;
+            }
         }
 
         if (staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(staffType), session->MapPosition))

@@ -207,9 +207,12 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
                 // Found a winner
                 if (vehicle->num_peeps != 0)
                 {
-                    Peep* peep = GET_PEEP(vehicle->peep[0]);
-                    ride->race_winner = peep->sprite_index;
-                    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                    auto* peep = GetEntity<Guest>(vehicle->peep[0]);
+                    if (peep != nullptr)
+                    {
+                        ride->race_winner = peep->sprite_index;
+                        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                    }
                 }
 
                 // Race is over
