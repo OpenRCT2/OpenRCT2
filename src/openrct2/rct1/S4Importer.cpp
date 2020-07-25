@@ -2807,13 +2807,25 @@ private:
                             ConvertWall(&type, &colourA, &colourB);
 
                             type = _wallTypeToEntryMap[type];
-                            auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3] & ~EDGE_SLOPE_ELEVATED;
+                            auto baseZ = originalTileElement.GetBaseZ();
+                            auto clearanceZ = originalTileElement.GetClearanceZ();
+                            auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3];
+                            if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
+                            {
+                                clearanceZ += LAND_HEIGHT_STEP;
+                            }
+                            if (edgeSlope & EDGE_SLOPE_ELEVATED)
+                            {
+                                edgeSlope &= ~EDGE_SLOPE_ELEVATED;
+                                baseZ += LAND_HEIGHT_STEP;
+                                clearanceZ += LAND_HEIGHT_STEP;
+                            }
 
                             auto element = tile_element_insert(location, originalTileElement.GetOccupiedQuadrants());
                             element->SetType(TILE_ELEMENT_TYPE_WALL);
                             element->SetDirection(edge);
-                            element->SetBaseZ(originalTileElement.GetBaseZ());
-                            element->SetClearanceZ(originalTileElement.GetClearanceZ());
+                            element->SetBaseZ(baseZ);
+                            element->SetClearanceZ(clearanceZ);
 
                             auto wallElement = element->AsWall();
                             wallElement->SetEntryIndex(type);

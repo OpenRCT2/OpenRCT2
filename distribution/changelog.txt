@@ -40,6 +40,7 @@
 - Fix: [#11640] Objects with a blank description in one language do not fall back to other languages anymore.
 - Fix: [#11676] Spiral Roller Coaster has regular lift hill available.
 - Fix: [#11695] Mechanics walk to tile 0, 0 at entrance only stations when trying to fix them.
+- Fix: [#11804] Some RCT1 fences are imported at the wrong height.
 - Fix: [#11953] Incorrect banner text shade colour on wall text.
 - Fix: [#12062] Inconsistent lift hill sprites on Flying Coaster while inverted (original bug).
 - Fix: [#12068] Incorrect Entrance/Exit location on track design preview. Incorrect track design previews with track that contain diagonal track elements.
