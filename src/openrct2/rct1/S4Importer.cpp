@@ -2810,7 +2810,7 @@ private:
                             auto baseZ = originalTileElement.GetBaseZ();
                             auto clearanceZ = originalTileElement.GetClearanceZ();
                             auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3];
-                            if (edgeSlope & EDGE_SLOPE_UPWARDS || edgeSlope & EDGE_SLOPE_DOWNWARDS)
+                            if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                             {
                                 clearanceZ += LAND_HEIGHT_STEP;
                             }
