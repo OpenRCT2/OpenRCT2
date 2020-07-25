@@ -271,22 +271,22 @@ static constexpr const uint8_t item_consumption_time[] = {
 
 /** rct2: 009823AC */
 static constexpr const PeepThoughtType crowded_thoughts[] = {
-    PeepThoughtType::PEEP_THOUGHT_TYPE_LOST,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_TIRED,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_BAD_LITTER,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_HUNGRY,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_THIRSTY,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_VERY_CLEAN,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_CROWDED,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_SCENERY,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_VERY_CLEAN,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_MUSIC,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_WATCHED,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_NOT_HUNGRY,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_NOT_THIRSTY,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_TOILET,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_NONE,
-    PeepThoughtType::PEEP_THOUGHT_TYPE_NONE,
+    PeepThoughtType::Lost,
+    PeepThoughtType::Tired,
+    PeepThoughtType::BadLitter,
+    PeepThoughtType::Hungry,
+    PeepThoughtType::Thirsty,
+    PeepThoughtType::VeryClean,
+    PeepThoughtType::Crowded,
+    PeepThoughtType::GreatScenery,
+    PeepThoughtType::VeryClean,
+    PeepThoughtType::Music,
+    PeepThoughtType::Watched,
+    PeepThoughtType::NotHungry,
+    PeepThoughtType::NotThirsty,
+    PeepThoughtType::Toilet,
+    PeepThoughtType::None,
+    PeepThoughtType::None,
 };
 
 /** rct2: 0x00982326 */
@@ -881,7 +881,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         if (PeepFlags & PEEP_FLAGS_CROWDED)
         {
             PeepThoughtType thought_type = crowded_thoughts[scenario_rand() & 0xF];
-            if (thought_type != PeepThoughtType::PEEP_THOUGHT_TYPE_NONE)
+            if (thought_type != PeepThoughtType::None)
             {
                 InsertNewThought(thought_type, PEEP_THOUGHT_ITEM_NONE);
             }
@@ -942,7 +942,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 {
                     PeepThoughtType thought_type = peep_assess_surroundings(x & 0xFFE0, y & 0xFFE0, z);
 
-                    if (thought_type != PeepThoughtType::PEEP_THOUGHT_TYPE_NONE)
+                    if (thought_type != PeepThoughtType::None)
                     {
                         InsertNewThought(thought_type, PEEP_THOUGHT_ITEM_NONE);
                         HappinessTarget = std::min(PEEP_MAX_HAPPINESS, HappinessTarget + 45);
@@ -959,7 +959,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
             if (PeepFlags & PEEP_FLAGS_WOW)
             {
-                InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_WOW2, PEEP_THOUGHT_ITEM_NONE);
+                InsertNewThought(PeepThoughtType::Wow2, PEEP_THOUGHT_ITEM_NONE);
             }
 
             if (GuestTimeOnRide > 15)
@@ -972,8 +972,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     if (ride != nullptr)
                     {
                         PeepThoughtType thought_type = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE)
-                            ? PeepThoughtType::PEEP_THOUGHT_TYPE_GET_OUT
-                            : PeepThoughtType::PEEP_THOUGHT_TYPE_GET_OFF;
+                            ? PeepThoughtType::WantToGetOut
+                            : PeepThoughtType::WantToGetOff;
 
                         InsertNewThought(thought_type, CurrentRide);
                     }
@@ -1023,28 +1023,28 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
                 if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
                 {
-                    possible_thoughts[num_thoughts++] = PeepThoughtType::PEEP_THOUGHT_TYPE_GO_HOME;
+                    possible_thoughts[num_thoughts++] = PeepThoughtType::WantToGoHome;
                 }
                 else
                 {
                     if (Energy <= 70 && Happiness < 128)
                     {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::PEEP_THOUGHT_TYPE_TIRED;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::Tired;
                     }
 
                     if (Hunger <= 10 && !HasFood())
                     {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::PEEP_THOUGHT_TYPE_HUNGRY;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::Hungry;
                     }
 
                     if (Thirst <= 25 && !HasFood())
                     {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::PEEP_THOUGHT_TYPE_THIRSTY;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::Thirsty;
                     }
 
                     if (Toilet >= 160)
                     {
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::PEEP_THOUGHT_TYPE_TOILET;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::Toilet;
                     }
 
                     if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= MONEY(9, 00) && Happiness >= 105 && Energy >= 70)
@@ -1056,7 +1056,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                          * 70 is also the threshold for tired thoughts (see above) and
                          * it makes sense that a tired peep might not think about getting
                          * more money. */
-                        possible_thoughts[num_thoughts++] = PeepThoughtType::PEEP_THOUGHT_TYPE_RUNNING_OUT;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::RunningOutOfCash;
                     }
                 }
 
@@ -1068,16 +1068,16 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
                     switch (chosen_thought)
                     {
-                        case PeepThoughtType::PEEP_THOUGHT_TYPE_HUNGRY:
+                        case PeepThoughtType::Hungry:
                             peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_SELLS_FOOD);
                             break;
-                        case PeepThoughtType::PEEP_THOUGHT_TYPE_THIRSTY:
+                        case PeepThoughtType::Thirsty:
                             peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_SELLS_DRINKS);
                             break;
-                        case PeepThoughtType::PEEP_THOUGHT_TYPE_TOILET:
+                        case PeepThoughtType::Toilet:
                             peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_IS_TOILET);
                             break;
-                        case PeepThoughtType::PEEP_THOUGHT_TYPE_RUNNING_OUT:
+                        case PeepThoughtType::RunningOutOfCash:
                             peep_head_for_nearest_ride_type(this, RIDE_TYPE_CASH_MACHINE);
                             break;
                         default:
@@ -1094,10 +1094,10 @@ void Guest::Tick128UpdateGuest(int32_t index)
              * the alternate time to the true branch). */
             if (Nausea >= 140)
             {
-                PeepThoughtType thought_type = PeepThoughtType::PEEP_THOUGHT_TYPE_SICK;
+                PeepThoughtType thought_type = PeepThoughtType::Sick;
                 if (Nausea >= 200)
                 {
-                    thought_type = PeepThoughtType::PEEP_THOUGHT_TYPE_VERY_SICK;
+                    thought_type = PeepThoughtType::VerySick;
                     peep_head_for_nearest_ride_type(this, RIDE_TYPE_FIRST_AID);
                 }
                 InsertNewThought(thought_type, PEEP_THOUGHT_ITEM_NONE);
@@ -1415,7 +1415,7 @@ void Guest::CheckIfLost()
             return;
         TimeLost = 230;
     }
-    InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_LOST, PEEP_THOUGHT_ITEM_NONE);
+    InsertNewThought(PeepThoughtType::Lost, PEEP_THOUGHT_ITEM_NONE);
 
     HappinessTarget = std::max(HappinessTarget - 30, 0);
 }
@@ -1433,7 +1433,7 @@ void Guest::CheckCantFindRide()
     // Peeps will think "I can't find ride X" twice before giving up completely.
     if (GuestIsLostCountdown == 30 || GuestIsLostCountdown == 60)
     {
-        InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_CANT_FIND, GuestHeadingToRideId);
+        InsertNewThought(PeepThoughtType::CantFind, GuestHeadingToRideId);
         HappinessTarget = std::max(HappinessTarget - 30, 0);
     }
 
@@ -1465,7 +1465,7 @@ void Guest::CheckCantFindExit()
     // Peeps who can't find the park exit will continue to get less happy until they find it.
     if (GuestIsLostCountdown == 1)
     {
-        InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PeepThoughtType::CantFindExit, PEEP_THOUGHT_ITEM_NONE);
         HappinessTarget = std::max(HappinessTarget - 30, 0);
     }
 
@@ -1500,7 +1500,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     if (HasItem(shopItem))
     {
-        InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_ALREADY_GOT, shopItem);
+        InsertNewThought(PeepThoughtType::AlreadyGot, shopItem);
         return false;
     }
 
@@ -1509,12 +1509,12 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         int32_t food = -1;
         if ((food = HasFoodStandardFlag()) != 0)
         {
-            InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food));
+            InsertNewThought(PeepThoughtType::HaventFinished, bitscanforward(food));
             return false;
         }
         else if ((food = HasFoodExtraFlag()) != 0)
         {
-            InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food) + 32);
+            InsertNewThought(PeepThoughtType::HaventFinished, bitscanforward(food) + 32);
             return false;
         }
         else if (Nausea >= 145)
@@ -1536,13 +1536,13 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     if (ShopItems[shopItem].IsFood() && (Hunger > 75))
     {
-        InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_NOT_HUNGRY, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PeepThoughtType::NotHungry, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
     if (ShopItems[shopItem].IsDrink() && (Thirst > 75))
     {
-        InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_NOT_THIRSTY, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PeepThoughtType::NotThirsty, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
@@ -1564,12 +1564,12 @@ loc_69B119:
         {
             if (CashInPocket == 0)
             {
-                InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+                InsertNewThought(PeepThoughtType::SpentMoney, PEEP_THOUGHT_ITEM_NONE);
                 return false;
             }
             if (price > CashInPocket)
             {
-                InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
+                InsertNewThought(PeepThoughtType::CantAfford, shopItem);
                 return false;
             }
         }
@@ -1601,8 +1601,8 @@ loc_69B119:
             {
                 // "I'm not paying that much for x"
                 PeepThoughtType thought_type = static_cast<PeepThoughtType>(
-                    (shopItem >= 32 ? (static_cast<uint8_t>(PeepThoughtType::PEEP_THOUGHT_TYPE_PHOTO2_MUCH) + (shopItem - 32))
-                                    : (static_cast<uint8_t>(PeepThoughtType::PEEP_THOUGHT_TYPE_BALLOON_MUCH) + shopItem)));
+                    (shopItem >= 32 ? (static_cast<uint8_t>(PeepThoughtType::Photo2BadValue) + (shopItem - 32))
+                                    : (static_cast<uint8_t>(PeepThoughtType::BalloonBadValue) + shopItem)));
                 InsertNewThought(thought_type, ride->id);
                 return false;
             }
@@ -1618,8 +1618,8 @@ loc_69B119:
                 {
                     // "This x is a really good value"
                     PeepThoughtType thought_item = static_cast<PeepThoughtType>(
-                        (shopItem >= 32 ? (static_cast<uint8_t>(PeepThoughtType::PEEP_THOUGHT_TYPE_PHOTO2) + (shopItem - 32))
-                                        : (static_cast<uint8_t>(PeepThoughtType::PEEP_THOUGHT_TYPE_BALLOON) + shopItem)));
+                        (shopItem >= 32 ? (static_cast<uint8_t>(PeepThoughtType::Photo2GoodValue) + (shopItem - 32))
+                                        : (static_cast<uint8_t>(PeepThoughtType::BalloonGoodValue) + shopItem)));
                     InsertNewThought(thought_item, ride->id);
                 }
             }
@@ -1827,7 +1827,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
 
     if (ride != nullptr && peep_really_liked_ride(this, ride))
     {
-        InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_WAS_GREAT, rideIndex);
+        InsertNewThought(PeepThoughtType::WasGreat, rideIndex);
 
         SoundId laughs[3] = { SoundId::Laugh1, SoundId::Laugh2, SoundId::Laugh3 };
         int32_t laughType = scenario_rand() & 7;
@@ -2072,11 +2072,11 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     {
                         if (CashInPocket <= 0)
                         {
-                            InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+                            InsertNewThought(PeepThoughtType::SpentMoney, PEEP_THOUGHT_ITEM_NONE);
                         }
                         else
                         {
-                            InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_CANT_AFFORD_0, ride->id);
+                            InsertNewThought(PeepThoughtType::CantAfford0, ride->id);
                         }
                     }
                     ChoseNotToGoOnRide(ride, peepAtRide, true);
@@ -2089,7 +2089,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             {
                 if (peepAtRide)
                 {
-                    InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_NOT_SAFE, ride->id);
+                    InsertNewThought(PeepThoughtType::NotSafe, ride->id);
                     if (HappinessTarget >= 64)
                     {
                         HappinessTarget -= 8;
@@ -2119,7 +2119,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                 {
                     if (peepAtRide)
                     {
-                        InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, ride->id);
+                        InsertNewThought(PeepThoughtType::NotWhileRaining, ride->id);
                         if (HappinessTarget >= 64)
                         {
                             HappinessTarget -= 8;
@@ -2141,7 +2141,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     {
                         if (peepAtRide)
                         {
-                            InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_MORE_THRILLING, ride->id);
+                            InsertNewThought(PeepThoughtType::MoreThrilling, ride->id);
                             if (HappinessTarget >= 64)
                             {
                                 HappinessTarget -= 8;
@@ -2164,7 +2164,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     {
                         if (peepAtRide)
                         {
-                            InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_SICKENING, ride->id);
+                            InsertNewThought(PeepThoughtType::MakesMeFeelSick, ride->id);
                             if (HappinessTarget >= 64)
                             {
                                 HappinessTarget -= 8;
@@ -2220,7 +2220,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                 {
                     if (peepAtRide)
                     {
-                        InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_BAD_VALUE, ride->id);
+                        InsertNewThought(PeepThoughtType::RideTooExpensive, ride->id);
                         if (HappinessTarget >= 60)
                         {
                             HappinessTarget -= 16;
@@ -2238,7 +2238,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     {
                         if (!(PeepFlags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY))
                         {
-                            InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_GOOD_VALUE, ride->id);
+                            InsertNewThought(PeepThoughtType::GoodValue, ride->id);
                         }
                     }
                 }
@@ -2287,7 +2287,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
         {
             if (peepAtShop)
             {
-                InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_NOT_PAYING, ride->id);
+                InsertNewThought(PeepThoughtType::ToiletsTooExpensive, ride->id);
                 if (HappinessTarget >= 60)
                 {
                     HappinessTarget -= 16;
@@ -2316,11 +2316,11 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
         {
             if (CashInPocket <= 0)
             {
-                InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+                InsertNewThought(PeepThoughtType::SpentMoney, PEEP_THOUGHT_ITEM_NONE);
             }
             else
             {
-                InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_CANT_AFFORD_0, ride->id);
+                InsertNewThought(PeepThoughtType::CantAfford0, ride->id);
             }
         }
         ChoseNotToGoOnRide(ride, peepAtShop, true);
@@ -2459,7 +2459,7 @@ static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
 {
     if (peepAtRide)
     {
-        peep->InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_INTENSE, ride->id);
+        peep->InsertNewThought(PeepThoughtType::TooIntense, ride->id);
         if (peep->HappinessTarget >= 64)
         {
             peep->HappinessTarget -= 8;
@@ -2657,14 +2657,14 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
 
     if (peep->CashInPocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        peep->InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+        peep->InsertNewThought(PeepThoughtType::SpentMoney, PEEP_THOUGHT_ITEM_NONE);
         peep_update_ride_at_entrance_try_leave(peep);
         return false;
     }
 
     if (ridePrice > peep->CashInPocket)
     {
-        peep->InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->CurrentRide);
+        peep->InsertNewThought(PeepThoughtType::CantAfford0, peep->CurrentRide);
         peep_update_ride_at_entrance_try_leave(peep);
         return false;
     }
@@ -2674,7 +2674,7 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
     {
         if (value * 2 < ridePrice)
         {
-            peep->InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_BAD_VALUE, peep->CurrentRide);
+            peep->InsertNewThought(PeepThoughtType::RideTooExpensive, peep->CurrentRide);
             peep_update_ride_at_entrance_try_leave(peep);
             return false;
         }
@@ -2945,7 +2945,7 @@ static bool peep_really_liked_ride(Peep* peep, Ride* ride)
 static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z)
 {
     if ((tile_element_height({ centre_x, centre_y })) > centre_z)
-        return PeepThoughtType::PEEP_THOUGHT_TYPE_NONE;
+        return PeepThoughtType::None;
 
     uint16_t num_scenery = 0;
     uint16_t num_fountains = 0;
@@ -2978,7 +2978,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         scenery = tileElement->AsPath()->GetAdditionEntry();
                         if (scenery == nullptr)
                         {
-                            return PeepThoughtType::PEEP_THOUGHT_TYPE_NONE;
+                            return PeepThoughtType::None;
                         }
                         if (tileElement->AsPath()->AdditionIsGhost())
                             break;
@@ -3041,19 +3041,19 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
     }
 
     if (num_fountains >= 5 && num_rubbish < 20)
-        return PeepThoughtType::PEEP_THOUGHT_TYPE_FOUNTAINS;
+        return PeepThoughtType::Fountains;
 
     if (num_scenery >= 40 && num_rubbish < 8)
-        return PeepThoughtType::PEEP_THOUGHT_TYPE_SCENERY;
+        return PeepThoughtType::GreatScenery;
 
     if (nearby_music == 1 && num_rubbish < 20)
-        return PeepThoughtType::PEEP_THOUGHT_TYPE_MUSIC;
+        return PeepThoughtType::Music;
 
     if (num_rubbish < 2 && !gCheatsDisableLittering)
         // if disable littering cheat is enabled, peeps will not have the "clean and tidy park" thought
-        return PeepThoughtType::PEEP_THOUGHT_TYPE_VERY_CLEAN;
+        return PeepThoughtType::VeryClean;
 
-    return PeepThoughtType::PEEP_THOUGHT_TYPE_NONE;
+    return PeepThoughtType::None;
 }
 
 /**
@@ -3146,7 +3146,7 @@ static void peep_leave_park(Peep* peep)
         peep->PeepFlags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
     }
 
-    peep->InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_GO_HOME, PEEP_THOUGHT_ITEM_NONE);
+    peep->InsertNewThought(PeepThoughtType::WantToGoHome, PEEP_THOUGHT_ITEM_NONE);
 
     rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
     if (w != nullptr)
@@ -3289,17 +3289,17 @@ static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeF
  */
 void Guest::StopPurchaseThought(uint8_t ride_type)
 {
-    auto thoughtType = PeepThoughtType::PEEP_THOUGHT_TYPE_HUNGRY;
+    auto thoughtType = PeepThoughtType::Hungry;
 
     if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_SELLS_FOOD))
     {
-        thoughtType = PeepThoughtType::PEEP_THOUGHT_TYPE_THIRSTY;
+        thoughtType = PeepThoughtType::Thirsty;
         if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_SELLS_DRINKS))
         {
-            thoughtType = PeepThoughtType::PEEP_THOUGHT_TYPE_RUNNING_OUT;
+            thoughtType = PeepThoughtType::RunningOutOfCash;
             if (ride_type != RIDE_TYPE_CASH_MACHINE)
             {
-                thoughtType = PeepThoughtType::PEEP_THOUGHT_TYPE_TOILET;
+                thoughtType = PeepThoughtType::Toilet;
                 if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_IS_TOILET))
                 {
                     return;
@@ -3313,7 +3313,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
     {
         rct_peep_thought* thought = &Thoughts[i];
 
-        if (thought->type == PeepThoughtType::PEEP_THOUGHT_TYPE_NONE)
+        if (thought->type == PeepThoughtType::None)
             break;
 
         if (thought->type != thoughtType)
@@ -3324,7 +3324,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
             memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
         }
 
-        Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::PEEP_THOUGHT_TYPE_NONE;
+        Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
 
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
         i--;
@@ -5532,11 +5532,11 @@ void Guest::UpdateWalking()
 
     if (CurrentSeat & 1)
     {
-        InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_NEW_RIDE, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PeepThoughtType::NewRideBeingBuilt, PEEP_THOUGHT_ITEM_NONE);
     }
     if (CurrentRide == RIDE_ID_NULL)
     {
-        InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_SCENERY, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PeepThoughtType::GreatScenery, PEEP_THOUGHT_ITEM_NONE);
     }
 }
 
@@ -5610,7 +5610,7 @@ void Guest::UpdateQueuing()
         if (TimeInQueue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
         {
             // Create the I have been waiting in line ages thought
-            InsertNewThought(PeepThoughtType::PEEP_THOUGHT_TYPE_QUEUING_AGES, CurrentRide);
+            InsertNewThought(PeepThoughtType::QueuingAges, CurrentRide);
         }
     }
     else
