@@ -28,21 +28,16 @@ enum
     WINDOW_ABOUT_PAGE_RCT2,
 };
 
-enum WINDOW_ABOUT_WIDGET_IDX {
-    WIDX_BACKGROUND,
-    WIDX_TITLE,
-    WIDX_CLOSE,
-    WIDX_PAGE_BACKGROUND,
-    WIDX_TAB_ABOUT_OPENRCT2,
-    WIDX_TAB_ABOUT_RCT2,
-
-    WIDX_PAGE_START,
-
-    // About OpenRCT2
-    WIDX_CHANGELOG = WIDX_PAGE_START,
-
-    // About RCT2
-    WIDX_MUSIC_CREDITS = WIDX_PAGE_START,
+enum class WindowAboutWidgetIndex {
+    Background,
+    Title,
+    Close,
+    PageBackground,
+    TabAboutOpenRCT2,
+    TabAboutRCT2,
+    PageStart,
+    ChangeLog,
+    MusicCredits
 };
 
 #define WIDGETS_MAIN \
@@ -69,11 +64,11 @@ static rct_widget *window_about_page_widgets[] = {
 };
 
 #define DEFAULT_ENABLED_WIDGETS \
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_ABOUT_OPENRCT2) | (1ULL << WIDX_TAB_ABOUT_RCT2)
+    (1ULL << static_cast<size_t>(WindowAboutWidgetIndex::Close)) | (1ULL << static_cast<size_t>(WindowAboutWidgetIndex::TabAboutOpenRCT2)) | (1ULL << static_cast<size_t>(WindowAboutWidgetIndex::TabAboutRCT2))
 
 static uint64_t window_about_page_enabled_widgets[] = {
-    DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_CHANGELOG),
-    DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_MUSIC_CREDITS),
+    DEFAULT_ENABLED_WIDGETS | (1ULL << static_cast<uint64_t>(WindowAboutWidgetIndex::ChangeLog)),
+    DEFAULT_ENABLED_WIDGETS | (1ULL << static_cast<uint64_t>(WindowAboutWidgetIndex::MusicCredits)),
 };
 
 static void window_about_openrct2_mouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -182,17 +177,20 @@ rct_window* window_about_open()
 
 static void window_about_openrct2_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex)
+    auto convertedIndex = static_cast<WindowAboutWidgetIndex>(widgetIndex);
+    switch (convertedIndex)
     {
-        case WIDX_CLOSE:
+        case WindowAboutWidgetIndex::Close:
             window_close(w);
             break;
-        case WIDX_TAB_ABOUT_OPENRCT2:
-        case WIDX_TAB_ABOUT_RCT2:
-            window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
+        case WindowAboutWidgetIndex::TabAboutOpenRCT2:
+        case WindowAboutWidgetIndex::TabAboutRCT2:
+            window_about_set_page(w, widgetIndex - static_cast<size_t>(WindowAboutWidgetIndex::TabAboutOpenRCT2));
             break;
-        case WIDX_CHANGELOG:
+        case WindowAboutWidgetIndex::ChangeLog:
             context_open_window(WC_CHANGELOG);
+            break;
+        default:
             break;
     }
 }
@@ -201,8 +199,8 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
 {
     window_draw_widgets(w, dpi);
 
-    const auto& aboutOpenRCT2 = w->widgets[WIDX_TAB_ABOUT_OPENRCT2];
-    const auto& aboutRCT2 = w->widgets[WIDX_TAB_ABOUT_RCT2];
+    const auto& aboutOpenRCT2 = w->widgets[static_cast<size_t>(WindowAboutWidgetIndex::TabAboutOpenRCT2)];
+    const auto& aboutRCT2 = w->widgets[static_cast<size_t>(WindowAboutWidgetIndex::TabAboutRCT2)];
 
     int32_t y = w->windowPos.y + aboutOpenRCT2.midY() - 3;
     ScreenCoordsXY aboutOpenRCT2Coords(w->windowPos.x + aboutOpenRCT2.left + 45, y);
@@ -229,7 +227,8 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
     ScreenCoordsXY aboutCoords(
-        w->windowPos.x + (w->width / 2), w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight);
+        w->windowPos.x + (w->width / 2),
+        w->windowPos.y + w->widgets[static_cast<size_t>(WindowAboutWidgetIndex::PageBackground)].top + lineHeight);
     width = w->width - 20;
 
     aboutCoords.y += gfx_draw_string_centred_wrapped(
@@ -271,17 +270,20 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_about_rct2_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex)
+    auto convertedIndex = static_cast<WindowAboutWidgetIndex>(widgetIndex);
+    switch (convertedIndex)
     {
-        case WIDX_CLOSE:
+        case WindowAboutWidgetIndex::Close:
             window_close(w);
             break;
-        case WIDX_TAB_ABOUT_OPENRCT2:
-        case WIDX_TAB_ABOUT_RCT2:
-            window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
+        case WindowAboutWidgetIndex::TabAboutOpenRCT2:
+        case WindowAboutWidgetIndex::TabAboutRCT2:
+            window_about_set_page(w, widgetIndex - static_cast<size_t>(WindowAboutWidgetIndex::TabAboutOpenRCT2));
             break;
-        case WIDX_MUSIC_CREDITS:
+        case WindowAboutWidgetIndex::MusicCredits:
             context_open_window(WC_MUSIC_CREDITS);
+            break;
+        default:
             break;
     }
 }
@@ -296,7 +298,7 @@ static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     window_about_openrct2_common_paint(w, dpi);
 
-    yPage = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 5;
+    yPage = w->windowPos.y + w->widgets[static_cast<size_t>(WindowAboutWidgetIndex::PageBackground)].top + 5;
 
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 200, yPage + 5 };
 
@@ -338,7 +340,9 @@ static void window_about_set_page(rct_window* w, int32_t page)
     w->enabled_widgets = window_about_page_enabled_widgets[page];
     w->event_handlers = window_about_page_events[page];
 
-    w->pressed_widgets |= (page == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
+    w->pressed_widgets |= (page == WINDOW_ABOUT_PAGE_RCT2)
+        ? (1ULL << static_cast<uint64_t>(WindowAboutWidgetIndex::TabAboutRCT2))
+        : (1ULL << static_cast<uint64_t>(WindowAboutWidgetIndex::TabAboutOpenRCT2));
 
     window_init_scroll_widgets(w);
     w->Invalidate();
