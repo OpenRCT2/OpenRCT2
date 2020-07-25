@@ -60,151 +60,152 @@ namespace PeepE
         Staff,
         Invalid = 0xFF
     };
+
+    enum class ThoughtType : uint8_t
+    {
+        Cant_Afford_0 = 0,      // "I can't afford"
+        Spent_Money = 1,        // "I've spent all my money"
+        Sick = 2,               // "I feel sick"
+        Very_Sick = 3,          // "I feel very sick"
+        More_Thrilling = 4,     // "I want to go on something more thrilling than X"
+        Intense = 5,            // "X looks too intense for me"
+        Havent_Finished = 6,    // "I haven't finished my X yet"
+        Sickening = 7,          // "Just looking at X makes me feel sick"
+        Bad_Value = 8,          // "I'm not paying that much to go on X"
+        Go_Home = 9,            // "I want to go home"
+        Good_Value = 10,        // "X is really good value"
+        Already_Got = 11,       // "I've already got"
+        Cant_Afford = 12,       // "I can't afford"
+        Not_Hungry = 13,        // "I'm not hungry"
+        Not_Thirsty = 14,       // "I'm not thirsty"
+        Drowning = 15,          // "Help! I'm drowning!"
+        Lost = 16,              // "I'm lost!"
+        Was_Great = 17,         // "X was great"
+        Queuing_Ages = 18,      // "I've been queuing for X for ages"
+        Tired = 19,             // "I'm tired"
+        Hungry = 20,            // "I'm hungry"
+        Thirsty = 21,           // "I'm thirsty"
+        Toilet = 22,            // "I need to go to the toilet"
+        Cant_Find = 23,         // "I can't find X"
+        Not_Paying = 24,        // "I'm not paying that much to use X"
+        Not_While_Raining = 25, // "I'm not going on X while it's raining"
+        Bad_Litter = 26,        // "The litter here is really bad"
+        Cant_Find_Exit = 27,    // "I can't find the exit"
+        Get_Off = 28,           // "I want to get off X"
+        Get_Out = 29,           // "I want to get out of X"
+        Not_Safe = 30,          // "I'm not going on X - it isn't safe"
+        Path_Disgusting = 31,   // "This path is disgusting"
+        Crowded = 32,           // "It's too crowded here"
+        Vandalism = 33,         // "The vandalism here is really bad"
+        Scenery = 34,           // "Great scenery!"
+        Very_Clean = 35,        // "This park is very clean and tidy"
+        Fountains = 36,         // "The jumping fountains are great"
+        Music = 37,             // "The music is nice here"
+        Balloon = 38,           // "This balloon from X is really good value"
+        Toy = 39,               // "This cuddly toy from X is really good value"
+        Map = 40,
+        Photo = 41, // "This on ride photo from X is really good value"
+        Umbrella = 42,
+        Drink = 43,
+        Burger = 44,
+        Chips = 45,
+        Ice_Cream = 46,
+        Candyfloss = 47,
+
+        Pizza = 51,
+
+        Popcorn = 53,
+        Hot_Dog = 54,
+        Tentacle = 55,
+        Hat = 56,
+        Toffee_Apple = 57,
+        TShirt = 58,
+        Doughnut = 59,
+        Coffee = 60,
+
+        Chicken = 62,
+        Lemonade = 63,
+
+        Wow = 67, // "Wow!"
+
+        Wow2 = 70,         // "Wow!"
+        Watched = 71,      // "I have the strangest feeling someone is watching me"
+        Balloon_Much = 72, // "I'm not paying that much to get a balloon from X"
+        Toy_Much = 73,
+        Map_Much = 74,
+        Photo_Much = 75,
+        Umbrella_Much = 76,
+        Drink_Much = 77,
+        Burger_Much = 78,
+        Chips_Much = 79,
+        Ice_Cream_Much = 80,
+        Candyfloss_Much = 81,
+
+        Pizza_Much = 85,
+
+        Popcorn_Much = 87,
+        Hot_Dog_Much = 88,
+        Tentacle_Much = 89,
+        Hat_Much = 90,
+        Toffee_Apple_Much = 91,
+        TShirt_Much = 92,
+        Doughtnut_Much = 93,
+        Coffee_Much = 94,
+
+        Chicken_Much = 96,
+        Lemonade_Much = 97,
+
+        Photo2 = 104, // "This on-ride photo from X is really good value"
+        Photo3 = 105,
+        Photo4 = 106,
+        Pretzel = 107,
+        Hot_Chocolate = 108,
+        Iced_Tea = 109,
+        Funnel_Cake = 110,
+        Sunglasses = 111,
+        Beef_Noodles = 112,
+        Fried_Rice_Noodles = 113,
+        Wonton_Soup = 114,
+        Meatball_Soup = 115,
+        Fruit_Juice = 116,
+        Soybean_Milk = 117,
+        Su_Jongkwa = 118,
+        Sub_Sandwich = 119,
+        Cookie = 120,
+
+        Roast_Sausage = 124,
+
+        Photo2_Much = 136,
+        Photo3_Much = 137,
+        Photo4_Much = 138,
+        Pretzel_Much = 139,
+        Hot_Chocolate_Much = 140,
+        Iced_Tea_Much = 141,
+        Funnel_Cake_Much = 142,
+        Sunglasses_Much = 143,
+        Beef_Noodles_Much = 144,
+        Fried_Rice_Noodles_Much = 145,
+        Wonton_Soup_Much = 146,
+        Meatball_Soup_Much = 147,
+        Fruit_Juice_Much = 148,
+        Soybean_Milk_Much = 149,
+        Su_Jongkwa_Much = 150,
+        Sub_Sandwich_Much = 151,
+        Cookie_Much = 152,
+
+        Roast_Sausage_Much = 156,
+
+        Help = 168,                 // "Help! Put me down!"
+        Running_Out = 169,          // "I'm running out of cash!"
+        New_Ride = 170,             // "Wow! A new ride being built!"
+        Nice_Ride_Deprecated = 171, // "Nice ride! But not as good as the Phoenix..."
+        Excited_Deprecated = 172,   // "I'm so excited - It's an Intamin ride!"
+        Here_We_Are = 173,          // "...and here we are on X!"
+
+        None = 255
+    };
+
 }
-
-enum PeepThoughtType : uint8_t
-{
-    PEEP_THOUGHT_TYPE_CANT_AFFORD_0 = 0,      // "I can't afford"
-    PEEP_THOUGHT_TYPE_SPENT_MONEY = 1,        // "I've spent all my money"
-    PEEP_THOUGHT_TYPE_SICK = 2,               // "I feel sick"
-    PEEP_THOUGHT_TYPE_VERY_SICK = 3,          // "I feel very sick"
-    PEEP_THOUGHT_TYPE_MORE_THRILLING = 4,     // "I want to go on something more thrilling than X"
-    PEEP_THOUGHT_TYPE_INTENSE = 5,            // "X looks too intense for me"
-    PEEP_THOUGHT_TYPE_HAVENT_FINISHED = 6,    // "I haven't finished my X yet"
-    PEEP_THOUGHT_TYPE_SICKENING = 7,          // "Just looking at X makes me feel sick"
-    PEEP_THOUGHT_TYPE_BAD_VALUE = 8,          // "I'm not paying that much to go on X"
-    PEEP_THOUGHT_TYPE_GO_HOME = 9,            // "I want to go home"
-    PEEP_THOUGHT_TYPE_GOOD_VALUE = 10,        // "X is really good value"
-    PEEP_THOUGHT_TYPE_ALREADY_GOT = 11,       // "I've already got"
-    PEEP_THOUGHT_TYPE_CANT_AFFORD = 12,       // "I can't afford"
-    PEEP_THOUGHT_TYPE_NOT_HUNGRY = 13,        // "I'm not hungry"
-    PEEP_THOUGHT_TYPE_NOT_THIRSTY = 14,       // "I'm not thirsty"
-    PEEP_THOUGHT_TYPE_DROWNING = 15,          // "Help! I'm drowning!"
-    PEEP_THOUGHT_TYPE_LOST = 16,              // "I'm lost!"
-    PEEP_THOUGHT_TYPE_WAS_GREAT = 17,         // "X was great"
-    PEEP_THOUGHT_TYPE_QUEUING_AGES = 18,      // "I've been queuing for X for ages"
-    PEEP_THOUGHT_TYPE_TIRED = 19,             // "I'm tired"
-    PEEP_THOUGHT_TYPE_HUNGRY = 20,            // "I'm hungry"
-    PEEP_THOUGHT_TYPE_THIRSTY = 21,           // "I'm thirsty"
-    PEEP_THOUGHT_TYPE_TOILET = 22,            // "I need to go to the toilet"
-    PEEP_THOUGHT_TYPE_CANT_FIND = 23,         // "I can't find X"
-    PEEP_THOUGHT_TYPE_NOT_PAYING = 24,        // "I'm not paying that much to use X"
-    PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING = 25, // "I'm not going on X while it's raining"
-    PEEP_THOUGHT_TYPE_BAD_LITTER = 26,        // "The litter here is really bad"
-    PEEP_THOUGHT_TYPE_CANT_FIND_EXIT = 27,    // "I can't find the exit"
-    PEEP_THOUGHT_TYPE_GET_OFF = 28,           // "I want to get off X"
-    PEEP_THOUGHT_TYPE_GET_OUT = 29,           // "I want to get out of X"
-    PEEP_THOUGHT_TYPE_NOT_SAFE = 30,          // "I'm not going on X - it isn't safe"
-    PEEP_THOUGHT_TYPE_PATH_DISGUSTING = 31,   // "This path is disgusting"
-    PEEP_THOUGHT_TYPE_CROWDED = 32,           // "It's too crowded here"
-    PEEP_THOUGHT_TYPE_VANDALISM = 33,         // "The vandalism here is really bad"
-    PEEP_THOUGHT_TYPE_SCENERY = 34,           // "Great scenery!"
-    PEEP_THOUGHT_TYPE_VERY_CLEAN = 35,        // "This park is very clean and tidy"
-    PEEP_THOUGHT_TYPE_FOUNTAINS = 36,         // "The jumping fountains are great"
-    PEEP_THOUGHT_TYPE_MUSIC = 37,             // "The music is nice here"
-    PEEP_THOUGHT_TYPE_BALLOON = 38,           // "This balloon from X is really good value"
-    PEEP_THOUGHT_TYPE_TOY = 39,               // "This cuddly toy from X is really good value"
-    PEEP_THOUGHT_TYPE_MAP = 40,
-    PEEP_THOUGHT_TYPE_PHOTO = 41, // "This on ride photo from X is really good value"
-    PEEP_THOUGHT_TYPE_UMBRELLA = 42,
-    PEEP_THOUGHT_TYPE_DRINK = 43,
-    PEEP_THOUGHT_TYPE_BURGER = 44,
-    PEEP_THOUGHT_TYPE_CHIPS = 45,
-    PEEP_THOUGHT_TYPE_ICE_CREAM = 46,
-    PEEP_THOUGHT_TYPE_CANDYFLOSS = 47,
-
-    PEEP_THOUGHT_TYPE_PIZZA = 51,
-
-    PEEP_THOUGHT_TYPE_POPCORN = 53,
-    PEEP_THOUGHT_TYPE_HOT_DOG = 54,
-    PEEP_THOUGHT_TYPE_TENTACLE = 55,
-    PEEP_THOUGHT_TYPE_HAT = 56,
-    PEEP_THOUGHT_TYPE_TOFFEE_APPLE = 57,
-    PEEP_THOUGHT_TYPE_TSHIRT = 58,
-    PEEP_THOUGHT_TYPE_DOUGHNUT = 59,
-    PEEP_THOUGHT_TYPE_COFFEE = 60,
-
-    PEEP_THOUGHT_TYPE_CHICKEN = 62,
-    PEEP_THOUGHT_TYPE_LEMONADE = 63,
-
-    PEEP_THOUGHT_TYPE_WOW = 67, // "Wow!"
-
-    PEEP_THOUGHT_TYPE_WOW2 = 70,         // "Wow!"
-    PEEP_THOUGHT_TYPE_WATCHED = 71,      // "I have the strangest feeling someone is watching me"
-    PEEP_THOUGHT_TYPE_BALLOON_MUCH = 72, // "I'm not paying that much to get a balloon from X"
-    PEEP_THOUGHT_TYPE_TOY_MUCH = 73,
-    PEEP_THOUGHT_TYPE_MAP_MUCH = 74,
-    PEEP_THOUGHT_TYPE_PHOTO_MUCH = 75,
-    PEEP_THOUGHT_TYPE_UMBRELLA_MUCH = 76,
-    PEEP_THOUGHT_TYPE_DRINK_MUCH = 77,
-    PEEP_THOUGHT_TYPE_BURGER_MUCH = 78,
-    PEEP_THOUGHT_TYPE_CHIPS_MUCH = 79,
-    PEEP_THOUGHT_TYPE_ICE_CREAM_MUCH = 80,
-    PEEP_THOUGHT_TYPE_CANDYFLOSS_MUCH = 81,
-
-    PEEP_THOUGHT_TYPE_PIZZA_MUCH = 85,
-
-    PEEP_THOUGHT_TYPE_POPCORN_MUCH = 87,
-    PEEP_THOUGHT_TYPE_HOT_DOG_MUCH = 88,
-    PEEP_THOUGHT_TYPE_TENTACLE_MUCH = 89,
-    PEEP_THOUGHT_TYPE_HAT_MUCH = 90,
-    PEEP_THOUGHT_TYPE_TOFFEE_APPLE_MUCH = 91,
-    PEEP_THOUGHT_TYPE_TSHIRT_MUCH = 92,
-    PEEP_THOUGHT_TYPE_DOUGHNUT_MUCH = 93,
-    PEEP_THOUGHT_TYPE_COFFEE_MUCH = 94,
-
-    PEEP_THOUGHT_TYPE_CHICKEN_MUCH = 96,
-    PEEP_THOUGHT_TYPE_LEMONADE_MUCH = 97,
-
-    PEEP_THOUGHT_TYPE_PHOTO2 = 104, // "This on-ride photo from X is really good value"
-    PEEP_THOUGHT_TYPE_PHOTO3 = 105,
-    PEEP_THOUGHT_TYPE_PHOTO4 = 106,
-    PEEP_THOUGHT_TYPE_PRETZEL = 107,
-    PEEP_THOUGHT_TYPE_HOT_CHOCOLATE = 108,
-    PEEP_THOUGHT_TYPE_ICED_TEA = 109,
-    PEEP_THOUGHT_TYPE_FUNNEL_CAKE = 110,
-    PEEP_THOUGHT_TYPE_SUNGLASSES = 111,
-    PEEP_THOUGHT_TYPE_BEEF_NOODLES = 112,
-    PEEP_THOUGHT_TYPE_FRIED_RICE_NOODLES = 113,
-    PEEP_THOUGHT_TYPE_WONTON_SOUP = 114,
-    PEEP_THOUGHT_TYPE_MEATBALL_SOUP = 115,
-    PEEP_THOUGHT_TYPE_FRUIT_JUICE = 116,
-    PEEP_THOUGHT_TYPE_SOYBEAN_MILK = 117,
-    PEEP_THOUGHT_TYPE_SU_JONGKWA = 118,
-    PEEP_THOUGHT_TYPE_SUB_SANDWICH = 119,
-    PEEP_THOUGHT_TYPE_COOKIE = 120,
-
-    PEEP_THOUGHT_TYPE_ROAST_SAUSAGE = 124,
-
-    PEEP_THOUGHT_TYPE_PHOTO2_MUCH = 136,
-    PEEP_THOUGHT_TYPE_PHOTO3_MUCH = 137,
-    PEEP_THOUGHT_TYPE_PHOTO4_MUCH = 138,
-    PEEP_THOUGHT_TYPE_PRETZEL_MUCH = 139,
-    PEEP_THOUGHT_TYPE_HOT_CHOCOLATE_MUCH = 140,
-    PEEP_THOUGHT_TYPE_ICED_TEA_MUCH = 141,
-    PEEP_THOUGHT_TYPE_FUNNEL_CAKE_MUCH = 142,
-    PEEP_THOUGHT_TYPE_SUNGLASSES_MUCH = 143,
-    PEEP_THOUGHT_TYPE_BEEF_NOODLES_MUCH = 144,
-    PEEP_THOUGHT_TYPE_FRIED_RICE_NOODLES_MUCH = 145,
-    PEEP_THOUGHT_TYPE_WONTON_SOUP_MUCH = 146,
-    PEEP_THOUGHT_TYPE_MEATBALL_SOUP_MUCH = 147,
-    PEEP_THOUGHT_TYPE_FRUIT_JUICE_MUCH = 148,
-    PEEP_THOUGHT_TYPE_SOYBEAN_MILK_MUCH = 149,
-    PEEP_THOUGHT_TYPE_SU_JONGKWA_MUCH = 150,
-    PEEP_THOUGHT_TYPE_SUB_SANDWICH_MUCH = 151,
-    PEEP_THOUGHT_TYPE_COOKIE_MUCH = 152,
-
-    PEEP_THOUGHT_TYPE_ROAST_SAUSAGE_MUCH = 156,
-
-    PEEP_THOUGHT_TYPE_HELP = 168,                 // "Help! Put me down!"
-    PEEP_THOUGHT_TYPE_RUNNING_OUT = 169,          // "I'm running out of cash!"
-    PEEP_THOUGHT_TYPE_NEW_RIDE = 170,             // "Wow! A new ride being built!"
-    PEEP_THOUGHT_TYPE_NICE_RIDE_DEPRECATED = 171, // "Nice ride! But not as good as the Phoenix..."
-    PEEP_THOUGHT_TYPE_EXCITED_DEPRECATED = 172,   // "I'm so excited - It's an Intamin ride!"
-    PEEP_THOUGHT_TYPE_HERE_WE_ARE = 173,          // "...and here we are on X!"
-
-    PEEP_THOUGHT_TYPE_NONE = 255
-};
 
 enum PeepState : uint8_t
 {
@@ -538,7 +539,7 @@ enum PeepRideDecision
 
 struct rct_peep_thought
 {
-    PeepThoughtType type;  // 0
+    PeepE::ThoughtType type;  // 0
     uint8_t item;          // 1
     uint8_t freshness;     // 2 larger is less fresh
     uint8_t fresh_timeout; // 3 updates every tick
@@ -786,7 +787,7 @@ public: // Peep
     static Peep* Generate(const CoordsXYZ& coords);
     void RemoveFromQueue();
     void RemoveFromRide();
-    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
+    void InsertNewThought(PeepE::ThoughtType thought_type, uint8_t thought_arguments);
     void FormatActionTo(Formatter&) const;
     void FormatNameTo(Formatter&) const;
     std::string GetName() const;

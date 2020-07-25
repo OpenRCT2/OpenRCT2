@@ -922,7 +922,7 @@ void Peep::UpdateFalling()
                             peep_release_balloon(guest, height);
                         }
 
-                        InsertNewThought(PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
+                        InsertNewThought(PeepE::ThoughtType::Drowning, PEEP_THOUGHT_ITEM_NONE);
 
                         Action = PEEP_ACTION_DROWNING;
                         ActionFrame = 0;
@@ -1014,7 +1014,7 @@ void Peep::UpdatePicked()
     SubState++;
     if (SubState == 13)
     {
-        InsertNewThought(PEEP_THOUGHT_TYPE_HELP, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PeepE::ThoughtType::Help, PEEP_THOUGHT_ITEM_NONE);
     }
 }
 
@@ -1029,7 +1029,7 @@ static void peep_update_thoughts(Peep* peep)
     int32_t fresh_thought = -1;
     for (int32_t i = 0; i < PEEP_MAX_THOUGHTS; i++)
     {
-        if (peep->Thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+        if (peep->Thoughts[i].type == PeepE::ThoughtType::None)
             break;
 
         if (peep->Thoughts[i].freshness == 1)
@@ -1060,7 +1060,7 @@ static void peep_update_thoughts(Peep* peep)
                         memmove(
                             &peep->Thoughts[i], &peep->Thoughts[i + 1], sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
                     }
-                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+                    peep->Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepE::ThoughtType::None;
                 }
             }
         }
@@ -1177,11 +1177,11 @@ void peep_problem_warnings_update()
 
         switch (peep->Thoughts[0].type)
         {
-            case PEEP_THOUGHT_TYPE_LOST: // 0x10
+            case PeepE::ThoughtType::Lost: // 0x10
                 lost_counter++;
                 break;
 
-            case PEEP_THOUGHT_TYPE_HUNGRY: // 0x14
+            case PeepE::ThoughtType::Hungry: // 0x14
                 if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
                 {
                     hunger_counter++;
@@ -1192,7 +1192,7 @@ void peep_problem_warnings_update()
                     hunger_counter++;
                 break;
 
-            case PEEP_THOUGHT_TYPE_THIRSTY:
+            case PeepE::ThoughtType::Thirsty:
                 if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
                 {
                     thirst_counter++;
@@ -1203,7 +1203,7 @@ void peep_problem_warnings_update()
                     thirst_counter++;
                 break;
 
-            case PEEP_THOUGHT_TYPE_TOILET:
+            case PeepE::ThoughtType::Toilet:
                 if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
                 {
                     toilet_counter++;
@@ -1214,16 +1214,16 @@ void peep_problem_warnings_update()
                     toilet_counter++;
                 break;
 
-            case PEEP_THOUGHT_TYPE_BAD_LITTER: // 0x1a
+            case PeepE::ThoughtType::Bad_Litter: // 0x1a
                 litter_counter++;
                 break;
-            case PEEP_THOUGHT_TYPE_CANT_FIND_EXIT: // 0x1b
+            case PeepE::ThoughtType::Cant_Find_Exit: // 0x1b
                 noexit_counter++;
                 break;
-            case PEEP_THOUGHT_TYPE_PATH_DISGUSTING: // 0x1f
+            case PeepE::ThoughtType::Path_Disgusting: // 0x1f
                 disgust_counter++;
                 break;
-            case PEEP_THOUGHT_TYPE_VANDALISM: // 0x21
+            case PeepE::ThoughtType::Vandalism: // 0x21
                 vandalism_counter++;
                 break;
             default:
@@ -1534,9 +1534,9 @@ static constexpr const uint8_t tshirt_colours[] = {
  * ah:thoughtArguments
  * esi: peep
  */
-void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
+void Peep::InsertNewThought(PeepE::ThoughtType thoughtType, uint8_t thoughtArguments)
 {
-    PeepActionType newAction = PeepThoughtToActionMap[thoughtType].action;
+    PeepActionType newAction = PeepThoughtToActionMap[static_cast<uint8_t>(thoughtType)].action;
     if (newAction != PEEP_ACTION_NONE_2 && this->Action >= PEEP_ACTION_NONE_1)
     {
         Action = newAction;
@@ -1549,7 +1549,7 @@ void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArgument
     {
         rct_peep_thought* thought = &Thoughts[i];
         // Remove the oldest thought by setting it to NONE.
-        if (thought->type == PEEP_THOUGHT_TYPE_NONE)
+        if (thought->type == PeepE::ThoughtType::None)
             break;
 
         if (thought->type == thoughtType && thought->item == thoughtArguments)
@@ -1610,7 +1610,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->InteractionRideIndex = RIDE_ID_NULL;
     peep->AssignedPeepType = PeepE::Type::Guest;
     peep->PreviousRide = RIDE_ID_NULL;
-    peep->Thoughts->type = PEEP_THOUGHT_TYPE_NONE;
+    peep->Thoughts->type = PeepE::ThoughtType::None;
     peep->WindowInvalidateFlags = 0;
 
     uint8_t intensityHighest = (scenario_rand() & 0x7) + 3;
@@ -2007,9 +2007,9 @@ bool Peep::SetName(const std::string_view& value)
 void peep_thought_set_format_args(const rct_peep_thought* thought)
 {
     auto ft = Formatter::Common();
-    ft.Add<rct_string_id>(PeepThoughts[thought->type]);
+    ft.Add<rct_string_id>(PeepThoughts[static_cast<uint8_t>(thought->type)]);
 
-    PeepThoughtToActionFlag flags = PeepThoughtToActionMap[thought->type].flags;
+    PeepThoughtToActionFlag flags = PeepThoughtToActionMap[static_cast<uint8_t>(thought->type)].flags;
     if (flags & PEEP_THOUGHT_ACTION_FLAG_RIDE)
     {
         auto ride = get_ride(thought->item);
@@ -2621,7 +2621,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
         {
             if ((scenario_rand() & 0xFFFF) <= 10922)
             {
-                peep->InsertNewThought(PEEP_THOUGHT_TYPE_VANDALISM, PEEP_THOUGHT_ITEM_NONE);
+                peep->InsertNewThought(PeepE::ThoughtType::Vandalism, PEEP_THOUGHT_ITEM_NONE);
                 peep->HappinessTarget = std::max(0, peep->HappinessTarget - 17);
             }
             vandalThoughtTimeout = 3;
@@ -2666,7 +2666,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
     if (crowded >= 10 && peep->State == PEEP_STATE_WALKING && (scenario_rand() & 0xFFFF) <= 21845)
     {
-        peep->InsertNewThought(PEEP_THOUGHT_TYPE_CROWDED, PEEP_THOUGHT_ITEM_NONE);
+        peep->InsertNewThought(PeepE::ThoughtType::Crowded, PEEP_THOUGHT_ITEM_NONE);
         peep->HappinessTarget = std::max(0, peep->HappinessTarget - 14);
     }
 
@@ -2692,7 +2692,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
         if (total_sick >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
-            peep->InsertNewThought(PEEP_THOUGHT_TYPE_PATH_DISGUSTING, PEEP_THOUGHT_ITEM_NONE);
+            peep->InsertNewThought(PeepE::ThoughtType::Path_Disgusting, PEEP_THOUGHT_ITEM_NONE);
             peep->HappinessTarget = std::max(0, peep->HappinessTarget - 17);
             // Reset disgusting time
             peep->DisgustingCount |= 0xC0;
@@ -2718,7 +2718,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
         if (total_litter >= 3 && (scenario_rand() & 0xFFFF) <= 10922)
         {
-            peep->InsertNewThought(PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
+            peep->InsertNewThought(PeepE::ThoughtType::Bad_Litter, PEEP_THOUGHT_ITEM_NONE);
             peep->HappinessTarget = std::max(0, peep->HappinessTarget - 17);
             // Reset litter time
             peep->LitterCount |= 0xC0;

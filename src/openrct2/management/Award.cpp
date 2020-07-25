@@ -92,9 +92,9 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
         if (peep->Thoughts[0].freshness > 5)
             continue;
 
-        if (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->Thoughts[0].type == PeepE::ThoughtType::Bad_Litter
+            || peep->Thoughts[0].type == PeepE::ThoughtType::Path_Disgusting
+            || peep->Thoughts[0].type == PeepE::ThoughtType::Vandalism)
         {
             negativeCount++;
         }
@@ -121,12 +121,12 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
         if (peep->Thoughts[0].freshness > 5)
             continue;
 
-        if (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VERY_CLEAN)
+        if (peep->Thoughts[0].type == PeepE::ThoughtType::Very_Clean)
             positiveCount++;
 
-        if (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->Thoughts[0].type == PeepE::ThoughtType::Bad_Litter
+            || peep->Thoughts[0].type == PeepE::ThoughtType::Path_Disgusting
+            || peep->Thoughts[0].type == PeepE::ThoughtType::Vandalism)
         {
             negativeCount++;
         }
@@ -202,12 +202,12 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
         if (peep->Thoughts[0].freshness > 5)
             continue;
 
-        if (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_SCENERY)
+        if (peep->Thoughts[0].type == PeepE::ThoughtType::Scenery)
             positiveCount++;
 
-        if (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->Thoughts[0].type == PeepE::ThoughtType::Bad_Litter
+            || peep->Thoughts[0].type == PeepE::ThoughtType::Path_Disgusting
+            || peep->Thoughts[0].type == PeepE::ThoughtType::Vandalism)
         {
             negativeCount++;
         }
@@ -240,7 +240,7 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
     {
         if (peep->OutsideOfPark)
             continue;
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepE::ThoughtType::Vandalism)
             peepsWhoDislikeVandalism++;
     }
 
@@ -322,7 +322,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
+        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepE::ThoughtType::Hungry)
             hungryPeeps++;
     }
     return (hungryPeeps <= 12);
@@ -366,7 +366,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
+        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepE::ThoughtType::Hungry)
             hungryPeeps++;
     }
     return (hungryPeeps > 15);
@@ -396,7 +396,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_TOILET)
+        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepE::ThoughtType::Toilet)
             guestsWhoNeedRestroom++;
     }
     return (guestsWhoNeedRestroom <= 16);
@@ -525,7 +525,7 @@ static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t act
 
         peepsCounted++;
         if (peep->Thoughts[0].freshness <= 5
-            && (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND))
+            && (peep->Thoughts[0].type == PeepE::ThoughtType::Lost || peep->Thoughts[0].type == PeepE::ThoughtType::Cant_Find))
             peepsLost++;
     }
 

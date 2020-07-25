@@ -1489,7 +1489,7 @@ public:
         {
             auto srcThought = &src->thoughts[i];
             auto dstThought = &dst->Thoughts[i];
-            dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
+            dstThought->type = static_cast<PeepE::ThoughtType>(srcThought->type);
             dstThought->item = srcThought->item;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
