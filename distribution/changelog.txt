@@ -37,6 +37,7 @@
 - Fix: [#11405] Building a path through walls does not always remove the walls.
 - Fix: [#11450] Rides with unsuitable track can't be opened even with "Enable all drawable track pieces" cheat.
 - Fix: [#11455] Object Selection window cuts off scenery names.
+- Fix: [#11623] Erratic zoom behavior when pointing outside of the map.
 - Fix: [#11640] Objects with a blank description in one language do not fall back to other languages anymore.
 - Fix: [#11676] Spiral Roller Coaster has regular lift hill available.
 - Fix: [#11695] Mechanics walk to tile 0, 0 at entrance only stations when trying to fix them.
