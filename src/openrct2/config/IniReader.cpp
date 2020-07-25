@@ -155,6 +155,23 @@ public:
         return result;
     }
 
+    int64_t GetInt64(const std::string& name, int64_t defaultValue) const override
+    {
+        int64_t result = defaultValue;
+        std::string value;
+        if (TryGetString(name, &value))
+        {
+            try
+            {
+                result = std::stoll(value);
+            }
+            catch (const std::exception&)
+            {
+            }
+        }
+        return result;
+    }
+
     float GetFloat(const std::string& name, float defaultValue) const override
     {
         float result = defaultValue;
@@ -384,6 +401,11 @@ public:
     }
 
     int32_t GetInt32([[maybe_unused]] const std::string& name, int32_t defaultValue) const override
+    {
+        return defaultValue;
+    }
+
+    int64_t GetInt64([[maybe_unused]] const std::string& name, int64_t defaultValue) const override
     {
         return defaultValue;
     }

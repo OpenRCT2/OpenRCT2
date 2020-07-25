@@ -39,6 +39,8 @@ TEST_F(IniReaderTest, create_empty)
     ASSERT_EQ(ir->GetEnum<int32_t>("spanish", 12345, Enum_Currency), 12345);
     ASSERT_EQ(ir->GetFloat("inquisition", 1.234f), 1.234f);
     ASSERT_EQ(ir->GetInt32("universal_answer", 42), 42);
+    ASSERT_EQ(
+        ir->GetInt64("heat_death_of_the_universe", std::numeric_limits<int64_t>::max()), std::numeric_limits<int64_t>::max());
     delete ir;
 }
 
