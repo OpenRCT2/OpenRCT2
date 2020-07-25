@@ -52,12 +52,12 @@ struct Ride;
 class GameActionResult;
 using ParkEntranceIndex = uint8_t;
 
-enum PeepType : uint8_t
+enum class PeepType : uint8_t
 {
-    PEEP_TYPE_GUEST,
-    PEEP_TYPE_STAFF,
+    Guest,
+    Staff,
 
-    PEEP_TYPE_INVALID = 0xFF
+    Invalid = 0xFF
 };
 
 enum PeepThoughtType : uint8_t

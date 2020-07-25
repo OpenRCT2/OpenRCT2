@@ -182,7 +182,7 @@ namespace OpenRCT2::Scripting
                 case SPRITE_IDENTIFIER_VEHICLE:
                     return GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(spriteId));
                 case SPRITE_IDENTIFIER_PEEP:
-                    if (sprite->peep.AssignedPeepType == PEEP_TYPE_STAFF)
+                    if (sprite->peep.AssignedPeepType == PeepType::Staff)
                         return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
                     else
                         return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId));
