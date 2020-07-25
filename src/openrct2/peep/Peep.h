@@ -60,7 +60,7 @@ enum class PeepType : uint8_t
     Invalid = 0xFF
 };
 
-enum PeepThoughtType : uint8_t
+enum class PeepThoughtType : uint8_t
 {
     PEEP_THOUGHT_TYPE_CANT_AFFORD_0 = 0,      // "I can't afford"
     PEEP_THOUGHT_TYPE_SPENT_MONEY = 1,        // "I've spent all my money"
