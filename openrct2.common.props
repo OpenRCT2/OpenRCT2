@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-
   <PropertyGroup>
     <!-- Allow any version of VS and Windows SDK -->
     <PlatformToolset>$(DefaultPlatformToolset)</PlatformToolset>
@@ -113,4 +112,8 @@
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
+  
+  <PropertyGroup>
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
 </Project>
