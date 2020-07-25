@@ -953,8 +953,8 @@ void window_viewport_get_map_coords_by_cursor(
     auto mouseCoords = context_get_cursor_position_scaled();
 
     // Compute map coordinate by mouse position.
-    CoordsXY mapCoords;
-    get_map_coordinates_from_pos(mouseCoords, VIEWPORT_INTERACTION_MASK_NONE, mapCoords, nullptr, nullptr, nullptr);
+    auto viewportPos = screen_coord_to_viewport_coord(w->viewport, mouseCoords);
+    auto mapCoords = viewport_coord_to_map_coord(viewportPos, 0);
     *map_x = mapCoords.x;
     *map_y = mapCoords.y;
 
