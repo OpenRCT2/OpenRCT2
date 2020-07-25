@@ -954,7 +954,8 @@ void window_viewport_get_map_coords_by_cursor(
 
     // Compute map coordinate by mouse position.
     auto viewportPos = screen_coord_to_viewport_coord(w->viewport, mouseCoords);
-    auto mapCoords = viewport_coord_to_map_coord(viewportPos, 0);
+    auto coordsXYZ = viewport_adjust_for_map_height(viewportPos);
+    auto mapCoords = viewport_coord_to_map_coord(viewportPos, coordsXYZ.z);
     *map_x = mapCoords.x;
     *map_y = mapCoords.y;
 
