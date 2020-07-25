@@ -38,31 +38,34 @@
 
 extern bool gWindowSceneryEyedropperEnabled;
 
-uint8_t gKeyboardShortcutChangeId;
-
 using shortcut_action = void (*)();
+using namespace OpenRCT2;
+
+Input::Shortcut gKeyboardShortcutChangeId;
 
 namespace
 {
-    extern const shortcut_action shortcut_table[SHORTCUT_COUNT];
+    extern const shortcut_action shortcut_table[Input::ShortcutsCount];
 }
 
 /**
  *
  *  rct2: 0x006E3E68
  */
+using namespace OpenRCT2;
 void keyboard_shortcut_handle(int32_t key)
 {
-    int32_t shortcut = keyboard_shortcuts_get_from_key(key);
-    if (shortcut != -1)
+    auto shortcut = keyboard_shortcuts_get_from_key(key);
+    if (shortcut != Input::Shortcut::Undefined)
     {
         keyboard_shortcut_handle_command(shortcut);
     }
 }
 
-void keyboard_shortcut_handle_command(int32_t shortcutIndex)
+void keyboard_shortcut_handle_command(Input::Shortcut shortcut)
 {
-    if (shortcutIndex >= 0 && static_cast<uint32_t>(shortcutIndex) < std::size(shortcut_table))
+    size_t shortcutIndex = static_cast<size_t>(shortcut);
+    if (shortcutIndex >= 0 && shortcutIndex < std::size(shortcut_table))
     {
         shortcut_action action = shortcut_table[shortcutIndex];
         if (action != nullptr)
@@ -1029,7 +1032,8 @@ static void shortcut_toggle_clearance_checks()
 
 namespace
 {
-    const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
+    using namespace OpenRCT2::Input;
+    const shortcut_action shortcut_table[ShortcutsCount] = {
         shortcut_close_top_most_window,
         shortcut_close_all_floating_windows,
         shortcut_cancel_construction_mode,
