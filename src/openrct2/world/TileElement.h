@@ -19,6 +19,8 @@ struct Banner;
 struct CoordsXY;
 struct rct_scenery_entry;
 struct rct_footpath_entry;
+class TerrainSurfaceObject;
+class TerrainEdgeObject;
 using track_type_t = uint16_t;
 
 constexpr const uint8_t MAX_ELEMENT_HEIGHT = 255;
@@ -166,8 +168,10 @@ public:
     void SetSlope(uint8_t newSlope);
 
     uint32_t GetSurfaceStyle() const;
+    TerrainSurfaceObject* GetSurfaceStyleObject() const;
     void SetSurfaceStyle(uint32_t newStyle);
     uint32_t GetEdgeStyle() const;
+    TerrainEdgeObject* GetEdgeStyleObject() const;
     void SetEdgeStyle(uint32_t newStyle);
 
     bool CanGrassGrow() const;
