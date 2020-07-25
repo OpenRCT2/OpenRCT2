@@ -193,9 +193,10 @@ public:
     void Server_Send_EVENT_PLAYER_JOINED(const char* playerName);
     void Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, const char* reason);
     void Client_Send_GAMEINFO();
-    void Client_Send_OBJECTS(const std::vector<std::string>& objects);
-    void Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
+    void Client_Send_MAPREQUEST(const std::vector<std::string>& objects);
+    void Server_Send_OBJECTS_LIST(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
     void Server_Send_SCRIPTS(NetworkConnection& connection) const;
+    void Client_Send_HEARTBEAT(NetworkConnection& connection) const;
 
     NetworkStats_t GetStats() const;
     json_t* GetServerInfoAsJson() const;
@@ -275,11 +276,13 @@ private:
     uint32_t _actionId;
     uint32_t _lastUpdateTime = 0;
     uint32_t _currentDeltaTime = 0;
+    uint32_t _lastSentHeartbeat = 0;
     std::string _chatLogPath;
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _serverLogPath;
     std::string _serverLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::shared_ptr<OpenRCT2::IPlatformEnvironment> _env;
+    std::vector<std::string> _missingObjects;
 
     void UpdateServer();
     void UpdateClient();
@@ -288,6 +291,7 @@ private:
     std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> client_command_handlers;
     std::vector<void (Network::*)(NetworkConnection& connection, NetworkPacket& packet)> server_command_handlers;
     void Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_HEARTBEAT(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Client_Joined(const char* name, const std::string& keyhash, NetworkConnection& connection);
@@ -310,10 +314,10 @@ private:
     void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
     void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
+    void Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet);
     void Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet);
+    void Server_Handle_MAPREQUEST(NetworkConnection& connection, NetworkPacket& packet);
 
     uint8_t* save_for_network(size_t& out_size, const std::vector<const ObjectRepositoryItem*>& objects) const;
 
@@ -346,7 +350,7 @@ Network::Network()
     client_command_handlers[NETWORK_COMMAND_EVENT] = &Network::Client_Handle_EVENT;
     client_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Client_Handle_GAMEINFO;
     client_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Client_Handle_TOKEN;
-    client_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Client_Handle_OBJECTS;
+    client_command_handlers[NETWORK_COMMAND_OBJECTS_LIST] = &Network::Client_Handle_OBJECTS_LIST;
     client_command_handlers[NETWORK_COMMAND_SCRIPTS] = &Network::Client_Handle_SCRIPTS;
     client_command_handlers[NETWORK_COMMAND_GAMESTATE] = &Network::Client_Handle_GAMESTATE;
     server_command_handlers.resize(NETWORK_COMMAND_MAX, nullptr);
@@ -356,8 +360,9 @@ Network::Network()
     server_command_handlers[NETWORK_COMMAND_PING] = &Network::Server_Handle_PING;
     server_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Server_Handle_GAMEINFO;
     server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
-    server_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Server_Handle_OBJECTS;
+    server_command_handlers[NETWORK_COMMAND_MAPREQUEST] = &Network::Server_Handle_MAPREQUEST;
     server_command_handlers[NETWORK_COMMAND_REQUEST_GAMESTATE] = &Network::Server_Handle_REQUEST_GAMESTATE;
+    server_command_handlers[NETWORK_COMMAND_HEARTBEAT] = &Network::Server_Handle_HEARTBEAT;
 
     _chat_log_fs << std::unitbuf;
     _server_log_fs << std::unitbuf;
@@ -864,6 +869,16 @@ void Network::UpdateClient()
                 window_close_by_class(WC_MULTIPLAYER);
                 Close();
             }
+            else
+            {
+                uint32_t ticks = platform_get_ticks();
+                if (ticks - _lastSentHeartbeat >= 3000)
+                {
+                    Client_Send_HEARTBEAT(*_serverConnection);
+                    _lastSentHeartbeat = ticks;
+                }
+            }
+
             break;
         }
     }
@@ -1449,11 +1464,11 @@ void Network::Client_Send_AUTH(
     _serverConnection->QueuePacket(std::move(packet));
 }
 
-void Network::Client_Send_OBJECTS(const std::vector<std::string>& objects)
+void Network::Client_Send_MAPREQUEST(const std::vector<std::string>& objects)
 {
     log_verbose("client requests %u objects", uint32_t(objects.size()));
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << static_cast<uint32_t>(NETWORK_COMMAND_OBJECTS) << static_cast<uint32_t>(objects.size());
+    *packet << static_cast<uint32_t>(NETWORK_COMMAND_MAPREQUEST) << static_cast<uint32_t>(objects.size());
     for (const auto& object : objects)
     {
         log_verbose("client requests object %s", object.c_str());
@@ -1470,18 +1485,36 @@ void Network::Server_Send_TOKEN(NetworkConnection& connection)
     connection.QueuePacket(std::move(packet));
 }
 
-void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const
+void Network::Server_Send_OBJECTS_LIST(
+    NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const
 {
     log_verbose("Server sends objects list with %u items", objects.size());
-    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
-    *packet << static_cast<uint32_t>(NETWORK_COMMAND_OBJECTS) << static_cast<uint32_t>(objects.size());
-    for (auto object : objects)
+
+    if (objects.empty())
     {
-        log_verbose("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
-        packet->Write(reinterpret_cast<const uint8_t*>(object->ObjectEntry.name), 8);
-        *packet << object->ObjectEntry.checksum << object->ObjectEntry.flags;
+        std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+        *packet << static_cast<uint32_t>(NETWORK_COMMAND_OBJECTS_LIST) << static_cast<uint32_t>(0)
+                << static_cast<uint32_t>(objects.size());
+
+        connection.QueuePacket(std::move(packet));
     }
-    connection.QueuePacket(std::move(packet));
+    else
+    {
+        for (size_t i = 0; i < objects.size(); ++i)
+        {
+            const auto* object = objects[i];
+
+            std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+            *packet << static_cast<uint32_t>(NETWORK_COMMAND_OBJECTS_LIST) << static_cast<uint32_t>(i)
+                    << static_cast<uint32_t>(objects.size());
+
+            log_verbose("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
+            packet->Write(reinterpret_cast<const uint8_t*>(object->ObjectEntry.name), 8);
+            *packet << object->ObjectEntry.checksum << object->ObjectEntry.flags;
+
+            connection.QueuePacket(std::move(packet));
+        }
+    }
 }
 
 void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
@@ -1517,6 +1550,16 @@ void Network::Server_Send_SCRIPTS(NetworkConnection& connection) const
 #    else
     *packet << static_cast<uint32_t>(0);
 #    endif
+    connection.QueuePacket(std::move(packet));
+}
+
+void Network::Client_Send_HEARTBEAT(NetworkConnection& connection) const
+{
+    log_verbose("Sending heartbeat");
+
+    std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
+    *packet << static_cast<uint32_t>(NETWORK_COMMAND_HEARTBEAT);
+
     connection.QueuePacket(std::move(packet));
 }
 
@@ -2444,6 +2487,12 @@ void Network::Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, Net
     }
 }
 
+void Network::Server_Handle_HEARTBEAT(NetworkConnection& connection, NetworkPacket& packet)
+{
+    log_verbose("Client %s heartbeat", connection.Socket->GetHostName());
+    connection.ResetLastPacketTime();
+}
+
 void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t auth_status;
@@ -2505,7 +2554,7 @@ void Network::Server_Client_Joined(const char* name, const std::string& keyhash,
         auto context = GetContext();
         auto& objManager = context->GetObjectManager();
         auto objects = objManager.GetPackableObjects();
-        Server_Send_OBJECTS(connection, objects);
+        Server_Send_OBJECTS_LIST(connection, objects);
         Server_Send_SCRIPTS(connection);
 
         // Log player joining event
@@ -2529,43 +2578,71 @@ void Network::Server_Handle_TOKEN(NetworkConnection& connection, [[maybe_unused]
     Server_Send_TOKEN(connection);
 }
 
-void Network::Client_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkPacket& packet)
 {
     auto& repo = GetContext()->GetObjectRepository();
-    uint32_t size;
-    packet >> size;
-    log_verbose("client received object list, it has %u entries", size);
-    if (size > OBJECT_ENTRY_COUNT)
+
+    uint32_t index = 0;
+    uint32_t totalObjects = 0;
+    packet >> index >> totalObjects;
+
+    static constexpr uint32_t OBJECT_START_INDEX = 0;
+    if (index == OBJECT_START_INDEX)
+    {
+        _missingObjects.clear();
+    }
+
+    if (totalObjects > OBJECT_ENTRY_COUNT)
     {
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_INVALID_REQUEST);
         connection.Socket->Disconnect();
         log_warning("Server sent invalid amount of objects");
         return;
     }
-    std::vector<std::string> requested_objects;
-    for (uint32_t i = 0; i < size; i++)
+
+    if (totalObjects > 0)
     {
-        const char* name = reinterpret_cast<const char*>(packet.Read(8));
-        // Required, as packet has no null terminators.
-        std::string s(name, name + 8);
-        uint32_t checksum, flags;
+        char objectListMsg[256];
+        const uint32_t args[] = {
+            index + 1,
+            totalObjects,
+        };
+        format_string(objectListMsg, 256, STR_MULTIPLAYER_RECEIVING_OBJECTS_LIST, &args);
+
+        auto intent = Intent(WC_NETWORK_STATUS);
+        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ objectListMsg });
+        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
+        context_open_intent(&intent);
+
+        char objectName[12]{};
+        std::memcpy(objectName, packet.Read(8), 8);
+
+        uint32_t checksum = 0;
+        uint32_t flags = 0;
         packet >> checksum >> flags;
-        const ObjectRepositoryItem* ori = repo.FindObject(s.c_str());
+
+        const auto* object = repo.FindObject(objectName);
         // This could potentially request the object if checksums don't match, but since client
         // won't replace its version with server-provided one, we don't do that.
-        if (ori == nullptr)
+        if (object == nullptr)
         {
-            log_verbose("Requesting object %s with checksum %x from server", s.c_str(), checksum);
-            requested_objects.push_back(s);
+            log_verbose("Requesting object %s with checksum %x from server", objectName, checksum);
+            _missingObjects.push_back(objectName);
         }
-        else if (ori->ObjectEntry.checksum != checksum || ori->ObjectEntry.flags != flags)
+        else if (object->ObjectEntry.checksum != checksum || object->ObjectEntry.flags != flags)
         {
             log_warning(
-                "Object %s has different checksum/flags (%x/%x) than server (%x/%x).", s.c_str(), ori->ObjectEntry.checksum,
-                ori->ObjectEntry.flags, checksum, flags);
+                "Object %s has different checksum/flags (%x/%x) than server (%x/%x).", objectName, object->ObjectEntry.checksum,
+                object->ObjectEntry.flags, checksum, flags);
         }
     }
-    Client_Send_OBJECTS(requested_objects);
+
+    if (index + 1 >= totalObjects)
+    {
+        log_verbose("client received object list, it has %u entries", totalObjects);
+        Client_Send_MAPREQUEST(_missingObjects);
+        _missingObjects.clear();
+    }
 }
 
 void Network::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet)
@@ -2660,7 +2737,7 @@ void Network::Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPack
     }
 }
 
-void Network::Server_Handle_OBJECTS(NetworkConnection& connection, NetworkPacket& packet)
+void Network::Server_Handle_MAPREQUEST(NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t size;
     packet >> size;
