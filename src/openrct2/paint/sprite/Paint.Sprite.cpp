@@ -50,7 +50,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
             const auto peep = spr->As<Peep>();
             if (peep != nullptr)
             {
-                if (!(peep->AssignedPeepType == PEEP_TYPE_STAFF && peep->StaffType == STAFF_TYPE_HANDYMAN))
+                if (!(peep->AssignedPeepType == PeepType::Staff && peep->StaffType == STAFF_TYPE_HANDYMAN))
                 {
                     continue;
                 }

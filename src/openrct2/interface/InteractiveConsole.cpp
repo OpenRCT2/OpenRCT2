@@ -490,7 +490,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                     return 1;
                 }
                 peep = GET_PEEP(int_val[0]);
-                bool is_entertainer = peep != nullptr && peep->AssignedPeepType == PEEP_TYPE_STAFF
+                bool is_entertainer = peep != nullptr && peep->AssignedPeepType == PeepType::Staff
                     && peep->StaffType == STAFF_TYPE_ENTERTAINER;
                 if (!is_entertainer)
                 {

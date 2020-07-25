@@ -59,7 +59,7 @@ public:
         }
 
         auto peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PEEP_TYPE_STAFF)
+        if (peep->AssignedPeepType != PeepType::Staff)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(
@@ -72,7 +72,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PEEP_TYPE_STAFF)
+        if (peep->AssignedPeepType != PeepType::Staff)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(

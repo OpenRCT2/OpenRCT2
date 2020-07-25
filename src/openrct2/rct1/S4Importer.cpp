@@ -1552,7 +1552,7 @@ private:
 
         dst->ItemStandardFlags = src->item_standard_flags;
 
-        if (dst->AssignedPeepType == PEEP_TYPE_GUEST)
+        if (dst->AssignedPeepType == PeepType::Guest)
         {
             if (dst->OutsideOfPark && dst->State != PEEP_STATE_LEAVING_PARK)
             {
