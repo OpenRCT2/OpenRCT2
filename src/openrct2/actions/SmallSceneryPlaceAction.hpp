@@ -56,7 +56,7 @@ DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, SmallSce
 private:
     CoordsXYZD _loc;
     uint8_t _quadrant;
-    uint16_t _sceneryType;
+    ObjectEntryIndex _sceneryType;
     uint8_t _primaryColour;
     uint8_t _secondaryColour;
 
@@ -64,7 +64,7 @@ public:
     SmallSceneryPlaceAction() = default;
 
     SmallSceneryPlaceAction(
-        const CoordsXYZD& loc, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+        const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
         : _loc(loc)
         , _quadrant(quadrant)
         , _sceneryType(sceneryType)

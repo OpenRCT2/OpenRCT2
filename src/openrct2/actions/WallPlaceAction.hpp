@@ -53,7 +53,7 @@ public:
 DEFINE_GAME_ACTION(WallPlaceAction, GAME_COMMAND_PLACE_WALL, WallPlaceActionResult)
 {
 private:
-    int32_t _wallType{ -1 };
+    ObjectEntryIndex _wallType{ OBJECT_ENTRY_INDEX_NULL };
     CoordsXYZ _loc;
     Direction _edge{ INVALID_DIRECTION };
     int32_t _primaryColour{ COLOUR_BLACK };
@@ -65,7 +65,7 @@ public:
     WallPlaceAction() = default;
 
     WallPlaceAction(
-        int32_t wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
+        ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
         int32_t tertiaryColour)
         : _wallType(wallType)
         , _loc(loc)

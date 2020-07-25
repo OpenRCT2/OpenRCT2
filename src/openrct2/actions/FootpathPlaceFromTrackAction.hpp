@@ -27,12 +27,12 @@ DEFINE_GAME_ACTION(FootpathPlaceFromTrackAction, GAME_COMMAND_PLACE_PATH_FROM_TR
 private:
     CoordsXYZ _loc;
     uint8_t _slope;
-    uint8_t _type;
+    ObjectEntryIndex _type;
     uint8_t _edges;
 
 public:
     FootpathPlaceFromTrackAction() = default;
-    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, uint8_t type, uint8_t edges)
+    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges)
         : _loc(loc)
         , _slope(slope)
         , _type(type)
