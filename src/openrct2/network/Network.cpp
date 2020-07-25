@@ -193,7 +193,7 @@ public:
     void Server_Send_EVENT_PLAYER_JOINED(const char* playerName);
     void Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, const char* reason);
     void Client_Send_GAMEINFO();
-    void Client_Send_REQUESTMAP(const std::vector<std::string>& objects);
+    void Client_Send_MAPREQUEST(const std::vector<std::string>& objects);
     void Server_Send_OBJECTS_LIST(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
     void Server_Send_SCRIPTS(NetworkConnection& connection) const;
     void Client_Send_HEARTBEAT(NetworkConnection& connection) const;
@@ -1464,7 +1464,7 @@ void Network::Client_Send_AUTH(
     _serverConnection->QueuePacket(std::move(packet));
 }
 
-void Network::Client_Send_REQUESTMAP(const std::vector<std::string>& objects)
+void Network::Client_Send_MAPREQUEST(const std::vector<std::string>& objects)
 {
     log_verbose("client requests %u objects", uint32_t(objects.size()));
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
@@ -2586,9 +2586,9 @@ void Network::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkP
     uint32_t totalObjects = 0;
     packet >> index >> totalObjects;
 
-    if (index == 0)
+    static constexpr uint32_t OBJECT_START_INDEX = 0;
+    if (index == OBJECT_START_INDEX)
     {
-        // Start of objects list.
         _missingObjects.clear();
     }
 
@@ -2614,33 +2614,33 @@ void Network::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkP
         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
         context_open_intent(&intent);
 
-        auto name = reinterpret_cast<const char*>(packet.Read(8));
-        // Required, as packet has no null terminators.
-        std::string s(name, name + 8);
+        char objectName[12]{};
+        std::memcpy(objectName, packet.Read(8), 8);
+
         uint32_t checksum = 0;
         uint32_t flags = 0;
         packet >> checksum >> flags;
 
-        const ObjectRepositoryItem* ori = repo.FindObject(s.c_str());
+        const auto* object = repo.FindObject(objectName);
         // This could potentially request the object if checksums don't match, but since client
         // won't replace its version with server-provided one, we don't do that.
-        if (ori == nullptr)
+        if (object == nullptr)
         {
-            log_verbose("Requesting object %s with checksum %x from server", s.c_str(), checksum);
-            _missingObjects.push_back(s);
+            log_verbose("Requesting object %s with checksum %x from server", objectName, checksum);
+            _missingObjects.push_back(objectName);
         }
-        else if (ori->ObjectEntry.checksum != checksum || ori->ObjectEntry.flags != flags)
+        else if (object->ObjectEntry.checksum != checksum || object->ObjectEntry.flags != flags)
         {
             log_warning(
-                "Object %s has different checksum/flags (%x/%x) than server (%x/%x).", s.c_str(), ori->ObjectEntry.checksum,
-                ori->ObjectEntry.flags, checksum, flags);
+                "Object %s has different checksum/flags (%x/%x) than server (%x/%x).", objectName, object->ObjectEntry.checksum,
+                object->ObjectEntry.flags, checksum, flags);
         }
     }
 
     if (index + 1 >= totalObjects)
     {
         log_verbose("client received object list, it has %u entries", totalObjects);
-        Client_Send_REQUESTMAP(_missingObjects);
+        Client_Send_MAPREQUEST(_missingObjects);
         _missingObjects.clear();
     }
 }
