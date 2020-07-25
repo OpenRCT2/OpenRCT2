@@ -301,6 +301,17 @@ enum class PatrolAreaValue
 
 static PatrolAreaValue _staffPatrolAreaPaintValue = PatrolAreaValue::NONE;
 
+static Staff* GetStaff(rct_window* w)
+{
+    auto staff = GetEntity<Staff>(w->number);
+    if (staff == nullptr)
+    {
+        window_close(w);
+        return nullptr;
+    }
+    return staff;
+}
+
 /**
  *
  *  rct2: 0x006BEE98
@@ -349,7 +360,11 @@ rct_window* window_staff_open(Peep* peep)
  */
 void window_staff_disable_widgets(rct_window* w)
 {
-    Peep* peep = GetEntity<Peep>(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
     uint64_t disabled_widgets = (1 << WIDX_TAB_4);
 
     if (peep != nullptr && peep->StaffType == STAFF_TYPE_SECURITY)
@@ -442,10 +457,9 @@ void window_staff_set_page(rct_window* w, int32_t page)
  */
 void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    auto* peep = GetEntity<Staff>(w->number);
+    const auto peep = GetStaff(w);
     if (peep == nullptr)
     {
-        window_close(w);
         return;
     }
 
@@ -574,7 +588,11 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     window_dropdown_show_text(dropdownPos, extray, w->colours[1], 0, 2);
     gDropdownDefaultIndex = 0;
 
-    Peep* peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
 
     // Disable clear patrol area if no area is set.
     if (!(gStaffModes[peep->StaffId] & 2))
@@ -597,7 +615,11 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
     // Clear patrol
     if (dropdownIndex == 1)
     {
-        Peep* peep = GET_PEEP(w->number);
+        const auto peep = GetStaff(w);
+        if (peep == nullptr)
+        {
+            return;
+        }
         for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
         {
             gStaffPatrolAreas[peep->StaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
@@ -640,7 +662,11 @@ void window_staff_overview_update(rct_window* w)
  */
 static void window_staff_set_order(rct_window* w, int32_t order_id)
 {
-    Peep* peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
 
     uint8_t newOrders = peep->StaffOrders ^ (1 << order_id);
     auto staffSetOrdersAction = StaffSetOrdersAction(w->number, newOrders);
@@ -746,7 +772,11 @@ void window_staff_stats_update(rct_window* w)
     w->frame_no++;
     widget_invalidate(w, WIDX_TAB_3);
 
-    Peep* peep = GET_PEEP(w->number);
+    auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
     if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_STAFF_STATS)
     {
         peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_STAFF_STATS;
@@ -779,7 +809,11 @@ void window_staff_stats_invalidate(rct_window* w)
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-    Peep* peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
 
     auto ft = Formatter::Common();
     peep->FormatNameTo(ft);
@@ -814,7 +848,11 @@ void window_staff_options_invalidate(rct_window* w)
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-    Peep* peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
     auto ft = Formatter::Common();
     peep->FormatNameTo(ft);
 
@@ -890,7 +928,11 @@ void window_staff_overview_invalidate(rct_window* w)
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
 
-    Peep* peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
     auto ft = Formatter::Common();
     peep->FormatNameTo(ft);
 
@@ -953,7 +995,11 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw the centred label
-    Peep* peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
     auto ft = Formatter::Common();
     peep->FormatActionTo(ft);
     rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
@@ -1029,7 +1075,11 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     screenCoords = ScreenCoordsXY{ 14, 20 };
 
-    Peep* peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
 
     if (peep->AssignedPeepType == PeepType::Staff && peep->StaffType == STAFF_TYPE_ENTERTAINER)
         screenCoords.y++;
@@ -1096,7 +1146,11 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_staff_options_tab_paint(w, dpi);
     window_staff_stats_tab_paint(w, dpi);
 
-    Peep* peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
 
     auto screenCoords = w->windowPos
         + ScreenCoordsXY{ window_staff_stats_widgets[WIDX_RESIZE].left + 4, window_staff_stats_widgets[WIDX_RESIZE].top + 4 };
@@ -1178,8 +1232,11 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
         w->picked_peep_frame = 0;
     }
 
-    Peep* peep;
-    peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
 
     uint32_t imageId = g_peep_animation_entries[peep->SpriteType].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
     imageId += w->picked_peep_frame >> 2;
@@ -1332,7 +1389,11 @@ void window_staff_viewport_init(rct_window* w)
 
     focus.sprite_id = w->number;
 
-    Peep* peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
 
     if (peep->State == PEEP_STATE_PICKED)
     {
@@ -1403,7 +1464,11 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
         return;
     }
 
-    Peep* peep = GET_PEEP(w->number);
+    const auto peep = GetStaff(w);
+    if (peep == nullptr)
+    {
+        return;
+    }
     int32_t checkedIndex = -1;
     // This will be moved below where Items Checked is when all
     // of dropdown related functions are finished. This prevents

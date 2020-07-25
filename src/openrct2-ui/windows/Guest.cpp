@@ -500,8 +500,9 @@ static Guest* GetGuest(rct_window* w)
     if (guest == nullptr)
     {
         window_close(w);
-        return;
+        return nullptr;
     }
+    return guest;
 }
 
 /**

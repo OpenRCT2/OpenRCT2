@@ -5223,7 +5223,7 @@ void Vehicle::KillPassengers(Ride* curRide)
         auto* curPeep = GetEntity<Guest>(peep[i]);
         if (curPeep == nullptr)
             continue;
-                
+
         if (!curPeep->OutsideOfPark)
         {
             decrement_guests_in_park();
