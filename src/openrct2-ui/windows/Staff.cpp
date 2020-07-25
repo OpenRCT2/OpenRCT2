@@ -1026,7 +1026,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     Peep* peep = GET_PEEP(w->number);
 
-    if (peep->AssignedPeepType == PeepType::Staff && peep->StaffType == STAFF_TYPE_ENTERTAINER)
+    if (peep->AssignedPeepType == PeepE::Type::Staff && peep->StaffType == STAFF_TYPE_ENTERTAINER)
         screenCoords.y++;
 
     int32_t ebx = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;

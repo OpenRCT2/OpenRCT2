@@ -1111,7 +1111,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     }
     if (generateName)
     {
-        if (src->AssignedPeepType == PeepType::Staff)
+        if (src->AssignedPeepType == PeepE::Type::Staff)
         {
             static constexpr const rct_string_id staffNames[] = {
                 STR_HANDYMAN_X,

@@ -688,7 +688,7 @@ private:
         // will be fetched on a deleted peep.
         for (auto peep : EntityList<Peep>(EntityListId::Peep))
         {
-            if (peep->AssignedPeepType == PeepType::Guest)
+            if (peep->AssignedPeepType == PeepE::Type::Guest)
             {
                 peep->Remove();
             }

@@ -270,7 +270,7 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
     auto staffTypeFlags = 0;
     for (auto peep : EntityList<Peep>(EntityListId::Peep))
     {
-        if (peep->AssignedPeepType == PeepType::Staff)
+        if (peep->AssignedPeepType == PeepE::Type::Staff)
         {
             staffCount++;
             staffTypeFlags |= (1 << peep->StaffType);
