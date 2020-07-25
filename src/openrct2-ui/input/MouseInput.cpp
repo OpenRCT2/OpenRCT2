@@ -1261,6 +1261,7 @@ void input_state_widget_pressed(
                         dropdownCleanup = dropdown_index == -1
                             || (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index))
                             || gDropdownItemsFormat[dropdown_index] == DROPDOWN_SEPARATOR;
+                        w = nullptr; // To be closed right next
                     }
                     else
                     {
