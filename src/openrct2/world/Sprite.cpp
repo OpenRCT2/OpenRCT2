@@ -288,7 +288,7 @@ rct_sprite_checksum sprite_checksum()
             if (sprite != nullptr && sprite->sprite_identifier != SPRITE_IDENTIFIER_NULL
                 && sprite->sprite_identifier != SPRITE_IDENTIFIER_MISC)
             {
-                // Up convert it to rct_sprite so that the full size is copied.
+                // Upconvert it to rct_sprite so that the full size is copied.
                 auto copy = *reinterpret_cast<rct_sprite*>(sprite);
 
                 // Only required for rendering/invalidation, has no meaning to the game state.
