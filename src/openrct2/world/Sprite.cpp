@@ -284,11 +284,12 @@ rct_sprite_checksum sprite_checksum()
         for (size_t i = 0; i < MAX_SPRITES; i++)
         {
             // TODO create a way to copy only the specific type
-            auto sprite = get_sprite(i);
-            if (sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_NULL
-                && sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_MISC)
+            auto sprite = GetEntity(i);
+            if (sprite != nullptr && sprite->sprite_identifier != SPRITE_IDENTIFIER_NULL
+                && sprite->sprite_identifier != SPRITE_IDENTIFIER_MISC)
             {
-                auto copy = *sprite;
+                // Upconvert it to rct_sprite so that the full size is copied.
+                auto copy = *reinterpret_cast<rct_sprite*>(sprite);
 
                 // Only required for rendering/invalidation, has no meaning to the game state.
                 copy.generic.sprite_left = copy.generic.sprite_right = copy.generic.sprite_top = copy.generic.sprite_bottom = 0;
