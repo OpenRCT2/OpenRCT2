@@ -52,13 +52,15 @@ struct Ride;
 class GameActionResult;
 using ParkEntranceIndex = uint8_t;
 
-enum class PeepType : uint8_t
+namespace Crowd
 {
-    Guest,
-    Staff,
-
-    Invalid = 0xFF
-};
+    enum class Type : uint8_t
+    {
+        Guest,
+        Staff,
+        Invalid = 0xFF
+    };
+}
 
 enum PeepThoughtType : uint8_t
 {
@@ -606,7 +608,7 @@ struct Peep : SpriteBase
     PeepState State;
     uint8_t SubState;
     PeepSpriteType SpriteType;
-    PeepType AssignedPeepType;
+    Crowd::Type AssignedPeepType;
     union
     {
         uint8_t StaffType;

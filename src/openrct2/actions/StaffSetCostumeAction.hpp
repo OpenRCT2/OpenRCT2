@@ -74,7 +74,7 @@ public:
         }
 
         Peep* peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PeepType::Staff || peep->StaffType != STAFF_TYPE_ENTERTAINER)
+        if (peep->AssignedPeepType != Crowd::Type::Staff || peep->StaffType != STAFF_TYPE_ENTERTAINER)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);

@@ -82,7 +82,7 @@ colour_t gStaffSecurityColour;
 template<> bool SpriteBase::Is<Staff>() const
 {
     auto peep = As<Peep>();
-    return peep && peep->AssignedPeepType == PeepType::Staff;
+    return peep && peep->AssignedPeepType == Crowd::Type::Staff;
 }
 
 /**
@@ -225,7 +225,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, const CoordsXYZ& staffPos, TileElem
      * both of these tiles are connected wide paths, the wide flag can be
      * ignored. */
 
-    if (staff->AssignedPeepType != PeepType::Staff)
+    if (staff->AssignedPeepType != Crowd::Type::Staff)
         return false;
 
     if (!staff_is_location_on_patrol_edge(staff, staffPos))
@@ -1857,7 +1857,8 @@ void Staff::Tick128UpdateStaff()
 bool Staff::IsMechanic() const
 {
     return (
-        sprite_identifier == SPRITE_IDENTIFIER_PEEP && AssignedPeepType == PeepType::Staff && StaffType == STAFF_TYPE_MECHANIC);
+        sprite_identifier == SPRITE_IDENTIFIER_PEEP && AssignedPeepType == Crowd::Type::Staff
+        && StaffType == STAFF_TYPE_MECHANIC);
 }
 
 void Staff::UpdateStaff(uint32_t stepsToTake)

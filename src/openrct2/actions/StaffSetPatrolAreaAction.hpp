@@ -56,7 +56,8 @@ public:
         }
 
         auto peep = GET_PEEP(_spriteId);
-        if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->AssignedPeepType != PeepType::Staff)
+        if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP
+            || peep->AssignedPeepType != Crowd::Type::Staff)
         {
             log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -68,7 +69,8 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto peep = GET_PEEP(_spriteId);
-        if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->AssignedPeepType != PeepType::Staff)
+        if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP
+            || peep->AssignedPeepType != Crowd::Type::Staff)
         {
             log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);

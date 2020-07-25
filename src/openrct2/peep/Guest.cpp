@@ -403,7 +403,7 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
 template<> bool SpriteBase::Is<Guest>() const
 {
     auto peep = As<Peep>();
-    return peep && peep->AssignedPeepType == PeepType::Guest;
+    return peep && peep->AssignedPeepType == Crowd::Type::Guest;
 }
 
 bool Guest::GuestHasValidXY() const

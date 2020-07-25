@@ -73,7 +73,7 @@ public:
         }
 
         auto peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PeepType::Guest)
+        if (peep->AssignedPeepType != Crowd::Type::Guest)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
@@ -85,7 +85,7 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         auto peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PeepType::Guest)
+        if (peep->AssignedPeepType != Crowd::Type::Guest)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);

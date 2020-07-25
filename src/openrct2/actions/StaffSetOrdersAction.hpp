@@ -54,7 +54,7 @@ public:
         }
 
         Peep* peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PeepType::Staff
+        if (peep->AssignedPeepType != Crowd::Type::Staff
             || (peep->StaffType != STAFF_TYPE_HANDYMAN && peep->StaffType != STAFF_TYPE_MECHANIC))
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
