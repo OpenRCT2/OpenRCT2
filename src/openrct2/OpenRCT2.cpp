@@ -9,7 +9,7 @@
 
 #include "OpenRCT2.h"
 
-int32_t gOpenRCT2StartupAction = STARTUP_ACTION_TITLE;
+STARTUP_ACTION gOpenRCT2StartupAction = STARTUP_ACTION::STARTUP_ACTION_TITLE;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
 utf8 gExePath[MAX_PATH];
 utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
