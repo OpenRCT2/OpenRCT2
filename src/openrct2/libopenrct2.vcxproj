@@ -230,6 +230,7 @@
     <ClInclude Include="network\DiscordService.h" />
     <ClInclude Include="network\network.h" />
     <ClInclude Include="network\NetworkAction.h" />
+    <ClInclude Include="network\NetworkBase.h" />
     <ClInclude Include="network\NetworkConnection.h" />
     <ClInclude Include="network\NetworkGroup.h" />
     <ClInclude Include="network\NetworkKey.h" />
@@ -549,8 +550,8 @@
     <ClCompile Include="management\NewsItem.cpp" />
     <ClCompile Include="management\Research.cpp" />
     <ClCompile Include="network\DiscordService.cpp" />
-    <ClCompile Include="network\Network.cpp" />
     <ClCompile Include="network\NetworkAction.cpp" />
+    <ClCompile Include="network\NetworkBase.cpp" />
     <ClCompile Include="network\NetworkConnection.cpp" />
     <ClCompile Include="network\NetworkGroup.cpp" />
     <ClCompile Include="network\NetworkKey.cpp" />
