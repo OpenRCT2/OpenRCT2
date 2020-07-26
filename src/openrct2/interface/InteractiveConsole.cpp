@@ -469,12 +469,14 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
 
-                if (int_valid[0] && int_valid[1] && ((GetEntity<Peep>(int_val[0])) != nullptr))
+                if (int_valid[0] && int_valid[1])
                 {
                     Peep* peep = GetEntity<Peep>(int_val[0]);
-
-                    peep->Energy = int_val[1];
-                    peep->EnergyTarget = int_val[1];
+                    if (peep != nullptr)
+                    {
+                        peep->Energy = int_val[1];
+                        peep->EnergyTarget = int_val[1];
+                    }
                 }
             }
             else if (argv[1] == "costume")
