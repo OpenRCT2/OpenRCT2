@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "network.h"
+#include "NetworkBase.h"
 
 #include "../Context.h"
 #include "../Game.h"
@@ -24,7 +24,7 @@
 #include "../ui/WindowManager.h"
 #include "../util/SawyerCoding.h"
 #include "../world/Location.hpp"
-#include "NetworkBase.h"
+#include "network.h"
 
 #include <algorithm>
 #include <iterator>
@@ -91,17 +91,6 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include <vector>
 
 using namespace OpenRCT2;
-
-enum
-{
-    SERVER_EVENT_PLAYER_JOINED,
-    SERVER_EVENT_PLAYER_DISCONNECTED,
-};
-
-enum
-{
-    NETWORK_TICK_FLAG_CHECKSUMS = 1 << 0,
-};
 
 static void network_chat_show_connected_message();
 static void network_chat_show_server_greeting();
