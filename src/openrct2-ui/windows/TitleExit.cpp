@@ -84,7 +84,7 @@ rct_window* window_title_exit_open()
  */
 static void window_title_exit_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (gIntroState != INTRO_STATE::INTRO_STATE_NONE)
+    if (gIntroState != IntroState::None)
         return;
 
     switch (widgetIndex)
