@@ -28,16 +28,16 @@ NewsItemQueues gNewsItems;
 
 /** rct2: 0x0097BE7C */
 const uint8_t news_type_properties[] = {
-    0,                                              // NEWS_ITEM_NULL
-    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // NEWS_ITEM_RIDE
-    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // NEWS_ITEM_PEEP_ON_RIDE
-    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // NEWS_ITEM_PEEP
-    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_MONEY
-    NEWS_TYPE_HAS_LOCATION,                         // NEWS_ITEM_BLANK
-    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_RESEARCH
-    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_PEEPS
-    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_AWARD
-    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_GRAPH
+    0,                                              // News::ItemType::Null
+    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // News::ItemType::Ride
+    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // News::ItemType::PeepOnRide
+    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // News::ItemType::Peep
+    NEWS_TYPE_HAS_SUBJECT,                          // News::ItemType::Money
+    NEWS_TYPE_HAS_LOCATION,                         // News::ItemType::Blank
+    NEWS_TYPE_HAS_SUBJECT,                          // News::ItemType::Research
+    NEWS_TYPE_HAS_SUBJECT,                          // News::ItemType::Peeps
+    NEWS_TYPE_HAS_SUBJECT,                          // News::ItemType::Award
+    NEWS_TYPE_HAS_SUBJECT,                          // News::ItemType::Graph
 };
 
 NewsItem& NewsItemQueues::Current()
@@ -215,13 +215,13 @@ void NewsItemQueues::ArchiveCurrent()
  *
  *  rct2: 0x0066BA74
  */
-std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t subject)
+std::optional<CoordsXYZ> news_item_get_subject_location(News::ItemType type, int32_t subject)
 {
     std::optional<CoordsXYZ> subjectLoc{ std::nullopt };
 
     switch (type)
     {
-        case NEWS_ITEM_RIDE:
+        case News::ItemType::Ride:
         {
             Ride* ride = get_ride(subject);
             if (ride == nullptr || ride->overall_view.isNull())
@@ -232,7 +232,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             subjectLoc = CoordsXYZ{ rideViewCentre, tile_element_height(rideViewCentre) };
             break;
         }
-        case NEWS_ITEM_PEEP_ON_RIDE:
+        case News::ItemType::PeepOnRide:
         {
             auto peep = TryGetEntity<Peep>(subject);
             if (peep == nullptr)
@@ -269,7 +269,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             }
             break;
         }
-        case NEWS_ITEM_PEEP:
+        case News::ItemType::Peep:
         {
             auto peep = TryGetEntity<Peep>(subject);
             if (peep != nullptr)
@@ -278,7 +278,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             }
             break;
         }
-        case NEWS_ITEM_BLANK:
+        case News::ItemType::Blank:
         {
             auto subjectUnsigned = static_cast<uint32_t>(subject);
             auto subjectXY = CoordsXY{ static_cast<int16_t>(subjectUnsigned & 0xFFFF),
@@ -306,7 +306,7 @@ NewsItem* NewsItemQueues::FirstOpenOrNewSlot()
     // The for loop above guarantees there is always an extra element to use
     assert(Recent.capacity() - Recent.size() >= 2);
     auto newsItem = res + 1;
-    newsItem->Type = NEWS_ITEM_NULL;
+    newsItem->Type = News::ItemType::Null;
 
     return &*res;
 }
@@ -315,7 +315,7 @@ NewsItem* NewsItemQueues::FirstOpenOrNewSlot()
  *
  *  rct2: 0x0066DF55
  */
-NewsItem* news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t assoc)
+NewsItem* news_item_add_to_queue(News::ItemType type, rct_string_id string_id, uint32_t assoc)
 {
     utf8 buffer[256];
     void* args = gCommonFormatArgs;
@@ -325,7 +325,7 @@ NewsItem* news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t
     return news_item_add_to_queue_raw(type, buffer, assoc);
 }
 
-NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t assoc)
+NewsItem* news_item_add_to_queue_raw(News::ItemType type, const utf8* text, uint32_t assoc)
 {
     NewsItem* newsItem = gNewsItems.FirstOpenOrNewSlot();
     newsItem->Type = type;
@@ -345,19 +345,19 @@ NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t as
  *  rct2: 0x0066EBE6
  *
  */
-void news_item_open_subject(int32_t type, int32_t subject)
+void news_item_open_subject(News::ItemType type, int32_t subject)
 {
     switch (type)
     {
-        case NEWS_ITEM_RIDE:
+        case News::ItemType::Ride:
         {
             auto intent = Intent(WC_RIDE);
             intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
             context_open_intent(&intent);
             break;
         }
-        case NEWS_ITEM_PEEP_ON_RIDE:
-        case NEWS_ITEM_PEEP:
+        case News::ItemType::PeepOnRide:
+        case News::ItemType::Peep:
         {
             auto peep = TryGetEntity<Peep>(subject);
             if (peep != nullptr)
@@ -368,10 +368,10 @@ void news_item_open_subject(int32_t type, int32_t subject)
             }
             break;
         }
-        case NEWS_ITEM_MONEY:
+        case News::ItemType::Money:
             context_open_window(WC_FINANCES);
             break;
-        case NEWS_ITEM_RESEARCH:
+        case News::ItemType::Research:
         {
             auto item = ResearchItem(subject, 0, 0);
             if (item.type == Research::EntryType::Ride)
@@ -405,7 +405,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
                 window_event_mouse_down_call(window, WC_SCENERY__WIDX_SCENERY_TAB_1 + subject);
             break;
         }
-        case NEWS_ITEM_PEEPS:
+        case News::ItemType::Peeps:
         {
             auto intent = Intent(WC_GUEST_LIST);
             intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_THINKING_X);
@@ -413,11 +413,15 @@ void news_item_open_subject(int32_t type, int32_t subject)
             context_open_intent(&intent);
             break;
         }
-        case NEWS_ITEM_AWARD:
+        case News::ItemType::Award:
             context_open_window_view(WV_PARK_AWARDS);
             break;
-        case NEWS_ITEM_GRAPH:
+        case News::ItemType::Graph:
             context_open_window_view(WV_PARK_RATING);
+            break;
+        case News::ItemType::Null:
+        case News::ItemType::Blank:
+        case News::ItemType::Count:
             break;
     }
 }
@@ -426,7 +430,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
  *
  *  rct2: 0x0066E407
  */
-void news_item_disable_news(uint8_t type, uint32_t assoc)
+void news_item_disable_news(News::ItemType type, uint32_t assoc)
 {
     // TODO: write test invalidating windows
     gNewsItems.ForeachRecentNews([type, assoc](auto& newsItem) {
@@ -462,7 +466,7 @@ void news_item_remove(int32_t index)
         return;
 
     // News item is already null, no need to remove it
-    if (gNewsItems[index].Type == NEWS_ITEM_NULL)
+    if (gNewsItems[index].Type == News::ItemType::Null)
         return;
 
     size_t newsBoundary = index < NEWS_ITEM_HISTORY_START ? NEWS_ITEM_HISTORY_START : MAX_NEWS_ITEMS;
@@ -470,5 +474,5 @@ void news_item_remove(int32_t index)
     {
         gNewsItems[i] = gNewsItems[i + 1];
     }
-    gNewsItems[newsBoundary - 1].Type = NEWS_ITEM_NULL;
+    gNewsItems[newsBoundary - 1].Type = News::ItemType::Null;
 }

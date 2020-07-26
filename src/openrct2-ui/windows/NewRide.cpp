@@ -660,7 +660,7 @@ static void window_new_ride_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(w);
             break;
         case WIDX_LAST_DEVELOPMENT_BUTTON:
-            news_item_open_subject(NEWS_ITEM_RESEARCH, gResearchLastItem->rawValue);
+            news_item_open_subject(News::ItemType::Research, gResearchLastItem->rawValue);
             break;
         case WIDX_RESEARCH_FUNDING_BUTTON:
             context_open_window_view(WV_FINANCES_RESEARCH);

@@ -246,7 +246,7 @@ static void scenario_entrance_fee_too_high_check()
             uint32_t packed_xy = (y << 16) | x;
             if (gConfigNotifications.park_warnings)
             {
-                news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+                news_item_add_to_queue(News::ItemType::Blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
             }
         }
     }
@@ -793,33 +793,33 @@ static void scenario_objective_check_guests_and_rating()
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
+                news_item_add_to_queue(News::ItemType::Graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
             }
         }
         else if (gScenarioParkRatingWarningDays == 8)
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
+                news_item_add_to_queue(News::ItemType::Graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
             }
         }
         else if (gScenarioParkRatingWarningDays == 15)
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
+                news_item_add_to_queue(News::ItemType::Graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
             }
         }
         else if (gScenarioParkRatingWarningDays == 22)
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
+                news_item_add_to_queue(News::ItemType::Graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
             }
         }
         else if (gScenarioParkRatingWarningDays == 29)
         {
-            news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
+            news_item_add_to_queue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
             gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
             scenario_failure();
             gGuestInitialHappiness = 50;

@@ -400,7 +400,7 @@ void S6Exporter::Export()
         const NewsItem* src = &gNewsItems[i];
         rct12_news_item* dst = &_s6.news_items[i];
 
-        dst->Type = src->Type;
+        dst->Type = static_cast<uint8_t>(src->Type);
         dst->Flags = src->Flags;
         dst->Assoc = src->Assoc;
         dst->Ticks = src->Ticks;

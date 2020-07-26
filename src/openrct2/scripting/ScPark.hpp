@@ -30,21 +30,26 @@ namespace OpenRCT2::Scripting
         "attraction", "peep_on_attraction", "peep", "money", "blank", "research", "guests", "award", "chart",
     };
 
-    inline uint8_t GetParkMessageType(const std::string& key)
+    inline News::ItemType GetParkMessageType(const std::string& key)
     {
-        auto it = std::find(std::begin(ParkMessageTypeStrings), std::end(ParkMessageTypeStrings), key);
-        return it != std::end(ParkMessageTypeStrings)
-            ? static_cast<uint8_t>(NEWS_ITEM_RIDE + std::distance(std::begin(ParkMessageTypeStrings), it))
-            : static_cast<uint8_t>(NEWS_ITEM_BLANK);
+        // Get the first ItemType that appears in ParkMessageTypeStrings that isn't Null
+        auto firstType = static_cast<uint8_t>(News::ItemType::Ride);
+
+        auto begin = std::begin(ParkMessageTypeStrings);
+        auto end = std::end(ParkMessageTypeStrings);
+
+        auto it = std::find(begin, end, key);
+        return it != end ? static_cast<News::ItemType>(firstType + std::distance(begin, it)) : News::ItemType::Blank;
     }
 
-    inline std::string GetParkMessageType(uint8_t type)
+    inline std::string GetParkMessageType(News::ItemType type)
     {
         // Decrement 1 as ParkMessageTypeStrings doesn't contain the null type
-        type--;
-        if (type < std::size(ParkMessageTypeStrings))
+        auto scriptType = static_cast<size_t>(type) - 1;
+
+        if (scriptType < std::size(ParkMessageTypeStrings))
         {
-            return ParkMessageTypeStrings[type];
+            return ParkMessageTypeStrings[scriptType];
         }
         return {};
     }
@@ -329,11 +334,11 @@ namespace OpenRCT2::Scripting
             // End the lists by setting next item to null
             if (index < NEWS_ITEM_HISTORY_START)
             {
-                gNewsItems[index].Type = NEWS_ITEM_NULL;
+                gNewsItems[index].Type = News::ItemType::Null;
             }
             if (archiveIndex < MAX_NEWS_ITEMS)
             {
-                gNewsItems[archiveIndex].Type = NEWS_ITEM_NULL;
+                gNewsItems[archiveIndex].Type = News::ItemType::Null;
             }
         }
 
@@ -343,7 +348,7 @@ namespace OpenRCT2::Scripting
             try
             {
                 uint32_t assoc = std::numeric_limits<uint32_t>::max();
-                uint8_t type = NEWS_ITEM_BLANK;
+                auto type = News::ItemType::Blank;
                 std::string text;
                 if (message.type() == DukValue::Type::STRING)
                 {
@@ -353,7 +358,7 @@ namespace OpenRCT2::Scripting
                 {
                     type = GetParkMessageType(message["type"].as_string());
                     text = language_convert_string(message["text"].as_string());
-                    if (type == NEWS_ITEM_BLANK)
+                    if (type == News::ItemType::Blank)
                     {
                         assoc = static_cast<uint32_t>(((COORDS_NULL & 0xFFFF) << 16) | (COORDS_NULL & 0xFFFF));
                     }
