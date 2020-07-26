@@ -58,8 +58,8 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
-        auto peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PeepType::Staff)
+        auto staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(
@@ -71,21 +71,21 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        auto peep = GET_PEEP(_spriteIndex);
-        if (peep->AssignedPeepType != PeepType::Staff)
+        auto staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
-        auto curName = peep->GetName();
+        auto curName = staff->GetName();
         if (curName == _name)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::OK, STR_NONE);
         }
 
-        if (!peep->SetName(_name))
+        if (!staff->SetName(_name))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_NAME_GUEST, STR_NONE);
         }
@@ -96,9 +96,9 @@ public:
         context_broadcast_intent(&intent);
 
         auto res = std::make_unique<GameActionResult>();
-        res->Position.x = peep->x;
-        res->Position.y = peep->y;
-        res->Position.z = peep->z;
+        res->Position.x = staff->x;
+        res->Position.y = staff->y;
+        res->Position.z = staff->z;
         return res;
     }
 };

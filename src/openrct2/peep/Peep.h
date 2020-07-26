@@ -996,9 +996,6 @@ enum
     PATHING_RIDE_ENTRANCE = 1 << 3,
 };
 
-/** Helper macro until rides are stored in this module. */
-#define GET_PEEP(sprite_index) &(get_sprite(sprite_index)->peep)
-
 // rct2: 0x00982708
 extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
 extern const bool gSpriteTypeToSlowWalkMap[48];

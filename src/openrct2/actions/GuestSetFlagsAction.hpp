@@ -45,7 +45,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        Peep* peep = GET_PEEP(_peepId);
+        Peep* peep = TryGetEntity<Peep>(_peepId);
         if (peep == nullptr)
         {
             log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
@@ -56,7 +56,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Peep* peep = GET_PEEP(_peepId);
+        Peep* peep = TryGetEntity<Peep>(_peepId);
         if (peep == nullptr)
         {
             log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));

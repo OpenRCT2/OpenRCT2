@@ -2992,8 +2992,8 @@ void Vehicle::PeepEasterEggHereWeAre() const
         vehicle = GET_VEHICLE(spriteId);
         for (int32_t i = 0; i < vehicle->num_peeps; ++i)
         {
-            Peep* curPeep = GET_PEEP(vehicle->peep[i]);
-            if (curPeep->PeepFlags & PEEP_FLAGS_HERE_WE_ARE)
+            auto* curPeep = GetEntity<Guest>(vehicle->peep[i]);
+            if (curPeep != nullptr && curPeep->PeepFlags & PEEP_FLAGS_HERE_WE_ARE)
             {
                 curPeep->InsertNewThought(PEEP_THOUGHT_TYPE_HERE_WE_ARE, curPeep->CurrentRide);
             }
@@ -4054,17 +4054,23 @@ void Vehicle::UpdateUnloadingPassengers()
         {
             next_free_seat -= 2;
 
-            Peep* curPeep = GET_PEEP(peep[seat * 2]);
+            auto firstGuest = GetEntity<Guest>(peep[seat * 2]);
             peep[seat * 2] = SPRITE_INDEX_NULL;
 
-            curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
-            curPeep->SubState = PEEP_RIDE_LEAVE_VEHICLE;
+            if (firstGuest != nullptr)
+            {
+                firstGuest->SetState(PEEP_STATE_LEAVING_RIDE);
+                firstGuest->SubState = PEEP_RIDE_LEAVE_VEHICLE;
+            }
 
-            curPeep = GET_PEEP(peep[seat * 2 + 1]);
+            auto secondGuest = GetEntity<Guest>(peep[seat * 2 + 1]);
             peep[seat * 2 + 1] = SPRITE_INDEX_NULL;
 
-            curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
-            curPeep->SubState = PEEP_RIDE_LEAVE_VEHICLE;
+            if (secondGuest != nullptr)
+            {
+                secondGuest->SetState(PEEP_STATE_LEAVING_RIDE);
+                secondGuest->SubState = PEEP_RIDE_LEAVE_VEHICLE;
+            }
         }
     }
     else
@@ -4096,9 +4102,12 @@ void Vehicle::UpdateUnloadingPassengers()
             train->next_free_seat = 0;
             for (uint8_t peepIndex = 0; peepIndex < train->num_peeps; peepIndex++)
             {
-                Peep* curPeep = GET_PEEP(train->peep[peepIndex]);
-                curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
-                curPeep->SubState = PEEP_RIDE_LEAVE_VEHICLE;
+                Peep* curPeep = GetEntity<Guest>(train->peep[peepIndex]);
+                if (curPeep != nullptr)
+                {
+                    curPeep->SetState(PEEP_STATE_LEAVING_RIDE);
+                    curPeep->SubState = PEEP_RIDE_LEAVE_VEHICLE;
+                }
             }
         }
     }
@@ -5211,7 +5220,10 @@ void Vehicle::KillPassengers(Ride* curRide)
 
     for (auto i = 0; i < num_peeps; i++)
     {
-        Peep* curPeep = GET_PEEP(peep[i]);
+        auto* curPeep = GetEntity<Guest>(peep[i]);
+        if (curPeep == nullptr)
+            continue;
+
         if (!curPeep->OutsideOfPark)
         {
             decrement_guests_in_park();
@@ -8807,16 +8819,16 @@ loc_6DC743:
                 {
                     if (trackPos.z == 2)
                     {
-                        Peep* curPeep = GET_PEEP(peep[0]);
-                        if (curPeep->Id & 7)
+                        auto* curPeep = GetEntity<Guest>(peep[0]);
+                        if (curPeep != nullptr && curPeep->Id & 7)
                         {
                             trackPos.z = 7;
                         }
                     }
                     if (trackPos.z == 6)
                     {
-                        Peep* curPeep = GET_PEEP(peep[0]);
-                        if (curPeep->Id & 7)
+                        auto* curPeep = GetEntity<Guest>(peep[0]);
+                        if (curPeep != nullptr && curPeep->Id & 7)
                         {
                             trackPos.z = 8;
                         }

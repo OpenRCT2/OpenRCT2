@@ -469,12 +469,14 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
 
-                if (int_valid[0] && int_valid[1] && ((GET_PEEP(int_val[0])) != nullptr))
+                if (int_valid[0] && int_valid[1])
                 {
-                    Peep* peep = GET_PEEP(int_val[0]);
-
-                    peep->Energy = int_val[1];
-                    peep->EnergyTarget = int_val[1];
+                    Peep* peep = GetEntity<Peep>(int_val[0]);
+                    if (peep != nullptr)
+                    {
+                        peep->Energy = int_val[1];
+                        peep->EnergyTarget = int_val[1];
+                    }
                 }
             }
             else if (argv[1] == "costume")
@@ -483,16 +485,18 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                 bool int_valid[2] = { false };
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
-                Peep* peep = nullptr;
                 if (!int_valid[0])
                 {
                     console.WriteLineError("Invalid staff ID");
                     return 1;
                 }
-                peep = GET_PEEP(int_val[0]);
-                bool is_entertainer = peep != nullptr && peep->AssignedPeepType == PeepType::Staff
-                    && peep->StaffType == STAFF_TYPE_ENTERTAINER;
-                if (!is_entertainer)
+                auto staff = GetEntity<Staff>(int_val[0]);
+                if (staff == nullptr)
+                {
+                    console.WriteLineError("Invalid staff ID");
+                    return 1;
+                }
+                if (staff->StaffType != STAFF_TYPE_ENTERTAINER)
                 {
                     console.WriteLineError("Specified staff is not entertainer");
                     return 1;

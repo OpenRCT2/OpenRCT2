@@ -479,10 +479,13 @@ void window_staff_list_scrollmousedown(rct_window* w, int32_t scrollIndex, const
             }
             else
             {
-                auto peep = GET_PEEP(spriteIndex);
-                auto intent = Intent(WC_PEEP);
-                intent.putExtra(INTENT_EXTRA_PEEP, peep);
-                context_open_intent(&intent);
+                auto peep = GetEntity<Staff>(spriteIndex);
+                if (peep != nullptr)
+                {
+                    auto intent = Intent(WC_PEEP);
+                    intent.putExtra(INTENT_EXTRA_PEEP, peep);
+                    context_open_intent(&intent);
+                }
             }
             break;
         }
@@ -695,7 +698,11 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
 
         if (y + 11 >= dpi->y)
         {
-            auto peep = GET_PEEP(spriteIndex);
+            auto peep = GetEntity<Staff>(spriteIndex);
+            if (peep == nullptr)
+            {
+                continue;
+            }
             int32_t format = (_quick_fire_mode ? STR_RED_STRINGID : STR_BLACK_STRING);
 
             if (i == _windowStaffListHighlightedIndex)

@@ -2219,11 +2219,15 @@ static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
     if (peep->GuestNextInQueue == SPRITE_INDEX_NULL)
         return false;
 
-    Peep* peep_next = GET_PEEP(peep->GuestNextInQueue);
+    auto* guestNext = GetEntity<Guest>(peep->GuestNextInQueue);
+    if (guestNext == nullptr)
+    {
+        return false;
+    }
 
-    int16_t x_diff = abs(peep_next->x - peep->x);
-    int16_t y_diff = abs(peep_next->y - peep->y);
-    int16_t z_diff = abs(peep_next->z - peep->z);
+    int16_t x_diff = abs(guestNext->x - peep->x);
+    int16_t y_diff = abs(guestNext->y - peep->y);
+    int16_t z_diff = abs(guestNext->z - peep->z);
 
     if (z_diff > 10)
         return false;
@@ -2240,29 +2244,29 @@ static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
     {
         if (x_diff > 13)
         {
-            if ((peep->x & 0xFFE0) != (peep_next->x & 0xFFE0) || (peep->y & 0xFFE0) != (peep_next->y & 0xFFE0))
+            if ((peep->x & 0xFFE0) != (guestNext->x & 0xFFE0) || (peep->y & 0xFFE0) != (guestNext->y & 0xFFE0))
                 return false;
         }
 
-        if (peep->sprite_direction != peep_next->sprite_direction)
+        if (peep->sprite_direction != guestNext->sprite_direction)
             return false;
 
-        switch (peep_next->sprite_direction / 8)
+        switch (guestNext->sprite_direction / 8)
         {
             case 0:
-                if (peep->x >= peep_next->x)
+                if (peep->x >= guestNext->x)
                     return false;
                 break;
             case 1:
-                if (peep->y <= peep_next->y)
+                if (peep->y <= guestNext->y)
                     return false;
                 break;
             case 2:
-                if (peep->x <= peep_next->x)
+                if (peep->x <= guestNext->x)
                     return false;
                 break;
             case 3:
-                if (peep->y >= peep_next->y)
+                if (peep->y >= guestNext->y)
                     return false;
                 break;
         }
@@ -3202,8 +3206,12 @@ rct_string_id get_real_name_string_id_from_id(uint32_t id)
 
 int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_b)
 {
-    Peep const* peep_a = GET_PEEP(sprite_index_a);
-    Peep const* peep_b = GET_PEEP(sprite_index_b);
+    Peep const* peep_a = GetEntity<Peep>(sprite_index_a);
+    Peep const* peep_b = GetEntity<Peep>(sprite_index_b);
+    if (peep_a == nullptr || peep_b == nullptr)
+    {
+        return 0;
+    }
 
     // Compare types
     if (peep_a->AssignedPeepType != peep_b->AssignedPeepType)
@@ -3383,13 +3391,18 @@ void Peep::RemoveFromQueue()
     auto spriteId = station.LastPeepInQueue;
     while (spriteId != SPRITE_INDEX_NULL)
     {
-        Peep* other_peep = GET_PEEP(spriteId);
-        if (sprite_index == other_peep->GuestNextInQueue)
+        auto* otherGuest = GetEntity<Guest>(spriteId);
+        if (otherGuest == nullptr)
         {
-            other_peep->GuestNextInQueue = GuestNextInQueue;
+            log_error("Invalid Guest Queue list!");
             return;
         }
-        spriteId = other_peep->GuestNextInQueue;
+        if (sprite_index == otherGuest->GuestNextInQueue)
+        {
+            otherGuest->GuestNextInQueue = GuestNextInQueue;
+            return;
+        }
+        spriteId = otherGuest->GuestNextInQueue;
     }
 }
 

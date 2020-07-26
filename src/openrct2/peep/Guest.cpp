@@ -2025,8 +2025,8 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                 // Check if there's room in the queue for the peep to enter.
                 if (ride->stations[entranceNum].LastPeepInQueue != SPRITE_INDEX_NULL)
                 {
-                    Peep* lastPeepInQueue = GET_PEEP(ride->stations[entranceNum].LastPeepInQueue);
-                    if (abs(lastPeepInQueue->z - z) <= 6)
+                    Peep* lastPeepInQueue = GetEntity<Guest>(ride->stations[entranceNum].LastPeepInQueue);
+                    if (lastPeepInQueue != nullptr && (abs(lastPeepInQueue->z - z) <= 6))
                     {
                         int32_t dx = abs(lastPeepInQueue->x - x);
                         int32_t dy = abs(lastPeepInQueue->y - y);
@@ -4081,22 +4081,21 @@ void Guest::UpdateRideEnterVehicle()
 
             if (vehicle->IsUsedInPairs())
             {
-                auto* seatedPeep = GET_PEEP(vehicle->peep[CurrentSeat ^ 1]);
-                if (seatedPeep != nullptr)
+                auto* seatedGuest = GetEntity<Guest>(vehicle->peep[CurrentSeat ^ 1]);
+                if (seatedGuest != nullptr)
                 {
-                    auto* seatedPeepAsGuest = seatedPeep->AsGuest();
-                    if (seatedPeepAsGuest == nullptr || seatedPeepAsGuest->SubState != PEEP_RIDE_ENTER_VEHICLE)
+                    if (seatedGuest->SubState != PEEP_RIDE_ENTER_VEHICLE)
                         return;
 
                     vehicle->num_peeps++;
                     ride->cur_num_customers++;
 
-                    vehicle->mass += seatedPeepAsGuest->Mass;
-                    seatedPeepAsGuest->MoveTo({ LOCATION_NULL, 0, 0 });
-                    seatedPeepAsGuest->SetState(PEEP_STATE_ON_RIDE);
-                    seatedPeepAsGuest->GuestTimeOnRide = 0;
-                    seatedPeepAsGuest->SubState = PEEP_RIDE_ON_RIDE;
-                    seatedPeepAsGuest->OnEnterRide(CurrentRide);
+                    vehicle->mass += seatedGuest->Mass;
+                    seatedGuest->MoveTo({ LOCATION_NULL, 0, 0 });
+                    seatedGuest->SetState(PEEP_STATE_ON_RIDE);
+                    seatedGuest->GuestTimeOnRide = 0;
+                    seatedGuest->SubState = PEEP_RIDE_ON_RIDE;
+                    seatedGuest->OnEnterRide(CurrentRide);
                 }
             }
 
@@ -5569,10 +5568,13 @@ void Guest::UpdateQueuing()
             // first check if the next in queue is actually nearby
             // if they are not then it's safe to assume that this is
             // the front of the queue.
-            Peep* next_peep = GET_PEEP(GuestNextInQueue);
-            if (abs(next_peep->x - x) < 32 && abs(next_peep->y - y) < 32)
+            Peep* nextGuest = GetEntity<Guest>(GuestNextInQueue);
+            if (nextGuest != nullptr)
             {
-                is_front = false;
+                if (abs(nextGuest->x - x) < 32 && abs(nextGuest->y - y) < 32)
+                {
+                    is_front = false;
+                }
             }
         }
 

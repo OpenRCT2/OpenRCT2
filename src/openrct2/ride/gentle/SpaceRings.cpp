@@ -71,10 +71,13 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
 
         if (vehicle != nullptr && vehicle->num_peeps > 0)
         {
-            Peep* rider = GET_PEEP(vehicle->peep[0]);
-            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->TshirtColour, rider->TrousersColour);
-            imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
-            sub_98199C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
+            auto* rider = GetEntity<Guest>(vehicle->peep[0]);
+            if (rider != nullptr)
+            {
+                imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->TshirtColour, rider->TrousersColour);
+                imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
+                sub_98199C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
+            }
         }
     }
 

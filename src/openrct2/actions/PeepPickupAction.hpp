@@ -65,7 +65,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PERSON_HERE);
         }
 
-        Peep* const peep = GET_PEEP(_spriteId);
+        auto* const peep = TryGetEntity<Peep>(_spriteId);
         if (!peep || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP)
         {
             log_error("Failed to pick up peep for sprite %d", _spriteId);
@@ -124,7 +124,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Peep* const peep = GET_PEEP(_spriteId);
+        Peep* const peep = TryGetEntity<Peep>(_spriteId);
         if (!peep || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP)
         {
             log_error("Failed to pick up peep for sprite %d", _spriteId);

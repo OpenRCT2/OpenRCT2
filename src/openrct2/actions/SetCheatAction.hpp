@@ -664,7 +664,7 @@ private:
                         {
                             offset++;
                         }
-                        auto peep = GET_PEEP(vehicle->peep[i + offset]);
+                        auto peep = TryGetEntity<Guest>(vehicle->peep[i + offset]);
                         if (peep != nullptr)
                         {
                             vehicle->mass -= peep->Mass;

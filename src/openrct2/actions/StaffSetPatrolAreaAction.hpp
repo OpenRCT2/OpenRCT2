@@ -55,8 +55,8 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        auto peep = GET_PEEP(_spriteId);
-        if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->AssignedPeepType != PeepType::Staff)
+        auto staff = TryGetEntity<Staff>(_spriteId);
+        if (staff == nullptr)
         {
             log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -67,16 +67,16 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        auto peep = GET_PEEP(_spriteId);
-        if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->AssignedPeepType != PeepType::Staff)
+        auto staff = TryGetEntity<Staff>(_spriteId);
+        if (staff == nullptr)
         {
             log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        int32_t patrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
+        int32_t patrolOffset = staff->StaffId * STAFF_PATROL_AREA_SIZE;
 
-        staff_toggle_patrol_area(peep->StaffId, _loc);
+        staff_toggle_patrol_area(staff->StaffId, _loc);
 
         bool isPatrolling = false;
         for (int32_t i = 0; i < 128; i++)
@@ -88,10 +88,10 @@ public:
             }
         }
 
-        gStaffModes[peep->StaffId] &= ~(1 << 1);
+        gStaffModes[staff->StaffId] &= ~(1 << 1);
         if (isPatrolling)
         {
-            gStaffModes[peep->StaffId] |= (1 << 1);
+            gStaffModes[staff->StaffId] |= (1 << 1);
         }
 
         for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)
