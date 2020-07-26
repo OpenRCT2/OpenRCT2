@@ -83,7 +83,7 @@ void viewport_init_all()
 
     // ?
     input_reset_flags();
-    input_set_state(INPUT_STATE_RESET);
+    input_set_state(INPUT_STATE::INPUT_STATE_RESET);
     gPressedWidget.window_classification = 255;
     gPickupPeepImage = UINT32_MAX;
     reset_tooltip_not_shown();

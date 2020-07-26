@@ -840,7 +840,8 @@ bool widget_is_pressed(rct_window* w, rct_widgetindex widgetIndex)
     {
         return true;
     }
-    if (input_get_state() == INPUT_STATE_WIDGET_PRESSED || input_get_state() == INPUT_STATE_DROPDOWN_ACTIVE)
+    if (input_get_state() == INPUT_STATE::INPUT_STATE_WIDGET_PRESSED
+        || input_get_state() == INPUT_STATE::INPUT_STATE_DROPDOWN_ACTIVE)
     {
         if (!(input_test_flag(INPUT_FLAG_WIDGET_PRESSED)))
             return false;

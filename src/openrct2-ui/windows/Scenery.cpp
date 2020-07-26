@@ -766,7 +766,7 @@ static void window_scenery_update(rct_window* w)
                 w->scenery.hover_counter++;
                 if (w->scenery.hover_counter < 8)
                 {
-                    if (input_get_state() != INPUT_STATE_SCROLL_LEFT)
+                    if (input_get_state() != INPUT_STATE::INPUT_STATE_SCROLL_LEFT)
                     {
                         w->min_width = WINDOW_SCENERY_WIDTH;
                         w->max_width = WINDOW_SCENERY_WIDTH;
@@ -792,7 +792,7 @@ static void window_scenery_update(rct_window* w)
     else
     {
         w->scenery.hover_counter = 0;
-        if (input_get_state() != INPUT_STATE_SCROLL_LEFT)
+        if (input_get_state() != INPUT_STATE::INPUT_STATE_SCROLL_LEFT)
         {
             w->min_width = WINDOW_SCENERY_WIDTH;
             w->max_width = WINDOW_SCENERY_WIDTH;
