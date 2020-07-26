@@ -1546,7 +1546,8 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         return false;
     }
 
-    if ((shopItem != SHOP_ITEM_UMBRELLA && !climate_is_raining()) && (shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
+    if ((shopItem != SHOP_ITEM_UMBRELLA && !climate_is_raining()) && (shopItem != SHOP_ITEM_MAP)
+        && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
     {
         if (((scenario_rand() & 0x7F) + 0x73) > Happiness)
             return false;
