@@ -76,7 +76,7 @@ rct_window* window_title_options_open()
 
 static void window_title_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (gIntroState != INTRO_STATE_NONE)
+    if (gIntroState != INTRO_STATE::INTRO_STATE_NONE)
         return;
 
     switch (widgetIndex)

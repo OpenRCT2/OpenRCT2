@@ -726,7 +726,7 @@ namespace OpenRCT2
          */
         void Launch()
         {
-            gIntroState = INTRO_STATE_NONE;
+            gIntroState = INTRO_STATE::INTRO_STATE_NONE;
             if (gOpenRCT2Headless)
             {
                 // NONE or OPEN are the only allowed actions for headless mode
@@ -746,7 +746,7 @@ namespace OpenRCT2
             switch (gOpenRCT2StartupAction)
             {
                 case STARTUP_ACTION_INTRO:
-                    gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
+                    gIntroState = INTRO_STATE::INTRO_STATE_PUBLISHER_BEGIN;
                     title_load();
                     break;
                 case STARTUP_ACTION_TITLE:
@@ -1013,7 +1013,7 @@ namespace OpenRCT2
 
             date_update_real_time_of_day();
 
-            if (gIntroState != INTRO_STATE_NONE)
+            if (gIntroState != INTRO_STATE::INTRO_STATE_NONE)
             {
                 intro_update();
             }

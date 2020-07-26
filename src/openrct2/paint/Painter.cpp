@@ -37,7 +37,7 @@ Painter::Painter(const std::shared_ptr<IUiContext>& uiContext)
 void Painter::Paint(IDrawingEngine& de)
 {
     auto dpi = de.GetDrawingPixelInfo();
-    if (gIntroState != INTRO_STATE_NONE)
+    if (gIntroState != INTRO_STATE::INTRO_STATE_NONE)
     {
         intro_draw(dpi);
     }

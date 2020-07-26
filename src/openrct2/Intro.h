@@ -14,7 +14,7 @@
 
 struct rct_drawpixelinfo;
 
-enum INTRO_STATE
+enum class INTRO_STATE : uint8_t
 {
     INTRO_STATE_NONE,
     INTRO_STATE_PUBLISHER_BEGIN,
@@ -30,7 +30,7 @@ enum INTRO_STATE
     INTRO_STATE_FINISH = 255,
 };
 
-extern uint8_t gIntroState;
+extern INTRO_STATE gIntroState;
 
 void intro_update();
 void intro_draw(rct_drawpixelinfo* dpi);

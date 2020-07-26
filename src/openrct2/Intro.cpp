@@ -22,7 +22,7 @@
 constexpr int32_t PALETTE_G1_IDX_DEVELOPER = 23217;
 constexpr int32_t PALETTE_G1_IDX_LOGO = 23224;
 
-uint8_t gIntroState;
+INTRO_STATE gIntroState;
 
 // Used mainly for timing but also for Y coordinate and fading.
 static int32_t _introStateCounter;
@@ -43,12 +43,12 @@ void intro_update()
 
     switch (gIntroState)
     {
-        case INTRO_STATE_DISCLAIMER_1:
-        case INTRO_STATE_DISCLAIMER_2:
+        case INTRO_STATE::INTRO_STATE_DISCLAIMER_1:
+        case INTRO_STATE::INTRO_STATE_DISCLAIMER_2:
             // Originally used for the disclaimer text
-            gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
+            gIntroState = INTRO_STATE::INTRO_STATE_PUBLISHER_BEGIN;
             [[fallthrough]];
-        case INTRO_STATE_PUBLISHER_BEGIN:
+        case INTRO_STATE::INTRO_STATE_PUBLISHER_BEGIN:
             load_palette();
 
             // Set the Y for the Infogrames logo
@@ -57,9 +57,9 @@ void intro_update()
             // Play the chain lift sound
             _soundChannel = Mixer_Play_Effect(SoundId::LiftBM, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.5f, 1, true);
             _chainLiftFinished = false;
-            gIntroState++;
+            gIntroState = INTRO_STATE::INTRO_STATE_PUBLISHER_SCROLL;
             break;
-        case INTRO_STATE_PUBLISHER_SCROLL:
+        case INTRO_STATE::INTRO_STATE_PUBLISHER_SCROLL:
             // Move the Infogrames logo down
             _introStateCounter += 5;
 
@@ -67,17 +67,17 @@ void intro_update()
             if (_introStateCounter > context_get_height() - 120)
             {
                 _introStateCounter = -116;
-                gIntroState++;
+                gIntroState = INTRO_STATE::INTRO_STATE_DEVELOPER_BEGIN;
             }
 
             break;
-        case INTRO_STATE_DEVELOPER_BEGIN:
+        case INTRO_STATE::INTRO_STATE_DEVELOPER_BEGIN:
             // Set the Y for the Chris Sawyer logo
             _introStateCounter = -116;
 
-            gIntroState++;
+            gIntroState = INTRO_STATE::INTRO_STATE_DEVELOPER_SCROLL;
             break;
-        case INTRO_STATE_DEVELOPER_SCROLL:
+        case INTRO_STATE::INTRO_STATE_DEVELOPER_SCROLL:
             _introStateCounter += 5;
 
             // Check if logo is almost scrolled to the bottom
@@ -110,20 +110,20 @@ void intro_update()
                 // Play long peep scream sound
                 _soundChannel = Mixer_Play_Effect(SoundId::Scream1, MIXER_LOOP_NONE, MIXER_VOLUME_MAX, 0.5f, 1, false);
 
-                gIntroState++;
+                gIntroState = INTRO_STATE::INTRO_STATE_LOGO_FADE_IN;
                 _introStateCounter = 0;
             }
             break;
-        case INTRO_STATE_LOGO_FADE_IN:
+        case INTRO_STATE::INTRO_STATE_LOGO_FADE_IN:
             // Fade in, add 4 / 256 to fading
             _introStateCounter += 0x400;
             if (_introStateCounter > 0xFF00)
             {
-                gIntroState++;
+                gIntroState = INTRO_STATE::INTRO_STATE_LOGO_WAIT;
                 _introStateCounter = 0;
             }
             break;
-        case INTRO_STATE_LOGO_WAIT:
+        case INTRO_STATE::INTRO_STATE_LOGO_WAIT:
             // Wait 80 game ticks
             _introStateCounter++;
             if (_introStateCounter >= 80)
@@ -131,18 +131,18 @@ void intro_update()
                 // Set fading to 256
                 _introStateCounter = 0xFF00;
 
-                gIntroState++;
+                gIntroState = INTRO_STATE::INTRO_STATE_LOGO_FADE_OUT;
             }
             break;
-        case INTRO_STATE_LOGO_FADE_OUT:
+        case INTRO_STATE::INTRO_STATE_LOGO_FADE_OUT:
             // Fade out, subtract 4 / 256 from fading
             _introStateCounter -= 0x400;
             if (_introStateCounter < 0)
             {
-                gIntroState = INTRO_STATE_CLEAR;
+                gIntroState = INTRO_STATE::INTRO_STATE_CLEAR;
             }
             break;
-        case INTRO_STATE_CLEAR:
+        case INTRO_STATE::INTRO_STATE_CLEAR:
             // Stop any playing sound
             if (_soundChannel != nullptr)
             {
@@ -151,13 +151,15 @@ void intro_update()
             }
 
             // Move to next part
-            gIntroState++;
+            gIntroState = INTRO_STATE::INTRO_STATE_FINISH;
             _introStateCounter = 0;
             break;
-        case INTRO_STATE_FINISH:
-            gIntroState = INTRO_STATE_NONE;
+        case INTRO_STATE::INTRO_STATE_FINISH:
+            gIntroState = INTRO_STATE::INTRO_STATE_NONE;
             load_palette();
             audio_start_title_music();
+            break;
+        default:
             break;
     }
 }
@@ -168,13 +170,13 @@ void intro_draw(rct_drawpixelinfo* dpi)
 
     switch (gIntroState)
     {
-        case INTRO_STATE_DISCLAIMER_1:
-        case INTRO_STATE_DISCLAIMER_2:
+        case INTRO_STATE::INTRO_STATE_DISCLAIMER_1:
+        case INTRO_STATE::INTRO_STATE_DISCLAIMER_2:
             break;
-        case INTRO_STATE_PUBLISHER_BEGIN:
+        case INTRO_STATE::INTRO_STATE_PUBLISHER_BEGIN:
             gfx_clear(dpi, BACKROUND_COLOUR_DARK);
             break;
-        case INTRO_STATE_PUBLISHER_SCROLL:
+        case INTRO_STATE::INTRO_STATE_PUBLISHER_SCROLL:
             gfx_clear(dpi, BACKROUND_COLOUR_DARK);
 
             // Draw a white rectangle for the logo background (gives a bit of white margin)
@@ -190,18 +192,18 @@ void intro_draw(rct_drawpixelinfo* dpi)
             gfx_draw_sprite(dpi, SPR_INTRO_INFOGRAMES_01, { (screenWidth / 2) - 320 + 69, _introStateCounter + 319 }, 0);
             gfx_draw_sprite(dpi, SPR_INTRO_INFOGRAMES_11, { (screenWidth / 2) - 320 + 319, _introStateCounter + 319 }, 0);
             break;
-        case INTRO_STATE_DEVELOPER_BEGIN:
+        case INTRO_STATE::INTRO_STATE_DEVELOPER_BEGIN:
             gfx_clear(dpi, BACKROUND_COLOUR_DARK);
             gfx_transpose_palette(PALETTE_G1_IDX_DEVELOPER, 255);
             break;
-        case INTRO_STATE_DEVELOPER_SCROLL:
+        case INTRO_STATE::INTRO_STATE_DEVELOPER_SCROLL:
             gfx_clear(dpi, BACKROUND_COLOUR_DARK);
 
             // Draw Chris Sawyer logo
             gfx_draw_sprite(dpi, SPR_INTRO_CHRIS_SAWYER_00, { (screenWidth / 2) - 320 + 70, _introStateCounter }, 0);
             gfx_draw_sprite(dpi, SPR_INTRO_CHRIS_SAWYER_10, { (screenWidth / 2) - 320 + 320, _introStateCounter }, 0);
             break;
-        case INTRO_STATE_LOGO_FADE_IN:
+        case INTRO_STATE::INTRO_STATE_LOGO_FADE_IN:
             if (_introStateCounter <= 0xFF00)
             {
                 gfx_transpose_palette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
@@ -212,10 +214,10 @@ void intro_draw(rct_drawpixelinfo* dpi)
             }
             screen_intro_draw_logo(dpi);
             break;
-        case INTRO_STATE_LOGO_WAIT:
+        case INTRO_STATE::INTRO_STATE_LOGO_WAIT:
             screen_intro_draw_logo(dpi);
             break;
-        case INTRO_STATE_LOGO_FADE_OUT:
+        case INTRO_STATE::INTRO_STATE_LOGO_FADE_OUT:
             if (_introStateCounter >= 0)
             {
                 gfx_transpose_palette(PALETTE_G1_IDX_LOGO, (_introStateCounter >> 8) & 0xFF);
@@ -226,8 +228,10 @@ void intro_draw(rct_drawpixelinfo* dpi)
             }
             screen_intro_draw_logo(dpi);
             break;
-        case INTRO_STATE_CLEAR:
+        case INTRO_STATE::INTRO_STATE_CLEAR:
             gfx_clear(dpi, BACKROUND_COLOUR_DARK);
+            break;
+        default:
             break;
     }
 }
@@ -261,13 +265,13 @@ static void screen_intro_skip_part()
 {
     switch (gIntroState)
     {
-        case INTRO_STATE_NONE:
+        case INTRO_STATE::INTRO_STATE_NONE:
             break;
-        case INTRO_STATE_DISCLAIMER_2:
-            gIntroState = INTRO_STATE_PUBLISHER_BEGIN;
+        case INTRO_STATE::INTRO_STATE_DISCLAIMER_2:
+            gIntroState = INTRO_STATE::INTRO_STATE_PUBLISHER_BEGIN;
             break;
         default:
-            gIntroState = INTRO_STATE_CLEAR;
+            gIntroState = INTRO_STATE::INTRO_STATE_CLEAR;
             break;
     }
 }
