@@ -28,7 +28,7 @@ public:
     static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
 
     uint8_t* GetData();
-    int32_t GetCommand() const;
+    NetworkCommand GetCommand() const;
 
     void Clear();
     bool CommandRequiresAuth();
@@ -43,7 +43,7 @@ public:
     {
         if (BytesRead + sizeof(value) > Size)
         {
-            value = 0;
+            value = T{};
         }
         else
         {

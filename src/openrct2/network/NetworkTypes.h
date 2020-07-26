@@ -50,7 +50,6 @@ enum NETWORK_AUTH
 
 enum class NetworkCommand : uint32_t
 {
-    Invalid = static_cast<uint32_t>(-1),
     Auth,
     Map,
     Chat,
@@ -73,6 +72,7 @@ enum class NetworkCommand : uint32_t
     Scripts,
     Heartbeat,
     Max,
+    Invalid = static_cast<uint32_t>(-1),
 };
 
 static_assert(NetworkCommand::GameInfo == static_cast<NetworkCommand>(9), "Master server expects this to be 9");

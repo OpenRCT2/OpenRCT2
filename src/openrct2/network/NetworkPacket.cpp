@@ -30,16 +30,13 @@ uint8_t* NetworkPacket::GetData()
     return &(*Data)[0];
 }
 
-int32_t NetworkPacket::GetCommand() const
+NetworkCommand NetworkPacket::GetCommand() const
 {
-    if (Data->size() >= sizeof(uint32_t))
-    {
-        return ByteSwapBE(*reinterpret_cast<uint32_t*>(&(*Data)[0]));
-    }
-    else
-    {
-        return NETWORK_COMMAND_INVALID;
-    }
+    if (Data->size() < sizeof(uint32_t))
+        return NetworkCommand::Invalid;
+
+    const uint32_t commandId = ByteSwapBE(*reinterpret_cast<uint32_t*>(&(*Data)[0]));
+    return static_cast<NetworkCommand>(commandId);
 }
 
 void NetworkPacket::Clear()
@@ -53,13 +50,13 @@ bool NetworkPacket::CommandRequiresAuth()
 {
     switch (GetCommand())
     {
-        case NETWORK_COMMAND_PING:
-        case NETWORK_COMMAND_AUTH:
-        case NETWORK_COMMAND_TOKEN:
-        case NETWORK_COMMAND_GAMEINFO:
-        case NETWORK_COMMAND_OBJECTS_LIST:
-        case NETWORK_COMMAND_MAPREQUEST:
-        case NETWORK_COMMAND_HEARTBEAT:
+        case NetworkCommand::Ping:
+        case NetworkCommand::Auth:
+        case NetworkCommand::Token:
+        case NetworkCommand::GameInfo:
+        case NetworkCommand::ObjectsList:
+        case NetworkCommand::MapRequest:
+        case NetworkCommand::Heartbeat:
             return false;
         default:
             return true;
