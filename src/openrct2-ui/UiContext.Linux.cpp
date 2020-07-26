@@ -119,6 +119,12 @@ namespace OpenRCT2::Ui
             Execute(cmd);
         }
 
+        void OpenURL(const std::string& url) override
+        {
+            std::string cmd = String::Format("xdg-open %s", url.c_str());
+            Execute(cmd);
+        }
+
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             std::string result;

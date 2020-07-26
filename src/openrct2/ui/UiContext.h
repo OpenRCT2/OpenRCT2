@@ -113,6 +113,7 @@ namespace OpenRCT2
 
             virtual void ShowMessageBox(const std::string& message) abstract;
             virtual void OpenFolder(const std::string& path) abstract;
+            virtual void OpenURL(const std::string& url) abstract;
             virtual std::string ShowFileDialog(const FileDialogDesc& desc) abstract;
             virtual std::string ShowDirectoryDialog(const std::string& title) abstract;
 

@@ -68,6 +68,10 @@ namespace OpenRCT2::Ui
             }
         }
 
+        void OpenURL(const std::string& url) override
+        {
+        }
+
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             @autoreleasepool {

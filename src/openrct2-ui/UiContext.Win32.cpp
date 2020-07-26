@@ -97,6 +97,12 @@ namespace OpenRCT2::Ui
             ShellExecuteW(NULL, L"open", pathW.c_str(), NULL, NULL, SW_SHOWNORMAL);
         }
 
+        void OpenURL(const std::string& url) override
+        {
+            std::wstring urlW = String::ToWideChar(url);
+            ShellExecuteW(NULL, L"open", urlW.c_str(), NULL, NULL, SW_SHOWNORMAL);
+        }
+
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             std::wstring wcFilename = String::ToWideChar(desc.DefaultFilename);

@@ -609,6 +609,11 @@ public:
         _platformUiContext->OpenFolder(path);
     }
 
+    void OpenURL(const std::string& url) override
+    {
+        _platformUiContext->OpenURL(url);
+    }
+
     std::string ShowFileDialog(const FileDialogDesc& desc) override
     {
         return _platformUiContext->ShowFileDialog(_window, desc);
