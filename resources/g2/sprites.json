@@ -959,6 +959,12 @@
         "forceBmp": true
     },
     {
+        "path": "font/latin/j-small.png",
+        "x_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1436,6 +1442,12 @@
     {
         "path": "font/rouble-bold.png",
         "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/j-bold.png",
+        "x_offset": -1,
         "palette": "keep",
         "forceBmp": true
     },
@@ -1925,6 +1937,12 @@
     {
         "path": "font/rouble-tiny.png",
         "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/j-tiny.png",
+        "x_offset": 0,
         "palette": "keep",
         "forceBmp": true
     }
