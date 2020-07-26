@@ -10,6 +10,8 @@
 
 #include <fstream>
 
+#ifndef DISABLE_NETWORK
+
 class NetworkBase
 {
 public:
@@ -229,3 +231,5 @@ private: // Client Data
     bool _requireReconnect = false;
     bool _clientMapLoaded = false;
 };
+
+#endif // DISABLE_NETWORK
