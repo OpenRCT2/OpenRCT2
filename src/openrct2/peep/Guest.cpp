@@ -1546,114 +1546,107 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         return false;
     }
 
-    if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
-        goto loc_69B119;
-
-    if ((shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
+    if ((shopItem != SHOP_ITEM_UMBRELLA && !climate_is_raining()) && (shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
     {
         if (((scenario_rand() & 0x7F) + 0x73) > Happiness)
             return false;
         else if (GuestNumRides < 3)
             return false;
     }
-
-loc_69B119:
-    if (!hasVoucher)
+    else 
     {
-        if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (!hasVoucher)
         {
-            if (CashInPocket == 0)
+            if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
             {
-                InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
-                return false;
-            }
-            if (price > CashInPocket)
-            {
-                InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
-                return false;
-            }
-        }
-
-        if (gClimateCurrent.Temperature >= 21)
-            itemValue = ShopItems[shopItem].HotValue;
-        else if (gClimateCurrent.Temperature <= 11)
-            itemValue = ShopItems[shopItem].ColdValue;
-        else
-            itemValue = ShopItems[shopItem].BaseValue;
-
-        if (itemValue < price)
-        {
-            itemValue -= price;
-            if (shopItem == SHOP_ITEM_UMBRELLA)
-            {
-                if (climate_is_raining())
-                    goto loc_69B221;
-            }
-
-            itemValue = -itemValue;
-            if (Happiness >= 128)
-                itemValue /= 2;
-
-            if (Happiness >= 180)
-                itemValue /= 2;
-
-            if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
-            {
-                // "I'm not paying that much for x"
-                PeepThoughtType thought_type = static_cast<PeepThoughtType>(
-                    (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32))
-                                    : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem)));
-                InsertNewThought(thought_type, ride->id);
-                return false;
-            }
-        }
-        else
-        {
-            itemValue -= price;
-            itemValue = std::max(8, itemValue);
-
-            if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-            {
-                if (itemValue >= static_cast<money32>(scenario_rand() & 0x07))
+                if (CashInPocket == 0)
                 {
-                    // "This x is a really good value"
-                    PeepThoughtType thought_item = static_cast<PeepThoughtType>(
-                        (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32))
-                                        : (PEEP_THOUGHT_TYPE_BALLOON + shopItem)));
-                    InsertNewThought(thought_item, ride->id);
+                    InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+                    return false;
+                }
+                if (price > CashInPocket)
+                {
+                    InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
+                    return false;
                 }
             }
 
-            int32_t happinessGrowth = itemValue * 4;
-            HappinessTarget = std::min((HappinessTarget + happinessGrowth), PEEP_MAX_HAPPINESS);
-            Happiness = std::min((Happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
-        }
-    }
+            if (gClimateCurrent.Temperature >= 21)
+                itemValue = ShopItems[shopItem].HotValue;
+            else if (gClimateCurrent.Temperature <= 11)
+                itemValue = ShopItems[shopItem].ColdValue;
+            else
+                itemValue = ShopItems[shopItem].BaseValue;
 
-loc_69B221:
-    if (!hasVoucher)
-    {
-        if (gClimateCurrent.Temperature >= 21)
-            itemValue = ShopItems[shopItem].HotValue;
-        else if (gClimateCurrent.Temperature <= 11)
-            itemValue = ShopItems[shopItem].ColdValue;
-        else
-            itemValue = ShopItems[shopItem].BaseValue;
-
-        itemValue -= price;
-        uint8_t satisfaction = 0;
-        if (itemValue > -8)
-        {
-            satisfaction++;
-            if (itemValue > -3)
+            if (itemValue < price)
             {
-                satisfaction++;
-                if (itemValue > 3)
-                    satisfaction++;
+                itemValue -= price;
+                if (shopItem == SHOP_ITEM_UMBRELLA)
+                {
+                    if (climate_is_raining())
+                    {
+                        if (gClimateCurrent.Temperature >= 21)
+                            itemValue = ShopItems[shopItem].HotValue;
+                        else if (gClimateCurrent.Temperature <= 11)
+                            itemValue = ShopItems[shopItem].ColdValue;
+                        else
+                            itemValue = ShopItems[shopItem].BaseValue;
+
+                        itemValue -= price;
+                        uint8_t satisfaction = 0;
+                        if (itemValue > -8)
+                        {
+                            satisfaction++;
+                            if (itemValue > -3)
+                            {
+                                satisfaction++;
+                                if (itemValue > 3)
+                                    satisfaction++;
+                            }
+                        }
+                        ride_update_satisfaction(ride, satisfaction);
+                    }
+                }
+
+                itemValue = -itemValue;
+                if (Happiness >= 128)
+                    itemValue /= 2;
+
+                if (Happiness >= 180)
+                    itemValue /= 2;
+
+                if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
+                {
+                    // "I'm not paying that much for x"
+                    PeepThoughtType thought_type = static_cast<PeepThoughtType>(
+                        (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32))
+                                        : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem)));
+                    InsertNewThought(thought_type, ride->id);
+                    return false;
+                }
+            }
+            else
+            {
+                itemValue -= price;
+                itemValue = std::max(8, itemValue);
+
+                if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+                {
+                    if (itemValue >= static_cast<money32>(scenario_rand() & 0x07))
+                    {
+                        // "This x is a really good value"
+                        PeepThoughtType thought_item = static_cast<PeepThoughtType>(
+                            (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32))
+                                            : (PEEP_THOUGHT_TYPE_BALLOON + shopItem)));
+                        InsertNewThought(thought_item, ride->id);
+                    }
+                }
+
+                int32_t happinessGrowth = itemValue * 4;
+                HappinessTarget = std::min((HappinessTarget + happinessGrowth), PEEP_MAX_HAPPINESS);
+                Happiness = std::min((Happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
             }
         }
-
-        ride_update_satisfaction(ride, satisfaction);
     }
 
     // The peep has now decided to buy the item (or, specifically, has not been
