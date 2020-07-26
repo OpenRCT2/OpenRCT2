@@ -1781,7 +1781,7 @@ static void window_ride_init_viewport(rct_window* w)
         rct_ride_entry* ride_entry = ride->GetRideEntry();
         if (ride_entry && ride_entry->tab_vehicle != 0)
         {
-            Vehicle* vehicle = GET_VEHICLE(focus.sprite.sprite_id);
+            Vehicle* vehicle = GetEntity<Vehicle>(focus.sprite.sprite_id);
             if (vehicle == nullptr)
             {
                 focus.sprite.sprite_id = SPRITE_INDEX_NULL;

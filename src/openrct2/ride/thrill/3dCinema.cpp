@@ -33,7 +33,7 @@ static void paint_3d_cinema_structure(
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        session->CurrentlyDrawnItem = GET_VEHICLE(ride->vehicles[0]);
+        session->CurrentlyDrawnItem = GetEntity<Vehicle>(ride->vehicles[0]);
     }
 
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];

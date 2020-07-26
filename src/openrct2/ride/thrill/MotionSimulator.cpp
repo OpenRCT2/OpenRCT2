@@ -49,7 +49,7 @@ static void paint_motionsimulator_vehicle(
         uint16_t spriteIndex = ride->vehicles[0];
         if (spriteIndex != SPRITE_INDEX_NULL)
         {
-            vehicle = GET_VEHICLE(spriteIndex);
+            vehicle = GetEntity<Vehicle>(spriteIndex);
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
             session->CurrentlyDrawnItem = vehicle;
         }

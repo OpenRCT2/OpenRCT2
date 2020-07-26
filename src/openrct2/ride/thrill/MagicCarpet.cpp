@@ -61,7 +61,7 @@ static Vehicle* get_first_vehicle(Ride* ride)
         uint16_t vehicleSpriteIndex = ride->vehicles[0];
         if (vehicleSpriteIndex != SPRITE_INDEX_NULL)
         {
-            return GET_VEHICLE(vehicleSpriteIndex);
+            return GetEntity<Vehicle>(vehicleSpriteIndex);
         }
     }
     return nullptr;
