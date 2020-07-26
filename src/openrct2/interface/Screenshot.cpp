@@ -444,7 +444,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
         return;
     }
 
-    gIntroState = INTRO_STATE_NONE;
+    gIntroState = IntroState::None;
     gScreenFlags = SCREEN_FLAGS_PLAYING;
 
     // Create Viewport and DPI for every rotation and zoom.
@@ -649,7 +649,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             throw std::runtime_error("Failed to load park.");
         }
 
-        gIntroState = INTRO_STATE_NONE;
+        gIntroState = IntroState::None;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
         rct_viewport viewport{};

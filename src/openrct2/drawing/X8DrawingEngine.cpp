@@ -188,7 +188,7 @@ void X8DrawingEngine::Invalidate(int32_t left, int32_t top, int32_t right, int32
 
 void X8DrawingEngine::BeginDraw()
 {
-    if (gIntroState == INTRO_STATE_NONE)
+    if (gIntroState == IntroState::None)
     {
 #ifdef __ENABLE_LIGHTFX__
         // HACK we need to re-configure the bits if light fx has been enabled / disabled

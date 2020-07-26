@@ -80,7 +80,7 @@ static std::vector<paint_session> extract_paint_session(const std::string parkFi
             return {};
         }
 
-        gIntroState = INTRO_STATE_NONE;
+        gIntroState = IntroState::None;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
         int32_t mapSize = gMapSize;

@@ -14,23 +14,23 @@
 
 struct rct_drawpixelinfo;
 
-enum INTRO_STATE
+enum class IntroState : uint8_t
 {
-    INTRO_STATE_NONE,
-    INTRO_STATE_PUBLISHER_BEGIN,
-    INTRO_STATE_PUBLISHER_SCROLL,
-    INTRO_STATE_DEVELOPER_BEGIN,
-    INTRO_STATE_DEVELOPER_SCROLL,
-    INTRO_STATE_LOGO_FADE_IN,
-    INTRO_STATE_LOGO_WAIT,
-    INTRO_STATE_LOGO_FADE_OUT,
-    INTRO_STATE_DISCLAIMER_1,
-    INTRO_STATE_DISCLAIMER_2,
-    INTRO_STATE_CLEAR = 254,
-    INTRO_STATE_FINISH = 255,
+    None,
+    PublisherBegin,
+    PublisherScroll,
+    DeveloperBegin,
+    DeveloperScroll,
+    LogoFadeIn,
+    LogoWait,
+    LogoFadeOut,
+    Disclaimer1,
+    Disclaimer2,
+    Clear = 254,
+    Finish = 255,
 };
 
-extern uint8_t gIntroState;
+extern IntroState gIntroState;
 
 void intro_update();
 void intro_draw(rct_drawpixelinfo* dpi);
