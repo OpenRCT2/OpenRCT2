@@ -152,7 +152,7 @@ static void window_news_update(rct_window* w)
         return;
 
     const auto& newsItem = gNewsItems.GetArchived()[j];
-    if (newsItem.Flags & NEWS_FLAG_HAS_BUTTON)
+    if (newsItem.HasButton())
         return;
     if (w->news.var_482 == 1)
     {
@@ -192,7 +192,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
     {
         if (mutableScreenCoords.y < itemHeight)
         {
-            if (newsItem.Flags & NEWS_FLAG_HAS_BUTTON || mutableScreenCoords.y < 14 || mutableScreenCoords.y >= 38
+            if (newsItem.HasButton() || mutableScreenCoords.y < 14 || mutableScreenCoords.y >= 38
                 || mutableScreenCoords.x < 328)
             {
                 buttonIndex = 0;
@@ -269,7 +269,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
         gfx_draw_string_left_wrapped(dpi, &text, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
 
         // Subject button
-        if ((newsItem.TypeHasSubject()) && !(newsItem.Flags & NEWS_FLAG_HAS_BUTTON))
+        if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))
         {
             auto screenCoords = ScreenCoordsXY{ 328, y + lineHeight + 4 };
 
@@ -345,7 +345,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
         }
 
         // Location button
-        if ((newsItem.TypeHasLocation()) && !(newsItem.Flags & NEWS_FLAG_HAS_BUTTON))
+        if ((newsItem.TypeHasLocation()) && !(newsItem.HasButton()))
         {
             auto screenCoords = ScreenCoordsXY{ 352, y + lineHeight + 4 };
 

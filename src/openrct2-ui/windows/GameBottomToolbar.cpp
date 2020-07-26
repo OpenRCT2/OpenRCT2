@@ -343,7 +343,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
         }
 
-        if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON)
+        if (newsItem->HasButton())
         {
             w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
@@ -598,7 +598,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
         case News::ItemType::PeepOnRide:
         case News::ItemType::Peep:
         {
-            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON)
+            if (newsItem->HasButton())
                 break;
 
             rct_drawpixelinfo cliped_dpi;
