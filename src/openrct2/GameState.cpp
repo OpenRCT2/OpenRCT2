@@ -165,7 +165,7 @@ void GameState::Update()
         UpdateLogic();
         if (gGameSpeed == 1)
         {
-            if (input_get_state() == INPUT_STATE::INPUT_STATE_RESET || input_get_state() == INPUT_STATE::INPUT_STATE_NORMAL)
+            if (input_get_state() == InputState::Reset || input_get_state() == InputState::Normal)
             {
                 if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING))
                 {

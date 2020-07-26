@@ -223,7 +223,7 @@ void window_dropdown_show_text_custom_width(
     _dropdownItemsChecked.reset();
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
-    input_set_state(INPUT_STATE::INPUT_STATE_DROPDOWN_ACTIVE);
+    input_set_state(InputState::DropdownActive);
 }
 
 /**
@@ -303,7 +303,7 @@ void window_dropdown_show_image(
     _dropdownItemsChecked.reset();
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
-    input_set_state(INPUT_STATE::INPUT_STATE_DROPDOWN_ACTIVE);
+    input_set_state(InputState::DropdownActive);
 }
 
 void window_dropdown_close()

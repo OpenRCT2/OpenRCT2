@@ -11,7 +11,7 @@
 
 #include "Context.h"
 
-INPUT_STATE _inputState;
+InputState _inputState;
 uint8_t _inputFlags;
 uint8_t gInputPlaceObjectModifier;
 
@@ -63,12 +63,12 @@ void input_reset_flags()
     _inputFlags = 0;
 }
 
-void input_set_state(INPUT_STATE state)
+void input_set_state(InputState state)
 {
     _inputState = state;
 }
 
-INPUT_STATE input_get_state()
+InputState input_get_state()
 {
     return _inputState;
 }

@@ -134,7 +134,7 @@ void input_handle_keyboard(bool isTitle)
         if (!isTitle)
         {
             // Handle mouse scrolling
-            if (input_get_state() == INPUT_STATE::INPUT_STATE_NORMAL && gConfigGeneral.edge_scrolling)
+            if (input_get_state() == InputState::Normal && gConfigGeneral.edge_scrolling)
             {
                 if (!(gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z)))
                 {
