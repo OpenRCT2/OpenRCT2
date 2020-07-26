@@ -198,16 +198,12 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
                 buttonIndex = 0;
                 break;
             }
-            else if (
-                mutableScreenCoords.x < 351
-                && news_type_properties[static_cast<uint8_t>(newsItem.Type)] & NEWS_TYPE_HAS_SUBJECT)
+            else if (mutableScreenCoords.x < 351 && newsItem.TypeHasSubject())
             {
                 buttonIndex = 1;
                 break;
             }
-            else if (
-                mutableScreenCoords.x < 376
-                && news_type_properties[static_cast<uint8_t>(newsItem.Type)] & NEWS_TYPE_HAS_LOCATION)
+            else if (mutableScreenCoords.x < 376 && newsItem.TypeHasLocation())
             {
                 buttonIndex = 2;
                 break;
@@ -273,8 +269,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
         gfx_draw_string_left_wrapped(dpi, &text, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
 
         // Subject button
-        if ((news_type_properties[static_cast<uint8_t>(newsItem.Type)] & NEWS_TYPE_HAS_SUBJECT)
-            && !(newsItem.Flags & NEWS_FLAG_HAS_BUTTON))
+        if ((newsItem.TypeHasSubject()) && !(newsItem.Flags & NEWS_FLAG_HAS_BUTTON))
         {
             auto screenCoords = ScreenCoordsXY{ 328, y + lineHeight + 4 };
 
@@ -350,8 +345,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
         }
 
         // Location button
-        if ((news_type_properties[static_cast<uint8_t>(newsItem.Type)] & NEWS_TYPE_HAS_LOCATION)
-            && !(newsItem.Flags & NEWS_FLAG_HAS_BUTTON))
+        if ((newsItem.TypeHasLocation()) && !(newsItem.Flags & NEWS_FLAG_HAS_BUTTON))
         {
             auto screenCoords = ScreenCoordsXY{ 352, y + lineHeight + 4 };
 

@@ -26,20 +26,6 @@
 
 NewsItemQueues gNewsItems;
 
-/** rct2: 0x0097BE7C */
-const uint8_t news_type_properties[] = {
-    0,                                              // News::ItemType::Null
-    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // News::ItemType::Ride
-    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // News::ItemType::PeepOnRide
-    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // News::ItemType::Peep
-    NEWS_TYPE_HAS_SUBJECT,                          // News::ItemType::Money
-    NEWS_TYPE_HAS_LOCATION,                         // News::ItemType::Blank
-    NEWS_TYPE_HAS_SUBJECT,                          // News::ItemType::Research
-    NEWS_TYPE_HAS_SUBJECT,                          // News::ItemType::Peeps
-    NEWS_TYPE_HAS_SUBJECT,                          // News::ItemType::Award
-    NEWS_TYPE_HAS_SUBJECT,                          // News::ItemType::Graph
-};
-
 NewsItem& NewsItemQueues::Current()
 {
     return Recent.front();

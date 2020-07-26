@@ -427,7 +427,7 @@ public:
         {
             const rct12_news_item* src = &_s6.news_items[i];
             NewsItem* dst = &gNewsItems[i];
-            if (src->Type < std::size(news_type_properties))
+            if (src->Type < News::ItemTypeCount)
             {
                 dst->Type = static_cast<News::ItemType>(src->Type);
                 dst->Flags = src->Flags;
