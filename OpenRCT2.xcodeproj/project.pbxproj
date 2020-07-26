@@ -93,6 +93,10 @@
 		9346F9DB208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		9346F9DC208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
 		9346F9DD208A191900C77D91 /* GuestPathfinding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9346F9D7208A191900C77D91 /* GuestPathfinding.cpp */; };
+		936F412824CE030F00E07BCF /* NetworkClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 936F412424CE030E00E07BCF /* NetworkClient.h */; };
+		936F412924CE030F00E07BCF /* NetworkBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936F412524CE030F00E07BCF /* NetworkBase.cpp */; };
+		936F412A24CE030F00E07BCF /* NetworkClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 936F412624CE030F00E07BCF /* NetworkClient.cpp */; };
+		936F412B24CE030F00E07BCF /* NetworkBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 936F412724CE030F00E07BCF /* NetworkBase.h */; };
 		939A359A20C12FC800630B3F /* Paint.Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 939A359720C12FC700630B3F /* Paint.Litter.cpp */; };
 		939A359B20C12FC800630B3F /* Paint.Misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 939A359820C12FC700630B3F /* Paint.Misc.cpp */; };
 		939A359C20C12FC800630B3F /* Paint.Sprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359920C12FC700630B3F /* Paint.Sprite.h */; };
@@ -482,7 +486,6 @@
 		F76C85FF1EC4E88300FA49E2 /* Rain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AB1EC4E7CC00FA49E2 /* Rain.cpp */; };
 		F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */; };
 		F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */; };
-		F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F81EC4E7CC00FA49E2 /* Network.cpp */; };
 		F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */; };
 		F76C864B1EC4E88300FA49E2 /* NetworkConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FC1EC4E7CC00FA49E2 /* NetworkConnection.cpp */; };
 		F76C864D1EC4E88300FA49E2 /* NetworkGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FE1EC4E7CC00FA49E2 /* NetworkGroup.cpp */; };
@@ -1304,6 +1307,10 @@
 		9350B52720B46E0900897BC5 /* ftbdf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftbdf.h; sourceTree = "<group>"; };
 		9350B52820B46E0900897BC5 /* ftrender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ftrender.h; sourceTree = "<group>"; };
 		9350B52920B46E0900897BC5 /* ft2build.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ft2build.h; sourceTree = "<group>"; };
+		936F412424CE030E00E07BCF /* NetworkClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkClient.h; sourceTree = "<group>"; };
+		936F412524CE030F00E07BCF /* NetworkBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkBase.cpp; sourceTree = "<group>"; };
+		936F412624CE030F00E07BCF /* NetworkClient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkClient.cpp; sourceTree = "<group>"; };
+		936F412724CE030F00E07BCF /* NetworkBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkBase.h; sourceTree = "<group>"; };
 		9391535A22D74359008E0780 /* OpenRCT2.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenRCT2.entitlements; sourceTree = "<group>"; };
 		939A359720C12FC700630B3F /* Paint.Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.Litter.cpp; sourceTree = "<group>"; };
 		939A359820C12FC700630B3F /* Paint.Misc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.Misc.cpp; sourceTree = "<group>"; };
@@ -1706,7 +1713,6 @@
 		F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileClassifier.cpp; sourceTree = "<group>"; };
 		F76C83B41EC4E7CC00FA49E2 /* FileClassifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileClassifier.h; sourceTree = "<group>"; };
 		F76C83BA1EC4E7CC00FA49E2 /* input.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = input.h; sourceTree = "<group>"; };
-		F76C83F81EC4E7CC00FA49E2 /* Network.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
 		F76C83F91EC4E7CC00FA49E2 /* network.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = network.h; sourceTree = "<group>"; };
 		F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkAction.cpp; sourceTree = "<group>"; };
 		F76C83FB1EC4E7CC00FA49E2 /* NetworkAction.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkAction.h; sourceTree = "<group>"; };
@@ -2959,10 +2965,13 @@
 			children = (
 				2ADE2F3022441905002598AF /* DiscordService.cpp */,
 				2ADE2F2F22441905002598AF /* DiscordService.h */,
-				F76C83F81EC4E7CC00FA49E2 /* Network.cpp */,
 				F76C83F91EC4E7CC00FA49E2 /* network.h */,
 				F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */,
 				F76C83FB1EC4E7CC00FA49E2 /* NetworkAction.h */,
+				936F412524CE030F00E07BCF /* NetworkBase.cpp */,
+				936F412724CE030F00E07BCF /* NetworkBase.h */,
+				936F412624CE030F00E07BCF /* NetworkClient.cpp */,
+				936F412424CE030E00E07BCF /* NetworkClient.h */,
 				F76C83FC1EC4E7CC00FA49E2 /* NetworkConnection.cpp */,
 				F76C83FD1EC4E7CC00FA49E2 /* NetworkConnection.h */,
 				F76C83FE1EC4E7CC00FA49E2 /* NetworkGroup.cpp */,
@@ -3673,6 +3682,7 @@
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
 				2ADE2F29224418B2002598AF /* Numerics.hpp in Headers */,
 				93DFD04924521C1A001FCBAF /* ScTile.hpp in Headers */,
+				936F412B24CE030F00E07BCF /* NetworkBase.h in Headers */,
 				93DFD04524521C1A001FCBAF /* ScObject.hpp in Headers */,
 				2ADE2F382244198B002598AF /* SpriteBase.h in Headers */,
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
@@ -3690,6 +3700,7 @@
 				93DFD04F24521C1A001FCBAF /* ScConsole.hpp in Headers */,
 				9308DA05209908090079EE96 /* Surface.h in Headers */,
 				93DE9753209C3C1000FB1CC8 /* GameState.h in Headers */,
+				936F412824CE030F00E07BCF /* NetworkClient.h in Headers */,
 				2ADE2F2A224418B2002598AF /* Meta.hpp in Headers */,
 				93DFD04624521C1A001FCBAF /* HookEngine.h in Headers */,
 				93FC09002418F3ED00CA3054 /* duk_config.h in Headers */,
@@ -4259,7 +4270,6 @@
 				C6607F481FE2B97E00D3FC0D /* Input.cpp in Sources */,
 				C688789F20289B200084B384 /* Language.cpp in Sources */,
 				C688791620289B9B0084B384 /* MiniGolf.cpp in Sources */,
-				F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */,
 				C688787820289A780084B384 /* Track.cpp in Sources */,
 				F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */,
 				C688788020289ADE0084B384 /* LightFX.cpp in Sources */,
@@ -4378,6 +4388,7 @@
 				C688791A20289B9B0084B384 /* SpaceRings.cpp in Sources */,
 				C688790420289B9B0084B384 /* Steeplechase.cpp in Sources */,
 				C68878E020289B9B0084B384 /* Peep.cpp in Sources */,
+				936F412A24CE030F00E07BCF /* NetworkClient.cpp in Sources */,
 				F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */,
 				C688790A20289B9B0084B384 /* WoodenRollerCoaster.cpp in Sources */,
 				C688787220289A780084B384 /* MusicList.cpp in Sources */,
@@ -4430,6 +4441,7 @@
 				93F76F0120BFF77B00D4512C /* Paint.LargeScenery.cpp in Sources */,
 				C688790720289B9B0084B384 /* VerticalDropRollerCoaster.cpp in Sources */,
 				93F9DA3A20B46FCA00D1BE92 /* SceneryObject.cpp in Sources */,
+				936F412924CE030F00E07BCF /* NetworkBase.cpp in Sources */,
 				C688787520289A780084B384 /* RideData.cpp in Sources */,
 				C688789B20289B200084B384 /* Convert.cpp in Sources */,
 				C688791F20289B9B0084B384 /* Enterprise.cpp in Sources */,
