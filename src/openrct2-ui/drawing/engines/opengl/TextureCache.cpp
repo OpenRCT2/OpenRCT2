@@ -215,19 +215,19 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
 
         // Initial capacity will be 12 which covers most cases of a fully visible park.
         _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1UL;
-    }
 
-    glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
-    glTexImage3D(
-        GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureCapacity, 0,
-        GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
+        glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
+        glTexImage3D(
+            GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureCapacity, 0,
+            GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
 
-    // Restore old data
-    if (!oldPixels.empty())
-    {
-        glTexSubImage3D(
-            GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices,
-            GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+        // Restore old data
+        if (!oldPixels.empty())
+        {
+            glTexSubImage3D(
+                GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices,
+                GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+        }
     }
 
     _atlasesTextureIndices = newIndices;

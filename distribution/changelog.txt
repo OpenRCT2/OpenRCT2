@@ -51,6 +51,7 @@
 - Fix: [#12211] Map Generator shows incorrect map sizes (e.g. "150 x 0").
 - Fix: [#12221] Map Generation tool doesn't place any trees.
 - Fix: [#12285] On-ride photo profit assumes every guest buys one.
+- Fix: [#12297] OpenGL renderer causing artifacts.
 - Fix: [#12312] Softlock when loading save file via command line fails.
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
 - Improved: [#6530] Allow water and land height changes on park borders.
