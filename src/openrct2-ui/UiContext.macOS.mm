@@ -31,7 +31,8 @@ namespace OpenRCT2::Ui
     public:
         macOSContext()
         {
-            @autoreleasepool {
+            @autoreleasepool
+            {
                 if ([NSWindow respondsToSelector:@selector(setAllowsAutomaticWindowTabbing:)])
                 {
                     [NSWindow setAllowsAutomaticWindowTabbing:NO];
@@ -51,7 +52,8 @@ namespace OpenRCT2::Ui
 
         void ShowMessageBox(SDL_Window* window, const std::string& message) override
         {
-            @autoreleasepool {
+            @autoreleasepool
+            {
                 NSAlert* alert = [[[NSAlert alloc] init] autorelease];
                 [alert addButtonWithTitle:@"OK"];
                 alert.messageText = [NSString stringWithUTF8String:message.c_str()];
@@ -61,16 +63,18 @@ namespace OpenRCT2::Ui
 
         void OpenFolder(const std::string& path) override
         {
-            @autoreleasepool {
+            @autoreleasepool
+            {
                 NSString* nsPath = [NSString stringWithUTF8String:path.c_str()];
-                NSURL *folderURL = [NSURL fileURLWithPath: nsPath];
-                [[NSWorkspace sharedWorkspace] openURL: folderURL];
+                NSURL* folderURL = [NSURL fileURLWithPath:nsPath];
+                [[NSWorkspace sharedWorkspace] openURL:folderURL];
             }
         }
 
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
-            @autoreleasepool {
+            @autoreleasepool
+            {
                 NSMutableArray* extensions = [NSMutableArray new];
                 for (const OpenRCT2::Ui::FileDialogDesc::Filter& filter : desc.Filters)
                 {
@@ -122,7 +126,8 @@ namespace OpenRCT2::Ui
 
         std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) override
         {
-            @autoreleasepool {
+            @autoreleasepool
+            {
                 NSOpenPanel* panel = [NSOpenPanel openPanel];
                 panel.canChooseFiles = false;
                 panel.canChooseDirectories = true;
