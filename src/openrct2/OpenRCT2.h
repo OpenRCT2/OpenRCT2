@@ -13,13 +13,13 @@
 
 #include <string>
 
-enum class STARTUP_ACTION
+enum class StartupAction
 {
-    STARTUP_ACTION_NONE,
-    STARTUP_ACTION_INTRO,
-    STARTUP_ACTION_TITLE,
-    STARTUP_ACTION_OPEN,
-    STARTUP_ACTION_EDIT
+    None,
+    Intro,
+    Title,
+    Open,
+    Edit
 };
 
 enum
@@ -34,7 +34,7 @@ enum
     SCREEN_FLAGS_EDITOR = (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER),
 };
 
-extern STARTUP_ACTION gOpenRCT2StartupAction;
+extern StartupAction gOpenRCT2StartupAction;
 extern utf8 gOpenRCT2StartupActionPath[512];
 extern utf8 gExePath[MAX_PATH];
 extern utf8 gCustomUserDataPath[MAX_PATH];
