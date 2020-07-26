@@ -555,6 +555,9 @@ bool track_block_get_next_from_zero(
  */
 bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction)
 {
+    if (input == nullptr || input->element == nullptr)
+        return false;
+
     auto inputElement = input->element->AsTrack();
     if (inputElement == nullptr)
         return false;
