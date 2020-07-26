@@ -707,7 +707,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
             auto ride = get_ride(peep->CurrentRide);
             if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
-                auto train = GET_VEHICLE(ride->vehicles[peep->CurrentTrain]);
+                auto train = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
                 if (train != nullptr)
                 {
                     auto car = train->GetCar(peep->CurrentCar);

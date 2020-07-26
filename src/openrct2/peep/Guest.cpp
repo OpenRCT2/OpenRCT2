@@ -2487,11 +2487,18 @@ static Vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vector<ui
 
     peep->CurrentCar = car_array[chosen_car];
 
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->CurrentTrain]);
-
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
+    if (vehicle == nullptr)
+    {
+        return nullptr;
+    }
     for (int32_t i = peep->CurrentCar; i > 0; --i)
     {
-        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
+        if (vehicle == nullptr)
+        {
+            return nullptr;
+        }
     }
 
     return vehicle;
@@ -2579,7 +2586,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
 
         for (int32_t i = 0; i < ride->num_vehicles; ++i)
         {
-            Vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
+            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
             if (vehicle == nullptr)
                 continue;
 
@@ -2610,7 +2617,11 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
 
     for (; vehicle_id != SPRITE_INDEX_NULL; vehicle_id = vehicle->next_vehicle_on_train, i++)
     {
-        vehicle = GET_VEHICLE(vehicle_id);
+        vehicle = GetEntity<Vehicle>(vehicle_id);
+        if (vehicle == nullptr)
+        {
+            break;
+        }
 
         uint8_t num_seats = vehicle->num_seats;
         if (vehicle->IsUsedInPairs())
@@ -3640,7 +3651,12 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
 
     uint8_t direction_track = (tile_element == nullptr ? 0 : tile_element->GetDirection());
 
-    auto vehicle = GET_VEHICLE(ride->vehicles[peep->CurrentTrain]);
+    auto vehicle = GetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
+    if (vehicle == nullptr)
+    {
+        // TODO: Goto ride exit on failure.
+        return;
+    }
     auto ride_entry = vehicle->GetRideEntry();
     auto vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
@@ -3742,7 +3758,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         }
     }
 
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         return;
@@ -3750,7 +3766,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
 
     for (int32_t i = CurrentCar; i != 0; --i)
     {
-        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         if (vehicle == nullptr)
         {
             return;
@@ -3973,10 +3989,19 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
 
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    if (vehicle == nullptr)
+    {
+        // TODO: Leave ride on failure goes for all returns on nullptr in this function
+        return;
+    }
     for (int32_t i = CurrentCar; i != 0; --i)
     {
-        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
+        if (vehicle == nullptr)
+        {
+            return;
+        }
     }
 
     rct_ride_entry* ride_entry = vehicle->GetRideEntry();
@@ -3994,8 +4019,13 @@ void Guest::UpdateRideFreeVehicleCheck()
             if (ride->vehicles[i] == SPRITE_INDEX_NULL)
                 continue;
 
-            Vehicle* train = GET_VEHICLE(ride->vehicles[i]);
-            Vehicle* second_vehicle = GET_VEHICLE(train->next_vehicle_on_train);
+            Vehicle* train = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (train == nullptr)
+                continue;
+
+            Vehicle* second_vehicle = GetEntity<Vehicle>(train->next_vehicle_on_train);
+            if (second_vehicle == nullptr)
+                continue;
 
             if (second_vehicle->num_peeps == 0)
                 continue;
@@ -4031,7 +4061,11 @@ void Guest::UpdateRideFreeVehicleCheck()
         }
     }
 
-    Vehicle* currentTrain = GET_VEHICLE(ride->vehicles[CurrentTrain]);
+    Vehicle* currentTrain = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    if (currentTrain == nullptr)
+    {
+        return;
+    }
     if (ride->status == RIDE_STATUS_OPEN && ++RejoinQueueTimeout != 0
         && !currentTrain->HasUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
     {
@@ -4065,12 +4099,16 @@ void Guest::UpdateRideEnterVehicle()
     auto* ride = get_ride(CurrentRide);
     if (ride != nullptr)
     {
-        auto* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
+        auto* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
         if (vehicle != nullptr)
         {
             for (int32_t i = CurrentCar; i != 0; --i)
             {
-                vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+                vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
+                if (vehicle == nullptr)
+                {
+                    return;
+                }
             }
 
             if (ride->mode != RIDE_MODE_FORWARD_ROTATION && ride->mode != RIDE_MODE_BACKWARD_ROTATION)
@@ -4126,12 +4164,19 @@ void Guest::UpdateRideLeaveVehicle()
     if (ride == nullptr)
         return;
 
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    if (vehicle == nullptr)
+        return;
+
     uint8_t ride_station = vehicle->current_station;
 
     for (int32_t i = CurrentCar; i != 0; --i)
     {
-        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
+        if (vehicle == nullptr)
+        {
+            return;
+        }
     }
 
     // Check if ride is NOT Ferris Wheel.
@@ -4181,8 +4226,12 @@ void Guest::UpdateRideLeaveVehicle()
 
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
         {
-            for (; !vehicle->IsHead(); vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride))
+            for (; !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
+                if (vehicle == nullptr)
+                {
+                    return;
+                }
                 uint16_t trackType = vehicle->GetTrackType();
                 if (trackType == TRACK_ELEM_FLAT || trackType > TRACK_ELEM_MIDDLE_STATION)
                     continue;
@@ -4286,7 +4335,11 @@ void Guest::UpdateRideLeaveVehicle()
 
     Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
 
-    vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
+    vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+    if (vehicle == nullptr)
+    {
+        return;
+    }
 
     rideEntry = vehicle->GetRideEntry();
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
@@ -4472,6 +4525,10 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     Var37++;
 
     Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
+    if (vehicle == nullptr)
+    {
+        return;
+    }
 
     CoordsXY targetLoc = ride->stations[CurrentRideStation].Start.ToTileCentre();
 
@@ -4540,7 +4597,11 @@ void Guest::UpdateRideApproachExitWaypoints()
         }
 
         Var37--;
-        Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
+        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
+        if (vehicle == nullptr)
+        {
+            return;
+        }
         CoordsXY targetLoc = ride->stations[CurrentRideStation].Start.ToTileCentre();
 
         if (ride->type == RIDE_TYPE_ENTERPRISE)

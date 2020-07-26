@@ -261,7 +261,11 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                             uint16_t vehicle_index = ride->vehicles[i];
                             while (vehicle_index != SPRITE_INDEX_NULL)
                             {
-                                Vehicle* vehicle = GET_VEHICLE(vehicle_index);
+                                Vehicle* vehicle = GetEntity<Vehicle>(vehicle_index);
+                                if (vehicle == nullptr)
+                                {
+                                    break;
+                                }
                                 vehicle->mass = mass;
                                 vehicle_index = vehicle->next_vehicle_on_train;
                             }

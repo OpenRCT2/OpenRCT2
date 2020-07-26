@@ -657,7 +657,11 @@ private:
                 spriteIndex = trainIndex;
                 while (spriteIndex != SPRITE_INDEX_NULL)
                 {
-                    auto vehicle = GET_VEHICLE(spriteIndex);
+                    auto vehicle = GetEntity<Vehicle>(spriteIndex);
+                    if (vehicle == nullptr)
+                    {
+                        break;
+                    }
                     for (size_t i = 0, offset = 0; i < vehicle->num_peeps; i++)
                     {
                         while (vehicle->peep[i + offset] == SPRITE_INDEX_NULL)
