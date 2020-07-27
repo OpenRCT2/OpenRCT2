@@ -152,8 +152,12 @@ void Vehicle::CableLiftUpdateWaitingToDepart()
     // Next check to see if the second part of the cable lift
     // is at the front of the passenger vehicle to simulate the
     // cable being attached underneath the train.
-    Vehicle* passengerVehicle = GET_VEHICLE(cable_lift_target);
-    Vehicle* cableLiftSecondPart = GET_VEHICLE(prev_vehicle_on_ride);
+    Vehicle* passengerVehicle = GetEntity<Vehicle>(cable_lift_target);
+    Vehicle* cableLiftSecondPart = GetEntity<Vehicle>(prev_vehicle_on_ride);
+    if (passengerVehicle == nullptr || cableLiftSecondPart == nullptr)
+    {
+        return;
+    }
 
     int16_t distX = abs(passengerVehicle->x - cableLiftSecondPart->x);
     int16_t distY = abs(passengerVehicle->y - cableLiftSecondPart->y);
@@ -176,7 +180,11 @@ void Vehicle::CableLiftUpdateDeparting()
     if (sub_state < 16)
         return;
 
-    Vehicle* passengerVehicle = GET_VEHICLE(cable_lift_target);
+    Vehicle* passengerVehicle = GetEntity<Vehicle>(cable_lift_target);
+    if (passengerVehicle == nullptr)
+    {
+        return;
+    }
     SetState(VEHICLE_STATUS_TRAVELLING, sub_state);
     passengerVehicle->SetState(VEHICLE_STATUS_TRAVELLING_CABLE_LIFT, passengerVehicle->sub_state);
 }
@@ -187,7 +195,11 @@ void Vehicle::CableLiftUpdateDeparting()
  */
 void Vehicle::CableLiftUpdateTravelling()
 {
-    Vehicle* passengerVehicle = GET_VEHICLE(cable_lift_target);
+    Vehicle* passengerVehicle = GetEntity<Vehicle>(cable_lift_target);
+    if (passengerVehicle == nullptr)
+    {
+        return;
+    }
 
     velocity = std::min(passengerVehicle->velocity, 439800);
     acceleration = 0;
@@ -373,6 +385,10 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
     for (Vehicle* vehicle = frontVehicle;;)
     {
+        if (vehicle == nullptr)
+        {
+            break;
+        }
         vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
         _vehicleUnkF64E10 = 1;
         vehicle->remaining_distance += _vehicleVelocityF64E0C;
@@ -427,13 +443,13 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
         {
             if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
                 break;
-            vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+            vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
         else
         {
             if (vehicle == this)
                 break;
-            vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+            vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         }
     }
 
@@ -443,7 +459,11 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
     for (uint16_t spriteId = sprite_index; spriteId != SPRITE_INDEX_NULL;)
     {
-        Vehicle* vehicle = GET_VEHICLE(spriteId);
+        Vehicle* vehicle = GetEntity<Vehicle>(spriteId);
+        if (vehicle == nullptr)
+        {
+            break;
+        }
         vehicleCount++;
 
         massTotal += vehicle->mass;

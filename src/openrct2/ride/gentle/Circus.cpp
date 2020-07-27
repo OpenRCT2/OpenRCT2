@@ -30,10 +30,11 @@ static void paint_circus_tent(
     if (rideEntry == nullptr)
         return;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        session->CurrentlyDrawnItem = GET_VEHICLE(ride->vehicles[0]);
+        session->CurrentlyDrawnItem = vehicle;
     }
 
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];

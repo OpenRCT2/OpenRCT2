@@ -4524,7 +4524,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     // This is incrementing the actual peep waypoint
     Var37++;
 
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[CurrentTrain]);
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
     if (vehicle == nullptr)
     {
         return;

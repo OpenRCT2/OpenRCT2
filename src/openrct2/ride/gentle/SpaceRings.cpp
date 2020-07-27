@@ -40,16 +40,14 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
     if (ride->num_stations == 0 || vehicleIndex < ride->num_vehicles)
     {
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-        Vehicle* vehicle = nullptr;
 
         int32_t frameNum = direction;
 
         uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
-
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+        auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
         {
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-            vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
             session->CurrentlyDrawnItem = vehicle;
             frameNum += static_cast<int8_t>(vehicle->vehicle_sprite_type) * 4;
         }

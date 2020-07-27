@@ -1013,7 +1013,11 @@ static void ride_remove_cable_lift(Ride* ride)
         uint16_t spriteIndex = ride->cable_lift;
         do
         {
-            Vehicle* vehicle = GET_VEHICLE(spriteIndex);
+            Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
+            if (vehicle == nullptr)
+            {
+                return;
+            }
             vehicle->Invalidate();
             sprite_remove(vehicle);
             spriteIndex = vehicle->next_vehicle_on_train;
@@ -1037,7 +1041,11 @@ static void ride_remove_vehicles(Ride* ride)
             uint16_t spriteIndex = ride->vehicles[i];
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
-                Vehicle* vehicle = GET_VEHICLE(spriteIndex);
+                Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
+                if (vehicle == nullptr)
+                {
+                    break;
+                }
                 vehicle->Invalidate();
                 sprite_remove(vehicle);
                 spriteIndex = vehicle->next_vehicle_on_train;
@@ -2486,17 +2494,17 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
                 vehicleSpriteIdx = ride->vehicles[ride->broken_vehicle];
                 if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
                 {
-                    vehicle = GET_VEHICLE(vehicleSpriteIdx);
+                    vehicle = GetEntity<Vehicle>(vehicleSpriteIdx);
                     for (i = ride->broken_car; i > 0; i--)
                     {
-                        if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
+                        if (vehicle == nullptr || vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
                         {
                             vehicle = nullptr;
                             break;
                         }
                         else
                         {
-                            vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+                            vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
                         }
                     }
                     if (vehicle != nullptr)
@@ -2513,8 +2521,11 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
             vehicleSpriteIdx = ride->vehicles[ride->broken_vehicle];
             if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
             {
-                vehicle = GET_VEHICLE(vehicleSpriteIdx);
-                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
+                vehicle = GetEntity<Vehicle>(vehicleSpriteIdx);
+                if (vehicle != nullptr)
+                {
+                    vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
+                }
             }
             break;
         case BREAKDOWN_BRAKES_FAILURE:
@@ -2804,8 +2815,8 @@ static void ride_music_update(Ride* ride)
         uint16_t vehicleSpriteIdx = ride->vehicles[0];
         if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
         {
-            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
-            if (vehicle->status != VEHICLE_STATUS_DOING_CIRCUS_SHOW)
+            Vehicle* vehicle = GetEntity<Vehicle>(vehicleSpriteIdx);
+            if (vehicle != nullptr && vehicle->status != VEHICLE_STATUS_DOING_CIRCUS_SHOW)
             {
                 ride->music_tune_id = 255;
                 return;
@@ -2883,7 +2894,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
     if (spriteIndex == SPRITE_INDEX_NULL)
         return;
 
-    auto vehicle = GET_VEHICLE(spriteIndex);
+    auto vehicle = GetEntity<Vehicle>(spriteIndex);
     if (vehicle == nullptr)
         return;
 
@@ -4618,13 +4629,17 @@ static void vehicle_unset_update_flag_b1(Vehicle* head)
     Vehicle* vehicle = head;
     while (true)
     {
+        if (vehicle == nullptr)
+        {
+            return;
+        }
         vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
         uint16_t spriteIndex = vehicle->next_vehicle_on_train;
         if (spriteIndex == SPRITE_INDEX_NULL)
         {
             break;
         }
-        vehicle = GET_VEHICLE(spriteIndex);
+        vehicle = GetEntity<Vehicle>(spriteIndex);
     }
 }
 
