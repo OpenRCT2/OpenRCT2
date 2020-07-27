@@ -3693,6 +3693,7 @@ STR_6374    :K
 STR_6375    :Neznámá atrakce
 STR_6376    :{WINDOW_COLOUR_2}Vozy atrakce:{NEWLINE}{BLACK}{STRINGID} pro {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} pro {STRINGID}
+STR_6378    :Stahování seznamu objektů: {INT32} / {INT32}
 
 ###############################################################################
 ## RCT2 Scenarios

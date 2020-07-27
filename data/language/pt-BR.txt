@@ -3673,6 +3673,7 @@ STR_6374    :F
 STR_6375    :Atração desconhecida
 STR_6376    :{WINDOW_COLOUR_2}Veículo: {NEWLINE}{BLACK}{STRINGID} para {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} para {STRINGID}
+STR_6378    :Lista de objetos sendo recebidos: {INT32} / {INT32}
 
 #############
 # Scenarios #

@@ -2899,7 +2899,7 @@ STR_5554    :{SMALLFONT}{BLACK}Gebirgswerkzeug aktivieren
 STR_5555    :Fahrzeuge anderer Streckentyp. anzeigen
 STR_5556    :{SMALLFONT}{BLACK}Spieler entfernen
 STR_5557    :Nach Desync. verbunden bleiben (Mehrspieler)
-STR_5558    :Damit diese Einstellung wirksam wird, ist ein Neustart erforderlich
+STR_5558    :Diese Einstellung wird erst nach einem Neustart von OpenRCT2 aktiv
 STR_5559    :10 Min. Inspektionen
 STR_5560    :{SMALLFONT}{BLACK}Setzt die Inspektionszeit aller Bahnen{NEWLINE}auf „Alle 10 Minuten“
 STR_5561    :Sprache konnte nicht geladen werden
@@ -3674,6 +3674,7 @@ STR_6374    :A
 STR_6375    :Unbekannte Attraktion
 STR_6376    :{WINDOW_COLOUR_2}Fahrzeug:{NEWLINE}{BLACK}{STRINGID} für {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} für {STRINGID}
+STR_6378    :Objektliste empfangen: {INT32}/{INT32}
 
 #############
 # Scenarios #
