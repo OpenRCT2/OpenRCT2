@@ -132,7 +132,7 @@ jobs:
         run: . scripts/setenv && get-discord-rpc
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DCMAKE_CXX_FLAGS="-g -gz"
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
       - name: Build artifacts
         shell: bash
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-x86_64.tar.gz bin/install/usr
