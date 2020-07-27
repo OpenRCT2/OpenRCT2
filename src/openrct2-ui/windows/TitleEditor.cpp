@@ -135,55 +135,53 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 
 // Increase BW if certain languages do not fit
 // BW should be a multiple of 4
+static constexpr const rct_string_id WINDOW_TITLE = STR_TITLE_EDITOR_TITLE;
 static constexpr const int32_t WW = 320;
 static constexpr const int32_t WH = 270;
-constexpr int32_t BX = 8;
-constexpr int32_t BW = 72;
-constexpr int32_t BY = 52;
-constexpr int32_t BH = 63;
-constexpr int32_t BS = 18;
-constexpr int32_t SCROLL_WIDTH = 350;
 static constexpr const int32_t WH2 = 127;
+static constexpr const ScreenSize ACTION_BTN = { 91, 14 };
+static constexpr const ScreenSize EDIT_BTN = { 72, 14 };
+static constexpr const ScreenSize PLAYBACK_BTN = { 18, 17 };
+static constexpr const ScreenSize REORDER_BTN = { 36, 14 };
+
+static constexpr int32_t SCROLL_WIDTH = 350;
 
 static rct_widget window_title_editor_widgets[] = {
-    { WWT_FRAME,            0,  0,      WW-1,   0,      WH2-1,  0xFFFFFFFF,             STR_NONE },                             // panel / background
-    { WWT_CAPTION,          0,  1,      WW-2,   1,      14,     STR_TITLE_EDITOR_TITLE, STR_WINDOW_TITLE_TIP },                 // title bar
-    { WWT_CLOSEBOX,         0,  WW-13,  WW-3,   2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },                 // close button
-    { WWT_RESIZE,           1,  0,      WW-1,   43,     WH2-1,  0xFFFFFFFF,             STR_NONE },                             // tab content panel
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_THEMES_TAB_SETTINGS_TIP },  // presets tab
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_TITLE_EDITOR_SAVES_TAB_TIP },       // saves tab
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_TITLE_EDITOR_SCRIPT_TAB_TIP },      // script tab
-    { WWT_SCROLL,           1,  BX+BW+9,WW-4,   48,     WH-4,   SCROLL_BOTH,            STR_NONE },                             // command/save list
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget     ({   0,  43},  { 320,  84}, WWT_RESIZE,          1                                                                                   ), // tab content panel
+    MakeRemapWidget({   3,  17},  {  31,  27}, WWT_TAB,             1, SPR_TAB,                           STR_THEMES_TAB_SETTINGS_TIP                   ), // presets tab
+    MakeRemapWidget({  34,  17},  {  31,  27}, WWT_TAB,             1, SPR_TAB,                           STR_TITLE_EDITOR_SAVES_TAB_TIP                ), // saves tab
+    MakeRemapWidget({  65,  17},  {  31,  27}, WWT_TAB,             1, SPR_TAB,                           STR_TITLE_EDITOR_SCRIPT_TAB_TIP               ), // script tab
+    MakeWidget     ({  89,  48},  { 228, 219}, WWT_SCROLL,          1, SCROLL_BOTH                                                                      ), // command/save list
 
     // Presets Tab
-    { WWT_DROPDOWN,         1,  125,    299,    60,     71,     STR_NONE,                           STR_NONE },                     // Preset title sequences
-    { WWT_BUTTON,           1,  288,    298,    61,     70,     STR_DROPDOWN_GLYPH,                 STR_NONE },
-    { WWT_BUTTON,           1,  10,     100,    82,     93,     STR_TITLE_EDITOR_ACTION_CREATE,     STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP },                      // Create button
-    { WWT_BUTTON,           1,  10,     100,    82+20,  93+20,  STR_TITLE_EDITOR_ACTION_DUPLICATE,  STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP },                       // Duplicate button
-    { WWT_BUTTON,           1,  110,    200,    82,     93,     STR_TRACK_MANAGE_DELETE,            STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP },                      // Delete button
-    { WWT_BUTTON,           1,  210,    300,    82,     93,     STR_TRACK_MANAGE_RENAME,            STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP },                      // Rename button
+    MakeWidget     ({ 125,  60},  { 175,  14}, WWT_DROPDOWN,        1                                                                                   ), // Preset title sequences
+    MakeWidget     ({ 288,  61},  {  11,  10}, WWT_BUTTON,          1, STR_DROPDOWN_GLYPH                                                               ),
+    MakeWidget     ({  10,  82},   ACTION_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_CREATE,    STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP   ), // Create button
+    MakeWidget     ({  10, 102},   ACTION_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP), // Duplicate button
+    MakeWidget     ({ 110,  82},   ACTION_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP   ), // Delete button
+    MakeWidget     ({ 210,  82},   ACTION_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP   ), // Rename button
 
     // Saves Tab
-    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY,         BH,         STR_TITLE_EDITOR_ACTION_ADD,        STR_TITLE_EDITOR_ACTION_ADD_TIP }, // Add
-    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*1),  BH+(BS*1),  STR_TITLE_EDITOR_ACTION_REMOVE,     STR_TITLE_EDITOR_ACTION_REMOVE_TIP }, // Remove
-    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*2),  BH+(BS*2),  STR_TRACK_MANAGE_RENAME,            STR_TITLE_EDITOR_ACTION_RENAME_TIP }, // Rename
-    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*3),  BH+(BS*3),  STR_TITLE_EDITOR_ACTION_LOAD,       STR_TITLE_EDITOR_ACTION_LOAD_TIP }, // Load
+    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_ADD,       STR_TITLE_EDITOR_ACTION_ADD_TIP               ), // Add
+    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_REMOVE,    STR_TITLE_EDITOR_ACTION_REMOVE_TIP            ), // Remove
+    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_TIP            ), // Rename
+    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_LOAD,      STR_TITLE_EDITOR_ACTION_LOAD_TIP              ), // Load
 
     // Script Tab
-    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY,         BH,         STR_TITLE_EDITOR_ACTION_INSERT,     STR_TITLE_EDITOR_ACTION_INSERT_TIP }, // Insert
-    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*1),  BH+(BS*1),  STR_TITLE_EDITOR_ACTION_EDIT,       STR_TITLE_EDITOR_ACTION_EDIT_TIP }, // Edit
-    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*2),  BH+(BS*2),  STR_TRACK_MANAGE_DELETE,            STR_TITLE_EDITOR_ACTION_DELETE_TIP }, // Delete
-    //{ WWT_DROPDOWN_BUTTON,    1,  BX,     BX+BW-1,BY+(BS*3),  BH+(BS*3),  STR_TITLE_EDITOR_ACTION_RELOAD,     STR_TITLE_EDITOR_ACTION_RELOAD_TIP }, // Reload
-    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*3),  BH+(BS*3),  STR_TITLE_EDITOR_ACTION_SKIP_TO,    STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP }, // Skip to
+    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_INSERT,    STR_TITLE_EDITOR_ACTION_INSERT_TIP            ), // Insert
+    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_EDIT,      STR_TITLE_EDITOR_ACTION_EDIT_TIP              ), // Edit
+    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_TIP            ), // Delete
+    // MakeWidget  ({   8, 106},     EDIT_BTN, WWT_DROPDOWN_BUTTON, 1, STR_TITLE_EDITOR_ACTION_RELOAD,    STR_TITLE_EDITOR_ACTION_RELOAD_TIP            ), // Reload
+    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_SKIP_TO,   STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP           ), // Skip to
 
-    { WWT_BUTTON,           1,  BX,     BX+BW/2-1,BY+(BS*5),BH+(BS*5),  STR_DOWN,   STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP }, // Move down
-    { WWT_BUTTON,           1,  BX+BW/2,BX+BW-1,BY+(BS*5),  BH+(BS*5),  STR_UP, STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP }, // Move up
+    MakeWidget     ({   8, 142},  REORDER_BTN, WWT_BUTTON,          1, STR_DOWN,                          STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP         ), // Move down
+    MakeWidget     ({  44, 142},  REORDER_BTN, WWT_BUTTON,          1, STR_UP,                            STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP           ), // Move up
 
-    { WWT_IMGBTN,           1,  BX,     BX+BW/4-1,  WH-32,  WH-16,      SPR_G2_TITLE_RESTART,   STR_TITLE_EDITOR_ACTION_REPLAY_TIP }, // Replay
-    { WWT_IMGBTN,           1,  BX+BW/4,BX+BW/2-1,  WH-32,  WH-16,      SPR_G2_TITLE_STOP,      STR_TITLE_EDITOR_ACTION_STOP_TIP }, // Stop
-    { WWT_IMGBTN,           1,  BX+BW/2,BX+BW*3/4-1,WH-32,  WH-16,      SPR_G2_TITLE_PLAY,      STR_TITLE_EDITOR_ACTION_PLAY_TIP }, // Play
-    { WWT_IMGBTN,           1,  BX+BW*3/4,BX+BW,    WH-32,  WH-16,      SPR_G2_TITLE_SKIP,      STR_TITLE_EDITOR_ACTION_SKIP_TIP }, // Skip
-
+    MakeWidget     ({   8, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_RESTART,              STR_TITLE_EDITOR_ACTION_REPLAY_TIP            ), // Replay
+    MakeWidget     ({  26, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_STOP,                 STR_TITLE_EDITOR_ACTION_STOP_TIP              ), // Stop
+    MakeWidget     ({  44, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_PLAY,                 STR_TITLE_EDITOR_ACTION_PLAY_TIP              ), // Play
+    MakeWidget     ({  62, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
     { WIDGETS_END },
 };
 
