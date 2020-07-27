@@ -69,7 +69,7 @@ void window_tooltip_reset(const ScreenCoordsXY& screenCoords)
     gTooltipCursorY = screenCoords.y;
     gTooltipTimeout = 0;
     gTooltipWidget.window_classification = 255;
-    input_set_state(INPUT_STATE_NORMAL);
+    input_set_state(InputState::Normal);
     input_set_flag(INPUT_FLAG_4, false);
 }
 

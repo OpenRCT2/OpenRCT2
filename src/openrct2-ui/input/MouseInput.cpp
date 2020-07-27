@@ -181,7 +181,7 @@ static rct_mouse_data* get_mouse_input()
  */
 static void input_scroll_drag_begin(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex)
 {
-    _inputState = INPUT_STATE_SCROLL_RIGHT;
+    _inputState = InputState::ScrollRight;
     gInputDragLast = screenCoords;
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
@@ -243,7 +243,7 @@ static void input_scroll_right(const ScreenCoordsXY& screenCoords, int32_t state
     if (w == nullptr)
     {
         context_show_cursor();
-        _inputState = INPUT_STATE_RESET;
+        _inputState = InputState::Reset;
         return;
     }
 
@@ -258,7 +258,7 @@ static void input_scroll_right(const ScreenCoordsXY& screenCoords, int32_t state
             }
             break;
         case MOUSE_STATE_RIGHT_RELEASE:
-            _inputState = INPUT_STATE_RESET;
+            _inputState = InputState::Reset;
             context_show_cursor();
             break;
     }
@@ -281,10 +281,10 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
 
     switch (_inputState)
     {
-        case INPUT_STATE_RESET:
+        case InputState::Reset:
             window_tooltip_reset(screenCoords);
             // fall-through
-        case INPUT_STATE_NORMAL:
+        case InputState::Normal:
             switch (state)
             {
                 case MOUSE_STATE_RELEASED:
@@ -319,14 +319,14 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                     break;
             }
             break;
-        case INPUT_STATE_WIDGET_PRESSED:
+        case InputState::WidgetPressed:
             input_state_widget_pressed(screenCoords, state, widgetIndex, w, widget);
             break;
-        case INPUT_STATE_POSITIONING_WINDOW:
+        case InputState::PositioningWindow:
             w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
             if (w == nullptr)
             {
-                _inputState = INPUT_STATE_RESET;
+                _inputState = InputState::Reset;
             }
             else
             {
@@ -337,7 +337,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                 }
             }
             break;
-        case INPUT_STATE_VIEWPORT_RIGHT:
+        case InputState::ViewportRight:
             if (state == MOUSE_STATE_RELEASED)
             {
                 input_viewport_drag_continue();
@@ -352,14 +352,14 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                 }
             }
             break;
-        case INPUT_STATE_DROPDOWN_ACTIVE:
+        case InputState::DropdownActive:
             input_state_widget_pressed(screenCoords, state, widgetIndex, w, widget);
             break;
-        case INPUT_STATE_VIEWPORT_LEFT:
+        case InputState::ViewportLeft:
             w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
             if (w == nullptr)
             {
-                _inputState = INPUT_STATE_RESET;
+                _inputState = InputState::Reset;
                 break;
             }
 
@@ -368,7 +368,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                 case MOUSE_STATE_RELEASED:
                     if (w->viewport == nullptr)
                     {
-                        _inputState = INPUT_STATE_RESET;
+                        _inputState = InputState::Reset;
                         break;
                     }
 
@@ -387,7 +387,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                     window_event_tool_drag_call(w, gCurrentToolWidget.widget_index, screenCoords);
                     break;
                 case MOUSE_STATE_LEFT_RELEASE:
-                    _inputState = INPUT_STATE_RESET;
+                    _inputState = InputState::Reset;
                     if (_dragWidget.window_number == w->number)
                     {
                         if ((_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
@@ -407,7 +407,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                     break;
             }
             break;
-        case INPUT_STATE_SCROLL_LEFT:
+        case InputState::ScrollLeft:
             switch (state)
             {
                 case MOUSE_STATE_RELEASED:
@@ -418,11 +418,11 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                     break;
             }
             break;
-        case INPUT_STATE_RESIZING:
+        case InputState::Resizing:
             w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
             if (w == nullptr)
             {
-                _inputState = INPUT_STATE_RESET;
+                _inputState = InputState::Reset;
             }
             else
             {
@@ -436,7 +436,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                 }
             }
             break;
-        case INPUT_STATE_SCROLL_RIGHT:
+        case InputState::ScrollRight:
             input_scroll_right(screenCoords, state);
             break;
     }
@@ -446,7 +446,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
 
 void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    _inputState = INPUT_STATE_POSITIONING_WINDOW;
+    _inputState = InputState::PositioningWindow;
     gInputDragLast = screenCoords - w->windowPos;
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
@@ -464,7 +464,7 @@ static void input_window_position_continue(
 
 static void input_window_position_end(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
-    _inputState = INPUT_STATE_NORMAL;
+    _inputState = InputState::Normal;
     gTooltipTimeout = 0;
     gTooltipWidget = _dragWidget;
     window_event_moved_call(w, screenCoords);
@@ -472,7 +472,7 @@ static void input_window_position_end(rct_window* w, const ScreenCoordsXY& scree
 
 static void input_window_resize_begin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    _inputState = INPUT_STATE_RESIZING;
+    _inputState = InputState::Resizing;
     gInputDragLast = screenCoords;
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
@@ -495,7 +495,7 @@ static void input_window_resize_continue(rct_window* w, const ScreenCoordsXY& sc
 
 static void input_window_resize_end()
 {
-    _inputState = INPUT_STATE_NORMAL;
+    _inputState = InputState::Normal;
     gTooltipTimeout = 0;
     gTooltipWidget = _dragWidget;
 }
@@ -507,7 +507,7 @@ static void input_window_resize_end()
 static void input_viewport_drag_begin(rct_window* w)
 {
     w->flags &= ~WF_SCROLLING_TO_LOCATION;
-    _inputState = INPUT_STATE_VIEWPORT_RIGHT;
+    _inputState = InputState::ViewportRight;
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
     _ticksSinceDragStart = 0;
@@ -543,7 +543,7 @@ static void input_viewport_drag_continue()
     if (viewport == nullptr)
     {
         context_show_cursor();
-        _inputState = INPUT_STATE_RESET;
+        _inputState = InputState::Reset;
     }
     else if (differentialCoords.x != 0 || differentialCoords.y != 0)
     {
@@ -580,7 +580,7 @@ static void input_viewport_drag_continue()
 
 static void input_viewport_drag_end()
 {
-    _inputState = INPUT_STATE_RESET;
+    _inputState = InputState::Reset;
     context_show_cursor();
 }
 
@@ -594,7 +594,7 @@ static void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, const
 
     widget = &w->widgets[widgetIndex];
 
-    _inputState = INPUT_STATE_SCROLL_LEFT;
+    _inputState = InputState::ScrollLeft;
     gPressedWidget.window_classification = w->classification;
     gPressedWidget.window_number = w->number;
     gPressedWidget.widget_index = widgetIndex;
@@ -723,7 +723,7 @@ static void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, co
 
 static void input_scroll_end()
 {
-    _inputState = INPUT_STATE_RESET;
+    _inputState = InputState::Reset;
     invalidate_scroll();
 }
 
@@ -1029,7 +1029,7 @@ static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w,
                 input_window_resize_begin(w, widgetIndex, screenCoords);
             break;
         case WWT_VIEWPORT:
-            _inputState = INPUT_STATE_VIEWPORT_LEFT;
+            _inputState = InputState::ViewportLeft;
             gInputDragLast = screenCoords;
             _dragWidget.window_classification = windowClass;
             _dragWidget.window_number = windowNumber;
@@ -1059,7 +1059,7 @@ static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w,
                 gPressedWidget.window_number = windowNumber;
                 gPressedWidget.widget_index = widgetIndex;
                 _inputFlags |= INPUT_FLAG_WIDGET_PRESSED;
-                _inputState = INPUT_STATE_WIDGET_PRESSED;
+                _inputState = InputState::WidgetPressed;
                 _clickRepeatTicks = 1;
 
                 widget_invalidate_by_number(windowClass, windowNumber, widgetIndex);
@@ -1204,7 +1204,7 @@ void input_state_widget_pressed(
     rct_window* cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
     if (cursor_w == nullptr)
     {
-        _inputState = INPUT_STATE_RESET;
+        _inputState = InputState::Reset;
         return;
     }
 
@@ -1233,7 +1233,7 @@ void input_state_widget_pressed(
 
             if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
             {
-                if (_inputState == INPUT_STATE_DROPDOWN_ACTIVE)
+                if (_inputState == InputState::DropdownActive)
                 {
                     gDropdownHighlightedIndex = gDropdownDefaultIndex;
                     window_invalidate_by_class(WC_DROPDOWN);
@@ -1246,7 +1246,7 @@ void input_state_widget_pressed(
             return;
         case MOUSE_STATE_LEFT_RELEASE:
         case MOUSE_STATE_RIGHT_PRESS:
-            if (_inputState == INPUT_STATE_DROPDOWN_ACTIVE)
+            if (_inputState == InputState::DropdownActive)
             {
                 if (w)
                 {
@@ -1300,7 +1300,7 @@ void input_state_widget_pressed(
                             widget_invalidate_by_number(cursor_w_class, cursor_w_number, cursor_widgetIndex);
                         }
 
-                        _inputState = INPUT_STATE_NORMAL;
+                        _inputState = InputState::Normal;
                         gTooltipTimeout = 0;
                         gTooltipWidget.widget_index = cursor_widgetIndex;
                         gTooltipWidget.window_classification = cursor_w_class;
@@ -1318,7 +1318,7 @@ void input_state_widget_pressed(
                 }
             }
 
-            _inputState = INPUT_STATE_NORMAL;
+            _inputState = InputState::Normal;
 
             if (state == MOUSE_STATE_RIGHT_PRESS)
             {
@@ -1353,7 +1353,7 @@ void input_state_widget_pressed(
     }
 
     _clickRepeatTicks = 0;
-    if (_inputState != INPUT_STATE_DROPDOWN_ACTIVE)
+    if (_inputState != InputState::DropdownActive)
     {
         // Hold down widget and drag outside of area??
         if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
@@ -1505,7 +1505,7 @@ int32_t get_next_key()
  */
 void set_cursor(uint8_t cursor_id)
 {
-    if (_inputState == INPUT_STATE_RESIZING)
+    if (_inputState == InputState::Resizing)
     {
         cursor_id = CURSOR_DIAGONAL_ARROWS;
     }
