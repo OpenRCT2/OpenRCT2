@@ -100,11 +100,10 @@ static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
         int32_t dh = (dx >> 8) & 0xFF;
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            uint16_t vehicleSpriteIdx = ride->vehicles[i];
-            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (vehicle == nullptr)
                 continue;
 
-            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->var_CE < dh)
                 continue;
 
@@ -122,11 +121,10 @@ static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
         // Check if all vehicles are ready to go
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            uint16_t vehicleSpriteIdx = ride->vehicles[i];
-            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (vehicle == nullptr)
                 continue;
 
-            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART)
             {
                 ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
@@ -197,11 +195,10 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
 
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            uint16_t vehicleSpriteIdx = ride->vehicles[i];
-            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (vehicle == nullptr)
                 continue;
 
-            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps)
             {
                 // Found a winner
@@ -234,11 +231,10 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
         // Check if all vehicles are ready to go
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            uint16_t vehicleSpriteIdx = ride->vehicles[i];
-            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (vehicle == nullptr)
                 continue;
 
-            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
             if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING)
             {
                 if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
@@ -272,11 +268,10 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
 {
     for (size_t i = 0; i < ride->num_vehicles; i++)
     {
-        uint16_t vehicleSpriteIdx = ride->vehicles[i];
-        if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+        if (vehicle == nullptr)
             continue;
 
-        Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
         vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
 
         rct_ride_entry* rideEntry = vehicle->GetRideEntry();

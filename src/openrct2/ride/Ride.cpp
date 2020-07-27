@@ -2984,9 +2984,9 @@ void ride_measurements_update()
                 for (int32_t j = 0; j < ride.num_vehicles; j++)
                 {
                     uint16_t vehicleSpriteIdx = ride.vehicles[j];
-                    if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
+                    auto vehicle = GetEntity<Vehicle>(vehicleSpriteIdx);
+                    if (vehicle != nullptr)
                     {
-                        auto vehicle = GET_VEHICLE(vehicleSpriteIdx);
                         if (vehicle->status == VEHICLE_STATUS_DEPARTING
                             || vehicle->status == VEHICLE_STATUS_TRAVELLING_CABLE_LIFT)
                         {
@@ -4649,7 +4649,9 @@ static void vehicle_unset_update_flag_b1(Vehicle* head)
  */
 static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYElement)
 {
-    Vehicle* vehicle = GET_VEHICLE(ride->vehicles[0]);
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+    assert(vehicle != nullptr);
+
     auto curTrackPos = vehicle->TrackLocation;
     auto curTrackElement = map_get_track_element_at(curTrackPos);
 
@@ -4771,7 +4773,11 @@ static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t i
         {
             for (int32_t i = 0; i < ride->num_vehicles; i++)
             {
-                Vehicle* vehicle = GET_VEHICLE(ride->vehicles[i]);
+                Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+                if (vehicle == nullptr)
+                {
+                    continue;
+                }
 
                 auto vehicleEntry = vehicle->Entry();
 
@@ -4794,15 +4800,12 @@ static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t i
  */
 void loc_6DDF9C(Ride* ride, TileElement* tileElement)
 {
-    Vehicle *train, *car;
-
     for (int32_t i = 0; i < ride->num_vehicles; i++)
     {
-        uint16_t vehicleSpriteIdx = ride->vehicles[i];
-        if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+        auto train = GetEntity<Vehicle>(ride->vehicles[i]);
+        if (train == nullptr)
             continue;
 
-        train = GET_VEHICLE(vehicleSpriteIdx);
         if (i == 0)
         {
             train->UpdateTrackMotion(nullptr);
@@ -4815,7 +4818,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
         do
         {
             tileElement->AsTrack()->SetBlockBrakeClosed(true);
-            car = train;
+            auto car = train;
             while (true)
             {
                 car->velocity = 0;
@@ -4823,17 +4826,16 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
                 car->SwingSprite = 0;
                 car->remaining_distance += 13962;
 
-                uint16_t spriteIndex = car->next_vehicle_on_train;
-                if (spriteIndex == SPRITE_INDEX_NULL)
+                car = GetEntity<Vehicle>(car->next_vehicle_on_train);
+                if (car == nullptr)
                 {
                     break;
                 }
-                car = GET_VEHICLE(spriteIndex);
             }
         } while (!(train->UpdateTrackMotion(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_10));
 
         tileElement->AsTrack()->SetBlockBrakeClosed(true);
-        car = train;
+        auto car = train;
         while (true)
         {
             car->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
@@ -4843,12 +4845,11 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
                 car->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, car->sub_state);
             }
 
-            uint16_t spriteIndex = car->next_vehicle_on_train;
-            if (spriteIndex == SPRITE_INDEX_NULL)
+            car = GetEntity<Vehicle>(car->next_vehicle_on_train);
+            if (car == nullptr)
             {
                 break;
             }
-            car = GET_VEHICLE(spriteIndex);
         }
     }
 }
@@ -6371,10 +6372,9 @@ void invalidate_test_results(Ride* ride)
     {
         for (int32_t i = 0; i < ride->num_vehicles; i++)
         {
-            uint16_t spriteIndex = ride->vehicles[i];
-            if (spriteIndex != SPRITE_INDEX_NULL)
+            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (vehicle != nullptr)
             {
-                Vehicle* vehicle = GET_VEHICLE(spriteIndex);
                 vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
             }
         }
@@ -6403,7 +6403,11 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor)
             uint16_t spriteIndex = ride->vehicles[i];
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
-                Vehicle* vehicle = GET_VEHICLE(spriteIndex);
+                Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
+                if (vehicle == nullptr)
+                {
+                    break;
+                }
                 vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
                 vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
                 vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
@@ -6435,7 +6439,11 @@ void ride_update_vehicle_colours(Ride* ride)
 
         while (spriteIndex != SPRITE_INDEX_NULL)
         {
-            Vehicle* vehicle = GET_VEHICLE(spriteIndex);
+            Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
+            if (vehicle == nullptr)
+            {
+                break;
+            }
             switch (ride->colour_scheme_type & 3)
             {
                 case RIDE_COLOUR_SCHEME_ALL_SAME:
@@ -7100,9 +7108,9 @@ void Ride::SetToDefaultInspectionInterval()
  */
 void Ride::Crash(uint8_t vehicleIndex)
 {
-    Vehicle* vehicle = GET_VEHICLE(vehicles[vehicleIndex]);
+    Vehicle* vehicle = GetEntity<Vehicle>(vehicles[vehicleIndex]);
 
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && vehicle != nullptr)
     {
         // Open ride window for crashed vehicle
         auto intent = Intent(WD_VEHICLE);
@@ -7154,16 +7162,10 @@ uint32_t ride_customers_in_last_5_minutes(const Ride* ride)
 Vehicle* ride_get_broken_vehicle(Ride* ride)
 {
     uint16_t vehicleIndex = ride->vehicles[ride->broken_vehicle];
-
-    if (vehicleIndex == SPRITE_INDEX_NULL)
-    {
-        return nullptr;
-    }
-
-    Vehicle* vehicle = GET_VEHICLE(vehicleIndex);
+    Vehicle* vehicle = GetEntity<Vehicle>(vehicleIndex);
     for (uint8_t i = 0; vehicle != nullptr && i < ride->broken_car; i++)
     {
-        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
     }
 
     return vehicle;

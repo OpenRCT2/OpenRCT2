@@ -31,7 +31,7 @@ void vehicle_visual_reverser(
 {
     Vehicle* v1 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
     Vehicle* v2 = GetEntity<Vehicle>(vehicle->next_vehicle_on_ride);
-    if (v1 ==nullptr || v2 == nullptr)
+    if (v1 == nullptr || v2 == nullptr)
     {
         return;
     }

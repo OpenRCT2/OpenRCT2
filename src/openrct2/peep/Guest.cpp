@@ -2510,6 +2510,10 @@ static Vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vector<ui
  */
 static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
 {
+    if (vehicle == nullptr)
+    {
+        return;
+    }
     uint8_t chosen_seat = vehicle->next_free_seat;
 
     if (ride->mode == RIDE_MODE_FORWARD_ROTATION || ride->mode == RIDE_MODE_BACKWARD_ROTATION)
