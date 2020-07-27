@@ -1554,7 +1554,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         else if (GuestNumRides < 3)
             return false;
     }
-    else 
+    else
     {
         if (!hasVoucher)
         {
