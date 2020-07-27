@@ -45,20 +45,20 @@ static DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
 
 #pragma region Widgets
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
 static constexpr const int32_t WW = 180;
 static constexpr const int32_t WH = 155;
 
 static rct_widget window_view_clipping_widgets[] = {
-    { WWT_FRAME,        0,  0,          WW - 1,     0,      WH - 1,     STR_NONE,                               STR_NONE }, // panel / background
-    { WWT_CAPTION,      0,  1,          WW - 2,     1,      14,         STR_VIEW_CLIPPING_TITLE,                STR_WINDOW_TITLE_TIP }, // title bar
-    { WWT_CLOSEBOX,     0,  WW - 13,    WW - 3,     2,      13,         STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP }, // close x button
-    { WWT_CHECKBOX,     0,  11,         WW - 11,    19,     29,         STR_VIEW_CLIPPING_HEIGHT_ENABLE,        STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip enable/disable check box
-    { WWT_GROUPBOX,     0,  5,          WW - 6,     36,     83,         STR_VIEW_CLIPPING_VERTICAL_CLIPPING,    STR_NONE },
-      SPINNER_WIDGETS  (0,  90,         WW - 12,    51,     62,         STR_NONE,                               STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
-    { WWT_SCROLL,       0,  11,         WW - 12,    66,     78,         SCROLL_HORIZONTAL,                      STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
-    { WWT_GROUPBOX,     0,  5,          WW - 6,     90,     WH - 6,     STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING,  STR_NONE },
-    { WWT_BUTTON,       0,  11,         WW - 12,    105,    121,        STR_VIEW_CLIPPING_SELECT_AREA,          STR_NONE }, // selector
-    { WWT_BUTTON,       0,  11,         WW - 12,    126,    143,        STR_VIEW_CLIPPING_CLEAR_SELECTION,      STR_NONE }, // clear
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget        ({     11,  19}, {    159,  11}, WWT_CHECKBOX, 0, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
+    MakeWidget        ({      5,  36}, {WW - 10,  48}, WWT_GROUPBOX, 0, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
+    MakeSpinnerWidgets({     90,  51}, {     79,  12}, WWT_SPINNER,  0, STR_NONE,                              STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
+    MakeWidget        ({     11,  66}, {    158,  13}, WWT_SCROLL,   0, SCROLL_HORIZONTAL,                     STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP  ), // clip height scrollbar
+    MakeWidget        ({      5,  90}, {WW - 10,  60}, WWT_GROUPBOX, 0, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                       ),
+    MakeWidget        ({     11, 105}, {    158,  17}, WWT_BUTTON,   0, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
+    MakeWidget        ({     11, 126}, {    158,  18}, WWT_BUTTON,   0, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
+
     { WIDGETS_END }
 };
 
