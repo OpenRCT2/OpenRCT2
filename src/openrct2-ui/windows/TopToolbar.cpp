@@ -227,34 +227,33 @@ static constexpr const int32_t right_aligned_widgets_order[] = {
 #pragma endregion
 
 static rct_widget window_top_toolbar_widgets[] = {
-    { WWT_TRNBTN,   0,  0x0000,         0x001D,         0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_PAUSE,             STR_PAUSE_GAME_TIP },               // Pause
-    { WWT_TRNBTN,   0,  0x001E + 30,    0x003B + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_FILE,              STR_DISC_AND_GAME_OPTIONS_TIP },    // File menu
-    { WWT_TRNBTN,   0,  0x00DC + 30,    0x00F9 + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MUTE,           STR_TOOLBAR_MUTE_TIP },             // Mute
-    { WWT_TRNBTN,   1,  0x0046 + 30,    0x0063 + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_ZOOM_OUT,          STR_ZOOM_OUT_TIP },                 // Zoom out
-    { WWT_TRNBTN,   1,  0x0064 + 30,    0x0081 + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_ZOOM_IN,           STR_ZOOM_IN_TIP },                  // Zoom in
-    { WWT_TRNBTN,   1,  0x0082 + 30,    0x009F + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_ROTATE,            STR_ROTATE_TIP },                   // Rotate camera
-    { WWT_TRNBTN,   1,  0x00A0 + 30,    0x00BD + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_VIEW,              STR_VIEW_OPTIONS_TIP },             // Transparency menu
-    { WWT_TRNBTN,   1,  0x00BE + 30,    0x00DB + 30,    0,      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_MAP,               STR_SHOW_MAP_TIP },                 // Map
-    { WWT_TRNBTN,   2,  0x010B, 0x0128, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_LAND,              STR_ADJUST_LAND_TIP },              // Land
-    { WWT_TRNBTN,   2,  0x0129, 0x0146, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_WATER,             STR_ADJUST_WATER_TIP },             // Water
-    { WWT_TRNBTN,   2,  0x0147, 0x0164, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_SCENERY,           STR_PLACE_SCENERY_TIP },            // Scenery
-    { WWT_TRNBTN,   2,  0x0165, 0x0182, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_FOOTPATH,          STR_BUILD_FOOTPATH_TIP },           // Path
-    { WWT_TRNBTN,   2,  0x0183, 0x01A0, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_CONSTRUCT_RIDE,    STR_BUILD_RIDE_TIP },               // Construct ride
-    { WWT_TRNBTN,   3,  0x01EA, 0x0207, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_RIDES,             STR_RIDES_IN_PARK_TIP },            // Rides
-    { WWT_TRNBTN,   3,  0x0208, 0x0225, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_PARK,              STR_PARK_INFORMATION_TIP },         // Park
-    { WWT_TRNBTN,   3,  0x0226, 0x0243, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_STAFF_TIP },                    // Staff
-    { WWT_TRNBTN,   3,  0x0230, 0x024D, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_GUESTS,            STR_GUESTS_TIP },                   // Guests
-    { WWT_TRNBTN,   2,  0x0230, 0x024D, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TOOLBAR_CLEAR_SCENERY,     STR_CLEAR_SCENERY_TIP },            // Clear scenery
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_GAME_SPEED_TIP },               // Fast forward
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_CHEATS_TIP },                   // Cheats
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_DEBUG_TIP },                    // Debug
-    { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SCENARIO_OPTIONS_FINANCIAL_TIP },// Finances
-    { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_FINANCES_RESEARCH_TIP },        // Research
-    { WWT_TRNBTN,   3,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_SHOW_RECENT_MESSAGES_TIP },     // News
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MULTIPLAYER,    STR_SHOW_MULTIPLAYER_STATUS_TIP },  // Network
-    { WWT_TRNBTN,   0,  0x001E, 0x003B, 0,                      TOP_TOOLBAR_HEIGHT,     IMAGE_TYPE_REMAP | SPR_TAB_TOOLBAR,               STR_TOOLBAR_CHAT_TIP },             // Chat
-
-    { WWT_EMPTY,    0,  0,      10-1,   0,                      0,                      0xFFFFFFFF,                                 STR_NONE },                         // Artificial widget separator
+    MakeRemapWidget({  0, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
+    MakeRemapWidget({ 60, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
+    MakeRemapWidget({250, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
+    MakeRemapWidget({100, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 1, SPR_TOOLBAR_ZOOM_OUT,       STR_ZOOM_OUT_TIP                  ), // Zoom out
+    MakeRemapWidget({130, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 1, SPR_TOOLBAR_ZOOM_IN,        STR_ZOOM_IN_TIP                   ), // Zoom in
+    MakeRemapWidget({160, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 1, SPR_TOOLBAR_ROTATE,         STR_ROTATE_TIP                    ), // Rotate camera
+    MakeRemapWidget({190, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 1, SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
+    MakeRemapWidget({220, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 1, SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
+    MakeRemapWidget({267, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
+    MakeRemapWidget({297, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
+    MakeRemapWidget({327, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
+    MakeRemapWidget({357, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
+    MakeRemapWidget({387, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
+    MakeRemapWidget({490, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
+    MakeRemapWidget({520, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
+    MakeRemapWidget({550, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
+    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
+    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TAB_TOOLBAR,            STR_CHEATS_TIP                    ), // Cheats
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TAB_TOOLBAR,            STR_DEBUG_TIP                     ), // Debug
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TAB_TOOLBAR,            STR_SCENARIO_OPTIONS_FINANCIAL_TIP), // Finances
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TAB_TOOLBAR,            STR_FINANCES_RESEARCH_TIP         ), // Research
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TAB_TOOLBAR,            STR_SHOW_RECENT_MESSAGES_TIP      ), // News
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
+    MakeWidget     ({  0, 0}, {10,                      1}, WWT_EMPTY,  0                                                                ), // Artificial widget separator
     { WIDGETS_END },
 };
 
