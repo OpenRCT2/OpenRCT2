@@ -172,7 +172,7 @@ static void window_new_campaign_get_shop_items()
         auto rideEntry = ride.GetRideEntry();
         if (rideEntry != nullptr)
         {
-            for (auto itemType : rideEntry->shop_item)
+            for (const auto itemType : rideEntry->shop_item)
             {
                 if (itemType != SHOP_ITEM_NONE && ShopItems[itemType].IsFoodOrDrink())
                 {
