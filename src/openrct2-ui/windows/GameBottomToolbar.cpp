@@ -337,13 +337,13 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
         if (subjectLoc == std::nullopt)
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 
-        if (!(news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT))
+        if (!(newsItem->TypeHasSubject()))
         {
             w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
         }
 
-        if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON)
+        if (newsItem->HasButton())
         {
             w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
@@ -592,13 +592,13 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
                           window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top };
     switch (newsItem->Type)
     {
-        case NEWS_ITEM_RIDE:
+        case News::ItemType::Ride:
             gfx_draw_sprite(dpi, SPR_RIDE, screenCoords, 0);
             break;
-        case NEWS_ITEM_PEEP_ON_RIDE:
-        case NEWS_ITEM_PEEP:
+        case News::ItemType::PeepOnRide:
+        case News::ItemType::Peep:
         {
-            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON)
+            if (newsItem->HasButton())
                 break;
 
             rct_drawpixelinfo cliped_dpi;
@@ -650,20 +650,24 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
             }
             break;
         }
-        case NEWS_ITEM_MONEY:
+        case News::ItemType::Money:
             gfx_draw_sprite(dpi, SPR_FINANCE, screenCoords, 0);
             break;
-        case NEWS_ITEM_RESEARCH:
+        case News::ItemType::Research:
             gfx_draw_sprite(dpi, (newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords, 0);
             break;
-        case NEWS_ITEM_PEEPS:
+        case News::ItemType::Peeps:
             gfx_draw_sprite(dpi, SPR_GUESTS, screenCoords, 0);
             break;
-        case NEWS_ITEM_AWARD:
+        case News::ItemType::Award:
             gfx_draw_sprite(dpi, SPR_AWARD, screenCoords, 0);
             break;
-        case NEWS_ITEM_GRAPH:
+        case News::ItemType::Graph:
             gfx_draw_sprite(dpi, SPR_GRAPH, screenCoords, 0);
+            break;
+        case News::ItemType::Null:
+        case News::ItemType::Blank:
+        case News::ItemType::Count:
             break;
     }
 }

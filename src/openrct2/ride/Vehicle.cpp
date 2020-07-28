@@ -3483,7 +3483,7 @@ void Vehicle::CheckIfMissing()
         curRide->FormatNameTo(ft);
         ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.station].singular);
 
-        news_item_add_to_queue(NEWS_ITEM_RIDE, STR_NEWS_VEHICLE_HAS_STALLED, ride);
+        news_item_add_to_queue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride);
     }
 }
 
@@ -5181,7 +5181,7 @@ static void ride_train_crash(Ride* ride, uint16_t numFatalities)
         {
             ride->FormatNameTo(ft);
             news_item_add_to_queue(
-                NEWS_ITEM_RIDE, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, ride->id);
+                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, ride->id);
         }
 
         if (gParkRatingCasualtyPenalty < 500)

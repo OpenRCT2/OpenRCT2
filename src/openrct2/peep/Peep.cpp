@@ -816,7 +816,7 @@ void peep_sprite_remove(Peep* peep)
     bool wasGuest = peep->AssignedPeepType == PeepType::Guest;
     if (peep->AssignedPeepType == PeepType::Guest)
     {
-        news_item_disable_news(NEWS_ITEM_PEEP_ON_RIDE, peep->sprite_index);
+        news_item_disable_news(News::ItemType::PeepOnRide, peep->sprite_index);
     }
     else
     {
@@ -825,7 +825,7 @@ void peep_sprite_remove(Peep* peep)
         staff_update_greyed_patrol_areas();
         peep->AssignedPeepType = PeepType::Staff;
 
-        news_item_disable_news(NEWS_ITEM_PEEP, peep->sprite_index);
+        news_item_disable_news(News::ItemType::Peep, peep->sprite_index);
     }
     sprite_remove(peep);
 
@@ -872,7 +872,7 @@ void Peep::UpdateFalling()
         {
             auto ft = Formatter::Common();
             FormatNameTo(ft);
-            news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16));
+            news_item_add_to_queue(News::ItemType::Blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16));
         }
 
         gParkRatingCasualtyPenalty = std::min(gParkRatingCasualtyPenalty + 25, 1000);
@@ -1238,7 +1238,7 @@ void peep_problem_warnings_update()
         warning_throttle[0] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_ARE_HUNGRY, 20);
+            news_item_add_to_queue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, 20);
         }
     }
 
@@ -1249,7 +1249,7 @@ void peep_problem_warnings_update()
         warning_throttle[1] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_ARE_THIRSTY, 21);
+            news_item_add_to_queue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, 21);
         }
     }
 
@@ -1260,7 +1260,7 @@ void peep_problem_warnings_update()
         warning_throttle[2] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_CANT_FIND_TOILET, 22);
+            news_item_add_to_queue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, 22);
         }
     }
 
@@ -1271,7 +1271,7 @@ void peep_problem_warnings_update()
         warning_throttle[3] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISLIKE_LITTER, 26);
+            news_item_add_to_queue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, 26);
         }
     }
 
@@ -1282,7 +1282,7 @@ void peep_problem_warnings_update()
         warning_throttle[4] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISGUSTED_BY_PATHS, 31);
+            news_item_add_to_queue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, 31);
         }
     }
 
@@ -1293,7 +1293,7 @@ void peep_problem_warnings_update()
         warning_throttle[5] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_DISLIKE_VANDALISM, 33);
+            news_item_add_to_queue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, 33);
         }
     }
 
@@ -1304,7 +1304,7 @@ void peep_problem_warnings_update()
         warning_throttle[6] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 27);
+            news_item_add_to_queue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 27);
         }
     }
     else if (lost_counter >= PEEP_LOST_WARNING_THRESHOLD)
@@ -1312,7 +1312,7 @@ void peep_problem_warnings_update()
         warning_throttle[6] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            news_item_add_to_queue(NEWS_ITEM_PEEPS, STR_PEEPS_GETTING_LOST_OR_STUCK, 16);
+            news_item_add_to_queue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 16);
         }
     }
 }
@@ -2401,7 +2401,8 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             ride->FormatNameTo(ft);
             if (gConfigNotifications.guest_queuing_for_ride)
             {
-                news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
+                news_item_add_to_queue(
+                    News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
             }
         }
     }
@@ -2462,7 +2463,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                 peep->FormatNameTo(ft);
                 if (gConfigNotifications.guest_left_park)
                 {
-                    news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index);
+                    news_item_add_to_queue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index);
                 }
             }
             return;
@@ -2830,7 +2831,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                         if (gConfigNotifications.guest_queuing_for_ride)
                         {
                             news_item_add_to_queue(
-                                NEWS_ITEM_PEEP_ON_RIDE, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
+                                News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
                         }
                     }
 
@@ -2940,7 +2941,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
                                                                                              : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (gConfigNotifications.guest_used_facility)
             {
-                news_item_add_to_queue(NEWS_ITEM_PEEP_ON_RIDE, string_id, peep->sprite_index);
+                news_item_add_to_queue(News::ItemType::PeepOnRide, string_id, peep->sprite_index);
             }
         }
     }
