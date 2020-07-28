@@ -2553,18 +2553,18 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         money16 entranceFee = park_get_entrance_fee();
         if (entranceFee != 0)
         {
-            if (peep->ItemStandardFlags & PEEP_ITEM_VOUCHER)
+            if (peep->ItemStandardFlags & PeepItem::VOUCHER)
             {
                 if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)
                 {
                     entranceFee /= 2;
-                    peep->ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
+                    peep->ItemStandardFlags &= ~PeepItem::VOUCHER;
                     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
                 else if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                 {
                     entranceFee = 0;
-                    peep->ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
+                    peep->ItemStandardFlags &= ~PeepItem::VOUCHER;
                     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
             }
@@ -3351,9 +3351,9 @@ void decrement_guests_heading_for_park()
 
 static void peep_release_balloon(Guest* peep, int16_t spawn_height)
 {
-    if (peep->ItemStandardFlags & PEEP_ITEM_BALLOON)
+    if (peep->ItemStandardFlags & PeepItem::BALLOON)
     {
-        peep->ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
+        peep->ItemStandardFlags &= ~PeepItem::BALLOON;
 
         if (peep->SpriteType == PEEP_SPRITE_TYPE_BALLOON && peep->x != LOCATION_NULL)
         {
