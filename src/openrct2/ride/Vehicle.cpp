@@ -4145,7 +4145,10 @@ void Vehicle::UpdateUnloadingPassengers()
         uint16_t spriteId = sprite_index;
         for (Vehicle* train; spriteId != SPRITE_INDEX_NULL; spriteId = train->next_vehicle_on_train)
         {
-            train = GET_VEHICLE(spriteId);
+            train = GetEntity<Vehicle>(spriteId);
+            if (train == nullptr)
+                break;
+
             if (train->restraints_position != 255)
                 continue;
 
@@ -4171,7 +4174,9 @@ void Vehicle::UpdateUnloadingPassengers()
     uint16_t spriteId = sprite_index;
     for (Vehicle* train; spriteId != SPRITE_INDEX_NULL; spriteId = train->next_vehicle_on_train)
     {
-        train = GET_VEHICLE(spriteId);
+        train = GetEntity<Vehicle>(spriteId);
+        if (train == nullptr)
+            break;
         if (train->num_peeps != train->next_free_seat)
             return;
     }
@@ -4194,7 +4199,9 @@ void Vehicle::UpdateWaitingForCableLift()
     if (curRide == nullptr)
         return;
 
-    Vehicle* cableLift = GET_VEHICLE(curRide->cable_lift);
+    Vehicle* cableLift = GetEntity<Vehicle>(curRide->cable_lift);
+    if (cableLift == nullptr)
+        return;
 
     if (cableLift->status != VEHICLE_STATUS_WAITING_FOR_PASSENGERS)
         return;
@@ -5258,7 +5265,9 @@ void Vehicle::KillAllPassengersInTrain()
     uint16_t spriteId = sprite_index;
     for (Vehicle* curVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = curVehicle->next_vehicle_on_train)
     {
-        curVehicle = GET_VEHICLE(spriteId);
+        curVehicle = GetEntity<Vehicle>(spriteId);
+        if (curVehicle == nullptr)
+            break;
         curVehicle->KillPassengers(curRide);
     }
 }
@@ -5428,7 +5437,9 @@ void Vehicle::UpdateCrash()
     Vehicle* curVehicle;
     do
     {
-        curVehicle = GET_VEHICLE(spriteId);
+        curVehicle = GetEntity<Vehicle>(spriteId);
+        if (curVehicle == nullptr)
+            break;
         if (curVehicle->sub_state > 1)
         {
             if (curVehicle->crash_z <= 96)
@@ -6267,9 +6278,9 @@ Vehicle* Vehicle::TrainHead() const
 
     for (;;)
     {
-        if (vehicle->prev_vehicle_on_ride > MAX_SPRITES)
+        prevVehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+        if (prevVehicle == nullptr)
             return nullptr;
-        prevVehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         if (prevVehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
             break;
 
@@ -6286,7 +6297,11 @@ Vehicle* Vehicle::TrainTail() const
 
     while ((spriteIndex = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL)
     {
-        vehicle = GET_VEHICLE(spriteIndex);
+        vehicle = GetEntity<Vehicle>(spriteIndex);
+        if (vehicle == nullptr)
+        {
+            return const_cast<Vehicle*>(this);
+        }
     }
 
     return const_cast<Vehicle*>(vehicle);
@@ -6414,13 +6429,13 @@ int32_t Vehicle::UpdateMotionDodgems()
             velocity = 0;
             uint8_t direction = sprite_direction | 1;
 
-            if (collideSprite != SPRITE_INDEX_NULL)
+            Vehicle* collideVehicle = GetEntity<Vehicle>(collideSprite);
+            if (collideVehicle != nullptr)
             {
                 var_34 = (scenario_rand() & 1) ? 1 : -1;
 
                 if (oldVelocity >= 131072)
                 {
-                    Vehicle* collideVehicle = GET_VEHICLE(collideSprite);
                     collideVehicle->dodgems_collision_direction = direction;
                     dodgems_collision_direction = direction ^ (1 << 4);
                 }
@@ -7568,8 +7583,13 @@ void Vehicle::UpdateHandleWaterSplash() const
             {
                 if (track_element_is_covered(trackType))
                 {
-                    Vehicle* nextVehicle = GET_VEHICLE(next_vehicle_on_ride);
-                    Vehicle* nextNextVehicle = GET_VEHICLE(nextVehicle->next_vehicle_on_ride);
+                    Vehicle* nextVehicle = GetEntity<Vehicle>(next_vehicle_on_ride);
+                    if (nextVehicle == nullptr)
+                        return;
+
+                    Vehicle* nextNextVehicle = GetEntity<Vehicle>(nextVehicle->next_vehicle_on_ride);
+                    if (nextNextVehicle == nullptr)
+                        return;
                     if (!track_element_is_covered(nextNextVehicle->GetTrackType()))
                     {
                         if (track_progress == 4)
@@ -7641,7 +7661,9 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* oth
         if (otherVehicleIndex == nullptr)
             return false;
 
-        Vehicle* collideVehicle = GET_VEHICLE(*otherVehicleIndex);
+        Vehicle* collideVehicle = GetEntity<Vehicle>(*otherVehicleIndex);
+        if (collideVehicle == nullptr)
+            return false;
 
         if (this == collideVehicle)
             return false;
@@ -7815,8 +7837,12 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* oth
  */
 void Vehicle::ReverseReverserCar()
 {
-    Vehicle* previousVehicle = GET_VEHICLE(prev_vehicle_on_ride);
-    Vehicle* nextVehicle = GET_VEHICLE(next_vehicle_on_ride);
+    Vehicle* previousVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
+    Vehicle* nextVehicle = GetEntity<Vehicle>(next_vehicle_on_ride);
+    if (previousVehicle == nullptr || nextVehicle == nullptr)
+    {
+        return;
+    }
 
     track_progress = 168;
     vehicle_type ^= 1;
@@ -8311,7 +8337,13 @@ loc_6DB967:
     remaining_distance = -1;
 
     // Might need to be bp rather than this, but hopefully not
-    auto head = (GET_VEHICLE(otherVehicleIndex))->TrainHead();
+    auto otherVeh = GetEntity<Vehicle>(otherVehicleIndex);
+    if (otherVeh == nullptr)
+    {
+        // Should never happen
+        return true;
+    }
+    auto head = otherVeh->TrainHead();
 
     regs.eax = abs(velocity - head->velocity);
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
@@ -8619,8 +8651,12 @@ loc_6DBE7F:
     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
     remaining_distance = 0x368A;
 
-    Vehicle* v3 = GET_VEHICLE(otherVehicleIndex);
+    Vehicle* v3 = GetEntity<Vehicle>(otherVehicleIndex);
     Vehicle* v4 = gCurrentVehicle;
+    if (v3 == nullptr)
+    {
+        return false;
+    }
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
     {
@@ -8698,7 +8734,11 @@ loc_6DC476:
     if (mini_golf_flags & (1 << 0))
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = GET_VEHICLE(vehicleIdx);
+        Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
+        if (vEDI == nullptr)
+        {
+            return;
+        }
         if (!(vEDI->mini_golf_flags & (1 << 0)) || (vEDI->mini_golf_flags & (1 << 2)))
         {
             goto loc_6DC985;
@@ -8714,7 +8754,11 @@ loc_6DC476:
     if (mini_golf_flags & (1 << 1))
     {
         auto vehicleIdx = IsHead() ? next_vehicle_on_ride : prev_vehicle_on_ride;
-        Vehicle* vEDI = GET_VEHICLE(vehicleIdx);
+        Vehicle* vEDI = GetEntity<Vehicle>(vehicleIdx);
+        if (vEDI == nullptr)
+        {
+            return;
+        }
         if (!(vEDI->mini_golf_flags & (1 << 1)) || (vEDI->mini_golf_flags & (1 << 2)))
         {
             goto loc_6DC985;
@@ -8733,8 +8777,8 @@ loc_6DC476:
 
         for (;;)
         {
-            vEDI = GET_VEHICLE(vEDI->prev_vehicle_on_ride);
-            if (vEDI == this)
+            vEDI = GetEntity<Vehicle>(vEDI->prev_vehicle_on_ride);
+            if (vEDI == this || vEDI == nullptr)
             {
                 break;
             }
@@ -8798,8 +8842,11 @@ loc_6DC476:
 
     if (!IsHead())
     {
-        Vehicle* prevVehicle = GET_VEHICLE(prev_vehicle_on_ride);
-        TrackSubposition = prevVehicle->TrackSubposition;
+        Vehicle* prevVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
+        if (prevVehicle != nullptr)
+        {
+            TrackSubposition = prevVehicle->TrackSubposition;
+        }
         if (TrackSubposition != VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9)
         {
             TrackSubposition--;
@@ -9078,7 +9125,11 @@ loc_6DCD6B:
     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
     remaining_distance = 0x368A;
     {
-        Vehicle* vEBP = GET_VEHICLE(otherVehicleIndex);
+        Vehicle* vEBP = GetEntity<Vehicle>(otherVehicleIndex);
+        if (vEBP == nullptr)
+        {
+            return;
+        }
         Vehicle* vEDI = gCurrentVehicle;
         if (abs(vEDI->velocity - vEBP->velocity) > 0xE0000)
         {
@@ -9183,7 +9234,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
     _vehicleVelocityF64E0C = (velocity >> 10) * 42;
     _vehicleFrontVehicle = _vehicleVelocityF64E08 < 0 ? TrainTail() : this;
 
-    for (Vehicle* vehicle = _vehicleFrontVehicle;;)
+    for (Vehicle* vehicle = _vehicleFrontVehicle; vehicle != nullptr;)
     {
         vehicle->UpdateTrackMotionMiniGolfVehicle(curRide, rideEntry, vehicleEntry);
         if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
@@ -9192,11 +9243,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         }
         if (_vehicleVelocityF64E08 >= 0)
         {
-            if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
-            {
-                break;
-            }
-            vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+            vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
         else
         {
@@ -9204,7 +9251,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
             {
                 break;
             }
-            vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+            vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         }
     }
 
@@ -9212,17 +9259,12 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
     int32_t numVehicles = 0;
     uint16_t totalMass = 0;
 
-    for (Vehicle* vehicle = this;;)
+    for (Vehicle* vehicle = this; vehicle != nullptr;)
     {
         numVehicles++;
         totalMass += vehicle->mass;
         sumAcceleration += vehicle->acceleration;
-        auto nextVehicleIndex = vehicle->next_vehicle_on_train;
-        if (nextVehicleIndex == SPRITE_INDEX_NULL)
-        {
-            break;
-        }
-        vehicle = GET_VEHICLE(nextVehicleIndex);
+        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
     }
 
     int32_t newAcceleration = ((sumAcceleration / numVehicles) * 21) >> 9;
@@ -9445,7 +9487,11 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     uint16_t spriteId = vehicle->sprite_index;
     while (spriteId != SPRITE_INDEX_NULL)
     {
-        Vehicle* car = GET_VEHICLE(spriteId);
+        Vehicle* car = GetEntity<Vehicle>(spriteId);
+        if (car == nullptr)
+        {
+            break;
+        }
         vehicleEntry = car->Entry();
         if (vehicleEntry == nullptr)
         {
@@ -9559,7 +9605,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     // ebx
     int32_t numVehicles = 0;
 
-    for (;;)
+    for (; vehicle!= nullptr;)
     {
         numVehicles++;
         // Not used?
@@ -9567,12 +9613,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         totalMass += vehicle->mass;
         totalAcceleration += vehicle->acceleration;
 
-        uint16_t spriteIndex = vehicle->next_vehicle_on_train;
-        if (spriteIndex == SPRITE_INDEX_NULL)
-        {
-            break;
-        }
-        vehicle = GET_VEHICLE(spriteIndex);
+        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
     }
 
     vehicle = gCurrentVehicle;
@@ -9837,7 +9878,7 @@ Vehicle* Vehicle::GetHead()
     auto v = this;
     while (v != nullptr && !v->IsHead())
     {
-        v = GET_VEHICLE(v->prev_vehicle_on_ride);
+        v = GetEntity<Vehicle>(v->prev_vehicle_on_ride);
     }
     return v;
 }
@@ -9852,7 +9893,12 @@ const Vehicle* Vehicle::GetCar(size_t carIndex) const
     auto car = this;
     for (; carIndex != 0; carIndex--)
     {
-        car = GET_VEHICLE(car->next_vehicle_on_train);
+        car = GetEntity<Vehicle>(car->next_vehicle_on_train);
+        if (car == nullptr)
+        {
+            log_error("Tried to get non-existant car from index!");
+            return nullptr;
+        }
     }
     return car;
 }
