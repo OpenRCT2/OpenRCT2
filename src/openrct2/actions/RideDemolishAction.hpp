@@ -174,41 +174,41 @@ private:
             }
 
             // remove any free voucher for this ride from peep
-            if (peep->ItemStandardFlags & PeepItem::VOUCHER)
+            if (peep->ItemStandardFlags & PEEP_ITEM_VOUCHER)
             {
                 if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherRideId == _rideIndex)
                 {
-                    peep->ItemStandardFlags &= ~(PeepItem::VOUCHER);
+                    peep->ItemStandardFlags &= ~(PEEP_ITEM_VOUCHER);
                 }
             }
 
             // remove any photos of this ride from peep
-            if (peep->ItemStandardFlags & PeepItem::PHOTO)
+            if (peep->ItemStandardFlags & PEEP_ITEM_PHOTO)
             {
                 if (peep->Photo1RideRef == _rideIndex)
                 {
-                    peep->ItemStandardFlags &= ~PeepItem::PHOTO;
+                    peep->ItemStandardFlags &= ~PEEP_ITEM_PHOTO;
                 }
             }
-            if (peep->ItemExtraFlags & PeepItem::PHOTO2)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO2)
             {
                 if (peep->Photo2RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~PeepItem::PHOTO2;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO2;
                 }
             }
-            if (peep->ItemExtraFlags & PeepItem::PHOTO3)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO3)
             {
                 if (peep->Photo3RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~PeepItem::PHOTO3;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO3;
                 }
             }
-            if (peep->ItemExtraFlags & PeepItem::PHOTO4)
+            if (peep->ItemExtraFlags & PEEP_ITEM_PHOTO4)
             {
                 if (peep->Photo4RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~PeepItem::PHOTO4;
+                    peep->ItemExtraFlags &= ~PEEP_ITEM_PHOTO4;
                 }
             }
 

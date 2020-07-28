@@ -155,60 +155,60 @@ static constexpr const ride_rating NauseaMaximumThresholds[] = {
 
 /** rct2: 0x0097EFCC */
 static constexpr const uint8_t item_standard_litter[32] = {
-    LITTER_TYPE_RUBBISH,          // PeepItem::BALLOON
-    LITTER_TYPE_RUBBISH,          // PeepItem::TOY
-    LITTER_TYPE_RUBBISH,          // PeepItem::MAP
-    LITTER_TYPE_RUBBISH,          // PeepItem::PHOTO
-    LITTER_TYPE_RUBBISH,          // PeepItem::UMBRELLA
-    LITTER_TYPE_RUBBISH,          // PeepItem::DRINK
-    LITTER_TYPE_RUBBISH,          // PeepItem::BURGER
-    LITTER_TYPE_RUBBISH,          // PeepItem::CHIPS
-    LITTER_TYPE_RUBBISH,          // PeepItem::ICE_CREAM
-    LITTER_TYPE_RUBBISH,          // PeepItem::CANDYFLOSS
-    LITTER_TYPE_EMPTY_CAN,        // PeepItem::EMPTY_CAN
-    LITTER_TYPE_RUBBISH,          // PeepItem::RUBBISH
-    LITTER_TYPE_EMPTY_BURGER_BOX, // PeepItem::EMPTY_BURGER_BOX
-    LITTER_TYPE_RUBBISH,          // PeepItem::PIZZA
-    LITTER_TYPE_RUBBISH,          // PeepItem::VOUCHER
-    LITTER_TYPE_RUBBISH,          // PeepItem::POPCORN
-    LITTER_TYPE_RUBBISH,          // PeepItem::HOT_DOG
-    LITTER_TYPE_RUBBISH,          // PeepItem::TENTACLE
-    LITTER_TYPE_RUBBISH,          // PeepItem::HAT
-    LITTER_TYPE_RUBBISH,          // PeepItem::TOFFEE_APPLE
-    LITTER_TYPE_RUBBISH,          // PeepItem::TSHIRT
-    LITTER_TYPE_RUBBISH,          // PeepItem::DOUGHNUT
-    LITTER_TYPE_RUBBISH,          // PeepItem::COFFEE
-    LITTER_TYPE_EMPTY_CUP,        // PeepItem::EMPTY_CUP
-    LITTER_TYPE_EMPTY_BOX,        // PeepItem::CHICKEN
-    LITTER_TYPE_EMPTY_BOTTLE,     // PeepItem::LEMONADE
-    LITTER_TYPE_EMPTY_BOX,        // PeepItem::EMPTY_BOX
-    LITTER_TYPE_EMPTY_BOTTLE,     // PeepItem::EMPTY_BOTTLE
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_BALLOON
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TOY
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_MAP
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_PHOTO
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_UMBRELLA
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_DRINK
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_BURGER
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_CHIPS
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_ICE_CREAM
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_CANDYFLOSS
+    LITTER_TYPE_EMPTY_CAN,        // PEEP_ITEM_EMPTY_CAN
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_RUBBISH
+    LITTER_TYPE_EMPTY_BURGER_BOX, // PEEP_ITEM_EMPTY_BURGER_BOX
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_PIZZA
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_VOUCHER
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_POPCORN
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_HOT_DOG
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TENTACLE
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_HAT
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TOFFEE_APPLE
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TSHIRT
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_DOUGHNUT
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_COFFEE
+    LITTER_TYPE_EMPTY_CUP,        // PEEP_ITEM_EMPTY_CUP
+    LITTER_TYPE_EMPTY_BOX,        // PEEP_ITEM_CHICKEN
+    LITTER_TYPE_EMPTY_BOTTLE,     // PEEP_ITEM_LEMONADE
+    LITTER_TYPE_EMPTY_BOX,        // PEEP_ITEM_EMPTY_BOX
+    LITTER_TYPE_EMPTY_BOTTLE,     // PEEP_ITEM_EMPTY_BOTTLE
 };
 
 /** rct2: 0x0097EFE8 */
 static constexpr const uint8_t item_extra_litter[32] = {
-    LITTER_TYPE_RUBBISH,            // PeepItem::PHOTO2
-    LITTER_TYPE_RUBBISH,            // PeepItem::PHOTO3
-    LITTER_TYPE_RUBBISH,            // PeepItem::PHOTO4
-    LITTER_TYPE_RUBBISH,            // PeepItem::PRETZEL
-    LITTER_TYPE_RUBBISH,            // PeepItem::CHOCOLATE
-    LITTER_TYPE_RUBBISH,            // PeepItem::ICED_TEA
-    LITTER_TYPE_RUBBISH,            // PeepItem::FUNNEL_CAKE
-    LITTER_TYPE_RUBBISH,            // PeepItem::SUNGLASSES
-    LITTER_TYPE_RUBBISH,            // PeepItem::BEEF_NOODLES
-    LITTER_TYPE_RUBBISH,            // PeepItem::FRIED_RICE_NOODLES
-    LITTER_TYPE_RUBBISH,            // PeepItem::WONTON_SOUP
-    LITTER_TYPE_RUBBISH,            // PeepItem::MEATBALL_SOUP
-    LITTER_TYPE_RUBBISH,            // PeepItem::FRUIT_JUICE
-    LITTER_TYPE_RUBBISH,            // PeepItem::SOYBEAN_MILK
-    LITTER_TYPE_RUBBISH,            // PeepItem::SU_JONGKWA
-    LITTER_TYPE_RUBBISH,            // PeepItem::SUB_SANDWICH
-    LITTER_TYPE_RUBBISH,            // PeepItem::COOKIE
-    LITTER_TYPE_EMPTY_BOWL_RED,     // PeepItem::EMPTY_BOWL_RED
-    LITTER_TYPE_EMPTY_DRINK_CARTON, // PeepItem::EMPTY_DRINK_CARTON
-    LITTER_TYPE_EMPTY_JUICE_CUP,    // PeepItem::EMPTY_JUICE_CUP
-    LITTER_TYPE_RUBBISH,            // PeepItem::ROAST_SAUSAGE
-    LITTER_TYPE_EMPTY_BOWL_BLUE,    // PeepItem::EMPTY_BOWL_BLUE
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO2
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO3
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO4
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PRETZEL
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_CHOCOLATE
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_ICED_TEA
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_FUNNEL_CAKE
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SUNGLASSES
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_BEEF_NOODLES
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_FRIED_RICE_NOODLES
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_WONTON_SOUP
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_MEATBALL_SOUP
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_FRUIT_JUICE
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SOYBEAN_MILK
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SU_JONGKWA
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SUB_SANDWICH
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_COOKIE
+    LITTER_TYPE_EMPTY_BOWL_RED,     // PEEP_ITEM_EMPTY_BOWL_RED
+    LITTER_TYPE_EMPTY_DRINK_CARTON, // PEEP_ITEM_EMPTY_DRINK_CARTON
+    LITTER_TYPE_EMPTY_JUICE_CUP,    // PEEP_ITEM_EMPTY_JUICE_CUP
+    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_ROAST_SAUSAGE
+    LITTER_TYPE_EMPTY_BOWL_BLUE,    // PEEP_ITEM_EMPTY_BOWL_BLUE
 };
 
 /** rct2: 0x009822F4, 0x00982310 */
@@ -447,10 +447,10 @@ void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
 
 void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 {
-    if ((passingPeep->ItemStandardFlags & PeepItem::PIZZA))
+    if ((passingPeep->ItemStandardFlags & PEEP_ITEM_PIZZA))
         return;
 
-    passingPeep->ItemStandardFlags |= PeepItem::PIZZA;
+    passingPeep->ItemStandardFlags |= PEEP_ITEM_PIZZA;
 
     int32_t peepDirection = (sprite_direction >> 3) ^ 2;
     int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
@@ -486,10 +486,10 @@ void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
 {
     if (this == passingPeep)
         return;
-    if (passingPeep->ItemStandardFlags & PeepItem::ICE_CREAM)
+    if (passingPeep->ItemStandardFlags & PEEP_ITEM_ICE_CREAM)
         return;
 
-    passingPeep->ItemStandardFlags |= PeepItem::ICE_CREAM;
+    passingPeep->ItemStandardFlags |= PEEP_ITEM_ICE_CREAM;
     passingPeep->UpdateSpriteType();
 }
 
@@ -1003,7 +1003,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((ItemStandardFlags & PeepItem::MAP) ? 8192U : 2184U))
+        if ((scenario_rand() & 0xFFFF) <= ((ItemStandardFlags & PEEP_ITEM_MAP) ? 8192U : 2184U))
         {
             PickRideToGoOn();
         }
@@ -1342,29 +1342,29 @@ bool Guest::HasItem(int32_t peepItem) const
 int32_t Guest::HasFoodStandardFlag() const
 {
     return ItemStandardFlags
-        & (PeepItem::DRINK | PeepItem::BURGER | PeepItem::CHIPS | PeepItem::ICE_CREAM | PeepItem::CANDYFLOSS | PeepItem::PIZZA
-           | PeepItem::POPCORN | PeepItem::HOT_DOG | PeepItem::TENTACLE | PeepItem::TOFFEE_APPLE | PeepItem::DOUGHNUT
-           | PeepItem::COFFEE | PeepItem::CHICKEN | PeepItem::LEMONADE);
+        & (PEEP_ITEM_DRINK | PEEP_ITEM_BURGER | PEEP_ITEM_CHIPS | PEEP_ITEM_ICE_CREAM | PEEP_ITEM_CANDYFLOSS | PEEP_ITEM_PIZZA
+           | PEEP_ITEM_POPCORN | PEEP_ITEM_HOT_DOG | PEEP_ITEM_TENTACLE | PEEP_ITEM_TOFFEE_APPLE | PEEP_ITEM_DOUGHNUT
+           | PEEP_ITEM_COFFEE | PEEP_ITEM_CHICKEN | PEEP_ITEM_LEMONADE);
 }
 
 int32_t Guest::HasFoodExtraFlag() const
 {
     return ItemExtraFlags
-        & (PeepItem::PRETZEL | PeepItem::CHOCOLATE | PeepItem::ICED_TEA | PeepItem::FUNNEL_CAKE | PeepItem::BEEF_NOODLES
-           | PeepItem::FRIED_RICE_NOODLES | PeepItem::WONTON_SOUP | PeepItem::MEATBALL_SOUP | PeepItem::FRUIT_JUICE
-           | PeepItem::SOYBEAN_MILK | PeepItem::SU_JONGKWA | PeepItem::SUB_SANDWICH | PeepItem::COOKIE
-           | PeepItem::ROAST_SAUSAGE);
+        & (PEEP_ITEM_PRETZEL | PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FUNNEL_CAKE | PEEP_ITEM_BEEF_NOODLES
+           | PEEP_ITEM_FRIED_RICE_NOODLES | PEEP_ITEM_WONTON_SOUP | PEEP_ITEM_MEATBALL_SOUP | PEEP_ITEM_FRUIT_JUICE
+           | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA | PEEP_ITEM_SUB_SANDWICH | PEEP_ITEM_COOKIE
+           | PEEP_ITEM_ROAST_SAUSAGE);
 }
 
 bool Guest::HasDrinkStandardFlag() const
 {
-    return ItemStandardFlags & (PeepItem::DRINK | PeepItem::COFFEE | PeepItem::LEMONADE);
+    return ItemStandardFlags & (PEEP_ITEM_DRINK | PEEP_ITEM_COFFEE | PEEP_ITEM_LEMONADE);
 }
 
 bool Guest::HasDrinkExtraFlag() const
 {
     return ItemExtraFlags
-        & (PeepItem::CHOCOLATE | PeepItem::ICED_TEA | PeepItem::FRUIT_JUICE | PeepItem::SOYBEAN_MILK | PeepItem::SU_JONGKWA);
+        & (PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FRUIT_JUICE | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA);
 }
 
 /**
@@ -1379,14 +1379,14 @@ bool Guest::HasDrink() const
 int32_t Guest::HasEmptyContainerStandardFlag() const
 {
     return ItemStandardFlags
-        & (PeepItem::EMPTY_CAN | PeepItem::EMPTY_BURGER_BOX | PeepItem::EMPTY_CUP | PeepItem::RUBBISH | PeepItem::EMPTY_BOX
-           | PeepItem::EMPTY_BOTTLE);
+        & (PEEP_ITEM_EMPTY_CAN | PEEP_ITEM_EMPTY_BURGER_BOX | PEEP_ITEM_EMPTY_CUP | PEEP_ITEM_RUBBISH | PEEP_ITEM_EMPTY_BOX
+           | PEEP_ITEM_EMPTY_BOTTLE);
 }
 
 int32_t Guest::HasEmptyContainerExtraFlag() const
 {
     return ItemExtraFlags
-        & (PeepItem::EMPTY_BOWL_RED | PeepItem::EMPTY_DRINK_CARTON | PeepItem::EMPTY_JUICE_CUP | PeepItem::EMPTY_BOWL_BLUE);
+        & (PEEP_ITEM_EMPTY_BOWL_RED | PEEP_ITEM_EMPTY_DRINK_CARTON | PEEP_ITEM_EMPTY_JUICE_CUP | PEEP_ITEM_EMPTY_BOWL_BLUE);
 }
 
 bool Guest::HasEmptyContainer() const
@@ -1492,7 +1492,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     bool hasVoucher = false;
 
-    if ((ItemStandardFlags & PeepItem::VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+    if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
         && (VoucherShopItem == shopItem))
     {
         hasVoucher = true;
@@ -1737,7 +1737,7 @@ loc_69B221:
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
-        ItemStandardFlags &= ~PeepItem::VOUCHER;
+        ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -1880,7 +1880,7 @@ void Guest::PickRideToGoOn()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
-        if (ItemStandardFlags & PeepItem::MAP)
+        if (ItemStandardFlags & PEEP_ITEM_MAP)
         {
             ReadMap();
         }
@@ -1918,7 +1918,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
     //      rides they haven't been on before.
-    if (ItemStandardFlags & PeepItem::MAP)
+    if (ItemStandardFlags & PEEP_ITEM_MAP)
     {
         // Consider rides that peep hasn't been on yet
         for (auto& ride : GetRideManager())
@@ -2428,7 +2428,7 @@ void Guest::ReadMap()
 
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
-    return peep->ItemStandardFlags & PeepItem::VOUCHER && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+    return peep->ItemStandardFlags & PEEP_ITEM_VOUCHER && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == ride->id;
 }
 
@@ -2651,7 +2651,7 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
-    if ((peep->ItemStandardFlags & PeepItem::VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+    if ((peep->ItemStandardFlags & PEEP_ITEM_VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == peep->CurrentRide)
         return true;
 
@@ -3174,7 +3174,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 
     std::bitset<MAX_RIDES> rideConsideration;
-    if (!considerOnlyCloseRides && (peep->ItemStandardFlags & PeepItem::MAP))
+    if (!considerOnlyCloseRides && (peep->ItemStandardFlags & PEEP_ITEM_MAP))
     {
         // Consider all rides in the park
         for (const auto& ride : GetRideManager())
@@ -3871,10 +3871,10 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if ((ItemStandardFlags & PeepItem::VOUCHER) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
+        if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
             && (VoucherRideId == CurrentRide))
         {
-            ItemStandardFlags &= ~PeepItem::VOUCHER;
+            ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
         else
@@ -6802,37 +6802,37 @@ struct item_pref_t
 
 // clang-format off
 static item_pref_t item_order_preference[] = {
-        { 0, PeepItem::ICE_CREAM, PEEP_SPRITE_TYPE_ICE_CREAM },
-        { 0, PeepItem::CHIPS, PEEP_SPRITE_TYPE_CHIPS },
-        { 0, PeepItem::PIZZA, PEEP_SPRITE_TYPE_PIZZA },
-        { 0, PeepItem::BURGER, PEEP_SPRITE_TYPE_BURGER },
-        { 0, PeepItem::DRINK, PEEP_SPRITE_TYPE_DRINK },
-        { 0, PeepItem::COFFEE, PEEP_SPRITE_TYPE_COFFEE },
-        { 0, PeepItem::CHICKEN, PEEP_SPRITE_TYPE_CHICKEN },
-        { 0, PeepItem::LEMONADE, PEEP_SPRITE_TYPE_LEMONADE },
-        { 0, PeepItem::CANDYFLOSS, PEEP_SPRITE_TYPE_CANDYFLOSS },
-        { 0, PeepItem::POPCORN, PEEP_SPRITE_TYPE_POPCORN },
-        { 0, PeepItem::HOT_DOG, PEEP_SPRITE_TYPE_HOT_DOG  },
-        { 0, PeepItem::TENTACLE, PEEP_SPRITE_TYPE_TENTACLE },
-        { 0, PeepItem::TOFFEE_APPLE, PEEP_SPRITE_TYPE_TOFFEE_APPLE },
-        { 0, PeepItem::DOUGHNUT, PEEP_SPRITE_TYPE_DOUGHNUT },
-        { 1, PeepItem::PRETZEL, PEEP_SPRITE_TYPE_PRETZEL },
-        { 1, PeepItem::COOKIE, PEEP_SPRITE_TYPE_PRETZEL },
-        { 1, PeepItem::CHOCOLATE, PEEP_SPRITE_TYPE_COFFEE },
-        { 1, PeepItem::ICED_TEA, PEEP_SPRITE_TYPE_COFFEE },
-        { 1, PeepItem::FUNNEL_CAKE, PEEP_SPRITE_TYPE_FUNNEL_CAKE },
-        { 1, PeepItem::BEEF_NOODLES, PEEP_SPRITE_TYPE_NOODLES },
-        { 1, PeepItem::FRIED_RICE_NOODLES, PEEP_SPRITE_TYPE_NOODLES },
-        { 1, PeepItem::WONTON_SOUP, PEEP_SPRITE_TYPE_SOUP },
-        { 1, PeepItem::MEATBALL_SOUP, PEEP_SPRITE_TYPE_SOUP },
-        { 1, PeepItem::FRUIT_JUICE, PEEP_SPRITE_TYPE_JUICE },
-        { 1, PeepItem::SOYBEAN_MILK, PEEP_SPRITE_TYPE_SU_JONGKWA },
-        { 1, PeepItem::SU_JONGKWA, PEEP_SPRITE_TYPE_SU_JONGKWA },
-        { 1, PeepItem::SUB_SANDWICH, PEEP_SPRITE_TYPE_SANDWICH },
-        { 1, PeepItem::ROAST_SAUSAGE, PEEP_SPRITE_TYPE_SAUSAGE },
-        { 0, PeepItem::BALLOON, PEEP_SPRITE_TYPE_BALLOON },
-        { 0, PeepItem::HAT, PEEP_SPRITE_TYPE_HAT },
-        { 1, PeepItem::SUNGLASSES, PEEP_SPRITE_TYPE_SUNGLASSES },
+        { 0, PEEP_ITEM_ICE_CREAM, PEEP_SPRITE_TYPE_ICE_CREAM },
+        { 0, PEEP_ITEM_CHIPS, PEEP_SPRITE_TYPE_CHIPS },
+        { 0, PEEP_ITEM_PIZZA, PEEP_SPRITE_TYPE_PIZZA },
+        { 0, PEEP_ITEM_BURGER, PEEP_SPRITE_TYPE_BURGER },
+        { 0, PEEP_ITEM_DRINK, PEEP_SPRITE_TYPE_DRINK },
+        { 0, PEEP_ITEM_COFFEE, PEEP_SPRITE_TYPE_COFFEE },
+        { 0, PEEP_ITEM_CHICKEN, PEEP_SPRITE_TYPE_CHICKEN },
+        { 0, PEEP_ITEM_LEMONADE, PEEP_SPRITE_TYPE_LEMONADE },
+        { 0, PEEP_ITEM_CANDYFLOSS, PEEP_SPRITE_TYPE_CANDYFLOSS },
+        { 0, PEEP_ITEM_POPCORN, PEEP_SPRITE_TYPE_POPCORN },
+        { 0, PEEP_ITEM_HOT_DOG, PEEP_SPRITE_TYPE_HOT_DOG  },
+        { 0, PEEP_ITEM_TENTACLE, PEEP_SPRITE_TYPE_TENTACLE },
+        { 0, PEEP_ITEM_TOFFEE_APPLE, PEEP_SPRITE_TYPE_TOFFEE_APPLE },
+        { 0, PEEP_ITEM_DOUGHNUT, PEEP_SPRITE_TYPE_DOUGHNUT },
+        { 1, PEEP_ITEM_PRETZEL, PEEP_SPRITE_TYPE_PRETZEL },
+        { 1, PEEP_ITEM_COOKIE, PEEP_SPRITE_TYPE_PRETZEL },
+        { 1, PEEP_ITEM_CHOCOLATE, PEEP_SPRITE_TYPE_COFFEE },
+        { 1, PEEP_ITEM_ICED_TEA, PEEP_SPRITE_TYPE_COFFEE },
+        { 1, PEEP_ITEM_FUNNEL_CAKE, PEEP_SPRITE_TYPE_FUNNEL_CAKE },
+        { 1, PEEP_ITEM_BEEF_NOODLES, PEEP_SPRITE_TYPE_NOODLES },
+        { 1, PEEP_ITEM_FRIED_RICE_NOODLES, PEEP_SPRITE_TYPE_NOODLES },
+        { 1, PEEP_ITEM_WONTON_SOUP, PEEP_SPRITE_TYPE_SOUP },
+        { 1, PEEP_ITEM_MEATBALL_SOUP, PEEP_SPRITE_TYPE_SOUP },
+        { 1, PEEP_ITEM_FRUIT_JUICE, PEEP_SPRITE_TYPE_JUICE },
+        { 1, PEEP_ITEM_SOYBEAN_MILK, PEEP_SPRITE_TYPE_SU_JONGKWA },
+        { 1, PEEP_ITEM_SU_JONGKWA, PEEP_SPRITE_TYPE_SU_JONGKWA },
+        { 1, PEEP_ITEM_SUB_SANDWICH, PEEP_SPRITE_TYPE_SANDWICH },
+        { 1, PEEP_ITEM_ROAST_SAUSAGE, PEEP_SPRITE_TYPE_SAUSAGE },
+        { 0, PEEP_ITEM_BALLOON, PEEP_SPRITE_TYPE_BALLOON },
+        { 0, PEEP_ITEM_HAT, PEEP_SPRITE_TYPE_HAT },
+        { 1, PEEP_ITEM_SUNGLASSES, PEEP_SPRITE_TYPE_SUNGLASSES },
         { 0xFF, 0xFFFFFFFF, PEEP_SPRITE_TYPE_INVALID }
 };
 // clang-format on
@@ -6855,11 +6855,11 @@ void Guest::UpdateSpriteType()
             }
             create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
-        ItemStandardFlags &= ~PeepItem::BALLOON;
+        ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (climate_is_raining() && (ItemStandardFlags & PeepItem::UMBRELLA) && x != LOCATION_NULL)
+    if (climate_is_raining() && (ItemStandardFlags & PEEP_ITEM_UMBRELLA) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
         if (map_is_location_valid(loc.ToTileStart()))
