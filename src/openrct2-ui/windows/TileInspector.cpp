@@ -19,6 +19,8 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/object/TerrainEdgeObject.h>
+#include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
@@ -32,43 +34,6 @@
 #include <openrct2/world/Surface.h>
 
 // clang-format off
-static constexpr const rct_string_id TerrainTypeStringIds[] = {
-    STR_TILE_INSPECTOR_TERRAIN_GRASS,
-    STR_TILE_INSPECTOR_TERRAIN_SAND,
-    STR_TILE_INSPECTOR_TERRAIN_DIRT,
-    STR_TILE_INSPECTOR_TERRAIN_ROCK,
-    STR_TILE_INSPECTOR_TERRAIN_MARTIAN,
-    STR_TILE_INSPECTOR_TERRAIN_CHECKERBOARD,
-    STR_TILE_INSPECTOR_TERRAIN_GRASS_CLUMPS,
-    STR_TILE_INSPECTOR_TERRAIN_ICE,
-    STR_TILE_INSPECTOR_TERRAIN_GRID_RED,
-    STR_TILE_INSPECTOR_TERRAIN_GRID_YELLOW,
-    STR_TILE_INSPECTOR_TERRAIN_GRID_BLUE,
-    STR_TILE_INSPECTOR_TERRAIN_GRID_GREEN,
-    STR_TILE_INSPECTOR_TERRAIN_SAND_DARK,
-    STR_TILE_INSPECTOR_TERRAIN_SAND_LIGHT,
-    STR_TILE_INSPECTOR_TERRAIN_CHECKERBOARD_INVERTED,
-    STR_TILE_INSPECTOR_TERRAIN_UNDERGROUND_VIEW,
-};
-
-static constexpr const rct_string_id TerrainEdgeTypeStringIds[] = {
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_ROCK,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_WOOD_RED,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_WOOD_BLACK,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_ICE,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_BRICK,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_IRON,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_GREY,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_YELLOW,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_RED,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_PURPLE,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_GREEN,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_STONE_BROWN,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_STONE_GREY,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_SKYSCRAPER_A,
-    STR_TILE_INSPECTOR_TERRAIN_EDGE_SKYSCRAPER_B,
-};
-
 static constexpr const rct_string_id EntranceTypeStringIds[] = {
     STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_ENTRANCE,
     STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_EXIT,
@@ -1814,15 +1779,21 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Terrain texture name
-                rct_string_id terrainNameId = TerrainTypeStringIds[tileElement->AsSurface()->GetSurfaceStyle()];
+                rct_string_id terrainNameId = STR_EMPTY;
+                auto surfaceStyle = tileElement->AsSurface()->GetSurfaceStyleObject();
+                if (surfaceStyle != nullptr)
+                {
+                    terrainNameId = surfaceStyle->NameStringId;
+                }
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SURFACE_TERAIN, &terrainNameId, COLOUR_WHITE, screenCoords);
 
                 // Edge texture name
-                uint32_t idx = tileElement->AsSurface()->GetEdgeStyle();
-                openrct2_assert(
-                    idx < std::size(TerrainEdgeTypeStringIds), "Tried accessing invalid entry %d in terrainEdgeTypeStringIds",
-                    idx);
-                rct_string_id terrainEdgeNameId = TerrainEdgeTypeStringIds[tileElement->AsSurface()->GetEdgeStyle()];
+                rct_string_id terrainEdgeNameId = STR_EMPTY;
+                auto edgeStyle = tileElement->AsSurface()->GetEdgeStyleObject();
+                if (edgeStyle != nullptr)
+                {
+                    terrainEdgeNameId = edgeStyle->NameStringId;
+                }
                 gfx_draw_string_left(
                     dpi, STR_TILE_INSPECTOR_SURFACE_EDGE, &terrainEdgeNameId, COLOUR_WHITE,
                     screenCoords + ScreenCoordsXY{ 0, 11 });

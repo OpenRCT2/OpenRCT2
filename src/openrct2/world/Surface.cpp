@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../object/ObjectManager.h"
+#include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../scenario/Scenario.h"
 #include "Location.hpp"
@@ -21,9 +22,21 @@ uint32_t SurfaceElement::GetSurfaceStyle() const
     return SurfaceStyle;
 }
 
+TerrainSurfaceObject* SurfaceElement::GetSurfaceStyleObject() const
+{
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, GetSurfaceStyle()));
+}
+
 uint32_t SurfaceElement::GetEdgeStyle() const
 {
     return EdgeStyle;
+}
+
+TerrainEdgeObject* SurfaceElement::GetEdgeStyleObject() const
+{
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, GetEdgeStyle()));
 }
 
 void SurfaceElement::SetSurfaceStyle(uint32_t newStyle)

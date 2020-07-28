@@ -2658,26 +2658,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug tools
 STR_5312    :Show console
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
-STR_5315    :Grass
-STR_5316    :Sand
-STR_5317    :Dirt
-STR_5318    :Rock
-STR_5319    :Martian
-STR_5320    :Checkerboard
-STR_5321    :Grass clumps
-STR_5322    :Ice
-STR_5323    :Grid (red)
-STR_5324    :Grid (yellow)
-STR_5325    :Grid (blue)
-STR_5326    :Grid (green)
-STR_5327    :Sand (dark)
-STR_5328    :Sand (light)
-STR_5329    :Checkerboard (inverted)
-STR_5330    :Underground view
-STR_5331    :Rock
-STR_5332    :Wood (red)
-STR_5333    :Wood (black)
-STR_5334    :Ice
 STR_5335    :Ride entrance
 STR_5336    :Ride exit
 STR_5337    :Park entrance
@@ -3493,17 +3473,6 @@ STR_6200    :Reset date
 STR_6201    :{MONTH}
 STR_6202    :Virtual floor style:
 STR_6203    :{SMALLFONT}{BLACK}When enabled, a virtual floor will be rendered when holding Ctrl or Shift to ease vertical placement of elements.
-STR_6204    :Brick
-STR_6205    :Iron
-STR_6206    :Grey stucco
-STR_6207    :Yellow stucco
-STR_6208    :Red stucco
-STR_6209    :Purple stucco
-STR_6210    :Green stucco
-STR_6211    :Brown sandstone
-STR_6212    :Grey sandstone
-STR_6213    :Skyscraper A
-STR_6214    :Skyscraper B
 STR_6215    :Construction
 STR_6216    :Operation
 STR_6217    :Ride / track availability
