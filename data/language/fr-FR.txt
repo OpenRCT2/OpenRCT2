@@ -2905,7 +2905,7 @@ STR_5554    :{SMALLFONT}{BLACK}Outil montagne
 STR_5555    :Afficher véhicules d'autres types de voie
 STR_5556    :{SMALLFONT}{BLACK}Sortir le joueur
 STR_5557    :Rester connecté après désynchronisation (multij.)
-STR_5558    :Redémarrez le jeu pour appliquer ce paramètre
+STR_5558    :Ce paramètre sera appliqué lorsque vous aurez redémarré OpenRCT2
 STR_5559    :Inspections 10 min.
 STR_5560    :{SMALLFONT}{BLACK}Définit l'intervalle d'inspection de toutes les attractions à toutes les 10 minutes
 STR_5561    :Le chargement de la langue a échoué
@@ -3685,6 +3685,7 @@ STR_6374    :C
 STR_6375    :Attraction inconnue
 STR_6376    :{WINDOW_COLOUR_2}Véhicule : {NEWLINE}{BLACK}{STRINGID} pour {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Type : {BLACK}{STRINGID} pour {STRINGID}
+STR_6378    :Réception de la liste des objets : {INT32} / {INT32}
 
 #############
 # Scenarios #
