@@ -245,7 +245,7 @@ exitcode_t HandleNoCommand(CommandLineArgEnumerator* enumerator)
     if (enumerator->TryPopString(&parkUri) && parkUri[0] != '-')
     {
         String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
-        gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
+        gOpenRCT2StartupAction = StartupAction::Open;
     }
 
     return EXITCODE_CONTINUE;
@@ -267,7 +267,7 @@ exitcode_t HandleCommandEdit(CommandLineArgEnumerator* enumerator)
     }
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
-    gOpenRCT2StartupAction = STARTUP_ACTION_EDIT;
+    gOpenRCT2StartupAction = StartupAction::Edit;
     return EXITCODE_CONTINUE;
 }
 
@@ -279,7 +279,7 @@ exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator* enumera
         return result;
     }
 
-    gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
+    gOpenRCT2StartupAction = StartupAction::Intro;
     return EXITCODE_CONTINUE;
 }
 
@@ -300,7 +300,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
         return EXITCODE_FAIL;
     }
 
-    gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
+    gOpenRCT2StartupAction = StartupAction::Open;
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
     gNetworkStart = NETWORK_MODE_SERVER;
