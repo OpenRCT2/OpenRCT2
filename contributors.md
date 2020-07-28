@@ -148,6 +148,7 @@ The following people are not part of the development team, but have been contrib
 * Reid Baris (Rdbaris)
 * Deanna Baris (dbaris)
 * Chaitanya Thengdi (chaitanyathengdi)
+* Sidney Kuyateh (autinerd)
 
 ## Toolchain
 * (Balletie) - macOS

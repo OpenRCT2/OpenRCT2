@@ -367,7 +367,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     String::Set(pathG1Check, sizeof(pathG1Check), path);
     Path::Append(pathG1Check, sizeof(pathG1Check), "Data");
     Path::Append(pathG1Check, sizeof(pathG1Check), "g1.dat");
-    if (Platform::FileExists(pathG1Check))
+    if (!Platform::FileExists(pathG1Check))
     {
         Console::Error::WriteLine("RCT2 path not valid.");
         Console::Error::WriteLine("Unable to find %s.", pathG1Check);
