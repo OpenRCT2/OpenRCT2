@@ -2651,12 +2651,12 @@ private:
         gClimateCurrent.Weather = _s4.weather;
         gClimateCurrent.WeatherEffect = WEATHER_EFFECT_NONE;
         gClimateCurrent.WeatherGloom = _s4.weather_gloom;
-        gClimateCurrent.RainLevel = _s4.rain;
+        gClimateCurrent.Level = static_cast<RainLevel>(_s4.rain);
         gClimateNext.Temperature = _s4.target_temperature;
         gClimateNext.Weather = _s4.target_weather;
         gClimateNext.WeatherEffect = WEATHER_EFFECT_NONE;
         gClimateNext.WeatherGloom = _s4.target_weather_gloom;
-        gClimateNext.RainLevel = _s4.target_rain;
+        gClimateNext.Level = static_cast<RainLevel>(_s4.target_rain);
     }
 
     void ImportScenarioNameDetails()

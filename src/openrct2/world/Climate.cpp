@@ -91,7 +91,7 @@ void climate_reset(int32_t climate)
     gClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
     gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
     gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
-    gClimateCurrent.RainLevel = weatherState->RainLevel;
+    gClimateCurrent.Level = weatherState->Level;
 
     _lightningTimer = 0;
     _thunderTimer = 0;
@@ -135,17 +135,17 @@ void climate_update()
                     _thunderTimer = 0;
                     _lightningTimer = 0;
 
-                    if (gClimateCurrent.RainLevel == gClimateNext.RainLevel)
+                    if (gClimateCurrent.Level == gClimateNext.Level)
                     {
                         gClimateCurrent.Weather = gClimateNext.Weather;
                         climate_determine_future_weather(scenario_rand());
                         auto intent = Intent(INTENT_ACTION_UPDATE_CLIMATE);
                         context_broadcast_intent(&intent);
                     }
-                    else if (gClimateNext.RainLevel <= RAIN_LEVEL_HEAVY)
+                    else if (gClimateNext.Level <= RainLevel::Heavy)
                     {
-                        gClimateCurrent.RainLevel = climate_step_weather_level(
-                            gClimateCurrent.RainLevel, gClimateNext.RainLevel);
+                        gClimateCurrent.Level = static_cast<RainLevel>(climate_step_weather_level(
+                            static_cast<int8_t>(gClimateCurrent.Level), static_cast<int8_t>(gClimateNext.Level)));
                     }
                 }
                 else
@@ -187,7 +187,7 @@ void climate_force_weather(uint8_t weather)
     const auto weatherState = &ClimateWeatherData[weather];
     gClimateCurrent.Weather = weather;
     gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
-    gClimateCurrent.RainLevel = weatherState->RainLevel;
+    gClimateCurrent.Level = weatherState->Level;
     gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
     gClimateUpdateTimer = 1920;
 
@@ -214,7 +214,7 @@ void climate_update_sound()
 
 bool climate_is_raining()
 {
-    return gClimateCurrent.RainLevel != RAIN_LEVEL_NONE;
+    return gClimateCurrent.Level != RainLevel::None;
 }
 
 FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state)
@@ -270,7 +270,7 @@ static void climate_determine_future_weather(int32_t randomDistribution)
     gClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
     gClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
     gClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
-    gClimateNext.RainLevel = nextWeatherState->RainLevel;
+    gClimateNext.Level = nextWeatherState->Level;
 
     gClimateUpdateTimer = 1920;
 }
@@ -412,12 +412,12 @@ const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] = {
 
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
 const WeatherState ClimateWeatherData[6] = {
-    { 10, WEATHER_EFFECT_NONE, 0, RAIN_LEVEL_NONE, SPR_WEATHER_SUN },         // Sunny
-    { 5, WEATHER_EFFECT_NONE, 0, RAIN_LEVEL_NONE, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
-    { 0, WEATHER_EFFECT_NONE, 0, RAIN_LEVEL_NONE, SPR_WEATHER_CLOUD },        // Cloudy
-    { -2, WEATHER_EFFECT_RAIN, 1, RAIN_LEVEL_LIGHT, SPR_WEATHER_LIGHT_RAIN }, // Rain
-    { -4, WEATHER_EFFECT_RAIN, 2, RAIN_LEVEL_HEAVY, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
-    { 2, WEATHER_EFFECT_STORM, 2, RAIN_LEVEL_HEAVY, SPR_WEATHER_STORM },      // Thunderstorm
+    { 10, WEATHER_EFFECT_NONE, 0, RainLevel::None, SPR_WEATHER_SUN },         // Sunny
+    { 5, WEATHER_EFFECT_NONE, 0, RainLevel::None, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
+    { 0, WEATHER_EFFECT_NONE, 0, RainLevel::None, SPR_WEATHER_CLOUD },        // Cloudy
+    { -2, WEATHER_EFFECT_RAIN, 1, RainLevel::Light, SPR_WEATHER_LIGHT_RAIN }, // Rain
+    { -4, WEATHER_EFFECT_RAIN, 2, RainLevel::Heavy, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
+    { 2, WEATHER_EFFECT_STORM, 2, RainLevel::Heavy, SPR_WEATHER_STORM },      // Thunderstorm
 };
 
 static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] = {
