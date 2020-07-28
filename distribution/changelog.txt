@@ -54,6 +54,7 @@
 - Fix: [#12297] OpenGL renderer causing artifacts.
 - Fix: [#12312] Softlock when loading save file via command line fails.
 - Fix: [#12486] `set-rct2` has a broken g1.dat check.
+- Fix: [#12505] Stores selling multiple items can only have the first product advertised.
 - Fix: 'j' character has broken kerning (original bug).
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
 - Improved: [#6530] Allow water and land height changes on park borders.
