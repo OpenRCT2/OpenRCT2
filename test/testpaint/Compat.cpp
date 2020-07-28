@@ -162,6 +162,11 @@ template<> bool SpriteBase::Is<Guest>() const
     return peep && peep->AssignedPeepType == PeepType::Guest;
 }
 
+template<> bool SpriteBase::Is<Vehicle>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
+}
+
 rct_sprite* get_sprite(size_t sprite_idx)
 {
     assert(sprite_idx < MAX_SPRITES);

@@ -9605,7 +9605,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     // ebx
     int32_t numVehicles = 0;
 
-    for (; vehicle!= nullptr;)
+    for (; vehicle != nullptr;)
     {
         numVehicles++;
         // Not used?
