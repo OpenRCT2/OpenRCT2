@@ -4230,12 +4230,8 @@ void Guest::UpdateRideLeaveVehicle()
 
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
         {
-            for (; !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
+            for (; vehicle != nullptr && !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
-                if (vehicle == nullptr)
-                {
-                    return;
-                }
                 uint16_t trackType = vehicle->GetTrackType();
                 if (trackType == TRACK_ELEM_FLAT || trackType > TRACK_ELEM_MIDDLE_STATION)
                     continue;
@@ -4256,6 +4252,10 @@ void Guest::UpdateRideLeaveVehicle()
                     break;
             }
 
+            if (vehicle == nullptr)
+            {
+                return;
+            }
             uint8_t shiftMultiplier = 12;
             uint8_t specialDirection = platformLocation.direction;
 
