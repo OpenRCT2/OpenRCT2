@@ -187,15 +187,18 @@ void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, v
 void NetworkConnection::RecordPacketStats(const NetworkPacket& packet, bool sending)
 {
     uint32_t packetSize = static_cast<uint32_t>(packet.BytesTransferred);
-    uint32_t trafficGroup = NETWORK_STATISTICS_GROUP_BASE;
+    uint32_t trafficGroup;
 
     switch (packet.GetCommand())
     {
-        case NETWORK_COMMAND_GAME_ACTION:
+        case NetworkCommand::GameAction:
             trafficGroup = NETWORK_STATISTICS_GROUP_COMMANDS;
             break;
-        case NETWORK_COMMAND_MAP:
+        case NetworkCommand::Map:
             trafficGroup = NETWORK_STATISTICS_GROUP_MAPDATA;
+            break;
+        default:
+            trafficGroup = NETWORK_STATISTICS_GROUP_BASE;
             break;
     }
 

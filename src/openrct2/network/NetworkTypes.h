@@ -48,34 +48,34 @@ enum NETWORK_AUTH
     NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED,
 };
 
-enum NETWORK_COMMAND
+enum class NetworkCommand : uint32_t
 {
-    NETWORK_COMMAND_AUTH,
-    NETWORK_COMMAND_MAP,
-    NETWORK_COMMAND_CHAT,
-    NETWORK_COMMAND_TICK = 4,
-    NETWORK_COMMAND_PLAYERLIST,
-    NETWORK_COMMAND_PING,
-    NETWORK_COMMAND_PINGLIST,
-    NETWORK_COMMAND_SETDISCONNECTMSG,
-    NETWORK_COMMAND_GAMEINFO,
-    NETWORK_COMMAND_SHOWERROR,
-    NETWORK_COMMAND_GROUPLIST,
-    NETWORK_COMMAND_EVENT,
-    NETWORK_COMMAND_TOKEN,
-    NETWORK_COMMAND_OBJECTS_LIST,
-    NETWORK_COMMAND_MAPREQUEST,
-    NETWORK_COMMAND_GAME_ACTION,
-    NETWORK_COMMAND_PLAYERINFO,
-    NETWORK_COMMAND_REQUEST_GAMESTATE,
-    NETWORK_COMMAND_GAMESTATE,
-    NETWORK_COMMAND_SCRIPTS,
-    NETWORK_COMMAND_HEARTBEAT,
-    NETWORK_COMMAND_MAX,
-    NETWORK_COMMAND_INVALID = -1
+    Auth,
+    Map,
+    Chat,
+    Tick = 4,
+    PlayerList,
+    Ping,
+    PingList,
+    DisconnectMessage,
+    GameInfo,
+    ShowError,
+    GroupList,
+    Event,
+    Token,
+    ObjectsList,
+    MapRequest,
+    GameAction,
+    PlayerInfo,
+    RequestGameState,
+    GameState,
+    Scripts,
+    Heartbeat,
+    Max,
+    Invalid = static_cast<uint32_t>(-1),
 };
 
-static_assert(NETWORK_COMMAND::NETWORK_COMMAND_GAMEINFO == 9, "Master server expects this to be 9");
+static_assert(NetworkCommand::GameInfo == static_cast<NetworkCommand>(9), "Master server expects this to be 9");
 
 enum NETWORK_SERVER_STATE
 {
