@@ -98,28 +98,27 @@ std::string rct_sprite_checksum::ToString() const
     return result;
 }
 
-rct_sprite* try_get_sprite(size_t spriteIndex)
+SpriteBase* try_get_sprite(size_t spriteIndex)
 {
-    rct_sprite* sprite = nullptr;
-    if (spriteIndex < MAX_SPRITES)
+    if (spriteIndex >= MAX_SPRITES)
     {
-        sprite = &_spriteList[spriteIndex];
+        return nullptr;
     }
-    return sprite;
+    return &_spriteList[spriteIndex].generic;
 }
 
-rct_sprite* get_sprite(size_t sprite_idx)
+SpriteBase* get_sprite(size_t spriteIndex)
 {
-    if (sprite_idx == SPRITE_INDEX_NULL)
+    if (spriteIndex == SPRITE_INDEX_NULL)
     {
         return nullptr;
     }
-    openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
-    if (sprite_idx >= MAX_SPRITES)
+    openrct2_assert(spriteIndex < MAX_SPRITES, "Tried getting sprite %u", spriteIndex);
+    if (spriteIndex >= MAX_SPRITES)
     {
         return nullptr;
     }
-    return &_spriteList[sprite_idx];
+    return &_spriteList[spriteIndex].generic;
 }
 
 uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)
