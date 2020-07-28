@@ -154,7 +154,7 @@ rct_window* window_new_campaign_open(int16_t campaignType)
     w->campaign.no_weeks = 2;
 
     // Currently selected ride
-    w->campaign.ride_id = SELECTED_RIDE_UNDEFINED;
+    w->campaign.RideId = SELECTED_RIDE_UNDEFINED;
 
     WindowCampaignRefreshRides();
     return w;
@@ -207,7 +207,7 @@ static void window_new_campaign_mouseup(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_START_BUTTON:
         {
-            auto gameAction = ParkMarketingAction(w->campaign.campaign_type, w->campaign.ride_id, w->campaign.no_weeks);
+            auto gameAction = ParkMarketingAction(w->campaign.campaign_type, w->campaign.RideId, w->campaign.no_weeks);
             gameAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
@@ -306,16 +306,25 @@ static void window_new_campaign_dropdown(rct_window* w, rct_widgetindex widgetIn
     if (widgetIndex != WIDX_RIDE_DROPDOWN_BUTTON)
         return;
 
-    if (dropdownIndex < 0 || static_cast<size_t>(dropdownIndex) >= window_new_campaign_rides.size())
+    if (dropdownIndex < 0)
         return;
 
     if (w->campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
     {
-        w->campaign.ride_id = window_new_campaign_shop_items[dropdownIndex];
+        if (static_cast<size_t>(dropdownIndex) >= std::size(window_new_campaign_shop_items))
+            return;
+
+        if (window_new_campaign_shop_items[dropdownIndex] == 255)
+            return;
+
+        w->campaign.ShopItemId = window_new_campaign_shop_items[dropdownIndex];
     }
     else
     {
-        w->campaign.ride_id = window_new_campaign_rides[dropdownIndex];
+        if (static_cast<size_t>(dropdownIndex) >= window_new_campaign_rides.size())
+            return;
+
+        w->campaign.RideId = window_new_campaign_rides[dropdownIndex];
     }
 
     w->Invalidate();
@@ -339,9 +348,9 @@ static void window_new_campaign_invalidate(rct_window* w)
             window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_DROPDOWN;
             window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_BUTTON;
             window_new_campaign_widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
-            if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED)
+            if (w->campaign.RideId != SELECTED_RIDE_UNDEFINED)
             {
-                auto ride = get_ride(w->campaign.ride_id);
+                auto ride = get_ride(w->campaign.RideId);
                 if (ride != nullptr)
                 {
                     window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
@@ -356,9 +365,9 @@ static void window_new_campaign_invalidate(rct_window* w)
             window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_DROPDOWN;
             window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_BUTTON;
             window_new_campaign_widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
-            if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED)
+            if (w->campaign.ShopItemId != SELECTED_RIDE_UNDEFINED)
             {
-                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = ShopItems[w->campaign.ride_id].Naming.Plural;
+                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = ShopItems[w->campaign.ShopItemId].Naming.Plural;
             }
             break;
     }
@@ -368,7 +377,7 @@ static void window_new_campaign_invalidate(rct_window* w)
 
     // Enable / disable start button based on ride dropdown
     w->disabled_widgets &= ~(1 << WIDX_START_BUTTON);
-    if (window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type == WWT_DROPDOWN && w->campaign.ride_id == SELECTED_RIDE_UNDEFINED)
+    if (window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type == WWT_DROPDOWN && w->campaign.RideId == SELECTED_RIDE_UNDEFINED)
         w->disabled_widgets |= 1 << WIDX_START_BUTTON;
 }
 

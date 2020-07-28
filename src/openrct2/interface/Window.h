@@ -247,7 +247,11 @@ struct campaign_variables
 {
     int16_t campaign_type;
     int16_t no_weeks; // 0x482
-    uint16_t ride_id; // 0x484
+    union
+    {
+        ride_id_t RideId;            // 0x484
+        ObjectEntryIndex ShopItemId; // 0x484
+    };
     uint32_t pad_486;
 };
 
