@@ -457,7 +457,7 @@ private:
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
         context_broadcast_intent(&intent);
         scenery_set_default_placement_configuration();
-        news_item_init_queue();
+        News::InitQueue();
         load_palette();
         gScreenAge = 0;
         gGameSpeed = 1;

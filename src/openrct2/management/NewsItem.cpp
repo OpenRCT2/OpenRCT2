@@ -24,21 +24,21 @@
 #include "../world/Location.hpp"
 #include "../world/Sprite.h"
 
-NewsItemQueues gNewsItems;
+News::ItemQueues gNewsItems;
 
-NewsItem& NewsItemQueues::Current()
+News::Item& News::ItemQueues::Current()
 {
     return Recent.front();
 }
 
-const NewsItem& NewsItemQueues::Current() const
+const News::Item& News::ItemQueues::Current() const
 {
     return Recent.front();
 }
 
-bool news_item_is_valid_idx(int32_t index)
+bool News::IsValidIndex(int32_t index)
 {
-    if (index >= MAX_NEWS_ITEMS)
+    if (index >= News::MaxItems)
     {
         log_error("Tried to get news item past MAX_NEWS.");
         return false;
@@ -46,17 +46,17 @@ bool news_item_is_valid_idx(int32_t index)
     return true;
 }
 
-NewsItem* news_item_get(int32_t index)
+News::Item* News::GetItem(int32_t index)
 {
     return gNewsItems.At(index);
 }
 
-NewsItem& NewsItemQueues::operator[](size_t index)
+News::Item& News::ItemQueues::operator[](size_t index)
 {
-    return const_cast<NewsItem&>(const_cast<const NewsItemQueues&>(*this)[index]);
+    return const_cast<News::Item&>(const_cast<const News::ItemQueues&>(*this)[index]);
 }
 
-const NewsItem& NewsItemQueues::operator[](size_t index) const
+const News::Item& News::ItemQueues::operator[](size_t index) const
 {
     if (index < Recent.capacity())
         return Recent[index];
@@ -64,14 +64,14 @@ const NewsItem& NewsItemQueues::operator[](size_t index) const
         return Archived[index - Recent.capacity()];
 }
 
-NewsItem* NewsItemQueues::At(int32_t index)
+News::Item* News::ItemQueues::At(int32_t index)
 {
-    return const_cast<NewsItem*>(const_cast<const NewsItemQueues&>(*this).At(index));
+    return const_cast<News::Item*>(const_cast<const News::ItemQueues&>(*this).At(index));
 }
 
-const NewsItem* NewsItemQueues::At(int32_t index) const
+const News::Item* News::ItemQueues::At(int32_t index) const
 {
-    if (news_item_is_valid_idx(index))
+    if (News::IsValidIndex(index))
     {
         return &(*this)[index];
     }
@@ -81,12 +81,12 @@ const NewsItem* NewsItemQueues::At(int32_t index) const
     }
 }
 
-bool news_item_is_queue_empty()
+bool News::IsQueueEmpty()
 {
     return gNewsItems.IsEmpty();
 }
 
-bool NewsItemQueues::IsEmpty() const
+bool News::ItemQueues::IsEmpty() const
 {
     return Recent.empty();
 }
@@ -95,13 +95,13 @@ bool NewsItemQueues::IsEmpty() const
  *
  *  rct2: 0x0066DF32
  */
-void NewsItemQueues::Clear()
+void News::ItemQueues::Clear()
 {
     Recent.clear();
     Archived.clear();
 }
 
-void news_item_init_queue()
+void News::InitQueue()
 {
     gNewsItems.Clear();
     assert(gNewsItems.IsEmpty());
@@ -116,12 +116,12 @@ void news_item_init_queue()
     context_broadcast_intent(&intent);
 }
 
-uint16_t NewsItemQueues::IncrementTicks()
+uint16_t News::ItemQueues::IncrementTicks()
 {
     return ++Current().Ticks;
 }
 
-static void news_item_tick_current()
+static void TickCurrent()
 {
     int32_t ticks = gNewsItems.IncrementTicks();
     // Only play news item sound when in normal playing mode
@@ -132,7 +132,7 @@ static void news_item_tick_current()
     }
 }
 
-int32_t NewsItemQueues::RemoveTime() const
+int32_t News::ItemQueues::RemoveTime() const
 {
     if (!Recent[5].IsEmpty() && !Recent[4].IsEmpty() && !Recent[3].IsEmpty() && !Recent[2].IsEmpty())
     {
@@ -141,7 +141,7 @@ int32_t NewsItemQueues::RemoveTime() const
     return 320;
 }
 
-bool NewsItemQueues::CurrentShouldBeArchived() const
+bool News::ItemQueues::CurrentShouldBeArchived() const
 {
     return Current().Ticks >= RemoveTime();
 }
@@ -150,7 +150,7 @@ bool NewsItemQueues::CurrentShouldBeArchived() const
  *
  *  rct2: 0x0066E252
  */
-void news_item_update_current()
+void News::UpdateCurrentItem()
 {
     // Check if there is a current news item
     if (gNewsItems.IsEmpty())
@@ -160,7 +160,7 @@ void news_item_update_current()
     context_broadcast_intent(&intent);
 
     // Update the current news item
-    news_item_tick_current();
+    TickCurrent();
 
     // Removal of current news item
     if (gNewsItems.CurrentShouldBeArchived())
@@ -171,12 +171,12 @@ void news_item_update_current()
  *
  *  rct2: 0x0066E377
  */
-void news_item_close_current()
+void News::CloseCurrentItem()
 {
     gNewsItems.ArchiveCurrent();
 }
 
-void NewsItemQueues::ArchiveCurrent()
+void News::ItemQueues::ArchiveCurrent()
 {
     // Check if there is a current message
     if (IsEmpty())
@@ -201,7 +201,7 @@ void NewsItemQueues::ArchiveCurrent()
  *
  *  rct2: 0x0066BA74
  */
-std::optional<CoordsXYZ> news_item_get_subject_location(News::ItemType type, int32_t subject)
+std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t subject)
 {
     std::optional<CoordsXYZ> subjectLoc{ std::nullopt };
 
@@ -281,7 +281,7 @@ std::optional<CoordsXYZ> news_item_get_subject_location(News::ItemType type, int
     return subjectLoc;
 }
 
-NewsItem* NewsItemQueues::FirstOpenOrNewSlot()
+News::Item* News::ItemQueues::FirstOpenOrNewSlot()
 {
     for (auto emptySlots = Recent.capacity() - Recent.size(); emptySlots < 2; ++emptySlots)
     {
@@ -301,19 +301,19 @@ NewsItem* NewsItemQueues::FirstOpenOrNewSlot()
  *
  *  rct2: 0x0066DF55
  */
-NewsItem* news_item_add_to_queue(News::ItemType type, rct_string_id string_id, uint32_t assoc)
+News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc)
 {
     utf8 buffer[256];
     void* args = gCommonFormatArgs;
 
     // overflows possible?
     format_string(buffer, 256, string_id, args);
-    return news_item_add_to_queue_raw(type, buffer, assoc);
+    return News::AddItemToQueue(type, buffer, assoc);
 }
 
-NewsItem* news_item_add_to_queue_raw(News::ItemType type, const utf8* text, uint32_t assoc)
+News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc)
 {
-    NewsItem* newsItem = gNewsItems.FirstOpenOrNewSlot();
+    News::Item* newsItem = gNewsItems.FirstOpenOrNewSlot();
     newsItem->Type = type;
     newsItem->Flags = 0;
     newsItem->Assoc = assoc;
@@ -331,7 +331,7 @@ NewsItem* news_item_add_to_queue_raw(News::ItemType type, const utf8* text, uint
  *  rct2: 0x0066EBE6
  *
  */
-void news_item_open_subject(News::ItemType type, int32_t subject)
+void News::OpenSubject(News::ItemType type, int32_t subject)
 {
     switch (type)
     {
@@ -416,7 +416,7 @@ void news_item_open_subject(News::ItemType type, int32_t subject)
  *
  *  rct2: 0x0066E407
  */
-void news_item_disable_news(News::ItemType type, uint32_t assoc)
+void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
 {
     // TODO: write test invalidating windows
     gNewsItems.ForeachRecentNews([type, assoc](auto& newsItem) {
@@ -440,22 +440,22 @@ void news_item_disable_news(News::ItemType type, uint32_t assoc)
     });
 }
 
-void news_item_add_to_queue_custom(NewsItem* newNewsItem)
+void News::AddItemToQueue(News::Item* newNewsItem)
 {
-    NewsItem* newsItem = gNewsItems.FirstOpenOrNewSlot();
+    News::Item* newsItem = gNewsItems.FirstOpenOrNewSlot();
     *newsItem = *newNewsItem;
 }
 
-void news_item_remove(int32_t index)
+void News::RemoveItem(int32_t index)
 {
-    if (index < 0 || index >= MAX_NEWS_ITEMS)
+    if (index < 0 || index >= News::MaxItems)
         return;
 
     // News item is already null, no need to remove it
     if (gNewsItems[index].Type == News::ItemType::Null)
         return;
 
-    size_t newsBoundary = index < NEWS_ITEM_HISTORY_START ? NEWS_ITEM_HISTORY_START : MAX_NEWS_ITEMS;
+    size_t newsBoundary = index < News::ItemHistoryStart ? News::ItemHistoryStart : News::MaxItems;
     for (size_t i = index; i < newsBoundary - 1; i++)
     {
         gNewsItems[i] = gNewsItems[i + 1];

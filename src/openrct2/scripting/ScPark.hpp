@@ -54,9 +54,9 @@ namespace OpenRCT2::Scripting
         return {};
     }
 
-    template<> inline NewsItem FromDuk(const DukValue& value)
+    template<> inline News::Item FromDuk(const DukValue& value)
     {
-        NewsItem result{};
+        News::Item result{};
         result.Type = GetParkMessageType(value["type"].as_string());
         result.Assoc = value["subject"].as_int();
         result.Ticks = value["tickCount"].as_int();
@@ -92,14 +92,14 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        NewsItem* GetMessage() const
+        News::Item* GetMessage() const
         {
             return &gNewsItems[_index];
         }
 
         bool isArchived_get() const
         {
-            return _index >= NEWS_ITEM_HISTORY_START;
+            return _index >= News::ItemHistoryStart;
         }
 
         uint16_t month_get() const
@@ -225,7 +225,7 @@ namespace OpenRCT2::Scripting
 
         void remove()
         {
-            news_item_remove(static_cast<int32_t>(_index));
+            News::RemoveItem(static_cast<int32_t>(_index));
         }
     };
 
@@ -300,7 +300,7 @@ namespace OpenRCT2::Scripting
             }
             for (size_t i = 0, newsSize = gNewsItems.GetArchived().size(); i < newsSize; i++)
             {
-                result.push_back(std::make_shared<ScParkMessage>(i + NEWS_ITEM_HISTORY_START));
+                result.push_back(std::make_shared<ScParkMessage>(i + News::ItemHistoryStart));
             }
             return result;
         }
@@ -308,14 +308,14 @@ namespace OpenRCT2::Scripting
         void messages_set(const std::vector<DukValue>& value)
         {
             int32_t index = 0;
-            int32_t archiveIndex = NEWS_ITEM_HISTORY_START;
+            int32_t archiveIndex = News::ItemHistoryStart;
             for (const auto& item : value)
             {
                 auto isArchived = item["isArchived"].as_bool();
-                auto newsItem = FromDuk<NewsItem>(item);
+                auto newsItem = FromDuk<News::Item>(item);
                 if (isArchived)
                 {
-                    if (archiveIndex < MAX_NEWS_ITEMS)
+                    if (archiveIndex < News::MaxItems)
                     {
                         gNewsItems[archiveIndex] = newsItem;
                         archiveIndex++;
@@ -323,7 +323,7 @@ namespace OpenRCT2::Scripting
                 }
                 else
                 {
-                    if (index < NEWS_ITEM_HISTORY_START)
+                    if (index < News::ItemHistoryStart)
                     {
                         gNewsItems[index] = newsItem;
                         index++;
@@ -332,11 +332,11 @@ namespace OpenRCT2::Scripting
             }
 
             // End the lists by setting next item to null
-            if (index < NEWS_ITEM_HISTORY_START)
+            if (index < News::ItemHistoryStart)
             {
                 gNewsItems[index].Type = News::ItemType::Null;
             }
-            if (archiveIndex < MAX_NEWS_ITEMS)
+            if (archiveIndex < News::MaxItems)
             {
                 gNewsItems[archiveIndex].Type = News::ItemType::Null;
             }
@@ -369,7 +369,7 @@ namespace OpenRCT2::Scripting
                         assoc = static_cast<uint32_t>(dukSubject.as_int());
                     }
                 }
-                news_item_add_to_queue_raw(type, text.c_str(), assoc);
+                News::AddItemToQueue(type, text.c_str(), assoc);
             }
             catch (const DukException&)
             {

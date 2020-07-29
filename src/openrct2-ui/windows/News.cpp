@@ -156,11 +156,11 @@ static void window_news_update(rct_window* w)
         return;
     if (w->news.var_482 == 1)
     {
-        news_item_open_subject(newsItem.Type, newsItem.Assoc);
+        News::OpenSubject(newsItem.Type, newsItem.Assoc);
     }
     else if (w->news.var_482 > 1)
     {
-        auto subjectLoc = news_item_get_subject_location(newsItem.Type, newsItem.Assoc);
+        auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
         if (subjectLoc != std::nullopt && (w = window_get_main()) != nullptr)
         {
             window_scroll_to_location(w, *subjectLoc);
@@ -276,7 +276,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             int32_t press = 0;
             if (w->news.var_480 != -1)
             {
-                news_item_is_valid_idx(w->news.var_480 + NEWS_ITEM_HISTORY_START);
+                News::IsValidIndex(w->news.var_480 + News::ItemHistoryStart);
                 if (i == w->news.var_480 && w->news.var_482 == 1)
                     press = INSET_RECT_FLAG_BORDER_INSET;
             }
@@ -352,7 +352,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             int32_t press = 0;
             if (w->news.var_480 != -1)
             {
-                news_item_is_valid_idx(w->news.var_480 + NEWS_ITEM_HISTORY_START);
+                News::IsValidIndex(w->news.var_480 + News::ItemHistoryStart);
                 if (i == w->news.var_480 && w->news.var_482 == 2)
                     press = 0x20;
             }

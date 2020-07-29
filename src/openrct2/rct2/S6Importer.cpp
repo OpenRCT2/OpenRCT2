@@ -422,11 +422,11 @@ public:
         gClimateNext.Level = static_cast<RainLevel>(_s6.next_rain_level);
 
         // News items
-        news_item_init_queue();
+        News::InitQueue();
         for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
         {
             const rct12_news_item* src = &_s6.news_items[i];
-            NewsItem* dst = &gNewsItems[i];
+            News::Item* dst = &gNewsItems[i];
             if (src->Type < News::ItemTypeCount)
             {
                 dst->Type = static_cast<News::ItemType>(src->Type);
