@@ -4626,20 +4626,9 @@ static void vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPo
 
 static void vehicle_unset_update_flag_b1(Vehicle* head)
 {
-    Vehicle* vehicle = head;
-    while (true)
+    for (auto vehicle = head; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
-        if (vehicle == nullptr)
-        {
-            return;
-        }
         vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
-        uint16_t spriteIndex = vehicle->next_vehicle_on_train;
-        if (spriteIndex == SPRITE_INDEX_NULL)
-        {
-            break;
-        }
-        vehicle = GetEntity<Vehicle>(spriteIndex);
     }
 }
 

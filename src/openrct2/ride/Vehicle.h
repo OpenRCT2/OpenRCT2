@@ -319,7 +319,7 @@ struct Vehicle : SpriteBase
     void Update();
     Vehicle* GetHead();
     const Vehicle* GetHead() const;
-    const Vehicle* GetCar(size_t carIndex) const;
+    Vehicle* GetCar(size_t carIndex) const;
     void Invalidate();
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;

@@ -383,12 +383,8 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
     _vehicleFrontVehicle = frontVehicle;
 
-    for (Vehicle* vehicle = frontVehicle;;)
+    for (Vehicle* vehicle = frontVehicle; vehicle != nullptr;)
     {
-        if (vehicle == nullptr)
-        {
-            break;
-        }
         vehicle->acceleration = dword_9A2970[vehicle->vehicle_sprite_type];
         _vehicleUnkF64E10 = 1;
         vehicle->remaining_distance += _vehicleVelocityF64E0C;
@@ -441,8 +437,6 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
         vehicle->acceleration /= _vehicleUnkF64E10;
         if (_vehicleVelocityF64E08 >= 0)
         {
-            if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
-                break;
             vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
         else

@@ -2492,16 +2492,7 @@ static Vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vector<ui
     {
         return nullptr;
     }
-    for (int32_t i = peep->CurrentCar; i > 0; --i)
-    {
-        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
-        if (vehicle == nullptr)
-        {
-            return nullptr;
-        }
-    }
-
-    return vehicle;
+    return vehicle->GetCar(peep->CurrentCar);
 }
 
 /**
@@ -3768,14 +3759,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         return;
     }
 
-    for (int32_t i = CurrentCar; i != 0; --i)
-    {
-        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
-        if (vehicle == nullptr)
-        {
-            return;
-        }
-    }
+    vehicle = vehicle->GetCar(CurrentCar);
 
     ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
@@ -3999,14 +3983,7 @@ void Guest::UpdateRideFreeVehicleCheck()
         // TODO: Leave ride on failure goes for all returns on nullptr in this function
         return;
     }
-    for (int32_t i = CurrentCar; i != 0; --i)
-    {
-        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
-        if (vehicle == nullptr)
-        {
-            return;
-        }
-    }
+    vehicle = vehicle->GetCar(CurrentCar);
 
     rct_ride_entry* ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
@@ -4106,14 +4083,7 @@ void Guest::UpdateRideEnterVehicle()
         auto* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
         if (vehicle != nullptr)
         {
-            for (int32_t i = CurrentCar; i != 0; --i)
-            {
-                vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
-                if (vehicle == nullptr)
-                {
-                    return;
-                }
-            }
+            vehicle = vehicle->GetCar(CurrentCar);
 
             if (ride->mode != RIDE_MODE_FORWARD_ROTATION && ride->mode != RIDE_MODE_BACKWARD_ROTATION)
             {
@@ -4173,14 +4143,10 @@ void Guest::UpdateRideLeaveVehicle()
         return;
 
     uint8_t ride_station = vehicle->current_station;
-
-    for (int32_t i = CurrentCar; i != 0; --i)
+    vehicle = vehicle->GetCar(CurrentCar);
+    if (vehicle == nullptr)
     {
-        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
-        if (vehicle == nullptr)
-        {
-            return;
-        }
+        return;
     }
 
     // Check if ride is NOT Ferris Wheel.
