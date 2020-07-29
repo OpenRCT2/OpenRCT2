@@ -2668,26 +2668,6 @@ STR_5311    :{SMALLFONT}{BLACK}Herramientas de depuración
 STR_5312    :Mostrar consola
 STR_5313    :Mostrar inspc. cuadricula
 STR_5314    :Inspector de cuadricula
-STR_5315    :Césped
-STR_5316    :Arena
-STR_5317    :Tierra
-STR_5318    :Roca
-STR_5319    :Marte
-STR_5320    :Ajedrez
-STR_5321    :Hierba
-STR_5322    :Hielo
-STR_5323    :Reja (rojo)
-STR_5324    :Reja (amarillo)
-STR_5325    :Reja (azul)
-STR_5326    :Reja (verde)
-STR_5327    :Arena (oscura)
-STR_5328    :Arena (clara)
-STR_5329    :Ajedrez (invertido)
-STR_5330    :Vista subterránea
-STR_5331    :Roca
-STR_5332    :Madera (roja)
-STR_5333    :Madera (negra)
-STR_5334    :Hielo
 STR_5335    :Entrada
 STR_5336    :Salida
 STR_5337    :Entrada del Parque
@@ -3517,17 +3497,6 @@ STR_6200    :Restablecer fecha
 STR_6201    :{MONTH}
 STR_6202    :Estilo del piso virtual:
 STR_6203    :{SMALLFONT}{BLACK}Si está habilitado, un piso virtual será renderizado al mantener CTRL o SHIFT para facilitar la colocación vertical de elementos.
-STR_6204    :Ladrillo
-STR_6205    :Hierro
-STR_6206    :Estuco gris
-STR_6207    :Estuco amarillo
-STR_6208    :Estuco rojo
-STR_6209    :Estuco violeta
-STR_6210    :Estuco verde
-STR_6211    :Arenisca marrón
-STR_6212    :Arenisca gris
-STR_6213    :Rascacielos A
-STR_6214    :Rascacielos B
 STR_6215    :Construcción
 STR_6216    :Operación
 STR_6217    :Atracción / pista disponibilidad

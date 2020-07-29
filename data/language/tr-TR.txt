@@ -2675,26 +2675,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug araçları
 STR_5312    :Konsolu göster
 STR_5313    :Zemin denetçisini göster
 STR_5314    :Zemin denetçisi
-STR_5315    :Çim
-STR_5316    :Kum
-STR_5317    :Çamur
-STR_5318    :Taş
-STR_5319    :Marslı
-STR_5320    :Dama tahtası
-STR_5321    :Çim kümeleri
-STR_5322    :Buz
-STR_5323    :Izgara (kırmızı)
-STR_5324    :Izgara (sarı)
-STR_5325    :Izgara (mor)
-STR_5326    :Izgara (yeşil)
-STR_5327    :Kum (kara)
-STR_5328    :Kum (açık)
-STR_5329    :Dama Tahtası (ters çevrilmiş)
-STR_5330    :Yeraltı veya iç görünüm
-STR_5331    :Taş
-STR_5332    :Ahşap (kırmızı)
-STR_5333    :Ahşap (siyah)
-STR_5334    :Buz
 STR_5335    :Alet girişi
 STR_5336    :Alet çıkışı
 STR_5337    :Park girişi
@@ -3519,17 +3499,6 @@ STR_6200    :Tarihi sıfırla
 STR_6201    :{MONTH}
 STR_6202    :Sanal zemin türü:
 STR_6203    :{SMALLFONT}{BLACK}Birşey inşa etdiğinizde Crtl veya Shift tuşunu basılı tuttuğunuz zaman inşayı kolaylaştırmak için saydam veya yarı saydam bir sanal zemin görüntülenecekdir
-STR_6204    :Tuğla
-STR_6205    :Demir
-STR_6206    :Gri sıva
-STR_6207    :Sarı sıva
-STR_6208    :Kırmızı sıva
-STR_6209    :Mor sıva
-STR_6210    :Yeşil sıva
-STR_6211    :Kahverengi kumtaşı
-STR_6212    :Gri kumtaşı
-STR_6213    :Gökdelen 1
-STR_6214    :Gökdelen 2
 STR_6215    :Inşa
 STR_6216    :Işletme
 STR_6217    :Alet/Ray

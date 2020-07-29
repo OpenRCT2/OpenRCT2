@@ -2670,26 +2670,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug tools
 STR_5312    :أظهر الكونسول
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
-STR_5315    :عشب
-STR_5316    :رمل
-STR_5317    :تراب
-STR_5318    :صخر
-STR_5319    :Martian
-STR_5320    :Checkerboard
-STR_5321    :Grass clumps
-STR_5322    :ثلج
-STR_5323    :Grid (red)
-STR_5324    :Grid (yellow)
-STR_5325    :Grid (blue)
-STR_5326    :Grid (green)
-STR_5327    :Sand (dark)
-STR_5328    :Sand (light)
-STR_5329    :Checkerboard (inverted)
-STR_5330    :Underground view
-STR_5331    :صخر
-STR_5332    :خشب (أحمر)
-STR_5333    :خشب (أسمر)
-STR_5334    :ثلج
 STR_5335    :مدخل الرحلة
 STR_5336    :مخرج الرحلة
 STR_5337    :مدخل الحديقة
@@ -3517,17 +3497,6 @@ STR_6200    :إسترجاع التاريخ
 STR_6201    :{MONTH}
 STR_6202    :نمط الأرض الإفتراضية
 STR_6203    :{SMALLFONT}{BLACK}حينما يتم تفعيلة، سوف يتم إظهار أرضية إفتراضية لكل تساعدك في وضع الأشكال عمودياً بشكل صحيح.
-STR_6204    :حجر
-STR_6205    :حديد
-STR_6206    :جص رمادي
-STR_6207    :جص أصفر
-STR_6208    :جص أحمر
-STR_6209    :جص بنفسجي
-STR_6210    :جص أخضر
-STR_6211    :حجر رملي بني
-STR_6212    :حجر رملي رمادي
-STR_6213    :ناطحة السحاب أ
-STR_6214    :ناطحة السحاب ب
 STR_6215    :الإنشاء
 STR_6216    :العملية
 STR_6217    :توافرية المسار \الرحلة

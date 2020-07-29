@@ -2681,26 +2681,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug værktøj
 STR_5312    :Vis konsol
 STR_5313    :Vis feltinspektion
 STR_5314    :Feltinspektion
-STR_5315    :Græs
-STR_5316    :Sand
-STR_5317    :Jord
-STR_5318    :Sten
-STR_5319    :Marsmand
-STR_5320    :Skakbræt
-STR_5321    :Græsklumper
-STR_5322    :Is
-STR_5323    :Gitter (rød)
-STR_5324    :Gitter (gul)
-STR_5325    :Gitter (blå)
-STR_5326    :Gitter (grøn)
-STR_5327    :Sand (mørk)
-STR_5328    :Sand (lys)
-STR_5329    :Skakbræt (inverteret)
-STR_5330    :Undergrunds visning
-STR_5331    :Sten
-STR_5332    :Træ (rød)
-STR_5333    :Træ (sort)
-STR_5334    :Is
 STR_5335    :Forlystelse indgang
 STR_5336    :Forlystelse Udgang
 STR_5337    :Park indgang
@@ -3222,7 +3202,7 @@ STR_5893    :Valutakurs
 STR_5894    :Angiv valutakursen
 STR_5895    :Gem bane
 STR_5896    :Kunne ikke gemme banen!
-STR_5898    :{BLACK}Kan ikke hente bane, finlen kan være {newline}beskadiget eller kan ikke findes!
+STR_5898    :{BLACK}Kan ikke hente bane, filen kan være{newline}beskadiget eller kan ikke findes!
 STR_5899    :Skift tegnings fejlsøgnings vindue.
 STR_5900    :Brug original tegnings kode
 STR_5901    :Vis segment højder
@@ -3425,61 +3405,61 @@ STR_6097    :{STRING} har placeret et spor på forlystelsen '{STRING}'.
 STR_6098    :{STRING} har fjernet et spor på forlystelsen.
 STR_6099    :Du forbandt til serveren.
 STR_6100    :Du afbrød forbindelsen til serveren.
-STR_6101    :Rides don't decrease in value over tid
-STR_6102    :{SMALLFONT}{BLACK}The value of a ride won't decrease over tid, so guests will not suddenly think that a ride is too expensive.
-STR_6103    :{SMALLFONT}{BLACK}This option is disabled during network play.
-STR_6104    :Corkscrew Roller Coaster
+STR_6101    :Forlystelser falder ikke i værdi, over tid
+STR_6102    :{SMALLFONT}{BLACK}Værdien af forlystelser vil ikke falde over tid over tid, Så gæsterne ikke vil vurdere forlystelsen, som spild af penge.
+STR_6103    :{SMALLFONT}{BLACK}Denne funktion er deaktiveret ved netværksspil.
+STR_6104    :Proptrækker rutschebane
 STR_6105    :Hypercoaster
 STR_6106    :Car Ride
 STR_6107    :Monster Trucks
-STR_6108    :Steel Twister
+STR_6108    :Stål Twister
 STR_6109    :Hyper-Twister
-STR_6110    :Junior Roller Coaster
-STR_6111    :Classic Mini Roller Coaster
-STR_6112    :A compact steel-tracked rutschebane where the train travels through corkscrews and loops
-STR_6113    :A tall non-inverting rutschebane with large drops, high speed, and comfortable trains with only lap bar restraints
-STR_6114    :Riders travel slowly in powered vehicles along a track-based route
-STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
-STR_6116    :Wide rutschebane trains glide along smooth steel track, travelling through a variety of inversions
-STR_6117    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_6118    :A gentle rutschebane for people who haven't yet got the courage to face the larger forlystelser
-STR_6119    :A cheap and easy to build rutschebane, but with a limited height
-STR_6120    :{BABYBLUE}New vehicle now available for {STRINGID}:{NEWLINE}{STRINGID}
-STR_6121    :{SMALLFONT}{BLACK}Extends the park's land rights all the way to the edges of the map
-STR_6122    :There are not enough rutschebaner in this scenario!
-STR_6123    :Error loading objects for park
-STR_6124    :Object name
-STR_6125    :Object type
+STR_6110    :Junior rutchebane
+STR_6111    :Klassisk mini rutchebane
+STR_6112    :En kompakt stålsporet rutschebane, hvor toget kører gennem snoninger og loops
+STR_6113    :En høj ikke-inverterende rutschebane med store fald, høj hastighed og komfortable vogne med simpel fastspænding
+STR_6114    :Passagerer kører langsomt i el-drevne køretøjer langs en sporbaseret rute
+STR_6115    :Kæmpe Eldrevne firhjulstrækkere , der kan klatre op ad stejle skråninger
+STR_6116    :Brede rutschebane vogne kører langs en glat stålspor, igennem en række forskellige inversioner
+STR_6117    :Siddende i komfortable vogne med forholdsvis simpel fastspænding, kan gæsterne nyde gigantiske fald og snoede spor samt masser af 'luft tid' over bakkerne
+STR_6118    :En rolig rutschebane for folk der endnu ikke har modet til at prøve de større rutschebaner
+STR_6119    :En billig og let at bygge rutchebane, men med begrænset højde
+STR_6120    :{BABYBLUE}Nyt køretøj er klar til {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Udvider parkens jordrettigheder hele vejen ud til kanten af kortet
+STR_6122    :Der er ikke nok rutschebaner i dette scenarie!
+STR_6123    :Fejl ved hentning af objekter til parken
+STR_6124    :Objekt navn
+STR_6125    :Objekt type
 STR_6126    :Ukendt type
-STR_6127    :File: {STRING}
-STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
+STR_6127    :Fil: {STRING}
+STR_6128    :Filen kunne ikke indlæses, da nogle af de objekter, der refereres til i den, mangler eller er beskadigede. En liste over disse objekter er angivet nedenfor.
 STR_6129    :Kopier
 STR_6130    :Kopier alt
-STR_6131    :Object source
-STR_6132    :Ignore research status
-STR_6133    :{SMALLFONT}{BLACK}Access forlystelser and scenery that have not yet been invented
-STR_6134    :Clear Scenery
-STR_6135    :Client sent invalid request
-STR_6136    :Server sent invalid request
-STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in “contributors.md”. For more information, visit http://github.com/OpenRCT2/OpenRCT2
-STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
-STR_6140    :Changelog...
-STR_6141    :RCT1 Bottom Toolbar
-STR_6142    :{WINDOW_COLOUR_2}Track name: {BLACK}{STRING}
-STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
-STR_6144    :Show dirty visuals
-STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
-STR_6146    :Enable all drawable track pieces
+STR_6131    :Objektkilde
+STR_6132    :Ignorer forskningsstatus
+STR_6133    :{SMALLFONT}{BLACK}Adgang til forlystelser og sceneri, der endnu ikke er opfundet
+STR_6134    :Ryd sceneri
+STR_6135    :Klienten sendte en ugyldig anmodning
+STR_6136    :Serveren sendte en ugyldig anmodning
+STR_6137    :OpenRCT2, en gratis,  open source klon af Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 er et samarbejde imellem mange forfattere, en komplet liste kan findes i “contributors.md”. Du kan finde flere oplysninger på http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :Alle produkt- og firmanavne tilhører deres respektive indehavere. Brug af dem indebærer ikke nogen tilknytning til eller godkendelse af dem.
+STR_6140    :Ændringslog...
+STR_6141    :RCT1 bund værktøjslinje
+STR_6142    :{WINDOW_COLOUR_2}Spor navn: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Forlystelses type: {BLACK}{STRINGID}
+STR_6144    :Vis problematiske visualiseringer
+STR_6145    :{SMALLFONT}{BLACK}Sæt hastigheds begrænsninger på boosters
+STR_6146    :Aktiver alle sporstykker, der kan vises
 STR_6147    :{SMALLFONT}{BLACK}Aktiverer alle sporstykker, som forlystelses typen er i stand til i konstruktions vinduet, uanset om køretøjet understøtter dem.
 STR_6148    :Forbinder til master server...
-STR_6149    :Kamn ikke forbinde til master server
+STR_6149    :Kan ikke forbinde til master server
 STR_6150    :Ugyldigt svar fra master server (ingen JSON nummer)
-STR_6151    :Master server failed to return servers
+STR_6151    :Master server kan ikke hente servere
 STR_6152    :Ugyldigt svar fra master server (ingen JSON array)
 STR_6153    :Betal ved indgang / Betal per tur
 STR_6154    :Af sikkerhedsmæssige årsager anbefales det ikke at køre OpenRCT2 med forhøjede tilladelser.
-STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en, eller konfigurer fra kommando linje.
+STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en, eller konfigurer fra kommando linjen.
 STR_6156    :Navn er reserveret
 STR_6157    :Konsol
 STR_6158    :Kan ikke hente denne fil...{NEWLINE}ikke kompatibel RCTC version: {COMMA16}
@@ -3528,20 +3508,9 @@ STR_6200    :Nulstil dato
 STR_6201    :{MONTH}
 STR_6202    :Virtuel gulv stil:
 STR_6203    :{SMALLFONT}{BLACK}Når aktiveret, et virtuel gulv vil blive vistnår du holder Ctrl eller Shift nede, for at lette placering af elementer.
-STR_6204    :Mursten
-STR_6205    :Jern
-STR_6206    :Grå stuk
-STR_6207    :Gul stuk
-STR_6208    :Rød stuk
-STR_6209    :Purple stuk
-STR_6210    :Grøn stuk
-STR_6211    :Brun sandsten
-STR_6212    :Grå sandsten
-STR_6213    :Skyskraber A
-STR_6214    :Skyskraber B
 STR_6215    :Konstruktion
 STR_6216    :Operation
-STR_6217    :Ride / track availability
+STR_6217    :Forlystelse / bane tilgængelighed
 STR_6218    :OpenRCT2 Official
 STR_6219    :Fremhæv sti problemer
 STR_6220    :Gør brugbar
@@ -3551,13 +3520,13 @@ STR_6223    :Skal være uden for parkens afgrænsning!
 STR_6224    :{STRING} Placerede et gæste indgangs punkt.
 STR_6225    :Ikke understøttet med OpenGL rendering
 STR_6226    :Aktiver tidlig scenarie færdiggørelse
-STR_6227    :{SMALLFONT}{BLACK}Udløser scenarie færdiggørelse, nåe alle scenarie mål er nået før tiden løber ud.
+STR_6227    :{SMALLFONT}{BLACK}Udløser scenarie færdiggørelse, når alle scenarie mål er nået før tiden løber ud.
 STR_6228    :Scenarie Indstillinger
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Frossen
-STR_6233    :Cut-away synsfelt
+STR_6233    :Beskåret synsfelt
 STR_6234    :Fremhæv sti problemer
 STR_6235    :Server Information
 STR_6236    :Spillere
@@ -3606,7 +3575,7 @@ STR_6281    :{SMALLFONT}{BLACK}Vis en separat knap, for chat vinduet i værktøj
 STR_6282    :Chat
 STR_6283    :Chat er ikke tilgængelig på nuværende tidspunkt. Er du forbundet til en server?
 STR_6284    :Netværk
-STR_6285    :Netværk Information
+STR_6285    :Netværksinformation
 STR_6286    :Modtag
 STR_6287    :Send
 STR_6288    :Total modtaget
@@ -3670,7 +3639,7 @@ STR_6345    :Felt Undersøger: Forøg element højde
 STR_6346    :Felt Undersøger: Reducer element højde
 STR_6347    :Sti tilføjelse kan ikke placeres på jernbaneoverskæring!
 STR_6348    :Fjern jernbaneoverskæring først!
-STR_6349    :Tilfældig titelsekvens
+STR_6349    :Tilfældig titel sekvens
 STR_6350    :Spredning
 STR_6351    :Sceneri sprednings værktøj
 STR_6352    :Tæthed
@@ -3691,7 +3660,7 @@ STR_6366    :Fastlåste eller blokerede køretøjer
 STR_6367    :{WINDOW_COLOUR_2}Animations billede:
 STR_6368    :Af kompatibilitetshensyn anbefales det ikke at køre OpenRCT2 med Wine. OpenRCT2 har indbygget understøttelse af macOS, Linux, FreeBSD og OpenBSD.
 STR_6369    :Tillad bygning af spor i ugyldige højder
-STR_6370    :{SMALLFONT}{BLACK}Gør det muligt at placere sporstykker i ethvert højdeniveauiveau
+STR_6370    :{SMALLFONT}{BLACK}Gør det muligt at placere sporstykker i ethvert højdeniveau
 STR_6371    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men filen “csg1i.dat” mangler. Det er nødvendigt at kopiere denne fil fra RollerCoaster Tycoon 1 CD'en, til “Data” folderen under RollerCoaster Tycoon 1 installationen på din harddisk.
 STR_6372    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men denne version er ikke korrekt. OpenRCT2 har brug for, Loopy Landscapes eller RCT Deluxe installationen for at kunne bruge RollerCoaster Tycoon 1 aktiver.
 STR_6373    :Slå rydningskontrol til/fra

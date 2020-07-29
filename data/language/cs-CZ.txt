@@ -2677,26 +2677,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug nástroje
 STR_5312    :Zobrazit konzoli
 STR_5313    :Zobrazit průzkumníka dlaždic
 STR_5314    :Průzkumník dlaždic
-STR_5315    :Tráva
-STR_5316    :Písek
-STR_5317    :Hlína
-STR_5318    :Kámen
-STR_5319    :Marťan
-STR_5320    :Šachovnice
-STR_5321    :Drny
-STR_5322    :Led
-STR_5323    :Mřížka (červená)
-STR_5324    :Mřížka (žlutá)
-STR_5325    :Mřížka (modrá)
-STR_5326    :Mřížka (zelená)
-STR_5327    :Písek (tmavý)
-STR_5328    :Písek (světlý)
-STR_5329    :Šachovnice (obrácená)
-STR_5330    :Podzemní pohled
-STR_5331    :Kámen
-STR_5332    :Dřevo (červené)
-STR_5333    :Dřevo (černé)
-STR_5334    :Led
 STR_5335    :Vstup na atrakci
 STR_5336    :Východ z atrakce
 STR_5337    :Vstup do zábavního parku
@@ -3522,17 +3502,6 @@ STR_6200    :Resetovat datum
 STR_6201    :{MONTH}
 STR_6202    :Styl virtuální mřížky
 STR_6203    :{SMALLFONT}{BLACK}Pro usnadnění vertikálního umisťování objektů můžete podržet klávesu Ctrl nebo Shift a poté bude vykreslena pomocná virtuální mřížka.
-STR_6204    :Cihla
-STR_6205    :Železo
-STR_6206    :Šedý štuk
-STR_6207    :Žlutý štuk
-STR_6208    :Červený štuk
-STR_6209    :Fialový štuk
-STR_6210    :Zelený štuk
-STR_6211    :Hnědý pískovec
-STR_6212    :Šedý pískovec
-STR_6213    :Mrakodrap A
-STR_6214    :Mrakodrap B
 STR_6215    :Budování
 STR_6216    :Provoz
 STR_6217    :Atrakce a tratě

@@ -2667,26 +2667,6 @@ STR_5311    :{SMALLFONT}{BLACK}Outil de débogage
 STR_5312    :Afficher la console
 STR_5313    :Afficher l'inspecteur de cases
 STR_5314    :Inspecteur de cases
-STR_5315    :Herbe
-STR_5316    :Sable
-STR_5317    :Boue
-STR_5318    :Pierre
-STR_5319    :Martien
-STR_5320    :Damier
-STR_5321    :Touffes d'herbe
-STR_5322    :Glace
-STR_5323    :Grille (rouge)
-STR_5324    :Grille (jaune)
-STR_5325    :Grille (bleu)
-STR_5326    :Grille (vert)
-STR_5327    :Sable (sombre)
-STR_5328    :Sable (clair)
-STR_5329    :Damier (inversé)
-STR_5330    :Vue souterraine
-STR_5331    :Pierre
-STR_5332    :Bois (rouge)
-STR_5333    :Bois (noir)
-STR_5334    :Glace
 STR_5335    :Entrée du manège
 STR_5336    :Sortie du manège
 STR_5337    :Entrée du parc
@@ -3514,17 +3494,6 @@ STR_6200    :Réinitialiser la date
 STR_6201    :{MONTH}
 STR_6202    :Style de plancher virtuel
 STR_6203    :{SMALLFONT}{BLACK}Lorsque cette option est activée, un plancher virtuel est affiché quand les touches Ctrl ou Maj sont pressées afin de faciliter le placement vertical des éléments.
-STR_6204    :Brique
-STR_6205    :Fer
-STR_6206    :Stuc gris
-STR_6207    :Stuc jaune
-STR_6208    :Stuc rouge
-STR_6209    :Stuc violet
-STR_6210    :Stuc vert
-STR_6211    :Grès marron
-STR_6212    :Grès gris
-STR_6213    :Gratte-ciel A
-STR_6214    :Gratte-ciel B
 STR_6215    :Construction
 STR_6216    :Opération
 STR_6217    :Disponibilité de l'attraction/voie

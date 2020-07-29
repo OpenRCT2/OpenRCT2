@@ -2670,26 +2670,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug tools
 STR_5312    :Show console
 STR_5313    :Vis ruteinspektør
 STR_5314    :Ruteinspektør
-STR_5315    :Grass
-STR_5316    :Sand
-STR_5317    :Dirt
-STR_5318    :Rock
-STR_5319    :Martian
-STR_5320    :Checkerboard
-STR_5321    :Grass clumps
-STR_5322    :Ice
-STR_5323    :Grid (red)
-STR_5324    :Grid (yellow)
-STR_5325    :Grid (blue)
-STR_5326    :Grid (green)
-STR_5327    :Sand (dark)
-STR_5328    :Sand (light)
-STR_5329    :Checkerboard (inverted)
-STR_5330    :Underground view
-STR_5331    :Rock
-STR_5332    :Wood (red)
-STR_5333    :Wood (black)
-STR_5334    :Ice
 STR_5335    :Ride entrance
 STR_5336    :Ride exit
 STR_5337    :Park entrance
@@ -3519,17 +3499,6 @@ STR_6200    :Tilbakestill dato
 STR_6201    :{MONTH}
 STR_6202    :Stil på virtuelt gulv
 STR_6203    :{SMALLFONT}{BLACK}Viser et virtuelt gulv når Ctrl eller Shift holdes, for å assistere i plassering av elementer vertikalt.
-STR_6204    :Murstein
-STR_6205    :Jern
-STR_6206    :Grå stukk
-STR_6207    :Gul stukk
-STR_6208    :Rød stukk
-STR_6209    :Lilla stukk
-STR_6210    :Grønn stukk
-STR_6211    :Brun sandstein
-STR_6212    :Grå sandstein
-STR_6213    :Skyskraper A
-STR_6214    :Skyskraper B
 STR_6215    :Konstruksjon
 STR_6216    :Operasjon
 STR_6217    :Attraksjons- og sportilgjengelighet

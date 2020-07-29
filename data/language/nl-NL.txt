@@ -2673,26 +2673,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debugginghulpmiddelen
 STR_5312    :Console tonen
 STR_5313    :Vakinspecteur tonen
 STR_5314    :Vakinspecteur
-STR_5315    :Gras
-STR_5316    :Zand
-STR_5317    :Aarde
-STR_5318    :Steen
-STR_5319    :Buitenaards
-STR_5320    :Schaakbord
-STR_5321    :Kluiten gras
-STR_5322    :IJs
-STR_5323    :Raster (rood)
-STR_5324    :Raster (geel)
-STR_5325    :Raster (blauw)
-STR_5326    :Raster (groen)
-STR_5327    :Raster (donker)
-STR_5328    :Raster (licht)
-STR_5329    :Schaakbord (omgekeerd)
-STR_5330    :Ondergronds zicht
-STR_5331    :Steen
-STR_5332    :Houten palen (rood)
-STR_5333    :Houten palen (zwart)
-STR_5334    :IJs
 STR_5335    :Attractie-ingang
 STR_5336    :Attractie-uitgang
 STR_5337    :Parkingang
@@ -3518,17 +3498,6 @@ STR_6200    :Datum resetten
 STR_6201    :{MONTH}
 STR_6202    :Stijl hulpraster:
 STR_6203    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal er een hulpraster worden weergegeven als je CTRL of SHIFT ingedrukt houdt, om het plaatsen van elementen gemakkelijker te maken.
-STR_6204    :Stenen
-STR_6205    :IJzer
-STR_6206    :Wit stucwerk
-STR_6207    :Geel stucwerk
-STR_6208    :Rood stucwerk
-STR_6209    :Paars stucwerk
-STR_6210    :Groen stucwerk
-STR_6211    :Gele zandsteen
-STR_6212    :Grijze zandsteen
-STR_6213    :Wolkenkrabber A
-STR_6214    :Wolkenkrabber B
 STR_6215    :Bouw
 STR_6216    :Bedrijf
 STR_6217    :Beschikbaarheid attr./baanonderdelen

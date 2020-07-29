@@ -2667,26 +2667,6 @@ STR_5311    :{SMALLFONT}{BLACK}Strumenti di debug
 STR_5312    :Mostra console
 STR_5313    :Mostra analizzatore celle
 STR_5314    :Analizzatore celle
-STR_5315    :Erba
-STR_5316    :Sabbia
-STR_5317    :Sporco
-STR_5318    :Rocce
-STR_5319    :Marziano
-STR_5320    :Checkerboard
-STR_5321    :Grass clumps
-STR_5322    :Ghiaccio
-STR_5323    :Griglia (rosso)
-STR_5324    :Griglia (giallo)
-STR_5325    :Griglia (blu)
-STR_5326    :Griglia (verde)
-STR_5327    :Sabbia (scuro)
-STR_5328    :Sabbia (chiaro)
-STR_5329    :Checkerboard (inverted)
-STR_5330    :Visione sotterranea
-STR_5331    :Roccia
-STR_5332    :Legno (rosso)
-STR_5333    :Legno (nero)
-STR_5334    :Ghiaccio
 STR_5335    :Entrata corsa
 STR_5336    :Uscita corsa
 STR_5337    :Entrata Parco
@@ -3514,17 +3494,6 @@ STR_6200    :Reimposta data
 STR_6201    :{MONTH}
 STR_6202    :Stile pavimento virtuale:
 STR_6203    :{SMALLFONT}{BLACK}Se attivo mostra un pavimento virtuale mentre si tiene premuto Ctrl o Maiusc, per facilitare il posizionamento di elementi.
-STR_6204    :Mattoni
-STR_6205    :Ferro
-STR_6206    :Cemento grigio
-STR_6207    :Cemento giallo
-STR_6208    :Cemento rosso
-STR_6209    :Cemento viola
-STR_6210    :Cemento verde
-STR_6211    :Pietra marrone
-STR_6212    :Pietra grigia
-STR_6213    :Grattacielo A
-STR_6214    :Grattacielo B
 STR_6215    :Costruzione
 STR_6216    :Operazione
 STR_6217    :Disponibilità percorso / tracciato

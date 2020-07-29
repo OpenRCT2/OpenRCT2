@@ -2667,26 +2667,6 @@ STR_5311    :{SMALLFONT}{BLACK}Verktyg för felsökning
 STR_5312    :Visa konsol
 STR_5313    :Visa rutinspekteraren
 STR_5314    :Rutinspekteraren
-STR_5315    :Gräs
-STR_5316    :Sand
-STR_5317    :Jord
-STR_5318    :Sten
-STR_5319    :Utomjordisk
-STR_5320    :Schackbräde 
-STR_5321    :Gräsklumpar
-STR_5322    :Is
-STR_5323    :Nät (röd)
-STR_5324    :Nät (gul)
-STR_5325    :Nät (blå)
-STR_5326    :Nät (grön)
-STR_5327    :Sand (mörk)
-STR_5328    :Sand (ljus)
-STR_5329    :Schackbräde (omvänt)
-STR_5330    :Underjordisk vy
-STR_5331    :Sten
-STR_5332    :Trä (rött)
-STR_5333    :Trä (svart)
-STR_5334    :Is
 STR_5335    :Åktursingång
 STR_5336    :Åktursutgång
 STR_5337    :Parkentré
@@ -3510,17 +3490,6 @@ STR_6200    :Återställ datum
 STR_6201    :{MONTH}
 STR_6202    :Stil på virtuella golv:
 STR_6203    :{SMALLFONT}{BLACK}När aktiverad, kommer ett rutnät att ritas i samma höjd som elementen är på när du håller in Ctrl eller Shift vilket förenklar vertikala placeringar.
-STR_6204    :Tegel
-STR_6205    :Järn
-STR_6206    :Grå stuck
-STR_6207    :Gul stuck
-STR_6208    :Röd stuck
-STR_6209    :Lila stuck
-STR_6210    :Grön stuck
-STR_6211    :Brun sandsten
-STR_6212    :Grå sandsten
-STR_6213    :Skyskrapa A
-STR_6214    :Skyskrapa B
 STR_6215    :Konstruktion
 STR_6216    :Manövrering
 STR_6217    :Åkturs- och spårtillgänglighet

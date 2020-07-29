@@ -2649,26 +2649,6 @@ STR_5311    :{SMALLFONT}{BLACK}Hibakereső eszközök
 STR_5312    :Konzol
 STR_5313    :Mezővizsgáló
 STR_5314    :Mezővizsgáló
-STR_5315    :Fű
-STR_5316    :Homok
-STR_5317    :Föld
-STR_5318    :Kavics
-STR_5319    :Marsi
-STR_5320    :Sakktábla
-STR_5321    :Fűcsomók
-STR_5322    :Jég
-STR_5323    :Rács (piros)
-STR_5324    :Rács (sárga)
-STR_5325    :Rács (kék)
-STR_5326    :Rács (zöld)
-STR_5327    :Homok (sötét)
-STR_5328    :Homok (világos)
-STR_5329    :Sakktábla (fordított)
-STR_5330    :Földalatti nézet
-STR_5331    :Kavics
-STR_5332    :Fa (piros)
-STR_5333    :Fa (fekete)
-STR_5334    :Jég
 STR_5335    :Játék bejárata
 STR_5336    :Játék kijárata
 STR_5337    :Park bejárata
@@ -3467,17 +3447,6 @@ STR_6200    :Dátum visszaállítása
 STR_6201    :{MONTH}
 STR_6202    :Virtuális padló stílusa:
 STR_6203    :{SMALLFONT}{BLACK}Ha be van kapcsolva, egy virtuális padló lesz megjelenítve a Ctrl vagy a Shift lenyomásával, hogy megkönnyítse az elemek vertikális elhelyezését.
-STR_6204    :Tégla
-STR_6205    :Vas
-STR_6206    :Szürke díszvakolat
-STR_6207    :Sárga díszvakolat
-STR_6208    :Piros díszvakolat
-STR_6209    :Lila díszvakolat
-STR_6210    :Zöld díszvakolat
-STR_6211    :Barna homokkő
-STR_6212    :Szürke homokkő
-STR_6213    :Felhőkarcoló A
-STR_6214    :Felhőkarcoló B
 STR_6215    :Építkezés
 STR_6216    :Működés
 STR_6217    :Játék / pálya elérhetősége

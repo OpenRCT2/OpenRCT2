@@ -2670,26 +2670,6 @@ STR_5311    :{SMALLFONT}{BLACK}Eines de depuració
 STR_5312    :Mostra consola
 STR_5313    :Inspecciona la casella
 STR_5314    :Inspecció de casella
-STR_5315    :Gespa
-STR_5316    :Sorra
-STR_5317    :Terra
-STR_5318    :Roca
-STR_5319    :Marcià
-STR_5320    :Tauler d'escacs
-STR_5321    :Mates d'herba
-STR_5322    :Gel
-STR_5323    :Quadrícula (vermella)
-STR_5324    :Quadrícula (groga)
-STR_5325    :Quadrícula (blava)
-STR_5326    :Quadrícula (verda)
-STR_5327    :Sorra (fosca)
-STR_5328    :Sorra (clara)
-STR_5329    :Tauler d'escacs (invertit)
-STR_5330    :Vista subterrània
-STR_5331    :Roca
-STR_5332    :Fusta (vermella)
-STR_5333    :Fusta (negra)
-STR_5334    :Gel
 STR_5335    :Entrada de l'atracció
 STR_5336    :Sortida de l'atracció
 STR_5337    :Entrada del parc
@@ -3517,17 +3497,6 @@ STR_6200    :Restableix data
 STR_6201    :{MONTH}
 STR_6202    :Estil del terra virtual:
 STR_6203    :{SMALLFONT}{BLACK}Quan està activat, es dibuixarà un terra virtual mentre es prem Ctrl o Maj per facilitar el posicionament d'elements.
-STR_6204    :Maó
-STR_6205    :Ferro
-STR_6206    :Estuc gris
-STR_6207    :Estuc groc
-STR_6208    :Estuc vermell
-STR_6209    :Estuc morat
-STR_6210    :Estuc verd
-STR_6211    :Arenisca marró
-STR_6212    :Arenisca gris
-STR_6213    :Gratacel A
-STR_6214    :Gratacel B
 STR_6215    :Construcció
 STR_6216    :Funcionament
 STR_6217    :Disponibilitat d'atraccions i tipus de via

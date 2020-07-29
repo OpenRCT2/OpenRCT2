@@ -2658,26 +2658,6 @@ STR_5311    :{SMALLFONT}{BLACK}Ferramentas de depuração
 STR_5312    :Exibir console
 STR_5313    :Exibir inspetor de azulejo
 STR_5314    :Inspetor de azulejo
-STR_5315    :Grama
-STR_5316    :Areia
-STR_5317    :Sujeira
-STR_5318    :Pedra
-STR_5319    :Marciano
-STR_5320    :Tabuleiro de damas
-STR_5321    :Tufos de grama
-STR_5322    :Gelo
-STR_5323    :Grade (vermelho)
-STR_5324    :Grade (amarelo)
-STR_5325    :Grade (azul)
-STR_5326    :Grade (verde)
-STR_5327    :Areia (escura)
-STR_5328    :Areia (clara)
-STR_5329    :Tabuleiro de damas (Invertido)
-STR_5330    :Visão subterrânea
-STR_5331    :Pedra
-STR_5332    :Madeira (vermelha)
-STR_5333    :Madeira (preta)
-STR_5334    :Gelo
 STR_5335    :Entrada da atração
 STR_5336    :Saída da atração
 STR_5337    :Entrada do parque
@@ -3502,17 +3482,6 @@ STR_6200    :Resetar data
 STR_6201    :{MONTH}
 STR_6202    :Estilo de chão virtual:
 STR_6203    :{SMALLFONT}{BLACK}Quando habilitado, um chão virtual será renderizado quando segurar a tecla Ctrl ou Shift para facilitar o posicionamento vertical dos elementos.
-STR_6204    :Tijolo
-STR_6205    :Ferro
-STR_6206    :Estuque cinza
-STR_6207    :Estuque amarelo
-STR_6208    :Estuque vermelho
-STR_6209    :Estuque roxo
-STR_6210    :Estuque verde
-STR_6211    :Arenito marrom
-STR_6212    :Arenito cinza
-STR_6213    :Arranha-céu A
-STR_6214    :Arranha-céu B
 STR_6215    :Construção
 STR_6216    :Operação
 STR_6217    :Atração / disponibilidade de trilho

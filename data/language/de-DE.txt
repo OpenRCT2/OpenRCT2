@@ -2661,26 +2661,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debugging-Tools
 STR_5312    :Konsole anzeigen
 STR_5313    :Kachelinspektor anzeigen
 STR_5314    :Kachelinspektor
-STR_5315    :Gras
-STR_5316    :Sand
-STR_5317    :Erde
-STR_5318    :Gestein
-STR_5319    :Mars
-STR_5320    :Schachbrett
-STR_5321    :Grasklumpen
-STR_5322    :Eis
-STR_5323    :Gitter (rot)
-STR_5324    :Gitter (gelb)
-STR_5325    :Gitter (blau)
-STR_5326    :Gitter (grün)
-STR_5327    :Sand (dunkel)
-STR_5328    :Sand (hell)
-STR_5329    :Schachbrett (invertiert)
-STR_5330    :Untergrundansicht
-STR_5331    :Gestein
-STR_5332    :Holz (rot)
-STR_5333    :Holz (schwarz)
-STR_5334    :Eis
 STR_5335    :Attraktionseingang
 STR_5336    :Attraktionsausgang
 STR_5337    :Parkeingang
@@ -3503,17 +3483,6 @@ STR_6200    :Datum zurücksetzen
 STR_6201    :{MONTH}
 STR_6202    :Stil des virtuellen Bodens:
 STR_6203    :{SMALLFONT}{BLACK}Um vertikales Platzieren von Elementen zu vereinfachen, wird ein virtueller Boden eingeblendet, wenn Strg oder Shift gehalten wird
-STR_6204    :Ziegelstein
-STR_6205    :Eisen
-STR_6206    :Grauer Stuck
-STR_6207    :Gelber Stuck
-STR_6208    :Roter Stuck
-STR_6209    :Violetter Stuck
-STR_6210    :Grüner Stuck
-STR_6211    :Brauner Sandstein
-STR_6212    :Grauer Sandstein
-STR_6213    :Wolkenkratzer A
-STR_6214    :Wolkenkratzer B
 STR_6215    :Konstruktion
 STR_6216    :Betrieb
 STR_6217    :Bahn- / Streckenverfügbarkeit

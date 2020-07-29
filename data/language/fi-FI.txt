@@ -2686,26 +2686,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug tools
 STR_5312    :Näytä komentokehote
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
-STR_5315    :Nurmikko
-STR_5316    :Hiekka
-STR_5317    :Pöly
-STR_5318    :Kallio
-STR_5319    :Marssilainen
-STR_5320    :Shakkilauta
-STR_5321    :Ruohokasoja
-STR_5322    :Jää
-STR_5323    :Ruudukko (punainen)
-STR_5324    :Ruudukko (keltainen)
-STR_5325    :Ruudukko (sininen)
-STR_5326    :Ruudukko (vihreä)
-STR_5327    :Hiekka (tumma)
-STR_5328    :Hiekka (vaalea)
-STR_5329    :Shakkilauta (käänteinen)
-STR_5330    :Maanalainen näkymä
-STR_5331    :Kallio
-STR_5332    :Puu (punainen)
-STR_5333    :Puu (musta)
-STR_5334    :Jää
 STR_5335    :Ajelun sisäänkäynti
 STR_5336    :Ajelun uloskäynti
 STR_5337    :Puiston sisäänkäynti
