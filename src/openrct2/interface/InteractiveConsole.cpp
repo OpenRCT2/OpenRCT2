@@ -256,18 +256,12 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        for (int32_t i = 0; i < ride->num_vehicles; i++)
+                        for (int32_t i = 0; i < ride->num_vehicles; ++i)
                         {
-                            uint16_t vehicle_index = ride->vehicles[i];
-                            while (vehicle_index != SPRITE_INDEX_NULL)
+                            for (Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
+                                 vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                             {
-                                Vehicle* vehicle = GetEntity<Vehicle>(vehicle_index);
-                                if (vehicle == nullptr)
-                                {
-                                    break;
-                                }
                                 vehicle->mass = mass;
-                                vehicle_index = vehicle->next_vehicle_on_train;
                             }
                         }
                     }

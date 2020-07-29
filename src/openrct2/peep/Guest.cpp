@@ -2608,16 +2608,9 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
     int32_t i = 0;
 
     uint16_t vehicle_id = ride->vehicles[chosen_train];
-    Vehicle* vehicle = nullptr;
-
-    for (; vehicle_id != SPRITE_INDEX_NULL; vehicle_id = vehicle->next_vehicle_on_train, i++)
+    for (Vehicle* vehicle = GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
+         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
     {
-        vehicle = GetEntity<Vehicle>(vehicle_id);
-        if (vehicle == nullptr)
-        {
-            break;
-        }
-
         uint8_t num_seats = vehicle->num_seats;
         if (vehicle->IsUsedInPairs())
         {

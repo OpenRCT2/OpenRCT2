@@ -451,19 +451,13 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
     uint16_t massTotal = 0;
     int32_t accelerationTotal = 0;
 
-    for (uint16_t spriteId = sprite_index; spriteId != SPRITE_INDEX_NULL;)
+    for (Vehicle* vehicle = GetEntity<Vehicle>(sprite_index); vehicle != nullptr;
+         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
-        Vehicle* vehicle = GetEntity<Vehicle>(spriteId);
-        if (vehicle == nullptr)
-        {
-            break;
-        }
         vehicleCount++;
 
         massTotal += vehicle->mass;
         accelerationTotal = add_clamp_int32_t(accelerationTotal, vehicle->acceleration);
-
-        spriteId = vehicle->next_vehicle_on_train;
     }
 
     int32_t newAcceleration = (accelerationTotal / vehicleCount) >> 9;

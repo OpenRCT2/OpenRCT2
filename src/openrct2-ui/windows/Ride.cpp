@@ -4053,18 +4053,12 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                             break;
                         for (int32_t i = 0; i < ride->num_vehicles; ++i)
                         {
-                            uint16_t spriteId = ride->vehicles[i];
-                            while (spriteId != SPRITE_INDEX_NULL)
+                            for (vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
+                                 vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                             {
-                                vehicle = GetEntity<Vehicle>(spriteId);
-                                if (vehicle == nullptr)
-                                {
-                                    break;
-                                }
                                 vehicle->ClearUpdateFlag(
                                     VEHICLE_UPDATE_FLAG_BROKEN_CAR | VEHICLE_UPDATE_FLAG_ZERO_VELOCITY
                                     | VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
-                                spriteId = vehicle->next_vehicle_on_train;
                             }
                         }
                         break;

@@ -1093,15 +1093,8 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
 {
     for (auto train : EntityList<Vehicle>(EntityListId::TrainHead))
     {
-        Vehicle* vehicle = nullptr;
-        for (auto vehicle_index = train->sprite_index; vehicle_index != SPRITE_INDEX_NULL;
-             vehicle_index = vehicle->next_vehicle_on_train)
+        for (Vehicle* vehicle = train; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {
-            vehicle = GetEntity<Vehicle>(vehicle_index);
-            if (vehicle == nullptr)
-            {
-                break;
-            }
             if (vehicle->x == LOCATION_NULL)
                 continue;
 

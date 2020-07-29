@@ -641,7 +641,6 @@ private:
 
     void RemoveAllGuests() const
     {
-        uint16_t spriteIndex;
         for (auto& ride : GetRideManager())
         {
             ride.num_riders = 0;
@@ -654,36 +653,21 @@ private:
 
             for (auto trainIndex : ride.vehicles)
             {
-                spriteIndex = trainIndex;
-                while (spriteIndex != SPRITE_INDEX_NULL)
+                for (Vehicle* vehicle = TryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
+                     vehicle = TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
-                    auto vehicle = GetEntity<Vehicle>(spriteIndex);
-                    if (vehicle == nullptr)
+                    for (auto& peepInTrainIndex : vehicle->peep)
                     {
-                        break;
-                    }
-                    for (size_t i = 0, offset = 0; i < vehicle->num_peeps; i++)
-                    {
-                        while (vehicle->peep[i + offset] == SPRITE_INDEX_NULL)
-                        {
-                            offset++;
-                        }
-                        auto peep = TryGetEntity<Guest>(vehicle->peep[i + offset]);
+                        auto peep = TryGetEntity<Guest>(peepInTrainIndex);
                         if (peep != nullptr)
                         {
                             vehicle->mass -= peep->Mass;
                         }
-                    }
-
-                    for (auto& peepInTrainIndex : vehicle->peep)
-                    {
                         peepInTrainIndex = SPRITE_INDEX_NULL;
                     }
 
                     vehicle->num_peeps = 0;
                     vehicle->next_free_seat = 0;
-
-                    spriteIndex = vehicle->next_vehicle_on_train;
                 }
             }
         }
