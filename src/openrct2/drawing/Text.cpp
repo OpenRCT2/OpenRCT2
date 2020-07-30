@@ -12,13 +12,11 @@
 #include "../localisation/Localisation.h"
 #include "Drawing.h"
 
-static TextPaint _legacyPaint;
-
-static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextPaint* paint, const_utf8string text);
+static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text);
 static void DrawText(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextPaint* paint, rct_string_id format, const void* args);
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, rct_string_id format, const void* args);
 
-StaticLayout::StaticLayout(utf8string source, TextPaint paint, int32_t width)
+StaticLayout::StaticLayout(utf8string source, const TextPaint& paint, int32_t width)
 {
     Buffer = source;
     Paint = paint;
@@ -54,7 +52,7 @@ void StaticLayout::Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)
     utf8* buffer = Buffer;
     for (int32_t line = 0; line < LineCount; ++line)
     {
-        DrawText(dpi, lineCoords, &tempPaint, buffer);
+        DrawText(dpi, lineCoords, tempPaint, buffer);
         tempPaint.Colour = TEXT_COLOUR_254;
         buffer = get_string_end(buffer) + 1;
         lineCoords.y += LineHeight;
@@ -76,12 +74,12 @@ int32_t StaticLayout::GetLineCount()
     return LineCount;
 }
 
-static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextPaint* paint, const_utf8string text)
+static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text)
 {
     int32_t width = gfx_get_string_width(text);
 
     auto alignedCoords = coords;
-    switch (paint->Alignment)
+    switch (paint.Alignment)
     {
         case TextAlignment::LEFT:
             break;
@@ -93,9 +91,9 @@ static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextP
             break;
     }
 
-    ttf_draw_string(dpi, text, paint->Colour, alignedCoords);
+    ttf_draw_string(dpi, text, paint.Colour, alignedCoords);
 
-    if (paint->UnderlineText)
+    if (paint.UnderlineText)
     {
         gfx_fill_rect(
             dpi, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
@@ -110,7 +108,7 @@ static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextP
 }
 
 static void DrawText(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, TextPaint* paint, rct_string_id format, const void* args)
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, rct_string_id format, const void* args)
 {
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
@@ -121,38 +119,29 @@ static void DrawTextCompat(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, uint8_t colour,
     TextAlignment alignment, bool underline = false)
 {
-    _legacyPaint.UnderlineText = underline;
-    _legacyPaint.Colour = colour;
-    _legacyPaint.Alignment = alignment;
-    _legacyPaint.SpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, underline, alignment };
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    DrawText(dpi, coords, &_legacyPaint, format, args);
+    DrawText(dpi, coords, textPaint, format, args);
 }
 
 static void DrawTextEllipsisedCompat(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, void* args, uint8_t colour,
     TextAlignment alignment, bool underline = false)
 {
-    _legacyPaint.UnderlineText = underline;
-    _legacyPaint.Colour = colour;
-    _legacyPaint.Alignment = alignment;
-    _legacyPaint.SpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, underline, alignment };
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
     gfx_clip_string(buffer, width);
 
-    DrawText(dpi, coords, &_legacyPaint, buffer);
+    DrawText(dpi, coords, textPaint, buffer);
 }
 
 void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)
 {
-    _legacyPaint.UnderlineText = false;
-    _legacyPaint.Colour = colour;
-    _legacyPaint.Alignment = TextAlignment::LEFT;
-    _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
-    DrawText(dpi, coords, &_legacyPaint, buffer);
+    TextPaint textPaint = { colour, gCurrentFontSpriteBase, false, TextAlignment::LEFT };
+    DrawText(dpi, coords, textPaint, buffer);
 }
 
 // Basic
@@ -220,12 +209,8 @@ int32_t gfx_draw_string_left_wrapped(
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-    _legacyPaint.UnderlineText = false;
-    _legacyPaint.Colour = colour;
-    _legacyPaint.Alignment = TextAlignment::LEFT;
-    _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
-
-    StaticLayout layout(buffer, _legacyPaint, width);
+    TextPaint textPaint = { colour, gCurrentFontSpriteBase, false, TextAlignment::LEFT };
+    StaticLayout layout(buffer, textPaint, width);
     layout.Draw(dpi, coords);
 
     return layout.GetHeight();
@@ -239,12 +224,8 @@ int32_t gfx_draw_string_centred_wrapped(
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-    _legacyPaint.UnderlineText = false;
-    _legacyPaint.Colour = colour;
-    _legacyPaint.Alignment = TextAlignment::CENTRE;
-    _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
-
-    StaticLayout layout(buffer, _legacyPaint, width);
+    TextPaint textPaint = { colour, gCurrentFontSpriteBase, false, TextAlignment::CENTRE };
+    StaticLayout layout(buffer, textPaint, width);
 
     // The original tried to vertically centre the text, but used line count - 1
     int32_t lineCount = layout.GetLineCount();
