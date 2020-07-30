@@ -270,6 +270,7 @@ namespace Editor
     static bool ReadS6(const char* path)
     {
         auto extension = path_get_extension(path);
+        auto loadedFromSave = false;
         if (_stricmp(extension, ".sc6") == 0)
         {
             load_from_sc6(path);
@@ -277,9 +278,10 @@ namespace Editor
         else if (_stricmp(extension, ".sv6") == 0 || _stricmp(extension, ".sv7") == 0)
         {
             load_from_sv6(path);
+            loadedFromSave = true;
         }
 
-        ClearMapForEditing(true);
+        ClearMapForEditing(loadedFromSave);
 
         gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
         gScreenAge = 0;
