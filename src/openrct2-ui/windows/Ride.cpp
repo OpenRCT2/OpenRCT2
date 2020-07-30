@@ -1626,10 +1626,11 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
             int32_t numPeepsLeft = vehicle->num_peeps;
             for (int32_t i = 0; i < 32 && numPeepsLeft > 0; i++)
             {
+                
                 uint16_t peepSpriteIndex = vehicle->peep[i];
                 if (peepSpriteIndex == SPRITE_INDEX_NULL)
                     continue;
-
+                
                 numPeepsLeft--;
                 rct_window* w2 = window_find_by_number(WC_PEEP, peepSpriteIndex);
                 if (w2 == nullptr)
@@ -2675,12 +2676,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
     if (ride == nullptr)
         return STR_EMPTY;
 
-    auto vehicleIndex = w->ride.view - 1;
-    auto vehicleSpriteIndex = ride->vehicles[vehicleIndex];
-    if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
-        return STR_EMPTY;
-
-    auto vehicle = GetEntity<Vehicle>(vehicleSpriteIndex);
+    auto vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
     if (vehicle == nullptr)
         return STR_EMPTY;
 
