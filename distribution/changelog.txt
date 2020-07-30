@@ -25,6 +25,7 @@
 - Fix: [#6119] Advertising campaign for ride window not updated properly (original bug).
 - Fix: [#7006] Submarine Ride is in the wrong research group.
 - Fix: [#7324] Research window shows vehicle name instead of ride name.
+- Fix: [#7969, #8175, #12501] When loading a landscape in the Scenario Editor, the inventions list, financial settings and objective settings are reset.
 - Fix: [#10634] Guests are unable to use uphill paths out of toilets.
 - Fix: [#10876] When removing a path, its guest entry point is not removed.
 - Fix: [#10876] There can be multiple peep spawns on the same location.
