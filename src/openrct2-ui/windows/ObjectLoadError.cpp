@@ -260,6 +260,7 @@ enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_DOWNLOAD_ALL
 };
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
 static constexpr const int32_t WW = 450;
 static constexpr const int32_t WH = 400;
 static constexpr const int32_t WW_LESS_PADDING = WW - 5;
@@ -268,17 +269,15 @@ constexpr int32_t SOURCE_COL_LEFT = (WW_LESS_PADDING / 4) + 1;
 constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
 static rct_widget window_object_load_error_widgets[] = {
-    { WWT_FRAME,             0, 0,               WW - 1,                0,          WH - 1,     STR_NONE,                       STR_NONE },                // Background
-    { WWT_CAPTION,           0, 1,               WW - 2,                1,          14,         STR_OBJECT_LOAD_ERROR_TITLE,    STR_WINDOW_TITLE_TIP },    // Title bar
-    { WWT_CLOSEBOX,          0, WW - 13,         WW - 3,                2,          13,         STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },    // Close button
-    { WWT_TABLE_HEADER,      0, NAME_COL_LEFT,   SOURCE_COL_LEFT - 1,   57,         70,         STR_OBJECT_NAME,                STR_NONE },                // 'Object name' header
-    { WWT_TABLE_HEADER,      0, SOURCE_COL_LEFT, TYPE_COL_LEFT - 1,     57,         70,         STR_OBJECT_SOURCE,              STR_NONE },                // 'Object source' header
-    { WWT_TABLE_HEADER,      0, TYPE_COL_LEFT,   WW_LESS_PADDING - 1,   57,         70,         STR_OBJECT_TYPE,                STR_NONE },                // 'Object type' header
-    { WWT_SCROLL,            0, 4,               WW_LESS_PADDING,       70,         WH - 33,    SCROLL_VERTICAL,                STR_NONE },                // Scrollable list area
-    { WWT_BUTTON,            0, 4,               148,                   WH - 23,    WH - 10,    STR_COPY_SELECTED,              STR_COPY_SELECTED_TIP },   // Copy selected button
-    { WWT_BUTTON,            0, 152,             296,                   WH - 23,    WH - 10,    STR_COPY_ALL,                   STR_COPY_ALL_TIP },        // Copy all button
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WWT_TABLE_HEADER, 0, STR_OBJECT_NAME                                   ), // 'Object name' header
+    MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, 0, STR_OBJECT_SOURCE                                 ), // 'Object source' header
+    MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, 0, STR_OBJECT_TYPE                                   ), // 'Object type' header
+    MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WWT_SCROLL,       0, SCROLL_VERTICAL                                   ), // Scrollable list area
+    MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WWT_BUTTON,       0, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
+    MakeWidget({            152, 377}, {145,  14}, WWT_BUTTON,       0, STR_COPY_ALL,                STR_COPY_ALL_TIP     ), // Copy all button
 #ifndef DISABLE_HTTP
-    { WWT_BUTTON,            0, 300,             WW_LESS_PADDING,       WH - 23,    WH - 10,    STR_DOWNLOAD_ALL,               STR_DOWNLOAD_ALL_TIP },    // Download all button
+    MakeWidget({            300, 377}, {146,  14}, WWT_BUTTON,       0, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
 #endif
     { WIDGETS_END },
 };
