@@ -32,7 +32,7 @@ namespace OpenRCT2
         std::string FilePath;
     };
 
-    interface IReplayManager
+    INTERFACE IReplayManager
     {
     public:
         enum class RecordType

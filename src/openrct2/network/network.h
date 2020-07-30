@@ -32,7 +32,7 @@ enum class PermissionState : uint8_t;
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    INTERFACE IPlatformEnvironment;
 }
 
 void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);

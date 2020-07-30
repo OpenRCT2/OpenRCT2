@@ -14,13 +14,13 @@
 
 namespace OpenRCT2::Audio
 {
-    interface IAudioSource;
+    INTERFACE IAudioSource;
 
     /**
      * Represents an audio channel that represents an audio source
      * and a number of properties such as volume, pan and loop information.
      */
-    interface IAudioChannel
+    INTERFACE IAudioChannel
     {
         virtual ~IAudioChannel() = default;
 

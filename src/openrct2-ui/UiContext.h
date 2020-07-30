@@ -17,16 +17,16 @@ struct SDL_Window;
 
 namespace OpenRCT2
 {
-    interface IContext;
-    interface IPlatformEnvironment;
+    INTERFACE IContext;
+    INTERFACE IPlatformEnvironment;
 
     namespace Ui
     {
         struct FileDialogDesc;
         class InGameConsole;
-        interface IUiContext;
+        INTERFACE IUiContext;
 
-        interface IPlatformUiContext
+        INTERFACE IPlatformUiContext
         {
             virtual ~IPlatformUiContext() = default;
             virtual void SetWindowIcon(SDL_Window * window) abstract;

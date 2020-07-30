@@ -14,7 +14,7 @@
 
 #include <vector>
 
-interface IStream;
+INTERFACE IStream;
 
 /**
  * Class to export RollerCoaster Tycoon 2 track designs (*.TD6).

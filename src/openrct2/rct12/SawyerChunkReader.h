@@ -15,7 +15,7 @@
 
 #include <memory>
 
-interface IStream;
+INTERFACE IStream;
 
 /**
  * Reads sawyer encoding chunks from a data stream. This can be used to read

@@ -225,7 +225,7 @@ namespace Platform
         auto hModule = GetModuleHandleA("ntdll.dll");
         if (hModule != nullptr)
         {
-            using RtlGetVersionPtr = NTSTATUS(WINAPI*)(PRTL_OSVERSIONINFOW);
+            using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
 #    if defined(__GNUC__) && __GNUC__ >= 8
 #        pragma GCC diagnostic push
 #        pragma GCC diagnostic ignored "-Wcast-function-type"

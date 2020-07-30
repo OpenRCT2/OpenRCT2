@@ -165,8 +165,8 @@ using rct_string_id = uint16_t;
         (x) = nullptr;                                                                                                         \
     } while (false)
 
-#ifndef interface
-#    define interface struct
+#ifndef INTERFACE
+#    define INTERFACE struct
 #endif
 #define abstract = 0
 

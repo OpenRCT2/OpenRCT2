@@ -14,7 +14,7 @@
 
 #include <memory>
 
-interface IStream;
+INTERFACE IStream;
 
 /**
  * Writes sawyer encoding chunks to a data stream. This can be used to write

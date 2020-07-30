@@ -15,8 +15,8 @@
 #include <string>
 #include <vector>
 
-interface IReadObjectContext;
-interface IStream;
+INTERFACE IReadObjectContext;
+INTERFACE IStream;
 
 enum OBJ_STRING_ID : uint8_t
 {

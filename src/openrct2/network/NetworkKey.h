@@ -18,7 +18,7 @@
 #    include <string>
 #    include <vector>
 
-interface IStream;
+INTERFACE IStream;
 
 namespace Crypt
 {

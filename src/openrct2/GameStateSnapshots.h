@@ -60,7 +60,7 @@ struct GameStateCompareData_t
  * as it may become invalid at any time when a snapshot is created, rather Link the snapshot
  * to a specific tick which can be obtained by that later again assuming its still valid.
  */
-interface IGameStateSnapshots
+INTERFACE IGameStateSnapshots
 {
     virtual ~IGameStateSnapshots() = default;
 

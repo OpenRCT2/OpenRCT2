@@ -22,17 +22,17 @@ namespace OpenRCT2
 {
     namespace Drawing
     {
-        interface IDrawingEngine;
+        INTERFACE IDrawingEngine;
     } // namespace Drawing
 
     namespace Ui
     {
-        interface IUiContext;
+        INTERFACE IUiContext;
     } // namespace Ui
 
     namespace Paint
     {
-        interface Painter final
+        INTERFACE Painter final
         {
         private:
             std::shared_ptr<Ui::IUiContext> const _uiContext;

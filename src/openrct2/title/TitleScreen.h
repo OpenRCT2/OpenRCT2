@@ -12,7 +12,7 @@
 #include "../common.h"
 #include "../drawing/Drawing.h"
 
-interface ITitleSequencePlayer;
+INTERFACE ITitleSequencePlayer;
 
 namespace OpenRCT2
 {

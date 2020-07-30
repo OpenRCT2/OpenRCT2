@@ -15,8 +15,8 @@
 #include <memory>
 #include <vector>
 
-interface IReadObjectContext;
-interface IStream;
+INTERFACE IReadObjectContext;
+INTERFACE IStream;
 
 class ImageTable
 {

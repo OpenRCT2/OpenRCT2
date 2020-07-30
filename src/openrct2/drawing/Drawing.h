@@ -22,12 +22,12 @@ struct ScreenLine;
 struct ScreenRect;
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    INTERFACE IPlatformEnvironment;
 }
 
 namespace OpenRCT2::Drawing
 {
-    interface IDrawingEngine;
+    INTERFACE IDrawingEngine;
 }
 
 struct PaletteBGRA

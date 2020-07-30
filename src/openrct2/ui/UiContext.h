@@ -19,21 +19,21 @@
 
 struct ScreenCoordsXY;
 struct rct_drawpixelinfo;
-interface ITitleSequencePlayer;
+INTERFACE ITitleSequencePlayer;
 
 namespace OpenRCT2
 {
     namespace Drawing
     {
-        interface IDrawingEngineFactory;
-        interface IRainDrawer;
+        INTERFACE IDrawingEngineFactory;
+        INTERFACE IRainDrawer;
         using DrawRainFunc = void (*)(
             OpenRCT2::Drawing::IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
     } // namespace Drawing
 
     namespace Ui
     {
-        interface IWindowManager;
+        INTERFACE IWindowManager;
 
         enum class FULLSCREEN_MODE
         {
@@ -87,7 +87,7 @@ namespace OpenRCT2
         /**
          * Represents the window or screen that OpenRCT2 is presented on.
          */
-        interface IUiContext
+        INTERFACE IUiContext
         {
             virtual ~IUiContext() = default;
 

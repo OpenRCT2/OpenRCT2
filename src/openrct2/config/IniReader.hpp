@@ -13,10 +13,10 @@
 
 #include <string>
 
-interface IStream;
+INTERFACE IStream;
 template<typename T> struct IConfigEnum;
 
-interface IIniReader
+INTERFACE IIniReader
 {
     virtual ~IIniReader() = default;
 

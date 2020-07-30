@@ -17,7 +17,7 @@ namespace OpenRCT2::Audio
     /**
      * Represents a readable source of audio PCM data.
      */
-    interface IAudioSource
+    INTERFACE IAudioSource
     {
         virtual ~IAudioSource() = default;
 

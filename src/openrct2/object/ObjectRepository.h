@@ -16,11 +16,11 @@
 #include <memory>
 #include <vector>
 
-interface IStream;
+INTERFACE IStream;
 class Object;
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    INTERFACE IPlatformEnvironment;
 }
 
 namespace OpenRCT2::Localisation
@@ -58,7 +58,7 @@ struct ObjectRepositoryItem
     }
 };
 
-interface IObjectRepository
+INTERFACE IObjectRepository
 {
     virtual ~IObjectRepository() = default;
 

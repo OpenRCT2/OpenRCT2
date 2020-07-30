@@ -17,7 +17,7 @@ namespace OpenRCT2
 {
     namespace Ui
     {
-        interface IUiContext;
+        INTERFACE IUiContext;
     } // namespace Ui
 
     namespace Drawing

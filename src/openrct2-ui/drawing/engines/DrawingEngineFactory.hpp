@@ -19,7 +19,7 @@ namespace OpenRCT2
     {
         using namespace OpenRCT2::Drawing;
 
-        interface IUiContext;
+        INTERFACE IUiContext;
 
         std::unique_ptr<IDrawingEngine> CreateSoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext);
         std::unique_ptr<IDrawingEngine> CreateHardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext);

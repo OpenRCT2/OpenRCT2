@@ -26,13 +26,13 @@ namespace OpenRCT2::Audio
         TitleMusic,
     };
 
-    interface IAudioSource;
-    interface IAudioChannel;
+    INTERFACE IAudioSource;
+    INTERFACE IAudioChannel;
 
     /**
      * Provides an audio stream by mixing multiple audio channels together.
      */
-    interface IAudioMixer
+    INTERFACE IAudioMixer
     {
         virtual ~IAudioMixer() = default;
 

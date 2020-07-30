@@ -35,7 +35,7 @@ enum NETWORK_READPACKET
 /**
  * Represents an address and port.
  */
-interface INetworkEndpoint
+INTERFACE INetworkEndpoint
 {
     virtual ~INetworkEndpoint()
     {
@@ -47,7 +47,7 @@ interface INetworkEndpoint
 /**
  * Represents a TCP socket / connection or listener.
  */
-interface ITcpSocket
+INTERFACE ITcpSocket
 {
 public:
     virtual ~ITcpSocket() = default;
@@ -74,7 +74,7 @@ public:
 /**
  * Represents a UDP socket / listener.
  */
-interface IUdpSocket
+INTERFACE IUdpSocket
 {
 public:
     virtual ~IUdpSocket() = default;

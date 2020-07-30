@@ -20,7 +20,7 @@
 /**
  * Interface to import scenarios and saved games.
  */
-interface ITrackImporter
+INTERFACE ITrackImporter
 {
 public:
     virtual ~ITrackImporter() = default;

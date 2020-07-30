@@ -48,10 +48,10 @@ struct scenario_index_entry
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    INTERFACE IPlatformEnvironment;
 }
 
-interface IScenarioRepository
+INTERFACE IScenarioRepository
 {
     virtual ~IScenarioRepository() = default;
 

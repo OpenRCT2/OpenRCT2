@@ -24,10 +24,10 @@ struct track_design_file_ref
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    INTERFACE IPlatformEnvironment;
 }
 
-interface ITrackDesignRepository
+INTERFACE ITrackDesignRepository
 {
     virtual ~ITrackDesignRepository() = default;
 

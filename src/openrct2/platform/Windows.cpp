@@ -16,7 +16,10 @@
 #ifdef _WIN32
 
 // Windows.h needs to be included first
+// clang-format off
 #    include <windows.h>
+#    include <shellapi.h>
+// clang-format on
 
 // Then the rest
 #    include "../OpenRCT2.h"

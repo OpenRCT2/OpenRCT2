@@ -37,7 +37,7 @@ class InteractiveConsole;
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    INTERFACE IPlatformEnvironment;
 }
 
 namespace OpenRCT2::Scripting

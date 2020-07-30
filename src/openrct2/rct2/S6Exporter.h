@@ -18,7 +18,7 @@
 #include <string_view>
 #include <vector>
 
-interface IStream;
+INTERFACE IStream;
 struct ObjectRepositoryItem;
 struct RCT12SpriteBase;
 struct SpriteBase;

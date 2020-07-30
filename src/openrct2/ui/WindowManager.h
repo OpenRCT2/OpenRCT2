@@ -20,7 +20,7 @@ namespace OpenRCT2::Ui
     /**
      * Manager of in-game windows and widgets.
      */
-    interface IWindowManager
+    INTERFACE IWindowManager
     {
         virtual ~IWindowManager() = default;
         virtual void Init() abstract;

@@ -14,7 +14,7 @@
 #include "../util/Util.h"
 #include "String.hpp"
 
-interface IStringReader
+INTERFACE IStringReader
 {
     virtual ~IStringReader() = default;
 

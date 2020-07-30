@@ -11,7 +11,7 @@
 
 #include "../common.h"
 
-interface IStream;
+INTERFACE IStream;
 
 enum class RCT12TrackDesignVersion : uint8_t;
 

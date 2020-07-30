@@ -17,12 +17,12 @@
 #include <string_view>
 #include <tuple>
 
-interface ILanguagePack;
-interface IObjectManager;
+INTERFACE ILanguagePack;
+INTERFACE IObjectManager;
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    INTERFACE IPlatformEnvironment;
 }
 
 namespace OpenRCT2::Localisation

@@ -25,7 +25,7 @@ enum
 
 #include <string>
 
-interface IStream;
+INTERFACE IStream;
 
 enum class FILE_TYPE
 {

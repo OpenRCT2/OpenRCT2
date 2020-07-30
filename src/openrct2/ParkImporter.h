@@ -17,9 +17,9 @@
 #include <string>
 #include <vector>
 
-interface IObjectManager;
-interface IObjectRepository;
-interface IStream;
+INTERFACE IObjectManager;
+INTERFACE IObjectRepository;
+INTERFACE IStream;
 struct scenario_index_entry;
 
 struct ParkLoadResult final
@@ -36,7 +36,7 @@ public:
 /**
  * Interface to import scenarios and saved games.
  */
-interface IParkImporter
+INTERFACE IParkImporter
 {
 public:
     virtual ~IParkImporter() = default;

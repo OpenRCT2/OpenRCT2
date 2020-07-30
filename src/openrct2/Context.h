@@ -15,12 +15,12 @@
 #include <memory>
 #include <string>
 
-interface IObjectManager;
-interface IObjectRepository;
-interface IScenarioRepository;
-interface IStream;
-interface ITrackDesignRepository;
-interface IGameStateSnapshots;
+INTERFACE IObjectManager;
+INTERFACE IObjectRepository;
+INTERFACE IScenarioRepository;
+INTERFACE IStream;
+INTERFACE ITrackDesignRepository;
+INTERFACE IGameStateSnapshots;
 
 class Intent;
 struct rct_window;
@@ -67,17 +67,17 @@ namespace OpenRCT2
 {
     class GameState;
 
-    interface IPlatformEnvironment;
-    interface IReplayManager;
+    INTERFACE IPlatformEnvironment;
+    INTERFACE IReplayManager;
 
     namespace Audio
     {
-        interface IAudioContext;
+        INTERFACE IAudioContext;
     }
 
     namespace Drawing
     {
-        interface IDrawingEngine;
+        INTERFACE IDrawingEngine;
     }
 
     namespace Localisation
@@ -92,18 +92,18 @@ namespace OpenRCT2
 
     namespace Ui
     {
-        interface IUiContext;
+        INTERFACE IUiContext;
     }
 
     namespace Paint
     {
-        interface Painter;
+        INTERFACE Painter;
     }
 
     /**
      * Represents an instance of OpenRCT2 and can be used to get various services.
      */
-    interface IContext
+    INTERFACE IContext
     {
         virtual ~IContext() = default;
 
