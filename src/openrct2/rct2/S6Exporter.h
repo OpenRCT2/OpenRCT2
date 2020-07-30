@@ -18,7 +18,11 @@
 #include <string_view>
 #include <vector>
 
-INTERFACE IStream;
+namespace OpenRCT2
+{
+    INTERFACE IStream;
+}
+
 struct ObjectRepositoryItem;
 struct RCT12SpriteBase;
 struct SpriteBase;
@@ -35,9 +39,9 @@ public:
     S6Exporter();
 
     void SaveGame(const utf8* path);
-    void SaveGame(IStream* stream);
+    void SaveGame(OpenRCT2::IStream* stream);
     void SaveScenario(const utf8* path);
-    void SaveScenario(IStream* stream);
+    void SaveScenario(OpenRCT2::IStream* stream);
     void Export();
     void ExportParkName();
     void ExportRides();
@@ -54,7 +58,7 @@ private:
     rct_s6_data _s6{};
     std::vector<std::string> _userStrings;
 
-    void Save(IStream* stream, bool isScenario);
+    void Save(OpenRCT2::IStream* stream, bool isScenario);
     static uint32_t GetLoanHash(money32 initialCash, money32 bankLoan, uint32_t maxBankLoan);
     void ExportResearchedRideTypes();
     void ExportResearchedRideEntries();

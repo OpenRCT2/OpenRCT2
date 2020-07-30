@@ -147,17 +147,17 @@ namespace OpenRCT2
             Seek(position, STREAM_SEEK_BEGIN);
         }
 
-        void Seek(int64_t offset, IStream::SeekType origin) override
+        void Seek(int64_t offset, int32_t origin) override
         {
             switch (origin)
             {
-                case IStream::SeekType.STREAM_SEEK_BEGIN:
+                case STREAM_SEEK_BEGIN:
                     fseeko(_file, offset, SEEK_SET);
                     break;
-                case IStream::SeekType.STREAM_SEEK_CURRENT:
+                case STREAM_SEEK_CURRENT:
                     fseeko(_file, offset, SEEK_CUR);
                     break;
-                case IStream::SeekType.STREAM_SEEK_END:
+                case STREAM_SEEK_END:
                     fseeko(_file, offset, SEEK_END);
                     break;
             }

@@ -34,7 +34,7 @@ protected:
         ASSERT_GT(encodedDataSize, sizeof(sawyercoding_chunk_header));
 
         // Decode
-        MemoryStream ms(encodedDataBuffer, encodedDataSize);
+        OpenRCT2::MemoryStream ms(encodedDataBuffer, encodedDataSize);
         SawyerChunkReader reader(&ms);
         auto chunk = reader.ReadChunk();
         ASSERT_EQ(static_cast<uint8_t>(chunk->GetEncoding()), chdr_in.encoding);
@@ -51,7 +51,7 @@ protected:
         auto chdr_in = reinterpret_cast<const sawyercoding_chunk_header*>(data);
         ASSERT_EQ(chdr_in->length, expectedLength);
 
-        MemoryStream ms(data, size);
+        OpenRCT2::MemoryStream ms(data, size);
         SawyerChunkReader reader(&ms);
         auto chunk = reader.ReadChunk();
         ASSERT_EQ(static_cast<uint8_t>(chunk->GetEncoding()), chdr_in->encoding);

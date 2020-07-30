@@ -13,7 +13,11 @@
 
 #include <string>
 
-INTERFACE IStream;
+namespace OpenRCT2
+{
+    INTERFACE IStream;
+}
+
 template<typename T> struct IConfigEnum;
 
 INTERFACE IIniReader
@@ -43,5 +47,5 @@ INTERFACE IIniReader
     utf8* GetCString(const std::string& name, const utf8* defaultValue) const;
 };
 
-IIniReader* CreateIniReader(IStream* stream);
+IIniReader* CreateIniReader(OpenRCT2::IStream* stream);
 IIniReader* CreateDefaultIniReader();

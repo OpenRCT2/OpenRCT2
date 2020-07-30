@@ -18,7 +18,10 @@
 INTERFACE IObjectManager;
 INTERFACE IObjectRepository;
 INTERFACE IScenarioRepository;
-INTERFACE IStream;
+namespace OpenRCT2
+{
+    INTERFACE IStream;
+}
 INTERFACE ITrackDesignRepository;
 INTERFACE IGameStateSnapshots;
 

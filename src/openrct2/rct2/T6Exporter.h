@@ -14,7 +14,10 @@
 
 #include <vector>
 
-INTERFACE IStream;
+namespace OpenRCT2
+{
+    INTERFACE IStream;
+}
 
 /**
  * Class to export RollerCoaster Tycoon 2 track designs (*.TD6).
@@ -25,7 +28,7 @@ public:
     T6Exporter(TrackDesign* trackDesign);
 
     bool SaveTrack(const utf8* path);
-    bool SaveTrack(IStream* stream);
+    bool SaveTrack(OpenRCT2::IStream* stream);
 
 private:
     TrackDesign* _trackDesign;

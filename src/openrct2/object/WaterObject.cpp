@@ -20,9 +20,9 @@
 
 #include <memory>
 
-void WaterObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void WaterObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(14, STREAM_SEEK_CURRENT);
+    stream->Seek(14, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint16_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);

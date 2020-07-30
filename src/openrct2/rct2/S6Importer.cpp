@@ -93,7 +93,7 @@ public:
 
     ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
     {
-        auto fs = FileStream(path, FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
         auto result = LoadFromStream(&fs, false, skipObjectCheck);
         _s6Path = path;
         return result;
@@ -101,14 +101,14 @@ public:
 
     ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) override
     {
-        auto fs = FileStream(path, FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
         auto result = LoadFromStream(&fs, true, skipObjectCheck);
         _s6Path = path;
         return result;
     }
 
     ParkLoadResult LoadFromStream(
-        IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck = false,
+        OpenRCT2::IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck = false,
         const utf8* path = String::Empty) override
     {
         if (isScenario && !gConfigGeneral.allow_loading_with_incorrect_checksum && !SawyerEncoding::ValidateChecksum(stream))

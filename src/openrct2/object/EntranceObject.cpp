@@ -15,9 +15,9 @@
 #include "../localisation/Localisation.h"
 #include "ObjectJsonHelpers.h"
 
-void EntranceObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(6, STREAM_SEEK_CURRENT);
+    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
     _legacyType.text_height = stream->ReadValue<uint8_t>();
 

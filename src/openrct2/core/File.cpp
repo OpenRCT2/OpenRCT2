@@ -87,7 +87,7 @@ namespace File
 
     void WriteAllBytes(const std::string& path, const void* buffer, size_t length)
     {
-        auto fs = FileStream(path, FILE_MODE_WRITE);
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
         fs.Write(buffer, length);
     }
 

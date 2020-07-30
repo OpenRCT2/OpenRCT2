@@ -98,7 +98,7 @@ void CheatsSerialise(DataSerialiser& ds)
 
     if (ds.IsSaving())
     {
-        IStream& stream = ds.GetStream();
+        OpenRCT2::IStream& stream = ds.GetStream();
 
         // Temporarily write 0, will be updated after every cheat is written.
         uint64_t countOffset = stream.GetPosition();

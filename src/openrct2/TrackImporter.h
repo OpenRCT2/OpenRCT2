@@ -26,7 +26,7 @@ public:
     virtual ~ITrackImporter() = default;
 
     virtual bool Load(const utf8* path) abstract;
-    virtual bool LoadFromStream(IStream * stream) abstract;
+    virtual bool LoadFromStream(OpenRCT2::IStream * stream) abstract;
 
     virtual std::unique_ptr<TrackDesign> Import() abstract;
 };

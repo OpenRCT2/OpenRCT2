@@ -23,17 +23,17 @@
 #include <algorithm>
 #include <iterator>
 
-void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(6, STREAM_SEEK_CURRENT);
+    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.tool_id = stream->ReadValue<uint8_t>();
     _legacyType.large_scenery.flags = stream->ReadValue<uint8_t>();
     _legacyType.large_scenery.price = stream->ReadValue<int16_t>();
     _legacyType.large_scenery.removal_price = stream->ReadValue<int16_t>();
-    stream->Seek(5, STREAM_SEEK_CURRENT);
+    stream->Seek(5, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     _legacyType.large_scenery.scrolling_mode = stream->ReadValue<uint8_t>();
-    stream->Seek(4, STREAM_SEEK_CURRENT);
+    stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 
@@ -108,12 +108,12 @@ void LargeSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
     gfx_draw_sprite(dpi, imageId, screenCoords, 0);
 }
 
-std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(IStream* stream)
+std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)
 {
     auto tiles = std::vector<rct_large_scenery_tile>();
     while (stream->ReadValue<uint16_t>() != 0xFFFF)
     {
-        stream->Seek(-2, STREAM_SEEK_CURRENT);
+        stream->Seek(-2, OpenRCT2::STREAM_SEEK_CURRENT);
         auto tile = stream->ReadValue<rct_large_scenery_tile>();
         tiles.push_back(tile);
     }

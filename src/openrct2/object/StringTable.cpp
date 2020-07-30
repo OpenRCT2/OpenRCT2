@@ -47,7 +47,7 @@ static bool StringIsBlank(const utf8* str)
     return true;
 }
 
-void StringTable::Read(IReadObjectContext* context, IStream* stream, uint8_t id)
+void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, uint8_t id)
 {
     try
     {

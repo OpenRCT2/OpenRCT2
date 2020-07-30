@@ -23,15 +23,15 @@
 
 #include <algorithm>
 
-void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(6, STREAM_SEEK_CURRENT);
+    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.small_scenery.flags = stream->ReadValue<uint32_t>();
     _legacyType.small_scenery.height = stream->ReadValue<uint8_t>();
     _legacyType.small_scenery.tool_id = stream->ReadValue<uint8_t>();
     _legacyType.small_scenery.price = stream->ReadValue<int16_t>();
     _legacyType.small_scenery.removal_price = stream->ReadValue<int16_t>();
-    stream->Seek(4, STREAM_SEEK_CURRENT);
+    stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.small_scenery.animation_delay = stream->ReadValue<uint16_t>();
     _legacyType.small_scenery.animation_mask = stream->ReadValue<uint16_t>();
     _legacyType.small_scenery.num_frames = stream->ReadValue<uint16_t>();
@@ -139,7 +139,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
     }
 }
 
-std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(IStream* stream)
+std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(OpenRCT2::IStream* stream)
 {
     uint8_t frameOffset;
     auto data = std::vector<uint8_t>();

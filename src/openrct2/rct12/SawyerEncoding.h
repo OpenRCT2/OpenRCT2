@@ -11,12 +11,15 @@
 
 #include "../common.h"
 
-INTERFACE IStream;
+namespace OpenRCT2
+{
+    INTERFACE IStream;
+}
 
 enum class RCT12TrackDesignVersion : uint8_t;
 
 namespace SawyerEncoding
 {
-    bool ValidateChecksum(IStream* stream);
-    RCT12TrackDesignVersion ValidateTrackChecksum(IStream* stream);
+    bool ValidateChecksum(OpenRCT2::IStream* stream);
+    RCT12TrackDesignVersion ValidateTrackChecksum(OpenRCT2::IStream* stream);
 } // namespace SawyerEncoding

@@ -18,7 +18,10 @@
 #    include <string>
 #    include <vector>
 
-INTERFACE IStream;
+namespace OpenRCT2
+{
+    INTERFACE IStream;
+}
 
 namespace Crypt
 {
@@ -31,10 +34,10 @@ public:
     NetworkKey();
     ~NetworkKey();
     bool Generate();
-    bool LoadPrivate(IStream* stream);
-    bool LoadPublic(IStream* stream);
-    bool SavePrivate(IStream* stream);
-    bool SavePublic(IStream* stream);
+    bool LoadPrivate(OpenRCT2::IStream* stream);
+    bool LoadPublic(OpenRCT2::IStream* stream);
+    bool SavePrivate(OpenRCT2::IStream* stream);
+    bool SavePublic(OpenRCT2::IStream* stream);
     std::string PublicKeyString();
     std::string PublicKeyHash();
     void Unload();

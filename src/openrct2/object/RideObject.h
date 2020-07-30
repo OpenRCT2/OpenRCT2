@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/IStream.hpp"
 #include "../ride/Ride.h"
 #include "Object.h"
 
@@ -34,7 +35,7 @@ public:
     }
 
     void ReadJson(IReadObjectContext* context, const json_t* root) override;
-    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
     void Load() override;
     void Unload() override;
 
@@ -46,7 +47,7 @@ public:
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
 private:
-    void ReadLegacyVehicle(IReadObjectContext* context, IStream* stream, rct_ride_entry_vehicle* vehicle);
+    void ReadLegacyVehicle(IReadObjectContext* context, OpenRCT2::IStream* stream, rct_ride_entry_vehicle* vehicle);
 
     void ReadJsonVehicleInfo(IReadObjectContext* context, const json_t* properties);
     std::vector<rct_ride_entry_vehicle> ReadJsonCars(const json_t* jCars);

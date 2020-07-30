@@ -17,14 +17,14 @@
 #include "ObjectJsonHelpers.h"
 #include "ObjectList.h"
 
-void BannerObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(6, STREAM_SEEK_CURRENT);
+    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.banner.scrolling_mode = stream->ReadValue<uint8_t>();
     _legacyType.banner.flags = stream->ReadValue<uint8_t>();
     _legacyType.banner.price = stream->ReadValue<int16_t>();
     _legacyType.banner.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
-    stream->Seek(2, STREAM_SEEK_CURRENT);
+    stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 

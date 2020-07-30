@@ -26,7 +26,7 @@
 class TD6Importer final : public ITrackImporter
 {
 private:
-    MemoryStream _stream;
+    OpenRCT2::MemoryStream _stream;
     std::string _name;
 
 public:
@@ -40,7 +40,7 @@ public:
         if (String::Equals(extension, ".td6", true))
         {
             _name = GetNameFromTrackPath(path);
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
             return LoadFromStream(&fs);
         }
         else
@@ -49,7 +49,7 @@ public:
         }
     }
 
-    bool LoadFromStream(IStream* stream) override
+    bool LoadFromStream(OpenRCT2::IStream* stream) override
     {
         if (!gConfigGeneral.allow_loading_with_incorrect_checksum
             && SawyerEncoding::ValidateTrackChecksum(stream) != RCT12TrackDesignVersion::TD6)

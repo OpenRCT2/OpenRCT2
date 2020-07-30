@@ -16,15 +16,15 @@
 #include "scenario/Scenario.h"
 #include "util/SawyerCoding.h"
 
-static bool TryClassifyAsS6(IStream* stream, ClassifiedFileInfo* result);
-static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result);
-static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 
 bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result)
 {
     try
     {
-        auto fs = FileStream(path, FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
         return TryClassifyFile(&fs, result);
     }
     catch (const std::exception&)
@@ -33,7 +33,7 @@ bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result)
     }
 }
 
-bool TryClassifyFile(IStream* stream, ClassifiedFileInfo* result)
+bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
 {
     // TODO Currently track designs get classified as SC4s because they use the
     //      same checksum algorithm. The only way after to tell the difference
@@ -61,7 +61,7 @@ bool TryClassifyFile(IStream* stream, ClassifiedFileInfo* result)
     return false;
 }
 
-static bool TryClassifyAsS6(IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();
@@ -89,7 +89,7 @@ static bool TryClassifyAsS6(IStream* stream, ClassifiedFileInfo* result)
     return success;
 }
 
-static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();
@@ -126,7 +126,7 @@ static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result)
     return success;
 }
 
-static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();

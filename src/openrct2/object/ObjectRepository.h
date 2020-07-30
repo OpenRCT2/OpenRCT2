@@ -16,7 +16,11 @@
 #include <memory>
 #include <vector>
 
-INTERFACE IStream;
+namespace OpenRCT2
+{
+    INTERFACE IStream;
+}
+
 class Object;
 namespace OpenRCT2
 {
@@ -76,8 +80,8 @@ INTERFACE IObjectRepository
     virtual void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) abstract;
     virtual void AddObjectFromFile(const std::string_view& objectName, const void* data, size_t dataSize) abstract;
 
-    virtual void ExportPackedObject(IStream * stream) abstract;
-    virtual void WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem*> & objects) abstract;
+    virtual void ExportPackedObject(OpenRCT2::IStream * stream) abstract;
+    virtual void WritePackedObjects(OpenRCT2::IStream * stream, std::vector<const ObjectRepositoryItem*> & objects) abstract;
 };
 
 std::unique_ptr<IObjectRepository> CreateObjectRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);

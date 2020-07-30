@@ -19,7 +19,10 @@
 
 INTERFACE IObjectManager;
 INTERFACE IObjectRepository;
-INTERFACE IStream;
+namespace OpenRCT2
+{
+    INTERFACE IStream;
+}
 struct scenario_index_entry;
 
 struct ParkLoadResult final
@@ -45,7 +48,7 @@ public:
     virtual ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) abstract;
     virtual ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) abstract;
     virtual ParkLoadResult LoadFromStream(
-        IStream * stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) abstract;
+        OpenRCT2::IStream * stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) abstract;
 
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
