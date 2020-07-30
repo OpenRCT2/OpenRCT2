@@ -837,7 +837,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
     }
     else if (
         mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
-        && race_winner != SPRITE_INDEX_NULL)
+        && GetEntity<Peep>(race_winner)!=nullptr)
     {
         auto peep = GetEntity<Peep>(race_winner);
         if (peep != nullptr)
@@ -2751,14 +2751,12 @@ Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspect
 
 Staff* ride_get_mechanic(Ride* ride)
 {
-    auto peep = GetEntity<Peep>(ride->mechanic);
-    if (peep != nullptr)
+    auto staff = GetEntity<Staff>(ride->mechanic);
+    if (staff != nullptr && staff->IsMechanic())
     {
-        auto staff = peep->AsStaff();
-        if (staff != nullptr && staff->IsMechanic())
-            return staff;
+        return staff;
     }
-return nullptr;
+    return nullptr;
 }
 
 Staff* ride_get_assigned_mechanic(Ride* ride)
