@@ -21,7 +21,7 @@
 #include <openrct2/ride/ShopItem.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
-static constexpr const int32_t WH = 107;
+static constexpr const int32_t WH = 109;
 static constexpr const int32_t WW = 350;
 constexpr uint16_t SELECTED_RIDE_UNDEFINED = 0xFFFF;
 
@@ -42,12 +42,12 @@ enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
 
 static rct_widget window_new_campaign_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_LABEL,            0,      14,     139,    24,     35,         0,                                              STR_NONE },             // ride label
-    { WWT_DROPDOWN,         0,      100,    341,    24,     35,         0,                                              STR_NONE },             // ride dropdown
-    { WWT_BUTTON,           0,      330,    340,    25,     34,         STR_DROPDOWN_GLYPH,                             STR_NONE },             // ride dropdown button
-    { WWT_LABEL,            0,      14,     139,    41,     54,         STR_LENGTH_OF_TIME,                             STR_NONE },             // weeks label
-      SPINNER_WIDGETS      (0,      120,    219,    41,     54,         0,                                              STR_NONE),              // weeks (3 widgets)
-    { WWT_BUTTON,           0,      14,     335,    89,     100,        STR_MARKETING_START_THIS_MARKETING_CAMPAIGN,    STR_NONE },             // start button
+    MakeWidget        ({ 14, 24}, {126, 12}, WWT_LABEL,    0, STR_EMPTY                                  ), // ride label
+    MakeWidget        ({100, 24}, {242, 12}, WWT_DROPDOWN, 0, STR_EMPTY                                  ), // ride dropdown
+    MakeWidget        ({330, 25}, { 11, 10}, WWT_BUTTON,   0, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
+    MakeWidget        ({ 14, 41}, {126, 14}, WWT_LABEL,    0, STR_LENGTH_OF_TIME                         ), // weeks label
+    MakeSpinnerWidgets({120, 41}, {100, 14}, WWT_SPINNER,  0, STR_EMPTY                                  ), // weeks (3 widgets)
+    MakeWidget        ({ 14, 89}, {322, 14}, WWT_BUTTON,   0, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
     { WIDGETS_END }
 };
 
@@ -138,7 +138,7 @@ rct_window* window_new_campaign_open(int16_t campaignType)
         window_close(w);
     }
 
-    w = window_create_auto_pos(350, 107, &window_new_campaign_events, WC_NEW_CAMPAIGN, 0);
+    w = window_create_auto_pos(WW, WH, &window_new_campaign_events, WC_NEW_CAMPAIGN, 0);
     w->widgets = window_new_campaign_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RIDE_DROPDOWN) | (1 << WIDX_RIDE_DROPDOWN_BUTTON)
         | (1 << WIDX_WEEKS_INCREASE_BUTTON) | (1 << WIDX_WEEKS_DECREASE_BUTTON) | (1 << WIDX_START_BUTTON);
