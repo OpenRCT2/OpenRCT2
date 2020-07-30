@@ -33,12 +33,11 @@ enum {
 
 static rct_widget window_viewport_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,           1,  0,  0,  14, 0,  0xFFFFFFFF,         STR_NONE                },  // resize
-    { WWT_VIEWPORT,         0,  3,  0,  17, 0,  0xFFFFFFFF,         STR_NONE                },  // viewport
-
-    { WWT_FLATBTN,          0,  0,  0,  17, 40, SPR_G2_ZOOM_IN,     STR_ZOOM_IN_TIP         },  // zoom in
-    { WWT_FLATBTN,          0,  0,  0,  41, 64, SPR_G2_ZOOM_OUT,    STR_ZOOM_OUT_TIP        },  // zoom out
-    { WWT_FLATBTN,          0,  0,  0,  65, 88, SPR_LOCATE,         STR_LOCATE_SUBJECT_TIP  },  // locate
+    MakeWidget({      0, 14}, { WW - 1, WH - 1}, WWT_RESIZE,   1                                         ), // resize
+    MakeWidget({      3, 17}, {WW - 26, WH - 3}, WWT_VIEWPORT, 0                                         ), // viewport
+    MakeWidget({WW - 25, 17}, {     24,     24}, WWT_FLATBTN,  0, SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP       ), // zoom in
+    MakeWidget({WW - 25, 41}, {     24,     24}, WWT_FLATBTN,  0, SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP      ), // zoom out
+    MakeWidget({WW - 25, 65}, {     24,     24}, WWT_FLATBTN,  0, SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP), // locate
     { WIDGETS_END },
 };
 

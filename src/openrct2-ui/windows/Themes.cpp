@@ -109,33 +109,35 @@ enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_THEMES_RCT1_BOTTOM_TOOLBAR
 };
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_THEMES_TITLE;
+static constexpr const int32_t WW = 320;
+static constexpr const int32_t WH = 107;
+
 static rct_widget window_themes_widgets[] = {
-    { WWT_FRAME,            0,  0,      319,    0,      106,    0xFFFFFFFF,                                 STR_NONE },                             // panel / background
-    { WWT_CAPTION,          0,  1,      318,    1,      14,     STR_THEMES_TITLE,                               STR_WINDOW_TITLE_TIP },                 // title bar
-    { WWT_CLOSEBOX,         0,  307,    317,    2,      13,     STR_CLOSE_X,                                    STR_CLOSE_WINDOW_TIP },                 // close button
-    { WWT_RESIZE,           1,  0,      319,    43,     106,    0xFFFFFFFF,                                 STR_NONE },                             // tab content panel
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_SETTINGS_TIP },          // settings tab
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_MAIN_TIP },              // main ui tab
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_PARK_TIP },              // park tab
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_TOOLS_TIP },             // tools tab
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_RIDES_AND_GUESTS_TIP },  // rides and peeps tab
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_EDITORS_TIP },           // editors tab
-    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_MISC_TIP },              // misc tab
-    { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_PROMPTS_TIP },           // prompts tab
-    { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                           STR_THEMES_TAB_FEATURES_TIP },          // features tab
-    { WWT_TABLE_HEADER,     1,  5,      218,    46,     60,     STR_THEMES_HEADER_WINDOW,                       STR_NONE },                             // Window header
-    { WWT_TABLE_HEADER,     1,  219,    315,    46,     60,     STR_THEMES_HEADER_PALETTE,                      STR_NONE },                             // Palette header
-    { WWT_DROPDOWN,         1,  125,    299,    60,     71,     STR_NONE,                                       STR_NONE },                             // Preset colour schemes
-    { WWT_BUTTON,           1,  288,    298,    61,     70,     STR_DROPDOWN_GLYPH,                             STR_NONE },
-    { WWT_BUTTON,           1,  10,     100,    82,     93,     STR_TITLE_EDITOR_ACTION_DUPLICATE,              STR_THEMES_ACTION_DUPLICATE_TIP },      // Duplicate button
-    { WWT_BUTTON,           1,  110,    200,    82,     93,     STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP },         // Delete button
-    { WWT_BUTTON,           1,  210,    300,    82,     93,     STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP },         // Rename button
-    { WWT_COLOURBTN,        1,  0,      0,      0,      0,      STR_NONE,                                       STR_NONE },                             // colour button mask
-    { WWT_SCROLL,           1,  3,      316,    60,     103,    SCROLL_VERTICAL,                                STR_NONE },                             // staff list
-    { WWT_CHECKBOX,         1,  10,     299,    54,     65,     STR_THEMES_OPTION_RCT1_RIDE_CONTROLS,           STR_NONE },                             // rct1 ride lights
-    { WWT_CHECKBOX,         1,  10,     299,    69,     80,     STR_THEMES_OPTION_RCT1_PARK_CONTROLS,           STR_NONE },                             // rct1 park lights
-    { WWT_CHECKBOX,         1,  10,     299,    84,     95,     STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT, STR_NONE },                             // rct1 scenario font
-    { WWT_CHECKBOX,         1,  10,     299,    99,     110,    STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR,          STR_NONE },                             // rct1 bottom toolbar
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget     ({  0, 43}, {320,  64}, WWT_RESIZE,       1                                                                                     ), // tab content panel
+    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                                        STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
+    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                                        STR_THEMES_TAB_MAIN_TIP            ), // main ui tab
+    MakeRemapWidget({ 65, 17}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                                        STR_THEMES_TAB_PARK_TIP            ), // park tab
+    MakeRemapWidget({ 96, 17}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                                        STR_THEMES_TAB_TOOLS_TIP           ), // tools tab
+    MakeRemapWidget({127, 17}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                                        STR_THEMES_TAB_RIDES_AND_GUESTS_TIP), // rides and peeps tab
+    MakeRemapWidget({158, 17}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                                        STR_THEMES_TAB_EDITORS_TIP         ), // editors tab
+    MakeRemapWidget({189, 17}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                                        STR_THEMES_TAB_MISC_TIP            ), // misc tab
+    MakeRemapWidget({220, 17}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                                        STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
+    MakeRemapWidget({251, 17}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                                        STR_THEMES_TAB_FEATURES_TIP        ), // features tab
+    MakeWidget     ({  5, 46}, {214,  15}, WWT_TABLE_HEADER, 1, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
+    MakeWidget     ({219, 46}, { 97,  15}, WWT_TABLE_HEADER, 1, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
+    MakeWidget     ({125, 60}, {175,  12}, WWT_DROPDOWN,     1                                                                                     ), // Preset colour schemes
+    MakeWidget     ({288, 61}, { 11,  10}, WWT_BUTTON,       1, STR_DROPDOWN_GLYPH                                                                 ),
+    MakeWidget     ({ 10, 82}, { 91,  12}, WWT_BUTTON,       1, STR_TITLE_EDITOR_ACTION_DUPLICATE,              STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
+    MakeWidget     ({110, 82}, { 91,  12}, WWT_BUTTON,       1, STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP       ), // Delete button
+    MakeWidget     ({210, 82}, { 91,  12}, WWT_BUTTON,       1, STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP       ), // Rename button
+    MakeWidget     ({  0,  0}, {  1,   1}, WWT_COLOURBTN,    1                                                                                     ), // colour button mask
+    MakeWidget     ({  3, 60}, {314,  44}, WWT_SCROLL,       1, SCROLL_VERTICAL                                                                    ), // staff list
+    MakeWidget     ({ 10, 54}, {290,  12}, WWT_CHECKBOX,     1, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                               ), // rct1 ride lights
+    MakeWidget     ({ 10, 69}, {290,  12}, WWT_CHECKBOX,     1, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                               ), // rct1 park lights
+    MakeWidget     ({ 10, 84}, {290,  12}, WWT_CHECKBOX,     1, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                     ), // rct1 scenario font
+    MakeWidget     ({ 10, 99}, {290,  12}, WWT_CHECKBOX,     1, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                              ), // rct1 bottom toolbar
     { WIDGETS_END },
 };
 
