@@ -22,6 +22,8 @@
 #include <cmath>
 
 #ifdef _WIN32
+    #pragma comment(lib, "Ws2_32.lib")
+
     // winsock2 must be included before windows.h
     #include <winsock2.h>
     #include <ws2tcpip.h>
