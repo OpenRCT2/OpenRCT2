@@ -37,15 +37,12 @@ enum WINDOW_NETWORK_WIDGET_IDX {
     WIDX_TAB1,
 };
 
-#define MAIN_NETWORK_WIDGETS \
-    { WWT_FRAME,            0,  0,          WW - 1,    0,      WH - 1,    STR_NONE,                   STR_NONE },                 /* panel / background   */  \
-    { WWT_CAPTION,          0,  1,          WW - 2,    1,      14,        STR_NONE,                   STR_WINDOW_TITLE_TIP },     /* title bar            */ \
-    { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3,    2,      13,        STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     /* close x button       */  \
-    { WWT_RESIZE,           1,  0,          WW - 1,    43,     WH - 1,    0xFFFFFFFF,                 STR_NONE },                 /* content panel        */  \
-    { WWT_TAB,              1,  3,          33,        17,     43,        IMAGE_TYPE_REMAP | SPR_TAB,       STR_SHOW_SERVER_INFO_TIP }, /* tab                  */  \
-
 static rct_widget window_network_information_widgets[] = {
-    MAIN_NETWORK_WIDGETS
+    MakeWidget     ({  0,  0}, {450, 210}, WWT_FRAME,    0                                       ), // panel / background
+    MakeWidget     ({  1,  1}, {448,  14}, WWT_CAPTION,  0, STR_NONE,    STR_WINDOW_TITLE_TIP    ), // title bar
+    MakeWidget     ({437,  2}, { 11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), // close x button
+    MakeWidget     ({  0, 43}, {450, 167}, WWT_RESIZE,   1                                       ), // content panel
+    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_SHOW_SERVER_INFO_TIP), // tab
     { WIDGETS_END }
 };
 
