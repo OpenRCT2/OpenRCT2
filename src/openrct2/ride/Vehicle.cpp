@@ -3856,8 +3856,9 @@ void Vehicle::UpdateArriving()
             return;
     }
 
-    if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN && curRide->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE
-        && curRide->inspection_station == current_station
+    bool hasBrakesFailure = curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN
+        && curRide->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE;
+    if (hasBrakesFailure && curRide->inspection_station == current_station
         && curRide->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
     {
         unkF64E35 = 0;
@@ -8083,9 +8084,9 @@ loc_6DAEB9:
     }
     else if (trackType == TRACK_ELEM_BRAKES)
     {
-        if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN
-              && curRide->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE
-              && curRide->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES))
+        bool hasBrakesFailure = curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN
+            && curRide->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE;
+        if (!hasBrakesFailure || curRide->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
             regs.eax = brake_speed << 16;
             if (regs.eax < _vehicleVelocityF64E08)
