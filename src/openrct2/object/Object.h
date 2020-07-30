@@ -134,16 +134,16 @@ struct rct_object_filters
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
-INTERFACE IObjectRepository;
+struct IObjectRepository;
 namespace OpenRCT2
 {
-    INTERFACE IStream;
+    struct IStream;
 }
 struct ObjectRepositoryItem;
 struct rct_drawpixelinfo;
 struct json_t;
 
-INTERFACE IReadObjectContext
+struct IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
 

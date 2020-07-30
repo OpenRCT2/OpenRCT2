@@ -17,14 +17,14 @@
 
 namespace OpenRCT2::Audio
 {
-    INTERFACE IAudioChannel;
-    INTERFACE IAudioMixer;
-    INTERFACE IAudioSource;
+    struct IAudioChannel;
+    struct IAudioMixer;
+    struct IAudioSource;
 
     /**
      * Audio services for playing music and sound effects.
      */
-    INTERFACE IAudioContext
+    struct IAudioContext
     {
         virtual ~IAudioContext() = default;
 

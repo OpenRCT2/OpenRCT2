@@ -36,7 +36,7 @@ namespace OpenRCT2
      * Represents a stream that can be read or written to. Implemented by types such as FileStream, NetworkStream or
      * MemoryStream.
      */
-    INTERFACE IStream
+    struct IStream
     {
         ///////////////////////////////////////////////////////////////////////////
         // Interface methods
@@ -111,7 +111,7 @@ namespace OpenRCT2
         /**
          * Reads the size of the given type from the stream directly into the given address.
          */
-        template<typename T> void Read(T * value)
+        template<typename T> void Read(T* value)
         {
             // Selects the best path at compile time
             if constexpr (sizeof(T) == 1)
@@ -197,7 +197,7 @@ namespace OpenRCT2
             return buffer;
         }
 
-        template<typename T> void WriteArray(T * buffer, size_t count)
+        template<typename T> void WriteArray(T* buffer, size_t count)
         {
             Write(buffer, sizeof(T) * count);
         }

@@ -17,7 +17,7 @@
 
 namespace OpenRCT2
 {
-    INTERFACE IStream;
+    struct IStream;
 }
 
 /**

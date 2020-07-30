@@ -40,7 +40,7 @@
 #include <algorithm>
 #include <unordered_map>
 
-INTERFACE IFileDataRetriever
+struct IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
     virtual std::vector<uint8_t> GetData(const std::string_view& path) const abstract;

@@ -15,10 +15,10 @@
 #include <string>
 #include <vector>
 
-INTERFACE IReadObjectContext;
+struct IReadObjectContext;
 namespace OpenRCT2
 {
-    INTERFACE IStream;
+    struct IStream;
 }
 
 enum OBJ_STRING_ID : uint8_t

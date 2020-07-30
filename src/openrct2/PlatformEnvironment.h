@@ -72,7 +72,7 @@ namespace OpenRCT2
     /**
      * Interface for retrieving paths and other environment related things.
      */
-    INTERFACE IPlatformEnvironment
+    struct IPlatformEnvironment
     {
         virtual ~IPlatformEnvironment() = default;
 

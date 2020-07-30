@@ -17,26 +17,27 @@ struct SDL_Window;
 
 namespace OpenRCT2
 {
-    INTERFACE IContext;
-    INTERFACE IPlatformEnvironment;
+    struct IContext;
+    struct IPlatformEnvironment;
 
     namespace Ui
     {
         struct FileDialogDesc;
         class InGameConsole;
-        INTERFACE IUiContext;
+        struct IUiContext;
 
-        INTERFACE IPlatformUiContext
+        struct IPlatformUiContext
         {
             virtual ~IPlatformUiContext() = default;
-            virtual void SetWindowIcon(SDL_Window * window) abstract;
+            virtual void SetWindowIcon(SDL_Window* window) abstract;
             virtual bool IsSteamOverlayAttached() abstract;
 
-            virtual void ShowMessageBox(SDL_Window * window, const std::string& message) abstract;
+            virtual void ShowMessageBox(SDL_Window* window, const std::string& message) abstract;
             virtual void OpenFolder(const std::string& path) abstract;
+
             virtual void OpenURL(const std::string& url) abstract;
-            virtual std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc& desc) abstract;
-            virtual std::string ShowDirectoryDialog(SDL_Window * window, const std::string& title) abstract;
+            virtual std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) abstract;
+            virtual std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) abstract;
         };
 
         std::unique_ptr<IUiContext> CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env);

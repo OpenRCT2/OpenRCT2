@@ -20,14 +20,14 @@ namespace OpenRCT2::Ui
     /**
      * Manager of in-game windows and widgets.
      */
-    INTERFACE IWindowManager
+    struct IWindowManager
     {
         virtual ~IWindowManager() = default;
         virtual void Init() abstract;
         virtual rct_window* OpenWindow(rct_windowclass wc) abstract;
         virtual rct_window* OpenView(uint8_t view) abstract;
         virtual rct_window* OpenDetails(uint8_t type, int32_t id) abstract;
-        virtual rct_window* OpenIntent(Intent * intent) abstract;
+        virtual rct_window* OpenIntent(Intent* intent) abstract;
         virtual void BroadcastIntent(const Intent& intent) abstract;
         virtual rct_window* ShowError(rct_string_id title, rct_string_id message) abstract;
         virtual rct_window* ShowError(const std::string_view& title, const std::string_view& message) abstract;

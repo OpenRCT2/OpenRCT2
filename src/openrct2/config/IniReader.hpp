@@ -15,12 +15,12 @@
 
 namespace OpenRCT2
 {
-    INTERFACE IStream;
+    struct IStream;
 }
 
 template<typename T> struct IConfigEnum;
 
-INTERFACE IIniReader
+struct IIniReader
 {
     virtual ~IIniReader() = default;
 

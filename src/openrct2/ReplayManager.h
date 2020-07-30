@@ -32,7 +32,7 @@ namespace OpenRCT2
         std::string FilePath;
     };
 
-    INTERFACE IReplayManager
+    struct IReplayManager
     {
     public:
         enum class RecordType
@@ -56,7 +56,7 @@ namespace OpenRCT2
             const std::string& name, uint32_t maxTicks = k_MaxReplayTicks, RecordType rt = RecordType::NORMAL)
             = 0;
         virtual bool StopRecording(bool discard = false) = 0;
-        virtual bool GetCurrentReplayInfo(ReplayRecordInfo & info) const = 0;
+        virtual bool GetCurrentReplayInfo(ReplayRecordInfo& info) const = 0;
 
         virtual bool StartPlayback(const std::string& file) = 0;
         virtual bool IsPlaybackStateMismatching() const = 0;

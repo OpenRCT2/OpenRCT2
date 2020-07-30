@@ -20,13 +20,13 @@
 /**
  * Interface to import scenarios and saved games.
  */
-INTERFACE ITrackImporter
+struct ITrackImporter
 {
 public:
     virtual ~ITrackImporter() = default;
 
     virtual bool Load(const utf8* path) abstract;
-    virtual bool LoadFromStream(OpenRCT2::IStream * stream) abstract;
+    virtual bool LoadFromStream(OpenRCT2::IStream* stream) abstract;
 
     virtual std::unique_ptr<TrackDesign> Import() abstract;
 };

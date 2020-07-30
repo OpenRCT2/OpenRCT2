@@ -14,13 +14,13 @@
 
 namespace OpenRCT2::Audio
 {
-    INTERFACE IAudioSource;
+    struct IAudioSource;
 
     /**
      * Represents an audio channel that represents an audio source
      * and a number of properties such as volume, pan and loop information.
      */
-    INTERFACE IAudioChannel
+    struct IAudioChannel
     {
         virtual ~IAudioChannel() = default;
 
@@ -62,7 +62,7 @@ namespace OpenRCT2::Audio
 
         virtual bool IsPlaying() const abstract;
 
-        virtual void Play(IAudioSource * source, int32_t loop = 0) abstract;
+        virtual void Play(IAudioSource* source, int32_t loop = 0) abstract;
         virtual void UpdateOldVolume() abstract;
 
         virtual size_t Read(void* dst, size_t len) abstract;

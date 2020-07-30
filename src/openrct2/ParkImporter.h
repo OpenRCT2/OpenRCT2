@@ -17,12 +17,13 @@
 #include <string>
 #include <vector>
 
-INTERFACE IObjectManager;
-INTERFACE IObjectRepository;
+struct IObjectManager;
+struct IObjectRepository;
 namespace OpenRCT2
 {
-    INTERFACE IStream;
+    struct IStream;
 }
+
 struct scenario_index_entry;
 
 struct ParkLoadResult final
@@ -39,7 +40,7 @@ public:
 /**
  * Interface to import scenarios and saved games.
  */
-INTERFACE IParkImporter
+struct IParkImporter
 {
 public:
     virtual ~IParkImporter() = default;
@@ -48,10 +49,10 @@ public:
     virtual ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) abstract;
     virtual ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) abstract;
     virtual ParkLoadResult LoadFromStream(
-        OpenRCT2::IStream * stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) abstract;
+        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) abstract;
 
     virtual void Import() abstract;
-    virtual bool GetDetails(scenario_index_entry * dst) abstract;
+    virtual bool GetDetails(scenario_index_entry* dst) abstract;
 };
 
 namespace ParkImporter

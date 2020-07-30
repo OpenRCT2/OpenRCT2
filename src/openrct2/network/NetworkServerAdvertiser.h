@@ -20,7 +20,7 @@ enum class ADVERTISE_STATUS
     REGISTERED,
 };
 
-INTERFACE INetworkServerAdvertiser
+struct INetworkServerAdvertiser
 {
     virtual ~INetworkServerAdvertiser()
     {

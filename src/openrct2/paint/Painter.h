@@ -22,17 +22,17 @@ namespace OpenRCT2
 {
     namespace Drawing
     {
-        INTERFACE IDrawingEngine;
+        struct IDrawingEngine;
     } // namespace Drawing
 
     namespace Ui
     {
-        INTERFACE IUiContext;
+        struct IUiContext;
     } // namespace Ui
 
     namespace Paint
     {
-        INTERFACE Painter final
+        struct Painter final
         {
         private:
             std::shared_ptr<Ui::IUiContext> const _uiContext;
@@ -44,14 +44,14 @@ namespace OpenRCT2
 
         public:
             explicit Painter(const std::shared_ptr<Ui::IUiContext>& uiContext);
-            void Paint(Drawing::IDrawingEngine & de);
+            void Paint(Drawing::IDrawingEngine& de);
 
-            paint_session* CreateSession(rct_drawpixelinfo * dpi, uint32_t viewFlags);
-            void ReleaseSession(paint_session * session);
+            paint_session* CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags);
+            void ReleaseSession(paint_session* session);
 
         private:
-            void PaintReplayNotice(rct_drawpixelinfo * dpi, const char* text);
-            void PaintFPS(rct_drawpixelinfo * dpi);
+            void PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text);
+            void PaintFPS(rct_drawpixelinfo* dpi);
             void MeasureFPS();
         };
     } // namespace Paint

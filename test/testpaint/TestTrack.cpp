@@ -30,7 +30,7 @@
 #include <string>
 #include <vector>
 
-interface ITestTrackFilter
+struct ITestTrackFilter
 {
 public:
     virtual ~ITestTrackFilter()

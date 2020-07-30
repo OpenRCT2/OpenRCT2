@@ -14,11 +14,11 @@
 
 #include <vector>
 
-INTERFACE IObjectRepository;
+struct IObjectRepository;
 class Object;
 struct ObjectRepositoryItem;
 
-INTERFACE IObjectManager
+struct IObjectManager
 {
     virtual ~IObjectManager()
     {

@@ -27,7 +27,7 @@ template<typename T> struct ConfigEnumEntry
     }
 };
 
-template<typename T> INTERFACE IConfigEnum
+template<typename T> struct IConfigEnum
 {
     virtual ~IConfigEnum() = default;
     virtual std::string GetName(T value) const abstract;

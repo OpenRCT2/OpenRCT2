@@ -15,15 +15,15 @@
 #include <memory>
 #include <string>
 
-INTERFACE IObjectManager;
-INTERFACE IObjectRepository;
-INTERFACE IScenarioRepository;
+struct IObjectManager;
+struct IObjectRepository;
+struct IScenarioRepository;
 namespace OpenRCT2
 {
-    INTERFACE IStream;
+    struct IStream;
 }
-INTERFACE ITrackDesignRepository;
-INTERFACE IGameStateSnapshots;
+struct ITrackDesignRepository;
+struct IGameStateSnapshots;
 
 class Intent;
 struct rct_window;
@@ -70,17 +70,17 @@ namespace OpenRCT2
 {
     class GameState;
 
-    INTERFACE IPlatformEnvironment;
-    INTERFACE IReplayManager;
+    struct IPlatformEnvironment;
+    struct IReplayManager;
 
     namespace Audio
     {
-        INTERFACE IAudioContext;
+        struct IAudioContext;
     }
 
     namespace Drawing
     {
-        INTERFACE IDrawingEngine;
+        struct IDrawingEngine;
     }
 
     namespace Localisation
@@ -95,18 +95,18 @@ namespace OpenRCT2
 
     namespace Ui
     {
-        INTERFACE IUiContext;
+        struct IUiContext;
     }
 
     namespace Paint
     {
-        INTERFACE Painter;
+        struct Painter;
     }
 
     /**
      * Represents an instance of OpenRCT2 and can be used to get various services.
      */
-    INTERFACE IContext
+    struct IContext
     {
         virtual ~IContext() = default;
 
@@ -134,8 +134,8 @@ namespace OpenRCT2
         virtual void InitialiseDrawingEngine() abstract;
         virtual void DisposeDrawingEngine() abstract;
         virtual bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail = false) abstract;
-        virtual bool LoadParkFromStream(IStream * stream, const std::string& path, bool loadTitleScreenFirstOnFail = false)
-            abstract;
+        virtual bool LoadParkFromStream(
+            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false) abstract;
         virtual void WriteLine(const std::string& s) abstract;
         virtual void Finish() abstract;
         virtual void Quit() abstract;
