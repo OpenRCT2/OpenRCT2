@@ -71,17 +71,17 @@ static rct_window_event_list window_staff_fire_events = {
     window_staff_fire_paint,
     nullptr
 };
-//clang-format on
-
+// clang-format on
 
 /** Based off of rct2: 0x6C0A77 */
 rct_window* window_staff_fire_prompt_open(Peep* peep)
 {
-    rct_window * w;
+    rct_window* w;
 
     // Check if the confirm window already exists.
     w = window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index);
-    if (w != nullptr) {
+    if (w != nullptr)
+    {
         return w;
     }
 
@@ -96,31 +96,31 @@ rct_window* window_staff_fire_prompt_open(Peep* peep)
     return w;
 }
 
-
 /**
-*
-*  rct2: 0x006C0B40
-*/
-static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+ *
+ *  rct2: 0x006C0B40
+ */
+static void window_staff_fire_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex){
-    case WIDX_YES:
+    switch (widgetIndex)
     {
-        auto staffFireAction = StaffFireAction(w->number);
-        GameActions::Execute(&staffFireAction);
-        break;
-    }
-    case WIDX_CANCEL:
-    case WIDX_CLOSE:
-        window_close(w);
+        case WIDX_YES:
+        {
+            auto staffFireAction = StaffFireAction(w->number);
+            GameActions::Execute(&staffFireAction);
+            break;
+        }
+        case WIDX_CANCEL:
+        case WIDX_CLOSE:
+            window_close(w);
     }
 }
 
 /**
-*
-*  rct2: 0x006C0AF2
-*/
-static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
+ *
+ *  rct2: 0x006C0AF2
+ */
+static void window_staff_fire_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
@@ -128,6 +128,6 @@ static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
     auto ft = Formatter::Common();
     peep->FormatNameTo(ft);
 
-    ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2,w->windowPos.y + (WH / 2) - 3);
+    ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, WW - 4, STR_FIRE_STAFF_ID, COLOUR_BLACK);
 }
