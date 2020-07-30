@@ -37,11 +37,10 @@ static void paint_circus_tent(
     }
 
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
-    uint32_t imageId = rideEntry->vehicles[0].base_image_id;
+    uint32_t imageId = rideEntry->vehicles[0].base_image_id + direction;
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
         imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
-        imageId += direction;
     }
 
     sub_98197C(session, imageId | imageColourFlags, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3);
