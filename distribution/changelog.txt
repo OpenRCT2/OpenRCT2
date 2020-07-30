@@ -54,6 +54,7 @@
 - Fix: [#12297] OpenGL renderer causing artifacts.
 - Fix: [#12312] Softlock when loading save file via command line fails.
 - Fix: [#12486] `set-rct2` has a broken g1.dat check.
+- Fix: [#12498] Circus construction ghost does not rotate (original bug).
 - Fix: [#12505] Stores selling multiple items can only have the first product advertised.
 - Fix: [#12506] Cannot advertise food if there are no rides in the park.
 - Fix: 'j' character has broken kerning (original bug).
