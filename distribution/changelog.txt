@@ -59,6 +59,7 @@
 - Fix: [#12506] Cannot advertise food if there are no rides in the park.
 - Fix: 'j' character has broken kerning (original bug).
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
+- Fix: Brakes keep working during "Brakes failure".
 - Improved: [#6530] Allow water and land height changes on park borders.
 - Improved: [#11390] Build hash written to screenshot metadata.
 - Improved: [#3205] Make handymen less likely to get stuck in ride queues.
