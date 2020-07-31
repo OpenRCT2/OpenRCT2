@@ -61,7 +61,7 @@ void GameState::InitAll(int32_t mapSize)
     reset_sprite_list();
     staff_reset_modes();
     date_reset();
-    climate_reset(CLIMATE_COOL_AND_WET);
+    climate_reset(ClimateType::CoolAndWet);
     news_item_init_queue();
 
     gInMapInitCode = false;

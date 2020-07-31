@@ -47,7 +47,7 @@ extern const WeatherState ClimateWeatherData[6];
 extern const FILTER_PALETTE_ID ClimateWeatherGloomColours[4];
 
 // Climate data
-uint8_t gClimate;
+ClimateType gClimate;
 ClimateState gClimateCurrent;
 ClimateState gClimateNext;
 uint16_t gClimateUpdateTimer;
@@ -79,11 +79,11 @@ int32_t climate_celsius_to_fahrenheit(int32_t celsius)
 /**
  * Set climate and determine start weather.
  */
-void climate_reset(int32_t climate)
+void climate_reset(ClimateType climate)
 {
     WeatherType weather = WeatherType::PartiallyCloudy;
     int32_t month = date_get_month(gDateMonthsElapsed);
-    const WeatherTransition* transition = &ClimateTransitions[climate][month];
+    const WeatherTransition* transition = &ClimateTransitions[(uint8_t)climate][month];
     const WeatherState* weatherState = &ClimateWeatherData[(uint8_t)weather];
 
     gClimate = climate;
@@ -262,7 +262,7 @@ static void climate_determine_future_weather(int32_t randomDistribution)
 
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
     // accordingly
-    const WeatherTransition* transition = &ClimateTransitions[gClimate][month];
+    const WeatherTransition* transition = &ClimateTransitions[(uint8_t)gClimate][month];
     WeatherType nextWeather = (WeatherType)(
         transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8]);
     gClimateNext.Weather = nextWeather;

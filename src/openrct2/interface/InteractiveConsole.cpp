@@ -637,7 +637,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "climate")
         {
-            console.WriteFormatLine("climate %s  (%d)", ClimateNames[gClimate], gClimate);
+            console.WriteFormatLine("climate %s  (%d)", ClimateNames[(uint8_t)gClimate], (uint8_t)gClimate);
         }
         else if (argv[0] == "game_speed")
         {
@@ -865,8 +865,9 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             if (int_valid[0])
             {
-                const auto newClimate = int_val[0];
-                if (newClimate < 0 || newClimate >= CLIMATE_COUNT)
+                const ClimateType newClimate = (ClimateType)int_val[0];
+
+                if (newClimate >= ClimateType::Count)
                 {
                     console.WriteLine(language_get_string(STR_INVALID_CLIMATE_ID));
                 }
@@ -878,17 +879,17 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             }
             else
             {
-                for (i = 0; i < CLIMATE_COUNT; i++)
+                for (i = 0; i < (uint8_t)ClimateType::Count; i++)
                 {
                     if (argv[1] == ClimateNames[i])
                     {
-                        gClimate = i;
+                        gClimate = (ClimateType)i;
                         break;
                     }
                 }
             }
 
-            if (i == CLIMATE_COUNT)
+            if (i == (uint8_t)ClimateType::Count)
                 invalidArgs = true;
             else
                 console.Execute("get climate");

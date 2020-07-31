@@ -691,7 +691,7 @@ struct rct1_s4
     uint8_t staff_modes[RCT1_MAX_STAFF];
     uint8_t unk_1F431E[4];
     uint8_t unk_1F4322[8];
-    uint8_t climate;
+    ClimateType climate;
     uint8_t unk_1F432B;
     uint16_t climate_timer;
     WeatherType weather;

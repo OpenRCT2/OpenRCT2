@@ -12,13 +12,13 @@
 #include "../common.h"
 #include "../drawing/Drawing.h"
 
-enum CLIMATE
+enum class ClimateType : uint8_t
 {
-    CLIMATE_COOL_AND_WET,
-    CLIMATE_WARM,
-    CLIMATE_HOT_AND_DRY,
-    CLIMATE_COLD,
-    CLIMATE_COUNT,
+    CoolAndWet,
+    Warm,
+    HotAndDry,
+    Cold,
+    Count
 };
 
 enum class WeatherType : uint8_t
@@ -63,14 +63,14 @@ struct ClimateState
     RainLevel Level;
 };
 
-extern uint8_t gClimate;
+extern ClimateType gClimate;
 extern ClimateState gClimateCurrent;
 extern ClimateState gClimateNext;
 extern uint16_t gClimateUpdateTimer;
 extern uint16_t gClimateLightningFlash;
 
 int32_t climate_celsius_to_fahrenheit(int32_t celsius);
-void climate_reset(int32_t climate);
+void climate_reset(ClimateType climate);
 void climate_update();
 void climate_update_sound();
 void climate_force_weather(WeatherType weather);

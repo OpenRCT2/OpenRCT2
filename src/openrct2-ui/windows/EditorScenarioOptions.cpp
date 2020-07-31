@@ -540,15 +540,15 @@ static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
 
     dropdownWidget = &w->widgets[WIDX_CLIMATE];
 
-    for (i = 0; i < CLIMATE_COUNT; i++)
+    for (i = 0; i < (uint8_t)ClimateType::Count; i++)
     {
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[i] = ClimateNames[i];
     }
     window_dropdown_show_text_custom_width(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, CLIMATE_COUNT, dropdownWidget->width() - 3);
-    dropdown_set_checked(gClimate, true);
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, (uint8_t)ClimateType::Count, dropdownWidget->width() - 3);
+    dropdown_set_checked((uint8_t)gClimate, true);
 }
 
 /**
@@ -1275,9 +1275,9 @@ static void window_editor_scenario_options_park_dropdown(rct_window* w, rct_widg
             break;
         }
         case WIDX_CLIMATE_DROPDOWN:
-            if (gClimate != static_cast<uint8_t>(dropdownIndex))
+            if ((uint8_t)gClimate != static_cast<uint8_t>(dropdownIndex))
             {
-                auto gameAction = ClimateSetAction(dropdownIndex);
+                auto gameAction = ClimateSetAction((ClimateType)dropdownIndex);
                 GameActions::Execute(&gameAction);
             }
             break;
@@ -1445,7 +1445,7 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
 
     // Climate value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CLIMATE].left + 1, w->widgets[WIDX_CLIMATE].top };
-    stringId = ClimateNames[gClimate];
+    stringId = ClimateNames[(uint8_t)gClimate];
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
 }
 

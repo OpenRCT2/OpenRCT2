@@ -277,7 +277,7 @@ struct rct_s6_data
     uint8_t byte_13CA740;
     uint8_t pad_13CA741;
     uint8_t byte_13CA742[4]; // unused
-    uint8_t climate;
+    ClimateType climate;
     uint8_t pad_013CA747;
     uint16_t climate_update_timer;
     WeatherType current_weather;
