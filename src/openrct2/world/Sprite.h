@@ -13,6 +13,7 @@
 #include "../common.h"
 #include "../peep/Peep.h"
 #include "../ride/Vehicle.h"
+#include "Duck.h"
 #include "Fountain.h"
 #include "SpriteBase.h"
 
@@ -59,7 +60,7 @@ struct Duck : SpriteGeneric
 {
     int16_t target_x;
     int16_t target_y;
-    uint8_t state;
+    DuckState state;
 
     void Update();
     uint32_t GetFrameImage(int32_t direction) const;

@@ -13,6 +13,7 @@
 
 #include "../common.h"
 #include "../object/Object.h"
+#include "../world/Duck.h"
 
 #include <string>
 #include <string_view>
@@ -668,7 +669,7 @@ struct RCT12SpriteDuck : RCT12SpriteBase
     int16_t target_x; // 0x30
     int16_t target_y; // 0x32
     uint8_t pad_34[0x14];
-    uint8_t state; // 0x48
+    DuckState state; // 0x48
 };
 assert_struct_size(RCT12SpriteDuck, 0x49);
 
