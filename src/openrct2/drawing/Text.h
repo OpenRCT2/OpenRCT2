@@ -42,7 +42,7 @@ private:
     StaticLayout(const StaticLayout&);
 
 public:
-    StaticLayout(utf8string source, TextPaint paint, int32_t width);
+    StaticLayout(utf8string source, const TextPaint& paint, int32_t width);
     void Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords);
     int32_t GetHeight();
     int32_t GetWidth();
