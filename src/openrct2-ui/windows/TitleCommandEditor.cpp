@@ -613,62 +613,55 @@ static void window_title_command_editor_tool_down(
 
     if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
-        uint16_t spriteIndex = info.sprite->generic.sprite_index;
-        uint16_t spriteIdentifier = info.sprite->generic.sprite_identifier;
         bool validSprite = false;
-        if (info.sprite->generic.Is<Peep>())
+        auto peep = info.sprite->As<Peep>();
+        auto vehicle = info.sprite->As<Vehicle>();
+        auto litter = info.sprite->As<Litter>();
+        auto duck = info.sprite->As<Duck>();
+        auto balloon = info.sprite->As<Balloon>();
+        if (peep != nullptr)
         {
             validSprite = true;
-            auto peep = GetEntity<Peep>(spriteIndex);
-            if (peep != nullptr)
+            uint8_t formatArgs[32]{};
+            Formatter ft(formatArgs);
+            peep->FormatNameTo(ft);
+            format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->Id);
+        }
+        else if (vehicle != nullptr)
+        {
+            validSprite = true;
+
+            auto ride = vehicle->GetRide();
+            if (ride != nullptr)
             {
                 uint8_t formatArgs[32]{};
                 Formatter ft(formatArgs);
-                peep->FormatNameTo(ft);
-                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->Id);
+                ride->FormatNameTo(ft);
+                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, formatArgs);
             }
         }
-        else if (spriteIdentifier == SPRITE_IDENTIFIER_VEHICLE)
+        else if (litter != nullptr)
         {
-            validSprite = true;
-            auto vehicle = GetEntity<Vehicle>(spriteIndex);
-            if (vehicle != nullptr)
-            {
-                auto ride = vehicle->GetRide();
-                if (ride != nullptr)
-                {
-                    uint8_t formatArgs[32]{};
-                    Formatter ft(formatArgs);
-                    ride->FormatNameTo(ft);
-                    format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, formatArgs);
-                }
-            }
-        }
-        else if (spriteIdentifier == SPRITE_IDENTIFIER_LITTER)
-        {
-            Litter* litter = GetEntity<Litter>(spriteIndex);
-            if (litter != nullptr && litter->type < std::size(litterNames))
+            if (litter->type < std::size(litterNames))
             {
                 validSprite = true;
                 format_string(command.SpriteName, USER_STRING_MAX_LENGTH, litterNames[litter->type], nullptr);
             }
         }
-        else if (spriteIdentifier == SPRITE_IDENTIFIER_MISC)
+        else if (balloon != nullptr)
         {
-            if (info.sprite->generic.Is<Balloon>())
-            {
-                validSprite = true;
-                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_SHOP_ITEM_SINGULAR_BALLOON, nullptr);
-            }
-            else if (info.sprite->generic.Is<Duck>())
-            {
-                validSprite = true;
-                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_DUCK, nullptr);
-            }
+            validSprite = true;
+            format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_SHOP_ITEM_SINGULAR_BALLOON, nullptr);
         }
+        else if (duck != nullptr)
+        {
+            validSprite = true;
+            format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_DUCK, nullptr);
+        }
+
         if (validSprite)
         {
-            command.SpriteIndex = spriteIndex;
+            command.SpriteIndex = info.sprite->sprite_index;
             window_follow_sprite(w, static_cast<size_t>(command.SpriteIndex));
             tool_cancel();
             w->Invalidate();

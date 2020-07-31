@@ -21,10 +21,9 @@ struct paint_struct;
 struct rct_drawpixelinfo;
 struct Peep;
 struct TileElement;
-struct Vehicle;
 struct rct_window;
 union paint_entry;
-union rct_sprite;
+struct SpriteBase;
 
 enum
 {
@@ -92,9 +91,7 @@ struct viewport_interaction_info
     union
     {
         TileElement* tileElement;
-        rct_sprite* sprite;
-        Peep* peep;
-        Vehicle* vehicle;
+        SpriteBase* sprite;
     };
 };
 
