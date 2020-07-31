@@ -405,7 +405,7 @@ public:
         // unk_13CA73E
         // pad_13CA73F
         // unk_13CA740
-        gClimate = _s6.climate;
+        gClimate = ClimateType{ _s6.climate };
         // pad_13CA741;
         // byte_13CA742
         // pad_013CA747

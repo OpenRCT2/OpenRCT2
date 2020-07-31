@@ -378,7 +378,7 @@ void S6Exporter::Export()
     // unk_13CA73E
     // pad_13CA73F
     // unk_13CA740
-    _s6.climate = gClimate;
+    _s6.climate = static_cast<uint8_t>(gClimate);
     // pad_13CA741;
     // byte_13CA742
     // pad_013CA747
