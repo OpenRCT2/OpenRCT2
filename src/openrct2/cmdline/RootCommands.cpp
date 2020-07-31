@@ -172,7 +172,7 @@ exitcode_t CommandLine::HandleCommandDefault()
     {
         if (_verbose)
         {
-            _log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = true;
+            _log_levels[(uint8_t)DiagnosticLevel::Verbose] = true;
             PrintLaunchInformation();
         }
 

@@ -12,14 +12,14 @@
 
 #include <cstdint>
 
-enum DIAGNOSTIC_LEVEL
+enum class DiagnosticLevel
 {
-    DIAGNOSTIC_LEVEL_FATAL,
-    DIAGNOSTIC_LEVEL_ERROR,
-    DIAGNOSTIC_LEVEL_WARNING,
-    DIAGNOSTIC_LEVEL_VERBOSE,
-    DIAGNOSTIC_LEVEL_INFORMATION,
-    DIAGNOSTIC_LEVEL_COUNT
+    Fatal,
+    Error,
+    Warning,
+    Verbose,
+    Information,
+    Count
 };
 
 /**
@@ -69,11 +69,11 @@ enum DIAGNOSTIC_LEVEL
 #    define DEBUG_LEVEL_1 0
 #endif // defined(DEBUG)
 
-extern bool _log_levels[DIAGNOSTIC_LEVEL_COUNT];
+extern bool _log_levels[(uint8_t)DiagnosticLevel::Count];
 
-void diagnostic_log(DIAGNOSTIC_LEVEL diagnosticLevel, const char* format, ...);
+void diagnostic_log(DiagnosticLevel diagnosticLevel, const char* format, ...);
 void diagnostic_log_with_location(
-    DIAGNOSTIC_LEVEL diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...);
+    DiagnosticLevel diagnosticLevel, const char* file, const char* function, int32_t line, const char* format, ...);
 
 #ifdef _MSC_VER
 #    define diagnostic_log_macro(level, format, ...)                                                                           \
@@ -83,10 +83,10 @@ void diagnostic_log_with_location(
         diagnostic_log_with_location(level, __FILE__, __func__, __LINE__, format, ##__VA_ARGS__)
 #endif // _MSC_VER
 
-#define log_fatal(format, ...) diagnostic_log_macro(DIAGNOSTIC_LEVEL_FATAL, format, ##__VA_ARGS__)
-#define log_error(format, ...) diagnostic_log_macro(DIAGNOSTIC_LEVEL_ERROR, format, ##__VA_ARGS__)
-#define log_warning(format, ...) diagnostic_log_macro(DIAGNOSTIC_LEVEL_WARNING, format, ##__VA_ARGS__)
-#define log_verbose(format, ...) diagnostic_log(DIAGNOSTIC_LEVEL_VERBOSE, format, ##__VA_ARGS__)
-#define log_info(format, ...) diagnostic_log_macro(DIAGNOSTIC_LEVEL_INFORMATION, format, ##__VA_ARGS__)
+#define log_fatal(format, ...) diagnostic_log_macro(DiagnosticLevel::Fatal, format, ##__VA_ARGS__)
+#define log_error(format, ...) diagnostic_log_macro(DiagnosticLevel::Error, format, ##__VA_ARGS__)
+#define log_warning(format, ...) diagnostic_log_macro(DiagnosticLevel::Warning, format, ##__VA_ARGS__)
+#define log_verbose(format, ...) diagnostic_log(DiagnosticLevel::Verbose, format, ##__VA_ARGS__)
+#define log_info(format, ...) diagnostic_log_macro(DiagnosticLevel::Information, format, ##__VA_ARGS__)
 
 #endif
