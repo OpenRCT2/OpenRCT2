@@ -356,7 +356,7 @@ void window_close_top()
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
+        if (gS6Info.editor_step != RCT2EditorStep::LandscapeEditor)
             return;
     }
 
@@ -1076,7 +1076,7 @@ void main_window_zoom(bool zoomIn, bool atCursor)
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == RCT2EditorStep::LandscapeEditor)
     {
         if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
         {

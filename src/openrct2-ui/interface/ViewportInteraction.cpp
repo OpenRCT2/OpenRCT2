@@ -62,7 +62,7 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != RCT2EditorStep::RollercoasterDesigner)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     CoordsXY mapCoord = {};
@@ -222,7 +222,7 @@ int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, 
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != RCT2EditorStep::RollercoasterDesigner)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     CoordsXY mapCoord = {};

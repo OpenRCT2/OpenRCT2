@@ -10,6 +10,7 @@
 #ifndef _SCENARIO_H_
 #define _SCENARIO_H_
 
+#include "../Editor.h"
 #include "../common.h"
 #include "../core/Random.hpp"
 #include "../management/Finance.h"
@@ -50,7 +51,7 @@ assert_struct_size(rct_s6_header, 0x20);
  */
 struct rct_s6_info
 {
-    uint8_t editor_step;
+    RCT2EditorStep editor_step;
     uint8_t category;        // 0x01
     uint8_t objective_type;  // 0x02
     uint8_t objective_arg_1; // 0x03

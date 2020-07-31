@@ -1074,7 +1074,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             save_path(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
             int32_t parkFlagsBackup = gParkFlags;
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-            gS6Info.editor_step = 255;
+            gS6Info.editor_step = RCT2EditorStep::None;
             safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
             int32_t success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
             gParkFlags = parkFlagsBackup;
@@ -1088,7 +1088,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             else
             {
                 context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
-                gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
+                gS6Info.editor_step = RCT2EditorStep::ObjectiveSelection;
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;

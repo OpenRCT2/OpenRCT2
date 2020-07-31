@@ -378,14 +378,14 @@ void finish_object_selection()
     {
         set_every_ride_type_invented();
         set_every_ride_entry_invented();
-        gS6Info.editor_step = EDITOR_STEP_ROLLERCOASTER_DESIGNER;
+        gS6Info.editor_step = RCT2EditorStep::RollercoasterDesigner;
         gfx_invalidate_screen();
     }
     else
     {
         set_all_scenery_items_invented();
         scenery_set_default_placement_configuration();
-        gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+        gS6Info.editor_step = RCT2EditorStep::LandscapeEditor;
         gfx_invalidate_screen();
     }
 }

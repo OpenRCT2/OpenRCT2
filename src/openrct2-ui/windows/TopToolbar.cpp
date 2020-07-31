@@ -688,7 +688,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
         window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
 
-        if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
+        if (gS6Info.editor_step != RCT2EditorStep::LandscapeEditor)
         {
             window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
             window_top_toolbar_widgets[WIDX_LAND].type = WWT_EMPTY;
@@ -698,13 +698,14 @@ static void window_top_toolbar_invalidate(rct_window* w)
             window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_EMPTY;
         }
 
-        if (gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+        if (gS6Info.editor_step != RCT2EditorStep::RollercoasterDesigner)
         {
             window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_EMPTY;
             window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
         }
 
-        if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+        if (gS6Info.editor_step != RCT2EditorStep::LandscapeEditor
+            && gS6Info.editor_step != RCT2EditorStep::RollercoasterDesigner)
         {
             window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WWT_EMPTY;
             window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WWT_EMPTY;
@@ -3309,7 +3310,7 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
     auto i = 0;
     gDropdownItemsFormat[i++] = STR_SHORTCUT_SHOW_MAP;
     gDropdownItemsFormat[i++] = STR_EXTRA_VIEWPORT;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == RCT2EditorStep::LandscapeEditor)
     {
         gDropdownItemsFormat[i++] = STR_MAPGEN_WINDOW_TITLE;
     }
@@ -3337,7 +3338,7 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
 static void top_toolbar_map_menu_dropdown(int16_t dropdownIndex)
 {
     int32_t customStartIndex = 3;
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == RCT2EditorStep::LandscapeEditor)
     {
         customStartIndex++;
     }

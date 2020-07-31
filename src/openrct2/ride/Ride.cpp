@@ -1974,7 +1974,7 @@ void Ride::UpdateAll()
     // Remove all rides if scenario editor
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        if (gS6Info.editor_step <= EDITOR_STEP_INVENTIONS_LIST_SET_UP)
+        if (gS6Info.editor_step <= RCT2EditorStep::InventionsListSetUp)
             for (auto& ride : GetRideManager())
                 ride.Delete();
         return;

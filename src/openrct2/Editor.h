@@ -30,16 +30,17 @@ namespace Editor
     void SetSelectedObject(int32_t objectType, size_t index, uint32_t flags);
 } // namespace Editor
 
-enum RCT2_EDITOR_STEP
+enum class RCT2EditorStep : uint8_t
 {
-    EDITOR_STEP_OBJECT_SELECTION,       // 0
-    EDITOR_STEP_LANDSCAPE_EDITOR,       // 1
-    EDITOR_STEP_INVENTIONS_LIST_SET_UP, // 2
-    EDITOR_STEP_OPTIONS_SELECTION,      // 3
-    EDITOR_STEP_OBJECTIVE_SELECTION,    // 4
-    EDITOR_STEP_SAVE_SCENARIO,          // 5
-    EDITOR_STEP_ROLLERCOASTER_DESIGNER, // 6
-    EDITOR_STEP_TRACK_DESIGNS_MANAGER   // 7
+    ObjectSelection,
+    LandscapeEditor,
+    InventionsListSetUp,
+    OptionsSelection,
+    ObjectiveSelection,
+    SaveScenario,
+    RollercoasterDesigner,
+    TrackDesignsManager,
+    None = 255
 };
 
 enum
