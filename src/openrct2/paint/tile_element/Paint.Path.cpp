@@ -479,8 +479,8 @@ static void sub_6A4101(
             uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
             sub_98199C(
-                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode, COLOUR_BLACK), 0, 0, 1, 1,
-                21, height + 7, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
+                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK), 0, 0,
+                1, 1, 21, height + 7, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
         }
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
