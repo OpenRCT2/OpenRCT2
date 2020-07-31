@@ -12,18 +12,18 @@
 #include "../common.h"
 #include "Map.h"
 
-enum TILE_INSPECTOR_ELEMENT_TYPE
+enum class TileInspectorElementType
 {
-    TILE_INSPECTOR_ELEMENT_ANY = 0,
-    TILE_INSPECTOR_ELEMENT_SURFACE,
-    TILE_INSPECTOR_ELEMENT_PATH,
-    TILE_INSPECTOR_ELEMENT_TRACK,
-    TILE_INSPECTOR_ELEMENT_SCENERY,
-    TILE_INSPECTOR_ELEMENT_ENTRANCE,
-    TILE_INSPECTOR_ELEMENT_WALL,
-    TILE_INSPECTOR_ELEMENT_SCENERYMULTIPLE,
-    TILE_INSPECTOR_ELEMENT_BANNER,
-    TILE_INSPECTOR_ELEMENT_CORRUPT,
+    Any,
+    Surface,
+    Path,
+    Track,
+    Scenery,
+    Entrance,
+    Wall,
+    Scenerymultiple,
+    Banner,
+    Corrupt
 };
 
 class GameActionResult;
