@@ -37,7 +37,7 @@ struct rct_mouse_data
 {
     uint32_t x;
     uint32_t y;
-    uint32_t state;
+    MouseState state;
 };
 
 static rct_mouse_data _mouseInputQueue[64];
@@ -62,7 +62,7 @@ int32_t gTooltipCursorY;
 
 static int16_t _clickRepeatTicks;
 
-static int32_t game_get_next_input(ScreenCoordsXY& screenCoords);
+static MouseState game_get_next_input(ScreenCoordsXY& screenCoords);
 static void input_widget_over(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex);
 static void input_widget_over_change_check(
     rct_windowclass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex);
@@ -72,10 +72,10 @@ void process_mouse_tool(const ScreenCoordsXY& screenCoords);
 void invalidate_scroll();
 static rct_mouse_data* get_mouse_input();
 void tile_element_right_click(int32_t type, TileElement* tileElement, const ScreenCoordsXY& screenCoords);
-static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t state);
+static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, MouseState state);
 static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex);
 void input_state_widget_pressed(
-    const ScreenCoordsXY& screenCoords, int32_t state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+    const ScreenCoordsXY& screenCoords, MouseState state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
 void set_cursor(uint8_t cursor_id);
 static void input_window_position_continue(
     rct_window* w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords);
@@ -109,11 +109,11 @@ void game_handle_input()
 
     invalidate_all_windows_after_input();
 
-    int32_t state;
+    MouseState state;
     ScreenCoordsXY screenCoords;
-    while ((state = game_get_next_input(screenCoords)) != MOUSE_STATE_RELEASED)
+    while ((state = game_get_next_input(screenCoords)) != MouseState::Released)
     {
-        game_handle_input_mouse(screenCoords, state & 0xFF);
+        game_handle_input_mouse(screenCoords, state);
     }
 
     if (_inputFlags & INPUT_FLAG_5)
@@ -139,14 +139,14 @@ void game_handle_input()
  *
  *  rct2: 0x006E83C7
  */
-static int32_t game_get_next_input(ScreenCoordsXY& screenCoords)
+static MouseState game_get_next_input(ScreenCoordsXY& screenCoords)
 {
     rct_mouse_data* input = get_mouse_input();
     if (input == nullptr)
     {
         const CursorState* cursorState = context_get_cursor_state();
         screenCoords = cursorState->position;
-        return 0;
+        return MouseState::Released;
     }
     else
     {
@@ -237,7 +237,7 @@ static void input_scroll_drag_continue(const ScreenCoordsXY& screenCoords, rct_w
  *
  *  rct2: 0x006E8ACB
  */
-static void input_scroll_right(const ScreenCoordsXY& screenCoords, int32_t state)
+static void input_scroll_right(const ScreenCoordsXY& screenCoords, MouseState state)
 {
     rct_window* w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
     if (w == nullptr)
@@ -249,7 +249,7 @@ static void input_scroll_right(const ScreenCoordsXY& screenCoords, int32_t state
 
     switch (state)
     {
-        case MOUSE_STATE_RELEASED:
+        case MouseState::Released:
             _ticksSinceDragStart += gCurrentDeltaTime;
             if (screenCoords.x != 0 || screenCoords.y != 0)
             {
@@ -257,9 +257,11 @@ static void input_scroll_right(const ScreenCoordsXY& screenCoords, int32_t state
                 input_scroll_drag_continue(screenCoords, w);
             }
             break;
-        case MOUSE_STATE_RIGHT_RELEASE:
+        case MouseState::RightRelease:
             _inputState = InputState::Reset;
             context_show_cursor();
+            break;
+        default:
             break;
     }
 }
@@ -268,7 +270,7 @@ static void input_scroll_right(const ScreenCoordsXY& screenCoords, int32_t state
  *
  *  rct2: 0x006E8655
  */
-static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t state)
+static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, MouseState state)
 {
     rct_window* w;
     rct_widget* widget;
@@ -287,13 +289,13 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
         case InputState::Normal:
             switch (state)
             {
-                case MOUSE_STATE_RELEASED:
+                case MouseState::Released:
                     input_widget_over(screenCoords, w, widgetIndex);
                     break;
-                case MOUSE_STATE_LEFT_PRESS:
+                case MouseState::LeftPress:
                     input_widget_left(screenCoords, w, widgetIndex);
                     break;
-                case MOUSE_STATE_RIGHT_PRESS:
+                case MouseState::RightPress:
                     window_close_by_class(WC_TOOLTIP);
 
                     if (w != nullptr)
@@ -317,6 +319,8 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                         }
                     }
                     break;
+                default:
+                    break;
             }
             break;
         case InputState::WidgetPressed:
@@ -331,18 +335,18 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
             else
             {
                 input_window_position_continue(w, gInputDragLast, screenCoords);
-                if (state == MOUSE_STATE_LEFT_RELEASE)
+                if (state == MouseState::LeftRelease)
                 {
                     input_window_position_end(w, screenCoords);
                 }
             }
             break;
         case InputState::ViewportRight:
-            if (state == MOUSE_STATE_RELEASED)
+            if (state == MouseState::Released)
             {
                 input_viewport_drag_continue();
             }
-            else if (state == MOUSE_STATE_RIGHT_RELEASE)
+            else if (state == MouseState::RightRelease)
             {
                 input_viewport_drag_end();
                 if (_ticksSinceDragStart < 500)
@@ -365,7 +369,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
 
             switch (state)
             {
-                case MOUSE_STATE_RELEASED:
+                case MouseState::Released:
                     if (w->viewport == nullptr)
                     {
                         _inputState = InputState::Reset;
@@ -386,7 +390,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
 
                     window_event_tool_drag_call(w, gCurrentToolWidget.widget_index, screenCoords);
                     break;
-                case MOUSE_STATE_LEFT_RELEASE:
+                case MouseState::LeftRelease:
                     _inputState = InputState::Reset;
                     if (_dragWidget.window_number == w->number)
                     {
@@ -405,16 +409,20 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                         }
                     }
                     break;
+                default:
+                    break;
             }
             break;
         case InputState::ScrollLeft:
             switch (state)
             {
-                case MOUSE_STATE_RELEASED:
+                case MouseState::Released:
                     input_scroll_continue(w, widgetIndex, screenCoords);
                     break;
-                case MOUSE_STATE_LEFT_RELEASE:
+                case MouseState::LeftRelease:
                     input_scroll_end();
+                    break;
+                default:
                     break;
             }
             break;
@@ -426,11 +434,11 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
             }
             else
             {
-                if (state == MOUSE_STATE_LEFT_RELEASE)
+                if (state == MouseState::LeftRelease)
                 {
                     input_window_resize_end();
                 }
-                if (state == MOUSE_STATE_RELEASED || state == MOUSE_STATE_LEFT_RELEASE)
+                if (state == MouseState::Released || state == MouseState::LeftRelease)
                 {
                     input_window_resize_continue(w, screenCoords);
                 }
@@ -1193,7 +1201,7 @@ void process_mouse_tool(const ScreenCoordsXY& screenCoords)
  *  rct2: 0x006E8DA7
  */
 void input_state_widget_pressed(
-    const ScreenCoordsXY& screenCoords, int32_t state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+    const ScreenCoordsXY& screenCoords, MouseState state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
 {
     rct_windowclass cursor_w_class;
     rct_windownumber cursor_w_number;
@@ -1210,7 +1218,7 @@ void input_state_widget_pressed(
 
     switch (state)
     {
-        case MOUSE_STATE_RELEASED:
+        case MouseState::Released:
             if (!w || cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                 break;
 
@@ -1244,8 +1252,8 @@ void input_state_widget_pressed(
             _inputFlags |= INPUT_FLAG_WIDGET_PRESSED;
             widget_invalidate_by_number(cursor_w_class, cursor_w_number, widgetIndex);
             return;
-        case MOUSE_STATE_LEFT_RELEASE:
-        case MOUSE_STATE_RIGHT_PRESS:
+        case MouseState::LeftRelease:
+        case MouseState::RightPress:
             if (_inputState == InputState::DropdownActive)
             {
                 if (w)
@@ -1320,7 +1328,7 @@ void input_state_widget_pressed(
 
             _inputState = InputState::Normal;
 
-            if (state == MOUSE_STATE_RIGHT_PRESS)
+            if (state == MouseState::RightPress)
             {
                 return;
             }
@@ -1530,7 +1538,7 @@ void invalidate_scroll()
 /**
  * rct2: 0x00406C96
  */
-void store_mouse_input(int32_t state, const ScreenCoordsXY& screenCoords)
+void store_mouse_input(MouseState state, const ScreenCoordsXY& screenCoords)
 {
     uint32_t writeIndex = _mouseInputQueueWriteIndex;
     uint32_t nextWriteIndex = (writeIndex + 1) % std::size(_mouseInputQueue);
