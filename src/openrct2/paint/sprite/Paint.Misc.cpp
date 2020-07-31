@@ -38,6 +38,8 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
         case SPRITE_MISC_STEAM_PARTICLE: // 0
         {
             auto particle = misc->As<SteamParticle>();
+            if (particle == nullptr)
+                return;
             uint32_t imageId = 22637 + (particle->frame / 256);
             sub_98196C(session, imageId, 0, 0, 1, 1, 0, particle->z);
             break;
@@ -50,6 +52,8 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
                 return;
             }
             auto moneyEffect = misc->As<MoneyEffect>();
+            if (moneyEffect == nullptr)
+                return;
             auto [stringId, value] = moneyEffect->GetStringId();
             paint_floating_money_effect(
                 session, value, stringId, moneyEffect->y, moneyEffect->z,
@@ -64,6 +68,8 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
                 return;
             }
             auto particle = misc->As<VehicleCrashParticle>();
+            if (particle == nullptr)
+                return;
             uint32_t imageId = vehicle_particle_base_sprites[particle->crashed_sprite_base] + particle->frame / 256;
             imageId = imageId | (particle->colour[0] << 19) | (particle->colour[1] << 24) | IMAGE_TYPE_REMAP
                 | IMAGE_TYPE_REMAP_2_PLUS;
@@ -74,6 +80,8 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
         case SPRITE_MISC_EXPLOSION_CLOUD: // 3
         {
             auto particle = misc->As<ExplosionCloud>();
+            if (particle == nullptr)
+                return;
             uint32_t imageId = 22878 + (particle->frame / 256);
             sub_98196C(session, imageId, 0, 0, 1, 1, 0, particle->z);
             break;
@@ -82,6 +90,8 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
         case SPRITE_MISC_CRASH_SPLASH: // 4
         {
             auto crashSplash = misc->As<CrashSplashParticle>();
+            if (crashSplash == nullptr)
+                return;
             uint32_t imageId = 22927 + (crashSplash->frame / 256);
             sub_98196C(session, imageId, 0, 0, 1, 1, 0, crashSplash->z);
             break;
@@ -91,6 +101,8 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
         {
             // Like a flare
             auto flare = misc->As<ExplosionFlare>();
+            if (flare == nullptr)
+                return;
             uint32_t imageId = 22896 + (flare->frame / 256);
             sub_98196C(session, imageId, 0, 0, 1, 1, 0, flare->z);
             break;
@@ -105,7 +117,8 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             }
 
             auto jumpingFountain = misc->As<JumpingFountain>();
-
+            if (jumpingFountain == nullptr)
+                return;
             uint16_t height = jumpingFountain->z + 6;
             int32_t ebx = imageDirection / 8;
 
@@ -136,7 +149,8 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
         case SPRITE_MISC_BALLOON: // 7
         {
             auto balloon = misc->As<Balloon>();
-
+            if (balloon == nullptr)
+                return;
             uint32_t imageId = 22651 + (balloon->frame & 7);
             if (balloon->popped != 0)
             {
@@ -152,6 +166,8 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             if (dpi->zoom_level <= 1)
             {
                 const Duck* duck = misc->As<Duck>();
+                if (duck == nullptr)
+                    return;
                 uint32_t imageId = duck->GetFrameImage(imageDirection);
                 if (imageId != 0)
                 {

@@ -1705,6 +1705,8 @@ private:
 
     void ImportMoneyEffect(MoneyEffect* dst, RCT12SpriteMoneyEffect* src)
     {
+        if (dst == nullptr)
+            return;
         dst->MoveDelay = src->move_delay;
         dst->NumMovements = src->num_movements;
         dst->Value = src->value;
@@ -1714,11 +1716,15 @@ private:
 
     void ImportSteamParticle(SteamParticle* dst, RCT12SpriteSteamParticle* src)
     {
+        if (dst == nullptr)
+            return;
         dst->frame = src->frame;
     }
 
     void ImportJumpingFountainWater(JumpingFountain* dst, RCT12SpriteJumpingFountain* src)
     {
+        if (dst == nullptr)
+            return;
         dst->FountainFlags = src->fountain_flags;
         dst->Iteration = src->iteration;
         dst->NumTicksAlive = src->num_ticks_alive;
@@ -1727,6 +1733,8 @@ private:
 
     void ImportBalloon(Balloon* dst, RCT12SpriteBalloon* src)
     {
+        if (dst == nullptr)
+            return;
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
         {
@@ -1740,6 +1748,8 @@ private:
 
     void ImportDuck(Duck* dst, RCT12SpriteDuck* src)
     {
+        if (dst == nullptr)
+            return;
         dst->frame = src->frame;
         dst->state = src->state;
     }
