@@ -63,9 +63,9 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
     MakeWidget     ({327,  2}, { 11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
     MakeWidget     ({  0, 43}, {340, 197}, WWT_RESIZE,   1                                       ), /* content panel */ \
     MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_SHOW_SERVER_INFO_TIP), /* tab */ \
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_PLAYERS_TIP         ), /* tab */ \
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_GROUPS_TIP          ), /* tab */ \
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_OPTIONS_TIP         )  /* tab */
+    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_PLAYERS_TIP         ), /* tab */ \
+    MakeRemapWidget({ 65, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_GROUPS_TIP          ), /* tab */ \
+    MakeRemapWidget({ 96, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_OPTIONS_TIP         )  /* tab */
 
 static rct_widget window_multiplayer_information_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,

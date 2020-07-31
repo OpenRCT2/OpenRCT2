@@ -38,9 +38,7 @@ enum WINDOW_NETWORK_WIDGET_IDX {
 };
 
 static rct_widget window_network_information_widgets[] = {
-    MakeWidget     ({  0,  0}, {450, 210}, WWT_FRAME,    0                                       ), // panel / background
-    MakeWidget     ({  1,  1}, {448,  14}, WWT_CAPTION,  0, STR_NONE,    STR_WINDOW_TITLE_TIP    ), // title bar
-    MakeWidget     ({437,  2}, { 11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), // close x button
+    WINDOW_SHIM(STR_NONE, WW, WH),
     MakeWidget     ({  0, 43}, {450, 167}, WWT_RESIZE,   1                                       ), // content panel
     MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_SHOW_SERVER_INFO_TIP), // tab
     { WIDGETS_END }
