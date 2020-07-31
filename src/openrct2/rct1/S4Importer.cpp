@@ -1672,10 +1672,10 @@ private:
                 switch (src->type)
                 {
                     case SPRITE_MISC_STEAM_PARTICLE:
-                        ImportSteamParticle(reinterpret_cast<SteamParticle*>(dst), reinterpret_cast<SteamParticle*>(src));
+                        ImportSteamParticle(dst->As<SteamParticle>(), reinterpret_cast<RCT12SpriteSteamParticle*>(src));
                         break;
                     case SPRITE_MISC_MONEY_EFFECT:
-                        ImportMoneyEffect(reinterpret_cast<MoneyEffect*>(dst), reinterpret_cast<MoneyEffect*>(src));
+                        ImportMoneyEffect(dst->As<MoneyEffect>(), reinterpret_cast<RCT12SpriteMoneyEffect*>(src));
                         break;
                     case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
                         break;
@@ -1687,13 +1687,13 @@ private:
                         break;
                     case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
                         ImportJumpingFountainWater(
-                            reinterpret_cast<JumpingFountain*>(dst), reinterpret_cast<JumpingFountain*>(src));
+                            dst->As<JumpingFountain>(), reinterpret_cast<RCT12SpriteJumpingFountain*>(src));
                         break;
                     case SPRITE_MISC_BALLOON:
-                        ImportBalloon(reinterpret_cast<Balloon*>(dst), reinterpret_cast<Balloon*>(src));
+                        ImportBalloon(dst->As<Balloon>(), reinterpret_cast<RCT12SpriteBalloon*>(src));
                         break;
                     case SPRITE_MISC_DUCK:
-                        ImportDuck(reinterpret_cast<Duck*>(dst), reinterpret_cast<Duck*>(src));
+                        ImportDuck(dst->As<Duck>(), reinterpret_cast<RCT12SpriteDuck*>(src));
                         break;
                 }
 
@@ -1703,29 +1703,29 @@ private:
         }
     }
 
-    void ImportMoneyEffect(MoneyEffect* dst, MoneyEffect* src)
+    void ImportMoneyEffect(MoneyEffect* dst, RCT12SpriteMoneyEffect* src)
     {
-        dst->MoveDelay = src->MoveDelay;
-        dst->NumMovements = src->NumMovements;
-        dst->Value = src->Value;
-        dst->OffsetX = src->OffsetX;
-        dst->Wiggle = src->Wiggle;
+        dst->MoveDelay = src->move_delay;
+        dst->NumMovements = src->num_movements;
+        dst->Value = src->value;
+        dst->OffsetX = src->offset_x;
+        dst->Wiggle = src->wiggle;
     }
 
-    void ImportSteamParticle(SteamParticle* dst, SteamParticle* src)
+    void ImportSteamParticle(SteamParticle* dst, RCT12SpriteSteamParticle* src)
     {
         dst->frame = src->frame;
     }
 
-    void ImportJumpingFountainWater(JumpingFountain* dst, JumpingFountain* src)
+    void ImportJumpingFountainWater(JumpingFountain* dst, RCT12SpriteJumpingFountain* src)
     {
-        dst->FountainFlags = src->FountainFlags;
-        dst->Iteration = src->Iteration;
-        dst->NumTicksAlive = src->NumTicksAlive;
+        dst->FountainFlags = src->fountain_flags;
+        dst->Iteration = src->iteration;
+        dst->NumTicksAlive = src->num_ticks_alive;
         dst->frame = src->frame;
     }
 
-    void ImportBalloon(Balloon* dst, Balloon* src)
+    void ImportBalloon(Balloon* dst, RCT12SpriteBalloon* src)
     {
         // Balloons were always blue in RCT1 without AA/LL
         if (_gameVersion == FILE_VERSION_RCT1)
@@ -1738,7 +1738,7 @@ private:
         }
     }
 
-    void ImportDuck(Duck* dst, Duck* src)
+    void ImportDuck(Duck* dst, RCT12SpriteDuck* src)
     {
         dst->frame = src->frame;
         dst->state = src->state;
