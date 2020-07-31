@@ -800,6 +800,7 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
 
 void Ride::FormatStatusTo(Formatter& ft) const
 {
+    auto peep = GetEntity<Peep>(race_winner);
     if (lifecycle_flags & RIDE_LIFECYCLE_CRASHED)
     {
         ft.Add<rct_string_id>(STR_CRASHED);
@@ -837,9 +838,8 @@ void Ride::FormatStatusTo(Formatter& ft) const
     }
     else if (
         mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
-        && GetEntity<Peep>(race_winner)!=nullptr)
+        && peep!=nullptr)
     {
-        auto peep = GetEntity<Peep>(race_winner);
         if (peep != nullptr)
         {
             ft.Add<rct_string_id>(STR_RACE_WON_BY);
