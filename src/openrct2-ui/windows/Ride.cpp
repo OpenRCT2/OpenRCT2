@@ -266,7 +266,7 @@ static rct_widget window_ride_operating_widgets[] = {
     MakeSpinnerWidgets({157, 154}, {152, 12}, WWT_SPINNER,  1, STR_ARG_14_STRINGID                                                                 ), // NB: 3 widgets
     MakeWidget        ({  7, 169}, {302, 12}, WWT_CHECKBOX, 1, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  ),
     MakeWidget        ({ 21,  61}, {129, 12}, WWT_LABEL,    1                                                                                      ),
-    MakeWidget        ({ 21,  75}, {129, 12}, WWT_LABEL,    1, STR_LIFT_HILL_CHAIN_SPEED,              STR_NONE                                    ),
+    MakeWidget        ({ 21,  75}, {129, 12}, WWT_LABEL,    1, STR_LIFT_HILL_CHAIN_SPEED                                                           ),
     MakeWidget        ({  7,  47}, {302, 12}, WWT_DROPDOWN, 1, 0xFFFFFFFF,                             STR_SELECT_OPERATING_MODE                   ),
     MakeWidget        ({297,  48}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
     MakeWidget        ({ 87, 109}, {222, 12}, WWT_DROPDOWN, 1                                                                                      ),
