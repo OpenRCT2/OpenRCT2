@@ -17,15 +17,15 @@
 
 enum class SoundId : uint8_t;
 
-enum MIXER_GROUP
-{
-    MIXER_GROUP_SOUND,
-    MIXER_GROUP_RIDE_MUSIC,
-    MIXER_GROUP_TITLE_MUSIC,
-};
-
 namespace OpenRCT2::Audio
 {
+    enum class MixerGroup : int32_t
+    {
+        Sound,
+        RideMusic,
+        TitleMusic,
+    };
+
     interface IAudioSource;
     interface IAudioChannel;
 
@@ -66,7 +66,7 @@ void Mixer_Channel_Rate(void* channel, double rate);
 int32_t Mixer_Channel_IsPlaying(void* channel);
 uint64_t Mixer_Channel_GetOffset(void* channel);
 int32_t Mixer_Channel_SetOffset(void* channel, uint64_t offset);
-void Mixer_Channel_SetGroup(void* channel, int32_t group);
+void Mixer_Channel_SetGroup(void* channel, OpenRCT2::Audio::MixerGroup group);
 void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming);
 void Mixer_SetVolume(float volume);
 

@@ -1395,7 +1395,7 @@ void peep_update_crowd_noise()
             _crowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, MIXER_LOOP_INFINITE, false);
             if (_crowdSoundChannel != nullptr)
             {
-                Mixer_Channel_SetGroup(_crowdSoundChannel, MIXER_GROUP_SOUND);
+                Mixer_Channel_SetGroup(_crowdSoundChannel, OpenRCT2::Audio::MixerGroup::Sound);
             }
         }
         if (_crowdSoundChannel != nullptr)

@@ -3711,7 +3711,7 @@ void ride_music_update_final()
                         // Move circus music to the sound mixer group
                         if (ride_music_info->path_id == PATH_ID_CSS24)
                         {
-                            Mixer_Channel_SetGroup(ride_music_3->sound_channel, MIXER_GROUP_SOUND);
+                            Mixer_Channel_SetGroup(ride_music_3->sound_channel, Audio::MixerGroup::Sound);
                         }
                     }
                     return;
