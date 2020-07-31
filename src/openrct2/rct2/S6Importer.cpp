@@ -414,8 +414,8 @@ public:
         gClimateNext.Weather = _s6.next_weather;
         gClimateCurrent.Temperature = _s6.temperature;
         gClimateNext.Temperature = _s6.next_temperature;
-        gClimateCurrent.WeatherEffect = _s6.current_weather_effect;
-        gClimateNext.WeatherEffect = _s6.next_weather_effect;
+        gClimateCurrent.WeatherEffect = WeatherEffectType{ _s6.current_weather_effect };
+        gClimateNext.WeatherEffect = WeatherEffectType{ _s6.next_weather_effect };
         gClimateCurrent.WeatherGloom = _s6.current_weather_gloom;
         gClimateNext.WeatherGloom = _s6.next_weather_gloom;
         gClimateCurrent.Level = static_cast<RainLevel>(_s6.current_rain_level);

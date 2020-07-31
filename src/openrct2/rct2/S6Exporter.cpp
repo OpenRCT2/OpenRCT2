@@ -387,8 +387,8 @@ void S6Exporter::Export()
     _s6.next_weather = gClimateNext.Weather;
     _s6.temperature = gClimateCurrent.Temperature;
     _s6.next_temperature = gClimateNext.Temperature;
-    _s6.current_weather_effect = gClimateCurrent.WeatherEffect;
-    _s6.next_weather_effect = gClimateNext.WeatherEffect;
+    _s6.current_weather_effect = static_cast<uint8_t>(gClimateCurrent.WeatherEffect);
+    _s6.next_weather_effect = static_cast<uint8_t>(gClimateNext.WeatherEffect);
     _s6.current_weather_gloom = gClimateCurrent.WeatherGloom;
     _s6.next_weather_gloom = gClimateNext.WeatherGloom;
     _s6.current_rain_level = static_cast<uint8_t>(gClimateCurrent.Level);
