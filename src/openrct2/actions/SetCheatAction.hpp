@@ -207,7 +207,7 @@ public:
                 scenario_success();
                 break;
             case CheatType::ForceWeather:
-                climate_force_weather(_param1);
+                climate_force_weather((WeatherType)_param1);
                 break;
             case CheatType::FreezeWeather:
                 gCheatsFreezeWeather = _param1 != 0;

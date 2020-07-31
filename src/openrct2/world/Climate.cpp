@@ -81,10 +81,10 @@ int32_t climate_celsius_to_fahrenheit(int32_t celsius)
  */
 void climate_reset(int32_t climate)
 {
-    uint8_t weather = WEATHER_PARTIALLY_CLOUDY;
+    WeatherType weather = WeatherType::PartiallyCloudy;
     int32_t month = date_get_month(gDateMonthsElapsed);
     const WeatherTransition* transition = &ClimateTransitions[climate][month];
-    const WeatherState* weatherState = &ClimateWeatherData[weather];
+    const WeatherState* weatherState = &ClimateWeatherData[(uint8_t)weather];
 
     gClimate = climate;
     gClimateCurrent.Weather = weather;
@@ -182,9 +182,9 @@ void climate_update()
     }
 }
 
-void climate_force_weather(uint8_t weather)
+void climate_force_weather(WeatherType weather)
 {
-    const auto weatherState = &ClimateWeatherData[weather];
+    const auto weatherState = &ClimateWeatherData[(uint8_t)weather];
     gClimateCurrent.Weather = weather;
     gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
     gClimateCurrent.Level = weatherState->Level;
@@ -231,9 +231,9 @@ FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state
 uint32_t climate_get_weather_sprite_id(const ClimateState& state)
 {
     uint32_t spriteId = SPR_WEATHER_SUN;
-    if (state.Weather < std::size(ClimateWeatherData))
+    if ((uint8_t)state.Weather < std::size(ClimateWeatherData))
     {
-        spriteId = ClimateWeatherData[state.Weather].SpriteId;
+        spriteId = ClimateWeatherData[(uint8_t)state.Weather].SpriteId;
     }
     return spriteId;
 }
@@ -263,10 +263,11 @@ static void climate_determine_future_weather(int32_t randomDistribution)
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
     // accordingly
     const WeatherTransition* transition = &ClimateTransitions[gClimate][month];
-    int8_t nextWeather = transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8];
+    WeatherType nextWeather = (WeatherType)(
+        transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8]);
     gClimateNext.Weather = nextWeather;
 
-    const auto nextWeatherState = &ClimateWeatherData[nextWeather];
+    const auto nextWeatherState = &ClimateWeatherData[(uint8_t)nextWeather];
     gClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
     gClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
     gClimateNext.WeatherGloom = nextWeatherState->GloomLevel;

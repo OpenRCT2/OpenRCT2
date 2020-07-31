@@ -707,7 +707,8 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
         case WIDX_WEATHER_DROPDOWN_BUTTON:
         {
             rct_widget* dropdownWidget;
-            int i, currentWeather;
+            int i;
+            WeatherType currentWeather;
 
             dropdownWidget = widget - 1;
 
@@ -721,7 +722,7 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
                 w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 6, dropdownWidget->width() - 3);
 
             currentWeather = gClimateCurrent.Weather;
-            dropdown_set_checked(currentWeather, true);
+            dropdown_set_checked((uint8_t)currentWeather, true);
         }
         break;
         case WIDX_STAFF_SPEED_DROPDOWN_BUTTON:
@@ -1165,7 +1166,7 @@ static void window_cheats_invalidate(rct_window* w)
     }
 
     // Current weather
-    window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrent.Weather];
+    window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[(uint8_t)gClimateCurrent.Weather];
     // Staff speed
     window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
 }

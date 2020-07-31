@@ -557,7 +557,7 @@ static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewpor
             throw std::runtime_error("Weather can only be set to an integer value from 1 till 6.");
         }
 
-        uint8_t customWeather = options->weather - 1;
+        WeatherType customWeather = (WeatherType)(options->weather - 1);
         climate_force_weather(customWeather);
     }
 

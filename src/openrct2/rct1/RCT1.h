@@ -16,6 +16,7 @@
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
+#include "../world/Climate.h"
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"
 
@@ -693,8 +694,8 @@ struct rct1_s4
     uint8_t climate;
     uint8_t unk_1F432B;
     uint16_t climate_timer;
-    uint8_t weather;
-    uint8_t target_weather;
+    WeatherType weather;
+    WeatherType target_weather;
     uint8_t temperature;
     uint8_t target_temperature;
     uint8_t thunder_frequency;
