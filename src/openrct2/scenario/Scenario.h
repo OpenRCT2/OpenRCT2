@@ -21,6 +21,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideRatings.h"
 #include "../world/Banner.h"
+#include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"
@@ -283,8 +284,8 @@ struct rct_s6_data
     uint8_t next_weather;
     uint8_t temperature;
     uint8_t next_temperature;
-    uint8_t current_weather_effect;
-    uint8_t next_weather_effect;
+    WeatherEffectType current_weather_effect;
+    WeatherEffectType next_weather_effect;
     uint8_t current_weather_gloom;
     uint8_t next_weather_gloom;
     uint8_t current_rain_level;
