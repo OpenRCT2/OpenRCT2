@@ -631,7 +631,7 @@ static void window_title_command_editor_tool_down(
         else if (spriteIdentifier == SPRITE_IDENTIFIER_VEHICLE)
         {
             validSprite = true;
-            auto vehicle = GET_VEHICLE(spriteIndex);
+            auto vehicle = GetEntity<Vehicle>(spriteIndex);
             if (vehicle != nullptr)
             {
                 auto ride = vehicle->GetRide();

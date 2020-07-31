@@ -3037,7 +3037,11 @@ static void vehicle_visual_splash3_effect(paint_session* session, int32_t z, con
  */
 static void vehicle_visual_splash4_effect(paint_session* session, int32_t z, const Vehicle* vehicle)
 {
-    Vehicle* vehicle2 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+    Vehicle* vehicle2 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+    if (vehicle2 == nullptr)
+    {
+        return;
+    }
     if (vehicle2->velocity <= 0x50000)
     {
         return;
@@ -3061,7 +3065,11 @@ static void vehicle_visual_splash4_effect(paint_session* session, int32_t z, con
  */
 static void vehicle_visual_splash5_effect(paint_session* session, int32_t z, const Vehicle* vehicle)
 {
-    Vehicle* vehicle2 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+    Vehicle* vehicle2 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+    if (vehicle2 == nullptr)
+    {
+        return;
+    }
     if (vehicle2->velocity <= 0x50000)
     {
         return;

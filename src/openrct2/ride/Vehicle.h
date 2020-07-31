@@ -319,7 +319,7 @@ struct Vehicle : SpriteBase
     void Update();
     Vehicle* GetHead();
     const Vehicle* GetHead() const;
-    const Vehicle* GetCar(size_t carIndex) const;
+    Vehicle* GetCar(size_t carIndex) const;
     void Invalidate();
     void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
@@ -634,8 +634,5 @@ extern int32_t _vehicleUnkF64E10;
 extern uint8_t _vehicleF64E2C;
 extern Vehicle* _vehicleFrontVehicle;
 extern CoordsXYZ unk_F64E20;
-
-/** Helper macro until rides are stored in this module. */
-#define GET_VEHICLE(sprite_index) &(get_sprite(sprite_index)->vehicle)
 
 #endif

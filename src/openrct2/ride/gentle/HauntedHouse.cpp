@@ -48,10 +48,10 @@ static void paint_haunted_house_structure(
 
     uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        Vehicle* vehicle = GET_VEHICLE(ride->vehicles[0]);
         session->CurrentlyDrawnItem = vehicle;
         frameNum = vehicle->vehicle_sprite_type;
     }

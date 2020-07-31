@@ -1252,11 +1252,15 @@ void vehicle_visual_splash_boats_or_water_coaster(
 {
     if (vehicle->IsHead())
     {
-        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_ride);
+        vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_ride);
     }
     else
     {
-        vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+        vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+    }
+    if (vehicle == nullptr)
+    {
+        return;
     }
     session->CurrentlyDrawnItem = vehicle;
     imageDirection = ((session->CurrentRotation * 8) + vehicle->sprite_direction) & 0x1F;

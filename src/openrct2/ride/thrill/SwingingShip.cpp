@@ -72,7 +72,7 @@ static void paint_swinging_ship_structure(
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
-        vehicle = GET_VEHICLE(ride->vehicles[0]);
+        vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
         session->CurrentlyDrawnItem = vehicle;

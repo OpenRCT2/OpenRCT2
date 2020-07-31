@@ -2193,7 +2193,11 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
                 break;
             }
 
-            vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+            vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+            if (vehicle == nullptr)
+            {
+                return true;
+            }
         }
 
         CoordsXY offset = DirectionOffsets[PeepDirection];
