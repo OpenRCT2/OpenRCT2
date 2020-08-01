@@ -100,11 +100,7 @@ std::string rct_sprite_checksum::ToString() const
 
 SpriteBase* try_get_sprite(size_t spriteIndex)
 {
-    if (spriteIndex >= MAX_SPRITES)
-    {
-        return nullptr;
-    }
-    return &_spriteList[spriteIndex].generic;
+    return spriteIndex >= MAX_SPRITES ? nullptr : &_spriteList[spriteIndex].generic;
 }
 
 SpriteBase* get_sprite(size_t spriteIndex)
@@ -114,11 +110,7 @@ SpriteBase* get_sprite(size_t spriteIndex)
         return nullptr;
     }
     openrct2_assert(spriteIndex < MAX_SPRITES, "Tried getting sprite %u", spriteIndex);
-    if (spriteIndex >= MAX_SPRITES)
-    {
-        return nullptr;
-    }
-    return &_spriteList[spriteIndex].generic;
+    return try_get_sprite(spriteIndex);
 }
 
 uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)

@@ -105,7 +105,7 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
                         info->type = VIEWPORT_INTERACTION_ITEM_NONE;
                     }
                 }
-                    break;
+                break;
             }
             break;
         case VIEWPORT_INTERACTION_ITEM_RIDE:
@@ -200,7 +200,7 @@ int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
                                     duck_press(duck);
                                 }
                             }
-                                break;
+                            break;
                         }
                     }
                     break;
