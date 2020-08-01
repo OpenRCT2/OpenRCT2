@@ -61,12 +61,12 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    CoordsXY mapCoord = {};
-    get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK,
-        mapCoord, &info->type, &info->tileElement);
-    info->x = mapCoord.x;
-    info->y = mapCoord.y;
+    auto info2 = get_map_coordinates_from_pos(
+        screenCoords, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK);
+    info->x = info2.Loc.x;
+    info->y = info2.Loc.y;
+    info->tileElement = info2.Element;
+    info->type = info2.SpriteType;
     auto tileElement = info->tileElement;
     auto sprite = info->sprite;
 
@@ -227,7 +227,6 @@ int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
  */
 int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info)
 {
-    TileElement* tileElement;
     rct_scenery_entry* sceneryEntry;
     Ride* ride;
     int32_t i, stationIndex;
@@ -240,13 +239,13 @@ int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    CoordsXY mapCoord = {};
-    get_map_coordinates_from_pos(
-        screenCoords, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), mapCoord, &info->type,
-        &info->tileElement);
-    info->x = mapCoord.x;
-    info->y = mapCoord.y;
-    tileElement = info->tileElement;
+    auto info2 = get_map_coordinates_from_pos(
+        screenCoords, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER));
+    info->x = info2.Loc.x;
+    info->y = info2.Loc.y;
+    info->tileElement = info2.Element;
+    info->type = info2.SpriteType;
+    auto tileElement = info->tileElement;
     auto sprite = info->sprite;
 
     switch (info->type)
@@ -688,27 +687,22 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
  */
 CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords)
 {
-    CoordsXY mapCoords;
-    CoordsXY initialPos{};
-    int32_t interactionType;
-    TileElement* tileElement;
     rct_window* window = window_find_from_point(screenCoords);
     auto viewport = window->viewport;
-    get_map_coordinates_from_pos_window(
-        window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapCoords, &interactionType,
-        &tileElement);
-    initialPos = mapCoords;
+    auto info = get_map_coordinates_from_pos_window(
+        window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER);
+    auto initialPos = info.Loc;
 
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         initialPos.setNull();
         return initialPos;
     }
 
     int16_t waterHeight = 0;
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER)
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_WATER)
     {
-        waterHeight = tileElement->AsSurface()->GetWaterHeight();
+        waterHeight = info.Element->AsSurface()->GetWaterHeight();
     }
 
     auto initialVPPos = screen_coord_to_viewport_coord(viewport, screenCoords);
@@ -717,7 +711,7 @@ CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords)
     for (int32_t i = 0; i < 5; i++)
     {
         int16_t z = waterHeight;
-        if (interactionType != VIEWPORT_INTERACTION_ITEM_WATER)
+        if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_WATER)
         {
             z = tile_element_height(mapPos);
         }

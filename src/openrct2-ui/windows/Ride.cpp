@@ -4346,28 +4346,22 @@ static int32_t window_ride_has_track_colour(Ride* ride, int32_t trackColour)
 
 static void window_ride_set_track_colour_scheme(rct_window* w, const ScreenCoordsXY& screenPos)
 {
-    TileElement* tileElement;
-    uint8_t newColourScheme;
-    int32_t interactionType, z, direction;
+    auto newColourScheme = static_cast<uint8_t>(w->ride_colour);
+    auto info = get_map_coordinates_from_pos(screenPos, VIEWPORT_INTERACTION_MASK_RIDE);
 
-    newColourScheme = static_cast<uint8_t>(w->ride_colour);
-
-    CoordsXY mapCoord = {};
-    get_map_coordinates_from_pos(screenPos, VIEWPORT_INTERACTION_MASK_RIDE, mapCoord, &interactionType, &tileElement);
-
-    if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
+    if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_RIDE)
         return;
-    if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+    if (info.Element->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return;
-    if (tileElement->AsTrack()->GetRideIndex() != w->number)
+    if (info.Element->AsTrack()->GetRideIndex() != w->number)
         return;
-    if (tileElement->AsTrack()->GetColourScheme() == newColourScheme)
+    if (info.Element->AsTrack()->GetColourScheme() == newColourScheme)
         return;
 
-    z = tileElement->GetBaseZ();
-    direction = tileElement->GetDirection();
+    auto z = info.Element->GetBaseZ();
+    auto direction = info.Element->GetDirection();
     auto gameAction = RideSetColourSchemeAction(
-        CoordsXYZD{ mapCoord, z, static_cast<Direction>(direction) }, tileElement->AsTrack()->GetTrackType(), newColourScheme);
+        CoordsXYZD{ info.Loc, z, static_cast<Direction>(direction) }, info.Element->AsTrack()->GetTrackType(), newColourScheme);
     GameActions::Execute(&gameAction);
 }
 
@@ -5538,23 +5532,19 @@ static void window_ride_measurements_update(rct_window* w)
  */
 static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    TileElement* tileElement;
-    CoordsXY mapCoords;
-    int32_t interactionType;
-
     _lastSceneryX = screenCoords.x;
     _lastSceneryY = screenCoords.y;
     _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
-    get_map_coordinates_from_pos(screenCoords, 0xFCCF, mapCoords, &interactionType, &tileElement);
-    switch (interactionType)
+    auto info = get_map_coordinates_from_pos(screenCoords, 0xFCCF);
+    switch (info.SpriteType)
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            _collectTrackDesignScenery = !track_design_save_contains_tile_element(tileElement);
-            track_design_save_select_tile_element(interactionType, mapCoords, tileElement, _collectTrackDesignScenery);
+            _collectTrackDesignScenery = !track_design_save_contains_tile_element(info.Element);
+            track_design_save_select_tile_element(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
             break;
     }
 }
@@ -5566,18 +5556,14 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
     _lastSceneryX = screenCoords.x;
     _lastSceneryY = screenCoords.y;
 
-    TileElement* tileElement;
-    CoordsXY mapCoords;
-    int32_t interactionType;
-
-    get_map_coordinates_from_pos(screenCoords, 0xFCCF, mapCoords, &interactionType, &tileElement);
-    switch (interactionType)
+    auto info = get_map_coordinates_from_pos(screenCoords, 0xFCCF);
+    switch (info.SpriteType)
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            track_design_save_select_tile_element(interactionType, mapCoords, tileElement, _collectTrackDesignScenery);
+            track_design_save_select_tile_element(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
             break;
     }
 }

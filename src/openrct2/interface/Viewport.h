@@ -101,7 +101,7 @@ struct InteractionInfo
     InteractionInfo(const paint_struct* ps);
     CoordsXY Loc;
     TileElement* Element = nullptr;
-    uint8_t SpriteType;
+    uint8_t SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
 };
 
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
@@ -156,12 +156,8 @@ void show_construction_rights();
 void hide_construction_rights();
 void viewport_set_visibility(uint8_t mode);
 
-void get_map_coordinates_from_pos(
-    const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
-    TileElement** tileElement);
-void get_map_coordinates_from_pos_window(
-    rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
-    TileElement** tileElement);
+InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t flags);
+InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
 int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info);

@@ -982,77 +982,71 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widgetindex widgetIndex)
 {
-    // ax, cx, bl
-    int32_t type;
-    // edx
-    TileElement* tile_element;
     auto flags = VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_WALL & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY
         & VIEWPORT_INTERACTION_MASK_BANNER;
     // This is -2 as banner is 12 but flags are offset different
 
-    // not used
-    CoordsXY gridCoords;
-    get_map_coordinates_from_pos(windowPos, flags, gridCoords, &type, &tile_element);
+    auto info = get_map_coordinates_from_pos(windowPos, flags);
 
-    switch (type)
+    switch (info.SpriteType)
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         {
-            rct_scenery_entry* scenery_entry = tile_element->AsSmallScenery()->GetEntry();
+            rct_scenery_entry* scenery_entry = info.Element->AsSmallScenery()->GetEntry();
 
             // If can't repaint
             if (!scenery_small_entry_has_flag(
                     scenery_entry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
                 return;
 
-            uint8_t quadrant = tile_element->AsSmallScenery()->GetSceneryQuadrant();
+            uint8_t quadrant = info.Element->AsSmallScenery()->GetSceneryQuadrant();
             auto repaintScenery = SmallScenerySetColourAction(
-                { gridCoords.x, gridCoords.y, tile_element->GetBaseZ() }, quadrant,
-                tile_element->AsSmallScenery()->GetEntryIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                { info.Loc, info.Element->GetBaseZ() }, quadrant, info.Element->AsSmallScenery()->GetEntryIndex(),
+                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
 
             GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
         {
-            rct_scenery_entry* scenery_entry = tile_element->AsWall()->GetEntry();
+            rct_scenery_entry* scenery_entry = info.Element->AsWall()->GetEntry();
 
             // If can't repaint
             if (!(scenery_entry->wall.flags & (WALL_SCENERY_HAS_PRIMARY_COLOUR | WALL_SCENERY_HAS_GLASS)))
                 return;
 
             auto repaintScenery = WallSetColourAction(
-                { gridCoords.x, gridCoords.y, tile_element->GetBaseZ(), tile_element->GetDirection() },
-                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+                { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() }, gWindowSceneryPrimaryColour,
+                gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
             GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         {
-            rct_scenery_entry* scenery_entry = tile_element->AsLargeScenery()->GetEntry();
+            rct_scenery_entry* scenery_entry = info.Element->AsLargeScenery()->GetEntry();
 
             // If can't repaint
             if (!(scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                 return;
 
             auto repaintScenery = LargeScenerySetColourAction(
-                { gridCoords.x, gridCoords.y, tile_element->GetBaseZ(), tile_element->GetDirection() },
-                tile_element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() },
+                info.Element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
 
             GameActions::Execute(&repaintScenery);
             break;
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            auto banner = tile_element->AsBanner()->GetBanner();
+            auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
                 auto scenery_entry = get_banner_entry(banner->type);
                 if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
                 {
                     auto repaintScenery = BannerSetColourAction(
-                        { gridCoords.x, gridCoords.y, tile_element->GetBaseZ(), tile_element->AsBanner()->GetPosition() },
+                        { info.Loc, info.Element->GetBaseZ(), info.Element->AsBanner()->GetPosition() },
                         gWindowSceneryPrimaryColour);
 
                     GameActions::Execute(&repaintScenery);
@@ -1070,16 +1064,13 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
     auto flags = VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_WALL & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY
         & VIEWPORT_INTERACTION_MASK_BANNER & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
 
-    int32_t type;
-    TileElement* tileElement;
-    CoordsXY unusedCoords;
-    get_map_coordinates_from_pos(windowPos, flags, unusedCoords, &type, &tileElement);
+    auto info = get_map_coordinates_from_pos(windowPos, flags);
 
-    switch (type)
+    switch (info.SpriteType)
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
         {
-            SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
+            SmallSceneryElement* sceneryElement = info.Element->AsSmallScenery();
             auto entryIndex = sceneryElement->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_small_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
@@ -1096,15 +1087,15 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
         {
-            auto entryIndex = tileElement->AsWall()->GetEntryIndex();
+            auto entryIndex = info.Element->AsWall()->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_wall_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 if (window_scenery_set_selected_item({ SCENERY_TYPE_WALL, entryIndex }))
                 {
-                    gWindowSceneryPrimaryColour = tileElement->AsWall()->GetPrimaryColour();
-                    gWindowScenerySecondaryColour = tileElement->AsWall()->GetSecondaryColour();
-                    gWindowSceneryTertiaryColour = tileElement->AsWall()->GetTertiaryColour();
+                    gWindowSceneryPrimaryColour = info.Element->AsWall()->GetPrimaryColour();
+                    gWindowScenerySecondaryColour = info.Element->AsWall()->GetSecondaryColour();
+                    gWindowSceneryTertiaryColour = info.Element->AsWall()->GetTertiaryColour();
                     gWindowSceneryEyedropperEnabled = false;
                 }
             }
@@ -1112,15 +1103,15 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         }
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
         {
-            auto entryIndex = tileElement->AsLargeScenery()->GetEntryIndex();
+            auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_large_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
                 if (window_scenery_set_selected_item({ SCENERY_TYPE_LARGE, entryIndex }))
                 {
-                    gWindowSceneryRotation = (get_current_rotation() + tileElement->GetDirection()) & 3;
-                    gWindowSceneryPrimaryColour = tileElement->AsLargeScenery()->GetPrimaryColour();
-                    gWindowScenerySecondaryColour = tileElement->AsLargeScenery()->GetSecondaryColour();
+                    gWindowSceneryRotation = (get_current_rotation() + info.Element->GetDirection()) & 3;
+                    gWindowSceneryPrimaryColour = info.Element->AsLargeScenery()->GetPrimaryColour();
+                    gWindowScenerySecondaryColour = info.Element->AsLargeScenery()->GetSecondaryColour();
                     gWindowSceneryEyedropperEnabled = false;
                 }
             }
@@ -1128,7 +1119,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         }
         case VIEWPORT_INTERACTION_ITEM_BANNER:
         {
-            auto banner = tileElement->AsBanner()->GetBanner();
+            auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
             {
                 auto sceneryEntry = get_banner_entry(banner->type);
@@ -1144,7 +1135,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
         }
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
         {
-            auto entryIndex = tileElement->AsPath()->GetAdditionEntryIndex();
+            auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
@@ -1229,18 +1220,15 @@ static void sub_6E1F34(
             if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
             {
                 // CTRL pressed
-                TileElement* tile_element;
                 auto flags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_RIDE
                     & VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_WALL
                     & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
-                int32_t interaction_type;
-                CoordsXY unusedCoords;
-                get_map_coordinates_from_pos(screenPos, flags, unusedCoords, &interaction_type, &tile_element);
+                auto info = get_map_coordinates_from_pos(screenPos, flags);
 
-                if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE)
+                if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_NONE)
                 {
                     gSceneryCtrlPressed = true;
-                    gSceneryCtrlPressZ = tile_element->GetBaseZ();
+                    gSceneryCtrlPressZ = info.Element->GetBaseZ();
                 }
             }
         }
@@ -1384,14 +1372,11 @@ static void sub_6E1F34(
             if (!gSceneryCtrlPressed)
             {
                 auto flags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER;
-                int32_t interaction_type = 0;
-                TileElement* tile_element;
-                CoordsXY gridCoords;
 
-                get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element);
-                gridPos = gridCoords;
+                auto info = get_map_coordinates_from_pos(screenPos, flags);
+                gridPos = info.Loc;
 
-                if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
+                if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
                 {
                     gridPos.setNull();
                     return;
@@ -1466,25 +1451,22 @@ static void sub_6E1F34(
         {
             // Path bits
             auto flags = VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
-            int32_t interaction_type = 0;
-            TileElement* tile_element;
-            CoordsXY gridCoords;
 
-            get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element);
-            gridPos = gridCoords;
+            auto info = get_map_coordinates_from_pos(screenPos, flags);
+            gridPos = info.Loc;
 
-            if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
+            if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
             {
                 gridPos.setNull();
                 return;
             }
 
-            *parameter_1 = tile_element->AsPath()->GetSlopeDirection() << 8;
-            if (tile_element->AsPath()->IsSloped())
+            *parameter_1 = info.Element->AsPath()->GetSlopeDirection() << 8;
+            if (info.Element->AsPath()->IsSloped())
                 *parameter_1 |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED << 8;
-            *parameter_2 = tile_element->base_height;
-            *parameter_2 |= (tile_element->AsPath()->GetSurfaceEntryIndex() << 8);
-            if (tile_element->AsPath()->IsQueue())
+            *parameter_2 = info.Element->base_height;
+            *parameter_2 |= (info.Element->AsPath()->GetSurfaceEntryIndex() << 8);
+            if (info.Element->AsPath()->IsQueue())
             {
                 *parameter_2 |= LOCATION_NULL;
             }
@@ -1635,14 +1617,11 @@ static void sub_6E1F34(
         {
             // Banner
             auto flags = VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
-            int32_t interaction_type = 0;
-            TileElement* tile_element;
-            CoordsXY gridCoords;
 
-            get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element);
-            gridPos = gridCoords;
+            auto info = get_map_coordinates_from_pos(screenPos, flags);
+            gridPos = info.Loc;
 
-            if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
+            if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
             {
                 gridPos.setNull();
                 return;
@@ -1652,11 +1631,11 @@ static void sub_6E1F34(
             rotation -= get_current_rotation();
             rotation &= 0x3;
 
-            int16_t z = tile_element->base_height;
+            int16_t z = info.Element->base_height;
 
-            if (tile_element->AsPath()->IsSloped())
+            if (info.Element->AsPath()->IsSloped())
             {
-                if (rotation != direction_reverse(tile_element->AsPath()->GetSlopeDirection()))
+                if (rotation != direction_reverse(info.Element->AsPath()->GetSlopeDirection()))
                 {
                     z += 2;
                 }
@@ -2400,12 +2379,9 @@ static void top_toolbar_tool_update_water(const ScreenCoordsXY& screenPos)
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    CoordsXY mapTile = {};
-    int32_t interaction_type = 0;
-    get_map_coordinates_from_pos(
-        screenPos, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapTile, &interaction_type, nullptr);
+    auto info = get_map_coordinates_from_pos(screenPos, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER);
 
-    if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         if (gWaterToolRaiseCost != MONEY32_UNDEFINED || gWaterToolLowerCost != MONEY32_UNDEFINED)
         {
@@ -2416,8 +2392,7 @@ static void top_toolbar_tool_update_water(const ScreenCoordsXY& screenPos)
         return;
     }
 
-    mapTile.x += 16;
-    mapTile.y += 16;
+    auto mapTile = info.Loc.ToTileCentre();
 
     uint8_t state_changed = 0;
 

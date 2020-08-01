@@ -121,31 +121,28 @@ namespace OpenRCT2::Scripting
             auto ctx = dukHandler.context();
 
             auto flags = 0;
-            CoordsXY mapCoords{};
-            int32_t interactionType = 0;
-            TileElement* tileElement{};
-            get_map_coordinates_from_pos(screenCoords, flags, mapCoords, &interactionType, &tileElement);
+            auto info = get_map_coordinates_from_pos(screenCoords, flags);
 
             DukObject obj(dukHandler.context());
             obj.Set("isDown", MouseDown);
             obj.Set("screenCoords", ToDuk(ctx, screenCoords));
-            obj.Set("mapCoords", ToDuk(ctx, mapCoords));
+            obj.Set("mapCoords", ToDuk(ctx, info.Loc));
 
-            if (interactionType == VIEWPORT_INTERACTION_ITEM_SPRITE && tileElement != nullptr)
+            if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE && info.Element != nullptr)
             {
                 // get_map_coordinates_from_pos returns the sprite using tileElement... ugh
-                auto sprite = reinterpret_cast<rct_sprite*>(tileElement);
+                auto sprite = reinterpret_cast<rct_sprite*>(info.Element);
                 obj.Set("entityId", sprite->generic.sprite_index);
             }
-            else if (tileElement != nullptr)
+            else if (info.Element != nullptr)
             {
                 int32_t index = 0;
-                auto el = map_get_first_element_at(mapCoords);
+                auto el = map_get_first_element_at(info.Loc);
                 if (el != nullptr)
                 {
                     do
                     {
-                        if (el == tileElement)
+                        if (el == info.Element)
                         {
                             obj.Set("tileElementIndex", index);
                             break;

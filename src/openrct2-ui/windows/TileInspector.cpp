@@ -1209,7 +1209,9 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     bool mouseOnViewport = false;
     if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
     {
-        get_map_coordinates_from_pos(screenCoords, ViewportInteractionFlags, mapCoords, nullptr, &clickedElement);
+        auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionFlags);
+        clickedElement = info.Element;
+        mapCoords = info.Loc;
     }
 
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor
@@ -1259,7 +1261,9 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, const Scre
     TileElement* clickedElement = nullptr;
     if (ctrlIsHeldDown)
     {
-        get_map_coordinates_from_pos(screenCoords, ViewportInteractionFlags, mapCoords, nullptr, &clickedElement);
+        auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionFlags);
+        clickedElement = info.Element;
+        mapCoords = info.Loc;
     }
 
     // Even if Ctrl was pressed, fall back to normal selection when there was nothing under the cursor

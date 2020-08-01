@@ -1285,11 +1285,8 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
 
     gPickupPeepImage = UINT32_MAX;
 
-    int32_t interactionType;
-    CoordsXY unusedCoords;
-    get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_NONE, unusedCoords, &interactionType, nullptr);
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+    auto info = get_map_coordinates_from_pos(screenCoords, VIEWPORT_INTERACTION_MASK_NONE);
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;
 
     gPickupPeepX = screenCoords.x - 1;
