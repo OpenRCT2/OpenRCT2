@@ -835,12 +835,11 @@ void Ride::FormatStatusTo(Formatter& ft) const
     {
         ft.Add<rct_string_id>(STR_TEST_RUN);
     }
-    else if (
-        mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING))
+    else if (mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING))
     {
         auto peep = GetEntity<Peep>(race_winner);
-            ft.Add<rct_string_id>(STR_RACE_WON_BY);
-            peep->FormatNameTo(ft);
+        ft.Add<rct_string_id>(STR_RACE_WON_BY);
+        peep->FormatNameTo(ft);
     }
     else if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_IS_SHOP))
     {
