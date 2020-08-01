@@ -532,7 +532,8 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         gfx_fill_rect(
             dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } }, ColourMapA[colour].dark);
     else
-        gfx_filter_rect(dpi, { { topLeft.x + 1, topLeft.y + 1 }, { bottomRight.x - 1, bottomRight.y - 1 } }, PALETTE_DARKEN_3);
+        gfx_filter_rect(
+            dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } }, PALETTE_DARKEN_3);
 
     // Draw text
     if (widget->text == STR_NONE)
