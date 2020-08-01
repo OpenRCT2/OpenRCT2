@@ -4895,44 +4895,31 @@ void Guest::UpdateRideMazePathfinding()
     {
         return;
     }
+
     uint16_t mazeEntry = trackElement->GetMazeEntry();
-    uint16_t openHedges = 0;
     // Var37 is 3, 7, 11 or 15
-
-    if (mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][3]))
+    uint8_t hedges[4]{ 0xFF, 0xFF, 0xFF, 0xFF };
+    uint8_t openCount = 0;
+    uint8_t mazeReverseLastEdge = direction_reverse(MazeLastEdge);
+    for (uint8_t i = 0; i < 4; ++i)
     {
-        openHedges = 1;
-    }
-    openHedges <<= 1;
-    if (mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][2]))
-    {
-        openHedges |= 1;
-    }
-    openHedges <<= 1;
-    if (mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][1]))
-    {
-        openHedges |= 1;
-    }
-    openHedges <<= 1;
-    if (mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][0]))
-    {
-        openHedges |= 1;
+        if (!(mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][i])) && i != mazeReverseLastEdge)
+        {
+            hedges[openCount++] = i;
+        }
     }
 
-    openHedges ^= 0xF;
-    if (openHedges == 0)
-        return;
-
-    uint8_t mazeLastEdge = direction_reverse(MazeLastEdge);
-    openHedges &= ~(1 << mazeLastEdge);
-    if (openHedges == 0)
-        openHedges |= (1 << mazeLastEdge);
-
-    uint8_t chosenEdge = scenario_rand() & 0x3;
-    while (!(openHedges & (1 << chosenEdge)))
+    if (openCount == 0)
     {
-        chosenEdge = (chosenEdge + 1) & 3;
+        if ((mazeEntry & (1 << _MazeCurrentDirectionToOpenHedge[Var37 / 4][mazeReverseLastEdge])))
+        {
+            return;
+        }
+        hedges[openCount++] = mazeReverseLastEdge;
     }
+
+    uint8_t chosenEdge = hedges[scenario_rand() % openCount];
+    assert(chosenEdge != 0xFF);
 
     targetLoc.x = CoordsDirectionDelta[chosenEdge].x / 2;
     targetLoc.y = CoordsDirectionDelta[chosenEdge].y / 2;
