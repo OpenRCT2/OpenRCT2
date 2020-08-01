@@ -1626,11 +1626,10 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
             int32_t numPeepsLeft = vehicle->num_peeps;
             for (int32_t i = 0; i < 32 && numPeepsLeft > 0; i++)
             {
-                
                 Peep* peep = GetEntity<Peep>(vehicle->peep[i]);
-                if(peep!=nullptr)
+                if (peep != nullptr)
                     continue;
-                
+
                 numPeepsLeft--;
                 rct_window* w2 = window_find_by_number(WC_PEEP, vehicle->peep[i]);
                 if (w2 == nullptr)
@@ -2457,7 +2456,6 @@ static void window_ride_main_update(rct_window* w)
 
             if (w->ride.view <= ride->num_vehicles)
             {
-
                 Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
                 if (vehicle == nullptr
                     || (vehicle->status != VEHICLE_STATUS_TRAVELLING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT
