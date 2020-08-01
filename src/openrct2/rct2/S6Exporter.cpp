@@ -1075,7 +1075,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     dst->var_C8 = src->var_C8;
     dst->var_CA = src->var_CA;
     dst->scream_sound_id = static_cast<uint8_t>(src->scream_sound_id);
-    dst->TrackSubposition = src->TrackSubposition;
+    dst->TrackSubposition = static_cast<uint8_t>(src->TrackSubposition);
     dst->var_CE = src->var_CE;
     dst->var_CF = src->var_CF;
     dst->lost_time_out = src->lost_time_out;

@@ -64,7 +64,7 @@ Vehicle* cable_lift_segment_create(
     {
         peep = SPRITE_INDEX_NULL;
     }
-    current->TrackSubposition = VEHICLE_TRACK_SUBPOSITION_0;
+    current->TrackSubposition = VehicleTrackSubposition::Default;
     current->sprite_direction = direction << 3;
 
     z = z * COORDS_Z_STEP;

@@ -1224,7 +1224,7 @@ private:
             statusSrc = static_cast<VEHICLE_STATUS>(src->status);
         }
         dst->status = statusSrc;
-        dst->TrackSubposition = src->TrackSubposition;
+        dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->current_station = src->current_station;
         if (src->boat_location.isNull() || ride->mode != RIDE_MODE_BOAT_HIRE || statusSrc != VEHICLE_STATUS_TRAVELLING_BOAT)

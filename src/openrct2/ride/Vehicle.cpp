@@ -728,64 +728,67 @@ template<> bool SpriteBase::Is<Vehicle>() const
     return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
 }
 
-static bool vehicle_move_info_valid(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset)
+static bool vehicle_move_info_valid(VehicleTrackSubposition trackSubposition, int32_t typeAndDirection, int32_t offset)
 {
-    if (trackSubposition >= static_cast<int32_t>(std::size(gTrackVehicleInfo)))
+    if (trackSubposition >= VehicleTrackSubposition{ std::size(gTrackVehicleInfo) })
     {
         return false;
     }
     int32_t size = 0;
     switch (trackSubposition)
     {
-        case VEHICLE_TRACK_SUBPOSITION_0:
+        case VehicleTrackSubposition::Default:
             size = 1024;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT:
+        case VehicleTrackSubposition::ChairliftGoingOut:
             size = 692;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK:
-        case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL:
-        case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL:
+        case VehicleTrackSubposition::ChairliftGoingBack:
+        case VehicleTrackSubposition::ChairliftEndBullwheel:
+        case VehicleTrackSubposition::ChairliftStartBullwheel:
             size = 404;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE:
-        case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE:
-        case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE:
-        case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE:
+        case VehicleTrackSubposition::GoKartsLeftLane:
+        case VehicleTrackSubposition::GoKartsRightLane:
+        case VehicleTrackSubposition::GoKartsMovingToRightLane:
+        case VehicleTrackSubposition::GoKartsMovingToLeftLane:
             size = 208;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_A_9: // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9
-        case VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10:
-        case VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_B_11:
-        case VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12:
-        case VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_13:
-        case VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_C_14:
+        case VehicleTrackSubposition::MiniGolfPathA9: // VehicleTrackSubposition::MiniGolfStart9
+        case VehicleTrackSubposition::MiniGolfBallPathA10:
+        case VehicleTrackSubposition::MiniGolfPathB11:
+        case VehicleTrackSubposition::MiniGolfBallPathB12:
+        case VehicleTrackSubposition::MiniGolfPathC13:
+        case VehicleTrackSubposition::MiniGolfBallPathC14:
             size = 824;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE:
-        case VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE:
+        case VehicleTrackSubposition::ReverserRCFrontBogie:
+        case VehicleTrackSubposition::ReverserRCRearBogie:
             size = 868;
+            break;
+        default:
             break;
     }
     if (typeAndDirection >= size)
     {
         return false;
     }
-    if (offset >= gTrackVehicleInfo[trackSubposition][typeAndDirection]->size)
+    if (offset >= gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->size)
     {
         return false;
     }
     return true;
 }
 
-static const rct_vehicle_info* vehicle_get_move_info(int32_t trackSubposition, int32_t typeAndDirection, int32_t offset)
+static const rct_vehicle_info* vehicle_get_move_info(
+    VehicleTrackSubposition trackSubposition, int32_t typeAndDirection, int32_t offset)
 {
     if (!vehicle_move_info_valid(trackSubposition, typeAndDirection, offset))
     {
         static constexpr const rct_vehicle_info zero = {};
         return &zero;
     }
-    return &gTrackVehicleInfo[trackSubposition][typeAndDirection]->info[offset];
+    return &gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->info[offset];
 }
 
 const rct_vehicle_info* Vehicle::GetMoveInfo() const
@@ -793,13 +796,13 @@ const rct_vehicle_info* Vehicle::GetMoveInfo() const
     return vehicle_get_move_info(TrackSubposition, track_type, track_progress);
 }
 
-static uint16_t vehicle_get_move_info_size(int32_t trackSubposition, int32_t typeAndDirection)
+static uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, int32_t typeAndDirection)
 {
     if (!vehicle_move_info_valid(trackSubposition, typeAndDirection, 0))
     {
         return 0;
     }
-    return gTrackVehicleInfo[trackSubposition][typeAndDirection]->size;
+    return gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->size;
 }
 
 uint16_t Vehicle::GetTrackProgress() const
@@ -7464,7 +7467,7 @@ void Vehicle::UpdateGoKartAttemptSwitchLanes()
     if ((scenario_rand() & 0xFFFF) <= probability)
     {
         // This changes "riding left" to "moving to right lane" and "riding right" to "moving to left lane".
-        TrackSubposition += 2;
+        TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) + 2U) };
     }
 }
 
@@ -7666,11 +7669,11 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* oth
             if (y_diff > 0x7FFF)
                 continue;
 
-            uint8_t cl = std::min(TrackSubposition, vehicle2->TrackSubposition);
-            uint8_t ch = std::max(TrackSubposition, vehicle2->TrackSubposition);
+            VehicleTrackSubposition cl = std::min(TrackSubposition, vehicle2->TrackSubposition);
+            VehicleTrackSubposition ch = std::max(TrackSubposition, vehicle2->TrackSubposition);
             if (cl != ch)
             {
-                if (cl == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE && ch == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE)
+                if (cl == VehicleTrackSubposition::GoKartsLeftLane && ch == VehicleTrackSubposition::GoKartsRightLane)
                     continue;
             }
 
@@ -7803,7 +7806,7 @@ void Vehicle::Sub6DBF3E()
     rct_ride_entry_vehicle* vehicleEntry = Entry();
 
     acceleration /= _vehicleUnkF64E10;
-    if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK)
+    if (TrackSubposition == VehicleTrackSubposition::ChairliftGoingBack)
     {
         return;
     }
@@ -7877,7 +7880,7 @@ void Vehicle::Sub6DBF3E()
             // Determine the stop positions for the karts. If in left lane it's further along the track than the right lane.
             // Since it's not possible to overtake when the race has ended, this does not check for overtake states (7 and
             // 8).
-            cx = TrackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE ? 18 : 20;
+            cx = TrackSubposition == VehicleTrackSubposition::GoKartsRightLane ? 18 : 20;
         }
 
         if (ax > cx)
@@ -7931,19 +7934,19 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
     bool isGoingBack = false;
     switch (TrackSubposition)
     {
-        case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK:
-        case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL:
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK;
+        case VehicleTrackSubposition::ChairliftGoingBack:
+        case VehicleTrackSubposition::ChairliftEndBullwheel:
+            TrackSubposition = VehicleTrackSubposition::ChairliftGoingBack;
             isGoingBack = true;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL:
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT;
+        case VehicleTrackSubposition::ChairliftStartBullwheel:
+            TrackSubposition = VehicleTrackSubposition::ChairliftGoingOut;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE:
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE;
+        case VehicleTrackSubposition::GoKartsMovingToRightLane:
+            TrackSubposition = VehicleTrackSubposition::GoKartsRightLane;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE:
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE;
+        case VehicleTrackSubposition::GoKartsMovingToLeftLane:
+            TrackSubposition = VehicleTrackSubposition::GoKartsLeftLane;
             break;
         default:
             break;
@@ -8011,7 +8014,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         return false;
     }
     if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
-        && TrackSubposition < VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE)
+        && TrackSubposition < VehicleTrackSubposition::GoKartsMovingToRightLane)
     {
         trackType = tileElement->AsTrack()->GetTrackType();
         if (trackType == TRACK_ELEM_FLAT
@@ -8021,18 +8024,18 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         }
     }
 
-    if (TrackSubposition >= VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT
-        && TrackSubposition <= VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL)
+    if (TrackSubposition >= VehicleTrackSubposition::ChairliftGoingOut
+        && TrackSubposition <= VehicleTrackSubposition::ChairliftStartBullwheel)
     {
         TileCoordsXYZ curLocation{ TrackLocation };
 
         if (curLocation == curRide->ChairliftBullwheelLocation[1])
         {
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL;
+            TrackSubposition = VehicleTrackSubposition::ChairliftEndBullwheel;
         }
         else if (curLocation == curRide->ChairliftBullwheelLocation[0])
         {
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL;
+            TrackSubposition = VehicleTrackSubposition::ChairliftStartBullwheel;
         }
     }
 
@@ -8213,14 +8216,14 @@ loc_6DAEB9:
             regs.ebx |= 4;
         }
 
-        if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE
+        if (TrackSubposition == VehicleTrackSubposition::ReverserRCFrontBogie
             && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress >= 30
             && track_progress <= 66)
         {
             regs.ebx |= 8;
         }
 
-        if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE
+        if (TrackSubposition == VehicleTrackSubposition::ReverserRCRearBogie
             && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress == 96)
         {
             ReverseReverserCar();
@@ -8338,19 +8341,21 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
 
     switch (TrackSubposition)
     {
-        case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL:
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT;
+        case VehicleTrackSubposition::ChairliftEndBullwheel:
+            TrackSubposition = VehicleTrackSubposition::ChairliftGoingOut;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE:
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE;
+        case VehicleTrackSubposition::GoKartsMovingToRightLane:
+            TrackSubposition = VehicleTrackSubposition::GoKartsLeftLane;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE:
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE;
+        case VehicleTrackSubposition::GoKartsMovingToLeftLane:
+            TrackSubposition = VehicleTrackSubposition::GoKartsRightLane;
             break;
-        case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK:
-        case VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL:
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK;
+        case VehicleTrackSubposition::ChairliftGoingBack:
+        case VehicleTrackSubposition::ChairliftStartBullwheel:
+            TrackSubposition = VehicleTrackSubposition::ChairliftGoingBack;
             nextTileBackwards = false;
+            break;
+        default:
             break;
     }
 
@@ -8410,18 +8415,18 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
     // loc_6DBC3B:
     TrackLocation = trackPos;
 
-    if (TrackSubposition >= VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT
-        && TrackSubposition <= VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL)
+    if (TrackSubposition >= VehicleTrackSubposition::ChairliftGoingOut
+        && TrackSubposition <= VehicleTrackSubposition::ChairliftStartBullwheel)
     {
         TileCoordsXYZ curLocation{ TrackLocation };
 
         if (curLocation == curRide->ChairliftBullwheelLocation[1])
         {
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL;
+            TrackSubposition = VehicleTrackSubposition::ChairliftEndBullwheel;
         }
         else if (curLocation == curRide->ChairliftBullwheelLocation[0])
         {
-            TrackSubposition = VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL;
+            TrackSubposition = VehicleTrackSubposition::ChairliftStartBullwheel;
         }
     }
 
@@ -8788,9 +8793,9 @@ loc_6DC476:
         {
             TrackSubposition = prevVehicle->TrackSubposition;
         }
-        if (TrackSubposition != VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9)
+        if (TrackSubposition != VehicleTrackSubposition::MiniGolfStart9)
         {
-            TrackSubposition--;
+            TrackSubposition = VehicleTrackSubposition{ static_cast<uint8_t>(static_cast<uint8_t>(TrackSubposition) - 1U) };
         }
     }
 
@@ -8826,13 +8831,13 @@ loc_6DC743:
                 else
                 {
                     uint16_t rand16 = scenario_rand() & 0xFFFF;
-                    uint8_t nextTrackSubposition = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_C_14;
+                    VehicleTrackSubposition nextTrackSubposition = VehicleTrackSubposition::MiniGolfBallPathC14;
                     if (rand16 <= 0xA000)
                     {
-                        nextTrackSubposition = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12;
+                        nextTrackSubposition = VehicleTrackSubposition::MiniGolfBallPathB12;
                         if (rand16 <= 0x900)
                         {
-                            nextTrackSubposition = VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10;
+                            nextTrackSubposition = VehicleTrackSubposition::MiniGolfBallPathA10;
                         }
                     }
                     TrackSubposition = nextTrackSubposition;
@@ -9091,7 +9096,7 @@ loc_6DCDE4:
 
 loc_6DCE02:
     acceleration /= _vehicleUnkF64E10;
-    if (TrackSubposition == VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK)
+    if (TrackSubposition == VehicleTrackSubposition::ChairliftGoingBack)
     {
         return;
     }
@@ -9278,7 +9283,7 @@ loc_6DD069:
  *
  *  rct2: 0x006DC1E4
  */
-static uint8_t modified_speed(uint16_t trackType, uint8_t trackSubposition, uint8_t speed)
+static uint8_t modified_speed(uint16_t trackType, VehicleTrackSubposition trackSubposition, uint8_t speed)
 {
     enum
     {
@@ -9291,11 +9296,11 @@ static uint8_t modified_speed(uint16_t trackType, uint8_t trackSubposition, uint
 
     if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE)
     {
-        speedModifier = (trackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE) ? HALF_SPEED : THREE_QUARTER_SPEED;
+        speedModifier = (trackSubposition == VehicleTrackSubposition::GoKartsLeftLane) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
     else if (trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE)
     {
-        speedModifier = (trackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE) ? HALF_SPEED : THREE_QUARTER_SPEED;
+        speedModifier = (trackSubposition == VehicleTrackSubposition::GoKartsRightLane) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
 
     switch (speedModifier)
