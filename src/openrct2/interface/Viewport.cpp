@@ -1632,15 +1632,13 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
  * tileElement: edx
  * viewport: edi
  */
-InteractionInfo get_map_coordinates_from_pos(
-    const ScreenCoordsXY& screenCoords, int32_t flags)
+InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t flags)
 {
     rct_window* window = window_find_from_point(screenCoords);
     return get_map_coordinates_from_pos_window(window, screenCoords, flags);
 }
 
-InteractionInfo get_map_coordinates_from_pos_window(
-    rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags)
+InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags)
 {
     InteractionInfo info{};
     if (window == nullptr || window->viewport == nullptr)
@@ -1764,8 +1762,7 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
     // This will get the tile location but we will need the more accuracy
     rct_window* window = window_find_from_point(screenCoords);
     auto myViewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(
-        window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN);
+    auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN);
     if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         return std::nullopt;

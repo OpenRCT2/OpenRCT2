@@ -249,8 +249,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
 {
     rct_window* window = window_find_from_point(screenCoords);
     auto viewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(
-        window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH);
+    auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH);
     if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_FOOTPATH
         || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
     {
@@ -342,8 +341,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
     // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
     rct_window* window = window_find_from_point(screenCoords);
     auto viewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(
-        window, screenCoords, VIEWPORT_INTERACTION_MASK_RIDE);
+    auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_RIDE);
     *tileElement = info.Element;
     if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_RIDE
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
