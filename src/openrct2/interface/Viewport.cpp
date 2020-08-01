@@ -1636,13 +1636,12 @@ void get_map_coordinates_from_pos(
     const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement)
 {
     rct_window* window = window_find_from_point(screenCoords);
-    rct_viewport* viewport = nullptr;
-    get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, &viewport);
+    get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement);
 }
 
 void get_map_coordinates_from_pos_window(
     rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
-    TileElement** tileElement, rct_viewport** viewport)
+    TileElement** tileElement)
 {
     InteractionInfo info{};
     if (window != nullptr && window->viewport != nullptr)
@@ -1673,8 +1672,6 @@ void get_map_coordinates_from_pos_window(
             info = set_interaction_info_from_paint_session(session, flags & 0xFFFF);
             paint_session_free(session);
         }
-        if (viewport != nullptr)
-            *viewport = myviewport;
     }
     if (interactionType != nullptr)
         *interactionType = info.SpriteType;
@@ -1769,12 +1766,12 @@ static rct_viewport* viewport_find_from_point(const ScreenCoordsXY& screenCoords
 std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rct_viewport** viewport)
 {
     int32_t interactionType;
-    rct_viewport* myViewport = nullptr;
     CoordsXY tileLoc;
     // This will get the tile location but we will need the more accuracy
     rct_window* window = window_find_from_point(screenCoords);
+    auto myViewport = window->viewport;
     get_map_coordinates_from_pos_window(
-        window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN, tileLoc, &interactionType, nullptr, &myViewport);
+        window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN, tileLoc, &interactionType, nullptr);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         return std::nullopt;

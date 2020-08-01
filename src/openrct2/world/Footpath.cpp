@@ -15,6 +15,7 @@
 #include "../actions/FootpathRemoveAction.hpp"
 #include "../actions/LandSetRightsAction.hpp"
 #include "../core/Guard.hpp"
+#include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
@@ -248,17 +249,17 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
 {
     int32_t z = 0, interactionType;
     TileElement* myTileElement;
-    rct_viewport* viewport;
     CoordsXY position = {};
     rct_window* window = window_find_from_point(screenCoords);
+    auto viewport = window->viewport;
     get_map_coordinates_from_pos_window(
-        window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH, position, &interactionType, &myTileElement, &viewport);
+        window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH, position, &interactionType, &myTileElement);
     if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH
         || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
     {
         get_map_coordinates_from_pos_window(
             window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, position,
-            &interactionType, &myTileElement, &viewport);
+            &interactionType, &myTileElement);
         if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         {
             position.setNull();
@@ -343,12 +344,12 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
 {
     // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
     int32_t interactionType;
-    rct_viewport* viewport;
 
     CoordsXY map_pos = {};
     rct_window* window = window_find_from_point(screenCoords);
+    auto viewport = window->viewport;
     get_map_coordinates_from_pos_window(
-        window, screenCoords, VIEWPORT_INTERACTION_MASK_RIDE, map_pos, &interactionType, tileElement, &viewport);
+        window, screenCoords, VIEWPORT_INTERACTION_MASK_RIDE, map_pos, &interactionType, tileElement);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
@@ -369,7 +370,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
     get_map_coordinates_from_pos_window(
         window, screenCoords,
         VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, map_pos,
-        &interactionType, tileElement, &viewport);
+        &interactionType, tileElement);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
         int32_t directions = entrance_get_directions(*tileElement);

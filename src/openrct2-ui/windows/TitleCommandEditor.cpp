@@ -195,7 +195,7 @@ static TileCoordsXY get_location()
         CoordsXY mapCoord;
         get_map_coordinates_from_pos_window(
             w, { w->viewport->view_width / 2, w->viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord,
-            &interactionType, &tileElement, nullptr);
+            &interactionType, &tileElement);
         mapCoord.x -= 16;
         mapCoord.y -= 16;
         tileCoord = TileCoordsXY{ mapCoord };

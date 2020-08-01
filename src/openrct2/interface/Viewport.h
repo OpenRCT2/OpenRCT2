@@ -161,7 +161,7 @@ void get_map_coordinates_from_pos(
     TileElement** tileElement);
 void get_map_coordinates_from_pos_window(
     rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
-    TileElement** tileElement, rct_viewport** viewport);
+    TileElement** tileElement);
 
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
 int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info);

@@ -692,11 +692,11 @@ CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords)
     CoordsXY initialPos{};
     int32_t interactionType;
     TileElement* tileElement;
-    rct_viewport* viewport;
     rct_window* window = window_find_from_point(screenCoords);
+    auto viewport = window->viewport;
     get_map_coordinates_from_pos_window(
         window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapCoords, &interactionType,
-        &tileElement, &viewport);
+        &tileElement);
     initialPos = mapCoords;
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
