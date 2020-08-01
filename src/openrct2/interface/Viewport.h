@@ -83,18 +83,6 @@ enum
     VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
 };
 
-struct viewport_interaction_info
-{
-    int32_t type;
-    int32_t x;
-    int32_t y;
-    union
-    {
-        TileElement* tileElement;
-        SpriteBase* sprite;
-    };
-};
-
 struct InteractionInfo
 {
     InteractionInfo() = default;
@@ -160,10 +148,10 @@ InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords,
 InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
-int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info);
+int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, InteractionInfo* info);
 int32_t viewport_interaction_left_over(const ScreenCoordsXY& screenCoords);
 int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords);
-int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info);
+int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, InteractionInfo* info);
 int32_t viewport_interaction_right_over(const ScreenCoordsXY& screenCoords);
 int32_t viewport_interaction_right_click(const ScreenCoordsXY& screenCoords);
 

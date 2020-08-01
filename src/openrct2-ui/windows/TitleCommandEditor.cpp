@@ -605,17 +605,18 @@ static void window_title_command_editor_update(rct_window* w)
 static void window_title_command_editor_tool_down(
     rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    viewport_interaction_info info;
+    InteractionInfo info;
     viewport_interaction_get_item_left(screenCoords, &info);
 
-    if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
+        auto entity = reinterpret_cast<SpriteBase*>(info.Element);
         bool validSprite = false;
-        auto peep = info.sprite->As<Peep>();
-        auto vehicle = info.sprite->As<Vehicle>();
-        auto litter = info.sprite->As<Litter>();
-        auto duck = info.sprite->As<Duck>();
-        auto balloon = info.sprite->As<Balloon>();
+        auto peep = entity->As<Peep>();
+        auto vehicle = entity->As<Vehicle>();
+        auto litter = entity->As<Litter>();
+        auto duck = entity->As<Duck>();
+        auto balloon = entity->As<Balloon>();
         if (peep != nullptr)
         {
             validSprite = true;
@@ -658,7 +659,7 @@ static void window_title_command_editor_tool_down(
 
         if (validSprite)
         {
-            command.SpriteIndex = info.sprite->sprite_index;
+            command.SpriteIndex = entity->sprite_index;
             window_follow_sprite(w, static_cast<size_t>(command.SpriteIndex));
             tool_cancel();
             w->Invalidate();
