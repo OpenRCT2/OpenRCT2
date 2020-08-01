@@ -500,6 +500,9 @@ bool viewport_interaction_right_click(const ScreenCoordsXY& screenCoords)
     switch (info.SpriteType)
     {
         case VIEWPORT_INTERACTION_ITEM_NONE:
+        case VIEWPORT_INTERACTION_ITEM_TERRAIN:
+        case VIEWPORT_INTERACTION_ITEM_WATER:
+        case VIEWPORT_INTERACTION_ITEM_LABEL:
             return false;
 
         case VIEWPORT_INTERACTION_ITEM_SPRITE:

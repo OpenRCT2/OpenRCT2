@@ -771,6 +771,8 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
                 }
                 break;
             }
+            default:
+                break;
         }
         auto z = info.Element->GetBaseZ();
         if (slope & RAISE_FOOTPATH_FLAG)
@@ -851,31 +853,33 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
     }
 
     // Set path
-    auto currentType = 0;
+    auto slope = 0;
     switch (info.SpriteType)
     {
         case VIEWPORT_INTERACTION_ITEM_TERRAIN:
-            currentType = DefaultPathSlope[info.Element->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+            slope = DefaultPathSlope[info.Element->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            currentType = info.Element->AsPath()->GetSlopeDirection();
+            slope = info.Element->AsPath()->GetSlopeDirection();
             if (info.Element->AsPath()->IsSloped())
             {
-                currentType |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+                slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
             }
+            break;
+        default:
             break;
     }
     auto z = info.Element->GetBaseZ();
-    if (currentType & RAISE_FOOTPATH_FLAG)
+    if (slope & RAISE_FOOTPATH_FLAG)
     {
-        currentType &= ~RAISE_FOOTPATH_FLAG;
+        slope &= ~RAISE_FOOTPATH_FLAG;
         z += PATH_HEIGHT_STEP;
     }
     auto selectedType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    auto footpathPlaceAction = FootpathPlaceAction({ info.Loc, z }, currentType, selectedType);
+    auto footpathPlaceAction = FootpathPlaceAction({ info.Loc, z }, slope, selectedType);
     footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
         if (result->Error == GA_ERROR::OK)
         {

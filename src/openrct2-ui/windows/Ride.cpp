@@ -5546,6 +5546,8 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
             _collectTrackDesignScenery = !track_design_save_contains_tile_element(info.Element);
             track_design_save_select_tile_element(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
             break;
+        default:
+            break;
     }
 }
 
@@ -5564,6 +5566,8 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
         case VIEWPORT_INTERACTION_ITEM_WALL:
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
             track_design_save_select_tile_element(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
+            break;
+        default:
             break;
     }
 }

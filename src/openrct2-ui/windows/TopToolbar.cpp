@@ -1146,6 +1146,8 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
             }
             break;
         }
+        default:
+            break;
     }
 }
 
