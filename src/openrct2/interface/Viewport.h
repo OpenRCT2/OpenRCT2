@@ -88,7 +88,11 @@ struct InteractionInfo
     InteractionInfo() = default;
     InteractionInfo(const paint_struct* ps);
     CoordsXY Loc;
-    TileElement* Element = nullptr;
+    union
+    {
+        TileElement* Element = nullptr;
+        SpriteBase* Entity;
+    };
     uint8_t SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
 };
 

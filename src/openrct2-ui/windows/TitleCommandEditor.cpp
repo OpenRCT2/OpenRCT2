@@ -610,7 +610,7 @@ static void window_title_command_editor_tool_down(
 
     if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
-        auto entity = reinterpret_cast<SpriteBase*>(info.Element);
+        auto entity = info.Entity;
         bool validSprite = false;
         auto peep = entity->As<Peep>();
         auto vehicle = entity->As<Vehicle>();

@@ -63,8 +63,8 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, I
 
     *info = get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK);
-    auto tileElement = info->Element;
-    auto sprite = reinterpret_cast<SpriteBase*>(info->Element);
+    auto tileElement = info->SpriteType != VIEWPORT_INTERACTION_ITEM_SPRITE ? info->Element : nullptr;
+    auto sprite = info->SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE ? info->Entity : nullptr;
 
     // Allows only balloons to be popped and ducks to be quacked in title screen
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
@@ -129,7 +129,7 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, I
         if (peep == nullptr)
             return VIEWPORT_INTERACTION_ITEM_NONE;
 
-        info->Element = reinterpret_cast<TileElement*>(peep);
+        info->Entity = peep;
         info->SpriteType = VIEWPORT_INTERACTION_ITEM_SPRITE;
         info->Loc.x = peep->x;
         info->Loc.y = peep->y;
@@ -162,7 +162,7 @@ int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
         {
-            auto entity = reinterpret_cast<SpriteBase*>(info.Element);
+            auto entity = info.Entity;
             switch (entity->sprite_identifier)
             {
                 case SPRITE_IDENTIFIER_VEHICLE:
@@ -240,12 +240,12 @@ int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, 
 
     *info = get_map_coordinates_from_pos(screenCoords, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER));
     auto tileElement = info->Element;
-    auto sprite = reinterpret_cast<SpriteBase*>(info->Element);
 
     switch (info->SpriteType)
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
         {
+            auto sprite = info->Entity;
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
                 return info->SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
 
@@ -480,7 +480,7 @@ int32_t viewport_interaction_right_click(const ScreenCoordsXY& screenCoords)
 
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
         {
-            auto entity = reinterpret_cast<SpriteBase*>(info.Element);
+            auto entity = info.Entity;
             if (entity->sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
                 auto vehicle = entity->As<Vehicle>();

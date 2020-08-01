@@ -128,11 +128,9 @@ namespace OpenRCT2::Scripting
             obj.Set("screenCoords", ToDuk(ctx, screenCoords));
             obj.Set("mapCoords", ToDuk(ctx, info.Loc));
 
-            if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE && info.Element != nullptr)
+            if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE && info.Entity != nullptr)
             {
-                // get_map_coordinates_from_pos returns the sprite using tileElement... ugh
-                auto sprite = reinterpret_cast<rct_sprite*>(info.Element);
-                obj.Set("entityId", sprite->generic.sprite_index);
+                obj.Set("entityId", info.Entity->sprite_index);
             }
             else if (info.Element != nullptr)
             {
