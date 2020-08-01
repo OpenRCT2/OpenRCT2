@@ -49,7 +49,7 @@ enum
     VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1 << 19),
 };
 
-enum
+enum ViewportInteractionItem : uint8_t
 {
     VIEWPORT_INTERACTION_ITEM_NONE,
     VIEWPORT_INTERACTION_ITEM_TERRAIN,
@@ -93,7 +93,7 @@ struct InteractionInfo
         TileElement* Element = nullptr;
         SpriteBase* Entity;
     };
-    uint8_t SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+    ViewportInteractionItem SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
 };
 
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX

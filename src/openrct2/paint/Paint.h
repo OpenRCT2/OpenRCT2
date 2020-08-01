@@ -15,6 +15,7 @@
 #include "../world/Location.hpp"
 
 struct TileElement;
+enum ViewportInteractionItem : uint8_t;
 
 #pragma pack(push, 1)
 /* size 0x12 */
@@ -73,8 +74,8 @@ struct paint_struct
     uint8_t quadrant_flags;
     attached_paint_struct* attached_ps; // 0x1C
     paint_struct* children;
-    paint_struct* next_quadrant_ps; // 0x24
-    uint8_t sprite_type;            // 0x28
+    paint_struct* next_quadrant_ps;      // 0x24
+    ViewportInteractionItem sprite_type; // 0x28
     uint8_t var_29;
     uint16_t pad_2A;
     uint16_t map_x;           // 0x2C
@@ -148,7 +149,7 @@ struct paint_session
     CoordsXY SpritePosition;
     paint_struct* LastRootPS;
     attached_paint_struct* UnkF1AD2C;
-    uint8_t InteractionType;
+    ViewportInteractionItem InteractionType;
     uint8_t CurrentRotation;
     support_height SupportSegments[9];
     support_height Support;
