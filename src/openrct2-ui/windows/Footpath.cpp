@@ -725,7 +725,7 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
     CoordsXY mapCoord = {};
     get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord, &interactionType,
-        &tileElement, nullptr);
+        &tileElement);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE || tileElement == nullptr)
     {
@@ -852,7 +852,7 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
     CoordsXY mapCoord = {};
     get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord, &interactionType,
-        &tileElement, nullptr);
+        &tileElement);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {

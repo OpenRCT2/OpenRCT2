@@ -157,8 +157,8 @@ void hide_construction_rights();
 void viewport_set_visibility(uint8_t mode);
 
 void get_map_coordinates_from_pos(
-    const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
-    rct_viewport** viewport);
+    const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
+    TileElement** tileElement);
 void get_map_coordinates_from_pos_window(
     rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
     TileElement** tileElement, rct_viewport** viewport);

@@ -64,7 +64,7 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
     CoordsXY mapCoord = {};
     get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK,
-        mapCoord, &info->type, &info->tileElement, nullptr);
+        mapCoord, &info->type, &info->tileElement);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     auto tileElement = info->tileElement;
@@ -243,7 +243,7 @@ int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, 
     CoordsXY mapCoord = {};
     get_map_coordinates_from_pos(
         screenCoords, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), mapCoord, &info->type,
-        &info->tileElement, nullptr);
+        &info->tileElement);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -693,8 +693,9 @@ CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords)
     int32_t interactionType;
     TileElement* tileElement;
     rct_viewport* viewport;
-    get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapCoords, &interactionType,
+    rct_window* window = window_find_from_point(screenCoords);
+    get_map_coordinates_from_pos_window(
+        window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapCoords, &interactionType,
         &tileElement, &viewport);
     initialPos = mapCoords;
 

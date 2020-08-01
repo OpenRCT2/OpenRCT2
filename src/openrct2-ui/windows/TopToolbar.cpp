@@ -991,9 +991,8 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
     // This is -2 as banner is 12 but flags are offset different
 
     // not used
-    rct_viewport* viewport;
     CoordsXY gridCoords;
-    get_map_coordinates_from_pos(windowPos, flags, gridCoords, &type, &tile_element, &viewport);
+    get_map_coordinates_from_pos(windowPos, flags, gridCoords, &type, &tile_element);
 
     switch (type)
     {
@@ -1073,9 +1072,8 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
 
     int32_t type;
     TileElement* tileElement;
-    rct_viewport* viewport;
     CoordsXY unusedCoords;
-    get_map_coordinates_from_pos(windowPos, flags, unusedCoords, &type, &tileElement, &viewport);
+    get_map_coordinates_from_pos(windowPos, flags, unusedCoords, &type, &tileElement);
 
     switch (type)
     {
@@ -1237,7 +1235,7 @@ static void sub_6E1F34(
                     & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
                 int32_t interaction_type;
                 CoordsXY unusedCoords;
-                get_map_coordinates_from_pos(screenPos, flags, unusedCoords, &interaction_type, &tile_element, nullptr);
+                get_map_coordinates_from_pos(screenPos, flags, unusedCoords, &interaction_type, &tile_element);
 
                 if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE)
                 {
@@ -1390,7 +1388,7 @@ static void sub_6E1F34(
                 TileElement* tile_element;
                 CoordsXY gridCoords;
 
-                get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element, nullptr);
+                get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element);
                 gridPos = gridCoords;
 
                 if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -1472,7 +1470,7 @@ static void sub_6E1F34(
             TileElement* tile_element;
             CoordsXY gridCoords;
 
-            get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element, nullptr);
+            get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element);
             gridPos = gridCoords;
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -1641,7 +1639,7 @@ static void sub_6E1F34(
             TileElement* tile_element;
             CoordsXY gridCoords;
 
-            get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element, nullptr);
+            get_map_coordinates_from_pos(screenPos, flags, gridCoords, &interaction_type, &tile_element);
             gridPos = gridCoords;
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
@@ -2405,8 +2403,7 @@ static void top_toolbar_tool_update_water(const ScreenCoordsXY& screenPos)
     CoordsXY mapTile = {};
     int32_t interaction_type = 0;
     get_map_coordinates_from_pos(
-        screenPos, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapTile, &interaction_type, nullptr,
-        nullptr);
+        screenPos, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, mapTile, &interaction_type, nullptr);
 
     if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE)
     {

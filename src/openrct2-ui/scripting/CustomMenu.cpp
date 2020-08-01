@@ -124,7 +124,7 @@ namespace OpenRCT2::Scripting
             CoordsXY mapCoords{};
             int32_t interactionType = 0;
             TileElement* tileElement{};
-            get_map_coordinates_from_pos(screenCoords, flags, mapCoords, &interactionType, &tileElement, nullptr);
+            get_map_coordinates_from_pos(screenCoords, flags, mapCoords, &interactionType, &tileElement);
 
             DukObject obj(dukHandler.context());
             obj.Set("isDown", MouseDown);

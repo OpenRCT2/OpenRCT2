@@ -658,7 +658,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
                 rct_viewport* viewport = window_get_viewport(w);
                 get_map_coordinates_from_pos(
                     { viewport->view_width / 2, viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord,
-                    &interactionType, &tileElement, nullptr);
+                    &interactionType, &tileElement);
 
                 auto tileMapCoord = TileCoordsXY(mapCoord);
                 console.WriteFormatLine("location %d %d", tileMapCoord.x, tileMapCoord.y);

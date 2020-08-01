@@ -148,7 +148,7 @@ static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 CoordsXY mapCoords;
                 get_map_coordinates_from_pos(
                     { w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2) }, VIEWPORT_INTERACTION_MASK_NONE,
-                    mapCoords, nullptr, nullptr, nullptr);
+                    mapCoords, nullptr, nullptr);
                 window_scroll_to_location(mainWindow, { mapCoords, tile_element_height(mapCoords) });
             }
             break;

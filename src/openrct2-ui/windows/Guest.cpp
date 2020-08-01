@@ -1288,7 +1288,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     int32_t interactionType;
     CoordsXY unusedCoords;
     get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_NONE, unusedCoords, &interactionType, nullptr, nullptr);
+        screenCoords, VIEWPORT_INTERACTION_MASK_NONE, unusedCoords, &interactionType, nullptr);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
         return;
 

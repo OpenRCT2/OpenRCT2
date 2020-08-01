@@ -1633,11 +1633,11 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
  * viewport: edi
  */
 void get_map_coordinates_from_pos(
-    const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
-    rct_viewport** viewport)
+    const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement)
 {
     rct_window* window = window_find_from_point(screenCoords);
-    get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
+    rct_viewport* viewport = nullptr;
+    get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, &viewport);
 }
 
 void get_map_coordinates_from_pos_window(
@@ -1772,8 +1772,9 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
     rct_viewport* myViewport = nullptr;
     CoordsXY tileLoc;
     // This will get the tile location but we will need the more accuracy
-    get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN, tileLoc, &interactionType, nullptr, &myViewport);
+    rct_window* window = window_find_from_point(screenCoords);
+    get_map_coordinates_from_pos_window(
+        window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN, tileLoc, &interactionType, nullptr, &myViewport);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         return std::nullopt;

@@ -6055,13 +6055,12 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     int16_t entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
     int32_t interactionType, stationDirection;
     TileElement* tileElement;
-    rct_viewport* viewport;
     Ride* ride;
     CoordsXYZD entranceExitCoords{};
 
     gRideEntranceExitPlaceDirection = INVALID_DIRECTION;
     CoordsXY unusedCoords;
-    get_map_coordinates_from_pos(screenCoords, 0xFFFB, unusedCoords, &interactionType, &tileElement, &viewport);
+    get_map_coordinates_from_pos(screenCoords, 0xFFFB, unusedCoords, &interactionType, &tileElement);
     if (interactionType != 0)
     {
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)

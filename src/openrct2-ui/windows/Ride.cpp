@@ -4353,7 +4353,7 @@ static void window_ride_set_track_colour_scheme(rct_window* w, const ScreenCoord
     newColourScheme = static_cast<uint8_t>(w->ride_colour);
 
     CoordsXY mapCoord = {};
-    get_map_coordinates_from_pos(screenPos, VIEWPORT_INTERACTION_MASK_RIDE, mapCoord, &interactionType, &tileElement, nullptr);
+    get_map_coordinates_from_pos(screenPos, VIEWPORT_INTERACTION_MASK_RIDE, mapCoord, &interactionType, &tileElement);
 
     if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
         return;
@@ -5546,7 +5546,7 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
     _lastSceneryY = screenCoords.y;
     _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
-    get_map_coordinates_from_pos(screenCoords, 0xFCCF, mapCoords, &interactionType, &tileElement, nullptr);
+    get_map_coordinates_from_pos(screenCoords, 0xFCCF, mapCoords, &interactionType, &tileElement);
     switch (interactionType)
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
@@ -5570,7 +5570,7 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
     CoordsXY mapCoords;
     int32_t interactionType;
 
-    get_map_coordinates_from_pos(screenCoords, 0xFCCF, mapCoords, &interactionType, &tileElement, nullptr);
+    get_map_coordinates_from_pos(screenCoords, 0xFCCF, mapCoords, &interactionType, &tileElement);
     switch (interactionType)
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
