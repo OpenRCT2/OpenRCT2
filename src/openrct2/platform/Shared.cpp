@@ -75,8 +75,8 @@ namespace Platform
         rct2_date outDate;
         outDate.day = localTime->tm_mday;
         outDate.day_of_week = localTime->tm_wday;
-        outDate.month = localTime->tm_mon;
-        outDate.year = localTime->tm_year;
+        outDate.month = localTime->tm_mon + 1;
+        outDate.year = localTime->tm_year + 1900;
         return outDate;
     }
 
