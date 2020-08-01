@@ -43,13 +43,13 @@ enum WINDOW_SIGN_WIDGET_IDX {
 
 // 0x9AEE00
 static rct_widget window_sign_widgets[] = {
-        WINDOW_SHIM(WINDOW_TITLE, WW, WH),             // close x button
-        { WWT_VIEWPORT, 1, 3,       WW - 26,    17,         WH - 20,    STR_VIEWPORT,   STR_NONE },                         // Viewport
-        { WWT_FLATBTN,  1, WW - 25, WW - 2,     19,         42,         SPR_RENAME,     STR_CHANGE_SIGN_TEXT_TIP },         // change sign button
-        { WWT_FLATBTN,  1, WW - 25, WW - 2,     67,         90,         SPR_DEMOLISH,   STR_DEMOLISH_SIGN_TIP },            // demolish button
-        { WWT_COLOURBTN, 1, 5,      16,         WH - 16,    WH - 5,     0xFFFFFFFF,     STR_SELECT_MAIN_SIGN_COLOUR_TIP },  // Main colour
-        { WWT_COLOURBTN, 1, 17,     28,         WH - 16,    WH - 5,     0xFFFFFFFF,     STR_SELECT_TEXT_COLOUR_TIP },       // Text colour
-        { WIDGETS_END },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget({      3,      17}, {85, 60}, WWT_VIEWPORT,  1, STR_VIEWPORT                                 ), // Viewport
+    MakeWidget({WW - 25,      19}, {24, 24}, WWT_FLATBTN,   1, SPR_RENAME,   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
+    MakeWidget({WW - 25,      67}, {24, 24}, WWT_FLATBTN,   1, SPR_DEMOLISH, STR_DEMOLISH_SIGN_TIP          ), // demolish button
+    MakeWidget({      5, WH - 16}, {12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
+    MakeWidget({     17, WH - 16}, {12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
+    { WIDGETS_END },
 };
 
 static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex);

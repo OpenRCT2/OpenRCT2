@@ -58,14 +58,14 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 };
 
 #define MAIN_MULTIPLAYER_WIDGETS \
-    { WWT_FRAME,            0,  0,      339,    0,      239,    STR_NONE,                   STR_NONE },                 /* panel / background   */  \
-    { WWT_CAPTION,          0,  1,      338,    1,      14,     STR_NONE,                   STR_WINDOW_TITLE_TIP },     /* title bar            */ \
-    { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     /* close x button       */  \
-    { WWT_RESIZE,           1,  0,      339,    43,     239,    0xFFFFFFFF,                 STR_NONE },                 /* content panel        */  \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_SHOW_SERVER_INFO_TIP }, /* tab                  */  \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_PLAYERS_TIP },          /* tab                  */  \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_GROUPS_TIP },           /* tab                  */  \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_OPTIONS_TIP }           /* tab                  */  \
+    MakeWidget     ({  0,  0}, {340, 240}, WWT_FRAME,    0                                       ), /* panel / background */ \
+    MakeWidget     ({  1,  1}, {338,  14}, WWT_CAPTION,  0, STR_NONE,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
+    MakeWidget     ({327,  2}, { 11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
+    MakeWidget     ({  0, 43}, {340, 197}, WWT_RESIZE,   1                                       ), /* content panel */ \
+    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_SHOW_SERVER_INFO_TIP), /* tab */ \
+    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_PLAYERS_TIP         ), /* tab */ \
+    MakeRemapWidget({ 65, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_GROUPS_TIP          ), /* tab */ \
+    MakeRemapWidget({ 96, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_OPTIONS_TIP         )  /* tab */
 
 static rct_widget window_multiplayer_information_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
@@ -74,32 +74,32 @@ static rct_widget window_multiplayer_information_widgets[] = {
 
 static rct_widget window_multiplayer_players_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
-    { WWT_TABLE_HEADER,     0,  3,      175,    46,      60,    STR_PLAYER,                 STR_NONE },                 // Player name
-    { WWT_TABLE_HEADER,     0,  176,    258,    46,      60,    STR_GROUP,                  STR_NONE },                 // Player name
-    { WWT_TABLE_HEADER,     0,  259,    358,    46,      60,    STR_LAST_ACTION,            STR_NONE },                 // Player name
-    { WWT_TABLE_HEADER,     0,  359,    400,    46,      60,    STR_PING,                   STR_NONE },                 // Player name
-    { WWT_SCROLL,           1,  3,      336,    60,     236,    SCROLL_VERTICAL,            STR_NONE },                 // list
+    MakeWidget({  3, 46}, {173,  15}, WWT_TABLE_HEADER, 0, STR_PLAYER     ), // Player name
+    MakeWidget({176, 46}, { 83,  15}, WWT_TABLE_HEADER, 0, STR_GROUP      ), // Player name
+    MakeWidget({259, 46}, {100,  15}, WWT_TABLE_HEADER, 0, STR_LAST_ACTION), // Player name
+    MakeWidget({359, 46}, { 42,  15}, WWT_TABLE_HEADER, 0, STR_PING       ), // Player name
+    MakeWidget({  3, 60}, {334, 177}, WWT_SCROLL,       1, SCROLL_VERTICAL), // list
     { WIDGETS_END }
 };
 
 static rct_widget window_multiplayer_groups_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
-    { WWT_DROPDOWN,         1,  141,    315,    46,     57,     0xFFFFFFFF,                 STR_NONE },                 // default group
-    { WWT_BUTTON,           1,  305,    315,    47,     56,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
-    { WWT_BUTTON,           1,  11,     102,    65,     76,     STR_ADD_GROUP,              STR_NONE },                 // add group button
-    { WWT_BUTTON,           1,  113,    204,    65,     76,     STR_REMOVE_GROUP,           STR_NONE },                 // remove group button
-    { WWT_BUTTON,           1,  215,    306,    65,     76,     STR_RENAME_GROUP,           STR_NONE },                 // rename group button
-    { WWT_DROPDOWN,         1,  72,     246,    80,     91,     0xFFFFFFFF,                 STR_NONE },                 // selected group
-    { WWT_BUTTON,           1,  236,    246,    81,     90,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
-    { WWT_SCROLL,           1,  3,      316,    94,     300,    SCROLL_VERTICAL,                            STR_NONE },                 // permissions list
+    MakeWidget({141, 46}, {175,  12}, WWT_DROPDOWN, 1                    ), // default group
+    MakeWidget({305, 47}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH),
+    MakeWidget({ 11, 65}, { 92,  12}, WWT_BUTTON,   1, STR_ADD_GROUP     ), // add group button
+    MakeWidget({113, 65}, { 92,  12}, WWT_BUTTON,   1, STR_REMOVE_GROUP  ), // remove group button
+    MakeWidget({215, 65}, { 92,  12}, WWT_BUTTON,   1, STR_RENAME_GROUP  ), // rename group button
+    MakeWidget({ 72, 80}, {175,  12}, WWT_DROPDOWN, 1                    ), // selected group
+    MakeWidget({236, 81}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH),
+    MakeWidget({  3, 94}, {314, 207}, WWT_SCROLL,   1, SCROLL_VERTICAL   ), // permissions list
     { WIDGETS_END }
 };
 
 static rct_widget window_multiplayer_options_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
-    { WWT_CHECKBOX,         1,  3,      297,    50,     61,     STR_LOG_CHAT,               STR_LOG_CHAT_TIP },
-    { WWT_CHECKBOX,         1,  3,      297,    64,     75,     STR_LOG_SERVER_ACTIONS,     STR_LOG_SERVER_ACTIONS_TIP },
-    { WWT_CHECKBOX,         1,  3,      297,    78,     89,     STR_ALLOW_KNOWN_KEYS_ONLY,  STR_ALLOW_KNOWN_KEYS_ONLY_TIP },
+    MakeWidget({3, 50}, {295, 12}, WWT_CHECKBOX, 1, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
+    MakeWidget({3, 64}, {295, 12}, WWT_CHECKBOX, 1, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
+    MakeWidget({3, 78}, {295, 12}, WWT_CHECKBOX, 1, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP),
     { WIDGETS_END }
 };
 

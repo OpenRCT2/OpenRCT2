@@ -209,159 +209,159 @@ constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 
 #define MAIN_RIDE_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    { WWT_RESIZE,           1,  0,      315,    43,     179,    0xFFFFFFFF,                     STR_NONE                                    }, \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_VIEW_OF_RIDE_ATTRACTION_TIP             }, \
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_VEHICLE_DETAILS_AND_OPTIONS_TIP         }, \
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_OPERATING_OPTIONS_TIP                   }, \
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_MAINTENANCE_OPTIONS_TIP                 }, \
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_COLOUR_SCHEME_OPTIONS_TIP               }, \
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_SOUND_AND_MUSIC_OPTIONS_TIP             }, \
-    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_MEASUREMENTS_AND_TEST_DATA_TIP          }, \
-    { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_GRAPHS_TIP                              }, \
-    { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_INCOME_AND_COSTS_TIP                    }, \
-    { WWT_TAB,              1,  282,    312,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_CUSTOMER_INFORMATION_TIP                }
+    MakeWidget     ({  0, 43}, {316, 137}, WWT_RESIZE, 1                                                 ), \
+    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_VIEW_OF_RIDE_ATTRACTION_TIP    ), \
+    MakeRemapWidget({ 34, 17}, { 31,  30}, WWT_TAB,    1, SPR_TAB,    STR_VEHICLE_DETAILS_AND_OPTIONS_TIP), \
+    MakeRemapWidget({ 65, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_OPERATING_OPTIONS_TIP          ), \
+    MakeRemapWidget({ 96, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_MAINTENANCE_OPTIONS_TIP        ), \
+    MakeRemapWidget({127, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_COLOUR_SCHEME_OPTIONS_TIP      ), \
+    MakeRemapWidget({158, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SOUND_AND_MUSIC_OPTIONS_TIP    ), \
+    MakeRemapWidget({189, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_MEASUREMENTS_AND_TEST_DATA_TIP ), \
+    MakeRemapWidget({220, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_GRAPHS_TIP                     ), \
+    MakeRemapWidget({251, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_INCOME_AND_COSTS_TIP           ), \
+    MakeRemapWidget({282, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_CUSTOMER_INFORMATION_TIP       )
 
 // 0x009ADC34
 static rct_widget window_ride_main_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_VIEWPORT,         1,  3,      290,    60,     166,    STR_VIEWPORT,                   STR_NONE                                    },
-    { WWT_DROPDOWN,         1,  35,     256,    46,     57,     0xFFFFFFFF,                     STR_VIEW_SELECTION                          },
-    { WWT_BUTTON,           1,  245,    255,    47,     56,     STR_DROPDOWN_GLYPH,             STR_VIEW_SELECTION                          },
-    { WWT_LABEL_CENTRED,    1,  3,      290,    167,    177,    0xFFFFFFFF,                     STR_NONE                                    },
-    { WWT_FLATBTN,          1,  291,    314,    46,     69,     0xFFFFFFFF,                     STR_OPEN_CLOSE_OR_TEST_RIDE                 },
-    { WWT_FLATBTN,          1,  291,    314,    70,     93,     SPR_CONSTRUCTION,               STR_CONSTRUCTION                            },
-    { WWT_FLATBTN,          1,  291,    314,    94,     117,    SPR_RENAME,                     STR_NAME_RIDE_TIP                           },
-    { WWT_FLATBTN,          1,  291,    314,    118,    141,    SPR_LOCATE,                     STR_LOCATE_SUBJECT_TIP                      },
-    { WWT_FLATBTN,          1,  291,    314,    142,    165,    SPR_DEMOLISH,                   STR_DEMOLISH_RIDE_TIP                       },
-    { WWT_IMGBTN,           1,  296,    309,    48,     61,     SPR_G2_RCT1_CLOSE_BUTTON_0,     STR_CLOSE_RIDE_TIP                          },
-    { WWT_IMGBTN,           1,  296,    309,    62,     75,     SPR_G2_RCT1_TEST_BUTTON_0,      STR_SIMULATE_RIDE_TIP                       },
-    { WWT_IMGBTN,           1,  296,    309,    62,     75,     SPR_G2_RCT1_TEST_BUTTON_0,      STR_TEST_RIDE_TIP                           },
-    { WWT_IMGBTN,           1,  296,    309,    76,     89,     SPR_G2_RCT1_OPEN_BUTTON_0,      STR_OPEN_RIDE_TIP                           },
-    { WWT_DROPDOWN,         1,  3,      307,    180,    191,    STR_ARG_6_STRINGID,             STR_NONE                                    },
-    { WWT_BUTTON,           1,  297,    307,    180,    191,    STR_DROPDOWN_GLYPH,             STR_NONE                                    },
+    MakeWidget({  3,  60}, {288, 107}, WWT_VIEWPORT,      1, STR_VIEWPORT                                           ),
+    MakeWidget({ 35,  46}, {222,  12}, WWT_DROPDOWN,      1, 0xFFFFFFFF,                 STR_VIEW_SELECTION         ),
+    MakeWidget({245,  47}, { 11,  10}, WWT_BUTTON,        1, STR_DROPDOWN_GLYPH,         STR_VIEW_SELECTION         ),
+    MakeWidget({  3, 167}, {288,  11}, WWT_LABEL_CENTRED, 1                                                         ),
+    MakeWidget({291,  46}, { 24,  24}, WWT_FLATBTN,       1, 0xFFFFFFFF,                 STR_OPEN_CLOSE_OR_TEST_RIDE),
+    MakeWidget({291,  70}, { 24,  24}, WWT_FLATBTN,       1, SPR_CONSTRUCTION,           STR_CONSTRUCTION           ),
+    MakeWidget({291,  94}, { 24,  24}, WWT_FLATBTN,       1, SPR_RENAME,                 STR_NAME_RIDE_TIP          ),
+    MakeWidget({291, 118}, { 24,  24}, WWT_FLATBTN,       1, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP     ),
+    MakeWidget({291, 142}, { 24,  24}, WWT_FLATBTN,       1, SPR_DEMOLISH,               STR_DEMOLISH_RIDE_TIP      ),
+    MakeWidget({296,  48}, { 14,  14}, WWT_IMGBTN,        1, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_RIDE_TIP         ),
+    MakeWidget({296,  62}, { 14,  14}, WWT_IMGBTN,        1, SPR_G2_RCT1_TEST_BUTTON_0,  STR_SIMULATE_RIDE_TIP      ),
+    MakeWidget({296,  62}, { 14,  14}, WWT_IMGBTN,        1, SPR_G2_RCT1_TEST_BUTTON_0,  STR_TEST_RIDE_TIP          ),
+    MakeWidget({296,  76}, { 14,  14}, WWT_IMGBTN,        1, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_RIDE_TIP          ),
+    MakeWidget({  3, 180}, {305,  12}, WWT_DROPDOWN,      1, STR_ARG_6_STRINGID                                     ),
+    MakeWidget({297, 180}, { 11,  12}, WWT_BUTTON,        1, STR_DROPDOWN_GLYPH                                     ),
     { WIDGETS_END },
 };
 
 // 0x009ADDA8
 static rct_widget window_ride_vehicle_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_DROPDOWN,         1,  7,      308,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    51,     60,     STR_DROPDOWN_GLYPH,                         STR_NONE                                        },
-    { WWT_SCROLL,           1,  7,      308,    147,    189,    0,                                          STR_NONE                                        },
-      SPINNER_WIDGETS      (1,  7,      151,    196,    207,    STR_RIDE_VEHICLE_COUNT,                     STR_MAX_VEHICLES_TIP),
-      SPINNER_WIDGETS      (1,  164,    308,    196,    207,    STR_1_CAR_PER_TRAIN,                        STR_MAX_CARS_PER_TRAIN_TIP),
+    MakeWidget        ({  7,  50}, {302, 12}, WWT_DROPDOWN, 1                                                    ),
+    MakeWidget        ({297,  51}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                                ),
+    MakeWidget        ({  7, 147}, {302, 43}, WWT_SCROLL,   1, STR_EMPTY                                         ),
+    MakeSpinnerWidgets({  7, 196}, {145, 12}, WWT_SPINNER,  1, STR_RIDE_VEHICLE_COUNT, STR_MAX_VEHICLES_TIP      ),
+    MakeSpinnerWidgets({164, 196}, {145, 12}, WWT_SPINNER,  1, STR_1_CAR_PER_TRAIN,    STR_MAX_CARS_PER_TRAIN_TIP),
     { WIDGETS_END },
 };
 
 // 0x009ADEFC
 static rct_widget window_ride_operating_widgets[] = {
     MAIN_RIDE_WIDGETS,
-      SPINNER_WIDGETS      (1,  157,    308,    61,     72,     STR_ARG_18_STRINGID,                        STR_NONE), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  157,    308,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED_VALUE,            STR_NONE), // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  7,      86,     109,    120,    STR_WAIT_FOR,                               STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP    },
-    { WWT_CHECKBOX,         1,  7,      308,    124,    135,    0xFFFFFFFF,                                 STR_NONE                                        },
-    { WWT_CHECKBOX,         1,  7,      156,    139,    150,    STR_MINIMUM_WAITING_TIME,                   STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP         },
-      SPINNER_WIDGETS      (1,  157,    308,    139,    150,    STR_ARG_10_STRINGID,                        STR_NONE), // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  7,      156,    154,    165,    STR_MAXIMUM_WAITING_TIME,                   STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP         },
-      SPINNER_WIDGETS      (1,  157,    308,    154,    165,    STR_ARG_14_STRINGID,                        STR_NONE), // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  7,      308,    169,    180,    STR_SYNCHRONISE_WITH_ADJACENT_STATIONS,     STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP      },
-    { WWT_LABEL,            1, 21,      149,    61,     72,     0xFFFFFFFF,                                 STR_NONE                                        },
-    { WWT_LABEL,            1, 21,      149,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED,                  STR_NONE                                        },
-    { WWT_DROPDOWN,         1,  7,      308,    47,     58,     0xFFFFFFFF,                                 STR_SELECT_OPERATING_MODE                       },
-    { WWT_BUTTON,           1,  297,    307,    48,     57,     STR_DROPDOWN_GLYPH,                         STR_SELECT_OPERATING_MODE                       },
-    { WWT_DROPDOWN,         1,  87,     308,    109,    120,    0xFFFFFFFF,                                 STR_NONE                                        },
-    { WWT_BUTTON,           1,  297,    307,    110,    119,    STR_DROPDOWN_GLYPH,                         STR_NONE                                        },
-    { WWT_LABEL,            1,  21,     149,    89,     100,    STR_NUMBER_OF_CIRCUITS,                     STR_NUMBER_OF_CIRCUITS_TIP                      },
-      SPINNER_WIDGETS      (1,  157,    308,    89,     100,    STR_NUMBER_OF_CIRCUITS_VALUE,               STR_NONE), // NB: 3 widgets
+    MakeSpinnerWidgets({157,  61}, {152, 12}, WWT_SPINNER,  1, STR_ARG_18_STRINGID                                                                 ), // NB: 3 widgets
+    MakeSpinnerWidgets({157,  75}, {152, 12}, WWT_SPINNER,  1, STR_LIFT_HILL_CHAIN_SPEED_VALUE                                                     ), // NB: 3 widgets
+    MakeWidget        ({  7, 109}, { 80, 12}, WWT_CHECKBOX, 1, STR_WAIT_FOR,                           STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP),
+    MakeWidget        ({  7, 124}, {302, 12}, WWT_CHECKBOX, 1                                                                                      ),
+    MakeWidget        ({  7, 139}, {150, 12}, WWT_CHECKBOX, 1, STR_MINIMUM_WAITING_TIME,               STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
+    MakeSpinnerWidgets({157, 139}, {152, 12}, WWT_SPINNER,  1, STR_ARG_10_STRINGID                                                                 ), // NB: 3 widgets
+    MakeWidget        ({  7, 154}, {150, 12}, WWT_CHECKBOX, 1, STR_MAXIMUM_WAITING_TIME,               STR_MAXIMUM_LENGTH_BEFORE_DEPARTING_TIP     ),
+    MakeSpinnerWidgets({157, 154}, {152, 12}, WWT_SPINNER,  1, STR_ARG_14_STRINGID                                                                 ), // NB: 3 widgets
+    MakeWidget        ({  7, 169}, {302, 12}, WWT_CHECKBOX, 1, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS, STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP  ),
+    MakeWidget        ({ 21,  61}, {129, 12}, WWT_LABEL,    1                                                                                      ),
+    MakeWidget        ({ 21,  75}, {129, 12}, WWT_LABEL,    1, STR_LIFT_HILL_CHAIN_SPEED                                                           ),
+    MakeWidget        ({  7,  47}, {302, 12}, WWT_DROPDOWN, 1, 0xFFFFFFFF,                             STR_SELECT_OPERATING_MODE                   ),
+    MakeWidget        ({297,  48}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,                     STR_SELECT_OPERATING_MODE                   ),
+    MakeWidget        ({ 87, 109}, {222, 12}, WWT_DROPDOWN, 1                                                                                      ),
+    MakeWidget        ({297, 110}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                                                                  ),
+    MakeWidget        ({ 21,  89}, {129, 12}, WWT_LABEL,    1, STR_NUMBER_OF_CIRCUITS,                 STR_NUMBER_OF_CIRCUITS_TIP                  ),
+    MakeSpinnerWidgets({157,  89}, {152, 12}, WWT_SPINNER,  1, STR_NUMBER_OF_CIRCUITS_VALUE                                                        ), // NB: 3 widgets
     { WIDGETS_END },
 };
 
 // 0x009AE190
 static rct_widget window_ride_maintenance_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_DROPDOWN,         1,  107,    308,    71,     82,     0,                              STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE      },
-    { WWT_BUTTON,           1,  297,    307,    72,     81,     STR_DROPDOWN_GLYPH,             STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE      },
-    { WWT_FLATBTN,          1,  289,    312,    108,    131,    0xFFFFFFFF,                     STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP                   },
-    { WWT_FLATBTN,          1,  265,    288,    108,    131,    SPR_CONSTRUCTION,               STR_REFURBISH_RIDE_TIP                                      },
-    { WWT_FLATBTN,          1,  241,    264,    108,    131,    SPR_NO_ENTRY,                   STR_DEBUG_FORCE_BREAKDOWN_TIP                               },
+    MakeWidget({107,  71}, {202, 12}, WWT_DROPDOWN, 1, STR_EMPTY,          STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
+    MakeWidget({297,  72}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE),
+    MakeWidget({289, 108}, { 24, 24}, WWT_FLATBTN,  1, 0xFFFFFFFF,         STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP             ),
+    MakeWidget({265, 108}, { 24, 24}, WWT_FLATBTN,  1, SPR_CONSTRUCTION,   STR_REFURBISH_RIDE_TIP                                ),
+    MakeWidget({241, 108}, { 24, 24}, WWT_FLATBTN,  1, SPR_NO_ENTRY,       STR_DEBUG_FORCE_BREAKDOWN_TIP                         ),
     { WIDGETS_END },
 };
 
 // 0x009AE2A4
 static rct_widget window_ride_colour_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_SPINNER,          1,  3,      70,     47,     93,     0xFFFFFFFF,                     STR_NONE                                                    },
-    { WWT_DROPDOWN,         1,  74,     312,    49,     60,     STR_ARG_14_STRINGID,            STR_NONE                                                    },
-    { WWT_BUTTON,           1,  301,    311,    50,     59,     STR_DROPDOWN_GLYPH,             STR_COLOUR_SCHEME_TO_CHANGE_TIP                             },
-    { WWT_COLOURBTN,        1,  79,     90,     74,     85,     0xFFFFFFFF,                     STR_SELECT_MAIN_COLOUR_TIP                                  },
-    { WWT_COLOURBTN,        1,  99,     110,    74,     85,     0xFFFFFFFF,                     STR_SELECT_ADDITIONAL_COLOUR_1_TIP                          },
-    { WWT_COLOURBTN,        1,  119,    130,    74,     85,     0xFFFFFFFF,                     STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP                     },
-    { WWT_DROPDOWN,         1,  74,     312,    49,     60,     0xFFFFFFFF,                     STR_NONE                                                    },
-    { WWT_BUTTON,           1,  301,    311,    50,     59,     STR_DROPDOWN_GLYPH,             STR_NONE                                                    },
-    { WWT_FLATBTN,          1,  289,    312,    68,     91,     SPR_PAINTBRUSH,                 STR_PAINT_INDIVIDUAL_AREA_TIP                               },
-    { WWT_SPINNER,          1,  245,    312,    101,    147,    0xFFFFFFFF,                     STR_NONE                                                    },
-    { WWT_DROPDOWN,         1,  103,    241,    103,    114,    0,                              STR_NONE                                                    },
-    { WWT_BUTTON,           1,  230,    240,    104,    113,    STR_DROPDOWN_GLYPH,             STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP               },
-    { WWT_SCROLL,           1,  3,      70,     157,    203,    0,                              STR_NONE                                                    },
-    { WWT_DROPDOWN,         1,  74,     312,    157,    168,    STR_ARG_6_STRINGID,             STR_NONE                                                    },
-    { WWT_BUTTON,           1,  301,    311,    158,    167,    STR_DROPDOWN_GLYPH,             STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP                        },
-    { WWT_DROPDOWN,         1,  74,     312,    173,    184,    0xFFFFFFFF,                     STR_NONE                                                    },
-    { WWT_BUTTON,           1,  301,    311,    174,    183,    STR_DROPDOWN_GLYPH,             STR_SELECT_VEHICLE_TO_MODIFY_TIP                            },
-    { WWT_COLOURBTN,        1,  79,     90,     190,    201,    0xFFFFFFFF,                     STR_SELECT_MAIN_COLOUR_TIP                                  },
-    { WWT_COLOURBTN,        1,  99,     110,    190,    201,    0xFFFFFFFF,                     STR_SELECT_ADDITIONAL_COLOUR_1_TIP                          },
-    { WWT_COLOURBTN,        1,  119,    130,    190,    201,    0xFFFFFFFF,                     STR_SELECT_ADDITIONAL_COLOUR_2_TIP                          },
+    MakeWidget({  3,  47}, { 68, 47}, WWT_SPINNER,   1                                                                    ),
+    MakeWidget({ 74,  49}, {239, 12}, WWT_DROPDOWN,  1, STR_ARG_14_STRINGID                                               ),
+    MakeWidget({301,  50}, { 11, 10}, WWT_BUTTON,    1, STR_DROPDOWN_GLYPH,  STR_COLOUR_SCHEME_TO_CHANGE_TIP              ),
+    MakeWidget({ 79,  74}, { 12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,          STR_SELECT_MAIN_COLOUR_TIP                   ),
+    MakeWidget({ 99,  74}, { 12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
+    MakeWidget({119,  74}, { 12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,          STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP      ),
+    MakeWidget({ 74,  49}, {239, 12}, WWT_DROPDOWN,  1                                                                    ),
+    MakeWidget({301,  50}, { 11, 10}, WWT_BUTTON,    1, STR_DROPDOWN_GLYPH                                                ),
+    MakeWidget({289,  68}, { 24, 24}, WWT_FLATBTN,   1, SPR_PAINTBRUSH,      STR_PAINT_INDIVIDUAL_AREA_TIP                ),
+    MakeWidget({245, 101}, { 68, 47}, WWT_SPINNER,   1                                                                    ),
+    MakeWidget({103, 103}, {139, 12}, WWT_DROPDOWN,  1, STR_EMPTY                                                         ),
+    MakeWidget({230, 104}, { 11, 10}, WWT_BUTTON,    1, STR_DROPDOWN_GLYPH,  STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP),
+    MakeWidget({  3, 157}, { 68, 47}, WWT_SCROLL,    1, STR_EMPTY                                                         ),
+    MakeWidget({ 74, 157}, {239, 12}, WWT_DROPDOWN,  1, STR_ARG_6_STRINGID                                                ),
+    MakeWidget({301, 158}, { 11, 10}, WWT_BUTTON,    1, STR_DROPDOWN_GLYPH,  STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP         ),
+    MakeWidget({ 74, 173}, {239, 12}, WWT_DROPDOWN,  1                                                                    ),
+    MakeWidget({301, 174}, { 11, 10}, WWT_BUTTON,    1, STR_DROPDOWN_GLYPH,  STR_SELECT_VEHICLE_TO_MODIFY_TIP             ),
+    MakeWidget({ 79, 190}, { 12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,          STR_SELECT_MAIN_COLOUR_TIP                   ),
+    MakeWidget({ 99, 190}, { 12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
+    MakeWidget({119, 190}, { 12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
     { WIDGETS_END },
 };
 
 // 0x009AE4C8
 static rct_widget window_ride_music_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_CHECKBOX,         1,  7,      308,    47,     58,     STR_PLAY_MUSIC,                 STR_SELECT_MUSIC_TIP                        },
-    { WWT_DROPDOWN,         1,  7,      308,    62,     73,     0,                              STR_NONE                                    },
-    { WWT_BUTTON,           1,  297,    307,    63,     72,     STR_DROPDOWN_GLYPH,             STR_SELECT_MUSIC_STYLE_TIP                  },
+    MakeWidget({  7, 47}, {302, 12}, WWT_CHECKBOX, 1, STR_PLAY_MUSIC,     STR_SELECT_MUSIC_TIP      ),
+    MakeWidget({  7, 62}, {302, 12}, WWT_DROPDOWN, 1, STR_EMPTY                                     ),
+    MakeWidget({297, 63}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_SELECT_MUSIC_STYLE_TIP),
     { WIDGETS_END },
 };
 
 // 0x009AE5DC
 static rct_widget window_ride_measurements_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_FLATBTN,          1,  288,    311,    194,    217,    SPR_FLOPPY,                     STR_SAVE_TRACK_DESIGN                       },
-    { WWT_BUTTON,           1,  4,      157,    127,    140,    STR_SELECT_NEARBY_SCENERY,      STR_NONE                                    },
-    { WWT_BUTTON,           1,  158,    311,    127,    140,    STR_RESET_SELECTION,            STR_NONE                                    },
-    { WWT_BUTTON,           1,  4,      157,    177,    190,    STR_DESIGN_SAVE,                STR_NONE                                    },
-    { WWT_BUTTON,           1,  158,    311,    177,    190,    STR_DESIGN_CANCEL,              STR_NONE                                    },
+    MakeWidget({288, 194}, { 24, 24}, WWT_FLATBTN, 1, SPR_FLOPPY,                STR_SAVE_TRACK_DESIGN),
+    MakeWidget({  4, 127}, {154, 14}, WWT_BUTTON,  1, STR_SELECT_NEARBY_SCENERY                       ),
+    MakeWidget({158, 127}, {154, 14}, WWT_BUTTON,  1, STR_RESET_SELECTION                             ),
+    MakeWidget({  4, 177}, {154, 14}, WWT_BUTTON,  1, STR_DESIGN_SAVE                                 ),
+    MakeWidget({158, 177}, {154, 14}, WWT_BUTTON,  1, STR_DESIGN_CANCEL                               ),
     { WIDGETS_END },
 };
 
 // 0x009AE710
 static rct_widget window_ride_graphs_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_SCROLL,           1,  3,      308,    46,     157,    SCROLL_HORIZONTAL,              STR_LOGGING_DATA_FROM_TIP                                   },
-    { WWT_BUTTON,           1,  3,      75,     163,    176,    STR_RIDE_STATS_VELOCITY,        STR_SHOW_GRAPH_OF_VELOCITY_AGAINST_TIME_TIP                 },
-    { WWT_BUTTON,           1,  76,     148,    163,    176,    STR_RIDE_STATS_ALTITUDE,        STR_SHOW_GRAPH_OF_ALTITUDE_AGAINST_TIME_TIP                 },
-    { WWT_BUTTON,           1,  149,    221,    163,    176,    STR_RIDE_STATS_VERT_G,          STR_SHOW_GRAPH_OF_VERTICAL_ACCELERATION_AGAINST_TIME_TIP    },
-    { WWT_BUTTON,           1,  222,    294,    163,    176,    STR_RIDE_STATS_LAT_G,           STR_SHOW_GRAPH_OF_LATERAL_ACCELERATION_AGAINST_TIME_TIP     },
+    MakeWidget({  3,  46}, {306, 112}, WWT_SCROLL, 1, SCROLL_HORIZONTAL,       STR_LOGGING_DATA_FROM_TIP                               ),
+    MakeWidget({  3, 163}, { 73,  14}, WWT_BUTTON, 1, STR_RIDE_STATS_VELOCITY, STR_SHOW_GRAPH_OF_VELOCITY_AGAINST_TIME_TIP             ),
+    MakeWidget({ 76, 163}, { 73,  14}, WWT_BUTTON, 1, STR_RIDE_STATS_ALTITUDE, STR_SHOW_GRAPH_OF_ALTITUDE_AGAINST_TIME_TIP             ),
+    MakeWidget({149, 163}, { 73,  14}, WWT_BUTTON, 1, STR_RIDE_STATS_VERT_G,   STR_SHOW_GRAPH_OF_VERTICAL_ACCELERATION_AGAINST_TIME_TIP),
+    MakeWidget({222, 163}, { 73,  14}, WWT_BUTTON, 1, STR_RIDE_STATS_LAT_G,    STR_SHOW_GRAPH_OF_LATERAL_ACCELERATION_AGAINST_TIME_TIP ),
     { WIDGETS_END },
 };
 
 // 0x009AE844
 static rct_widget window_ride_income_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_LABEL,            1,  19,     144,    50,     63,     0xFFFFFFFF,                                 STR_NONE                                                    },
-      SPINNER_WIDGETS      (1,  147,    308,    50,     63,     STR_ARG_6_CURRENCY2DP,                      STR_NONE),  // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  5,      310,    62,     74,     STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
-    { WWT_LABEL,            1,  19,     144,    94,     107,    0xFFFFFFFF,                                 STR_NONE                                                    },
-      SPINNER_WIDGETS      (1,  147,    308,    94,     107,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE),  // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  5,      310,    106,    118,    STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
+    MakeWidget        ({ 19,  50}, {126, 14}, WWT_LABEL,    1                                                                    ),
+    MakeSpinnerWidgets({147,  50}, {162, 14}, WWT_SPINNER,  1, STR_ARG_6_CURRENCY2DP                                             ), // NB: 3 widgets
+    MakeWidget        ({  5,  62}, {306, 13}, WWT_CHECKBOX, 1, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP),
+    MakeWidget        ({ 19,  94}, {126, 14}, WWT_LABEL,    1                                                                    ),
+    MakeSpinnerWidgets({147,  94}, {162, 14}, WWT_SPINNER,  1, STR_RIDE_SECONDARY_PRICE_VALUE                                    ), // NB: 3 widgets
+    MakeWidget        ({  5, 106}, {306, 13}, WWT_CHECKBOX, 1, STR_SAME_PRICE_THROUGHOUT_PARK, STR_SAME_PRICE_THROUGHOUT_PARK_TIP),
     { WIDGETS_END },
 };
 
 // 0x009AE9C8
 static rct_widget window_ride_customer_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_FLATBTN,          1,  289,    312,    54,     77,     SPR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION,    STR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION_TIP },
-    { WWT_FLATBTN,          1,  289,    312,    78,     101,    SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION,                STR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION_TIP             },
-    { WWT_FLATBTN,          1,  289,    312,    102,    125,    SPR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION,       STR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION_TIP    },
+    MakeWidget({289,  54}, {24, 24}, WWT_FLATBTN, 1, SPR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION, STR_SHOW_GUESTS_THOUGHTS_ABOUT_THIS_RIDE_ATTRACTION_TIP),
+    MakeWidget({289,  78}, {24, 24}, WWT_FLATBTN, 1, SPR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION,             STR_SHOW_GUESTS_ON_THIS_RIDE_ATTRACTION_TIP            ),
+    MakeWidget({289, 102}, {24, 24}, WWT_FLATBTN, 1, SPR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION,    STR_SHOW_GUESTS_QUEUING_FOR_THIS_RIDE_ATTRACTION_TIP   ),
     { WIDGETS_END },
 };
 

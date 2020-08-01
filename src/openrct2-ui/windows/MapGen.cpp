@@ -116,58 +116,58 @@ static constexpr const int32_t WH = 273;
 
 #define SHARED_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
-    { WWT_RESIZE,   1,  0,          WW - 1, 43, WH - 2, 0xFFFFFFFF,                 STR_NONE },             /* WIDX_PAGE_BACKGROUND */ \
-    { WWT_TAB,      1,  3,          33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_1 */ \
-    { WWT_TAB,      1,  34,         64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_2 */ \
-    { WWT_TAB,      1,  65,         95,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE },             /* WIDX_TAB_3 */ \
-    { WWT_TAB,      1,  96,         126,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_NONE }              /* WIDX_TAB_4 */
+    MakeWidget     ({ 0, 43}, {WW, 229}, WWT_RESIZE, 1         ), /* WIDX_PAGE_BACKGROUND */ \
+    MakeRemapWidget({ 3, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB), /* WIDX_TAB_1 */ \
+    MakeRemapWidget({34, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB), /* WIDX_TAB_2 */ \
+    MakeRemapWidget({65, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB), /* WIDX_TAB_3 */ \
+    MakeRemapWidget({96, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB) /* WIDX_TAB_4 */
 
 static rct_widget MapWidgets[] = {
     SHARED_WIDGETS,
-    { WWT_BUTTON,           1, WW - 95, WW - 6, WH - 18, WH - 5, STR_MAPGEN_ACTION_GENERATE, STR_NONE },
-      SPINNER_WIDGETS      (1,  104,    198,    52,     63,     STR_NONE,                   STR_NONE), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  104,    198,    70,     81,     STR_NONE,                   STR_NONE), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  104,    198,    88,     99,     STR_NONE,                   STR_NONE), // NB: 3 widgets
-    { WWT_FLATBTN,          1,  104,    150,    106,    141,    0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP },
-    { WWT_FLATBTN,          1,  151,    197,    106,    141,    0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP },
+    MakeWidget        ({155, 255}, {90, 14}, WWT_BUTTON,  1, STR_MAPGEN_ACTION_GENERATE                              ),
+    MakeSpinnerWidgets({104,  52}, {95, 12}, WWT_SPINNER, 1                                                          ), // NB: 3 widgets
+    MakeSpinnerWidgets({104,  70}, {95, 12}, WWT_SPINNER, 1                                                          ), // NB: 3 widgets
+    MakeSpinnerWidgets({104,  88}, {95, 12}, WWT_SPINNER, 1                                                          ), // NB: 3 widgets
+    MakeWidget        ({104, 106}, {47, 36}, WWT_FLATBTN, 1, 0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP    ),
+    MakeWidget        ({151, 106}, {47, 36}, WWT_FLATBTN, 1, 0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP),
     { WIDGETS_END },
 };
 
 static rct_widget RandomWidgets[] = {
     SHARED_WIDGETS,
-    { WWT_BUTTON,           1, WW - 95, WW - 6, WH - 18, WH - 5, STR_MAPGEN_ACTION_GENERATE,        STR_NONE },
-    { WWT_CHECKBOX,         1,  4,      198,    52,     63,     STR_MAPGEN_OPTION_RANDOM_TERRAIN,   STR_NONE },
-    { WWT_CHECKBOX,         1,  4,      198,    70,     81,     STR_MAPGEN_OPTION_PLACE_TREES,      STR_NONE },
+    MakeWidget({155, 255}, { 90, 14}, WWT_BUTTON,   1, STR_MAPGEN_ACTION_GENERATE      ),
+    MakeWidget({  4,  52}, {195, 12}, WWT_CHECKBOX, 1, STR_MAPGEN_OPTION_RANDOM_TERRAIN),
+    MakeWidget({  4,  70}, {195, 12}, WWT_CHECKBOX, 1, STR_MAPGEN_OPTION_PLACE_TREES   ),
     { WIDGETS_END },
 };
 
 static rct_widget SimplexWidgets[] = {
     SHARED_WIDGETS,
-    { WWT_BUTTON,           1, WW - 95, WW - 6, WH - 18, WH - 5, STR_MAPGEN_ACTION_GENERATE,      STR_NONE }, // WIDX_SIMPLEX_GENERATE
-    { WWT_LABEL_CENTRED,    1,  4,      198,    52,     63,     STR_MAPGEN_SIMPLEX_NOISE,         STR_NONE }, // WIDX_SIMPLEX_LABEL
-      SPINNER_WIDGETS      (1,  104,    198,    70,     81,     STR_NONE,                         STR_NONE),  // WIDX_SIMPLEX_LOW{,_UP,_DOWN}
-      SPINNER_WIDGETS      (1,  104,    198,    88,     99,     STR_NONE,                         STR_NONE),  // WIDX_SIMPLEX_HIGH{,_UP,_DOWN}
-      SPINNER_WIDGETS      (1,  104,    198,    106,    117,    STR_NONE,                         STR_NONE),  // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-      SPINNER_WIDGETS      (1,  104,    198,    124,    135,    STR_NONE,                         STR_NONE),  // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
-      SPINNER_WIDGETS      (1,  104,    198,    148,    159,    STR_NONE,                         STR_NONE),  // WIDX_SIMPLEX_MAP_SIZE{,_UP,_DOWN}
-      SPINNER_WIDGETS      (1,  104,    198,    166,    177,    STR_NONE,                         STR_NONE),  // WIDX_SIMPLEX_WATER_LEVEL{,_UP,_DOWN}
-    { WWT_CHECKBOX,         1,  104,    198,    190,    201,    STR_MAPGEN_OPTION_RANDOM_TERRAIN, STR_NONE }, // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
-    { WWT_FLATBTN,          1,  102,    148,    202,    237,    0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP }, // WIDX_SIMPLEX_FLOOR_TEXTURE
-    { WWT_FLATBTN,          1,  150,    196,    202,    237,    0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP }, // WIDX_SIMPLEX_WALL_TEXTURE
-    { WWT_CHECKBOX,         1,  104,    198,    239,    250,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
+    MakeWidget        ({155, 255}, { 90, 14}, WWT_BUTTON,        1, STR_MAPGEN_ACTION_GENERATE                                    ), // WIDX_SIMPLEX_GENERATE
+    MakeWidget        ({  4,  52}, {195, 12}, WWT_LABEL_CENTRED, 1, STR_MAPGEN_SIMPLEX_NOISE                                      ), // WIDX_SIMPLEX_LABEL
+    MakeSpinnerWidgets({104,  70}, { 95, 12}, WWT_SPINNER,       1                                                                ), // WIDX_SIMPLEX_LOW{,_UP,_DOWN}
+    MakeSpinnerWidgets({104,  88}, { 95, 12}, WWT_SPINNER,       1                                                                ), // WIDX_SIMPLEX_HIGH{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 106}, { 95, 12}, WWT_SPINNER,       1                                                                ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 124}, { 95, 12}, WWT_SPINNER,       1                                                                ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 148}, { 95, 12}, WWT_SPINNER,       1                                                                ), // WIDX_SIMPLEX_MAP_SIZE{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 166}, { 95, 12}, WWT_SPINNER,       1                                                                ), // WIDX_SIMPLEX_WATER_LEVEL{,_UP,_DOWN}
+    MakeWidget        ({104, 190}, { 95, 12}, WWT_CHECKBOX,      1, STR_MAPGEN_OPTION_RANDOM_TERRAIN                              ), // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
+    MakeWidget        ({102, 202}, { 47, 36}, WWT_FLATBTN,       1, 0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP    ), // WIDX_SIMPLEX_FLOOR_TEXTURE
+    MakeWidget        ({150, 202}, { 47, 36}, WWT_FLATBTN,       1, 0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP), // WIDX_SIMPLEX_WALL_TEXTURE
+    MakeWidget        ({104, 239}, { 95, 12}, WWT_CHECKBOX,      1                                                                ), // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
     { WIDGETS_END },
 };
 
 static rct_widget HeightmapWidgets[] = {
     SHARED_WIDGETS,
-    { WWT_BUTTON,           1, WW - 155, WW - 6, WH - 18, WH - 5, STR_MAPGEN_SELECT_HEIGHTMAP, STR_NONE }, // WIDX_HEIGHTMAP_SELECT
-    { WWT_CHECKBOX,         1,  4,      103,    52,     63,     STR_MAPGEN_SMOOTH_HEIGHTMAP,STR_NONE }, // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
-      SPINNER_WIDGETS      (1,  104,    198,    70,     81,     STR_NONE,                   STR_NONE), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
-    { WWT_CHECKBOX,         1,  4,      103,    88,     99,     STR_MAPGEN_NORMALIZE,       STR_NONE }, // WIDX_HEIGHTMAP_NORMALIZE
-    { WWT_CHECKBOX,         1,  4,      103,    106,    117,    STR_MAPGEN_SMOOTH_TILE,     STR_NONE }, // WIDX_HEIGHTMAP_SMOOTH_TILES
-      SPINNER_WIDGETS      (1,  104,    198,    124,    135,    STR_NONE,                   STR_NONE),  // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
-      SPINNER_WIDGETS      (1,  104,    198,    142,    153,    STR_NONE,                   STR_NONE),  // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
-      SPINNER_WIDGETS      (1,  104,    198,    160,    171,    STR_NONE,                   STR_NONE),  // WIDX_HEIGHTMAP_WATER_LEVEL{,_UP,_DOWN}
+    MakeWidget        ({ 95, 255}, {150, 14}, WWT_BUTTON,   1, STR_MAPGEN_SELECT_HEIGHTMAP), // WIDX_HEIGHTMAP_SELECT
+    MakeWidget        ({  4,  52}, {100, 12}, WWT_CHECKBOX, 1, STR_MAPGEN_SMOOTH_HEIGHTMAP), // WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP
+    MakeSpinnerWidgets({104,  70}, { 95, 12}, WWT_SPINNER,  1                             ), // WIDX_HEIGHTMAP_STRENGTH{,_UP,_DOWN}
+    MakeWidget        ({  4,  88}, {100, 12}, WWT_CHECKBOX, 1, STR_MAPGEN_NORMALIZE       ), // WIDX_HEIGHTMAP_NORMALIZE
+    MakeWidget        ({  4, 106}, {100, 12}, WWT_CHECKBOX, 1, STR_MAPGEN_SMOOTH_TILE     ), // WIDX_HEIGHTMAP_SMOOTH_TILES
+    MakeSpinnerWidgets({104, 124}, { 95, 12}, WWT_SPINNER,  1                             ), // WIDX_HEIGHTMAP_LOW{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 142}, { 95, 12}, WWT_SPINNER,  1                             ), // WIDX_HEIGHTMAP_HIGH{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 160}, { 95, 12}, WWT_SPINNER,  1                             ), // WIDX_HEIGHTMAP_WATER_LEVEL{,_UP,_DOWN}
     { WIDGETS_END },
 };
 

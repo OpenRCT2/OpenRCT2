@@ -70,48 +70,41 @@ enum WINDOW_STAFF_WIDGET_IDX {
 validate_global_widx(WC_PEEP, WIDX_PATROL);
 validate_global_widx(WC_STAFF, WIDX_PICKUP);
 
+#define MAIN_STAFF_WIDGETS \
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+    MakeWidget     ({      0,      43}, {190, 137}, WWT_RESIZE,        1                                        ), /* Resize */ \
+    MakeRemapWidget({      3,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_OVERVIEW_TIP), /* Tab 1 */ \
+    MakeRemapWidget({     34,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_OPTIONS_TIP ), /* Tab 2 */ \
+    MakeRemapWidget({     65,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_STATS_TIP   ), /* Tab 3 */ \
+    MakeRemapWidget({     96,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB                               )  /* Tab 4 */
+
 static rct_widget window_staff_overview_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,   1, 0,       WW - 1,     43,         WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
-    { WWT_TAB,      1, 3,       33,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
-    { WWT_TAB,      1, 34,      64,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
-    { WWT_TAB,      1, 65,      95,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
-    { WWT_TAB,      1, 96,      126,        17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
-    { WWT_VIEWPORT, 1, 3,       WW - 26,    47,         WH - 14,0xFFFFFFFF,             STR_NONE},              // Viewport
-    { WWT_LABEL_CENTRED, 1, 3,  WW - 26,    WH - 13,    WH - 3, 0xFFFFFFFF,             STR_NONE },             // Label at bottom of viewport
-    { WWT_FLATBTN,  1, WW - 25, WW - 2,     45,         68,     SPR_PICKUP_BTN,         STR_PICKUP_TIP},        // Pickup Button
-    { WWT_FLATBTN,  1, WW - 25, WW - 2,     69,         92,     SPR_PATROL_BTN,         STR_SET_PATROL_TIP},    // Patrol Button
-    { WWT_FLATBTN,  1, WW - 25, WW - 2,     93,         116,    SPR_RENAME,             STR_NAME_STAFF_TIP},    // Rename Button
-    { WWT_FLATBTN,  1, WW - 25, WW - 2,     117,        140,    SPR_LOCATE,             STR_LOCATE_SUBJECT_TIP},// Locate Button
-    { WWT_FLATBTN,  1, WW - 25, WW - 2,     141,        164,    SPR_DEMOLISH,           STR_FIRE_STAFF_TIP},    // Fire Button
+    MAIN_STAFF_WIDGETS,
+    MakeWidget     ({      3,      47}, {162, 120}, WWT_VIEWPORT,      1                                        ), // Viewport
+    MakeWidget     ({      3, WH - 13}, {162,  11}, WWT_LABEL_CENTRED, 1                                        ), // Label at bottom of viewport
+    MakeWidget     ({WW - 25,      45}, { 24,  24}, WWT_FLATBTN,       1, SPR_PICKUP_BTN, STR_PICKUP_TIP        ), // Pickup Button
+    MakeWidget     ({WW - 25,      69}, { 24,  24}, WWT_FLATBTN,       1, SPR_PATROL_BTN, STR_SET_PATROL_TIP    ), // Patrol Button
+    MakeWidget     ({WW - 25,      93}, { 24,  24}, WWT_FLATBTN,       1, SPR_RENAME,     STR_NAME_STAFF_TIP    ), // Rename Button
+    MakeWidget     ({WW - 25,     117}, { 24,  24}, WWT_FLATBTN,       1, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP), // Locate Button
+    MakeWidget     ({WW - 25,     141}, { 24,  24}, WWT_FLATBTN,       1, SPR_DEMOLISH,   STR_FIRE_STAFF_TIP    ), // Fire Button
     { WIDGETS_END },
 };
 
 //0x9AF910
 static rct_widget window_staff_options_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,           1, 0,       WW - 1, 43,     WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
-    { WWT_TAB,              1, 3,       33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
-    { WWT_TAB,              1, 34,      64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
-    { WWT_TAB,              1, 65,      95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
-    { WWT_TAB,              1, 96,      126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
-    { WWT_CHECKBOX,         1, 5,       WW - 6, 50,     61,     0xFFFFFFFF,             STR_NONE},              // Checkbox 1
-    { WWT_CHECKBOX,         1, 5,       WW - 6, 67,     78,     0xFFFFFFFF,             STR_NONE },             // Checkbox 2
-    { WWT_CHECKBOX,         1, 5,       WW - 6, 84,     95,     0xFFFFFFFF,             STR_NONE},              // Checkbox 3
-    { WWT_CHECKBOX,         1, 5,       WW - 6, 101,    112,    0xFFFFFFFF,             STR_NONE},              // Checkbox 4
-    { WWT_DROPDOWN,         1, 5,       WW - 6, 50,     61,     0xFFFFFFFF,             STR_NONE},              // Costume Dropdown
-    { WWT_BUTTON,           1, WW - 17, WW - 7, 51,     60,     STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP},// Costume Dropdown Button
+    MAIN_STAFF_WIDGETS,
+    MakeWidget     ({      5,  50}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 1
+    MakeWidget     ({      5,  67}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 2
+    MakeWidget     ({      5,  84}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 3
+    MakeWidget     ({      5, 101}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 4
+    MakeWidget     ({      5,  50}, {180,  12}, WWT_DROPDOWN, 1                                            ), // Costume Dropdown
+    MakeWidget     ({WW - 17,  51}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
     { WIDGETS_END },
 };
 
 //0x9AF9F4
 static rct_widget window_staff_stats_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    { WWT_RESIZE,   1, 0,       WW - 1, 43, WH - 1, 0xFFFFFFFF,             STR_NONE },             // Resize
-    { WWT_TAB,      1, 3,       33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OVERVIEW_TIP },// Tab 1
-    { WWT_TAB,      1, 34,      64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_OPTIONS_TIP}, // Tab 2
-    { WWT_TAB,      1, 65,      95,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
-    { WWT_TAB,      1, 96,      126,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
+    MAIN_STAFF_WIDGETS,
     { WIDGETS_END },
 };
 

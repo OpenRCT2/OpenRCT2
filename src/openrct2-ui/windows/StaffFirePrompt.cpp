@@ -32,8 +32,8 @@ enum WINDOW_STAFF_FIRE_WIDGET_IDX {
 // 0x9AFB4C
 static rct_widget window_staff_fire_widgets[] = {
     WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
-    { WWT_BUTTON,           0,  10,         94,         WH - 20,    WH - 9,     STR_YES,                STR_NONE },
-    { WWT_BUTTON,           0,  WW - 95,    WW - 11,    WH - 20,    WH - 9,     STR_SAVE_PROMPT_CANCEL, STR_NONE },
+    MakeWidget({     10, WH - 20}, {85, 14}, WWT_BUTTON, 0, STR_YES               ),
+    MakeWidget({WW - 95, WH - 20}, {85, 14}, WWT_BUTTON, 0, STR_SAVE_PROMPT_CANCEL),
     { WIDGETS_END }
 };
 
