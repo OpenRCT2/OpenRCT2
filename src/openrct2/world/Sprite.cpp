@@ -773,14 +773,7 @@ void sprite_remove(SpriteBase* sprite)
     sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
     _spriteFlashingList[sprite->sprite_index] = false;
 
-    size_t quadrantIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
-    uint16_t* spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
-    SpriteBase* quadrantSprite;
-    while (*spriteIndex != SPRITE_INDEX_NULL && (quadrantSprite = GetEntity(*spriteIndex)) != sprite)
-    {
-        spriteIndex = &quadrantSprite->next_in_quadrant;
-    }
-    *spriteIndex = sprite->next_in_quadrant;
+    SpriteSpatialRemove(sprite);
 }
 
 static bool litter_can_be_at(const CoordsXYZ& mapPos)
