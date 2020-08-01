@@ -1627,15 +1627,14 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
             for (int32_t i = 0; i < 32 && numPeepsLeft > 0; i++)
             {
                 
-                uint16_t peepSpriteIndex = vehicle->peep[i];
-                if (peepSpriteIndex == SPRITE_INDEX_NULL)
+                Peep* peep = GetEntity<Peep>(vehicle->peep[i]);
+                if(peep!=nullptr)
                     continue;
                 
                 numPeepsLeft--;
-                rct_window* w2 = window_find_by_number(WC_PEEP, peepSpriteIndex);
+                rct_window* w2 = window_find_by_number(WC_PEEP, vehicle->peep[i]);
                 if (w2 == nullptr)
                 {
-                    Peep* peep = GetEntity<Peep>(peepSpriteIndex);
                     auto intent = Intent(WC_PEEP);
                     intent.putExtra(INTENT_EXTRA_PEEP, peep);
                     context_open_intent(&intent);
@@ -2458,12 +2457,8 @@ static void window_ride_main_update(rct_window* w)
 
             if (w->ride.view <= ride->num_vehicles)
             {
-                int32_t vehicleIndex = w->ride.view - 1;
-                uint16_t vehicleSpriteIndex = ride->vehicles[vehicleIndex];
-                if (vehicleSpriteIndex == SPRITE_INDEX_NULL)
-                    return;
 
-                Vehicle* vehicle = GetEntity<Vehicle>(vehicleSpriteIndex);
+                Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
                 if (vehicle == nullptr
                     || (vehicle->status != VEHICLE_STATUS_TRAVELLING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT
                         && vehicle->status != VEHICLE_STATUS_TRAVELLING_DODGEMS
