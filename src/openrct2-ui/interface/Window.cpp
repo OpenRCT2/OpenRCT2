@@ -587,7 +587,7 @@ void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi)
 
     if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_NO_BACKGROUND))
         gfx_filter_rect(
-            dpi, w->windowPos.x, w->windowPos.y, w->windowPos.x + w->width - 1, w->windowPos.y + w->height - 1, PALETTE_51);
+            dpi, { w->windowPos, w->windowPos + ScreenCoordsXY{ w->width - 1, w->windowPos.y + w->height - 1 } }, PALETTE_51);
 
     // todo: some code missing here? Between 006EB18C and 006EB260
 
