@@ -124,7 +124,7 @@ public:
             if (_waitCounter == 0)
             {
                 const TitleCommand* command = &_sequence->Commands[_position];
-                if (command->Type == TITLE_SCRIPT_WAIT)
+                if (command->Type == TitleScript::Wait)
                 {
                     IncrementPosition();
                 }
@@ -137,11 +137,11 @@ public:
                 const TitleCommand* command = &_sequence->Commands[_position];
                 if (ExecuteCommand(command))
                 {
-                    if (command->Type == TITLE_SCRIPT_WAIT)
+                    if (command->Type == TitleScript::Wait)
                     {
                         break;
                     }
-                    if (command->Type != TITLE_SCRIPT_RESTART)
+                    if (command->Type != TitleScript::Restart)
                     {
                         IncrementPosition();
                     }
@@ -182,7 +182,7 @@ public:
             Reset();
         }
 
-        if (_sequence->Commands[targetPosition].Type == TITLE_SCRIPT_RESTART)
+        if (_sequence->Commands[targetPosition].Type == TitleScript::Restart)
         {
             targetPosition = 0;
         }
@@ -244,36 +244,36 @@ private:
     {
         switch (command->Type)
         {
-            case TITLE_SCRIPT_END:
+            case TitleScript::End:
                 _waitCounter = 1;
                 break;
-            case TITLE_SCRIPT_WAIT:
+            case TitleScript::Wait:
                 // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms /
                 // 25 ms/tick
                 _waitCounter = std::max<int32_t>(1, command->Milliseconds / static_cast<uint32_t>(GAME_UPDATE_TIME_MS));
                 break;
-            case TITLE_SCRIPT_LOCATION:
+            case TitleScript::Location:
             {
                 auto loc = TileCoordsXY(command->X, command->Y).ToCoordsXY().ToTileCentre();
                 SetViewLocation(loc);
                 break;
             }
-            case TITLE_SCRIPT_ROTATE:
+            case TitleScript::Rotate:
                 RotateView(command->Rotations);
                 break;
-            case TITLE_SCRIPT_ZOOM:
+            case TitleScript::Zoom:
                 SetViewZoom(command->Zoom);
                 break;
-            case TITLE_SCRIPT_SPEED:
+            case TitleScript::Speed:
                 gGameSpeed = std::clamp<uint8_t>(command->Speed, 1, 4);
                 break;
-            case TITLE_SCRIPT_FOLLOW:
+            case TitleScript::Follow:
                 FollowSprite(command->SpriteIndex);
                 break;
-            case TITLE_SCRIPT_RESTART:
+            case TitleScript::Restart:
                 Reset();
                 break;
-            case TITLE_SCRIPT_LOAD:
+            case TitleScript::Load:
             {
                 bool loadSuccess = false;
                 uint8_t saveIndex = command->SaveIndex;
@@ -294,7 +294,7 @@ private:
                 }
                 break;
             }
-            case TITLE_SCRIPT_LOADSC:
+            case TitleScript::LoadSC:
             {
                 bool loadSuccess = false;
                 auto scenario = GetScenarioRepository()->GetByInternalName(command->Scenario);
@@ -309,6 +309,8 @@ private:
                 }
                 break;
             }
+            default:
+                break;
         }
         return true;
     }

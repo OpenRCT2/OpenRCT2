@@ -952,7 +952,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
         rct_string_id commandName = STR_NONE;
         switch (command->Type)
         {
-            case TITLE_SCRIPT_LOAD:
+            case TitleScript::Load:
                 commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
                 if (command->SaveIndex == SAVE_INDEX_INVALID)
                 {
@@ -964,24 +964,24 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                     ft.Add<const char*>(_editingTitleSequence->Saves[command->SaveIndex]);
                 }
                 break;
-            case TITLE_SCRIPT_LOCATION:
+            case TitleScript::Location:
                 commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
                 ft.Add<uint16_t>(command->X);
                 ft.Add<uint16_t>(command->Y);
                 break;
-            case TITLE_SCRIPT_ROTATE:
+            case TitleScript::Rotate:
                 commandName = STR_TITLE_EDITOR_COMMAND_ROTATE;
                 ft.Add<uint16_t>(command->Rotations);
                 break;
-            case TITLE_SCRIPT_ZOOM:
+            case TitleScript::Zoom:
                 commandName = STR_TITLE_EDITOR_COMMAND_ZOOM;
                 ft.Add<uint16_t>(command->Zoom);
                 break;
-            case TITLE_SCRIPT_SPEED:
+            case TitleScript::Speed:
                 commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
                 ft.Add<rct_string_id>(SpeedNames[command->Speed - 1]);
                 break;
-            case TITLE_SCRIPT_FOLLOW:
+            case TitleScript::Follow:
                 commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
                 if (command->SpriteIndex == SPRITE_INDEX_NULL)
                 {
@@ -992,17 +992,17 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                     ft.Add<utf8*>(command->SpriteName);
                 }
                 break;
-            case TITLE_SCRIPT_WAIT:
+            case TitleScript::Wait:
                 commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
                 ft.Add<uint16_t>(command->Milliseconds);
                 break;
-            case TITLE_SCRIPT_RESTART:
+            case TitleScript::Restart:
                 commandName = STR_TITLE_EDITOR_RESTART;
                 break;
-            case TITLE_SCRIPT_END:
+            case TitleScript::End:
                 commandName = STR_TITLE_EDITOR_END;
                 break;
-            case TITLE_SCRIPT_LOADSC:
+            case TitleScript::LoadSC:
             {
                 commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
                 const char* name = "";

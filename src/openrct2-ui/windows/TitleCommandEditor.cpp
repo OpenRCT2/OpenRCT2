@@ -30,22 +30,22 @@
 // clang-format off
 struct TITLE_COMMAND_ORDER {
     // originally a uint8_t, but the new millisecond wait times require a uint16_t.
-    uint16_t command;
+    TitleScript command;
     rct_string_id nameStringId;
     rct_string_id descStringId;
 };
 
 static TITLE_COMMAND_ORDER _window_title_command_editor_orders[] = {
-    { TITLE_SCRIPT_LOAD,        STR_TITLE_EDITOR_ACTION_LOAD_SAVE, STR_TITLE_EDITOR_ARGUMENT_SAVEFILE },
-    { TITLE_SCRIPT_LOADSC,      STR_TITLE_EDITOR_ACTION_LOAD_SCENARIO, STR_TITLE_EDITOR_ARGUMENT_SCENARIO },
-    { TITLE_SCRIPT_LOCATION,    STR_TITLE_EDITOR_COMMAND_TYPE_LOCATION, STR_TITLE_EDITOR_ARGUMENT_COORDINATES },
-    { TITLE_SCRIPT_ROTATE,      STR_TITLE_EDITOR_COMMAND_TYPE_ROTATE,   STR_TITLE_EDITOR_ARGUMENT_ROTATIONS },
-    { TITLE_SCRIPT_ZOOM,        STR_TITLE_EDITOR_COMMAND_TYPE_ZOOM,     STR_TITLE_EDITOR_ARGUMENT_ZOOM_LEVEL },
-    { TITLE_SCRIPT_SPEED,       STR_TITLE_EDITOR_COMMAND_TYPE_SPEED,    STR_TITLE_EDITOR_ARGUMENT_SPEED },
-    { TITLE_SCRIPT_FOLLOW,      STR_TITLE_EDITOR_COMMAND_TYPE_FOLLOW,   STR_NONE },
-    { TITLE_SCRIPT_WAIT,        STR_TITLE_EDITOR_COMMAND_TYPE_WAIT,     STR_TITLE_EDITOR_ARGUMENT_WAIT_SECONDS },
-    { TITLE_SCRIPT_RESTART,     STR_TITLE_EDITOR_RESTART,               STR_NONE },
-    { TITLE_SCRIPT_END,         STR_TITLE_EDITOR_END,                   STR_NONE },
+    { TitleScript::Load,        STR_TITLE_EDITOR_ACTION_LOAD_SAVE, STR_TITLE_EDITOR_ARGUMENT_SAVEFILE },
+    { TitleScript::LoadSC,      STR_TITLE_EDITOR_ACTION_LOAD_SCENARIO, STR_TITLE_EDITOR_ARGUMENT_SCENARIO },
+    { TitleScript::Location,    STR_TITLE_EDITOR_COMMAND_TYPE_LOCATION, STR_TITLE_EDITOR_ARGUMENT_COORDINATES },
+    { TitleScript::Rotate,      STR_TITLE_EDITOR_COMMAND_TYPE_ROTATE,   STR_TITLE_EDITOR_ARGUMENT_ROTATIONS },
+    { TitleScript::Zoom,        STR_TITLE_EDITOR_COMMAND_TYPE_ZOOM,     STR_TITLE_EDITOR_ARGUMENT_ZOOM_LEVEL },
+    { TitleScript::Speed,       STR_TITLE_EDITOR_COMMAND_TYPE_SPEED,    STR_TITLE_EDITOR_ARGUMENT_SPEED },
+    { TitleScript::Follow,      STR_TITLE_EDITOR_COMMAND_TYPE_FOLLOW,   STR_NONE },
+    { TitleScript::Wait,        STR_TITLE_EDITOR_COMMAND_TYPE_WAIT,     STR_TITLE_EDITOR_ARGUMENT_WAIT_SECONDS },
+    { TitleScript::Restart,     STR_TITLE_EDITOR_RESTART,               STR_NONE },
+    { TitleScript::End,         STR_TITLE_EDITOR_END,                   STR_NONE },
 };
 
 #define NUM_COMMANDS std::size(_window_title_command_editor_orders)
@@ -81,7 +81,7 @@ static int32_t _window_title_command_editor_index;
 constexpr size_t BUF_SIZE = 50;
 static char textbox1Buffer[BUF_SIZE];
 static char textbox2Buffer[BUF_SIZE];
-static TitleCommand command = { TITLE_SCRIPT_LOAD, { 0 } };
+static TitleCommand command = { TitleScript::Load, { 0 } };
 static TitleSequence * _sequence = nullptr;
 
 static rct_widget window_title_command_editor_widgets[] = {
@@ -117,8 +117,8 @@ static void window_title_command_editor_invalidate(rct_window * w);
 static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi);
 static void window_title_command_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
 static void scenario_select_callback(const utf8 * path);
-static int32_t get_command_info_index(int32_t index);
-static TITLE_COMMAND_ORDER get_command_info(int32_t index);
+static int32_t get_command_info_index(TitleScript index);
+static TITLE_COMMAND_ORDER get_command_info(TitleScript index);
 static TileCoordsXY get_location();
 static uint8_t get_zoom();
 
@@ -156,7 +156,7 @@ static rct_window_event_list window_title_command_editor_events = {
 
 static void scenario_select_callback(const utf8* path)
 {
-    if (command.Type == TITLE_SCRIPT_LOADSC)
+    if (command.Type == TitleScript::LoadSC)
     {
         const utf8* fileName = path_get_filename(path);
         auto scenario = GetScenarioRepository()->GetByFilename(fileName);
@@ -164,7 +164,7 @@ static void scenario_select_callback(const utf8* path)
     }
 }
 
-static int32_t get_command_info_index(int32_t index)
+static int32_t get_command_info_index(TitleScript index)
 {
     for (int32_t i = 0; i < static_cast<int32_t>(NUM_COMMANDS); i++)
     {
@@ -174,7 +174,7 @@ static int32_t get_command_info_index(int32_t index)
     return 0;
 }
 
-static TITLE_COMMAND_ORDER get_command_info(int32_t index)
+static TITLE_COMMAND_ORDER get_command_info(TitleScript index)
 {
     for (int32_t i = 0; i < static_cast<int32_t>(NUM_COMMANDS); i++)
     {
@@ -258,26 +258,28 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
 
     switch (command.Type)
     {
-        case TITLE_SCRIPT_LOAD:
+        case TitleScript::Load:
             if (command.SaveIndex >= _sequence->NumSaves)
                 command.SaveIndex = SAVE_INDEX_INVALID;
             break;
-        case TITLE_SCRIPT_LOCATION:
+        case TitleScript::Location:
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
             snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
             break;
-        case TITLE_SCRIPT_ROTATE:
-        case TITLE_SCRIPT_ZOOM:
+        case TitleScript::Rotate:
+        case TitleScript::Zoom:
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
             break;
-        case TITLE_SCRIPT_WAIT:
+        case TitleScript::Wait:
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
             break;
-        case TITLE_SCRIPT_FOLLOW:
+        case TitleScript::Follow:
             if (command.SpriteIndex != SPRITE_INDEX_NULL)
             {
                 window_follow_sprite(window, static_cast<size_t>(command.SpriteIndex));
             }
+            break;
+        default:
             break;
     }
 }
@@ -301,7 +303,7 @@ static void window_title_command_editor_mouseup(rct_window* w, rct_widgetindex w
         case WIDX_TEXTBOX_FULL:
             // The only commands that use TEXTBOX_FULL currently are Wait, Rotate, and Zoom. Rotate and Zoom have single-digit
             // maximum values, while Wait has 5-digit maximum values.
-            if (command.Type == TITLE_SCRIPT_WAIT)
+            if (command.Type == TitleScript::Wait)
             {
                 window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 6);
             }
@@ -317,7 +319,7 @@ static void window_title_command_editor_mouseup(rct_window* w, rct_widgetindex w
             window_start_textbox(w, widgetIndex, STR_STRING, textbox2Buffer, 4);
             break;
         case WIDX_GET:
-            if (command.Type == TITLE_SCRIPT_LOCATION)
+            if (command.Type == TitleScript::Location)
             {
                 auto tileCoord = get_location();
                 command.X = static_cast<uint8_t>(tileCoord.x);
@@ -325,7 +327,7 @@ static void window_title_command_editor_mouseup(rct_window* w, rct_widgetindex w
                 snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
                 snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
             }
-            else if (command.Type == TITLE_SCRIPT_ZOOM)
+            else if (command.Type == TitleScript::Zoom)
             {
                 uint8_t zoom = get_zoom();
                 command.Zoom = zoom;
@@ -397,7 +399,7 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
             break;
         }
         case WIDX_INPUT_DROPDOWN:
-            if (command.Type == TITLE_SCRIPT_SPEED)
+            if (command.Type == TitleScript::Speed)
             {
                 int32_t numItems = 4;
                 for (int32_t i = 0; i < numItems; i++)
@@ -412,7 +414,7 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
 
                 dropdown_set_checked(command.Speed - 1, true);
             }
-            else if (command.Type == TITLE_SCRIPT_LOAD)
+            else if (command.Type == TitleScript::Load)
             {
                 int32_t numItems = static_cast<int32_t>(_sequence->NumSaves);
                 for (int32_t i = 0; i < numItems; i++)
@@ -456,7 +458,7 @@ static void window_title_command_editor_dropdown(rct_window* w, rct_widgetindex 
             command.Type = _window_title_command_editor_orders[dropdownIndex].command;
             switch (command.Type)
             {
-                case TITLE_SCRIPT_LOCATION:
+                case TitleScript::Location:
                 {
                     auto tileCoord = get_location();
                     command.X = static_cast<uint8_t>(tileCoord.x);
@@ -465,55 +467,59 @@ static void window_title_command_editor_dropdown(rct_window* w, rct_widgetindex 
                     snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
                     break;
                 }
-                case TITLE_SCRIPT_ROTATE:
+                case TitleScript::Rotate:
                     command.Rotations = 1;
                     snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
                     break;
-                case TITLE_SCRIPT_ZOOM:
+                case TitleScript::Zoom:
                     command.Zoom = 0;
                     snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Zoom);
                     break;
-                case TITLE_SCRIPT_FOLLOW:
+                case TitleScript::Follow:
                     command.SpriteIndex = SPRITE_INDEX_NULL;
                     command.SpriteName[0] = '\0';
                     window_unfollow_sprite(w);
                     w->viewport->flags &= ~VIEWPORT_FOCUS_TYPE_SPRITE;
                     break;
-                case TITLE_SCRIPT_SPEED:
+                case TitleScript::Speed:
                     command.Speed = 1;
                     break;
-                case TITLE_SCRIPT_WAIT:
+                case TitleScript::Wait:
                     command.Milliseconds = 10000;
                     snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
                     break;
-                case TITLE_SCRIPT_LOAD:
+                case TitleScript::Load:
                     command.SaveIndex = 0;
                     if (command.SaveIndex >= _sequence->NumSaves)
                     {
                         command.SaveIndex = 0xFF;
                     }
                     break;
-                case TITLE_SCRIPT_LOADSC:
+                case TitleScript::LoadSC:
                     command.Scenario[0] = '\0';
+                default:
+                    break;
             }
             w->Invalidate();
             break;
         case WIDX_INPUT_DROPDOWN:
             switch (command.Type)
             {
-                case TITLE_SCRIPT_SPEED:
+                case TitleScript::Speed:
                     if (dropdownIndex != command.Speed - 1)
                     {
                         command.Speed = static_cast<uint8_t>(dropdownIndex + 1);
                         w->Invalidate();
                     }
                     break;
-                case TITLE_SCRIPT_LOAD:
+                case TitleScript::Load:
                     if (dropdownIndex != command.SaveIndex)
                     {
                         command.SaveIndex = static_cast<uint8_t>(dropdownIndex);
                         w->Invalidate();
                     }
+                    break;
+                default:
                     break;
             }
             break;
@@ -527,7 +533,7 @@ static void window_title_command_editor_textinput(rct_window* w, rct_widgetindex
     if (value < 0)
         value = 0;
     // The Wait command is the only one with acceptable values greater than 255.
-    if (value > 255 && command.Type != TITLE_SCRIPT_WAIT)
+    if (value > 255 && command.Type != TitleScript::Wait)
         value = 255;
     switch (widgetIndex)
     {
@@ -536,7 +542,7 @@ static void window_title_command_editor_textinput(rct_window* w, rct_widgetindex
             {
                 if (*end == '\0')
                 {
-                    if (command.Type == TITLE_SCRIPT_WAIT)
+                    if (command.Type == TitleScript::Wait)
                     {
                         if (value < 100)
                             value = 100;
@@ -550,7 +556,7 @@ static void window_title_command_editor_textinput(rct_window* w, rct_widgetindex
                         // Both Rotate and Zoom have a maximum value of 3, but Rotate has a min value of 1 not 0.
                         if (value > 3)
                             value = 3;
-                        if (value < 1 && command.Type == TITLE_SCRIPT_ROTATE)
+                        if (value < 1 && command.Type == TitleScript::Rotate)
                             value = 1;
                         command.Rotations = static_cast<uint8_t>(value);
                         snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Rotations);
@@ -691,29 +697,29 @@ static void window_title_command_editor_invalidate(rct_window* w)
     window_title_command_editor_widgets[WIDX_VIEWPORT].type = WWT_EMPTY;
     switch (command.Type)
     {
-        case TITLE_SCRIPT_LOAD:
-        case TITLE_SCRIPT_SPEED:
+        case TitleScript::Load:
+        case TitleScript::Speed:
             window_title_command_editor_widgets[WIDX_INPUT].type = WWT_DROPDOWN;
             window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WWT_BUTTON;
             break;
-        case TITLE_SCRIPT_LOADSC:
+        case TitleScript::LoadSC:
             window_title_command_editor_widgets[WIDX_INPUT].type = WWT_DROPDOWN;
             window_title_command_editor_widgets[WIDX_SELECT_SCENARIO].type = WWT_BUTTON;
             break;
-        case TITLE_SCRIPT_LOCATION:
+        case TitleScript::Location:
             window_title_command_editor_widgets[WIDX_TEXTBOX_X].type = WWT_TEXT_BOX;
             window_title_command_editor_widgets[WIDX_TEXTBOX_Y].type = WWT_TEXT_BOX;
             window_title_command_editor_widgets[WIDX_GET].type = WWT_BUTTON;
             break;
-        case TITLE_SCRIPT_ROTATE:
-        case TITLE_SCRIPT_WAIT:
+        case TitleScript::Rotate:
+        case TitleScript::Wait:
             window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WWT_TEXT_BOX;
             break;
-        case TITLE_SCRIPT_ZOOM:
+        case TitleScript::Zoom:
             window_title_command_editor_widgets[WIDX_GET].type = WWT_BUTTON;
             window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WWT_TEXT_BOX;
             break;
-        case TITLE_SCRIPT_FOLLOW:
+        case TitleScript::Follow:
             window_title_command_editor_widgets[WIDX_SELECT_SPRITE].type = WWT_BUTTON;
             window_title_command_editor_widgets[WIDX_VIEWPORT].type = WWT_VIEWPORT;
 
@@ -723,6 +729,8 @@ static void window_title_command_editor_invalidate(rct_window* w)
             else
                 w->pressed_widgets &= ~(1 << WIDX_SELECT_SPRITE);
 
+            break;
+        default:
             break;
     }
 
@@ -757,14 +765,14 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
     // Label (e.g. "Location:")
     gfx_draw_string_left(dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY2 - 14 });
 
-    if (command.Type == TITLE_SCRIPT_SPEED)
+    if (command.Type == TitleScript::Speed)
     {
         gfx_draw_string_left_clipped(
             dpi, SpeedNames[command.Speed - 1], nullptr, w->colours[1],
             { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
             w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
     }
-    if (command.Type == TITLE_SCRIPT_FOLLOW)
+    if (command.Type == TitleScript::Follow)
     {
         uint8_t colour = COLOUR_BLACK;
         rct_string_id spriteString = STR_TITLE_COMMAND_EDITOR_FORMAT_SPRITE_NAME;
@@ -787,7 +795,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             { w->windowPos.x + w->widgets[WIDX_VIEWPORT].left + 2, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top + 1 },
             w->widgets[WIDX_VIEWPORT].width() - 2);
     }
-    else if (command.Type == TITLE_SCRIPT_LOAD)
+    else if (command.Type == TitleScript::Load)
     {
         if (command.SaveIndex == SAVE_INDEX_INVALID)
         {
@@ -805,7 +813,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
     }
-    else if (command.Type == TITLE_SCRIPT_LOADSC)
+    else if (command.Type == TitleScript::LoadSC)
     {
         if (command.Scenario[0] == '\0')
         {

@@ -12,11 +12,28 @@
 #include "../common.h"
 #include "../localisation/Localisation.h"
 
+enum class TitleScript : uint8_t
+{
+    Wait,
+    Location,
+    Rotate,
+    Zoom,
+    Follow,
+    Restart,
+    Load,
+    End,
+    Speed,
+    Loop,
+    EndLoop,
+    LoadSC,
+    Undefined = 0xFF
+};
+
 #define TITLE_COMMAND_SCENARIO_LENGTH 64
 
 struct TitleCommand
 {
-    uint8_t Type;
+    TitleScript Type;
     union
     {
         uint8_t SaveIndex; // LOAD (this index is internal only)
@@ -56,23 +73,6 @@ struct TitleSequenceParkHandle
 {
     const utf8* HintPath;
     void* Stream;
-};
-
-enum TITLE_SCRIPT
-{
-    TITLE_SCRIPT_UNDEFINED = 0xFF,
-    TITLE_SCRIPT_WAIT = 0,
-    TITLE_SCRIPT_LOCATION,
-    TITLE_SCRIPT_ROTATE,
-    TITLE_SCRIPT_ZOOM,
-    TITLE_SCRIPT_FOLLOW,
-    TITLE_SCRIPT_RESTART,
-    TITLE_SCRIPT_LOAD,
-    TITLE_SCRIPT_END,
-    TITLE_SCRIPT_SPEED,
-    TITLE_SCRIPT_LOOP,
-    TITLE_SCRIPT_ENDLOOP,
-    TITLE_SCRIPT_LOADSC,
 };
 
 constexpr const utf8* TITLE_SEQUENCE_EXTENSION = ".parkseq";
