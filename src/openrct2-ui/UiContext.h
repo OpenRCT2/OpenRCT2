@@ -34,6 +34,7 @@ namespace OpenRCT2
 
             virtual void ShowMessageBox(SDL_Window * window, const std::string& message) abstract;
             virtual void OpenFolder(const std::string& path) abstract;
+            virtual void OpenURL(const std::string& url) abstract;
             virtual std::string ShowFileDialog(SDL_Window * window, const FileDialogDesc& desc) abstract;
             virtual std::string ShowDirectoryDialog(SDL_Window * window, const std::string& title) abstract;
         };

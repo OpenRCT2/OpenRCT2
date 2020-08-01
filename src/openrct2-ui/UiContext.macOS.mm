@@ -19,9 +19,12 @@
 #    undef interface
 #    undef abstract
 
+#    include <ApplicationServices/ApplicationServices.h>
 #    import <Cocoa/Cocoa.h>
+#    include <CoreFoundation/CFBundle.h>
 #    include <SDL.h>
 #    include <mach-o/dyld.h>
+#    include <string>
 
 namespace OpenRCT2::Ui
 {
@@ -69,6 +72,14 @@ namespace OpenRCT2::Ui
                 NSURL* folderURL = [NSURL fileURLWithPath:nsPath];
                 [[NSWorkspace sharedWorkspace] openURL:folderURL];
             }
+        }
+
+        void OpenURL(const std::string& url) override
+        {
+            CFURLRef urlRef = CFURLCreateWithBytes(
+                nullptr, reinterpret_cast<const UInt8*>(url.c_str()), url.length(), kCFStringEncodingUTF8, nullptr);
+            LSOpenCFURLRef(urlRef, 0);
+            CFRelease(urlRef);
         }
 
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override

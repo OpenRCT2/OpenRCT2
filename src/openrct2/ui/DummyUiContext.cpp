@@ -92,6 +92,9 @@ namespace OpenRCT2::Ui
         void OpenFolder(const std::string& /*path*/) override
         {
         }
+        void OpenURL(const std::string& /*url*/) override
+        {
+        }
         std::string ShowFileDialog(const FileDialogDesc& /*desc*/) override
         {
             return std::string();
