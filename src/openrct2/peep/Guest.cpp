@@ -4234,7 +4234,7 @@ void Guest::UpdateRideLeaveVehicle()
                     specialDirection = ((vehicle->sprite_direction + 3) / 8) + 1;
                     specialDirection &= 3;
 
-                    if (vehicle->TrackSubposition == VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE)
+                    if (vehicle->TrackSubposition == VehicleTrackSubposition::GoKartsRightLane)
                         specialDirection = direction_reverse(specialDirection);
                 }
             }
