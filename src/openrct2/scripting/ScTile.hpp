@@ -942,6 +942,25 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint8_t direction_get() const
+        {
+            if (_element != nullptr)
+            {
+                return _element->GetDirection();
+            }
+
+            return 0;
+        }
+        void direction_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            if (_element != nullptr)
+            {
+                _element->SetDirection(value);
+                Invalidate();
+            }
+        }
+
         void Invalidate()
         {
             map_invalidate_tile_full(_coords);
@@ -955,6 +974,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTileElement::baseHeight_get, &ScTileElement::baseHeight_set, "baseHeight");
             dukglue_register_property(
                 ctx, &ScTileElement::clearanceHeight_get, &ScTileElement::clearanceHeight_set, "clearanceHeight");
+            dukglue_register_property(ctx, &ScTileElement::direction_get, &ScTileElement::direction_set, "direction");
 
             // Some
             dukglue_register_property(ctx, &ScTileElement::object_get, &ScTileElement::object_set, "object");
