@@ -98,28 +98,19 @@ std::string rct_sprite_checksum::ToString() const
     return result;
 }
 
-rct_sprite* try_get_sprite(size_t spriteIndex)
+SpriteBase* try_get_sprite(size_t spriteIndex)
 {
-    rct_sprite* sprite = nullptr;
-    if (spriteIndex < MAX_SPRITES)
-    {
-        sprite = &_spriteList[spriteIndex];
-    }
-    return sprite;
+    return spriteIndex >= MAX_SPRITES ? nullptr : &_spriteList[spriteIndex].generic;
 }
 
-rct_sprite* get_sprite(size_t sprite_idx)
+SpriteBase* get_sprite(size_t spriteIndex)
 {
-    if (sprite_idx == SPRITE_INDEX_NULL)
+    if (spriteIndex == SPRITE_INDEX_NULL)
     {
         return nullptr;
     }
-    openrct2_assert(sprite_idx < MAX_SPRITES, "Tried getting sprite %u", sprite_idx);
-    if (sprite_idx >= MAX_SPRITES)
-    {
-        return nullptr;
-    }
-    return &_spriteList[sprite_idx];
+    openrct2_assert(spriteIndex < MAX_SPRITES, "Tried getting sprite %u", spriteIndex);
+    return try_get_sprite(spriteIndex);
 }
 
 uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)
@@ -782,14 +773,7 @@ void sprite_remove(SpriteBase* sprite)
     sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
     _spriteFlashingList[sprite->sprite_index] = false;
 
-    size_t quadrantIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
-    uint16_t* spriteIndex = &gSpriteSpatialIndex[quadrantIndex];
-    SpriteBase* quadrantSprite;
-    while (*spriteIndex != SPRITE_INDEX_NULL && (quadrantSprite = GetEntity(*spriteIndex)) != sprite)
-    {
-        spriteIndex = &quadrantSprite->next_in_quadrant;
-    }
-    *spriteIndex = sprite->next_in_quadrant;
+    SpriteSpatialRemove(sprite);
 }
 
 static bool litter_can_be_at(const CoordsXYZ& mapPos)

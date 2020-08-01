@@ -46,11 +46,11 @@ static void paint_crooked_house_structure(
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        if (ride->vehicles[0] != SPRITE_INDEX_NULL)
+        auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+        if (vehicle != nullptr)
         {
-            auto sprite = GetEntity(ride->vehicles[0]);
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-            session->CurrentlyDrawnItem = sprite;
+            session->CurrentlyDrawnItem = vehicle;
         }
     }
 

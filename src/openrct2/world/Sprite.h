@@ -201,17 +201,17 @@ enum
     LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
 
-rct_sprite* try_get_sprite(size_t spriteIndex);
-rct_sprite* get_sprite(size_t sprite_idx);
+SpriteBase* try_get_sprite(size_t spriteIndex);
+SpriteBase* get_sprite(size_t sprite_idx);
 template<typename T = SpriteBase> T* GetEntity(size_t sprite_idx)
 {
-    auto spr = reinterpret_cast<SpriteBase*>(get_sprite(sprite_idx));
+    auto spr = get_sprite(sprite_idx);
     return spr != nullptr ? spr->As<T>() : nullptr;
 }
 
 template<typename T = SpriteBase> T* TryGetEntity(size_t sprite_idx)
 {
-    auto spr = reinterpret_cast<SpriteBase*>(try_get_sprite(sprite_idx));
+    auto spr = try_get_sprite(sprite_idx);
     return spr != nullptr ? spr->As<T>() : nullptr;
 }
 
@@ -258,7 +258,6 @@ void create_duck(const CoordsXY& pos);
 void duck_update(Duck* duck);
 void duck_press(Duck* duck);
 void duck_remove_all();
-uint32_t duck_get_frame_image(const Duck* duck, int32_t direction);
 
 ///////////////////////////////////////////////////////////////
 // Crash particles

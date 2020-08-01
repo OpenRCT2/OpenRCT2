@@ -305,13 +305,16 @@ void create_duck(const CoordsXY& pos)
     targetPos.x += offsetXY;
     targetPos.y += offsetXY;
 
-    sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
-    sprite->duck.type = SPRITE_MISC_DUCK;
-    sprite->duck.sprite_width = 9;
-    sprite->duck.sprite_height_negative = 12;
-    sprite->duck.sprite_height_positive = 9;
-    sprite->duck.target_x = targetPos.x;
-    sprite->duck.target_y = targetPos.y;
+    sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_MISC;
+    sprite->generic.type = SPRITE_MISC_DUCK;
+    auto duck = sprite->generic.As<Duck>();
+    if (duck == nullptr)
+        return; // can never happen
+    duck->sprite_width = 9;
+    duck->sprite_height_negative = 12;
+    duck->sprite_height_positive = 9;
+    duck->target_x = targetPos.x;
+    duck->target_y = targetPos.y;
     uint8_t direction = scenario_rand() & 3;
     switch (direction)
     {
@@ -328,10 +331,10 @@ void create_duck(const CoordsXY& pos)
             targetPos.y = 8191 - (scenario_rand() & 0x3F);
             break;
     }
-    sprite->duck.sprite_direction = direction << 3;
-    sprite->duck.MoveTo({ targetPos.x, targetPos.y, 496 });
-    sprite->duck.state = DUCK_STATE::FLY_TO_WATER;
-    sprite->duck.frame = 0;
+    duck->sprite_direction = direction << 3;
+    duck->MoveTo({ targetPos.x, targetPos.y, 496 });
+    duck->state = DUCK_STATE::FLY_TO_WATER;
+    duck->frame = 0;
 }
 
 void Duck::Update()
@@ -367,9 +370,4 @@ void duck_remove_all()
     {
         duck->Remove();
     }
-}
-
-uint32_t duck_get_frame_image(const Duck* duck, int32_t direction)
-{
-    return duck->GetFrameImage(direction);
 }

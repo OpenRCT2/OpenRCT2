@@ -53,10 +53,6 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
  */
 int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info)
 {
-    TileElement* tileElement;
-    rct_sprite* sprite;
-    Vehicle* vehicle;
-
     // No click input for scenario editor or track manager
     if (gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -71,13 +67,13 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
         mapCoord, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
-    tileElement = info->tileElement;
-    sprite = info->sprite;
+    auto tileElement = info->tileElement;
+    auto sprite = info->sprite;
 
     // Allows only balloons to be popped and ducks to be quacked in title screen
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
-        if (info->type == VIEWPORT_INTERACTION_ITEM_SPRITE && (sprite->generic.Is<Balloon>() || sprite->generic.Is<Duck>()))
+        if (info->type == VIEWPORT_INTERACTION_ITEM_SPRITE && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
             return info->type;
         else
             return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -86,18 +82,30 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
     switch (info->type)
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
-            switch (sprite->generic.sprite_identifier)
+            switch (sprite->sprite_identifier)
             {
                 case SPRITE_IDENTIFIER_VEHICLE:
-                    vehicle = &(sprite->vehicle);
-                    if (vehicle->ride_subtype != RIDE_ENTRY_INDEX_NULL)
+                {
+                    auto vehicle = sprite->As<Vehicle>();
+                    if (vehicle != nullptr && vehicle->ride_subtype != RIDE_ENTRY_INDEX_NULL)
                         vehicle->SetMapToolbar();
                     else
                         info->type = VIEWPORT_INTERACTION_ITEM_NONE;
-                    break;
+                }
+                break;
                 case SPRITE_IDENTIFIER_PEEP:
-                    peep_set_map_tooltip(&sprite->peep);
-                    break;
+                {
+                    auto peep = sprite->As<Peep>();
+                    if (peep != nullptr)
+                    {
+                        peep_set_map_tooltip(peep);
+                    }
+                    else
+                    {
+                        info->type = VIEWPORT_INTERACTION_ITEM_NONE;
+                    }
+                }
+                break;
             }
             break;
         case VIEWPORT_INTERACTION_ITEM_RIDE:
@@ -121,14 +129,15 @@ int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, v
     // If nothing is under cursor, find a close by peep
     if (info->type == VIEWPORT_INTERACTION_ITEM_NONE)
     {
-        info->peep = viewport_interaction_get_closest_peep(screenCoords, 32);
-        if (info->peep == nullptr)
+        auto peep = viewport_interaction_get_closest_peep(screenCoords, 32);
+        if (peep == nullptr)
             return VIEWPORT_INTERACTION_ITEM_NONE;
 
+        info->sprite = peep;
         info->type = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        info->x = info->peep->x;
-        info->y = info->peep->y;
-        peep_set_map_tooltip(info->peep);
+        info->x = peep->x;
+        info->y = peep->y;
+        peep_set_map_tooltip(peep);
     }
 
     return info->type;
@@ -156,36 +165,42 @@ int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
     switch (viewport_interaction_get_item_left(screenCoords, &info))
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
-            switch (info.sprite->generic.sprite_identifier)
+            switch (info.sprite->sprite_identifier)
             {
                 case SPRITE_IDENTIFIER_VEHICLE:
                 {
                     auto intent = Intent(WD_VEHICLE);
-                    intent.putExtra(INTENT_EXTRA_VEHICLE, info.vehicle);
+                    intent.putExtra(INTENT_EXTRA_VEHICLE, info.sprite);
                     context_open_intent(&intent);
                     break;
                 }
                 case SPRITE_IDENTIFIER_PEEP:
                 {
                     auto intent = Intent(WC_PEEP);
-                    intent.putExtra(INTENT_EXTRA_PEEP, info.peep);
+                    intent.putExtra(INTENT_EXTRA_PEEP, info.sprite);
                     context_open_intent(&intent);
                     break;
                 }
                 case SPRITE_IDENTIFIER_MISC:
                     if (game_is_not_paused())
                     {
-                        switch (info.sprite->generic.type)
+                        switch (info.sprite->type)
                         {
                             case SPRITE_MISC_BALLOON:
                             {
-                                auto balloonPress = BalloonPressAction(info.sprite->generic.sprite_index);
+                                auto balloonPress = BalloonPressAction(info.sprite->sprite_index);
                                 GameActions::Execute(&balloonPress);
                             }
                             break;
                             case SPRITE_MISC_DUCK:
-                                duck_press(&info.sprite->duck);
-                                break;
+                            {
+                                auto duck = info.sprite->As<Duck>();
+                                if (duck != nullptr)
+                                {
+                                    duck_press(duck);
+                                }
+                            }
+                            break;
                         }
                     }
                     break;
@@ -232,15 +247,21 @@ int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, 
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
-    rct_sprite* sprite = info->sprite;
+    auto sprite = info->sprite;
 
     switch (info->type)
     {
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->generic.sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
+        {
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
                 return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-            ride = get_ride(sprite->vehicle.ride);
+            auto vehicle = sprite->As<Vehicle>();
+            if (vehicle == nullptr)
+            {
+                return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
+            }
+            ride = get_ride(vehicle->ride);
             if (ride != nullptr && ride->status == RIDE_STATUS_CLOSED)
             {
                 auto ft = Formatter::MapTooltip();
@@ -248,7 +269,7 @@ int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, 
                 ride->FormatNameTo(ft);
             }
             return info->type;
-
+        }
         case VIEWPORT_INTERACTION_ITEM_RIDE:
         {
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
@@ -465,9 +486,14 @@ int32_t viewport_interaction_right_click(const ScreenCoordsXY& screenCoords)
             return 0;
 
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
-            if (info.sprite->generic.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            if (info.sprite->sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
-                auto ride = get_ride(info.sprite->vehicle.ride);
+                auto vehicle = info.sprite->As<Vehicle>();
+                if (vehicle == nullptr)
+                {
+                    break;
+                }
+                auto ride = get_ride(vehicle->ride);
                 if (ride != nullptr)
                 {
                     ride_construct(ride);

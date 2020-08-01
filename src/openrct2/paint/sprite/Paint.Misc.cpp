@@ -29,16 +29,19 @@ const uint32_t vehicle_particle_base_sprites[] = {
 /**
  * rct2: 0x00672AC9
  */
-void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDirection)
+void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDirection)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    switch (misc->generic.type)
+    switch (misc->type)
     {
         case SPRITE_MISC_STEAM_PARTICLE: // 0
         {
-            uint32_t imageId = 22637 + (misc->steam_particle.frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->generic.z);
+            auto particle = misc->As<SteamParticle>();
+            if (particle == nullptr)
+                return;
+            uint32_t imageId = 22637 + (particle->frame / 256);
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, particle->z);
             break;
         }
 
@@ -48,8 +51,9 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
             {
                 return;
             }
-
-            const MoneyEffect* moneyEffect = &misc->money_effect;
+            auto moneyEffect = misc->As<MoneyEffect>();
+            if (moneyEffect == nullptr)
+                return;
             auto [stringId, value] = moneyEffect->GetStringId();
             paint_floating_money_effect(
                 session, value, stringId, moneyEffect->y, moneyEffect->z,
@@ -63,35 +67,44 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
             {
                 return;
             }
-
-            VehicleCrashParticle particle = misc->crashed_vehicle_particle;
-            uint32_t imageId = vehicle_particle_base_sprites[particle.crashed_sprite_base] + particle.frame / 256;
-            imageId = imageId | (particle.colour[0] << 19) | (particle.colour[1] << 24) | IMAGE_TYPE_REMAP
+            auto particle = misc->As<VehicleCrashParticle>();
+            if (particle == nullptr)
+                return;
+            uint32_t imageId = vehicle_particle_base_sprites[particle->crashed_sprite_base] + particle->frame / 256;
+            imageId = imageId | (particle->colour[0] << 19) | (particle->colour[1] << 24) | IMAGE_TYPE_REMAP
                 | IMAGE_TYPE_REMAP_2_PLUS;
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->generic.z);
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, particle->z);
             break;
         }
 
         case SPRITE_MISC_EXPLOSION_CLOUD: // 3
         {
-            uint32_t imageId = 22878 + (misc->generic.frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->generic.z);
+            auto particle = misc->As<ExplosionCloud>();
+            if (particle == nullptr)
+                return;
+            uint32_t imageId = 22878 + (particle->frame / 256);
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, particle->z);
             break;
         }
 
         case SPRITE_MISC_CRASH_SPLASH: // 4
         {
-            CrashSplashParticle crashSplash = misc->crash_splash;
-            uint32_t imageId = 22927 + (crashSplash.frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, crashSplash.z);
+            auto crashSplash = misc->As<CrashSplashParticle>();
+            if (crashSplash == nullptr)
+                return;
+            uint32_t imageId = 22927 + (crashSplash->frame / 256);
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, crashSplash->z);
             break;
         }
 
         case SPRITE_MISC_EXPLOSION_FLARE: // 5
         {
             // Like a flare
-            uint32_t imageId = 22896 + (misc->generic.frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->generic.z);
+            auto flare = misc->As<ExplosionFlare>();
+            if (flare == nullptr)
+                return;
+            uint32_t imageId = 22896 + (flare->frame / 256);
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, flare->z);
             break;
         }
 
@@ -103,15 +116,16 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
                 return;
             }
 
-            JumpingFountain jumpingFountain = misc->jumping_fountain;
-
-            uint16_t height = jumpingFountain.z + 6;
+            auto jumpingFountain = misc->As<JumpingFountain>();
+            if (jumpingFountain == nullptr)
+                return;
+            uint16_t height = jumpingFountain->z + 6;
             int32_t ebx = imageDirection / 8;
 
             // Fountain is firing anti clockwise
-            bool reversed = (jumpingFountain.FountainFlags & FOUNTAIN_FLAG::DIRECTION);
+            bool reversed = (jumpingFountain->FountainFlags & FOUNTAIN_FLAG::DIRECTION);
             // Fountain rotation
-            bool rotated = (jumpingFountain.sprite_direction / 16) & 1;
+            bool rotated = (jumpingFountain->sprite_direction / 16) & 1;
             bool isAntiClockwise = (ebx / 2) & 1; // Clockwise or Anti-clockwise
 
             // These cancel each other out
@@ -120,8 +134,8 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
                 isAntiClockwise = !isAntiClockwise;
             }
 
-            uint32_t baseImageId = (jumpingFountain.type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW) ? 23037 : 22973;
-            uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain.frame;
+            uint32_t baseImageId = (jumpingFountain->type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW) ? 23037 : 22973;
+            uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain->frame;
             constexpr std::array<CoordsXY, 2> antiClockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, -3 },
                                                                              CoordsXY{ 0, -3 } };
             constexpr std::array<CoordsXY, 2> clockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, 3 }, CoordsXY{ 0, 3 } };
@@ -134,24 +148,27 @@ void misc_paint(paint_session* session, const rct_sprite* misc, int32_t imageDir
 
         case SPRITE_MISC_BALLOON: // 7
         {
-            Balloon balloon = misc->balloon;
-
-            uint32_t imageId = 22651 + (balloon.frame & 7);
-            if (balloon.popped != 0)
+            auto balloon = misc->As<Balloon>();
+            if (balloon == nullptr)
+                return;
+            uint32_t imageId = 22651 + (balloon->frame & 7);
+            if (balloon->popped != 0)
             {
                 imageId += 8;
             }
 
-            imageId = imageId | (balloon.colour << 19) | IMAGE_TYPE_REMAP;
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, balloon.z);
+            imageId = imageId | (balloon->colour << 19) | IMAGE_TYPE_REMAP;
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, balloon->z);
             break;
         }
 
         case SPRITE_MISC_DUCK:
             if (dpi->zoom_level <= 1)
             {
-                const Duck* duck = &misc->duck;
-                uint32_t imageId = duck_get_frame_image(&misc->duck, imageDirection);
+                const Duck* duck = misc->As<Duck>();
+                if (duck == nullptr)
+                    return;
+                uint32_t imageId = duck->GetFrameImage(imageDirection);
                 if (imageId != 0)
                 {
                     sub_98196C(session, imageId, 0, 0, 1, 1, 0, duck->z);

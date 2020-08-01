@@ -82,19 +82,22 @@ void Balloon::Pop()
 void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
 {
     rct_sprite* sprite = create_sprite(SPRITE_IDENTIFIER_MISC);
-    if (sprite != nullptr)
-    {
-        sprite->balloon.sprite_width = 13;
-        sprite->balloon.sprite_height_negative = 22;
-        sprite->balloon.sprite_height_positive = 11;
-        sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite->balloon.MoveTo(balloonPos);
-        sprite->balloon.type = SPRITE_MISC_BALLOON;
-        sprite->balloon.time_to_move = 0;
-        sprite->balloon.frame = 0;
-        sprite->balloon.colour = colour;
-        sprite->balloon.popped = (isPopped ? 1 : 0);
-    }
+    if (sprite == nullptr)
+        return;
+    sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_MISC;
+    sprite->generic.type = SPRITE_MISC_BALLOON;
+    auto balloon = sprite->generic.As<Balloon>();
+    if (balloon == nullptr)
+        return; // can never happen
+
+    balloon->sprite_width = 13;
+    balloon->sprite_height_negative = 22;
+    balloon->sprite_height_positive = 11;
+    balloon->MoveTo(balloonPos);
+    balloon->time_to_move = 0;
+    balloon->frame = 0;
+    balloon->colour = colour;
+    balloon->popped = (isPopped ? 1 : 0);
 }
 
 void balloon_update(Balloon* balloon)
