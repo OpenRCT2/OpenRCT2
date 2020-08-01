@@ -4629,7 +4629,8 @@ static void vehicle_unset_update_flag_b1(Vehicle* head)
 static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYElement)
 {
     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-    assert(vehicle != nullptr);
+    if (vehicle == nullptr)
+        return;
 
     auto curTrackPos = vehicle->TrackLocation;
     auto curTrackElement = map_get_track_element_at(curTrackPos);
@@ -4744,7 +4745,7 @@ static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t i
     {
         if (ride->IsBlockSectioned())
         {
-            CoordsXYE firstBlock;
+            CoordsXYE firstBlock{};
             ride_create_vehicles_find_first_block(ride, &firstBlock);
             loc_6DDF9C(ride, firstBlock.element);
         }
