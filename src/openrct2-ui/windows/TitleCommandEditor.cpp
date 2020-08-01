@@ -605,8 +605,7 @@ static void window_title_command_editor_update(rct_window* w)
 static void window_title_command_editor_tool_down(
     rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    InteractionInfo info;
-    viewport_interaction_get_item_left(screenCoords, &info);
+    auto info = viewport_interaction_get_item_left(screenCoords);
 
     if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {

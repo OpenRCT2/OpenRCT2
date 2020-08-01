@@ -152,12 +152,12 @@ InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords,
 InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
-int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, InteractionInfo* info);
-int32_t viewport_interaction_left_over(const ScreenCoordsXY& screenCoords);
-int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords);
-int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, InteractionInfo* info);
-int32_t viewport_interaction_right_over(const ScreenCoordsXY& screenCoords);
-int32_t viewport_interaction_right_click(const ScreenCoordsXY& screenCoords);
+InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_left_over(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_left_click(const ScreenCoordsXY& screenCoords);
+InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_right_over(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_right_click(const ScreenCoordsXY& screenCoords);
 
 CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords);
 void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);
