@@ -557,11 +557,11 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
             auto isSelected = (SelectedCell && itemIndex == SelectedCell->Row);
             if (isSelected)
             {
-                gfx_filter_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1), PALETTE_DARKEN_2);
+                gfx_filter_rect(dpi, { { dpi->x, y }, {dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } }, PALETTE_DARKEN_2);
             }
             else if (isHighlighted)
             {
-                gfx_filter_rect(dpi, dpi->x, y, dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1), PALETTE_DARKEN_1);
+                gfx_filter_rect(dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } }, PALETTE_DARKEN_1);
             }
             else if (isStriped)
             {
