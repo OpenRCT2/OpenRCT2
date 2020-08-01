@@ -10,12 +10,13 @@
 #pragma once
 
 #include "../common.h"
+#include "Scenario.h"
 
 struct source_desc
 {
     const utf8* title;
     uint8_t id;
-    uint8_t source;
+    ScenarioSource source;
     int32_t index;
     uint8_t category;
 };

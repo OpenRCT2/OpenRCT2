@@ -346,7 +346,7 @@ namespace ScenarioSources
                 {
                     outDesc->title = desc->Title;
                     outDesc->id = desc->Id;
-                    outDesc->source = static_cast<uint8_t>(i);
+                    outDesc->source = static_cast<ScenarioSource>(i);
                     outDesc->index = currentIndex;
                     outDesc->category = desc->Category;
                     return true;
@@ -357,7 +357,7 @@ namespace ScenarioSources
 
         outDesc->title = nullptr;
         outDesc->id = SC_UNIDENTIFIED;
-        outDesc->source = SCENARIO_SOURCE_OTHER;
+        outDesc->source = ScenarioSource::Other;
         outDesc->index = -1;
         outDesc->category = SCENARIO_CATEGORY_OTHER;
         return false;
@@ -377,7 +377,7 @@ namespace ScenarioSources
                 {
                     outDesc->title = desc->Title;
                     outDesc->id = desc->Id;
-                    outDesc->source = static_cast<uint8_t>(i);
+                    outDesc->source = static_cast<ScenarioSource>(i);
                     outDesc->index = currentIndex;
                     outDesc->category = desc->Category;
                     return true;
@@ -388,7 +388,7 @@ namespace ScenarioSources
 
         outDesc->title = "";
         outDesc->id = SC_UNIDENTIFIED;
-        outDesc->source = SCENARIO_SOURCE_OTHER;
+        outDesc->source = ScenarioSource::Other;
         outDesc->index = -1;
         outDesc->category = SCENARIO_CATEGORY_OTHER;
         return false;

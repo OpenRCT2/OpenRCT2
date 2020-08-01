@@ -212,9 +212,9 @@ static void window_scenarioselect_init_tabs(rct_window* w)
         const scenario_index_entry* scenario = scenario_repository_get_by_index(i);
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
-            if (_titleEditor && scenario->source_game == SCENARIO_SOURCE_OTHER)
+            if (_titleEditor && scenario->source_game == ScenarioSource::Other)
                 continue;
-            showPages |= 1 << scenario->source_game;
+            showPages |= 1 << (uint8_t)scenario->source_game;
         }
         else
         {
@@ -695,14 +695,14 @@ static void initialise_list_items(rct_window* w)
 
         if (!is_scenario_visible(w, scenario))
             continue;
-        if (_titleEditor && scenario->source_game == SCENARIO_SOURCE_OTHER)
+        if (_titleEditor && scenario->source_game == ScenarioSource::Other)
             continue;
 
         // Category heading
         rct_string_id headingStringId = STR_NONE;
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
-            if (w->selected_tab != SCENARIO_SOURCE_REAL && currentHeading != scenario->category)
+            if (w->selected_tab != (uint8_t)ScenarioSource::Real && currentHeading != scenario->category)
             {
                 currentHeading = scenario->category;
                 headingStringId = ScenarioCategoryStringIds[currentHeading];
@@ -712,9 +712,9 @@ static void initialise_list_items(rct_window* w)
         {
             if (w->selected_tab <= SCENARIO_CATEGORY_EXPERT)
             {
-                if (currentHeading != scenario->source_game)
+                if (currentHeading != (uint8_t)scenario->source_game)
                 {
-                    currentHeading = scenario->source_game;
+                    currentHeading = (uint8_t)scenario->source_game;
                     headingStringId = ScenarioOriginStringIds[currentHeading];
                 }
             }
@@ -805,7 +805,7 @@ static bool is_scenario_visible(rct_window* w, const scenario_index_entry* scena
 {
     if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
     {
-        if (scenario->source_game != w->selected_tab)
+        if ((uint8_t)scenario->source_game != w->selected_tab)
         {
             return false;
         }
