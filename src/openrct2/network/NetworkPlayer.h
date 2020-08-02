@@ -17,7 +17,7 @@
 #include <string>
 #include <unordered_map>
 
-class NetworkPacket;
+struct NetworkPacket;
 
 class NetworkPlayer final
 {

@@ -16,13 +16,15 @@
 #include <memory>
 #include <vector>
 
-class NetworkPacket final
+struct NetworkPacket final
 {
-public:
     uint16_t Size = 0;
     std::vector<uint8_t> Data;
     size_t BytesTransferred = 0;
     size_t BytesRead = 0;
+
+    NetworkPacket() = default;
+    NetworkPacket(NetworkCommand id);
 
     uint8_t* GetData();
     const uint8_t* GetData() const;

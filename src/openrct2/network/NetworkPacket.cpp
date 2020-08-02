@@ -15,6 +15,11 @@
 
 #    include <memory>
 
+NetworkPacket::NetworkPacket(NetworkCommand id)
+{
+    *this << static_cast<std::underlying_type<NetworkCommand>::type>(id);
+}
+
 uint8_t* NetworkPacket::GetData()
 {
     return Data.data();
