@@ -248,6 +248,12 @@ void footpath_provisional_update()
 CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
 {
     rct_window* window = window_find_from_point(screenCoords);
+    if (window == nullptr || window->viewport == nullptr)
+    {
+        CoordsXY position{};
+        position.setNull();
+        return position;
+    }
     auto viewport = window->viewport;
     auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH);
     if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_FOOTPATH
@@ -340,6 +346,12 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
 {
     // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
     rct_window* window = window_find_from_point(screenCoords);
+    if (window == nullptr || window->viewport == nullptr)
+    {
+        CoordsXY ret{};
+        ret.setNull();
+        return ret;
+    }
     auto viewport = window->viewport;
     auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_RIDE);
     *tileElement = info.Element;
