@@ -720,14 +720,10 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    int32_t interactionType{};
-    TileElement* tileElement{};
-    CoordsXY mapCoord = {};
-    get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord, &interactionType,
-        &tileElement, nullptr);
+    auto info = get_map_coordinates_from_pos(
+        screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
 
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE || tileElement == nullptr)
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE || info.Element == nullptr)
     {
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         footpath_provisional_update();
@@ -735,8 +731,8 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
     else
     {
         // Check for change
-        if ((gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1) && gFootpathProvisionalPosition.x == mapCoord.x
-            && gFootpathProvisionalPosition.y == mapCoord.y && gFootpathProvisionalPosition.z == tileElement->GetBaseZ())
+        if ((gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+            && gFootpathProvisionalPosition == CoordsXYZ{ info.Loc, info.Element->GetBaseZ() })
         {
             return;
         }
@@ -744,18 +740,18 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
         // Set map selection
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        gMapSelectPositionA = mapCoord;
-        gMapSelectPositionB = mapCoord;
+        gMapSelectPositionA = info.Loc;
+        gMapSelectPositionB = info.Loc;
 
         footpath_provisional_update();
 
         // Set provisional path
         int32_t slope = 0;
-        switch (interactionType)
+        switch (info.SpriteType)
         {
             case VIEWPORT_INTERACTION_ITEM_TERRAIN:
             {
-                auto surfaceElement = tileElement->AsSurface();
+                auto surfaceElement = info.Element->AsSurface();
                 if (surfaceElement != nullptr)
                 {
                     slope = DefaultPathSlope[surfaceElement->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
@@ -764,7 +760,7 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
             }
             case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
             {
-                auto pathElement = tileElement->AsPath();
+                auto pathElement = info.Element->AsPath();
                 if (pathElement != nullptr)
                 {
                     slope = pathElement->GetSlopeDirection();
@@ -775,8 +771,10 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
                 }
                 break;
             }
+            default:
+                break;
         }
-        auto z = tileElement->GetBaseZ();
+        auto z = info.Element->GetBaseZ();
         if (slope & RAISE_FOOTPATH_FLAG)
         {
             slope &= ~RAISE_FOOTPATH_FLAG;
@@ -784,7 +782,7 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
         }
         int32_t pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
-        _window_footpath_cost = footpath_provisional_set(pathType, { mapCoord, z }, slope);
+        _window_footpath_cost = footpath_provisional_set(pathType, { info.Loc, z }, slope);
         window_invalidate_by_class(WC_FOOTPATH);
     }
 }
@@ -839,9 +837,6 @@ static void window_footpath_set_selection_start_bridge_at_point(const ScreenCoor
  */
 static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoords)
 {
-    int32_t interactionType, currentType, selectedType, z;
-    TileElement* tileElement;
-
     if (_footpathErrorOccured)
     {
         return;
@@ -849,42 +844,42 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
 
     footpath_provisional_update();
 
-    CoordsXY mapCoord = {};
-    get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord, &interactionType,
-        &tileElement, nullptr);
+    const auto info = get_map_coordinates_from_pos(
+        screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
 
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         return;
     }
 
     // Set path
-    currentType = 0;
-    switch (interactionType)
+    auto slope = 0;
+    switch (info.SpriteType)
     {
         case VIEWPORT_INTERACTION_ITEM_TERRAIN:
-            currentType = DefaultPathSlope[tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+            slope = DefaultPathSlope[info.Element->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            currentType = tileElement->AsPath()->GetSlopeDirection();
-            if (tileElement->AsPath()->IsSloped())
+            slope = info.Element->AsPath()->GetSlopeDirection();
+            if (info.Element->AsPath()->IsSloped())
             {
-                currentType |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+                slope |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
             }
             break;
+        default:
+            break;
     }
-    z = tileElement->GetBaseZ();
-    if (currentType & RAISE_FOOTPATH_FLAG)
+    auto z = info.Element->GetBaseZ();
+    if (slope & RAISE_FOOTPATH_FLAG)
     {
-        currentType &= ~RAISE_FOOTPATH_FLAG;
+        slope &= ~RAISE_FOOTPATH_FLAG;
         z += PATH_HEIGHT_STEP;
     }
-    selectedType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
+    auto selectedType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    auto footpathPlaceAction = FootpathPlaceAction({ mapCoord.x, mapCoord.y, z }, currentType, selectedType);
+    auto footpathPlaceAction = FootpathPlaceAction({ info.Loc, z }, slope, selectedType);
     footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
         if (result->Error == GA_ERROR::OK)
         {

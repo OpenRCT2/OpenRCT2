@@ -190,12 +190,9 @@ static TileCoordsXY get_location()
     rct_window* w = window_get_main();
     if (w != nullptr)
     {
-        int32_t interactionType;
-        TileElement* tileElement;
-        CoordsXY mapCoord;
-        get_map_coordinates_from_pos_window(
-            w, { w->viewport->view_width / 2, w->viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord,
-            &interactionType, &tileElement, nullptr);
+        auto info = get_map_coordinates_from_pos_window(
+            w, { w->viewport->view_width / 2, w->viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN);
+        auto mapCoord = info.Loc;
         mapCoord.x -= 16;
         mapCoord.y -= 16;
         tileCoord = TileCoordsXY{ mapCoord };
@@ -608,17 +605,17 @@ static void window_title_command_editor_update(rct_window* w)
 static void window_title_command_editor_tool_down(
     rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    viewport_interaction_info info;
-    viewport_interaction_get_item_left(screenCoords, &info);
+    auto info = viewport_interaction_get_item_left(screenCoords);
 
-    if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
+        auto entity = info.Entity;
         bool validSprite = false;
-        auto peep = info.sprite->As<Peep>();
-        auto vehicle = info.sprite->As<Vehicle>();
-        auto litter = info.sprite->As<Litter>();
-        auto duck = info.sprite->As<Duck>();
-        auto balloon = info.sprite->As<Balloon>();
+        auto peep = entity->As<Peep>();
+        auto vehicle = entity->As<Vehicle>();
+        auto litter = entity->As<Litter>();
+        auto duck = entity->As<Duck>();
+        auto balloon = entity->As<Balloon>();
         if (peep != nullptr)
         {
             validSprite = true;
@@ -661,7 +658,7 @@ static void window_title_command_editor_tool_down(
 
         if (validSprite)
         {
-            command.SpriteIndex = info.sprite->sprite_index;
+            command.SpriteIndex = entity->sprite_index;
             window_follow_sprite(w, static_cast<size_t>(command.SpriteIndex));
             tool_cancel();
             w->Invalidate();

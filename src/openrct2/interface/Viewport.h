@@ -49,7 +49,7 @@ enum
     VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1 << 19),
 };
 
-enum
+enum ViewportInteractionItem : uint8_t
 {
     VIEWPORT_INTERACTION_ITEM_NONE,
     VIEWPORT_INTERACTION_ITEM_TERRAIN,
@@ -83,25 +83,17 @@ enum
     VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
 };
 
-struct viewport_interaction_info
-{
-    int32_t type;
-    int32_t x;
-    int32_t y;
-    union
-    {
-        TileElement* tileElement;
-        SpriteBase* sprite;
-    };
-};
-
 struct InteractionInfo
 {
     InteractionInfo() = default;
     InteractionInfo(const paint_struct* ps);
     CoordsXY Loc;
-    TileElement* Element = nullptr;
-    uint8_t SpriteType;
+    union
+    {
+        TileElement* Element = nullptr;
+        SpriteBase* Entity;
+    };
+    ViewportInteractionItem SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
 };
 
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
@@ -156,20 +148,16 @@ void show_construction_rights();
 void hide_construction_rights();
 void viewport_set_visibility(uint8_t mode);
 
-void get_map_coordinates_from_pos(
-    const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
-    rct_viewport** viewport);
-void get_map_coordinates_from_pos_window(
-    rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
-    TileElement** tileElement, rct_viewport** viewport);
+InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t flags);
+InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
-int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info);
-int32_t viewport_interaction_left_over(const ScreenCoordsXY& screenCoords);
-int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords);
-int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info);
-int32_t viewport_interaction_right_over(const ScreenCoordsXY& screenCoords);
-int32_t viewport_interaction_right_click(const ScreenCoordsXY& screenCoords);
+InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_left_over(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_left_click(const ScreenCoordsXY& screenCoords);
+InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_right_over(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_right_click(const ScreenCoordsXY& screenCoords);
 
 CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords);
 void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);

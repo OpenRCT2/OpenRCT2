@@ -15,6 +15,7 @@
 #include "../actions/FootpathRemoveAction.hpp"
 #include "../actions/LandSetRightsAction.hpp"
 #include "../core/Guard.hpp"
+#include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
@@ -246,32 +247,28 @@ void footpath_provisional_update()
  */
 CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
 {
-    int32_t z = 0, interactionType;
-    TileElement* myTileElement;
-    rct_viewport* viewport;
-    CoordsXY position = {};
-
-    get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH, position, &interactionType, &myTileElement, &viewport);
-    if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH
+    rct_window* window = window_find_from_point(screenCoords);
+    auto viewport = window->viewport;
+    auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH);
+    if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_FOOTPATH
         || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
     {
-        get_map_coordinates_from_pos(
-            screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, position, &interactionType,
-            &myTileElement, &viewport);
-        if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+        info = get_map_coordinates_from_pos_window(
+            window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
+        if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
         {
+            auto position = info.Loc;
             position.setNull();
             return position;
         }
     }
 
-    auto minPosition = position;
-    auto maxPosition = position + CoordsXY{ 31, 31 };
-
-    position += CoordsXY{ 16, 16 };
-
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
+    auto minPosition = info.Loc;
+    auto maxPosition = info.Loc + CoordsXY{ 31, 31 };
+    auto myTileElement = info.Element;
+    auto position = info.Loc.ToTileCentre();
+    auto z = 0;
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
     {
         z = myTileElement->GetBaseZ();
         if (myTileElement->AsPath()->IsSloped())
@@ -284,7 +281,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
 
     for (int32_t i = 0; i < 5; i++)
     {
-        if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH)
+        if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_FOOTPATH)
         {
             z = tile_element_height(position);
         }
@@ -342,14 +339,11 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
 CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement)
 {
     // First check if we point at an entrance or exit. In that case, we would want the path coming from the entrance/exit.
-    int32_t interactionType;
-    rct_viewport* viewport;
-
-    CoordsXY map_pos = {};
-    get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_RIDE, map_pos, &interactionType, tileElement, &viewport);
-
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE
+    rct_window* window = window_find_from_point(screenCoords);
+    auto viewport = window->viewport;
+    auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_RIDE);
+    *tileElement = info.Element;
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_RIDE
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
         && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
@@ -361,14 +355,14 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
             bx &= 3;
             if (direction != nullptr)
                 *direction = bx;
-            return map_pos;
+            return info.Loc;
         }
     }
 
-    get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
-        map_pos, &interactionType, tileElement, &viewport);
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_RIDE && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+    info = get_map_coordinates_from_pos_window(
+        window, screenCoords,
+        VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_RIDE && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
         int32_t directions = entrance_get_directions(*tileElement);
         if (directions & 0x0F)
@@ -376,7 +370,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
             int32_t bx = (*tileElement)->GetDirectionWithOffset(bitscanforward(directions));
             if (direction != nullptr)
                 *direction = bx;
-            return map_pos;
+            return info.Loc;
         }
     }
 

@@ -652,15 +652,11 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
             rct_window* w = window_get_main();
             if (w != nullptr)
             {
-                int32_t interactionType;
-                TileElement* tileElement;
-                CoordsXY mapCoord = {};
                 rct_viewport* viewport = window_get_viewport(w);
-                get_map_coordinates_from_pos(
-                    { viewport->view_width / 2, viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN, mapCoord,
-                    &interactionType, &tileElement, nullptr);
+                auto info = get_map_coordinates_from_pos(
+                    { viewport->view_width / 2, viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN);
 
-                auto tileMapCoord = TileCoordsXY(mapCoord);
+                auto tileMapCoord = TileCoordsXY(info.Loc);
                 console.WriteFormatLine("location %d %d", tileMapCoord.x, tileMapCoord.y);
             }
         }

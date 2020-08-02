@@ -145,11 +145,9 @@ static void window_viewport_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             mainWindow = window_get_main();
             if (mainWindow != nullptr)
             {
-                CoordsXY mapCoords;
-                get_map_coordinates_from_pos(
-                    { w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2) }, VIEWPORT_INTERACTION_MASK_NONE,
-                    mapCoords, nullptr, nullptr, nullptr);
-                window_scroll_to_location(mainWindow, { mapCoords, tile_element_height(mapCoords) });
+                auto info = get_map_coordinates_from_pos(
+                    { w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2) }, VIEWPORT_INTERACTION_MASK_NONE);
+                window_scroll_to_location(mainWindow, { info.Loc, tile_element_height(info.Loc) });
             }
             break;
     }

@@ -1632,57 +1632,48 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
  * tileElement: edx
  * viewport: edi
  */
-void get_map_coordinates_from_pos(
-    const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
-    rct_viewport** viewport)
+InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t flags)
 {
     rct_window* window = window_find_from_point(screenCoords);
-    get_map_coordinates_from_pos_window(window, screenCoords, flags, mapCoords, interactionType, tileElement, viewport);
+    return get_map_coordinates_from_pos_window(window, screenCoords, flags);
 }
 
-void get_map_coordinates_from_pos_window(
-    rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
-    TileElement** tileElement, rct_viewport** viewport)
+InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags)
 {
     InteractionInfo info{};
-    if (window != nullptr && window->viewport != nullptr)
+    if (window == nullptr || window->viewport == nullptr)
     {
-        rct_viewport* myviewport = window->viewport;
-        screenCoords -= myviewport->pos;
-        if (screenCoords.x >= 0 && screenCoords.x < static_cast<int32_t>(myviewport->width) && screenCoords.y >= 0
-            && screenCoords.y < static_cast<int32_t>(myviewport->height))
-        {
-            screenCoords.x = screenCoords.x * myviewport->zoom;
-            screenCoords.y = screenCoords.y * myviewport->zoom;
-            screenCoords += myviewport->viewPos;
-            if (myviewport->zoom > 0)
-            {
-                screenCoords.x &= (0xFFFF * myviewport->zoom) & 0xFFFF;
-                screenCoords.y &= (0xFFFF * myviewport->zoom) & 0xFFFF;
-            }
-            rct_drawpixelinfo dpi;
-            dpi.x = screenCoords.x;
-            dpi.y = screenCoords.y;
-            dpi.height = 1;
-            dpi.zoom_level = myviewport->zoom;
-            dpi.width = 1;
-
-            paint_session* session = paint_session_alloc(&dpi, myviewport->flags);
-            paint_session_generate(session);
-            paint_session_arrange(session);
-            info = set_interaction_info_from_paint_session(session, flags & 0xFFFF);
-            paint_session_free(session);
-        }
-        if (viewport != nullptr)
-            *viewport = myviewport;
+        return info;
     }
-    if (interactionType != nullptr)
-        *interactionType = info.SpriteType;
 
-    mapCoords = info.Loc;
+    rct_viewport* myviewport = window->viewport;
+    auto viewLoc = screenCoords;
+    viewLoc -= myviewport->pos;
+    if (viewLoc.x >= 0 && viewLoc.x < static_cast<int32_t>(myviewport->width) && viewLoc.y >= 0
+        && viewLoc.y < static_cast<int32_t>(myviewport->height))
+    {
+        viewLoc.x = viewLoc.x * myviewport->zoom;
+        viewLoc.y = viewLoc.y * myviewport->zoom;
+        viewLoc += myviewport->viewPos;
+        if (myviewport->zoom > 0)
+        {
+            viewLoc.x &= (0xFFFF * myviewport->zoom) & 0xFFFF;
+            viewLoc.y &= (0xFFFF * myviewport->zoom) & 0xFFFF;
+        }
+        rct_drawpixelinfo dpi;
+        dpi.x = viewLoc.x;
+        dpi.y = viewLoc.y;
+        dpi.height = 1;
+        dpi.zoom_level = myviewport->zoom;
+        dpi.width = 1;
 
-    if (tileElement != nullptr)
-        *tileElement = info.Element;
+        paint_session* session = paint_session_alloc(&dpi, myviewport->flags);
+        paint_session_generate(session);
+        paint_session_arrange(session);
+        info = set_interaction_info_from_paint_session(session, flags & 0xFFFF);
+        paint_session_free(session);
+    }
+    return info;
 }
 
 /**
@@ -1768,27 +1759,25 @@ static rct_viewport* viewport_find_from_point(const ScreenCoordsXY& screenCoords
  */
 std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rct_viewport** viewport)
 {
-    int32_t interactionType;
-    rct_viewport* myViewport = nullptr;
-    CoordsXY tileLoc;
     // This will get the tile location but we will need the more accuracy
-    get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN, tileLoc, &interactionType, nullptr, &myViewport);
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+    rct_window* window = window_find_from_point(screenCoords);
+    auto myViewport = window->viewport;
+    auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN);
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
         return std::nullopt;
     }
 
     auto start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenCoords);
-    CoordsXY cursorMapPos = { tileLoc.x + 16, tileLoc.y + 16 };
+    CoordsXY cursorMapPos = info.Loc.ToTileCentre();
 
     // Iterates the cursor location to work out exactly where on the tile it is
     for (int32_t i = 0; i < 5; i++)
     {
         int32_t z = tile_element_height(cursorMapPos);
         cursorMapPos = viewport_coord_to_map_coord(start_vp_pos, z);
-        cursorMapPos.x = std::clamp(cursorMapPos.x, tileLoc.x, tileLoc.x + 31);
-        cursorMapPos.y = std::clamp(cursorMapPos.y, tileLoc.y, tileLoc.y + 31);
+        cursorMapPos.x = std::clamp(cursorMapPos.x, info.Loc.x, info.Loc.x + 31);
+        cursorMapPos.y = std::clamp(cursorMapPos.y, info.Loc.y, info.Loc.y + 31);
     }
 
     if (viewport != nullptr)
