@@ -27,14 +27,18 @@ enum {
     WIDX_START_NEW_GAME,
     WIDX_CONTINUE_SAVED_GAME,
     WIDX_MULTIPLAYER,
-    WIDX_GAME_TOOLS
+    WIDX_GAME_TOOLS,
+    WIDX_NEW_VERSION,
 };
 
+static ScreenRect _filterRect;
+
 static rct_widget window_title_menu_widgets[] = {
-    MakeWidget({0, 0}, {82, 82}, WWT_IMGBTN, 2, SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
-    MakeWidget({0, 0}, {82, 82}, WWT_IMGBTN, 2, SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
-    MakeWidget({0, 0}, {82, 82}, WWT_IMGBTN, 2, SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
-    MakeWidget({0, 0}, {82, 82}, WWT_IMGBTN, 2, SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
+    MakeWidget({0, 28}, {82, 82}, WWT_IMGBTN, 2, SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
+    MakeWidget({0, 28}, {82, 82}, WWT_IMGBTN, 2, SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
+    MakeWidget({0, 28}, {82, 82}, WWT_IMGBTN, 2, SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
+    MakeWidget({0, 28}, {82, 82}, WWT_IMGBTN, 2, SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
+    MakeWidget({0, 0}, {82 * 4, 28}, WWT_EMPTY, 1, STR_UPDATE_AVAILABLE),
     { WIDGETS_END },
 };
 
@@ -42,6 +46,7 @@ static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex
 static void window_title_menu_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_title_menu_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, int32_t *cursorId);
+static void window_title_menu_invalidate(rct_window *w);
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_title_menu_events = {
@@ -70,7 +75,7 @@ static rct_window_event_list window_title_menu_events = {
     nullptr,
     window_title_menu_cursor,
     nullptr,
-    nullptr,
+    window_title_menu_invalidate,
     window_title_menu_paint,
     nullptr
 };
@@ -85,7 +90,7 @@ rct_window* window_title_menu_open()
     rct_window* window;
 
     window = window_create(
-        ScreenCoordsXY(0, context_get_height() - 154), 0, 100, &window_title_menu_events, WC_TITLE_MENU,
+        ScreenCoordsXY(0, context_get_height() - 182), 0, 100, &window_title_menu_events, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_title_menu_widgets;
     window->enabled_widgets
@@ -97,7 +102,7 @@ rct_window* window_title_menu_open()
 
     rct_widgetindex i = 0;
     int32_t x = 0;
-    for (rct_widget* widget = window->widgets; widget->type != WWT_LAST; widget++)
+    for (rct_widget* widget = window->widgets; widget != &window->widgets[WIDX_NEW_VERSION]; widget++)
     {
         if (widget_is_enabled(window, i))
         {
@@ -113,7 +118,9 @@ rct_window* window_title_menu_open()
         i++;
     }
     window->width = x;
+    window->widgets[WIDX_NEW_VERSION].right = window->width;
     window->windowPos.x = (context_get_width() - window->width) / 2;
+    window->colours[1] = TRANSLUCENT(COLOUR_LIGHT_ORANGE);
 
     window_init_scroll_widgets(window);
 
@@ -172,6 +179,9 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
                 context_open_window(WC_SERVER_LIST);
             }
             break;
+        case WIDX_NEW_VERSION:
+            context_open_window(WC_NEW_VERSION);
+            break;
     }
 }
 
@@ -226,8 +236,19 @@ static void window_title_menu_cursor(
     gTooltipTimeout = 2000;
 }
 
+static void window_title_menu_invalidate(rct_window* w)
+{
+    _filterRect = { w->windowPos.x, w->windowPos.y + 28, w->windowPos.x + w->width - 1, w->windowPos.y + 82 + 28 - 1 };
+    if (OpenRCT2::GetContext()->HasNewVersionInfo())
+    {
+        w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
+        w->widgets[WIDX_NEW_VERSION].type = WWT_BUTTON;
+        _filterRect.Point1.y = w->windowPos.y;
+    }
+}
+
 static void window_title_menu_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    gfx_filter_rect(dpi, w->windowPos.x, w->windowPos.y, w->windowPos.x + w->width - 1, w->windowPos.y + 82 - 1, PALETTE_51);
+    gfx_filter_rect(dpi, _filterRect, PALETTE_51);
     window_draw_widgets(w, dpi);
 }

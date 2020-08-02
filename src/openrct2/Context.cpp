@@ -339,17 +339,6 @@ namespace OpenRCT2
 
             crash_init();
 
-            if (!_versionCheckFuture.valid())
-            {
-                _versionCheckFuture = std::async(std::launch::async, [this] {
-                    _newVersionInfo = get_latest_version();
-                    if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
-                    {
-                        _hasNewVersionInfo = true;
-                    }
-                });
-            }
-
             if (gConfigGeneral.last_run_version != nullptr && String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
             {
                 gOpenRCT2ShowChangelog = false;
@@ -486,6 +475,18 @@ namespace OpenRCT2
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             _uiContext->Initialise();
+
+            if (!_versionCheckFuture.valid())
+            {
+                _versionCheckFuture = std::async(std::launch::async, [this] {
+                    _newVersionInfo = get_latest_version();
+                    if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
+                    {
+                        _hasNewVersionInfo = true;
+                    }
+                });
+            }
+
             return true;
         }
 

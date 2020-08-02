@@ -128,8 +128,8 @@ rct_window* window_new_version_open()
     window->max_height = MIN_WH;
 
     window->colours[0] = COLOUR_GREY;
-    window->colours[1] = COLOUR_LIGHT_BLUE;
-    window->colours[2] = COLOUR_LIGHT_BLUE;
+    window->colours[1] = COLOUR_DARK_GREEN;
+    window->colours[2] = COLOUR_DARK_GREEN;
 
     return window;
 }

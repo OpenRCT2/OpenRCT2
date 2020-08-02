@@ -121,6 +121,8 @@ enum FILE_MENU_DDIDX {
     // separator
     DDIDX_QUIT_TO_MENU = 10,
     DDIDX_EXIT_OPENRCT2 = 11,
+    // separator
+    DDIDX_UPDATE_AVAILABLE = 13,
 };
 
 enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
@@ -488,6 +490,12 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsFormat[10] = STR_QUIT_TO_MENU;
                 gDropdownItemsFormat[11] = STR_EXIT_OPENRCT2;
                 numItems = 12;
+                if (OpenRCT2::GetContext()->HasNewVersionInfo())
+                {
+                    gDropdownItemsFormat[12] = STR_EMPTY;
+                    gDropdownItemsFormat[13] = STR_UPDATE_AVAILABLE;
+                    numItems += 2;
+                }
             }
             window_dropdown_show_text(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
@@ -602,6 +610,9 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 }
                 case DDIDX_EXIT_OPENRCT2:
                     context_quit();
+                    break;
+                case DDIDX_UPDATE_AVAILABLE:
+                    context_open_window(WC_NEW_VERSION);
                     break;
             }
             break;
