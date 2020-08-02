@@ -971,22 +971,20 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
                 if (!(tile_element->AsPath()->GetEdges() & EDGE_NE))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(
-                        session->MapPosition, -16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                        session->MapPosition, -16, 0, height + 23, LightType::Lantern3);
                 }
                 if (!(tile_element->AsPath()->GetEdges() & EDGE_SE))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(
-                        session->MapPosition, 0, 16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 16, height + 23, LightType::Lantern3);
                 }
                 if (!(tile_element->AsPath()->GetEdges() & EDGE_SW))
                 {
-                    lightfx_add_3d_light_magic_from_drawing_tile(
-                        session->MapPosition, 16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 23, LightType::Lantern3);
                 }
                 if (!(tile_element->AsPath()->GetEdges() & EDGE_NW))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(
-                        session->MapPosition, 0, -16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                        session->MapPosition, 0, -16, height + 23, LightType::Lantern3);
                 }
             }
         }
