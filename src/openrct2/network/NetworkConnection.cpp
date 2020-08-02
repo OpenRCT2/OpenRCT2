@@ -51,13 +51,13 @@ int32_t NetworkConnection::ReadPacket()
             {
                 return NETWORK_READPACKET_DISCONNECTED;
             }
-            InboundPacket.Data->resize(InboundPacket.Size);
+            InboundPacket.Data.resize(InboundPacket.Size);
         }
     }
     else
     {
         // read packet data
-        if (InboundPacket.Data->capacity() > 0)
+        if (InboundPacket.Data.capacity() > 0)
         {
             void* buffer = &InboundPacket.GetData()[InboundPacket.BytesTransferred - sizeof(InboundPacket.Size)];
             size_t bufferLength = sizeof(InboundPacket.Size) + InboundPacket.Size - InboundPacket.BytesTransferred;
@@ -88,7 +88,7 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
     std::vector<uint8_t> tosend;
     tosend.reserve(sizeof(sizen) + packet.Size);
     tosend.insert(tosend.end(), reinterpret_cast<uint8_t*>(&sizen), reinterpret_cast<uint8_t*>(&sizen) + sizeof(sizen));
-    tosend.insert(tosend.end(), packet.Data->begin(), packet.Data->end());
+    tosend.insert(tosend.end(), packet.Data.begin(), packet.Data.end());
 
     const void* buffer = &tosend[packet.BytesTransferred];
     size_t bufferSize = tosend.size() - packet.BytesTransferred;
@@ -106,15 +106,15 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
     return sendComplete;
 }
 
-void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front)
+void NetworkConnection::QueuePacket(NetworkPacket&& packet, bool front)
 {
-    if (AuthStatus == NETWORK_AUTH_OK || !packet->CommandRequiresAuth())
+    if (AuthStatus == NETWORK_AUTH_OK || !packet.CommandRequiresAuth())
     {
-        packet->Size = static_cast<uint16_t>(packet->Data->size());
+        packet.Size = static_cast<uint16_t>(packet.Data.size());
         if (front)
         {
             // If the first packet was already partially sent add new packet to second position
-            if (!_outboundPackets.empty() && _outboundPackets.front()->BytesTransferred > 0)
+            if (!_outboundPackets.empty() && _outboundPackets.front().BytesTransferred > 0)
             {
                 auto it = _outboundPackets.begin();
                 it++; // Second position
@@ -134,9 +134,9 @@ void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool 
 
 void NetworkConnection::SendQueuedPackets()
 {
-    while (!_outboundPackets.empty() && SendPacket(*_outboundPackets.front()))
+    while (!_outboundPackets.empty() && SendPacket(_outboundPackets.front()))
     {
-        _outboundPackets.remove(_outboundPackets.front());
+        _outboundPackets.pop_front();
     }
 }
 

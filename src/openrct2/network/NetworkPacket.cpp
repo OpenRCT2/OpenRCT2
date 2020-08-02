@@ -15,35 +15,32 @@
 
 #    include <memory>
 
-std::unique_ptr<NetworkPacket> NetworkPacket::Allocate()
-{
-    return std::make_unique<NetworkPacket>();
-}
-
-std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket& packet)
-{
-    return std::make_unique<NetworkPacket>(packet);
-}
-
 uint8_t* NetworkPacket::GetData()
 {
-    return &(*Data)[0];
+    return Data.data();
+}
+
+const uint8_t* NetworkPacket::GetData() const
+{
+    return Data.data();
 }
 
 NetworkCommand NetworkPacket::GetCommand() const
 {
-    if (Data->size() < sizeof(uint32_t))
+    if (Data.size() < sizeof(uint32_t))
         return NetworkCommand::Invalid;
 
-    const uint32_t commandId = ByteSwapBE(*reinterpret_cast<uint32_t*>(&(*Data)[0]));
-    return static_cast<NetworkCommand>(commandId);
+    uint32_t commandId = 0;
+    std::memcpy(&commandId, GetData(), sizeof(commandId));
+
+    return static_cast<NetworkCommand>(ByteSwapBE(commandId));
 }
 
 void NetworkPacket::Clear()
 {
     BytesTransferred = 0;
     BytesRead = 0;
-    Data->clear();
+    Data.clear();
 }
 
 bool NetworkPacket::CommandRequiresAuth()
@@ -63,9 +60,10 @@ bool NetworkPacket::CommandRequiresAuth()
     }
 }
 
-void NetworkPacket::Write(const uint8_t* bytes, size_t size)
+void NetworkPacket::Write(const void* bytes, size_t size)
 {
-    Data->insert(Data->end(), bytes, bytes + size);
+    const uint8_t* src = reinterpret_cast<const uint8_t*>(bytes);
+    Data.insert(Data.end(), src, src + size);
 }
 
 void NetworkPacket::WriteString(const utf8* string)
