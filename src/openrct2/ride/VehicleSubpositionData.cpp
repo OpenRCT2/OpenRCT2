@@ -25724,24 +25724,24 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoListReverserRCRear
 };
 
 // rct2: 0x008B8F30
-constexpr const rct_vehicle_info_list * const * gTrackVehicleInfo[VEHICLE_TRACK_SUBPOSITION_COUNT] = {
-    TrackVehicleInfoListDefault,                  // VEHICLE_TRACK_SUBPOSITION_0
-    TrackVehicleInfoListChairliftGoingOut,        // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT
-    TrackVehicleInfoListChairliftGoingBack,       // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK
-    TrackVehicleInfoListChairliftEndBullwheel,    // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL
-    TrackVehicleInfoListChairliftStartBullwheel,  // VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL
-    TrackVehicleInfoListGoKartsLeftLane,          // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE
-    TrackVehicleInfoListGoKartsRightLane,         // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE
-    TrackVehicleInfoListGoKartsMovingToRightLane, // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE
-    TrackVehicleInfoListGoKartsMovingToLeftLane,  // VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE
-    TrackVehicleInfoListMiniGolfStartPathA9,      // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9, VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_A_9
-    TrackVehicleInfoListMiniGolfBallPathA10,      // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10
-    TrackVehicleInfoListMiniGolfPathB11,          // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_B_11
-    TrackVehicleInfoListMiniGolfBallPathB12,      // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12
-    TrackVehicleInfoListMiniGolfPathC13,          // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_13
-    TrackVehicleInfoListMiniGolfPathC14,          // VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_14
-    TrackVehicleInfoListReverserRCFrontBogie,     // VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE
-    TrackVehicleInfoListReverserRCRearBogie,      // VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE
+constexpr const rct_vehicle_info_list * const * gTrackVehicleInfo[static_cast<uint8_t>(VehicleTrackSubposition::Count)] = {
+    TrackVehicleInfoListDefault,                  // VehicleTrackSubposition::Default
+    TrackVehicleInfoListChairliftGoingOut,        // VehicleTrackSubposition::ChairliftGoingOut
+    TrackVehicleInfoListChairliftGoingBack,       // VehicleTrackSubposition::ChairliftGoingBack
+    TrackVehicleInfoListChairliftEndBullwheel,    // VehicleTrackSubposition::ChairliftEndBullwheel
+    TrackVehicleInfoListChairliftStartBullwheel,  // VehicleTrackSubposition::ChairliftStartBullwheel
+    TrackVehicleInfoListGoKartsLeftLane,          // VehicleTrackSubposition::GoKartsLeftLane
+    TrackVehicleInfoListGoKartsRightLane,         // VehicleTrackSubposition::GoKartsRightLane
+    TrackVehicleInfoListGoKartsMovingToRightLane, // VehicleTrackSubposition::GoKartsMovingToRightLane
+    TrackVehicleInfoListGoKartsMovingToLeftLane,  // VehicleTrackSubposition::GoKartsMovingToLeftLane
+    TrackVehicleInfoListMiniGolfStartPathA9,      // VehicleTrackSubposition::MiniGolfStart9, VehicleTrackSubposition::MiniGolfPathA9
+    TrackVehicleInfoListMiniGolfBallPathA10,      // VehicleTrackSubposition::MiniGolfBallPathA10
+    TrackVehicleInfoListMiniGolfPathB11,          // VehicleTrackSubposition::MiniGolfPathB11
+    TrackVehicleInfoListMiniGolfBallPathB12,      // VehicleTrackSubposition::MiniGolfBallPathB12
+    TrackVehicleInfoListMiniGolfPathC13,          // VehicleTrackSubposition::MiniGolfPathC13
+    TrackVehicleInfoListMiniGolfPathC14,          // VehicleTrackSubposition::MiniGolfBallPathC14
+    TrackVehicleInfoListReverserRCFrontBogie,     // VehicleTrackSubposition::ReverserRCFrontBogie
+    TrackVehicleInfoListReverserRCRearBogie,      // VehicleTrackSubposition::ReverserRCRearBogie
 };
 
 // clang-format on

@@ -152,30 +152,30 @@ enum VEHICLE_STATUS
 
 struct rct_vehicle_sound_params;
 
-enum VEHICLE_TRACK_SUBPOSITION : uint8_t
+enum class VehicleTrackSubposition : uint8_t
 {
-    VEHICLE_TRACK_SUBPOSITION_0,
+    Default,
     // Going out means "moving away from the start". Viewed from Station 1, this is the left hand side of the track.
-    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_OUT,
-    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_GOING_BACK,
+    ChairliftGoingOut,
+    ChairliftGoingBack,
     // End and start bullwheel as viewed from Station 1.
-    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_END_BULLWHEEL,
-    VEHICLE_TRACK_SUBPOSITION_CHAIRLIFT_START_BULLWHEEL,
-    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_LEFT_LANE,
-    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_RIGHT_LANE,
-    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_RIGHT_LANE,
-    VEHICLE_TRACK_SUBPOSITION_GO_KARTS_MOVING_TO_LEFT_LANE,
-    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_START_9 = 9,
-    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_A_9 = 9,
-    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_A_10,
-    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_B_11,
-    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_B_12,
-    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_PATH_C_13,
-    VEHICLE_TRACK_SUBPOSITION_MINI_GOLF_BALL_PATH_C_14,
-    VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_FRONT_BOGIE,
-    VEHICLE_TRACK_SUBPOSITION_REVERSER_RC_REAR_BOGIE,
+    ChairliftEndBullwheel,
+    ChairliftStartBullwheel,
+    GoKartsLeftLane,
+    GoKartsRightLane,
+    GoKartsMovingToRightLane,
+    GoKartsMovingToLeftLane,
+    MiniGolfStart9 = 9,
+    MiniGolfPathA9 = 9,
+    MiniGolfBallPathA10,
+    MiniGolfPathB11,
+    MiniGolfBallPathB12,
+    MiniGolfPathC13,
+    MiniGolfBallPathC14,
+    ReverserRCFrontBogie,
+    ReverserRCRearBogie,
 
-    VEHICLE_TRACK_SUBPOSITION_COUNT,
+    Count,
 };
 
 struct Ride;
@@ -290,7 +290,7 @@ struct Vehicle : SpriteBase
     uint16_t var_C8;
     uint16_t var_CA;
     SoundId scream_sound_id;
-    uint8_t TrackSubposition;
+    VehicleTrackSubposition TrackSubposition;
     union
     {
         uint8_t var_CE;
