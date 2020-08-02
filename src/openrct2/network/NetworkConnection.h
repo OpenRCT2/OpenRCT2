@@ -45,7 +45,7 @@ public:
     void QueuePacket(const NetworkPacket& packet, bool front = false)
     {
         auto copy = packet;
-        return QueuePacket(std::move(copy));
+        return QueuePacket(std::move(copy), front);
     }
 
     void SendQueuedPackets();
