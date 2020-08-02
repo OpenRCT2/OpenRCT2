@@ -710,6 +710,12 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
 CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords)
 {
     rct_window* window = window_find_from_point(screenCoords);
+    if (window == nullptr || window->viewport == nullptr)
+    {
+        CoordsXY ret{};
+        ret.setNull();
+        return ret;
+    }
     auto viewport = window->viewport;
     auto info = get_map_coordinates_from_pos_window(
         window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER);

@@ -1761,6 +1761,10 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
 {
     // This will get the tile location but we will need the more accuracy
     rct_window* window = window_find_from_point(screenCoords);
+    if (window == nullptr || window->viewport == nullptr)
+    {
+        return std::nullopt;
+    }
     auto myViewport = window->viewport;
     auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN);
     if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
