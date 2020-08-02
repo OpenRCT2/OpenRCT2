@@ -16,8 +16,8 @@
 #    include <memory>
 
 NetworkPacket::NetworkPacket(NetworkCommand id)
+    : Header{ 0, id }
 {
-    *this << static_cast<std::underlying_type<NetworkCommand>::type>(id);
 }
 
 uint8_t* NetworkPacket::GetData()
@@ -32,13 +32,7 @@ const uint8_t* NetworkPacket::GetData() const
 
 NetworkCommand NetworkPacket::GetCommand() const
 {
-    if (Data.size() < sizeof(uint32_t))
-        return NetworkCommand::Invalid;
-
-    uint32_t commandId = 0;
-    std::memcpy(&commandId, GetData(), sizeof(commandId));
-
-    return static_cast<NetworkCommand>(ByteSwapBE(commandId));
+    return Header.Id;
 }
 
 void NetworkPacket::Clear()
@@ -78,7 +72,7 @@ void NetworkPacket::WriteString(const utf8* string)
 
 const uint8_t* NetworkPacket::Read(size_t size)
 {
-    if (BytesRead + size > NetworkPacket::Size)
+    if (BytesRead + size > Header.Size)
     {
         return nullptr;
     }
@@ -94,7 +88,7 @@ const utf8* NetworkPacket::ReadString()
 {
     char* str = reinterpret_cast<char*>(&GetData()[BytesRead]);
     char* strend = str;
-    while (BytesRead < Size && *strend != 0)
+    while (BytesRead < Header.Size && *strend != 0)
     {
         BytesRead++;
         strend++;

@@ -1736,11 +1736,8 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
 
 void NetworkBase::ProcessPacket(NetworkConnection& connection, NetworkPacket& packet)
 {
-    std::underlying_type<NetworkCommand>::type command;
-    packet >> command;
-
     const auto& handlerList = GetMode() == NETWORK_MODE_SERVER ? server_command_handlers : client_command_handlers;
-    auto it = handlerList.find(static_cast<NetworkCommand>(command));
+    auto it = handlerList.find(packet.GetCommand());
     if (it != handlerList.end())
     {
         auto commandHandler = it->second;
@@ -2650,7 +2647,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
 {
     uint32_t size, offset;
     packet >> size >> offset;
-    int32_t chunksize = static_cast<int32_t>(packet.Size - packet.BytesRead);
+    int32_t chunksize = static_cast<int32_t>(packet.Header.Size - packet.BytesRead);
     if (chunksize <= 0)
     {
         return;
@@ -2925,7 +2922,7 @@ void NetworkBase::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& 
     packet >> tick >> actionType;
 
     MemoryStream stream;
-    size_t size = packet.Size - packet.BytesRead;
+    const size_t size = packet.Header.Size - packet.BytesRead;
     stream.WriteArray(packet.Read(size), size);
     stream.SetPosition(0);
 
@@ -3015,7 +3012,7 @@ void NetworkBase::Server_Handle_GAME_ACTION(NetworkConnection& connection, Netwo
     }
 
     DataSerialiser stream(false);
-    size_t size = packet.Size - packet.BytesRead;
+    const size_t size = packet.Header.Size - packet.BytesRead;
     stream.GetStream().WriteArray(packet.Read(size), size);
     stream.GetStream().SetPosition(0);
 

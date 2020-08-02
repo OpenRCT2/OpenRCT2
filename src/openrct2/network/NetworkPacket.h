@@ -16,13 +16,17 @@
 #include <memory>
 #include <vector>
 
-struct NetworkPacket final
+#pragma pack(push, 1)
+struct PacketHeader
 {
     uint16_t Size = 0;
-    std::vector<uint8_t> Data;
-    size_t BytesTransferred = 0;
-    size_t BytesRead = 0;
+    NetworkCommand Id = NetworkCommand::Invalid;
+};
+static_assert(sizeof(PacketHeader) == 6);
+#pragma pack(pop)
 
+struct NetworkPacket final
+{
     NetworkPacket() = default;
     NetworkPacket(NetworkCommand id);
 
@@ -42,7 +46,7 @@ struct NetworkPacket final
 
     template<typename T> NetworkPacket& operator>>(T& value)
     {
-        if (BytesRead + sizeof(value) > Size)
+        if (BytesRead + sizeof(value) > Header.Size)
         {
             value = T{};
         }
@@ -68,4 +72,10 @@ struct NetworkPacket final
         Write(static_cast<const uint8_t*>(data.GetStream().GetData()), data.GetStream().GetLength());
         return *this;
     }
+
+public:
+    PacketHeader Header{};
+    std::vector<uint8_t> Data;
+    size_t BytesTransferred = 0;
+    size_t BytesRead = 0;
 };
