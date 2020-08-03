@@ -476,17 +476,6 @@ namespace OpenRCT2
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             _uiContext->Initialise();
 
-            if (!_versionCheckFuture.valid())
-            {
-                _versionCheckFuture = std::async(std::launch::async, [this] {
-                    _newVersionInfo = get_latest_version();
-                    if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
-                    {
-                        _hasNewVersionInfo = true;
-                    }
-                });
-            }
-
             return true;
         }
 
@@ -743,6 +732,17 @@ namespace OpenRCT2
          */
         void Launch()
         {
+            if (!_versionCheckFuture.valid())
+            {
+                _versionCheckFuture = std::async(std::launch::async, [this] {
+                    _newVersionInfo = get_latest_version();
+                    if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
+                    {
+                        _hasNewVersionInfo = true;
+                    }
+                });
+            }
+
             gIntroState = IntroState::None;
             if (gOpenRCT2Headless)
             {
