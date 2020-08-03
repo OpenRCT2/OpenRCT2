@@ -283,7 +283,7 @@ void audio_start_title_music()
     gTitleMusicChannel = Mixer_Play_Music(pathId, MIXER_LOOP_INFINITE, true);
     if (gTitleMusicChannel != nullptr)
     {
-        Mixer_Channel_SetGroup(gTitleMusicChannel, MIXER_GROUP_TITLE_MUSIC);
+        Mixer_Channel_SetGroup(gTitleMusicChannel, OpenRCT2::Audio::MixerGroup::TitleMusic);
     }
 }
 

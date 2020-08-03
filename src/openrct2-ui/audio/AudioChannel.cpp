@@ -26,7 +26,7 @@ namespace OpenRCT2::Audio
         AudioSource_* _source = nullptr;
         SpeexResamplerState* _resampler = nullptr;
 
-        int32_t _group = MIXER_GROUP_SOUND;
+        MixerGroup _group = MixerGroup::Sound;
         double _rate = 0;
         uint64_t _offset = 0;
         int32_t _loop = 0;
@@ -80,12 +80,12 @@ namespace OpenRCT2::Audio
             _resampler = value;
         }
 
-        [[nodiscard]] int32_t GetGroup() const override
+        [[nodiscard]] MixerGroup GetGroup() const override
         {
             return _group;
         }
 
-        void SetGroup(int32_t group) override
+        void SetGroup(MixerGroup group) override
         {
             _group = group;
         }

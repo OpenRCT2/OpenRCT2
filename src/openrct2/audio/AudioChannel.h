@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "AudioMixer.h"
 
 namespace OpenRCT2::Audio
 {
@@ -25,8 +26,8 @@ namespace OpenRCT2::Audio
 
         virtual IAudioSource* GetSource() const abstract;
 
-        virtual int32_t GetGroup() const abstract;
-        virtual void SetGroup(int32_t group) abstract;
+        virtual MixerGroup GetGroup() const abstract;
+        virtual void SetGroup(MixerGroup group) abstract;
 
         virtual double GetRate() const abstract;
         virtual void SetRate(double rate) abstract;
