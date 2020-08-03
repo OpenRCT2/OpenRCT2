@@ -512,6 +512,10 @@ static Guest* GetGuest(rct_window* w)
  */
 rct_window* window_guest_open(Peep* peep)
 {
+    if (peep == nullptr)
+    {
+        return nullptr;
+    }
     if (peep->AssignedPeepType == PeepType::Staff)
     {
         return window_staff_open(peep);
