@@ -733,13 +733,10 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
         case RIDE_TYPE_WATER_COASTER:
         {
             Vehicle* vehicle_draw = vehicle->TrainHead();
-            if (vehicle_draw->next_vehicle_on_train != SPRITE_INDEX_NULL)
+            auto nextVeh = GetEntity<Vehicle>(vehicle_draw->next_vehicle_on_train);
+            if (nextVeh != nullptr)
             {
-                auto nextVeh = GetEntity<Vehicle>(vehicle_draw->next_vehicle_on_train);
-                if (nextVeh != nullptr)
-                {
-                    vehicle_draw = nextVeh;
-                }
+                vehicle_draw = nextVeh;
             }
             place_x = vehicle_draw->x;
             place_y = vehicle_draw->y;

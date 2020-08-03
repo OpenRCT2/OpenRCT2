@@ -2216,8 +2216,6 @@ void Peep::SwitchNextActionSpriteType()
 static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
 {
     peep->TimeInQueue++;
-    if (peep->GuestNextInQueue == SPRITE_INDEX_NULL)
-        return false;
 
     auto* guestNext = GetEntity<Guest>(peep->GuestNextInQueue);
     if (guestNext == nullptr)
@@ -3387,22 +3385,20 @@ void Peep::RemoveFromQueue()
         station.LastPeepInQueue = GuestNextInQueue;
         return;
     }
-
-    auto spriteId = station.LastPeepInQueue;
-    while (spriteId != SPRITE_INDEX_NULL)
+    
+    auto* otherGuest = GetEntity<Guest>(station.LastPeepInQueue);
+    if (otherGuest == nullptr)
     {
-        auto* otherGuest = GetEntity<Guest>(spriteId);
-        if (otherGuest == nullptr)
-        {
-            log_error("Invalid Guest Queue list!");
-            return;
-        }
+        log_error("Invalid Guest Queue list!");
+        return;
+    }
+    for (;otherGuest != nullptr;otherGuest = GetEntity<Guest>(otherGuest->GuestNextInQueue))
+    {
         if (sprite_index == otherGuest->GuestNextInQueue)
         {
             otherGuest->GuestNextInQueue = GuestNextInQueue;
             return;
         }
-        spriteId = otherGuest->GuestNextInQueue;
     }
 }
 
