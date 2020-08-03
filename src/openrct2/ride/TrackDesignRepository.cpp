@@ -23,6 +23,7 @@
 #include "../object/ObjectRepository.h"
 #include "../object/RideObject.h"
 #include "../ride/RideData.h"
+#include "../util/Util.h"
 #include "TrackDesign.h"
 
 #include <algorithm>
@@ -319,7 +320,7 @@ private:
             {
                 return a.RideType < b.RideType;
             }
-            return String::Compare(a.Name, b.Name) < 0;
+            return strlogicalcmp(a.Name.c_str(), b.Name.c_str()) < 0;
         });
     }
 
