@@ -6405,7 +6405,10 @@ int32_t Vehicle::UpdateMotionDodgems()
         edx = -edx;
     edx >>= 5;
     eax += edx;
-    eax /= mass;
+    if (mass != 0)
+    {
+        eax /= mass;
+    }
     rct_ride_entry* rideEntry = GetRideEntry();
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle_type];
 
