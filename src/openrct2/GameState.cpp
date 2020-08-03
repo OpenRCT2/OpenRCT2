@@ -62,7 +62,7 @@ void GameState::InitAll(int32_t mapSize)
     staff_reset_modes();
     date_reset();
     climate_reset(CLIMATE_COOL_AND_WET);
-    news_item_init_queue();
+    News::InitQueue();
 
     gInMapInitCode = false;
 
@@ -298,7 +298,7 @@ void GameState::UpdateLogic()
     research_update();
     ride_ratings_update_all();
     ride_measurements_update();
-    news_item_update_current();
+    News::UpdateCurrentItem();
 
     map_animation_invalidate_all();
     vehicle_sounds_update();

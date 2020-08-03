@@ -140,7 +140,7 @@ namespace Editor
         gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
-        news_item_init_queue();
+        News::InitQueue();
         context_open_window_view(WV_EDITOR_MAIN);
         FinaliseMainView();
         gScreenAge = 0;
@@ -364,7 +364,7 @@ namespace Editor
 
         climate_reset(gClimate);
 
-        news_item_init_queue();
+        News::InitQueue();
     }
 
     /**

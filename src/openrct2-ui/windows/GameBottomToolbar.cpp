@@ -157,7 +157,7 @@ rct_window* window_game_bottom_toolbar_open()
  */
 static void window_game_bottom_toolbar_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    NewsItem* newsItem;
+    News::Item* newsItem;
 
     switch (widgetIndex)
     {
@@ -173,27 +173,27 @@ static void window_game_bottom_toolbar_mouseup(rct_window* w, rct_widgetindex wi
             context_open_window_view(WV_PARK_RATING);
             break;
         case WIDX_MIDDLE_INSET:
-            if (news_item_is_queue_empty())
+            if (News::IsQueueEmpty())
             {
                 context_open_window(WC_RECENT_NEWS);
             }
             else
             {
-                news_item_close_current();
+                News::CloseCurrentItem();
             }
             break;
         case WIDX_NEWS_SUBJECT:
-            newsItem = news_item_get(0);
-            news_item_open_subject(newsItem->Type, newsItem->Assoc);
+            newsItem = News::GetItem(0);
+            News::OpenSubject(newsItem->Type, newsItem->Assoc);
             break;
         case WIDX_NEWS_LOCATE:
-            if (news_item_is_queue_empty())
+            if (News::IsQueueEmpty())
                 break;
 
             {
-                newsItem = news_item_get(0);
+                newsItem = News::GetItem(0);
 
-                auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
+                auto subjectLoc = News::GetSubjectLocation(newsItem->Type, newsItem->Assoc);
 
                 if (subjectLoc == std::nullopt)
                     break;
@@ -300,7 +300,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
     window_game_bottom_toolbar_widgets[WIDX_LEFT_INSET].type = WWT_EMPTY;
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WWT_EMPTY;
 
-    if (news_item_is_queue_empty())
+    if (News::IsQueueEmpty())
     {
         if (!(theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
         {
@@ -321,7 +321,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
     }
     else
     {
-        NewsItem* newsItem = news_item_get(0);
+        News::Item* newsItem = News::GetItem(0);
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_PLACEHOLDER;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_FLATBTN;
@@ -332,7 +332,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
         w->disabled_widgets &= ~(1 << WIDX_NEWS_LOCATE);
 
         // Find out if the news item is no longer valid
-        auto subjectLoc = news_item_get_subject_location(newsItem->Type, newsItem->Assoc);
+        auto subjectLoc = News::GetSubjectLocation(newsItem->Type, newsItem->Assoc);
 
         if (subjectLoc == std::nullopt)
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
@@ -396,7 +396,7 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
     window_game_bottom_toolbar_draw_left_panel(dpi, w);
     window_game_bottom_toolbar_draw_right_panel(dpi, w);
 
-    if (!news_item_is_queue_empty())
+    if (!News::IsQueueEmpty())
     {
         window_game_bottom_toolbar_draw_news_item(dpi, w);
     }
@@ -568,11 +568,11 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rct_window* w)
 {
     int32_t width;
-    NewsItem* newsItem;
+    News::Item* newsItem;
     rct_widget* middleOutsetWidget;
 
     middleOutsetWidget = &window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
-    newsItem = news_item_get(0);
+    newsItem = News::GetItem(0);
 
     // Current news item
     gfx_fill_rect_inset(
