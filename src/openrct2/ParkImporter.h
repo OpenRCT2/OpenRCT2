@@ -12,15 +12,6 @@
 #include "common.h"
 #include "object/Object.h"
 
-enum PARK_LOAD_ERROR
-{
-    PARK_LOAD_ERROR_OK,
-    PARK_LOAD_ERROR_MISSING_OBJECTS,
-    PARK_LOAD_ERROR_INVALID_EXTENSION,
-    PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG,
-    PARK_LOAD_ERROR_UNKNOWN = 255
-};
-
 #include "core/String.hpp"
 
 #include <memory>
