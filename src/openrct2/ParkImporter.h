@@ -10,9 +10,8 @@
 #pragma once
 
 #include "common.h"
-#include "object/Object.h"
-
 #include "core/String.hpp"
+#include "object/Object.h"
 
 #include <memory>
 #include <string>
