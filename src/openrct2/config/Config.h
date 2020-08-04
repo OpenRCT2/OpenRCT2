@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../drawing/Drawing.h"
+#include "../localisation/Currency.h"
 
 #include <string>
 
@@ -58,7 +59,7 @@ struct GeneralConfiguration
     int32_t date_format;
     int32_t currency_format;
     int32_t custom_currency_rate;
-    int32_t custom_currency_affix;
+    CurrencyAffix custom_currency_affix;
     utf8* custom_currency_symbol;
 
     // Controls

@@ -143,7 +143,7 @@ static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widg
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                 DROPDOWN_FLAG_STAY_OPEN, 2, widget->width() - 3);
 
-            if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
+            if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CurrencyAffix::Prefix)
             {
                 dropdown_set_checked(0, true);
             }
@@ -183,13 +183,13 @@ static void custom_currency_window_dropdown([[maybe_unused]] rct_window* w, rct_
     {
         if (dropdownIndex == 0)
         {
-            CurrencyDescriptors[CURRENCY_CUSTOM].affix_ascii = CURRENCY_PREFIX;
-            CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = CURRENCY_PREFIX;
+            CurrencyDescriptors[CURRENCY_CUSTOM].affix_ascii = CurrencyAffix::Prefix;
+            CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = CurrencyAffix::Prefix;
         }
         else if (dropdownIndex == 1)
         {
-            CurrencyDescriptors[CURRENCY_CUSTOM].affix_ascii = CURRENCY_SUFFIX;
-            CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = CURRENCY_SUFFIX;
+            CurrencyDescriptors[CURRENCY_CUSTOM].affix_ascii = CurrencyAffix::Suffix;
+            CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = CurrencyAffix::Suffix;
         }
 
         gConfigGeneral.custom_currency_affix = CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode;
@@ -258,7 +258,7 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     gfx_draw_string(dpi, CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, w->colours[1], screenCoords);
 
-    if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CURRENCY_PREFIX)
+    if (CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode == CurrencyAffix::Prefix)
     {
         gfx_draw_string_left(
             dpi, STR_PREFIX, w, w->colours[1],
