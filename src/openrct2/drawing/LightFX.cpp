@@ -395,7 +395,7 @@ void lightfx_prepare_light_list()
                 continue;
             }
 
-            SetLightTypeSize(
+            entry->lightType = SetLightTypeSize(
                 entry->lightType, GetLightTypeSize(entry->lightType) - static_cast<int8_t>(_current_view_zoom_front));
         }
     }
