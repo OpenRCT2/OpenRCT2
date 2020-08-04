@@ -389,14 +389,14 @@ void lightfx_prepare_light_list()
 
         if (_current_view_zoom_front > 0)
         {
-            if ((static_cast<uint8_t>(entry->lightType) & 0x3) < static_cast<int8_t>(_current_view_zoom_front))
+            if (GetLightTypeSize(entry->lightType) < static_cast<int8_t>(_current_view_zoom_front))
             {
                 entry->lightType = LightType::None;
                 continue;
             }
 
-            entry->lightType = static_cast<LightType>(
-                static_cast<uint8_t>(entry->lightType) - static_cast<int8_t>(_current_view_zoom_front));
+            SetLightTypeSize(
+                entry->lightType, GetLightTypeSize(entry->lightType) - static_cast<int8_t>(_current_view_zoom_front));
         }
     }
 }

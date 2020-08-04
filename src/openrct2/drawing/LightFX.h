@@ -40,6 +40,15 @@ enum LIGHTFX_LIGHT_QUALIFIER
     LIGHTFX_LIGHT_QUALIFIER_MAP = 0x2
 };
 
+constexpr uint8_t GetLightTypeSize(LightType type)
+{
+    return static_cast<uint8_t>(type) & 0x3;
+}
+constexpr LightType SetLightTypeSize(LightType type, uint8_t size)
+{
+    return static_cast<LightType>(((static_cast<uint8_t>(type) & ~0x3) | size));
+}
+
 void lightfx_set_available(bool available);
 bool lightfx_is_available();
 bool lightfx_for_vehicles_is_available();
