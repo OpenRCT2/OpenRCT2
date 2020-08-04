@@ -1294,7 +1294,7 @@ static int32_t footpath_is_connected_to_map_edge_helper(
     // Struct for keeping track of tile state
     struct TileState
     {
-        //bool processed = false;
+        bool processed = false;
         CoordsXYZ footpathPos;
         int32_t direction;
         int32_t level;
@@ -1310,21 +1310,35 @@ static int32_t footpath_is_connected_to_map_edge_helper(
     // Captures the current state of the variables and stores them for iteration later
     auto CaptureCurrentTileState = [&tiles, &footpathPos, &direction, &level, &distanceFromJunction, &junctionTolerance,
                                     &numPendingTiles]() -> void {
-        tiles.push_back({ footpathPos, direction, level, distanceFromJunction, junctionTolerance });
+        // Search for an entry of this in our list already
+        for (size_t ii(0); ii < tiles.size(); ++ii)
+            if (tiles[ii].footpathPos == footpathPos && tiles[ii].direction == direction)
+                return;
+
+        // If we get here we did not find it, so insert it
+        tiles.push_back({ false, footpathPos, direction, level, distanceFromJunction, junctionTolerance });
         ++numPendingTiles;
     };
 
     // Loads the next tile to visit into our variables
     auto LoadNextTileElement = [&tiles, &footpathPos, &direction, &level, &distanceFromJunction, &junctionTolerance,
                                 &numPendingTiles]() -> void {
-        size_t ii = tiles.size();
-        --numPendingTiles;
-        footpathPos = tiles[ii - 1].footpathPos;
-        direction = tiles[ii - 1].direction;
-        level = tiles[ii - 1].level;
-        distanceFromJunction = tiles[ii - 1].distanceFromJunction;
-        junctionTolerance = tiles[ii - 1].junctionTolerance;
-        tiles.pop_back();
+        for (size_t ii = tiles.size(); ii > 0; --ii)
+        {
+            if (tiles[ii - 1].processed)
+                continue;
+            else
+            {
+                tiles[ii - 1].processed = true;
+                --numPendingTiles;
+                footpathPos = tiles[ii - 1].footpathPos;
+                direction = tiles[ii - 1].direction;
+                level = tiles[ii - 1].level;
+                distanceFromJunction = tiles[ii - 1].distanceFromJunction;
+                junctionTolerance = tiles[ii - 1].junctionTolerance;
+                return;
+            }
+        }
     };
 
     // Helper method for footpath_is_connected_to_map_edge_helper
@@ -1371,9 +1385,13 @@ static int32_t footpath_is_connected_to_map_edge_helper(
 
         // Check if we are at edge of map
         if (targetPos.x < COORDS_XY_STEP || targetPos.y < COORDS_XY_STEP)
+        {
             return FOOTPATH_SEARCH_SUCCESS;
+        }
         if (targetPos.x >= gMapSizeUnits || targetPos.y >= gMapSizeUnits)
+        {
             return FOOTPATH_SEARCH_SUCCESS;
+        }
 
         tileElement = map_get_first_element_at(targetPos);
         if (tileElement == nullptr)
@@ -1417,7 +1435,6 @@ static int32_t footpath_is_connected_to_map_edge_helper(
 
             // Find next direction to go
             if (!get_next_direction(edges, &direction))
-                // return FOOTPATH_SEARCH_INCOMPLETE;
                 continue;
 
             edges &= ~(1 << direction);
