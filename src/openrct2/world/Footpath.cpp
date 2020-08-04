@@ -1363,65 +1363,62 @@ static int32_t footpath_is_connected_to_map_edge_recurse(
                 }
             }
         }
-        goto searchFromFootpath;
-    } while (!(tileElement++)->IsLastForTile());
-    return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
+        // Exclude direction we came from
+        targetPos.z = tileElement->GetBaseZ();
+        edges &= ~(1 << direction);
 
-searchFromFootpath:
-    // Exclude direction we came from
-    targetPos.z = tileElement->GetBaseZ();
-    edges &= ~(1 << direction);
-
-    // Find next direction to go
-    int32_t newDirection{};
-    if (!get_next_direction(edges, &newDirection))
-    {
-        return FOOTPATH_SEARCH_INCOMPLETE;
-    }
-    direction = newDirection;
-
-    edges &= ~(1 << direction);
-    if (edges == 0)
-    {
-        // Only possible direction to go
-        if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == direction)
+        // Find next direction to go
+        int32_t newDirection{};
+        if (!get_next_direction(edges, &newDirection))
         {
-            targetPos.z += PATH_HEIGHT_STEP;
+            return FOOTPATH_SEARCH_INCOMPLETE;
         }
-        return footpath_is_connected_to_map_edge_recurse(
-            targetPos, direction, flags, level, distanceFromJunction + 1, junctionTolerance);
-    }
-    else
-    {
-        // We have reached a junction
-        if (distanceFromJunction != 0)
-        {
-            junctionTolerance--;
-        }
-        junctionTolerance--;
-        if (junctionTolerance < 0)
-        {
-            return FOOTPATH_SEARCH_TOO_COMPLEX;
-        }
+        direction = newDirection;
 
-        do
+        edges &= ~(1 << direction);
+        if (edges == 0)
         {
-            direction = newDirection;
-            edges &= ~(1 << direction);
+            // Only possible direction to go
             if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == direction)
             {
                 targetPos.z += PATH_HEIGHT_STEP;
             }
-            int32_t result = footpath_is_connected_to_map_edge_recurse(
-                targetPos, direction, flags, level, 0, junctionTolerance);
-            if (result == FOOTPATH_SEARCH_SUCCESS)
+            return footpath_is_connected_to_map_edge_recurse(
+                targetPos, direction, flags, level, distanceFromJunction + 1, junctionTolerance);
+        }
+        else
+        {
+            // We have reached a junction
+            if (distanceFromJunction != 0)
             {
-                return result;
+                junctionTolerance--;
             }
-        } while (get_next_direction(edges, &newDirection));
+            junctionTolerance--;
+            if (junctionTolerance < 0)
+            {
+                return FOOTPATH_SEARCH_TOO_COMPLEX;
+            }
 
-        return FOOTPATH_SEARCH_INCOMPLETE;
-    }
+            do
+            {
+                direction = newDirection;
+                edges &= ~(1 << direction);
+                if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == direction)
+                {
+                    targetPos.z += PATH_HEIGHT_STEP;
+                }
+                int32_t result = footpath_is_connected_to_map_edge_recurse(
+                    targetPos, direction, flags, level, 0, junctionTolerance);
+                if (result == FOOTPATH_SEARCH_SUCCESS)
+                {
+                    return result;
+                }
+            } while (get_next_direction(edges, &newDirection));
+
+            return FOOTPATH_SEARCH_INCOMPLETE;
+        }
+    } while (!(tileElement++)->IsLastForTile());
+    return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
 }
 
 // TODO: Use GAME_COMMAND_FLAGS
