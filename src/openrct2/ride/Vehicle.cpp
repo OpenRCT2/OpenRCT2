@@ -2808,7 +2808,8 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
-        if (try_add_synchronised_station(location + CoordsXYZ{ CoordsDirectionDelta[direction], 0 }))
+        location += CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
+        if (try_add_synchronised_station(location))
         {
             spaceBetween = maxCheckDistance;
             continue;
@@ -2820,11 +2821,13 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     }
 
     // Other search direction.
+    location = ride.stations[station].GetStart();
     direction = direction_reverse(direction) & 3;
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
-        if (try_add_synchronised_station(location + CoordsXYZ{ CoordsDirectionDelta[direction], 0 }))
+        location += CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
+        if (try_add_synchronised_station(location))
         {
             spaceBetween = maxCheckDistance;
             continue;
