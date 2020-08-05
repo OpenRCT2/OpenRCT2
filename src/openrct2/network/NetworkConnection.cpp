@@ -18,6 +18,7 @@
 #    include "network.h"
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
+constexpr size_t NetworkBufferSize = 1024;
 
 NetworkConnection::NetworkConnection()
 {
@@ -31,47 +32,61 @@ NetworkConnection::~NetworkConnection()
 
 int32_t NetworkConnection::ReadPacket()
 {
-    if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Size))
+    size_t bytesRead = 0;
+
+    // Read packet header.
+    auto& header = InboundPacket.Header;
+    if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Header))
     {
-        // read packet size
-        void* buffer = &(reinterpret_cast<char*>(&InboundPacket.Size))[InboundPacket.BytesTransferred];
-        size_t bufferLength = sizeof(InboundPacket.Size) - InboundPacket.BytesTransferred;
-        size_t readBytes;
-        NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
+        const size_t missingLength = sizeof(header) - InboundPacket.BytesTransferred;
+
+        uint8_t* buffer = reinterpret_cast<uint8_t*>(&InboundPacket.Header);
+
+        NETWORK_READPACKET status = Socket->ReceiveData(buffer, missingLength, &bytesRead);
         if (status != NETWORK_READPACKET_SUCCESS)
         {
             return status;
         }
 
-        InboundPacket.BytesTransferred += readBytes;
-        if (InboundPacket.BytesTransferred == sizeof(InboundPacket.Size))
+        InboundPacket.BytesTransferred += bytesRead;
+        if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Header))
         {
-            InboundPacket.Size = Convert::NetworkToHost(InboundPacket.Size);
-            if (InboundPacket.Size == 0) // Can't have a size 0 packet
-            {
-                return NETWORK_READPACKET_DISCONNECTED;
-            }
-            InboundPacket.Data->resize(InboundPacket.Size);
+            // If still not enough data for header, keep waiting.
+            return NETWORK_READPACKET_MORE_DATA;
         }
+
+        // Normalise values.
+        header.Size = Convert::NetworkToHost(header.Size);
+        header.Id = ByteSwapBE(header.Id);
+
+        // NOTE: For compatibility reasons for the master server we need to remove sizeof(Header.Id) from the size.
+        // Previously the Id field was not part of the header rather part of the body.
+        header.Size -= sizeof(header.Id);
+
+        // Fall-through: Read rest of packet.
     }
-    else
+
+    // Read packet body.
     {
-        // read packet data
-        if (InboundPacket.Data->capacity() > 0)
+        const size_t missingLength = header.Size - (InboundPacket.BytesTransferred - sizeof(header));
+
+        uint8_t buffer[NetworkBufferSize];
+
+        if (missingLength > 0)
         {
-            void* buffer = &InboundPacket.GetData()[InboundPacket.BytesTransferred - sizeof(InboundPacket.Size)];
-            size_t bufferLength = sizeof(InboundPacket.Size) + InboundPacket.Size - InboundPacket.BytesTransferred;
-            size_t readBytes;
-            NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
+            NETWORK_READPACKET status = Socket->ReceiveData(buffer, std::min(missingLength, NetworkBufferSize), &bytesRead);
             if (status != NETWORK_READPACKET_SUCCESS)
             {
                 return status;
             }
 
-            InboundPacket.BytesTransferred += readBytes;
+            InboundPacket.BytesTransferred += bytesRead;
+            InboundPacket.Write(buffer, bytesRead);
         }
-        if (InboundPacket.BytesTransferred == sizeof(InboundPacket.Size) + InboundPacket.Size)
+
+        if (InboundPacket.Data.size() == header.Size)
         {
+            // Received complete packet.
             _lastPacketTime = platform_get_ticks();
 
             RecordPacketStats(InboundPacket, false);
@@ -79,26 +94,34 @@ int32_t NetworkConnection::ReadPacket()
             return NETWORK_READPACKET_SUCCESS;
         }
     }
+
     return NETWORK_READPACKET_MORE_DATA;
 }
 
 bool NetworkConnection::SendPacket(NetworkPacket& packet)
 {
-    uint16_t sizen = Convert::HostToNetwork(packet.Size);
-    std::vector<uint8_t> tosend;
-    tosend.reserve(sizeof(sizen) + packet.Size);
-    tosend.insert(tosend.end(), reinterpret_cast<uint8_t*>(&sizen), reinterpret_cast<uint8_t*>(&sizen) + sizeof(sizen));
-    tosend.insert(tosend.end(), packet.Data->begin(), packet.Data->end());
+    auto header = packet.Header;
 
-    const void* buffer = &tosend[packet.BytesTransferred];
-    size_t bufferSize = tosend.size() - packet.BytesTransferred;
-    size_t sent = Socket->SendData(buffer, bufferSize);
+    std::vector<uint8_t> buffer;
+    buffer.reserve(sizeof(header) + header.Size);
+
+    // NOTE: For compatibility reasons for the master server we need to add sizeof(Header.Id) to the size.
+    // Previously the Id field was not part of the header rather part of the body.
+    header.Size += sizeof(header.Id);
+    header.Size = Convert::HostToNetwork(header.Size);
+    header.Id = ByteSwapBE(header.Id);
+
+    buffer.insert(buffer.end(), reinterpret_cast<uint8_t*>(&header), reinterpret_cast<uint8_t*>(&header) + sizeof(header));
+    buffer.insert(buffer.end(), packet.Data.begin(), packet.Data.end());
+
+    size_t bufferSize = buffer.size() - packet.BytesTransferred;
+    size_t sent = Socket->SendData(buffer.data() + packet.BytesTransferred, bufferSize);
     if (sent > 0)
     {
         packet.BytesTransferred += sent;
     }
 
-    bool sendComplete = packet.BytesTransferred == tosend.size();
+    bool sendComplete = packet.BytesTransferred == buffer.size();
     if (sendComplete)
     {
         RecordPacketStats(packet, true);
@@ -106,15 +129,15 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
     return sendComplete;
 }
 
-void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front)
+void NetworkConnection::QueuePacket(NetworkPacket&& packet, bool front)
 {
-    if (AuthStatus == NETWORK_AUTH_OK || !packet->CommandRequiresAuth())
+    if (AuthStatus == NETWORK_AUTH_OK || !packet.CommandRequiresAuth())
     {
-        packet->Size = static_cast<uint16_t>(packet->Data->size());
+        packet.Header.Size = static_cast<uint16_t>(packet.Data.size());
         if (front)
         {
             // If the first packet was already partially sent add new packet to second position
-            if (!_outboundPackets.empty() && _outboundPackets.front()->BytesTransferred > 0)
+            if (!_outboundPackets.empty() && _outboundPackets.front().BytesTransferred > 0)
             {
                 auto it = _outboundPackets.begin();
                 it++; // Second position
@@ -134,9 +157,9 @@ void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool 
 
 void NetworkConnection::SendQueuedPackets()
 {
-    while (!_outboundPackets.empty() && SendPacket(*_outboundPackets.front()))
+    while (!_outboundPackets.empty() && SendPacket(_outboundPackets.front()))
     {
-        _outboundPackets.remove(_outboundPackets.front());
+        _outboundPackets.pop_front();
     }
 }
 

@@ -113,7 +113,7 @@ public: // Client
     void ProcessPlayerInfo();
     void ProcessDisconnectedClients();
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
-    void SendPacketToClients(NetworkPacket& packet, bool front = false, bool gameCmd = false);
+    void SendPacketToClients(const NetworkPacket& packet, bool front = false, bool gameCmd = false);
     bool CheckSRAND(uint32_t tick, uint32_t srand0);
     bool CheckDesynchronizaton();
     void RequestStateSnapshot();

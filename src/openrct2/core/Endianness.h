@@ -11,6 +11,9 @@
 
 #include "../common.h"
 
+#include <cstring>
+#include <type_traits>
+
 template<size_t size> struct ByteSwapT
 {
 };
@@ -58,6 +61,22 @@ template<> struct ByteSwapT<8>
 template<typename T> static T ByteSwapBE(const T& value)
 {
     using ByteSwap = ByteSwapT<sizeof(T)>;
-    typename ByteSwap::UIntType result = ByteSwap::SwapBE(reinterpret_cast<const typename ByteSwap::UIntType&>(value));
-    return *reinterpret_cast<T*>(&result);
+    using UIntType = typename ByteSwap::UIntType;
+
+    if constexpr (std::is_enum_v<T> || std::is_integral_v<T>)
+    {
+        auto result = ByteSwap::SwapBE(static_cast<const UIntType>(value));
+        return static_cast<T>(result);
+    }
+    else
+    {
+        // Complex type, reinterpret_cast is not safe for this case.
+        // Create a temporary of size(T) as unsigned type via copy instead.
+        UIntType temp;
+        std::memcpy(&temp, &value, sizeof(T));
+        auto result = ByteSwap::SwapBE(temp);
+        T res;
+        std::memcpy(&res, &result, sizeof(T));
+        return res;
+    }
 }

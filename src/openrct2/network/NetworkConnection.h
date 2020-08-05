@@ -16,7 +16,7 @@
 #    include "NetworkTypes.h"
 #    include "Socket.h"
 
-#    include <list>
+#    include <deque>
 #    include <memory>
 #    include <vector>
 
@@ -41,7 +41,13 @@ public:
     ~NetworkConnection();
 
     int32_t ReadPacket();
-    void QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front = false);
+    void QueuePacket(NetworkPacket&& packet, bool front = false);
+    void QueuePacket(const NetworkPacket& packet, bool front = false)
+    {
+        auto copy = packet;
+        return QueuePacket(std::move(copy), front);
+    }
+
     void SendQueuedPackets();
     void ResetLastPacketTime();
     bool ReceivedPacketRecently();
@@ -51,7 +57,7 @@ public:
     void SetLastDisconnectReason(const rct_string_id string_id, void* args = nullptr);
 
 private:
-    std::list<std::unique_ptr<NetworkPacket>> _outboundPackets;
+    std::deque<NetworkPacket> _outboundPackets;
     uint32_t _lastPacketTime = 0;
     utf8* _lastDisconnectReason = nullptr;
 
