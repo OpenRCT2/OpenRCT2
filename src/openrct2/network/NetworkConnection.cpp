@@ -59,8 +59,8 @@ int32_t NetworkConnection::ReadPacket()
         header.Size = Convert::NetworkToHost(header.Size);
         header.Id = ByteSwapBE(header.Id);
 
-        // NOTE: For compatibility reasons we need to remove sizeof(Header.Id) from the size
-        // Previously the Id field was not part of the header rather part of the body
+        // NOTE: For compatibility reasons for the master server we need to remove sizeof(Header.Id) from the size.
+        // Previously the Id field was not part of the header rather part of the body.
         header.Size -= sizeof(header.Id);
 
         // Fall-through: Read rest of packet.
@@ -105,8 +105,8 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
     std::vector<uint8_t> buffer;
     buffer.reserve(sizeof(header) + header.Size);
 
-    // NOTE: For compatibility reasons we need to add sizeof(Header.Id) to the size
-    // Previously the Id field was not part of the header rather part of the body
+    // NOTE: For compatibility reasons for the master server we need to add sizeof(Header.Id) to the size.
+    // Previously the Id field was not part of the header rather part of the body.
     header.Size += sizeof(header.Id);
     header.Size = Convert::HostToNetwork(header.Size);
     header.Id = ByteSwapBE(header.Id);
