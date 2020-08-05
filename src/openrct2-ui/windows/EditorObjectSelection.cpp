@@ -1100,14 +1100,34 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object dat name
-    const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
-    auto ft = Formatter::Common();
-    ft.Add<rct_string_id>(STR_STRING);
-    ft.Add<const char*>(path);
-    gfx_draw_string_right(
-        dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + w->width - 5, screenPos.y });
-}
+    {
+        const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(path);
+        gfx_draw_string_right(
+            dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + w->width - 5, screenPos.y });
+        screenPos.y += LIST_ROW_HEIGHT;
+    }
 
+    // Draw object author (will be blank space if no author in file or a non JSON object)
+    {
+        auto ft = Formatter::Common();
+        std::string authorsString = "";
+        for (int i = 0; i < listItem->repositoryItem->Authors.size(); i++)
+        {
+            if (i > 0)
+            {
+                authorsString.append(", ");
+            }
+            authorsString.append(listItem->repositoryItem->Authors[i]);
+        }
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(authorsString.c_str());
+        gfx_draw_string_right(
+            dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + w->width - 5, screenPos.y });
+    }
+}
 /**
  *
  *  rct2: 0x006AADA3

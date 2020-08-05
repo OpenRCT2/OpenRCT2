@@ -74,7 +74,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 20;
+    static constexpr uint16_t VERSION = 21;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -114,6 +114,7 @@ public:
             item.ObjectEntry = *object->GetObjectEntry();
             item.Path = path;
             item.Name = object->GetName();
+            item.Authors = object->GetAuthors();
             item.Sources = object->GetSourceGames();
             object->SetRepositoryItem(&item);
             delete object;
@@ -128,11 +129,19 @@ protected:
         stream->WriteValue(item.ObjectEntry);
         stream->WriteString(item.Path);
         stream->WriteString(item.Name);
+
         uint8_t sourceLength = static_cast<uint8_t>(item.Sources.size());
         stream->WriteValue(sourceLength);
         for (auto source : item.Sources)
         {
             stream->WriteValue(source);
+        }
+
+        uint8_t authorsLength = static_cast<uint8_t>(item.Authors.size());
+        stream->WriteValue(authorsLength);
+        for (auto author : item.Authors)
+        {
+            stream->WriteString(author);
         }
 
         switch (item.ObjectEntry.GetType())
@@ -165,11 +174,19 @@ protected:
         item.ObjectEntry = stream->ReadValue<rct_object_entry>();
         item.Path = stream->ReadStdString();
         item.Name = stream->ReadStdString();
+
         auto sourceLength = stream->ReadValue<uint8_t>();
         for (size_t i = 0; i < sourceLength; i++)
         {
             auto value = stream->ReadValue<uint8_t>();
             item.Sources.push_back(value);
+        }
+
+        auto authorsLength = stream->ReadValue<uint8_t>();
+        for (size_t i = 0; i < authorsLength; i++)
+        {
+            auto author = stream->ReadStdString();
+            item.Authors.push_back(author);
         }
 
         switch (item.ObjectEntry.GetType())

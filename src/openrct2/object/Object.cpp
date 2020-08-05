@@ -116,6 +116,16 @@ void rct_object_entry::SetName(const std::string_view& value)
     std::memcpy(name, value.data(), std::min(sizeof(name), value.size()));
 }
 
+std::vector<std::string> Object::GetAuthors()
+{
+    return _authors;
+}
+
+void Object::SetAuthors(std::vector<std::string> authors)
+{
+    _authors = authors;
+}
+
 std::optional<uint8_t> rct_object_entry::GetSceneryType() const
 {
     switch (GetType())

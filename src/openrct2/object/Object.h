@@ -166,6 +166,7 @@ private:
     StringTable _stringTable;
     ImageTable _imageTable;
     std::vector<uint8_t> _sourceGames;
+    std::vector<std::string> _authors;
     bool _isJsonObject{};
 
 protected:
@@ -243,6 +244,9 @@ public:
     }
     std::vector<uint8_t> GetSourceGames();
     void SetSourceGames(const std::vector<uint8_t>& sourceGames);
+
+    std::vector<std::string> GetAuthors();
+    void SetAuthors(std::vector<std::string> authors);
 
     const ImageTable& GetImageTable() const
     {
