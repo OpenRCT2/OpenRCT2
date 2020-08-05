@@ -1114,7 +1114,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         auto ft = Formatter::Common();
         std::string authorsString = "";
-        for (int i = 0; i < listItem->repositoryItem->Authors.size(); i++)
+        for (size_t i = 0; i < listItem->repositoryItem->Authors.size(); i++)
         {
             if (i > 0)
             {
