@@ -150,6 +150,7 @@ The following people are not part of the development team, but have been contrib
 * Chaitanya Thengdi (chaitanyathengdi)
 * Sidney Kuyateh (autinerd)
 * Łukasz Pękalski (Lukasz-Pe)
+* (quale)
 
 ## Toolchain
 * (Balletie) - macOS
