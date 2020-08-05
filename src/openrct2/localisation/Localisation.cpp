@@ -804,7 +804,7 @@ static void format_currency(char** dest, size_t* size, int64_t value)
 
     // Currency symbol
     const utf8* symbol = currencyDesc->symbol_unicode;
-    uint8_t affix = currencyDesc->affix_unicode;
+    CurrencyAffix affix = currencyDesc->affix_unicode;
     if (!font_supports_string(symbol, FONT_SIZE_MEDIUM))
     {
         symbol = currencyDesc->symbol_ascii;
@@ -812,7 +812,7 @@ static void format_currency(char** dest, size_t* size, int64_t value)
     }
 
     // Prefix
-    if (affix == CURRENCY_PREFIX)
+    if (affix == CurrencyAffix::Prefix)
         format_append_string(dest, size, symbol);
     if ((*size) == 0)
         return;
@@ -822,7 +822,7 @@ static void format_currency(char** dest, size_t* size, int64_t value)
         return;
 
     // Currency symbol suffix
-    if (affix == CURRENCY_SUFFIX)
+    if (affix == CurrencyAffix::Suffix)
         format_append_string(dest, size, symbol);
 }
 
@@ -845,7 +845,7 @@ static void format_currency_2dp(char** dest, size_t* size, int64_t value)
 
     // Currency symbol
     const utf8* symbol = currencyDesc->symbol_unicode;
-    uint8_t affix = currencyDesc->affix_unicode;
+    CurrencyAffix affix = currencyDesc->affix_unicode;
     if (!font_supports_string(symbol, FONT_SIZE_MEDIUM))
     {
         symbol = currencyDesc->symbol_ascii;
@@ -853,7 +853,7 @@ static void format_currency_2dp(char** dest, size_t* size, int64_t value)
     }
 
     // Prefix
-    if (affix == CURRENCY_PREFIX)
+    if (affix == CurrencyAffix::Prefix)
         format_append_string(dest, size, symbol);
     if ((*size) == 0)
         return;
@@ -871,7 +871,7 @@ static void format_currency_2dp(char** dest, size_t* size, int64_t value)
         return;
 
     // Currency symbol suffix
-    if (affix == CURRENCY_SUFFIX)
+    if (affix == CurrencyAffix::Suffix)
         format_append_string(dest, size, symbol);
 }
 

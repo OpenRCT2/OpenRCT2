@@ -38,10 +38,10 @@ enum CURRENCY_TYPE
     CURRENCY_END // Last item
 };
 
-enum CURRENCY_AFFIX
+enum class CurrencyAffix
 {
-    CURRENCY_PREFIX,
-    CURRENCY_SUFFIX
+    Prefix,
+    Suffix
 };
 
 #define CURRENCY_SYMBOL_MAX_SIZE 8
@@ -53,9 +53,9 @@ struct currency_descriptor
     char isoCode[4];
     // Rate is relative to 0.10 GBP
     int32_t rate;
-    uint8_t affix_unicode;
+    CurrencyAffix affix_unicode;
     utf8 symbol_unicode[CURRENCY_SYMBOL_MAX_SIZE];
-    uint8_t affix_ascii;
+    CurrencyAffix affix_ascii;
     char symbol_ascii[CURRENCY_SYMBOL_MAX_SIZE];
     rct_string_id stringId;
 };

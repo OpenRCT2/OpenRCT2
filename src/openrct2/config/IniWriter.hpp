@@ -35,10 +35,12 @@ struct IIniWriter
 
     template<typename T> void WriteEnum(const std::string& name, T value, const IConfigEnum<T>& configEnum)
     {
+        static_assert(sizeof(T) <= sizeof(int32_t), "Type too large");
+
         std::string key = configEnum.GetName(value);
         if (key.empty())
         {
-            WriteInt32(name, value);
+            WriteInt32(name, static_cast<int32_t>(value));
         }
         else
         {
