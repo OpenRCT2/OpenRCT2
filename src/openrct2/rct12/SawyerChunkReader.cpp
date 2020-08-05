@@ -15,7 +15,6 @@
 // memory on a special debug heap and then initialises all the memory to 0xCC.
 #if defined(_WIN32) && defined(DEBUG)
 #    define __USE_HEAP_ALLOC__
-#    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
 #endif
 
@@ -41,7 +40,7 @@ public:
     }
 };
 
-SawyerChunkReader::SawyerChunkReader(IStream* stream)
+SawyerChunkReader::SawyerChunkReader(OpenRCT2::IStream* stream)
     : _stream(stream)
 {
 }
@@ -52,7 +51,7 @@ void SawyerChunkReader::SkipChunk()
     try
     {
         auto header = _stream->ReadValue<sawyercoding_chunk_header>();
-        _stream->Seek(header.length, STREAM_SEEK_CURRENT);
+        _stream->Seek(header.length, OpenRCT2::STREAM_SEEK_CURRENT);
     }
     catch (const std::exception&)
     {

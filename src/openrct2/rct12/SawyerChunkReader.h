@@ -15,7 +15,10 @@
 
 #include <memory>
 
-interface IStream;
+namespace OpenRCT2
+{
+    struct IStream;
+}
 
 /**
  * Reads sawyer encoding chunks from a data stream. This can be used to read
@@ -24,10 +27,10 @@ interface IStream;
 class SawyerChunkReader final
 {
 private:
-    IStream* const _stream = nullptr;
+    OpenRCT2::IStream* const _stream = nullptr;
 
 public:
-    explicit SawyerChunkReader(IStream* stream);
+    explicit SawyerChunkReader(OpenRCT2::IStream* stream);
 
     /**
      * Skips the next chunk in the stream without decoding or reading its data

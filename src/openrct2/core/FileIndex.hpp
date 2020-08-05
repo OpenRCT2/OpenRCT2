@@ -132,12 +132,12 @@ protected:
     /**
      * Serialises an index item to the given stream.
      */
-    virtual void Serialise(IStream* stream, const TItem& item) const abstract;
+    virtual void Serialise(OpenRCT2::IStream* stream, const TItem& item) const abstract;
 
     /**
      * Deserialises an index item from the given stream.
      */
-    virtual TItem Deserialise(IStream* stream) const abstract;
+    virtual TItem Deserialise(OpenRCT2::IStream* stream) const abstract;
 
 private:
     ScanResult Scan() const
@@ -261,7 +261,7 @@ private:
             try
             {
                 log_verbose("FileIndex:Loading index: '%s'", _indexPath.c_str());
-                auto fs = FileStream(_indexPath, FILE_MODE_OPEN);
+                auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_OPEN);
 
                 // Read header, check if we need to re-scan
                 auto header = fs.ReadValue<FileIndexHeader>();
@@ -300,7 +300,7 @@ private:
         {
             log_verbose("FileIndex:Writing index: '%s'", _indexPath.c_str());
             Path::CreateDirectory(Path::GetDirectory(_indexPath));
-            auto fs = FileStream(_indexPath, FILE_MODE_WRITE);
+            auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_WRITE);
 
             // Write header
             FileIndexHeader header;

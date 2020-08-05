@@ -16,7 +16,7 @@
 
 namespace SawyerEncoding
 {
-    bool ValidateChecksum(IStream* stream)
+    bool ValidateChecksum(OpenRCT2::IStream* stream)
     {
         uint64_t initialPosition = stream->GetPosition();
         uint64_t dataSize = stream->GetLength() - initialPosition;
@@ -60,7 +60,7 @@ namespace SawyerEncoding
     }
 
     // Returns version number
-    RCT12TrackDesignVersion ValidateTrackChecksum(IStream* stream)
+    RCT12TrackDesignVersion ValidateTrackChecksum(OpenRCT2::IStream* stream)
     {
         uint64_t initialPosition = stream->GetPosition();
         uint64_t dataSize = stream->GetLength() - initialPosition;

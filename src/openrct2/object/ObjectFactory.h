@@ -13,7 +13,7 @@
 
 #include <string_view>
 
-interface IObjectRepository;
+struct IObjectRepository;
 class Object;
 struct rct_object_entry;
 

@@ -134,13 +134,16 @@ struct rct_object_filters
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
-interface IObjectRepository;
-interface IStream;
+struct IObjectRepository;
+namespace OpenRCT2
+{
+    struct IStream;
+}
 struct ObjectRepositoryItem;
 struct rct_drawpixelinfo;
 struct json_t;
 
-interface IReadObjectContext
+struct IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
 
@@ -223,7 +226,7 @@ public:
     virtual void ReadJson(IReadObjectContext* /*context*/, const json_t* /*root*/)
     {
     }
-    virtual void ReadLegacy(IReadObjectContext* context, IStream* stream);
+    virtual void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream);
     virtual void Load() abstract;
     virtual void Unload() abstract;
 

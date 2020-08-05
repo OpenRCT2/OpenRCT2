@@ -14,12 +14,12 @@
 #include "../util/Util.h"
 #include "String.hpp"
 
-interface IStringReader
+struct IStringReader
 {
     virtual ~IStringReader() = default;
 
-    virtual bool TryPeek(codepoint_t * outCodepoint) abstract;
-    virtual bool TryRead(codepoint_t * outCodepoint) abstract;
+    virtual bool TryPeek(codepoint_t* outCodepoint) abstract;
+    virtual bool TryRead(codepoint_t* outCodepoint) abstract;
     virtual void Skip() abstract;
     virtual bool CanRead() const abstract;
 };

@@ -341,7 +341,7 @@ void audio_init_ride_sounds_and_info()
         {
             try
             {
-                auto fs = FileStream(path, FILE_MODE_OPEN);
+                auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
                 uint32_t head = fs.ReadValue<uint32_t>();
                 if (head == 0x78787878)
                 {

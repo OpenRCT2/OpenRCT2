@@ -60,7 +60,7 @@ struct GameStateCompareData_t
  * as it may become invalid at any time when a snapshot is created, rather Link the snapshot
  * to a specific tick which can be obtained by that later again assuming its still valid.
  */
-interface IGameStateSnapshots
+struct IGameStateSnapshots
 {
     virtual ~IGameStateSnapshots() = default;
 
@@ -77,12 +77,12 @@ interface IGameStateSnapshots
     /*
      * Links the snapshot to a specific game tick.
      */
-    virtual void LinkSnapshot(GameStateSnapshot_t & snapshot, uint32_t tick, uint32_t srand0) = 0;
+    virtual void LinkSnapshot(GameStateSnapshot_t& snapshot, uint32_t tick, uint32_t srand0) = 0;
 
     /*
      * This will fill the snapshot with the current game state in a compact form.
      */
-    virtual void Capture(GameStateSnapshot_t & snapshot) = 0;
+    virtual void Capture(GameStateSnapshot_t& snapshot) = 0;
 
     /*
      * Returns the snapshot for a given tick in the history, nullptr if not found.
@@ -92,7 +92,7 @@ interface IGameStateSnapshots
     /*
      * Serialisation of GameStateSnapshot_t
      */
-    virtual void SerialiseSnapshot(GameStateSnapshot_t & snapshot, DataSerialiser & serialiser) const = 0;
+    virtual void SerialiseSnapshot(GameStateSnapshot_t& snapshot, DataSerialiser& serialiser) const = 0;
 
     /*
      * Compares two states resulting GameStateCompareData_t with all mismatches stored.

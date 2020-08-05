@@ -21,7 +21,6 @@
 // clang-format off
 // CNG: Cryptography API: Next Generation (CNG)
 //      available in Windows Vista onwards.
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <wincrypt.h>
 #include <bcrypt.h>

@@ -24,17 +24,17 @@ struct track_design_file_ref
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    struct IPlatformEnvironment;
 }
 
-interface ITrackDesignRepository
+struct ITrackDesignRepository
 {
     virtual ~ITrackDesignRepository() = default;
 
     virtual size_t GetCount() const abstract;
     virtual size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const abstract;
-    virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8_t rideType, const std::string& entry)
-        const abstract;
+    virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(
+        uint8_t rideType, const std::string& entry) const abstract;
 
     virtual void Scan(int32_t language) abstract;
     virtual bool Delete(const std::string& path) abstract;

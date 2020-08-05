@@ -28,8 +28,8 @@ struct GameStateSnapshot_t
     uint32_t tick = InvalidTick;
     uint32_t srand0 = 0;
 
-    MemoryStream storedSprites;
-    MemoryStream parkParameters;
+    OpenRCT2::MemoryStream storedSprites;
+    OpenRCT2::MemoryStream parkParameters;
 
     // Must pass a function that can access the sprite.
     void SerialiseSprites(std::function<rct_sprite*(const size_t)> getEntity, const size_t numSprites, bool saving)

@@ -18,7 +18,7 @@
 /**
  * Represents a zip file.
  */
-interface IZipArchive
+struct IZipArchive
 {
     virtual ~IZipArchive()
     {

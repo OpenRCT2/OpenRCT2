@@ -18,11 +18,11 @@
 class IniWriter final : public IIniWriter
 {
 private:
-    IStream* _stream;
+    OpenRCT2::IStream* _stream;
     bool _firstSection = true;
 
 public:
-    explicit IniWriter(IStream* stream)
+    explicit IniWriter(OpenRCT2::IStream* stream)
         : _stream(stream)
     {
     }
@@ -103,7 +103,7 @@ void IIniWriter::WriteString(const std::string& name, const utf8* value)
     WriteString(name, String::ToStd(value));
 }
 
-IIniWriter* CreateIniWriter(IStream* stream)
+IIniWriter* CreateIniWriter(OpenRCT2::IStream* stream)
 {
     return new IniWriter(stream);
 }

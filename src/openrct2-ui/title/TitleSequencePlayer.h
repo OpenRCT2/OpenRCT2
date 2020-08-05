@@ -12,8 +12,8 @@
 #include <memory>
 #include <openrct2/common.h>
 
-interface ITitleSequencePlayer;
-interface IScenarioRepository;
+struct ITitleSequencePlayer;
+struct IScenarioRepository;
 
 namespace OpenRCT2
 {

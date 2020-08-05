@@ -61,27 +61,27 @@ S6Exporter::S6Exporter()
 
 void S6Exporter::SaveGame(const utf8* path)
 {
-    auto fs = FileStream(path, FILE_MODE_WRITE);
+    auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
     SaveGame(&fs);
 }
 
-void S6Exporter::SaveGame(IStream* stream)
+void S6Exporter::SaveGame(OpenRCT2::IStream* stream)
 {
     Save(stream, false);
 }
 
 void S6Exporter::SaveScenario(const utf8* path)
 {
-    auto fs = FileStream(path, FILE_MODE_WRITE);
+    auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
     SaveScenario(&fs);
 }
 
-void S6Exporter::SaveScenario(IStream* stream)
+void S6Exporter::SaveScenario(OpenRCT2::IStream* stream)
 {
     Save(stream, true);
 }
 
-void S6Exporter::Save(IStream* stream, bool isScenario)
+void S6Exporter::Save(OpenRCT2::IStream* stream, bool isScenario)
 {
     _s6.header.type = isScenario ? S6_TYPE_SCENARIO : S6_TYPE_SAVEDGAME;
     _s6.header.classic_flag = 0;

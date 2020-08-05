@@ -1426,7 +1426,7 @@ uint8_t* NetworkBase::save_for_network(size_t& out_size, const std::vector<const
     bool RLEState = gUseRLE;
     gUseRLE = false;
 
-    auto ms = MemoryStream();
+    auto ms = OpenRCT2::MemoryStream();
     if (!SaveMap(&ms, objects))
     {
         log_warning("Failed to export map.");

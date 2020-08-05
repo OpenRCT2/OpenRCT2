@@ -14,9 +14,9 @@
 
 namespace OpenRCT2::Drawing
 {
-    interface IDrawingEngine;
+    struct IDrawingEngine;
 
-    interface IDrawingContext
+    struct IDrawingContext
     {
         virtual ~IDrawingContext()
         {

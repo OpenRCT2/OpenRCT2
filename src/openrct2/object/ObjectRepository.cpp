@@ -611,7 +611,7 @@ private:
         return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
     }
 
-    void WritePackedObject(IStream* stream, const rct_object_entry* entry)
+    void WritePackedObject(OpenRCT2::IStream* stream, const rct_object_entry* entry)
     {
         const ObjectRepositoryItem* item = FindObject(entry);
         if (item == nullptr)
@@ -620,7 +620,7 @@ private:
         }
 
         // Read object data from file
-        auto fs = FileStream(item->Path, FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FILE_MODE_OPEN);
         auto fileEntry = fs.ReadValue<rct_object_entry>();
         if (!object_entry_compare(entry, &fileEntry))
         {

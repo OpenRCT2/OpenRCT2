@@ -21,7 +21,7 @@ struct FileInfo
     uint64_t LastModified;
 };
 
-interface IFileScanner
+struct IFileScanner
 {
     virtual ~IFileScanner() = default;
 

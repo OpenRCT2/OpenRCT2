@@ -38,15 +38,15 @@ struct GamePalette;
 
 namespace OpenRCT2::Ui
 {
-    interface IUiContext;
+    struct IUiContext;
 } // namespace OpenRCT2::Ui
 
 namespace OpenRCT2::Drawing
 {
     enum class DRAWING_ENGINE_TYPE;
-    interface IDrawingContext;
+    struct IDrawingContext;
 
-    interface IDrawingEngine
+    struct IDrawingEngine
     {
         virtual ~IDrawingEngine()
         {
@@ -67,7 +67,7 @@ namespace OpenRCT2::Drawing
         virtual void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) abstract;
         virtual std::string Screenshot() abstract;
 
-        virtual IDrawingContext* GetDrawingContext(rct_drawpixelinfo * dpi) abstract;
+        virtual IDrawingContext* GetDrawingContext(rct_drawpixelinfo* dpi) abstract;
         virtual rct_drawpixelinfo* GetDrawingPixelInfo() abstract;
 
         virtual DRAWING_ENGINE_FLAGS GetFlags() abstract;
@@ -75,7 +75,7 @@ namespace OpenRCT2::Drawing
         virtual void InvalidateImage(uint32_t image) abstract;
     };
 
-    interface IDrawingEngineFactory
+    struct IDrawingEngineFactory
     {
         virtual ~IDrawingEngineFactory()
         {
@@ -84,7 +84,7 @@ namespace OpenRCT2::Drawing
             DRAWING_ENGINE_TYPE type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
     };
 
-    interface IRainDrawer
+    struct IRainDrawer
     {
         virtual ~IRainDrawer()
         {

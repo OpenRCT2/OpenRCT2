@@ -15,8 +15,11 @@
 #include <string>
 #include <vector>
 
-interface IReadObjectContext;
-interface IStream;
+struct IReadObjectContext;
+namespace OpenRCT2
+{
+    struct IStream;
+}
 
 enum OBJ_STRING_ID : uint8_t
 {
@@ -47,7 +50,7 @@ public:
     StringTable(const StringTable&) = delete;
     StringTable& operator=(const StringTable&) = delete;
 
-    void Read(IReadObjectContext* context, IStream* stream, uint8_t id);
+    void Read(IReadObjectContext* context, OpenRCT2::IStream* stream, uint8_t id);
     void Sort();
     std::string GetString(uint8_t id) const;
     std::string GetString(uint8_t language, uint8_t id) const;

@@ -21,7 +21,7 @@
 #include <limits>
 #include <string_view>
 
-interface IObjectManager;
+struct IObjectManager;
 class Formatter;
 class StationObject;
 struct Peep;

@@ -13,10 +13,14 @@
 
 #include <string>
 
-interface IStream;
+namespace OpenRCT2
+{
+    struct IStream;
+}
+
 template<typename T> struct IConfigEnum;
 
-interface IIniWriter
+struct IIniWriter
 {
     virtual ~IIniWriter() = default;
 
@@ -45,4 +49,4 @@ interface IIniWriter
     void WriteString(const std::string& name, const utf8* value);
 };
 
-IIniWriter* CreateIniWriter(IStream* stream);
+IIniWriter* CreateIniWriter(OpenRCT2::IStream* stream);

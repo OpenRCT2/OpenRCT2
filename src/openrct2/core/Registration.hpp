@@ -17,7 +17,7 @@ namespace OpenRCT2
      * Represents a registration of some service which when deleted will be
      * unregistered.
      */
-    interface IRegistration
+    struct IRegistration
     {
         virtual ~IRegistration() = default;
     };

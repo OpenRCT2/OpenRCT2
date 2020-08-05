@@ -21,7 +21,7 @@ using SpeexResamplerState = struct SpeexResamplerState_;
 namespace OpenRCT2::Audio
 {
     struct AudioFormat;
-    interface IAudioContext;
+    struct IAudioContext;
 
 #pragma pack(push, 1)
     struct WaveFormat
@@ -48,16 +48,16 @@ namespace OpenRCT2::Audio
     assert_struct_size(WaveFormatEx, 18);
 #pragma pack(pop)
 
-    interface ISDLAudioSource : public IAudioSource
+    struct ISDLAudioSource : public IAudioSource
     {
         [[nodiscard]] virtual AudioFormat GetFormat() const abstract;
     };
 
-    interface ISDLAudioChannel : public IAudioChannel
+    struct ISDLAudioChannel : public IAudioChannel
     {
         [[nodiscard]] virtual AudioFormat GetFormat() const abstract;
         [[nodiscard]] virtual SpeexResamplerState* GetResampler() const abstract;
-        virtual void SetResampler(SpeexResamplerState * value) abstract;
+        virtual void SetResampler(SpeexResamplerState* value) abstract;
     };
 
     namespace AudioSource

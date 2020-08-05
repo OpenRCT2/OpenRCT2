@@ -123,7 +123,7 @@ enum KeyboardShortcut
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    struct IPlatformEnvironment;
 
     namespace Input
     {

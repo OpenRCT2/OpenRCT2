@@ -11,7 +11,7 @@
 
 #include "../common.h"
 
-interface ITitleSequencePlayer
+struct ITitleSequencePlayer
 {
     virtual ~ITitleSequencePlayer() = default;
 

@@ -165,9 +165,6 @@ using rct_string_id = uint16_t;
         (x) = nullptr;                                                                                                         \
     } while (false)
 
-#ifndef interface
-#    define interface struct
-#endif
 #define abstract = 0
 
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))

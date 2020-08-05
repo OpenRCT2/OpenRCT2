@@ -28,7 +28,7 @@ ImageTable::~ImageTable()
     }
 }
 
-void ImageTable::Read(IReadObjectContext* context, IStream* stream)
+void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     if (gOpenRCT2NoGraphics)
     {

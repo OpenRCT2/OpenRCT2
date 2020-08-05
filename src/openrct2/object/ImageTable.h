@@ -15,8 +15,11 @@
 #include <memory>
 #include <vector>
 
-interface IReadObjectContext;
-interface IStream;
+struct IReadObjectContext;
+namespace OpenRCT2
+{
+    struct IStream;
+}
 
 class ImageTable
 {
@@ -30,7 +33,7 @@ public:
     ImageTable& operator=(const ImageTable&) = delete;
     ~ImageTable();
 
-    void Read(IReadObjectContext* context, IStream* stream);
+    void Read(IReadObjectContext* context, OpenRCT2::IStream* stream);
     const rct_g1_element* GetImages() const
     {
         return _entries.data();

@@ -8,7 +8,6 @@
  *****************************************************************************/
 
 // Windows.h needs to be included first
-#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 // Enable visual styles

@@ -48,10 +48,10 @@ struct scenario_index_entry
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    struct IPlatformEnvironment;
 }
 
-interface IScenarioRepository
+struct IScenarioRepository
 {
     virtual ~IScenarioRepository() = default;
 
@@ -69,8 +69,8 @@ interface IScenarioRepository
     virtual const scenario_index_entry* GetByInternalName(const utf8* name) const abstract;
     virtual const scenario_index_entry* GetByPath(const utf8* path) const abstract;
 
-    virtual bool TryRecordHighscore(int32_t language, const utf8* scenarioFileName, money32 companyValue, const utf8* name)
-        abstract;
+    virtual bool TryRecordHighscore(
+        int32_t language, const utf8* scenarioFileName, money32 companyValue, const utf8* name) abstract;
 };
 
 std::unique_ptr<IScenarioRepository> CreateScenarioRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);

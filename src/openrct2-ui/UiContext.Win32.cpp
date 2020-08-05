@@ -16,7 +16,11 @@
 #    endif // __MINGW32__
 
 // Windows.h needs to be included first
+// clang-format off
 #    include <windows.h>
+#    include <shellapi.h>
+#    include <commdlg.h>
+// clang-format on
 #    undef CreateWindow
 
 // Then the rest

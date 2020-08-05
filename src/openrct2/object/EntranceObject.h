@@ -28,7 +28,7 @@ public:
         return &_legacyType;
     }
 
-    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
     void ReadJson(IReadObjectContext* context, const json_t* root) override;
     void Load() override;
     void Unload() override;

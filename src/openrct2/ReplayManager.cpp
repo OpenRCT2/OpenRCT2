@@ -72,7 +72,7 @@ namespace OpenRCT2
         uint32_t magic;
         uint16_t version;
         uint64_t uncompressedSize;
-        MemoryStream data;
+        OpenRCT2::MemoryStream data;
     };
 
     struct ReplayRecordData
@@ -80,9 +80,9 @@ namespace OpenRCT2
         uint32_t magic;
         uint16_t version;
         std::string networkId;
-        MemoryStream parkData;
-        MemoryStream parkParams;
-        MemoryStream cheatData;
+        OpenRCT2::MemoryStream parkData;
+        OpenRCT2::MemoryStream parkParams;
+        OpenRCT2::MemoryStream cheatData;
         std::string name;      // Name of play
         std::string filePath;  // File path of replay.
         uint64_t timeRecorded; // Posix Time.
@@ -91,7 +91,7 @@ namespace OpenRCT2
         std::multiset<ReplayCommand> commands;
         std::vector<std::pair<uint32_t, rct_sprite_checksum>> checksums;
         uint32_t checksumIndex;
-        MemoryStream gameStateSnapshots;
+        OpenRCT2::MemoryStream gameStateSnapshots;
     };
 
     class ReplayManager final : public IReplayManager

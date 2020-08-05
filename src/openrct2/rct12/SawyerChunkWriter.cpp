@@ -15,7 +15,7 @@
 // Maximum buffer size to store compressed data, maximum of 16 MiB
 constexpr size_t MAX_COMPRESSED_CHUNK_SIZE = 16 * 1024 * 1024;
 
-SawyerChunkWriter::SawyerChunkWriter(IStream* stream)
+SawyerChunkWriter::SawyerChunkWriter(OpenRCT2::IStream* stream)
     : _stream(stream)
 {
 }

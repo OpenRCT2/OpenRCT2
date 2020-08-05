@@ -35,7 +35,7 @@ bool T6Exporter::SaveTrack(const utf8* path)
 {
     try
     {
-        auto fs = FileStream(path, FILE_MODE_WRITE);
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
         return SaveTrack(&fs);
     }
     catch (const std::exception& e)
@@ -45,9 +45,9 @@ bool T6Exporter::SaveTrack(const utf8* path)
     }
 }
 
-bool T6Exporter::SaveTrack(IStream* stream)
+bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
 {
-    MemoryStream tempStream;
+    OpenRCT2::MemoryStream tempStream;
     tempStream.WriteValue<uint8_t>(_trackDesign->type);
     tempStream.WriteValue<uint8_t>(_trackDesign->vehicle_type);
     tempStream.WriteValue<uint32_t>(_trackDesign->flags);

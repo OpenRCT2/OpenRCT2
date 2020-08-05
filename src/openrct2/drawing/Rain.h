@@ -15,7 +15,7 @@ struct rct_drawpixelinfo;
 
 namespace OpenRCT2::Drawing
 {
-    interface IRainDrawer;
+    struct IRainDrawer;
 }
 
 // clang-format off

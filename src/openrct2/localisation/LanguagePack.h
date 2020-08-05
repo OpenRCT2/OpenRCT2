@@ -14,7 +14,7 @@
 #include <string>
 #include <string_view>
 
-interface ILanguagePack
+struct ILanguagePack
 {
     virtual ~ILanguagePack() = default;
 

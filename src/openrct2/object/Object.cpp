@@ -32,7 +32,7 @@ void* Object::GetLegacyData()
     throw std::runtime_error("Not supported.");
 }
 
-void Object::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void Object::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     throw std::runtime_error("Not supported.");
 }

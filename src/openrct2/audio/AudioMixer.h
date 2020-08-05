@@ -26,13 +26,13 @@ namespace OpenRCT2::Audio
         TitleMusic,
     };
 
-    interface IAudioSource;
-    interface IAudioChannel;
+    struct IAudioSource;
+    struct IAudioChannel;
 
     /**
      * Provides an audio stream by mixing multiple audio channels together.
      */
-    interface IAudioMixer
+    struct IAudioMixer
     {
         virtual ~IAudioMixer() = default;
 
@@ -40,8 +40,8 @@ namespace OpenRCT2::Audio
         virtual void Close() abstract;
         virtual void Lock() abstract;
         virtual void Unlock() abstract;
-        virtual IAudioChannel* Play(IAudioSource * source, int32_t loop, bool deleteondone, bool deletesourceondone) abstract;
-        virtual void Stop(IAudioChannel * channel) abstract;
+        virtual IAudioChannel* Play(IAudioSource* source, int32_t loop, bool deleteondone, bool deletesourceondone) abstract;
+        virtual void Stop(IAudioChannel* channel) abstract;
         virtual bool LoadMusic(size_t pathid) abstract;
         virtual void SetVolume(float volume) abstract;
 

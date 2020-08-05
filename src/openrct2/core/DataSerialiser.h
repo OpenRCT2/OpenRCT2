@@ -10,14 +10,15 @@
 #pragma once
 
 #include "DataSerialiserTraits.h"
+#include "MemoryStream.h"
 
 #include <type_traits>
 
 class DataSerialiser
 {
 private:
-    MemoryStream _stream;
-    IStream& _activeStream;
+    OpenRCT2::MemoryStream _stream;
+    OpenRCT2::IStream& _activeStream;
     bool _isSaving = false;
     bool _isLogging = false;
 
@@ -29,7 +30,7 @@ public:
     {
     }
 
-    DataSerialiser(bool isSaving, IStream& stream, bool isLogging = false)
+    DataSerialiser(bool isSaving, OpenRCT2::IStream& stream, bool isLogging = false)
         : _activeStream(stream)
         , _isSaving(isSaving)
         , _isLogging(isLogging)
@@ -51,7 +52,7 @@ public:
         return _isLogging;
     }
 
-    IStream& GetStream()
+    OpenRCT2::IStream& GetStream()
     {
         return _activeStream;
     }
