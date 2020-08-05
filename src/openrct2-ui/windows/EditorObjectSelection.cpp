@@ -1083,7 +1083,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
             dpi, gCommonFormatArgs, screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
     }
 
-    auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 4) };
+    auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
 
     // Draw ride type.
     if (get_selected_object_type(w) == OBJECT_TYPE_RIDE)
