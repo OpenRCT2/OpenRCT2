@@ -453,7 +453,7 @@ namespace ObjectFactory
                             json_t* tryString = json_array_get(authors, j);
                             if (json_is_string(tryString))
                             {
-                                authorVector.push_back(json_string_value(tryString));
+                                authorVector.emplace_back(json_string_value(tryString));
                             }
                         }
                         result->SetAuthors(authorVector);
@@ -462,10 +462,6 @@ namespace ObjectFactory
                     {
                         result->SetAuthors({ json_string_value(authors) });
                     }
-                }
-                else
-                {
-                    result->SetAuthors({ "" });
                 }
                 auto sourceGames = json_object_get(jRoot, "sourceGame");
                 if (json_is_array(sourceGames))

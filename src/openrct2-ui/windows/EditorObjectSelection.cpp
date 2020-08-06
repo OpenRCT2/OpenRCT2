@@ -1113,7 +1113,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     // Draw object author (will be blank space if no author in file or a non JSON object)
     {
         auto ft = Formatter::Common();
-        std::string authorsString = "";
+        std::string authorsString;
         for (size_t i = 0; i < listItem->repositoryItem->Authors.size(); i++)
         {
             if (i > 0)

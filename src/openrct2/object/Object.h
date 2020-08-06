@@ -245,8 +245,8 @@ public:
     std::vector<uint8_t> GetSourceGames();
     void SetSourceGames(const std::vector<uint8_t>& sourceGames);
 
-    std::vector<std::string> GetAuthors();
-    void SetAuthors(std::vector<std::string> authors);
+    const std::vector<std::string>& GetAuthors();
+    void SetAuthors(const std::vector<std::string>& authors);
 
     const ImageTable& GetImageTable() const
     {

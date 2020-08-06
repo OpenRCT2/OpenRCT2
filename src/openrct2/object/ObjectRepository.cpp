@@ -139,7 +139,7 @@ protected:
 
         uint8_t authorsLength = static_cast<uint8_t>(item.Authors.size());
         stream->WriteValue(authorsLength);
-        for (auto author : item.Authors)
+        for (const auto& author : item.Authors)
         {
             stream->WriteString(author);
         }
@@ -186,7 +186,7 @@ protected:
         for (size_t i = 0; i < authorsLength; i++)
         {
             auto author = stream->ReadStdString();
-            item.Authors.push_back(author);
+            item.Authors.emplace_back(author);
         }
 
         switch (item.ObjectEntry.GetType())
