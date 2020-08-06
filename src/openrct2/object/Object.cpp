@@ -116,7 +116,7 @@ void rct_object_entry::SetName(const std::string_view& value)
     std::memcpy(name, value.data(), std::min(sizeof(name), value.size()));
 }
 
-const std::vector<std::string>& Object::GetAuthors()
+const std::vector<std::string>& Object::GetAuthors() const
 {
     return _authors;
 }
