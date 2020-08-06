@@ -3987,7 +3987,6 @@ void Guest::UpdateRideFreeVehicleCheck()
 
         for (size_t i = 0; i < ride->num_vehicles; ++i)
         {
-
             Vehicle* train = GetEntity<Vehicle>(ride->vehicles[i]);
             if (train == nullptr)
                 continue;

@@ -3385,14 +3385,14 @@ void Peep::RemoveFromQueue()
         station.LastPeepInQueue = GuestNextInQueue;
         return;
     }
-    
+
     auto* otherGuest = GetEntity<Guest>(station.LastPeepInQueue);
     if (otherGuest == nullptr)
     {
         log_error("Invalid Guest Queue list!");
         return;
     }
-    for (;otherGuest != nullptr;otherGuest = GetEntity<Guest>(otherGuest->GuestNextInQueue))
+    for (; otherGuest != nullptr; otherGuest = GetEntity<Guest>(otherGuest->GuestNextInQueue))
     {
         if (sprite_index == otherGuest->GuestNextInQueue)
         {
