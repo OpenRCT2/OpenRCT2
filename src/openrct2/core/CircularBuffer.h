@@ -10,6 +10,7 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 
 template<typename _TType, size_t _TMax> class CircularBuffer
 {
