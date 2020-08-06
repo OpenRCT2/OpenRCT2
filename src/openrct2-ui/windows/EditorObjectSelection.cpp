@@ -1124,8 +1124,9 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         }
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(authorsString.c_str());
-        gfx_draw_string_right(
-            dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + w->width - 5, screenPos.y });
+        gfx_draw_string_right_clipped(
+            dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + w->width - 5, screenPos.y },
+            w->width - w->widgets[WIDX_LIST].right - 4);
     }
 }
 /**
