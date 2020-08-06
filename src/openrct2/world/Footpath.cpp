@@ -1291,6 +1291,9 @@ static int32_t footpath_is_connected_to_map_edge_helper(
     CoordsXYZ footpathPos, int32_t direction, int32_t flags, int32_t level, int32_t distanceFromJunction,
     int32_t junctionTolerance)
 {
+    // return value of this function
+    int32_t returnVal = FOOTPATH_SEARCH_INCOMPLETE;
+
     // Struct for keeping track of tile state
     struct TileState
     {
@@ -1386,11 +1389,13 @@ static int32_t footpath_is_connected_to_map_edge_helper(
         // Check if we are at edge of map
         if (targetPos.x < COORDS_XY_STEP || targetPos.y < COORDS_XY_STEP)
         {
-            return FOOTPATH_SEARCH_SUCCESS;
+            if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN) || DoneProcessing())
+                return FOOTPATH_SEARCH_SUCCESS;
         }
         if (targetPos.x >= gMapSizeUnits || targetPos.y >= gMapSizeUnits)
         {
-            return FOOTPATH_SEARCH_SUCCESS;
+            if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN) || DoneProcessing())
+                return FOOTPATH_SEARCH_SUCCESS;
         }
 
         tileElement = map_get_first_element_at(targetPos);
@@ -1456,7 +1461,11 @@ static int32_t footpath_is_connected_to_map_edge_helper(
                 if (distanceFromJunction != 0)
                     --junctionTolerance;
                 if (junctionTolerance < 0)
-                    return FOOTPATH_SEARCH_TOO_COMPLEX;
+                    if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN))
+                    {
+                        returnVal = FOOTPATH_SEARCH_TOO_COMPLEX;
+                        break;
+                    }
 
                 // Loop until there are no more directions we can go
                 do
@@ -1471,9 +1480,10 @@ static int32_t footpath_is_connected_to_map_edge_helper(
                     CaptureCurrentTileState();
                 } while (get_next_direction(edges, &direction));
             }
+            break;
         } while (!(tileElement++)->IsLastForTile());
     }
-    return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
+    return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : returnVal;
 }
 
 // TODO: Use GAME_COMMAND_FLAGS
