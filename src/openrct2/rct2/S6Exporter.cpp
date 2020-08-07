@@ -1017,7 +1017,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     dst->vehicle_type = src->vehicle_type;
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;
-    if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE && src->status == VEHICLE_STATUS_TRAVELLING_BOAT)
+    if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE && src->status == VehicleStatus::TravellingBoat)
     {
         if (src->BoatLocation.isNull())
         {
@@ -1048,7 +1048,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     dst->current_station = src->current_station;
     dst->current_time = src->current_time;
     dst->crash_z = src->crash_z;
-    dst->status = src->status;
+    dst->status = static_cast<uint8_t>(src->status);
     dst->sub_state = src->sub_state;
     for (size_t i = 0; i < std::size(src->peep); i++)
     {

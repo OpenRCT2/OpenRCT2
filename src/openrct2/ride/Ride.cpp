@@ -2791,7 +2791,7 @@ static void ride_music_update(Ride* ride)
     if (ride->type == RIDE_TYPE_CIRCUS)
     {
         Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-        if (vehicle != nullptr && vehicle->status != VEHICLE_STATUS_DOING_CIRCUS_SHOW)
+        if (vehicle != nullptr && vehicle->status != VehicleStatus::DoingCircusShow)
         {
             ride->music_tune_id = 255;
             return;
@@ -2870,7 +2870,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
 
     if (measurement.flags & RIDE_MEASUREMENT_FLAG_UNLOADING)
     {
-        if (vehicle->status != VEHICLE_STATUS_DEPARTING && vehicle->status != VEHICLE_STATUS_TRAVELLING_CABLE_LIFT)
+        if (vehicle->status != VehicleStatus::Departing && vehicle->status != VehicleStatus::TravellingCableLift)
             return;
 
         measurement.flags &= ~RIDE_MEASUREMENT_FLAG_UNLOADING;
@@ -2878,7 +2878,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
             measurement.current_item = 0;
     }
 
-    if (vehicle->status == VEHICLE_STATUS_UNLOADING_PASSENGERS)
+    if (vehicle->status == VehicleStatus::UnloadingPassengers)
     {
         measurement.flags |= RIDE_MEASUREMENT_FLAG_UNLOADING;
         return;
@@ -2957,8 +2957,7 @@ void ride_measurements_update()
                     auto vehicle = GetEntity<Vehicle>(vehicleSpriteIdx);
                     if (vehicle != nullptr)
                     {
-                        if (vehicle->status == VEHICLE_STATUS_DEPARTING
-                            || vehicle->status == VEHICLE_STATUS_TRAVELLING_CABLE_LIFT)
+                        if (vehicle->status == VehicleStatus::Departing || vehicle->status == VehicleStatus::TravellingCableLift)
                         {
                             measurement->vehicle_index = j;
                             measurement->current_station = vehicle->current_station;
@@ -4402,7 +4401,7 @@ static Vehicle* vehicle_create_car(
 
         vehicle->track_type = tileElement->AsTrack()->GetTrackType() << 2;
         vehicle->track_progress = 0;
-        vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
+        vehicle->SetState(VehicleStatus::MovingToEndOfStation);
         vehicle->update_flags = 0;
 
         CoordsXY chosenLoc;
@@ -4503,7 +4502,7 @@ static Vehicle* vehicle_create_car(
                 vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
             }
         }
-        vehicle->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
+        vehicle->SetState(VehicleStatus::MovingToEndOfStation);
     }
 
     // loc_6DDD5E:
@@ -4791,10 +4790,10 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
         for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
             car->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
-            car->SetState(VEHICLE_STATUS_TRAVELLING, car->sub_state);
+            car->SetState(VehicleStatus::Travelling, car->sub_state);
             if ((car->GetTrackType()) == TRACK_ELEM_END_STATION)
             {
-                car->SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION, car->sub_state);
+                car->SetState(VehicleStatus::MovingToEndOfStation, car->sub_state);
             }
         }
     }

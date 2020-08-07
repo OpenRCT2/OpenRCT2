@@ -125,7 +125,7 @@ static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
             if (vehicle == nullptr)
                 continue;
 
-            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART)
+            if (vehicle->status != VehicleStatus::WaitingToDepart)
             {
                 ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
                 return;
@@ -199,7 +199,7 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
             if (vehicle == nullptr)
                 continue;
 
-            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps)
+            if (vehicle->status != VehicleStatus::WaitingToDepart && vehicle->num_laps >= numLaps)
             {
                 // Found a winner
                 if (vehicle->num_peeps != 0)
@@ -235,7 +235,7 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
             if (vehicle == nullptr)
                 continue;
 
-            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING)
+            if (vehicle->status != VehicleStatus::WaitingToDepart && vehicle->status != VehicleStatus::Departing)
             {
                 if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
                 {

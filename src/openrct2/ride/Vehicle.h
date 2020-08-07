@@ -111,37 +111,37 @@ static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
 
 enum VEHICLE_STATUS
 {
-    VEHICLE_STATUS_MOVING_TO_END_OF_STATION,
-    VEHICLE_STATUS_WAITING_FOR_PASSENGERS,
-    VEHICLE_STATUS_WAITING_TO_DEPART,
-    VEHICLE_STATUS_DEPARTING,
-    VEHICLE_STATUS_TRAVELLING,
-    VEHICLE_STATUS_ARRIVING,
-    VEHICLE_STATUS_UNLOADING_PASSENGERS,
-    VEHICLE_STATUS_TRAVELLING_BOAT,
-    VEHICLE_STATUS_CRASHING,
-    VEHICLE_STATUS_CRASHED,
-    VEHICLE_STATUS_TRAVELLING_DODGEMS,
-    VEHICLE_STATUS_SWINGING,
-    VEHICLE_STATUS_ROTATING,
-    VEHICLE_STATUS_FERRIS_WHEEL_ROTATING,
-    VEHICLE_STATUS_SIMULATOR_OPERATING,
-    VEHICLE_STATUS_SHOWING_FILM,
-    VEHICLE_STATUS_SPACE_RINGS_OPERATING,
-    VEHICLE_STATUS_TOP_SPIN_OPERATING,
-    VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING,
-    VEHICLE_STATUS_DOING_CIRCUS_SHOW,
-    VEHICLE_STATUS_CROOKED_HOUSE_OPERATING,
-    VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT,
-    VEHICLE_STATUS_TRAVELLING_CABLE_LIFT,
-    VEHICLE_STATUS_STOPPING,
-    VEHICLE_STATUS_WAITING_FOR_PASSENGERS_17,
-    VEHICLE_STATUS_WAITING_TO_START,
-    VEHICLE_STATUS_STARTING,
-    VEHICLE_STATUS_OPERATING_1A,
-    VEHICLE_STATUS_STOPPING_1B,
-    VEHICLE_STATUS_UNLOADING_PASSENGERS_1C,
-    VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
+    MovingToEndOfStation,
+    WaitingForPassengers,
+    WaitingToDepart,
+    Departing,
+    Travelling,
+    Arriving,
+    UnloadingPassengers,
+    TravellingBoat,
+    Crashing,
+    Crashed,
+    TravellingDodgems,
+    Swinging,
+    Rotating,
+    FerrisWheelRotating,
+    SimulatorOperating,
+    ShowingFilm,
+    SpaceRingsOperating,
+    TopSpinOperating,
+    HauntedHouseOperating,
+    DoingCircusShow,
+    CrookedHouseOperating,
+    WaitingForCableLift,
+    TravellingCableLift,
+    Stopping,
+    WaitingForPassengers17,
+    WaitingToStart,
+    Starting,
+    Operating1A,
+    Stopping1B,
+    UnloadingPassengers1C,
+    StoppedByBlockBrakes
 };
 
 struct rct_vehicle_sound_params;
@@ -251,7 +251,7 @@ struct Vehicle : SpriteBase
         int16_t SwingSpeed;
         int16_t crash_z;
     };
-    VEHICLE_STATUS status;
+    VehicleStatus status;
     uint8_t sub_state;
     uint16_t peep[32];
     uint8_t peep_tshirt_colours[32];
@@ -321,7 +321,7 @@ struct Vehicle : SpriteBase
     const Vehicle* GetHead() const;
     Vehicle* GetCar(size_t carIndex) const;
     void Invalidate();
-    void SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState = 0);
+    void SetState(VehicleStatus vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
     void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
     bool DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* spriteId) const;
