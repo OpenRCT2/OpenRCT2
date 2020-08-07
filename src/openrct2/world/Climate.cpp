@@ -169,7 +169,7 @@ void climate_update()
         climate_update_lightning();
         climate_update_thunder();
     }
-    else if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
+    else if (gClimateCurrent.WeatherEffect == WeatherEffectType::Storm)
     {
         // Create new thunder and lightning
         uint32_t randomNumber = util_rand();
@@ -277,7 +277,7 @@ static void climate_determine_future_weather(int32_t randomDistribution)
 
 static void climate_update_rain_sound()
 {
-    if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_RAIN || gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
+    if (gClimateCurrent.WeatherEffect == WeatherEffectType::Rain || gClimateCurrent.WeatherEffect == WeatherEffectType::Storm)
     {
         // Start playing the rain sound
         if (gRainSoundChannel == nullptr)
@@ -412,12 +412,12 @@ const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] = {
 
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
 const WeatherState ClimateWeatherData[6] = {
-    { 10, WEATHER_EFFECT_NONE, 0, RainLevel::None, SPR_WEATHER_SUN },         // Sunny
-    { 5, WEATHER_EFFECT_NONE, 0, RainLevel::None, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
-    { 0, WEATHER_EFFECT_NONE, 0, RainLevel::None, SPR_WEATHER_CLOUD },        // Cloudy
-    { -2, WEATHER_EFFECT_RAIN, 1, RainLevel::Light, SPR_WEATHER_LIGHT_RAIN }, // Rain
-    { -4, WEATHER_EFFECT_RAIN, 2, RainLevel::Heavy, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
-    { 2, WEATHER_EFFECT_STORM, 2, RainLevel::Heavy, SPR_WEATHER_STORM },      // Thunderstorm
+    { 10, WeatherEffectType::None, 0, RainLevel::None, SPR_WEATHER_SUN },         // Sunny
+    { 5, WeatherEffectType::None, 0, RainLevel::None, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
+    { 0, WeatherEffectType::None, 0, RainLevel::None, SPR_WEATHER_CLOUD },        // Cloudy
+    { -2, WeatherEffectType::Rain, 1, RainLevel::Light, SPR_WEATHER_LIGHT_RAIN }, // Rain
+    { -4, WeatherEffectType::Rain, 2, RainLevel::Heavy, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
+    { 2, WeatherEffectType::Storm, 2, RainLevel::Heavy, SPR_WEATHER_STORM },      // Thunderstorm
 };
 
 static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] = {

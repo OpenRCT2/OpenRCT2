@@ -2665,12 +2665,12 @@ private:
         gClimateUpdateTimer = _s4.climate_timer;
         gClimateCurrent.Temperature = _s4.temperature;
         gClimateCurrent.Weather = _s4.weather;
-        gClimateCurrent.WeatherEffect = WEATHER_EFFECT_NONE;
+        gClimateCurrent.WeatherEffect = WeatherEffectType::None;
         gClimateCurrent.WeatherGloom = _s4.weather_gloom;
         gClimateCurrent.Level = static_cast<RainLevel>(_s4.rain);
         gClimateNext.Temperature = _s4.target_temperature;
         gClimateNext.Weather = _s4.target_weather;
-        gClimateNext.WeatherEffect = WEATHER_EFFECT_NONE;
+        gClimateNext.WeatherEffect = WeatherEffectType::None;
         gClimateNext.WeatherGloom = _s4.target_weather_gloom;
         gClimateNext.Level = static_cast<RainLevel>(_s4.target_rain);
     }
