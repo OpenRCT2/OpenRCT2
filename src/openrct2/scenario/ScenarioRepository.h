@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../scenario/Scenario.h"
 
 #include <memory>
 
@@ -30,7 +31,7 @@ struct scenario_index_entry
 
     // Category / sequence
     uint8_t category;
-    uint8_t source_game;
+    ScenarioSource source_game;
     int16_t source_index;
     uint16_t sc_id;
 
