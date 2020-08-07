@@ -2459,7 +2459,8 @@ static void window_ride_main_update(rct_window* w)
                 Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
                 if (vehicle == nullptr
                     || (vehicle->status != VehicleStatus::Travelling && vehicle->status != VehicleStatus::TravellingCableLift
-                        && vehicle->status != VehicleStatus::TravellingDodgems && vehicle->status != VehicleStatus::TravellingBoat))
+                        && vehicle->status != VehicleStatus::TravellingDodgems
+                        && vehicle->status != VehicleStatus::TravellingBoat))
                 {
                     return;
                 }
@@ -2695,7 +2696,8 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
     if (ride->type == RIDE_TYPE_MINI_GOLF)
         return 0;
 
-    if ((RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_SINGLE_SESSION) && vehicle->status <= VehicleStatus::UnloadingPassengers)
+    if ((RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_SINGLE_SESSION)
+        && vehicle->status <= VehicleStatus::UnloadingPassengers)
     {
         stringId = SingleSessionVehicleStatusNames[static_cast<size_t>(vehicle->status)];
     }

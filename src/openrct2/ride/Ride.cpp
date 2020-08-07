@@ -2957,7 +2957,8 @@ void ride_measurements_update()
                     auto vehicle = GetEntity<Vehicle>(vehicleSpriteIdx);
                     if (vehicle != nullptr)
                     {
-                        if (vehicle->status == VehicleStatus::Departing || vehicle->status == VehicleStatus::TravellingCableLift)
+                        if (vehicle->status == VehicleStatus::Departing
+                            || vehicle->status == VehicleStatus::TravellingCableLift)
                         {
                             measurement->vehicle_index = j;
                             measurement->current_station = vehicle->current_station;
