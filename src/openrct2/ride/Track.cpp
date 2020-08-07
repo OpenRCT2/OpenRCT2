@@ -803,10 +803,9 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
     if (ride == nullptr)
         return false;
 
-    CoordsXY remove = CoordsXY { loc.x, loc.y };
+    CoordsXY remove = CoordsXY{ loc.x, loc.y };
     CoordsXY station0 = CoordsXY{ loc.x, loc.y };
-    int32_t stationX1 = loc.x;
-    int32_t stationY1 = loc.y;
+    CoordsXY station1 = CoordsXY{ loc.x, loc.y };
     int32_t stationLength = 0;
     int32_t byte_F441D1 = -1;
 
@@ -849,8 +848,8 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
     }
 
     // Search forwards for more station
-    currentLoc.x = stationX1;
-    currentLoc.y = stationY1;
+    currentLoc.x = station1.x;
+    currentLoc.y = station1.y;
     do
     {
         currentLoc.x += CoordsDirectionDelta[loc.direction].x;
@@ -867,15 +866,15 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
                 }
             }
 
-            stationX1 = currentLoc.x;
-            stationY1 = currentLoc.y;
+            station1.x = currentLoc.x;
+            station1.y = currentLoc.y;
             stationLength++;
         }
     } while (stationElement != nullptr);
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
     {
-        if ((remove.x != station0.x || remove.y != station0.y) && (remove.x != stationX1 || remove.y != stationY1)
+        if ((remove.x != station0.x || remove.y != station0.y) && (remove.x != station1.x || remove.y != station1.y)
             && ride->num_stations >= MAX_STATIONS)
         {
             gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
@@ -887,8 +886,8 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
         }
     }
 
-    currentLoc.x = stationX1;
-    currentLoc.y = stationY1;
+    currentLoc.x = station1.x;
+    currentLoc.y = station1.y;
     bool finaliseStationDone;
     do
     {
@@ -901,7 +900,7 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
             if (stationElement != nullptr)
             {
                 int32_t targetTrackType;
-                if ((currentLoc.x == stationX1 && currentLoc.y == stationY1)
+                if ((currentLoc.x == station1.x && currentLoc.y == station1.y)
                     || (currentLoc.x + CoordsDirectionDelta[loc.direction].x == remove.x
                         && currentLoc.y + CoordsDirectionDelta[loc.direction].y == remove.y))
                 {
