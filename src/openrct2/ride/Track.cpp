@@ -797,7 +797,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
  *
  *  rct2: 0x006C494B
  */
-bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex, int32_t flags)
+bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, int32_t flags)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
