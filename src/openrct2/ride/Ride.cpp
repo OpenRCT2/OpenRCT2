@@ -2453,7 +2453,6 @@ static void choose_random_train_to_breakdown_safe(Ride* ride)
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
 {
     StationIndex i;
-    uint16_t vehicleSpriteIdx;
     Vehicle* vehicle;
 
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
@@ -2506,14 +2505,10 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
             ride->broken_car = 0;
 
             // Set flag on broken train, first car
-            vehicleSpriteIdx = ride->vehicles[ride->broken_vehicle];
-            if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
+            vehicle = GetEntity<Vehicle>(ride->vehicles[ride->broken_vehicle]);
+            if (vehicle != nullptr)
             {
-                vehicle = GetEntity<Vehicle>(vehicleSpriteIdx);
-                if (vehicle != nullptr)
-                {
-                    vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
-                }
+                vehicle->SetUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
             }
             break;
         case BREAKDOWN_BRAKES_FAILURE:
@@ -2795,15 +2790,11 @@ static void ride_music_update(Ride* ride)
 
     if (ride->type == RIDE_TYPE_CIRCUS)
     {
-        uint16_t vehicleSpriteIdx = ride->vehicles[0];
-        if (vehicleSpriteIdx != SPRITE_INDEX_NULL)
+        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+        if (vehicle != nullptr && vehicle->status != VEHICLE_STATUS_DOING_CIRCUS_SHOW)
         {
-            Vehicle* vehicle = GetEntity<Vehicle>(vehicleSpriteIdx);
-            if (vehicle != nullptr && vehicle->status != VEHICLE_STATUS_DOING_CIRCUS_SHOW)
-            {
-                ride->music_tune_id = 255;
-                return;
-            }
+            ride->music_tune_id = 255;
+            return;
         }
     }
 
@@ -2873,11 +2864,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
     if (measurement.vehicle_index >= std::size(ride.vehicles))
         return;
 
-    auto spriteIndex = ride.vehicles[measurement.vehicle_index];
-    if (spriteIndex == SPRITE_INDEX_NULL)
-        return;
-
-    auto vehicle = GetEntity<Vehicle>(spriteIndex);
+    auto vehicle = GetEntity<Vehicle>(ride.vehicles[measurement.vehicle_index]);
     if (vehicle == nullptr)
         return;
 
@@ -6355,18 +6342,12 @@ void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor)
     {
         for (int32_t i = 0; i < ride->num_vehicles; i++)
         {
-            uint16_t spriteIndex = ride->vehicles[i];
-            while (spriteIndex != SPRITE_INDEX_NULL)
+            for (Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]); vehicle != nullptr;
+                 vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
             {
-                Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
-                if (vehicle == nullptr)
-                {
-                    break;
-                }
                 vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
                 vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_CAR);
                 vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN);
-                spriteIndex = vehicle->next_vehicle_on_train;
             }
         }
     }
@@ -6511,10 +6492,10 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
         VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                                                                                                   // TRACK_QUARTER_LOOP
         VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_SPINNING_TUNNEL
         VEHICLE_SPRITE_FLAG_FLAT,                                                                                                              // TRACK_ROTATION_CONTROL_TOGGLE
-        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_BANKED |  VEHICLE_SPRITE_FLAG_INLINE_TWISTS,                                       // TRACK_INLINE_TWIST_UNINVERTED   
-        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_BANKED |  VEHICLE_SPRITE_FLAG_INLINE_TWISTS,                                       // TRACK_INLINE_TWIST_INVERTED     
-        VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                                                                                                   // TRACK_QUARTER_LOOP_UNINVERTED   
-        VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                                                                                                   // TRACK_QUARTER_LOOP_INVERTED     
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_BANKED |  VEHICLE_SPRITE_FLAG_INLINE_TWISTS,                                       // TRACK_INLINE_TWIST_UNINVERTED
+        VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_FLAT_BANKED |  VEHICLE_SPRITE_FLAG_INLINE_TWISTS,                                       // TRACK_INLINE_TWIST_INVERTED
+        VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                                                                                                   // TRACK_QUARTER_LOOP_UNINVERTED
+        VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                                                                                                   // TRACK_QUARTER_LOOP_INVERTED
         VEHICLE_SPRITE_FLAG_GENTLE_SLOPES,                                                                                                     // TRACK_RAPIDS
         VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES |  VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                           // TRACK_HALF_LOOP_UNINVERTED
         VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES |  VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES,                           // TRACK_HALF_LOOP_INVERTED

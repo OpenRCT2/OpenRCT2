@@ -2023,29 +2023,26 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             else
             {
                 // Check if there's room in the queue for the peep to enter.
-                if (ride->stations[entranceNum].LastPeepInQueue != SPRITE_INDEX_NULL)
+                Peep* lastPeepInQueue = GetEntity<Guest>(ride->stations[entranceNum].LastPeepInQueue);
+                if (lastPeepInQueue != nullptr && (abs(lastPeepInQueue->z - z) <= 6))
                 {
-                    Peep* lastPeepInQueue = GetEntity<Guest>(ride->stations[entranceNum].LastPeepInQueue);
-                    if (lastPeepInQueue != nullptr && (abs(lastPeepInQueue->z - z) <= 6))
+                    int32_t dx = abs(lastPeepInQueue->x - x);
+                    int32_t dy = abs(lastPeepInQueue->y - y);
+                    int32_t maxD = std::max(dx, dy);
+
+                    // Unlike normal paths, peeps cannot overlap when queueing for a ride.
+                    // This check enforces a minimum distance between peeps entering the queue.
+                    if (maxD < 8)
                     {
-                        int32_t dx = abs(lastPeepInQueue->x - x);
-                        int32_t dy = abs(lastPeepInQueue->y - y);
-                        int32_t maxD = std::max(dx, dy);
+                        peep_tried_to_enter_full_queue(this, ride);
+                        return false;
+                    }
 
-                        // Unlike normal paths, peeps cannot overlap when queueing for a ride.
-                        // This check enforces a minimum distance between peeps entering the queue.
-                        if (maxD < 8)
-                        {
-                            peep_tried_to_enter_full_queue(this, ride);
-                            return false;
-                        }
-
-                        // This checks if there's a peep standing still at the very end of the queue.
-                        if (maxD <= 13 && lastPeepInQueue->TimeInQueue > 10)
-                        {
-                            peep_tried_to_enter_full_queue(this, ride);
-                            return false;
-                        }
+                    // This checks if there's a peep standing still at the very end of the queue.
+                    if (maxD <= 13 && lastPeepInQueue->TimeInQueue > 10)
+                    {
+                        peep_tried_to_enter_full_queue(this, ride);
+                        return false;
                     }
                 }
             }
@@ -3990,9 +3987,6 @@ void Guest::UpdateRideFreeVehicleCheck()
 
         for (size_t i = 0; i < ride->num_vehicles; ++i)
         {
-            if (ride->vehicles[i] == SPRITE_INDEX_NULL)
-                continue;
-
             Vehicle* train = GetEntity<Vehicle>(ride->vehicles[i]);
             if (train == nullptr)
                 continue;
@@ -5572,20 +5566,17 @@ void Guest::UpdateQueuing()
     if (SubState != 10)
     {
         bool is_front = true;
-        if (GuestNextInQueue != SPRITE_INDEX_NULL)
+        // Fix #4819: Occasionally the peep->GuestNextInQueue is incorrectly set
+        // to prevent this from causing the peeps to enter a loop
+        // first check if the next in queue is actually nearby
+        // if they are not then it's safe to assume that this is
+        // the front of the queue.
+        Peep* nextGuest = GetEntity<Guest>(GuestNextInQueue);
+        if (nextGuest != nullptr)
         {
-            // Fix #4819: Occasionally the peep->GuestNextInQueue is incorrectly set
-            // to prevent this from causing the peeps to enter a loop
-            // first check if the next in queue is actually nearby
-            // if they are not then it's safe to assume that this is
-            // the front of the queue.
-            Peep* nextGuest = GetEntity<Guest>(GuestNextInQueue);
-            if (nextGuest != nullptr)
+            if (abs(nextGuest->x - x) < 32 && abs(nextGuest->y - y) < 32)
             {
-                if (abs(nextGuest->x - x) < 32 && abs(nextGuest->y - y) < 32)
-                {
-                    is_front = false;
-                }
+                is_front = false;
             }
         }
 
