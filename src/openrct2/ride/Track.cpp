@@ -826,9 +826,7 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
 
     // Search backwards for more station
     CoordsXYZD currentLoc = stationBackLoc;
-    while (
-        (stationElement = find_station_element(currentLoc, rideIndex))
-        != nullptr)
+    while ((stationElement = find_station_element(currentLoc, rideIndex)) != nullptr)
     {
         if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
         {
@@ -867,8 +865,7 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
     {
-        if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc)
-            && ride->num_stations >= MAX_STATIONS)
+        if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc) && ride->num_stations >= MAX_STATIONS)
         {
             gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
             return false;
@@ -901,7 +898,7 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
                     else
                     {
                         ride->stations[stationIndex].Start = currentLoc;
-                        ride->stations[stationIndex].Height = currentLoc.z;
+                        ride->stations[stationIndex].Height = currentLoc.z / COORDS_Z_STEP;
                         ride->stations[stationIndex].Depart = 1;
                         ride->stations[stationIndex].Length = stationLength != 0 ? stationLength : byte_F441D1;
                         ride->num_stations++;

@@ -151,6 +151,7 @@ The following people are not part of the development team, but have been contrib
 * Sidney Kuyateh (autinerd)
 * Łukasz Pękalski (Lukasz-Pe)
 * (quale)
+* Arran Ireland (ion232)
 
 ## Toolchain
 * (Balletie) - macOS
