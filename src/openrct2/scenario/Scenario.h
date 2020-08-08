@@ -63,16 +63,16 @@ struct rct_s6_info
 };
 assert_struct_size(rct_s6_info, 0x198);
 
-enum SCENARIO_SOURCE
+enum class ScenarioSource : uint8_t
 {
-    SCENARIO_SOURCE_RCT1,
-    SCENARIO_SOURCE_RCT1_AA,
-    SCENARIO_SOURCE_RCT1_LL,
-    SCENARIO_SOURCE_RCT2,
-    SCENARIO_SOURCE_RCT2_WW,
-    SCENARIO_SOURCE_RCT2_TT,
-    SCENARIO_SOURCE_REAL,
-    SCENARIO_SOURCE_OTHER,
+    RCT1,
+    RCT1_AA,
+    RCT1_LL,
+    RCT2,
+    RCT2_WW,
+    RCT2_TT,
+    Real,
+    Other
 };
 
 struct rct_stex_entry

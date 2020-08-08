@@ -66,7 +66,7 @@ static int32_t scenario_index_entry_CompareByCategory(const scenario_index_entry
         default:
             if (entryA.source_game != entryB.source_game)
             {
-                return entryA.source_game - entryB.source_game;
+                return static_cast<int32_t>(entryA.source_game) - static_cast<int32_t>(entryB.source_game);
             }
             return strcmp(entryA.name, entryB.name);
         case SCENARIO_CATEGORY_REAL:
@@ -80,11 +80,11 @@ static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry& e
     // Order by source game
     if (entryA.source_game != entryB.source_game)
     {
-        return entryA.source_game - entryB.source_game;
+        return static_cast<int32_t>(entryA.source_game) - static_cast<int32_t>(entryB.source_game);
     }
 
     // Then by index / category / name
-    uint8_t sourceGame = entryA.source_game;
+    ScenarioSource sourceGame = ScenarioSource{ entryA.source_game };
     switch (sourceGame)
     {
         default:
@@ -111,7 +111,7 @@ static int32_t scenario_index_entry_CompareByIndex(const scenario_index_entry& e
             {
                 return entryA.source_index - entryB.source_index;
             }
-        case SCENARIO_SOURCE_REAL:
+        case ScenarioSource::Real:
             return scenario_index_entry_CompareByCategory(entryA, entryB);
     }
 }
@@ -185,7 +185,7 @@ protected:
         item.timestamp = stream->ReadValue<uint64_t>();
 
         item.category = stream->ReadValue<uint8_t>();
-        item.source_game = stream->ReadValue<uint8_t>();
+        item.source_game = ScenarioSource{ stream->ReadValue<uint8_t>() };
         item.source_index = stream->ReadValue<int16_t>();
         item.sc_id = stream->ReadValue<uint16_t>();
 
@@ -302,7 +302,7 @@ private:
         {
             entry.sc_id = desc.id;
             entry.source_index = desc.index;
-            entry.source_game = desc.source;
+            entry.source_game = ScenarioSource{ desc.source };
             entry.category = desc.category;
         }
         else
@@ -311,11 +311,11 @@ private:
             entry.source_index = -1;
             if (entry.category == SCENARIO_CATEGORY_REAL)
             {
-                entry.source_game = SCENARIO_SOURCE_REAL;
+                entry.source_game = ScenarioSource::Real;
             }
             else
             {
-                entry.source_game = SCENARIO_SOURCE_OTHER;
+                entry.source_game = ScenarioSource::Other;
             }
         }
 
@@ -401,7 +401,7 @@ public:
         {
             const scenario_index_entry* scenario = &_scenarios[i];
 
-            if (scenario->source_game == SCENARIO_SOURCE_OTHER && scenario->sc_id == SC_UNIDENTIFIED)
+            if (scenario->source_game == ScenarioSource::Other && scenario->sc_id == SC_UNIDENTIFIED)
                 continue;
 
             // Note: this is always case insensitive search for cross platform consistency

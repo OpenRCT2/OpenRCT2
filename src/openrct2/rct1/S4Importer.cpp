@@ -222,7 +222,7 @@ public:
         bool isOfficial = ScenarioSources::TryGetById(_s4.scenario_slot_index, &desc);
 
         dst->category = desc.category;
-        dst->source_game = desc.source;
+        dst->source_game = ScenarioSource{ desc.source };
         dst->source_index = desc.index;
         dst->sc_id = desc.id;
 
