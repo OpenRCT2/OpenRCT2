@@ -109,12 +109,6 @@ static_assert(sizeof(rct_ride_entry_vehicle) % 4 == 0, "Invalid struct size");
 static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
 #endif
 
-enum VEHICLE_TYPE : uint8_t
-{
-    VEHICLE_TYPE_HEAD = 0,
-    VEHICLE_TYPE_TAIL = 1,
-};
-
 enum VEHICLE_STATUS
 {
     VEHICLE_STATUS_MOVING_TO_END_OF_STATION,
@@ -200,6 +194,12 @@ struct rct_vehicle_info
 
 struct Vehicle : SpriteBase
 {
+    enum class Type : uint8_t
+    {
+        Head,
+        Tail,
+    };
+
     uint8_t vehicle_sprite_type;
     uint8_t bank_rotation;
     int32_t remaining_distance;
@@ -314,7 +314,7 @@ struct Vehicle : SpriteBase
 
     constexpr bool IsHead() const
     {
-        return type == VEHICLE_TYPE_HEAD;
+        return type == static_cast<uint8_t>(Vehicle::Type::Head);
     }
     void Update();
     Vehicle* GetHead();

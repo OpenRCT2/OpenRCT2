@@ -32,7 +32,7 @@ Vehicle* cable_lift_segment_create(
     {
         ride.cable_lift = current->sprite_index;
     }
-    current->type = head ? VEHICLE_TYPE_HEAD : VEHICLE_TYPE_TAIL;
+    current->type = static_cast<uint8_t>(head ? Vehicle::Type::Head : Vehicle::Type::Tail);
     current->var_44 = var_44;
     current->remaining_distance = remaining_distance;
     current->sprite_width = 10;
