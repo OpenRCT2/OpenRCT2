@@ -88,9 +88,9 @@ namespace Config
         ConfigEnumEntry<int32_t>("OPENGL", DRAWING_ENGINE_OPENGL),
     });
 
-    static const auto Enum_Temperature = ConfigEnum<TEMPERATURE_FORMAT>({
-        ConfigEnumEntry<TEMPERATURE_FORMAT>("CELSIUS", TEMPERATURE_FORMAT::C),
-        ConfigEnumEntry<TEMPERATURE_FORMAT>("FAHRENHEIT", TEMPERATURE_FORMAT::F),
+    static const auto Enum_Temperature = ConfigEnum<TemperatureFormat>({
+        ConfigEnumEntry<TemperatureFormat>("CELSIUS", TemperatureFormat::C),
+        ConfigEnumEntry<TemperatureFormat>("FAHRENHEIT", TemperatureFormat::F),
     });
 
     static const auto Enum_ScaleQuality = ConfigEnum<int32_t>({
@@ -162,7 +162,7 @@ namespace Config
             model->save_plugin_data = reader->GetBoolean("save_plugin_data", true);
             model->debugging_tools = reader->GetBoolean("debugging_tools", false);
             model->show_height_as_units = reader->GetBoolean("show_height_as_units", false);
-            model->temperature_format = reader->GetEnum<TEMPERATURE_FORMAT>(
+            model->temperature_format = reader->GetEnum<TemperatureFormat>(
                 "temperature_format", platform_get_locale_temperature_format(), Enum_Temperature);
             model->window_height = reader->GetInt32("window_height", -1);
             model->window_snap_proximity = reader->GetInt32("window_snap_proximity", 5);
@@ -242,7 +242,7 @@ namespace Config
         writer->WriteBoolean("save_plugin_data", model->save_plugin_data);
         writer->WriteBoolean("debugging_tools", model->debugging_tools);
         writer->WriteBoolean("show_height_as_units", model->show_height_as_units);
-        writer->WriteEnum<TEMPERATURE_FORMAT>("temperature_format", model->temperature_format, Enum_Temperature);
+        writer->WriteEnum<TemperatureFormat>("temperature_format", model->temperature_format, Enum_Temperature);
         writer->WriteInt32("window_height", model->window_height);
         writer->WriteInt32("window_snap_proximity", model->window_snap_proximity);
         writer->WriteInt32("window_width", model->window_width);

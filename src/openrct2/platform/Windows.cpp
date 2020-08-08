@@ -328,7 +328,7 @@ uint8_t platform_get_locale_measurement_format()
     }
 }
 
-TEMPERATURE_FORMAT platform_get_locale_temperature_format()
+TemperatureFormat platform_get_locale_temperature_format()
 {
     UINT fahrenheit;
 
@@ -337,13 +337,13 @@ TEMPERATURE_FORMAT platform_get_locale_temperature_format()
     if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, (LPSTR)&fahrenheit, sizeof(fahrenheit)) == 0)
     {
         // Assume celsius by default if function call fails
-        return TEMPERATURE_FORMAT::C;
+        return TemperatureFormat::C;
     }
 
     if (fahrenheit)
-        return TEMPERATURE_FORMAT::F;
+        return TemperatureFormat::F;
     else
-        return TEMPERATURE_FORMAT::C;
+        return TemperatureFormat::C;
 }
 
 uint8_t platform_get_locale_date_format()

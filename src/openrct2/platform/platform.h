@@ -117,7 +117,7 @@ uint8_t platform_get_locale_currency();
 uint8_t platform_get_currency_value(const char* currencyCode);
 uint16_t platform_get_locale_language();
 uint8_t platform_get_locale_measurement_format();
-TEMPERATURE_FORMAT platform_get_locale_temperature_format();
+TemperatureFormat platform_get_locale_temperature_format();
 uint8_t platform_get_locale_date_format();
 bool platform_process_is_elevated();
 bool platform_get_steam_path(utf8* outPath, size_t outSize);
