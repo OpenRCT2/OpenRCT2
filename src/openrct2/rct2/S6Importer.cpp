@@ -1346,7 +1346,7 @@ public:
         dst->track_progress = src->track_progress;
         dst->track_direction = src->track_direction;
         if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE
-            || src->status != static_cast<uint8_t>(VehicleStatus::TravellingBoat))
+            || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
         {
             dst->BoatLocation.setNull();
             dst->track_type = src->track_type;
@@ -1369,10 +1369,10 @@ public:
         dst->current_time = src->current_time;
         dst->crash_z = src->crash_z;
 
-        VehicleStatus statusSrc = VehicleStatus::MovingToEndOfStation;
-        if (src->status <= static_cast<uint8_t>(VehicleStatus::StoppedByBlockBrakes))
+        Vehicle::Status statusSrc = Vehicle::Status::MovingToEndOfStation;
+        if (src->status <= static_cast<uint8_t>(Vehicle::Status::StoppedByBlockBrakes))
         {
-            statusSrc = static_cast<VehicleStatus>(src->status);
+            statusSrc = static_cast<Vehicle::Status>(src->status);
         }
 
         dst->status = statusSrc;

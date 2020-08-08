@@ -1219,16 +1219,16 @@ private:
             }
         }
 
-        VehicleStatus statusSrc = VehicleStatus::MovingToEndOfStation;
-        if (src->status <= static_cast<uint8_t>(VehicleStatus::StoppedByBlockBrakes))
+        Vehicle::Status statusSrc = Vehicle::Status::MovingToEndOfStation;
+        if (src->status <= static_cast<uint8_t>(Vehicle::Status::StoppedByBlockBrakes))
         {
-            statusSrc = static_cast<VehicleStatus>(src->status);
+            statusSrc = static_cast<Vehicle::Status>(src->status);
         }
         dst->status = statusSrc;
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->current_station = src->current_station;
-        if (src->boat_location.isNull() || ride->mode != RIDE_MODE_BOAT_HIRE || statusSrc != VehicleStatus::TravellingBoat)
+        if (src->boat_location.isNull() || ride->mode != RIDE_MODE_BOAT_HIRE || statusSrc != Vehicle::Status::TravellingBoat)
         {
             dst->BoatLocation.setNull();
             dst->track_type = src->track_type;

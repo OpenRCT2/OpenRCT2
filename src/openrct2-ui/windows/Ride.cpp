@@ -1008,47 +1008,47 @@ static constexpr const rct_string_id VehicleColourSchemeNames[] = {
 };
 
 static constexpr const rct_string_id VehicleStatusNames[] = {
-    STR_MOVING_TO_END_OF,           // VehicleStatus::MovingToEndOfStation
-    STR_WAITING_FOR_PASSENGERS_AT,  // VehicleStatus::WaitingForPassengers
-    STR_WAITING_TO_DEPART,          // VehicleStatus::WaitingToDepart
-    STR_DEPARTING,                  // VehicleStatus::Departing
-    STR_TRAVELLING_AT_0,            // VehicleStatus::Travelling
-    STR_ARRIVING_AT,                // VehicleStatus::Arriving
-    STR_UNLOADING_PASSENGERS_AT,    // VehicleStatus::UnloadingPassengers
-    STR_TRAVELLING_AT_1,            // VehicleStatus::TravellingBoat
-    STR_CRASHING,                   // VehicleStatus::Crashing
-    STR_CRASHED_0,                  // VehicleStatus::Crashed
-    STR_TRAVELLING_AT_2,            // VehicleStatus::TravellingDodgems
-    STR_SWINGING,                   // VehicleStatus::Swinging
-    STR_ROTATING_0,                 // VehicleStatus::Rotating
-    STR_ROTATING_1,                 // VehicleStatus::FerrisWheelRotating
-    STR_OPERATING_0,                // VehicleStatus::SimulatorOperating
-    STR_SHOWING_FILM,               // VehicleStatus::ShowingFilm
-    STR_ROTATING_2,                 // VehicleStatus::SpaceRingsOperating
-    STR_OPERATING_1,                // VehicleStatus::TopSpinOperating
-    STR_OPERATING_2,                // VehicleStatus::HauntedHouseOperating
-    STR_DOING_CIRCUS_SHOW,          // VehicleStatus::DoingCircusShow
-    STR_OPERATING_3,                // VehicleStatus::CrookedHouseOperating
-    STR_WAITING_FOR_CABLE_LIFT,     // VehicleStatus::WaitingForCableLift
-    STR_TRAVELLING_AT_3,            // VehicleStatus::TravellingCableLift
-    STR_STOPPING_0,                 // VehicleStatus::Stopping
-    STR_WAITING_FOR_PASSENGERS,     // VehicleStatus::WaitingForPassengers17
-    STR_WAITING_TO_START,           // VehicleStatus::WaitingToStart
-    STR_STARTING,                   // VehicleStatus::Starting
-    STR_OPERATING,                  // VehicleStatus::Operating1A
-    STR_STOPPING_1,                 // VehicleStatus::Stopping1B
-    STR_UNLOADING_PASSENGERS,       // VehicleStatus::UnloadingPassengers1C
-    STR_STOPPED_BY_BLOCK_BRAKES,    // VehicleStatus::StoppedByBlockBrakes
+    STR_MOVING_TO_END_OF,           // Vehicle::Status::MovingToEndOfStation
+    STR_WAITING_FOR_PASSENGERS_AT,  // Vehicle::Status::WaitingForPassengers
+    STR_WAITING_TO_DEPART,          // Vehicle::Status::WaitingToDepart
+    STR_DEPARTING,                  // Vehicle::Status::Departing
+    STR_TRAVELLING_AT_0,            // Vehicle::Status::Travelling
+    STR_ARRIVING_AT,                // Vehicle::Status::Arriving
+    STR_UNLOADING_PASSENGERS_AT,    // Vehicle::Status::UnloadingPassengers
+    STR_TRAVELLING_AT_1,            // Vehicle::Status::TravellingBoat
+    STR_CRASHING,                   // Vehicle::Status::Crashing
+    STR_CRASHED_0,                  // Vehicle::Status::Crashed
+    STR_TRAVELLING_AT_2,            // Vehicle::Status::TravellingDodgems
+    STR_SWINGING,                   // Vehicle::Status::Swinging
+    STR_ROTATING_0,                 // Vehicle::Status::Rotating
+    STR_ROTATING_1,                 // Vehicle::Status::FerrisWheelRotating
+    STR_OPERATING_0,                // Vehicle::Status::SimulatorOperating
+    STR_SHOWING_FILM,               // Vehicle::Status::ShowingFilm
+    STR_ROTATING_2,                 // Vehicle::Status::SpaceRingsOperating
+    STR_OPERATING_1,                // Vehicle::Status::TopSpinOperating
+    STR_OPERATING_2,                // Vehicle::Status::HauntedHouseOperating
+    STR_DOING_CIRCUS_SHOW,          // Vehicle::Status::DoingCircusShow
+    STR_OPERATING_3,                // Vehicle::Status::CrookedHouseOperating
+    STR_WAITING_FOR_CABLE_LIFT,     // Vehicle::Status::WaitingForCableLift
+    STR_TRAVELLING_AT_3,            // Vehicle::Status::TravellingCableLift
+    STR_STOPPING_0,                 // Vehicle::Status::Stopping
+    STR_WAITING_FOR_PASSENGERS,     // Vehicle::Status::WaitingForPassengers17
+    STR_WAITING_TO_START,           // Vehicle::Status::WaitingToStart
+    STR_STARTING,                   // Vehicle::Status::Starting
+    STR_OPERATING,                  // Vehicle::Status::Operating1A
+    STR_STOPPING_1,                 // Vehicle::Status::Stopping1B
+    STR_UNLOADING_PASSENGERS,       // Vehicle::Status::UnloadingPassengers1C
+    STR_STOPPED_BY_BLOCK_BRAKES,    // Vehicle::Status::StoppedByBlockBrakes
 };
 
 static constexpr const rct_string_id SingleSessionVehicleStatusNames[] = {
-    STR_STOPPING_0,                 // VehicleStatus::MovingToEndOfStation
-    STR_WAITING_FOR_PASSENGERS,     // VehicleStatus::WaitingForPassengers
-    STR_WAITING_TO_START,           // VehicleStatus::WaitingToDepart
-    STR_STARTING,                   // VehicleStatus::Departing
-    STR_OPERATING,                  // VehicleStatus::Travelling
-    STR_STOPPING_1,                 // VehicleStatus::Arriving
-    STR_UNLOADING_PASSENGERS,       // VehicleStatus::UnloadingPassengers
+    STR_STOPPING_0,                 // Vehicle::Status::MovingToEndOfStation
+    STR_WAITING_FOR_PASSENGERS,     // Vehicle::Status::WaitingForPassengers
+    STR_WAITING_TO_START,           // Vehicle::Status::WaitingToDepart
+    STR_STARTING,                   // Vehicle::Status::Departing
+    STR_OPERATING,                  // Vehicle::Status::Travelling
+    STR_STOPPING_1,                 // Vehicle::Status::Arriving
+    STR_UNLOADING_PASSENGERS,       // Vehicle::Status::UnloadingPassengers
 };
 
 static constexpr const rct_string_id MusicStyleNames[] = {
@@ -2458,9 +2458,10 @@ static void window_ride_main_update(rct_window* w)
             {
                 Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
                 if (vehicle == nullptr
-                    || (vehicle->status != VehicleStatus::Travelling && vehicle->status != VehicleStatus::TravellingCableLift
-                        && vehicle->status != VehicleStatus::TravellingDodgems
-                        && vehicle->status != VehicleStatus::TravellingBoat))
+                    || (vehicle->status != Vehicle::Status::Travelling
+                        && vehicle->status != Vehicle::Status::TravellingCableLift
+                        && vehicle->status != Vehicle::Status::TravellingDodgems
+                        && vehicle->status != Vehicle::Status::TravellingBoat))
                 {
                     return;
                 }
@@ -2673,7 +2674,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
     if (vehicle == nullptr)
         return STR_EMPTY;
 
-    if (vehicle->status != VehicleStatus::Crashing && vehicle->status != VehicleStatus::Crashed)
+    if (vehicle->status != Vehicle::Status::Crashing && vehicle->status != Vehicle::Status::Crashed)
     {
         int32_t trackType = vehicle->GetTrackType();
         if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_CABLE_LIFT_HILL
@@ -2697,7 +2698,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
         return 0;
 
     if ((RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_SINGLE_SESSION)
-        && vehicle->status <= VehicleStatus::UnloadingPassengers)
+        && vehicle->status <= Vehicle::Status::UnloadingPassengers)
     {
         stringId = SingleSessionVehicleStatusNames[static_cast<size_t>(vehicle->status)];
     }
