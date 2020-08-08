@@ -1153,7 +1153,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
 
                     window_options_show_dropdown(w, widget, 2);
 
-                    dropdown_set_checked(gConfigGeneral.temperature_format, true);
+                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.temperature_format), true);
                     break;
                 case WIDX_LANGUAGE_DROPDOWN:
                     for (size_t i = 1; i < LANGUAGE_COUNT; i++)
@@ -1421,9 +1421,9 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     window_options_update_height_markers();
                     break;
                 case WIDX_TEMPERATURE_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.temperature_format)
+                    if (dropdownIndex != static_cast<int32_t>(gConfigGeneral.temperature_format))
                     {
-                        gConfigGeneral.temperature_format = static_cast<int8_t>(dropdownIndex);
+                        gConfigGeneral.temperature_format = static_cast<TEMPERATURE_FORMAT>(dropdownIndex);
                         config_save_default();
                         gfx_invalidate_screen();
                     }
@@ -1761,7 +1761,7 @@ static void window_options_invalidate(rct_window* w)
             window_options_culture_widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
 
             // Temperature: celsius/fahrenheit
-            window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F
+            window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TEMPERATURE_FORMAT::F
                 ? STR_FAHRENHEIT
                 : STR_CELSIUS;
 

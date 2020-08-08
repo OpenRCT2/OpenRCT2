@@ -535,7 +535,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
 
     int32_t temperature = gClimateCurrent.Temperature;
     rct_string_id format = STR_CELSIUS_VALUE;
-    if (gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F)
+    if (gConfigGeneral.temperature_format == TEMPERATURE_FORMAT::F)
     {
         temperature = climate_celsius_to_fahrenheit(temperature);
         format = STR_FAHRENHEIT_VALUE;
