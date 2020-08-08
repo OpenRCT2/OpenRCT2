@@ -216,7 +216,7 @@ public:
 
             if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
             {
-                if (!track_remove_station_element({ mapLoc.x, mapLoc.y, mapLoc.z, _origin.direction }, rideIndex, 0))
+                if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
                 {
                     return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
                 }
