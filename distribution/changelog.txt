@@ -32,6 +32,7 @@
 - Fix: [#10876] There can be multiple peep spawns on the same location.
 - Fix: [#11002] Rides list shows both red and green light activated.
 - Fix: [#11072] Land and water tools working out of bounds (original bug).
+- Fix: [#11085] Handle player list before game actions during map load.
 - Fix: [#11259] Custom JSON object breaks saves.
 - Fix: [#11290] Perform funds checking for all peeps entering a ride.
 - Fix: [#11315] Ride that has never opened is shown as favorite ride of many guests.
