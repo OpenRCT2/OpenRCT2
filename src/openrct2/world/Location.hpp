@@ -553,6 +553,11 @@ struct CoordsXYZD : public CoordsXYZ
         return { x + rhs.x, y + rhs.y, z + rhs.z, direction };
     }
 
+    const CoordsXYZD operator-(const CoordsXY& rhs) const
+    {
+        return { x - rhs.x, y - rhs.y, z, direction };
+    }
+
     const CoordsXYZD operator-(const CoordsXYZ& rhs) const
     {
         return { x - rhs.x, y - rhs.y, z - rhs.z, direction };
