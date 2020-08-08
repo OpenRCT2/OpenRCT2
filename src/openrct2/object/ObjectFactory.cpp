@@ -442,27 +442,26 @@ namespace ObjectFactory
                 {
                     throw std::runtime_error("Object has errors");
                 }
+
                 auto authors = json_object_get(jRoot, "authors");
-                if (authors != nullptr)
+                if (json_is_array(authors))
                 {
-                    if (json_is_array(authors))
+                    std::vector<std::string> authorVector;
+                    for (size_t j = 0; j < json_array_size(authors); j++)
                     {
-                        std::vector<std::string> authorVector;
-                        for (size_t j = 0; j < json_array_size(authors); j++)
+                        json_t* tryString = json_array_get(authors, j);
+                        if (json_is_string(tryString))
                         {
-                            json_t* tryString = json_array_get(authors, j);
-                            if (json_is_string(tryString))
-                            {
-                                authorVector.emplace_back(json_string_value(tryString));
-                            }
+                            authorVector.emplace_back(json_string_value(tryString));
                         }
-                        result->SetAuthors(std::move(authorVector));
                     }
-                    else if (json_is_string(authors))
-                    {
-                        result->SetAuthors({ json_string_value(authors) });
-                    }
+                    result->SetAuthors(std::move(authorVector));
                 }
+                else if (json_is_string(authors))
+                {
+                    result->SetAuthors({ json_string_value(authors) });
+                }
+
                 auto sourceGames = json_object_get(jRoot, "sourceGame");
                 if (json_is_array(sourceGames))
                 {
