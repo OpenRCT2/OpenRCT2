@@ -1423,7 +1423,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                 case WIDX_TEMPERATURE_DROPDOWN:
                     if (dropdownIndex != static_cast<int32_t>(gConfigGeneral.temperature_format))
                     {
-                        gConfigGeneral.temperature_format = static_cast<TemperatureFormat>(dropdownIndex);
+                        gConfigGeneral.temperature_format = static_cast<TemperatureUnit>(dropdownIndex);
                         config_save_default();
                         gfx_invalidate_screen();
                     }
@@ -1761,7 +1761,8 @@ static void window_options_invalidate(rct_window* w)
             window_options_culture_widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
 
             // Temperature: celsius/fahrenheit
-            window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TemperatureFormat::F
+            window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format
+                    == TemperatureUnit::Fahrenheit
                 ? STR_FAHRENHEIT
                 : STR_CELSIUS;
 

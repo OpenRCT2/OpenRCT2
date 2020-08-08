@@ -15,7 +15,7 @@
 
 #include <string>
 
-enum class TemperatureFormat : int32_t;
+enum class TemperatureUnit : int32_t;
 
 struct GeneralConfiguration
 {
@@ -56,7 +56,7 @@ struct GeneralConfiguration
     // Localisation
     int32_t language;
     int32_t measurement_format;
-    TemperatureFormat temperature_format;
+    TemperatureUnit temperature_format;
     bool show_height_as_units;
     int32_t date_format;
     int32_t currency_format;
@@ -208,10 +208,10 @@ enum SORT
     SORT_DATE_DESCENDING,
 };
 
-enum class TemperatureFormat : int32_t
+enum class TemperatureUnit : int32_t
 {
-    C,
-    F
+    Celsius,
+    Fahrenheit
 };
 
 enum SCALE_QUALITY
