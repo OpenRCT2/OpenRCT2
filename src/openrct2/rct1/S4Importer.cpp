@@ -1124,7 +1124,7 @@ private:
                 if (srcVehicle->x != LOCATION_NULL)
                 {
                     // If vehicle is the first car on a train add to train list
-                    auto isFirstCar = srcVehicle->type == static_cast<uint8_t>(VehicleType::Head);
+                    auto isFirstCar = srcVehicle->type == static_cast<uint8_t>(Vehicle::Type::Head);
                     auto llt = isFirstCar ? EntityListId::TrainHead : EntityListId::Vehicle;
 
                     Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SPRITE_IDENTIFIER_VEHICLE, llt));

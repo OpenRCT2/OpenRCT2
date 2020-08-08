@@ -4359,7 +4359,7 @@ static Vehicle* vehicle_create_car(
     vehicle->ride_subtype = ride->subtype;
 
     vehicle->vehicle_type = vehicleEntryIndex;
-    vehicle->type = static_cast<uint8_t>(carIndex == 0 ? VehicleType::Head : VehicleType::Tail);
+    vehicle->type = static_cast<uint8_t>(carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail);
     vehicle->var_44 = ror32(vehicleEntry->spacing, 10) & 0xFFFF;
     auto edx = vehicleEntry->spacing >> 1;
     *remainingDistance -= edx;
