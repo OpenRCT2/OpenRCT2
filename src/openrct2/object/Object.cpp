@@ -121,7 +121,7 @@ const std::vector<std::string>& Object::GetAuthors() const
     return _authors;
 }
 
-void Object::SetAuthors(const std::vector<std::string>& authors)
+void Object::SetAuthors(const std::vector<std::string>&& authors)
 {
     _authors = authors;
 }

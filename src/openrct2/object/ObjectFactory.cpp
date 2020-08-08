@@ -456,7 +456,7 @@ namespace ObjectFactory
                                 authorVector.emplace_back(json_string_value(tryString));
                             }
                         }
-                        result->SetAuthors(authorVector);
+                        result->SetAuthors(std::move(authorVector));
                     }
                     else if (json_is_string(authors))
                     {
