@@ -797,29 +797,26 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
  *
  *  rct2: 0x006C494B
  */
-bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex, int32_t flags)
+bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, int32_t flags)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return false;
 
-    int32_t removeX = x;
-    int32_t removeY = y;
-    int32_t stationX0 = x;
-    int32_t stationY0 = y;
-    int32_t stationX1 = x;
-    int32_t stationY1 = y;
+    CoordsXYZD removeLoc = loc;
+    CoordsXYZD stationBackLoc = loc;
+    CoordsXYZD stationFrontLoc = loc;
     int32_t stationLength = 0;
     int32_t byte_F441D1 = -1;
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
-        TileElement* tileElement = map_get_track_element_at_with_direction_from_ride({ x, y, z << 3, direction }, rideIndex);
+        TileElement* tileElement = map_get_track_element_at_with_direction_from_ride(loc, rideIndex);
         if (tileElement != nullptr)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                ride_remove_station(ride, { x, y, z * COORDS_Z_STEP });
+                ride_remove_station(ride, loc);
             }
         }
         return true;
@@ -828,55 +825,47 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
     TileElement* stationElement;
 
     // Search backwards for more station
-    x = stationX0;
-    y = stationY0;
-    while ((stationElement = find_station_element({ x, y, z * COORDS_Z_STEP, direction }, rideIndex)) != nullptr)
+    CoordsXYZD currentLoc = stationBackLoc;
+    while ((stationElement = find_station_element(currentLoc, rideIndex)) != nullptr)
     {
         if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                ride_remove_station(ride, { x, y, z * COORDS_Z_STEP });
+                ride_remove_station(ride, currentLoc);
             }
         }
 
-        stationX0 = x;
-        stationY0 = y;
+        stationBackLoc = currentLoc;
         byte_F441D1++;
 
-        x -= CoordsDirectionDelta[direction].x;
-        y -= CoordsDirectionDelta[direction].y;
+        currentLoc -= CoordsDirectionDelta[currentLoc.direction];
     }
 
     // Search forwards for more station
-    x = stationX1;
-    y = stationY1;
+    currentLoc = stationFrontLoc;
     do
     {
-        x += CoordsDirectionDelta[direction].x;
-        y += CoordsDirectionDelta[direction].y;
+        currentLoc += CoordsDirectionDelta[currentLoc.direction];
 
-        stationElement = find_station_element({ x, y, z * COORDS_Z_STEP, direction }, rideIndex);
+        stationElement = find_station_element(currentLoc, rideIndex);
         if (stationElement != nullptr)
         {
             if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
-                    ride_remove_station(ride, { x, y, z * COORDS_Z_STEP });
+                    ride_remove_station(ride, currentLoc);
                 }
             }
-
-            stationX1 = x;
-            stationY1 = y;
+            stationFrontLoc = currentLoc;
             stationLength++;
         }
     } while (stationElement != nullptr);
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
     {
-        if ((removeX != stationX0 || removeY != stationY0) && (removeX != stationX1 || removeY != stationY1)
-            && ride->num_stations >= MAX_STATIONS)
+        if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc) && ride->num_stations >= MAX_STATIONS)
         {
             gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
             return false;
@@ -887,21 +876,19 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
         }
     }
 
-    x = stationX1;
-    y = stationY1;
+    currentLoc = stationFrontLoc;
     bool finaliseStationDone;
     do
     {
         finaliseStationDone = true;
 
-        if (x != removeX || y != removeY)
+        if (currentLoc != removeLoc)
         {
-            stationElement = find_station_element({ x, y, z * COORDS_Z_STEP, direction }, rideIndex);
+            stationElement = find_station_element(currentLoc, rideIndex);
             if (stationElement != nullptr)
             {
                 int32_t targetTrackType;
-                if ((x == stationX1 && y == stationY1)
-                    || (x + CoordsDirectionDelta[direction].x == removeX && y + CoordsDirectionDelta[direction].y == removeY))
+                if ((currentLoc == stationFrontLoc) || (currentLoc + CoordsDirectionDelta[currentLoc.direction] == removeLoc))
                 {
                     auto stationIndex = ride_get_first_empty_station_start(ride);
                     if (stationIndex == STATION_INDEX_NULL)
@@ -910,9 +897,8 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
                     }
                     else
                     {
-                        ride->stations[stationIndex].Start.x = x;
-                        ride->stations[stationIndex].Start.y = y;
-                        ride->stations[stationIndex].Height = z;
+                        ride->stations[stationIndex].Start = currentLoc;
+                        ride->stations[stationIndex].Height = currentLoc.z / COORDS_Z_STEP;
                         ride->stations[stationIndex].Depart = 1;
                         ride->stations[stationIndex].Length = stationLength != 0 ? stationLength : byte_F441D1;
                         ride->num_stations++;
@@ -923,13 +909,13 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
                 }
                 else
                 {
-                    if (x - CoordsDirectionDelta[direction].x == removeX && y - CoordsDirectionDelta[direction].y == removeY)
+                    if (currentLoc - CoordsDirectionDelta[currentLoc.direction] == removeLoc)
                     {
                         targetTrackType = TRACK_ELEM_BEGIN_STATION;
                     }
                     else
                     {
-                        if (x == stationX0 && y == stationY0)
+                        if (currentLoc == stationBackLoc)
                         {
                             targetTrackType = TRACK_ELEM_BEGIN_STATION;
                         }
@@ -941,14 +927,13 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
 
-                map_invalidate_element({ x, y }, stationElement);
+                map_invalidate_element(currentLoc, stationElement);
             }
         }
 
-        if (x != stationX0 || y != stationY0)
+        if (currentLoc != stationBackLoc)
         {
-            x -= CoordsDirectionDelta[direction].x;
-            y -= CoordsDirectionDelta[direction].y;
+            currentLoc -= CoordsDirectionDelta[currentLoc.direction];
             finaliseStationDone = false;
         }
     } while (!finaliseStationDone);
