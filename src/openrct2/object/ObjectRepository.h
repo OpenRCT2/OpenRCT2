@@ -40,6 +40,7 @@ struct ObjectRepositoryItem
     rct_object_entry ObjectEntry;
     std::string Path;
     std::string Name;
+    std::vector<std::string> Authors;
     std::vector<uint8_t> Sources;
     Object* LoadedObject{};
     struct
