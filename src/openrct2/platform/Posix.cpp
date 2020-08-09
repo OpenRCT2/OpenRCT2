@@ -353,7 +353,7 @@ time_t platform_file_get_modified_time(const utf8* path)
     return 100;
 }
 
-uint8_t platform_get_locale_temperature_format()
+TemperatureUnit platform_get_locale_temperature_format()
 {
 // LC_MEASUREMENT is GNU specific.
 #    ifdef LC_MEASUREMENT
@@ -367,10 +367,10 @@ uint8_t platform_get_locale_temperature_format()
         if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0)
             || !fnmatch("*_PW*", langstring, 0))
         {
-            return TEMPERATURE_FORMAT_F;
+            return TemperatureUnit::Fahrenheit;
         }
     }
-    return TEMPERATURE_FORMAT_C;
+    return TemperatureUnit::Celsius;
 }
 
 uint8_t platform_get_locale_date_format()

@@ -88,9 +88,9 @@ namespace Config
         ConfigEnumEntry<int32_t>("OPENGL", DRAWING_ENGINE_OPENGL),
     });
 
-    static const auto Enum_Temperature = ConfigEnum<int32_t>({
-        ConfigEnumEntry<int32_t>("CELSIUS", TEMPERATURE_FORMAT_C),
-        ConfigEnumEntry<int32_t>("FAHRENHEIT", TEMPERATURE_FORMAT_F),
+    static const auto Enum_Temperature = ConfigEnum<TemperatureUnit>({
+        ConfigEnumEntry<TemperatureUnit>("CELSIUS", TemperatureUnit::Celsius),
+        ConfigEnumEntry<TemperatureUnit>("FAHRENHEIT", TemperatureUnit::Fahrenheit),
     });
 
     static const auto Enum_ScaleQuality = ConfigEnum<int32_t>({
@@ -162,7 +162,7 @@ namespace Config
             model->save_plugin_data = reader->GetBoolean("save_plugin_data", true);
             model->debugging_tools = reader->GetBoolean("debugging_tools", false);
             model->show_height_as_units = reader->GetBoolean("show_height_as_units", false);
-            model->temperature_format = reader->GetEnum<int32_t>(
+            model->temperature_format = reader->GetEnum<TemperatureUnit>(
                 "temperature_format", platform_get_locale_temperature_format(), Enum_Temperature);
             model->window_height = reader->GetInt32("window_height", -1);
             model->window_snap_proximity = reader->GetInt32("window_snap_proximity", 5);
@@ -242,7 +242,7 @@ namespace Config
         writer->WriteBoolean("save_plugin_data", model->save_plugin_data);
         writer->WriteBoolean("debugging_tools", model->debugging_tools);
         writer->WriteBoolean("show_height_as_units", model->show_height_as_units);
-        writer->WriteEnum<int32_t>("temperature_format", model->temperature_format, Enum_Temperature);
+        writer->WriteEnum<TemperatureUnit>("temperature_format", model->temperature_format, Enum_Temperature);
         writer->WriteInt32("window_height", model->window_height);
         writer->WriteInt32("window_snap_proximity", model->window_snap_proximity);
         writer->WriteInt32("window_width", model->window_width);
