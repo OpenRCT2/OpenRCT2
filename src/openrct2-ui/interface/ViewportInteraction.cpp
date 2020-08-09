@@ -65,7 +65,9 @@ InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenC
     info = get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK);
     auto tileElement = info.SpriteType != VIEWPORT_INTERACTION_ITEM_SPRITE ? info.Element : nullptr;
-    auto sprite = info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE ? info.Entity : nullptr;
+    // Only valid when info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE, but can't assign nullptr without compiler
+    // complaining
+    auto sprite = info.Entity;
 
     // Allows only balloons to be popped and ducks to be quacked in title screen
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
