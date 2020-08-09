@@ -1538,7 +1538,7 @@ void Vehicle::UpdateMeasurements()
     if (curRide == nullptr)
         return;
 
-    if (status == VEHICLE_STATUS_TRAVELLING_BOAT)
+    if (status == Vehicle::Status::TravellingBoat)
     {
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_TESTED;
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
@@ -1980,71 +1980,71 @@ void Vehicle::Update()
 
     switch (status)
     {
-        case VEHICLE_STATUS_MOVING_TO_END_OF_STATION:
+        case Vehicle::Status::MovingToEndOfStation:
             UpdateMovingToEndOfStation();
             break;
-        case VEHICLE_STATUS_WAITING_FOR_PASSENGERS:
+        case Vehicle::Status::WaitingForPassengers:
             UpdateWaitingForPassengers();
             break;
-        case VEHICLE_STATUS_WAITING_TO_DEPART:
+        case Vehicle::Status::WaitingToDepart:
             UpdateWaitingToDepart();
             break;
-        case VEHICLE_STATUS_CRASHING:
-        case VEHICLE_STATUS_CRASHED:
+        case Vehicle::Status::Crashing:
+        case Vehicle::Status::Crashed:
             UpdateCrash();
             break;
-        case VEHICLE_STATUS_TRAVELLING_DODGEMS:
+        case Vehicle::Status::TravellingDodgems:
             UpdateDodgemsMode();
             break;
-        case VEHICLE_STATUS_SWINGING:
+        case Vehicle::Status::Swinging:
             UpdateSwinging();
             break;
-        case VEHICLE_STATUS_SIMULATOR_OPERATING:
+        case Vehicle::Status::SimulatorOperating:
             UpdateSimulatorOperating();
             break;
-        case VEHICLE_STATUS_TOP_SPIN_OPERATING:
+        case Vehicle::Status::TopSpinOperating:
             UpdateTopSpinOperating();
             break;
-        case VEHICLE_STATUS_FERRIS_WHEEL_ROTATING:
+        case Vehicle::Status::FerrisWheelRotating:
             UpdateFerrisWheelRotating();
             break;
-        case VEHICLE_STATUS_SPACE_RINGS_OPERATING:
+        case Vehicle::Status::SpaceRingsOperating:
             UpdateSpaceRingsOperating();
             break;
-        case VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING:
+        case Vehicle::Status::HauntedHouseOperating:
             UpdateHauntedHouseOperating();
             break;
-        case VEHICLE_STATUS_CROOKED_HOUSE_OPERATING:
+        case Vehicle::Status::CrookedHouseOperating:
             UpdateCrookedHouseOperating();
             break;
-        case VEHICLE_STATUS_ROTATING:
+        case Vehicle::Status::Rotating:
             UpdateRotating();
             break;
-        case VEHICLE_STATUS_DEPARTING:
+        case Vehicle::Status::Departing:
             UpdateDeparting();
             break;
-        case VEHICLE_STATUS_TRAVELLING:
+        case Vehicle::Status::Travelling:
             UpdateTravelling();
             break;
-        case VEHICLE_STATUS_TRAVELLING_CABLE_LIFT:
+        case Vehicle::Status::TravellingCableLift:
             UpdateTravellingCableLift();
             break;
-        case VEHICLE_STATUS_TRAVELLING_BOAT:
+        case Vehicle::Status::TravellingBoat:
             UpdateTravellingBoat();
             break;
-        case VEHICLE_STATUS_ARRIVING:
+        case Vehicle::Status::Arriving:
             UpdateArriving();
             break;
-        case VEHICLE_STATUS_UNLOADING_PASSENGERS:
+        case Vehicle::Status::UnloadingPassengers:
             UpdateUnloadingPassengers();
             break;
-        case VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT:
+        case Vehicle::Status::WaitingForCableLift:
             UpdateWaitingForCableLift();
             break;
-        case VEHICLE_STATUS_SHOWING_FILM:
+        case Vehicle::Status::ShowingFilm:
             UpdateShowingFilm();
             break;
-        case VEHICLE_STATUS_DOING_CIRCUS_SHOW:
+        case Vehicle::Status::DoingCircusShow:
             UpdateDoingCircusShow();
         default:
             break;
@@ -2104,7 +2104,7 @@ void Vehicle::UpdateMovingToEndOfStation()
             current_station = 0;
             velocity = 0;
             acceleration = 0;
-            SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
+            SetState(Vehicle::Status::WaitingForPassengers);
             break;
         default:
         {
@@ -2139,7 +2139,7 @@ void Vehicle::UpdateMovingToEndOfStation()
 
                 if (curRide->mode == RIDE_MODE_RACE && sub_state >= 40)
                 {
-                    SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
+                    SetState(Vehicle::Status::WaitingForPassengers);
                     break;
                 }
             }
@@ -2157,7 +2157,7 @@ void Vehicle::UpdateMovingToEndOfStation()
             current_station = station;
             velocity = 0;
             acceleration = 0;
-            SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
+            SetState(Vehicle::Status::WaitingForPassengers);
             break;
         }
     }
@@ -2200,7 +2200,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         if (peep[seat] != SPRITE_INDEX_NULL)
         {
             curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
-            SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+            SetState(Vehicle::Status::UnloadingPassengers);
             return;
         }
 
@@ -2216,7 +2216,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         return;
 
     curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
-    SetState(VEHICLE_STATUS_WAITING_FOR_PASSENGERS);
+    SetState(Vehicle::Status::WaitingForPassengers);
 }
 
 static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, uint16_t spriteIndex)
@@ -2349,8 +2349,8 @@ void Vehicle::UpdateWaitingForPassengers()
                 if (train == nullptr)
                     continue;
 
-                if (train->status == VEHICLE_STATUS_UNLOADING_PASSENGERS
-                    || train->status == VEHICLE_STATUS_MOVING_TO_END_OF_STATION)
+                if (train->status == Vehicle::Status::UnloadingPassengers
+                    || train->status == Vehicle::Status::MovingToEndOfStation)
                 {
                     if (train->current_station == current_station)
                     {
@@ -2406,7 +2406,7 @@ void Vehicle::UpdateWaitingForPassengers()
         SetUpdateFlag(VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT);
     }
 
-    SetState(VEHICLE_STATUS_WAITING_TO_DEPART);
+    SetState(Vehicle::Status::WaitingToDepart);
 }
 
 /**
@@ -2449,7 +2449,7 @@ void Vehicle::UpdateDodgemsMode()
     Invalidate();
     velocity = 0;
     acceleration = 0;
-    SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+    SetState(Vehicle::Status::UnloadingPassengers);
 }
 
 /**
@@ -2495,7 +2495,7 @@ void Vehicle::UpdateWaitingToDepart()
             {
                 if (!ride_get_exit_location(curRide, current_station).isNull())
                 {
-                    SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+                    SetState(Vehicle::Status::UnloadingPassengers);
                     return;
                 }
             }
@@ -2509,7 +2509,7 @@ void Vehicle::UpdateWaitingToDepart()
                 {
                     if (!ride_get_exit_location(curRide, current_station).isNull())
                     {
-                        SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+                        SetState(Vehicle::Status::UnloadingPassengers);
                         return;
                     }
                     break;
@@ -2538,7 +2538,7 @@ void Vehicle::UpdateWaitingToDepart()
         }
     }
 
-    SetState(VEHICLE_STATUS_DEPARTING);
+    SetState(Vehicle::Status::Departing);
 
     if (curRide->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
     {
@@ -2551,7 +2551,7 @@ void Vehicle::UpdateWaitingToDepart()
         {
             if (track.element->AsTrack()->HasCableLift())
             {
-                SetState(VEHICLE_STATUS_WAITING_FOR_CABLE_LIFT, sub_state);
+                SetState(Vehicle::Status::WaitingForCableLift, sub_state);
             }
         }
     }
@@ -2561,36 +2561,36 @@ void Vehicle::UpdateWaitingToDepart()
         case RIDE_MODE_DODGEMS:
             // Dodgems mode uses sub_state / var_CE to tell how long
             // the vehicle has been ridden.
-            SetState(VEHICLE_STATUS_TRAVELLING_DODGEMS);
+            SetState(Vehicle::Status::TravellingDodgems);
             var_CE = 0;
             UpdateDodgemsMode();
             break;
         case RIDE_MODE_SWING:
-            SetState(VEHICLE_STATUS_SWINGING);
+            SetState(Vehicle::Status::Swinging);
             var_CE = 0;
             current_time = -1;
             UpdateSwinging();
             break;
         case RIDE_MODE_ROTATION:
-            SetState(VEHICLE_STATUS_ROTATING);
+            SetState(Vehicle::Status::Rotating);
             var_CE = 0;
             current_time = -1;
             UpdateRotating();
             break;
         case RIDE_MODE_FILM_AVENGING_AVIATORS:
-            SetState(VEHICLE_STATUS_SIMULATOR_OPERATING);
+            SetState(Vehicle::Status::SimulatorOperating);
             current_time = -1;
             UpdateSimulatorOperating();
             break;
         case RIDE_MODE_FILM_THRILL_RIDERS:
-            SetState(VEHICLE_STATUS_SIMULATOR_OPERATING, 1);
+            SetState(Vehicle::Status::SimulatorOperating, 1);
             current_time = -1;
             UpdateSimulatorOperating();
             break;
         case RIDE_MODE_BEGINNERS:
         case RIDE_MODE_INTENSE:
         case RIDE_MODE_BERSERK:
-            SetState(VEHICLE_STATUS_TOP_SPIN_OPERATING, sub_state);
+            SetState(Vehicle::Status::TopSpinOperating, sub_state);
 
             switch (curRide->mode)
             {
@@ -2611,7 +2611,7 @@ void Vehicle::UpdateWaitingToDepart()
             break;
         case RIDE_MODE_FORWARD_ROTATION:
         case RIDE_MODE_BACKWARD_ROTATION:
-            SetState(VEHICLE_STATUS_FERRIS_WHEEL_ROTATING, vehicle_sprite_type);
+            SetState(Vehicle::Status::FerrisWheelRotating, vehicle_sprite_type);
             var_CE = 0;
             ferris_wheel_var_0 = 8;
             ferris_wheel_var_1 = 8;
@@ -2620,7 +2620,7 @@ void Vehicle::UpdateWaitingToDepart()
         case RIDE_MODE_3D_FILM_MOUSE_TAILS:
         case RIDE_MODE_3D_FILM_STORM_CHASERS:
         case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
-            SetState(VEHICLE_STATUS_SHOWING_FILM, sub_state);
+            SetState(Vehicle::Status::ShowingFilm, sub_state);
             switch (curRide->mode)
             {
                 case RIDE_MODE_3D_FILM_MOUSE_TAILS:
@@ -2637,24 +2637,24 @@ void Vehicle::UpdateWaitingToDepart()
             UpdateShowingFilm();
             break;
         case RIDE_MODE_CIRCUS_SHOW:
-            SetState(VEHICLE_STATUS_DOING_CIRCUS_SHOW);
+            SetState(Vehicle::Status::DoingCircusShow);
             current_time = -1;
             UpdateDoingCircusShow();
             break;
         case RIDE_MODE_SPACE_RINGS:
-            SetState(VEHICLE_STATUS_SPACE_RINGS_OPERATING);
+            SetState(Vehicle::Status::SpaceRingsOperating);
             vehicle_sprite_type = 0;
             current_time = -1;
             UpdateSpaceRingsOperating();
             break;
         case RIDE_MODE_HAUNTED_HOUSE:
-            SetState(VEHICLE_STATUS_HAUNTED_HOUSE_OPERATING);
+            SetState(Vehicle::Status::HauntedHouseOperating);
             vehicle_sprite_type = 0;
             current_time = -1;
             UpdateHauntedHouseOperating();
             break;
         case RIDE_MODE_CROOKED_HOUSE:
-            SetState(VEHICLE_STATUS_CROOKED_HOUSE_OPERATING);
+            SetState(Vehicle::Status::CrookedHouseOperating);
             vehicle_sprite_type = 0;
             current_time = -1;
             UpdateCrookedHouseOperating();
@@ -2745,7 +2745,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
             continue;
         }
 
-        if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART)
+        if (vehicle->status != Vehicle::Status::WaitingToDepart)
         {
             continue;
         }
@@ -2882,7 +2882,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                                 {
                                     continue;
                                 }
-                                if (v->status != VEHICLE_STATUS_WAITING_TO_DEPART && v->velocity != 0)
+                                if (v->status != Vehicle::Status::WaitingToDepart && v->velocity != 0)
                                 {
                                     // Here at least one vehicle on the ride is moving.
                                     return false;
@@ -2920,12 +2920,12 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                         {
                             continue;
                         }
-                        if (otherVehicle->status != VEHICLE_STATUS_TRAVELLING)
+                        if (otherVehicle->status != Vehicle::Status::Travelling)
                         {
                             if (currentStation == otherVehicle->current_station)
                             {
-                                if (otherVehicle->status == VEHICLE_STATUS_WAITING_TO_DEPART
-                                    || otherVehicle->status == VEHICLE_STATUS_MOVING_TO_END_OF_STATION)
+                                if (otherVehicle->status == Vehicle::Status::WaitingToDepart
+                                    || otherVehicle->status == Vehicle::Status::MovingToEndOfStation)
                                 {
                                     numTrainsAtStation++;
                                 }
@@ -3128,7 +3128,7 @@ void Vehicle::UpdateTravellingBoatHireSetup()
     var_35 = 0;
     // No longer on a track so reset to 0 for import/export
     track_type = 0;
-    SetState(VEHICLE_STATUS_TRAVELLING_BOAT);
+    SetState(Vehicle::Status::TravellingBoat);
     remaining_distance += 27924;
 
     UpdateTravellingBoat();
@@ -3431,7 +3431,7 @@ void Vehicle::FinishDeparting()
         curRide->stations[current_station].Depart |= waitingTime;
     }
     lost_time_out = 0;
-    SetState(VEHICLE_STATUS_TRAVELLING, 1);
+    SetState(Vehicle::Status::Travelling, 1);
     if (velocity < 0)
         sub_state = 0;
 }
@@ -3513,7 +3513,7 @@ void Vehicle::UpdateCollisionSetup()
         return;
     }
 
-    SetState(VEHICLE_STATUS_CRASHED, sub_state);
+    SetState(Vehicle::Status::Crashed, sub_state);
 
     if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
@@ -3604,7 +3604,7 @@ void Vehicle::UpdateCrashSetup()
         SimulateCrash();
         return;
     }
-    SetState(VEHICLE_STATUS_CRASHING, sub_state);
+    SetState(Vehicle::Status::Crashing, sub_state);
 
     if (NumPeepsUntilTrainTail() != 0)
     {
@@ -3727,7 +3727,7 @@ void Vehicle::UpdateTravelling()
             {
                 if (sub_state <= 1)
                 {
-                    SetState(VEHICLE_STATUS_ARRIVING, 1);
+                    SetState(Vehicle::Status::Arriving, 1);
                     var_C0 = 0;
                     return;
                 }
@@ -3836,7 +3836,7 @@ void Vehicle::UpdateTravelling()
     if (curRide->mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH && velocity < 0)
         return;
 
-    SetState(VEHICLE_STATUS_ARRIVING);
+    SetState(Vehicle::Status::Arriving);
     current_station = _vehicleStationIndex;
     var_C0 = 0;
     if (velocity < 0)
@@ -3875,7 +3875,7 @@ void Vehicle::UpdateArriving()
             ClearUpdateFlag(VEHICLE_UPDATE_FLAG_12);
             velocity = 0;
             acceleration = 0;
-            SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+            SetState(Vehicle::Status::UnloadingPassengers);
             return;
     }
 
@@ -3982,7 +3982,7 @@ loc_6D8E36:
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION && unkF64E35 == 0)
     {
-        SetState(VEHICLE_STATUS_DEPARTING, 1);
+        SetState(Vehicle::Status::Departing, 1);
         return;
     }
 
@@ -4015,20 +4015,20 @@ loc_6D8E36:
     {
         if (num_laps < curRide->num_circuits)
         {
-            SetState(VEHICLE_STATUS_DEPARTING, 1);
+            SetState(Vehicle::Status::Departing, 1);
             return;
         }
 
         if (num_laps == curRide->num_circuits && HasUpdateFlag(VEHICLE_UPDATE_FLAG_12))
         {
-            SetState(VEHICLE_STATUS_DEPARTING, 1);
+            SetState(Vehicle::Status::Departing, 1);
             return;
         }
     }
 
     if (curRide->num_circuits != 1 && num_laps < curRide->num_circuits)
     {
-        SetState(VEHICLE_STATUS_DEPARTING, 1);
+        SetState(Vehicle::Status::Departing, 1);
         return;
     }
 
@@ -4037,20 +4037,20 @@ loc_6D8E36:
         audio_play_sound_at_location(SoundId::RideLaunch2, { x, y, z });
         velocity = 0;
         acceleration = 0;
-        SetState(VEHICLE_STATUS_DEPARTING, 1);
+        SetState(Vehicle::Status::Departing, 1);
         return;
     }
 
     if (curRide->mode == RIDE_MODE_RACE && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
     {
-        SetState(VEHICLE_STATUS_DEPARTING, 1);
+        SetState(Vehicle::Status::Departing, 1);
         return;
     }
 
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_12);
     velocity = 0;
     acceleration = 0;
-    SetState(VEHICLE_STATUS_UNLOADING_PASSENGERS);
+    SetState(Vehicle::Status::UnloadingPassengers);
 }
 
 /**
@@ -4109,7 +4109,7 @@ void Vehicle::UpdateUnloadingPassengers()
             {
                 UpdateTestFinish();
             }
-            SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
+            SetState(Vehicle::Status::MovingToEndOfStation);
             return;
         }
 
@@ -4150,7 +4150,7 @@ void Vehicle::UpdateUnloadingPassengers()
     {
         UpdateTestFinish();
     }
-    SetState(VEHICLE_STATUS_MOVING_TO_END_OF_STATION);
+    SetState(Vehicle::Status::MovingToEndOfStation);
 }
 
 /**
@@ -4167,10 +4167,10 @@ void Vehicle::UpdateWaitingForCableLift()
     if (cableLift == nullptr)
         return;
 
-    if (cableLift->status != VEHICLE_STATUS_WAITING_FOR_PASSENGERS)
+    if (cableLift->status != Vehicle::Status::WaitingForPassengers)
         return;
 
-    cableLift->SetState(VEHICLE_STATUS_WAITING_TO_DEPART, sub_state);
+    cableLift->SetState(Vehicle::Status::WaitingToDepart, sub_state);
     cableLift->cable_lift_target = sprite_index;
 }
 
@@ -4234,7 +4234,7 @@ void Vehicle::UpdateTravellingCableLift()
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_11)
     {
-        SetState(VEHICLE_STATUS_TRAVELLING, 1);
+        SetState(Vehicle::Status::Travelling, 1);
         lost_time_out = 0;
         return;
     }
@@ -4291,7 +4291,7 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
         }
 
         track_progress = 0;
-        SetState(VEHICLE_STATUS_TRAVELLING, sub_state);
+        SetState(Vehicle::Status::Travelling, sub_state);
         unk_F64E20.x = currentBoatLocation.x;
         unk_F64E20.y = currentBoatLocation.y;
     }
@@ -4752,7 +4752,7 @@ void Vehicle::UpdateSwinging()
     // swing has to be in slowing down phase
     if (sub_state == 0)
     {
-        SetState(VEHICLE_STATUS_ARRIVING);
+        SetState(Vehicle::Status::Arriving);
         var_C0 = 0;
         return;
     }
@@ -4849,7 +4849,7 @@ void Vehicle::UpdateFerrisWheelRotating()
     if (subState != vehicle_sprite_type)
         return;
 
-    SetState(VEHICLE_STATUS_ARRIVING);
+    SetState(Vehicle::Status::Arriving);
     var_C0 = 0;
 }
 
@@ -4875,7 +4875,7 @@ void Vehicle::UpdateSimulatorOperating()
         return;
     }
 
-    SetState(VEHICLE_STATUS_ARRIVING);
+    SetState(Vehicle::Status::Arriving);
     var_C0 = 0;
 }
 
@@ -4949,7 +4949,7 @@ void Vehicle::UpdateRotating()
         {
             if (sub_state == 2)
             {
-                SetState(VEHICLE_STATUS_ARRIVING);
+                SetState(Vehicle::Status::Arriving);
                 var_C0 = 0;
                 return;
             }
@@ -4961,7 +4961,7 @@ void Vehicle::UpdateRotating()
 
     if (curRide->type == RIDE_TYPE_ENTERPRISE && sub_state == 2)
     {
-        SetState(VEHICLE_STATUS_ARRIVING);
+        SetState(Vehicle::Status::Arriving);
         var_C0 = 0;
         return;
     }
@@ -4991,7 +4991,7 @@ void Vehicle::UpdateSpaceRingsOperating()
     }
     else
     {
-        SetState(VEHICLE_STATUS_ARRIVING);
+        SetState(Vehicle::Status::Arriving);
         var_C0 = 0;
     }
 }
@@ -5019,7 +5019,7 @@ void Vehicle::UpdateHauntedHouseOperating()
 
     if (current_time + 1 > 1500)
     {
-        SetState(VEHICLE_STATUS_ARRIVING);
+        SetState(Vehicle::Status::Arriving);
         var_C0 = 0;
         return;
     }
@@ -5062,7 +5062,7 @@ void Vehicle::UpdateCrookedHouseOperating()
     // Originally used an array of size 1 at 0x009A0AC4 and passed the sub state into it.
     if (static_cast<uint16_t>(current_time + 1) > 600)
     {
-        SetState(VEHICLE_STATUS_ARRIVING);
+        SetState(Vehicle::Status::Arriving);
         var_C0 = 0;
         return;
     }
@@ -5098,7 +5098,7 @@ void Vehicle::UpdateTopSpinOperating()
         return;
     }
 
-    SetState(VEHICLE_STATUS_ARRIVING);
+    SetState(Vehicle::Status::Arriving);
     var_C0 = 0;
 }
 
@@ -5121,7 +5121,7 @@ void Vehicle::UpdateShowingFilm()
     }
     else
     {
-        SetState(VEHICLE_STATUS_ARRIVING);
+        SetState(Vehicle::Status::Arriving);
         var_C0 = 0;
     }
 }
@@ -5142,7 +5142,7 @@ void Vehicle::UpdateDoingCircusShow()
     }
     else
     {
-        SetState(VEHICLE_STATUS_ARRIVING);
+        SetState(Vehicle::Status::Arriving);
         var_C0 = 0;
     }
 }
@@ -5272,7 +5272,7 @@ void Vehicle::CrashOnLand()
         SimulateCrash();
         return;
     }
-    SetState(VEHICLE_STATUS_CRASHED, sub_state);
+    SetState(Vehicle::Status::Crashed, sub_state);
 
     if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
@@ -5335,7 +5335,7 @@ void Vehicle::CrashOnWater()
         SimulateCrash();
         return;
     }
-    SetState(VEHICLE_STATUS_CRASHED, sub_state);
+    SetState(Vehicle::Status::Crashed, sub_state);
 
     if (!(curRide->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
     {
@@ -7246,7 +7246,7 @@ void Vehicle::UpdateAdditionalAnimation()
                     if (curRide != nullptr)
                     {
                         if (!ride_has_station_shelter(curRide)
-                            || (status != VEHICLE_STATUS_MOVING_TO_END_OF_STATION && status != VEHICLE_STATUS_ARRIVING))
+                            || (status != Vehicle::Status::MovingToEndOfStation && status != Vehicle::Status::Arriving))
                         {
                             int32_t typeIndex = [&] {
                                 switch (vehicle_sprite_type)
@@ -7736,7 +7736,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* oth
 
     // TODO Is it possible for collideVehicle to be NULL?
 
-    if (status == VEHICLE_STATUS_MOVING_TO_END_OF_STATION)
+    if (status == Vehicle::Status::MovingToEndOfStation)
     {
         if (sprite_direction == 0)
         {
@@ -7768,8 +7768,8 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* oth
         }
     }
 
-    if (collideVehicle->status == VEHICLE_STATUS_TRAVELLING_BOAT && status != VEHICLE_STATUS_ARRIVING
-        && status != VEHICLE_STATUS_TRAVELLING)
+    if (collideVehicle->status == Vehicle::Status::TravellingBoat && status != Vehicle::Status::Arriving
+        && status != Vehicle::Status::Travelling)
     {
         return false;
     }
@@ -9707,7 +9707,7 @@ void Vehicle::UpdateCrossings() const
                                 frontVehicle->TrackLocation, frontVehicle->GetTrackType(), 0) };
     int32_t curZ = frontVehicle->TrackLocation.z;
 
-    if (xyElement.element && status != VEHICLE_STATUS_ARRIVING)
+    if (xyElement.element && status != Vehicle::Status::Arriving)
     {
         int16_t autoReserveAhead = 4 + abs(velocity) / 150000;
         int16_t crossingBonus = 0;
@@ -9847,7 +9847,7 @@ Vehicle* Vehicle::GetCar(size_t carIndex) const
     return car;
 }
 
-void Vehicle::SetState(VEHICLE_STATUS vehicleStatus, uint8_t subState)
+void Vehicle::SetState(Vehicle::Status vehicleStatus, uint8_t subState)
 {
     status = vehicleStatus;
     sub_state = subState;

@@ -2585,7 +2585,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
             if (vehicle->next_free_seat >= vehicle->num_seats)
                 continue;
 
-            if (vehicle->status != VEHICLE_STATUS_WAITING_FOR_PASSENGERS)
+            if (vehicle->status != Vehicle::Status::WaitingForPassengers)
                 continue;
             chosen_train = i;
             break;
