@@ -171,7 +171,7 @@ static bool award_is_deserved_best_value(int32_t activeAwardTypes)
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
         return false;
 
-    if (gParkFlags & (PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
+    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
         return false;
 
     if (gTotalRideValueForMoney < MONEY(10, 00))
