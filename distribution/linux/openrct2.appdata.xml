@@ -63,4 +63,8 @@
     <content_attribute id="money-purchasing">none</content_attribute>
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
+  <releases>
+      <release version="0.2.6" date="2020-04-17" />
+      <release version="0.2.5" date="2020-03-24" />
+  </releases>
 </component>
