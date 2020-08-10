@@ -559,12 +559,12 @@ const rct_trackdefinition FlatRideTrackDefinitions[256] =
 };
 // clang-format on
 
-PitchAndRoll TrackPitchAndRollStart(uint8_t trackType)
+PitchAndRoll TrackPitchAndRollStart(track_type_t trackType)
 {
     return { TrackDefinitions[trackType].vangle_start, TrackDefinitions[trackType].bank_start };
 }
 
-PitchAndRoll TrackPitchAndRollEnd(uint8_t trackType)
+PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType)
 {
     return { TrackDefinitions[trackType].vangle_end, TrackDefinitions[trackType].bank_end };
 }
@@ -1166,7 +1166,7 @@ bool track_type_is_station(track_type_t trackType)
     }
 }
 
-bool track_element_is_covered(int32_t trackElementType)
+bool track_element_is_covered(track_type_t trackElementType)
 {
     switch (trackElementType)
     {
@@ -1195,13 +1195,13 @@ bool track_element_is_covered(int32_t trackElementType)
     }
 }
 
-bool track_element_is_booster(uint8_t rideType, uint8_t trackType)
+bool track_element_is_booster(uint8_t rideType, track_type_t trackType)
 {
     // Boosters share their ID with the Spinning Control track.
     return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER;
 }
 
-bool track_element_has_speed_setting(uint8_t trackType)
+bool track_element_has_speed_setting(track_type_t trackType)
 {
     // This does not check if the element is really a Spinning Control track instead of a booster,
     // but this does not cause problems.
