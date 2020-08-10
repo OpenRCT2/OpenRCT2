@@ -571,7 +571,6 @@ bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const 
 void track_get_back(CoordsXYE* input, CoordsXYE* output);
 void track_get_front(CoordsXYE* input, CoordsXYE* output);
 
-bool track_element_is_block_start(TileElement* trackElement);
 bool track_element_is_covered(int32_t trackElementType);
 bool track_type_is_station(track_type_t trackType);
 

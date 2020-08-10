@@ -1085,9 +1085,9 @@ void TrackElement::SetHasChain(bool on)
  * A beginning of a block can be the end of a station, the end of a lift hill,
  * or a block brake.
  */
-bool track_element_is_block_start(TileElement* trackElement)
+bool TrackElement::IsBlockStart() const
 {
-    switch (trackElement->AsTrack()->GetTrackType())
+    switch (GetTrackType())
     {
         case TRACK_ELEM_END_STATION:
         case TRACK_ELEM_CABLE_LIFT_HILL:
@@ -1097,7 +1097,7 @@ bool track_element_is_block_start(TileElement* trackElement)
         case TRACK_ELEM_60_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-            if (trackElement->AsTrack()->HasChain())
+            if (HasChain())
             {
                 return true;
             }
