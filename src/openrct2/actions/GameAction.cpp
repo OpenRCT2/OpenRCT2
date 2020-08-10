@@ -475,7 +475,8 @@ namespace GameActions
                     NetworkPlayerId_t playerId = action->GetPlayer();
 
                     int32_t playerIndex = network_get_player_index(playerId.id);
-                    Guard::Assert(playerIndex != -1);
+                    Guard::Assert(
+                        playerIndex != -1, "Unable to find player %u for game action %u", playerId, action->GetType());
 
                     network_set_player_last_action(playerIndex, action->GetType());
                     if (result->Cost != 0)
