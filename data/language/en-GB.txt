@@ -3634,6 +3634,7 @@ STR_6375    :Unknown Ride
 STR_6376    :{WINDOW_COLOUR_2}Ride vehicle:{NEWLINE}{BLACK}{STRINGID} for {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} for {STRINGID}
 STR_6378    :Receiving objects list: {INT32} / {INT32}
+STR_6379    :Received invalid data
 
 #############
 # Scenarios #
