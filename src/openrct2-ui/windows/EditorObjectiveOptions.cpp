@@ -461,7 +461,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
         gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE;
         numItems++;
 
-        if (parkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+        if (park_ride_prices_unlocked())
         {
             gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_MONTHLY_INCOME_FROM_RIDE_TICKETS;
@@ -752,8 +752,7 @@ static void window_editor_objective_options_main_update(rct_window* w)
          objectiveType != OBJECTIVE_HAVE_FUN && objectiveType != OBJECTIVE_10_ROLLERCOASTERS
          && objectiveType != OBJECTIVE_GUESTS_AND_RATING && objectiveType != OBJECTIVE_10_ROLLERCOASTERS_LENGTH
          && objectiveType != OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-        // The park must be free for the monthly ride income objective
-        || (!(parkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && objectiveType == OBJECTIVE_MONTHLY_RIDE_INCOME))
+        || (!park_ride_prices_unlocked() && objectiveType == OBJECTIVE_MONTHLY_RIDE_INCOME))
     {
         // Reset objective
         window_editor_objective_options_set_objective(w, OBJECTIVE_GUESTS_AND_RATING);
