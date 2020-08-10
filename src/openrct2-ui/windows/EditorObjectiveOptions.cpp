@@ -439,51 +439,19 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
     dropdownWidget = &w->widgets[WIDX_OBJECTIVE];
     parkFlags = gParkFlags;
 
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_HAVE_FUN;
-    numItems++;
-
-    if (!(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
+    for (auto i = 0; i < OBJECTIVE_COUNT; i++)
     {
-        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE;
-        numItems++;
+        if (i == OBJECTIVE_NONE || i == OBJECTIVE_BUILD_THE_BEST)
+            continue;
 
-        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_MONTHLY_PROFIT_FROM_FOOD_MERCHANDISE;
-        numItems++;
-
-        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_REPAY_LOAN_AND_ACHIEVE_A_GIVEN_PARK_VALUE;
-        numItems++;
-
-        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE;
-        numItems++;
-
-        if (park_ride_prices_unlocked())
+        const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) || !ObjectiveNeedsMoney(i);
+        if (objectiveAllowedByMoneyUsage && (i != OBJECTIVE_MONTHLY_RIDE_INCOME || park_ride_prices_unlocked()))
         {
             gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_MONTHLY_INCOME_FROM_RIDE_TICKETS;
+            gDropdownItemsArgs[numItems] = ObjectiveDropdownOptionNames[i];
             numItems++;
         }
     }
-
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_IN_PARK;
-    numItems++;
-
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS;
-    numItems++;
-
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS_OF_A_GIVEN_LENGTH;
-    numItems++;
-
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_FINISH_BUILDING_5_ROLLER_COASTERS;
-    numItems++;
 
     window_dropdown_show_text_custom_width(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -747,11 +715,7 @@ static void window_editor_objective_options_main_update(rct_window* w)
     objectiveType = gScenarioObjectiveType;
 
     // Reset objective if invalid
-    if (((parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) &&
-         // The following objectives are the only valid objectives when there is no money
-         objectiveType != OBJECTIVE_HAVE_FUN && objectiveType != OBJECTIVE_10_ROLLERCOASTERS
-         && objectiveType != OBJECTIVE_GUESTS_AND_RATING && objectiveType != OBJECTIVE_10_ROLLERCOASTERS_LENGTH
-         && objectiveType != OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+    if (((parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) && ObjectiveNeedsMoney(objectiveType))
         || (!park_ride_prices_unlocked() && objectiveType == OBJECTIVE_MONTHLY_RIDE_INCOME))
     {
         // Reset objective
