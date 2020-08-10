@@ -1130,7 +1130,7 @@ public:
                 // Skipping IsHighlighted()
 
                 auto trackType = dst2->GetTrackType();
-                if (track_element_has_speed_setting(trackType))
+                if (TrackTypeHasSpeedSetting(trackType))
                 {
                     dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 }

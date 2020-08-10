@@ -8130,7 +8130,7 @@ loc_6DAEB9:
             }
         }
     }
-    else if (track_element_is_booster(curRide->type, trackType))
+    else if (TrackTypeIsBooster(curRide->type, trackType))
     {
         regs.eax = get_booster_speed(curRide->type, (brake_speed << 16));
 
@@ -8513,7 +8513,7 @@ loc_6DBA33:;
         }
     }
 
-    if (track_element_is_booster(curRide->type, trackType))
+    if (TrackTypeIsBooster(curRide->type, trackType))
     {
         regs.eax = get_booster_speed(curRide->type, (brake_speed << 16));
 

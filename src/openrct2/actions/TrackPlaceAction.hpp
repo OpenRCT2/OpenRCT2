@@ -633,7 +633,7 @@ public:
                     map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, tileElement->GetBaseZ() });
                     break;
             }
-            if (track_element_has_speed_setting(_trackType))
+            if (TrackTypeHasSpeedSetting(_trackType))
             {
                 tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
             }

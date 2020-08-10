@@ -364,7 +364,7 @@ bool window_ride_construction_update_state(
         }
     }
 
-    if (track_element_has_speed_setting(trackType))
+    if (TrackTypeHasSpeedSetting(trackType))
     {
         properties = _currentBrakeSpeed2;
     }
