@@ -2283,7 +2283,7 @@ void NetworkBase::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             connection.Socket->Disconnect();
             break;
         default:
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+            connection.SetLastDisconnectReason(STR_MULTIPLAYER_RECEIVED_INVALID_DATA);
             connection.Socket->Disconnect();
             break;
     }
