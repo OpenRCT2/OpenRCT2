@@ -62,6 +62,7 @@
 - Fix: [#12505] Stores selling multiple items can only have the first product advertised.
 - Fix: [#12506] Cannot advertise food if there are no rides in the park.
 - Fix: [#12533] Track designs list does not use natural sorting.
+- Fix: [#12611] 'Monthly Income from ride tickets' in Scenario Editor is removed when park is not free entry.
 - Fix: 'j' character has broken kerning (original bug).
 - Fix: RCT1 scenarios have more items in the object list than are present in the park or the research list.
 - Fix: Brakes keep working during "Brakes failure".
