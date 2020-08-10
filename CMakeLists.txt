@@ -26,8 +26,8 @@ set(CMAKE_MACOSX_RPATH 1)
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "304d13a126c15bf2c86ff13b81a2f2cc1856ac8d")
 
-set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.15/objects.zip")
-set(OBJECTS_SHA1 "dfd5864cf7d0449c0fb280c5c6b902a24816df6c")
+set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.16/objects.zip")
+set(OBJECTS_SHA1 "ea8be00a7ab5a1e9369277f8f59f487bc588eb6a")
 
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v0.0.17/replays.zip")
 set(REPLAYS_SHA1 "8DD6D8DBDB1EA50ABCB3A1FB55D2800E13486F44")
