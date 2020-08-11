@@ -2215,7 +2215,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
-        int32_t args[] = { peep->x, peep->y, peep->x };
+        int32_t args[] = { peep->x, peep->y, peep->z };
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_POSITION, args, 0, screenCoords);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
