@@ -490,7 +490,7 @@ static constexpr const rct_size16 window_guest_page_sizes[][2] = {
     { 210, 148, 210, 148 },     // WINDOW_GUEST_FINANCE
     { 192, 159, 500, 450 },     // WINDOW_GUEST_THOUGHTS
     { 192, 159, 500, 450 },     // WINDOW_GUEST_INVENTORY
-    { 192, 159, 192, 171 }      // WINDOW_GUEST_DEBUG
+    { 192, 171, 192, 171 }      // WINDOW_GUEST_DEBUG
 };
 // clang-format on
 
@@ -2215,7 +2215,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
-        int32_t args[] = { peep->x, peep->y, peep->x };
+        int32_t args[] = { peep->x, peep->y, peep->z };
         gfx_draw_string_left(dpi, STR_PEEP_DEBUG_POSITION, args, 0, screenCoords);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
