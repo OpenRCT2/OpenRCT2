@@ -490,7 +490,7 @@ static constexpr const rct_size16 window_guest_page_sizes[][2] = {
     { 210, 148, 210, 148 },     // WINDOW_GUEST_FINANCE
     { 192, 159, 500, 450 },     // WINDOW_GUEST_THOUGHTS
     { 192, 159, 500, 450 },     // WINDOW_GUEST_INVENTORY
-    { 192, 159, 192, 171 }      // WINDOW_GUEST_DEBUG
+    { 192, 171, 192, 171 }      // WINDOW_GUEST_DEBUG
 };
 // clang-format on
 
