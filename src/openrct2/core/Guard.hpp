@@ -68,6 +68,12 @@ namespace Guard
         Assert(argument >= min && argument <= max, message, args);
         va_end(args);
     }
+
+    template<typename T> static void IndexInRange(size_t index, const T& container)
+    {
+        Guard::Assert(index >= container.size(), "Index %zu out of bounds (%zu)", index, container.size());
+    }
+
 } // namespace Guard
 
 #define GUARD_LINE "Location: %s:%d", __func__, __LINE__
