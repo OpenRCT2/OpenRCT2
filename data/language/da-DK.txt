@@ -1989,7 +1989,7 @@ STR_2785    :{WINDOW_COLOUR_2}tryk på den nye genvej for:{NEWLINE}“{STRINGID}
 STR_2786    :{SMALLFONT}{BLACK}Klik på genvejsbeskrivelsen og vælg en ny tast
 STR_2787    :{WINDOW_COLOUR_2}Park værdi: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Tillykke !{NEWLINE}{BLACK}Du har nået dit mål med en virksomheds værdi på {CURRENCY} !
-STR_2789    :{WINDOW_COLOUR_2}Du har ikke opnået dit mål !
+STR_2789    :{WINDOW_COLOUR_2}Du har ikke opnået dit mål!
 STR_2790    :Angiv dit navn til scenarie listen
 STR_2791    :Angiv Navn
 STR_2792    :Angiv venligst dit navn til scenarie listen:
@@ -1999,7 +1999,7 @@ STR_2795    :Sorter
 STR_2796    :{SMALLFONT}{BLACK}Sorter ordnen af forlystelseslisten ved hjælp af den viste informationstype
 STR_2797    :Flyt visning når markøren rør ved kanten af skærmen
 STR_2798    :{SMALLFONT}{BLACK}Scroll oversigten når musen rører kanten
-STR_2799    :{SMALLFONT}{BLACK}Få vist eller ændre kontrol tast tildelinger
+STR_2799    :{SMALLFONT}{BLACK}Få vist eller rediger genvejstaster
 STR_2800    :{WINDOW_COLOUR_2}Total entré: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}indkomst fra entré: {BLACK}{CURRENCY2DP}
 STR_2802    :Kort
@@ -3469,7 +3469,7 @@ STR_6161    :Skift gitterlinjer Visning til/fra
 STR_6162    :Snurrende Vild Mus
 STR_6163    :Muse formede biler suser gennem skarpe kurver og korte fald, imens de snurrer lidt rundt for at desorientere gæsterne
 STR_6164    :{WHITE}❌
-STR_6165    :Brug vertikal synkronisering
+STR_6165    :Brug vertikal synk.
 STR_6166    :{SMALLFONT}{BLACK}Synkroniserer hvert billede, som vises, til skærmens opdateringshastighed, hvilket forhindrer, udrivninger i grafikken.
 STR_6167    :{SMALLFONT}{BLACK}Avanceret
 STR_6168    :Titel Sekvens
@@ -3924,7 +3924,7 @@ STR_DTLS    :Forvandel dette forladte stenbrud, til et sted til at tiltrække gy
 <Coaster Crazy>
 STR_SCNR    :Coaster Crazy
 STR_PARK    :Coaster Crazy
-STR_DTLS    :YDu har begrænsede midler, men ubegrænset tid til at vende dette bjergområde til en stor rutschebane forlystelsespark
+STR_DTLS    :Du har begrænsede midler, men ubegrænset tid til at vende dette bjergområde til en stor rutschebane forlystelsespark
 
 <Urban Park>
 STR_SCNR    :Urban Park
@@ -3940,112 +3940,112 @@ STR_DTLS    :En stor have park skal forvandles til en blomstrende forlystelsespa
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
 STR_PARK    :Iceberg Islands
-STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+STR_DTLS    :En samling af isbjerge udgør en kold ramme for denne ambitiøse forlystelsespark
 
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+STR_DTLS    :En sovende vulkan er hovedtemaet af denne coaster-bygning udfordring
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+STR_DTLS    :Fri for eventuelle finansielle grænser, din udfordring er at udvikle denne ørken park og samtidig holde gæsterne glade
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
 STR_PARK    :Razor Rocks
-STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+STR_DTLS    :Din opgave er at bygge en massiv coaster-fyldt park i blandt Razor Rocks
 
 <Crater Lake>
 STR_SCNR    :Crater Lake
 STR_PARK    :Crater Lake
-STR_DTLS    :A large lake in an ancient crater is the setting for this park
+STR_DTLS    :En stor sø i et gammelt krater er hovedtemaet denne park
 
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
 STR_PARK    :Vertigo Views
-STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+STR_DTLS    :Denne store park har allerede en fremragende hyper-coaster, men din opgave er at øge fortjenesten massivt
 
 <Paradise Pier 2>
 STR_SCNR    :Paradise Pier 2
 STR_PARK    :Paradise Pier 2
-STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+STR_DTLS    :Paradise Pier har udvidet sit netværk af gangbroer ud over havet, og din opgave er at udvide parken, for at udnytte den ekstra plads
 
 <Dragon's Cove>
 STR_SCNR    :Dragon's Cove
 STR_PARK    :Dragon's Cove
-STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+STR_DTLS    :Denne bugt ved havet udgør rammen om denne coaster-bygning udfordring
 
 <Good Knight Park>
 STR_SCNR    :Good Knight Park
 STR_PARK    :Good Knight Park
-STR_DTLS    :A castle with a pair of rutschebaner needs developing into a larger theme park
+STR_DTLS    :Et slot med et par rutschebaner har behov udvikle sig til en større forlystelsespark
 
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :A park which has much of its footpaths and coasters underground
+STR_DTLS    :En park, der har mange af sine stier og rutchebaner under jorden
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier
 STR_PARK    :Grand Glacier
-STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+STR_DTLS    :En gletscherfyldt dal er din, til at udvikle sig til en forlystelsespark
 
 <Crazy Craters>
 STR_SCNR    :Crazy Craters
 STR_PARK    :Crazy Craters
-STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+STR_DTLS    :I en fjern verden, hvor der ikke er brug for penge, skal du bygge et underholdningscenter for at holde folk glade
 
 <Dusty Desert>
 STR_SCNR    :Dusty Desert
 STR_PARK    :Dusty Desert
-STR_DTLS    :Five coasters require completion in this desert park
+STR_DTLS    :Fem rutchebaner skal laves færdig, i denne ørkenpark
 
 <Woodworm Park>
 STR_SCNR    :Woodworm Park
 STR_PARK    :Woodworm Park
-STR_DTLS    :This historical park is only allowed to build older-styled forlystelser
+STR_DTLS    :I denne historiske park er kun tilladt at bygge gammeldags forlystelser
 
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximise its profit
+STR_DTLS    :Udvikel denne rumvæsen park til at maksimere fortjenesten
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
 STR_PARK    :Sunny Swamps
-STR_DTLS    :This well-themed amusement park already has several forlystelser, but has plenty of space for expansion
+STR_DTLS    :Denne velusmykket forlystelsespark har allerede adskillige forlystelser, men der er masser af plads til udvidelse
 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
 STR_PARK    :Frightmare Hills
-STR_DTLS    :A scary park with a giant centrepiece coaster
+STR_DTLS    :En skræmmende park, med en gigantisk rutchebane i centrum
 
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks
 STR_PARK    :Thunder Rocks
-STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+STR_DTLS    :To store klipper stikker frem fra sandet, hvorpå der er påbegyndt en forlystelsespark
 
 <Octagon Park>
 STR_SCNR    :Octagon Park
 STR_PARK    :Octagon Park
-STR_DTLS    :In this large park you must design and build ten large coasters
+STR_DTLS    :I denne store park skal du designe og bygge ti store rutchebaner
 
 <Pleasure Island>
 STR_SCNR    :Pleasure Island
 STR_PARK    :Pleasure Island
-STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+STR_DTLS    :En lang tynd ø uggør en udfordrende ramme til at konstruere et udvalg af rutchebaner
 
 <Icicle Worlds>
 STR_SCNR    :Icicle Worlds
 STR_PARK    :Icicle Worlds
-STR_DTLS    :An icy landscape needs turning into a thriving theme park
+STR_DTLS    :Et iskoldt landskab, skal blive til en blomstrende forlystelsespark
 
 <Southern Sands>
 STR_SCNR    :Southern Sands
 STR_PARK    :Southern Sands
-STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+STR_DTLS    :En ørkenpark med nogle smart designede rutchebaner, er klar til at du udvikler den
 
 <Tiny Towers>
 STR_SCNR    :Tiny Towers
