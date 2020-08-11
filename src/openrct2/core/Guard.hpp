@@ -71,7 +71,7 @@ namespace Guard
 
     template<typename T> static void IndexInRange(size_t index, const T& container)
     {
-        Guard::Assert(index >= container.size(), "Index %zu out of bounds (%zu)", index, container.size());
+        Guard::Assert(index < container.size(), "Index %zu out of bounds (%zu)", index, container.size());
     }
 
 } // namespace Guard
