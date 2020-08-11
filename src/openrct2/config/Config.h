@@ -15,6 +15,7 @@
 
 #include <string>
 
+enum class MeasurementFormat : int32_t;
 enum class TemperatureUnit : int32_t;
 
 struct GeneralConfiguration
@@ -55,7 +56,7 @@ struct GeneralConfiguration
 
     // Localisation
     int32_t language;
-    int32_t measurement_format;
+    MeasurementFormat measurement_format;
     TemperatureUnit temperature_format;
     bool show_height_as_units;
     int32_t date_format;
@@ -221,11 +222,11 @@ enum SCALE_QUALITY
     SCALE_QUALITY_SMOOTH_NN
 };
 
-enum MEASUREMENT_FORMAT
+enum class MeasurementFormat : int32_t
 {
-    MEASUREMENT_FORMAT_IMPERIAL,
-    MEASUREMENT_FORMAT_METRIC,
-    MEASUREMENT_FORMAT_SI
+    Imperial,
+    Metric,
+    SI
 };
 
 extern GeneralConfiguration gConfigGeneral;

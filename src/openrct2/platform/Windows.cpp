@@ -308,23 +308,23 @@ uint8_t platform_get_locale_currency()
     return platform_get_currency_value(currCode);
 }
 
-uint8_t platform_get_locale_measurement_format()
+MeasurementFormat platform_get_locale_measurement_format()
 {
     UINT measurement_system;
     if (GetLocaleInfo(
             LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, (LPSTR)&measurement_system, sizeof(measurement_system))
         == 0)
     {
-        return MEASUREMENT_FORMAT_METRIC;
+        return MeasurementFormat::Metric;
     }
 
     switch (measurement_system)
     {
         case 1:
-            return MEASUREMENT_FORMAT_IMPERIAL;
+            return MeasurementFormat::Imperial;
         case 0:
         default:
-            return MEASUREMENT_FORMAT_METRIC;
+            return MeasurementFormat::Metric;
     }
 }
 

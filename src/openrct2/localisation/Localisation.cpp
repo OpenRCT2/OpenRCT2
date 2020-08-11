@@ -886,7 +886,7 @@ static void format_length(char** dest, size_t* size, int32_t value)
 {
     rct_string_id stringId = STR_UNIT_SUFFIX_METRES;
 
-    if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL)
+    if (gConfigGeneral.measurement_format == MeasurementFormat::Imperial)
     {
         value = metres_to_feet(value);
         stringId = STR_UNIT_SUFFIX_FEET;
@@ -903,13 +903,14 @@ static void format_velocity(char** dest, size_t* size, uint16_t value)
     switch (gConfigGeneral.measurement_format)
     {
         default:
+        case MeasurementFormat::Imperial:
             stringId = STR_UNIT_SUFFIX_MILES_PER_HOUR;
             break;
-        case MEASUREMENT_FORMAT_METRIC:
+        case MeasurementFormat::Metric:
             value = mph_to_kmph(value);
             stringId = STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR;
             break;
-        case MEASUREMENT_FORMAT_SI:
+        case MeasurementFormat::SI:
             value = mph_to_dmps(value);
             stringId = STR_UNIT_SUFFIX_METRES_PER_SECOND;
             break;

@@ -122,7 +122,7 @@ uint8_t platform_get_locale_currency()
     }
 }
 
-uint8_t platform_get_locale_measurement_format()
+MeasurementFormat platform_get_locale_measurement_format()
 {
     @autoreleasepool
     {
@@ -130,10 +130,10 @@ uint8_t platform_get_locale_measurement_format()
 
         if (metricSystem.boolValue)
         {
-            return MEASUREMENT_FORMAT_METRIC;
+            return MeasurementFormat::Metric;
         }
 
-        return MEASUREMENT_FORMAT_IMPERIAL;
+        return MeasurementFormat::Imperial;
     }
 }
 

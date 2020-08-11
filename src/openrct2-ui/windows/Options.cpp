@@ -1143,7 +1143,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
 
                     window_options_show_dropdown(w, widget, 3);
 
-                    dropdown_set_checked(gConfigGeneral.measurement_format, true);
+                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
                     break;
                 case WIDX_TEMPERATURE_DROPDOWN:
                     gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
@@ -1416,7 +1416,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     gfx_invalidate_screen();
                     break;
                 case WIDX_DISTANCE_DROPDOWN:
-                    gConfigGeneral.measurement_format = static_cast<int8_t>(dropdownIndex);
+                    gConfigGeneral.measurement_format = static_cast<MeasurementFormat>(dropdownIndex);
                     config_save_default();
                     window_options_update_height_markers();
                     break;
@@ -1744,13 +1744,13 @@ static void window_options_invalidate(rct_window* w)
                 switch (gConfigGeneral.measurement_format)
                 {
                     default:
-                    case MEASUREMENT_FORMAT_IMPERIAL:
+                    case MeasurementFormat::Imperial:
                         stringId = STR_IMPERIAL;
                         break;
-                    case MEASUREMENT_FORMAT_METRIC:
+                    case MeasurementFormat::Metric:
                         stringId = STR_METRIC;
                         break;
-                    case MEASUREMENT_FORMAT_SI:
+                    case MeasurementFormat::SI:
                         stringId = STR_SI;
                         break;
                 }
