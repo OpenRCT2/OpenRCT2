@@ -217,7 +217,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         }
 
         uint8_t trackFlags;
-        if (track_element_has_speed_setting(track.type))
+        if (TrackTypeHasSpeedSetting(track.type))
         {
             trackFlags = trackElement.element->AsTrack()->GetBrakeBoosterSpeed() >> 1;
         }

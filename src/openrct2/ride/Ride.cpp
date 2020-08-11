@@ -1470,7 +1470,7 @@ void ride_construction_set_default_next_piece()
             }
             else
             {
-                if (track_element_is_booster(ride->type, trackType))
+                if (TrackTypeIsBooster(ride->type, trackType))
                 {
                     curve = RideConstructionSpecialPieceSelected | TRACK_ELEM_BOOSTER;
                 }
@@ -1531,7 +1531,7 @@ void ride_construction_set_default_next_piece()
             }
             else
             {
-                if (track_element_is_booster(ride->type, trackType))
+                if (TrackTypeIsBooster(ride->type, trackType))
                 {
                     curve = RideConstructionSpecialPieceSelected | TRACK_ELEM_BOOSTER;
                 }

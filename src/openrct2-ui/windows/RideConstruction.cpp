@@ -2513,7 +2513,7 @@ void window_ride_construction_update_active_elements_impl()
             != std::nullopt)
         {
             _selectedTrackType = tileElement->AsTrack()->GetTrackType();
-            if (track_element_has_speed_setting(tileElement->AsTrack()->GetTrackType()))
+            if (TrackTypeHasSpeedSetting(tileElement->AsTrack()->GetTrackType()))
                 _currentBrakeSpeed2 = tileElement->AsTrack()->GetBrakeBoosterSpeed();
             _currentSeatRotationAngle = tileElement->AsTrack()->GetSeatRotation();
         }
@@ -3065,7 +3065,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
 
     bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES
         || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TRACK_ELEM_BRAKES);
-    _boosterTrackSelected = track_element_is_booster(ride->type, _selectedTrackType)
+    _boosterTrackSelected = TrackTypeIsBooster(ride->type, _selectedTrackType)
         || (ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE
             && _currentTrackCurve == (RideConstructionSpecialPieceSelected | TRACK_ELEM_BOOSTER));
 

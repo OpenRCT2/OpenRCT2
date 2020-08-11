@@ -376,6 +376,7 @@ public:
     void SetDoorBState(uint8_t newState);
 
     bool IsStation() const;
+    bool IsBlockStart() const;
 };
 assert_struct_size(TrackElement, 16);
 

@@ -6750,7 +6750,7 @@ static void block_brakes_open_previous_section(Ride& ride, const CoordsXYZ& vehi
                 return;
             }
         }
-    } while (!track_element_is_block_start(trackBeginEnd.begin_element));
+    } while (!(trackBeginEnd.begin_element->AsTrack()->IsBlockStart()));
 
     // Get the start of the track block instead of the end
     location = { trackBeginEnd.begin_x, trackBeginEnd.begin_y, trackBeginEnd.begin_z };
@@ -7917,7 +7917,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
     }
 
-    if (track_element_is_block_start(tileElement))
+    if (tileElement->AsTrack()->IsBlockStart())
     {
         if (next_vehicle_on_train == SPRITE_INDEX_NULL)
         {
@@ -8130,7 +8130,7 @@ loc_6DAEB9:
             }
         }
     }
-    else if (track_element_is_booster(curRide->type, trackType))
+    else if (TrackTypeIsBooster(curRide->type, trackType))
     {
         regs.eax = get_booster_speed(curRide->type, (brake_speed << 16));
 
@@ -8513,7 +8513,7 @@ loc_6DBA33:;
         }
     }
 
-    if (track_element_is_booster(curRide->type, trackType))
+    if (TrackTypeIsBooster(curRide->type, trackType))
     {
         regs.eax = get_booster_speed(curRide->type, (brake_speed << 16));
 

@@ -245,7 +245,7 @@ bool RCT12TrackElement::IsInverted() const
 
 uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
 {
-    if (track_element_has_speed_setting(GetTrackType()))
+    if (TrackTypeHasSpeedSetting(GetTrackType()))
     {
         return (sequence >> 4) << 1;
     }
@@ -791,7 +791,7 @@ void RCT12TrackElement::SetInverted(bool inverted)
 
 void RCT12TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 {
-    if (track_element_has_speed_setting(GetTrackType()))
+    if (TrackTypeHasSpeedSetting(GetTrackType()))
     {
         sequence &= ~0b11110000;
         sequence |= ((speed >> 1) << 4);

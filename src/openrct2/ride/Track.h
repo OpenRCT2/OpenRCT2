@@ -554,8 +554,8 @@ struct track_circuit_iterator
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
 
-PitchAndRoll TrackPitchAndRollStart(uint8_t trackType);
-PitchAndRoll TrackPitchAndRollEnd(uint8_t trackType);
+PitchAndRoll TrackPitchAndRollStart(track_type_t trackType);
+PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType);
 
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
 
@@ -571,8 +571,7 @@ bool track_circuit_iterators_match(const track_circuit_iterator* firstIt, const 
 void track_get_back(CoordsXYE* input, CoordsXYE* output);
 void track_get_front(CoordsXYE* input, CoordsXYE* output);
 
-bool track_element_is_block_start(TileElement* trackElement);
-bool track_element_is_covered(int32_t trackElementType);
+bool track_element_is_covered(track_type_t trackElementType);
 bool track_type_is_station(track_type_t trackType);
 
 roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank);
@@ -586,5 +585,5 @@ money32 maze_set_track(
     uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
     uint8_t mode);
 
-bool track_element_is_booster(uint8_t rideType, uint8_t trackType);
-bool track_element_has_speed_setting(uint8_t trackType);
+bool TrackTypeIsBooster(uint8_t rideType, track_type_t trackType);
+bool TrackTypeHasSpeedSetting(track_type_t trackType);
