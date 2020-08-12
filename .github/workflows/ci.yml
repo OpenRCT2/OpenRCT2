@@ -25,7 +25,7 @@ jobs:
     name: Check code formatting
     runs-on: ubuntu-latest
     container:
-      image: openrct2/openrct2-build:0.2.4-format
+      image: openrct2/openrct2-build:0.3.0-format
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-mingw
+      image: openrct2/openrct2-build:0.3.0-mingw
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -125,7 +125,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic
+      image: openrct2/openrct2-build:0.3.0-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -160,7 +160,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic32
+      image: openrct2/openrct2-build:0.3.0-bionic32
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -200,7 +200,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic
+      image: openrct2/openrct2-build:0.3.0-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -258,7 +258,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic
+      image: openrct2/openrct2-build:0.3.0-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -270,7 +270,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-android
+      image: openrct2/openrct2-build:0.3.0-android
     steps:
       - name: Checkout
         uses: actions/checkout@v1
