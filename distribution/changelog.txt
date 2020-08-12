@@ -47,6 +47,7 @@
 - Fix: [#11695] Mechanics walk to tile 0, 0 at entrance only stations when trying to fix them.
 - Fix: [#11804] Some RCT1 fences are imported at the wrong height.
 - Fix: [#11953] Incorrect banner text shade colour on wall text.
+- Fix: [#11968] Maze height is higher than it should be.
 - Fix: [#12062] Inconsistent lift hill sprites on Flying Coaster while inverted (original bug).
 - Fix: [#12068] Incorrect Entrance/Exit location on track design preview. Incorrect track design previews with track that contain diagonal track elements.
 - Fix: [#12071] Crash in Guest List when a guest dies.
