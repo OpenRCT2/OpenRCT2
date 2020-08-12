@@ -113,7 +113,7 @@ The following people are not part of the development team, but have been contrib
 * William Wallace (Willox)
 * Christian Friedrich Coors (ccoors)
 * Robbin Voortman (rvoortman)
-* (telk5093)
+* Willem J. Lee (telk5093)
 * Ethan Smith (ethanhs) - Refactor MAX_PATH
 * Robert Lewicki (rlewicki)
 * Liam Parker (elInfidel)
@@ -191,7 +191,7 @@ The following people are not part of the development team, but have been contrib
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
 * Italian - Luca Andrea Rossi (LucaRed), Precious Ugo Abara (48cfu)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Haruna Chinzei, Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
-* Korean - (telk5093), (NeverDruid); small fixes: (kexplo)
+* Korean - Willem J. Lee (telk5093), (NeverDruid); small fixes: (kexplo)
 * Norwegian - Hugo Wallenburg (Goddesen)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes), Tulio Paschoalin Leao (tupaschoal)
