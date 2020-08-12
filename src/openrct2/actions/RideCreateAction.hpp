@@ -229,7 +229,7 @@ public:
                 ride->price[1] = ShopItems[rideEntry->shop_item[1]].DefaultPrice;
             }
 
-            if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
+            if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
             {
                 ride->price[0] = 0;
             }

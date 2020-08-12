@@ -219,7 +219,7 @@ public:
                 ParkSetOpen(!park_is_open());
                 break;
             case CheatType::HaveFun:
-                gScenarioObjectiveType = OBJECTIVE_HAVE_FUN;
+                gScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
                 break;
             case CheatType::SetForcedParkRating:
                 set_forced_park_rating(_param1);

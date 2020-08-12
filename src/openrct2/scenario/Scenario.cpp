@@ -71,10 +71,7 @@ uint32_t gLastAutoSaveUpdate = 0;
 uint32_t gScenarioTicks;
 random_engine_t gScenarioRand;
 
-uint8_t gScenarioObjectiveType;
-uint8_t gScenarioObjectiveYear;
-uint16_t gScenarioObjectiveNumGuests;
-money32 gScenarioObjectiveCurrency;
+Objective gScenarioObjective;
 
 uint16_t gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
@@ -100,7 +97,7 @@ void scenario_begin()
     research_reset_current_item();
     scenery_set_default_placement_configuration();
     News::InitQueue();
-    if (gScenarioObjectiveType != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
+    if (gScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         context_open_window_view(WV_PARK_OBJECTIVE);
 
     auto& park = GetContext()->GetGameState()->GetPark();
@@ -291,7 +288,7 @@ static void scenario_day_update()
 {
     finance_update_daily_profit();
     peep_update_days_in_queue();
-    switch (gScenarioObjectiveType)
+    switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_10_ROLLERCOASTERS:
         case OBJECTIVE_GUESTS_AND_RATING:
@@ -528,7 +525,7 @@ uint32_t scenario_rand_max(uint32_t max)
  */
 static bool scenario_prepare_rides_for_save()
 {
-    int32_t isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
+    int32_t isFiveCoasterObjective = gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
     uint8_t rcs = 0;
 
     for (auto& ride : GetRideManager())
@@ -595,10 +592,10 @@ bool scenario_prepare_for_save()
     if (gS6Info.name[0] == 0)
         String::Set(gS6Info.name, sizeof(gS6Info.name), parkName);
 
-    gS6Info.objective_type = gScenarioObjectiveType;
-    gS6Info.objective_arg_1 = gScenarioObjectiveYear;
-    gS6Info.objective_arg_2 = gScenarioObjectiveCurrency;
-    gS6Info.objective_arg_3 = gScenarioObjectiveNumGuests;
+    gS6Info.objective_type = gScenarioObjective.Type;
+    gS6Info.objective_arg_1 = gScenarioObjective.Year;
+    gS6Info.objective_arg_2 = gScenarioObjective.Currency;
+    gS6Info.objective_arg_3 = gScenarioObjective.NumGuests;
 
     // This can return false if the goal is 'Finish 5 roller coaster' and there are too few.
     if (!scenario_prepare_rides_for_save())
@@ -606,7 +603,7 @@ bool scenario_prepare_for_save()
         return false;
     }
 
-    if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
+    if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
         gParkFlags |= PARK_FLAGS_PARK_OPEN;
 
     // Fix #2385: saved scenarios did not initialise temperatures to selected climate
@@ -713,13 +710,13 @@ void scenario_remove_trackless_rides(rct_s6_data* s6)
 
 static void scenario_objective_check_guests_by()
 {
-    uint8_t objectiveYear = gScenarioObjectiveYear;
+    uint8_t objectiveYear = gScenarioObjective.Year;
     int16_t parkRating = gParkRating;
     int32_t currentMonthYear = gDateMonthsElapsed;
 
     if (currentMonthYear == MONTH_COUNT * objectiveYear || gConfigGeneral.allow_early_completion)
     {
-        if (parkRating >= 600 && gNumGuestsInPark >= gScenarioObjectiveNumGuests)
+        if (parkRating >= 600 && gNumGuestsInPark >= gScenarioObjective.NumGuests)
         {
             scenario_success();
         }
@@ -732,9 +729,9 @@ static void scenario_objective_check_guests_by()
 
 static void scenario_objective_check_park_value_by()
 {
-    uint8_t objectiveYear = gScenarioObjectiveYear;
+    uint8_t objectiveYear = gScenarioObjective.Year;
     int32_t currentMonthYear = gDateMonthsElapsed;
-    money32 objectiveParkValue = gScenarioObjectiveCurrency;
+    money32 objectiveParkValue = gScenarioObjective.Currency;
     money32 parkValue = gParkValue;
 
     if (currentMonthYear == MONTH_COUNT * objectiveYear || gConfigGeneral.allow_early_completion)
@@ -831,14 +828,14 @@ static void scenario_objective_check_guests_and_rating()
     }
 
     if (gParkRating >= 700)
-        if (gNumGuestsInPark >= gScenarioObjectiveNumGuests)
+        if (gNumGuestsInPark >= gScenarioObjective.NumGuests)
             scenario_success();
 }
 
 static void scenario_objective_check_monthly_ride_income()
 {
     money32 lastMonthRideIncome = gExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
-    if (lastMonthRideIncome >= gScenarioObjectiveCurrency)
+    if (lastMonthRideIncome >= gScenarioObjective.Currency)
     {
         scenario_success();
     }
@@ -851,7 +848,7 @@ static void scenario_objective_check_monthly_ride_income()
  */
 static void scenario_objective_check_10_rollercoasters_length()
 {
-    const auto objective_length = gScenarioObjectiveNumGuests;
+    const auto objective_length = gScenarioObjective.MinimumLength;
     std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
@@ -880,7 +877,7 @@ static void scenario_objective_check_10_rollercoasters_length()
 
 static void scenario_objective_check_finish_5_rollercoasters()
 {
-    const auto objectiveRideExcitement = gScenarioObjectiveCurrency;
+    const auto objectiveRideExcitement = gScenarioObjective.MinimumExcitement;
 
     // Originally, this did not check for null rides, neither did it check if
     // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
@@ -908,7 +905,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
 
 static void scenario_objective_check_replay_loan_and_park_value()
 {
-    money32 objectiveParkValue = gScenarioObjectiveCurrency;
+    money32 objectiveParkValue = gScenarioObjective.Currency;
     money32 parkValue = gParkValue;
     money32 currentLoan = gBankLoan;
 
@@ -924,7 +921,7 @@ static void scenario_objective_check_monthly_food_income()
         + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkSales)]
         + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkStock)];
 
-    if (lastMonthProfit >= gScenarioObjectiveCurrency)
+    if (lastMonthProfit >= gScenarioObjective.Currency)
     {
         scenario_success();
     }
@@ -941,7 +938,7 @@ static void scenario_objective_check()
         return;
     }
 
-    switch (gScenarioObjectiveType)
+    switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_GUESTS_BY:
             scenario_objective_check_guests_by();

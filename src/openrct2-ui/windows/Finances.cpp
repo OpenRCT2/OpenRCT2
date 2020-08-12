@@ -703,7 +703,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, stringId, &gCash, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 8, 294 });
 
     // Objective related financial information
-    if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME)
+    if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
     {
         money32 lastMonthProfit = finance_get_last_month_shop_profit();
         ft = Formatter::Common();
