@@ -1721,8 +1721,10 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
                 // could not read anything from socket
                 break;
         }
-    } while (packetStatus == NETWORK_READPACKET_MORE_DATA || packetStatus == NETWORK_READPACKET_SUCCESS);
+    } while (packetStatus == NETWORK_READPACKET_SUCCESS);
+
     connection.SendQueuedPackets();
+
     if (!connection.ReceivedPacketRecently())
     {
         if (!connection.GetLastDisconnectReason())
@@ -1731,6 +1733,7 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
         }
         return false;
     }
+
     return true;
 }
 

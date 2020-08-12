@@ -18,7 +18,7 @@
 #    include "network.h"
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
-constexpr size_t NetworkBufferSize = 1024;
+constexpr size_t NetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.
 
 NetworkConnection::NetworkConnection()
 {
