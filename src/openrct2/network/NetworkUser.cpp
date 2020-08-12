@@ -12,7 +12,7 @@
 #    include "NetworkUser.h"
 
 #    include "../core/Console.hpp"
-#    include "../core/Json.hpp"
+#    include "../core/Guard.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../platform/Platform2.h"
@@ -21,50 +21,43 @@
 
 constexpr const utf8* USER_STORE_FILENAME = "users.json";
 
-NetworkUser* NetworkUser::FromJson(json_t* json)
+NetworkUser* NetworkUser::FromJson(json_t& jsonData)
 {
-    const char* hash = json_string_value(json_object_get(json, "hash"));
-    const char* name = json_string_value(json_object_get(json, "name"));
-    const json_t* jsonGroupId = json_object_get(json, "groupId");
+    Guard::Assert(jsonData.is_object(), "NetworkUser::FromJson expects parameter jsonData to be object");
+
+    const std::string hash = Json::GetString(jsonData["hash"]);
+    const std::string name = Json::GetString(jsonData["name"]);
+    json_t jsonGroupId = jsonData["groupId"];
 
     NetworkUser* user = nullptr;
-    if (hash != nullptr && name != nullptr)
+    if (!hash.empty() && !name.empty())
     {
         user = new NetworkUser();
-        user->Hash = std::string(hash);
-        user->Name = std::string(name);
-        if (!json_is_null(jsonGroupId))
+        user->Hash = hash;
+        user->Name = name;
+        if (jsonGroupId.is_number_integer())
         {
-            user->GroupId = static_cast<uint8_t>(json_integer_value(jsonGroupId));
+            user->GroupId = Json::GetNumber<uint8_t>(jsonGroupId);
         }
         user->Remove = false;
-        return user;
     }
     return user;
 }
 
-json_t* NetworkUser::ToJson() const
+json_t NetworkUser::ToJson() const
 {
-    return ToJson(json_object());
-}
+    json_t jsonData;
+    jsonData["hash"] = Hash;
+    jsonData["name"] = Name;
 
-json_t* NetworkUser::ToJson(json_t* json) const
-{
-    json_object_set_new(json, "hash", json_string(Hash.c_str()));
-    json_object_set_new(json, "name", json_string(Name.c_str()));
-
-    json_t* jsonGroupId;
+    json_t jsonGroupId;
     if (GroupId.HasValue())
     {
-        jsonGroupId = json_integer(GroupId.GetValue());
+        jsonGroupId = GroupId.GetValue();
     }
-    else
-    {
-        jsonGroupId = json_null();
-    }
-    json_object_set_new(json, "groupId", jsonGroupId);
+    jsonData["groupId"] = jsonGroupId;
 
-    return json;
+    return jsonData;
 }
 
 NetworkUserManager::~NetworkUserManager()
@@ -92,18 +85,18 @@ void NetworkUserManager::Load()
 
         try
         {
-            json_t* jsonUsers = Json::ReadFromFile(path);
-            size_t numUsers = json_array_size(jsonUsers);
-            for (size_t i = 0; i < numUsers; i++)
+            json_t jsonUsers = Json::ReadFromFile(path);
+            for (auto& jsonUser : jsonUsers)
             {
-                json_t* jsonUser = json_array_get(jsonUsers, i);
-                NetworkUser* networkUser = NetworkUser::FromJson(jsonUser);
-                if (networkUser != nullptr)
+                if (jsonUser.is_object())
                 {
-                    _usersByHash[networkUser->Hash] = networkUser;
+                    auto networkUser = NetworkUser::FromJson(jsonUser);
+                    if (networkUser != nullptr)
+                    {
+                        _usersByHash[networkUser->Hash] = networkUser;
+                    }
                 }
             }
-            json_decref(jsonUsers);
         }
         catch (const std::exception& ex)
         {
@@ -117,7 +110,7 @@ void NetworkUserManager::Save()
     utf8 path[MAX_PATH];
     GetStorePath(path, sizeof(path));
 
-    json_t* jsonUsers = nullptr;
+    json_t jsonUsers;
     try
     {
         if (Platform::FileExists(path))
@@ -129,36 +122,35 @@ void NetworkUserManager::Save()
     {
     }
 
-    if (jsonUsers == nullptr)
-    {
-        jsonUsers = json_array();
-    }
-
     // Update existing users
     std::unordered_set<std::string> savedHashes;
-    size_t numUsers = json_array_size(jsonUsers);
-    for (size_t i = 0; i < numUsers; i++)
+    for (auto it = jsonUsers.begin(); it != jsonUsers.end();)
     {
-        json_t* jsonUser = json_array_get(jsonUsers, i);
-        const char* hash = json_string_value(json_object_get(jsonUser, "hash"));
-        if (hash != nullptr)
+        json_t jsonUser = *it;
+        if (!jsonUser.is_object())
         {
-            auto hashString = std::string(hash);
-            const NetworkUser* networkUser = GetUserByHash(hashString);
-            if (networkUser != nullptr)
+            continue;
+        }
+        std::string hashString = Json::GetString(jsonUser["hash"]);
+
+        const auto networkUser = GetUserByHash(hashString);
+        if (networkUser != nullptr)
+        {
+            if (networkUser->Remove)
             {
-                if (networkUser->Remove)
-                {
-                    json_array_remove(jsonUsers, i);
-                    i--;
-                }
-                else
-                {
-                    networkUser->ToJson(jsonUser);
-                    savedHashes.insert(hashString);
-                }
+                it = jsonUsers.erase(it);
+                // erase advances the iterator so make sure we don't do it again
+                continue;
+            }
+            else
+            {
+                // replace the existing element in jsonUsers
+                *it = networkUser->ToJson();
+                savedHashes.insert(hashString);
             }
         }
+
+        it++;
     }
 
     // Add new users
@@ -167,13 +159,11 @@ void NetworkUserManager::Save()
         const NetworkUser* networkUser = kvp.second;
         if (!networkUser->Remove && savedHashes.find(networkUser->Hash) == savedHashes.end())
         {
-            json_t* jsonUser = networkUser->ToJson();
-            json_array_append_new(jsonUsers, jsonUser);
+            jsonUsers.push_back(networkUser->ToJson());
         }
     }
 
-    Json::WriteToFile(path, jsonUsers, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
-    json_decref(jsonUsers);
+    Json::WriteToFile(path, jsonUsers);
 }
 
 void NetworkUserManager::UnsetUsersOfGroup(uint8_t groupId)
