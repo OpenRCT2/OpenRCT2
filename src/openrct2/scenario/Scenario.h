@@ -344,7 +344,9 @@ enum
     OBJECTIVE_10_ROLLERCOASTERS_LENGTH,
     OBJECTIVE_FINISH_5_ROLLERCOASTERS,
     OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE,
-    OBJECTIVE_MONTHLY_FOOD_INCOME
+    OBJECTIVE_MONTHLY_FOOD_INCOME,
+
+    OBJECTIVE_COUNT
 };
 
 enum
@@ -420,5 +422,6 @@ void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char* name);
 void scenario_autosave_check();
+bool ObjectiveNeedsMoney(const uint8_t objective);
 
 #endif
