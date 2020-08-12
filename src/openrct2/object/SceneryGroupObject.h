@@ -34,7 +34,7 @@ public:
     {
         return &_legacyType;
     }
-    void ReadJson(IReadObjectContext* context, const json_t* root) override;
+    void ReadJson(IReadObjectContext* context, json_t& root) override;
 
     void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
     void Load() override;
@@ -47,7 +47,7 @@ public:
 
 private:
     static std::vector<rct_object_entry> ReadItems(OpenRCT2::IStream* stream);
-    static uint32_t ReadJsonEntertainerCostumes(const json_t* jCostumes);
+    static uint32_t ReadJsonEntertainerCostumes(json_t& jCostumes);
     static EntertainerCostume ParseEntertainerCostume(const std::string& s);
-    static std::vector<rct_object_entry> ReadJsonEntries(const json_t* jEntries);
+    static std::vector<rct_object_entry> ReadJsonEntries(json_t& jEntries);
 };

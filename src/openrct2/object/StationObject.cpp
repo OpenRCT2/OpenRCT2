@@ -14,7 +14,6 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
 #include "../world/Banner.h"
-#include "ObjectJsonHelpers.h"
 
 void StationObject::Load()
 {
@@ -78,17 +77,24 @@ void StationObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t h
     }
 }
 
-void StationObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void StationObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
-    Height = ObjectJsonHelpers::GetInteger(properties, "height", 0);
-    ScrollingMode = ObjectJsonHelpers::GetInteger(properties, "scrollingMode", SCROLLING_MODE_NONE);
-    Flags = ObjectJsonHelpers::GetFlags<uint32_t>(
-        properties,
-        { { "hasPrimaryColour", STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR },
-          { "hasSecondaryColour", STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR },
-          { "isTransparent", STATION_OBJECT_FLAGS::IS_TRANSPARENT } });
+    Guard::Assert(root.is_object(), "StationObject::ReadJson expects parameter root to be object");
 
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    auto properties = root["properties"];
+
+    if (properties.is_object())
+    {
+        Height = Json::GetNumber<int32_t>(properties["height"]);
+        ScrollingMode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+        Flags = Json::GetFlags<uint32_t>(
+            properties,
+            {
+                { "hasPrimaryColour", STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR },
+                { "hasSecondaryColour", STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR },
+                { "isTransparent", STATION_OBJECT_FLAGS::IS_TRANSPARENT },
+            });
+    }
+
+    PopulateTablesFromJson(context, root);
 }

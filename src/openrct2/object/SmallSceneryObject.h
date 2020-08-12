@@ -32,7 +32,7 @@ public:
     }
 
     void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, const json_t* root) override;
+    void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;
 
@@ -40,7 +40,7 @@ public:
 
 private:
     static std::vector<uint8_t> ReadFrameOffsets(OpenRCT2::IStream* stream);
-    static std::vector<uint8_t> ReadJsonFrameOffsets(const json_t* jFrameOffsets);
+    static std::vector<uint8_t> ReadJsonFrameOffsets(json_t& jFrameOffsets);
     void PerformFixes();
     rct_object_entry GetScgPiratHeader();
     rct_object_entry GetScgMineHeader();

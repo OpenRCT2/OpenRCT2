@@ -14,7 +14,6 @@
 #include "../localisation/Language.h"
 #include "../object/Object.h"
 #include "../object/ObjectRepository.h"
-#include "ObjectJsonHelpers.h"
 #include "ObjectList.h"
 
 void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
@@ -82,20 +81,23 @@ void BannerObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t he
     gfx_draw_sprite(dpi, imageId + 1, screenCoords + ScreenCoordsXY{ -12, 8 }, 0);
 }
 
-void BannerObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void BannerObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
+    Guard::Assert(root.is_object(), "BannerObject::ReadJson expects parameter root to be object");
+    json_t properties = root["properties"];
 
-    _legacyType.banner.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
-    _legacyType.banner.price = json_integer_value(json_object_get(properties, "price"));
-    _legacyType.banner.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
-        properties,
-        {
-            { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR },
-        });
+    if (properties.is_object())
+    {
+        _legacyType.banner.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
+        _legacyType.banner.price = Json::GetNumber<int16_t>(properties["price"]);
+        _legacyType.banner.flags = Json::GetFlags<uint8_t>(
+            properties,
+            {
+                { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR },
+            });
 
-    SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
+        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
+    }
 
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    PopulateTablesFromJson(context, root);
 }
