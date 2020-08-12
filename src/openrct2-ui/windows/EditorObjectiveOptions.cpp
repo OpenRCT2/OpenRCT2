@@ -445,7 +445,9 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
             continue;
 
         const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) || !ObjectiveNeedsMoney(i);
-        if (objectiveAllowedByMoneyUsage && (i != OBJECTIVE_MONTHLY_RIDE_INCOME || park_ride_prices_unlocked()))
+        // This objective can only work if the player can ask money for rides.
+        const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || park_ride_prices_unlocked();
+        if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
         {
             gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[numItems] = ObjectiveDropdownOptionNames[i];
@@ -714,9 +716,13 @@ static void window_editor_objective_options_main_update(rct_window* w)
     parkFlags = gParkFlags;
     objectiveType = gScenarioObjectiveType;
 
-    // Reset objective if invalid
-    if (((parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) && ObjectiveNeedsMoney(objectiveType))
-        || (!park_ride_prices_unlocked() && objectiveType == OBJECTIVE_MONTHLY_RIDE_INCOME))
+    // Check if objective is allowed by money and pay-per-ride settings.
+    const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
+        || !ObjectiveNeedsMoney(objectiveType);
+    // This objective can only work if the player can ask money for rides.
+    const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
+        || park_ride_prices_unlocked();
+    if (!objectiveAllowedByMoneyUsage || !objectiveAllowedByPaymentSettings)
     {
         // Reset objective
         window_editor_objective_options_set_objective(w, OBJECTIVE_GUESTS_AND_RATING);
