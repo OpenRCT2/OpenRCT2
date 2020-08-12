@@ -252,7 +252,6 @@
     <ClInclude Include="object\LargeSceneryObject.h" />
     <ClInclude Include="object\Object.h" />
     <ClInclude Include="object\ObjectFactory.h" />
-    <ClInclude Include="object\ObjectJsonHelpers.h" />
     <ClInclude Include="object\ObjectLimits.h" />
     <ClInclude Include="object\ObjectList.h" />
     <ClInclude Include="object\ObjectManager.h" />
@@ -528,6 +527,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="interface\Chat.cpp" />
     <ClCompile Include="interface\Colour.cpp" />
+    <ClCompile Include="interface\Cursors.cpp" />
     <ClCompile Include="interface\FontFamilies.cpp" />
     <ClCompile Include="interface\Fonts.cpp" />
     <ClCompile Include="interface\InteractiveConsole.cpp" />
@@ -576,7 +576,6 @@
     <ClCompile Include="object\LargeSceneryObject.cpp" />
     <ClCompile Include="object\Object.cpp" />
     <ClCompile Include="object\ObjectFactory.cpp" />
-    <ClCompile Include="object\ObjectJsonHelpers.cpp" />
     <ClCompile Include="object\ObjectList.cpp" />
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />
