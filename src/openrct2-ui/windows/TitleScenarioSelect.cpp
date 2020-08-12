@@ -17,6 +17,7 @@
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
@@ -517,9 +518,22 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Scenario objective
     ft = Formatter::Common();
     ft.Add<rct_string_id>(ObjectiveNames[scenario->objective_type]);
-    ft.Add<int16_t>(scenario->objective_arg_3);
-    ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
-    ft.Add<int32_t>(scenario->objective_arg_2);
+    if (scenario->objective_type == OBJECTIVE_BUILD_THE_BEST)
+    {
+        rct_string_id rideTypeString = STR_NONE;
+        auto rideTypeId = scenario->objective_arg_3;
+        if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
+        {
+            rideTypeString = RideTypeDescriptors[rideTypeId].Naming.Name;
+        }
+        ft.Add<rct_string_id>(rideTypeString);
+    }
+    else
+    {
+        ft.Add<int16_t>(scenario->objective_arg_3);
+        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
+        ft.Add<int32_t>(scenario->objective_arg_2);
+    }
     screenPos.y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenPos, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
 
     // Scenario score

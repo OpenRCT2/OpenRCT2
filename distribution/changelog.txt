@@ -27,6 +27,7 @@
 - Fix: [#7006] Submarine Ride is in the wrong research group.
 - Fix: [#7324] Research window shows vehicle name instead of ride name.
 - Fix: [#7969, #8175, #12501] When loading a landscape in the Scenario Editor, the inventions list, financial settings and objective settings are reset.
+- Fix: [#10549] 'Build the best ride you can' objective missing ride name.
 - Fix: [#10634] Guests are unable to use uphill paths out of toilets.
 - Fix: [#10751] Saved mazes are incomplete.
 - Fix: [#10876] When removing a path, its guest entry point is not removed.
