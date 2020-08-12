@@ -52,6 +52,8 @@ constexpr const uint8_t RCT2_MAX_WATER_OBJECTS = 1;
 constexpr const uint8_t RCT2_MAX_SCENARIO_TEXT_OBJECTS = 1;
 constexpr const uint8_t RCT2_RIDE_TYPE_COUNT = 91;
 
+constexpr const rct_string_id RCT2_RIDE_STRING_START = 2;
+
 // clang-format off
 constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
     RCT2_MAX_RIDE_OBJECTS +

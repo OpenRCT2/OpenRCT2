@@ -26,6 +26,7 @@
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Award.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Entrance.h>
@@ -1609,9 +1610,22 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Objective
     ft = Formatter::Common();
-    ft.Add<uint16_t>(gScenarioObjectiveNumGuests);
-    ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjectiveYear));
-    ft.Add<money32>(gScenarioObjectiveCurrency);
+    if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
+    {
+        rct_string_id rideTypeString = STR_NONE;
+        auto rideTypeId = gScenarioObjectiveNumGuests;
+        if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
+        {
+            rideTypeString = RideTypeDescriptors[rideTypeId].Naming.Name;
+        }
+        ft.Add<rct_string_id>(rideTypeString);
+    }
+    else
+    {
+        ft.Add<uint16_t>(gScenarioObjectiveNumGuests);
+        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjectiveYear));
+        ft.Add<money32>(gScenarioObjectiveCurrency);
+    }
 
     screenCoords.y += gfx_draw_string_left_wrapped(
         dpi, gCommonFormatArgs, screenCoords, 221, ObjectiveNames[gScenarioObjectiveType], COLOUR_BLACK);
