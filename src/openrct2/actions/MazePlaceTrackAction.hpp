@@ -180,7 +180,7 @@ public:
         auto tileElement = tile_element_insert(_loc, 0b1111);
         assert(tileElement != nullptr);
 
-        tileElement->SetClearanceZ(clearanceHeight + MAZE_CLEARANCE_HEIGHT);
+        tileElement->SetClearanceZ(clearanceHeight);
         tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
         tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
