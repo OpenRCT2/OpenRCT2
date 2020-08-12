@@ -15,6 +15,7 @@
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 #include "../common.h"
+#include "../core/Json.hpp"
 #include "../localisation/StringIds.h"
 #include "NetworkTypes.h"
 
@@ -22,7 +23,6 @@
 #include <string>
 #include <vector>
 
-struct json_t;
 struct GameAction;
 struct Peep;
 struct CoordsXYZ;
@@ -117,4 +117,4 @@ std::string network_get_version();
 
 NetworkStats_t network_get_stats();
 NetworkServerState_t network_get_server_state();
-json_t* network_get_server_info_as_json();
+json_t network_get_server_info_as_json();
