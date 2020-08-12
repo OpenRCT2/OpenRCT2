@@ -14,7 +14,7 @@
 #include "StringIds.h"
 
 // clang-format off
-currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
+currency_descriptor CurrencyDescriptors[CurrencyType::COUNT] = {
     {   "GBP",  10,     CurrencyAffix::Prefix,    "\xC2\xA3",     CurrencyAffix::Suffix,    "GBP",  STR_POUNDS          },  // British Pound
     {   "USD",  10,     CurrencyAffix::Prefix,    "$",            CurrencyAffix::Prefix,    "$",    STR_DOLLARS         },  // US Dollar
     {   "FRF",  10,     CurrencyAffix::Suffix,    "F",            CurrencyAffix::Suffix,    "F",    STR_FRANC           },  // French Franc
@@ -38,12 +38,12 @@ currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
 
 void currency_load_custom_currency_config()
 {
-    CurrencyDescriptors[CURRENCY_CUSTOM].rate = gConfigGeneral.custom_currency_rate;
-    CurrencyDescriptors[CURRENCY_CUSTOM].affix_unicode = gConfigGeneral.custom_currency_affix;
+    CurrencyDescriptors[CurrencyType::Custom].rate = gConfigGeneral.custom_currency_rate;
+    CurrencyDescriptors[CurrencyType::Custom].affix_unicode = gConfigGeneral.custom_currency_affix;
     if (gConfigGeneral.custom_currency_symbol != nullptr)
     {
         safe_strcpy(
-            CurrencyDescriptors[CURRENCY_CUSTOM].symbol_unicode, gConfigGeneral.custom_currency_symbol,
+            CurrencyDescriptors[CurrencyType::Custom].symbol_unicode, gConfigGeneral.custom_currency_symbol,
             CURRENCY_SYMBOL_MAX_SIZE);
     }
 }

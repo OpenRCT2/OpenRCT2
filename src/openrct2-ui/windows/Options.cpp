@@ -1107,8 +1107,8 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     break;
                 case WIDX_CURRENCY_DROPDOWN:
                 {
-                    num_items = CURRENCY_END + 1;                      // All the currencies plus the separator
-                    size_t num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
+                    num_items = CurrencyType::COUNT + 1;                      // All the currencies plus the separator
+                    size_t num_ordinary_currencies = CurrencyType::COUNT - 1; // All the currencies except custom currency
 
                     for (size_t i = 0; i < num_ordinary_currencies; i++)
                     {
@@ -1119,11 +1119,11 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     gDropdownItemsFormat[num_ordinary_currencies] = DROPDOWN_SEPARATOR;
 
                     gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[CURRENCY_CUSTOM].stringId;
+                    gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[CurrencyType::Custom].stringId;
 
                     window_options_show_dropdown(w, widget, num_items);
 
-                    if (gConfigGeneral.currency_format == CURRENCY_CUSTOM)
+                    if (gConfigGeneral.currency_format == CurrencyType::Custom)
                     {
                         dropdown_set_checked(gConfigGeneral.currency_format + 1, true);
                     }
@@ -1403,7 +1403,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     window_options_update_height_markers();
                     break;
                 case WIDX_CURRENCY_DROPDOWN:
-                    if (dropdownIndex == CURRENCY_CUSTOM + 1)
+                    if (dropdownIndex == CurrencyType::Custom + 1)
                     { // Add 1 because the separator occupies a position
                         gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex) - 1;
                         context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
