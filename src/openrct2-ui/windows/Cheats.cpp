@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetDateAction.hpp>
 #include <openrct2/actions/SetCheatAction.hpp>
 #include <openrct2/config/Config.h>
@@ -1168,6 +1169,11 @@ static void window_cheats_invalidate(rct_window* w)
     window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrent.Weather];
     // Staff speed
     window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
+
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
+        w->disabled_widgets |= (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_NO_MONEY);
+    }
 }
 
 static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)

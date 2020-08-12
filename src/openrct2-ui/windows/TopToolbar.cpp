@@ -3477,7 +3477,6 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
-        dropdown_set_disabled(DDIDX_CHEATS, true);
         dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
         dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
         dropdown_set_disabled(DDIDX_SCENARIO_OPTIONS, true);
@@ -3497,10 +3496,7 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
         dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
     }
 
-    if (!dropdown_is_disabled(DDIDX_CHEATS))
-        gDropdownDefaultIndex = DDIDX_CHEATS;
-    else
-        gDropdownDefaultIndex = DDIDX_TILE_INSPECTOR;
+    gDropdownDefaultIndex = DDIDX_CHEATS;
 }
 
 static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)

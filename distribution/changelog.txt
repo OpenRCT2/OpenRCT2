@@ -57,6 +57,7 @@
 - Fix: [#12221] Map Generation tool doesn't place any trees.
 - Fix: [#12285] On-ride photo profit assumes every guest buys one.
 - Fix: [#12297] OpenGL renderer causing artifacts.
+- Fix: [#12308] Cannot use cheats in editor modes.
 - Fix: [#12312] Softlock when loading save file via command line fails.
 - Fix: [#12486] `set-rct2` has a broken g1.dat check.
 - Fix: [#12498] Circus construction ghost does not rotate (original bug).
