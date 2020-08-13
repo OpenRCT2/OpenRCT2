@@ -351,6 +351,13 @@ enum
 
 bool ObjectiveNeedsMoney(const uint8_t objective);
 
+enum class ObjectiveStatus : uint8_t
+{
+    Undecided,
+    Success,
+    Failure,
+};
+
 struct Objective
 {
     uint8_t Type;
@@ -379,6 +386,19 @@ struct Objective
         const bool objectiveAllowedByPaymentSettings = (Type != OBJECTIVE_MONTHLY_RIDE_INCOME) || canAskMoneyForRides;
         return objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings;
     }
+
+    ObjectiveStatus Check() const;
+
+private:
+    ObjectiveStatus CheckGuestsBy() const;
+    ObjectiveStatus CheckParkValueBy() const;
+    ObjectiveStatus Check10RollerCoasters() const;
+    ObjectiveStatus CheckGuestsAndRating() const;
+    ObjectiveStatus CheckMonthlyRideIncome() const;
+    ObjectiveStatus Check10RollerCoastersLength() const;
+    ObjectiveStatus CheckFinish5RollerCoasters() const;
+    ObjectiveStatus CheckRepayLoanAndParkValue() const;
+    ObjectiveStatus CheckMonthlyFoodIncome() const;
 };
 
 enum
