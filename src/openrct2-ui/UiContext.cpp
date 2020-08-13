@@ -551,11 +551,11 @@ public:
         }
 
         ScaleQuality scaleQuality = _scaleQuality;
-        if (_scaleQuality == ScaleQuality::SmoothNN)
+        if (_scaleQuality == ScaleQuality::SmoothNearestNeighbour)
         {
             scaleQuality = ScaleQuality::Linear;
         }
-        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", static_cast<int32_t>(_scaleQuality));
+        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", static_cast<int32_t>(scaleQuality));
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
         int32_t width, height;

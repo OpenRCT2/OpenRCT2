@@ -219,7 +219,7 @@ enum class ScaleQuality : int32_t
 {
     NearestNeighbour,
     Linear,
-    SmoothNN
+    SmoothNearestNeighbour
 };
 
 enum MEASUREMENT_FORMAT

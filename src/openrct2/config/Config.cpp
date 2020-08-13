@@ -96,7 +96,7 @@ namespace Config
     static const auto Enum_ScaleQuality = ConfigEnum<ScaleQuality>({
         ConfigEnumEntry<ScaleQuality>("NEAREST_NEIGHBOUR", ScaleQuality::NearestNeighbour),
         ConfigEnumEntry<ScaleQuality>("LINEAR", ScaleQuality::Linear),
-        ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNN),
+        ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNearestNeighbour),
     });
 
     static const auto Enum_VirtualFloorStyle = ConfigEnum<int32_t>({
@@ -192,7 +192,8 @@ namespace Config
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
             model->window_scale = reader->GetFloat("window_scale", platform_get_default_scale());
-            model->scale_quality = reader->GetEnum<ScaleQuality>("scale_quality", ScaleQuality::SmoothNN, Enum_ScaleQuality);
+            model->scale_quality = reader->GetEnum<ScaleQuality>(
+                "scale_quality", ScaleQuality::SmoothNearestNeighbour, Enum_ScaleQuality);
             model->show_fps = reader->GetBoolean("show_fps", false);
             model->multithreading = reader->GetBoolean("multi_threading", false);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);

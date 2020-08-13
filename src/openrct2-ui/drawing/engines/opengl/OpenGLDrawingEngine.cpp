@@ -469,7 +469,7 @@ private:
         {
             _scaleFramebuffer = new OpenGLFramebuffer(_width, _height, false, false);
         }
-        if (GetContext()->GetUiContext()->GetScaleQuality() == ScaleQuality::SmoothNN)
+        if (GetContext()->GetUiContext()->GetScaleQuality() == ScaleQuality::SmoothNearestNeighbour)
         {
             uint32_t scale = std::ceil(gConfigGeneral.window_scale);
             _smoothScaleFramebuffer = new OpenGLFramebuffer(_width * scale, _height * scale, false, false);
