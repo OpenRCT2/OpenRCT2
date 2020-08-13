@@ -156,25 +156,25 @@ validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 static rct_widget window_scenery_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT),
     MakeWidget     ({  0,  43}, {634, 99}, WWT_RESIZE,    1                                                  ), // 8         0x009DE2C8
-    MakeWidget     ({  3,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 10        0x009DE2D8
-    MakeWidget     ({ 34,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 20        0x009DE2E8
-    MakeWidget     ({ 65,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 40        0x009DE2F8
-    MakeWidget     ({ 96,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 80        0x009DE308
-    MakeWidget     ({127,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 100       0x009DE318
-    MakeWidget     ({158,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 200       0x009DE328
-    MakeWidget     ({189,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 400       0x009DE338
-    MakeWidget     ({220,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 800       0x009DE348
-    MakeWidget     ({251,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 1000      0x009DE358
-    MakeWidget     ({282,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 2000      0x009DE368
-    MakeWidget     ({313,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 4000      0x009DE378
-    MakeWidget     ({344,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 8000      0x009DE388
-    MakeWidget     ({375,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 10000     0x009DE398
-    MakeWidget     ({406,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 20000     0x009DE3A8
-    MakeWidget     ({437,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 40000     0x009DE3B8
-    MakeWidget     ({468,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 80000     0x009DE3C8
-    MakeWidget     ({468,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 100000    0x009DE3D8
-    MakeWidget     ({468,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 200000    0x009DE3E8
-    MakeWidget     ({468,  17}, { 31, 27}, WWT_TAB,       1, 0xFFFFFFFF,          STR_STRING_DEFINED_TOOLTIP ), // 400000    0x009DE3F8
+    MakeTab        ({  3,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 10        0x009DE2D8
+    MakeTab        ({ 34,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 20        0x009DE2E8
+    MakeTab        ({ 65,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 40        0x009DE2F8
+    MakeTab        ({ 96,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 80        0x009DE308
+    MakeTab        ({127,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 100       0x009DE318
+    MakeTab        ({158,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 200       0x009DE328
+    MakeTab        ({189,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 400       0x009DE338
+    MakeTab        ({220,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 800       0x009DE348
+    MakeTab        ({251,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 1000      0x009DE358
+    MakeTab        ({282,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 2000      0x009DE368
+    MakeTab        ({313,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 4000      0x009DE378
+    MakeTab        ({344,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 8000      0x009DE388
+    MakeTab        ({375,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 10000     0x009DE398
+    MakeTab        ({406,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 20000     0x009DE3A8
+    MakeTab        ({437,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 40000     0x009DE3B8
+    MakeTab        ({468,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 80000     0x009DE3C8
+    MakeTab        ({468,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 100000    0x009DE3D8
+    MakeTab        ({468,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 200000    0x009DE3E8
+    MakeTab        ({468,  17},                                                   STR_STRING_DEFINED_TOOLTIP ), // 400000    0x009DE3F8
     MakeRemapWidget({468,  17}, { 31, 27}, WWT_TAB,       1, SPR_TAB_QUESTION,    STR_STRING_DEFINED_TOOLTIP ), // 800000    0x009DE408
     MakeWidget     ({  2,  47}, {607, 80}, WWT_SCROLL,    1, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
     MakeWidget     ({609,  44}, { 24, 24}, WWT_FLATBTN,   1, SPR_ROTATE_ARROW,    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
