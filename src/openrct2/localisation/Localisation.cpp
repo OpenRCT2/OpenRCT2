@@ -898,11 +898,10 @@ static void format_length(char** dest, size_t* size, int32_t value)
 
 static void format_velocity(char** dest, size_t* size, uint16_t value)
 {
-    rct_string_id stringId;
+    rct_string_id stringId = STR_NONE;
 
     switch (gConfigGeneral.measurement_format)
     {
-        default:
         case MeasurementFormat::Imperial:
             stringId = STR_UNIT_SUFFIX_MILES_PER_HOUR;
             break;

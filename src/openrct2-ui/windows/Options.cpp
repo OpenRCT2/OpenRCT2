@@ -1740,10 +1740,9 @@ static void window_options_invalidate(rct_window* w)
 
             // Distance: metric / imperial / si
             {
-                rct_string_id stringId;
+                rct_string_id stringId = STR_NONE;
                 switch (gConfigGeneral.measurement_format)
                 {
-                    default:
                     case MeasurementFormat::Imperial:
                         stringId = STR_IMPERIAL;
                         break;
