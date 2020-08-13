@@ -309,9 +309,31 @@ declare global {
         "research" |
         "interest";
 
+    type ActionType =
+        "guestsetname" |
+        "parksetname" |
+        "ridecreate" |
+        "ridedemolish" |
+        "rideentranceexitplace" |
+        "rideentranceexitremove" |
+        "ridesetappearance" |
+        "ridesetcolourscheme" |
+        "ridesetname" |
+        "ridesetprice" |
+        "ridesetsetting" |
+        "ridesetstatus" |
+        "ridesetvehicles" |
+        "setcheataction" |
+        "smallsceneryplace" |
+        "trackdesign" |
+        "trackplace" |
+        "trackremove" |
+        "tracksetbrakespeed";
+
     interface GameActionEventArgs {
         readonly player: number;
-        readonly type: string;
+        readonly type: number;
+        readonly action: ActionType;
         readonly isClientOnly: boolean;
         readonly args: object;
         result: GameActionResult;

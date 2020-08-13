@@ -955,7 +955,7 @@ const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
     { "rideentranceexitplace", GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT },
     { "rideentranceexitremove", GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT },
     { "ridesetappearance", GAME_COMMAND_SET_RIDE_APPEARANCE },
-    { "ridesetcolourscheme.hpp", GAME_COMMAND_SET_COLOUR_SCHEME },
+    { "ridesetcolourscheme", GAME_COMMAND_SET_COLOUR_SCHEME },
     { "ridesetname", GAME_COMMAND_SET_RIDE_NAME },
     { "ridesetprice", GAME_COMMAND_SET_RIDE_PRICE },
     { "ridesetsetting", GAME_COMMAND_SET_RIDE_SETTING },
