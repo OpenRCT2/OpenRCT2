@@ -58,7 +58,7 @@ namespace OpenRCT2::Ui
         }
         ScaleQuality GetScaleQuality() override
         {
-            return ScaleQuality::NN;
+            return ScaleQuality::NearestNeighbour;
         }
         void SetFullscreenMode(FULLSCREEN_MODE /*mode*/) override
         {

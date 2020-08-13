@@ -94,7 +94,7 @@ namespace Config
     });
 
     static const auto Enum_ScaleQuality = ConfigEnum<ScaleQuality>({
-        ConfigEnumEntry<ScaleQuality>("NEAREST_NEIGHBOUR", ScaleQuality::NN),
+        ConfigEnumEntry<ScaleQuality>("NEAREST_NEIGHBOUR", ScaleQuality::NearestNeighbour),
         ConfigEnumEntry<ScaleQuality>("LINEAR", ScaleQuality::Linear),
         ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNN),
     });

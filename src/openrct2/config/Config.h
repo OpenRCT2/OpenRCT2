@@ -217,7 +217,7 @@ enum class TemperatureUnit : int32_t
 
 enum class ScaleQuality : int32_t
 {
-    NN, //Nearest Neighbour
+    NearestNeighbour,
     Linear,
     SmoothNN
 };

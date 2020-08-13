@@ -72,7 +72,7 @@ private:
     SDL_Window* _window = nullptr;
     int32_t _width = 0;
     int32_t _height = 0;
-    ScaleQuality _scaleQuality = ScaleQuality::NN;
+    ScaleQuality _scaleQuality = ScaleQuality::NearestNeighbour;
 
     std::vector<Resolution> _fsResolutions;
 
@@ -547,7 +547,7 @@ public:
         _scaleQuality = gConfigGeneral.scale_quality;
         if (gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
-            _scaleQuality = ScaleQuality::NN;
+            _scaleQuality = ScaleQuality::NearestNeighbour;
         }
 
         ScaleQuality scaleQuality = _scaleQuality;

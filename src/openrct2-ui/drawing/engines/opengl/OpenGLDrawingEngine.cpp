@@ -465,7 +465,7 @@ private:
             delete _smoothScaleFramebuffer;
             _smoothScaleFramebuffer = nullptr;
         }
-        if (GetContext()->GetUiContext()->GetScaleQuality() != ScaleQuality::NN)
+        if (GetContext()->GetUiContext()->GetScaleQuality() != ScaleQuality::NearestNeighbour)
         {
             _scaleFramebuffer = new OpenGLFramebuffer(_width, _height, false, false);
         }
