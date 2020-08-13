@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetDateAction.hpp>
 #include <openrct2/actions/SetCheatAction.hpp>
 #include <openrct2/config/Config.h>
@@ -185,15 +186,20 @@ static constexpr ScreenSize CHEAT_CHECK = {221, 12};
 static constexpr ScreenSize CHEAT_SPINNER = {117, 14};
 static constexpr ScreenSize MINMAX_BUTTON = {55, 17};
 
+static constexpr const int32_t TAB_WIDTH = 31;
+static constexpr const int32_t TAB_HEIGHT = 27;
+static constexpr const int32_t TAB_START = 3;
+
+
 #pragma endregion
 
 #define MAIN_CHEATS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
     MakeWidget     ({ 0, 43}, {WW, 257}, WWT_IMGBTN, 1                                      ), /* tab content panel */ \
-    MakeRemapWidget({ 3, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_FINANCIAL_CHEATS_TIP), /* tab 1 */ \
-    MakeRemapWidget({34, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_GUEST_CHEATS_TIP    ), /* tab 2 */ \
-    MakeRemapWidget({65, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_PARK_CHEATS_TIP     ), /* tab 3 */ \
-    MakeRemapWidget({96, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_RIDE_CHEATS_TIP     )  /* tab 4 */
+    MakeRemapWidget({ 3, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_FINANCIAL_CHEATS_TIP), /* tab 1 */ \
+    MakeRemapWidget({34, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_GUEST_CHEATS_TIP    ), /* tab 2 */ \
+    MakeRemapWidget({65, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_PARK_CHEATS_TIP     ), /* tab 3 */ \
+    MakeRemapWidget({96, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_RIDE_CHEATS_TIP     )  /* tab 4 */
 
 static rct_widget window_cheats_money_widgets[] =
 {
@@ -1168,10 +1174,37 @@ static void window_cheats_invalidate(rct_window* w)
     window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrent.Weather];
     // Staff speed
     window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
+
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
+        w->disabled_widgets |= (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_NO_MONEY);
+    }
+}
+
+static void window_cheats_update_tab_positions(rct_window* w)
+{
+    constexpr const uint16_t tabs[] = {
+        WIDX_TAB_1,
+        WIDX_TAB_2,
+        WIDX_TAB_3,
+        WIDX_TAB_4,
+    };
+
+    int32_t left = TAB_START;
+
+    for (auto tab : tabs)
+    {
+        w->widgets[tab].left = left;
+        if (!(w->disabled_widgets & (1ULL << tab)))
+        {
+            left += TAB_WIDTH;
+        }
+    }
 }
 
 static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
+    window_cheats_update_tab_positions(w);
     window_draw_widgets(w, dpi);
     window_cheats_draw_tab_images(dpi, w);
 
