@@ -61,6 +61,8 @@ enum
 
 constexpr uint8_t SCROLLBAR_WIDTH = 10;
 
+constexpr const ScreenSize TAB_SIZE = { 31, 27 };
+
 constexpr rct_widget MakeWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, uint8_t type, uint8_t colour, uint32_t content = 0xFFFFFFFF,
     rct_string_id tooltip = STR_NONE)
@@ -83,6 +85,16 @@ constexpr rct_widget MakeRemapWidget(
     rct_string_id tooltip = STR_NONE)
 {
     return MakeWidget(origin, size, type, colour, IMAGE_TYPE_REMAP | content, tooltip);
+}
+
+constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, rct_string_id tooltip = STR_NONE)
+{
+    const ScreenSize size = TAB_SIZE;
+    const uint8_t type = WWT_TAB;
+    const uint8_t colour = 1;
+    const uint32_t content = 0xFFFFFFFF;
+
+    return MakeWidget(origin, size, type, colour, content, tooltip);
 }
 
 #define MakeSpinnerWidgets(...)                                                                                                \
