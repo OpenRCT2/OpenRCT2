@@ -5366,9 +5366,12 @@ void ride_get_start_of_track(CoordsXYE* output)
         bool moveSlowIt = true;
         do
         {
+            // Because we are working backwards, begin_element is the section at the end of a piece of track, whereas
+            // begin_x and begin_y are the coordinates at the start of a piece of track, so we need to pass end_x and
+            // end_y
             CoordsXYE lastGood = {
-                /* .x = */ trackBeginEnd.begin_x,
-                /* .y = */ trackBeginEnd.begin_y,
+                /* .x = */ trackBeginEnd.end_x,
+                /* .y = */ trackBeginEnd.end_y,
                 /* .element = */ trackBeginEnd.begin_element,
             };
 
