@@ -36,9 +36,9 @@ uint8_t platform_get_locale_currency()
     return platform_get_currency_value(NULL);
 }
 
-uint8_t platform_get_locale_measurement_format()
+MeasurementFormat platform_get_locale_measurement_format()
 {
-    return MEASUREMENT_FORMAT_METRIC;
+    return MeasurementFormat::Metric;
 }
 
 float platform_get_default_scale()

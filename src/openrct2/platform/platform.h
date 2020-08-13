@@ -116,7 +116,7 @@ utf8* platform_open_directory_browser(const utf8* title);
 uint8_t platform_get_locale_currency();
 uint8_t platform_get_currency_value(const char* currencyCode);
 uint16_t platform_get_locale_language();
-uint8_t platform_get_locale_measurement_format();
+MeasurementFormat platform_get_locale_measurement_format();
 TemperatureUnit platform_get_locale_temperature_format();
 uint8_t platform_get_locale_date_format();
 bool platform_process_is_elevated();

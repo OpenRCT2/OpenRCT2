@@ -123,7 +123,7 @@ uint8_t platform_get_locale_currency()
     return platform_get_currency_value(lc->int_curr_symbol);
 }
 
-uint8_t platform_get_locale_measurement_format()
+MeasurementFormat platform_get_locale_measurement_format()
 {
 // LC_MEASUREMENT is GNU specific.
 #    ifdef LC_MEASUREMENT
@@ -137,10 +137,10 @@ uint8_t platform_get_locale_measurement_format()
         // using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
         if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0))
         {
-            return MEASUREMENT_FORMAT_IMPERIAL;
+            return MeasurementFormat::Imperial;
         }
     }
-    return MEASUREMENT_FORMAT_METRIC;
+    return MeasurementFormat::Metric;
 }
 
 bool platform_get_steam_path(utf8* outPath, size_t outSize)

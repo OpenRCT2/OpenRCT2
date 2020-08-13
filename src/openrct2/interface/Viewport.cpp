@@ -1898,7 +1898,7 @@ int16_t get_height_marker_offset()
         return 0;
 
     // Height labels in feet
-    if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL)
+    if (gConfigGeneral.measurement_format == MeasurementFormat::Imperial)
         return 1 * 256;
 
     // Height labels in metres
