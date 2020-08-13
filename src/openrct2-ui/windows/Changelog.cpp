@@ -43,9 +43,9 @@ constexpr int32_t MIN_WH = 250;
 
 static rct_widget window_changelog_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({0, 14}, {500, 382}, WWT_RESIZE, 1             ), // content panel
-    MakeWidget({3, 16}, {495, 366}, WWT_SCROLL, 1, SCROLL_BOTH), // scroll area
-    MakeWidget({3, 473}, {300, 14}, WWT_PLACEHOLDER, 1, STR_NEW_RELEASE_DOWNLOAD_PAGE), // changelog button
+    MakeWidget({0,  14}, {500, 382}, WWT_RESIZE,      1                               ), // content panel
+    MakeWidget({3,  16}, {495, 366}, WWT_SCROLL,      1, SCROLL_BOTH                  ), // scroll area
+    MakeWidget({3, 473}, {300,  14}, WWT_PLACEHOLDER, 1, STR_NEW_RELEASE_DOWNLOAD_PAGE), // changelog button
     { WIDGETS_END },
 };
 

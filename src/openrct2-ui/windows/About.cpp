@@ -56,9 +56,9 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 
 static rct_widget window_about_openrct2_widgets[] = {
     WIDGETS_MAIN,
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 2}, {200, 14}, WWT_BUTTON, 1, STR_CHANGELOG_ELLIPSIS),          // changelog button
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 1}, {200, 14}, WWT_BUTTON, 1, STR_JOIN_DISCORD),                 // "join discord" button
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 0}, {200, 14}, WWT_PLACEHOLDER, 1, STR_UPDATE_AVAILABLE), // "new version" button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 2}, {200, 14}, WWT_BUTTON,      1, STR_CHANGELOG_ELLIPSIS), // changelog button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 1}, {200, 14}, WWT_BUTTON,      1, STR_JOIN_DISCORD      ), // "join discord" button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 0}, {200, 14}, WWT_PLACEHOLDER, 1, STR_UPDATE_AVAILABLE  ), // "new version" button
     { WIDGETS_END }
 };
 
