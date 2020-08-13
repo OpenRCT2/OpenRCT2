@@ -93,10 +93,10 @@ namespace Config
         ConfigEnumEntry<TemperatureUnit>("FAHRENHEIT", TemperatureUnit::Fahrenheit),
     });
 
-    static const auto Enum_ScaleQuality = ConfigEnum<int32_t>({
-        ConfigEnumEntry<int32_t>("NEAREST_NEIGHBOUR", SCALE_QUALITY_NN),
-        ConfigEnumEntry<int32_t>("LINEAR", SCALE_QUALITY_LINEAR),
-        ConfigEnumEntry<int32_t>("SMOOTH_NEAREST_NEIGHBOUR", SCALE_QUALITY_SMOOTH_NN),
+    static const auto Enum_ScaleQuality = ConfigEnum<ScaleQuality>({
+        ConfigEnumEntry<ScaleQuality>("NEAREST_NEIGHBOUR", ScaleQuality::NN),
+        ConfigEnumEntry<ScaleQuality>("LINEAR", ScaleQuality::Linear),
+        ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNN),
     });
 
     static const auto Enum_VirtualFloorStyle = ConfigEnum<int32_t>({
@@ -192,7 +192,7 @@ namespace Config
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
             model->window_scale = reader->GetFloat("window_scale", platform_get_default_scale());
-            model->scale_quality = reader->GetEnum<int32_t>("scale_quality", SCALE_QUALITY_SMOOTH_NN, Enum_ScaleQuality);
+            model->scale_quality = reader->GetEnum<ScaleQuality>("scale_quality", ScaleQuality::SmoothNN, Enum_ScaleQuality);
             model->show_fps = reader->GetBoolean("show_fps", false);
             model->multithreading = reader->GetBoolean("multi_threading", false);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);
@@ -266,7 +266,7 @@ namespace Config
         writer->WriteBoolean("allow_loading_with_incorrect_checksum", model->allow_loading_with_incorrect_checksum);
         writer->WriteBoolean("steam_overlay_pause", model->steam_overlay_pause);
         writer->WriteFloat("window_scale", model->window_scale);
-        writer->WriteEnum<int32_t>("scale_quality", model->scale_quality, Enum_ScaleQuality);
+        writer->WriteEnum<ScaleQuality>("scale_quality", model->scale_quality, Enum_ScaleQuality);
         writer->WriteBoolean("show_fps", model->show_fps);
         writer->WriteBoolean("multi_threading", model->multithreading);
         writer->WriteBoolean("trap_cursor", model->trap_cursor);

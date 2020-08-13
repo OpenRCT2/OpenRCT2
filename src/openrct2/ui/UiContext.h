@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../common.h"
 #include "../interface/Cursors.h"
+#include "../config/Config.h"
 
 #include <memory>
 #include <string>
@@ -102,7 +103,7 @@ namespace OpenRCT2
             virtual void* GetWindow() abstract;
             virtual int32_t GetWidth() abstract;
             virtual int32_t GetHeight() abstract;
-            virtual int32_t GetScaleQuality() abstract;
+            virtual ScaleQuality GetScaleQuality() abstract;
             virtual void SetFullscreenMode(FULLSCREEN_MODE mode) abstract;
             virtual const std::vector<Resolution>& GetFullscreenResolutions() abstract;
             virtual bool HasFocus() abstract;

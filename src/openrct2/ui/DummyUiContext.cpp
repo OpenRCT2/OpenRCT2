@@ -10,6 +10,7 @@
 #include "../drawing/X8DrawingEngine.h"
 #include "UiContext.h"
 #include "WindowManager.h"
+#include "../config/Config.h"
 
 using namespace OpenRCT2::Drawing;
 
@@ -55,9 +56,9 @@ namespace OpenRCT2::Ui
         {
             return 0;
         }
-        int32_t GetScaleQuality() override
+        ScaleQuality GetScaleQuality() override
         {
-            return 0;
+            return ScaleQuality::NN;
         }
         void SetFullscreenMode(FULLSCREEN_MODE /*mode*/) override
         {

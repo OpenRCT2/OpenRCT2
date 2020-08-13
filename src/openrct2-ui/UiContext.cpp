@@ -72,7 +72,7 @@ private:
     SDL_Window* _window = nullptr;
     int32_t _width = 0;
     int32_t _height = 0;
-    int32_t _scaleQuality = 0;
+    ScaleQuality _scaleQuality = ScaleQuality::NN;
 
     std::vector<Resolution> _fsResolutions;
 
@@ -155,7 +155,7 @@ public:
         return _height;
     }
 
-    int32_t GetScaleQuality() override
+    ScaleQuality GetScaleQuality() override
     {
         return _scaleQuality;
     }
@@ -547,13 +547,13 @@ public:
         _scaleQuality = gConfigGeneral.scale_quality;
         if (gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
-            _scaleQuality = SCALE_QUALITY_NN;
+            _scaleQuality = ScaleQuality::NN;
         }
 
-        int32_t scaleQuality = _scaleQuality;
-        if (_scaleQuality == SCALE_QUALITY_SMOOTH_NN)
+        ScaleQuality scaleQuality = _scaleQuality;
+        if (_scaleQuality == ScaleQuality::SmoothNN)
         {
-            scaleQuality = SCALE_QUALITY_LINEAR;
+            scaleQuality = ScaleQuality::Linear;
         }
         snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);

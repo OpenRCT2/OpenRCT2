@@ -1069,7 +1069,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                     window_options_show_dropdown(w, widget, 2);
 
                     // Note: offset by one to compensate for lack of NN option.
-                    dropdown_set_checked(gConfigGeneral.scale_quality - 1, true);
+                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
                     break;
             }
             break;
@@ -1367,9 +1367,9 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     break;
                 case WIDX_SCALE_QUALITY_DROPDOWN:
                     // Note: offset by one to compensate for lack of NN option.
-                    if ((dropdownIndex + 1) != gConfigGeneral.scale_quality)
+                    if (static_cast<ScaleQuality>(dropdownIndex + 1) != gConfigGeneral.scale_quality)
                     {
-                        gConfigGeneral.scale_quality = static_cast<uint8_t>(dropdownIndex) + 1;
+                        gConfigGeneral.scale_quality = static_cast<ScaleQuality>(dropdownIndex + 1);
                         config_save_default();
                         gfx_invalidate_screen();
                         context_trigger_resize();
@@ -1667,7 +1667,7 @@ static void window_options_invalidate(rct_window* w)
                                                                                                             .fullscreen_mode];
             window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[gConfigGeneral.drawing_engine];
             window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
-                [gConfigGeneral.scale_quality - 1];
+                [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
 
             break;
         }

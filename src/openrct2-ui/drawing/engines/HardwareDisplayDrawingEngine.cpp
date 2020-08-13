@@ -115,10 +115,10 @@ public:
             }
         }
 
-        int32_t scaleQuality = GetContext()->GetUiContext()->GetScaleQuality();
-        if (scaleQuality == SCALE_QUALITY_SMOOTH_NN)
+        ScaleQuality scaleQuality = GetContext()->GetUiContext()->GetScaleQuality();
+        if (scaleQuality == ScaleQuality::SmoothNN)
         {
-            scaleQuality = SCALE_QUALITY_LINEAR;
+            scaleQuality = ScaleQuality::Linear;
             smoothNN = true;
         }
         else

@@ -16,6 +16,7 @@
 #include <string>
 
 enum class TemperatureUnit : int32_t;
+enum class ScaleQuality : int32_t;
 
 struct GeneralConfiguration
 {
@@ -32,7 +33,7 @@ struct GeneralConfiguration
     int32_t fullscreen_height;
     float window_scale;
     int32_t drawing_engine;
-    int32_t scale_quality;
+    ScaleQuality scale_quality;
     bool uncap_fps;
     bool use_vsync;
     bool show_fps;
@@ -214,11 +215,11 @@ enum class TemperatureUnit : int32_t
     Fahrenheit
 };
 
-enum SCALE_QUALITY
+enum class ScaleQuality : int32_t
 {
-    SCALE_QUALITY_NN,
-    SCALE_QUALITY_LINEAR,
-    SCALE_QUALITY_SMOOTH_NN
+    NN, //Nearest Neighbour
+    Linear,
+    SmoothNN
 };
 
 enum MEASUREMENT_FORMAT
