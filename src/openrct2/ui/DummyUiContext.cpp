@@ -7,10 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../config/Config.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "UiContext.h"
 #include "WindowManager.h"
-#include "../config/Config.h"
 
 using namespace OpenRCT2::Drawing;
 
