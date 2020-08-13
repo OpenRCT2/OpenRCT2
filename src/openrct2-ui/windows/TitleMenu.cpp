@@ -180,7 +180,7 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
             }
             break;
         case WIDX_NEW_VERSION:
-            context_open_window(WC_NEW_VERSION);
+            context_open_window_view(WV_NEW_VERSION_INFO);
             break;
     }
 }

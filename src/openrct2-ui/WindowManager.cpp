@@ -44,7 +44,7 @@ public:
             case WC_BOTTOM_TOOLBAR:
                 return window_game_bottom_toolbar_open();
             case WC_CHANGELOG:
-                return window_changelog_open();
+                return OpenView(WV_CHANGELOG);
             case WC_CHEATS:
                 return window_cheats_open();
             case WC_CLEAR_SCENERY:
@@ -135,8 +135,6 @@ public:
                 return window_water_open();
             case WC_NETWORK:
                 return window_network_open();
-            case WC_NEW_VERSION:
-                return window_new_version_open();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -174,6 +172,10 @@ public:
                 return window_editor_bottom_toolbar_open();
             case WV_EDITOR_MAIN:
                 return window_editor_main_open();
+            case WV_CHANGELOG:
+                return window_changelog_open(WV_CHANGELOG);
+            case WV_NEW_VERSION_INFO:
+                return window_changelog_open(WV_NEW_VERSION_INFO);
             default:
                 return nullptr;
         }

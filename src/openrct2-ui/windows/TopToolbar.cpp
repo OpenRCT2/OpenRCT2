@@ -612,7 +612,7 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                     context_quit();
                     break;
                 case DDIDX_UPDATE_AVAILABLE:
-                    context_open_window(WC_NEW_VERSION);
+                    context_open_window_view(WV_NEW_VERSION_INFO);
                     break;
             }
             break;

@@ -482,7 +482,6 @@ enum
     WC_VIEW_CLIPPING = 131,
     WC_OBJECT_LOAD_ERROR = 132,
     WC_NETWORK = 133,
-    WC_NEW_VERSION = 134,
 
     // Only used for colour schemes
     WC_STAFF = 220,
@@ -507,6 +506,8 @@ enum
     WV_NETWORK_PASSWORD,
     WV_EDITOR_BOTTOM_TOOLBAR,
     WV_EDITOR_MAIN,
+    WV_CHANGELOG,
+    WV_NEW_VERSION_INFO,
 };
 
 enum
