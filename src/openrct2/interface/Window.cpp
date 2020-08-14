@@ -1629,7 +1629,7 @@ void window_resize_gui(int32_t width, int32_t height)
     if (titleWind != nullptr)
     {
         titleWind->windowPos.x = (width - titleWind->width) / 2;
-        titleWind->windowPos.y = height - 154;
+        titleWind->windowPos.y = height - 182;
     }
 
     rct_window* exitWind = window_find_by_class(WC_TITLE_EXIT);

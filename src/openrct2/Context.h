@@ -28,6 +28,7 @@ struct IGameStateSnapshots;
 class Intent;
 struct rct_window;
 using rct_windowclass = uint8_t;
+struct NewVersionInfo;
 
 struct CursorState
 {
@@ -140,6 +141,8 @@ namespace OpenRCT2
         virtual void Finish() abstract;
         virtual void Quit() abstract;
 
+        virtual bool HasNewVersionInfo() const abstract;
+        virtual const NewVersionInfo* GetNewVersionInfo() const abstract;
         /**
          * This is deprecated, use IPlatformEnvironment.
          */

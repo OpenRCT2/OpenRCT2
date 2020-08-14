@@ -68,6 +68,7 @@
 #include <algorithm>
 #include <cmath>
 #include <exception>
+#include <future>
 #include <iterator>
 #include <memory>
 #include <string>
@@ -124,6 +125,10 @@ namespace OpenRCT2
         // If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to
         // false.
         bool _finished = false;
+
+        std::future<void> _versionCheckFuture;
+        NewVersionInfo _newVersionInfo;
+        bool _hasNewVersionInfo = false;
 
     public:
         // Singleton of Context.
@@ -470,6 +475,7 @@ namespace OpenRCT2
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             _uiContext->Initialise();
+
             return true;
         }
 
@@ -726,6 +732,17 @@ namespace OpenRCT2
          */
         void Launch()
         {
+            if (!_versionCheckFuture.valid())
+            {
+                _versionCheckFuture = std::async(std::launch::async, [this] {
+                    _newVersionInfo = get_latest_version();
+                    if (!String::StartsWith(gVersionInfoTag, _newVersionInfo.tag))
+                    {
+                        _hasNewVersionInfo = true;
+                    }
+                });
+            }
+
             gIntroState = IntroState::None;
             if (gOpenRCT2Headless)
             {
@@ -1154,6 +1171,16 @@ namespace OpenRCT2
             return parkData;
         }
 #endif
+
+        bool HasNewVersionInfo() const override
+        {
+            return _hasNewVersionInfo;
+        }
+
+        const NewVersionInfo* GetNewVersionInfo() const override
+        {
+            return &_newVersionInfo;
+        }
     };
 
     Context* Context::Instance = nullptr;

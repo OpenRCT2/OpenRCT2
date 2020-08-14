@@ -3635,6 +3635,10 @@ STR_6376    :{WINDOW_COLOUR_2}Ride vehicle:{NEWLINE}{BLACK}{STRINGID} for {STRIN
 STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} for {STRINGID}
 STR_6378    :Receiving objects list: {INT32} / {INT32}
 STR_6379    :Received invalid data
+STR_6380    :Update available!
+STR_6381    :Join OpenRCT2 Discord!
+STR_6382    :Newer release of OpenRCT2 is available: {STRING}!
+STR_6383    :Open download page
 
 #############
 # Scenarios #
