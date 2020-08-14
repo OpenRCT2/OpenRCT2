@@ -4,6 +4,21 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
 
+# Note: Searching for CCache must be before project() so project() can use CCache too
+# if it is available
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+find_package(CCache)
+
+if (CCache_FOUND)
+    option(OPENRCT2_USE_CCACHE "Use CCache to improve recompilation speed (optional)" ON)
+    if (OPENRCT2_USE_CCACHE)
+        # Use e.g. "ccache clang++" instead of "clang++"
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCache_EXECUTABLE}")
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK    "${CCache_EXECUTABLE}")
+    endif (OPENRCT2_USE_CCACHE)
+endif (CCache_FOUND)
+
 project(openrct2 CXX)
 
 include(cmake/platform.cmake)
