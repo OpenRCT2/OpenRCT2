@@ -3634,6 +3634,11 @@ STR_6375    :Nieznana atrakcja
 STR_6376    :{WINDOW_COLOUR_2}Pojazd:{NEWLINE}{BLACK}{STRINGID} dla {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} dla {STRINGID}
 STR_6378    :Odebrano listę obiektów: {INT32} / {INT32}
+STR_6379    :Odebrano nieprawidłowe dane
+STR_6380    :Dostępna aktualizacja!
+STR_6381    :Dołącz do Discorda OpenRCT2!
+STR_6382    :Dostępne jest nowsze wydanie OpenRCT2: {STRING}!
+STR_6383    :Otwórz stronę pobierania
 
 #############
 # Scenarios #
