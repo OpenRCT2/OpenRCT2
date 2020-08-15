@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,7 +33,7 @@
 static std::vector<utf8*> GetSaves(const utf8* path);
 static std::vector<utf8*> GetSaves(IZipArchive* zip);
 static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, std::vector<utf8*> saves);
-static void LegacyScriptGetLine(IStream* stream, char* parts);
+static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts);
 static std::vector<uint8_t> ReadScriptFile(const utf8* path);
 static std::string LegacyScriptWrite(TitleSequence* seq);
 
@@ -88,7 +88,7 @@ TitleSequence* LoadTitleSequence(const utf8* path)
         isZip = false;
     }
 
-    auto commands = LegacyScriptRead((utf8*)script.data(), script.size(), saves);
+    auto commands = LegacyScriptRead(reinterpret_cast<utf8*>(script.data()), script.size(), saves);
 
     TitleSequence* seq = CreateTitleSequence();
     seq->Name = Path::GetFileNameWithoutExtension(path);
@@ -131,7 +131,8 @@ TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence* seq, size_t i
                 auto data = zip->GetFileData(filename);
                 auto dataForMs = Memory::Allocate<uint8_t>(data.size());
                 std::copy_n(data.data(), data.size(), dataForMs);
-                auto ms = new MemoryStream(dataForMs, data.size(), MEMORY_ACCESS::READ | MEMORY_ACCESS::OWNER);
+                auto ms = new OpenRCT2::MemoryStream(
+                    dataForMs, data.size(), OpenRCT2::MEMORY_ACCESS::READ | OpenRCT2::MEMORY_ACCESS::OWNER);
 
                 handle = Memory::Allocate<TitleSequenceParkHandle>();
                 handle->Stream = ms;
@@ -148,10 +149,10 @@ TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence* seq, size_t i
             String::Set(absolutePath, sizeof(absolutePath), seq->Path);
             Path::Append(absolutePath, sizeof(absolutePath), filename);
 
-            FileStream* fileStream = nullptr;
+            OpenRCT2::FileStream* fileStream = nullptr;
             try
             {
-                fileStream = new FileStream(absolutePath, FILE_MODE_OPEN);
+                fileStream = new OpenRCT2::FileStream(absolutePath, OpenRCT2::FILE_MODE_OPEN);
             }
             catch (const IOException& exception)
             {
@@ -174,7 +175,7 @@ void TitleSequenceCloseParkHandle(TitleSequenceParkHandle* handle)
     if (handle != nullptr)
     {
         Memory::Free(handle->HintPath);
-        delete ((IStream*)handle->Stream);
+        delete (static_cast<OpenRCT2::IStream*>(handle->Stream));
         Memory::Free(handle);
     }
 }
@@ -386,7 +387,7 @@ static std::vector<utf8*> GetSaves(IZipArchive* zip)
 static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, std::vector<utf8*> saves)
 {
     std::vector<TitleCommand> commands;
-    auto fs = MemoryStream(script, scriptLength);
+    auto fs = OpenRCT2::MemoryStream(script, scriptLength);
     do
     {
         char parts[3 * 128], *token, *part1, *part2;
@@ -408,7 +409,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLen
                 {
                     if (String::Equals(part1, saves[i], true))
                     {
-                        command.SaveIndex = (uint8_t)i;
+                        command.SaveIndex = static_cast<uint8_t>(i);
                         break;
                     }
                 }
@@ -472,7 +473,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLen
     return commands;
 }
 
-static void LegacyScriptGetLine(IStream* stream, char* parts)
+static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts)
 {
     for (int32_t i = 0; i < 3; i++)
     {
@@ -543,8 +544,8 @@ static std::vector<uint8_t> ReadScriptFile(const utf8* path)
     std::vector<uint8_t> result;
     try
     {
-        auto fs = FileStream(path, FILE_MODE_OPEN);
-        auto size = (size_t)fs.GetLength();
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+        auto size = static_cast<size_t>(fs.GetLength());
         result.resize(size);
         fs.Read(result.data(), size);
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -476,6 +476,18 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int32_t trackType, int32_
             return get_track_paint_function_splash_boats(TRACK_ELEM_S_BEND_LEFT, direction);
         case TRACK_ELEM_S_BEND_RIGHT_COVERED:
             return get_track_paint_function_splash_boats(TRACK_ELEM_S_BEND_RIGHT, direction);
+        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_FLAT_TO_25_DEG_DOWN, direction);
+        case TRACK_ELEM_25_DEG_DOWN_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_25_DEG_DOWN, direction);
+        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN, direction);
+        case TRACK_ELEM_60_DEG_DOWN_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_60_DEG_DOWN, direction);
+        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN, direction);
+        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_25_DEG_DOWN_TO_FLAT, direction);
 
         case TRACK_ELEM_ON_RIDE_PHOTO:
             return get_track_paint_function_junior_rc(trackType, direction);

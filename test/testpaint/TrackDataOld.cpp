@@ -6773,7 +6773,7 @@ static constexpr const uint32_t _OldDodgemsTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008A83E0 */
-static constexpr const uint32_t _OldPirateShipTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldSwingingShipTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -10681,7 +10681,7 @@ static constexpr const uint32_t _OldHauntedHouseTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x0076F8D4 */
-static constexpr const uint32_t _OldCircusShowTrackPaintFunctions[256] = {
+static constexpr const uint32_t _OldCircusTrackPaintFunctions[256] = {
     0,
     0,
     0,
@@ -19262,7 +19262,7 @@ static constexpr const uint32_t _OldLimLaunchedRollerCoasterTrackPaintFunctions[
 
 static constexpr const uint32_t _null[256] = {0};
 
-const uint32_t * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT] = {
+const uint32_t * RideTypeTrackPaintFunctionsOld[RCT2_RIDE_TYPE_COUNT] = {
     _OldSpiralRollerCoasterTrackPaintFunctions,             // RIDE_TYPE_SPIRAL_ROLLER_COASTER
     _OldStandUpRollerCoasterTrackPaintFunctions,            // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     _OldSuspendedSwingingCoasterTrackPaintFunctions,        // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
@@ -19289,7 +19289,7 @@ const uint32_t * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT] = {
     _OldLogFlumeTrackPaintFunctions,                        // RIDE_TYPE_LOG_FLUME
     _OldRiverRapidsTrackPaintFunctions,                     // RIDE_TYPE_RIVER_RAPIDS
     _OldDodgemsTrackPaintFunctions,                         // RIDE_TYPE_DODGEMS
-    _OldPirateShipTrackPaintFunctions,                      // RIDE_TYPE_SWINGING_SHIP
+    _OldSwingingShipTrackPaintFunctions,                    // RIDE_TYPE_SWINGING_SHIP
     _OldSwingingInverterShipTrackPaintFunctions,            // RIDE_TYPE_SWINGING_INVERTER_SHIP
     _OldShopTrackPaintFunctions,                            // RIDE_TYPE_FOOD_STALL
     _OldShopTrackPaintFunctions,                            // RIDE_TYPE_1D
@@ -19312,7 +19312,7 @@ const uint32_t * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT] = {
     _OldTwistTrackPaintFunctions,                           // RIDE_TYPE_TWIST
     _OldHauntedHouseTrackPaintFunctions,                    // RIDE_TYPE_HAUNTED_HOUSE
     _OldFacilityTrackPaintFunctions,                        // RIDE_TYPE_FIRST_AID
-    _OldCircusShowTrackPaintFunctions,                      // RIDE_TYPE_CIRCUS
+    _OldCircusTrackPaintFunctions,                          // RIDE_TYPE_CIRCUS
     _OldGhostTrainTrackPaintFunctions,                      // RIDE_TYPE_GHOST_TRAIN
     _OldTwisterRollerCoasterTrackPaintFunctions,            // RIDE_TYPE_TWISTER_ROLLER_COASTER
     _OldWoodenRollerCoasterTrackPaintFunctions,             // RIDE_TYPE_WOODEN_ROLLER_COASTER

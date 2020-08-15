@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,11 +46,11 @@ static void paint_crooked_house_structure(
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        if (ride->vehicles[0] != SPRITE_INDEX_NULL)
+        auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+        if (vehicle != nullptr)
         {
-            rct_sprite* sprite = get_sprite(ride->vehicles[0]);
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-            session->CurrentlyDrawnItem = sprite;
+            session->CurrentlyDrawnItem = vehicle;
         }
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,7 +22,7 @@ static constexpr const uint8_t track_map_1x5[][5] = {
     { 0, 1, 2, 3, 4 },
 };
 
-struct pirate_ship_bound_box
+struct swinging_ship_bound_box
 {
     int16_t length_x;
     int16_t length_y;
@@ -31,10 +31,10 @@ struct pirate_ship_bound_box
 };
 
 /** rct2: 0x008A83B0 */
-static constexpr const uint32_t pirate_ship_base_sprite_offset[] = { 0, 9, 0, 9 };
+static constexpr const uint32_t swinging_ship_base_sprite_offset[] = { 0, 9, 0, 9 };
 
 /** rct2: 0x008A83C0 */
-static constexpr const pirate_ship_bound_box pirate_ship_data[] = {
+static constexpr const swinging_ship_bound_box swinging_ship_data[] = {
     { 31, 16, 1, 8 },
     { 16, 31, 8, 1 },
     { 31, 16, 1, 8 },
@@ -43,19 +43,19 @@ static constexpr const pirate_ship_bound_box pirate_ship_data[] = {
 
 enum
 {
-    SPR_PIRATE_SHIP_FRAME_SW_NE = 21994,
-    SPR_PIRATE_SHIP_FRAME_FRONT_SW_NE = 21995,
-    SPR_PIRATE_SHIP_FRAME_NW_SE = 21996,
-    SPR_PIRATE_SHIP_FRAME_FRONT_NW_SE = 21997,
+    SPR_SWINGING_SHIP_FRAME_SW_NE = 21994,
+    SPR_SWINGING_SHIP_FRAME_FRONT_SW_NE = 21995,
+    SPR_SWINGING_SHIP_FRAME_NW_SE = 21996,
+    SPR_SWINGING_SHIP_FRAME_FRONT_NW_SE = 21997,
 };
 
-static constexpr const uint32_t pirate_ship_frame_sprites[][2] = {
-    { SPR_PIRATE_SHIP_FRAME_SW_NE, SPR_PIRATE_SHIP_FRAME_FRONT_SW_NE },
-    { SPR_PIRATE_SHIP_FRAME_NW_SE, SPR_PIRATE_SHIP_FRAME_FRONT_NW_SE },
+static constexpr const uint32_t swinging_ship_frame_sprites[][2] = {
+    { SPR_SWINGING_SHIP_FRAME_SW_NE, SPR_SWINGING_SHIP_FRAME_FRONT_SW_NE },
+    { SPR_SWINGING_SHIP_FRAME_NW_SE, SPR_SWINGING_SHIP_FRAME_FRONT_NW_SE },
 };
 
 /** rct2: 0x4AF254 */
-static void paint_pirate_ship_structure(
+static void paint_swinging_ship_structure(
     paint_session* session, Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
     uint32_t imageId, baseImageId;
@@ -72,16 +72,16 @@ static void paint_pirate_ship_structure(
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
-        vehicle = GET_VEHICLE(ride->vehicles[0]);
+        vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    baseImageId = rideEntry->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
+    baseImageId = rideEntry->vehicles[0].base_image_id + swinging_ship_base_sprite_offset[direction];
     if (vehicle != nullptr)
     {
-        int32_t rotation = (int8_t)vehicle->vehicle_sprite_type;
+        int32_t rotation = static_cast<int8_t>(vehicle->vehicle_sprite_type);
         if (rotation != 0)
         {
             if (direction & 2)
@@ -103,9 +103,9 @@ static void paint_pirate_ship_structure(
         imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
     }
 
-    pirate_ship_bound_box bounds = pirate_ship_data[direction];
+    swinging_ship_bound_box bounds = swinging_ship_data[direction];
 
-    imageId = pirate_ship_frame_sprites[(direction & 1)][0] | session->TrackColours[SCHEME_TRACK];
+    imageId = swinging_ship_frame_sprites[(direction & 1)][0] | session->TrackColours[SCHEME_TRACK];
     sub_98197C(
         session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
         height);
@@ -156,7 +156,7 @@ static void paint_pirate_ship_structure(
         }
     }
 
-    imageId = pirate_ship_frame_sprites[(direction & 1)][1] | session->TrackColours[SCHEME_TRACK];
+    imageId = swinging_ship_frame_sprites[(direction & 1)][1] | session->TrackColours[SCHEME_TRACK];
     sub_98199C(
         session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
         height);
@@ -166,7 +166,7 @@ static void paint_pirate_ship_structure(
 }
 
 /** rct2: 0x008A85C4 */
-static void paint_pirate_ship(
+static void paint_swinging_ship(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
@@ -296,19 +296,19 @@ static void paint_pirate_ship(
     switch (relativeTrackSequence)
     {
         case 1:
-            paint_pirate_ship_structure(session, ride, direction, 64, height);
+            paint_swinging_ship_structure(session, ride, direction, 64, height);
             break;
         case 2:
-            paint_pirate_ship_structure(session, ride, direction, 32, height);
+            paint_swinging_ship_structure(session, ride, direction, 32, height);
             break;
         case 0:
-            paint_pirate_ship_structure(session, ride, direction, 0, height);
+            paint_swinging_ship_structure(session, ride, direction, 0, height);
             break;
         case 3:
-            paint_pirate_ship_structure(session, ride, direction, -32, height);
+            paint_swinging_ship_structure(session, ride, direction, -32, height);
             break;
         case 4:
-            paint_pirate_ship_structure(session, ride, direction, -64, height);
+            paint_swinging_ship_structure(session, ride, direction, -64, height);
             break;
     }
 
@@ -318,12 +318,12 @@ static void paint_pirate_ship(
 /**
  * rct2: 0x008A83E0
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_swinging_ship(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_5)
     {
         return nullptr;
     }
 
-    return paint_pirate_ship;
+    return paint_swinging_ship;
 }

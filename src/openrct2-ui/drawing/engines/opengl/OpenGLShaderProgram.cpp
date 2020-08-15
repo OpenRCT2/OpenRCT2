@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -83,7 +83,7 @@ std::string OpenGLShader::ReadSourceCode(const std::string& path)
         throw IOException("Shader source too large.");
     }
 
-    auto fileData = std::string((size_t)fileLength + 1, '\0');
+    auto fileData = std::string(static_cast<size_t>(fileLength) + 1, '\0');
     fs.Read(static_cast<void*>(fileData.data()), fileLength);
     return fileData;
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,8 +25,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-constexpr int32_t WW = 250;
-constexpr int32_t WH = 90;
+static constexpr const rct_string_id WINDOW_TITLE = STR_OPTIONS;
+static constexpr const int32_t WW = 250;
+static constexpr const int32_t WH = 90;
 
 // clang-format off
 enum WINDOW_TEXT_INPUT_WIDGET_IDX {
@@ -39,11 +40,9 @@ enum WINDOW_TEXT_INPUT_WIDGET_IDX {
 
 // 0x9DE4E0
 static rct_widget window_text_input_widgets[] = {
-    { WWT_FRAME,     1,  0,        WW - 1,   0,        WH - 1,  STR_NONE,     STR_NONE },
-    { WWT_CAPTION,   1,  1,        WW - 2,   1,        14,      STR_OPTIONS,  STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,  1,  WW - 13,  WW - 3,   2,        13,      STR_CLOSE_X,  STR_CLOSE_WINDOW_TIP },
-    { WWT_BUTTON,    1,  WW - 80,  WW - 10,  WH - 22,  WH - 9,  STR_CANCEL,   STR_NONE },
-    { WWT_BUTTON,    1,  10,       80,       WH - 22,  WH - 9,  STR_OK,       STR_NONE },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget({170, 68}, {71, 14}, WWT_BUTTON, 1, STR_CANCEL),
+    MakeWidget({ 10, 68}, {71, 14}, WWT_BUTTON, 1, STR_OK    ),
     { WIDGETS_END }
 };
 
@@ -93,6 +92,11 @@ static rct_windowclass calling_class = 0;
 static rct_windownumber calling_number = 0;
 static int32_t calling_widget = 0;
 static int32_t _maxInputLength;
+
+static std::string _title;
+static std::string _description;
+static std::function<void(const std::string_view&)> _callback;
+static std::function<void()> _cancelCallback;
 
 void window_text_input_open(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
@@ -144,16 +148,81 @@ void window_text_input_raw_open(
     window_text_input_widgets[WIDX_TITLE].text = title;
 
     // Save calling window details so that the information can be passed back to the correct window & widget
-    calling_class = call_w->classification;
-    calling_number = call_w->number;
-    calling_widget = call_widget;
+    if (call_w == nullptr)
+    {
+        calling_class = WC_NULL;
+        calling_number = 0;
+        calling_widget = 0;
+    }
+    else
+    {
+        calling_class = call_w->classification;
+        calling_number = call_w->number;
+        calling_widget = call_widget;
+    }
 
     gTextInput = context_start_text_input(text_input, maxLength);
 
     window_init_scroll_widgets(w);
-    w->colours[0] = call_w->colours[0];
-    w->colours[1] = call_w->colours[1];
-    w->colours[2] = call_w->colours[2];
+
+    if (call_w == nullptr)
+    {
+        w->colours[0] = COLOUR_GREY;
+        w->colours[1] = COLOUR_GREY;
+        w->colours[2] = COLOUR_GREY;
+    }
+    else
+    {
+        w->colours[0] = call_w->colours[1];
+        w->colours[1] = call_w->colours[1];
+        w->colours[2] = call_w->colours[1];
+    }
+}
+
+void window_text_input_open(
+    const std::string_view& title, const std::string_view& description, const std::string_view& initialValue, size_t maxLength,
+    std::function<void(const std::string_view&)> callback, std::function<void()> cancelCallback)
+{
+    _title = title;
+    _description = description;
+    _callback = callback;
+    _cancelCallback = cancelCallback;
+
+    std::string szInitialValue(initialValue);
+    auto szDescription = _description.c_str();
+    std::memcpy(TextInputDescriptionArgs, &szDescription, sizeof(const char*));
+    maxLength = std::min(sizeof(text_input) - 1, maxLength);
+    window_text_input_raw_open(nullptr, 0, STR_STRING, STR_STRING, szInitialValue.c_str(), static_cast<int32_t>(maxLength));
+}
+
+static void window_text_input_execute_callback(bool hasValue)
+{
+    if (calling_class == WC_NULL)
+    {
+        if (hasValue)
+        {
+            if (_callback)
+            {
+                _callback(text_input);
+            }
+        }
+        else
+        {
+            if (_cancelCallback)
+            {
+                _cancelCallback();
+            }
+        }
+    }
+    else
+    {
+        auto calling_w = window_find_by_number(calling_class, calling_number);
+        if (calling_w != nullptr)
+        {
+            auto value = hasValue ? text_input : nullptr;
+            window_event_textinput_call(calling_w, calling_widget, value);
+        }
+    }
 }
 
 /**
@@ -161,26 +230,17 @@ void window_text_input_raw_open(
  */
 static void window_text_input_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    rct_window* calling_w;
-
-    calling_w = window_find_by_number(calling_class, calling_number);
     switch (widgetIndex)
     {
         case WIDX_CANCEL:
         case WIDX_CLOSE:
             context_stop_text_input();
-            // Pass back the text that has been entered.
-            // ecx when zero means text input failed
-            if (calling_w != nullptr)
-                window_event_textinput_call(calling_w, calling_widget, nullptr);
+            window_text_input_execute_callback(false);
             window_close(w);
             break;
         case WIDX_OKAY:
             context_stop_text_input();
-            // Pass back the text that has been entered.
-            // ecx when nonzero means text input success
-            if (calling_w != nullptr)
-                window_event_textinput_call(calling_w, calling_widget, text_input);
+            window_text_input_execute_callback(true);
             window_close(w);
     }
 }
@@ -192,14 +252,16 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    int32_t y = w->windowPos.y + 25;
+    ScreenCoordsXY screenCoords;
+    screenCoords.y = w->windowPos.y + 25;
 
     int32_t no_lines = 0;
     int32_t font_height = 0;
 
-    gfx_draw_string_centred(dpi, input_text_description, w->windowPos.x + WW / 2, y, w->colours[1], &TextInputDescriptionArgs);
+    gfx_draw_string_centred(
+        dpi, input_text_description, { w->windowPos.x + WW / 2, screenCoords.y }, w->colours[1], &TextInputDescriptionArgs);
 
-    y += 25;
+    screenCoords.y += 25;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gCurrentFontFlags = 0;
@@ -212,9 +274,10 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
     gfx_fill_rect_inset(
-        dpi, w->windowPos.x + 10, y, w->windowPos.x + WW - 10, y + 10 * (no_lines + 1) + 3, w->colours[1], INSET_RECT_F_60);
+        dpi, w->windowPos.x + 10, screenCoords.y, w->windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3,
+        w->colours[1], INSET_RECT_F_60);
 
-    y += 1;
+    screenCoords.y += 1;
 
     char* wrap_pointer = wrapped_string;
     size_t char_count = 0;
@@ -224,7 +287,8 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t cursorY = 0;
     for (int32_t line = 0; line <= no_lines; line++)
     {
-        gfx_draw_string(dpi, wrap_pointer, w->colours[1], w->windowPos.x + 12, y);
+        screenCoords.x = w->windowPos.x + 12;
+        gfx_draw_string(dpi, wrap_pointer, w->colours[1], screenCoords);
 
         size_t string_length = get_string_size(wrap_pointer) - 1;
 
@@ -234,7 +298,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
             char temp_string[TEXT_INPUT_SIZE] = { 0 };
             std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
             cursorX = w->windowPos.x + 13 + gfx_get_string_width(temp_string);
-            cursorY = y;
+            cursorY = screenCoords.y;
 
             int32_t width = 6;
             if (gTextInput->SelectionStart < strlen(text_input))
@@ -251,7 +315,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 uint8_t colour = ColourMapA[w->colours[1]].mid_light;
                 // TODO: palette index addition
-                gfx_fill_rect(dpi, cursorX, y + 9, cursorX + width, y + 9, colour + 5);
+                gfx_fill_rect(dpi, { { cursorX, screenCoords.y + 9 }, { cursorX + width, screenCoords.y + 9 } }, colour + 5);
             }
 
             cur_drawn++;
@@ -263,13 +327,13 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
             char_count++;
         char_count += string_length;
 
-        y += 10;
+        screenCoords.y += 10;
     }
 
     if (!cur_drawn)
     {
         cursorX = gLastDrawStringX;
-        cursorY = y - 10;
+        cursorY = screenCoords.y - 10;
     }
 
     // IME composition
@@ -285,32 +349,24 @@ void window_text_input_key(rct_window* w, char keychar)
     if (keychar == '\r')
     {
         context_stop_text_input();
+        window_text_input_execute_callback(true);
         window_close(w);
-        // Window was closed and its unique_ptr is gone,
-        // don't try invalidating it.
-        w = window_find_by_number(calling_class, calling_number);
-        // Pass back the text that has been entered.
-        // ecx when nonzero means text input success
-        if (w)
-            window_event_textinput_call(w, calling_widget, text_input);
-
-        // Update the window pointer, as it may have been closed by textinput handler
-        w = window_find_by_number(calling_class, calling_number);
     }
-
-    if (w)
-        w->Invalidate();
+    w->Invalidate();
 }
 
 void window_text_input_periodic_update(rct_window* w)
 {
-    rct_window* calling_w = window_find_by_number(calling_class, calling_number);
-    // If the calling window is closed then close the text
-    // input window.
-    if (!calling_w)
+    if (calling_class != WC_NULL)
     {
-        window_close(w);
-        return;
+        auto calling_w = window_find_by_number(calling_class, calling_number);
+        // If the calling window is closed then close the text
+        // input window.
+        if (!calling_w)
+        {
+            window_close(w);
+            return;
+        }
     }
 
     // Used to blink the cursor.
@@ -326,6 +382,11 @@ static void window_text_input_close(rct_window* w)
     // Make sure that we take it out of the text input
     // mode otherwise problems may occur.
     context_stop_text_input();
+
+    _title = {};
+    _description = {};
+    _callback = {};
+    _cancelCallback = {};
 }
 
 static void window_text_input_invalidate(rct_window* w)
@@ -356,17 +417,22 @@ static void window_text_input_invalidate(rct_window* w)
     window_text_input_widgets[WIDX_CANCEL].bottom = height - 9;
 
     window_text_input_widgets[WIDX_BACKGROUND].bottom = height - 1;
+
+    // Set window title argument
+    auto ft = Formatter::Common();
+    ft.Add<const char*>(_title.c_str());
 }
 
 static void draw_ime_composition(rct_drawpixelinfo* dpi, int cursorX, int cursorY)
 {
     int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer);
-    int x = cursorX - (compositionWidth / 2);
-    int y = cursorY + 13;
+    ScreenCoordsXY screenCoords(cursorX - (compositionWidth / 2), cursorY + 13);
     int width = compositionWidth;
     int height = 10;
 
-    gfx_fill_rect(dpi, x - 1, y - 1, x + width + 1, y + height + 1, PALETTE_INDEX_12);
-    gfx_fill_rect(dpi, x, y, x + width, y + height, PALETTE_INDEX_0);
-    gfx_draw_string(dpi, (char*)gTextInput->ImeBuffer, COLOUR_DARK_GREEN, x, y);
+    gfx_fill_rect(
+        dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
+        PALETTE_INDEX_12);
+    gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
+    gfx_draw_string(dpi, static_cast<const char*>(gTextInput->ImeBuffer), COLOUR_DARK_GREEN, screenCoords);
 }

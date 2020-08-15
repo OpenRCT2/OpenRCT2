@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -74,13 +74,26 @@ private:
 
         uint8_t minHeight = GetLowestHeight(validRange);
         bool hasChanged = false;
+        bool withinOwnership = false;
         for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
             {
+                if (!LocationValid({ x, y }))
+                    continue;
+
                 auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                     continue;
+
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+                {
+                    if (!map_is_location_in_park(CoordsXY{ x, y }))
+                    {
+                        continue;
+                    }
+                }
+                withinOwnership = true;
 
                 uint8_t height = surfaceElement->GetWaterHeight() / COORDS_Z_STEP;
                 if (height == 0)
@@ -107,6 +120,14 @@ private:
             }
         }
 
+        if (!withinOwnership)
+        {
+            GameActionResult::Ptr ownerShipResult = std::make_unique<GameActionResult>(
+                GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
+            ownerShipResult->ErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
+            return ownerShipResult;
+        }
+
         if (isExecuting && hasChanged)
         {
             audio_play_sound_at_location(SoundId::LayingOutWater, res->Position);
@@ -126,6 +147,14 @@ private:
         {
             for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
             {
+                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+                {
+                    if (!map_is_location_in_park(CoordsXY{ x, y }))
+                    {
+                        continue;
+                    }
+                }
+
                 auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
                 if (surfaceElement == nullptr)
                     continue;

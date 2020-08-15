@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -134,7 +134,7 @@ void input_handle_keyboard(bool isTitle)
         if (!isTitle)
         {
             // Handle mouse scrolling
-            if (input_get_state() == INPUT_STATE_NORMAL && gConfigGeneral.edge_scrolling)
+            if (input_get_state() == InputState::Normal && gConfigGeneral.edge_scrolling)
             {
                 if (!(gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z)))
                 {

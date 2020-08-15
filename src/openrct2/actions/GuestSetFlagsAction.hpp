@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,10 +45,10 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        Peep* peep = GET_PEEP(_peepId);
+        Peep* peep = TryGetEntity<Peep>(_peepId);
         if (peep == nullptr)
         {
-            log_error("Used invalid sprite index for peep: %u", (uint32_t)_peepId);
+            log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_THIS);
         }
         return std::make_unique<GameActionResult>();
@@ -56,14 +56,14 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Peep* peep = GET_PEEP(_peepId);
+        Peep* peep = TryGetEntity<Peep>(_peepId);
         if (peep == nullptr)
         {
-            log_error("Used invalid sprite index for peep: %u", (uint32_t)_peepId);
+            log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_THIS);
         }
 
-        peep->peep_flags = _newFlags;
+        peep->PeepFlags = _newFlags;
 
         return std::make_unique<GameActionResult>();
     }

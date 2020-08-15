@@ -37,19 +37,19 @@
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v20/openrct2-libs-v20-x86-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">2963fb45c23f5996638babd1e0bcd9661248ca02</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v20/openrct2-libs-v20-x64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">b7019e51bd78254cf19301d5668483a370a59eb0</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v24/openrct2-libs-v21-x86-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">21eef7db74fd1c886f3a1ef3f7989721e42a726b</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v24/openrct2-libs-v21-x64-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">6367d76f6b95859f8b45cbf03b222b8b5200d8b5</LibsSha1>
     <GtestVersion>2fe3bd994b3189899d93f1d5a881e725e046fdc2</GtestVersion>
     <GtestUrl>https://github.com/google/googletest/archive/$(GtestVersion).zip</GtestUrl>
     <GtestSha1>058b9df80244c03f1633cb06e9f70471a29ebb8e</GtestSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha1>304d13a126c15bf2c86ff13b81a2f2cc1856ac8d</TitleSequencesSha1>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.14/objects.zip</ObjectsUrl>
-    <ObjectsSha1>31a0ed0047b4bdb1428071044130192b3c0a30fa</ObjectsSha1>
-    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.9/replays.zip</ReplaysUrl>
-    <ReplaysSha1>4A2CAE6C6DBD54E8C0A892AA6327540F6F5108B1</ReplaysSha1>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.16/objects.zip</ObjectsUrl>
+    <ObjectsSha1>ea8be00a7ab5a1e9369277f8f59f487bc588eb6a</ObjectsSha1>
+    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.17/replays.zip</ReplaysUrl>
+    <ReplaysSha1>8DD6D8DBDB1EA50ABCB3A1FB55D2800E13486F44</ReplaysSha1>
   </PropertyGroup>
 
   <ItemGroup>
@@ -129,7 +129,7 @@
                         Url="$(TitleSequencesUrl)"
                         Sha1="$(TitleSequencesSha1)"
                         CheckFile="$(DependenciesCheckFile)"
-                        OutputDirectory="$(TargetDir)data\title" />
+                        OutputDirectory="$(TargetDir)data\sequence" />
   </Target>
 
   <!-- Target to download the objects -->

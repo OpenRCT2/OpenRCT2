@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -97,6 +97,10 @@ public:
                 }
             }
 
+            if (!LocationValid(currentTile))
+            {
+                return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            }
             // Prevent duplicate costs when using the clear scenery tool that overlaps multiple large
             // scenery tile elements.
             if (flags & GAME_COMMAND_FLAG_PATH_SCENERY)

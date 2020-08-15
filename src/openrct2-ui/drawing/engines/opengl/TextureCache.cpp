@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,6 +13,7 @@
 
 #    include <algorithm>
 #    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/world/Location.hpp>
 #    include <stdexcept>
 #    include <vector>
 
@@ -96,7 +97,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
     return info;
 }
 
-BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* palette)
+BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap)
 {
     GlyphId glyphId{};
     glyphId.Image = image;
@@ -105,7 +106,12 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* pa
     {
         shared_lock lock(_mutex);
 
-        std::copy_n(palette, sizeof(glyphId.Palette), reinterpret_cast<uint8_t*>(&glyphId.Palette));
+        uint8_t glyphMap[8];
+        for (uint8_t i = 0; i < 8; i++)
+        {
+            glyphMap[i] = paletteMap[i];
+        }
+        std::copy_n(glyphMap, sizeof(glyphId.Palette), reinterpret_cast<uint8_t*>(&glyphId.Palette));
 
         auto kvp = _glyphTextureMap.find(glyphId);
         if (kvp != _glyphTextureMap.end())
@@ -121,7 +127,7 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, uint8_t* pa
     // Load new texture.
     unique_lock lock(_mutex);
 
-    auto cacheInfo = LoadGlyphTexture(image, palette);
+    auto cacheInfo = LoadGlyphTexture(image, paletteMap);
     auto it = _glyphTextureMap.insert(std::make_pair(glyphId, cacheInfo));
 
     return (*it.first).second;
@@ -175,9 +181,13 @@ void TextureCache::GeneratePaletteTexture()
     for (int i = 0; i < PALETTE_TO_G1_OFFSET_COUNT; ++i)
     {
         GLint y = PaletteToY(i);
-        uint16_t image = palette_to_g1_offset[i];
-        auto element = gfx_get_g1_element(image);
-        gfx_draw_sprite_software(&dpi, ImageId(image), -element->x_offset, y - element->y_offset);
+
+        auto g1Index = GetPaletteG1Index(i);
+        if (g1Index)
+        {
+            auto element = gfx_get_g1_element(*g1Index);
+            gfx_draw_sprite_software(&dpi, ImageId(*g1Index), { -element->x_offset, y - element->y_offset });
+        }
     }
 
     glBindTexture(GL_TEXTURE_RECTANGLE, _paletteTexture);
@@ -205,19 +215,19 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
 
         // Initial capacity will be 12 which covers most cases of a fully visible park.
         _atlasesTextureCapacity = (_atlasesTextureCapacity + 6) << 1UL;
-    }
 
-    glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
-    glTexImage3D(
-        GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureCapacity, 0,
-        GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
+        glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
+        glTexImage3D(
+            GL_TEXTURE_2D_ARRAY, 0, GL_R8UI, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureCapacity, 0,
+            GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
 
-    // Restore old data
-    if (!oldPixels.empty())
-    {
-        glTexSubImage3D(
-            GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices,
-            GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+        // Restore old data
+        if (!oldPixels.empty())
+        {
+            glTexSubImage3D(
+                GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, _atlasesTextureDimensions, _atlasesTextureDimensions, _atlasesTextureIndices,
+                GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+        }
     }
 
     _atlasesTextureIndices = newIndices;
@@ -240,9 +250,9 @@ AtlasTextureInfo TextureCache::LoadImageTexture(uint32_t image)
     return cacheInfo;
 }
 
-AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32_t image, uint8_t* palette)
+AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap)
 {
-    rct_drawpixelinfo dpi = GetGlyphAsDPI(image, palette);
+    rct_drawpixelinfo dpi = GetGlyphAsDPI(image, paletteMap);
 
     auto cacheInfo = AllocateImage(dpi.width, dpi.height);
     cacheInfo.image = image;
@@ -277,7 +287,7 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     }
 
     auto atlasIndex = static_cast<int32_t>(_atlases.size());
-    int32_t atlasSize = powf(2, (float)Atlas::CalculateImageSizeOrder(imageWidth, imageHeight));
+    int32_t atlasSize = powf(2, static_cast<float>(Atlas::CalculateImageSizeOrder(imageWidth, imageHeight)));
 
 #    ifdef DEBUG
     log_verbose("new texture atlas #%d (size %d) allocated", atlasIndex, atlasSize);
@@ -300,18 +310,20 @@ rct_drawpixelinfo TextureCache::GetImageAsDPI(uint32_t image, uint32_t tertiaryC
     int32_t height = g1Element->height;
 
     rct_drawpixelinfo dpi = CreateDPI(width, height);
-    gfx_draw_sprite_software(&dpi, ImageId::FromUInt32(image, tertiaryColour), -g1Element->x_offset, -g1Element->y_offset);
+    gfx_draw_sprite_software(&dpi, ImageId::FromUInt32(image, tertiaryColour), { -g1Element->x_offset, -g1Element->y_offset });
     return dpi;
 }
 
-rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32_t image, uint8_t* palette)
+rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32_t image, const PaletteMap& palette)
 {
     auto g1Element = gfx_get_g1_element(image & 0x7FFFFUL);
     int32_t width = g1Element->width;
     int32_t height = g1Element->height;
 
     rct_drawpixelinfo dpi = CreateDPI(width, height);
-    gfx_draw_sprite_palette_set_software(&dpi, ImageId::FromUInt32(image), -g1Element->x_offset, -g1Element->y_offset, palette);
+
+    const auto glyphCoords = ScreenCoordsXY{ -g1Element->x_offset, -g1Element->y_offset };
+    gfx_draw_sprite_palette_set_software(&dpi, ImageId::FromUInt32(image), glyphCoords, palette);
     return dpi;
 }
 

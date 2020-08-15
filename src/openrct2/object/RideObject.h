@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../core/IStream.hpp"
 #include "../ride/Ride.h"
 #include "Object.h"
 
@@ -34,7 +35,7 @@ public:
     }
 
     void ReadJson(IReadObjectContext* context, const json_t* root) override;
-    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
     void Load() override;
     void Unload() override;
 
@@ -46,7 +47,7 @@ public:
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
 private:
-    void ReadLegacyVehicle(IReadObjectContext* context, IStream* stream, rct_ride_entry_vehicle* vehicle);
+    void ReadLegacyVehicle(IReadObjectContext* context, OpenRCT2::IStream* stream, rct_ride_entry_vehicle* vehicle);
 
     void ReadJsonVehicleInfo(IReadObjectContext* context, const json_t* properties);
     std::vector<rct_ride_entry_vehicle> ReadJsonCars(const json_t* jCars);

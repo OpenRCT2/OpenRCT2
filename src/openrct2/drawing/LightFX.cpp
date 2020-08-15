@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,7 +50,7 @@ struct lightlist_entry
 {
     int16_t x, y, z;
     ScreenCoordsXY viewCoords;
-    uint8_t lightType;
+    LightType lightType;
     uint8_t lightIntensity;
     uint32_t lightID;
     uint16_t lightIDqualifier;
@@ -77,28 +77,28 @@ static uint8_t _current_view_rotation_back = 0;
 static ZoomLevel _current_view_zoom_back = 0;
 static ZoomLevel _current_view_zoom_back_delay = 0;
 
-static rct_palette gPalette_light;
+static GamePalette gPalette_light;
 
 static uint8_t calc_light_intensity_lantern(int32_t x, int32_t y)
 {
-    double distance = (double)(x * x + y * y);
+    double distance = static_cast<double>(x * x + y * y);
 
     double light = 0.03 + std::pow(10.0 / (1.0 + distance / 100.0), 0.55);
     light *= std::min(1.0, std::max(0.0, 2.0 - std::sqrt(distance) / 64));
     light *= 0.1f;
 
-    return (uint8_t)(std::min(255.0, light * 255.0));
+    return static_cast<uint8_t>(std::min(255.0, light * 255.0));
 }
 
 static uint8_t calc_light_intensity_spot(int32_t x, int32_t y)
 {
-    double distance = (double)(x * x + y * y);
+    double distance = static_cast<double>(x * x + y * y);
 
     double light = 0.3 + std::pow(10.0 / (1.0 + distance / 100.0), 0.75);
     light *= std::min(1.0, std::max(0.0, 2.0 - std::sqrt(distance) / 64));
     light *= 0.5f;
 
-    return (uint8_t)(std::min(255.0, light * 255.0)) >> 4;
+    return static_cast<uint8_t>(std::min(255.0, light * 255.0)) >> 4;
 }
 
 static void calc_rescale_light_half(uint8_t* target, uint8_t* source, uint32_t targetWidth, uint32_t targetHeight)
@@ -208,7 +208,7 @@ void lightfx_prepare_light_list()
         if ((posOnScreenX < -128) || (posOnScreenY < -128) || (posOnScreenX > _pixelInfo.width + 128)
             || (posOnScreenY > _pixelInfo.height + 128))
         {
-            entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
+            entry->lightType = LightType::None;
             continue;
         }
 
@@ -279,7 +279,6 @@ void lightfx_prepare_light_list()
         {
             int32_t totalSamplePoints = 5;
             int32_t startSamplePoint = 1;
-            // int32_t lastSampleCount = 0;
 
             if ((entry->lightIDqualifier & 0xF) == LIGHTFX_LIGHT_QUALIFIER_MAP)
             {
@@ -371,28 +370,16 @@ void lightfx_prepare_light_list()
                 else if (pat == 8)
                 {
                     break;
-                    // if (_current_view_zoom_front > 0)
-                    //  break;
-                    // int32_t newSampleCount = lightIntensityOccluded / 900;
-                    // if (abs(newSampleCount - lastSampleCount) < 10)
-                    //  break;
-                    // totalSamplePoints += 4;
                 }
             }
 
             totalSamplePoints -= startSamplePoint;
 
-            //  lightIntensityOccluded = totalSamplePoints * 100;
-
-            //  log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded);
-
             if (lightIntensityOccluded == 0)
             {
-                entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
+                entry->lightType = LightType::None;
                 continue;
             }
-
-            //  log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded / totalSamplePoints);
 
             entry->lightIntensity = std::min<uint32_t>(
                 0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
@@ -402,13 +389,14 @@ void lightfx_prepare_light_list()
 
         if (_current_view_zoom_front > 0)
         {
-            if ((entry->lightType & 0x3) < static_cast<int8_t>(_current_view_zoom_front))
+            if (GetLightTypeSize(entry->lightType) < static_cast<int8_t>(_current_view_zoom_front))
             {
-                entry->lightType = LIGHTFX_LIGHT_TYPE_NONE;
+                entry->lightType = LightType::None;
                 continue;
             }
 
-            entry->lightType -= static_cast<int8_t>(_current_view_zoom_front);
+            entry->lightType = SetLightTypeSize(
+                entry->lightType, GetLightTypeSize(entry->lightType) - static_cast<int8_t>(_current_view_zoom_front));
         }
     }
 }
@@ -425,7 +413,7 @@ void lightfx_swap_buffers()
 
     tmp = _LightListBack;
     _LightListBack = _LightListFront;
-    _LightListFront = (lightlist_entry*)tmp;
+    _LightListFront = static_cast<lightlist_entry*>(tmp);
 
     LightListCurrentCountFront = LightListCurrentCountBack;
     LightListCurrentCountBack = 0x0;
@@ -470,7 +458,7 @@ void lightfx_render_lights_to_frontbuffer()
     for (uint32_t light = 0; light < LightListCurrentCountFront; light++)
     {
         const uint8_t* bufReadBase = nullptr;
-        uint8_t* bufWriteBase = (uint8_t*)_light_rendered_buffer_front;
+        uint8_t* bufWriteBase = static_cast<uint8_t*>(_light_rendered_buffer_front);
         uint32_t bufReadWidth, bufReadHeight;
         int32_t bufWriteX, bufWriteY;
         int32_t bufWriteWidth, bufWriteHeight;
@@ -491,42 +479,42 @@ void lightfx_render_lights_to_frontbuffer()
 
         switch (entry->lightType)
         {
-            case LIGHTFX_LIGHT_TYPE_LANTERN_0:
+            case LightType::Lantern0:
                 bufReadWidth = 32;
                 bufReadHeight = 32;
                 bufReadBase = _bakedLightTexture_lantern_0;
                 break;
-            case LIGHTFX_LIGHT_TYPE_LANTERN_1:
+            case LightType::Lantern1:
                 bufReadWidth = 64;
                 bufReadHeight = 64;
                 bufReadBase = _bakedLightTexture_lantern_1;
                 break;
-            case LIGHTFX_LIGHT_TYPE_LANTERN_2:
+            case LightType::Lantern2:
                 bufReadWidth = 128;
                 bufReadHeight = 128;
                 bufReadBase = _bakedLightTexture_lantern_2;
                 break;
-            case LIGHTFX_LIGHT_TYPE_LANTERN_3:
+            case LightType::Lantern3:
                 bufReadWidth = 256;
                 bufReadHeight = 256;
                 bufReadBase = _bakedLightTexture_lantern_3;
                 break;
-            case LIGHTFX_LIGHT_TYPE_SPOT_0:
+            case LightType::Spot0:
                 bufReadWidth = 32;
                 bufReadHeight = 32;
                 bufReadBase = _bakedLightTexture_spot_0;
                 break;
-            case LIGHTFX_LIGHT_TYPE_SPOT_1:
+            case LightType::Spot1:
                 bufReadWidth = 64;
                 bufReadHeight = 64;
                 bufReadBase = _bakedLightTexture_spot_1;
                 break;
-            case LIGHTFX_LIGHT_TYPE_SPOT_2:
+            case LightType::Spot2:
                 bufReadWidth = 128;
                 bufReadHeight = 128;
                 bufReadBase = _bakedLightTexture_spot_2;
                 break;
-            case LIGHTFX_LIGHT_TYPE_SPOT_3:
+            case LightType::Spot3:
                 bufReadWidth = 256;
                 bufReadHeight = 256;
                 bufReadBase = _bakedLightTexture_spot_3;
@@ -627,12 +615,12 @@ void* lightfx_get_front_buffer()
     return _light_rendered_buffer_front;
 }
 
-const rct_palette* lightfx_get_palette()
+const GamePalette& lightfx_get_palette()
 {
-    return &gPalette_light;
+    return gPalette_light;
 }
 
-void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x, int16_t y, uint16_t z, uint8_t lightType)
+void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x, int16_t y, uint16_t z, LightType lightType)
 {
     if (LightListCurrentCountBack == 15999)
     {
@@ -678,7 +666,7 @@ void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x
 }
 
 void lightfx_add_3d_light_magic_from_drawing_tile(
-    const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, uint8_t lightType)
+    const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, LightType lightType)
 {
     int16_t x = mapPosition.x + offsetX + 16;
     int16_t y = mapPosition.y + offsetY + 16;
@@ -705,41 +693,37 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
         10, 10, 9, 8, 7, 6, 4, 2, 0, -2, -4, -6, -7, -8, -9, -10, -10, -10, -9, -8, -7, -6, -4, -2, 0, 2, 4, 6, 7, 8, 9, 10,
     };
 
-    auto ride = get_ride(vehicle->ride);
+    auto ride = vehicle->GetRide();
 
     switch (ride->type)
     {
         case RIDE_TYPE_OBSERVATION_TOWER:
             lightfx_add_3d_light(
-                vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y + 16, vehicle->z,
-                LIGHTFX_LIGHT_TYPE_SPOT_3);
+                vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y + 16, vehicle->z, LightType::Spot3);
             lightfx_add_3d_light(
-                vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x + 16, vehicle->y, vehicle->z,
-                LIGHTFX_LIGHT_TYPE_SPOT_3);
+                vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x + 16, vehicle->y, vehicle->z, LightType::Spot3);
             lightfx_add_3d_light(
-                vehicleID, 0x0200 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x - 16, vehicle->y, vehicle->z,
-                LIGHTFX_LIGHT_TYPE_SPOT_3);
+                vehicleID, 0x0200 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x - 16, vehicle->y, vehicle->z, LightType::Spot3);
             lightfx_add_3d_light(
-                vehicleID, 0x0300 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y - 16, vehicle->z,
-                LIGHTFX_LIGHT_TYPE_SPOT_3);
+                vehicleID, 0x0300 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y - 16, vehicle->z, LightType::Spot3);
             break;
         case RIDE_TYPE_MINE_TRAIN_COASTER:
         case RIDE_TYPE_GHOST_TRAIN:
-            if (vehicle == vehicle_get_head(vehicle))
+            if (vehicle == vehicle->TrainHead())
             {
                 place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
                 lightfx_add_3d_light(
-                    vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z, LIGHTFX_LIGHT_TYPE_SPOT_3);
+                    vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z, LightType::Spot3);
             }
             break;
         case RIDE_TYPE_CHAIRLIFT:
             lightfx_add_3d_light(
-                vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z - 16,
-                LIGHTFX_LIGHT_TYPE_LANTERN_2);
+                vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z - 16, LightType::Lantern2);
             break;
         case RIDE_TYPE_BOAT_HIRE:
         case RIDE_TYPE_CAR_RIDE:
+        case RIDE_TYPE_MONSTER_TRUCKS:
         case RIDE_TYPE_GO_KARTS:
         case RIDE_TYPE_DODGEMS:
         case RIDE_TYPE_MINI_HELICOPTERS:
@@ -748,10 +732,11 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
         case RIDE_TYPE_SPLASH_BOATS:
         case RIDE_TYPE_WATER_COASTER:
         {
-            Vehicle* vehicle_draw = vehicle_get_head(vehicle);
-            if (vehicle_draw->next_vehicle_on_train != SPRITE_INDEX_NULL)
+            Vehicle* vehicle_draw = vehicle->TrainHead();
+            auto nextVeh = GetEntity<Vehicle>(vehicle_draw->next_vehicle_on_train);
+            if (nextVeh != nullptr)
             {
-                vehicle_draw = GET_VEHICLE(vehicle_draw->next_vehicle_on_train);
+                vehicle_draw = nextVeh;
             }
             place_x = vehicle_draw->x;
             place_y = vehicle_draw->y;
@@ -759,63 +744,55 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
             place_x -= offsetLookup[(vehicle_draw->sprite_direction + 0) % 32];
             place_y -= offsetLookup[(vehicle_draw->sprite_direction + 8) % 32];
             lightfx_add_3d_light(
-                vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z, LIGHTFX_LIGHT_TYPE_SPOT_2);
+                vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z, LightType::Spot2);
             place_x -= offsetLookup[(vehicle_draw->sprite_direction + 0) % 32];
             place_y -= offsetLookup[(vehicle_draw->sprite_direction + 8) % 32];
             lightfx_add_3d_light(
-                vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z, LIGHTFX_LIGHT_TYPE_SPOT_2);
+                vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z, LightType::Spot2);
             break;
         }
         case RIDE_TYPE_MONORAIL:
             lightfx_add_3d_light(
-                vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y, vehicle->z + 12,
-                LIGHTFX_LIGHT_TYPE_SPOT_2);
-            if (vehicle == vehicle_get_head(vehicle))
+                vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y, vehicle->z + 12, LightType::Spot2);
+            if (vehicle == vehicle->TrainHead())
             {
                 place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
                 lightfx_add_3d_light(
-                    vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10,
-                    LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10, LightType::Lantern3);
                 place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 3;
                 place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 3;
                 lightfx_add_3d_light(
-                    vehicleID, 0x0200 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 2,
-                    LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    vehicleID, 0x0200 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 2, LightType::Lantern3);
             }
-            if (vehicle == vehicle_get_tail(vehicle))
+            if (vehicle == vehicle->TrainTail())
             {
                 place_x += offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y += offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
                 lightfx_add_3d_light(
-                    vehicleID, 0x0300 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10,
-                    LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    vehicleID, 0x0300 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10, LightType::Lantern3);
                 place_x += offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y += offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
                 lightfx_add_3d_light(
-                    vehicleID, 0x0400 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 2,
-                    LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    vehicleID, 0x0400 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 2, LightType::Lantern3);
             }
             break;
         case RIDE_TYPE_MINIATURE_RAILWAY:
-            if (vehicle == vehicle_get_head(vehicle))
+            if (vehicle == vehicle->TrainHead())
             {
                 place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
                 lightfx_add_3d_light(
-                    vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10,
-                    LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    vehicleID, 0x0100 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10, LightType::Lantern3);
                 place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
                 lightfx_add_3d_light(
-                    vehicleID, 0x0200 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 2,
-                    LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    vehicleID, 0x0200 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 2, LightType::Lantern3);
             }
             else
             {
                 lightfx_add_3d_light(
-                    vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10,
-                    LIGHTFX_LIGHT_TYPE_LANTERN_3);
+                    vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z + 10, LightType::Lantern3);
             }
             break;
         default:
@@ -825,7 +802,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
 
 void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 {
-    float night = (float)(pow(gDayNightCycle, 1.5));
+    float night = static_cast<float>(pow(gDayNightCycle, 1.5));
 
     float natLightR = 1.0f;
     float natLightG = 1.0f;
@@ -842,9 +819,9 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     float sunLight = std::max(0.0f, std::min(1.0f, 2.0f - night * 3.0f));
 
     // Night version
-    natLightR = flerp(natLightR * 4.0f, 0.635f, (float)(std::pow(night, 0.035f + sunLight * 10.50f)));
-    natLightG = flerp(natLightG * 4.0f, 0.650f, (float)(std::pow(night, 0.100f + sunLight * 5.50f)));
-    natLightB = flerp(natLightB * 4.0f, 0.850f, (float)(std::pow(night, 0.200f + sunLight * 1.5f)));
+    natLightR = flerp(natLightR * 4.0f, 0.635f, (std::pow(night, 0.035f + sunLight * 10.50f)));
+    natLightG = flerp(natLightG * 4.0f, 0.650f, (std::pow(night, 0.100f + sunLight * 5.50f)));
+    natLightB = flerp(natLightB * 4.0f, 0.850f, (std::pow(night, 0.200f + sunLight * 1.5f)));
 
     float overExpose = 0.0f;
     float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
@@ -856,7 +833,7 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 
     if (gClimateCurrent.Temperature > 20)
     {
-        float offset = ((float)(gClimateCurrent.Temperature - 20)) * 0.04f;
+        float offset = (static_cast<float>(gClimateCurrent.Temperature - 20)) * 0.04f;
         offset *= 1.0f - night;
         lightAvg /= 1.0f + offset;
         //      overExpose += offset * 0.1f;
@@ -878,12 +855,12 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     natLightB *= 1.0f + overExpose;
     overExpose *= 255.0f;
 
-    float targetFogginess = (float)(gClimateCurrent.RainLevel) / 8.0f;
+    float targetFogginess = static_cast<float>(gClimateCurrent.Level) / 8.0f;
     targetFogginess += (night * night) * 0.15f;
 
     if (gClimateCurrent.Temperature < 10)
     {
-        targetFogginess += ((float)(10 - gClimateCurrent.Temperature)) * 0.01f;
+        targetFogginess += (static_cast<float>(10 - gClimateCurrent.Temperature)) * 0.01f;
     }
 
     fogginess -= (fogginess - targetFogginess) * 0.00001f;
@@ -903,9 +880,10 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     float reduceColourNat = 1.0f;
     float reduceColourLit = 1.0f;
 
-    reduceColourLit *= night / (float)std::pow(std::max(1.01f, 0.4f + lightAvg), 2.0);
+    reduceColourLit *= night / static_cast<float>(std::pow(std::max(1.01f, 0.4f + lightAvg), 2.0));
 
-    float targetLightPollution = reduceColourLit * std::max(0.0f, 0.0f + 0.000001f * (float)lightfx_get_light_polution());
+    float targetLightPollution = reduceColourLit
+        * std::max(0.0f, 0.0f + 0.000001f * static_cast<float>(lightfx_get_light_polution()));
     lightPolution -= (lightPolution - targetLightPollution) * 0.001f;
 
     //  lightPollution /= 1.0f + fogginess * 1.0f;
@@ -920,7 +898,7 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
     natLightG /= 1.0f + lightPolution;
     natLightB /= 1.0f + lightPolution;
 
-    reduceColourLit += (float)(gClimateCurrent.RainLevel) / 2.0f;
+    reduceColourLit += static_cast<float>(gClimateCurrent.Level) / 2.0f;
 
     reduceColourNat /= 1.0f + fogginess;
     reduceColourLit /= 1.0f + fogginess;
@@ -950,15 +928,15 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
         else if ((i % 16) < 7)
             boost = 1.001f * wetnessBoost;
         if (i > 230 && i < 232)
-            boost = ((float)(*b)) / 64.0f;
+            boost = (static_cast<float>(*b)) / 64.0f;
 
         if (false)
         {
             // This experiment shifts the colour of pixels as-if they are wet, but it is not a pretty solution at all
             if ((i % 16))
             {
-                float iVal = ((float)((i + 12) % 16)) / 16.0f;
-                float eff = (wetness * ((float)std::pow(iVal, 1.5) * 0.85f));
+                float iVal = (static_cast<float>((i + 12) % 16)) / 16.0f;
+                float eff = (wetness * (static_cast<float>(std::pow(iVal, 1.5)) * 0.85f));
                 reduceColourNat *= 1.0f - eff;
                 addLightNatR += fogR * eff * 3.95f;
                 addLightNatG += fogR * eff * 3.95f;
@@ -970,17 +948,26 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
         addLightNatG *= 1.0f - envFog;
         addLightNatB *= 1.0f - envFog;
 
-        *r = (uint8_t)(std::min(
-            255.0f, std::max(0.0f, (-overExpose + (float)(*r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
-        *g = (uint8_t)(std::min(
-            255.0f, std::max(0.0f, (-overExpose + (float)(*g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
-        *b = (uint8_t)(std::min(
-            255.0f, std::max(0.0f, (-overExpose + (float)(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
+        *r = static_cast<uint8_t>(std::min(
+            255.0f,
+            std::max(
+                0.0f, (-overExpose + static_cast<float>(*r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
+        *g = static_cast<uint8_t>(std::min(
+            255.0f,
+            std::max(
+                0.0f, (-overExpose + static_cast<float>(*g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
+        *b = static_cast<uint8_t>(std::min(
+            255.0f,
+            std::max(
+                0.0f, (-overExpose + static_cast<float>(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
 
-        rct_palette_entry* dstEntry = &gPalette_light.entries[i];
-        dstEntry->red = (uint8_t)(std::min<float>(0xFF, ((float)(*r) * reduceColourLit * boost + lightFog) * elecMultR));
-        dstEntry->green = (uint8_t)(std::min<float>(0xFF, ((float)(*g) * reduceColourLit * boost + lightFog) * elecMultG));
-        dstEntry->blue = (uint8_t)(std::min<float>(0xFF, ((float)(*b) * reduceColourLit * boost + lightFog) * elecMultB));
+        auto dstEntry = &gPalette_light[i];
+        dstEntry->Red = static_cast<uint8_t>(
+            std::min<float>(0xFF, (static_cast<float>(*r) * reduceColourLit * boost + lightFog) * elecMultR));
+        dstEntry->Green = static_cast<uint8_t>(
+            std::min<float>(0xFF, (static_cast<float>(*g) * reduceColourLit * boost + lightFog) * elecMultG));
+        dstEntry->Blue = static_cast<uint8_t>(
+            std::min<float>(0xFF, (static_cast<float>(*b) * reduceColourLit * boost + lightFog) * elecMultB));
     }
 }
 
@@ -1002,7 +989,7 @@ void lightfx_render_to_texture(
     lightfx_prepare_light_list();
     lightfx_render_lights_to_frontbuffer();
 
-    uint8_t* lightBits = (uint8_t*)lightfx_get_front_buffer();
+    uint8_t* lightBits = static_cast<uint8_t*>(lightfx_get_front_buffer());
     if (lightBits == nullptr)
     {
         return;
@@ -1010,8 +997,8 @@ void lightfx_render_to_texture(
 
     for (uint32_t y = 0; y < height; y++)
     {
-        uintptr_t dstOffset = (uintptr_t)(y * dstPitch);
-        uint32_t* dst = (uint32_t*)((uintptr_t)dstPixels + dstOffset);
+        uintptr_t dstOffset = static_cast<uintptr_t>(y * dstPitch);
+        uint32_t* dst = reinterpret_cast<uint32_t*>(reinterpret_cast<uintptr_t>(dstPixels) + dstOffset);
         for (uint32_t x = 0; x < width; x++)
         {
             uint8_t* src = &bits[y * width + x];

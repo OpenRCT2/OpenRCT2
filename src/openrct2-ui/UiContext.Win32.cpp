@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,11 @@
 #    endif // __MINGW32__
 
 // Windows.h needs to be included first
+// clang-format off
 #    include <windows.h>
+#    include <shellapi.h>
+#    include <commdlg.h>
+// clang-format on
 #    undef CreateWindow
 
 // Then the rest
@@ -73,7 +77,7 @@ namespace OpenRCT2::Ui
                     HWND hwnd = GetHWND(window);
                     if (hwnd != nullptr)
                     {
-                        SendMessageA(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)icon);
+                        SendMessageA(hwnd, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(icon));
                     }
                 }
             }
@@ -97,6 +101,12 @@ namespace OpenRCT2::Ui
             ShellExecuteW(NULL, L"open", pathW.c_str(), NULL, NULL, SW_SHOWNORMAL);
         }
 
+        void OpenURL(const std::string& url) override
+        {
+            std::wstring urlW = String::ToWideChar(url);
+            ShellExecuteW(NULL, L"open", urlW.c_str(), NULL, NULL, SW_SHOWNORMAL);
+        }
+
         std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) override
         {
             std::wstring wcFilename = String::ToWideChar(desc.DefaultFilename);
@@ -113,7 +123,7 @@ namespace OpenRCT2::Ui
             openFileName.lpstrInitialDir = wcInitialDirectory.c_str();
             openFileName.lpstrFilter = wcFilters.c_str();
             openFileName.lpstrFile = &wcFilename[0];
-            openFileName.nMaxFile = (DWORD)wcFilename.size();
+            openFileName.nMaxFile = static_cast<DWORD>(wcFilename.size());
 
             // Open dialog
             BOOL dialogResult = FALSE;
@@ -141,7 +151,7 @@ namespace OpenRCT2::Ui
                     int32_t filterIndex = openFileName.nFilterIndex - 1;
 
                     assert(filterIndex >= 0);
-                    assert(filterIndex < (int32_t)desc.Filters.size());
+                    assert(filterIndex < static_cast<int32_t>(desc.Filters.size()));
 
                     std::string pattern = desc.Filters[filterIndex].Pattern;
                     std::string patternExtension = Path::GetExtension(pattern);

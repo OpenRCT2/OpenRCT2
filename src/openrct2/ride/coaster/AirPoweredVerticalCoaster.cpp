@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,6 +21,9 @@
 
 enum
 {
+    SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE = 22164,
+    SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE = 22165,
+
     SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE = 22226,
     SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE = 22227,
     SPR_AIR_POWERED_VERTICAL_RC_STATION_SW_NE = 22228,
@@ -190,7 +193,7 @@ static void air_powered_vertical_rc_track_flat(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -220,7 +223,7 @@ static void air_powered_vertical_rc_track_station(
     if (ride != nullptr)
         track_paint_util_draw_station_platform(session, ride, direction, height, 5, tileElement);
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -264,7 +267,7 @@ static void air_powered_vertical_rc_track_right_quarter_turn_5(
     track_paint_util_right_quarter_turn_5_tiles_paint_3(
         session, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
+    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     switch (trackSequence)
     {
@@ -341,7 +344,7 @@ static void air_powered_vertical_rc_track_flat_to_left_bank(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -370,7 +373,7 @@ static void air_powered_vertical_rc_track_flat_to_right_bank(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -445,7 +448,7 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
     }
 
     track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
+    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     switch (trackSequence)
     {
@@ -523,7 +526,7 @@ static void air_powered_vertical_rc_track_left_bank(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -552,7 +555,7 @@ static void air_powered_vertical_rc_track_brakes(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -664,7 +667,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
 
             wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
@@ -690,7 +693,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
 
             if (trackSequence == 0)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
 
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -893,6 +896,39 @@ static void air_powered_vertical_rc_track_vertical_slope_down(
         session, rideIndex, 6 - trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
+static void air_powered_vertical_rc_track_booster(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    // The booster piece is borrowed from the Reverse Freefall Colour.
+    // It has two track colours, instead of the one that the APVC has.
+    uint32_t colour = session->TrackColours[SCHEME_TRACK];
+    if (!tileElement->IsGhost() && !tileElement->AsTrack()->IsHighlighted())
+    {
+        // Replace remap colour 2 (bits 24-28) with a copy of remap colour 1 (bits 19-23).
+        colour_t colour1 = (colour >> 19) & 31;
+        colour &= ~0x1F000000;
+        colour |= (colour1 << 24);
+    }
+
+    if (direction & 1)
+    {
+        uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | colour;
+        sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+    }
+    else
+    {
+        uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | colour;
+        sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+    }
+
+    wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
@@ -935,6 +971,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t tr
             return air_powered_vertical_rc_track_vertical_down;
         case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL:
             return air_powered_vertical_rc_track_vertical_slope_down;
+        case TRACK_ELEM_BOOSTER:
+            return air_powered_vertical_rc_track_booster;
     }
     return nullptr;
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,9 +25,9 @@ enum WINDOW_NETWORK_STATUS_WIDGET_IDX {
 };
 
 static rct_widget window_network_status_widgets[] = {
-    { WWT_FRAME,            0,  0,      440,    0,      90,     0xFFFFFFFF,                 STR_NONE },                                 // panel / background
-    { WWT_CAPTION,          0,  1,      438,    1,      14,     STR_NONE,                   STR_WINDOW_TITLE_TIP },                     // title bar
-    { WWT_CLOSEBOX,         0,  427,    437,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },                     // close x button
+    MakeWidget({  0, 0}, {441, 91}, WWT_FRAME,    0                                   ), // panel / background
+    MakeWidget({  1, 1}, {438, 14}, WWT_CAPTION,  0, STR_NONE,    STR_WINDOW_TITLE_TIP), // title bar
+    MakeWidget({427, 2}, { 11, 12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), // close x button
     { WIDGETS_END },
 };
 
@@ -182,8 +182,7 @@ static void window_network_status_paint(rct_window* w, rct_drawpixelinfo* dpi)
     lineCh = utf8_write_codepoint(lineCh, FORMAT_BLACK);
     safe_strcpy(lineCh, window_network_status_text, sizeof(buffer) - (lineCh - buffer));
     gfx_clip_string(buffer, w->widgets[WIDX_BACKGROUND].right - 50);
-    int32_t x = w->windowPos.x + (w->width / 2);
-    int32_t y = w->windowPos.y + (w->height / 2);
-    x -= gfx_get_string_width(buffer) / 2;
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, x, y);
+    ScreenCoordsXY screenCoords(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
+    screenCoords.x -= gfx_get_string_width(buffer) / 2;
+    gfx_draw_string(dpi, buffer, COLOUR_BLACK, screenCoords);
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,11 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/FileSystem.hpp"
+#include "../world/Location.hpp"
+#include "ZoomLevel.hpp"
 
+#include <optional>
 #include <string>
 
 struct rct_drawpixelinfo;
@@ -31,6 +35,21 @@ struct ScreenshotOptions
     bool transparent = false;
 };
 
+struct CaptureView
+{
+    int32_t Width{};
+    int32_t Height{};
+    CoordsXY Position;
+};
+
+struct CaptureOptions
+{
+    fs::path Filename;
+    std::optional<CaptureView> View;
+    ZoomLevel Zoom;
+    uint8_t Rotation{};
+};
+
 void screenshot_check();
 std::string screenshot_dump();
 std::string screenshot_dump_png(rct_drawpixelinfo* dpi);
@@ -39,3 +58,5 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
 void screenshot_giant();
 int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOptions* options);
 int32_t cmdline_for_gfxbench(const char** argv, int32_t argc);
+
+void CaptureImage(const CaptureOptions& options);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,6 +29,7 @@ enum class TileModifyType : uint8_t
     PathToggleEdge,
     EntranceMakeUsable,
     WallSetSlope,
+    WallSetAnimationFrame,
     TrackBaseHeightOffset,
     TrackSetChain,
     TrackSetChainBlock,
@@ -89,6 +90,10 @@ public:
 private:
     GameActionResult::Ptr QueryExecute(bool isExecuting) const
     {
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_LAND_NOT_OWNED_BY_PARK);
+        }
         auto res = MakeResult();
         switch (static_cast<TileModifyType>(_setting))
         {
@@ -183,6 +188,13 @@ private:
                 const auto elementIndex = _value1;
                 const auto slopeValue = _value2;
                 res = tile_inspector_wall_set_slope(_loc, elementIndex, slopeValue, isExecuting);
+                break;
+            }
+            case TileModifyType::WallSetAnimationFrame:
+            {
+                const auto elementIndex = _value1;
+                const auto animationFrameOffset = _value2;
+                res = tile_inspector_wall_animation_frame_offset(_loc, elementIndex, animationFrameOffset, isExecuting);
                 break;
             }
             case TileModifyType::TrackBaseHeightOffset:

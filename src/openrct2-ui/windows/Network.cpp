@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,8 +26,8 @@ enum {
     WINDOW_NETWORK_PAGE_INFORMATION,
 };
 
-constexpr int32_t WW = 450;
-constexpr int32_t WH = 210;
+static constexpr const int32_t WW = 450;
+static constexpr const int32_t WH = 210;
 
 enum WINDOW_NETWORK_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -37,15 +37,10 @@ enum WINDOW_NETWORK_WIDGET_IDX {
     WIDX_TAB1,
 };
 
-#define MAIN_NETWORK_WIDGETS \
-    { WWT_FRAME,            0,  0,          WW - 1,    0,      WH - 1,    STR_NONE,                   STR_NONE },                 /* panel / background   */  \
-    { WWT_CAPTION,          0,  1,          WW - 2,    1,      14,        STR_NONE,                   STR_WINDOW_TITLE_TIP },     /* title bar            */ \
-    { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3,    2,      13,        STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     /* close x button       */  \
-    { WWT_RESIZE,           1,  0,          WW - 1,    43,     WH - 1,    0xFFFFFFFF,                 STR_NONE },                 /* content panel        */  \
-    { WWT_TAB,              1,  3,          33,        17,     43,        IMAGE_TYPE_REMAP | SPR_TAB,       STR_SHOW_SERVER_INFO_TIP }, /* tab                  */  \
-
 static rct_widget window_network_information_widgets[] = {
-    MAIN_NETWORK_WIDGETS
+    WINDOW_SHIM(STR_NONE, WW, WH),
+    MakeWidget     ({  0, 43}, {450, 167}, WWT_RESIZE,   1                                       ), // content panel
+    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_SHOW_SERVER_INFO_TIP), // tab
     { WIDGETS_END }
 };
 
@@ -266,8 +261,8 @@ static void window_network_information_update(rct_window* w)
         const NetworkHistory_t& history = _networkHistory[i];
         for (int n = 1; n < NETWORK_STATISTICS_GROUP_MAX; n++)
         {
-            graphMaxIn = (float)std::max<uint32_t>(history.deltaBytesReceived[n], graphMaxIn);
-            graphMaxOut = (float)std::max<uint32_t>(history.deltaBytesSent[n], graphMaxOut);
+            graphMaxIn = static_cast<float>(std::max<uint32_t>(history.deltaBytesReceived[n], graphMaxIn));
+            graphMaxOut = static_cast<float>(std::max<uint32_t>(history.deltaBytesSent[n], graphMaxOut));
         }
     }
 
@@ -282,8 +277,8 @@ static void window_network_information_update(rct_window* w)
 
         _bytesIn = _networkAccumulatedStats.deltaBytesReceived[NETWORK_STATISTICS_GROUP_TOTAL];
         _bytesOut = _networkAccumulatedStats.deltaBytesSent[NETWORK_STATISTICS_GROUP_TOTAL];
-        _bytesInSec = (double)_bytesIn / statsTimeElapsed;
-        _bytesOutSec = (double)_bytesOut / statsTimeElapsed;
+        _bytesInSec = static_cast<double>(_bytesIn) / statsTimeElapsed;
+        _bytesOutSec = static_cast<double>(_bytesOut) / statsTimeElapsed;
 
         _networkAccumulatedStats = {};
     }
@@ -301,7 +296,8 @@ static void window_network_information_invalidate(rct_window* w)
 
 static void graph_draw_bar(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t height, int32_t width, int32_t colour)
 {
-    gfx_fill_rect(dpi, x, y, x + width, y + height, colour);
+    auto coords = ScreenCoordsXY{ x, y };
+    gfx_fill_rect(dpi, { coords, coords + ScreenCoordsXY{ width, height } }, colour);
 }
 
 static void window_network_draw_graph(
@@ -310,11 +306,21 @@ static void window_network_draw_graph(
     float dataMax = received ? _graphMaxIn : _graphMaxOut;
 
     // Draw box.
-    gfx_draw_line(dpi, x, y, x, y + height, COLOUR_BLACK);
-    gfx_draw_line(dpi, x, y + height, x + width, y + height, COLOUR_BLACK);
+    auto right1 = ScreenCoordsXY{ x, y };
+    auto right2 = ScreenCoordsXY{ x, y + height };
+    gfx_draw_line(dpi, { right1, right2 }, COLOUR_BLACK);
 
-    gfx_draw_line(dpi, x, y, x + width, y, COLOUR_BLACK);
-    gfx_draw_line(dpi, x + width, y, x + width, y + height, COLOUR_BLACK);
+    auto left1 = ScreenCoordsXY{ x, y + height };
+    auto left2 = ScreenCoordsXY{ x + width, y + height };
+    gfx_draw_line(dpi, { left1, left2 }, COLOUR_BLACK);
+
+    auto bottom1 = ScreenCoordsXY{ x, y };
+    auto bottom2 = ScreenCoordsXY{ x + width, y };
+    gfx_draw_line(dpi, { bottom1, bottom2 }, COLOUR_BLACK);
+
+    auto top1 = ScreenCoordsXY{ x + width, y };
+    auto top2 = ScreenCoordsXY{ x + width, y + height };
+    gfx_draw_line(dpi, { top1, top2 }, COLOUR_BLACK);
 
     // Draw graph inside box
     x = x + 1;
@@ -323,7 +329,7 @@ static void window_network_draw_graph(
     height = height - 2;
 
     rct_drawpixelinfo clippedDPI;
-    if (!clip_drawpixelinfo(&clippedDPI, dpi, x, y, width, height))
+    if (!clip_drawpixelinfo(&clippedDPI, dpi, { x, y }, width, height))
         return;
 
     dpi = &clippedDPI;
@@ -334,15 +340,15 @@ static void window_network_draw_graph(
         // std::sort(history.deltaBytesReceived.begin(), history.deltaBytesReceived.end(), std::greater<uint16_t>());
 
         // NOTE: Capacity is not a mistake, we always want the full length.
-        uint32_t curX = std::round(((float)i / (float)_networkHistory.capacity()) * barWidth * width);
+        uint32_t curX = std::round((static_cast<float>(i) / static_cast<float>(_networkHistory.capacity())) * barWidth * width);
 
         float totalSum = 0.0f;
         for (int n = 1; n < NETWORK_STATISTICS_GROUP_MAX; n++)
         {
             if (received)
-                totalSum += (float)history.deltaBytesReceived[n];
+                totalSum += static_cast<float>(history.deltaBytesReceived[n]);
             else
-                totalSum += (float)history.deltaBytesSent[n];
+                totalSum += static_cast<float>(history.deltaBytesSent[n]);
         }
 
         int32_t yOffset = height;
@@ -353,13 +359,13 @@ static void window_network_draw_graph(
 
             if (received)
             {
-                totalHeight = ((float)history.deltaBytesReceived[n] / dataMax) * height;
-                singleHeight = ((float)history.deltaBytesReceived[n] / totalSum) * totalHeight;
+                totalHeight = (static_cast<float>(history.deltaBytesReceived[n]) / dataMax) * height;
+                singleHeight = (static_cast<float>(history.deltaBytesReceived[n]) / totalSum) * totalHeight;
             }
             else
             {
-                totalHeight = ((float)history.deltaBytesSent[n] / dataMax) * height;
-                singleHeight = ((float)history.deltaBytesSent[n] / totalSum) * totalHeight;
+                totalHeight = (static_cast<float>(history.deltaBytesSent[n]) / dataMax) * height;
+                singleHeight = (static_cast<float>(history.deltaBytesSent[n]) / totalSum) * totalHeight;
             }
 
             uint32_t lineHeight = std::ceil(singleHeight);
@@ -391,45 +397,48 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
     const int32_t graphHeight = (totalHeight - totalHeightText - heightTab) / 2;
 
     rct_drawpixelinfo clippedDPI;
-    if (clip_drawpixelinfo(&clippedDPI, dpi, w->windowPos.x, w->windowPos.y, w->width, w->height))
+    if (clip_drawpixelinfo(&clippedDPI, dpi, w->windowPos, w->width, w->height))
     {
         dpi = &clippedDPI;
 
-        int32_t x = padding;
-        int32_t y = heightTab + padding;
+        auto screenCoords = ScreenCoordsXY{ padding, heightTab + padding };
 
         // Received stats.
         {
-            gfx_draw_string_left(dpi, STR_NETWORK_RECEIVE, nullptr, PALETTE_INDEX_10, x, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_RECEIVE, nullptr, PALETTE_INDEX_10, screenCoords);
 
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesInSec);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 70, y);
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(70, 0));
 
-            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, x + 200, y);
+            gfx_draw_string_left(
+                dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY{ 200, 0 });
 
             format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesReceived[NETWORK_STATISTICS_GROUP_TOTAL]);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 300, y);
-            y += textHeight + padding;
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(300, 0));
+            screenCoords.y += textHeight + padding;
 
-            window_network_draw_graph(w, dpi, x, y, graphHeight, w->width - (padding * 2), graphBarWidth, true);
-            y += graphHeight + padding;
+            window_network_draw_graph(
+                w, dpi, screenCoords.x, screenCoords.y, graphHeight, w->width - (padding * 2), graphBarWidth, true);
+            screenCoords.y += graphHeight + padding;
         }
 
         // Sent stats.
         {
-            gfx_draw_string_left(dpi, STR_NETWORK_SEND, nullptr, PALETTE_INDEX_10, x, y);
+            gfx_draw_string_left(dpi, STR_NETWORK_SEND, nullptr, PALETTE_INDEX_10, screenCoords);
 
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesOutSec);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 70, y);
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(70, 0));
 
-            gfx_draw_string_left(dpi, STR_NETWORK_TOTAL_SENT, nullptr, PALETTE_INDEX_10, x + 200, y);
+            gfx_draw_string_left(
+                dpi, STR_NETWORK_TOTAL_SENT, nullptr, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY{ 200, 0 });
 
             format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesSent[NETWORK_STATISTICS_GROUP_TOTAL]);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 300, y);
-            y += textHeight + padding;
+            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(300, 0));
+            screenCoords.y += textHeight + padding;
 
-            window_network_draw_graph(w, dpi, x, y, graphHeight, w->width - (padding * 2), graphBarWidth, false);
-            y += graphHeight + padding;
+            window_network_draw_graph(
+                w, dpi, screenCoords.x, screenCoords.y, graphHeight, w->width - (padding * 2), graphBarWidth, false);
+            screenCoords.y += graphHeight + padding;
         }
 
         // Draw legend
@@ -439,14 +448,16 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
                 format_string(textBuffer, sizeof(textBuffer), NetworkTrafficGroupNames[i], nullptr);
 
                 // Draw color stripe.
-                gfx_fill_rect(dpi, x, y + 4, x + 4, y + 6, NetworkTrafficGroupColors[i]);
+                gfx_fill_rect(
+                    dpi, { screenCoords + ScreenCoordsXY{ 0, 4 }, screenCoords + ScreenCoordsXY{ 4, 6 } },
+                    NetworkTrafficGroupColors[i]);
 
                 // Draw text.
-                gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, x + 10, y);
+                gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(10, 0));
 
                 gfx_get_string_width(textBuffer);
 
-                x += gfx_get_string_width(textBuffer) + 20;
+                screenCoords.x += gfx_get_string_width(textBuffer) + 20;
             }
         }
     }
@@ -471,7 +482,7 @@ static void window_network_draw_tab_image(rct_window* w, rct_drawpixelinfo* dpi,
         }
 
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos.x + w->widgets[widgetIndex].left, w->windowPos.y + w->widgets[widgetIndex].top, 0);
+            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top }, 0);
     }
 }
 

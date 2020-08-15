@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,14 +14,15 @@
 #include <memory>
 #include <stack>
 #include <string>
+#include <string_view>
 #include <tuple>
 
-interface ILanguagePack;
-interface IObjectManager;
+struct ILanguagePack;
+struct IObjectManager;
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    struct IPlatformEnvironment;
 }
 
 namespace OpenRCT2::Localisation
@@ -56,7 +57,7 @@ namespace OpenRCT2::Localisation
         const char* GetString(rct_string_id id) const;
         std::tuple<rct_string_id, rct_string_id, rct_string_id> GetLocalisedScenarioStrings(
             const std::string& scenarioFilename) const;
-        rct_string_id GetObjectOverrideStringId(const char* identifier, uint8_t index) const;
+        rct_string_id GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) const;
         std::string GetLanguagePath(uint32_t languageId) const;
 
         void OpenLanguage(int32_t id, IObjectManager& objectManager);

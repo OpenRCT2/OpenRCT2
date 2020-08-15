@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "BannerSetStyleAction.hpp"
 #include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
+#include "CustomAction.hpp"
 #include "FootpathPlaceAction.hpp"
 #include "FootpathPlaceFromTrackAction.hpp"
 #include "FootpathRemoveAction.hpp"
@@ -171,5 +172,8 @@ namespace GameActions
         Register<GuestSetFlagsAction>();
         Register<ParkSetDateAction>();
         Register<SetCheatAction>();
+#ifdef ENABLE_SCRIPTING
+        Register<CustomAction>();
+#endif
     }
 } // namespace GameActions

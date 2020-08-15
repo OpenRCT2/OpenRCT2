@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/TrackDesignRepository.h"
 
@@ -27,7 +28,7 @@
 class TD4Importer final : public ITrackImporter
 {
 private:
-    MemoryStream _stream;
+    OpenRCT2::MemoryStream _stream;
     std::string _name;
 
 public:
@@ -41,7 +42,7 @@ public:
         if (String::Equals(extension, ".td4", true))
         {
             _name = GetNameFromTrackPath(path);
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
             return LoadFromStream(&fs);
         }
         else
@@ -50,7 +51,7 @@ public:
         }
     }
 
-    bool LoadFromStream(IStream* stream) override
+    bool LoadFromStream(OpenRCT2::IStream* stream) override
     {
         auto checksumType = SawyerEncoding::ValidateTrackChecksum(stream);
         if (!gConfigGeneral.allow_loading_with_incorrect_checksum && checksumType == RCT12TrackDesignVersion::unknown)
@@ -136,7 +137,7 @@ private:
 
     std::unique_ptr<TrackDesign> ImportTD4Base(std::unique_ptr<TrackDesign> td, rct_track_td4& td4Base)
     {
-        td->type = RCT1::GetRideType(td4Base.type);
+        td->type = RCT1::GetRideType(td4Base.type, td4Base.vehicle_type);
 
         // All TD4s that use powered launch use the type that doesn't pass the station.
         td->ride_mode = td4Base.mode;
@@ -151,13 +152,13 @@ private:
         {
             const char* vehObjName = RCT1::GetRideTypeObject(td4Base.type);
             assert(vehObjName != nullptr);
-            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), (size_t)8));
+            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
         }
         else
         {
             const char* vehObjName = RCT1::GetVehicleObject(td4Base.vehicle_type);
             assert(vehObjName != nullptr);
-            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), (size_t)8));
+            std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
         }
         std::memcpy(&td->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
         td->vehicle_type = td4Base.vehicle_type;
@@ -222,7 +223,7 @@ private:
         td->number_of_cars_per_train = td4Base.number_of_cars_per_train;
         td->min_waiting_time = td4Base.min_waiting_time;
         td->max_waiting_time = td4Base.max_waiting_time;
-        td->operation_setting = std::min(td4Base.operation_setting, RideProperties[td->type].max_value);
+        td->operation_setting = std::min(td4Base.operation_setting, RideTypeDescriptors[td->type].OperatingSettings.MaxValue);
         td->max_speed = td4Base.max_speed;
         td->average_speed = td4Base.average_speed;
         td->ride_length = td4Base.ride_length;
@@ -249,7 +250,7 @@ private:
         td->space_required_y = 255;
         td->lift_hill_speed = 5;
         td->num_circuits = 0;
-        td->operation_setting = std::min(td->operation_setting, RideProperties[td->type].max_value);
+        td->operation_setting = std::min(td->operation_setting, RideTypeDescriptors[td->type].OperatingSettings.MaxValue);
 
         if (td->type == RIDE_TYPE_MAZE)
         {

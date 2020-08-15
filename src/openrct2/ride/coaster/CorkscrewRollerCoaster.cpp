@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -104,7 +104,7 @@ static void corkscrew_rc_track_station(
         session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station_2(session, rideIndex, direction, height, tileElement, 9, 11);
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -4657,7 +4657,7 @@ static void corkscrew_rc_track_flat_to_60_deg_up_long_base(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -4751,10 +4751,10 @@ static void corkscrew_rc_track_flat_to_60_deg_up_long_base(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height + 24, TUNNEL_8);
+                    paint_util_push_tunnel_right(session, height + 24, TUNNEL_SQUARE_8);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height + 24, TUNNEL_8);
+                    paint_util_push_tunnel_left(session, height + 24, TUNNEL_SQUARE_8);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -4800,7 +4800,7 @@ static void corkscrew_rc_track_60_deg_up_to_flat_long_base(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_7);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_7);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -4892,10 +4892,10 @@ static void corkscrew_rc_track_60_deg_up_to_flat_long_base(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(

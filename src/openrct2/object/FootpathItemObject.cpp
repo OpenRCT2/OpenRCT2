@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,15 +20,15 @@
 
 #include <unordered_map>
 
-void FootpathItemObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(6, STREAM_SEEK_CURRENT);
+    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.path_bit.flags = stream->ReadValue<uint16_t>();
     _legacyType.path_bit.draw_type = stream->ReadValue<uint8_t>();
     _legacyType.path_bit.tool_id = stream->ReadValue<uint8_t>();
     _legacyType.path_bit.price = stream->ReadValue<int16_t>();
-    _legacyType.path_bit.scenery_tab_id = stream->ReadValue<uint8_t>();
-    stream->Seek(1, STREAM_SEEK_CURRENT);
+    _legacyType.path_bit.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 
@@ -45,7 +45,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, IStream* stream
 
     // Add path bits to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
     // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
-    auto identifier = GetIdentifier();
+    auto identifier = GetLegacyIdentifier();
 
     auto& objectRepository = context->GetObjectRepository();
     auto item = objectRepository.FindObject(identifier);
@@ -81,9 +81,8 @@ void FootpathItemObject::Unload()
 
 void FootpathItemObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
-    gfx_draw_sprite(dpi, _legacyType.image, x - 22, y - 24, 0);
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+    gfx_draw_sprite(dpi, _legacyType.image, screenCoords - ScreenCoordsXY{ 22, 24 }, 0);
 }
 
 static uint8_t ParseDrawType(const std::string& s)

@@ -183,7 +183,7 @@ private:
     {
         // Read PEM data via BIO buffer
         // HACK first parameter is not const on MINGW for some reason
-        auto bio = BIO_new_mem_buf((void*)pem.data(), (int)pem.size());
+        auto bio = BIO_new_mem_buf(static_cast<const void*>(pem.data()), static_cast<int>(pem.size()));
         if (bio == nullptr)
         {
             throw std::runtime_error("BIO_new_mem_buf failed");
@@ -307,7 +307,7 @@ public:
             status = EVP_DigestVerifyUpdate(mdctx, data, dataLen);
             OpenSSLThrowOnBadStatus("EVP_DigestVerifyUpdate", status);
 
-            status = EVP_DigestVerifyFinal(mdctx, (uint8_t*)sig, sigLen);
+            status = EVP_DigestVerifyFinal(mdctx, static_cast<const uint8_t*>(sig), sigLen);
             if (status != 0 && status != 1)
             {
                 OpenSSLThrowOnBadStatus("EVP_DigestVerifyUpdate", status);

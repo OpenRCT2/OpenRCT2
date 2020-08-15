@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../ride/Track.h"
 #include "Banner.h"
 #include "LargeScenery.h"
+#include "Location.hpp"
 #include "Scenery.h"
 
 uint8_t TileElementBase::GetType() const
@@ -167,7 +168,7 @@ void TileElement::ClearAs(uint8_t newType)
 
 void TileElementBase::Remove()
 {
-    tile_element_remove((TileElement*)this);
+    tile_element_remove(static_cast<TileElement*>(this));
 }
 
 // Rotate both of the values amount
@@ -177,7 +178,6 @@ const QuarterTile QuarterTile::Rotate(uint8_t amount) const
     {
         case 0:
             return QuarterTile{ *this };
-            break;
         case 1:
         {
             auto rotVal1 = _val << 1;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Crypt.h>
 #include <openrct2/core/File.h>
 #include <openrct2/core/MemoryStream.h>
 #include <openrct2/core/Path.hpp>
@@ -107,7 +108,7 @@ static std::unique_ptr<GameState_t> GetGameState(std::unique_ptr<IContext>& cont
     std::unique_ptr<GameState_t> res = std::make_unique<GameState_t>();
     for (size_t spriteIdx = 0; spriteIdx < MAX_SPRITES; spriteIdx++)
     {
-        rct_sprite* sprite = get_sprite(spriteIdx);
+        rct_sprite* sprite = reinterpret_cast<rct_sprite*>(GetEntity(spriteIdx));
         if (sprite == nullptr)
             res->sprites[spriteIdx].generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
         else
@@ -158,115 +159,115 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(NextLoc.x);
     COMPARE_FIELD(NextLoc.y);
     COMPARE_FIELD(NextLoc.z);
-    COMPARE_FIELD(next_flags);
-    COMPARE_FIELD(outside_of_park);
-    COMPARE_FIELD(state);
-    COMPARE_FIELD(sub_state);
-    COMPARE_FIELD(sprite_type);
-    COMPARE_FIELD(type);
-    COMPARE_FIELD(no_of_rides);
-    COMPARE_FIELD(tshirt_colour);
-    COMPARE_FIELD(trousers_colour);
-    COMPARE_FIELD(destination_x);
-    COMPARE_FIELD(destination_y);
-    COMPARE_FIELD(destination_tolerance);
-    COMPARE_FIELD(var_37);
-    COMPARE_FIELD(energy);
-    COMPARE_FIELD(energy_target);
-    COMPARE_FIELD(happiness);
-    COMPARE_FIELD(happiness_target);
-    COMPARE_FIELD(nausea);
-    COMPARE_FIELD(nausea_target);
-    COMPARE_FIELD(hunger);
-    COMPARE_FIELD(thirst);
-    COMPARE_FIELD(toilet);
-    COMPARE_FIELD(mass);
-    COMPARE_FIELD(time_to_consume);
-    COMPARE_FIELD(intensity);
-    COMPARE_FIELD(nausea_tolerance);
-    COMPARE_FIELD(window_invalidate_flags);
-    COMPARE_FIELD(paid_on_drink);
+    COMPARE_FIELD(NextFlags);
+    COMPARE_FIELD(OutsideOfPark);
+    COMPARE_FIELD(State);
+    COMPARE_FIELD(SubState);
+    COMPARE_FIELD(SpriteType);
+    COMPARE_FIELD(AssignedPeepType);
+    COMPARE_FIELD(GuestNumRides);
+    COMPARE_FIELD(TshirtColour);
+    COMPARE_FIELD(TrousersColour);
+    COMPARE_FIELD(DestinationX);
+    COMPARE_FIELD(DestinationY);
+    COMPARE_FIELD(DestinationTolerance);
+    COMPARE_FIELD(Var37);
+    COMPARE_FIELD(Energy);
+    COMPARE_FIELD(EnergyTarget);
+    COMPARE_FIELD(Happiness);
+    COMPARE_FIELD(HappinessTarget);
+    COMPARE_FIELD(Nausea);
+    COMPARE_FIELD(NauseaTarget);
+    COMPARE_FIELD(Hunger);
+    COMPARE_FIELD(Thirst);
+    COMPARE_FIELD(Toilet);
+    COMPARE_FIELD(Mass);
+    COMPARE_FIELD(TimeToConsume);
+    COMPARE_FIELD(Intensity);
+    COMPARE_FIELD(NauseaTolerance);
+    COMPARE_FIELD(WindowInvalidateFlags);
+    COMPARE_FIELD(PaidOnDrink);
     for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
     {
-        COMPARE_FIELD(ride_types_been_on[i]);
+        COMPARE_FIELD(RideTypesBeenOn[i]);
     }
-    COMPARE_FIELD(item_extra_flags);
-    COMPARE_FIELD(photo2_ride_ref);
-    COMPARE_FIELD(photo3_ride_ref);
-    COMPARE_FIELD(photo4_ride_ref);
-    COMPARE_FIELD(current_ride);
-    COMPARE_FIELD(current_ride_station);
-    COMPARE_FIELD(current_train);
-    COMPARE_FIELD(time_to_sitdown);
-    COMPARE_FIELD(special_sprite);
-    COMPARE_FIELD(action_sprite_type);
-    COMPARE_FIELD(next_action_sprite_type);
-    COMPARE_FIELD(action_sprite_image_offset);
-    COMPARE_FIELD(action);
-    COMPARE_FIELD(action_frame);
-    COMPARE_FIELD(step_progress);
-    COMPARE_FIELD(next_in_queue);
-    COMPARE_FIELD(maze_last_edge);
-    COMPARE_FIELD(interaction_ride_index);
-    COMPARE_FIELD(time_in_queue);
+    COMPARE_FIELD(ItemExtraFlags);
+    COMPARE_FIELD(Photo2RideRef);
+    COMPARE_FIELD(Photo3RideRef);
+    COMPARE_FIELD(Photo4RideRef);
+    COMPARE_FIELD(CurrentRide);
+    COMPARE_FIELD(CurrentRideStation);
+    COMPARE_FIELD(CurrentTrain);
+    COMPARE_FIELD(TimeToSitdown);
+    COMPARE_FIELD(SpecialSprite);
+    COMPARE_FIELD(ActionSpriteType);
+    COMPARE_FIELD(NextActionSpriteType);
+    COMPARE_FIELD(ActionSpriteImageOffset);
+    COMPARE_FIELD(Action);
+    COMPARE_FIELD(ActionFrame);
+    COMPARE_FIELD(StepProgress);
+    COMPARE_FIELD(GuestNextInQueue);
+    COMPARE_FIELD(MazeLastEdge);
+    COMPARE_FIELD(InteractionRideIndex);
+    COMPARE_FIELD(TimeInQueue);
     for (int i = 0; i < 32; i++)
     {
-        COMPARE_FIELD(rides_been_on[i]);
+        COMPARE_FIELD(RidesBeenOn[i]);
     }
-    COMPARE_FIELD(id);
-    COMPARE_FIELD(cash_in_pocket);
-    COMPARE_FIELD(cash_spent);
-    COMPARE_FIELD(time_in_park);
-    COMPARE_FIELD(rejoin_queue_timeout);
-    COMPARE_FIELD(previous_ride);
-    COMPARE_FIELD(previous_ride_time_out);
+    COMPARE_FIELD(Id);
+    COMPARE_FIELD(CashInPocket);
+    COMPARE_FIELD(CashSpent);
+    COMPARE_FIELD(TimeInPark);
+    COMPARE_FIELD(RejoinQueueTimeout);
+    COMPARE_FIELD(PreviousRide);
+    COMPARE_FIELD(PreviousRideTimeOut);
     for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
     {
-        COMPARE_FIELD(thoughts[i].type);
-        COMPARE_FIELD(thoughts[i].item);
-        COMPARE_FIELD(thoughts[i].freshness);
-        COMPARE_FIELD(thoughts[i].fresh_timeout);
+        COMPARE_FIELD(Thoughts[i].type);
+        COMPARE_FIELD(Thoughts[i].item);
+        COMPARE_FIELD(Thoughts[i].freshness);
+        COMPARE_FIELD(Thoughts[i].fresh_timeout);
     }
-    COMPARE_FIELD(path_check_optimisation);
-    COMPARE_FIELD(guest_heading_to_ride_id);
-    COMPARE_FIELD(staff_orders);
-    COMPARE_FIELD(photo1_ride_ref);
-    COMPARE_FIELD(peep_flags);
-    COMPARE_FIELD(pathfind_goal.x);
-    COMPARE_FIELD(pathfind_goal.y);
-    COMPARE_FIELD(pathfind_goal.z);
-    COMPARE_FIELD(pathfind_goal.direction);
+    COMPARE_FIELD(PathCheckOptimisation);
+    COMPARE_FIELD(GuestHeadingToRideId);
+    COMPARE_FIELD(StaffOrders);
+    COMPARE_FIELD(Photo1RideRef);
+    COMPARE_FIELD(PeepFlags);
+    COMPARE_FIELD(PathfindGoal.x);
+    COMPARE_FIELD(PathfindGoal.y);
+    COMPARE_FIELD(PathfindGoal.z);
+    COMPARE_FIELD(PathfindGoal.direction);
     for (int i = 0; i < 4; i++)
     {
-        COMPARE_FIELD(pathfind_history[i].x);
-        COMPARE_FIELD(pathfind_history[i].y);
-        COMPARE_FIELD(pathfind_history[i].z);
-        COMPARE_FIELD(pathfind_history[i].direction);
+        COMPARE_FIELD(PathfindHistory[i].x);
+        COMPARE_FIELD(PathfindHistory[i].y);
+        COMPARE_FIELD(PathfindHistory[i].z);
+        COMPARE_FIELD(PathfindHistory[i].direction);
     }
-    COMPARE_FIELD(no_action_frame_num);
-    COMPARE_FIELD(litter_count);
-    COMPARE_FIELD(time_on_ride);
-    COMPARE_FIELD(disgusting_count);
-    COMPARE_FIELD(paid_to_enter);
-    COMPARE_FIELD(paid_on_rides);
-    COMPARE_FIELD(paid_on_food);
-    COMPARE_FIELD(paid_on_souvenirs);
-    COMPARE_FIELD(no_of_food);
-    COMPARE_FIELD(no_of_drinks);
-    COMPARE_FIELD(no_of_souvenirs);
-    COMPARE_FIELD(vandalism_seen);
-    COMPARE_FIELD(voucher_type);
-    COMPARE_FIELD(voucher_arguments);
-    COMPARE_FIELD(surroundings_thought_timeout);
-    COMPARE_FIELD(angriness);
-    COMPARE_FIELD(time_lost);
-    COMPARE_FIELD(days_in_queue);
-    COMPARE_FIELD(balloon_colour);
-    COMPARE_FIELD(umbrella_colour);
-    COMPARE_FIELD(hat_colour);
-    COMPARE_FIELD(favourite_ride);
-    COMPARE_FIELD(favourite_ride_rating);
-    COMPARE_FIELD(item_standard_flags);
+    COMPARE_FIELD(WalkingFrameNum);
+    COMPARE_FIELD(LitterCount);
+    COMPARE_FIELD(GuestTimeOnRide);
+    COMPARE_FIELD(DisgustingCount);
+    COMPARE_FIELD(PaidToEnter);
+    COMPARE_FIELD(PaidOnRides);
+    COMPARE_FIELD(PaidOnFood);
+    COMPARE_FIELD(PaidOnSouvenirs);
+    COMPARE_FIELD(AmountOfFood);
+    COMPARE_FIELD(AmountOfDrinks);
+    COMPARE_FIELD(AmountOfSouvenirs);
+    COMPARE_FIELD(VandalismSeen);
+    COMPARE_FIELD(VoucherType);
+    COMPARE_FIELD(VoucherRideId);
+    COMPARE_FIELD(SurroundingsThoughtTimeout);
+    COMPARE_FIELD(Angriness);
+    COMPARE_FIELD(TimeLost);
+    COMPARE_FIELD(DaysInQueue);
+    COMPARE_FIELD(BalloonColour);
+    COMPARE_FIELD(UmbrellaColour);
+    COMPARE_FIELD(HatColour);
+    COMPARE_FIELD(FavouriteRide);
+    COMPARE_FIELD(FavouriteRideRating);
+    COMPARE_FIELD(ItemStandardFlags);
 }
 
 static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
@@ -291,10 +292,10 @@ static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
     COMPARE_FIELD(var_44);
     COMPARE_FIELD(mass);
     COMPARE_FIELD(update_flags);
-    COMPARE_FIELD(swing_sprite);
+    COMPARE_FIELD(SwingSprite);
     COMPARE_FIELD(current_station);
-    COMPARE_FIELD(swinging_car_var_0);
-    COMPARE_FIELD(var_4E);
+    COMPARE_FIELD(SwingPosition);
+    COMPARE_FIELD(SwingSpeed);
     COMPARE_FIELD(status);
     COMPARE_FIELD(sub_state);
     for (int i = 0; i < 32; i++)
@@ -355,12 +356,12 @@ static void CompareSpriteDataSteamParticle(const SteamParticle& left, const Stea
 
 static void CompareSpriteDataMoneyEffect(const MoneyEffect& left, const MoneyEffect& right)
 {
-    COMPARE_FIELD(move_delay);
-    COMPARE_FIELD(num_movements);
-    COMPARE_FIELD(vertical);
-    COMPARE_FIELD(value);
-    COMPARE_FIELD(offset_x);
-    COMPARE_FIELD(wiggle);
+    COMPARE_FIELD(MoveDelay);
+    COMPARE_FIELD(NumMovements);
+    COMPARE_FIELD(Vertical);
+    COMPARE_FIELD(Value);
+    COMPARE_FIELD(OffsetX);
+    COMPARE_FIELD(Wiggle);
 }
 
 static void CompareSpriteDataCrashedVehicleParticle(const VehicleCrashParticle& left, const VehicleCrashParticle& right)
@@ -565,4 +566,14 @@ TEST(S6ImportExportAdvanceTicks, all)
     CompareStates(importBuffer, exportBuffer, importedState, exportedState);
 
     SUCCEED();
+}
+
+TEST(SeaDecrypt, DecryptSea)
+{
+    auto path = TestData::GetParkPath("volcania.sea");
+    auto decrypted = DecryptSea(path);
+    auto sha1 = Crypt::SHA1(decrypted.data(), decrypted.size());
+    std::array<uint8_t, 20> expected = { 0x1B, 0x85, 0xFC, 0xC0, 0xE8, 0x9B, 0xBE, 0x72, 0xD9, 0x1F,
+                                         0x6E, 0xC8, 0xB1, 0xFF, 0xEC, 0x70, 0x2A, 0x72, 0x05, 0xBB };
+    ASSERT_EQ(sha1, expected);
 }

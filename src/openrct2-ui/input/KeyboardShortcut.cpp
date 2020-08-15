@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
+#include <openrct2/actions/SetCheatAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>
@@ -1020,6 +1021,12 @@ static void shortcut_decrease_element_height()
     }
 }
 
+static void shortcut_toggle_clearance_checks()
+{
+    auto setCheatAction = SetCheatAction(CheatType::DisableClearanceChecks, gCheatsDisableClearanceChecks ? 0 : 1);
+    GameActions::Execute(&setCheatAction);
+}
+
 namespace
 {
     const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
@@ -1109,6 +1116,7 @@ namespace
         shortcut_decrease_y_coord,
         shortcut_increase_element_height,
         shortcut_decrease_element_height,
+        shortcut_toggle_clearance_checks,
     };
 } // anonymous namespace
 

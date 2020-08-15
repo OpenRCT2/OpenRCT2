@@ -6,6 +6,20 @@ env:
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
   OPENRCT2_VERSION: 0.2.6
 jobs:
+  lint-commit:
+    name: Lint Commit Message
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Lint Commit Messages
+        uses: wagoid/commitlint-github-action@v1
+        with:
+          configFile: .commitlint.json
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
@@ -19,6 +33,7 @@ jobs:
   windows:
     name: Windows
     runs-on: windows-latest
+    needs: [check-code-formatting]
     strategy:
       fail-fast: false
       matrix:
@@ -62,6 +77,7 @@ jobs:
   windows-mingw:
     name: Windows (win32) using mingw
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
       image: openrct2/openrct2-build:0.2.4-mingw
     steps:
@@ -71,11 +87,12 @@ jobs:
         run: |
           sudo su
           mkdir bin && cd bin
-          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DDISABLE_IPO=on -DFORCE32=on -DBUILD_SHARED_LIBS=ON
+          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DDISABLE_IPO=on -DFORCE32=on -DBUILD_SHARED_LIBS=ON -DENABLE_SCRIPTING=OFF
           ninja -k0
   macos:
     name: macOS
     runs-on: macos-latest
+    needs: [check-code-formatting]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -104,6 +121,7 @@ jobs:
   linux-portable:
     name: Linux (x64, portable)
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
       image: openrct2/openrct2-build:0.2.4-bionic
     steps:
@@ -114,7 +132,7 @@ jobs:
         run: . scripts/setenv && get-discord-rpc
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DCMAKE_CXX_FLAGS="-g -gz"
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
       - name: Build artifacts
         shell: bash
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-x86_64.tar.gz bin/install/usr
@@ -138,6 +156,7 @@ jobs:
   linux-portable-32:
     name: Linux (i686, portable)
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
       image: openrct2/openrct2-build:0.2.4-bionic32
     steps:
@@ -150,7 +169,7 @@ jobs:
         shell: bash
         env:
           TESTPAINT: true
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DCMAKE_CXX_FLAGS="-m32 -gz"
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -gz"
       - name: Build artifacts
         shell: bash
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-i686.tar.gz bin/install/usr
@@ -177,6 +196,7 @@ jobs:
   linux-appimage:
     name: Linux (x64, AppImage)
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
       image: openrct2/openrct2-build:0.2.4-bionic
     steps:
@@ -198,6 +218,7 @@ jobs:
           path: artifacts
   linux-docker:
     name: Linux (docker)
+    needs: [check-code-formatting]
     if: github.repository == 'OpenRCT2/OpenRCT2'
     runs-on: ubuntu-latest
     steps:
@@ -221,6 +242,7 @@ jobs:
   linux-clang:
     name: Linux (Debug, [http, network, OpenGL] disabled) using clang
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
       image: openrct2/openrct2-build:0.2.4-bionic
     steps:
@@ -232,6 +254,7 @@ jobs:
   android:
     name: Android
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
       image: openrct2/openrct2-build:0.2.4-android
     steps:

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,7 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/world/Location.hpp>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Input;
@@ -371,4 +372,5 @@ const uint16_t KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] = {
     SHORTCUT_UNDEFINED,                       // SHORTCUT_SCENERY_PICKER
     SHORTCUT_UNDEFINED,                       // SHORTCUT_SCALE_UP
     SHORTCUT_UNDEFINED,                       // SHORTCUT_SCALE_DOWN
+    SHORTCUT_UNDEFINED,                       // SHORTCUT_TOGGLE_CLEARANCE_CHECKS
 };

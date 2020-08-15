@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -87,7 +87,7 @@ void* Intent::GetPointerExtra(uint32_t key) const
 
     auto data = _Data.at(key);
     openrct2_assert(data.type == IntentData::DT_POINTER, "Actual type doesn't match requested type");
-    return (void*)data.pointerVal;
+    return static_cast<void*>(data.pointerVal);
 }
 
 uint32_t Intent::GetUIntExtra(uint32_t key) const

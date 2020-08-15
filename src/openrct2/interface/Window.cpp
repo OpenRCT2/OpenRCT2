@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -162,7 +162,7 @@ void window_update_all()
 static void window_close_surplus(int32_t cap, int8_t avoid_classification)
 {
     // find the amount of windows that are currently open
-    auto count = (int32_t)g_window_list.size();
+    auto count = static_cast<int32_t>(g_window_list.size());
     // difference between amount open and cap = amount to close
     auto diff = count - WINDOW_LIMIT_RESERVED - cap;
     for (auto i = 0; i < diff; i++)
@@ -523,9 +523,8 @@ void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
     if (widget->left == -2)
         return;
 
-    gfx_set_dirty_blocks(
-        w->windowPos.x + widget->left, w->windowPos.y + widget->top, w->windowPos.x + widget->right + 1,
-        w->windowPos.y + widget->bottom + 1);
+    gfx_set_dirty_blocks({ { w->windowPos + ScreenCoordsXY{ widget->left, widget->top } },
+                           { w->windowPos + ScreenCoordsXY{ widget->right + 1, widget->bottom + 1 } } });
 }
 
 template<typename _TPred> static void widget_invalidate_by_condition(_TPred pred)
@@ -810,18 +809,14 @@ rct_window* window_get_main()
  * @param y (ecx)
  * @param z (edx)
  */
-void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
+void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
 {
-    CoordsXYZ location_3d = { x, y, z };
-
     assert(w != nullptr);
-
     window_unfollow_sprite(w);
-
     if (w->viewport)
     {
-        int16_t height = tile_element_height({ x, y });
-        if (z < height - 16)
+        int16_t height = tile_element_height(coords);
+        if (coords.z < height - 16)
         {
             if (!(w->viewport->flags & 1 << 0))
             {
@@ -838,7 +833,7 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             }
         }
 
-        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), location_3d);
+        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords);
 
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
@@ -846,8 +841,8 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             bool found = false;
             while (!found)
             {
-                int16_t x2 = w->viewport->pos.x + (int16_t)(w->viewport->width * window_scroll_locations[i][0]);
-                int16_t y2 = w->viewport->pos.y + (int16_t)(w->viewport->height * window_scroll_locations[i][1]);
+                int16_t x2 = w->viewport->pos.x + static_cast<int16_t>(w->viewport->width * window_scroll_locations[i][0]);
+                int16_t y2 = w->viewport->pos.y + static_cast<int16_t>(w->viewport->height * window_scroll_locations[i][1]);
 
                 auto it = window_get_iterator(w);
                 for (; it != g_window_list.end(); it++)
@@ -870,7 +865,7 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
                 {
                     found = true;
                 }
-                if (i >= (int32_t)std::size(window_scroll_locations))
+                if (i >= static_cast<int32_t>(std::size(window_scroll_locations)))
                 {
                     i = 0;
                     found = true;
@@ -883,8 +878,8 @@ void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z)
             if (!(w->flags & WF_NO_SCROLLING))
             {
                 w->savedViewPos = screenCoords
-                    - ScreenCoordsXY{ (int16_t)(w->viewport->view_width * window_scroll_locations[i][0]),
-                                      (int16_t)(w->viewport->view_height * window_scroll_locations[i][1]) };
+                    - ScreenCoordsXY{ static_cast<int16_t>(w->viewport->view_width * window_scroll_locations[i][0]),
+                                      static_cast<int16_t>(w->viewport->view_height * window_scroll_locations[i][1]) };
                 w->flags |= WF_SCROLLING_TO_LOCATION;
             }
         }
@@ -958,8 +953,9 @@ void window_viewport_get_map_coords_by_cursor(
     auto mouseCoords = context_get_cursor_position_scaled();
 
     // Compute map coordinate by mouse position.
-    CoordsXY mapCoords;
-    get_map_coordinates_from_pos(mouseCoords, VIEWPORT_INTERACTION_MASK_NONE, mapCoords, nullptr, nullptr, nullptr);
+    auto viewportPos = screen_coord_to_viewport_coord(w->viewport, mouseCoords);
+    auto coordsXYZ = viewport_adjust_for_map_height(viewportPos);
+    auto mapCoords = viewport_coord_to_map_coord(viewportPos, coordsXYZ.z);
     *map_x = mapCoords.x;
     *map_y = mapCoords.y;
 
@@ -1009,6 +1005,8 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int
 void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
 {
     rct_viewport* v = w->viewport;
+    if (v == nullptr)
+        return;
 
     zoomLevel = std::clamp(zoomLevel, ZoomLevel::min(), ZoomLevel::max());
     if (v->zoom == zoomLevel)
@@ -1315,8 +1313,8 @@ void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32
     w->max_height = maxHeight;
 
     // Clamp width and height to minimum and maximum
-    int32_t width = std::clamp<int32_t>(w->width, minWidth, maxWidth);
-    int32_t height = std::clamp<int32_t>(w->height, minHeight, maxHeight);
+    int32_t width = std::clamp<int32_t>(w->width, std::min(minWidth, maxWidth), std::max(minWidth, maxWidth));
+    int32_t height = std::clamp<int32_t>(w->height, std::min(minHeight, maxHeight), std::max(minHeight, maxHeight));
 
     // Resize window if size has changed
     if (w->width != width || w->height != height)
@@ -1631,7 +1629,7 @@ void window_resize_gui(int32_t width, int32_t height)
     if (titleWind != nullptr)
     {
         titleWind->windowPos.x = (width - titleWind->width) / 2;
-        titleWind->windowPos.y = height - 154;
+        titleWind->windowPos.y = height - 182;
     }
 
     rct_window* exitWind = window_find_by_class(WC_TITLE_EXIT);
@@ -1690,7 +1688,7 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
 void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id)
 {
     int32_t i, x = w->widgets[start_tab_id].left;
-    int32_t tab_width = w->widgets[start_tab_id].right - w->widgets[start_tab_id].left;
+    int32_t tab_width = w->widgets[start_tab_id].width();
 
     for (i = start_tab_id; i <= end_tab_id; i++)
     {
@@ -2082,7 +2080,7 @@ void window_follow_sprite(rct_window* w, size_t spriteIndex)
 {
     if (spriteIndex < MAX_SPRITES || spriteIndex == SPRITE_INDEX_NULL)
     {
-        w->viewport_smart_follow_sprite = (uint16_t)spriteIndex;
+        w->viewport_smart_follow_sprite = static_cast<uint16_t>(spriteIndex);
     }
 }
 
@@ -2135,7 +2133,7 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
 
     if (scroll->flags & HSCROLLBAR_VISIBLE)
     {
-        int32_t view_size = widget->right - widget->left - 21;
+        int32_t view_size = widget->width() - 21;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             view_size -= 11;
         int32_t x = scroll->h_left * view_size;
@@ -2143,7 +2141,7 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
             x /= scroll->h_right;
         scroll->h_thumb_left = x + 11;
 
-        x = widget->right - widget->left - 2;
+        x = widget->width() - 2;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             x -= 11;
         x += scroll->h_left;
@@ -2157,14 +2155,14 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
         {
             double barPosition = (scroll->h_thumb_right * 1.0) / view_size;
 
-            scroll->h_thumb_left = (uint16_t)std::lround(scroll->h_thumb_left - (20 * barPosition));
-            scroll->h_thumb_right = (uint16_t)std::lround(scroll->h_thumb_right + (20 * (1 - barPosition)));
+            scroll->h_thumb_left = static_cast<uint16_t>(std::lround(scroll->h_thumb_left - (20 * barPosition)));
+            scroll->h_thumb_right = static_cast<uint16_t>(std::lround(scroll->h_thumb_right + (20 * (1 - barPosition))));
         }
     }
 
     if (scroll->flags & VSCROLLBAR_VISIBLE)
     {
-        int32_t view_size = widget->bottom - widget->top - 21;
+        int32_t view_size = widget->height() - 21;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             view_size -= 11;
         int32_t y = scroll->v_top * view_size;
@@ -2172,7 +2170,7 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
             y /= scroll->v_bottom;
         scroll->v_thumb_top = y + 11;
 
-        y = widget->bottom - widget->top - 2;
+        y = widget->height() - 2;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             y -= 11;
         y += scroll->v_top;
@@ -2186,8 +2184,8 @@ void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
         {
             double barPosition = (scroll->v_thumb_bottom * 1.0) / view_size;
 
-            scroll->v_thumb_top = (uint16_t)std::lround(scroll->v_thumb_top - (20 * barPosition));
-            scroll->v_thumb_bottom = (uint16_t)std::lround(scroll->v_thumb_bottom + (20 * (1 - barPosition)));
+            scroll->v_thumb_top = static_cast<uint16_t>(std::lround(scroll->v_thumb_top - (20 * barPosition)));
+            scroll->v_thumb_bottom = static_cast<uint16_t>(std::lround(scroll->v_thumb_bottom + (20 * (1 - barPosition))));
         }
     }
 }

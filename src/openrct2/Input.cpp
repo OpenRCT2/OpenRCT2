@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,7 @@
 
 #include "Context.h"
 
-INPUT_STATE _inputState;
+InputState _inputState;
 uint8_t _inputFlags;
 uint8_t gInputPlaceObjectModifier;
 
@@ -63,12 +63,12 @@ void input_reset_flags()
     _inputFlags = 0;
 }
 
-void input_set_state(INPUT_STATE state)
+void input_set_state(InputState state)
 {
     _inputState = state;
 }
 
-INPUT_STATE input_get_state()
+InputState input_get_state()
 {
     return _inputState;
 }

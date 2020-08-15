@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -99,7 +99,7 @@ void scenario_begin()
         gParkFlags |= PARK_FLAGS_NO_MONEY;
     research_reset_current_item();
     scenery_set_default_placement_configuration();
-    news_item_init_queue();
+    News::InitQueue();
     if (gScenarioObjectiveType != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         context_open_window_view(WV_PARK_OBJECTIVE);
 
@@ -189,7 +189,7 @@ static void scenario_end()
  */
 void scenario_failure()
 {
-    gScenarioCompletedCompanyValue = 0x80000001;
+    gScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
     scenario_end();
 }
 
@@ -246,7 +246,7 @@ static void scenario_entrance_fee_too_high_check()
             uint32_t packed_xy = (y << 16) | x;
             if (gConfigNotifications.park_warnings)
             {
-                news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+                News::AddItemToQueue(News::ItemType::Blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
             }
         }
     }
@@ -326,7 +326,7 @@ static void scenario_week_update()
     ride_check_all_reachable();
     ride_update_favourited_stat();
 
-    auto water_type = (rct_water_type*)object_entry_get_chunk(OBJECT_TYPE_WATER, 0);
+    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(OBJECT_TYPE_WATER, 0));
 
     if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
     {
@@ -359,7 +359,7 @@ static void scenario_update_daynight_cycle()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle)
     {
-        float monthFraction = gDateMonthTicks / (float)0x10000;
+        float monthFraction = gDateMonthTicks / static_cast<float>(0x10000);
         if (monthFraction < (1 / 8.0f))
         {
             gDayNightCycle = 0.0f;
@@ -514,7 +514,7 @@ uint32_t scenario_rand_max(uint32_t max)
         return 0;
     if ((max & (max - 1)) == 0)
         return scenario_rand() & (max - 1);
-    uint32_t rand, cap = ~((uint32_t)0) - (~((uint32_t)0) % max) - 1;
+    uint32_t rand, cap = ~(static_cast<uint32_t>(0)) - (~(static_cast<uint32_t>(0)) % max) - 1;
     do
     {
         rand = scenario_rand();
@@ -656,9 +656,9 @@ void scenario_fix_ghosts(rct_s6_data* s6)
                     if (bannerIndex != RCT12_BANNER_INDEX_NULL)
                     {
                         auto banner = &s6->banners[bannerIndex];
-                        if (banner->type != BANNER_NULL)
+                        if (banner->type != RCT12_OBJECT_ENTRY_INDEX_NULL)
                         {
-                            banner->type = BANNER_NULL;
+                            banner->type = RCT12_OBJECT_ENTRY_INDEX_NULL;
                             if (is_user_string_id(banner->string_idx))
                                 s6->custom_strings[(banner->string_idx % RCT12_MAX_USER_STRINGS)][0] = 0;
                         }
@@ -793,39 +793,39 @@ static void scenario_objective_check_guests_and_rating()
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
+                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
             }
         }
         else if (gScenarioParkRatingWarningDays == 8)
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
+                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
             }
         }
         else if (gScenarioParkRatingWarningDays == 15)
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
+                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
             }
         }
         else if (gScenarioParkRatingWarningDays == 22)
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
+                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
             }
         }
         else if (gScenarioParkRatingWarningDays == 29)
         {
-            news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
+            News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
             gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
             scenario_failure();
             gGuestInitialHappiness = 50;
         }
     }
-    else if (gScenarioCompletedCompanyValue != (money32)0x80000001)
+    else if (gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
     {
         gScenarioParkRatingWarningDays = 0;
     }
@@ -971,4 +971,18 @@ static void scenario_objective_check()
             scenario_objective_check_monthly_food_income();
             break;
     }
+}
+
+bool ObjectiveNeedsMoney(const uint8_t objective)
+{
+    switch (objective)
+    {
+        case OBJECTIVE_PARK_VALUE_BY:
+        case OBJECTIVE_MONTHLY_RIDE_INCOME:
+        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_MONTHLY_FOOD_INCOME:
+            return true;
+    }
+
+    return false;
 }

@@ -16,7 +16,6 @@
 
 #    include <cstdio>
 #    include <stdexcept>
-#    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
 #    include <winhttp.h>
 
@@ -177,10 +176,16 @@ namespace Http
             if (hConnect == nullptr)
                 ThrowWin32Exception("WinHttpConnect");
 
+            auto dwFlags = 0;
+            if (lstrcmpiW(std::wstring(url.lpszScheme, url.dwSchemeLength).c_str(), L"https") == 0)
+            {
+                dwFlags = WINHTTP_FLAG_SECURE;
+            }
+
             auto wVerb = GetVerb(req.method);
             auto wQuery = std::wstring(url.lpszUrlPath, url.dwUrlPathLength);
             hRequest = WinHttpOpenRequest(
-                hConnect, wVerb, wQuery.c_str(), NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, WINHTTP_FLAG_SECURE);
+                hConnect, wVerb, wQuery.c_str(), NULL, WINHTTP_NO_REFERER, WINHTTP_DEFAULT_ACCEPT_TYPES, dwFlags);
             if (hRequest == nullptr)
                 ThrowWin32Exception("WinHttpOpenRequest");
 

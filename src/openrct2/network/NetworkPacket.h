@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,19 +16,24 @@
 #include <memory>
 #include <vector>
 
-class NetworkPacket final
+#pragma pack(push, 1)
+struct PacketHeader
 {
-public:
     uint16_t Size = 0;
-    std::shared_ptr<std::vector<uint8_t>> Data = std::make_shared<std::vector<uint8_t>>();
-    size_t BytesTransferred = 0;
-    size_t BytesRead = 0;
+    NetworkCommand Id = NetworkCommand::Invalid;
+};
+static_assert(sizeof(PacketHeader) == 6);
+#pragma pack(pop)
 
-    static std::unique_ptr<NetworkPacket> Allocate();
-    static std::unique_ptr<NetworkPacket> Duplicate(NetworkPacket& packet);
+struct NetworkPacket final
+{
+    NetworkPacket() = default;
+    NetworkPacket(NetworkCommand id);
 
     uint8_t* GetData();
-    int32_t GetCommand() const;
+    const uint8_t* GetData() const;
+
+    NetworkCommand GetCommand() const;
 
     void Clear();
     bool CommandRequiresAuth();
@@ -36,14 +41,14 @@ public:
     const uint8_t* Read(size_t size);
     const utf8* ReadString();
 
-    void Write(const uint8_t* bytes, size_t size);
+    void Write(const void* bytes, size_t size);
     void WriteString(const utf8* string);
 
     template<typename T> NetworkPacket& operator>>(T& value)
     {
-        if (BytesRead + sizeof(value) > Size)
+        if (BytesRead + sizeof(value) > Header.Size)
         {
-            value = 0;
+            value = T{};
         }
         else
         {
@@ -58,14 +63,19 @@ public:
     template<typename T> NetworkPacket& operator<<(T value)
     {
         T swapped = ByteSwapBE(value);
-        uint8_t* bytes = (uint8_t*)&swapped;
-        Data->insert(Data->end(), bytes, bytes + sizeof(value));
+        Write(&swapped, sizeof(T));
         return *this;
     }
 
     NetworkPacket& operator<<(DataSerialiser& data)
     {
-        Write((const uint8_t*)data.GetStream().GetData(), data.GetStream().GetLength());
+        Write(static_cast<const uint8_t*>(data.GetStream().GetData()), data.GetStream().GetLength());
         return *this;
     }
+
+public:
+    PacketHeader Header{};
+    std::vector<uint8_t> Data;
+    size_t BytesTransferred = 0;
+    size_t BytesRead = 0;
 };

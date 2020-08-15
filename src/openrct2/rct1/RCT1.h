@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,6 +28,7 @@ constexpr const uint8_t RCT1_RESEARCH_FLAGS_SEPARATOR = 0xFF;
 constexpr const uint16_t RCT1_MAX_ANIMATED_OBJECTS = 1000;
 constexpr const uint8_t RCT1_MAX_BANNERS = 100;
 constexpr int32_t RCT1_COORDS_Z_STEP = 4;
+constexpr const uint32_t RCT1_NUM_LL_CSG_ENTRIES = 69917;
 
 struct ParkLoadResult;
 
@@ -142,7 +143,7 @@ struct rct1_ride
     uint8_t chairlift_bullwheel_z[2];         // 0x0EE
     union
     {
-        rating_tuple ratings;
+        RatingTuple ratings;
         struct
         {
             ride_rating excitement; // 0x0F0
@@ -175,7 +176,7 @@ struct rct1_ride
     uint8_t pad_11F[0x7];              // 0x11F
     uint8_t spiral_slide_progress;     // 0x126
     uint8_t pad_127[0x9];              // 0x127
-    int16_t build_date;                // 0x130
+    uint16_t build_date;               // 0x130
     money16 upkeep_cost;               // 0x131
     uint16_t race_winner;              // 0x132
     uint8_t unk_134[2];                // 0x134
@@ -266,19 +267,19 @@ struct rct1_vehicle : RCT12SpriteBase
     uint16_t var_44;
     uint16_t mass;         // 0x46
     uint16_t update_flags; // 0x48
-    uint8_t swing_sprite;
+    uint8_t SwingSprite;
     uint8_t current_station; // 0x4B
     union
     {
-        int16_t swinging_car_var_0; // 0x4C
-        int16_t current_time;       // 0x4C
+        int16_t SwingPosition; // 0x4C
+        int16_t current_time;  // 0x4C
         struct
         {
             int8_t ferris_wheel_var_0; // 0x4C
             int8_t ferris_wheel_var_1; // 0x4D
         };
     };
-    int16_t var_4E;
+    int16_t SwingSpeed;
     uint8_t status;                  // 0x50
     uint8_t sub_state;               // 0x51
     uint16_t peep[32];               // 0x52
@@ -500,7 +501,7 @@ enum RCT1_PEEP_SPRITE_TYPE
     RCT1_PEEP_SPRITE_TYPE_HEAD_DOWN = 23,
     RCT1_PEEP_SPRITE_TYPE_NAUSEOUS = 24,
     RCT1_PEEP_SPRITE_TYPE_VERY_NAUSEOUS = 25,
-    RCT1_PEEP_SPRITE_TYPE_REQUIRE_BATHROOM = 26,
+    RCT1_PEEP_SPRITE_TYPE_REQUIRE_TOILET = 26,
     RCT1_PEEP_SPRITE_TYPE_HAT = 27,
     RCT1_PEEP_SPRITE_TYPE_BURGER = 28,
     RCT1_PEEP_SPRITE_TYPE_TENTACLE = 29,
@@ -671,8 +672,8 @@ struct rct1_s4
     uint32_t game_time_counter;
     rct1_ride rides[RCT12_MAX_RIDES_IN_PARK];
     uint16_t unk_game_time_counter;
-    uint16_t view_x;
-    uint16_t view_y;
+    int16_t view_x;
+    int16_t view_y;
     uint8_t view_zoom;
     uint8_t view_rotation;
     RCT12MapAnimation map_animations[RCT1_MAX_ANIMATED_OBJECTS];

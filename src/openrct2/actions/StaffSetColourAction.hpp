@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -65,14 +65,12 @@ public:
         }
 
         // Update each staff member's uniform
-        int32_t spriteIndex;
-        Peep* peep;
-        FOR_ALL_PEEPS (spriteIndex, peep)
+        for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
-            if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == _staffType)
+            if (peep->StaffType == _staffType)
             {
-                peep->tshirt_colour = _colour;
-                peep->trousers_colour = _colour;
+                peep->TshirtColour = _colour;
+                peep->TrousersColour = _colour;
             }
         }
 

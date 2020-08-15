@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -52,6 +52,7 @@ bool gCheatsAllowArbitraryRideTypeChanges = false;
 bool gCheatsDisableRideValueAging = false;
 bool gCheatsIgnoreResearchStatus = false;
 bool gCheatsEnableAllDrawableTrackPieces = false;
+bool gCheatsAllowTrackPlaceInvalidHeights = false;
 
 void CheatsReset()
 {
@@ -75,6 +76,8 @@ void CheatsReset()
     gCheatsAllowArbitraryRideTypeChanges = false;
     gCheatsDisableRideValueAging = false;
     gCheatsIgnoreResearchStatus = false;
+    gCheatsEnableAllDrawableTrackPieces = false;
+    gCheatsAllowTrackPlaceInvalidHeights = false;
 }
 
 void CheatsSet(CheatType cheatType, int32_t param1 /* = 0*/, int32_t param2 /* = 0*/)
@@ -95,7 +98,7 @@ void CheatsSerialise(DataSerialiser& ds)
 
     if (ds.IsSaving())
     {
-        IStream& stream = ds.GetStream();
+        OpenRCT2::IStream& stream = ds.GetStream();
 
         // Temporarily write 0, will be updated after every cheat is written.
         uint64_t countOffset = stream.GetPosition();
@@ -122,6 +125,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::DisableRideValueAging, gCheatsDisableRideValueAging, count);
         CheatEntrySerialise(ds, CheatType::IgnoreResearchStatus, gCheatsIgnoreResearchStatus, count);
         CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, gCheatsEnableAllDrawableTrackPieces, count);
+        CheatEntrySerialise(ds, CheatType::AllowTrackPlaceInvalidHeights, gCheatsAllowTrackPlaceInvalidHeights, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();
@@ -205,6 +209,9 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::EnableAllDrawableTrackPieces:
                     ds << gCheatsEnableAllDrawableTrackPieces;
+                    break;
+                case CheatType::AllowTrackPlaceInvalidHeights:
+                    ds << gCheatsAllowTrackPlaceInvalidHeights;
                     break;
                 default:
                     break;
@@ -309,6 +316,8 @@ const char* CheatsGetName(CheatType cheatType)
             return language_get_string(STR_CHEAT_IGNORE_RESEARCH_STATUS);
         case CheatType::EnableAllDrawableTrackPieces:
             return language_get_string(STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES);
+        case CheatType::AllowTrackPlaceInvalidHeights:
+            return language_get_string(STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS);
         default:
             return "Unknown Cheat";
     }

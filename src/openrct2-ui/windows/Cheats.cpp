@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ParkSetDateAction.hpp>
 #include <openrct2/actions/SetCheatAction.hpp>
 #include <openrct2/config/Config.h>
@@ -108,8 +109,8 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_GUEST_NAUSEA_MIN,
     WIDX_GUEST_NAUSEA_TOLERANCE_MAX,
     WIDX_GUEST_NAUSEA_TOLERANCE_MIN,
-    WIDX_GUEST_BATHROOM_MAX,
-    WIDX_GUEST_BATHROOM_MIN,
+    WIDX_GUEST_TOILET_MAX,
+    WIDX_GUEST_TOILET_MIN,
     WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1,
     WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15,
     WIDX_GUEST_IGNORE_RIDE_INTENSITY,
@@ -160,6 +161,7 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_BUILD_IN_PAUSE_MODE,
     WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES,
     WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,
+    WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,
     WIDX_OPERATION_MODES_GROUP,
     WIDX_SHOW_ALL_OPERATING_MODES,
     WIDX_FAST_LIFT_HILL,
@@ -175,93 +177,79 @@ enum WINDOW_CHEATS_WIDGET_IDX
 
 #pragma region MEASUREMENTS
 
-constexpr int32_t WW = 249;
-constexpr int32_t WH = 300;
-constexpr int32_t TAB_HEIGHT = 43;
-constexpr int32_t XSPA = 5;                                              // X spacing
-constexpr int32_t YSPA = 5;                                              // Y spacing
-constexpr int32_t XOS = 6 + XSPA;                                        // X offset from left
-constexpr int32_t YOS = TAB_HEIGHT + YSPA;                               // Y offset from top (includes tabs height)
-constexpr int32_t BTNW = 110;                                            // button width
-constexpr int32_t BTNH = 16;                                             // button height
-constexpr int32_t OPTW = 220;                                            // Option (checkbox) width (two columns)
-constexpr int32_t OPTH = 10;                                             // Option (checkbox) height (two columns)
-constexpr int32_t GROUP_SPACE = 6;
+static constexpr const rct_string_id WINDOW_TITLE = STR_CHEAT_TITLE;
+static constexpr const int32_t WW = 249;
+static constexpr const int32_t WH = 300;
 
-#define YPL(ROW)        ((int16_t)(YOS + ((BTNH + YSPA) * ROW)))
-#define HPL(ROW)        ((int16_t)(YPL(ROW) + BTNH))
-#define OHPL(ROW)       ((int16_t)(YPL(ROW) + OPTH))
-#define XPL(COL)        ((int16_t)(XOS + ((BTNW + XSPA) * COL)))
-#define WPL(COL)        ((int16_t)(XPL(COL) + BTNW))
-#define OWPL            ((int16_t)(XPL(0) + OPTW))
+static constexpr ScreenSize CHEAT_BUTTON = {110, 17};
+static constexpr ScreenSize CHEAT_CHECK = {221, 12};
+static constexpr ScreenSize CHEAT_SPINNER = {117, 14};
+static constexpr ScreenSize MINMAX_BUTTON = {55, 17};
 
-#define MIN_BTN_LEFT    ((int16_t)(XPL(1)))
-#define MIN_BTN_RIGHT   ((int16_t)(WPL(1) - (BTNW / 2)))
-#define MAX_BTN_LEFT    ((int16_t)(XPL(1.5)))
-#define MAX_BTN_RIGHT   ((int16_t)(WPL(1)))
+static constexpr const int32_t TAB_WIDTH = 31;
+static constexpr const int32_t TAB_HEIGHT = 27;
+static constexpr const int32_t TAB_START = 3;
 
-constexpr int32_t TXTO = 3;  // Text horizontal offset from button left (for button text)
+
 #pragma endregion
 
 #define MAIN_CHEATS_WIDGETS \
-    { WWT_FRAME,            0,  0,          WW - 1, 0,      WH - 1,     0xFFFFFFFF,             STR_NONE },                 /* panel / background   */ \
-    { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_CHEAT_TITLE,        STR_WINDOW_TITLE_TIP },     /* title bar            */ \
-    { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3, 2,      13,         STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },     /* close x button       */ \
-    { WWT_IMGBTN,           1,  0,          WW - 1, 43,     WH - 1,     0xFFFFFFFF,             STR_NONE },                 /* tab content panel    */ \
-    { WWT_TAB,              1,  3,          33,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCIAL_CHEATS_TIP }, /* tab 1                */ \
-    { WWT_TAB,              1,  34,         64,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_GUEST_CHEATS_TIP },     /* tab 2                */ \
-    { WWT_TAB,              1,  65,         95,     17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_PARK_CHEATS_TIP },      /* tab 3                */ \
-    { WWT_TAB,              1,  96,         126,    17,     43,         IMAGE_TYPE_REMAP | SPR_TAB,   STR_RIDE_CHEATS_TIP }       /* tab 4                */
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+    MakeWidget     ({ 0, 43}, {WW, 257}, WWT_IMGBTN, 1                                      ), /* tab content panel */ \
+    MakeRemapWidget({ 3, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_FINANCIAL_CHEATS_TIP), /* tab 1 */ \
+    MakeRemapWidget({34, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_GUEST_CHEATS_TIP    ), /* tab 2 */ \
+    MakeRemapWidget({65, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_PARK_CHEATS_TIP     ), /* tab 3 */ \
+    MakeRemapWidget({96, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_RIDE_CHEATS_TIP     )  /* tab 4 */
 
 static rct_widget window_cheats_money_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(0),         HPL(0),         STR_MAKE_PARK_NO_MONEY,             STR_NONE },                             // No money
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(1),         HPL(3.5),       STR_ADD_SET_MONEY,                  STR_NONE },                             // add / set money group frame
-      SPINNER_WIDGETS      (1,      XPL(0),                 WPL(1) - 10,            YPL(2) + 2,     HPL(2) - 3,     STR_NONE,                           STR_NONE),                              // money value (3 widgets)
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_ADD_MONEY,                      STR_NONE },                             // add money
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(3),         HPL(3),         STR_SET_MONEY,                      STR_NONE },                             // set money
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_CHEAT_CLEAR_LOAN,               STR_NONE },                             // Clear loan
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(6.5),       HPL(10.5),      STR_DATE_SET,                       STR_NONE },                             // Date group
-      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(7) + 2,     HPL(7) - 3,     STR_NONE,                           STR_NONE),                              // Year box (3 widgets)
-      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(8) + 2,     HPL(8) - 3,     STR_NONE,                           STR_NONE),                              // Month box (3 widgets)
-      SPINNER_WIDGETS      (1,      WPL(0),                 WPL(1) - 10,            YPL(9) + 2,     HPL(9) - 3,     STR_NONE,                           STR_NONE),                              // Day box (3 widgets)
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(10),        HPL(10),        STR_DATE_SET,                       STR_NONE },                             // Set Date
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(10),        HPL(10),        STR_DATE_RESET,                     STR_NONE },                             // Reset Date
+    MakeWidget        ({ 11,  48}, CHEAT_BUTTON,  WWT_CHECKBOX, 1, STR_MAKE_PARK_NO_MONEY), // No money
+    MakeWidget        ({  5,  69}, {238,  69},    WWT_GROUPBOX, 1, STR_ADD_SET_MONEY     ), // add / set money group frame
+    MakeSpinnerWidgets({ 11,  92}, CHEAT_SPINNER, WWT_SPINNER,  1                        ), // money value
+    MakeWidget        ({ 11, 111}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_ADD_MONEY         ), // add money
+    MakeWidget        ({127, 111}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_SET_MONEY         ), // set money
+    MakeWidget        ({ 11, 153}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_CHEAT_CLEAR_LOAN  ), // Clear loan
+    MakeWidget        ({  5, 184}, {238, 101},    WWT_GROUPBOX, 1, STR_DATE_SET          ), // Date group
+    MakeSpinnerWidgets({120, 197}, CHEAT_SPINNER, WWT_SPINNER,  1                        ), // Year box
+    MakeSpinnerWidgets({120, 218}, CHEAT_SPINNER, WWT_SPINNER,  1                        ), // Month box
+    MakeSpinnerWidgets({120, 239}, CHEAT_SPINNER, WWT_SPINNER,  1                        ), // Day box
+    MakeWidget        ({ 11, 258}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_DATE_SET          ), // Set Date
+    MakeWidget        ({127, 258}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_DATE_RESET        ), // Reset Date
     { WIDGETS_END },
 };
 
 static rct_widget window_cheats_guests_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(0),         HPL(12.5),      STR_CHEAT_SET_GUESTS_PARAMETERS,    STR_NONE },                             // Guests parameters group frame
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(1),         HPL(1),         STR_MAX,                            STR_NONE },                             // happiness max
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(1),         HPL(1),         STR_MIN,                            STR_NONE },                             // happiness min
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(2),         HPL(2),         STR_MAX,                            STR_NONE },                             // energy max
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(2),         HPL(2),         STR_MIN,                            STR_NONE },                             // energy min
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(3),         HPL(3),         STR_MAX,                            STR_NONE },                             // hunger max
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(3),         HPL(3),         STR_MIN,                            STR_NONE },                             // hunger min
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(4),         HPL(4),         STR_MAX,                            STR_NONE },                             // thirst max
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(4),         HPL(4),         STR_MIN,                            STR_NONE },                             // thirst min
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(5),         HPL(5),         STR_MAX,                            STR_NONE },                             // nausea max
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(5),         HPL(5),         STR_MIN,                            STR_NONE },                             // nausea min
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(6),         HPL(6),         STR_MAX,                            STR_NONE },                             // nausea tolerance max
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(6),         HPL(6),         STR_MIN,                            STR_NONE },                             // nausea tolerance min
-    { WWT_BUTTON,           1,      MAX_BTN_LEFT,           MAX_BTN_RIGHT,          YPL(7),         HPL(7),         STR_MAX,                            STR_NONE },                             // bathroom max
-    { WWT_BUTTON,           1,      MIN_BTN_LEFT,           MIN_BTN_RIGHT,          YPL(7),         HPL(7),         STR_MIN,                            STR_NONE },                             // bathroom min
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(9),         HPL(9),         STR_CHEAT_MORE_THAN_1,              STR_NONE },                             // ride intensity > 1
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(9),         HPL(9),         STR_CHEAT_LESS_THAN_15,             STR_NONE },                             // ride intensity < 15
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(10),        OHPL(10),       STR_CHEAT_IGNORE_INTENSITY,         STR_CHEAT_IGNORE_INTENSITY_TIP },       // guests ignore intensity
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(11),        OHPL(11),       STR_CHEAT_DISABLE_VANDALISM,        STR_CHEAT_DISABLE_VANDALISM_TIP },      // disable vandalism
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(12),        OHPL(12),       STR_CHEAT_DISABLE_LITTERING,        STR_CHEAT_DISABLE_LITTERING_TIP },      // disable littering
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(14),        HPL(16.5),      STR_CHEAT_GIVE_ALL_GUESTS,          STR_NONE },                             // Guests parameters group frame
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(15),        HPL(15),        STR_CHEAT_CURRENCY_FORMAT,          STR_NONE },                             // give guests money
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(15),        HPL(15),        STR_SHOP_ITEM_PLURAL_PARK_MAP,      STR_NONE },                             // give guests park maps
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(16),        HPL(16),        STR_SHOP_ITEM_PLURAL_BALLOON,       STR_NONE },                             // give guests balloons
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(16),        HPL(16),        STR_SHOP_ITEM_PLURAL_UMBRELLA,      STR_NONE },                             // give guests umbrellas
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(18),        HPL(18),        STR_CHEAT_LARGE_TRAM_GUESTS,        STR_CHEAT_LARGE_TRAM_GUESTS_TIP },      // large tram
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(18),        HPL(18),        STR_CHEAT_REMOVE_ALL_GUESTS,        STR_CHEAT_REMOVE_ALL_GUESTS_TIP },      // remove all guests
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(19),        HPL(19),        STR_CHEAT_EXPLODE,                  STR_CHEAT_EXPLODE_TIP },                // explode guests
+    MakeWidget({  5,  48}, {238, 279},    WWT_GROUPBOX, 1, STR_CHEAT_SET_GUESTS_PARAMETERS                                 ), // Guests parameters group frame
+    MakeWidget({183,  69}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MAX                                                         ), // happiness max
+    MakeWidget({127,  69}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MIN                                                         ), // happiness min
+    MakeWidget({183,  90}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MAX                                                         ), // energy max
+    MakeWidget({127,  90}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MIN                                                         ), // energy min
+    MakeWidget({183, 111}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MAX                                                         ), // hunger max
+    MakeWidget({127, 111}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MIN                                                         ), // hunger min
+    MakeWidget({183, 132}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MAX                                                         ), // thirst max
+    MakeWidget({127, 132}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MIN                                                         ), // thirst min
+    MakeWidget({183, 153}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MAX                                                         ), // nausea max
+    MakeWidget({127, 153}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MIN                                                         ), // nausea min
+    MakeWidget({183, 174}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MAX                                                         ), // nausea tolerance max
+    MakeWidget({127, 174}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MIN                                                         ), // nausea tolerance min
+    MakeWidget({183, 195}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MAX                                                         ), // toilet max
+    MakeWidget({127, 195}, MINMAX_BUTTON, WWT_BUTTON,   1, STR_MIN                                                         ), // toilet min
+    MakeWidget({127, 237}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_CHEAT_MORE_THAN_1                                           ), // ride intensity > 1
+    MakeWidget({ 11, 237}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_CHEAT_LESS_THAN_15                                          ), // ride intensity < 15
+    MakeWidget({ 11, 258}, CHEAT_CHECK,   WWT_CHECKBOX, 1, STR_CHEAT_IGNORE_INTENSITY,      STR_CHEAT_IGNORE_INTENSITY_TIP ), // guests ignore intensity
+    MakeWidget({ 11, 279}, CHEAT_CHECK,   WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_VANDALISM,     STR_CHEAT_DISABLE_VANDALISM_TIP), // disable vandalism
+    MakeWidget({ 11, 300}, CHEAT_CHECK,   WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_LITTERING,     STR_CHEAT_DISABLE_LITTERING_TIP), // disable littering
+    MakeWidget({  5, 342}, {238,  69},    WWT_GROUPBOX, 1, STR_CHEAT_GIVE_ALL_GUESTS                                       ), // Guests parameters group frame
+    MakeWidget({ 11, 363}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_CHEAT_CURRENCY_FORMAT                                       ), // give guests money
+    MakeWidget({127, 363}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_SHOP_ITEM_PLURAL_PARK_MAP                                   ), // give guests park maps
+    MakeWidget({ 11, 384}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_SHOP_ITEM_PLURAL_BALLOON                                    ), // give guests balloons
+    MakeWidget({127, 384}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
+    MakeWidget({ 11, 426}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
+    MakeWidget({127, 426}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_CHEAT_REMOVE_ALL_GUESTS,     STR_CHEAT_REMOVE_ALL_GUESTS_TIP), // remove all guests
+    MakeWidget({ 11, 447}, CHEAT_BUTTON,  WWT_BUTTON,   1, STR_CHEAT_EXPLODE,               STR_CHEAT_EXPLODE_TIP          ), // explode guests
     { WIDGETS_END },
 };
 
@@ -269,56 +257,56 @@ static rct_widget window_cheats_guests_widgets[] =
 static rct_widget window_cheats_misc_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(0),         HPL(7.25),      STR_CHEAT_GENERAL_GROUP,            STR_NONE },                             // General group
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(1),         HPL(1),         STR_CHEAT_OPEN_PARK,                STR_CHEAT_OPEN_PARK_TIP },              // open / close park
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(2),         HPL(2),         STR_CREATE_DUCKS,                   STR_CREATE_DUCKS_TIP },                 // Create ducks
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(1),         HPL(1),         STR_CHEAT_PARK_PARAMETERS,          STR_CHEAT_PARK_PARAMETERS_TIP },        // Park parameters
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(2),         HPL(2),         STR_REMOVE_DUCKS,                   STR_REMOVE_DUCKS_TIP },                 // Remove ducks
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },           // Own all land
-    { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_FORCE_PARK_RATING,              STR_NONE },                             // Force park rating
-      SPINNER_WIDGETS      (1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE),                              // park rating (3 widgets)
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(6),         HPL(6),         STR_CHEAT_WIN_SCENARIO,             STR_NONE },                             // Win scenario
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(6),         HPL(6),         STR_CHEAT_HAVE_FUN,                 STR_NONE },                             // Have fun!
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(7),         HPL(7),         STR_CHEAT_NEVERENDING_MARKETING,    STR_CHEAT_NEVERENDING_MARKETING_TIP },  // never ending marketing campaigns
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(8.25),      HPL(10.5),      STR_CHEAT_WEATHER_GROUP,            STR_NONE },                             // Weather group
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(9),         HPL(9),         STR_CHEAT_FREEZE_WEATHER,           STR_CHEAT_FREEZE_WEATHER_TIP },         // Freeze weather
-    { WWT_DROPDOWN,         1,      XPL(1),                 WPL(1),                 YPL(10) + 2,    YPL(10) + 13,   STR_NONE,                           STR_FORCE_WEATHER_TOOLTIP },            // Force weather
-    { WWT_BUTTON,           1,      WPL(1) - 11,            WPL(1) - 1,             YPL(10) + 3,    YPL(10) + 12,   STR_DROPDOWN_GLYPH,                 STR_FORCE_WEATHER_TOOLTIP },            // Force weather
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(12),        HPL(17.5),      STR_CHEAT_STAFF_GROUP,              STR_NONE },                             // Staff group
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(13),        HPL(13),        STR_CHEAT_CLEAR_GRASS,              STR_NONE },                             // Clear grass
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(13),        HPL(13),        STR_CHEAT_MOWED_GRASS,              STR_NONE },                             // Mowed grass
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(14),        HPL(14),        STR_CHEAT_WATER_PLANTS,             STR_NONE },                             // Water plants
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(14),        HPL(14),        STR_CHEAT_FIX_VANDALISM,            STR_NONE },                             // Fix vandalism
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(15),        HPL(15),        STR_CHEAT_REMOVE_LITTER,            STR_NONE },                             // Remove litter
-    { WWT_CHECKBOX,         1,      XPL(0),                 WPL(1),                 YPL(16),        HPL(16),        STR_CHEAT_DISABLE_PLANT_AGING,      STR_CHEAT_DISABLE_PLANT_AGING_TIP },    // Disable plant ageing
-    { WWT_DROPDOWN,         1,      XPL(1),                 WPL(1),                 YPL(17) + 2,    YPL(17) + 13,   STR_NONE,                           STR_NONE },                             // Staff speed
-    { WWT_BUTTON,           1,      WPL(1) - 11,            WPL(1) - 1,             YPL(17) + 3,    YPL(17) + 12,   STR_DROPDOWN_GLYPH,                 STR_NONE },                             // Staff speed
+    MakeWidget        ({  5,  48}, {238, 169},   WWT_GROUPBOX, 1, STR_CHEAT_GENERAL_GROUP                                             ), // General group
+    MakeWidget        ({ 11,  69}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
+    MakeWidget        ({ 11,  90}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP               ), // Create ducks
+    MakeWidget        ({127,  69}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_PARK_PARAMETERS,       STR_CHEAT_PARK_PARAMETERS_TIP      ), // Park parameters
+    MakeWidget        ({127,  90}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP               ), // Remove ducks
+    MakeWidget        ({ 11, 111}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
+    MakeWidget        ({ 11, 153}, CHEAT_BUTTON, WWT_CHECKBOX, 1, STR_FORCE_PARK_RATING                                               ), // Force park rating
+    MakeSpinnerWidgets({126, 155}, {111,  12},   WWT_SPINNER,  1                                                                      ), // park rating (3 widgets)
+    MakeWidget        ({ 11, 174}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
+    MakeWidget        ({127, 174}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
+    MakeWidget        ({ 11, 195}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
+    MakeWidget        ({  5, 221}, {238,  64},   WWT_GROUPBOX, 1, STR_CHEAT_WEATHER_GROUP                                             ), // Weather group
+    MakeWidget        ({ 11, 237}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP       ), // Freeze weather
+    MakeWidget        ({126, 258}, {111,  14},   WWT_DROPDOWN, 1, STR_NONE,                        STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
+    MakeWidget        ({225, 259}, { 11,  12},   WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,              STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
+    MakeWidget        ({  5, 300}, {238, 132},   WWT_GROUPBOX, 1, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
+    MakeWidget        ({ 11, 321}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
+    MakeWidget        ({127, 321}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
+    MakeWidget        ({ 11, 342}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
+    MakeWidget        ({127, 342}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
+    MakeWidget        ({ 11, 363}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
+    MakeWidget        ({ 11, 384}, CHEAT_BUTTON, WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
+    MakeWidget        ({126, 405}, {111,  14},   WWT_DROPDOWN, 1                                                                      ), // Staff speed
+    MakeWidget        ({225, 406}, { 11,  12},   WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
     { WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(0),         HPL(0),         STR_CHEAT_FIX_ALL_RIDES,                        STR_CHEAT_FIX_ALL_RIDES_TIP },          // Fix all rides
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(0),         HPL(0),         STR_CHEAT_RENEW_RIDES,                          STR_CHEAT_RENEW_RIDES_TIP },            // Renew rides
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(1),         HPL(1),         STR_CHEAT_MAKE_DESTRUCTABLE,                    STR_CHEAT_MAKE_DESTRUCTABLE_TIP },      // All destructible
-    { WWT_BUTTON,           1,      XPL(1),                 WPL(1),                 YPL(1),         HPL(1),         STR_CHEAT_RESET_CRASH_STATUS,                   STR_CHEAT_RESET_CRASH_STATUS_TIP },     // Reset crash status
-    { WWT_BUTTON,           1,      XPL(0),                 WPL(0),                 YPL(2),         HPL(2),         STR_CHEAT_10_MINUTE_INSPECTIONS,                STR_CHEAT_10_MINUTE_INSPECTIONS_TIP },  // 10 minute inspections
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(3.25),      HPL(6.25),      STR_CHEAT_GROUP_CONSTRUCTION,                   STR_NONE },                             // Construction group
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(4),         OHPL(4),        STR_CHEAT_BUILD_IN_PAUSE_MODE,                  STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP },    // Build in pause mode
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(5),         OHPL(5),        STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP},   // Show all drawable track pieces
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(6),         OHPL(6),        STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP },    // Enable chain lift on all track
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(7.25),      HPL(12.25),     STR_CHEAT_GROUP_OPERATION,                      STR_NONE },                             // Construction group
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(8),         OHPL(8),        STR_CHEAT_SHOW_ALL_OPERATING_MODES,             STR_NONE },                             // Show all operating modes
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(9),         OHPL(9),        STR_CHEAT_UNLOCK_OPERATING_LIMITS,              STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP },// 410 km/h lift hill etc.
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(10),        OHPL(10),       STR_CHEAT_DISABLE_BRAKES_FAILURE,               STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP }, // Disable brakes failure
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(11),        OHPL(11),       STR_CHEAT_DISABLE_BREAKDOWNS,                   STR_CHEAT_DISABLE_BREAKDOWNS_TIP },     // Disable all breakdowns
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(12),        OHPL(12),       STR_CHEAT_DISABLE_RIDE_VALUE_AGING,             STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP }, // Disable ride ageing
-    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(13.25),     HPL(17.25),     STR_CHEAT_GROUP_AVAILABILITY,                   STR_NONE },                             // Construction group
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(14),        OHPL(14),       STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP },  // Allow arbitrary ride type changes
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(15),        OHPL(15),       STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, STR_NONE },                 // Show vehicles from other track types
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(16),        OHPL(16),       STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP }, // Disable train length limits
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(17),        OHPL(17),       STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP},    // Ignore Research Status
-
+    MakeWidget({ 11,  48}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_FIX_ALL_RIDES,                        STR_CHEAT_FIX_ALL_RIDES_TIP                    ), // Fix all rides
+    MakeWidget({127,  48}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_RENEW_RIDES,                          STR_CHEAT_RENEW_RIDES_TIP                      ), // Renew rides
+    MakeWidget({ 11,  69}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_MAKE_DESTRUCTABLE,                    STR_CHEAT_MAKE_DESTRUCTABLE_TIP                ), // All destructible
+    MakeWidget({127,  69}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_RESET_CRASH_STATUS,                   STR_CHEAT_RESET_CRASH_STATUS_TIP               ), // Reset crash status
+    MakeWidget({ 11,  90}, CHEAT_BUTTON, WWT_BUTTON,   1, STR_CHEAT_10_MINUTE_INSPECTIONS,                STR_CHEAT_10_MINUTE_INSPECTIONS_TIP            ), // 10 minute inspections
+    MakeWidget({  5, 116}, {238, 101},   WWT_GROUPBOX, 1, STR_CHEAT_GROUP_CONSTRUCTION                                                                   ), // Construction group
+    MakeWidget({ 11, 132}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_BUILD_IN_PAUSE_MODE,                  STR_CHEAT_BUILD_IN_PAUSE_MODE_TIP              ), // Build in pause mode
+    MakeWidget({ 11, 153}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP ), // Show all drawable track pieces
+    MakeWidget({ 11, 174}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP   ), // Enable chain lift on all track
+    MakeWidget({ 11, 195}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP), // Allow track place at invalid heights
+    MakeWidget({  5, 221}, {238, 122},   WWT_GROUPBOX, 1, STR_CHEAT_GROUP_OPERATION                                                                      ), // Construction group
+    MakeWidget({ 11, 237}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_SHOW_ALL_OPERATING_MODES                                                             ), // Show all operating modes
+    MakeWidget({ 11, 258}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_UNLOCK_OPERATING_LIMITS,              STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP          ), // 410 km/h lift hill etc.
+    MakeWidget({ 11, 279}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_BRAKES_FAILURE,               STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP           ), // Disable brakes failure
+    MakeWidget({ 11, 300}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_BREAKDOWNS,                   STR_CHEAT_DISABLE_BREAKDOWNS_TIP               ), // Disable all breakdowns
+    MakeWidget({ 11, 321}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_RIDE_VALUE_AGING,             STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP         ), // Disable ride ageing
+    MakeWidget({  5, 347}, {238, 101},   WWT_GROUPBOX, 1, STR_CHEAT_GROUP_AVAILABILITY                                                                   ), // Construction group
+    MakeWidget({ 11, 363}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP), // Allow arbitrary ride type changes
+    MakeWidget({ 11, 384}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
+    MakeWidget({ 11, 405}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
+    MakeWidget({ 11, 426}, CHEAT_CHECK,  WWT_CHECKBOX, 1, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           ), // Ignore Research Status
     { WIDGETS_END },
 };
 
@@ -520,8 +508,8 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_GUEST_NAUSEA_MIN) |
     (1ULL << WIDX_GUEST_NAUSEA_TOLERANCE_MAX) |
     (1ULL << WIDX_GUEST_NAUSEA_TOLERANCE_MIN) |
-    (1ULL << WIDX_GUEST_BATHROOM_MAX) |
-    (1ULL << WIDX_GUEST_BATHROOM_MIN) |
+    (1ULL << WIDX_GUEST_TOILET_MAX) |
+    (1ULL << WIDX_GUEST_TOILET_MIN) |
     (1ULL << WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1) |
     (1ULL << WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15) |
     (1ULL << WIDX_GUEST_IGNORE_RIDE_INTENSITY) |
@@ -577,7 +565,8 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES) |
     (1ULL << WIDX_DISABLE_RIDE_VALUE_AGING) |
     (1ULL << WIDX_IGNORE_RESEARCH_STATUS) |
-    (1ULL << WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES)
+    (1ULL << WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES) |
+    (1ULL << WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS)
 };
 
 static uint64_t window_cheats_page_hold_down_widgets[] = {
@@ -658,26 +647,26 @@ static void window_cheats_money_mousedown(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_MONTH_UP:
             _monthSpinnerValue++;
-            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, (int)MONTH_COUNT);
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, (int)days_in_month[_monthSpinnerValue - 1]);
+            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_MONTH_DOWN:
             _monthSpinnerValue--;
-            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, (int)MONTH_COUNT);
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, (int)days_in_month[_monthSpinnerValue - 1]);
+            _monthSpinnerValue = std::clamp(_monthSpinnerValue, 1, static_cast<int32_t>(MONTH_COUNT));
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_MONTH_BOX);
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DAY_UP:
             _daySpinnerValue++;
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, (int)days_in_month[_monthSpinnerValue - 1]);
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DAY_DOWN:
             _daySpinnerValue--;
-            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, (int)days_in_month[_monthSpinnerValue - 1]);
+            _daySpinnerValue = std::clamp(_daySpinnerValue, 1, static_cast<int32_t>(days_in_month[_monthSpinnerValue - 1]));
             widget_invalidate(w, WIDX_DAY_BOX);
             break;
         case WIDX_DATE_SET:
@@ -734,9 +723,8 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsArgs[i] = WeatherTypes[i];
             }
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
-                dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 6,
-                dropdownWidget->right - dropdownWidget->left - 3);
+                { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 6, dropdownWidget->width() - 3);
 
             currentWeather = gClimateCurrent.Weather;
             dropdown_set_checked(currentWeather, true);
@@ -755,9 +743,8 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
             }
 
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
-                dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3,
-                dropdownWidget->right - dropdownWidget->left - 3);
+                { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3, dropdownWidget->width() - 3);
             dropdown_set_checked(_selectedStaffSpeed, true);
         }
     }
@@ -869,11 +856,11 @@ static void window_cheats_guests_mouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_GUEST_NAUSEA_TOLERANCE_MIN:
             CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, PEEP_NAUSEA_TOLERANCE_NONE);
             break;
-        case WIDX_GUEST_BATHROOM_MAX:
-            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_BATHROOM, PEEP_MAX_BATHROOM);
+        case WIDX_GUEST_TOILET_MAX:
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, PEEP_MAX_TOILET);
             break;
-        case WIDX_GUEST_BATHROOM_MIN:
-            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_BATHROOM, 0);
+        case WIDX_GUEST_TOILET_MIN:
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, 0);
             break;
         case WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1:
             CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY, 1);
@@ -1074,6 +1061,15 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES:
             CheatsSet(CheatType::EnableAllDrawableTrackPieces, !gCheatsEnableAllDrawableTrackPieces);
             break;
+        case WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS:
+        {
+            if (!gCheatsAllowTrackPlaceInvalidHeights)
+            {
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+            }
+            CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gCheatsAllowTrackPlaceInvalidHeights);
+        }
+        break;
     }
 }
 
@@ -1121,6 +1117,8 @@ static void window_cheats_invalidate(rct_window* w)
     // Set title
     w->widgets[WIDX_TITLE].text = window_cheats_page_titles[w->page];
 
+    auto ft = Formatter::Common();
+
     switch (w->page)
     {
         case WINDOW_CHEATS_PAGE_MONEY:
@@ -1141,7 +1139,7 @@ static void window_cheats_invalidate(rct_window* w)
         }
         break;
         case WINDOW_CHEATS_PAGE_GUESTS:
-            set_format_arg(0, int32_t, 10000);
+            ft.Add<int32_t>(MONEY(1000, 00));
             widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
             widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
             widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
@@ -1155,7 +1153,7 @@ static void window_cheats_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
             break;
         case WINDOW_CHEATS_PAGE_RIDES:
-            set_format_arg(0, uint16_t, 255);
+            ft.Add<uint16_t>(255);
             widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gCheatsFastLiftHill);
             widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gCheatsDisableBrakesFailure);
             widget_set_checkbox_value(w, WIDX_DISABLE_ALL_BREAKDOWNS, gCheatsDisableAllBreakdowns);
@@ -1168,6 +1166,7 @@ static void window_cheats_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_DISABLE_RIDE_VALUE_AGING, gCheatsDisableRideValueAging);
             widget_set_checkbox_value(w, WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
             widget_set_checkbox_value(w, WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
+            widget_set_checkbox_value(w, WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gCheatsAllowTrackPlaceInvalidHeights);
             break;
     }
 
@@ -1175,73 +1174,85 @@ static void window_cheats_invalidate(rct_window* w)
     window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrent.Weather];
     // Staff speed
     window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
+
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
+        w->disabled_widgets |= (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_NO_MONEY);
+    }
+}
+
+static void window_cheats_update_tab_positions(rct_window* w)
+{
+    constexpr const uint16_t tabs[] = {
+        WIDX_TAB_1,
+        WIDX_TAB_2,
+        WIDX_TAB_3,
+        WIDX_TAB_4,
+    };
+
+    int32_t left = TAB_START;
+
+    for (auto tab : tabs)
+    {
+        w->widgets[tab].left = left;
+        if (!(w->disabled_widgets & (1ULL << tab)))
+        {
+            left += TAB_WIDTH;
+        }
+    }
 }
 
 static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
+    window_cheats_update_tab_positions(w);
     window_draw_widgets(w, dpi);
     window_cheats_draw_tab_images(dpi, w);
+
+    static constexpr int16_t X_LCOL = 14;
+    static constexpr int16_t X_RCOL = 208;
 
     if (w->page == WINDOW_CHEATS_PAGE_MONEY)
     {
         uint8_t colour = w->colours[1];
-        set_format_arg(0, money32, _moneySpinnerValue);
+        auto ft = Formatter::Common();
+        ft.Add<money32>(_moneySpinnerValue);
         if (widget_is_disabled(w, WIDX_MONEY_SPINNER))
         {
             colour |= COLOUR_FLAG_INSET;
         }
         int32_t actual_month = _monthSpinnerValue - 1;
         gfx_draw_string_left(
-            dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->windowPos.x + XPL(0) + TXTO,
-            w->windowPos.y + YPL(2) + TXTO);
-        gfx_draw_string_left(
-            dpi, STR_YEAR, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(7) + TXTO);
-        gfx_draw_string_left(
-            dpi, STR_MONTH, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(8) + TXTO);
-        gfx_draw_string_left(
-            dpi, STR_DAY, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(9) + TXTO);
+            dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->windowPos + ScreenCoordsXY{ X_LCOL, 93 });
+        gfx_draw_string_left(dpi, STR_YEAR, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 198 });
+        gfx_draw_string_left(dpi, STR_MONTH, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 219 });
+        gfx_draw_string_left(dpi, STR_DAY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 240 });
         gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_yearSpinnerValue, w->colours[1], w->windowPos.x + WPL(1) - 34 - TXTO,
-            w->windowPos.y + YPL(7) + TXTO);
+            dpi, STR_FORMAT_INTEGER, &_yearSpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 198 });
         gfx_draw_string_right(
-            dpi, STR_FORMAT_MONTH, &actual_month, w->colours[1], w->windowPos.x + WPL(1) - 34 - TXTO,
-            w->windowPos.y + YPL(8) + TXTO);
+            dpi, STR_FORMAT_MONTH, &actual_month, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 219 });
         gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_daySpinnerValue, w->colours[1], w->windowPos.x + WPL(1) - 34 - TXTO,
-            w->windowPos.y + YPL(9) + TXTO);
+            dpi, STR_FORMAT_INTEGER, &_daySpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 240 });
     }
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
-        gfx_draw_string_left(
-            dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(17) + TXTO);
-        gfx_draw_string_left(
-            dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(10) + TXTO);
+        gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 408 });
+        gfx_draw_string_left(dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 261 });
         gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_parkRatingSpinnerValue, w->colours[1], w->windowPos.x + WPL(1) - 34 - TXTO,
-            w->windowPos.y + YPL(5) + TXTO);
+            dpi, STR_FORMAT_INTEGER, &_parkRatingSpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 156 });
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
     {
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_HAPPINESS, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO,
-            w->windowPos.y + YPL(1) + TXTO);
+            dpi, STR_CHEAT_GUEST_HAPPINESS, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 72 });
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_ENERGY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 93 });
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HUNGER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 114 });
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_THIRST, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 135 });
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_NAUSEA, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 156 });
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_ENERGY, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(2) + TXTO);
+            dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 177 });
+        gfx_draw_string_left(dpi, STR_CHEAT_GUEST_TOILET, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 198 });
         gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_HUNGER, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(3) + TXTO);
-        gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_THIRST, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(4) + TXTO);
-        gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_NAUSEA, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO, w->windowPos.y + YPL(5) + TXTO);
-        gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_NAUSEA_TOLERANCE, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO,
-            w->windowPos.y + YPL(6) + TXTO);
-        gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_BATHROOM, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO,
-            w->windowPos.y + YPL(7) + TXTO);
-        gfx_draw_string_left(
-            dpi, STR_CHEAT_GUEST_PREFERRED_INTENSITY, nullptr, COLOUR_BLACK, w->windowPos.x + XPL(0) + TXTO,
-            w->windowPos.y + YPL(8) + TXTO);
+            dpi, STR_CHEAT_GUEST_PREFERRED_INTENSITY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 219 });
     }
 }
 
@@ -1256,7 +1267,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
         if (w->page == WINDOW_CHEATS_PAGE_MONEY)
             sprite_idx += (w->frame_no / 2) % 8;
         gfx_draw_sprite(
-            dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_1].left, w->windowPos.y + w->widgets[WIDX_TAB_1].top, 0);
+            dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_1].left, w->widgets[WIDX_TAB_1].top }, 0);
     }
 
     // Guests tab
@@ -1266,7 +1277,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
         if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
             sprite_idx += (w->frame_no / 3) % 8;
         gfx_draw_sprite(
-            dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_2].left, w->windowPos.y + w->widgets[WIDX_TAB_2].top, 0);
+            dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_2].left, w->widgets[WIDX_TAB_2].top }, 0);
     }
 
     // Misc tab
@@ -1274,7 +1285,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
     {
         sprite_idx = SPR_TAB_PARK;
         gfx_draw_sprite(
-            dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_3].left, w->windowPos.y + w->widgets[WIDX_TAB_3].top, 0);
+            dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_3].left, w->widgets[WIDX_TAB_3].top }, 0);
     }
 
     // Rides tab
@@ -1284,7 +1295,7 @@ static void window_cheats_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
         if (w->page == WINDOW_CHEATS_PAGE_RIDES)
             sprite_idx += (w->frame_no / 4) % 16;
         gfx_draw_sprite(
-            dpi, sprite_idx, w->windowPos.x + w->widgets[WIDX_TAB_4].left, w->windowPos.y + w->widgets[WIDX_TAB_4].top, 0);
+            dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_4].left, w->widgets[WIDX_TAB_4].top }, 0);
     }
 }
 
@@ -1304,7 +1315,7 @@ static void window_cheats_set_page(rct_window* w, int32_t page)
     rct_widget* widget = &w->widgets[WIDX_TAB_CONTENT];
     while (widget->type != WWT_LAST)
     {
-        maxY = std::max(maxY, (int32_t)widget->bottom);
+        maxY = std::max(maxY, static_cast<int32_t>(widget->bottom));
         widget++;
     }
     maxY += 6;

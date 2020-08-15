@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,6 @@
 
 #include <SDL.h>
 #include <algorithm>
-#include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/AudioSource.h>
 #include <openrct2/common.h>
 #include <vector>
@@ -37,17 +36,17 @@ namespace OpenRCT2::Audio
         }
 
     public:
-        ~MemoryAudioSource()
+        ~MemoryAudioSource() override
         {
             Unload();
         }
 
-        uint64_t GetLength() const override
+        [[nodiscard]] uint64_t GetLength() const override
         {
             return _length;
         }
 
-        AudioFormat GetFormat() const override
+        [[nodiscard]] AudioFormat GetFormat() const override
         {
             return _format;
         }
@@ -126,7 +125,7 @@ namespace OpenRCT2::Audio
                     SDL_RWread(rw, &pcmSize, sizeof(pcmSize), 1);
                     _length = pcmSize;
 
-                    WaveFormatEx waveFormat;
+                    WaveFormatEx waveFormat{};
                     SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
                     _format.freq = waveFormat.frequency;
                     _format.format = AUDIO_S16LSB;

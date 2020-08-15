@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,6 +46,13 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("setting", _setting);
+        visitor.Visit("value", _value);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
@@ -63,7 +70,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride: #%d.", (int32_t)_rideIndex);
+            log_warning("Invalid ride: #%d.", static_cast<int32_t>(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
         }
 
@@ -81,7 +88,7 @@ public:
                     return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_CHANGE_OPERATING_MODE, STR_MUST_BE_CLOSED_FIRST);
                 }
 
-                if (!ride_is_mode_valid(ride))
+                if (!ride_is_mode_valid(ride) && !gCheatsShowAllOperatingModes)
                 {
                     log_warning("Invalid ride mode: %u", _value);
                     return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
@@ -168,7 +175,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride: #%d.", (int32_t)_rideIndex);
+            log_warning("Invalid ride: #%d.", static_cast<int32_t>(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
         }
 
@@ -255,23 +262,13 @@ public:
 private:
     bool ride_is_mode_valid(Ride * ride) const
     {
-        const uint8_t* availableModes = ride_seek_available_modes(ride);
-
-        for (; *availableModes != 0xFF; availableModes++)
-        {
-            if (*availableModes == _value)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return RideTypeDescriptors[ride->type].RideModes & (1ULL << _value);
     }
 
     bool ride_is_valid_lift_hill_speed(Ride * ride) const
     {
-        int32_t minSpeed = gCheatsFastLiftHill ? 0 : RideLiftData[ride->type].minimum_speed;
-        int32_t maxSpeed = gCheatsFastLiftHill ? 255 : RideLiftData[ride->type].maximum_speed;
+        int32_t minSpeed = gCheatsFastLiftHill ? 0 : RideTypeDescriptors[ride->type].LiftData.minimum_speed;
+        int32_t maxSpeed = gCheatsFastLiftHill ? 255 : RideTypeDescriptors[ride->type].LiftData.maximum_speed;
         return _value >= minSpeed && _value <= maxSpeed;
     }
 
@@ -284,8 +281,9 @@ private:
 
     bool ride_is_valid_operation_option(Ride * ride) const
     {
-        uint8_t minValue = RideProperties[ride->type].min_value;
-        uint8_t maxValue = RideProperties[ride->type].max_value;
+        const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+        uint8_t minValue = operatingSettings.MinValue;
+        uint8_t maxValue = operatingSettings.MaxValue;
         if (gCheatsFastLiftHill)
         {
             minValue = 0;
@@ -303,7 +301,7 @@ private:
                 return STR_CANT_CHANGE_SPEED;
             case RIDE_MODE_RACE:
                 return STR_CANT_CHANGE_NUMBER_OF_LAPS;
-            case RIDE_MODE_BUMPERCAR:
+            case RIDE_MODE_DODGEMS:
                 return STR_CANT_CHANGE_TIME_LIMIT;
             case RIDE_MODE_SWING:
                 return STR_CANT_CHANGE_NUMBER_OF_SWINGS;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -96,7 +96,7 @@ private:
     std::unordered_map<std::string, std::string, StringIHash, StringICmp> _values;
 
 public:
-    explicit IniReader(IStream* stream)
+    explicit IniReader(OpenRCT2::IStream* stream)
     {
         uint64_t length = stream->GetLength() - stream->GetPosition();
         _buffer.resize(length);
@@ -155,6 +155,23 @@ public:
         return result;
     }
 
+    int64_t GetInt64(const std::string& name, int64_t defaultValue) const override
+    {
+        int64_t result = defaultValue;
+        std::string value;
+        if (TryGetString(name, &value))
+        {
+            try
+            {
+                result = std::stoll(value);
+            }
+            catch (const std::exception&)
+            {
+            }
+        }
+        return result;
+    }
+
     float GetFloat(const std::string& name, float defaultValue) const override
     {
         float result = defaultValue;
@@ -201,7 +218,7 @@ private:
         {
             return;
         }
-        utf8* file = (utf8*)_buffer.data();
+        utf8* file = reinterpret_cast<utf8*>(_buffer.data());
         utf8* content = String::SkipBOM(file);
         if (file != content)
         {
@@ -216,7 +233,7 @@ private:
         bool onNewLineCh = false;
         for (size_t i = 0; i < _buffer.size(); i++)
         {
-            char b = (char)_buffer[i];
+            char b = static_cast<char>(_buffer[i]);
             if (b == 0 || b == '\n' || b == '\r')
             {
                 if (!onNewLineCh)
@@ -363,7 +380,7 @@ private:
 
     std::string GetLine(size_t index)
     {
-        utf8* szBuffer = (utf8*)_buffer.data();
+        utf8* szBuffer = reinterpret_cast<utf8*>(_buffer.data());
         auto span = _lines[index];
         auto line = std::string(szBuffer + span.Start, span.Length);
         return line;
@@ -384,6 +401,11 @@ public:
     }
 
     int32_t GetInt32([[maybe_unused]] const std::string& name, int32_t defaultValue) const override
+    {
+        return defaultValue;
+    }
+
+    int64_t GetInt64([[maybe_unused]] const std::string& name, int64_t defaultValue) const override
     {
         return defaultValue;
     }
@@ -415,7 +437,7 @@ utf8* IIniReader::GetCString(const std::string& name, const utf8* defaultValue) 
     return String::Duplicate(szValue.c_str());
 }
 
-IIniReader* CreateIniReader(IStream* stream)
+IIniReader* CreateIniReader(OpenRCT2::IStream* stream)
 {
     return new IniReader(stream);
 }

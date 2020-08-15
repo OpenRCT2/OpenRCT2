@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,6 +22,8 @@
 #include <cmath>
 
 #ifdef _WIN32
+    #pragma comment(lib, "Ws2_32.lib")
+
     // winsock2 must be included before windows.h
     #include <winsock2.h>
     #include <ws2tcpip.h>
@@ -109,11 +111,11 @@ public:
     {
         if (_address.sa_family == AF_INET)
         {
-            return ((sockaddr_in*)&_address)->sin_port;
+            return reinterpret_cast<const sockaddr_in*>(&_address)->sin_port;
         }
         else
         {
-            return ((sockaddr_in6*)&_address)->sin6_port;
+            return reinterpret_cast<const sockaddr_in6*>(&_address)->sin6_port;
         }
     }
 
@@ -156,7 +158,7 @@ protected:
     static bool SetOption(SOCKET socket, int32_t a, int32_t b, bool value)
     {
         int32_t ivalue = value ? 1 : 0;
-        return setsockopt(socket, a, b, (const char*)&ivalue, sizeof(ivalue)) == 0;
+        return setsockopt(socket, a, b, reinterpret_cast<const char*>(&ivalue), sizeof(ivalue)) == 0;
     }
 
 private:
@@ -187,7 +189,7 @@ private:
         else
         {
             std::memcpy(ss, result->ai_addr, result->ai_addrlen);
-            *ss_len = (socklen_t)result->ai_addrlen;
+            *ss_len = static_cast<socklen_t>(result->ai_addrlen);
             freeaddrinfo(result);
             return true;
         }
@@ -201,6 +203,7 @@ private:
     uint16_t _listeningPort = 0;
     SOCKET _socket = INVALID_SOCKET;
 
+    std::string _ipAddress;
     std::string _hostName;
     std::future<void> _connectFuture;
     std::string _error;
@@ -255,13 +258,13 @@ public:
 
         // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
         int32_t value = 0;
-        if (setsockopt(_socket, IPPROTO_IPV6, IPV6_V6ONLY, (const char*)&value, sizeof(value)) != 0)
+        if (setsockopt(_socket, IPPROTO_IPV6, IPV6_V6ONLY, reinterpret_cast<const char*>(&value), sizeof(value)) != 0)
         {
             log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
         }
 
         value = 1;
-        if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, (const char*)&value, sizeof(value)) != 0)
+        if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&value), sizeof(value)) != 0)
         {
             log_error("SO_REUSEADDR failed. %d", LAST_SOCKET_ERROR());
         }
@@ -269,7 +272,7 @@ public:
         try
         {
             // Bind to address:port and listen
-            if (bind(_socket, (sockaddr*)&ss, ss_len) != 0)
+            if (bind(_socket, reinterpret_cast<sockaddr*>(&ss), ss_len) != 0)
             {
                 throw SocketException("Unable to bind to socket.");
             }
@@ -305,7 +308,7 @@ public:
         socklen_t client_len = sizeof(struct sockaddr_storage);
 
         std::unique_ptr<ITcpSocket> tcpSocket;
-        SOCKET socket = accept(_socket, (struct sockaddr*)&client_addr, &client_len);
+        SOCKET socket = accept(_socket, reinterpret_cast<struct sockaddr*>(&client_addr), &client_len);
         if (socket == INVALID_SOCKET)
         {
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
@@ -322,18 +325,21 @@ public:
             }
             else
             {
+                auto ipAddress = GetIpAddressFromSocket(reinterpret_cast<sockaddr_in*>(&client_addr));
+
                 char hostName[NI_MAXHOST];
                 int32_t rc = getnameinfo(
-                    (struct sockaddr*)&client_addr, client_len, hostName, sizeof(hostName), nullptr, 0,
+                    reinterpret_cast<struct sockaddr*>(&client_addr), client_len, hostName, sizeof(hostName), nullptr, 0,
                     NI_NUMERICHOST | NI_NUMERICSERV);
                 SetOption(socket, IPPROTO_TCP, TCP_NODELAY, true);
+
                 if (rc == 0)
                 {
-                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, hostName));
+                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, hostName, ipAddress));
                 }
                 else
                 {
-                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, ""));
+                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, "", ipAddress));
                 }
             }
         }
@@ -373,7 +379,7 @@ public:
             }
 
             // Connect
-            int32_t connectResult = connect(_socket, (sockaddr*)&ss, ss_len);
+            int32_t connectResult = connect(_socket, reinterpret_cast<sockaddr*>(&ss), ss_len);
             if (connectResult != SOCKET_ERROR || (LAST_SOCKET_ERROR() != EINPROGRESS && LAST_SOCKET_ERROR() != EWOULDBLOCK))
             {
                 throw SocketException("Failed to connect.");
@@ -383,7 +389,7 @@ public:
 
             int32_t error = 0;
             socklen_t len = sizeof(error);
-            if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len) != 0)
+            if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, reinterpret_cast<char*>(&error), &len) != 0)
             {
                 throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
             }
@@ -406,11 +412,11 @@ public:
                 timeval timeout{};
                 timeout.tv_sec = 0;
                 timeout.tv_usec = 0;
-                if (select((int32_t)(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
+                if (select(static_cast<int32_t>(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)
                 {
                     error = 0;
                     len = sizeof(error);
-                    if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, (char*)&error, &len) != 0)
+                    if (getsockopt(_socket, SOL_SOCKET, SO_ERROR, reinterpret_cast<char*>(&error), &len) != 0)
                     {
                         throw SocketException("getsockopt failed with error: " + std::to_string(LAST_SOCKET_ERROR()));
                     }
@@ -476,9 +482,9 @@ public:
         size_t totalSent = 0;
         do
         {
-            const char* bufferStart = (const char*)buffer + totalSent;
+            const char* bufferStart = static_cast<const char*>(buffer) + totalSent;
             size_t remainingSize = size - totalSent;
-            int32_t sentBytes = send(_socket, bufferStart, (int32_t)remainingSize, FLAG_NO_PIPE);
+            int32_t sentBytes = send(_socket, bufferStart, static_cast<int32_t>(remainingSize), FLAG_NO_PIPE);
             if (sentBytes == SOCKET_ERROR)
             {
                 return totalSent;
@@ -495,7 +501,7 @@ public:
             throw std::runtime_error("Socket not connected.");
         }
 
-        int32_t readBytes = recv(_socket, (char*)buffer, (int32_t)size, 0);
+        int32_t readBytes = recv(_socket, static_cast<char*>(buffer), static_cast<int32_t>(size), 0);
         if (readBytes == 0)
         {
             *sizeReceived = 0;
@@ -546,11 +552,17 @@ public:
         return _hostName.empty() ? nullptr : _hostName.c_str();
     }
 
+    std::string GetIpAddress() const override
+    {
+        return _ipAddress;
+    }
+
 private:
-    explicit TcpSocket(SOCKET socket, const std::string& hostName)
+    explicit TcpSocket(SOCKET socket, const std::string& hostName, const std::string& ipAddress)
     {
         _socket = socket;
         _hostName = hostName;
+        _ipAddress = ipAddress;
         _status = SOCKET_STATUS_CONNECTED;
     }
 
@@ -562,6 +574,32 @@ private:
             _socket = INVALID_SOCKET;
         }
         _status = SOCKET_STATUS_CLOSED;
+    }
+
+    std::string GetIpAddressFromSocket(const sockaddr_in* addr)
+    {
+        std::string result;
+#    if defined(__MINGW32__)
+        if (addr->sin_family == AF_INET)
+        {
+            result = inet_ntoa(addr->sin_addr);
+        }
+#    else
+        if (addr->sin_family == AF_INET)
+        {
+            char str[INET_ADDRSTRLEN]{};
+            inet_ntop(AF_INET, &addr->sin_addr, str, sizeof(str));
+            result = str;
+        }
+        else if (addr->sin_family == AF_INET6)
+        {
+            auto addrv6 = reinterpret_cast<const sockaddr_in6*>(&addr);
+            char str[INET6_ADDRSTRLEN]{};
+            inet_ntop(AF_INET6, &addrv6->sin6_addr, str, sizeof(str));
+            result = str;
+        }
+#    endif
+        return result;
     }
 };
 
@@ -618,7 +656,7 @@ public:
         try
         {
             // Bind to address:port and listen
-            if (bind(_socket, (sockaddr*)&ss, ss_len) != 0)
+            if (bind(_socket, reinterpret_cast<sockaddr*>(&ss), ss_len) != 0)
             {
                 throw SocketException("Unable to bind to socket.");
             }
@@ -641,7 +679,7 @@ public:
         {
             throw SocketException("Unable to resolve address.");
         }
-        NetworkEndpoint endpoint((const sockaddr*)&ss, ss_len);
+        NetworkEndpoint endpoint(reinterpret_cast<const sockaddr*>(&ss), ss_len);
         return SendData(endpoint, buffer, size);
     }
 
@@ -668,9 +706,11 @@ public:
         size_t totalSent = 0;
         do
         {
-            const char* bufferStart = (const char*)buffer + totalSent;
+            const char* bufferStart = static_cast<const char*>(buffer) + totalSent;
             size_t remainingSize = size - totalSent;
-            int32_t sentBytes = sendto(_socket, bufferStart, (int32_t)remainingSize, FLAG_NO_PIPE, (const sockaddr*)ss, ss_len);
+            int32_t sentBytes = sendto(
+                _socket, bufferStart, static_cast<int32_t>(remainingSize), FLAG_NO_PIPE, static_cast<const sockaddr*>(ss),
+                ss_len);
             if (sentBytes == SOCKET_ERROR)
             {
                 return totalSent;
@@ -690,7 +730,9 @@ public:
             senderAddrLen = _endpoint.GetAddressLen();
             std::memcpy(&senderAddr, &_endpoint.GetAddress(), senderAddrLen);
         }
-        auto readBytes = recvfrom(_socket, (char*)buffer, (int32_t)size, 0, (sockaddr*)&senderAddr, &senderAddrLen);
+        auto readBytes = recvfrom(
+            _socket, static_cast<char*>(buffer), static_cast<int32_t>(size), 0, reinterpret_cast<sockaddr*>(&senderAddr),
+            &senderAddrLen);
         if (readBytes <= 0)
         {
             *sizeReceived = 0;
@@ -701,7 +743,7 @@ public:
             *sizeReceived = readBytes;
             if (sender != nullptr)
             {
-                *sender = std::make_unique<NetworkEndpoint>((sockaddr*)&senderAddr, senderAddrLen);
+                *sender = std::make_unique<NetworkEndpoint>(reinterpret_cast<sockaddr*>(&senderAddr), senderAddrLen);
             }
             return NETWORK_READPACKET_SUCCESS;
         }
@@ -886,7 +928,7 @@ std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
     const char* buf_end = buf + ifconfx.ifc_len;
     for (const char* p = buf; p < buf_end;)
     {
-        auto req = (const ifreq*)p;
+        auto req = reinterpret_cast<const ifreq*>(p);
         if (req->ifr_addr.sa_family == AF_INET)
         {
             ifreq r;

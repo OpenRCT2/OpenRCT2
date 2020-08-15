@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
 #include "Map.h"
@@ -32,67 +33,73 @@
 
 static Banner _banners[MAX_BANNERS];
 
+namespace
+{
+    template<uint32_t TFrom, uint32_t TTo> struct CodePointToUtf8
+    {
+        constexpr CodePointToUtf8()
+        {
+            for (uint32_t i = TFrom; i <= TTo; ++i)
+            {
+                utf8_write_codepoint(m_colors[i - TFrom], i);
+            }
+        }
+
+        constexpr auto operator()(uint8_t colourId) const
+        {
+            return m_colors[colourId];
+        }
+
+        using Utf8Colour = utf8[5]; // A 32bit codepoint uses at most 4 bytes in utf8
+        Utf8Colour m_colors[TTo - TFrom + 1]{};
+    };
+} // namespace
+
+static constexpr CodePointToUtf8<FORMAT_COLOUR_CODE_START, FORMAT_COLOUR_CODE_END> colourToUtf8;
+
 std::string Banner::GetText() const
 {
     uint8_t args[32]{};
-    FormatTextTo(args);
+    Formatter ft(args);
+    FormatTextTo(ft);
     return format_string(STR_STRINGID, args);
 }
 
-size_t Banner::FormatTextTo(void* argsV, bool addColour) const
+void Banner::FormatTextTo(Formatter& ft, bool addColour) const
 {
-    auto args = static_cast<uint8_t*>(argsV);
-
-    int numColourArgs = 0;
     if (addColour)
     {
-        textColourUtf8.resize(5); // one code point in utf8 takes at most 4 bytes
-        auto terminator = utf8_write_codepoint(textColourUtf8.data(), FORMAT_COLOUR_CODE_START + text_colour);
-        *terminator = '\0';
-
-        set_format_arg_on(args, numColourArgs, rct_string_id, STR_STRING_STRINGID);
-        numColourArgs += sizeof(rct_string_id);
-
-        set_format_arg_on(args, numColourArgs, const char*, textColourUtf8.data());
-        numColourArgs += sizeof(const char*);
-
-        args += numColourArgs;
+        ft.Add<rct_string_id>(STR_STRING_STRINGID).Add<const char*>(colourToUtf8(text_colour));
     }
 
-    return numColourArgs + FormatTextTo(args);
+    FormatTextTo(ft);
 }
 
-size_t Banner::FormatTextTo(void* argsV) const
+void Banner::FormatTextTo(Formatter& ft) const
 {
-    auto args = (uint8_t*)argsV;
     if (flags & BANNER_FLAG_NO_ENTRY)
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_NO_ENTRY);
-        return sizeof(rct_string_id);
+        ft.Add<rct_string_id>(STR_NO_ENTRY).NumBytes();
     }
     else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
         auto ride = get_ride(ride_index);
         if (ride != nullptr)
         {
-            return ride->FormatNameTo(args);
+            ride->FormatNameTo(ft);
         }
         else
         {
-            set_format_arg_on(args, 0, rct_string_id, STR_DEFAULT_SIGN);
-            return sizeof(rct_string_id);
+            ft.Add<rct_string_id>(STR_DEFAULT_SIGN).NumBytes();
         }
     }
     else if (text.empty())
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_DEFAULT_SIGN);
-        return sizeof(rct_string_id);
+        ft.Add<rct_string_id>(STR_DEFAULT_SIGN).NumBytes();
     }
     else
     {
-        set_format_arg_on(args, 0, rct_string_id, STR_STRING);
-        set_format_arg_on(args, 2, const char*, text.c_str());
-        return sizeof(rct_string_id) + sizeof(const char*);
+        ft.Add<rct_string_id>(STR_STRING).Add<const char*>(text.c_str()).NumBytes();
     }
 }
 

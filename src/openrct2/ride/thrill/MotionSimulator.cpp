@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,7 +49,7 @@ static void paint_motionsimulator_vehicle(
         uint16_t spriteIndex = ride->vehicles[0];
         if (spriteIndex != SPRITE_INDEX_NULL)
         {
-            vehicle = GET_VEHICLE(spriteIndex);
+            vehicle = GetEntity<Vehicle>(spriteIndex);
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
             session->CurrentlyDrawnItem = vehicle;
         }

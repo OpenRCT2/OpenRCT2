@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,7 +44,8 @@ namespace Platform
 
     static std::string GetBundlePath()
     {
-        @autoreleasepool {
+        @autoreleasepool
+        {
             NSBundle* bundle = [NSBundle mainBundle];
             if (bundle)
             {
@@ -65,7 +66,7 @@ namespace Platform
 
     std::string GetInstallPath()
     {
-        auto path = std::string(gCustomOpenrctDataPath);
+        auto path = std::string(gCustomOpenRCT2DataPath);
         if (!path.empty())
         {
             path = Path::GetAbsolute(path);
@@ -103,16 +104,17 @@ namespace Platform
         }
     }
 
-    uintptr_t StrDecompToPrecomp(utf8* input)
+    utf8* StrDecompToPrecomp(utf8* input)
     {
-        @autoreleasepool {
+        @autoreleasepool
+        {
             if (input == NULL)
             {
                 return 0;
             }
 
             NSString* inputDecomp = [NSString stringWithUTF8String:input];
-            return reinterpret_cast<uintptr_t>(strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]));
+            return strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
         }
     }
 

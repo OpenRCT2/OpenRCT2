@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,12 +14,16 @@
 #include "../ride/Station.h"
 #include "Banner.h"
 #include "Footpath.h"
-#include "Location.hpp"
 
 struct Banner;
+struct CoordsXY;
 struct rct_scenery_entry;
 struct rct_footpath_entry;
+class TerrainSurfaceObject;
+class TerrainEdgeObject;
 using track_type_t = uint16_t;
+
+constexpr const uint8_t MAX_ELEMENT_HEIGHT = 255;
 
 #pragma pack(push, 1)
 
@@ -103,7 +107,8 @@ struct TileElement : public TileElementBase
 
     template<typename TType, TileElementType TClass> TType* as() const
     {
-        return (TileElementType)GetType() == TClass ? (TType*)this : nullptr;
+        return static_cast<TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(const_cast<TileElement*>(this))
+                                                                 : nullptr;
     }
 
 public:
@@ -163,8 +168,10 @@ public:
     void SetSlope(uint8_t newSlope);
 
     uint32_t GetSurfaceStyle() const;
+    TerrainSurfaceObject* GetSurfaceStyleObject() const;
     void SetSurfaceStyle(uint32_t newStyle);
     uint32_t GetEdgeStyle() const;
+    TerrainEdgeObject* GetEdgeStyleObject() const;
     void SetEdgeStyle(uint32_t newStyle);
 
     bool CanGrassGrow() const;
@@ -257,7 +264,7 @@ public:
 
     bool HasAddition() const;
     uint8_t GetAddition() const;
-    uint8_t GetAdditionEntryIndex() const;
+    ObjectEntryIndex GetAdditionEntryIndex() const;
     rct_scenery_entry* GetAdditionEntry() const;
     void SetAddition(uint8_t newAddition);
 
@@ -367,6 +374,9 @@ public:
     uint8_t GetDoorBState() const;
     void SetDoorAState(uint8_t newState);
     void SetDoorBState(uint8_t newState);
+
+    bool IsStation() const;
+    bool IsBlockStart() const;
 };
 assert_struct_size(TrackElement, 16);
 
@@ -404,7 +414,7 @@ assert_struct_size(SmallSceneryElement, 16);
 struct LargeSceneryElement : TileElementBase
 {
 private:
-    uint16_t EntryIndex;
+    ObjectEntryIndex EntryIndex;
     ::BannerIndex BannerIndex;
     uint8_t SequenceIndex;
     uint8_t Colour[3];
@@ -415,8 +425,8 @@ private:
 #pragma clang diagnostic pop
 
 public:
-    uint16_t GetEntryIndex() const;
-    void SetEntryIndex(uint16_t newIndex);
+    ObjectEntryIndex GetEntryIndex() const;
+    void SetEntryIndex(ObjectEntryIndex newIndex);
     rct_scenery_entry* GetEntry() const;
 
     uint8_t GetSequenceIndex() const;
@@ -632,10 +642,6 @@ enum
 #define TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK 0b00001111
 
 #define TILE_ELEMENT_COLOUR_MASK 0b00011111
-
-#define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0b01110000
-#define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0b00001111
-#define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0b11110000
 
 BannerIndex tile_element_get_banner_index(TileElement* tileElement);
 bool tile_element_is_underground(TileElement* tileElement);

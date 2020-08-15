@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -95,14 +95,14 @@ private:
 
         auto x0 = std::max(_range.GetLeft(), 32);
         auto y0 = std::max(_range.GetTop(), 32);
-        auto x1 = std::min(_range.GetRight(), (int32_t)gMapSizeMaxXY);
-        auto y1 = std::min(_range.GetBottom(), (int32_t)gMapSizeMaxXY);
+        auto x1 = std::min(_range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY));
+        auto y1 = std::min(_range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY));
 
         for (int32_t y = y0; y <= y1; y += COORDS_XY_STEP)
         {
             for (int32_t x = x0; x <= x1; x += COORDS_XY_STEP)
             {
-                if (MapCanClearAt({ x, y }))
+                if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
                 {
                     auto cost = ClearSceneryFromTile({ x, y }, executing);
                     if (cost != MONEY32_UNDEFINED)

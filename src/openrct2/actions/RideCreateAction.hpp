@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,6 +60,24 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("rideType", _rideType);
+        visitor.Visit("rideObject", _subType);
+        visitor.Visit("colour1", _colour1);
+        visitor.Visit("colour2", _colour2);
+    }
+
+    int32_t GetRideType() const
+    {
+        return _rideType;
+    }
+
+    int32_t GetRideObject() const
+    {
+        return _subType;
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
@@ -92,8 +110,8 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
         }
 
-        const track_colour_preset_list* colourPresets = &RideColourPresets[_rideType];
-        if (_colour1 >= colourPresets->count)
+        const auto& colourPresets = RideTypeDescriptors[_rideType].ColourPresets;
+        if (_colour1 >= colourPresets.count)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
@@ -166,49 +184,54 @@ public:
         ride->min_waiting_time = 10;
         ride->max_waiting_time = 60;
         ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
-        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT)
+        if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT)
         {
             ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
         }
-        ride->music = RideData4[ride->type].default_music;
+        ride->music = RideTypeDescriptors[ride->type].DefaultMusic;
 
-        auto rideProperties = RideProperties[ride->type];
-        ride->operation_option = (rideProperties.min_value * 3 + rideProperties.max_value) / 4;
+        const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+        ride->operation_option = (operatingSettings.MinValue * 3 + operatingSettings.MaxValue) / 4;
 
-        ride->lift_hill_speed = RideLiftData[ride->type].minimum_speed;
+        ride->lift_hill_speed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
 
         ride->measurement = {};
-        ride->excitement = (ride_rating)-1;
+        ride->excitement = RIDE_RATING_UNDEFINED;
         ride->cur_num_customers = 0;
         ride->num_customers_timeout = 0;
         ride->chairlift_bullwheel_rotation = 0;
 
-        ride->price = 0;
-        ride->price_secondary = 0;
+        for (auto& price : ride->price)
+        {
+            price = 0;
+        }
+
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            ride->price = RideData4[ride->type].price;
-            ride->price_secondary = RideData4[ride->type].price_secondary;
+            for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
+            {
+                ride->price[i] = RideTypeDescriptors[ride->type].DefaultPrices[i];
+            }
 
-            if (rideEntry->shop_item == SHOP_ITEM_NONE)
+            if (rideEntry->shop_item[0] == SHOP_ITEM_NONE)
             {
                 if (!park_ride_prices_unlocked())
                 {
-                    ride->price = 0;
+                    ride->price[0] = 0;
                 }
             }
             else
             {
-                ride->price = ShopItems[rideEntry->shop_item].DefaultPrice;
+                ride->price[0] = ShopItems[rideEntry->shop_item[0]].DefaultPrice;
             }
-            if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE)
+            if (rideEntry->shop_item[1] != SHOP_ITEM_NONE)
             {
-                ride->price_secondary = ShopItems[rideEntry->shop_item_secondary].DefaultPrice;
+                ride->price[1] = ShopItems[rideEntry->shop_item[1]].DefaultPrice;
             }
 
             if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
             {
-                ride->price = 0;
+                ride->price[0] = 0;
             }
 
             if (ride->type == RIDE_TYPE_TOILETS)
@@ -218,31 +241,22 @@ public:
                     money32 price = ride_get_common_price(ride);
                     if (price != MONEY32_UNDEFINED)
                     {
-                        ride->price = (money16)price;
+                        ride->price[0] = static_cast<money16>(price);
                     }
                 }
             }
 
-            if (rideEntry->shop_item != SHOP_ITEM_NONE)
+            for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
             {
-                if (shop_item_has_common_price(rideEntry->shop_item))
+                if (rideEntry->shop_item[i] != SHOP_ITEM_NONE)
                 {
-                    money32 price = shop_item_get_common_price(ride, rideEntry->shop_item);
-                    if (price != MONEY32_UNDEFINED)
+                    if (shop_item_has_common_price(rideEntry->shop_item[i]))
                     {
-                        ride->price = (money16)price;
-                    }
-                }
-            }
-
-            if (rideEntry->shop_item_secondary != SHOP_ITEM_NONE)
-            {
-                if (shop_item_has_common_price(rideEntry->shop_item_secondary))
-                {
-                    money32 price = shop_item_get_common_price(ride, rideEntry->shop_item_secondary);
-                    if (price != MONEY32_UNDEFINED)
-                    {
-                        ride->price_secondary = (money16)price;
+                        money32 price = shop_item_get_common_price(ride, rideEntry->shop_item[i]);
+                        if (price != MONEY32_UNDEFINED)
+                        {
+                            ride->price[i] = static_cast<money16>(price);
+                        }
                     }
                 }
             }
@@ -253,7 +267,7 @@ public:
                 money32 price = shop_item_get_common_price(ride, SHOP_ITEM_PHOTO);
                 if (price != MONEY32_UNDEFINED)
                 {
-                    ride->price_secondary = (money16)price;
+                    ride->price[1] = static_cast<money16>(price);
                 }
             }
         }

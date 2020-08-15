@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,10 +13,14 @@
 
 #include <string>
 
-interface IStream;
+namespace OpenRCT2
+{
+    struct IStream;
+}
+
 template<typename T> struct IConfigEnum;
 
-interface IIniWriter
+struct IIniWriter
 {
     virtual ~IIniWriter() = default;
 
@@ -24,16 +28,19 @@ interface IIniWriter
 
     virtual void WriteBoolean(const std::string& name, bool value) abstract;
     virtual void WriteInt32(const std::string& name, int32_t value) abstract;
+    virtual void WriteInt64(const std::string& name, int64_t value) abstract;
     virtual void WriteFloat(const std::string& name, float value) abstract;
     virtual void WriteString(const std::string& name, const std::string& value) abstract;
     virtual void WriteEnum(const std::string& name, const std::string& key) abstract;
 
     template<typename T> void WriteEnum(const std::string& name, T value, const IConfigEnum<T>& configEnum)
     {
+        static_assert(sizeof(T) <= sizeof(int32_t), "Type too large");
+
         std::string key = configEnum.GetName(value);
         if (key.empty())
         {
-            WriteInt32(name, value);
+            WriteInt32(name, static_cast<int32_t>(value));
         }
         else
         {
@@ -44,4 +51,4 @@ interface IIniWriter
     void WriteString(const std::string& name, const utf8* value);
 };
 
-IIniWriter* CreateIniWriter(IStream* stream);
+IIniWriter* CreateIniWriter(OpenRCT2::IStream* stream);

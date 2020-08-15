@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -155,23 +155,23 @@ public:
         ConfigureBits(width, height, width);
     }
 
-    void SetPalette(const rct_palette_entry* palette) override
+    void SetPalette(const GamePalette& palette) override
     {
         if (_screenTextureFormat != nullptr)
         {
             for (int32_t i = 0; i < 256; i++)
             {
-                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].red, palette[i].green, palette[i].blue);
+                _paletteHWMapped[i] = SDL_MapRGB(_screenTextureFormat, palette[i].Red, palette[i].Green, palette[i].Blue);
             }
 
 #ifdef __ENABLE_LIGHTFX__
             if (gConfigGeneral.enable_light_fx)
             {
-                auto lightPalette = lightfx_get_palette();
+                auto& lightPalette = lightfx_get_palette();
                 for (int32_t i = 0; i < 256; i++)
                 {
-                    auto src = &lightPalette->entries[i];
-                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src->red, src->green, src->blue, src->alpha);
+                    const auto& src = lightPalette[i];
+                    _lightPaletteHWMapped[i] = SDL_MapRGBA(_screenTextureFormat, src.Red, src.Green, src.Blue, src.Alpha);
                 }
             }
 #endif

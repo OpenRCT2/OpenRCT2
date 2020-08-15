@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -156,7 +156,7 @@ static void lay_down_rc_track_station(
             0, 6, height + 24);
         track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 11);
         track_paint_util_draw_station_inverted(session, rideIndex, direction, height, tileElement, STATION_VARIANT_1);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     }
     else
     {
@@ -183,7 +183,7 @@ static void lay_down_rc_track_station(
             session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
         track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 11);
         track_paint_util_draw_station_2(session, rideIndex, direction, height, tileElement, 9, 11);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     }
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -15154,7 +15154,7 @@ static void lay_down_rc_track_left_quarter_banked_helix_large_up(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_INVERTED_3);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -15288,10 +15288,10 @@ static void lay_down_rc_track_left_quarter_banked_helix_large_up(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height + 16, TUNNEL_3);
+                    paint_util_push_tunnel_right(session, height + 16, TUNNEL_INVERTED_3);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height + 16, TUNNEL_3);
+                    paint_util_push_tunnel_left(session, height + 16, TUNNEL_INVERTED_3);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -15338,7 +15338,7 @@ static void lay_down_rc_track_right_quarter_banked_helix_large_up(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_INVERTED_3);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -15472,10 +15472,10 @@ static void lay_down_rc_track_right_quarter_banked_helix_large_up(
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height + 16, TUNNEL_3);
+                    paint_util_push_tunnel_right(session, height + 16, TUNNEL_INVERTED_3);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height + 16, TUNNEL_3);
+                    paint_util_push_tunnel_left(session, height + 16, TUNNEL_INVERTED_3);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -15522,7 +15522,7 @@ static void lay_down_rc_track_left_quarter_banked_helix_large_down(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_3);
+                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_INVERTED_3);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -15656,10 +15656,10 @@ static void lay_down_rc_track_left_quarter_banked_helix_large_down(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_3);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_INVERTED_3);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_3);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_INVERTED_3);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -15706,7 +15706,7 @@ static void lay_down_rc_track_right_quarter_banked_helix_large_down(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_3);
+                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_INVERTED_3);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -15840,10 +15840,10 @@ static void lay_down_rc_track_right_quarter_banked_helix_large_down(
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_3);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_INVERTED_3);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_3);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_INVERTED_3);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);

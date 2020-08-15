@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -51,11 +51,11 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
 // clang-format on
 
 // clang-format off
-const utf8 BlackUpArrowString[] =       { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xB2, (utf8)(uint8_t)0x00 };
-const utf8 BlackDownArrowString[] =     { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xBC, (utf8)(uint8_t)0x00 };
-const utf8 BlackLeftArrowString[] =     { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x97, (utf8)(uint8_t)0x80, (utf8)(uint8_t)0x00 };
-const utf8 BlackRightArrowString[] =    { (utf8)(uint8_t)0xC2, (utf8)(uint8_t)0x8E, (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x96, (utf8)(uint8_t)0xB6, (utf8)(uint8_t)0x00 };
-const utf8 CheckBoxMarkString[] =       { (utf8)(uint8_t)0xE2, (utf8)(uint8_t)0x9C, (utf8)(uint8_t)0x93, (utf8)(uint8_t)0x00 };
+const utf8 BlackUpArrowString[] =       { static_cast<utf8>(static_cast<uint8_t>(0xC2)), static_cast<utf8>(static_cast<uint8_t>(0x8E)), static_cast<utf8>(static_cast<uint8_t>(0xE2)), static_cast<utf8>(static_cast<uint8_t>(0x96)), static_cast<utf8>(static_cast<uint8_t>(0xB2)), static_cast<utf8>(static_cast<uint8_t>(0x00)) };
+const utf8 BlackDownArrowString[] =     { static_cast<utf8>(static_cast<uint8_t>(0xC2)), static_cast<utf8>(static_cast<uint8_t>(0x8E)), static_cast<utf8>(static_cast<uint8_t>(0xE2)), static_cast<utf8>(static_cast<uint8_t>(0x96)), static_cast<utf8>(static_cast<uint8_t>(0xBC)), static_cast<utf8>(static_cast<uint8_t>(0x00)) };
+const utf8 BlackLeftArrowString[] =     { static_cast<utf8>(static_cast<uint8_t>(0xC2)), static_cast<utf8>(static_cast<uint8_t>(0x8E)), static_cast<utf8>(static_cast<uint8_t>(0xE2)), static_cast<utf8>(static_cast<uint8_t>(0x97)), static_cast<utf8>(static_cast<uint8_t>(0x80)), static_cast<utf8>(static_cast<uint8_t>(0x00)) };
+const utf8 BlackRightArrowString[] =    { static_cast<utf8>(static_cast<uint8_t>(0xC2)), static_cast<utf8>(static_cast<uint8_t>(0x8E)), static_cast<utf8>(static_cast<uint8_t>(0xE2)), static_cast<utf8>(static_cast<uint8_t>(0x96)), static_cast<utf8>(static_cast<uint8_t>(0xB6)), static_cast<utf8>(static_cast<uint8_t>(0x00)) };
+const utf8 CheckBoxMarkString[] =       { static_cast<utf8>(static_cast<uint8_t>(0xE2)), static_cast<utf8>(static_cast<uint8_t>(0x9C)), static_cast<utf8>(static_cast<uint8_t>(0x93)), static_cast<utf8>(static_cast<uint8_t>(0x00)) };
 // clang-format on
 
 void utf8_remove_format_codes(utf8* text, bool allowcolours)
@@ -125,14 +125,118 @@ void language_free_object_string(rct_string_id stringId)
     localisationService.FreeObjectString(stringId);
 }
 
-rct_string_id language_get_object_override_string_id(const char* identifier, uint8_t index)
-{
-    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
-    return localisationService.GetObjectOverrideStringId(identifier, index);
-}
-
 rct_string_id language_allocate_object_string(const std::string& target)
 {
     auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
     return localisationService.AllocateObjectString(target);
+}
+
+std::string language_convert_string_to_tokens(const std::string_view& s)
+{
+    std::string result;
+    result.reserve(s.size() * 4);
+    std::string input = std::string(s);
+    auto readPtr = input.c_str();
+    while (true)
+    {
+        char32_t code = utf8_get_next(readPtr, const_cast<const utf8**>(&readPtr));
+        if (code == 0)
+        {
+            break;
+        }
+        else if (code == '\n')
+        {
+            result.push_back('\n');
+        }
+        else if (utf8_is_format_code(code))
+        {
+            auto token = format_get_token(code);
+            result.push_back('{');
+            result.append(token);
+            result.push_back('}');
+        }
+        else
+        {
+            char buffer[8]{};
+            utf8_write_codepoint(buffer, code);
+            result.append(buffer);
+        }
+    }
+    result.shrink_to_fit();
+    return result;
+}
+
+std::string language_convert_string(const std::string_view& s)
+{
+    enum class PARSE_STATE
+    {
+        DEFAULT,
+        CR,
+        TOKEN,
+    };
+
+    std::string result;
+    std::string token;
+    PARSE_STATE state{};
+    token.reserve(64);
+    result.reserve(s.size() * 2);
+    for (char c : s)
+    {
+        switch (state)
+        {
+            case PARSE_STATE::CR:
+                result.push_back(FORMAT_NEWLINE);
+                state = PARSE_STATE::DEFAULT;
+                [[fallthrough]];
+            case PARSE_STATE::DEFAULT:
+                switch (c)
+                {
+                    case '\r':
+                        state = PARSE_STATE::CR;
+                        break;
+                    case '\n':
+                        result.push_back(FORMAT_NEWLINE);
+                        break;
+                    case '{':
+                        token.clear();
+                        state = PARSE_STATE::TOKEN;
+                        break;
+                    default:
+                        if (static_cast<uint8_t>(c) >= 32)
+                        {
+                            result.push_back(c);
+                        }
+                        break;
+                }
+                break;
+            case PARSE_STATE::TOKEN:
+                if (c == '}')
+                {
+                    auto code = format_get_code(token.c_str());
+                    if (code == 0)
+                    {
+                        int32_t number{};
+                        if (sscanf(token.c_str(), "%d", &number) == 1)
+                        {
+                            auto b = static_cast<uint8_t>(std::clamp(number, 0, 255));
+                            token.push_back(b);
+                        }
+                    }
+                    else
+                    {
+                        char buffer[8]{};
+                        utf8_write_codepoint(buffer, code);
+                        result.append(buffer);
+                    }
+                    state = PARSE_STATE::DEFAULT;
+                }
+                else
+                {
+                    token.push_back(c);
+                }
+                break;
+        }
+    }
+    result.shrink_to_fit();
+    return result;
 }

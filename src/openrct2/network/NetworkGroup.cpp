@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,7 +26,7 @@ NetworkGroup NetworkGroup::FromJson(const json_t* json)
         throw std::runtime_error("Missing group data");
     }
 
-    group.Id = (uint8_t)json_integer_value(jsonId);
+    group.Id = static_cast<uint8_t>(json_integer_value(jsonId));
     group._name = std::string(json_string_value(jsonName));
     std::fill(group.ActionsAllowed.begin(), group.ActionsAllowed.end(), 0);
 

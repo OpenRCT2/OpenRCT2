@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,17 +23,17 @@
 #include <algorithm>
 #include <iterator>
 
-void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(6, STREAM_SEEK_CURRENT);
+    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.tool_id = stream->ReadValue<uint8_t>();
     _legacyType.large_scenery.flags = stream->ReadValue<uint8_t>();
     _legacyType.large_scenery.price = stream->ReadValue<int16_t>();
     _legacyType.large_scenery.removal_price = stream->ReadValue<int16_t>();
-    stream->Seek(5, STREAM_SEEK_CURRENT);
+    stream->Seek(5, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.large_scenery.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     _legacyType.large_scenery.scrolling_mode = stream->ReadValue<uint8_t>();
-    stream->Seek(4, STREAM_SEEK_CURRENT);
+    stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 
@@ -102,19 +102,18 @@ void LargeSceneryObject::Unload()
 
 void LargeSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = (height / 2) - 39;
+    auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) - 39 };
 
     uint32_t imageId = 0xB2D00000 | _legacyType.image;
-    gfx_draw_sprite(dpi, imageId, x, y, 0);
+    gfx_draw_sprite(dpi, imageId, screenCoords, 0);
 }
 
-std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(IStream* stream)
+std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)
 {
     auto tiles = std::vector<rct_large_scenery_tile>();
     while (stream->ReadValue<uint16_t>() != 0xFFFF)
     {
-        stream->Seek(-2, STREAM_SEEK_CURRENT);
+        stream->Seek(-2, OpenRCT2::STREAM_SEEK_CURRENT);
         auto tile = stream->ReadValue<rct_large_scenery_tile>();
         tiles.push_back(tile);
     }

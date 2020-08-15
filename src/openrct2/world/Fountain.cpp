@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,16 +27,6 @@ enum class PATTERN
     DOPEY_JUMPERS,
     FAST_RANDOM_CHASERS,
 };
-
-namespace FOUNTAIN_FLAG
-{
-    const uint32_t FAST = 1 << 0;
-    const uint32_t GOTO_EDGE = 1 << 1;
-    const uint32_t SPLIT = 1 << 2;
-    const uint32_t TERMINATE = 1 << 3;
-    const uint32_t BOUNCE = 1 << 4;
-    const uint32_t DIRECTION = 1 << 7;
-}; // namespace FOUNTAIN_FLAG
 
 static constexpr const std::array<CoordsXY, 8> _fountainDirectionsNegative = {
     CoordsXY{ -COORDS_XY_STEP, 0 },
@@ -79,6 +69,12 @@ const uint8_t _fountainPatternFlags[] = {
     0,                                                                     // DOPEY_JUMPERS
     FOUNTAIN_FLAG::FAST                                                    // FAST_RANDOM_CHASERS
 };
+
+template<> bool SpriteBase::Is<JumpingFountain>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC
+        && (type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW || type == SPRITE_MISC_JUMPING_FOUNTAIN_WATER);
+}
 
 void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement)
 {
@@ -142,7 +138,7 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_height_negative = 36;
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-        sprite_move(newLoc.x, newLoc.y, newLoc.z, jumpingFountain);
+        jumpingFountain->MoveTo(newLoc);
         jumpingFountain->type = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
                                                                       : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
         jumpingFountain->NumTicksAlive = 0;
@@ -162,7 +158,7 @@ void JumpingFountain::Update()
         return;
     }
 
-    invalidate_sprite_0(this);
+    Invalidate0();
     frame++;
 
     switch (type)
@@ -263,7 +259,7 @@ bool JumpingFountain::IsJumpingFountain(const int32_t newType, const CoordsXYZ& 
         if (!tileElement->AsPath()->HasAddition())
             continue;
 
-        const uint8_t additionIndex = tileElement->AsPath()->GetAdditionEntryIndex();
+        const auto additionIndex = tileElement->AsPath()->GetAdditionEntryIndex();
         rct_scenery_entry* sceneryEntry = get_footpath_item_entry(additionIndex);
         if (sceneryEntry != nullptr && sceneryEntry->path_bit.flags & pathBitFlagMask)
         {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -67,7 +67,7 @@ public:
 
     Object* GetLoadedObject(int32_t objectType, size_t index) override
     {
-        if (index >= (size_t)object_entry_group_counts[objectType])
+        if (index >= static_cast<size_t>(object_entry_group_counts[objectType]))
         {
 #ifdef DEBUG
             log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
@@ -117,7 +117,7 @@ public:
                     loadedObject = GetOrLoadObject(ori);
                     if (loadedObject != nullptr)
                     {
-                        if (_loadedObjects.size() <= (size_t)slot)
+                        if (_loadedObjects.size() <= static_cast<size_t>(slot))
                         {
                             _loadedObjects.resize(slot + 1);
                         }
@@ -147,17 +147,16 @@ public:
         log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
     }
 
-    void UnloadObjects(const rct_object_entry* entries, size_t count) override
+    void UnloadObjects(const std::vector<rct_object_entry>& entries) override
     {
         // TODO there are two performance issues here:
         //        - FindObject for every entry which is a dictionary lookup
         //        - GetLoadedObjectIndex for every entry which enumerates _loadedList
 
         size_t numObjectsUnloaded = 0;
-        for (size_t i = 0; i < count; i++)
+        for (const auto& entry : entries)
         {
-            const rct_object_entry* entry = &entries[i];
-            const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
+            const ObjectRepositoryItem* ori = _objectRepository.FindObject(&entry);
             if (ori != nullptr)
             {
                 Object* loadedObject = ori->LoadedObject;
@@ -207,7 +206,8 @@ public:
         for (size_t i = 0; i < numObjects; i++)
         {
             const ObjectRepositoryItem* item = &_objectRepository.GetObjects()[i];
-            if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr)
+            if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr
+                && !item->LoadedObject->IsJsonObject())
             {
                 objects.push_back(item);
             }
@@ -319,11 +319,11 @@ private:
             if (_loadedObjects.size() <= i)
             {
                 _loadedObjects.resize(i + 1);
-                return (int32_t)i;
+                return static_cast<int32_t>(i);
             }
             else if (_loadedObjects[i] == nullptr)
             {
-                return (int32_t)i;
+                return static_cast<int32_t>(i);
             }
         }
         return -1;
@@ -422,23 +422,23 @@ private:
                 switch (loadedObject->GetObjectType())
                 {
                     case OBJECT_TYPE_SMALL_SCENERY:
-                        sceneryEntry = (rct_scenery_entry*)loadedObject->GetLegacyData();
+                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->small_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_LARGE_SCENERY:
-                        sceneryEntry = (rct_scenery_entry*)loadedObject->GetLegacyData();
+                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->large_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_WALLS:
-                        sceneryEntry = (rct_scenery_entry*)loadedObject->GetLegacyData();
+                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->wall.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_BANNERS:
-                        sceneryEntry = (rct_scenery_entry*)loadedObject->GetLegacyData();
+                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->banner.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_PATH_BITS:
-                        sceneryEntry = (rct_scenery_entry*)loadedObject->GetLegacyData();
+                        sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->path_bit.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_SCENERY_GROUP:
@@ -707,7 +707,7 @@ private:
         {
             result += object_entry_group_counts[i];
         }
-        result += (int32_t)entryIndex;
+        result += static_cast<int32_t>(entryIndex);
         return result;
     }
 };
@@ -721,14 +721,14 @@ void* object_manager_get_loaded_object_by_index(size_t index)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.GetLoadedObject(index);
-    return (void*)loadedObject;
+    return static_cast<void*>(loadedObject);
 }
 
 void* object_manager_get_loaded_object(const rct_object_entry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.GetLoadedObject(entry);
-    return (void*)loadedObject;
+    return static_cast<void*>(loadedObject);
 }
 
 ObjectEntryIndex object_manager_get_loaded_object_entry_index(const void* loadedObject)
@@ -743,13 +743,13 @@ void* object_manager_load_object(const rct_object_entry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.LoadObject(entry);
-    return (void*)loadedObject;
+    return static_cast<void*>(loadedObject);
 }
 
-void object_manager_unload_objects(const rct_object_entry* entries, size_t count)
+void object_manager_unload_objects(const std::vector<rct_object_entry>& entries)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    objectManager.UnloadObjects(entries, count);
+    objectManager.UnloadObjects(entries);
 }
 
 void object_manager_unload_all_objects()

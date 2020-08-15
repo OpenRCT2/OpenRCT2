@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,6 +33,14 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("station", _stationNum);
+        visitor.Visit("isExit", _isExit);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags();
@@ -50,7 +58,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride id %d for entrance/exit removal", (int32_t)_rideIndex);
+            log_warning("Invalid ride id %d for entrance/exit removal", static_cast<int32_t>(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -62,6 +70,11 @@ public:
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NOT_ALLOWED_TO_MODIFY_STATION);
+        }
+
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         bool found = false;
@@ -100,8 +113,8 @@ public:
         if (!found)
         {
             log_warning(
-                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, (int32_t)_rideIndex,
-                _stationNum);
+                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y,
+                static_cast<int32_t>(_rideIndex), _stationNum);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -113,7 +126,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride id %d for entrance/exit removal", (int32_t)_rideIndex);
+            log_warning("Invalid ride id %d for entrance/exit removal", static_cast<int32_t>(_rideIndex));
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -160,8 +173,8 @@ public:
         if (!found)
         {
             log_warning(
-                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, (int32_t)_rideIndex,
-                _stationNum);
+                "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y,
+                static_cast<int32_t>(_rideIndex), _stationNum);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 

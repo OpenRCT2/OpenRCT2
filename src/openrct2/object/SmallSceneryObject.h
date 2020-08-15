@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,7 +31,7 @@ public:
         return &_legacyType;
     }
 
-    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
     void ReadJson(IReadObjectContext* context, const json_t* root) override;
     void Load() override;
     void Unload() override;
@@ -39,7 +39,7 @@ public:
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 
 private:
-    static std::vector<uint8_t> ReadFrameOffsets(IStream* stream);
+    static std::vector<uint8_t> ReadFrameOffsets(OpenRCT2::IStream* stream);
     static std::vector<uint8_t> ReadJsonFrameOffsets(const json_t* jFrameOffsets);
     void PerformFixes();
     rct_object_entry GetScgPiratHeader();

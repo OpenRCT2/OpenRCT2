@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -74,24 +74,14 @@ static constexpr const uint8_t * DuckAnimations[] =
 };
 // clang-format on
 
-bool rct_sprite::IsDuck()
+template<> bool SpriteBase::Is<Duck>() const
 {
-    return this->duck.sprite_identifier == SPRITE_IDENTIFIER_MISC && this->duck.type == SPRITE_MISC_DUCK;
-}
-
-Duck* rct_sprite::AsDuck()
-{
-    Duck* result = nullptr;
-    if (IsDuck())
-    {
-        return (Duck*)this;
-    }
-    return result;
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_DUCK;
 }
 
 void Duck::Invalidate()
 {
-    invalidate_sprite_1(this);
+    Invalidate1();
 }
 
 bool Duck::IsFlying()
@@ -103,11 +93,6 @@ void Duck::Remove()
 {
     Invalidate();
     sprite_remove(this);
-}
-
-void Duck::MoveTo(const CoordsXYZ& destination)
-{
-    sprite_move(destination.x, destination.y, destination.z, this);
 }
 
 void Duck::UpdateFlyToWater()
@@ -320,13 +305,16 @@ void create_duck(const CoordsXY& pos)
     targetPos.x += offsetXY;
     targetPos.y += offsetXY;
 
-    sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
-    sprite->duck.type = SPRITE_MISC_DUCK;
-    sprite->duck.sprite_width = 9;
-    sprite->duck.sprite_height_negative = 12;
-    sprite->duck.sprite_height_positive = 9;
-    sprite->duck.target_x = targetPos.x;
-    sprite->duck.target_y = targetPos.y;
+    sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_MISC;
+    sprite->generic.type = SPRITE_MISC_DUCK;
+    auto duck = sprite->generic.As<Duck>();
+    if (duck == nullptr)
+        return; // can never happen
+    duck->sprite_width = 9;
+    duck->sprite_height_negative = 12;
+    duck->sprite_height_positive = 9;
+    duck->target_x = targetPos.x;
+    duck->target_y = targetPos.y;
     uint8_t direction = scenario_rand() & 3;
     switch (direction)
     {
@@ -343,30 +331,30 @@ void create_duck(const CoordsXY& pos)
             targetPos.y = 8191 - (scenario_rand() & 0x3F);
             break;
     }
-    sprite->duck.sprite_direction = direction << 3;
-    sprite_move(targetPos.x, targetPos.y, 496, &sprite->duck);
-    sprite->duck.state = DUCK_STATE::FLY_TO_WATER;
-    sprite->duck.frame = 0;
+    duck->sprite_direction = direction << 3;
+    duck->MoveTo({ targetPos.x, targetPos.y, 496 });
+    duck->state = DUCK_STATE::FLY_TO_WATER;
+    duck->frame = 0;
 }
 
-void duck_update(Duck* duck)
+void Duck::Update()
 {
-    switch ((DUCK_STATE)duck->state)
+    switch (static_cast<DUCK_STATE>(state))
     {
         case DUCK_STATE::FLY_TO_WATER:
-            duck->UpdateFlyToWater();
+            UpdateFlyToWater();
             break;
         case DUCK_STATE::SWIM:
-            duck->UpdateSwim();
+            UpdateSwim();
             break;
         case DUCK_STATE::DRINK:
-            duck->UpdateDrink();
+            UpdateDrink();
             break;
         case DUCK_STATE::DOUBLE_DRINK:
-            duck->UpdateDoubleDrink();
+            UpdateDoubleDrink();
             break;
         case DUCK_STATE::FLY_AWAY:
-            duck->UpdateFlyAway();
+            UpdateFlyAway();
             break;
     }
 }
@@ -378,21 +366,8 @@ void duck_press(Duck* duck)
 
 void duck_remove_all()
 {
-    uint16_t nextSpriteIndex;
-    for (uint16_t spriteIndex = gSpriteListHead[SPRITE_LIST_MISC]; spriteIndex != SPRITE_INDEX_NULL;
-         spriteIndex = nextSpriteIndex)
+    for (auto duck : EntityList<Duck>(EntityListId::Misc))
     {
-        SpriteGeneric* sprite = &(get_sprite(spriteIndex)->generic);
-        nextSpriteIndex = sprite->next;
-        if (sprite->type == SPRITE_MISC_DUCK)
-        {
-            invalidate_sprite_1(sprite);
-            sprite_remove(sprite);
-        }
+        duck->Remove();
     }
-}
-
-uint32_t duck_get_frame_image(const Duck* duck, int32_t direction)
-{
-    return duck->GetFrameImage(direction);
 }

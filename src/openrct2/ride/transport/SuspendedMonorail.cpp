@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,7 +47,7 @@ static void suspended_monorail_track_flat(
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 42, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
@@ -73,7 +73,7 @@ static void suspended_monorail_track_station(
         height + 32);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 3);
     track_paint_util_draw_station_inverted(session, rideIndex, direction, height, tileElement, STATION_VARIANT_TALL);
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
@@ -134,11 +134,11 @@ static void suspended_monorail_track_25_deg_up(
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
     }
     paint_util_set_general_support_height(session, height + 72, 0x20);
 }
@@ -199,11 +199,11 @@ static void suspended_monorail_track_flat_to_25_deg_up(
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     }
     else
     {
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
     }
     paint_util_set_general_support_height(session, height + 64, 0x20);
 }
@@ -264,7 +264,7 @@ static void suspended_monorail_track_25_deg_up_to_flat(
 
     if (direction == 0 || direction == 3)
     {
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_9);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_INVERTED_9);
     }
     else
     {
@@ -337,7 +337,7 @@ static void suspended_monorail_track_left_quarter_turn_5(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -466,10 +466,10 @@ static void suspended_monorail_track_left_quarter_turn_5(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -525,7 +525,7 @@ static void suspended_monorail_track_s_bend_left(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -646,10 +646,10 @@ static void suspended_monorail_track_s_bend_left(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -696,7 +696,7 @@ static void suspended_monorail_track_s_bend_right(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -817,10 +817,10 @@ static void suspended_monorail_track_s_bend_right(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -868,7 +868,7 @@ static void suspended_monorail_track_left_quarter_turn_3(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -936,10 +936,10 @@ static void suspended_monorail_track_left_quarter_turn_3(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -995,7 +995,7 @@ static void suspended_monorail_track_left_eighth_to_diag(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -1158,7 +1158,7 @@ static void suspended_monorail_track_right_eighth_to_diag(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;

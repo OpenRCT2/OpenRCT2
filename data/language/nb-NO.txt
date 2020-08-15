@@ -1943,8 +1943,8 @@ STR_2728    :{UINT16}hour:{UINT16}min
 STR_2729    :{UINT16}hour:{UINT16}mins
 STR_2730    :{UINT16}hours:{UINT16}min
 STR_2731    :{UINT16}hours:{UINT16}mins
-STR_2732    :{COMMA16}ft
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}ft
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Year {COMMA16}
@@ -1980,7 +1980,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Change keyboard shortcut
@@ -2533,19 +2533,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Year {POP16}{COMMA16}
 STR_5161    :Date Format:
 STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
-STR_5164    :Twitch Channel name
-STR_5165    :Name guests after followers
-STR_5166    :{SMALLFONT}{BLACK}Name guests after channel's{NEWLINE}Twitch followers
-STR_5167    :Track follower guests
-STR_5168    :{SMALLFONT}{BLACK}Enable tracking information for guests named after channel's Twitch followers
-STR_5169    :Name guests after people in Twitch chat
-STR_5170    :{SMALLFONT}{BLACK}Name guests after people in Twitch chat
-STR_5171    :Track chat guests
-STR_5172    :{SMALLFONT}{BLACK}Enable tracking information for guests named after Twitch chat participants
-STR_5173    :Pull Twitch chat as news
-STR_5174    :{SMALLFONT}{BLACK}Use Twitch chat messages preceded by !news for in game notifications
-STR_5175    :Input the name of your Twitch channel
-STR_5176    :Enable Twitch integration
 STR_5177    :Screen mode:
 STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
 STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
@@ -2640,7 +2627,6 @@ STR_5267    :{SMALLFONT}{BLACK}Culture and Units
 STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Controls and interface
 STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Small Scenery
 STR_5273    :{SMALLFONT}{BLACK}Large Scenery
 STR_5274    :{SMALLFONT}{BLACK}Footpath
@@ -2684,26 +2670,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug tools
 STR_5312    :Show console
 STR_5313    :Vis ruteinspektør
 STR_5314    :Ruteinspektør
-STR_5315    :Grass
-STR_5316    :Sand
-STR_5317    :Dirt
-STR_5318    :Rock
-STR_5319    :Martian
-STR_5320    :Checkerboard
-STR_5321    :Grass clumps
-STR_5322    :Ice
-STR_5323    :Grid (red)
-STR_5324    :Grid (yellow)
-STR_5325    :Grid (blue)
-STR_5326    :Grid (green)
-STR_5327    :Sand (dark)
-STR_5328    :Sand (light)
-STR_5329    :Checkerboard (inverted)
-STR_5330    :Underground view
-STR_5331    :Rock
-STR_5332    :Wood (red)
-STR_5333    :Wood (black)
-STR_5334    :Ice
 STR_5335    :Ride entrance
 STR_5336    :Ride exit
 STR_5337    :Park entrance
@@ -3181,7 +3147,6 @@ STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
 STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built rides
-STR_5852    :{SMALLFONT}{BLACK}Set the name of the TwitchTV channel that will be used for Twitch integration
 STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
 STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off
 STR_5855    :{SMALLFONT}{BLACK}Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
@@ -3534,17 +3499,6 @@ STR_6200    :Tilbakestill dato
 STR_6201    :{MONTH}
 STR_6202    :Stil på virtuelt gulv
 STR_6203    :{SMALLFONT}{BLACK}Viser et virtuelt gulv når Ctrl eller Shift holdes, for å assistere i plassering av elementer vertikalt.
-STR_6204    :Murstein
-STR_6205    :Jern
-STR_6206    :Grå stukk
-STR_6207    :Gul stukk
-STR_6208    :Rød stukk
-STR_6209    :Lilla stukk
-STR_6210    :Grønn stukk
-STR_6211    :Brun sandstein
-STR_6212    :Grå sandstein
-STR_6213    :Skyskraper A
-STR_6214    :Skyskraper B
 STR_6215    :Konstruksjon
 STR_6216    :Operasjon
 STR_6217    :Attraksjons- og sportilgjengelighet
@@ -3582,9 +3536,6 @@ STR_6248    :{WINDOW_COLOUR_1}Pusse opp {STRINGID} for {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Pusse opp {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Er du sikker på at du vil rive ned {STRINGID} og tjene {CURRENCY}?
 STR_6251    :Attraksjonen er ikke tømt
-STR_6252    :Twitch API URL
-STR_6253    :{SMALLFONT}{BLACK}Oppgi URL-en for integrasjons-API-et til Twitch. Påkrevd for å bruke Twitch-integrasjon.
-STR_6254    :Twitch-integrasjon API URL:
 STR_6255    :Ugyldig URL
 STR_6256    :Renderingseffekter
 STR_6257    :Glass

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../scenario/Scenario.h"
 
 #include <memory>
 
@@ -30,7 +31,7 @@ struct scenario_index_entry
 
     // Category / sequence
     uint8_t category;
-    uint8_t source_game;
+    ScenarioSource source_game;
     int16_t source_index;
     uint16_t sc_id;
 
@@ -48,10 +49,10 @@ struct scenario_index_entry
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    struct IPlatformEnvironment;
 }
 
-interface IScenarioRepository
+struct IScenarioRepository
 {
     virtual ~IScenarioRepository() = default;
 
@@ -69,8 +70,8 @@ interface IScenarioRepository
     virtual const scenario_index_entry* GetByInternalName(const utf8* name) const abstract;
     virtual const scenario_index_entry* GetByPath(const utf8* path) const abstract;
 
-    virtual bool TryRecordHighscore(int32_t language, const utf8* scenarioFileName, money32 companyValue, const utf8* name)
-        abstract;
+    virtual bool TryRecordHighscore(
+        int32_t language, const utf8* scenarioFileName, money32 companyValue, const utf8* name) abstract;
 };
 
 std::unique_ptr<IScenarioRepository> CreateScenarioRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,8 +15,9 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 
-constexpr int32_t WW = 250;
-constexpr int32_t WH = 60;
+static constexpr const rct_string_id WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
+static constexpr const int32_t WW = 250;
+static constexpr const int32_t WH = 60;
 
 // clang-format off
 enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {
@@ -27,9 +28,7 @@ enum WINDOW_SHORTCUT_CHANGE_WIDGET_IDX {
 
 // 0x9DE4E0
 static rct_widget window_shortcut_change_widgets[] = {
-    { WWT_FRAME,            0,  0,          WW - 1, 0,      WH - 1,     STR_NONE,                   STR_NONE },
-    { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_SHORTCUT_CHANGE_TITLE,  STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  WW-13,      WW - 3, 2,      13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     { WIDGETS_END }
 };
 
@@ -69,12 +68,17 @@ static rct_window_event_list window_shortcut_change_events = {
 };
 // clang-format on
 
-rct_window* window_shortcut_change_open(int32_t selected_key)
+static rct_string_id CurrentShortcutKeyStringId{};
+
+rct_window* window_shortcut_change_open(int32_t selected_key, rct_string_id key_string_id)
 {
     // Move this to window_shortcut_change_open
     window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+
     // Save the item we are selecting for new window
     gKeyboardShortcutChangeId = selected_key;
+    CurrentShortcutKeyStringId = key_string_id;
+
     rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
 
     w->widgets = window_shortcut_change_widgets;
@@ -105,9 +109,9 @@ static void window_shortcut_change_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    int32_t x = w->windowPos.x + 125;
-    int32_t y = w->windowPos.y + 30;
+    ScreenCoordsXY stringCoords(w->windowPos.x + 125, w->windowPos.y + 30);
 
-    set_format_arg(0, rct_string_id, ShortcutStringIds[gKeyboardShortcutChangeId]);
-    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(CurrentShortcutKeyStringId);
+    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
 }

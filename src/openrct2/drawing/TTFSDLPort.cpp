@@ -1,3 +1,7 @@
+// Adapted from freetype.h in order to avoid C-style casts.
+
+#define FT_LOAD_TARGET_ALT(x) (static_cast<FT_Int32>((x)&15) << 16)
+
 /**
  * The following code is from SDL2_ttf (2 Jan 2017).
  * Taking just what was needed for OpenRCT2 with all SDL2 calls
@@ -205,7 +209,7 @@ static void TTF_initLineMectrics(const TTF_Font* font, const TTFSurface* textbuf
     uint8_t* dst;
     int height;
 
-    dst = (uint8_t*)textbuf->pixels;
+    dst = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels));
     if (row > 0)
     {
         dst += row * textbuf->pitch;
@@ -228,7 +232,7 @@ outline into account.
 static void TTF_drawLine_Solid(const TTF_Font* font, const TTFSurface* textbuf, const int row)
 {
     int line;
-    uint8_t* dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
+    uint8_t* dst_check = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + textbuf->pitch * textbuf->h;
     uint8_t* dst;
     int height;
 
@@ -250,7 +254,7 @@ static void TTF_drawLine_Solid(const TTF_Font* font, const TTFSurface* textbuf, 
 static void TTF_drawLine_Shaded(const TTF_Font* font, const TTFSurface* textbuf, const int row)
 {
     int line;
-    uint8_t* dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
+    uint8_t* dst_check = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + textbuf->pitch * textbuf->h;
     uint8_t* dst;
     int height;
 
@@ -323,13 +327,13 @@ static unsigned long RWread(FT_Stream stream, unsigned long offset, unsigned cha
 {
     FILE* src;
 
-    src = (FILE*)stream->descriptor.pointer;
-    fseek(src, (int)offset, SEEK_SET);
+    src = static_cast<FILE*>(stream->descriptor.pointer);
+    fseek(src, static_cast<int>(offset), SEEK_SET);
     if (count == 0)
     {
         return 0;
     }
-    return (unsigned long)fread(buffer, 1, (int)count, src);
+    return static_cast<unsigned long>(fread(buffer, 1, static_cast<int>(count), src));
 }
 
 static size_t fsize(FILE* file)
@@ -337,7 +341,7 @@ static size_t fsize(FILE* file)
     size_t origPos = ftell(file);
     fseek(file, 0, SEEK_END);
     size_t size = ftell(file);
-    fseek(file, (long)origPos, SEEK_SET);
+    fseek(file, static_cast<long>(origPos), SEEK_SET);
     return size;
 }
 
@@ -380,7 +384,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         return NULL;
     }
 
-    font = (TTF_Font*)malloc(sizeof *font);
+    font = static_cast<TTF_Font*>(malloc(sizeof *font));
     if (font == NULL)
     {
         TTF_SetError("Out of memory");
@@ -390,24 +394,24 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
         }
         return NULL;
     }
-    std::fill_n((uint8_t*)font, sizeof(*font), 0x00);
+    std::fill_n(reinterpret_cast<uint8_t*>(font), sizeof(*font), 0x00);
 
     font->src = src;
     font->freesrc = freesrc;
 
-    stream = (FT_Stream)malloc(sizeof(*stream));
+    stream = static_cast<FT_Stream>(malloc(sizeof(*stream)));
     if (stream == NULL)
     {
         TTF_SetError("Out of memory");
         TTF_CloseFont(font);
         return NULL;
     }
-    std::fill_n((uint8_t*)stream, sizeof(*stream), 0x00);
+    std::fill_n(reinterpret_cast<uint8_t*>(stream), sizeof(*stream), 0x00);
 
     stream->read = RWread;
     stream->descriptor.pointer = src;
-    stream->pos = (unsigned long)position;
-    stream->size = (unsigned long)(fsize(src) - position);
+    stream->pos = static_cast<unsigned long>(position);
+    stream->size = static_cast<unsigned long>(fsize(src) - position);
 
     font->args.flags = FT_OPEN_STREAM;
     font->args.stream = stream;
@@ -636,7 +640,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
         }
         if (TTF_HANDLE_STYLE_ITALIC(font))
         {
-            cached->maxx += (int)ceil(font->glyph_italics);
+            cached->maxx += static_cast<int>(ceil(font->glyph_italics));
         }
         cached->stored |= CACHED_METRICS;
     }
@@ -656,7 +660,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
             FT_Matrix shear;
 
             shear.xx = 1 << 16;
-            shear.xy = (int)(font->glyph_italics * (1 << 16)) / font->height;
+            shear.xy = static_cast<int>(font->glyph_italics * (1 << 16)) / font->height;
             shear.yx = 0;
             shear.yy = 1 << 16;
 
@@ -683,7 +687,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
                 FT_Done_Glyph(bitmap_glyph);
                 return error;
             }
-            src = &((FT_BitmapGlyph)bitmap_glyph)->bitmap;
+            src = &(reinterpret_cast<FT_BitmapGlyph>(bitmap_glyph))->bitmap;
         }
         else
         {
@@ -738,14 +742,14 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
         }
         if (TTF_HANDLE_STYLE_ITALIC(font))
         {
-            int bump = (int)ceil(font->glyph_italics);
+            int bump = static_cast<int>(ceil(font->glyph_italics));
             dst->pitch += bump;
             dst->width += bump;
         }
 
         if (dst->rows != 0)
         {
-            dst->buffer = (unsigned char*)malloc(dst->pitch * dst->rows);
+            dst->buffer = static_cast<unsigned char*>(malloc(dst->pitch * dst->rows));
             if (!dst->buffer)
             {
                 return FT_Err_Out_Of_Memory;
@@ -929,7 +933,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16_t ch, c_glyph* cached, int wan
                             {
                                 pixel = NUM_GRAYS - 1;
                             }
-                            pixmap[col] = (uint8_t)pixel;
+                            pixmap[col] = static_cast<uint8_t>(pixel);
                         }
                     }
                 }
@@ -1002,7 +1006,7 @@ void TTF_CloseFont(TTF_Font* font)
 #    define UNKNOWN_UNICODE 0xFFFD
 static uint32_t UTF8_getch(const char** src, size_t* srclen)
 {
-    const uint8_t* p = *(const uint8_t**)src;
+    const uint8_t* p = *reinterpret_cast<const uint8_t**>(src);
     size_t left = 0;
     [[maybe_unused]] bool overlong = false;
     bool underflow = false;
@@ -1020,7 +1024,7 @@ static uint32_t UTF8_getch(const char** src, size_t* srclen)
             {
                 overlong = true;
             }
-            ch = (uint32_t)(p[0] & 0x01);
+            ch = static_cast<uint32_t>(p[0] & 0x01);
             left = 5;
         }
     }
@@ -1032,7 +1036,7 @@ static uint32_t UTF8_getch(const char** src, size_t* srclen)
             {
                 overlong = true;
             }
-            ch = (uint32_t)(p[0] & 0x03);
+            ch = static_cast<uint32_t>(p[0] & 0x03);
             left = 4;
         }
     }
@@ -1044,7 +1048,7 @@ static uint32_t UTF8_getch(const char** src, size_t* srclen)
             {
                 overlong = true;
             }
-            ch = (uint32_t)(p[0] & 0x07);
+            ch = static_cast<uint32_t>(p[0] & 0x07);
             left = 3;
         }
     }
@@ -1056,7 +1060,7 @@ static uint32_t UTF8_getch(const char** src, size_t* srclen)
             {
                 overlong = true;
             }
-            ch = (uint32_t)(p[0] & 0x0F);
+            ch = static_cast<uint32_t>(p[0] & 0x0F);
             left = 2;
         }
     }
@@ -1068,7 +1072,7 @@ static uint32_t UTF8_getch(const char** src, size_t* srclen)
             {
                 overlong = true;
             }
-            ch = (uint32_t)(p[0] & 0x1F);
+            ch = static_cast<uint32_t>(p[0] & 0x1F);
             left = 1;
         }
     }
@@ -1076,7 +1080,7 @@ static uint32_t UTF8_getch(const char** src, size_t* srclen)
     {
         if ((p[0] & 0x80) == 0x00)
         {
-            ch = (uint32_t)p[0];
+            ch = static_cast<uint32_t>(p[0]);
         }
     }
     ++*src;
@@ -1284,7 +1288,7 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
     }
 
     /* Create the target surface */
-    textbuf = (TTFSurface*)calloc(1, sizeof(TTFSurface));
+    textbuf = static_cast<TTFSurface*>(calloc(1, sizeof(TTFSurface)));
     if (textbuf == NULL)
     {
         return NULL;
@@ -1296,7 +1300,7 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
 
     /* Adding bound checking to avoid all kinds of memory corruption errors
     that may occur. */
-    dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
+    dst_check = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + textbuf->pitch * textbuf->h;
 
     /* check kerning */
     use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
@@ -1347,15 +1351,16 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
         {
             /* Make sure we don't go either over, or under the
              * limit */
-            if ((signed)row + glyph->yoffset < 0)
+            if (static_cast<signed>(row) + glyph->yoffset < 0)
             {
                 continue;
             }
-            if ((signed)row + glyph->yoffset >= textbuf->h)
+            if (static_cast<signed>(row) + glyph->yoffset >= textbuf->h)
             {
                 continue;
             }
-            dst = (uint8_t*)textbuf->pixels + (row + glyph->yoffset) * textbuf->pitch + xstart + glyph->minx;
+            dst = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + (row + glyph->yoffset) * textbuf->pitch
+                + xstart + glyph->minx;
             src = current->buffer + row * current->pitch;
 
             for (col = width; col > 0 && dst < dst_check; --col)
@@ -1416,7 +1421,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
     }
 
     /* Create the target surface */
-    textbuf = (TTFSurface*)calloc(1, sizeof(TTFSurface));
+    textbuf = static_cast<TTFSurface*>(calloc(1, sizeof(TTFSurface)));
     if (textbuf == NULL)
     {
         return NULL;
@@ -1428,7 +1433,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
 
     /* Adding bound checking to avoid all kinds of memory corruption errors
        that may occur. */
-    dst_check = (uint8_t*)textbuf->pixels + textbuf->pitch * textbuf->h;
+    dst_check = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + textbuf->pitch * textbuf->h;
 
     /* check kerning */
     use_kerning = FT_HAS_KERNING(font->face) && font->kerning;
@@ -1483,16 +1488,17 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
         {
             /* Make sure we don't go either over, or under the
              * limit */
-            if ((signed)row + glyph->yoffset < 0)
+            if (static_cast<signed>(row) + glyph->yoffset < 0)
             {
                 continue;
             }
-            if ((signed)row + glyph->yoffset >= textbuf->h)
+            if (static_cast<signed>(row) + glyph->yoffset >= textbuf->h)
             {
                 continue;
             }
 
-            dst = (uint8_t*)textbuf->pixels + (row + glyph->yoffset) * textbuf->pitch + xstart + glyph->minx;
+            dst = const_cast<uint8_t*>(static_cast<const uint8_t*>(textbuf->pixels)) + (row + glyph->yoffset) * textbuf->pitch
+                + xstart + glyph->minx;
             src = current->buffer + row * current->pitch;
 
             for (col = width; col > 0 && dst < dst_check; --col)
@@ -1528,9 +1534,9 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
 void TTF_SetFontHinting(TTF_Font* font, int hinting)
 {
     if (hinting == TTF_HINTING_LIGHT)
-        font->hinting = FT_LOAD_TARGET_LIGHT;
+        font->hinting = FT_LOAD_TARGET_ALT(FT_RENDER_MODE_LIGHT);
     else if (hinting == TTF_HINTING_MONO)
-        font->hinting = FT_LOAD_TARGET_MONO;
+        font->hinting = FT_LOAD_TARGET_ALT(FT_RENDER_MODE_MONO);
     else if (hinting == TTF_HINTING_NONE)
         font->hinting = FT_LOAD_NO_HINTING;
     else
@@ -1541,9 +1547,9 @@ void TTF_SetFontHinting(TTF_Font* font, int hinting)
 
 int TTF_GetFontHinting(const TTF_Font* font)
 {
-    if (font->hinting == FT_LOAD_TARGET_LIGHT)
+    if (font->hinting == FT_LOAD_TARGET_ALT(FT_RENDER_MODE_LIGHT))
         return TTF_HINTING_LIGHT;
-    else if (font->hinting == FT_LOAD_TARGET_MONO)
+    else if (font->hinting == FT_LOAD_TARGET_ALT(FT_RENDER_MODE_MONO))
         return TTF_HINTING_MONO;
     else if (font->hinting == FT_LOAD_NO_HINTING)
         return TTF_HINTING_NONE;

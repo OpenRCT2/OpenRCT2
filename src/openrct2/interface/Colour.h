@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -62,7 +62,7 @@ enum
     COLOUR_LIGHT_WATER = 10
 };
 
-enum
+enum : uint8_t
 {
     PALETTE_INDEX_0 = 0,     // Transparent
     PALETTE_INDEX_10 = 10,   // Black (0-dark), Dark gray (0)
@@ -76,9 +76,18 @@ enum
     PALETTE_INDEX_21 = 21,   // Dark gray (11), White (lighter-11)
     PALETTE_INDEX_40 = 40,   //
     PALETTE_INDEX_42 = 42,   // Light Brown (lighter), Saturated brown (11)
-    PALETTE_INDEX_54 = 54,   //
-    PALETTE_INDEX_55 = 55,   // Bright Yellow (light), Yellow (lightest)
-    PALETTE_INDEX_56 = 56,   // Bright Yellow (lighter, lightest), Yellow (10)
+    PALETTE_INDEX_46 = 46,   // Tertiary remap 0  / Yellow (darkest)
+    PALETTE_INDEX_47 = 47,   // Tertiary remap 1  / Yellow
+    PALETTE_INDEX_48 = 48,   // Tertiary remap 2  / Yellow
+    PALETTE_INDEX_49 = 49,   // Tertiary remap 3  / Yellow
+    PALETTE_INDEX_50 = 50,   // Tertiary remap 4  / Yellow
+    PALETTE_INDEX_51 = 51,   // Tertiary remap 5  / Yellow
+    PALETTE_INDEX_52 = 52,   // Tertiary remap 6  / Yellow
+    PALETTE_INDEX_53 = 53,   // Tertiary remap 7  / Yellow
+    PALETTE_INDEX_54 = 54,   // Tertiary remap 8  / Yellow
+    PALETTE_INDEX_55 = 55,   // Tertiary remap 9  / Yellow
+    PALETTE_INDEX_56 = 56,   // Tertiary remap 10 / Yellow
+    PALETTE_INDEX_57 = 57,   // Tertiary remap 11 / Yellow (lightest)
     PALETTE_INDEX_61 = 61,   // Bordeaux Red (darker)
     PALETTE_INDEX_62 = 62,   //
     PALETTE_INDEX_68 = 68,   //
@@ -102,15 +111,66 @@ enum
     PALETTE_INDEX_186 = 186, //
     PALETTE_INDEX_194 = 194, //
     PALETTE_INDEX_195 = 195, //
-    PALETTE_INDEX_209 = 209, // Bright Pink (light)
+    PALETTE_INDEX_202 = 202, // Secondary remap 0  / Pink (darkest)
+    PALETTE_INDEX_203 = 203, // Secondary remap 1  / Pink
+    PALETTE_INDEX_204 = 204, // Secondary remap 2  / Pink
+    PALETTE_INDEX_205 = 205, // Secondary remap 3  / Pink
+    PALETTE_INDEX_206 = 206, // Secondary remap 4  / Pink
+    PALETTE_INDEX_207 = 207, // Secondary remap 5  / Pink
+    PALETTE_INDEX_208 = 208, // Secondary remap 6  / Pink
+    PALETTE_INDEX_209 = 209, // Secondary remap 7  / Pink
+    PALETTE_INDEX_210 = 210, // Secondary remap 8  / Pink
+    PALETTE_INDEX_211 = 211, // Secondary remap 9  / Pink
+    PALETTE_INDEX_212 = 212, // Secondary remap 10 / Pink
+    PALETTE_INDEX_213 = 213, // Secondary remap 11 / Pink (lightest)
     PALETTE_INDEX_222 = 222, //
-    PALETTE_INDEX_230 = 230, //
-    PALETTE_INDEX_245 = 245, //
-    PALETTE_INDEX_248 = 248, // Grey (dark)
-    PALETTE_INDEX_252 = 252, // Grey (light)
-
-    PALETTE_COUNT = 256,
+    PALETTE_INDEX_230 = 230, // Water (waves)
+    PALETTE_INDEX_231 = 231, // Water (waves)
+    PALETTE_INDEX_232 = 232, // Water (waves)
+    PALETTE_INDEX_233 = 233, // Water (waves)
+    PALETTE_INDEX_234 = 234, // Water (waves)
+    PALETTE_INDEX_235 = 235, // Water (sparkles)
+    PALETTE_INDEX_236 = 236, // Water (sparkles)
+    PALETTE_INDEX_237 = 237, // Water (sparkles)
+    PALETTE_INDEX_238 = 238, // Water (sparkles)
+    PALETTE_INDEX_239 = 239, // Water (sparkles)
+    PALETTE_INDEX_240 = 240, // Track rails
+    PALETTE_INDEX_241 = 241, // Track rails
+    PALETTE_INDEX_242 = 242, // Track rails
+    PALETTE_INDEX_243 = 243, // Primary remap 0
+    PALETTE_INDEX_244 = 244, // Primary remap 1
+    PALETTE_INDEX_245 = 245, // Primary remap 2
+    PALETTE_INDEX_246 = 246, // Primary remap 3
+    PALETTE_INDEX_247 = 247, // Primary remap 4
+    PALETTE_INDEX_248 = 248, // Primary remap 5
+    PALETTE_INDEX_249 = 249, // Primary remap 6
+    PALETTE_INDEX_250 = 250, // Primary remap 7
+    PALETTE_INDEX_251 = 251, // Primary remap 8
+    PALETTE_INDEX_252 = 252, // Primary remap 9
+    PALETTE_INDEX_253 = 253, // Primary remap 10
+    PALETTE_INDEX_254 = 254, // Primary remap 11
 };
+
+constexpr size_t PALETTE_COUNT = 256;
+
+constexpr uint8_t PALETTE_OFFSET_DYNAMIC = PALETTE_INDEX_10;
+constexpr uint8_t PALETTE_LENGTH_DYNAMIC = 236;
+
+constexpr uint8_t PALETTE_OFFSET_WATER_WAVES = PALETTE_INDEX_230;
+constexpr uint8_t PALETTE_OFFSET_WATER_SPARKLES = PALETTE_INDEX_235;
+constexpr uint8_t PALETTE_LENGTH_WATER_WAVES = 5;
+constexpr uint8_t PALETTE_LENGTH_WATER_SPARKLES = 5;
+
+constexpr uint8_t PALETTE_OFFSET_TRACK_RAILS = PALETTE_INDEX_240;
+constexpr uint8_t PALETTE_LENGTH_TRACK_RAILS = 3;
+
+constexpr uint8_t PALETTE_OFFSET_REMAP_PRIMARY = PALETTE_INDEX_243;
+constexpr uint8_t PALETTE_OFFSET_REMAP_SECONDARY = PALETTE_INDEX_202;
+constexpr uint8_t PALETTE_OFFSET_REMAP_TERTIARY = PALETTE_INDEX_46;
+constexpr uint8_t PALETTE_LENGTH_REMAP = 12;
+
+constexpr uint8_t PALETTE_OFFSET_ANIMATED = PALETTE_INDEX_230;
+constexpr uint8_t PALETTE_LENGTH_ANIMATED = 16;
 
 #define TEXT_COLOUR_254 (254)
 #define TEXT_COLOUR_255 (255)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,6 +31,10 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
+
+static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
+static constexpr const int32_t WH = 229;
+static constexpr const int32_t WW = 450;
 
 #pragma region Widgets
 
@@ -82,30 +86,28 @@ enum {
 };
 
 #define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
-    { WWT_FRAME,            0,  0,      449,    0,      228,    STR_NONE,                   STR_NONE                                            }, \
-    { WWT_CAPTION,          0,  1,      448,    1,      14,     STR_OBJECTIVE_SELECTION,    STR_WINDOW_TITLE_TIP                                }, \
-    { WWT_CLOSEBOX,         0,  437,    447,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                                }, \
-    { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                   STR_NONE                                            }, \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP              }, \
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP                }
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+    MakeWidget     ({  0,  43}, {280, 106}, WWT_RESIZE, 1                                                 ), \
+    MakeRemapWidget({  3,  17}, { 31,  27}, WWT_TAB,    1, SPR_TAB, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP), \
+    MakeRemapWidget({ 34,  17}, { 31,  27}, WWT_TAB,    1, SPR_TAB, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP  )
 
 static rct_widget window_editor_objective_options_main_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
-    { WWT_DROPDOWN,         1,  98,     441,    48,     59,     STR_NONE,                   STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
-    { WWT_BUTTON,           1,  430,    440,    49,     58,     STR_DROPDOWN_GLYPH,         STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
-      SPINNER_WIDGETS      (1,  158,    277,    65,     76,     STR_NONE,                   STR_NONE), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  158,    277,    82,     93,     STR_NONE,                   STR_NONE), // NB: 3 widgets
-    { WWT_BUTTON,           1,  370,    444,    99,     110,    STR_CHANGE,                 STR_CHANGE_NAME_OF_PARK_TIP                         },
-    { WWT_BUTTON,           1,  370,    444,    116,    127,    STR_CHANGE,                 STR_CHANGE_NAME_OF_SCENARIO_TIP                     },
-    { WWT_DROPDOWN,         1,  98,     277,    133,    144,    STR_NONE,                   STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
-    { WWT_BUTTON,           1,  266,    276,    134,    143,    STR_DROPDOWN_GLYPH,         STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
-    { WWT_BUTTON,           1,  370,    444,    150,    161,    STR_CHANGE,                 STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP     },
+    MakeWidget        ({ 98,  48}, {344,  12}, WWT_DROPDOWN, 1, STR_NONE,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
+    MakeWidget        ({430,  49}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
+    MakeSpinnerWidgets({158,  65}, {120,  12}, WWT_BUTTON,   1                                                                     ), // NB: 3 widgets
+    MakeSpinnerWidgets({158,  82}, {120,  12}, WWT_BUTTON,   1                                                                     ), // NB: 3 widgets
+    MakeWidget        ({370,  99}, { 75,  12}, WWT_BUTTON,   1, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
+    MakeWidget        ({370, 116}, { 75,  12}, WWT_BUTTON,   1, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
+    MakeWidget        ({ 98, 133}, {180,  12}, WWT_DROPDOWN, 1, STR_NONE,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
+    MakeWidget        ({266, 134}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
+    MakeWidget        ({370, 150}, { 75,  12}, WWT_BUTTON,   1, STR_CHANGE,         STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_objective_options_rides_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
-    { WWT_SCROLL,           1,  3,      376,    60,     220,    SCROLL_VERTICAL,            STR_NONE                                            },
+    MakeWidget({  3,  60}, {374, 161}, WWT_SCROLL,   1, SCROLL_VERTICAL),
     { WIDGETS_END }
 };
 
@@ -302,7 +304,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
     if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
         spriteIndex += (w->frame_no / 4) % 16;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
+    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
 
     // Tab 2
     if (!(w->disabled_widgets & (1 << WIDX_TAB_2)))
@@ -312,7 +314,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
         if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
             spriteIndex += (w->frame_no / 4) % 16;
 
-        gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
+        gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
     }
 }
 
@@ -437,56 +439,25 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
     dropdownWidget = &w->widgets[WIDX_OBJECTIVE];
     parkFlags = gParkFlags;
 
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_HAVE_FUN;
-    numItems++;
-
-    if (!(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
+    for (auto i = 0; i < OBJECTIVE_COUNT; i++)
     {
-        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE;
-        numItems++;
+        if (i == OBJECTIVE_NONE || i == OBJECTIVE_BUILD_THE_BEST)
+            continue;
 
-        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_MONTHLY_PROFIT_FROM_FOOD_MERCHANDISE;
-        numItems++;
-
-        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_REPAY_LOAN_AND_ACHIEVE_A_GIVEN_PARK_VALUE;
-        numItems++;
-
-        gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE;
-        numItems++;
-
-        if (parkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+        const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) || !ObjectiveNeedsMoney(i);
+        // This objective can only work if the player can ask money for rides.
+        const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || park_ride_prices_unlocked();
+        if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
         {
             gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_MONTHLY_INCOME_FROM_RIDE_TICKETS;
+            gDropdownItemsArgs[numItems] = ObjectiveDropdownOptionNames[i];
             numItems++;
         }
     }
 
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_IN_PARK;
-    numItems++;
-
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS;
-    numItems++;
-
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_BUILD_10_ROLLER_COASTERS_OF_A_GIVEN_LENGTH;
-    numItems++;
-
-    gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[numItems] = STR_OBJECTIVE_DROPDOWN_FINISH_BUILDING_5_ROLLER_COASTERS;
-    numItems++;
-
     window_dropdown_show_text_custom_width(
-        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
-        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
-        dropdownWidget->right - dropdownWidget->left - 3);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, dropdownWidget->width() - 3);
 
     objectiveType = gScenarioObjectiveType;
     for (int32_t j = 0; j < numItems; j++)
@@ -512,9 +483,8 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
         gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
     }
     window_dropdown_show_text_custom_width(
-        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
-        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5,
-        dropdownWidget->right - dropdownWidget->left - 3);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5, dropdownWidget->width() - 3);
     dropdown_set_checked(gS6Info.category, true);
 }
 
@@ -716,14 +686,14 @@ static void window_editor_objective_options_main_dropdown(rct_window* w, rct_wid
     {
         case WIDX_OBJECTIVE_DROPDOWN:
             // TODO: Don't rely on string ID order
-            newObjectiveType = (uint8_t)(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
+            newObjectiveType = static_cast<uint8_t>(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
             if (gScenarioObjectiveType != newObjectiveType)
                 window_editor_objective_options_set_objective(w, newObjectiveType);
             break;
         case WIDX_CATEGORY_DROPDOWN:
-            if (gS6Info.category != (uint8_t)dropdownIndex)
+            if (gS6Info.category != static_cast<uint8_t>(dropdownIndex))
             {
-                gS6Info.category = (uint8_t)dropdownIndex;
+                gS6Info.category = static_cast<uint8_t>(dropdownIndex);
                 w->Invalidate();
             }
             break;
@@ -746,14 +716,13 @@ static void window_editor_objective_options_main_update(rct_window* w)
     parkFlags = gParkFlags;
     objectiveType = gScenarioObjectiveType;
 
-    // Reset objective if invalid
-    if (((parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) &&
-         // The following objectives are the only valid objectives when there is no money
-         objectiveType != OBJECTIVE_HAVE_FUN && objectiveType != OBJECTIVE_10_ROLLERCOASTERS
-         && objectiveType != OBJECTIVE_GUESTS_AND_RATING && objectiveType != OBJECTIVE_10_ROLLERCOASTERS_LENGTH
-         && objectiveType != OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-        // The park must be free for the monthly ride income objective
-        || (!(parkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && objectiveType == OBJECTIVE_MONTHLY_RIDE_INCOME))
+    // Check if objective is allowed by money and pay-per-ride settings.
+    const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
+        || !ObjectiveNeedsMoney(objectiveType);
+    // This objective can only work if the player can ask money for rides.
+    const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
+        || park_ride_prices_unlocked();
+    if (!objectiveAllowedByMoneyUsage || !objectiveAllowedByPaymentSettings)
     {
         // Reset objective
         window_editor_objective_options_set_objective(w, OBJECTIVE_GUESTS_AND_RATING);
@@ -856,7 +825,7 @@ static void window_editor_objective_options_main_invalidate(rct_window* w)
  */
 static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y, width;
+    int32_t width;
     rct_string_id stringId;
     uint32_t arg;
 
@@ -864,21 +833,18 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     // Objective label
-    x = w->windowPos.x + 8;
-    y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE].top;
-    gfx_draw_string_left(dpi, STR_OBJECTIVE_WINDOW, nullptr, COLOUR_BLACK, x, y);
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_OBJECTIVE].top };
+    gfx_draw_string_left(dpi, STR_OBJECTIVE_WINDOW, nullptr, COLOUR_BLACK, screenCoords);
 
     // Objective value
-    x = w->windowPos.x + w->widgets[WIDX_OBJECTIVE].left + 1;
-    y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE].top;
+    screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE].left + 1, w->widgets[WIDX_OBJECTIVE].top };
     stringId = ObjectiveDropdownOptionNames[gScenarioObjectiveType];
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WWT_EMPTY)
     {
         // Objective argument 1 label
-        x = w->windowPos.x + 28;
-        y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_1].top;
+        screenCoords = w->windowPos + ScreenCoordsXY{ 28, w->widgets[WIDX_OBJECTIVE_ARG_1].top };
         switch (gScenarioObjectiveType)
         {
             case OBJECTIVE_GUESTS_BY:
@@ -902,11 +868,11 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 stringId = STR_WINDOW_OBJECTIVE_EXCITEMENT_RATING;
                 break;
         }
-        gfx_draw_string_left(dpi, stringId, nullptr, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, stringId, nullptr, COLOUR_BLACK, screenCoords);
 
         // Objective argument 1 value
-        x = w->windowPos.x + w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_1].top;
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1, w->widgets[WIDX_OBJECTIVE_ARG_1].top };
         switch (gScenarioObjectiveType)
         {
             case OBJECTIVE_GUESTS_BY:
@@ -930,72 +896,66 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 arg = gScenarioObjectiveCurrency;
                 break;
         }
-        gfx_draw_string_left(dpi, stringId, &arg, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, stringId, &arg, COLOUR_BLACK, screenCoords);
     }
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_2].type != WWT_EMPTY)
     {
         // Objective argument 2 label
-        x = w->windowPos.x + 28;
-        y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
-        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, nullptr, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos + ScreenCoordsXY{ 28, w->widgets[WIDX_OBJECTIVE_ARG_2].top };
+        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_DATE, nullptr, COLOUR_BLACK, screenCoords);
 
         // Objective argument 2 value
-        x = w->windowPos.x + w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_OBJECTIVE_ARG_2].top;
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1, w->widgets[WIDX_OBJECTIVE_ARG_2].top };
         arg = (gScenarioObjectiveYear * MONTH_COUNT) - 1;
-        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, COLOUR_BLACK, screenCoords);
     }
 
     // Park name
-    x = w->windowPos.x + 8;
-    y = w->windowPos.y + w->widgets[WIDX_PARK_NAME].top;
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_PARK_NAME].top };
     width = w->widgets[WIDX_PARK_NAME].left - 16;
 
     {
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto parkName = park.Name.c_str();
 
-        set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, const char*, parkName);
-        gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(parkName);
+        gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, COLOUR_BLACK, screenCoords, width);
     }
 
     // Scenario name
-    x = w->windowPos.x + 8;
-    y = w->windowPos.y + w->widgets[WIDX_SCENARIO_NAME].top;
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_SCENARIO_NAME].top };
     width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
-    set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char*, gS6Info.name);
-
-    gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
+    auto ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(gS6Info.name);
+    gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, COLOUR_BLACK, screenCoords, width);
 
     // Scenario details label
-    x = w->windowPos.x + 8;
-    y = w->windowPos.y + w->widgets[WIDX_DETAILS].top;
-    gfx_draw_string_left(dpi, STR_WINDOW_PARK_DETAILS, nullptr, COLOUR_BLACK, x, y);
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_DETAILS].top };
+    gfx_draw_string_left(dpi, STR_WINDOW_PARK_DETAILS, nullptr, COLOUR_BLACK, screenCoords);
 
     // Scenario details value
-    x = w->windowPos.x + 16;
-    y = w->windowPos.y + w->widgets[WIDX_DETAILS].top + 10;
+    screenCoords = w->windowPos + ScreenCoordsXY{ 16, w->widgets[WIDX_DETAILS].top + 10 };
     width = w->widgets[WIDX_DETAILS].left - 4;
 
-    set_format_arg(0, rct_string_id, STR_STRING);
-    set_format_arg(2, const char*, gS6Info.details);
-
-    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_BLACK_STRING, COLOUR_BLACK);
+    ft = Formatter::Common();
+    ft.Add<rct_string_id>(STR_STRING);
+    ft.Add<const char*>(gS6Info.details);
+    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Scenario category label
-    x = w->windowPos.x + 8;
-    y = w->windowPos.y + w->widgets[WIDX_CATEGORY].top;
-    gfx_draw_string_left(dpi, STR_WINDOW_SCENARIO_GROUP, nullptr, COLOUR_BLACK, x, y);
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CATEGORY].top };
+    gfx_draw_string_left(dpi, STR_WINDOW_SCENARIO_GROUP, nullptr, COLOUR_BLACK, screenCoords);
 
     // Scenario category value
-    x = w->windowPos.x + w->widgets[WIDX_CATEGORY].left + 1;
-    y = w->windowPos.y + w->widgets[WIDX_CATEGORY].top;
+    screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CATEGORY].left + 1, w->widgets[WIDX_CATEGORY].top };
     stringId = ScenarioCategoryStringIds[gS6Info.category];
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
 }
 
 /**
@@ -1136,8 +1096,8 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     gfx_draw_string_left(
-        dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK, w->windowPos.x + 6,
-        w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 3);
+        dpi, STR_WINDOW_PRESERVATION_ORDER, nullptr, COLOUR_BLACK,
+        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PAGE_BACKGROUND].top + 3 });
 }
 
 /**
@@ -1147,7 +1107,7 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
 static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t colour = ColourMapA[w->colours[1]].mid_light;
-    gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, colour);
+    gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
 
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
@@ -1175,13 +1135,15 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
             {
                 gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
                                                                                   : FONT_SPRITE_BASE_MEDIUM_DARK;
-                gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, 2, y);
+                gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, { 2, y });
             }
 
             // Ride name
-            uint32_t args[32]{};
-            ride->FormatNameTo(args);
-            gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, 15, y);
+            uint8_t args[32]{};
+
+            Formatter ft(args);
+            ride->FormatNameTo(ft);
+            gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, { 15, y });
         }
     }
 }

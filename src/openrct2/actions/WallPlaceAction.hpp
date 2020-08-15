@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
-#include "../ride/RideGroupManager.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
@@ -110,6 +110,11 @@ public:
         if (_loc.z == 0)
         {
             res->Position.z = tile_element_height(res->Position);
+        }
+
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::NOT_OWNED);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY)
@@ -260,7 +265,7 @@ public:
             }
 
             auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
+            if (!banner->IsNull())
             {
                 log_error("No free banners available");
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
@@ -342,36 +347,6 @@ public:
             return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
-        if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
-        {
-            if (_bannerId == BANNER_INDEX_NULL)
-            {
-                log_error("Banner Index not specified.");
-                return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
-            }
-
-            auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
-            {
-                log_error("No free banners available");
-                return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
-            }
-
-            banner->text = {};
-            banner->colour = COLOUR_WHITE;
-            banner->text_colour = COLOUR_WHITE;
-            banner->flags = BANNER_FLAG_IS_WALL;
-            banner->type = 0;
-            banner->position = TileCoordsXY(_loc);
-
-            ride_id_t rideIndex = banner_get_closest_ride_index(targetLoc);
-            if (rideIndex != RIDE_ID_NULL)
-            {
-                banner->ride_index = rideIndex;
-                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
-            }
-        }
-
         uint8_t clearanceHeight = targetHeight / COORDS_Z_STEP;
         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
         {
@@ -393,6 +368,37 @@ public:
         {
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
+
+        if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+        {
+            if (_bannerId == BANNER_INDEX_NULL)
+            {
+                log_error("Banner Index not specified.");
+                return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
+            }
+
+            auto banner = GetBanner(_bannerId);
+            if (!banner->IsNull())
+            {
+                log_error("No free banners available");
+                return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
+            }
+
+            banner->text = {};
+            banner->colour = COLOUR_WHITE;
+            banner->text_colour = COLOUR_WHITE;
+            banner->flags = BANNER_FLAG_IS_WALL;
+            banner->type = 0; // Banner must be deleted after this point in an early return
+            banner->position = TileCoordsXY(_loc);
+
+            ride_id_t rideIndex = banner_get_closest_ride_index(targetLoc);
+            if (rideIndex != RIDE_ID_NULL)
+            {
+                banner->ride_index = rideIndex;
+                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            }
+        }
+
         TileElement* tileElement = tile_element_insert(targetLoc, 0b0000);
         assert(tileElement != nullptr);
 
@@ -462,24 +468,7 @@ private:
             return false;
         }
 
-        if (RideGroupManager::RideTypeHasRideGroups(ride->type))
-        {
-            auto rideEntry = get_ride_entry(ride->subtype);
-            if (rideEntry == nullptr)
-            {
-                return false;
-            }
-            auto rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
-            if (rideGroup == nullptr)
-            {
-                return false;
-            }
-            if (!(rideGroup->Flags & RIDE_GROUP_FLAG_ALLOW_DOORS_ON_TRACK))
-            {
-                return false;
-            }
-        }
-        else if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK))
+        if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK))
         {
             return false;
         }

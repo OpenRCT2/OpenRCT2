@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,15 +22,15 @@ struct INetworkEndpoint;
 
 struct ServerListEntry
 {
-    std::string address;
-    std::string name;
-    std::string description;
-    std::string version;
-    bool requiresPassword{};
-    bool favourite{};
-    uint8_t players{};
-    uint8_t maxplayers{};
-    bool local{};
+    std::string Address;
+    std::string Name;
+    std::string Description;
+    std::string Version;
+    bool RequiresPassword{};
+    bool Favourite{};
+    uint8_t Players{};
+    uint8_t MaxPlayers{};
+    bool Local{};
 
     int32_t CompareTo(const ServerListEntry& other) const;
     bool IsVersionValid() const;

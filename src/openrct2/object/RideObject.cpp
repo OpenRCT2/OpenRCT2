@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,7 +20,7 @@
 #include "../localisation/Language.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
-#include "../ride/RideGroupManager.h"
+#include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../ride/Track.h"
 #include "ObjectJsonHelpers.h"
@@ -31,6 +31,23 @@
 #include <unordered_map>
 
 using namespace OpenRCT2;
+
+static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
+{
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
+
+    for (auto i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    {
+        auto oldRideType = rideEntry->ride_type[i];
+        if (oldRideType != RIDE_TYPE_NULL)
+        {
+            rideEntry->ride_type[i] = RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
+        }
+    }
+}
 
 void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
@@ -50,7 +67,11 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.second_vehicle = stream->ReadValue<uint8_t>();
     _legacyType.rear_vehicle = stream->ReadValue<uint8_t>();
     _legacyType.third_vehicle = stream->ReadValue<uint8_t>();
-    _legacyType.pad_019 = stream->ReadValue<uint8_t>();
+
+    _legacyType.BuildMenuPriority = 0;
+    // Skip pad_019
+    stream->Seek(1, STREAM_SEEK_CURRENT);
+
     for (auto& vehicleEntry : _legacyType.vehicles)
     {
         ReadLegacyVehicle(context, stream, &vehicleEntry);
@@ -60,11 +81,10 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.intensity_multiplier = stream->ReadValue<int8_t>();
     _legacyType.nausea_multiplier = stream->ReadValue<int8_t>();
     _legacyType.max_height = stream->ReadValue<uint8_t>();
-    _legacyType.enabledTrackPieces = stream->ReadValue<uint64_t>();
-    _legacyType.category[0] = stream->ReadValue<uint8_t>();
-    _legacyType.category[1] = stream->ReadValue<uint8_t>();
-    _legacyType.shop_item = stream->ReadValue<uint8_t>();
-    _legacyType.shop_item_secondary = stream->ReadValue<uint8_t>();
+    // Skipping a uint64_t for the enabled track pieces and two uint8_ts for the categories.
+    stream->Seek(10, STREAM_SEEK_CURRENT);
+    _legacyType.shop_item[0] = stream->ReadValue<uint8_t>();
+    _legacyType.shop_item[1] = stream->ReadValue<uint8_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
     GetStringTable().Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
@@ -160,6 +180,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
     }
+    RideObjectUpdateRideType(&_legacyType);
 }
 
 void RideObject::Load()
@@ -167,8 +188,8 @@ void RideObject::Load()
     _legacyType.obj = this;
 
     GetStringTable().Sort();
-    _legacyType.naming.name = language_allocate_object_string(GetName());
-    _legacyType.naming.description = language_allocate_object_string(GetDescription());
+    _legacyType.naming.Name = language_allocate_object_string(GetName());
+    _legacyType.naming.Description = language_allocate_object_string(GetDescription());
     _legacyType.capacity = language_allocate_object_string(GetCapacity());
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
@@ -344,13 +365,13 @@ void RideObject::Load()
 
 void RideObject::Unload()
 {
-    language_free_object_string(_legacyType.naming.name);
-    language_free_object_string(_legacyType.naming.description);
+    language_free_object_string(_legacyType.naming.Name);
+    language_free_object_string(_legacyType.naming.Description);
     language_free_object_string(_legacyType.capacity);
     gfx_object_free_images(_legacyType.images_offset, GetImageTable().GetCount());
 
-    _legacyType.naming.name = 0;
-    _legacyType.naming.description = 0;
+    _legacyType.naming.Name = 0;
+    _legacyType.naming.Description = 0;
     _legacyType.capacity = 0;
     _legacyType.images_offset = 0;
 }
@@ -367,7 +388,7 @@ void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t wi
             imageId++;
     }
 
-    gfx_draw_sprite(dpi, imageId, 0, 0, 0);
+    gfx_draw_sprite(dpi, imageId, { 0, 0 }, 0);
 }
 
 std::string RideObject::GetDescription() const
@@ -382,45 +403,20 @@ std::string RideObject::GetCapacity() const
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 {
+    // Find the first non-null ride type, to be used when checking the ride group and determining the category.
+    uint8_t firstRideType = ride_entry_get_first_non_null_ride_type(&_legacyType);
+    uint8_t category = RideTypeDescriptors[firstRideType].Category;
+
     for (int32_t i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
         item->RideInfo.RideType[i] = _legacyType.ride_type[i];
     }
     for (int32_t i = 0; i < RCT2_MAX_CATEGORIES_PER_RIDE; i++)
     {
-        item->RideInfo.RideCategory[i] = _legacyType.category[i];
+        item->RideInfo.RideCategory[i] = category;
     }
 
-    uint8_t flags = 0;
-    item->RideInfo.RideFlags = flags;
-
-    // Find the first non-null ride type, to be used when checking the ride group
-    uint8_t rideTypeIdx = ride_entry_get_first_non_null_ride_type(&_legacyType);
-
-    // Determines the ride group. Will fall back to 0 if there is none found.
-    uint8_t rideGroupIndex = 0;
-
-    const RideGroup* rideGroup = RideGroupManager::GetRideGroup(rideTypeIdx, &_legacyType);
-
-    // If the ride group is nullptr, the track type does not have ride groups.
-    if (rideGroup != nullptr)
-    {
-        for (uint8_t i = rideGroupIndex + 1; i < MAX_RIDE_GROUPS_PER_RIDE_TYPE; i++)
-        {
-            const RideGroup* irg = RideGroupManager::RideGroupFind(rideTypeIdx, i);
-
-            if (irg != nullptr)
-            {
-                if (irg->Equals(rideGroup))
-                {
-                    rideGroupIndex = i;
-                    break;
-                }
-            }
-        }
-    }
-
-    item->RideInfo.RideGroupIndex = rideGroupIndex;
+    item->RideInfo.RideFlags = 0;
 }
 
 void RideObject::ReadLegacyVehicle(
@@ -547,22 +543,13 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
         _legacyType.ride_type[i] = rideType;
     }
 
-    auto rideCategories = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "category"));
-    if (rideCategories.size() >= 1)
-    {
-        _legacyType.category[0] = ParseRideCategory(rideCategories[0]);
-        _legacyType.category[1] = _legacyType.category[0];
-    }
-    if (rideCategories.size() >= 2)
-    {
-        _legacyType.category[1] = ParseRideCategory(rideCategories[1]);
-    }
-
     _legacyType.max_height = ObjectJsonHelpers::GetInteger(properties, "maxHeight");
 
     // This needs to be set for both shops/facilities _and_ regular rides.
-    _legacyType.shop_item = SHOP_ITEM_NONE;
-    _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
+    for (auto& item : _legacyType.shop_item)
+    {
+        item = SHOP_ITEM_NONE;
+    }
 
     _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
 
@@ -583,7 +570,8 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
 
         // Shop item
         auto rideSells = ObjectJsonHelpers::GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "sells"));
-        for (size_t i = 0; i < rideSells.size(); i++)
+        auto numShopItems = std::min(static_cast<size_t>(NUM_SHOP_ITEMS_PER_RIDE), rideSells.size());
+        for (size_t i = 0; i < numShopItems; i++)
         {
             auto shopItem = ParseShopItem(rideSells[i]);
             if (shopItem == SHOP_ITEM_NONE)
@@ -591,18 +579,7 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
                 context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, "Unknown shop item");
             }
 
-            if (i == 0)
-            {
-                _legacyType.shop_item = ParseShopItem(rideSells[0]);
-            }
-            else if (i == 1)
-            {
-                _legacyType.shop_item_secondary = ParseShopItem(rideSells[1]);
-            }
-            else
-            {
-                // More than 2 shop items not supported yet!
-            }
+            _legacyType.shop_item[i] = ParseShopItem(rideSells[i]);
         }
     }
     else
@@ -641,6 +618,7 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
         auto availableTrackPieces = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "availableTrackPieces"));
     }
 
+    _legacyType.BuildMenuPriority = ObjectJsonHelpers::GetInteger(properties, "buildMenuPriority", 0);
     _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32_t>(
         properties,
         {
@@ -658,6 +636,7 @@ void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
             { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB },
         });
 
+    RideObjectUpdateRideType(&_legacyType);
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
     ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
 }
@@ -1051,7 +1030,7 @@ uint8_t RideObject::ParseRideType(const std::string& s)
         { "lim_launched_rc", RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER },
     };
     auto result = LookupTable.find(s);
-    return (result != LookupTable.end()) ? result->second : (uint8_t)RIDE_TYPE_NULL;
+    return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_TYPE_NULL);
 }
 
 uint8_t RideObject::ParseRideCategory(const std::string& s)
@@ -1065,7 +1044,7 @@ uint8_t RideObject::ParseRideCategory(const std::string& s)
         { "stall", RIDE_CATEGORY_SHOP },
     };
     auto result = LookupTable.find(s);
-    return (result != LookupTable.end()) ? result->second : (uint8_t)RIDE_CATEGORY_TRANSPORT;
+    return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_CATEGORY_TRANSPORT);
 }
 
 uint8_t RideObject::ParseShopItem(const std::string& s)
@@ -1110,5 +1089,5 @@ uint8_t RideObject::ParseShopItem(const std::string& s)
         { "sunglasses", SHOP_ITEM_SUNGLASSES },
     };
     auto result = LookupTable.find(s);
-    return (result != LookupTable.end()) ? result->second : (uint8_t)SHOP_ITEM_NONE;
+    return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(SHOP_ITEM_NONE);
 }

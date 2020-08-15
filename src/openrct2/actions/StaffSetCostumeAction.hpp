@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -73,8 +73,8 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        Peep* peep = GET_PEEP(_spriteIndex);
-        if (peep->type != PEEP_TYPE_STAFF || peep->staff_type != STAFF_TYPE_ENTERTAINER)
+        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -91,27 +91,32 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        Peep* peep = GET_PEEP(_spriteIndex);
+        auto* staff = TryGetEntity<Staff>(_spriteIndex);
+        if (staff == nullptr)
+        {
+            log_warning("Invalid game command for sprite %u", _spriteIndex);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
 
         auto spriteType = static_cast<PeepSpriteType>(_costume + 4);
-        peep->sprite_type = spriteType;
-        peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
+        staff->SpriteType = spriteType;
+        staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
         if (peep_slow_walking_types[spriteType])
         {
-            peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
+            staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
         }
-        peep->action_frame = 0;
-        peep->UpdateCurrentActionSpriteType();
-        peep->Invalidate();
+        staff->ActionFrame = 0;
+        staff->UpdateCurrentActionSpriteType();
+        staff->Invalidate();
 
         window_invalidate_by_number(WC_PEEP, _spriteIndex);
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
         context_broadcast_intent(&intent);
 
         auto res = std::make_unique<GameActionResult>();
-        res->Position.x = peep->x;
-        res->Position.y = peep->y;
-        res->Position.z = peep->z;
+        res->Position.x = staff->x;
+        res->Position.y = staff->y;
+        res->Position.z = staff->z;
         return res;
     }
 };

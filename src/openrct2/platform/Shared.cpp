@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,6 @@
 #include "../common.h"
 
 #ifdef _WIN32
-#    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
 #else
 #    include <unistd.h>
@@ -20,13 +19,14 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
+#include "../core/FileSystem.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../localisation/Currency.h"
 #include "../localisation/Localisation.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
-#include "platform.h"
+#include "Platform2.h"
 
 #include <algorithm>
 #include <stdlib.h>
@@ -64,9 +64,44 @@ static uint32_t _frequency = 0;
 static LARGE_INTEGER _entryTimestamp;
 #endif // _WIN32
 
+namespace Platform
+{
+    rct2_date GetDateLocal()
+    {
+        auto time = std::time(nullptr);
+        auto localTime = std::localtime(&time);
+
+        rct2_date outDate;
+        outDate.day = localTime->tm_mday;
+        outDate.day_of_week = localTime->tm_wday;
+        outDate.month = localTime->tm_mon + 1;
+        outDate.year = localTime->tm_year + 1900;
+        return outDate;
+    }
+
+    rct2_time GetTimeLocal()
+    {
+        auto time = std::time(nullptr);
+        auto localTime = std::localtime(&time);
+
+        rct2_time outTime;
+        outTime.hour = localTime->tm_hour;
+        outTime.minute = localTime->tm_min;
+        outTime.second = localTime->tm_sec;
+        return outTime;
+    }
+
+    bool FileExists(const std::string path)
+    {
+        fs::path file = fs::u8path(path);
+        log_verbose("Checking if file exists: %s", path.c_str());
+        return fs::exists(file);
+    }
+} // namespace Platform
+
 using update_palette_func = void (*)(const uint8_t*, int32_t, int32_t);
 
-rct_palette_entry gPalette[256];
+GamePalette gPalette;
 
 void platform_update_palette(const uint8_t* colours, int32_t start_index, int32_t num_colours)
 {
@@ -95,18 +130,18 @@ void platform_update_palette(const uint8_t* colours, int32_t start_index, int32_
             }
         }
 
-        gPalette[i].red = r;
-        gPalette[i].green = g;
-        gPalette[i].blue = b;
-        gPalette[i].alpha = 0;
+        gPalette[i].Red = r;
+        gPalette[i].Green = g;
+        gPalette[i].Blue = b;
+        gPalette[i].Alpha = 0;
         colours += 4;
     }
 
     // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
-    gPalette[255].alpha = 0;
-    gPalette[255].red = 255;
-    gPalette[255].green = 255;
-    gPalette[255].blue = 255;
+    gPalette[255].Alpha = 0;
+    gPalette[255].Red = 255;
+    gPalette[255].Green = 255;
+    gPalette[255].Blue = 255;
 
     if (!gOpenRCT2Headless)
     {
@@ -144,7 +179,7 @@ static void platform_ticks_init()
 #ifdef _WIN32
     LARGE_INTEGER freq;
     QueryPerformanceFrequency(&freq);
-    _frequency = (uint32_t)(freq.QuadPart / 1000);
+    _frequency = static_cast<uint32_t>(freq.QuadPart / 1000);
     QueryPerformanceCounter(&_entryTimestamp);
 #endif
 }
@@ -158,9 +193,9 @@ uint32_t platform_get_ticks()
     LARGE_INTEGER runningDelta;
     runningDelta.QuadPart = pfc.QuadPart - _entryTimestamp.QuadPart;
 
-    return (uint32_t)(runningDelta.QuadPart / _frequency);
+    return static_cast<uint32_t>(runningDelta.QuadPart / _frequency);
 #elif defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
-    return (uint32_t)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
+    return static_cast<uint32_t>(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
 #else
     struct timespec ts;
     if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
@@ -168,7 +203,7 @@ uint32_t platform_get_ticks()
         log_fatal("clock_gettime failed");
         exit(-1);
     }
-    return (uint32_t)(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
+    return static_cast<uint32_t>(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
 #endif
 }
 

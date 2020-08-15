@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,6 +54,13 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("type", _cheatType);
+        visitor.Visit("param1", _param1);
+        visitor.Visit("param2", _param2);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
@@ -97,6 +104,8 @@ public:
                 break;
             case CheatType::DisableClearanceChecks:
                 gCheatsDisableClearanceChecks = _param1 != 0;
+                // Required to update the clearance checks overlay on the Cheats button.
+                window_invalidate_by_class(WC_TOP_TOOLBAR);
                 break;
             case CheatType::DisableSupportLimits:
                 gCheatsDisableSupportLimits = _param1 != 0;
@@ -237,6 +246,9 @@ public:
             case CheatType::RemoveDucks:
                 duck_remove_all();
                 break;
+            case CheatType::AllowTrackPlaceInvalidHeights:
+                gCheatsAllowTrackPlaceInvalidHeights = _param1 != 0;
+                break;
             default:
             {
                 log_error("Unabled cheat: %d", _cheatType.id);
@@ -330,9 +342,9 @@ private:
                     case GUEST_PARAMETER_NAUSEA_TOLERANCE:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
                                  { PEEP_NAUSEA_TOLERANCE_NONE, PEEP_NAUSEA_TOLERANCE_HIGH } };
-                    case GUEST_PARAMETER_BATHROOM:
+                    case GUEST_PARAMETER_TOILET:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                                 { 0, PEEP_MAX_BATHROOM } };
+                                 { 0, PEEP_MAX_TOILET } };
                     case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY }, { 0, 255 } };
                     default:
@@ -415,13 +427,8 @@ private:
 
     void RemoveLitter() const
     {
-        Litter* litter;
-        uint16_t spriteIndex, nextSpriteIndex;
-
-        for (spriteIndex = gSpriteListHead[SPRITE_LIST_LITTER]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
+        for (auto litter : EntityList<Litter>(EntityListId::Litter))
         {
-            litter = &(get_sprite(spriteIndex)->litter);
-            nextSpriteIndex = litter->next;
             sprite_remove(litter);
         }
 
@@ -563,46 +570,42 @@ private:
 
     void SetGuestParameter(int32_t parameter, int32_t value) const
     {
-        int32_t spriteIndex;
-        Peep* p;
-        FOR_ALL_GUESTS (spriteIndex, p)
+        for (auto peep : EntityList<Guest>(EntityListId::Peep))
         {
-            auto peep = p->AsGuest();
-            assert(peep != nullptr);
             switch (parameter)
             {
                 case GUEST_PARAMETER_HAPPINESS:
-                    peep->happiness = value;
-                    peep->happiness_target = value;
+                    peep->Happiness = value;
+                    peep->HappinessTarget = value;
                     // Clear the 'red-faced with anger' status if we're making the guest happy
                     if (value > 0)
                     {
-                        peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
-                        peep->angriness = 0;
+                        peep->PeepFlags &= ~PEEP_FLAGS_ANGRY;
+                        peep->Angriness = 0;
                     }
                     break;
                 case GUEST_PARAMETER_ENERGY:
-                    peep->energy = value;
-                    peep->energy_target = value;
+                    peep->Energy = value;
+                    peep->EnergyTarget = value;
                     break;
                 case GUEST_PARAMETER_HUNGER:
-                    peep->hunger = value;
+                    peep->Hunger = value;
                     break;
                 case GUEST_PARAMETER_THIRST:
-                    peep->thirst = value;
+                    peep->Thirst = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA:
-                    peep->nausea = value;
-                    peep->nausea_target = value;
+                    peep->Nausea = value;
+                    peep->NauseaTarget = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA_TOLERANCE:
-                    peep->nausea_tolerance = value;
+                    peep->NauseaTolerance = value;
                     break;
-                case GUEST_PARAMETER_BATHROOM:
-                    peep->toilet = value;
+                case GUEST_PARAMETER_TOILET:
+                    peep->Toilet = value;
                     break;
                 case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
-                    peep->intensity = (15 << 4) | value;
+                    peep->Intensity = IntensityRange(value, 15);
                     break;
             }
             peep->UpdateSpriteType();
@@ -611,28 +614,24 @@ private:
 
     void GiveObjectToGuests(int32_t object) const
     {
-        int32_t spriteIndex;
-        Peep* p;
-        FOR_ALL_GUESTS (spriteIndex, p)
+        for (auto peep : EntityList<Guest>(EntityListId::Peep))
         {
-            auto peep = p->AsGuest();
-            assert(peep != nullptr);
             switch (object)
             {
                 case OBJECT_MONEY:
-                    peep->cash_in_pocket = MONEY(1000, 00);
+                    peep->CashInPocket = MONEY(1000, 00);
                     break;
                 case OBJECT_PARK_MAP:
-                    peep->item_standard_flags |= PEEP_ITEM_MAP;
+                    peep->ItemStandardFlags |= PEEP_ITEM_MAP;
                     break;
                 case OBJECT_BALLOON:
-                    peep->item_standard_flags |= PEEP_ITEM_BALLOON;
-                    peep->balloon_colour = scenario_rand_max(COLOUR_COUNT - 1);
+                    peep->ItemStandardFlags |= PEEP_ITEM_BALLOON;
+                    peep->BalloonColour = scenario_rand_max(COLOUR_COUNT - 1);
                     peep->UpdateSpriteType();
                     break;
                 case OBJECT_UMBRELLA:
-                    peep->item_standard_flags |= PEEP_ITEM_UMBRELLA;
-                    peep->umbrella_colour = scenario_rand_max(COLOUR_COUNT - 1);
+                    peep->ItemStandardFlags |= PEEP_ITEM_UMBRELLA;
+                    peep->UmbrellaColour = scenario_rand_max(COLOUR_COUNT - 1);
                     peep->UpdateSpriteType();
                     break;
             }
@@ -642,7 +641,6 @@ private:
 
     void RemoveAllGuests() const
     {
-        uint16_t spriteIndex, nextSpriteIndex;
         for (auto& ride : GetRideManager())
         {
             ride.num_riders = 0;
@@ -655,41 +653,30 @@ private:
 
             for (auto trainIndex : ride.vehicles)
             {
-                spriteIndex = trainIndex;
-                while (spriteIndex != SPRITE_INDEX_NULL)
+                for (Vehicle* vehicle = TryGetEntity<Vehicle>(trainIndex); vehicle != nullptr;
+                     vehicle = TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
                 {
-                    auto vehicle = GET_VEHICLE(spriteIndex);
-                    for (size_t i = 0, offset = 0; i < vehicle->num_peeps; i++)
-                    {
-                        while (vehicle->peep[i + offset] == SPRITE_INDEX_NULL)
-                        {
-                            offset++;
-                        }
-                        auto peep = GET_PEEP(vehicle->peep[i + offset]);
-                        if (peep != nullptr)
-                        {
-                            vehicle->mass -= peep->mass;
-                        }
-                    }
-
                     for (auto& peepInTrainIndex : vehicle->peep)
                     {
+                        auto peep = TryGetEntity<Guest>(peepInTrainIndex);
+                        if (peep != nullptr)
+                        {
+                            vehicle->mass -= peep->Mass;
+                        }
                         peepInTrainIndex = SPRITE_INDEX_NULL;
                     }
 
                     vehicle->num_peeps = 0;
                     vehicle->next_free_seat = 0;
-
-                    spriteIndex = vehicle->next_vehicle_on_train;
                 }
             }
         }
 
-        for (spriteIndex = gSpriteListHead[SPRITE_LIST_PEEP]; spriteIndex != SPRITE_INDEX_NULL; spriteIndex = nextSpriteIndex)
+        // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
+        // will be fetched on a deleted peep.
+        for (auto peep : EntityList<Peep>(EntityListId::Peep))
         {
-            auto peep = &(get_sprite(spriteIndex)->peep);
-            nextSpriteIndex = peep->next;
-            if (peep->type == PEEP_TYPE_GUEST)
+            if (peep->AssignedPeepType == PeepType::Guest)
             {
                 peep->Remove();
             }
@@ -701,27 +688,21 @@ private:
 
     void ExplodeGuests() const
     {
-        int32_t sprite_index;
-        Peep* peep;
-
-        FOR_ALL_GUESTS (sprite_index, peep)
+        for (auto peep : EntityList<Guest>(EntityListId::Peep))
         {
             if (scenario_rand_max(6) == 0)
             {
-                peep->peep_flags |= PEEP_FLAGS_EXPLODE;
+                peep->PeepFlags |= PEEP_FLAGS_EXPLODE;
             }
         }
     }
 
     void SetStaffSpeed(uint8_t value) const
     {
-        uint16_t spriteIndex;
-        Peep* peep;
-
-        FOR_ALL_STAFF (spriteIndex, peep)
+        for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
-            peep->energy = value;
-            peep->energy_target = value;
+            peep->Energy = value;
+            peep->EnergyTarget = value;
         }
     }
 

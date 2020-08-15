@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,19 +13,22 @@
 
 #include <cstring>
 
-template<int32_t image_type, int32_t zoom_level>
-static void FASTCALL DrawRLESprite2_Magnify(
-    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
-    const rct_drawpixelinfo* RESTRICT dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
+template<int32_t image_type, int32_t zoom_level> static void FASTCALL DrawRLESpriteMagnify(DrawSpriteArgs& args)
 {
     // TODO
 }
 
-template<int32_t image_type, int32_t zoom_level>
-static void FASTCALL DrawRLESprite2(
-    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
-    const rct_drawpixelinfo* RESTRICT dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
+template<DrawBlendOp TBlendOp, int32_t zoom_level> static void FASTCALL DrawRLESpriteMinify(DrawSpriteArgs& args)
 {
+    auto dpi = args.DPI;
+    auto source_bits_pointer = args.SourceImage.offset;
+    auto dest_bits_pointer = args.DestinationBits;
+    auto source_x_start = args.SrcX;
+    auto source_y_start = args.SrcY;
+    auto width = args.Width;
+    auto height = args.Height;
+    [[maybe_unused]] auto& paletteMap = args.PalMap;
+
     // The distance between two samples in the source image.
     // We draw the image at 1 / (2^zoom_level) scale.
     int32_t zoom_amount = 1 << zoom_level;
@@ -58,7 +61,6 @@ static void FASTCALL DrawRLESprite2(
         while (!isEndOfLine)
         {
             const uint8_t* copySrc = lineData;
-            // uint8_t* copyDest = loop_dest_pointer;
 
             // Read chunk metadata
             uint8_t dataSize = *copySrc++;
@@ -104,28 +106,25 @@ static void FASTCALL DrawRLESprite2(
 
             // Finally after all those checks, copy the image onto the drawing surface
             // If the image type is not a basic one we require to mix the pixels
-            if (image_type & IMAGE_TYPE_REMAP) // palette controlled images
+            if constexpr ((TBlendOp & BLEND_SRC) != 0) // palette controlled images
             {
                 for (int j = 0; j < numPixels; j += zoom_amount, copySrc += zoom_amount, copyDest++)
                 {
-                    if (image_type & IMAGE_TYPE_TRANSPARENT)
+                    if ((TBlendOp & BLEND_DST) != 0)
                     {
-                        uint16_t color = ((*copySrc << 8) | *copyDest) - 0x100;
-                        *copyDest = palette_pointer[color];
+                        *copyDest = paletteMap.Blend(*copySrc, *copyDest);
                     }
                     else
                     {
-                        *copyDest = palette_pointer[*copySrc];
+                        *copyDest = paletteMap[*copySrc];
                     }
                 }
             }
-            else if (image_type & IMAGE_TYPE_TRANSPARENT) // single alpha blended color (used for glass)
+            else if constexpr ((TBlendOp & BLEND_DST) != 0) // single alpha blended color (used for glass)
             {
                 for (int j = 0; j < numPixels; j += zoom_amount, copyDest++)
                 {
-                    uint8_t pixel = *copyDest;
-                    pixel = palette_pointer[pixel];
-                    *copyDest = pixel;
+                    *copyDest = paletteMap[*copyDest];
                 }
             }
             else // standard opaque image
@@ -146,39 +145,28 @@ static void FASTCALL DrawRLESprite2(
     }
 }
 
-#define DrawRLESpriteHelper2_Magnify(image_type, zoom_level)                                                                   \
-    DrawRLESprite2_Magnify<image_type, zoom_level>(                                                                            \
-        source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
-
-#define DrawRLESpriteHelper2(image_type, zoom_level)                                                                           \
-    DrawRLESprite2<image_type, zoom_level>(                                                                                    \
-        source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
-
-template<int32_t image_type>
-static void FASTCALL DrawRLESprite1(
-    const uint8_t* source_bits_pointer, uint8_t* dest_bits_pointer, const uint8_t* palette_pointer,
-    const rct_drawpixelinfo* dpi, int32_t source_y_start, int32_t height, int32_t source_x_start, int32_t width)
+template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(DrawSpriteArgs& args)
 {
-    auto zoom_level = static_cast<int8_t>(dpi->zoom_level);
+    auto zoom_level = static_cast<int8_t>(args.DPI->zoom_level);
     switch (zoom_level)
     {
         case -2:
-            DrawRLESpriteHelper2_Magnify(image_type, 2);
+            DrawRLESpriteMagnify<TBlendOp, 2>(args);
             break;
         case -1:
-            DrawRLESpriteHelper2_Magnify(image_type, 1);
+            DrawRLESpriteMagnify<TBlendOp, 1>(args);
             break;
         case 0:
-            DrawRLESpriteHelper2(image_type, 0);
+            DrawRLESpriteMinify<TBlendOp, 0>(args);
             break;
         case 1:
-            DrawRLESpriteHelper2(image_type, 1);
+            DrawRLESpriteMinify<TBlendOp, 1>(args);
             break;
         case 2:
-            DrawRLESpriteHelper2(image_type, 2);
+            DrawRLESpriteMinify<TBlendOp, 2>(args);
             break;
         case 3:
-            DrawRLESpriteHelper2(image_type, 3);
+            DrawRLESpriteMinify<TBlendOp, 3>(args);
             break;
         default:
             assert(false);
@@ -186,38 +174,31 @@ static void FASTCALL DrawRLESprite1(
     }
 }
 
-#define DrawRLESpriteHelper1(image_type)                                                                                       \
-    DrawRLESprite1<image_type>(                                                                                                \
-        source_bits_pointer, dest_bits_pointer, palette_pointer, dpi, source_y_start, height, source_x_start, width)
-
 /**
  * Transfers readied images onto buffers
  * This function copies the sprite data onto the screen
  *  rct2: 0x0067AA18
  * @param imageId Only flags are used.
  */
-void FASTCALL gfx_rle_sprite_to_buffer(
-    const uint8_t* RESTRICT source_bits_pointer, uint8_t* RESTRICT dest_bits_pointer, const uint8_t* RESTRICT palette_pointer,
-    const rct_drawpixelinfo* RESTRICT dpi, ImageId imageId, int32_t source_y_start, int32_t height, int32_t source_x_start,
-    int32_t width)
+void FASTCALL gfx_rle_sprite_to_buffer(DrawSpriteArgs& args)
 {
-    if (imageId.HasPrimary())
+    if (args.Image.HasPrimary())
     {
-        if (imageId.IsBlended())
+        if (args.Image.IsBlended())
         {
-            DrawRLESpriteHelper1(IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT);
+            DrawRLESprite<BLEND_TRANSPARENT | BLEND_SRC | BLEND_DST>(args);
         }
         else
         {
-            DrawRLESpriteHelper1(IMAGE_TYPE_REMAP);
+            DrawRLESprite<BLEND_TRANSPARENT | BLEND_SRC>(args);
         }
     }
-    else if (imageId.IsBlended())
+    else if (args.Image.IsBlended())
     {
-        DrawRLESpriteHelper1(IMAGE_TYPE_TRANSPARENT);
+        DrawRLESprite<BLEND_TRANSPARENT | BLEND_DST>(args);
     }
     else
     {
-        DrawRLESpriteHelper1(IMAGE_TYPE_DEFAULT);
+        DrawRLESprite<BLEND_TRANSPARENT>(args);
     }
 }

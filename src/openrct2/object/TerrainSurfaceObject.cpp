@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
+#include "../world/Location.hpp"
 #include "ObjectJsonHelpers.h"
 
 void TerrainSurfaceObject::Load()
@@ -54,21 +55,22 @@ void TerrainSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, in
         imageId |= SPRITE_ID_PALETTE_COLOUR_1(Colour);
     }
 
+    ScreenCoordsXY screenCoords{};
     int32_t x0 = 0;
-    int32_t y = -16;
+    screenCoords.y = -16;
     for (int32_t i = 0; i < 8; i++)
     {
-        int32_t x = x0;
+        screenCoords.x = x0;
         if (i % 2 == 0)
         {
-            x -= 32;
+            screenCoords.x -= 32;
         }
         for (int32_t j = 0; j < 4; j++)
         {
-            gfx_draw_sprite(dpi, imageId, x, y, 0);
-            x += 64;
+            gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+            screenCoords.x += 64;
         }
-        y += 16;
+        screenCoords.y += 16;
     }
 }
 

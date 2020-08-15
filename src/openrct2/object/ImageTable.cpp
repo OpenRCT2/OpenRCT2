@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,7 +28,7 @@ ImageTable::~ImageTable()
     }
 }
 
-void ImageTable::Read(IReadObjectContext* context, IStream* stream)
+void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     if (gOpenRCT2NoGraphics)
     {
@@ -45,10 +45,10 @@ void ImageTable::Read(IReadObjectContext* context, IStream* stream)
         if (remainingBytes > imageDataSize)
         {
             context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size longer than expected.");
-            imageDataSize = (uint32_t)remainingBytes;
+            imageDataSize = static_cast<uint32_t>(remainingBytes);
         }
 
-        auto dataSize = (size_t)imageDataSize;
+        auto dataSize = static_cast<size_t>(imageDataSize);
         auto data = std::make_unique<uint8_t[]>(dataSize);
         if (data == nullptr)
         {
@@ -57,14 +57,14 @@ void ImageTable::Read(IReadObjectContext* context, IStream* stream)
         }
 
         // Read g1 element headers
-        uintptr_t imageDataBase = (uintptr_t)data.get();
+        uintptr_t imageDataBase = reinterpret_cast<uintptr_t>(data.get());
         std::vector<rct_g1_element> newEntries;
         for (uint32_t i = 0; i < numImages; i++)
         {
             rct_g1_element g1Element;
 
-            uintptr_t imageDataOffset = (uintptr_t)stream->ReadValue<uint32_t>();
-            g1Element.offset = (uint8_t*)(imageDataBase + imageDataOffset);
+            uintptr_t imageDataOffset = static_cast<uintptr_t>(stream->ReadValue<uint32_t>());
+            g1Element.offset = reinterpret_cast<uint8_t*>(imageDataBase + imageDataOffset);
 
             g1Element.width = stream->ReadValue<int16_t>();
             g1Element.height = stream->ReadValue<int16_t>();
@@ -77,7 +77,7 @@ void ImageTable::Read(IReadObjectContext* context, IStream* stream)
         }
 
         // Read g1 element data
-        size_t readBytes = (size_t)stream->TryRead(data.get(), dataSize);
+        size_t readBytes = static_cast<size_t>(stream->TryRead(data.get(), dataSize));
 
         // If data is shorter than expected (some custom objects are unfortunately like that)
         size_t unreadBytes = dataSize - readBytes;

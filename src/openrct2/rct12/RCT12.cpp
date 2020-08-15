@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -221,8 +221,7 @@ uint8_t RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
-        || trackType == TRACK_ELEM_TOWER_BASE)
+    if (track_type_is_station(trackType) || trackType == TRACK_ELEM_TOWER_BASE)
     {
         return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
@@ -246,7 +245,7 @@ bool RCT12TrackElement::IsInverted() const
 
 uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
 {
-    if (track_element_has_speed_setting(GetTrackType()))
+    if (TrackTypeHasSpeedSetting(GetTrackType()))
     {
         return (sequence >> 4) << 1;
     }
@@ -255,7 +254,7 @@ uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
 
 bool RCT12TrackElement::HasGreenLight() const
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    if (track_type_is_station(trackType))
     {
         return (sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
     }
@@ -335,12 +334,12 @@ colour_t RCT12SmallSceneryElement::GetSecondaryColour() const
 
 bool RCT12SmallSceneryElement::NeedsSupports() const
 {
-    return (bool)(colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
+    return colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }
 
 uint32_t RCT12LargeSceneryElement::GetEntryIndex() const
 {
-    return entryIndex & TILE_ELEMENT_LARGE_TYPE_MASK;
+    return entryIndex & RCT12_TILE_ELEMENT_LARGE_TYPE_MASK;
 }
 
 uint16_t RCT12LargeSceneryElement::GetSequenceIndex() const
@@ -449,7 +448,7 @@ uint8_t RCT12EntranceElement::GetRideIndex() const
 
 uint8_t RCT12EntranceElement::GetStationIndex() const
 {
-    return (index & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+    return (index & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
 uint8_t RCT12EntranceElement::GetSequenceIndex() const
@@ -524,13 +523,13 @@ void RCT12TileElement::ClearAs(uint8_t newType)
 
 void RCT12LargeSceneryElement::SetEntryIndex(uint32_t newIndex)
 {
-    entryIndex &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
-    entryIndex |= (newIndex & TILE_ELEMENT_LARGE_TYPE_MASK);
+    entryIndex &= ~RCT12_TILE_ELEMENT_LARGE_TYPE_MASK;
+    entryIndex |= (newIndex & RCT12_TILE_ELEMENT_LARGE_TYPE_MASK);
 }
 
 void RCT12LargeSceneryElement::SetSequenceIndex(uint16_t sequence)
 {
-    entryIndex &= TILE_ELEMENT_LARGE_TYPE_MASK;
+    entryIndex &= RCT12_TILE_ELEMENT_LARGE_TYPE_MASK;
     entryIndex |= (sequence << 10);
 }
 
@@ -753,8 +752,7 @@ void RCT12TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 
 void RCT12TrackElement::SetStationIndex(uint8_t newStationIndex)
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION
-        || trackType == TRACK_ELEM_TOWER_BASE)
+    if (track_type_is_station(trackType) || trackType == TRACK_ELEM_TOWER_BASE)
     {
         sequence &= ~RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK;
         sequence |= (newStationIndex << 4);
@@ -793,7 +791,7 @@ void RCT12TrackElement::SetInverted(bool inverted)
 
 void RCT12TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 {
-    if (track_element_has_speed_setting(GetTrackType()))
+    if (TrackTypeHasSpeedSetting(GetTrackType()))
     {
         sequence &= ~0b11110000;
         sequence |= ((speed >> 1) << 4);
@@ -819,7 +817,7 @@ void RCT12TrackElement::SetBlockBrakeClosed(bool isClosed)
 
 void RCT12TrackElement::SetHasGreenLight(uint8_t greenLight)
 {
-    if (trackType == TRACK_ELEM_END_STATION || trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION)
+    if (track_type_is_station(trackType))
     {
         sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
         if (greenLight)
@@ -976,7 +974,7 @@ void RCT12EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
 
 void RCT12EntranceElement::SetStationIndex(uint8_t stationIndex)
 {
-    index &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    index &= ~RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK;
     index |= (stationIndex << 4);
 }
 
@@ -1009,4 +1007,20 @@ bool RCT12ResearchItem::IsUninventedEndMarker() const
 bool RCT12ResearchItem::IsRandomEndMarker() const
 {
     return rawValue == RCT12_RESEARCHED_ITEMS_END_2;
+}
+
+ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index)
+{
+    if (index == RCT12_OBJECT_ENTRY_INDEX_NULL)
+        return OBJECT_ENTRY_INDEX_NULL;
+
+    return index;
+}
+
+RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex index)
+{
+    if (index == OBJECT_ENTRY_INDEX_NULL)
+        return RCT12_OBJECT_ENTRY_INDEX_NULL;
+
+    return index;
 }

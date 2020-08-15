@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -31,26 +31,26 @@ enum WEATHER
     WEATHER_THUNDER,
 };
 
-enum WEATHER_EFFECT
+enum class WeatherEffectType : uint8_t
 {
-    WEATHER_EFFECT_NONE,
-    WEATHER_EFFECT_RAIN,
-    WEATHER_EFFECT_STORM,
+    None,
+    Rain,
+    Storm,
 };
 
-enum RAIN_LEVEL
+enum class RainLevel
 {
-    RAIN_LEVEL_NONE,
-    RAIN_LEVEL_LIGHT,
-    RAIN_LEVEL_HEAVY,
+    None,
+    Light,
+    Heavy,
 };
 
 struct WeatherState
 {
     int8_t TemperatureDelta;
-    int8_t EffectLevel;
+    WeatherEffectType EffectLevel;
     int8_t GloomLevel;
-    int8_t RainLevel;
+    RainLevel Level;
     uint32_t SpriteId;
 };
 
@@ -58,9 +58,9 @@ struct ClimateState
 {
     uint8_t Weather;
     int8_t Temperature;
-    uint8_t WeatherEffect;
+    WeatherEffectType WeatherEffect;
     uint8_t WeatherGloom;
-    uint8_t RainLevel;
+    RainLevel Level;
 };
 
 extern uint8_t gClimate;

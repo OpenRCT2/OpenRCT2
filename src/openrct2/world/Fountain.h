@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,3 +41,13 @@ enum
     JUMPING_FOUNTAIN_TYPE_WATER,
     JUMPING_FOUNTAIN_TYPE_SNOW
 };
+
+namespace FOUNTAIN_FLAG
+{
+    const uint32_t FAST = 1 << 0;
+    const uint32_t GOTO_EDGE = 1 << 1;
+    const uint32_t SPLIT = 1 << 2;
+    const uint32_t TERMINATE = 1 << 3;
+    const uint32_t BOUNCE = 1 << 4;
+    const uint32_t DIRECTION = 1 << 7;
+}; // namespace FOUNTAIN_FLAG

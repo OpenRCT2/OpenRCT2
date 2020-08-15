@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,7 @@
 #include "../common.h"
 #include "../drawing/Drawing.h"
 
-interface ITitleSequencePlayer;
+struct ITitleSequencePlayer;
 
 namespace OpenRCT2
 {
@@ -65,4 +65,4 @@ size_t title_get_current_sequence();
 bool title_preview_sequence(size_t value);
 void title_stop_previewing_sequence();
 bool title_is_previewing_sequence();
-void DrawOpenRCT2(rct_drawpixelinfo* dpi, int32_t x, int32_t y);
+void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords);

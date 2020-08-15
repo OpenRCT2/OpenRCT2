@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,7 +35,7 @@ enum NETWORK_READPACKET
 /**
  * Represents an address and port.
  */
-interface INetworkEndpoint
+struct INetworkEndpoint
 {
     virtual ~INetworkEndpoint()
     {
@@ -47,7 +47,7 @@ interface INetworkEndpoint
 /**
  * Represents a TCP socket / connection or listener.
  */
-interface ITcpSocket
+struct ITcpSocket
 {
 public:
     virtual ~ITcpSocket() = default;
@@ -55,6 +55,7 @@ public:
     virtual SOCKET_STATUS GetStatus() const abstract;
     virtual const char* GetError() const abstract;
     virtual const char* GetHostName() const abstract;
+    virtual std::string GetIpAddress() const abstract;
 
     virtual void Listen(uint16_t port) abstract;
     virtual void Listen(const std::string& address, uint16_t port) abstract;
@@ -73,7 +74,7 @@ public:
 /**
  * Represents a UDP socket / listener.
  */
-interface IUdpSocket
+struct IUdpSocket
 {
 public:
     virtual ~IUdpSocket() = default;

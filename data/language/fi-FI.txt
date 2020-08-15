@@ -1948,8 +1948,8 @@ STR_2728    :{UINT16}tunti:{UINT16}min
 STR_2729    :{UINT16}tunti:{UINT16}minuuttia
 STR_2730    :{UINT16}tuntia:{UINT16}min
 STR_2731    :{UINT16}tuntia:{UINT16}minuuttias
-STR_2732    :{COMMA16}jalka
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}jalka
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Vuosi {COMMA16}
@@ -1985,7 +1985,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Ikkuna #{COMMA16}
 STR_2780    :Ylimääräinen ikkuna
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Muuta näppäimistön pikanäppäintä
@@ -2548,19 +2548,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Vuosi {POP16}{COMMA16}
 STR_5161    :Päiväyksen tyyli:
 STR_5162    :Päivä/Kuukausi/Vuosi
 STR_5163    :Kuukausi/Päivä/Vuosi
-STR_5164    :Twitch Channel name
-STR_5165    :Name peeps after followers
-STR_5166    :{SMALLFONT}{BLACK}Will name peeps after channel's Twitch followers
-STR_5167    :Track follower peeps
-STR_5168    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after channel's Twitch followers
-STR_5169    :Name peeps after people in Twitch chat
-STR_5170    :{SMALLFONT}{BLACK}Will name peeps after people in Twitch chat
-STR_5171    :Track chat peeps
-STR_5172    :{SMALLFONT}{BLACK}Will turn on tracking information for guests named after Twitch chat participants
-STR_5173    :Pull Twitch chat as news
-STR_5174    :{SMALLFONT}{BLACK}Will use Twitch chat messages preceded by !news for in game notifications
-STR_5175    :Input the name of your Twitch channel
-STR_5176    :Enable Twitch integration
 STR_5177    :Fullscreen mode:
 STR_5178    :{SMALLFONT}{BLACK}Näytä taloushuijaukset
 STR_5179    :{SMALLFONT}{BLACK}Näytä vierashuijaukset
@@ -2656,7 +2643,6 @@ STR_5268    :{SMALLFONT}{BLACK}Ääni
 STR_5269    :{SMALLFONT}{BLACK}Controls and interface
 STR_5270    :{SMALLFONT}{BLACK}Sekalaiset
 # again, twitch is a name, and can't be translated
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Small Scenery
 STR_5273    :{SMALLFONT}{BLACK}Large Scenery
 STR_5274    :{SMALLFONT}{BLACK}Jalkakäytävä
@@ -2700,26 +2686,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug tools
 STR_5312    :Näytä komentokehote
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
-STR_5315    :Nurmikko
-STR_5316    :Hiekka
-STR_5317    :Pöly
-STR_5318    :Kallio
-STR_5319    :Marssilainen
-STR_5320    :Shakkilauta
-STR_5321    :Ruohokasoja
-STR_5322    :Jää
-STR_5323    :Ruudukko (punainen)
-STR_5324    :Ruudukko (keltainen)
-STR_5325    :Ruudukko (sininen)
-STR_5326    :Ruudukko (vihreä)
-STR_5327    :Hiekka (tumma)
-STR_5328    :Hiekka (vaalea)
-STR_5329    :Shakkilauta (käänteinen)
-STR_5330    :Maanalainen näkymä
-STR_5331    :Kallio
-STR_5332    :Puu (punainen)
-STR_5333    :Puu (musta)
-STR_5334    :Jää
 STR_5335    :Ajelun sisäänkäynti
 STR_5336    :Ajelun uloskäynti
 STR_5337    :Puiston sisäänkäynti

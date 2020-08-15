@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,22 +46,22 @@ enum {
     WIDX_LOAD_SERVER
 };
 
-constexpr int32_t WW = 300;
-constexpr int32_t WH = 154;
+static constexpr const int32_t WW = 300;
+static constexpr const int32_t WH = 154;
 
 static rct_widget window_server_start_widgets[] = {
-    { WWT_FRAME,            0,  0,      WW-1,   0,          WH-1,   STR_NONE,                       STR_NONE },                 // panel / background
-    { WWT_CAPTION,          0,  1,      WW-2,   1,          14,     STR_START_SERVER,               STR_WINDOW_TITLE_TIP },     // title bar
-    { WWT_CLOSEBOX,         0,  WW-13,  WW-3,   2,          13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },     // close x button
-    { WWT_TEXT_BOX,         1,  120,    WW-8,   20,         32,     STR_NONE,                       STR_NONE },                 // port text box
-    { WWT_TEXT_BOX,         1,  120,    WW-8,   36,         48,     STR_NONE,                       STR_NONE },                 // name text box
-    { WWT_TEXT_BOX,         1,  120,    WW-8,   52,         64,     STR_NONE,                       STR_NONE },                 // description text box
-    { WWT_TEXT_BOX,         1,  120,    WW-8,   68,         80,     STR_NONE,                       STR_NONE },                 // greeting text box
-    { WWT_TEXT_BOX,         1,  120,    WW-8,   84,         96,     STR_NONE,                       STR_NONE },                 // password text box
-      SPINNER_WIDGETS      (1,  120,    WW-8,   100,        111,    STR_SERVER_MAX_PLAYERS_VALUE,   STR_NONE),                  // max players (3 widgets)
-    { WWT_CHECKBOX,         1,  6,      WW-8,   117,        130,    STR_ADVERTISE,                  STR_ADVERTISE_SERVER_TIP }, // advertise checkbox
-    { WWT_BUTTON,           1,  6,      106,    WH-6-13,    WH-6,   STR_NEW_GAME,                   STR_NONE },                 // start server button
-    { WWT_BUTTON,           1,  112,    212,    WH-6-13,    WH-6,   STR_LOAD_GAME,                  STR_NONE },
+    MakeWidget        ({    0,       0}, { WW, WH}, WWT_FRAME,    0                                                        ), // panel / background
+    MakeWidget        ({    1,       1}, {298, 14}, WWT_CAPTION,  0, STR_START_SERVER,             STR_WINDOW_TITLE_TIP    ), // title bar
+    MakeWidget        ({WW-13,       2}, { 11, 12}, WWT_CLOSEBOX, 0, STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP    ), // close x button
+    MakeWidget        ({  120,      20}, {173, 13}, WWT_TEXT_BOX, 1                                                        ), // port text box
+    MakeWidget        ({  120,      36}, {173, 13}, WWT_TEXT_BOX, 1                                                        ), // name text box
+    MakeWidget        ({  120,      52}, {173, 13}, WWT_TEXT_BOX, 1                                                        ), // description text box
+    MakeWidget        ({  120,      68}, {173, 13}, WWT_TEXT_BOX, 1                                                        ), // greeting text box
+    MakeWidget        ({  120,      84}, {173, 13}, WWT_TEXT_BOX, 1                                                        ), // password text box
+    MakeSpinnerWidgets({  120,     100}, {173, 12}, WWT_SPINNER,  1, STR_SERVER_MAX_PLAYERS_VALUE                          ), // max players (3 widgets)
+    MakeWidget        ({    6,     117}, {287, 14}, WWT_CHECKBOX, 1, STR_ADVERTISE,                STR_ADVERTISE_SERVER_TIP), // advertise checkbox
+    MakeWidget        ({    6, WH-6-13}, {101, 14}, WWT_BUTTON,   1, STR_NEW_GAME                                          ), // start server button
+    MakeWidget        ({  112, WH-6-13}, {101, 14}, WWT_BUTTON,   1, STR_LOAD_GAME                                         ), // None
     { WIDGETS_END },
 };
 
@@ -217,7 +217,7 @@ static void window_server_start_mouseup(rct_window* w, rct_widgetindex widgetInd
             network_set_password(_password);
             auto intent = Intent(WC_LOADSAVE);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, (void*)window_server_start_loadsave_callback);
+            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_server_start_loadsave_callback));
             context_open_intent(&intent);
             break;
     }
@@ -331,7 +331,9 @@ static void window_server_start_invalidate(rct_window* w)
     colour_scheme_update_by_class(w, WC_SERVER_LIST);
 
     widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
-    set_format_arg(18, uint16_t, gConfigNetwork.maxplayers);
+    auto ft = Formatter::Common();
+    ft.Increment(18);
+    ft.Add<uint16_t>(gConfigNetwork.maxplayers);
 }
 
 static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -339,19 +341,19 @@ static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
 
     gfx_draw_string_left(
-        dpi, STR_PORT, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PORT_INPUT].top);
+        dpi, STR_PORT, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PORT_INPUT].top });
     gfx_draw_string_left(
-        dpi, STR_SERVER_NAME, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_NAME_INPUT].top);
+        dpi, STR_SERVER_NAME, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_NAME_INPUT].top });
     gfx_draw_string_left(
-        dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1], w->windowPos.x + 6,
-        w->windowPos.y + w->widgets[WIDX_DESCRIPTION_INPUT].top);
+        dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_DESCRIPTION_INPUT].top });
     gfx_draw_string_left(
-        dpi, STR_SERVER_GREETING, nullptr, w->colours[1], w->windowPos.x + 6,
-        w->windowPos.y + w->widgets[WIDX_GREETING_INPUT].top);
+        dpi, STR_SERVER_GREETING, nullptr, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_GREETING_INPUT].top });
     gfx_draw_string_left(
-        dpi, STR_PASSWORD, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_PASSWORD_INPUT].top);
+        dpi, STR_PASSWORD, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PASSWORD_INPUT].top });
     gfx_draw_string_left(
-        dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], w->windowPos.x + 6, w->windowPos.y + w->widgets[WIDX_MAXPLAYERS].top);
+        dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_MAXPLAYERS].top });
 }
 
 #endif

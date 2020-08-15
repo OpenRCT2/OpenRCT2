@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,7 +40,7 @@
 #include <algorithm>
 #include <unordered_map>
 
-interface IFileDataRetriever
+struct IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
     virtual std::vector<uint8_t> GetData(const std::string_view& path) const abstract;
@@ -87,7 +87,7 @@ private:
     IObjectRepository& _objectRepository;
     const IFileDataRetriever* _fileDataRetriever;
 
-    std::string _objectName;
+    std::string _identifier;
     bool _loadImages;
     std::string _basePath;
     bool _wasWarning = false;
@@ -104,13 +104,18 @@ public:
     }
 
     ReadObjectContext(
-        IObjectRepository& objectRepository, const std::string& objectName, bool loadImages,
+        IObjectRepository& objectRepository, const std::string& identifier, bool loadImages,
         const IFileDataRetriever* fileDataRetriever)
         : _objectRepository(objectRepository)
         , _fileDataRetriever(fileDataRetriever)
-        , _objectName(objectName)
+        , _identifier(identifier)
         , _loadImages(loadImages)
     {
+    }
+
+    std::string_view GetObjectIdentifier() override
+    {
+        return _identifier;
     }
 
     IObjectRepository& GetObjectRepository() override
@@ -138,7 +143,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Warning (%d): %s", _objectName.c_str(), code, text);
+            Console::Error::WriteLine("[%s] Warning (%d): %s", _identifier.c_str(), code, text);
         }
     }
 
@@ -148,7 +153,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Error (%d): %s", _objectName.c_str(), code, text);
+            Console::Error::WriteLine("[%s] Error (%d): %s", _identifier.c_str(), code, text);
         }
     }
 };
@@ -174,7 +179,7 @@ namespace ObjectFactory
         return (result != LookupTable.end()) ? result->second : OBJECT_SOURCE_CUSTOM;
     }
 
-    static void ReadObjectLegacy(Object* object, IReadObjectContext* context, IStream* stream)
+    static void ReadObjectLegacy(Object* object, IReadObjectContext* context, OpenRCT2::IStream* stream)
     {
         try
         {
@@ -198,7 +203,7 @@ namespace ObjectFactory
         Object* result = nullptr;
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
             auto chunkReader = SawyerChunkReader(&fs);
 
             rct_object_entry entry = fs.ReadValue<rct_object_entry>();
@@ -214,7 +219,7 @@ namespace ObjectFactory
                 auto chunk = chunkReader.ReadChunk();
                 log_verbose("  size: %zu", chunk->GetLength());
 
-                auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
+                auto chunkStream = OpenRCT2::MemoryStream(chunk->GetData(), chunk->GetLength());
                 auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
                 ReadObjectLegacy(result, &readContext, &chunkStream);
                 if (readContext.WasError())
@@ -246,7 +251,7 @@ namespace ObjectFactory
             object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
             auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
-            auto chunkStream = MemoryStream(data, dataSize);
+            auto chunkStream = OpenRCT2::MemoryStream(data, dataSize);
             ReadObjectLegacy(result, &readContext, &chunkStream);
 
             if (readContext.WasError())
@@ -359,7 +364,7 @@ namespace ObjectFactory
             }
 
             json_error_t jsonLoadError;
-            auto jRoot = json_loadb((const char*)jsonBytes.data(), jsonBytes.size(), 0, &jsonLoadError);
+            auto jRoot = json_loadb(reinterpret_cast<const char*>(jsonBytes.data()), jsonBytes.size(), 0, &jsonLoadError);
             if (jRoot == nullptr)
             {
                 throw JsonException(&jsonLoadError);
@@ -429,12 +434,34 @@ namespace ObjectFactory
                 std::memcpy(entry.name, originalName.c_str(), minLength);
 
                 result = CreateObject(entry);
+                result->SetIdentifier(id);
+                result->MarkAsJsonObject();
                 auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2NoGraphics, fileRetriever);
                 result->ReadJson(&readContext, jRoot);
                 if (readContext.WasError())
                 {
                     throw std::runtime_error("Object has errors");
                 }
+
+                auto authors = json_object_get(jRoot, "authors");
+                if (json_is_array(authors))
+                {
+                    std::vector<std::string> authorVector;
+                    for (size_t j = 0; j < json_array_size(authors); j++)
+                    {
+                        json_t* tryString = json_array_get(authors, j);
+                        if (json_is_string(tryString))
+                        {
+                            authorVector.emplace_back(json_string_value(tryString));
+                        }
+                    }
+                    result->SetAuthors(std::move(authorVector));
+                }
+                else if (json_is_string(authors))
+                {
+                    result->SetAuthors({ json_string_value(authors) });
+                }
+
                 auto sourceGames = json_object_get(jRoot, "sourceGame");
                 if (json_is_array(sourceGames))
                 {

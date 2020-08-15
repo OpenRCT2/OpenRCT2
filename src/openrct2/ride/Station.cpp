@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,11 +11,12 @@
 
 #include "../Game.h"
 #include "../scenario/Scenario.h"
+#include "../world/Location.hpp"
 #include "../world/Sprite.h"
 #include "Track.h"
 
 static void ride_update_station_blocksection(Ride* ride, StationIndex stationIndex);
-static void ride_update_station_bumpercar(Ride* ride, StationIndex stationIndex);
+static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex);
 static void ride_update_station_normal(Ride* ride, StationIndex stationIndex);
 static void ride_update_station_race(Ride* ride, StationIndex stationIndex);
 static void ride_race_init_vehicle_speeds(Ride* ride);
@@ -35,8 +36,8 @@ void ride_update_station(Ride* ride, StationIndex stationIndex)
         case RIDE_MODE_RACE:
             ride_update_station_race(ride, stationIndex);
             break;
-        case RIDE_MODE_BUMPERCAR:
-            ride_update_station_bumpercar(ride, stationIndex);
+        case RIDE_MODE_DODGEMS:
+            ride_update_station_dodgems(ride, stationIndex);
             break;
         case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
         case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
@@ -83,7 +84,7 @@ static void ride_update_station_blocksection(Ride* ride, StationIndex stationInd
  *
  *  rct2: 0x006AC12B
  */
-static void ride_update_station_bumpercar(Ride* ride, StationIndex stationIndex)
+static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
 {
     // Change of station depart flag should really call invalidate_station_start
     // but since dodgems do not have station lights there is no point.
@@ -96,16 +97,14 @@ static void ride_update_station_bumpercar(Ride* ride, StationIndex stationIndex)
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
     {
         int32_t dx = ride->time_limit * 32;
-        int32_t dl = dx & 0xFF;
         int32_t dh = (dx >> 8) & 0xFF;
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            uint16_t vehicleSpriteIdx = ride->vehicles[i];
-            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (vehicle == nullptr)
                 continue;
 
-            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
-            if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->sub_state > dl))
+            if (vehicle->var_CE < dh)
                 continue;
 
             // End match
@@ -122,12 +121,11 @@ static void ride_update_station_bumpercar(Ride* ride, StationIndex stationIndex)
         // Check if all vehicles are ready to go
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            uint16_t vehicleSpriteIdx = ride->vehicles[i];
-            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (vehicle == nullptr)
                 continue;
 
-            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
-            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART)
+            if (vehicle->status != Vehicle::Status::WaitingToDepart)
             {
                 ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
                 return;
@@ -197,19 +195,21 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
 
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            uint16_t vehicleSpriteIdx = ride->vehicles[i];
-            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (vehicle == nullptr)
                 continue;
 
-            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
-            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps)
+            if (vehicle->status != Vehicle::Status::WaitingToDepart && vehicle->num_laps >= numLaps)
             {
                 // Found a winner
                 if (vehicle->num_peeps != 0)
                 {
-                    Peep* peep = GET_PEEP(vehicle->peep[0]);
-                    ride->race_winner = peep->sprite_index;
-                    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                    auto* peep = GetEntity<Guest>(vehicle->peep[0]);
+                    if (peep != nullptr)
+                    {
+                        ride->race_winner = peep->sprite_index;
+                        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
+                    }
                 }
 
                 // Race is over
@@ -231,12 +231,11 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
         // Check if all vehicles are ready to go
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
-            uint16_t vehicleSpriteIdx = ride->vehicles[i];
-            if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (vehicle == nullptr)
                 continue;
 
-            Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
-            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING)
+            if (vehicle->status != Vehicle::Status::WaitingToDepart && vehicle->status != Vehicle::Status::Departing)
             {
                 if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
                 {
@@ -269,20 +268,19 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
 {
     for (size_t i = 0; i < ride->num_vehicles; i++)
     {
-        uint16_t vehicleSpriteIdx = ride->vehicles[i];
-        if (vehicleSpriteIdx == SPRITE_INDEX_NULL)
+        Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+        if (vehicle == nullptr)
             continue;
 
-        Vehicle* vehicle = GET_VEHICLE(vehicleSpriteIdx);
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_6);
 
-        rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+        rct_ride_entry* rideEntry = vehicle->GetRideEntry();
 
         vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].powered_max_speed;
 
         if (vehicle->num_peeps != 0)
         {
-            Peep* peep = &get_sprite(vehicle->peep[0])->peep;
+            auto peep = GetEntity<Peep>(vehicle->peep[0]);
 
             // Easter egg names should only work on guests
             Guest* guest = peep->AsGuest();

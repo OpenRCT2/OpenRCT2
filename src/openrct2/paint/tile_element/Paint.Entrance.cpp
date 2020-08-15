@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -44,26 +44,22 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     {
         if (!is_exit)
         {
-            lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+            lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, height + 45, LightType::Lantern3);
         }
 
         switch (tile_element->GetDirection())
         {
             case 0:
-                lightfx_add_3d_light_magic_from_drawing_tile(
-                    session->MapPosition, 16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+                lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 16, LightType::Lantern2);
                 break;
             case 1:
-                lightfx_add_3d_light_magic_from_drawing_tile(
-                    session->MapPosition, 0, -16, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+                lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, -16, height + 16, LightType::Lantern2);
                 break;
             case 2:
-                lightfx_add_3d_light_magic_from_drawing_tile(
-                    session->MapPosition, -16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+                lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, -16, 0, height + 16, LightType::Lantern2);
                 break;
             case 3:
-                lightfx_add_3d_light_magic_from_drawing_tile(
-                    session->MapPosition, 0, 16, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
+                lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 16, height + 16, LightType::Lantern2);
                 break;
         }
     }
@@ -155,26 +151,29 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
 
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (!is_exit && !(tile_element->IsGhost()) && tile_element->AsEntrance()->GetRideIndex() != RIDE_ID_NULL
         && stationObj->ScrollingMode != SCROLLING_MODE_NONE)
     {
-        set_format_arg(0, rct_string_id, STR_RIDE_ENTRANCE_NAME);
-        set_format_arg(4, uint32_t, 0);
+        // clear next 8 bytes
+        Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
+
+        auto ft = Formatter::Common();
+        ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
 
         if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            ride->FormatNameTo(gCommonFormatArgs + 2);
+            ride->FormatNameTo(ft);
         }
         else
         {
-            set_format_arg(2, rct_string_id, STR_RIDE_ENTRANCE_CLOSED);
+            ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_CLOSED);
         }
 
         utf8 entrance_string[256];
@@ -193,8 +192,8 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
         sub_98199C(
-            session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, stationObj->ScrollingMode, COLOUR_BLACK), 0,
-            0, 0x1C, 0x1C, 0x33, height + stationObj->Height, 2, 2, height + stationObj->Height);
+            session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj->ScrollingMode, COLOUR_BLACK),
+            0, 0, 0x1C, 0x1C, 0x33, height + stationObj->Height, 2, 2, height + stationObj->Height);
     }
 
     image_id = entranceImageId;
@@ -222,7 +221,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
-        lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, 155, LIGHTFX_LIGHT_TYPE_LANTERN_3);
+        lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, 155, LightType::Lantern3);
     }
 #endif
 
@@ -256,7 +255,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 sub_98197C(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height);
             }
 
-            entrance = (rct_entrance_type*)object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0);
+            entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0));
             if (entrance == nullptr)
             {
                 return;
@@ -270,20 +269,20 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 break;
 
             {
-                set_format_arg(0, uint32_t, 0);
-                set_format_arg(4, uint32_t, 0);
+                Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
+                auto ft = Formatter::Common();
 
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
                 {
                     const auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
                     auto name = park.Name.c_str();
-                    set_format_arg(0, rct_string_id, STR_STRING);
-                    set_format_arg(2, const char*, name);
+                    ft.Add<rct_string_id>(STR_STRING);
+                    ft.Add<const char*>(name);
                 }
                 else
                 {
-                    set_format_arg(0, rct_string_id, STR_BANNER_TEXT_CLOSED);
-                    set_format_arg(2, uint32_t, 0);
+                    ft.Add<rct_string_id>(STR_BANNER_TEXT_CLOSED);
+                    ft.Add<uint32_t>(0);
                 }
 
                 utf8 park_name[256];
@@ -305,14 +304,14 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                     break;
 
                 int32_t stsetup = scrolling_text_setup(
-                    session, STR_BANNER_TEXT_FORMAT, scroll, entrance->scrolling_mode + direction / 2, COLOUR_BLACK);
+                    session, STR_BANNER_TEXT_FORMAT, ft, scroll, entrance->scrolling_mode + direction / 2, COLOUR_BLACK);
                 int32_t text_height = height + entrance->text_height;
                 sub_98199C(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height);
             }
             break;
         case 1:
         case 2:
-            entrance = (rct_entrance_type*)object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0);
+            entrance = static_cast<rct_entrance_type*>(object_entry_get_chunk(OBJECT_TYPE_PARK_ENTRANCE, 0));
             if (entrance == nullptr)
             {
                 return;

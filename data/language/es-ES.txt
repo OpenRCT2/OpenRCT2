@@ -1941,8 +1941,8 @@ STR_2728    :{UINT16}hora:{UINT16}min
 STR_2729    :{UINT16}hora:{UINT16}mins
 STR_2730    :{UINT16}horas:{UINT16}min
 STR_2731    :{UINT16}horas:{UINT16}mins
-STR_2732    :{COMMA16}ft
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}ft
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, año {COMMA16}
@@ -1978,7 +1978,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 # End of new strings
 STR_2779    :Cámara #{COMMA16}
 STR_2780    :Añadir 'cámara de vigilancia'
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Cambiar atajo de teclado
@@ -2531,19 +2531,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Año {POP16}{COMMA16}
 STR_5161    :Formato de fecha:
 STR_5162    :Día/Mes/Año
 STR_5163    :Mes/Día/Año
-STR_5164    :Nombre del Canal Twitch
-STR_5165    :Nombrar visitantes como tus seguidores
-STR_5166    :{SMALLFONT}{BLACK}Nombrar a los visitantes de tu parque con los nombres de los seguidores de tu canal de Twitch.
-STR_5167    :Seguimiento de 'visitantes seguidores'
-STR_5168    :{SMALLFONT}{BLACK}Activar el seguimiento de visitantes que han sido nombrados con los nombres de los seguidores de tu canal de Twitch.
-STR_5169    :Nombrar visitantes como gente del chat de Twitch
-STR_5170    :{SMALLFONT}{BLACK}Nombrar a los visitantes de tu parque con los nombres de las personas conectadas en tu canal de Twitch.
-STR_5171    :Seguimiento de 'visitantes del chat'
-STR_5172    :{SMALLFONT}{BLACK}Activar el seguimiento de visitantes que han sido nombrados con los nombres de las personas conectadas en el chat de tu canal de Twitch.
-STR_5173    :Mostrar noticias del chat Twitch
-STR_5174    :{SMALLFONT}{BLACK}Mostrar mensajes del chat de Twitch precedido de "!news" en las notificaciones del juego.
-STR_5175    :Escribe el nombre de tu canal Twitch
-STR_5176    :Hab. integración Twitch
 STR_5177    :Modo de pantalla:
 STR_5178    :{SMALLFONT}{BLACK}Mostrar trucos de dinero
 STR_5179    :{SMALLFONT}{BLACK}Mostrar trucos de visitante
@@ -2638,7 +2625,6 @@ STR_5267    :{SMALLFONT}{BLACK}Idioma y unidades
 STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Interfaz y controles
 STR_5270    :{SMALLFONT}{BLACK}Otras opciones
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Decorado pequeño
 STR_5273    :{SMALLFONT}{BLACK}Decorado grande
 STR_5274    :{SMALLFONT}{BLACK}Senderos
@@ -2682,26 +2668,6 @@ STR_5311    :{SMALLFONT}{BLACK}Herramientas de depuración
 STR_5312    :Mostrar consola
 STR_5313    :Mostrar inspc. cuadricula
 STR_5314    :Inspector de cuadricula
-STR_5315    :Césped
-STR_5316    :Arena
-STR_5317    :Tierra
-STR_5318    :Roca
-STR_5319    :Marte
-STR_5320    :Ajedrez
-STR_5321    :Hierba
-STR_5322    :Hielo
-STR_5323    :Reja (rojo)
-STR_5324    :Reja (amarillo)
-STR_5325    :Reja (azul)
-STR_5326    :Reja (verde)
-STR_5327    :Arena (oscura)
-STR_5328    :Arena (clara)
-STR_5329    :Ajedrez (invertido)
-STR_5330    :Vista subterránea
-STR_5331    :Roca
-STR_5332    :Madera (roja)
-STR_5333    :Madera (negra)
-STR_5334    :Hielo
 STR_5335    :Entrada
 STR_5336    :Salida
 STR_5337    :Entrada del Parque
@@ -3181,7 +3147,6 @@ STR_5848    :{SMALLFONT}{BLACK}Crea o modifica las secuencias del menú principa
 STR_5849    :{SMALLFONT}{BLACK}Colocar automáticamente los nuevos empleados contratados.
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Establece el tiempo de inspección por defecto en las atracciones nuevas.
-STR_5852    :{SMALLFONT}{BLACK}Establece el nombre del canal TwitchTV que se utilizará para la integración de Twitch.
 STR_5853    :{SMALLFONT}{BLACK}Habilitar/Deshabilitar efectos de sonido.
 STR_5854    :{SMALLFONT}{BLACK}Habilitar/Deshabilitar músicas de atracciones.
 STR_5855    :{SMALLFONT}{BLACK}Establecer modo de pantalla completa, ventana, o pantalla sin bordes.
@@ -3532,17 +3497,6 @@ STR_6200    :Restablecer fecha
 STR_6201    :{MONTH}
 STR_6202    :Estilo del piso virtual:
 STR_6203    :{SMALLFONT}{BLACK}Si está habilitado, un piso virtual será renderizado al mantener CTRL o SHIFT para facilitar la colocación vertical de elementos.
-STR_6204    :Ladrillo
-STR_6205    :Hierro
-STR_6206    :Estuco gris
-STR_6207    :Estuco amarillo
-STR_6208    :Estuco rojo
-STR_6209    :Estuco violeta
-STR_6210    :Estuco verde
-STR_6211    :Arenisca marrón
-STR_6212    :Arenisca gris
-STR_6213    :Rascacielos A
-STR_6214    :Rascacielos B
 STR_6215    :Construcción
 STR_6216    :Operación
 STR_6217    :Atracción / pista disponibilidad
@@ -3580,9 +3534,6 @@ STR_6248    :{WINDOW_COLOUR_1}¿Quieres renovar {STRINGID} por {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}¿Quieres renovar {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}¿Seguro quieres demoler {STRINGID} y ganar {CURRENCY}?
 STR_6251    :La atracción aún no está vacía
-STR_6252    :Twitch API URL
-STR_6253    :{SMALLFONT}{BLACK}Brindar URL de la API de integración de Twitch. Requerida para habilitar la integración de Twitch.
-STR_6254    :URL de la API de Twitch:
 STR_6255    :URL inválida.
 STR_6256    :Efectos al renderizar
 STR_6257    :Translúcido

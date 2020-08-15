@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -98,6 +98,7 @@ enum GAME_COMMAND
     GAME_COMMAND_REMOVE_FOOTPATH_SCENERY,      // GA
     GAME_COMMAND_GUEST_SET_FLAGS,              // GA
     GAME_COMMAND_SET_DATE,                     // GA
+    GAME_COMMAND_CUSTOM,                       // GA
     GAME_COMMAND_COUNT,
 };
 
@@ -156,6 +157,8 @@ void update_palette_effects();
 void game_load_or_quit_no_save_prompt();
 void load_from_sv6(const char* path);
 void game_load_init();
+void game_load_scripts();
+void game_unload_scripts();
 void pause_toggle();
 bool game_is_paused();
 bool game_is_not_paused();

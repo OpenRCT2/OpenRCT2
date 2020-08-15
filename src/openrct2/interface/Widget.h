@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,7 @@
 #ifndef _WIDGET_H_
 #define _WIDGET_H_
 
+#include "../localisation/StringIds.h"
 #include "Window.h"
 
 enum WINDOW_WIDGET_TYPES
@@ -59,6 +60,57 @@ enum
 };
 
 constexpr uint8_t SCROLLBAR_WIDTH = 10;
+
+constexpr rct_widget MakeWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, uint8_t type, uint8_t colour, uint32_t content = 0xFFFFFFFF,
+    rct_string_id tooltip = STR_NONE)
+{
+    rct_widget out = {};
+    out.left = origin.x;
+    out.right = origin.x + size.width - 1;
+    out.top = origin.y;
+    out.bottom = origin.y + size.height - 1;
+    out.type = type;
+    out.colour = colour;
+    out.content = content;
+    out.tooltip = tooltip;
+
+    return out;
+}
+
+constexpr rct_widget MakeRemapWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, uint8_t type, uint8_t colour, uint32_t content = 0xFFFFFFFF,
+    rct_string_id tooltip = STR_NONE)
+{
+    return MakeWidget(origin, size, type, colour, IMAGE_TYPE_REMAP | content, tooltip);
+}
+
+#define MakeSpinnerWidgets(...)                                                                                                \
+    MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
+
+constexpr rct_widget MakeSpinnerDecreaseWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, uint8_t colour,
+    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+{
+    const int16_t xPos = origin.x + size.width - 26;
+    const int16_t yPos = origin.y + 1;
+    const uint16_t width = 13;
+    const uint16_t height = size.height - 2;
+
+    return MakeWidget({ xPos, yPos }, { width, height }, WWT_BUTTON, colour, STR_NUMERIC_DOWN, tooltip);
+}
+
+constexpr rct_widget MakeSpinnerIncreaseWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, uint8_t colour,
+    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+{
+    const int16_t xPos = origin.x + size.width - 13;
+    const int16_t yPos = origin.y + 1;
+    const uint16_t width = 12;
+    const uint16_t height = size.height - 2;
+
+    return MakeWidget({ xPos, yPos }, { width, height }, WWT_BUTTON, colour, STR_NUMERIC_UP, tooltip);
+}
 
 void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index);
 void widget_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);

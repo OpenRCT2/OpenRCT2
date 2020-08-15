@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@ void NetworkPlayer::SetName(const std::string& name)
 {
     // 36 == 31 + strlen(" #255");
     Name = name.substr(0, 36);
-    utf8_remove_format_codes((utf8*)Name.data(), false);
+    utf8_remove_format_codes(static_cast<utf8*>(Name.data()), false);
 }
 
 void NetworkPlayer::Read(NetworkPacket& packet)
@@ -32,7 +32,7 @@ void NetworkPlayer::Read(NetworkPacket& packet)
 
 void NetworkPlayer::Write(NetworkPacket& packet)
 {
-    packet.WriteString((const char*)Name.c_str());
+    packet.WriteString(static_cast<const char*>(Name.c_str()));
     packet << Id << Flags << Group << LastAction << LastActionCoord.x << LastActionCoord.y << LastActionCoord.z << MoneySpent
            << CommandsRan;
 }

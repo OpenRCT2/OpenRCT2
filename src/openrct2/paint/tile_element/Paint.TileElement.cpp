@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -213,7 +213,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     uint16_t max_height = 0;
     do
     {
-        max_height = std::max(max_height, (uint16_t)element->GetClearanceZ());
+        max_height = std::max(max_height, static_cast<uint16_t>(element->GetClearanceZ()));
     } while (!(element++)->IsLastForTile());
 
     element--;

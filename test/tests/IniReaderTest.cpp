@@ -29,7 +29,7 @@ static auto Enum_Currency = ConfigEnum<int32_t>({});
 
 TEST_F(IniReaderTest, create_empty)
 {
-    MemoryStream ms(0);
+    OpenRCT2::MemoryStream ms(0);
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), true);
     IIniReader* ir = CreateIniReader(&ms);
@@ -39,12 +39,14 @@ TEST_F(IniReaderTest, create_empty)
     ASSERT_EQ(ir->GetEnum<int32_t>("spanish", 12345, Enum_Currency), 12345);
     ASSERT_EQ(ir->GetFloat("inquisition", 1.234f), 1.234f);
     ASSERT_EQ(ir->GetInt32("universal_answer", 42), 42);
+    ASSERT_EQ(
+        ir->GetInt64("heat_death_of_the_universe", std::numeric_limits<int64_t>::max()), std::numeric_limits<int64_t>::max());
     delete ir;
 }
 
 TEST_F(IniReaderTest, read_prepared)
 {
-    MemoryStream ms(predefined.c_str(), predefined.size());
+    OpenRCT2::MemoryStream ms(predefined.c_str(), predefined.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
     IIniReader* ir = CreateIniReader(&ms);
@@ -74,7 +76,7 @@ TEST_F(IniReaderTest, read_prepared)
 
 TEST_F(IniReaderTest, read_duplicate)
 {
-    MemoryStream ms(duplicate.c_str(), duplicate.size());
+    OpenRCT2::MemoryStream ms(duplicate.c_str(), duplicate.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
     IIniReader* ir = CreateIniReader(&ms);
@@ -100,7 +102,7 @@ TEST_F(IniReaderTest, read_duplicate)
 
 TEST_F(IniReaderTest, read_untrimmed)
 {
-    MemoryStream ms(untrimmed.c_str(), untrimmed.size());
+    OpenRCT2::MemoryStream ms(untrimmed.c_str(), untrimmed.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
     IIniReader* ir = CreateIniReader(&ms);
@@ -118,7 +120,7 @@ TEST_F(IniReaderTest, read_untrimmed)
 
 TEST_F(IniReaderTest, read_case_insensitive)
 {
-    MemoryStream ms(caseInsensitive.c_str(), caseInsensitive.size());
+    OpenRCT2::MemoryStream ms(caseInsensitive.c_str(), caseInsensitive.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
     IIniReader* ir = CreateIniReader(&ms);

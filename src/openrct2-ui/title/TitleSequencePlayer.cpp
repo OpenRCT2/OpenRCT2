@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -111,7 +111,7 @@ public:
         }
 
         // Check that position is valid
-        if (_position >= (int32_t)_sequence->NumCommands)
+        if (_position >= static_cast<int32_t>(_sequence->NumCommands))
         {
             _position = 0;
             return false;
@@ -173,7 +173,7 @@ public:
 
     void Seek(int32_t targetPosition) override
     {
-        if (targetPosition < 0 || targetPosition >= (int32_t)_sequence->NumCommands)
+        if (targetPosition < 0 || targetPosition >= static_cast<int32_t>(_sequence->NumCommands))
         {
             throw std::runtime_error("Invalid position.");
         }
@@ -280,7 +280,7 @@ private:
                 TitleSequenceParkHandle* parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
                 if (parkHandle != nullptr)
                 {
-                    loadSuccess = LoadParkFromStream(static_cast<IStream*>(parkHandle->Stream), parkHandle->HintPath);
+                    loadSuccess = LoadParkFromStream(static_cast<OpenRCT2::IStream*>(parkHandle->Stream), parkHandle->HintPath);
                     TitleSequenceCloseParkHandle(parkHandle);
                 }
                 if (!loadSuccess)
@@ -389,7 +389,7 @@ private:
      * @param stream The stream to read the park data from.
      * @param hintPath Hint path, the extension is grabbed to determine what importer to use.
      */
-    bool LoadParkFromStream(IStream* stream, const std::string& hintPath)
+    bool LoadParkFromStream(OpenRCT2::IStream* stream, const std::string& hintPath)
     {
         log_verbose("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
         bool success = false;
@@ -457,7 +457,7 @@ private:
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
         context_broadcast_intent(&intent);
         scenery_set_default_placement_configuration();
-        news_item_init_queue();
+        News::InitQueue();
         load_palette();
         gScreenAge = 0;
         gGameSpeed = 1;
@@ -478,7 +478,7 @@ private:
             // Prevent scroll adjustment due to window placement when in-game
             auto oldScreenFlags = gScreenFlags;
             gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
-            w->SetLocation(loc.x, loc.y, z);
+            w->SetLocation({ loc, z });
             gScreenFlags = oldScreenFlags;
 
             viewport_update_position(w);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@ enum WINDOW_TITLE_EXIT_WIDGET_IDX {
 };
 
 static rct_widget window_title_exit_widgets[] = {
-    { WWT_IMGBTN, 2, 0, 39, 0, 63, SPR_MENU_EXIT, STR_EXIT },
+    MakeWidget({0, 0}, {40, 64}, WWT_IMGBTN, 2, SPR_MENU_EXIT, STR_EXIT),
     { WIDGETS_END },
 };
 
@@ -84,7 +84,7 @@ rct_window* window_title_exit_open()
  */
 static void window_title_exit_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (gIntroState != INTRO_STATE_NONE)
+    if (gIntroState != IntroState::None)
         return;
 
     switch (widgetIndex)

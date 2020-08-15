@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,8 +10,13 @@
 #pragma once
 
 #include "../common.h"
+#include "../drawing/Drawing.h"
+#include "../localisation/Currency.h"
 
 #include <string>
+
+enum class MeasurementFormat : int32_t;
+enum class TemperatureUnit : int32_t;
 
 struct GeneralConfiguration
 {
@@ -51,13 +56,13 @@ struct GeneralConfiguration
 
     // Localisation
     int32_t language;
-    int32_t measurement_format;
-    int32_t temperature_format;
+    MeasurementFormat measurement_format;
+    TemperatureUnit temperature_format;
     bool show_height_as_units;
     int32_t date_format;
     int32_t currency_format;
     int32_t custom_currency_rate;
-    int32_t custom_currency_affix;
+    CurrencyAffix custom_currency_affix;
     utf8* custom_currency_symbol;
 
     // Controls
@@ -96,6 +101,7 @@ struct GeneralConfiguration
     utf8* last_save_track_directory;
     utf8* last_run_version;
     bool use_native_browse_dialog;
+    int64_t last_version_check_time;
 };
 
 struct InterfaceConfiguration
@@ -127,17 +133,6 @@ struct SoundConfiguration
     bool audio_focus;
 };
 
-struct TwitchConfiguration
-{
-    utf8* channel;
-    utf8* api_url;
-    bool enable_follower_peep_names;
-    bool enable_follower_peep_tracking;
-    bool enable_chat_peep_names;
-    bool enable_chat_peep_tracking;
-    bool enable_news;
-};
-
 struct NetworkConfiguration
 {
     std::string player_name;
@@ -146,6 +141,7 @@ struct NetworkConfiguration
     std::string default_password;
     bool stay_connected;
     bool advertise;
+    std::string advertise_address;
     int32_t maxplayers;
     std::string server_name;
     std::string server_description;
@@ -174,7 +170,6 @@ struct NotificationConfiguration
     bool ride_researched;
     bool ride_stalled_vehicles;
     bool guest_warnings;
-    bool guest_lost;
     bool guest_left_park;
     bool guest_queuing_for_ride;
     bool guest_on_ride;
@@ -202,6 +197,11 @@ struct FontConfiguration
     int32_t hinting_threshold;
 };
 
+struct PluginConfiguration
+{
+    bool enable_hot_reloading;
+};
+
 enum SORT
 {
     SORT_NAME_ASCENDING,
@@ -210,10 +210,10 @@ enum SORT
     SORT_DATE_DESCENDING,
 };
 
-enum TEMPERATURE_FORMAT
+enum class TemperatureUnit : int32_t
 {
-    TEMPERATURE_FORMAT_C,
-    TEMPERATURE_FORMAT_F
+    Celsius,
+    Fahrenheit
 };
 
 enum SCALE_QUALITY
@@ -223,20 +223,20 @@ enum SCALE_QUALITY
     SCALE_QUALITY_SMOOTH_NN
 };
 
-enum MEASUREMENT_FORMAT
+enum class MeasurementFormat : int32_t
 {
-    MEASUREMENT_FORMAT_IMPERIAL,
-    MEASUREMENT_FORMAT_METRIC,
-    MEASUREMENT_FORMAT_SI
+    Imperial,
+    Metric,
+    SI
 };
 
 extern GeneralConfiguration gConfigGeneral;
 extern InterfaceConfiguration gConfigInterface;
 extern SoundConfiguration gConfigSound;
-extern TwitchConfiguration gConfigTwitch;
 extern NetworkConfiguration gConfigNetwork;
 extern NotificationConfiguration gConfigNotifications;
 extern FontConfiguration gConfigFonts;
+extern PluginConfiguration gConfigPlugin;
 
 bool config_open(const utf8* path);
 bool config_save(const utf8* path);
@@ -245,3 +245,11 @@ void config_set_defaults();
 void config_release();
 bool config_save_default();
 bool config_find_or_browse_install_directory();
+
+bool RCT1DataPresentAtLocation(const utf8* path);
+std::string FindCsg1datAtLocation(const utf8* path);
+bool Csg1datPresentAtLocation(const utf8* path);
+std::string FindCsg1idatAtLocation(const utf8* path);
+bool Csg1idatPresentAtLocation(const utf8* path);
+bool CsgIsUsable(rct_gx csg);
+bool CsgAtLocationIsUsable(const utf8* path);

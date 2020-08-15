@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,8 +15,11 @@
 #include <memory>
 #include <vector>
 
-interface IReadObjectContext;
-interface IStream;
+struct IReadObjectContext;
+namespace OpenRCT2
+{
+    struct IStream;
+}
 
 class ImageTable
 {
@@ -30,14 +33,14 @@ public:
     ImageTable& operator=(const ImageTable&) = delete;
     ~ImageTable();
 
-    void Read(IReadObjectContext* context, IStream* stream);
+    void Read(IReadObjectContext* context, OpenRCT2::IStream* stream);
     const rct_g1_element* GetImages() const
     {
         return _entries.data();
     }
     uint32_t GetCount() const
     {
-        return (uint32_t)_entries.size();
+        return static_cast<uint32_t>(_entries.size());
     }
     void AddImage(const rct_g1_element* g1);
 };

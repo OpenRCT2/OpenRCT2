@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,7 @@
 // Structures shared between both RCT1 and RCT2.
 
 #include "../common.h"
-#include "../world/Location.hpp"
+#include "../object/Object.h"
 
 #include <string>
 #include <string_view>
@@ -54,14 +54,23 @@ constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK = 0xE0;   // 
 constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK = 0x1F; // in RCT12TileElement.properties.surface.terrain
 constexpr const uint8_t RCT12_TILE_ELEMENT_SURFACE_TERRAIN_MASK = 0xE0;      // in RCT12TileElement.properties.surface.terrain
 
+constexpr const uint16_t RCT12_TILE_ELEMENT_LARGE_TYPE_MASK = 0x3FF;
+
 constexpr uint16_t const RCT12_XY8_UNDEFINED = 0xFFFF;
 
+using RCT12ObjectEntryIndex = uint8_t;
+constexpr const RCT12ObjectEntryIndex RCT12_OBJECT_ENTRY_INDEX_NULL = 255;
+
 // Everything before this point has been researched
-#define RCT12_RESEARCHED_ITEMS_SEPARATOR 0xFFFFFFFF
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_SEPARATOR = 0xFFFFFFFF;
 // Everything before this point and after separator still requires research
-#define RCT12_RESEARCHED_ITEMS_END 0xFFFFFFFE
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END = 0xFFFFFFFE;
 // Extra end of list entry. Leftover from RCT1.
-#define RCT12_RESEARCHED_ITEMS_END_2 0xFFFFFFFD
+constexpr const uint32_t RCT12_RESEARCHED_ITEMS_END_2 = 0xFFFFFFFD;
+
+constexpr const uint8_t RCT12_MAX_ELEMENT_HEIGHT = 255;
+
+constexpr const uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
 
 enum class RCT12TrackDesignVersion : uint8_t
 {
@@ -125,6 +134,24 @@ enum
     // The most significant bit in this mask will always be zero, since rides can only have 4 stations
     RCT12_FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK = (1 << 4) | (1 << 5) | (1 << 6),
     RCT12_FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST = (1 << 7),
+};
+
+enum
+{
+    RCT12_STATION_STYLE_PLAIN,
+    RCT12_STATION_STYLE_WOODEN,
+    RCT12_STATION_STYLE_CANVAS_TENT,
+    RCT12_STATION_STYLE_CASTLE_GREY,
+    RCT12_STATION_STYLE_CASTLE_BROWN,
+    RCT12_STATION_STYLE_JUNGLE,
+    RCT12_STATION_STYLE_LOG_CABIN,
+    RCT12_STATION_STYLE_CLASSICAL,
+    RCT12_STATION_STYLE_ABSTRACT,
+    RCT12_STATION_STYLE_SNOW,
+    RCT12_STATION_STYLE_PAGODA,
+    RCT12_STATION_STYLE_SPACE,
+
+    RCT12_STATION_STYLE_INVISIBLE, // Added by OpenRCT2
 };
 
 #pragma pack(push, 1)
@@ -276,7 +303,9 @@ struct RCT12TileElement : public RCT12TileElementBase
     uint8_t pad_04[4];
     template<typename TType, RCT12TileElementType TClass> TType* as() const
     {
-        return (RCT12TileElementType)GetType() == TClass ? (TType*)this : nullptr;
+        return static_cast<RCT12TileElementType>(GetType()) == TClass
+            ? reinterpret_cast<TType*>(const_cast<RCT12TileElement*>(this))
+            : nullptr;
     }
 
     RCT12SurfaceElement* AsSurface() const
@@ -355,7 +384,7 @@ private:
     };
 
 public:
-    uint8_t GetEntryIndex() const;
+    RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetQueueBannerDirection() const;
     bool IsSloped() const;
     uint8_t GetSlopeDirection() const;
@@ -372,7 +401,7 @@ public:
     uint8_t GetRCT1PathType() const;
     uint8_t GetRCT1SupportType() const;
 
-    void SetPathEntryIndex(uint8_t newIndex);
+    void SetPathEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetQueueBannerDirection(uint8_t direction);
     void SetSloped(bool isSloped);
     void SetSlopeDirection(uint8_t newSlope);
@@ -466,14 +495,14 @@ private:
     uint8_t colour_1;   // 6
     uint8_t colour_2;   // 7
 public:
-    uint8_t GetEntryIndex() const;
+    RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetAge() const;
     uint8_t GetSceneryQuadrant() const;
     colour_t GetPrimaryColour() const;
     colour_t GetSecondaryColour() const;
     bool NeedsSupports() const;
 
-    void SetEntryIndex(uint8_t newIndex);
+    void SetEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetAge(uint8_t newAge);
     void SetSceneryQuadrant(uint8_t newQuadrant);
     void SetPrimaryColour(colour_t colour);
@@ -512,7 +541,7 @@ private:
     uint8_t colour_1;  // 6 0b_2221_1111 2 = colour_2 (uses flags for rest of colour2), 1 = colour_1
     uint8_t animation; // 7 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 public:
-    uint8_t GetEntryIndex() const;
+    RCT12ObjectEntryIndex GetEntryIndex() const;
     uint8_t GetSlope() const;
     colour_t GetPrimaryColour() const;
     colour_t GetSecondaryColour() const;
@@ -525,7 +554,7 @@ public:
     int32_t GetRCT1WallType(int32_t edge) const;
     colour_t GetRCT1WallColour() const;
 
-    void SetEntryIndex(uint8_t newIndex);
+    void SetEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetSlope(uint8_t newslope);
     void SetPrimaryColour(colour_t newColour);
     void SetSecondaryColour(colour_t newColour);
@@ -744,7 +773,7 @@ assert_struct_size(RCT12RideMeasurement, 0x4B0C);
 
 struct RCT12Banner
 {
-    uint8_t type;
+    RCT12ObjectEntryIndex type;
     uint8_t flags;            // 0x01
     rct_string_id string_idx; // 0x02
     union
@@ -775,7 +804,7 @@ struct RCT12ResearchItem
         uint32_t rawValue;
         struct
         {
-            uint8_t entryIndex;
+            RCT12ObjectEntryIndex entryIndex;
             uint8_t baseRideType;
             uint8_t type; // 0: scenery entry, 1: ride entry
             uint8_t flags;
@@ -791,4 +820,5 @@ assert_struct_size(RCT12ResearchItem, 5);
 
 #pragma pack(pop)
 
-bool is_user_string_id(rct_string_id stringId);
+ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
+RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex index);

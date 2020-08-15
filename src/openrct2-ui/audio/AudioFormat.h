@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,12 +24,12 @@ namespace OpenRCT2::Audio
         SDL_AudioFormat format;
         int32_t channels;
 
-        int32_t BytesPerSample() const
+        [[nodiscard]] int32_t BytesPerSample() const
         {
-            return (SDL_AUDIO_BITSIZE(format)) / 8;
+            return (SDL_AUDIO_BITSIZE(format)) / 8; // NOLINT(hicpp-signed-bitwise)
         }
 
-        int32_t GetByteRate() const
+        [[nodiscard]] int32_t GetByteRate() const
         {
             return BytesPerSample() * channels;
         }

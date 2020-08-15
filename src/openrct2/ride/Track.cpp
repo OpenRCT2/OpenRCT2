@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,7 +29,6 @@
 #include "../world/Surface.h"
 #include "Ride.h"
 #include "RideData.h"
-#include "RideGroupManager.h"
 #include "RideRatings.h"
 #include "Station.h"
 #include "TrackData.h"
@@ -560,6 +559,16 @@ const rct_trackdefinition FlatRideTrackDefinitions[256] =
 };
 // clang-format on
 
+PitchAndRoll TrackPitchAndRollStart(track_type_t trackType)
+{
+    return { TrackDefinitions[trackType].vangle_start, TrackDefinitions[trackType].bank_start };
+}
+
+PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType)
+{
+    return { TrackDefinitions[trackType].vangle_end, TrackDefinitions[trackType].bank_end };
+}
+
 /**
  * Helper method to determine if a connects to b by its bank and angle, not location.
  */
@@ -611,7 +620,7 @@ static TileElement* find_station_element(const CoordsXYZD& loc, ride_id_t rideIn
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
-        if (!track_element_is_station(tileElement))
+        if (!tileElement->AsTrack()->IsStation())
             continue;
 
         return tileElement;
@@ -788,29 +797,26 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
  *
  *  rct2: 0x006C494B
  */
-bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction direction, ride_id_t rideIndex, int32_t flags)
+bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, int32_t flags)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return false;
 
-    int32_t removeX = x;
-    int32_t removeY = y;
-    int32_t stationX0 = x;
-    int32_t stationY0 = y;
-    int32_t stationX1 = x;
-    int32_t stationY1 = y;
+    CoordsXYZD removeLoc = loc;
+    CoordsXYZD stationBackLoc = loc;
+    CoordsXYZD stationFrontLoc = loc;
     int32_t stationLength = 0;
     int32_t byte_F441D1 = -1;
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
-        TileElement* tileElement = map_get_track_element_at_with_direction_from_ride({ x, y, z << 3, direction }, rideIndex);
+        TileElement* tileElement = map_get_track_element_at_with_direction_from_ride(loc, rideIndex);
         if (tileElement != nullptr)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                ride_remove_station(ride, { x, y, z * COORDS_Z_STEP });
+                ride_remove_station(ride, loc);
             }
         }
         return true;
@@ -819,55 +825,47 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
     TileElement* stationElement;
 
     // Search backwards for more station
-    x = stationX0;
-    y = stationY0;
-    while ((stationElement = find_station_element({ x, y, z * COORDS_Z_STEP, direction }, rideIndex)) != nullptr)
+    CoordsXYZD currentLoc = stationBackLoc;
+    while ((stationElement = find_station_element(currentLoc, rideIndex)) != nullptr)
     {
         if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
-                ride_remove_station(ride, { x, y, z * COORDS_Z_STEP });
+                ride_remove_station(ride, currentLoc);
             }
         }
 
-        stationX0 = x;
-        stationY0 = y;
+        stationBackLoc = currentLoc;
         byte_F441D1++;
 
-        x -= CoordsDirectionDelta[direction].x;
-        y -= CoordsDirectionDelta[direction].y;
+        currentLoc -= CoordsDirectionDelta[currentLoc.direction];
     }
 
     // Search forwards for more station
-    x = stationX1;
-    y = stationY1;
+    currentLoc = stationFrontLoc;
     do
     {
-        x += CoordsDirectionDelta[direction].x;
-        y += CoordsDirectionDelta[direction].y;
+        currentLoc += CoordsDirectionDelta[currentLoc.direction];
 
-        stationElement = find_station_element({ x, y, z * COORDS_Z_STEP, direction }, rideIndex);
+        stationElement = find_station_element(currentLoc, rideIndex);
         if (stationElement != nullptr)
         {
             if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
-                    ride_remove_station(ride, { x, y, z * COORDS_Z_STEP });
+                    ride_remove_station(ride, currentLoc);
                 }
             }
-
-            stationX1 = x;
-            stationY1 = y;
+            stationFrontLoc = currentLoc;
             stationLength++;
         }
     } while (stationElement != nullptr);
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
     {
-        if ((removeX != stationX0 || removeY != stationY0) && (removeX != stationX1 || removeY != stationY1)
-            && ride->num_stations >= MAX_STATIONS)
+        if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc) && ride->num_stations >= MAX_STATIONS)
         {
             gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
             return false;
@@ -878,22 +876,20 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
         }
     }
 
-    x = stationX1;
-    y = stationY1;
+    currentLoc = stationFrontLoc;
     bool finaliseStationDone;
     do
     {
         finaliseStationDone = true;
 
-        if (x != removeX || y != removeY)
+        if (currentLoc != removeLoc)
         {
-            stationElement = find_station_element({ x, y, z * COORDS_Z_STEP, direction }, rideIndex);
+            stationElement = find_station_element(currentLoc, rideIndex);
             if (stationElement != nullptr)
             {
                 int32_t targetTrackType;
-                if (x == stationX1 && y == stationY1)
+                if ((currentLoc == stationFrontLoc) || (currentLoc + CoordsDirectionDelta[currentLoc.direction] == removeLoc))
                 {
-                loc_6C4BF5:;
                     auto stationIndex = ride_get_first_empty_station_start(ride);
                     if (stationIndex == STATION_INDEX_NULL)
                     {
@@ -901,9 +897,8 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
                     }
                     else
                     {
-                        ride->stations[stationIndex].Start.x = x;
-                        ride->stations[stationIndex].Start.y = y;
-                        ride->stations[stationIndex].Height = z;
+                        ride->stations[stationIndex].Start = currentLoc;
+                        ride->stations[stationIndex].Height = currentLoc.z / COORDS_Z_STEP;
                         ride->stations[stationIndex].Depart = 1;
                         ride->stations[stationIndex].Length = stationLength != 0 ? stationLength : byte_F441D1;
                         ride->num_stations++;
@@ -914,40 +909,31 @@ bool track_remove_station_element(int32_t x, int32_t y, int32_t z, Direction dir
                 }
                 else
                 {
-                    if (x + CoordsDirectionDelta[direction].x == removeX && y + CoordsDirectionDelta[direction].y == removeY)
+                    if (currentLoc - CoordsDirectionDelta[currentLoc.direction] == removeLoc)
                     {
-                        goto loc_6C4BF5;
+                        targetTrackType = TRACK_ELEM_BEGIN_STATION;
                     }
                     else
                     {
-                        if (x - CoordsDirectionDelta[direction].x == removeX
-                            && y - CoordsDirectionDelta[direction].y == removeY)
+                        if (currentLoc == stationBackLoc)
                         {
                             targetTrackType = TRACK_ELEM_BEGIN_STATION;
                         }
                         else
                         {
-                            if (x == stationX0 && y == stationY0)
-                            {
-                                targetTrackType = TRACK_ELEM_BEGIN_STATION;
-                            }
-                            else
-                            {
-                                targetTrackType = TRACK_ELEM_MIDDLE_STATION;
-                            }
+                            targetTrackType = TRACK_ELEM_MIDDLE_STATION;
                         }
                     }
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
 
-                map_invalidate_element({ x, y }, stationElement);
+                map_invalidate_element(currentLoc, stationElement);
             }
         }
 
-        if (x != stationX0 || y != stationY0)
+        if (currentLoc != stationBackLoc)
         {
-            x -= CoordsDirectionDelta[direction].x;
-            y -= CoordsDirectionDelta[direction].y;
+            currentLoc -= CoordsDirectionDelta[currentLoc.direction];
             finaliseStationDone = false;
         }
     } while (!finaliseStationDone);
@@ -969,7 +955,7 @@ bool track_circuit_iterator_previous(track_circuit_iterator* it)
 
     if (it->first == nullptr)
     {
-        if (!track_block_get_previous(it->last.x, it->last.y, it->last.element, &trackBeginEnd))
+        if (!track_block_get_previous({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
             return false;
 
         it->current.x = trackBeginEnd.begin_x;
@@ -992,7 +978,7 @@ bool track_circuit_iterator_previous(track_circuit_iterator* it)
         it->firstIteration = false;
         it->last = it->current;
 
-        if (track_block_get_previous(it->last.x, it->last.y, it->last.element, &trackBeginEnd))
+        if (track_block_get_previous({ it->last.x, it->last.y, it->last.element }, &trackBeginEnd))
         {
             it->current.x = trackBeginEnd.end_x;
             it->current.y = trackBeginEnd.end_y;
@@ -1048,7 +1034,7 @@ void track_get_back(CoordsXYE* input, CoordsXYE* output)
     lastTrack = *input;
     do
     {
-        result = track_block_get_previous(lastTrack.x, lastTrack.y, lastTrack.element, &currentTrack);
+        result = track_block_get_previous(lastTrack, &currentTrack);
         if (result)
         {
             lastTrack.x = currentTrack.begin_x;
@@ -1099,9 +1085,9 @@ void TrackElement::SetHasChain(bool on)
  * A beginning of a block can be the end of a station, the end of a lift hill,
  * or a block brake.
  */
-bool track_element_is_block_start(TileElement* trackElement)
+bool TrackElement::IsBlockStart() const
 {
-    switch (trackElement->AsTrack()->GetTrackType())
+    switch (GetTrackType())
     {
         case TRACK_ELEM_END_STATION:
         case TRACK_ELEM_CABLE_LIFT_HILL:
@@ -1111,7 +1097,7 @@ bool track_element_is_block_start(TileElement* trackElement)
         case TRACK_ELEM_60_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
         case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-            if (trackElement->AsTrack()->HasChain())
+            if (HasChain())
             {
                 return true;
             }
@@ -1120,7 +1106,7 @@ bool track_element_is_block_start(TileElement* trackElement)
     return false;
 }
 
-int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank)
+roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank)
 {
     auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     if (ride != nullptr)
@@ -1131,9 +1117,9 @@ int32_t track_get_actual_bank(TileElement* tileElement, int32_t bank)
     return bank;
 }
 
-int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
+roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank)
 {
-    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+    if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
     {
         if (isInverted)
         {
@@ -1150,7 +1136,7 @@ int32_t track_get_actual_bank_2(int32_t rideType, bool isInverted, int32_t bank)
     return bank;
 }
 
-int32_t track_get_actual_bank_3(Vehicle* vehicle, TileElement* tileElement)
+roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement)
 {
     auto trackType = tileElement->AsTrack()->GetTrackType();
     auto bankStart = TrackDefinitions[trackType].bank_start;
@@ -1158,14 +1144,18 @@ int32_t track_get_actual_bank_3(Vehicle* vehicle, TileElement* tileElement)
     if (ride == nullptr)
         return bankStart;
 
-    bool isInverted = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0)
-        ^ tileElement->AsTrack()->IsInverted();
+    bool isInverted = useInvertedSprites ^ tileElement->AsTrack()->IsInverted();
     return track_get_actual_bank_2(ride->type, isInverted, bankStart);
 }
 
-bool track_element_is_station(TileElement* trackElement)
+bool TrackElement::IsStation() const
 {
-    switch (trackElement->AsTrack()->GetTrackType())
+    return track_type_is_station(GetTrackType());
+}
+
+bool track_type_is_station(track_type_t trackType)
+{
+    switch (trackType)
     {
         case TRACK_ELEM_END_STATION:
         case TRACK_ELEM_BEGIN_STATION:
@@ -1176,7 +1166,7 @@ bool track_element_is_station(TileElement* trackElement)
     }
 }
 
-bool track_element_is_covered(int32_t trackElementType)
+bool track_element_is_covered(track_type_t trackElementType)
 {
     switch (trackElementType)
     {
@@ -1205,13 +1195,13 @@ bool track_element_is_covered(int32_t trackElementType)
     }
 }
 
-bool track_element_is_booster(uint8_t rideType, uint8_t trackType)
+bool TrackTypeIsBooster(uint8_t rideType, track_type_t trackType)
 {
     // Boosters share their ID with the Spinning Control track.
-    return rideType != RIDE_TYPE_STEEL_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER;
+    return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER;
 }
 
-bool track_element_has_speed_setting(uint8_t trackType)
+bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
     // This does not check if the element is really a Spinning Control track instead of a booster,
     // but this does not cause problems.

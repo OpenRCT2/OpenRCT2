@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,9 +15,9 @@
 #include "../localisation/Localisation.h"
 #include "ObjectJsonHelpers.h"
 
-void EntranceObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(6, STREAM_SEEK_CURRENT);
+    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
     _legacyType.text_height = stream->ReadValue<uint8_t>();
 
@@ -43,13 +43,12 @@ void EntranceObject::Unload()
 
 void EntranceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     uint32_t imageId = _legacyType.image_id;
-    gfx_draw_sprite(dpi, imageId + 1, x - 32, y + 14, 0);
-    gfx_draw_sprite(dpi, imageId + 0, x + 0, y + 28, 0);
-    gfx_draw_sprite(dpi, imageId + 2, x + 32, y + 44, 0);
+    gfx_draw_sprite(dpi, imageId + 1, screenCoords + ScreenCoordsXY{ -32, 14 }, 0);
+    gfx_draw_sprite(dpi, imageId + 0, screenCoords + ScreenCoordsXY{ 0, 28 }, 0);
+    gfx_draw_sprite(dpi, imageId + 2, screenCoords + ScreenCoordsXY{ 32, 44 }, 0);
 }
 
 void EntranceObject::ReadJson(IReadObjectContext* context, const json_t* root)

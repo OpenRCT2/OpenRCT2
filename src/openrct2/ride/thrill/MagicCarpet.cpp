@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,7 +61,7 @@ static Vehicle* get_first_vehicle(Ride* ride)
         uint16_t vehicleSpriteIndex = ride->vehicles[0];
         if (vehicleSpriteIndex != SPRITE_INDEX_NULL)
         {
-            return GET_VEHICLE(vehicleSpriteIndex);
+            return GetEntity<Vehicle>(vehicleSpriteIndex);
         }
     }
     return nullptr;
@@ -84,14 +84,14 @@ static void paint_magic_carpet_frame(
     if (plane == PLANE_BACK)
     {
         sub_98197C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y,
-            bbOffset.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127, offset.z,
+            bbOffset.x, bbOffset.y, bbOffset.z);
     }
     else
     {
         sub_98199C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y,
-            bbOffset.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127, offset.z,
+            bbOffset.x, bbOffset.y, bbOffset.z);
     }
 }
 
@@ -102,7 +102,7 @@ static void paint_magic_carpet_pendulum(
     uint32_t imageId = swingImageId;
     if (direction & 2)
     {
-        imageId = (0 - ((int32_t)imageId)) & 31;
+        imageId = (0 - (static_cast<int32_t>(imageId))) & 31;
     }
     if (direction & 1)
     {
@@ -114,8 +114,8 @@ static void paint_magic_carpet_pendulum(
     }
     imageId |= session->TrackColours[SCHEME_TRACK];
     sub_98199C(
-        session, imageId, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y,
-        bbOffset.z);
+        session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127, offset.z,
+        bbOffset.x, bbOffset.y, bbOffset.z);
 }
 
 static void paint_magic_carpet_vehicle(
@@ -151,8 +151,8 @@ static void paint_magic_carpet_vehicle(
     offset.z += MagicCarpetOscillationZ[swingImageId];
 
     sub_98199C(
-        session, vehicleImageId | imageColourFlags, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z,
-        bbOffset.x, bbOffset.y, bbOffset.z);
+        session, vehicleImageId | imageColourFlags, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x,
+        bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z);
 
     // Riders
     rct_drawpixelinfo* dpi = &session->DPI;
@@ -168,8 +168,8 @@ static void paint_magic_carpet_vehicle(
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 0] << 19);
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 1] << 24);
                 sub_98199C(
-                    session, imageId, (int8_t)offset.x, (int8_t)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x,
-                    bbOffset.y, bbOffset.z);
+                    session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127,
+                    offset.z, bbOffset.x, bbOffset.y, bbOffset.z);
             }
         }
     }

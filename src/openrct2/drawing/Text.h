@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../common.h"
 
+struct ScreenCoordsXY;
 struct rct_drawpixelinfo;
 
 enum class TextAlignment
@@ -31,18 +32,18 @@ struct TextPaint
 class StaticLayout
 {
 private:
-    utf8string _buffer;
-    TextPaint _paint;
-    int32_t _lineCount = 0;
-    int32_t _lineHeight;
-    int32_t _maxWidth;
+    utf8string Buffer;
+    TextPaint Paint;
+    int32_t LineCount = 0;
+    int32_t LineHeight;
+    int32_t MaxWidth;
 
     StaticLayout();
     StaticLayout(const StaticLayout&);
 
 public:
-    StaticLayout(utf8string source, TextPaint paint, int32_t width);
-    void Draw(rct_drawpixelinfo* dpi, int32_t x, int32_t y);
+    StaticLayout(utf8string source, const TextPaint& paint, int32_t width);
+    void Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords);
     int32_t GetHeight();
     int32_t GetWidth();
     int32_t GetLineCount();

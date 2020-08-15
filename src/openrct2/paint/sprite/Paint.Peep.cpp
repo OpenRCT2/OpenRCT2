@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,7 +24,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
-        if (peep->type == PEEP_TYPE_STAFF)
+        if (peep->AssignedPeepType == PeepType::Staff)
         {
             int16_t peep_x, peep_y, peep_z;
 
@@ -51,7 +51,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
             }
 
             lightfx_add_3d_light(
-                peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
+                peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LightType::Spot1);
         }
     }
 #endif
@@ -67,41 +67,41 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
         return;
     }
 
-    rct_peep_animation_entry sprite = g_peep_animation_entries[peep->sprite_type];
+    rct_peep_animation_entry sprite = g_peep_animation_entries[peep->SpriteType];
 
-    PeepActionSpriteType spriteType = peep->action_sprite_type;
-    uint8_t imageOffset = peep->action_sprite_image_offset;
+    PeepActionSpriteType spriteType = peep->ActionSpriteType;
+    uint8_t imageOffset = peep->ActionSpriteImageOffset;
 
-    if (peep->action == PEEP_ACTION_NONE_1)
+    if (peep->Action == PEEP_ACTION_NONE_1)
     {
-        spriteType = peep->next_action_sprite_type;
+        spriteType = peep->NextActionSpriteType;
         imageOffset = 0;
     }
 
     // In the following 4 calls to sub_98197C/sub_98199C, we add 5 (instead of 3) to the
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
     uint32_t baseImageId = (imageDirection >> 3) + sprite.sprite_animation[spriteType].base_image + imageOffset * 4;
-    uint32_t imageId = baseImageId | peep->tshirt_colour << 19 | peep->trousers_colour << 24 | IMAGE_TYPE_REMAP
+    uint32_t imageId = baseImageId | peep->TshirtColour << 19 | peep->TrousersColour << 24 | IMAGE_TYPE_REMAP
         | IMAGE_TYPE_REMAP_2_PLUS;
     sub_98197C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
 
     if (baseImageId >= 10717 && baseImageId < 10749)
     {
-        imageId = (baseImageId + 32) | peep->hat_colour << 19 | IMAGE_TYPE_REMAP;
+        imageId = (baseImageId + 32) | peep->HatColour << 19 | IMAGE_TYPE_REMAP;
         sub_98199C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
         return;
     }
 
     if (baseImageId >= 10781 && baseImageId < 10813)
     {
-        imageId = (baseImageId + 32) | peep->balloon_colour << 19 | IMAGE_TYPE_REMAP;
+        imageId = (baseImageId + 32) | peep->BalloonColour << 19 | IMAGE_TYPE_REMAP;
         sub_98199C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
         return;
     }
 
     if (baseImageId >= 11197 && baseImageId < 11229)
     {
-        imageId = (baseImageId + 32) | peep->umbrella_colour << 19 | IMAGE_TYPE_REMAP;
+        imageId = (baseImageId + 32) | peep->UmbrellaColour << 19 | IMAGE_TYPE_REMAP;
         sub_98199C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
         return;
     }

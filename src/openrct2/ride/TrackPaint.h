@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -419,7 +419,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_go_karts(int32_t trackType, int32_
 TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int32_t trackType, int32_t direction);
-TRACK_PAINT_FUNCTION get_track_paint_function_pirate_ship(int32_t trackType, int32_t direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_swinging_ship(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int32_t trackType, int32_t direction);
@@ -434,7 +434,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType, 
 TRACK_PAINT_FUNCTION get_track_paint_function_facility(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_twist(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType, int32_t direction);
-TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int32_t trackType, int32_t direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_circus(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(int32_t trackType, int32_t direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_side_friction_rc(int32_t trackType, int32_t direction);

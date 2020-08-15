@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,22 +17,22 @@
 
 enum class SoundId : uint8_t;
 
-enum MIXER_GROUP
-{
-    MIXER_GROUP_SOUND,
-    MIXER_GROUP_RIDE_MUSIC,
-    MIXER_GROUP_TITLE_MUSIC,
-};
-
 namespace OpenRCT2::Audio
 {
-    interface IAudioSource;
-    interface IAudioChannel;
+    enum class MixerGroup : int32_t
+    {
+        Sound,
+        RideMusic,
+        TitleMusic,
+    };
+
+    struct IAudioSource;
+    struct IAudioChannel;
 
     /**
      * Provides an audio stream by mixing multiple audio channels together.
      */
-    interface IAudioMixer
+    struct IAudioMixer
     {
         virtual ~IAudioMixer() = default;
 
@@ -40,8 +40,8 @@ namespace OpenRCT2::Audio
         virtual void Close() abstract;
         virtual void Lock() abstract;
         virtual void Unlock() abstract;
-        virtual IAudioChannel* Play(IAudioSource * source, int32_t loop, bool deleteondone, bool deletesourceondone) abstract;
-        virtual void Stop(IAudioChannel * channel) abstract;
+        virtual IAudioChannel* Play(IAudioSource* source, int32_t loop, bool deleteondone, bool deletesourceondone) abstract;
+        virtual void Stop(IAudioChannel* channel) abstract;
         virtual bool LoadMusic(size_t pathid) abstract;
         virtual void SetVolume(float volume) abstract;
 
@@ -66,7 +66,7 @@ void Mixer_Channel_Rate(void* channel, double rate);
 int32_t Mixer_Channel_IsPlaying(void* channel);
 uint64_t Mixer_Channel_GetOffset(void* channel);
 int32_t Mixer_Channel_SetOffset(void* channel, uint64_t offset);
-void Mixer_Channel_SetGroup(void* channel, int32_t group);
+void Mixer_Channel_SetGroup(void* channel, OpenRCT2::Audio::MixerGroup group);
 void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming);
 void Mixer_SetVolume(float volume);
 

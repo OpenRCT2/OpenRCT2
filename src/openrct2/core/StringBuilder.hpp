@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,7 +36,7 @@ public:
 
     void Append(int32_t codepoint)
     {
-        Append((codepoint_t)codepoint);
+        Append(static_cast<codepoint_t>(codepoint));
     }
 
     /**
@@ -178,7 +178,7 @@ private:
         if (_capacity > capacity)
             return;
 
-        _capacity = std::max((size_t)8, _capacity);
+        _capacity = std::max(static_cast<size_t>(8), _capacity);
         while (_capacity < capacity)
         {
             _capacity *= 2;

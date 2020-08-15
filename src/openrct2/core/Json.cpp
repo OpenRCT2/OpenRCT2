@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,9 +18,9 @@ namespace Json
     json_t* ReadFromFile(const utf8* path, size_t maxSize)
     {
         json_t* json = nullptr;
-        auto fs = FileStream(path, FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
 
-        size_t fileLength = (size_t)fs.GetLength();
+        size_t fileLength = static_cast<size_t>(fs.GetLength());
         if (fileLength > maxSize)
         {
             throw IOException("Json file too large.");
@@ -48,7 +48,7 @@ namespace Json
         const char* jsonOutput = json_dumps(json, flags);
 
         // Write to file
-        auto fs = FileStream(path, FILE_MODE_WRITE);
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
         size_t jsonOutputSize = String::SizeOf(jsonOutput);
         fs.Write(jsonOutput, jsonOutputSize);
     }

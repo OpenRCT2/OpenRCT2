@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,22 +26,6 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
-
-#pragma pack(push, 1)
-struct rct_g1_header
-{
-    uint32_t num_entries;
-    uint32_t total_size;
-};
-assert_struct_size(rct_g1_header, 8);
-#pragma pack(pop)
-
-struct rct_gx
-{
-    rct_g1_header header;
-    std::vector<rct_g1_element> elements;
-    void* data;
-};
 
 // clang-format off
 constexpr struct
@@ -119,7 +103,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
-            elements[i].offset = (uint8_t*)(uintptr_t)src.offset;
+            elements[i].offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(src.offset));
             elements[i].width = src.width;
             elements[i].height = src.height;
             elements[i].x_offset = src.x_offset;
@@ -128,7 +112,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
 
             if (src.flags & G1_FLAG_HAS_ZOOM_SPRITE)
             {
-                elements[i].zoomed_offset = (int32_t)(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
+                elements[i].zoomed_offset = static_cast<int32_t>(i - rctc_to_rct2_index(rctc - src.zoomed_offset));
             }
             else
             {
@@ -158,7 +142,7 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
 
             // Double cast to silence compiler warning about casting to
             // pointer from integer of mismatched length.
-            elements[i].offset = (uint8_t*)(uintptr_t)src.offset;
+            elements[i].offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(src.offset));
             elements[i].width = src.width;
             elements[i].height = src.height;
             elements[i].x_offset = src.x_offset;
@@ -191,30 +175,6 @@ void mask_scalar(
         colourSrc += colourWrap;
         dst += dstWrap;
     }
-}
-
-static std::string gfx_get_csg_header_path()
-{
-    auto path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "Data", "csg1i.dat"));
-    if (path.empty())
-    {
-        path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "RCTdeluxe_install", "Data", "csg1i.dat"));
-    }
-    return path;
-}
-
-static std::string gfx_get_csg_data_path()
-{
-    // csg1.1 and csg1.dat are the same file.
-    // In the CD version, it's called csg1.1 on the CD and csg1.dat on the disk.
-    // In the GOG version, it's always called csg1.1.
-    // In the Steam version, it's called csg1.dat in the "disk" folder and csg1.1 in the "CD" folder.
-    auto path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "Data", "csg1.1"));
-    if (path.empty())
-    {
-        path = Path::ResolveCasing(Path::Combine(gConfigGeneral.rct1_path, "Data", "csg1.dat"));
-    }
-    return path;
 }
 
 static rct_gx _g1 = {};
@@ -258,7 +218,7 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
         // Fix entry data offsets
         for (uint32_t i = 0; i < _g1.header.num_entries; i++)
         {
-            _g1.elements[i].offset += (uintptr_t)_g1.data;
+            _g1.elements[i].offset += reinterpret_cast<uintptr_t>(_g1.data);
         }
         return true;
     }
@@ -304,7 +264,7 @@ bool gfx_load_g2()
 
     char path[MAX_PATH];
 
-    platform_get_openrct_data_path(path, sizeof(path));
+    platform_get_openrct2_data_path(path, sizeof(path));
     safe_strcat_path(path, "g2.dat", MAX_PATH);
     try
     {
@@ -321,7 +281,7 @@ bool gfx_load_g2()
         // Fix entry data offsets
         for (uint32_t i = 0; i < _g2.header.num_entries; i++)
         {
-            _g2.elements[i].offset += (uintptr_t)_g2.data;
+            _g2.elements[i].offset += reinterpret_cast<uintptr_t>(_g2.data);
         }
         return true;
     }
@@ -350,8 +310,8 @@ bool gfx_load_csg()
         return false;
     }
 
-    auto pathHeaderPath = gfx_get_csg_header_path();
-    auto pathDataPath = gfx_get_csg_data_path();
+    auto pathHeaderPath = FindCsg1idatAtLocation(gConfigGeneral.rct1_path);
+    auto pathDataPath = FindCsg1datAtLocation(gConfigGeneral.rct1_path);
     try
     {
         auto fileHeader = FileStream(pathHeaderPath, FILE_MODE_OPEN);
@@ -359,10 +319,10 @@ bool gfx_load_csg()
         size_t fileHeaderSize = fileHeader.GetLength();
         size_t fileDataSize = fileData.GetLength();
 
-        _csg.header.num_entries = (uint32_t)(fileHeaderSize / sizeof(rct_g1_element_32bit));
-        _csg.header.total_size = (uint32_t)fileDataSize;
+        _csg.header.num_entries = static_cast<uint32_t>(fileHeaderSize / sizeof(rct_g1_element_32bit));
+        _csg.header.total_size = static_cast<uint32_t>(fileDataSize);
 
-        if (_csg.header.num_entries < 69917)
+        if (!CsgIsUsable(_csg))
         {
             log_warning("Cannot load CSG1.DAT, it has too few entries. Only CSG1.DAT from Loopy Landscapes will work.");
             return false;
@@ -378,7 +338,7 @@ bool gfx_load_csg()
         // Fix entry data offsets
         for (uint32_t i = 0; i < _csg.header.num_entries; i++)
         {
-            _csg.elements[i].offset += (uintptr_t)_csg.data;
+            _csg.elements[i].offset += reinterpret_cast<uintptr_t>(_csg.data);
             // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
             if (_csg.elements[i].flags & G1_FLAG_HAS_ZOOM_SPRITE)
             {
@@ -398,68 +358,59 @@ bool gfx_load_csg()
     }
 }
 
-const uint8_t* FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
+static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
 {
     if (!imageId.HasSecondary())
     {
-        uint8_t palette_ref = imageId.GetRemap();
+        uint8_t paletteId = imageId.GetRemap();
         if (!imageId.IsBlended())
         {
-            palette_ref &= 0x7F;
+            paletteId &= 0x7F;
         }
-
-        uint16_t palette_offset = palette_to_g1_offset[palette_ref];
-        auto g1 = gfx_get_g1_element(palette_offset);
-        if (g1 == nullptr)
-        {
-            return nullptr;
-        }
-        else
-        {
-            return g1->offset;
-        }
+        return GetPaletteMapForColour(paletteId);
     }
     else
     {
-        uint8_t* palette_pointer = gPeepPalette;
-
-        uint32_t primary_offset = palette_to_g1_offset[imageId.GetPrimary()];
-        uint32_t secondary_offset = palette_to_g1_offset[imageId.GetSecondary()];
-
+        auto paletteMap = PaletteMap(gPeepPalette);
         if (imageId.HasTertiary())
         {
-            palette_pointer = gOtherPalette;
-#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
-            assert(tertiary_colour < PALETTE_TO_G1_OFFSET_COUNT);
-#endif // DEBUG_LEVEL_2
-            uint32_t tertiary_offset = palette_to_g1_offset[imageId.GetTertiary()];
-            auto tertiary_palette = gfx_get_g1_element(tertiary_offset);
-            if (tertiary_palette != nullptr)
+            paletteMap = PaletteMap(gOtherPalette);
+            auto tertiaryPaletteMap = GetPaletteMapForColour(imageId.GetTertiary());
+            if (tertiaryPaletteMap)
             {
-                std::memcpy(palette_pointer + 0x2E, &tertiary_palette->offset[0xF3], 12);
+                paletteMap.Copy(
+                    PALETTE_OFFSET_REMAP_TERTIARY, *tertiaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
             }
         }
-        auto primary_palette = gfx_get_g1_element(primary_offset);
-        if (primary_palette != nullptr)
+
+        auto primaryPaletteMap = GetPaletteMapForColour(imageId.GetPrimary());
+        if (primaryPaletteMap)
         {
-            std::memcpy(palette_pointer + 0xF3, &primary_palette->offset[0xF3], 12);
-        }
-        auto secondary_palette = gfx_get_g1_element(secondary_offset);
-        if (secondary_palette != nullptr)
-        {
-            std::memcpy(palette_pointer + 0xCA, &secondary_palette->offset[0xF3], 12);
+            paletteMap.Copy(
+                PALETTE_OFFSET_REMAP_PRIMARY, *primaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
         }
 
-        return palette_pointer;
+        auto secondaryPaletteMap = GetPaletteMapForColour(imageId.GetSecondary());
+        if (secondaryPaletteMap)
+        {
+            paletteMap.Copy(
+                PALETTE_OFFSET_REMAP_SECONDARY, *secondaryPaletteMap, PALETTE_OFFSET_REMAP_PRIMARY, PALETTE_LENGTH_REMAP);
+        }
+
+        return paletteMap;
     }
 }
 
-void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
+void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& spriteCoords)
 {
     if (imageId.HasValue())
     {
         auto palette = gfx_draw_sprite_get_palette(imageId);
-        gfx_draw_sprite_palette_set_software(dpi, imageId, x, y, palette);
+        if (!palette)
+        {
+            palette = PaletteMap::GetDefault();
+        }
+        gfx_draw_sprite_palette_set_software(dpi, imageId, spriteCoords, *palette);
     }
 }
 
@@ -473,8 +424,11 @@ void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, 
  * y (dx)
  */
 void FASTCALL gfx_draw_sprite_palette_set_software(
-    rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y, const uint8_t* palette_pointer)
+    rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
+    int32_t x = coords.x;
+    int32_t y = coords.y;
+
     const auto* g1 = gfx_get_g1_element(imageId);
     if (g1 == nullptr)
     {
@@ -491,8 +445,10 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
         zoomed_dpi.width = dpi->width >> 1;
         zoomed_dpi.pitch = dpi->pitch;
         zoomed_dpi.zoom_level = dpi->zoom_level - 1;
+
+        const auto spriteCoords = ScreenCoordsXY{ x >> 1, y >> 1 };
         gfx_draw_sprite_palette_set_software(
-            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), x >> 1, y >> 1, palette_pointer);
+            &zoomed_dpi, imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset), spriteCoords, paletteMap);
         return;
     }
 
@@ -513,6 +469,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     // This will be the height of the drawn image
     int32_t height = g1->height;
+
     // This is the start y coordinate on the destination
     int16_t dest_start_y = y + g1->y_offset;
 
@@ -569,6 +526,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     // This will be the width of the drawn image
     int32_t width = g1->width;
+
     // This is the source start x coordinate
     int32_t source_start_x = 0;
     // This is the destination start x coordinate
@@ -615,19 +573,19 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     // Move the pointer to the start point of the destination
     dest_pointer += ((dpi->width / zoom_level) + dpi->pitch) * dest_start_y + dest_start_x;
 
-    if (g1->flags & G1_FLAG_RLE_COMPRESSION)
+    DrawSpriteArgs args(dpi, imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
+    gfx_sprite_to_buffer(args);
+}
+
+void FASTCALL gfx_sprite_to_buffer(DrawSpriteArgs& args)
+{
+    if (args.SourceImage.flags & G1_FLAG_RLE_COMPRESSION)
     {
-        // We have to use a different method to move the source pointer for
-        // rle encoded sprites so that will be handled within this function
-        gfx_rle_sprite_to_buffer(
-            g1->offset, dest_pointer, palette_pointer, dpi, imageId, source_start_y, height, source_start_x, width);
-        return;
+        gfx_rle_sprite_to_buffer(args);
     }
-    else if (!(g1->flags & G1_FLAG_1))
+    else if (!(args.SourceImage.flags & G1_FLAG_1))
     {
-        // Move the pointer to the start point of the source
-        auto source_pointer = g1->offset + (((size_t)g1->width * source_start_y) + source_start_x);
-        gfx_bmp_sprite_to_buffer(palette_pointer, source_pointer, dest_pointer, g1, dpi, height, width, imageId);
+        gfx_bmp_sprite_to_buffer(args);
     }
 }
 
@@ -637,8 +595,8 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
  *
  *  rct2: 0x00681DE2
  */
-void FASTCALL
-    gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
+void FASTCALL gfx_draw_sprite_raw_masked_software(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, int32_t maskImage, int32_t colourImage)
 {
     int32_t left, top, right, bottom, width, height;
     auto imgMask = gfx_get_g1_element(maskImage & 0x7FFFF);
@@ -651,7 +609,7 @@ void FASTCALL
     // Only BMP format is supported for masking
     if (!(imgMask->flags & G1_FLAG_BMP) || !(imgColour->flags & G1_FLAG_BMP))
     {
-        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), x, y);
+        gfx_draw_sprite_software(dpi, ImageId::FromUInt32(colourImage), scrCoords);
         return;
     }
 
@@ -665,21 +623,20 @@ void FASTCALL
     width = std::min(imgMask->width, imgColour->width);
     height = std::min(imgMask->height, imgColour->height);
 
-    x += imgMask->x_offset;
-    y += imgMask->y_offset;
+    auto offsetCoords = scrCoords + ScreenCoordsXY{ imgMask->x_offset, imgMask->y_offset };
 
-    left = std::max<int32_t>(dpi->x, x);
-    top = std::max<int32_t>(dpi->y, y);
-    right = std::min(dpi->x + dpi->width, x + width);
-    bottom = std::min(dpi->y + dpi->height, y + height);
+    left = std::max<int32_t>(dpi->x, offsetCoords.x);
+    top = std::max<int32_t>(dpi->y, offsetCoords.y);
+    right = std::min(dpi->x + dpi->width, offsetCoords.x + width);
+    bottom = std::min(dpi->y + dpi->height, offsetCoords.y + height);
 
     width = right - left;
     height = bottom - top;
     if (width < 0 || height < 0)
         return;
 
-    int32_t skipX = left - x;
-    int32_t skipY = top - y;
+    int32_t skipX = left - offsetCoords.x;
+    int32_t skipY = top - offsetCoords.y;
 
     uint8_t const* maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
     uint8_t const* colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
@@ -701,7 +658,7 @@ const rct_g1_element* gfx_get_g1_element(int32_t image_id)
 {
     openrct2_assert(!gOpenRCT2NoGraphics, "gfx_get_g1_element called on headless instance");
 
-    auto offset = (size_t)image_id;
+    auto offset = static_cast<size_t>(image_id);
     if (offset == 0x7FFFF)
     {
         return nullptr;
@@ -777,14 +734,14 @@ void gfx_set_g1_element(int32_t imageId, const rct_g1_element* g1)
         {
             if (imageId < SPR_RCTC_G1_END)
             {
-                if (imageId < (int32_t)_g1.elements.size())
+                if (imageId < static_cast<int32_t>(_g1.elements.size()))
                 {
                     _g1.elements[imageId] = *g1;
                 }
             }
             else
             {
-                size_t idx = (size_t)imageId - SPR_IMAGE_LIST_BEGIN;
+                size_t idx = static_cast<size_t>(imageId) - SPR_IMAGE_LIST_BEGIN;
                 // Grow the element buffer if necessary
                 while (idx >= _imageListElements.size())
                 {

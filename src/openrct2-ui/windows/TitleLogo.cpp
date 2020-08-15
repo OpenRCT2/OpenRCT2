@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,8 +14,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-constexpr int32_t WW = 232;
-constexpr int32_t WH = 136;
+static constexpr const int32_t WW = 232;
+static constexpr const int32_t WH = 136;
 
 enum
 {
@@ -23,7 +23,7 @@ enum
 };
 
 static rct_widget window_title_logo_widgets[] = {
-    { WWT_IMGBTN, 0, 0, WW, 0, WH, STR_NONE, STR_NONE },
+    MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WWT_IMGBTN, 0),
     { WIDGETS_END },
 };
 
@@ -97,8 +97,7 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
  */
 static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x = 2;
-    int32_t y = 2;
-    gfx_draw_sprite(dpi, SPR_G2_LOGO, w->windowPos.x + x, w->windowPos.y + y, 0);
-    gfx_draw_sprite(dpi, SPR_G2_TITLE, w->windowPos.x + x + 104, w->windowPos.y + y + 18, 0);
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ 2, 2 };
+    gfx_draw_sprite(dpi, SPR_G2_LOGO, screenCoords, 0);
+    gfx_draw_sprite(dpi, SPR_G2_TITLE, screenCoords + ScreenCoordsXY{ 104, 18 }, 0);
 }

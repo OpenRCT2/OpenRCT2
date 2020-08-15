@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -132,12 +132,12 @@ protected:
     /**
      * Serialises an index item to the given stream.
      */
-    virtual void Serialise(IStream* stream, const TItem& item) const abstract;
+    virtual void Serialise(OpenRCT2::IStream* stream, const TItem& item) const abstract;
 
     /**
      * Deserialises an index item from the given stream.
      */
-    virtual TItem Deserialise(IStream* stream) const abstract;
+    virtual TItem Deserialise(OpenRCT2::IStream* stream) const abstract;
 
 private:
     ScanResult Scan() const
@@ -160,8 +160,8 @@ private:
 
                 stats.TotalFiles++;
                 stats.TotalFileSize += fileInfo->Size;
-                stats.FileDateModifiedChecksum ^= (uint32_t)(fileInfo->LastModified >> 32)
-                    ^ (uint32_t)(fileInfo->LastModified & 0xFFFFFFFF);
+                stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo->LastModified >> 32)
+                    ^ static_cast<uint32_t>(fileInfo->LastModified & 0xFFFFFFFF);
                 stats.FileDateModifiedChecksum = ror32(stats.FileDateModifiedChecksum, 5);
                 stats.PathChecksum += GetPathChecksum(path);
             }
@@ -179,7 +179,7 @@ private:
         {
             const auto& filePath = scanResult.Files.at(i);
 
-            if (_log_levels[DIAGNOSTIC_LEVEL_VERBOSE])
+            if (_log_levels[static_cast<uint8_t>(DiagnosticLevel::Verbose)])
             {
                 std::lock_guard<std::mutex> lock(printLock);
                 log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
@@ -246,7 +246,7 @@ private:
         WriteIndexFile(language, scanResult.Stats, allItems);
 
         auto endTime = std::chrono::high_resolution_clock::now();
-        auto duration = (std::chrono::duration<float>)(endTime - startTime);
+        auto duration = std::chrono::duration<float>(endTime - startTime);
         Console::WriteLine("Finished building %s in %.2f seconds.", _name.c_str(), duration.count());
 
         return allItems;
@@ -261,7 +261,7 @@ private:
             try
             {
                 log_verbose("FileIndex:Loading index: '%s'", _indexPath.c_str());
-                auto fs = FileStream(_indexPath, FILE_MODE_OPEN);
+                auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_OPEN);
 
                 // Read header, check if we need to re-scan
                 auto header = fs.ReadValue<FileIndexHeader>();
@@ -300,7 +300,7 @@ private:
         {
             log_verbose("FileIndex:Writing index: '%s'", _indexPath.c_str());
             Path::CreateDirectory(Path::GetDirectory(_indexPath));
-            auto fs = FileStream(_indexPath, FILE_MODE_WRITE);
+            auto fs = OpenRCT2::FileStream(_indexPath, OpenRCT2::FILE_MODE_WRITE);
 
             // Write header
             FileIndexHeader header;
@@ -309,7 +309,7 @@ private:
             header.VersionB = _version;
             header.LanguageId = language;
             header.Stats = stats;
-            header.NumItems = (uint32_t)items.size();
+            header.NumItems = static_cast<uint32_t>(items.size());
             fs.WriteValue(header);
 
             // Write items

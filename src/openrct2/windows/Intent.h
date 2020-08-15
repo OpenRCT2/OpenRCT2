@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -80,6 +80,7 @@ enum
 {
     INTENT_ACTION_MAP,
     INTENT_ACTION_NEW_RIDE_OF_TYPE,
+    INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST,
     INTENT_ACTION_REFRESH_NEW_RIDES,
     INTENT_ACTION_REFRESH_RIDE_LIST,
     INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION,

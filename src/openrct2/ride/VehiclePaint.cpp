@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -958,7 +958,7 @@ static void vehicle_sprite_paint_6D520E(
     paint_session* session, const Vehicle* vehicle, int32_t ebx, int32_t ecx, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    vehicle_sprite_paint(session, vehicle, ebx + vehicle->swing_sprite, ecx, z, vehicleEntry);
+    vehicle_sprite_paint(session, vehicle, ebx + vehicle->SwingSprite, ecx, z, vehicleEntry);
 }
 
 // 6D51EB
@@ -974,7 +974,7 @@ static void vehicle_sprite_paint_6D51EB(
     {
         ebx = ebx / 8;
     }
-    ebx = (ebx * vehicleEntry->base_num_frames) + vehicle->swing_sprite + vehicleEntry->base_image_id;
+    ebx = (ebx * vehicleEntry->base_num_frames) + vehicle->SwingSprite + vehicleEntry->base_image_id;
     vehicle_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
 }
 
@@ -1086,7 +1086,7 @@ static void vehicle_sprite_0_5(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -1107,7 +1107,7 @@ static void vehicle_sprite_0_6(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -1128,7 +1128,7 @@ static void vehicle_sprite_0_7(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -1149,7 +1149,7 @@ static void vehicle_sprite_0_8(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -1170,7 +1170,7 @@ static void vehicle_sprite_0_9(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -1191,7 +1191,7 @@ static void vehicle_sprite_0_10(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -1212,7 +1212,7 @@ static void vehicle_sprite_0_11(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -1233,7 +1233,7 @@ static void vehicle_sprite_0_12(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -1254,7 +1254,7 @@ static void vehicle_sprite_0_13(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -1275,7 +1275,7 @@ static void vehicle_sprite_0_14(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -2337,10 +2337,10 @@ static void vehicle_sprite_17(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
-        if ((vehicle->track_type >> 2) != TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-            && (vehicle->track_type >> 2) != TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN)
+        if ((vehicle->GetTrackType()) != TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
+            && (vehicle->GetTrackType()) != TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN)
         {
             vehicleEntry--;
         }
@@ -2362,11 +2362,11 @@ static void vehicle_sprite_18(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
-        if ((vehicle->track_type >> 2) != TRACK_ELEM_90_DEG_DOWN
-            && (vehicle->track_type >> 2) != TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-            && (vehicle->track_type >> 2) != TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN)
+        if ((vehicle->GetTrackType()) != TRACK_ELEM_90_DEG_DOWN
+            && (vehicle->GetTrackType()) != TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
+            && (vehicle->GetTrackType()) != TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN)
         {
             vehicleEntry--;
         }
@@ -2388,7 +2388,7 @@ static void vehicle_sprite_19(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -2409,7 +2409,7 @@ static void vehicle_sprite_20(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -2430,7 +2430,7 @@ static void vehicle_sprite_21(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -2451,7 +2451,7 @@ static void vehicle_sprite_22(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -2472,7 +2472,7 @@ static void vehicle_sprite_23(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -2493,7 +2493,7 @@ static void vehicle_sprite_24(
     paint_session* session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+    if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
         vehicleEntry--;
     }
@@ -2964,7 +2964,7 @@ static constexpr const vehicle_sprite_func vehicle_sprite_funcs[] = {
  */
 static void vehicle_visual_splash1_effect(paint_session* session, int32_t z, const Vehicle* vehicle)
 {
-    if ((vehicle->track_type >> 2) != TRACK_ELEM_WATER_SPLASH)
+    if ((vehicle->GetTrackType()) != TRACK_ELEM_WATER_SPLASH)
     {
         return;
     }
@@ -2976,7 +2976,7 @@ static void vehicle_visual_splash1_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (vehicle_get_head(vehicle)->velocity <= 0x50000)
+    if (vehicle->TrainHead()->velocity <= 0x50000)
     {
         return;
     }
@@ -3037,7 +3037,11 @@ static void vehicle_visual_splash3_effect(paint_session* session, int32_t z, con
  */
 static void vehicle_visual_splash4_effect(paint_session* session, int32_t z, const Vehicle* vehicle)
 {
-    Vehicle* vehicle2 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+    Vehicle* vehicle2 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+    if (vehicle2 == nullptr)
+    {
+        return;
+    }
     if (vehicle2->velocity <= 0x50000)
     {
         return;
@@ -3061,7 +3065,11 @@ static void vehicle_visual_splash4_effect(paint_session* session, int32_t z, con
  */
 static void vehicle_visual_splash5_effect(paint_session* session, int32_t z, const Vehicle* vehicle)
 {
-    Vehicle* vehicle2 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
+    Vehicle* vehicle2 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
+    if (vehicle2 == nullptr)
+    {
+        return;
+    }
     if (vehicle2->velocity <= 0x50000)
     {
         return;
@@ -3074,7 +3082,7 @@ static void vehicle_visual_splash5_effect(paint_session* session, int32_t z, con
     {
         return;
     }
-    if (!track_element_is_covered(vehicle->track_type >> 2))
+    if (!track_element_is_covered(vehicle->GetTrackType()))
     {
         return;
     }
@@ -3146,14 +3154,14 @@ void vehicle_paint(paint_session* session, const Vehicle* vehicle, int32_t image
     }
     else
     {
-        rideEntry = get_ride_entry(vehicle->ride_subtype);
+        rideEntry = vehicle->GetRideEntry();
         if (rideEntry == nullptr)
         {
             return;
         }
 
         auto vehicleEntryIndex = vehicle->vehicle_type;
-        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES)
+        if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
         {
             vehicleEntryIndex++;
             z += 16;

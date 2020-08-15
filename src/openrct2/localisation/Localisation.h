@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -85,26 +85,81 @@ extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
     std::memcpy(args + offset, &value, size);
 }
 
-template<typename T> void constexpr set_format_arg(uint8_t* args, size_t offset, uintptr_t value)
+class Formatter
 {
-    static_assert(sizeof(T) <= sizeof(uintptr_t), "Type too large");
-    set_format_arg_body(args, offset, value, sizeof(T));
-}
+    const uint8_t* StartBuf;
+    uint8_t* CurrentBuf;
 
-#define set_format_arg(offset, type, value)                                                                                    \
-    do                                                                                                                         \
-    {                                                                                                                          \
-        static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large");                                                    \
-        set_format_arg_body(gCommonFormatArgs, offset, (uintptr_t)(value), sizeof(type));                                      \
-    } while (false)
+public:
+    explicit Formatter(uint8_t* buf)
+        : StartBuf(buf)
+        , CurrentBuf(buf)
+    {
+    }
 
-#define set_format_arg_on(args, offset, type, value) set_format_arg_body(args, offset, (uintptr_t)(value), sizeof(type))
+    static Formatter Common()
+    {
+        return Formatter(gCommonFormatArgs);
+    }
 
-#define set_map_tooltip_format_arg(offset, type, value)                                                                        \
-    do                                                                                                                         \
-    {                                                                                                                          \
-        static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large");                                                    \
-        set_format_arg_body(gMapTooltipFormatArgs, offset, (uintptr_t)(value), sizeof(type));                                  \
-    } while (false)
+    static Formatter MapTooltip()
+    {
+        return Formatter(gMapTooltipFormatArgs);
+    }
+
+    auto Buf()
+    {
+        return CurrentBuf;
+    }
+
+    void Increment(size_t count)
+    {
+        CurrentBuf += count;
+    }
+
+    void Rewind()
+    {
+        CurrentBuf -= NumBytes();
+    }
+
+    std::size_t NumBytes() const
+    {
+        return CurrentBuf - StartBuf;
+    }
+
+    template<typename TSpecified, typename TDeduced> Formatter& Add(TDeduced value)
+    {
+        static_assert(sizeof(TSpecified) <= sizeof(uintptr_t), "Type too large");
+        static_assert(sizeof(TDeduced) <= sizeof(uintptr_t), "Type too large");
+
+        // clang-format off
+        static_assert(
+            std::is_same_v<TSpecified, char*> ||
+            std::is_same_v<TSpecified, const char*> ||
+            std::is_same_v<TSpecified, int16_t> ||
+            std::is_same_v<TSpecified, int32_t> ||
+            std::is_same_v<TSpecified, money32> ||
+            std::is_same_v<TSpecified, rct_string_id> ||
+            std::is_same_v<TSpecified, uint16_t> ||
+            std::is_same_v<TSpecified, uint32_t> ||
+            std::is_same_v<TSpecified, utf8*> ||
+            std::is_same_v<TSpecified, const utf8*>
+        );
+        // clang-format on
+
+        uintptr_t convertedValue;
+        if constexpr (std::is_integral_v<TSpecified>)
+        {
+            convertedValue = static_cast<uintptr_t>(value);
+        }
+        else
+        {
+            convertedValue = reinterpret_cast<uintptr_t>(value);
+        }
+        set_format_arg_body(CurrentBuf, 0, convertedValue, sizeof(TSpecified));
+        Increment(sizeof(TSpecified));
+        return *this;
+    }
+};
 
 #endif

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,10 +24,6 @@
 #endif
 
 #ifdef _WIN32
-#    ifndef NOMINMAX
-#        define NOMINMAX
-#    endif
-#    define WIN32_LEAN_AND_MEAN
 #    include <windows.h>
 #endif
 
@@ -82,10 +78,10 @@ namespace String
 // UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
 // Unfortunately, we'll have to help the compiler here.
 #    if U_SIZEOF_WCHAR_T == 4
-        icu::UnicodeString str = icu::UnicodeString::fromUTF32((const UChar32*)src.data(), src.length());
+        icu::UnicodeString str = icu::UnicodeString::fromUTF32(reinterpret_cast<const UChar32*>(src.data()), src.length());
 #    elif U_SIZEOF_WCHAR_T == 2
         std::wstring wstr = std::wstring(src);
-        icu::UnicodeString str = icu::UnicodeString((const wchar_t*)wstr.c_str());
+        icu::UnicodeString str = icu::UnicodeString(static_cast<const wchar_t*>(wstr.c_str()));
 #    else
 #        error Unsupported U_SIZEOF_WCHAR_T size
 #    endif
@@ -112,15 +108,15 @@ namespace String
 // UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
 // Unfortunately, we'll have to help the compiler here.
 #    if U_SIZEOF_WCHAR_T == 4
-        size_t length = (size_t)str.length();
+        size_t length = static_cast<size_t>(str.length());
         std::wstring result(length, '\0');
 
         UErrorCode status = U_ZERO_ERROR;
-        str.toUTF32((UChar32*)&result[0], str.length(), status);
+        str.toUTF32(reinterpret_cast<UChar32*>(&result[0]), str.length(), status);
 
 #    elif U_SIZEOF_WCHAR_T == 2
         const char16_t* buffer = str.getBuffer();
-        std::wstring result = (wchar_t*)buffer;
+        std::wstring result = static_cast<wchar_t*>(buffer);
 
 #    else
 #        error Unsupported U_SIZEOF_WCHAR_T size
@@ -228,7 +224,7 @@ namespace String
         {
             if (*ch == match)
             {
-                return (size_t)(ch - str);
+                return static_cast<size_t>(ch - str);
             }
         }
         return SIZE_MAX;
@@ -336,7 +332,7 @@ namespace String
             return nullptr;
         }
 
-        size_t requiredSize = (size_t)len + 1;
+        size_t requiredSize = static_cast<size_t>(len) + 1;
         if (requiredSize > bufferSize)
         {
             // Try again with bigger buffer
@@ -454,12 +450,13 @@ namespace String
 
     utf8* SkipBOM(utf8* buffer)
     {
-        return (utf8*)SkipBOM((const utf8*)buffer);
+        return const_cast<utf8*>(SkipBOM(static_cast<const utf8*>(buffer)));
     }
 
     const utf8* SkipBOM(const utf8* buffer)
     {
-        if ((uint8_t)buffer[0] == 0xEF && (uint8_t)buffer[1] == 0xBB && (uint8_t)buffer[2] == 0xBF)
+        if (static_cast<uint8_t>(buffer[0]) == 0xEF && static_cast<uint8_t>(buffer[1]) == 0xBB
+            && static_cast<uint8_t>(buffer[2]) == 0xBF)
         {
             return buffer + 3;
         }
@@ -473,7 +470,7 @@ namespace String
 
     codepoint_t GetNextCodepoint(utf8* ptr, utf8** nextPtr)
     {
-        return GetNextCodepoint((const utf8*)ptr, (const utf8**)nextPtr);
+        return GetNextCodepoint(static_cast<const utf8*>(ptr), const_cast<const utf8**>(nextPtr));
     }
 
     codepoint_t GetNextCodepoint(const utf8* ptr, const utf8** nextPtr)
@@ -489,7 +486,7 @@ namespace String
     bool IsWhiteSpace(codepoint_t codepoint)
     {
         // 0x3000 is the 'ideographic space', a 'fullwidth' character used in CJK languages.
-        return iswspace((wchar_t)codepoint) || codepoint == 0x3000;
+        return iswspace(static_cast<wchar_t>(codepoint)) || codepoint == 0x3000;
     }
 
     utf8* Trim(utf8* str)
@@ -649,7 +646,8 @@ namespace String
 
         // Convert the lot.
         char* buffer_target = &buffer[0];
-        ucnv_fromUnicode(conv, &buffer_target, buffer_limit, (const UChar**)&source, source_limit, nullptr, true, &status);
+        ucnv_fromUnicode(
+            conv, &buffer_target, buffer_limit, static_cast<const UChar**>(&source), source_limit, nullptr, true, &status);
 
         if (U_FAILURE(status))
         {

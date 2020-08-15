@@ -12,6 +12,7 @@
 
 #include <gtest/gtest.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/util/Util.h>
 #include <string>
 #include <tuple>
 #include <utility>
@@ -146,4 +147,27 @@ TEST_F(StringTest, ToUpper_Japanese)
 {
     auto actual = String::ToUpper(u8"日本語で大文字がなし");
     ASSERT_STREQ(actual.c_str(), u8"日本語で大文字がなし");
+}
+
+TEST_F(StringTest, strlogicalcmp)
+{
+    auto res_logical_1 = strlogicalcmp("foo1", "foo1_2");
+    auto res_logical_2 = strlogicalcmp("foo1_2", "foo1");
+    auto res_1 = strcmp("foo1", "foo1_2");
+    auto res_2 = strcmp("foo1_2", "foo1");
+    // We only care if sign is correct, actual values might not be.
+    EXPECT_GE(res_1 * res_logical_1, 1);
+    EXPECT_GE(res_2 * res_logical_2, 1);
+    EXPECT_NE(res_logical_1, res_logical_2);
+
+    EXPECT_GT(strlogicalcmp("foo12", "foo1"), 0);
+    EXPECT_LT(strlogicalcmp("foo12", "foo13"), 0);
+    EXPECT_EQ(strlogicalcmp("foo13", "foo13"), 0);
+
+    EXPECT_EQ(strlogicalcmp("foo13", "FOO13"), 0);
+
+    EXPECT_LT(strlogicalcmp("A", "b"), 0);
+    EXPECT_LT(strlogicalcmp("a", "B"), 0);
+    EXPECT_GT(strlogicalcmp("B", "a"), 0);
+    EXPECT_GT(strlogicalcmp("b", "A"), 0);
 }

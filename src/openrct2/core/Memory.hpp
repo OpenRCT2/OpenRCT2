@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,21 +23,21 @@ namespace Memory
 {
     template<typename T> static T* Allocate()
     {
-        T* result = (T*)malloc(sizeof(T));
+        T* result = static_cast<T*>(malloc(sizeof(T)));
         Guard::ArgumentNotNull(result, "Failed to allocate %zu bytes for %s", sizeof(T), typeid(T).name());
         return result;
     }
 
     template<typename T> static T* Allocate(size_t size)
     {
-        T* result = (T*)malloc(size);
+        T* result = static_cast<T*>(malloc(size));
         Guard::ArgumentNotNull(result, "Failed to allocate %zu bytes for %s", size, typeid(T).name());
         return result;
     }
 
     template<typename T> static T* AllocateArray(size_t count)
     {
-        T* result = (T*)malloc(count * sizeof(T));
+        T* result = static_cast<T*>(malloc(count * sizeof(T)));
         Guard::ArgumentNotNull(result, "Failed to allocate array of %zu * %s (%zu bytes)", count, typeid(T).name(), sizeof(T));
         return result;
     }
@@ -47,11 +47,11 @@ namespace Memory
         T* result;
         if (ptr == nullptr)
         {
-            result = (T*)malloc(size);
+            result = static_cast<T*>(malloc(size));
         }
         else
         {
-            result = (T*)realloc((void*)ptr, size);
+            result = static_cast<T*>(realloc(reinterpret_cast<void*>(ptr), size));
         }
         Guard::ArgumentNotNull(result, "Failed to reallocate %x (%s) to have %zu bytes", ptr, typeid(T).name(), size);
         return result;
@@ -62,11 +62,11 @@ namespace Memory
         T* result;
         if (ptr == nullptr)
         {
-            result = (T*)malloc(count * sizeof(T));
+            result = static_cast<T*>(malloc(count * sizeof(T)));
         }
         else
         {
-            result = (T*)realloc((void*)ptr, count * sizeof(T));
+            result = static_cast<T*>(realloc(reinterpret_cast<void*>(ptr), count * sizeof(T)));
         }
         Guard::ArgumentNotNull(
             result, "Failed to reallocate array at %x (%s) to have %zu entries", ptr, typeid(T).name(), count);

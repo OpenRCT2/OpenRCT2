@@ -1949,8 +1949,8 @@ STR_2728    :{UINT16}小时:{UINT16}分
 STR_2729    :{UINT16}小时:{UINT16}分
 STR_2730    :{UINT16}小时:{UINT16}分
 STR_2731    :{UINT16}小时:{UINT16}分
-STR_2732    :{COMMA16}ft
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}ft
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :第{POP16}{COMMA16}年{PUSH16}{PUSH16}{MONTH}
@@ -1986,7 +1986,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :查看窗口 #{COMMA16}
 STR_2780    :额外的查看窗口
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :变更快捷键
@@ -2539,19 +2539,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}第{COMMA16}年
 STR_5161    :日期格式:
 STR_5162    :日/月/年
 STR_5163    :月/日/年
-STR_5164    :Twitch频道名称
-STR_5165    :以关注者的用户名命名游客
-STR_5166    :{SMALLFONT}{BLACK}用Twitch频道的关注者来命名游客
-STR_5167    :跟踪'关注者'游客
-STR_5168    :{SMALLFONT}{BLACK}启用跟踪关注者用户名的游客信息
-STR_5169    :以Twitch聊天中的名字命名游客
-STR_5170    :{SMALLFONT}{BLACK}用Twitch聊天中的名字来命名游客
-STR_5171    :跟踪'聊天'游客
-STR_5172    :{SMALLFONT}{BLACK}启用跟踪参与聊天用户名的游客信息
-STR_5173    :将Twitch聊天的内容以新闻的方式推送
-STR_5174    :{SMALLFONT}{BLACK}将Twitch聊天中所有标'!news'的内容以通知的方式推送
-STR_5175    :请输入你的Twitch频道名称
-STR_5176    :允许Twitch与游戏集成
 STR_5177    :显示模式:
 STR_5178    :{SMALLFONT}{BLACK}显示财务秘籍
 STR_5179    :{SMALLFONT}{BLACK}显示游客秘籍
@@ -2646,7 +2633,6 @@ STR_5267    :{SMALLFONT}{BLACK}语言及单位
 STR_5268    :{SMALLFONT}{BLACK}音效
 STR_5269    :{SMALLFONT}{BLACK}控制及界面
 STR_5270    :{SMALLFONT}{BLACK}杂项
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}小型景观
 STR_5273    :{SMALLFONT}{BLACK}大型景观
 STR_5274    :{SMALLFONT}{BLACK}道路
@@ -2690,26 +2676,6 @@ STR_5311    :{SMALLFONT}{BLACK}调试工具
 STR_5312    :显示控制台
 STR_5313    :显示地图网格检查工具
 STR_5314    :地图网格检查工具
-STR_5315    :草地
-STR_5316    :沙地
-STR_5317    :泥地
-STR_5318    :石地
-STR_5319    :火星
-STR_5320    :棋盘
-STR_5321    :草丛
-STR_5322    :雪地
-STR_5323    :网格 (红)
-STR_5324    :网格 (黄)
-STR_5325    :网格 (蓝)
-STR_5326    :网格 (绿)
-STR_5327    :沙地 (较暗)
-STR_5328    :沙地 (较浅)
-STR_5329    :棋盘 (反转)
-STR_5330    :地下视图
-STR_5331    :石地
-STR_5332    :森林 (红)
-STR_5333    :森林 (黑)
-STR_5334    :雪地
 STR_5335    :设施入口
 STR_5336    :设施出口
 STR_5337    :乐园入口
@@ -3187,7 +3153,6 @@ STR_5848    :{SMALLFONT}{BLACK}创建并管理自定义主菜单动画
 STR_5849    :{SMALLFONT}{BLACK}自动放置新雇佣的员工
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}设置新建游乐设施的默认检查的时间间隔
-STR_5852    :{SMALLFONT}{BLACK}设置Twitch集成中使用的TwitchTV频道名
 STR_5853    :{SMALLFONT}{BLACK}开启/关闭音效
 STR_5854    :{SMALLFONT}{BLACK}开启/关闭游乐设施音乐
 STR_5855    :{SMALLFONT}{BLACK}设置全屏, 窗口或无边框窗口显示
@@ -3539,17 +3504,6 @@ STR_6200    :重置日期
 STR_6201    :{MONTH}
 STR_6202    :虚拟楼层类型：
 STR_6203    :{SMALLFONT}{BLACK}启用后, 当按住Ctrl或Shift键时将会绘制一层虚拟楼层以便轻松地垂直放置元素.
-STR_6204    :砖墙
-STR_6205    :钢铁
-STR_6206    :灰色粉饰灰泥
-STR_6207    :黄色粉饰灰泥
-STR_6208    :红色粉饰灰泥
-STR_6209    :紫色粉饰灰泥
-STR_6210    :绿色粉饰灰泥
-STR_6211    :棕色砂岩
-STR_6212    :灰色砂岩
-STR_6213    :摩天大楼A
-STR_6214    :摩天大楼B
 STR_6215    :建造
 STR_6216    :运营
 STR_6217    :游乐设施 / 轨道可用性
@@ -3587,9 +3541,6 @@ STR_6248    :{WINDOW_COLOUR_1}你是否要翻新 {STRINGID} 以获得 {CURRENCY}
 STR_6249    :{WINDOW_COLOUR_1}你是否要翻新 {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}你是否确定要完全拆除 {STRINGID} 以获得 {CURRENCY}?
 STR_6251    :游乐设施尚未清空
-STR_6252    :Twitch API 链接
-STR_6253    :{SMALLFONT}{BLACK}提供Twitch集成API链接. 用以启用Twitch集成.
-STR_6254    :Twitch集成API链接:
 STR_6255    :链接无效
 STR_6256    :渲染效果
 STR_6257    :明净的 (半透明)

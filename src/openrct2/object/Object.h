@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,12 +13,13 @@
 #include "ImageTable.h"
 #include "StringTable.h"
 
+#include <algorithm>
 #include <optional>
 #include <string_view>
 #include <vector>
 
 using ObjectEntryIndex = uint16_t;
-constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = 255;
+constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 
 // First 0xF of rct_object_entry->flags
 enum OBJECT_TYPE
@@ -96,19 +97,7 @@ struct rct_object_entry
         return std::string_view(name, std::size(name));
     }
 
-    void SetName(const char* value)
-    {
-        auto src = value;
-        for (size_t i = 0; i < sizeof(name); i++)
-        {
-            auto dc = ' ';
-            if (*src != '\0')
-            {
-                dc = *src++;
-            }
-            name[i] = dc;
-        }
-    }
+    void SetName(const std::string_view& value);
 
     uint8_t GetType() const
     {
@@ -145,16 +134,20 @@ struct rct_object_filters
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
-interface IObjectRepository;
-interface IStream;
+struct IObjectRepository;
+namespace OpenRCT2
+{
+    struct IStream;
+}
 struct ObjectRepositoryItem;
 struct rct_drawpixelinfo;
 struct json_t;
 
-interface IReadObjectContext
+struct IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
 
+    virtual std::string_view GetObjectIdentifier() abstract;
     virtual IObjectRepository& GetObjectRepository() abstract;
     virtual bool ShouldLoadImages() abstract;
     virtual std::vector<uint8_t> GetData(const std::string_view& path) abstract;
@@ -171,11 +164,13 @@ interface IReadObjectContext
 class Object
 {
 private:
-    char* _identifier;
+    std::string _identifier;
     rct_object_entry _objectEntry{};
     StringTable _stringTable;
     ImageTable _imageTable;
     std::vector<uint8_t> _sourceGames;
+    std::vector<std::string> _authors;
+    bool _isJsonObject{};
 
 protected:
     StringTable& GetStringTable()
@@ -197,12 +192,31 @@ protected:
 
 public:
     explicit Object(const rct_object_entry& entry);
-    virtual ~Object();
+    virtual ~Object() = default;
 
-    // Legacy data structures
-    const char* GetIdentifier() const
+    std::string_view GetIdentifier() const
     {
         return _identifier;
+    }
+    void SetIdentifier(const std::string_view& identifier)
+    {
+        _identifier = identifier;
+    }
+
+    void MarkAsJsonObject()
+    {
+        _isJsonObject = true;
+    }
+
+    bool IsJsonObject() const
+    {
+        return _isJsonObject;
+    };
+
+    // Legacy data structures
+    std::string_view GetLegacyIdentifier() const
+    {
+        return _objectEntry.GetName();
     }
     const rct_object_entry* GetObjectEntry() const
     {
@@ -213,7 +227,7 @@ public:
     virtual void ReadJson(IReadObjectContext* /*context*/, const json_t* /*root*/)
     {
     }
-    virtual void ReadLegacy(IReadObjectContext* context, IStream* stream);
+    virtual void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream);
     virtual void Load() abstract;
     virtual void Unload() abstract;
 
@@ -234,6 +248,9 @@ public:
     std::vector<uint8_t> GetSourceGames();
     void SetSourceGames(const std::vector<uint8_t>& sourceGames);
 
+    const std::vector<std::string>& GetAuthors() const;
+    void SetAuthors(const std::vector<std::string>&& authors);
+
     const ImageTable& GetImageTable() const
     {
         return _imageTable;
@@ -242,6 +259,11 @@ public:
     rct_object_entry GetScgWallsHeader();
     rct_object_entry GetScgPathXHeader();
     rct_object_entry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
+
+    uint32_t GetNumImages() const
+    {
+        return GetImageTable().GetCount();
+    }
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
 #    pragma GCC diagnostic pop
@@ -271,5 +293,5 @@ const rct_object_entry* object_list_find(rct_object_entry* entry);
 
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
 
-void* object_entry_get_chunk(int32_t objectType, size_t index);
-const rct_object_entry* object_entry_get_entry(int32_t objectType, size_t index);
+void* object_entry_get_chunk(int32_t objectType, ObjectEntryIndex index);
+const rct_object_entry* object_entry_get_entry(int32_t objectType, ObjectEntryIndex index);

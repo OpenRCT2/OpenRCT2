@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,7 @@
 /**
  * rct2: 0x0077084A
  */
-static void paint_circus_show_tent(
+static void paint_circus_tent(
     paint_session* session, ride_id_t rideIndex, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
@@ -30,18 +30,18 @@ static void paint_circus_show_tent(
     if (rideEntry == nullptr)
         return;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        session->CurrentlyDrawnItem = GET_VEHICLE(ride->vehicles[0]);
+        session->CurrentlyDrawnItem = vehicle;
     }
 
     uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
-    uint32_t imageId = rideEntry->vehicles[0].base_image_id;
+    uint32_t imageId = rideEntry->vehicles[0].base_image_id + direction;
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
         imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
-        imageId += direction;
     }
 
     sub_98197C(session, imageId | imageColourFlags, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3);
@@ -52,7 +52,7 @@ static void paint_circus_show_tent(
 /**
  * rct2: 0x0076FAD4
  */
-static void paint_circus_show(
+static void paint_circus(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
@@ -75,22 +75,22 @@ static void paint_circus_show(
     switch (trackSequence)
     {
         case 1:
-            paint_circus_show_tent(session, rideIndex, direction, 32, 32, height);
+            paint_circus_tent(session, rideIndex, direction, 32, 32, height);
             break;
         case 3:
-            paint_circus_show_tent(session, rideIndex, direction, 32, -32, height);
+            paint_circus_tent(session, rideIndex, direction, 32, -32, height);
             break;
         case 5:
-            paint_circus_show_tent(session, rideIndex, direction, 0, -32, height);
+            paint_circus_tent(session, rideIndex, direction, 0, -32, height);
             break;
         case 6:
-            paint_circus_show_tent(session, rideIndex, direction, -32, 32, height);
+            paint_circus_tent(session, rideIndex, direction, -32, 32, height);
             break;
         case 7:
-            paint_circus_show_tent(session, rideIndex, direction, -32, -32, height);
+            paint_circus_tent(session, rideIndex, direction, -32, -32, height);
             break;
         case 8:
-            paint_circus_show_tent(session, rideIndex, direction, -32, 0, height);
+            paint_circus_tent(session, rideIndex, direction, -32, 0, height);
             break;
     }
 
@@ -123,12 +123,12 @@ static void paint_circus_show(
 /**
  * rct2: 0x0076F8D4
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_circus(int32_t trackType, int32_t direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {
         return nullptr;
     }
 
-    return paint_circus_show;
+    return paint_circus;
 }

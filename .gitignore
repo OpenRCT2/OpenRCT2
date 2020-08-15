@@ -24,7 +24,7 @@ libversion
 
 # Downloaded or built data files
 data/g2.dat
-data/title
+data/sequence
 data/object
 
 #################

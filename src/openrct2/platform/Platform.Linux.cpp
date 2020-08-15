@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -81,7 +81,7 @@ namespace Platform
     std::string GetInstallPath()
     {
         // 1. Try command line argument
-        auto path = std::string(gCustomOpenrctDataPath);
+        auto path = std::string(gCustomOpenRCT2DataPath);
         if (!path.empty())
         {
             return Path::GetAbsolute(path);
@@ -150,9 +150,9 @@ namespace Platform
         return exePath;
     }
 
-    uintptr_t StrDecompToPrecomp(utf8* input)
+    utf8* StrDecompToPrecomp(utf8* input)
     {
-        return reinterpret_cast<uintptr_t>(input);
+        return input;
     }
 
     bool HandleSpecialCommandLineArgument(const char* argument)

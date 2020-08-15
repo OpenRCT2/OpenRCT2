@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../management/Finance.h"
-#include "../ride/RideGroupManager.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
@@ -74,7 +74,19 @@ public:
         _origin.direction &= 3;
     }
 
-    uint16_t GetActionFlags() const override
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_origin);
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("trackType", _trackType);
+        visitor.Visit("brakeSpeed", _brakeSpeed);
+        visitor.Visit("colour", _colour);
+        visitor.Visit("seatRotation", _seatRotation);
+        visitor.Visit("trackPlaceFlags", _trackPlaceFlags);
+        visitor.Visit("isFromTrackDesign", _fromTrackDesign);
+    }
+
+    uint16_t GetActionFlags() const override final
     {
         return GameAction::GetActionFlags();
     }
@@ -92,13 +104,13 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride for track placement, rideIndex = %d", (int32_t)_rideIndex);
+            log_warning("Invalid ride for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry == nullptr)
         {
-            log_warning("Invalid ride subtype for track placement, rideIndex = %d", (int32_t)_rideIndex);
+            log_warning("Invalid ride subtype for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
@@ -116,7 +128,7 @@ public:
 
         res->GroundFlags = 0;
 
-        uint32_t rideTypeFlags = RideProperties[ride->type].flags;
+        uint32_t rideTypeFlags = RideTypeDescriptors[ride->type].Flags;
 
         if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TRACK_ELEM_END_STATION)
         {
@@ -151,7 +163,7 @@ public:
             }
             // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
             if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED)
-                && !track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL_STEEP)
+                && !RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_LIFT_HILL_STEEP)
                 && !gCheatsEnableChainLiftOnAllTrack)
             {
                 if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_IS_STEEP_UP)
@@ -170,7 +182,7 @@ public:
             auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), 0 };
             auto tileCoords = CoordsXYZ{ _origin.x, _origin.y, _origin.z } + rotatedTrack;
 
-            if (!map_is_location_owned(tileCoords) && !gCheatsSandboxMode)
+            if (!LocationValid(tileCoords) || (!map_is_location_owned(tileCoords) && !gCheatsSandboxMode))
             {
                 return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
             }
@@ -183,18 +195,21 @@ public:
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
         const uint16_t* trackFlags = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatTrackFlags : TrackFlags;
-        if (trackFlags[_trackType] & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
+        if (!gCheatsAllowTrackPlaceInvalidHeights)
         {
-            if ((_origin.z & 0x0F) != 8)
+            if (trackFlags[_trackType] & TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT)
             {
-                return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CONSTRUCTION_ERR_UNKNOWN);
+                if ((_origin.z & 0x0F) != 8)
+                {
+                    return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CONSTRUCTION_ERR_UNKNOWN);
+                }
             }
-        }
-        else
-        {
-            if ((_origin.z & 0x0F) != 0)
+            else
             {
-                return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CONSTRUCTION_ERR_UNKNOWN);
+                if ((_origin.z & 0x0F) != 0)
+                {
+                    return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CONSTRUCTION_ERR_UNKNOWN);
+                }
             }
         }
 
@@ -215,13 +230,14 @@ public:
             int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
 
             int32_t clearanceZ = trackBlock->var_07;
-            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].clearance_height > 24)
+            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
+                && RideTypeDescriptors[ride->type].Heights.ClearanceHeight > 24)
             {
                 clearanceZ += 24;
             }
             else
             {
-                clearanceZ += RideData5[ride->type].clearance_height;
+                clearanceZ += RideTypeDescriptors[ride->type].Heights.ClearanceHeight;
             }
 
             clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
@@ -231,7 +247,8 @@ public:
                 return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_HIGH);
             }
 
-            uint8_t crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && _trackType == TRACK_ELEM_FLAT)
+            uint8_t crossingMode = (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
+                                    && _trackType == TRACK_ELEM_FLAT)
                 ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                 : CREATE_CROSSING_MODE_NONE;
             if (!map_can_construct_with_clear_at(
@@ -368,18 +385,14 @@ public:
                 {
                     uint16_t maxHeight;
 
-                    if (RideGroupManager::RideTypeIsIndependent(ride->type) && rideEntry->max_height != 0)
+                    if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+                        && rideEntry->max_height != 0)
                     {
                         maxHeight = rideEntry->max_height;
                     }
-                    else if (RideGroupManager::RideTypeHasRideGroups(ride->type))
-                    {
-                        const RideGroup* rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
-                        maxHeight = rideGroup->MaximumHeight;
-                    }
                     else
                     {
-                        maxHeight = RideData5[ride->type].max_height;
+                        maxHeight = RideTypeDescriptors[ride->type].Heights.MaxHeight;
                     }
 
                     ride_height /= COORDS_Z_PER_TINY_Z;
@@ -396,10 +409,10 @@ public:
                 supportHeight = (10 * COORDS_Z_STEP);
             }
 
-            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTrackCosts[ride->type].support_price) * 5;
+            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice) * 5;
         }
 
-        money32 price = RideTrackCosts[ride->type].track_price;
+        money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
         price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatRideTrackPricing[_trackType] : TrackPricing[_trackType];
 
         price >>= 16;
@@ -412,14 +425,14 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid ride for track placement, rideIndex = %d", (int32_t)_rideIndex);
+            log_warning("Invalid ride for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
         if (rideEntry == nullptr)
         {
-            log_warning("Invalid ride subtype for track placement, rideIndex = %d", (int32_t)_rideIndex);
+            log_warning("Invalid ride subtype for track placement, rideIndex = %d", static_cast<int32_t>(_rideIndex));
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
         }
 
@@ -431,7 +444,7 @@ public:
 
         res->GroundFlags = 0;
 
-        uint32_t rideTypeFlags = RideProperties[ride->type].flags;
+        uint32_t rideTypeFlags = RideTypeDescriptors[ride->type].Flags;
 
         const uint8_t(*wallEdges)[16];
         if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE)
@@ -456,19 +469,21 @@ public:
 
             int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
             int32_t clearanceZ = trackBlock->var_07;
-            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL && RideData5[ride->type].clearance_height > 24)
+            if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
+                && RideTypeDescriptors[ride->type].Heights.ClearanceHeight > 24)
             {
                 clearanceZ += 24;
             }
             else
             {
-                clearanceZ += RideData5[ride->type].clearance_height;
+                clearanceZ += RideTypeDescriptors[ride->type].Heights.ClearanceHeight;
             }
 
             clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
             const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
-            uint8_t crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && _trackType == TRACK_ELEM_FLAT)
+            uint8_t crossingMode = (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
+                                    && _trackType == TRACK_ELEM_FLAT)
                 ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                 : CREATE_CROSSING_MODE_NONE;
             if (!map_can_construct_with_clear_at(
@@ -522,7 +537,7 @@ public:
                 supportHeight = (10 * COORDS_Z_STEP);
             }
 
-            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTrackCosts[ride->type].support_price) * 5;
+            cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice) * 5;
 
             invalidate_test_results(ride);
             switch (_trackType)
@@ -618,7 +633,7 @@ public:
                     map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, tileElement->GetBaseZ() });
                     break;
             }
-            if (track_element_has_speed_setting(_trackType))
+            if (TrackTypeHasSpeedSetting(_trackType))
             {
                 tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
             }
@@ -692,7 +707,7 @@ public:
             map_invalidate_tile_full(mapLoc);
         }
 
-        money32 price = RideTrackCosts[ride->type].track_price;
+        money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
         price *= (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatRideTrackPricing[_trackType] : TrackPricing[_trackType];
 
         price >>= 16;

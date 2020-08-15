@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -50,8 +50,13 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        auto peep = GET_PEEP(_spriteId);
-        if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+
+        auto staff = TryGetEntity<Staff>(_spriteId);
+        if (staff == nullptr)
         {
             log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -62,16 +67,16 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        auto peep = GET_PEEP(_spriteId);
-        if (peep == nullptr || peep->sprite_identifier != SPRITE_IDENTIFIER_PEEP || peep->type != PEEP_TYPE_STAFF)
+        auto staff = TryGetEntity<Staff>(_spriteId);
+        if (staff == nullptr)
         {
             log_error("Invalid spriteId. spriteId = %u", _spriteId);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        int32_t patrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
+        int32_t patrolOffset = staff->StaffId * STAFF_PATROL_AREA_SIZE;
 
-        staff_toggle_patrol_area(peep->staff_id, _loc.x, _loc.y);
+        staff_toggle_patrol_area(staff->StaffId, _loc);
 
         bool isPatrolling = false;
         for (int32_t i = 0; i < 128; i++)
@@ -83,10 +88,10 @@ public:
             }
         }
 
-        gStaffModes[peep->staff_id] &= ~(1 << 1);
+        gStaffModes[staff->StaffId] &= ~(1 << 1);
         if (isPatrolling)
         {
-            gStaffModes[peep->staff_id] |= (1 << 1);
+            gStaffModes[staff->StaffId] |= (1 << 1);
         }
 
         for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)

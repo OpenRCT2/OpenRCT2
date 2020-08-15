@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -63,16 +63,16 @@ struct rct_s6_info
 };
 assert_struct_size(rct_s6_info, 0x198);
 
-enum SCENARIO_SOURCE
+enum class ScenarioSource : uint8_t
 {
-    SCENARIO_SOURCE_RCT1,
-    SCENARIO_SOURCE_RCT1_AA,
-    SCENARIO_SOURCE_RCT1_LL,
-    SCENARIO_SOURCE_RCT2,
-    SCENARIO_SOURCE_RCT2_WW,
-    SCENARIO_SOURCE_RCT2_TT,
-    SCENARIO_SOURCE_REAL,
-    SCENARIO_SOURCE_OTHER,
+    RCT1,
+    RCT1_AA,
+    RCT1_LL,
+    RCT2,
+    RCT2_WW,
+    RCT2_TT,
+    Real,
+    Other
 };
 
 struct rct_stex_entry
@@ -112,8 +112,8 @@ struct rct_s6_data
     // SC6[6]
     uint32_t next_free_tile_element_pointer_index;
     RCT2Sprite sprites[RCT2_MAX_SPRITES];
-    uint16_t sprite_lists_head[SPRITE_LIST_COUNT];
-    uint16_t sprite_lists_count[SPRITE_LIST_COUNT];
+    uint16_t sprite_lists_head[static_cast<uint8_t>(EntityListId::Count)];
+    uint16_t sprite_lists_count[static_cast<uint8_t>(EntityListId::Count)];
     rct_string_id park_name;
     uint8_t pad_013573D6[2];
     uint32_t park_name_args;
@@ -256,8 +256,8 @@ struct rct_s6_data
     uint32_t game_ticks_1;
     rct2_ride rides[RCT12_MAX_RIDES_IN_PARK];
     uint16_t saved_age;
-    uint16_t saved_view_x;
-    uint16_t saved_view_y;
+    int16_t saved_view_x;
+    int16_t saved_view_y;
     uint8_t saved_view_zoom;
     uint8_t saved_view_rotation;
     RCT12MapAnimation map_animations[RCT2_MAX_ANIMATED_OBJECTS];
@@ -344,7 +344,9 @@ enum
     OBJECTIVE_10_ROLLERCOASTERS_LENGTH,
     OBJECTIVE_FINISH_5_ROLLERCOASTERS,
     OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE,
-    OBJECTIVE_MONTHLY_FOOD_INCOME
+    OBJECTIVE_MONTHLY_FOOD_INCOME,
+
+    OBJECTIVE_COUNT
 };
 
 enum
@@ -365,6 +367,8 @@ enum
 
 #define AUTOSAVE_PAUSE 0
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
+
+static constexpr money32 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
@@ -418,5 +422,6 @@ void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char* name);
 void scenario_autosave_check();
+bool ObjectiveNeedsMoney(const uint8_t objective);
 
 #endif

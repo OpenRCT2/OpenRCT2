@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,12 +14,12 @@
 #include "../util/Util.h"
 #include "String.hpp"
 
-interface IStringReader
+struct IStringReader
 {
     virtual ~IStringReader() = default;
 
-    virtual bool TryPeek(codepoint_t * outCodepoint) abstract;
-    virtual bool TryRead(codepoint_t * outCodepoint) abstract;
+    virtual bool TryPeek(codepoint_t* outCodepoint) abstract;
+    virtual bool TryRead(codepoint_t* outCodepoint) abstract;
     virtual void Skip() abstract;
     virtual bool CanRead() const abstract;
 };

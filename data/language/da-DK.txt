@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -141,38 +141,38 @@ STR_0558    :Passagerer sidder parvis i sæder der roterer omkring enderne af tr
 STR_0559    :Stor temabygning med uhyggelige gange og skræmmende rum
 STR_0560    :Et sted for syge gæster at gå hen for hurtigere at få det bedre
 STR_0561    :Cirkus show inde i et stort telt
-STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
-STR_0565    :A simple wooden rutschebane capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
-STR_0566    :Individual rutschebane cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
-STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
-STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
-STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyor belt, accelerating down steep slopes to soak the riders with a giant splash
-STR_0573    :Powered helicopter shaped cars running on a steel track, controlled by the pedalling of the riders
-STR_0574    :Riders are held in special harnesses in a lying-down position, travelling through twisted track and inversions either on their backs or facing the ground
-STR_0575    :Powered trains hanging from a single rail transport people around the park
-STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
-STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
+STR_0562    :El-drevne vogne kører langs et flere-lags spor forbi uhyggeligt landskaber og specielle effekter
+STR_0563    :Siddende i komfortable vogne med forholdsvis simpel fastspænding, kan gæsterne nyde gigantiske fald og snoede spor samt masser af 'luft tid' over bakkerne
+STR_0564    :Kørende på træspor, denne forlystelse er hurtig, ru, støjende, og giver en 'ude af kontrol' tur med masser af 'luft tid'
+STR_0565    :En simpel trærutschebane er i stand til kun at bevæge sig på blide skråninger og sving, hvor bilerne kun holdes på sporet ved side friktion hjul og tyngdekraften
+STR_0566    :Individuelle rutschebanevogne suser rundt en trang zig-zag bane med skarpe hjørner og korte hurtige fald
+STR_0567    :Siddende i sæder suspenderet hver side af sporet, gæsterne er sat hoved-over-hæle, mens de styrter ned af stejle fald og kører gennem forskellige inversioner
+STR_0569    :placeret i særlige seler under sporet, gæsterne oplever følelsen af flyvning, imens de svinger gennem luften
+STR_0571    :Cirkulære vogne spinder rundt, imens de kører langs et zig-zag træspor
+STR_0572    :Både med stor kapacitet sejler langs en bred vandkanal, fremdrives på opad gående skråninger af et transportbånd, accelererer ned af stejle skråninger og gør gæsterne våde i et kæmpe vandplask
+STR_0573    :Motordrevne helikopterformede vogne, der kører på en stålbane, kontrolleret af gæster ved hjælp af pedaler
+STR_0574    :Gæster holdes i særlige seler i en liggende position, der rejser gennem snoet spor og inversioner, så de vender enten på ryggen eller med ansigtet mod jorden
+STR_0575    :Elektrisk tog hængende fra en enkelt jernbane skinne, der transporterer folk rundt i parken
+STR_0577    :Skinnevogne der kører på træspor, og drejer rundt på særlige vende sektioner
+STR_0578    :Vogne kører langs et spor omgivet af cirkulære bøjler, gennemkører stejle fald og 'heartline' drejninger
 STR_0579    :Et roligt spil mini golf
 STR_0580    :En gigantisk rutschebane der er i stand til fald og bakker på over 90 meter
 STR_0581    :En ring af sæder bliver trukket op i toppen af et højt tårn, imens den roterer roligt rundt, hvorefter af lave et fridt fald ned , og stopper roligt i bunden ved hjælp af magnetiske bremser
 STR_0582    :En kør-selv luftpudebåd
-STR_0583    :Building containing warped rooms and angled corridors to disorientate people walking through it
-STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
-STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
-STR_0586    :Boat shaped cars run on rutschebane track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
-STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
-STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
-STR_0589    :A large flying-carpet themed car which moves up and down cyclically on the ends of 4 arms
-STR_0590    :Riders ride in a submerged submarine through an underwater course
-STR_0591    :Raft-shaped boats gently meander around a river track
-STR_0593    :Rotating wheel with suspended passenger pods, which first starts spinning and is then tilted up by a supporting arm
-STR_0598    :Inverted rutschebane trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
-STR_0599    :A compact rutschebane with individual cars and smooth twisting drops
-STR_0600    :Powered mine trains career along a smooth and twisted track layout
-STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_0583    :Bygning med skæve rum og vinklede korridorer til at desorientere folk der går gennem det
+STR_0584    :Særlige cykler kører på et enkelt stålspor, fremdrives af gæsterne med pedalerne
+STR_0585    :Gæster sidder parvis i sæder suspenderet under sporet, imens de kører igennem loop og vrid med vilde inversioner
+STR_0586    :Bådformede vogne kører på rutschebane igennem snoede kurver og stejle fald, der sprøjter ned sektioner af vand og blide flodsektioner
+STR_0587    :Efter en spændende luft-dreven igangsætning, suser vognene op i ad et lodret spor, over toppen, og lodret ned på den anden side, og tilbage til stationen.
+STR_0588    :Individuelle vogne kører under en zig-zag'ende spor med hårnåle sving og stejle fald.
+STR_0589    :Et stor flyvende tæppe tema vogn, der bevæger sig op og ned cyklisk på enderne af 4 arme
+STR_0590    :Gæsterne sejler i en neddykket ubåd gennem en undervandsbane
+STR_0591    :Gummibåde der bugter sig igennem et flod spor
+STR_0593    :Roterende hjul med suspenderede passagerkapsler, som først begynder at dreje og derefter vippes op af en bærende arm
+STR_0598    :Omvendt rutschebane vogne accelerer ud af stationen til en lodret opad gående spir af spor, derefter kører tilbage gennem stationen for at køre baglæns op en anden lodret spir af spor
+STR_0599    :En kompakt rutschebane med individuelle vogne og rolige snoede fald
+STR_0600    :Selvkørende togvogne kører igennem en sen snoet bane af spor
+STR_0602    :Rutsjebanetog accelereres ud af stationen af lineære induktionsmotorer for at suse gennem snoede inversioner
 STR_0767    :Gæst {INT32}
 STR_0768    :Handymand {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -1184,7 +1184,6 @@ STR_1807    :Kontrolfejl
 STR_1808    :{WINDOW_COLOUR_2}Sidste nedbrud: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nuværende nedbrud: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Bærer:
-
 STR_1811    :Kan ikke bygge det her...
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Forskellige objekter
@@ -1945,8 +1944,8 @@ STR_2728    :{UINT16}time:{UINT16}min
 STR_2729    :{UINT16}time:{UINT16}min
 STR_2730    :{UINT16}timer:{UINT16}min
 STR_2731    :{UINT16}timer:{UINT16}min
-STR_2732    :{COMMA16}fod
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}fod
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, år {COMMA16}
@@ -1982,7 +1981,7 @@ STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Visning #{COMMA16}
 STR_2780    :Ekstra visning
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Skift tastatur genvej
@@ -1990,7 +1989,7 @@ STR_2785    :{WINDOW_COLOUR_2}tryk på den nye genvej for:{NEWLINE}“{STRINGID}
 STR_2786    :{SMALLFONT}{BLACK}Klik på genvejsbeskrivelsen og vælg en ny tast
 STR_2787    :{WINDOW_COLOUR_2}Park værdi: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Tillykke !{NEWLINE}{BLACK}Du har nået dit mål med en virksomheds værdi på {CURRENCY} !
-STR_2789    :{WINDOW_COLOUR_2}Du har ikke opnået dit mål !
+STR_2789    :{WINDOW_COLOUR_2}Du har ikke opnået dit mål!
 STR_2790    :Angiv dit navn til scenarie listen
 STR_2791    :Angiv Navn
 STR_2792    :Angiv venligst dit navn til scenarie listen:
@@ -2000,7 +1999,7 @@ STR_2795    :Sorter
 STR_2796    :{SMALLFONT}{BLACK}Sorter ordnen af forlystelseslisten ved hjælp af den viste informationstype
 STR_2797    :Flyt visning når markøren rør ved kanten af skærmen
 STR_2798    :{SMALLFONT}{BLACK}Scroll oversigten når musen rører kanten
-STR_2799    :{SMALLFONT}{BLACK}Få vist eller ændre kontrol tast tildelinger
+STR_2799    :{SMALLFONT}{BLACK}Få vist eller rediger genvejstaster
 STR_2800    :{WINDOW_COLOUR_2}Total entré: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}indkomst fra entré: {BLACK}{CURRENCY2DP}
 STR_2802    :Kort
@@ -2440,8 +2439,8 @@ STR_3329    :Park indgang endnu ikke bygget
 STR_3330    :Parken skal eje noget land
 STR_3331    :Stien fra park indgang til kanten af kortet er enten ikke komplet eller for kompleks - Stien skal være et felt bred, med så få samlinger og sving som muligt
 STR_3332    :Park indgang vender forkert, eller har ikke nogen stiforbindelse til kanten af kortet
-STR_3333    :Eksporter plug-in objekter med gemte spil
-STR_3334    :{SMALLFONT}{BLACK}Vælg om ekstra plug-in objektdata kræves (add-in data der ikke følger med hovedspillet) i gemte spil eller scenarie filer, og tillader dem blive indlæst af en person, der ikke har de ekstra objektdata
+STR_3333    :Eksporter brugerdefinerede objekter med gemte spil
+STR_3334    :{SMALLFONT}{BLACK}Vælg om brugerdefinerede objektdata kræves (add-in data der ikke følger med hovedspillet) i gemte spil eller scenarie filer, og tillader dem blive indlæst af en person, der ikke har de ekstra objektdata
 STR_3335    :Banedesigner - Vælg forlystelsestyper & vogne
 STR_3336    :Banedesign Manager - Vælg forlystelsestyper
 STR_3338    :{BLACK}Specialdesignet layout
@@ -2545,19 +2544,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, År {POP16}{COMMA16}
 STR_5161    :Dato Format:
 STR_5162    :Dag/Måned/År
 STR_5163    :Måned/Dag/År
-STR_5164    :Twitch Kanal navn
-STR_5165    :Navngiv gæster efter følgere på Twitch
-STR_5166    :{SMALLFONT}{BLACK}Navngiv gæster efter dem der er {NEWLINE}følgere på din Twitch konto
-STR_5167    :Overvåg gæster der er følgere på Twitch
-STR_5168    :{SMALLFONT}{BLACK}Aktiverer overvågnings information for gæster der er navngivet efter følgere på Twitch
-STR_5169    :Navngiv gæster efter chat-brugere på Twitch
-STR_5170    :{SMALLFONT}{BLACK}Giv gæster et navn fra personer der chatter på Twitch
-STR_5171    :Overvåg gæster der er i Twitch chat
-STR_5172    :{SMALLFONT}{BLACK}Aktiverer overvågnings information for gæster der er navngivet efter deltager i chatten på Twitch
-STR_5173    :Træk Twitch chat som nyheder
-STR_5174    :{SMALLFONT}{BLACK}Brug Twitch chat meddelelser efterfulgt af !nyhed for meddelelser i spillet
-STR_5175    :Angiv dit navn på din Twitch kanal
-STR_5176    :Aktiver Twitch integration
 STR_5177    :Skærmtilstand:
 STR_5178    :{SMALLFONT}{BLACK}Vis finansiel snyd
 STR_5179    :{SMALLFONT}{BLACK}Vis gæste snyd
@@ -2652,7 +2638,6 @@ STR_5267    :{SMALLFONT}{BLACK}Kultur og enheder
 STR_5268    :{SMALLFONT}{BLACK}Lyd
 STR_5269    :{SMALLFONT}{BLACK}Kontrol og udseende
 STR_5270    :{SMALLFONT}{BLACK}Diverse
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Lille Sceneri
 STR_5273    :{SMALLFONT}{BLACK}Stort Sceneri
 STR_5274    :{SMALLFONT}{BLACK}Gangstier
@@ -2696,26 +2681,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug værktøj
 STR_5312    :Vis konsol
 STR_5313    :Vis feltinspektion
 STR_5314    :Feltinspektion
-STR_5315    :Græs
-STR_5316    :Sand
-STR_5317    :Jord
-STR_5318    :Sten
-STR_5319    :Marsmand
-STR_5320    :Skakbræt
-STR_5321    :Græsklumper
-STR_5322    :Is
-STR_5323    :Gitter (rød)
-STR_5324    :Gitter (gul)
-STR_5325    :Gitter (blå)
-STR_5326    :Gitter (grøn)
-STR_5327    :Sand (mørk)
-STR_5328    :Sand (lys)
-STR_5329    :Skakbræt (inverteret)
-STR_5330    :Undergrunds visning
-STR_5331    :Sten
-STR_5332    :Træ (rød)
-STR_5333    :Træ (sort)
-STR_5334    :Is
 STR_5335    :Forlystelse indgang
 STR_5336    :Forlystelse Udgang
 STR_5337    :Park indgang
@@ -2934,7 +2899,7 @@ STR_5554    :{SMALLFONT}{BLACK}Aktiver bjergværktøj
 STR_5555    :Vis vogne fra andre spor type
 STR_5556    :{SMALLFONT}{BLACK}Smid spiller ud
 STR_5557    :Forbliv forbundet efter afbrudt forbindelse (Multiplayer)
-STR_5558    :En genstart er påkrævet før indstillingerne træder i kraft
+STR_5558    :Denne indstilling træder først i kraft, når du har genstartet OpenRCT2
 STR_5559    :10 min. inspektioner
 STR_5560    :{SMALLFONT}{BLACK}Sæt inspektions interval til 'hvert 10. minut' på alle forlystelser
 STR_5561    :Kan ikke indlæse sprog
@@ -3167,103 +3132,102 @@ STR_5822    :{SMALLFONT}{BLACK}Skift imellem dag og nat.{NEWLINE}Et døgn tager 
 STR_5823    :{SMALLFONT}{BLACK}Vis bannere med store bogstaver (RCT1 opførsel)
 STR_5824    :{SMALLFONT}{BLACK}Fjern lyn effekter{NEWLINE}under tordenvejr
 STR_5825    :{SMALLFONT}{BLACK}Hold musepilen inde i vinduet
-STR_5826    :{SMALLFONT}{BLACK}Invert right mouse dragging of the viewport
-STR_5827    :{SMALLFONT}{BLACK}Sets the colour scheme used for the GUI
-STR_5828    :{SMALLFONT}{BLACK}Changes what measurement format is used for distances, speed, etc.
-STR_5829    :{SMALLFONT}{BLACK}Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
+STR_5826    :{SMALLFONT}{BLACK}Inverter bevægelse ved træk med højre museknap i hovedvinduet
+STR_5827    :{SMALLFONT}{BLACK}Indstiller det farveskema, der bruges til GUI
+STR_5828    :{SMALLFONT}{BLACK}Ændrer hvilket måleformat der bruges til afstande, hastighed osv.
+STR_5829    :{SMALLFONT}{BLACK}Ændrer, hvilket valutaformat der bruges. Rent visuelt er det kune en anslået valutakurs
 STR_5830    :{SMALLFONT}{BLACK}Skifter sproget der bliver brugt
-STR_5831    :{SMALLFONT}{BLACK}Changes what format the{NEWLINE}temperature is displayed in
-STR_5832    :{SMALLFONT}{BLACK}Vis height as generic units instead of measurement format set under “Distance and Speed”
-STR_5833    :{SMALLFONT}{BLACK}Changes what date format is used
-STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
-STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
-STR_5836    :{SMALLFONT}{BLACK}Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder, or set the path to RCT1 in the Diverse tab.
-STR_5837    :{SMALLFONT}{BLACK}Create and manage custom UI themes
-STR_5838    :{SMALLFONT}{BLACK}Vis a separate button for the finance window in the toolbar
-STR_5839    :{SMALLFONT}{BLACK}Vis a separate button for the research and development window in the toolbar
-STR_5840    :{SMALLFONT}{BLACK}Vis a separate button for the cheats window in the toolbar
-STR_5841    :{SMALLFONT}{BLACK}Vis a separate button for the recent news window in the toolbar
-STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
-STR_5843    :{SMALLFONT}{BLACK}Enables progressive unlocking of scenarios (RCT1 behaviour)
-STR_5844    :{SMALLFONT}{BLACK}Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
-STR_5845    :{SMALLFONT}{BLACK}Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
-STR_5846    :{SMALLFONT}{BLACK}Set how often OpenRCT2 automatically saves
-STR_5847    :{SMALLFONT}{BLACK}Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
-STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
-STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
+STR_5831    :{SMALLFONT}{BLACK}Ændrer hvilket måleformat der bruges {NEWLINE}til visning af temperatur
+STR_5832    :{SMALLFONT}{BLACK}Vis højde som generiske enheder i stedet for måleformat, der er under “Afstand og hastighed”
+STR_5833    :{SMALLFONT}{BLACK}Ændrer det datoformat, der bruges
+STR_5834    :{SMALLFONT}{BLACK}Vælg, hvilken lydenhed OpenRCT2 skal bruge
+STR_5835    :{SMALLFONT}{BLACK}Slå lyden fra for spillet, hvis vinduet mister fokus
+STR_5836    :{SMALLFONT}{BLACK}Vælg musik, der skal bruges i hovedmenuen. {NEWLINE} Hvis du vælger RCT1-tema, kræver det, at du kopierer 'data/css17.dat' fra din RCT1-spilmappe til 'data/css50.dat' i din RCT2-mappe eller angiver stien til RCT1 under fanen Diverse.
+STR_5837    :{SMALLFONT}{BLACK}Oprette og administrere brugerdefinerede brugergrænsefladetemaer
+STR_5838    :{SMALLFONT}{BLACK}Vis en separat knap til finansvinduet på værktøjslinjen
+STR_5839    :{SMALLFONT}{BLACK}Vis en separat knap til forsknings- og udviklingsvinduet på værktøjslinjen
+STR_5840    :{SMALLFONT}{BLACK}Vis en separat knap til snydevinduet på værktøjslinjen
+STR_5841    :{SMALLFONT}{BLACK}Vis en separat knap til nyhedsvinduet på værktøjslinjen
+STR_5842    :{SMALLFONT}{BLACK}Sorter scenarier i faner, baseret på deres sværhedsgrad (RCT2 metode), eller deres spilkilde (RCT1 metode)
+STR_5843    :{SMALLFONT}{BLACK}Aktiver progressiv oplåsning af scenarier (RCT1 metode)
+STR_5844    :{SMALLFONT}{BLACK}Forbliv forbundet til multiplayer serveren{NEWLINE}selv hvis der opstår synkroniseringsfejl
+STR_5845    :{SMALLFONT}{BLACK}Tilføj en knap til{NEWLINE}fejlfinding i værktøjslinjen.{NEWLINE}Aktiver tastatur genveje til udviklingskonsollen
+STR_5846    :{SMALLFONT}{BLACK}Sæt hvor tit OpenRCT2 gemmer automatisk
+STR_5847    :{SMALLFONT}{BLACK}Vælg park sekvens for titelskærmen.{NEWLINE}Titel sekvens fra RCT1/2 kræver importerede scenarier for at fungere
+STR_5848    :{SMALLFONT}{BLACK}Opret og administrer brugerdefinerede titel sekvenser
+STR_5849    :{SMALLFONT}{BLACK}Placer automatisk{NEWLINE}nyansatte medarbejdere
 STR_5850    :<not used anymore>
-STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built forlystelser
-STR_5852    :{SMALLFONT}{BLACK}Set the name of the TwitchTV channel that will be used for Twitch integration
-STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
-STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off
-STR_5855    :{SMALLFONT}{BLACK}Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
-STR_5856    :{SMALLFONT}{BLACK}Set game resolution when in fullscreen mode
-STR_5857    :{SMALLFONT}{BLACK}Game options
-STR_5858    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
-STR_5859    :{SMALLFONT}{BLACK}Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
-STR_5860    :Toggle original/decompiled track drawing
-STR_5861    :Key verification failure.
-STR_5862    :Block unknown players.
-STR_5863    :{SMALLFONT}{BLACK}Only allow players with known keys to join.
-STR_5864    :This server only allows whitelisted players to connect.
-STR_5865    :Log chat history
-STR_5866    :{SMALLFONT}{BLACK}Logs all chat history to files in your user directory.
-STR_5867    :{WINDOW_COLOUR_2}Provider Name: {BLACK}{STRING}
-STR_5868    :{WINDOW_COLOUR_2}Provider E-mail: {BLACK}{STRING}
-STR_5869    :{WINDOW_COLOUR_2}Provider Website: {BLACK}{STRING}
+STR_5851    :{SMALLFONT}{BLACK}Sæt standard vedligeholdelses interval{NEWLINE}på nybyggede forlystelser
+STR_5853    :{SMALLFONT}{BLACK}Slå lydeffekter til/fra
+STR_5854    :{SMALLFONT}{BLACK}Slå forlystelses musik til/fra
+STR_5855    :{SMALLFONT}{BLACK}Sæt almindelig fuldskærm, kantløs fuldskærm{NEWLINE}eller vindue tilstand
+STR_5856    :{SMALLFONT}{BLACK}Sæt spillets opløsning i fuldskærmstilstand
+STR_5857    :{SMALLFONT}{BLACK}Spil indstillinger
+STR_5858    :{SMALLFONT}{BLACK}Brug GPU til visning i stedet for CPU. Forbedrer kompatibiliteten med skærm-capture software. Kan forringe ydeevnen lidt.
+STR_5859    :{SMALLFONT}{BLACK}Aktiver "frame tweening" for et visuelt{NEWLINE}mere flydende spil. Ved deaktivering,{NEWLINE}vil spillet køre med 40 billeder pr. sekund, fast.
+STR_5860    :Skift original/decompileret spor tegning
+STR_5861    :Kunne ikke verificere nøglen.
+STR_5862    :Blokér ukendte spillere.
+STR_5863    :{SMALLFONT}{BLACK}Tillad at kun spillere med kendte nøgler kan deltage.
+STR_5864    :Denne server tillader kun hvidlistede spillere at oprette forbindelse.
+STR_5865    :Gem chat historik
+STR_5866    :{SMALLFONT}{BLACK}Gem al chat historik i filer i brugerbiblioteket.
+STR_5867    :{WINDOW_COLOUR_2}Udbyder navn: {BLACK}{STRING}
+STR_5868    :{WINDOW_COLOUR_2}Udbyder E-mail: {BLACK}{STRING}
+STR_5869    :{WINDOW_COLOUR_2}Udbyder Webside: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Vis server information
-STR_5871    :Plants don't age
-STR_5872    :{SMALLFONT}{BLACK}Disable plant ageing such that they don't wilt.
-STR_5873    :Allow chain lifts on all track pieces
-STR_5874    :{SMALLFONT}{BLACK}Allows any piece of track to be made into a chain lift
-STR_5875    :Drawing Engine:
-STR_5876    :{SMALLFONT}{BLACK}The engine to use for drawing the game.
+STR_5871    :Planter ældes ikke
+STR_5872    :{SMALLFONT}{BLACK}Slå planters ældning fra, så de ikke visner.
+STR_5873    :Tillad kædeløft på alle sportyper
+STR_5874    :{SMALLFONT}{BLACK}Tillander at alle typer af spor, kan anvendes som kædeløft spor.
+STR_5875    :Visningsmotor:
+STR_5876    :{SMALLFONT}{BLACK}Motoren der bliver brugt til visning i spillet.
 STR_5877    :Software
-STR_5878    :Software (hardware display)
-STR_5879    :OpenGL (experimental)
-STR_5880    :Selected only
-STR_5881    :Non-selected only
-STR_5882    :Custom currency
-STR_5883    :Custom currency configuration
-STR_5884    :{WINDOW_COLOUR_2}Exchange rate: 
-STR_5885    :{WINDOW_COLOUR_2}is equivalent to {COMMA32} GBP (£)
-STR_5886    :{WINDOW_COLOUR_2}Currency symbol:
-STR_5887    :Prefix
-STR_5888    :Suffix
-STR_5889    :Custom currency symbol
-STR_5890    :Enter the currency symbol to display
-STR_5891    :Default
-STR_5892    :{SMALLFONT}{BLACK}Go to the default directory
-STR_5893    :Exchange Rate
-STR_5894    :Enter the exchange rate
-STR_5895    :Save Track
-STR_5896    :Track save failed!
-STR_5898    :{BLACK}Can't load the track, the file might be {newline}corrupted, broken or missing!
-STR_5899    :Toggle paint debug window
-STR_5900    :Use original drawing code
-STR_5901    :Vis segment heights
-STR_5902    :Vis bounding boxes
-STR_5903    :Vis paint debug window
-STR_5904    :Reset dato
-STR_5905    :{SMALLFONT}{BLACK}A map generation tool that automatically creates a custom landscape
-STR_5906    :Zoom to cursor position
-STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will centre around the cursor, as opposed to the screen centre.
-STR_5908    :Allow arbitrary ride type changes
-STR_5909    :{SMALLFONT}{BLACK}Allows changing ride type freely. May cause crashes.
+STR_5878    :Software (hardware visning)
+STR_5879    :OpenGL (eksperimentel)
+STR_5880    :Kun valgte
+STR_5881    :Kun ikke valgte
+STR_5882    :Brugerdefineret valuta
+STR_5883    :Konfiguration af brugerdefineret valuta
+STR_5884    :{WINDOW_COLOUR_2}Vækselrate: 
+STR_5885    :{WINDOW_COLOUR_2}som svarer til {COMMA32} GBP (£)
+STR_5886    :{WINDOW_COLOUR_2}Valuta symbol:
+STR_5887    :Præfiks
+STR_5888    :Suffiks
+STR_5889    :Brugerdefineret valuta symbol
+STR_5890    :Angiv hvilket valuta symbol der skal vises
+STR_5891    :Standard
+STR_5892    :{SMALLFONT}{BLACK}Gå til standard biblioteket
+STR_5893    :Valutakurs
+STR_5894    :Angiv valutakursen
+STR_5895    :Gem bane
+STR_5896    :Kunne ikke gemme banen!
+STR_5898    :{BLACK}Kan ikke hente bane, filen kan være{newline}beskadiget eller kan ikke findes!
+STR_5899    :Skift tegnings fejlsøgnings vindue.
+STR_5900    :Brug original tegnings kode
+STR_5901    :Vis segment højder
+STR_5902    :Vis omgivende kasser
+STR_5903    :Vis tegnings fejlsøgnings vindue
+STR_5904    :Nulstil dato
+STR_5905    :{SMALLFONT}{BLACK}Et kortgenereringsværktøj, der automatisk opretter et brugerdefineret landskab
+STR_5906    :Zoom til markør position
+STR_5907    :{SMALLFONT}{BLACK}Når funktionen er aktiveret, centrerer zoomet rundt om markøren i modsætning til skærmcentret.
+STR_5908    :Tillad vilkårlige ændringer af turtype
+STR_5909    :{SMALLFONT}{BLACK}Giver mulighed for at ændre ride type frit. Kan forårsage ulykker.
 STR_5910    :Anvend
-STR_5911    :See-Through Paths
-STR_5912    :See-through paths toggle
+STR_5911    :Gennemsigtige stier
+STR_5912    :Skift gennemsigtige stier
 STR_5913    :Chat
-STR_5914    :Ukendt ride
+STR_5914    :Ukendt forlystelse
 STR_5915    :Spiller
 STR_5916    :{COMMA16} spiller
 STR_5917    :{COMMA16} spillere
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Gengiv vejreffekter
-STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colours will be rendered during storms.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per train
+STR_5921    :{SMALLFONT}{BLACK}Hvis aktiveret, regn og dystre farver vil blive tegnet under storme.
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maks {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maks {COMMA16} {STRINGID} per vogn
 STR_5924    :Overflade detaljer
 STR_5925    :Sti detaljer
 STR_5926    :Bane detaljer
@@ -3274,47 +3238,47 @@ STR_5930    :Stort sceneri detaljer
 STR_5931    :Banner detaljer
 STR_5932    :Fejl element detaljer
 STR_5933    :Egenskaber
-STR_5934    :{WINDOW_COLOUR_2}Terrain texture: {BLACK}{STRINGID}
-STR_5935    :{WINDOW_COLOUR_2}Terrain edge: {BLACK}{STRINGID}
-STR_5936    :{WINDOW_COLOUR_2}Land ownership: {BLACK}{STRINGID}
+STR_5934    :{WINDOW_COLOUR_2}Terræn tekstur: {BLACK}{STRINGID}
+STR_5935    :{WINDOW_COLOUR_2}Terræn kant: {BLACK}{STRINGID}
+STR_5936    :{WINDOW_COLOUR_2}Ejendomsret til jord: {BLACK}{STRINGID}
 STR_5937    :Ikke ejet, og ikke til salg
-STR_5938    :{WINDOW_COLOUR_2}Water level: {BLACK}{COMMA16}
+STR_5938    :{WINDOW_COLOUR_2}Vandniveau: {BLACK}{COMMA16}
 STR_5939    :Fjern park hegn
 STR_5940    :Gendan park hegn
 STR_5941    :{WINDOW_COLOUR_2}Basis højde:
 STR_5942    :{WINDOW_COLOUR_2}Sti navn: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Additions: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Additions: {BLACK}None
-STR_5945    :{WINDOW_COLOUR_2}Connected edges:
-STR_5946    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
-STR_5947    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
-STR_5948    :{WINDOW_COLOUR_2}Ride name: {BLACK}{STRINGID}
+STR_5943    :{WINDOW_COLOUR_2}Tilføjelser: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Tilføjelser: {BLACK}Ingen
+STR_5945    :{WINDOW_COLOUR_2}Forbundende kanter:
+STR_5946    :{WINDOW_COLOUR_2}Forlystelses type: {BLACK}{STRINGID}
+STR_5947    :{WINDOW_COLOUR_2}Forlystelses ID: {BLACK}{COMMA16}
+STR_5948    :{WINDOW_COLOUR_2}Forlystelses navn: {BLACK}{STRINGID}
 STR_5949    :{WINDOW_COLOUR_2}Kæde hejs
-STR_5950    :{WINDOW_COLOUR_2}Apply changes to entire track piece
-STR_5951    :{WINDOW_COLOUR_2}Track piece ID: {BLACK}{COMMA16}
-STR_5952    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
-STR_5953    :{SMALLFONT}{BLACK}Sort the map elements on the current tile based on their base height.
-STR_5954    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
-STR_5955    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
+STR_5950    :{WINDOW_COLOUR_2}Anvend på hele sporstykket
+STR_5951    :{WINDOW_COLOUR_2}Sporstykke ID: {BLACK}{COMMA16}
+STR_5952    :{WINDOW_COLOUR_2}Sekvens nummer: {BLACK}{COMMA16}
+STR_5953    :{SMALLFONT}{BLACK}Sorter kortelementerne på det aktuelle felt baseret på deres basishøjde.
+STR_5954    :{WINDOW_COLOUR_2}alder på sceneri: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Kvadrant placering: {BLACK}{STRINGID}
 STR_5956    :Sydvest
 STR_5957    :Nordvest
 STR_5958    :Nordøst
 STR_5959    :Sydøst
-STR_5960    :{WINDOW_COLOUR_2}Quadrant placement:
-STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
-STR_5962    :{WINDOW_COLOUR_2}Collision detection:
-STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
+STR_5960    :{WINDOW_COLOUR_2}Kvadrant placering:
+STR_5961    :{WINDOW_COLOUR_2}Indgangsindeks: {BLACK}{COMMA16}
+STR_5962    :{WINDOW_COLOUR_2}Kollisionsdetektering:
+STR_5963    :{WINDOW_COLOUR_2}Forhøjede hjørner:
 STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Entrance type: {BLACK}{STRINGID}
-STR_5966    :{WINDOW_COLOUR_2}Park indgang part: {BLACK}{STRINGID}
+STR_5965    :{WINDOW_COLOUR_2}Indgangs type: {BLACK}{STRINGID}
+STR_5966    :{WINDOW_COLOUR_2}Park indgangs part: {BLACK}{STRINGID}
 STR_5967    :Midten
 STR_5968    :Venstre
 STR_5969    :Højre
-STR_5970    :{WINDOW_COLOUR_2}Indgang ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Udgang ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Forlystelse ID: {BLACK}{COMMA16}
-STR_5973    :Clamp to next
-STR_5974    :{SMALLFONT}{BLACK}Changes the base- and clearance height so that it's at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
+STR_5970    :{WINDOW_COLOUR_2}Indgangs ID: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}Udgangs ID: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}Forlystelses ID: {BLACK}{COMMA16}
+STR_5973    :Fastlås til næste
+STR_5974    :{SMALLFONT}{BLACK}Ændrer basis- og frigangshøjden, så den er på samme som det næste element på den aktuelle felt. Dette gør det nemmere at bygge videre på dette felt.
 STR_5975    :Bakke:
 STR_5976    :Flad
 STR_5977    :Højre side op
@@ -3322,180 +3286,180 @@ STR_5978    :Venstre side op
 STR_5979    :{WINDOW_COLOUR_2}Væg type: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}Banner tekst: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}Ikke et banner
-STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Large scenery piece ID: {BLACK}{COMMA16}
+STR_5982    :{WINDOW_COLOUR_2}Stort sceneri type: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}Stort sceneri enhed ID: {BLACK}{COMMA16}
 STR_5984    :Blokerede stier:
 STR_5985    :Ny mappe
 STR_5986    :Angiv navnet på den nye mappe.
 STR_5987    :Kan ikke oprette mappe
-STR_5988    :{SMALLFONT}{BLACK}No remaining land rights for sale
-STR_5989    :{SMALLFONT}{BLACK}No remaining construction rights for sale
-STR_5990    :{SMALLFONT}{BLACK}No remaining land rights or construction rights for sale
+STR_5988    :{SMALLFONT}{BLACK}Ingen resterende jordrettigheder til salg
+STR_5989    :{SMALLFONT}{BLACK}Ingen resterende byggerettigheder til salg
+STR_5990    :{SMALLFONT}{BLACK}Ingen resterende jordrettigheder eller byggerettigheder til salg
 STR_5991    :Kan ikke indsætte element...
-STR_5992    :The map elements limit has been reached
-STR_5993    :{SMALLFONT}{BLACK}Copy selected element
-STR_5994    :{SMALLFONT}{BLACK}Paste copied element
+STR_5992    :Grænsen for kortelementer er nået
+STR_5993    :{SMALLFONT}{BLACK}Kopier valgte element
+STR_5994    :{SMALLFONT}{BLACK}Indsæt kopieret element
 STR_5995    :Booster
 STR_5996    :Booster hastighed
-STR_5997    :Add/set money
-STR_5998    :Add money
-STR_5999    :Set money
+STR_5997    :Tilføj/sæt penge
+STR_5998    :Tilføj penge
+STR_5999    :Sæt penge
 STR_6000    :Angiv ny værdi
-STR_6001    :Enable lighting effects (experimental)
-STR_6002    :{SMALLFONT}{BLACK}Lamps and forlystelser will be lit up at night.{NEWLINE}Requires rendering engine to be set to hardware display.
-STR_6003    :Cut-away View
-STR_6004    :Cut-away View
-STR_6005    :Enable cut-away view
-STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or below the cut height (vertical clipping) and in the selected area (horizontal clipping).
-STR_6007    :Cut height
-STR_6008    :{SMALLFONT}{BLACK}Click to toggle raw value<->value in measurement units
-STR_6009    :{SMALLFONT}{BLACK}Select cut height
+STR_6001    :Aktiver lyneffekter (Eksperimentel)
+STR_6002    :{SMALLFONT}{BLACK}Lamper og forlystelser lyser op om natten.{NEWLINE}Kræver at grafik motor er sat til hardware visning.
+STR_6003    :Beskåret visning
+STR_6004    :Beskåret visning
+STR_6005    :Aktiver beskåret visning
+STR_6006    :{SMALLFONT}{BLACK}Beskåret visning, viser kun kort elementer på, eller under beskærings højden (vertikal beskæring) og i det valgte område (horisontal beskæring).
+STR_6007    :Beskærings højde
+STR_6008    :{SMALLFONT}{BLACK}Klik for at vælge rå værdi<->værdi i indstillet måleenhed
+STR_6009    :{SMALLFONT}{BLACK}Vælg beskærings højde
 STR_6010    :{COMMA2DP32}m
-STR_6011    :{COMMA1DP16}ft
+STR_6011    :{COMMA1DP16}fod
 STR_6012    :{COMMA1DP16}
-STR_6013    :{SMALLFONT}{BLACK}Guests will only pay the ticket to enter the park and services.{NEWLINE}Ride entry is free.
-STR_6014    :{SMALLFONT}{BLACK}Guests will only pay indgang tickets for forlystelser and services.{NEWLINE}They won't pay anything to enter the park.
-STR_6015    :Sloped
-STR_6016    :Modify Tile
-STR_6017    :Please slow down
-STR_6018    :Ride construction - Turn left
-STR_6019    :Ride construction - Turn right
-STR_6020    :Ride construction - Use default track
-STR_6021    :Ride construction - Slope down
-STR_6022    :Ride construction - Slope up
-STR_6023    :Ride construction - Toggle chain lift
-STR_6024    :Ride construction - Bank left
-STR_6025    :Ride construction - Bank right
-STR_6026    :Ride construction - Previous track
-STR_6027    :Ride construction - Next track
-STR_6028    :Ride construction - Build current
-STR_6029    :Ride construction - Demolish current
-STR_6030    :{SMALLFONT}{BLACK}Scenery picker. Click any scenery on the map to select the same piece for construction.
+STR_6013    :{SMALLFONT}{BLACK}Gæsterne betaler kun billetten for at komme ind i parken, og for tjenester. {NEWLINE} Adgang til forlystelser er gratis.
+STR_6014    :{SMALLFONT}{BLACK}Gæsterne betaler kun billetter til forlystelser og tjenester. {NEWLINE} De betaler ikke noget for at komme ind i parken.
+STR_6015    :Skrå
+STR_6016    :Modificer felt
+STR_6017    :Sæt venligst farten ned
+STR_6018    :Forlystelse konstruktion - Venstresving
+STR_6019    :Forlystelse konstruktion - Højresving
+STR_6020    :Forlystelse konstruktion - Use default track
+STR_6021    :Forlystelse konstruktion - Bakke ned
+STR_6022    :Forlystelse konstruktion - Bakke op
+STR_6023    :Forlystelse konstruktion - Skift kædeløft
+STR_6024    :Forlystelse konstruktion - Hældning venstre
+STR_6025    :Forlystelse konstruktion - Hældning højre
+STR_6026    :Forlystelse konstruktion - Foregående spor
+STR_6027    :Forlystelse konstruktion - Næste spor
+STR_6028    :Forlystelse konstruktion - Byg nuværenden
+STR_6029    :Forlystelse konstruktion - Fjern nuværende
+STR_6030    :{SMALLFONT}{BLACK}Sceneri vælger. Klik på et sceneri på kortet for at vælge det samme stykke til byggeri.
 STR_6031    :Server Beskrivelse:
 STR_6032    :Server Velkomst:
 STR_6033    :Sti til RCT1 installation:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Vælg venligst din RCT1 filmappe
 STR_6036    :{SMALLFONT}{BLACK}Ryd
-STR_6037    :Vælg venligst en gyldigt RCT1 filmappe
-STR_6038    :{SMALLFONT}{BLACK}If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
-STR_6039    :{SMALLFONT}{BLACK}Quick demolish ride
-STR_6040    :Edit Scenario Options
+STR_6037    :Den valgte folder indeholder ikke en gyldig, RollerCoaster Tycoon 1 installation.
+STR_6038    :{SMALLFONT}{BLACK}Hvis du har RCT1 installeret, skal du indstille denne indstilling til spillets mappe for at indlæse scenarier, musik osv.
+STR_6039    :{SMALLFONT}{BLACK}Hurtig rydning af forlystelse
+STR_6040    :Rediger scenarie egenskaber
 STR_6041    :{BLACK}Ingen mekanikere er ansat!
 STR_6042    :Hent højde kort
 STR_6043    :Vælg højde kort
 STR_6044    :Glat højde kort
 STR_6045    :Styrke
 STR_6046    :Normaliser højde kort
-STR_6047    :Smooth tiles
-STR_6048    :Height map error
+STR_6047    :Glatte felter
+STR_6048    :Højdekort fejl
 STR_6049    :Fejl ved indlæsning af PNG
 STR_6050    :Fejl ved indlæsning af bitmap
-STR_6051    :The width and height need to match
-STR_6052    :The heightmap is too big, and will be cut off
-STR_6053    :The heightmap cannot be normalised
-STR_6054    :Only 24-bit bitmaps are supported
-STR_6055    :OpenRCT2 Heightmap File
-STR_6056    :{SMALLFONT}{BLACK}Mute
-STR_6057    :{SMALLFONT}{BLACK}Vis a separate button for the Mute Option in the toolbar
-STR_6058    :Mute
+STR_6051    :Bredden og højden skal matche
+STR_6052    :Højdekortet er for stort, og vil blive beskåret
+STR_6053    :Højdekortet kan ikke normaliseres
+STR_6054    :kun 24-bit bitmaps er supporteret
+STR_6055    :OpenRCT2 Højdekort fil
+STR_6056    :{SMALLFONT}{BLACK}Lydløs
+STR_6057    :{SMALLFONT}{BLACK}Vis en seperat knap for lydløs tilstand i værktøjslinjen
+STR_6058    :Lydløs
 STR_6059    :»
-STR_6060    :Vis guest purchases as animation
-STR_6061    :{SMALLFONT}{BLACK}Vis animated money effect{NEWLINE}when guests make purchases.
+STR_6060    :Vis gæste køb som en animation
+STR_6061    :{SMALLFONT}{BLACK}Vis animeret penge effekt,{NEWLINE}når gæster bruger penge.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
-STR_6064    :Own all land
-STR_6065    :Log user actions
-STR_6066    :{SMALLFONT}{BLACK}Logs all user actions to files in your user directory.
-STR_6067    :Server started.
-STR_6068    :Server shutdown.
-STR_6069    :{STRING} was kicked from the server by {STRING}.
-STR_6070    :{STRING} was set to gruppe '{STRING}' by {STRING}.
-STR_6071    :{STRING} created new player gruppe '{STRING}'.
-STR_6072    :{STRING} deleted player gruppe '{String}'.
-STR_6073    :{STRING} edited permissions for player gruppe '{String}'.
-STR_6074    :{STRING} changed player gruppe name from '{String}' to '{String}'.
-STR_6075    :{STRING} changed the default player gruppe to '{String}'.
-STR_6076    :{STRING} used/toggled cheat '{STRING}'.
-STR_6077    :Add Money
-STR_6078    :{STRING} created ride '{STRING}'.
-STR_6079    :{STRING} demolished ride '{STRING}'.
-STR_6080    :{STRING} changed the appearance of ride '{STRING}'.
-STR_6081    :{STRING} changed the status of ride '{STRING}' to closed.
-STR_6082    :{STRING} changed the status of ride '{STRING}' to open.
-STR_6083    :{STRING} changed the status of ride '{STRING}' to testing.
-STR_6084    :{STRING} changed the vehicle settings of ride '{STRING}'.
-STR_6085    :{STRING} changed the ride settings of ride '{STRING}'.
-STR_6086    :{STRING} renamed the ride '{STRING}' to '{STRING}'.
-STR_6087    :{STRING} changed the price of ride '{STRING}' to {STRING}
-STR_6088    :{STRING} changed the secondary price of ride '{STRING}' to {STRING}
-STR_6089    :{STRING} renamed the park from '{STRING}' to '{STRING}'.
-STR_6090    :{STRING} opened the park.
-STR_6091    :{STRING} closed the park.
-STR_6092    :{STRING} changed the park indgang fee to {STRING}
-STR_6093    :{STRING} placed new scenery.
-STR_6094    :{STRING} removed scenery.
-STR_6095    :{STRING} edited scenery.
-STR_6096    :{STRING} set sign name to '{STRING}'.
-STR_6097    :{STRING} placed a track of ride '{STRING}'.
-STR_6098    :{STRING} removed a track of ride.
-STR_6099    :You connected to the server.
-STR_6100    :You disconnected from the server.
-STR_6101    :Rides don't decrease in value over tid
-STR_6102    :{SMALLFONT}{BLACK}The value of a ride won't decrease over tid, so guests will not suddenly think that a ride is too expensive.
-STR_6103    :{SMALLFONT}{BLACK}This option is disabled during network play.
-STR_6104    :Corkscrew Roller Coaster
+STR_6064    :Ejer al land
+STR_6065    :Log brugeraktivitet
+STR_6066    :{SMALLFONT}{BLACK}Logfør alle brugerhandlinger til filer i din brugermappe.
+STR_6067    :Server startet.
+STR_6068    :Server lukker ned.
+STR_6069    :{STRING} blev smidt ud af serveren, af {STRING}.
+STR_6070    :{STRING} blev sat til gruppen '{STRING}' af {STRING}.
+STR_6071    :{STRING} har oprettet spillergruppen, '{STRING}'.
+STR_6072    :{STRING} har slettet spillergruppen '{String}'.
+STR_6073    :{STRING} har redigeret rettigheder i spillergruppen '{String}'.
+STR_6074    :{STRING} har ændret navnet på spillergruppen '{String}' til '{String}'.
+STR_6075    :{STRING} har ændret standard spillergruppen til '{String}'.
+STR_6076    :{STRING} har brugt eller ændret snydefunktionen '{STRING}'.
+STR_6077    :Tilføj Penge
+STR_6078    :{STRING} har oprettet forlystelsen '{STRING}'.
+STR_6079    :{STRING} har fjernet forlystelsen '{STRING}'.
+STR_6080    :{STRING} har ændret udsenet på forlystelsen '{STRING}'.
+STR_6081    :{STRING} har ændret status på forlystelsen '{STRING}' til lukket.
+STR_6082    :{STRING} har ændret status på forlystelsen '{STRING}' til åben.
+STR_6083    :{STRING} har ændret status på forlystelsen '{STRING}' til tester.
+STR_6084    :{STRING} har ændret vognindstillinger i forlystelsen '{STRING}'.
+STR_6085    :{STRING} har ændret forlystelses indstillinger i forlystelsen '{STRING}'.
+STR_6086    :{STRING} har omdøbt forlystelsen '{STRING}' til '{STRING}'.
+STR_6087    :{STRING} har ændret entreprisen for forlystelsen '{STRING}' til {STRING}
+STR_6088    :{STRING} har ændret den sekundære pris for forlystelsen '{STRING}' til {STRING}
+STR_6089    :{STRING} har omdøbt parken '{STRING}' til '{STRING}'.
+STR_6090    :{STRING} har åbnet parken.
+STR_6091    :{STRING} har lukket parken.
+STR_6092    :{STRING} har ændret park adgangsprisen til {STRING}
+STR_6093    :{STRING} har placeret nyt sceneri.
+STR_6094    :{STRING} har fjernet sceneri.
+STR_6095    :{STRING} har redigeret sceneri.
+STR_6096    :{STRING} har ændret navnet på skiltet '{STRING}'.
+STR_6097    :{STRING} har placeret et spor på forlystelsen '{STRING}'.
+STR_6098    :{STRING} har fjernet et spor på forlystelsen.
+STR_6099    :Du forbandt til serveren.
+STR_6100    :Du afbrød forbindelsen til serveren.
+STR_6101    :Forlystelser falder ikke i værdi, over tid
+STR_6102    :{SMALLFONT}{BLACK}Værdien af forlystelser vil ikke falde over tid over tid, Så gæsterne ikke vil vurdere forlystelsen, som spild af penge.
+STR_6103    :{SMALLFONT}{BLACK}Denne funktion er deaktiveret ved netværksspil.
+STR_6104    :Proptrækker rutschebane
 STR_6105    :Hypercoaster
 STR_6106    :Car Ride
 STR_6107    :Monster Trucks
-STR_6108    :Steel Twister
+STR_6108    :Stål Twister
 STR_6109    :Hyper-Twister
-STR_6110    :Junior Roller Coaster
-STR_6111    :Classic Mini Roller Coaster
-STR_6112    :A compact steel-tracked rutschebane where the train travels through corkscrews and loops
-STR_6113    :A tall non-inverting rutschebane with large drops, high speed, and comfortable trains with only lap bar restraints
-STR_6114    :Riders travel slowly in powered vehicles along a track-based route
-STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
-STR_6116    :Wide rutschebane trains glide along smooth steel track, travelling through a variety of inversions
-STR_6117    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_6118    :A gentle rutschebane for people who haven't yet got the courage to face the larger forlystelser
-STR_6119    :A cheap and easy to build rutschebane, but with a limited height
-STR_6120    :{BABYBLUE}New vehicle now available for {STRINGID}:{NEWLINE}{STRINGID}
-STR_6121    :{SMALLFONT}{BLACK}Extends the park's land rights all the way to the edges of the map
-STR_6122    :There are not enough rutschebaner in this scenario!
-STR_6123    :Error loading objects for park
-STR_6124    :Object name
-STR_6125    :Object type
+STR_6110    :Junior rutchebane
+STR_6111    :Klassisk mini rutchebane
+STR_6112    :En kompakt stålsporet rutschebane, hvor toget kører gennem snoninger og loops
+STR_6113    :En høj ikke-inverterende rutschebane med store fald, høj hastighed og komfortable vogne med simpel fastspænding
+STR_6114    :Passagerer kører langsomt i el-drevne køretøjer langs en sporbaseret rute
+STR_6115    :Kæmpe Eldrevne firhjulstrækkere , der kan klatre op ad stejle skråninger
+STR_6116    :Brede rutschebane vogne kører langs en glat stålspor, igennem en række forskellige inversioner
+STR_6117    :Siddende i komfortable vogne med forholdsvis simpel fastspænding, kan gæsterne nyde gigantiske fald og snoede spor samt masser af 'luft tid' over bakkerne
+STR_6118    :En rolig rutschebane for folk der endnu ikke har modet til at prøve de større rutschebaner
+STR_6119    :En billig og let at bygge rutchebane, men med begrænset højde
+STR_6120    :{BABYBLUE}Nyt køretøj er klar til {STRINGID}:{NEWLINE}{STRINGID}
+STR_6121    :{SMALLFONT}{BLACK}Udvider parkens jordrettigheder hele vejen ud til kanten af kortet
+STR_6122    :Der er ikke nok rutschebaner i dette scenarie!
+STR_6123    :Fejl ved hentning af objekter til parken
+STR_6124    :Objekt navn
+STR_6125    :Objekt type
 STR_6126    :Ukendt type
-STR_6127    :File: {STRING}
-STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
+STR_6127    :Fil: {STRING}
+STR_6128    :Filen kunne ikke indlæses, da nogle af de objekter, der refereres til i den, mangler eller er beskadigede. En liste over disse objekter er angivet nedenfor.
 STR_6129    :Kopier
 STR_6130    :Kopier alt
-STR_6131    :Object source
-STR_6132    :Ignore research status
-STR_6133    :{SMALLFONT}{BLACK}Access forlystelser and scenery that have not yet been invented
-STR_6134    :Clear Scenery
-STR_6135    :Client sent invalid request
-STR_6136    :Server sent invalid request
-STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
-STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in “contributors.md”. For more information, visit http://github.com/OpenRCT2/OpenRCT2
-STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
-STR_6140    :Changelog...
-STR_6141    :RCT1 Bottom Toolbar
-STR_6142    :{WINDOW_COLOUR_2}Track name: {BLACK}{STRING}
-STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
-STR_6144    :Show dirty visuals
-STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
-STR_6146    :Enable all drawable track pieces
+STR_6131    :Objektkilde
+STR_6132    :Ignorer forskningsstatus
+STR_6133    :{SMALLFONT}{BLACK}Adgang til forlystelser og sceneri, der endnu ikke er opfundet
+STR_6134    :Ryd sceneri
+STR_6135    :Klienten sendte en ugyldig anmodning
+STR_6136    :Serveren sendte en ugyldig anmodning
+STR_6137    :OpenRCT2, en gratis,  open source klon af Roller Coaster Tycoon 2.
+STR_6138    :OpenRCT2 er et samarbejde imellem mange forfattere, en komplet liste kan findes i “contributors.md”. Du kan finde flere oplysninger på http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :Alle produkt- og firmanavne tilhører deres respektive indehavere. Brug af dem indebærer ikke nogen tilknytning til eller godkendelse af dem.
+STR_6140    :Ændringslog...
+STR_6141    :RCT1 bund værktøjslinje
+STR_6142    :{WINDOW_COLOUR_2}Spor navn: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Forlystelses type: {BLACK}{STRINGID}
+STR_6144    :Vis problematiske visualiseringer
+STR_6145    :{SMALLFONT}{BLACK}Sæt hastigheds begrænsninger på boosters
+STR_6146    :Aktiver alle sporstykker, der kan vises
 STR_6147    :{SMALLFONT}{BLACK}Aktiverer alle sporstykker, som forlystelses typen er i stand til i konstruktions vinduet, uanset om køretøjet understøtter dem.
 STR_6148    :Forbinder til master server...
-STR_6149    :Kamn ikke forbinde til master server
+STR_6149    :Kan ikke forbinde til master server
 STR_6150    :Ugyldigt svar fra master server (ingen JSON nummer)
-STR_6151    :Master server failed to return servers
+STR_6151    :Master server kan ikke hente servere
 STR_6152    :Ugyldigt svar fra master server (ingen JSON array)
 STR_6153    :Betal ved indgang / Betal per tur
 STR_6154    :Af sikkerhedsmæssige årsager anbefales det ikke at køre OpenRCT2 med forhøjede tilladelser.
-STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en, eller konfigurer fra kommando linje.
+STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en, eller konfigurer fra kommando linjen.
 STR_6156    :Navn er reserveret
 STR_6157    :Konsol
 STR_6158    :Kan ikke hente denne fil...{NEWLINE}ikke kompatibel RCTC version: {COMMA16}
@@ -3505,7 +3469,7 @@ STR_6161    :Skift gitterlinjer Visning til/fra
 STR_6162    :Snurrende Vild Mus
 STR_6163    :Muse formede biler suser gennem skarpe kurver og korte fald, imens de snurrer lidt rundt for at desorientere gæsterne
 STR_6164    :{WHITE}❌
-STR_6165    :Brug vertikal synkronisering
+STR_6165    :Brug vertikal synk.
 STR_6166    :{SMALLFONT}{BLACK}Synkroniserer hvert billede, som vises, til skærmens opdateringshastighed, hvilket forhindrer, udrivninger i grafikken.
 STR_6167    :{SMALLFONT}{BLACK}Avanceret
 STR_6168    :Titel Sekvens
@@ -3544,20 +3508,9 @@ STR_6200    :Nulstil dato
 STR_6201    :{MONTH}
 STR_6202    :Virtuel gulv stil:
 STR_6203    :{SMALLFONT}{BLACK}Når aktiveret, et virtuel gulv vil blive vistnår du holder Ctrl eller Shift nede, for at lette placering af elementer.
-STR_6204    :Mursten
-STR_6205    :Jern
-STR_6206    :Grå stuk
-STR_6207    :Gul stuk
-STR_6208    :Rød stuk
-STR_6209    :Purple stuk
-STR_6210    :Grøn stuk
-STR_6211    :Brun sandsten
-STR_6212    :Grå sandsten
-STR_6213    :Skyskraber A
-STR_6214    :Skyskraber B
 STR_6215    :Konstruktion
 STR_6216    :Operation
-STR_6217    :Ride / track availability
+STR_6217    :Forlystelse / bane tilgængelighed
 STR_6218    :OpenRCT2 Official
 STR_6219    :Fremhæv sti problemer
 STR_6220    :Gør brugbar
@@ -3567,13 +3520,13 @@ STR_6223    :Skal være uden for parkens afgrænsning!
 STR_6224    :{STRING} Placerede et gæste indgangs punkt.
 STR_6225    :Ikke understøttet med OpenGL rendering
 STR_6226    :Aktiver tidlig scenarie færdiggørelse
-STR_6227    :{SMALLFONT}{BLACK}Udløser scenarie færdiggørelse, nåe alle scenarie mål er nået før tiden løber ud.
+STR_6227    :{SMALLFONT}{BLACK}Udløser scenarie færdiggørelse, når alle scenarie mål er nået før tiden løber ud.
 STR_6228    :Scenarie Indstillinger
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Frossen
-STR_6233    :Cut-away synsfelt
+STR_6233    :Beskåret synsfelt
 STR_6234    :Fremhæv sti problemer
 STR_6235    :Server Information
 STR_6236    :Spillere
@@ -3592,9 +3545,6 @@ STR_6248    :{WINDOW_COLOUR_1}Vil du renovere {STRINGID} for {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Vil du renovere {STRINGID}?STR_6249    :{WINDOW_COLOUR_1}Do you want to renovere {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Er du sikker på at du vil destruere {STRINGID} og modtage {CURRENCY}?
 STR_6251    :Forlystelse er ikke tom endnu
-STR_6252    :Twitch API URL
-STR_6253    :{SMALLFONT}{BLACK}Angiv URL til Twitch integrations API. Påkrævet for at aktivere Twitch integration.
-STR_6254    :URL til Twitch integrations API:
 STR_6255    :URL er ikke gyldig
 STR_6256    :Renderings effekter
 STR_6257    :Uklar (halvgennemsigtig)
@@ -3625,7 +3575,7 @@ STR_6281    :{SMALLFONT}{BLACK}Vis en separat knap, for chat vinduet i værktøj
 STR_6282    :Chat
 STR_6283    :Chat er ikke tilgængelig på nuværende tidspunkt. Er du forbundet til en server?
 STR_6284    :Netværk
-STR_6285    :Netværk Information
+STR_6285    :Netværksinformation
 STR_6286    :Modtag
 STR_6287    :Send
 STR_6288    :Total modtaget
@@ -3689,7 +3639,7 @@ STR_6345    :Felt Undersøger: Forøg element højde
 STR_6346    :Felt Undersøger: Reducer element højde
 STR_6347    :Sti tilføjelse kan ikke placeres på jernbaneoverskæring!
 STR_6348    :Fjern jernbaneoverskæring først!
-STR_6349    :Tilfældig titelsekvens
+STR_6349    :Tilfældig titel sekvens
 STR_6350    :Spredning
 STR_6351    :Sceneri sprednings værktøj
 STR_6352    :Tæthed
@@ -3704,6 +3654,21 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Aktiver lyseffekter på forlystelser (eksperimentel)
 STR_6362    :{SMALLFONT}{BLACK}Hvis aktiv, vognene for spor-forlystelser vil lyse op om natten.
 STR_6363    :Kopierede tekst til udklipsholder
+STR_6364    :{RED}{COMMA16} person døde i forlystelsen {STRINGID}
+STR_6365    :Forlystelse tilskadekommende
+STR_6366    :Fastlåste eller blokerede køretøjer
+STR_6367    :{WINDOW_COLOUR_2}Animations billede:
+STR_6368    :Af kompatibilitetshensyn anbefales det ikke at køre OpenRCT2 med Wine. OpenRCT2 har indbygget understøttelse af macOS, Linux, FreeBSD og OpenBSD.
+STR_6369    :Tillad bygning af spor i ugyldige højder
+STR_6370    :{SMALLFONT}{BLACK}Gør det muligt at placere sporstykker i ethvert højdeniveau
+STR_6371    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men filen “csg1i.dat” mangler. Det er nødvendigt at kopiere denne fil fra RollerCoaster Tycoon 1 CD'en, til “Data” folderen under RollerCoaster Tycoon 1 installationen på din harddisk.
+STR_6372    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men denne version er ikke korrekt. OpenRCT2 har brug for, Loopy Landscapes eller RCT Deluxe installationen for at kunne bruge RollerCoaster Tycoon 1 aktiver.
+STR_6373    :Slå rydningskontrol til/fra
+STR_6374    :R
+STR_6375    :Ukendt forlystelse
+STR_6376    :{WINDOW_COLOUR_2}Vogn:{NEWLINE}{BLACK}{STRINGID} til {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} til {STRINGID}
+STR_6378    :Henter objektliste: {INT32} / {INT32}
 
 #############
 # Scenarios #
@@ -3959,7 +3924,7 @@ STR_DTLS    :Forvandel dette forladte stenbrud, til et sted til at tiltrække gy
 <Coaster Crazy>
 STR_SCNR    :Coaster Crazy
 STR_PARK    :Coaster Crazy
-STR_DTLS    :YDu har begrænsede midler, men ubegrænset tid til at vende dette bjergområde til en stor rutschebane forlystelsespark
+STR_DTLS    :Du har begrænsede midler, men ubegrænset tid til at vende dette bjergområde til en stor rutschebane forlystelsespark
 
 <Urban Park>
 STR_SCNR    :Urban Park
@@ -3975,112 +3940,112 @@ STR_DTLS    :En stor have park skal forvandles til en blomstrende forlystelsespa
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
 STR_PARK    :Iceberg Islands
-STR_DTLS    :A collection of icebergs make a cold setting for this ambitious theme park
+STR_DTLS    :En samling af isbjerge udgør en kold ramme for denne ambitiøse forlystelsespark
 
 <Volcania>
 STR_SCNR    :Volcania
 STR_PARK    :Volcania
-STR_DTLS    :A dormant volcano is the setting of this coaster-building challenge
+STR_DTLS    :En sovende vulkan er hovedtemaet af denne coaster-bygning udfordring
 
 <Arid Heights>
 STR_SCNR    :Arid Heights
 STR_PARK    :Arid Heights
-STR_DTLS    :Free of any financial limits, your challenge is to develop this desert park while keeping the guests happy
+STR_DTLS    :Fri for eventuelle finansielle grænser, din udfordring er at udvikle denne ørken park og samtidig holde gæsterne glade
 
 <Razor Rocks>
 STR_SCNR    :Razor Rocks
 STR_PARK    :Razor Rocks
-STR_DTLS    :Your task is to build a massive coaster-filled park in amongst Razor Rocks
+STR_DTLS    :Din opgave er at bygge en massiv coaster-fyldt park i blandt Razor Rocks
 
 <Crater Lake>
 STR_SCNR    :Crater Lake
 STR_PARK    :Crater Lake
-STR_DTLS    :A large lake in an ancient crater is the setting for this park
+STR_DTLS    :En stor sø i et gammelt krater er hovedtemaet denne park
 
 <Vertigo Views>
 STR_SCNR    :Vertigo Views
 STR_PARK    :Vertigo Views
-STR_DTLS    :This large park already has an excellent hyper-coaster, but your task is to massively increase its profit
+STR_DTLS    :Denne store park har allerede en fremragende hyper-coaster, men din opgave er at øge fortjenesten massivt
 
 <Paradise Pier 2>
 STR_SCNR    :Paradise Pier 2
 STR_PARK    :Paradise Pier 2
-STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
+STR_DTLS    :Paradise Pier har udvidet sit netværk af gangbroer ud over havet, og din opgave er at udvide parken, for at udnytte den ekstra plads
 
 <Dragon's Cove>
 STR_SCNR    :Dragon's Cove
 STR_PARK    :Dragon's Cove
-STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
+STR_DTLS    :Denne bugt ved havet udgør rammen om denne coaster-bygning udfordring
 
 <Good Knight Park>
 STR_SCNR    :Good Knight Park
 STR_PARK    :Good Knight Park
-STR_DTLS    :A castle with a pair of rutschebaner needs developing into a larger theme park
+STR_DTLS    :Et slot med et par rutschebaner har behov udvikle sig til en større forlystelsespark
 
 <Wacky Warren>
 STR_SCNR    :Wacky Warren
 STR_PARK    :Wacky Warren
-STR_DTLS    :A park which has much of its footpaths and coasters underground
+STR_DTLS    :En park, der har mange af sine stier og rutchebaner under jorden
 
 <Grand Glacier>
 STR_SCNR    :Grand Glacier
 STR_PARK    :Grand Glacier
-STR_DTLS    :A glacier-filled valley is yours to develop into a theme park
+STR_DTLS    :En gletscherfyldt dal er din, til at udvikle sig til en forlystelsespark
 
 <Crazy Craters>
 STR_SCNR    :Crazy Craters
 STR_PARK    :Crazy Craters
-STR_DTLS    :In a far-off world where money is not needed, you must build an entertainment centre to keep the people happy
+STR_DTLS    :I en fjern verden, hvor der ikke er brug for penge, skal du bygge et underholdningscenter for at holde folk glade
 
 <Dusty Desert>
 STR_SCNR    :Dusty Desert
 STR_PARK    :Dusty Desert
-STR_DTLS    :Five coasters require completion in this desert park
+STR_DTLS    :Fem rutchebaner skal laves færdig, i denne ørkenpark
 
 <Woodworm Park>
 STR_SCNR    :Woodworm Park
 STR_PARK    :Woodworm Park
-STR_DTLS    :This historical park is only allowed to build older-styled forlystelser
+STR_DTLS    :I denne historiske park er kun tilladt at bygge gammeldags forlystelser
 
 <Icarus Park>
 STR_SCNR    :Icarus Park
 STR_PARK    :Icarus Park
-STR_DTLS    :Develop this alien park to maximise its profit
+STR_DTLS    :Udvikel denne rumvæsen park til at maksimere fortjenesten
 
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
 STR_PARK    :Sunny Swamps
-STR_DTLS    :This well-themed amusement park already has several forlystelser, but has plenty of space for expansion
+STR_DTLS    :Denne velusmykket forlystelsespark har allerede adskillige forlystelser, men der er masser af plads til udvidelse
 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
 STR_PARK    :Frightmare Hills
-STR_DTLS    :A scary park with a giant centrepiece coaster
+STR_DTLS    :En skræmmende park, med en gigantisk rutchebane i centrum
 
 <Thunder Rocks>
 STR_SCNR    :Thunder Rocks
 STR_PARK    :Thunder Rocks
-STR_DTLS    :Two large hunks of rock stick out of the sand, upon which the beginnings of a theme park are constructed
+STR_DTLS    :To store klipper stikker frem fra sandet, hvorpå der er påbegyndt en forlystelsespark
 
 <Octagon Park>
 STR_SCNR    :Octagon Park
 STR_PARK    :Octagon Park
-STR_DTLS    :In this large park you must design and build ten large coasters
+STR_DTLS    :I denne store park skal du designe og bygge ti store rutchebaner
 
 <Pleasure Island>
 STR_SCNR    :Pleasure Island
 STR_PARK    :Pleasure Island
-STR_DTLS    :A long thin island makes a challenging setting to build a selection of coasters
+STR_DTLS    :En lang tynd ø uggør en udfordrende ramme til at konstruere et udvalg af rutchebaner
 
 <Icicle Worlds>
 STR_SCNR    :Icicle Worlds
 STR_PARK    :Icicle Worlds
-STR_DTLS    :An icy landscape needs turning into a thriving theme park
+STR_DTLS    :Et iskoldt landskab, skal blive til en blomstrende forlystelsespark
 
 <Southern Sands>
 STR_SCNR    :Southern Sands
 STR_PARK    :Southern Sands
-STR_DTLS    :A desert park with some cleverly designed coasters is yours to expand
+STR_DTLS    :En ørkenpark med nogle smart designede rutchebaner, er klar til at du udvikler den
 
 <Tiny Towers>
 STR_SCNR    :Tiny Towers

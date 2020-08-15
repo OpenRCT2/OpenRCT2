@@ -1940,8 +1940,8 @@ STR_2728    :{UINT16}hora:{UINT16}min
 STR_2729    :{UINT16}hora:{UINT16}mins
 STR_2730    :{UINT16}horas:{UINT16}min
 STR_2731    :{UINT16}horas:{UINT16}mins
-STR_2732    :{COMMA16}pés
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}pés
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Ano {COMMA16}
@@ -1977,7 +1977,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Janela de Exibição #{COMMA16}
 STR_2780    :Janela de Exibição Grande
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Alterar atalhos do teclado
@@ -2421,8 +2421,8 @@ STR_3329    :Entrada do parque ainda não construída
 STR_3330    :O parque deve ter um pouco de terreno
 STR_3331    :Caminho da entrada do parque a borda do mapa incompleta ou muito complexo - O caminho deve ter uma largura simples (um quadrado) com poucos cruzamentos e esquinas
 STR_3332    :Entrada do parque está ao contrário ou não tem caminho até a borda do mapa
-STR_3333    :Exportar plug-in de objetos com jogos salvos
-STR_3334    :{SMALLFONT}{BLACK}Selecione se deve salvar requerimento de qualquer plug-in de objeto adicional (dados adicionais não fornecidos no produto principal) nos dados de jogo salvo ou cenário, permitindo que sejam carregados por alguém que não tenha dados de objeto adicional
+STR_3333    :Exportar objetos personalizados com jogos salvos
+STR_3334    :{SMALLFONT}{BLACK}Selecione se deve salvar qualquer objeto customizado adicional requerido (dados adicionais não fornecidos no produto principal) nos dados de jogo salvo ou cenário, permitindo que sejam carregados por alguém que não tenha dados de objeto adicional
 STR_3335    :Construtor de Pista - Selecione o Tipo de Veículo e Atração
 STR_3336    :Gerenciador de Projetos de Pista - Selecione o Tipo de Atração
 STR_3338    :{BLACK}Projeto com Traçado Personalizado
@@ -2521,19 +2521,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Ano {POP16}{COMMA16}
 STR_5161    :Formato da Data:
 STR_5162    :Dia/Mês/Ano
 STR_5163    :Mês/Dia/Ano
-STR_5164    :Nome do canal do Twitch
-STR_5165    :Usar nome dos seguidores
-STR_5166    :{SMALLFONT}{BLACK}Nomeia os visitantes com o nome{NEWLINE}dos seguidores do canal no Twitch
-STR_5167    :Rastrear visitantes seguidores
-STR_5168    :{SMALLFONT}{BLACK}Habilita informação de rastreamento dos visitantes com nome igual aos dos seguidores do seu canal no Twitch
-STR_5169    :Usar nome das pessoas no chat do Twitch
-STR_5170    :{SMALLFONT}{BLACK}Nomeia os visitantes com o nome das pessoas no chat do Twitch
-STR_5171    :Rastrear visitantes do chat
-STR_5172    :{SMALLFONT}{BLACK}Habilita informação de rastreamento dos visitantes com nome igual aos das pessoas do chat do Twitch
-STR_5173    :Mostrar chat do Twitch como notícias
-STR_5174    :{SMALLFONT}{BLACK}Usa as mensagens do chat do Twitch precedido por !news nas notificações dentro do jogo
-STR_5175    :Insira o nome do seu canal no Twitch
-STR_5176    :Habilitar integração com Twitch
 STR_5177    :Modo de tela:
 STR_5178    :{SMALLFONT}{BLACK}Mostrar trapaças financeiras
 STR_5179    :{SMALLFONT}{BLACK}Mostrar trapaças de visitantes
@@ -2628,7 +2615,6 @@ STR_5267    :{SMALLFONT}{BLACK}Idioma e Unidades
 STR_5268    :{SMALLFONT}{BLACK}Áudio
 STR_5269    :{SMALLFONT}{BLACK}Controles e interface
 STR_5270    :{SMALLFONT}{BLACK}Variados
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Cenário Pequeno
 STR_5273    :{SMALLFONT}{BLACK}Cenário Grande
 STR_5274    :{SMALLFONT}{BLACK}Calçada
@@ -2672,26 +2658,6 @@ STR_5311    :{SMALLFONT}{BLACK}Ferramentas de depuração
 STR_5312    :Exibir console
 STR_5313    :Exibir inspetor de azulejo
 STR_5314    :Inspetor de azulejo
-STR_5315    :Grama
-STR_5316    :Areia
-STR_5317    :Sujeira
-STR_5318    :Pedra
-STR_5319    :Marciano
-STR_5320    :Tabuleiro de damas
-STR_5321    :Tufos de grama
-STR_5322    :Gelo
-STR_5323    :Grade (vermelho)
-STR_5324    :Grade (amarelo)
-STR_5325    :Grade (azul)
-STR_5326    :Grade (verde)
-STR_5327    :Areia (escura)
-STR_5328    :Areia (clara)
-STR_5329    :Tabuleiro de damas (Invertido)
-STR_5330    :Visão subterrânea
-STR_5331    :Pedra
-STR_5332    :Madeira (vermelha)
-STR_5333    :Madeira (preta)
-STR_5334    :Gelo
 STR_5335    :Entrada da atração
 STR_5336    :Saída da atração
 STR_5337    :Entrada do parque
@@ -2810,7 +2776,7 @@ STR_5452    :Alternar barra de ferramentas
 STR_5453    :Selecione outra atração
 STR_5454    :Remover limite de FPS
 STR_5455    :Ativar o modo sandbox
-STR_5456    :Desabilitar as verificações de depuração
+STR_5456    :Desabilitar as verificações de folga
 STR_5457    :Desativar limites de apoio
 STR_5458    :Girar no sentido horário
 STR_5459    :Girar no sentido anti-horário
@@ -3166,7 +3132,6 @@ STR_5848    :{SMALLFONT}{BLACK}Cria ou gerencia sequências de títulos personal
 STR_5849    :{SMALLFONT}{BLACK}Posiciona automaticamente{NEWLINE}novos funcionários contratados
 STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Define o intervalo de inspeção padrão{NEWLINE}nas novas atrações construídas
-STR_5852    :{SMALLFONT}{BLACK}Define o nome do canal do TwitchTV que será usado para a integração do Twitch
 STR_5853    :{SMALLFONT}{BLACK}Liga/Desliga os efeitos sonoros
 STR_5854    :{SMALLFONT}{BLACK}Liga/Desliga música da atração
 STR_5855    :{SMALLFONT}{BLACK}Define tela cheia sem borda ou em modo janela
@@ -3350,7 +3315,7 @@ STR_6033    :Caminho para a instalação do RCT1:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Por favor, selecione o diretório do seu RCT1
 STR_6036    :{SMALLFONT}{BLACK}Limpar
-STR_6037    :Por favor, seleciona um diretório válido do RCT1
+STR_6037    :O diretório selecionado não contém uma instalação válida de RollerCoaster 1.
 STR_6038    :{SMALLFONT}{BLACK}Se você instalou o RCT1, defina esta opção para seu diretório para carregar cenários, músicas, etc.
 STR_6039    :{SMALLFONT}{BLACK}Demole atração rapidamente
 STR_6040    :Editar Opções do Cenário
@@ -3517,17 +3482,6 @@ STR_6200    :Resetar data
 STR_6201    :{MONTH}
 STR_6202    :Estilo de chão virtual:
 STR_6203    :{SMALLFONT}{BLACK}Quando habilitado, um chão virtual será renderizado quando segurar a tecla Ctrl ou Shift para facilitar o posicionamento vertical dos elementos.
-STR_6204    :Tijolo
-STR_6205    :Ferro
-STR_6206    :Estuque cinza
-STR_6207    :Estuque amarelo
-STR_6208    :Estuque vermelho
-STR_6209    :Estuque roxo
-STR_6210    :Estuque verde
-STR_6211    :Arenito marrom
-STR_6212    :Arenito cinza
-STR_6213    :Arranha-céu A
-STR_6214    :Arranha-céu B
 STR_6215    :Construção
 STR_6216    :Operação
 STR_6217    :Atração / disponibilidade de trilho
@@ -3565,9 +3519,6 @@ STR_6248    :{WINDOW_COLOUR_1}Você quer reformar {STRINGID} por {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Você quer reformar {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Você tem certeza que quer demolir completamente {STRINGID} e ganhar {CURRENCY}?
 STR_6251    :Brinquedo ainda não está vazio
-STR_6252    :Twitch API URL
-STR_6253    :{SMALLFONT}{BLACK}Fornece URL do API de integração do Twitch. Necessário para permitir a integração com Twitch.
-STR_6254    :URL do API de integração do Twitch:
 STR_6255    :URL não é válido
 STR_6256    :Efeitos de renderização
 STR_6257    :Vítreo (translúcido)
@@ -3677,6 +3628,26 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Habilitar efeitos luminosos em atrações (experimental)
 STR_6362    :{SMALLFONT}{BLACK}Se habilitados, veículos de atrações com trilhos serão iluminados à noite.
 STR_6363    :Texto copiado para a área de transferência
+STR_6364    :{RED}{COMMA16} pessoa morreu em um acidente em {STRINGID}
+STR_6365    :Acidentes em atrações
+STR_6366    :Veículos presos ou parados
+STR_6367    :{WINDOW_COLOUR_2}Quadro de animação:
+STR_6368    :Por questão de compatibilidade, não é recomendado executar o OpenRCT2 com Wine. O OpenRCT2 tem suporte nativo a macOS, Linux, FreeBSD e OpenBSD.
+STR_6369    :Permitir construção de trilhos em alturas inválidas
+STR_6370    :{SMALLFONT}{BLACK}Permite a construção de trilhos em qualquer intervalo de altura
+STR_6371    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas o arquivo “csg1i.dat” não existe. Esse arquivo tem de ser copiado do CD do RollerCoaster Tycoon 1 para a pasta “Data” do RollerCoaster Tycoon 1 instalado em sua memória.
+STR_6372    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas essa versão não é compatível. O OpenRCT2 precisa da instalação do Loopy Landscapes ou RCT Deluxe para usar os recursos do RollerCoaster Tycoon 1.
+STR_6373    :Liga/desliga verificação de folga
+STR_6374    :F
+STR_6375    :Atração desconhecida
+STR_6376    :{WINDOW_COLOUR_2}Veículo: {NEWLINE}{BLACK}{STRINGID} para {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} para {STRINGID}
+STR_6378    :Lista de objetos sendo recebidos: {INT32} / {INT32}
+STR_6379    :Dados inválidos recebidos
+STR_6380    :Atualização disponível!
+STR_6381    :Faça parte do Discord do OpenRCT2!
+STR_6382    :Uma versão mais nova do OpenRCT2 está disponível: {STRING}!
+STR_6383    :Abrir página de download
 
 #############
 # Scenarios #

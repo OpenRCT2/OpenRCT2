@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,6 +24,9 @@ namespace OpenRCT2::Ui
         IWindowManager* const _windowManager = CreateDummyWindowManager();
 
     public:
+        void Initialise() override
+        {
+        }
         void Update() override
         {
         }
@@ -87,6 +90,9 @@ namespace OpenRCT2::Ui
         {
         }
         void OpenFolder(const std::string& /*path*/) override
+        {
+        }
+        void OpenURL(const std::string& /*url*/) override
         {
         }
         std::string ShowFileDialog(const FileDialogDesc& /*desc*/) override

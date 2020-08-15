@@ -15,7 +15,7 @@ STR_0047    :ATM
 STR_0052    :Tunnel Of Horror
 STR_0517    :Passengers ride in miniature trains along a narrow-gauge railroad track
 STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railroad track
-STR_0534    :Self-driven gas-engined go karts
+STR_0537    :Guests bump into each other in self-driven electric bumper cars
 STR_0555    :Guests ride in an elevator up or down a vertical tower to get from one level to another
 
 STR_0574    :Riders are held in special harnesses in a lying-down position, traveling through twisted track and inversions either on their backs or facing the ground

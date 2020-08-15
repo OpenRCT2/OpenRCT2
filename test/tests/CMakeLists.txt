@@ -86,6 +86,7 @@ set(COMMON_TEST_SOURCES
 
 # Create a re-usable library to save some compilation time
 add_library(test-common STATIC ${COMMON_TEST_SOURCES})
+set_target_properties(test-common PROPERTIES COMPILE_DEFINITIONS DISABLE_HTTP)
 
 # Setup testdata. It should be fine here, as the only way to reach here is by explicitly requesting tests.
 execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_CURRENT_LIST_DIR}/testdata" "${CMAKE_CURRENT_BINARY_DIR}/testdata")
@@ -222,6 +223,15 @@ SET_CHECK_CXX_FLAGS(test_replays)
 target_link_libraries(test_replays ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_replays)
 add_test(NAME replay_tests COMMAND test_replays)
+
+# Play tests
+set(PLAY_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/PlayTests.cpp"
+                      "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+add_executable(test_plays ${PLAY_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_plays)
+target_link_libraries(test_plays ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_plays)
+add_test(NAME play_tests COMMAND test_plays)
 
 # Pathfinding test
 set(PATHFINDING_TEST_SOURCES  "${CMAKE_CURRENT_LIST_DIR}/Pathfinding.cpp"

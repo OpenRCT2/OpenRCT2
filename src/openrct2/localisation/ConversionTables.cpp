@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -101,8 +101,8 @@ const encoding_convert_entry RCT2ToUnicodeTable[] =
 
 static int32_t encoding_search_compare(const void *pKey, const void *pEntry)
 {
-    uint16_t key = *((uint16_t*)pKey);
-    encoding_convert_entry *entry = (encoding_convert_entry*)pEntry;
+    const uint16_t key = *reinterpret_cast<const uint16_t*>(pKey);
+    const encoding_convert_entry *entry = static_cast<const encoding_convert_entry*>(pEntry);
     if (key < entry->code) return -1;
     if (key > entry->code) return 1;
     return 0;
@@ -110,7 +110,7 @@ static int32_t encoding_search_compare(const void *pKey, const void *pEntry)
 
 static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_convert_entry *table, size_t count)
 {
-    encoding_convert_entry * entry = (encoding_convert_entry *)std::bsearch(&code, table, count, sizeof(encoding_convert_entry), encoding_search_compare);
+    encoding_convert_entry * entry = static_cast<encoding_convert_entry *>(std::bsearch(&code, table, count, sizeof(encoding_convert_entry), encoding_search_compare));
     if (entry == nullptr) return code;
     else return entry->unicode;
 }

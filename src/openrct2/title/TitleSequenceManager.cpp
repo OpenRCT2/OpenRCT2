@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,7 +9,9 @@
 
 #include "TitleSequenceManager.h"
 
+#include "../Context.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../core/Collections.hpp"
 #include "../core/FileScanner.h"
 #include "../core/Memory.hpp"
@@ -48,8 +50,8 @@ namespace TitleSequenceManager
     static void AddSequence(const utf8* scanPath);
     static void SortSequences();
     static std::string GetNameFromSequencePath(const std::string& path);
-    static void GetDataSequencesPath(utf8* buffer, size_t bufferSize);
-    static void GetUserSequencesPath(utf8* buffer, size_t bufferSize);
+    static std::string GetDataSequencesPath();
+    static std::string GetUserSequencesPath();
     static bool IsNameReserved(const std::string& name);
 
     size_t GetCount()
@@ -158,15 +160,12 @@ namespace TitleSequenceManager
 
     static std::string GetNewTitleSequencePath(const std::string& name, bool isZip)
     {
-        utf8 path[MAX_PATH];
-        GetUserSequencesPath(path, sizeof(path));
-        platform_ensure_directory_exists(path);
-        Path::Append(path, sizeof(path), name.c_str());
+        auto path = Path::Combine(GetUserSequencesPath(), name);
         if (isZip)
         {
-            String::Append(path, sizeof(path), TITLE_SEQUENCE_EXTENSION);
+            path += TITLE_SEQUENCE_EXTENSION;
         }
-        return std::string(path);
+        return path;
     }
 
     static size_t GetPredefinedIndex(const std::string& path)
@@ -201,17 +200,15 @@ namespace TitleSequenceManager
 
     void Scan()
     {
-        utf8 path[MAX_PATH];
-
         _items.clear();
 
         // Scan data path
-        GetDataSequencesPath(path, sizeof(path));
-        Scan(path);
+        auto path = GetDataSequencesPath();
+        Scan(path.c_str());
 
         // Scan user path
-        GetUserSequencesPath(path, sizeof(path));
-        Scan(path);
+        path = GetUserSequencesPath();
+        Scan(path.c_str());
 
         SortSequences();
     }
@@ -277,15 +274,16 @@ namespace TitleSequenceManager
         return result;
     }
 
-    static void GetDataSequencesPath(utf8* buffer, size_t bufferSize)
+    static std::string GetDataSequencesPath()
     {
-        platform_get_openrct_data_path(buffer, bufferSize);
-        Path::Append(buffer, bufferSize, "title");
+        auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+        return env->GetDirectoryPath(OpenRCT2::DIRBASE::OPENRCT2, OpenRCT2::DIRID::SEQUENCE);
     }
 
-    static void GetUserSequencesPath(utf8* buffer, size_t bufferSize)
+    static std::string GetUserSequencesPath()
     {
-        platform_get_user_directory(buffer, "title sequences", bufferSize);
+        auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+        return env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::SEQUENCE);
     }
 
     static bool IsNameReserved(const std::string& name)

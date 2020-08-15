@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -32,7 +32,7 @@ namespace OpenRCT2
         std::string FilePath;
     };
 
-    interface IReplayManager
+    struct IReplayManager
     {
     public:
         enum class RecordType
@@ -56,7 +56,7 @@ namespace OpenRCT2
             const std::string& name, uint32_t maxTicks = k_MaxReplayTicks, RecordType rt = RecordType::NORMAL)
             = 0;
         virtual bool StopRecording(bool discard = false) = 0;
-        virtual bool GetCurrentReplayInfo(ReplayRecordInfo & info) const = 0;
+        virtual bool GetCurrentReplayInfo(ReplayRecordInfo& info) const = 0;
 
         virtual bool StartPlayback(const std::string& file) = 0;
         virtual bool IsPlaybackStateMismatching() const = 0;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -67,8 +67,8 @@ static uint8_t findClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
 
     for (int i = PALETTE_INDEX_0; i < PALETTE_INDEX_230; i++)
     {
-        const int32_t distance = std::pow(gPalette[i].red - red, 2) + std::pow(gPalette[i].green - green, 2)
-            + std::pow(gPalette[i].blue - blue, 2);
+        const int32_t distance = std::pow(gPalette[i].Red - red, 2) + std::pow(gPalette[i].Green - green, 2)
+            + std::pow(gPalette[i].Blue - blue, 2);
 
         if (distance < closestDistance)
         {
@@ -90,9 +90,9 @@ uint8_t blendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2)
         return BlendColourMap[cMin][cMax];
     }
 
-    uint8_t red = (gPalette[cMin].red + gPalette[cMax].red) / 2;
-    uint8_t green = (gPalette[cMin].green + gPalette[cMax].green) / 2;
-    uint8_t blue = (gPalette[cMin].blue + gPalette[cMax].blue) / 2;
+    uint8_t red = (gPalette[cMin].Red + gPalette[cMax].Red) / 2;
+    uint8_t green = (gPalette[cMin].Green + gPalette[cMax].Green) / 2;
+    uint8_t blue = (gPalette[cMin].Blue + gPalette[cMax].Blue) / 2;
 
     BlendColourMap[cMin][cMax] = findClosestPaletteIndex(red, green, blue);
     return BlendColourMap[cMin][cMax];

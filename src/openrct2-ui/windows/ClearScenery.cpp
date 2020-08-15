@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,16 +29,18 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
     WIDX_FOOTPATH
 };
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_CLEAR_SCENERY;
+static constexpr const int32_t WW = 98;
+static constexpr const int32_t WH = 94;
+
 static rct_widget window_clear_scenery_widgets[] = {
-    { WWT_FRAME,    0,  0,  97, 0,  93, 0xFFFFFFFF,                                 STR_NONE },                         // panel / background
-    { WWT_CAPTION,  0,  1,  96, 1,  14, STR_CLEAR_SCENERY,                          STR_WINDOW_TITLE_TIP },             // title bar
-    { WWT_CLOSEBOX, 0,  85, 95, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP },             // close x button
-    { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                       STR_NONE },                         // preview box
-    { WWT_TRNBTN,   1,  28, 43, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP },      // decrement size
-    { WWT_TRNBTN,   1,  54, 69, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP },       // increment size
-    { WWT_FLATBTN,  1,  7,  30, 53, 76, IMAGE_TYPE_REMAP | SPR_G2_BUTTON_TREES,           STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP }, // small scenery
-    { WWT_FLATBTN,  1,  37, 60, 53, 76, IMAGE_TYPE_REMAP | SPR_G2_BUTTON_LARGE_SCENERY,   STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP }, // large scenery
-    { WWT_FLATBTN,  1,  67, 90, 53, 76, IMAGE_TYPE_REMAP | SPR_G2_BUTTON_FOOTPATH,        STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP }, // footpaths
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget     ({27, 17}, {44, 32}, WWT_IMGBTN,  0, SPR_LAND_TOOL_SIZE_0,        STR_NONE),                                   // preview box
+    MakeRemapWidget({28, 18}, {16, 16}, WWT_TRNBTN,  1, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP),                // decrement size
+    MakeRemapWidget({54, 32}, {16, 16}, WWT_TRNBTN,  1, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP),                 // increment size
+    MakeRemapWidget({ 7, 53}, {24, 24}, WWT_FLATBTN, 1, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
+    MakeRemapWidget({37, 53}, {24, 24}, WWT_FLATBTN, 1, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
+    MakeRemapWidget({67, 53}, {24, 24}, WWT_FLATBTN, 1, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP),     // footpaths
     { WIDGETS_END },
 };
 
@@ -97,7 +99,7 @@ rct_window* window_clear_scenery_open()
         return window;
 
     window = window_create(
-        ScreenCoordsXY(context_get_width() - 98, 29), 98, 94, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
+        ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
     window->widgets = window_clear_scenery_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
@@ -233,26 +235,22 @@ static void window_clear_scenery_invalidate(rct_window* w)
  */
 static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y;
-
     window_draw_widgets(w, dpi);
 
     // Draw number for tool sizes bigger than 7
-    x = w->windowPos.x
-        + (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2;
-    y = w->windowPos.y
-        + (window_clear_scenery_widgets[WIDX_PREVIEW].top + window_clear_scenery_widgets[WIDX_PREVIEW].bottom) / 2;
+    ScreenCoordsXY screenCoords = { w->windowPos.x + window_clear_scenery_widgets[WIDX_PREVIEW].midX(),
+                                    w->windowPos.y + window_clear_scenery_widgets[WIDX_PREVIEW].midY() };
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
+        gfx_draw_string_centred(
+            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
     }
 
     // Draw cost amount
     if (gClearSceneryCost != MONEY32_UNDEFINED && gClearSceneryCost != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        x = (window_clear_scenery_widgets[WIDX_PREVIEW].left + window_clear_scenery_widgets[WIDX_PREVIEW].right) / 2
-            + w->windowPos.x;
-        y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5 + 27;
-        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, &gClearSceneryCost);
+        screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + w->windowPos.x;
+        screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5 + 27;
+        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gClearSceneryCost);
     }
 }

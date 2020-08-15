@@ -15,8 +15,10 @@
 #include <openrct2/object/Object.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Station.h>
 #include <openrct2/ride/Track.h>
+#include <openrct2/ride/Vehicle.h>
 #include <openrct2/world/Location.hpp>
 #include <openrct2/world/Sprite.h>
 #include <openrct2/world/Surface.h>
@@ -26,6 +28,8 @@ class StationObject;
 #define gRideEntries RCT2_ADDRESS(0x009ACFA4, rct_ride_entry*)
 #define gTileElementTilePointers RCT2_ADDRESS(0x013CE9A4, TileElement*)
 rct_sprite* sprite_list = RCT2_ADDRESS(0x010E63BC, rct_sprite);
+
+bool gCheatsEnableAllDrawableTrackPieces = false;
 
 Ride gRideList[MAX_RIDES];
 int16_t gMapSizeUnits;
@@ -121,9 +125,9 @@ Ride* get_ride(ride_id_t index)
     return &gRideList[index];
 }
 
-rct_ride_entry* get_ride_entry(int index)
+rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
 {
-    if (index < 0 || index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
+    if (index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
     {
         log_error("invalid index %d for ride type", index);
         return nullptr;
@@ -142,10 +146,31 @@ rct_ride_entry* Ride::GetRideEntry() const
     return rideEntry;
 }
 
-rct_sprite* get_sprite(size_t sprite_idx)
+template<> bool SpriteBase::Is<SpriteBase>() const
+{
+    return true;
+}
+
+template<> bool SpriteBase::Is<Peep>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_PEEP;
+}
+
+template<> bool SpriteBase::Is<Guest>() const
+{
+    auto peep = As<Peep>();
+    return peep && peep->AssignedPeepType == PeepType::Guest;
+}
+
+template<> bool SpriteBase::Is<Vehicle>() const
+{
+    return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
+}
+
+SpriteBase* get_sprite(size_t sprite_idx)
 {
     assert(sprite_idx < MAX_SPRITES);
-    return &sprite_list[sprite_idx];
+    return reinterpret_cast<SpriteBase*>(&sprite_list[sprite_idx]);
 }
 
 bool TileElementBase::IsLastForTile() const
@@ -187,9 +212,9 @@ TileElement* map_get_first_element_at(const CoordsXY& elementPos)
     return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * 256];
 }
 
-bool ride_type_has_flag(int rideType, uint32_t flag)
+bool ride_type_has_flag(int rideType, uint64_t flag)
 {
-    return (RideProperties[rideType].flags & flag) != 0;
+    return (RideTypeDescriptors[rideType].Flags & flag) != 0;
 }
 
 int16_t get_height_marker_offset()
@@ -440,9 +465,14 @@ StationObject* ride_get_station_object(const Ride* ride)
     return nullptr;
 }
 
+Ride* Vehicle::GetRide() const
+{
+    return get_ride(ride);
+}
+
 bool Vehicle::IsGhost() const
 {
-    auto r = get_ride(ride);
+    auto r = GetRide();
     return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
 }
 
@@ -491,4 +521,338 @@ CoordsXYZ RideStation::GetStart() const
 {
     TileCoordsXYZ stationTileCoords{ Start.x, Start.y, Height };
     return stationTileCoords.ToCoordsXYZ();
+}
+
+bool TrackElement::IsStation() const
+{
+    return track_type_is_station(GetTrackType());
+}
+
+bool track_type_is_station(track_type_t trackType)
+{
+    switch (trackType)
+    {
+        case TRACK_ELEM_END_STATION:
+        case TRACK_ELEM_BEGIN_STATION:
+        case TRACK_ELEM_MIDDLE_STATION:
+            return true;
+        default:
+            return false;
+    }
+}
+
+void ride_ratings_calculate_spiral_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_stand_up_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_suspended_swinging_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_inverted_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_junior_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_miniature_railway([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_monorail([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_mini_suspended_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_boat_hire([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_wooden_wild_mouse([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_steeplechase([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_car_ride([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_launched_freefall([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_bobsleigh_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_observation_tower([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_looping_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_dinghy_slide([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_mine_train_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_chairlift([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_corkscrew_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_maze([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_spiral_slide([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_go_karts([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_log_flume([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_river_rapids([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_dodgems([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_swinging_ship([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_inverter_ship([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_food_stall([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_shop([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_merry_go_round([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_information_kiosk([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_toilets([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_ferris_wheel([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_motion_simulator([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_3d_cinema([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_top_spin([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_space_rings([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_reverse_freefall_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_lift([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_vertical_drop_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_cash_machine([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_twist([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_haunted_house([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_first_aid([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_circus([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_ghost_train([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_twister_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_wooden_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_side_friction_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_wild_mouse([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_multi_dimension_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_flying_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_virginia_reel([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_splash_boats([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_mini_helicopters([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_lay_down_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_suspended_monorail([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_reverser_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_heartline_twister_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_mini_golf([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_giga_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_roto_drop([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_flying_saucers([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_crooked_house([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_monorail_cycles([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_compact_inverted_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_water_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_air_powered_vertical_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_inverted_hairpin_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_magic_carpet([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_submarine_ride([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_river_rafts([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_enterprise([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_inverted_impulse_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_mini_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_mine_ride([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_lim_launched_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_drink_stall([[maybe_unused]] Ride* ride)
+{
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -49,10 +49,10 @@ void DrawRain(rct_drawpixelinfo* dpi, IRainDrawer* rainDrawer)
             viewFlags = viewport->flags;
 
         // Get rain draw function and draw rain
-        uint32_t rainType = gClimateCurrent.RainLevel;
-        if (rainType != RAIN_LEVEL_NONE && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+        RainLevel rainType = gClimateCurrent.Level;
+        if (rainType != RainLevel::None && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
-            auto drawFunc = DrawRainFunctions[rainType];
+            auto drawFunc = DrawRainFunctions[static_cast<int8_t>(rainType)];
             auto uiContext = GetContext()->GetUiContext();
             uiContext->DrawRainAnimation(rainDrawer, dpi, drawFunc);
         }
@@ -65,14 +65,14 @@ void DrawRain(rct_drawpixelinfo* dpi, IRainDrawer* rainDrawer)
  */
 static void DrawLightRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    int32_t x_start = -(int32_t)gScenarioTicks + 8;
+    int32_t x_start = -static_cast<int32_t>(gScenarioTicks) + 8;
     int32_t y_start = (gScenarioTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(int32_t)gScenarioTicks + 0x18;
+    x_start = -static_cast<int32_t>(gScenarioTicks) + 0x18;
     y_start = (gScenarioTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
@@ -86,28 +86,28 @@ static void DrawLightRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, in
  */
 static void DrawHeavyRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
-    int32_t x_start = -(int32_t)gScenarioTicks;
+    int32_t x_start = -static_cast<int32_t>(gScenarioTicks);
     int32_t y_start = gScenarioTicks * 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(int32_t)gScenarioTicks + 0x10;
+    x_start = -static_cast<int32_t>(gScenarioTicks) + 0x10;
     y_start = (gScenarioTicks * 6) + 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(int32_t)gScenarioTicks + 8;
+    x_start = -static_cast<int32_t>(gScenarioTicks) + 8;
     y_start = (gScenarioTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     rainDrawer->Draw(left, top, width, height, x_start, y_start);
 
-    x_start = -(int32_t)gScenarioTicks + 0x18;
+    x_start = -static_cast<int32_t>(gScenarioTicks) + 0x18;
     y_start = (gScenarioTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;

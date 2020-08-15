@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -62,7 +62,6 @@ static void paint_ferris_wheel_structure(
     if (rideEntry == nullptr)
         return;
 
-    Vehicle* vehicle = nullptr;
     int8_t xOffset = !(direction & 1) ? axisOffset : 0;
     int8_t yOffset = (direction & 1) ? axisOffset : 0;
 
@@ -70,10 +69,9 @@ static void paint_ferris_wheel_structure(
 
     baseImageId = rideEntry->vehicles[0].base_image_id;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        vehicle = GET_VEHICLE(ride->vehicles[0]);
-
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
         session->CurrentlyDrawnItem = vehicle;
     }
@@ -102,18 +100,12 @@ static void paint_ferris_wheel_structure(
         session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
         boundBox.offset_y, height);
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        vehicle = GET_VEHICLE(ride->vehicles[0]);
         for (int32_t i = 0; i < 32; i += 2)
         {
-            if (vehicle->peep[i] == SPRITE_INDEX_NULL)
-            {
-                continue;
-            }
-
-            Peep* peep = GET_PEEP(vehicle->peep[i]);
-            if (peep->state != PEEP_STATE_ON_RIDE)
+            auto* peep = GetEntity<Guest>(vehicle->peep[i]);
+            if (peep == nullptr || peep->State != PEEP_STATE_ON_RIDE)
             {
                 continue;
             }

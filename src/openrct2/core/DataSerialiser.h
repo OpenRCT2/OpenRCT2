@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,14 +10,15 @@
 #pragma once
 
 #include "DataSerialiserTraits.h"
+#include "MemoryStream.h"
 
 #include <type_traits>
 
 class DataSerialiser
 {
 private:
-    MemoryStream _stream;
-    IStream& _activeStream;
+    OpenRCT2::MemoryStream _stream;
+    OpenRCT2::IStream& _activeStream;
     bool _isSaving = false;
     bool _isLogging = false;
 
@@ -29,7 +30,7 @@ public:
     {
     }
 
-    DataSerialiser(bool isSaving, IStream& stream, bool isLogging = false)
+    DataSerialiser(bool isSaving, OpenRCT2::IStream& stream, bool isLogging = false)
         : _activeStream(stream)
         , _isSaving(isSaving)
         , _isLogging(isLogging)
@@ -51,7 +52,7 @@ public:
         return _isLogging;
     }
 
-    IStream& GetStream()
+    OpenRCT2::IStream& GetStream()
     {
         return _activeStream;
     }

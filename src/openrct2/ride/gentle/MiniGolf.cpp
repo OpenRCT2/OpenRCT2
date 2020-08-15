@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
 #include <iterator>
@@ -491,13 +492,13 @@ static void paint_mini_golf_track_flat(
     {
         imageId = SPR_MINI_GOLF_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
-        paint_util_push_tunnel_right(session, height, TUNNEL_10);
+        paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
     else
     {
         imageId = SPR_MINI_GOLF_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
-        paint_util_push_tunnel_left(session, height, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -589,7 +590,7 @@ static void paint_mini_golf_track_flat_to_25_deg_up(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
         case 1:
             paint_util_push_tunnel_right(session, height, TUNNEL_2);
@@ -598,7 +599,7 @@ static void paint_mini_golf_track_flat_to_25_deg_up(
             paint_util_push_tunnel_left(session, height, TUNNEL_2);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
     }
 
@@ -631,10 +632,10 @@ static void paint_mini_golf_track_25_deg_up_to_flat(
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_0);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_PATH_AND_MINI_GOLF);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_PATH_AND_MINI_GOLF);
             break;
         case 3:
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_0);
@@ -705,7 +706,7 @@ static void paint_mini_golf_station(
         track_paint_util_draw_station_covers(session, EDGE_SW, hasSWFence, stationObj, height);
 
         // Was leftwards tunnel in game, seems odd
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
@@ -727,7 +728,7 @@ static void paint_mini_golf_station(
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
         track_paint_util_draw_station_covers(session, EDGE_SE, hasSEFence, stationObj, height);
 
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -756,7 +757,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             if (!shouldDrawFence)
                 break;
 
@@ -774,7 +775,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             break;
 
         case 2:
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             if (!shouldDrawFence)
                 break;
 
@@ -783,8 +784,8 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             break;
 
         case 3:
-            paint_util_push_tunnel_left(session, height, TUNNEL_10);
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             if (!shouldDrawFence)
                 break;
 
@@ -838,11 +839,11 @@ static void paint_mini_golf_hole_ab(
 
     if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1))
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
     else if ((direction == 3 && trackSequence == 0) || (direction == 1 && trackSequence == 1))
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_10);
+        paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
     if (direction & 1)
@@ -906,11 +907,11 @@ static void paint_mini_golf_hole_c(
 
     if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1))
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
     else if ((direction == 3 && trackSequence == 0) || (direction == 1 && trackSequence == 1))
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_10);
+        paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
     if (direction & 1)
@@ -978,12 +979,12 @@ static void paint_mini_golf_hole_d(
     {
         case 0x00:
         case 0x12:
-            paint_util_push_tunnel_left(session, height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
 
         case 0x02:
         case 0x30:
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
     }
 
@@ -1068,12 +1069,12 @@ static void paint_mini_golf_hole_e(
     {
         case 0x00:
         case 0x12:
-            paint_util_push_tunnel_left(session, height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
 
         case 0x02:
         case 0x30:
-            paint_util_push_tunnel_right(session, height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
             break;
     }
 
@@ -1208,7 +1209,7 @@ void vehicle_visual_mini_golf_player(
         return;
     }
 
-    auto ride = get_ride(vehicle->ride);
+    auto ride = vehicle->GetRide();
     if (ride == nullptr)
         return;
 
@@ -1216,13 +1217,15 @@ void vehicle_visual_mini_golf_player(
     if (rideEntry == nullptr)
         return;
 
-    rct_sprite* sprite = get_sprite(vehicle->peep[0]);
+    auto* peep = GetEntity<Peep>(vehicle->peep[0]);
+    if (peep == nullptr)
+        return;
 
     uint8_t frame = mini_golf_peep_animation_frames[vehicle->mini_golf_current_animation][vehicle->animation_frame];
     uint32_t ebx = (frame << 2) + (imageDirection >> 3);
 
     uint32_t image_id = rideEntry->vehicles[0].base_image_id + 1 + ebx;
-    uint32_t peep_palette = sprite->peep.tshirt_colour << 19 | sprite->peep.trousers_colour << 24 | 0x0A0000000;
+    uint32_t peep_palette = peep->TshirtColour << 19 | peep->TrousersColour << 24 | 0x0A0000000;
     sub_98197C(session, image_id | peep_palette, 0, 0, 1, 1, 11, z, 0, 0, z + 5);
 }
 
@@ -1248,7 +1251,7 @@ void vehicle_visual_mini_golf_ball(
         return;
     }
 
-    auto ride = get_ride(vehicle->ride);
+    auto ride = vehicle->GetRide();
     if (ride == nullptr)
         return;
 

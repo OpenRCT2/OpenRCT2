@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "RideGroupManager.h"
 
 #include <memory>
 
@@ -21,23 +20,21 @@ struct track_design_file_ref
 };
 
 #include <string>
+#include <vector>
 
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    struct IPlatformEnvironment;
 }
 
-interface ITrackDesignRepository
+struct ITrackDesignRepository
 {
     virtual ~ITrackDesignRepository() = default;
 
     virtual size_t GetCount() const abstract;
     virtual size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const abstract;
-    virtual size_t GetCountForRideGroup(uint8_t rideType, const RideGroup* rideGroup) const abstract;
-    virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8_t rideType, const std::string& entry)
-        const abstract;
-    virtual std::vector<track_design_file_ref> GetItemsForRideGroup(uint8_t rideType, const RideGroup* rideGroup)
-        const abstract;
+    virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(
+        uint8_t rideType, const std::string& entry) const abstract;
 
     virtual void Scan(int32_t language) abstract;
     virtual bool Delete(const std::string& path) abstract;

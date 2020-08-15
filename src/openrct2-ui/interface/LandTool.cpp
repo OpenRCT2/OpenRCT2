@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,8 +39,8 @@ static uint16_t toolSizeSpriteIndices[] =
 uint16_t gLandToolSize;
 money32 gLandToolRaiseCost;
 money32 gLandToolLowerCost;
-uint8_t gLandToolTerrainSurface;
-uint8_t gLandToolTerrainEdge;
+ObjectEntryIndex gLandToolTerrainSurface;
+ObjectEntryIndex gLandToolTerrainEdge;
 money32 gWaterToolRaiseCost;
 money32 gWaterToolLowerCost;
 
@@ -83,8 +83,8 @@ void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, ui
     uint32_t surfaceCount = itemIndex;
 
     window_dropdown_show_image(
-        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top, w->colours[2], 0,
-        surfaceCount, 47, 36, dropdown_get_appropriate_image_dropdown_items_per_row(surfaceCount));
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height(), w->colours[2], 0, surfaceCount, 47, 36,
+        dropdown_get_appropriate_image_dropdown_items_per_row(surfaceCount));
 
     gDropdownDefaultIndex = defaultIndex;
 }
@@ -113,8 +113,8 @@ void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8
     auto itemsPerRow = dropdown_get_appropriate_image_dropdown_items_per_row(edgeCount);
 
     window_dropdown_show_image(
-        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top, w->colours[2], 0, edgeCount,
-        47, 36, itemsPerRow);
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height(), w->colours[2], 0, edgeCount, 47, 36,
+        itemsPerRow);
 
     gDropdownDefaultIndex = defaultIndex;
 }

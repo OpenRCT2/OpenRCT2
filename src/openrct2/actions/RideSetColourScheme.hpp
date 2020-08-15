@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,6 +37,13 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("trackType", _trackType);
+        visitor.Visit("colourScheme", _newColourScheme);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
@@ -51,6 +58,10 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_LAND_NOT_OWNED_BY_PARK);
+        }
         return std::make_unique<GameActionResult>();
     }
 
@@ -60,8 +71,7 @@ public:
         res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
-        int32_t x = _loc.x, y = _loc.y, z = _loc.z;
-        sub_6C683D(&x, &y, &z, _loc.direction, _trackType, _newColourScheme, nullptr, 4);
+        sub_6C683D(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
 
         return res;
     }

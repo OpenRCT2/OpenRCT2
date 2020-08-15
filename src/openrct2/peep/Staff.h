@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -77,12 +77,12 @@ void staff_reset_modes();
 void staff_set_name(uint16_t spriteIndex, const char* name);
 bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainerType);
 void staff_update_greyed_patrol_areas();
-bool staff_is_location_on_patrol_edge(Peep* mechanic, int32_t x, int32_t y);
-bool staff_can_ignore_wide_flag(Peep* mechanic, int32_t x, int32_t y, uint8_t z, TileElement* path);
+bool staff_is_location_on_patrol_edge(Peep* mechanic, const CoordsXY& loc);
+bool staff_can_ignore_wide_flag(Peep* mechanic, const CoordsXYZ& staffPos, TileElement* path);
 void staff_reset_stats();
 bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords);
-void staff_set_patrol_area(int32_t staffIndex, int32_t x, int32_t y, bool value);
-void staff_toggle_patrol_area(int32_t staffIndex, int32_t x, int32_t y);
+void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool value);
+void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords);
 colour_t staff_get_colour(uint8_t staffType);
 bool staff_set_colour(uint8_t staffType, colour_t value);
 uint32_t staff_get_available_entertainer_costumes();

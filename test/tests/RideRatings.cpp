@@ -19,6 +19,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideData.h>
 #include <string>
 
 using namespace OpenRCT2;
@@ -45,10 +46,10 @@ protected:
 
     std::string FormatRatings(const Ride& ride)
     {
-        rating_tuple ratings = ride.ratings;
+        RatingTuple ratings = ride.ratings;
         std::string line = String::StdFormat(
-            "%s: (%d, %d, %d)", ride_type_get_enum_name(ride.type), (int)ratings.excitement, (int)ratings.intensity,
-            (int)ratings.nausea);
+            "%s: (%d, %d, %d)", RideTypeDescriptors[ride.type].EnumName, (int)ratings.Excitement, (int)ratings.Intensity,
+            (int)ratings.Nausea);
         return line;
     }
 };

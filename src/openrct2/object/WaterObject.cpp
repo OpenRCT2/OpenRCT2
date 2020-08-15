@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,13 +15,14 @@
 #include "../core/IStream.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
+#include "../world/Location.hpp"
 #include "ObjectJsonHelpers.h"
 
 #include <memory>
 
-void WaterObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void WaterObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(14, STREAM_SEEK_CURRENT);
+    stream->Seek(14, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint16_t>();
 
     GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
@@ -50,9 +51,8 @@ void WaterObject::Unload()
 void WaterObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
     // Write (no image)
-    int32_t x = width / 2;
-    int32_t y = height / 2;
-    gfx_draw_string_centred(dpi, STR_WINDOW_NO_IMAGE, x, y, COLOUR_BLACK, nullptr);
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+    gfx_draw_string_centred(dpi, STR_WINDOW_NO_IMAGE, screenCoords, COLOUR_BLACK, nullptr);
 }
 
 void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, const json_t* root)
@@ -110,8 +110,8 @@ void WaterObject::ReadJsonPalette(const json_t* jPalette)
 
     rct_g1_element g1 = {};
     g1.offset = data.get();
-    g1.width = (int16_t)numColours;
-    g1.x_offset = (int16_t)paletteStartIndex;
+    g1.width = static_cast<int16_t>(numColours);
+    g1.x_offset = static_cast<int16_t>(paletteStartIndex);
     g1.flags = G1_FLAG_PALETTE;
 
     auto& imageTable = GetImageTable();

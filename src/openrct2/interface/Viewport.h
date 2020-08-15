@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,10 +21,9 @@ struct paint_struct;
 struct rct_drawpixelinfo;
 struct Peep;
 struct TileElement;
-struct Vehicle;
 struct rct_window;
 union paint_entry;
-union rct_sprite;
+struct SpriteBase;
 
 enum
 {
@@ -50,7 +49,7 @@ enum
     VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1 << 19),
 };
 
-enum
+enum ViewportInteractionItem : uint8_t
 {
     VIEWPORT_INTERACTION_ITEM_NONE,
     VIEWPORT_INTERACTION_ITEM_TERRAIN,
@@ -84,27 +83,17 @@ enum
     VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
 };
 
-struct viewport_interaction_info
-{
-    int32_t type;
-    int32_t x;
-    int32_t y;
-    union
-    {
-        TileElement* tileElement;
-        rct_sprite* sprite;
-        Peep* peep;
-        Vehicle* vehicle;
-    };
-};
-
 struct InteractionInfo
 {
     InteractionInfo() = default;
     InteractionInfo(const paint_struct* ps);
     CoordsXY Loc;
-    TileElement* Element = nullptr;
-    uint8_t SpriteType;
+    union
+    {
+        TileElement* Element = nullptr;
+        SpriteBase* Entity;
+    };
+    ViewportInteractionItem SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
 };
 
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
@@ -148,7 +137,7 @@ void viewport_paint(
 CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords);
 
 ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, const ScreenCoordsXY& screenCoords);
-CoordsXY viewport_coord_to_map_coord(int32_t x, int32_t y, int32_t z);
+CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z);
 std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords, int32_t* direction);
 
 void show_gridlines();
@@ -159,20 +148,16 @@ void show_construction_rights();
 void hide_construction_rights();
 void viewport_set_visibility(uint8_t mode);
 
-void get_map_coordinates_from_pos(
-    const ScreenCoordsXY& screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType, TileElement** tileElement,
-    rct_viewport** viewport);
-void get_map_coordinates_from_pos_window(
-    rct_window* window, ScreenCoordsXY screenCoords, int32_t flags, CoordsXY& mapCoords, int32_t* interactionType,
-    TileElement** tileElement, rct_viewport** viewport);
+InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t flags);
+InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
-int32_t viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info);
-int32_t viewport_interaction_left_over(const ScreenCoordsXY& screenCoords);
-int32_t viewport_interaction_left_click(const ScreenCoordsXY& screenCoords);
-int32_t viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords, viewport_interaction_info* info);
-int32_t viewport_interaction_right_over(const ScreenCoordsXY& screenCoords);
-int32_t viewport_interaction_right_click(const ScreenCoordsXY& screenCoords);
+InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_left_over(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_left_click(const ScreenCoordsXY& screenCoords);
+InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_right_over(const ScreenCoordsXY& screenCoords);
+bool viewport_interaction_right_click(const ScreenCoordsXY& screenCoords);
 
 CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords);
 void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);

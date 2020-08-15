@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,7 @@
 #    include "../core/Json.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../platform/platform.h"
+#    include "../platform/Platform2.h"
 
 #    include <unordered_set>
 
@@ -35,7 +35,7 @@ NetworkUser* NetworkUser::FromJson(json_t* json)
         user->Name = std::string(name);
         if (!json_is_null(jsonGroupId))
         {
-            user->GroupId = (uint8_t)json_integer_value(jsonGroupId);
+            user->GroupId = static_cast<uint8_t>(json_integer_value(jsonGroupId));
         }
         user->Remove = false;
         return user;
@@ -86,7 +86,7 @@ void NetworkUserManager::Load()
     utf8 path[MAX_PATH];
     GetStorePath(path, sizeof(path));
 
-    if (platform_file_exists(path))
+    if (Platform::FileExists(path))
     {
         DisposeUsers();
 
@@ -120,7 +120,7 @@ void NetworkUserManager::Save()
     json_t* jsonUsers = nullptr;
     try
     {
-        if (platform_file_exists(path))
+        if (Platform::FileExists(path))
         {
             jsonUsers = Json::ReadFromFile(path);
         }

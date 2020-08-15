@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,11 +16,15 @@
 #include <memory>
 #include <vector>
 
-interface IStream;
+namespace OpenRCT2
+{
+    struct IStream;
+}
+
 class Object;
 namespace OpenRCT2
 {
-    interface IPlatformEnvironment;
+    struct IPlatformEnvironment;
 }
 
 namespace OpenRCT2::Localisation
@@ -36,6 +40,7 @@ struct ObjectRepositoryItem
     rct_object_entry ObjectEntry;
     std::string Path;
     std::string Name;
+    std::vector<std::string> Authors;
     std::vector<uint8_t> Sources;
     Object* LoadedObject{};
     struct
@@ -43,7 +48,6 @@ struct ObjectRepositoryItem
         uint8_t RideFlags;
         uint8_t RideCategory[MAX_CATEGORIES_PER_RIDE];
         uint8_t RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
-        uint8_t RideGroupIndex;
     } RideInfo;
     struct
     {
@@ -55,11 +59,11 @@ struct ObjectRepositoryItem
         if (Sources.empty())
             return OBJECT_SOURCE_CUSTOM;
         else
-            return (OBJECT_SOURCE_GAME)Sources[0];
+            return static_cast<OBJECT_SOURCE_GAME>(Sources[0]);
     }
 };
 
-interface IObjectRepository
+struct IObjectRepository
 {
     virtual ~IObjectRepository() = default;
 
@@ -67,7 +71,7 @@ interface IObjectRepository
     virtual void Construct(int32_t language) abstract;
     virtual size_t GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem* GetObjects() const abstract;
-    virtual const ObjectRepositoryItem* FindObject(const utf8* name) const abstract;
+    virtual const ObjectRepositoryItem* FindObject(const std::string_view& legacyIdentifier) const abstract;
     virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
 
     virtual Object* LoadObject(const ObjectRepositoryItem* ori) abstract;
@@ -77,8 +81,8 @@ interface IObjectRepository
     virtual void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) abstract;
     virtual void AddObjectFromFile(const std::string_view& objectName, const void* data, size_t dataSize) abstract;
 
-    virtual void ExportPackedObject(IStream * stream) abstract;
-    virtual void WritePackedObjects(IStream * stream, std::vector<const ObjectRepositoryItem*> & objects) abstract;
+    virtual void ExportPackedObject(OpenRCT2::IStream* stream) abstract;
+    virtual void WritePackedObjects(OpenRCT2::IStream* stream, std::vector<const ObjectRepositoryItem*>& objects) abstract;
 };
 
 std::unique_ptr<IObjectRepository> CreateObjectRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
