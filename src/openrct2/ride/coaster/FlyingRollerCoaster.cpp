@@ -15041,6 +15041,38 @@ static void flying_rc_track_flyer_half_loop_down(
     }
 }
 
+static void flying_rc_track_left_flyer_corkscrew_up(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    bolliger_mabillard_track_left_corkscrew_up(
+        session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES_INVERTED);
+}
+
+static void flying_rc_track_right_flyer_corkscrew_up(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    bolliger_mabillard_track_right_corkscrew_up(
+        session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES_INVERTED);
+}
+
+static void flying_rc_track_left_flyer_corkscrew_down(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    bolliger_mabillard_track_left_corkscrew_down(
+        session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES_INVERTED);
+}
+
+static void flying_rc_track_right_flyer_corkscrew_down(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    bolliger_mabillard_track_right_corkscrew_down(
+        session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES_INVERTED);
+}
+
 /** rct2: 0x007C7664 */
 static void flying_rc_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -17579,6 +17611,22 @@ static void flying_rc_track_right_banked_25_deg_down_to_flat(
     flying_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
+static void flying_rc_track_multidim_90_deg_up_to_inverted_flat_quarter_loop(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    bolliger_mabillard_track_90_deg_to_inverted_flat_quarter_loop_up(
+        session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES_INVERTED);
+}
+
+static void flying_rc_track_multidim_inverted_flat_to_90_deg_quarter_loop_down(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    bolliger_mabillard_track_inverted_flat_to_90_deg_quarter_loop_down(
+        session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES_INVERTED);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType, int32_t direction)
 {
     switch (trackType)
@@ -17871,6 +17919,73 @@ TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType, int32
             return flying_rc_track_right_banked_25_deg_down_to_flat;
         case TRACK_ELEM_BOOSTER:
             return flying_rc_track_booster;
+
+        // Use Twister Roller Coaster
+        // Extra track compatibility, since the sprites fit
+        case TRACK_ELEM_LEFT_VERTICAL_LOOP:
+        case TRACK_ELEM_RIGHT_VERTICAL_LOOP:
+        case TRACK_ELEM_90_DEG_UP:
+        case TRACK_ELEM_90_DEG_DOWN:
+        case TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP:
+        case TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN:
+        case TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP:
+        case TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN:
+        case TRACK_ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
+        case TRACK_ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
+        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK:
+        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP:
+        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP:
+        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
+        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
+        case TRACK_ELEM_FLAT_TO_60_DEG_UP:
+        case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+        case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
+        case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
+        case TRACK_ELEM_BRAKE_FOR_DROP:
+        case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
+        case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+        case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
+        case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
+        case TRACK_ELEM_HALF_LOOP_UP:
+        case TRACK_ELEM_HALF_LOOP_DOWN:
+        case TRACK_ELEM_LEFT_CORKSCREW_UP:
+        case TRACK_ELEM_RIGHT_CORKSCREW_UP:
+        case TRACK_ELEM_LEFT_CORKSCREW_DOWN:
+        case TRACK_ELEM_RIGHT_CORKSCREW_DOWN:
+        case TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE:
+        case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE:
+        case TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE:
+        case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122:
+        case TRACK_ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN:
+        case TRACK_ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN:
+        case TRACK_ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP:
+        case TRACK_ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP:
+        case TRACK_ELEM_POWERED_LIFT:
+        case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP:
+        case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP:
+        case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN:
+        case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN:
+        case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP:
+        case TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
+            return get_track_paint_function_twister_rc(trackType, direction);
+
+        // Inversible corkscrews
+        case TRACK_ELEM_LEFT_FLYER_CORKSCREW_UP:
+            return flying_rc_track_left_flyer_corkscrew_up;
+        case TRACK_ELEM_RIGHT_FLYER_CORKSCREW_UP:
+            return flying_rc_track_right_flyer_corkscrew_up;
+        case TRACK_ELEM_LEFT_FLYER_CORKSCREW_DOWN:
+            return flying_rc_track_left_flyer_corkscrew_down;
+        case TRACK_ELEM_RIGHT_FLYER_CORKSCREW_DOWN:
+            return flying_rc_track_right_flyer_corkscrew_down;
+
+        // Inversible quarter loop support
+        // Due to lack of sprites, can only do the inside loop
+        case TRACK_ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
+            return flying_rc_track_multidim_inverted_flat_to_90_deg_quarter_loop_down;
+        case TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP:
+            return flying_rc_track_multidim_90_deg_up_to_inverted_flat_quarter_loop;
     }
     return nullptr;
 }
