@@ -200,7 +200,7 @@ declare global {
          * @param args The action parameters.
          * @param callback The function to be called with the result of the action.
          */
-        queryAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
+        queryAction(action: ActionType, args: object, callback: (result: GameActionResult) => void): void;
 
         /**
          * Executes a game action. In a network game, this will send a request to the server and wait
@@ -209,7 +209,7 @@ declare global {
          * @param args The action parameters.
          * @param callback The function to be called with the result of the action.
          */
-        executeAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
+        executeAction(action: ActionType, args: object, callback: (result: GameActionResult) => void): void;
 
         /**
          * Subscribes to the given hook.
@@ -309,9 +309,51 @@ declare global {
         "research" |
         "interest";
 
+    /**
+     * All the possible internal game actions are listed. Custom game actions are also allowed (the string type)
+     */
     type ActionType =
+        "balloonpress" |
+        "bannerplace" |
+        "bannerremove" |
+        "bannersetcolour" |
+        "bannersetname" |
+        "bannersetstyle" |
+        "clearscenery" |
+        "climateset" |
+        "footpathplace" |
+        "footpathplacefromtrack" |
+        "foothpathremove" |
+        "footpathsceneryplace" |
+        "footpathsceneryremove" |
+        "guestsetflags" |
         "guestsetname" |
+        "landbuyrights" |
+        "landlower" |
+        "landraise" |
+        "landsetheight" |
+        "landsetrights" |
+        "landsmoothaction" |
+        "largesceneryplace" |
+        "largesceneryremove" |
+        "largescenerysetcolour" |
+        "loadorquit" |
+        "mazeplacetrack" |
+        "mazesettrack" |
+        "networkmodifygroup" |
+        "parkentranceremove" |
+        "parkmarketing" |
+        "parksetdate" |
+        "parksetloan" |
         "parksetname" |
+        "parksetparameter" |
+        "parksetresearchfunding" |
+        "pausetoggle" |
+        "peeppickup" |
+        "placeparkentrance" |
+        "placepeepspawn" |
+        "playerkick" |
+        "playersetgroup" |
         "ridecreate" |
         "ridedemolish" |
         "rideentranceexitplace" |
@@ -323,12 +365,32 @@ declare global {
         "ridesetsetting" |
         "ridesetstatus" |
         "ridesetvehicles" |
+        "scenariosetsetting" |
         "setcheataction" |
+        "setparkentrancefee" |
+        "signsetname" |
         "smallsceneryplace" |
+        "smallsceneryremove" |
+        "stafffire" |
+        "staffhire" |
+        "staffsetcolour" |
+        "staffsetcostume" |
+        "staffsetname" |
+        "staffsetorders" |
+        "staffsetpatrolarea" |
+        "surfacesetstyle" |
+        "tilemodify" |
         "trackdesign" |
         "trackplace" |
         "trackremove" |
-        "tracksetbrakespeed";
+        "tracksetbrakespeed" |
+        "wallplace" |
+        "wallremove" |
+        "wallsetcolour" |
+        "waterlower" |
+        "waterraise" |
+        "watersetheight" |
+        string;
 
     interface GameActionEventArgs {
         readonly player: number;
