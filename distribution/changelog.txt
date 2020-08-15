@@ -1,4 +1,4 @@
-0.2.6+ (in development)
+0.3.0 (2020-08-15)
 ------------------------------------------------------------------------
 - Feature: [#7648] "Enable all drawable track pieces" now enables more pieces for the Twister, Vertical and Air Powered Vertical coasters.
 - Feature: [#9029] Open doors with the tile inspector.
