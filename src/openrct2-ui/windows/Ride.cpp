@@ -6026,7 +6026,7 @@ static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetInde
             {
                 auto ft = Formatter::Common();
                 ft.Increment(2);
-                ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].count);
+                ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number);
                 ft.Add<uint16_t>(measurement->vehicle_index + 1);
             }
             else
