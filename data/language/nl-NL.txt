@@ -3659,6 +3659,11 @@ STR_6375    :Onbekende attractie
 STR_6376    :{WINDOW_COLOUR_2}Voertuig:{NEWLINE}{BLACK}{STRINGID} voor {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} voor {STRINGID}
 STR_6378    :Objectenlijst ophalen: {INT32} / {INT32}
+STR_6379    :Ongeldige gegevens ontvangen
+STR_6380    :Update beschikbaar!
+STR_6381    :Meepraten op de OpenRCT2-Discord
+STR_6382    :Er is een nieuwe versie van OpenRCT2 beschikbaar: {STRING}
+STR_6383    :Downloadpagina openen
 
 #############
 # Scenarios #
