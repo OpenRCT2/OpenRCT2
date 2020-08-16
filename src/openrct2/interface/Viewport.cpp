@@ -1016,7 +1016,13 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
     auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
     if (paletteId != PALETTE_NULL)
     {
-        gfx_filter_rect(dpi, { { dpi->x, dpi->y }, { dpi->width + dpi->x - 1, dpi->height + dpi->y - 1 } }, paletteId);
+        // Only scale width if zoomed in more than 1:1
+        auto zoomLevel = dpi->zoom_level < 0 ? dpi->zoom_level : 0;
+        auto x = dpi->x;
+        auto y = dpi->y;
+        auto w = (dpi->width / zoomLevel) - 1;
+        auto h = (dpi->height / zoomLevel) - 1;
+        gfx_filter_rect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
     }
 }
 
