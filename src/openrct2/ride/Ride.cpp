@@ -2700,7 +2700,7 @@ Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspect
 
     for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
-        if (peep->StaffType != STAFF_TYPE_MECHANIC)
+        if (peep->AssignedStaffType != STAFF_TYPE_MECHANIC)
             continue;
 
         if (!forInspection)

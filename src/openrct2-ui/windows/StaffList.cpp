@@ -192,7 +192,7 @@ void WindowStaffListRefresh()
     for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
         sprite_set_flashing(peep, false);
-        if (peep->StaffType != _windowStaffListSelectedTab)
+        if (peep->AssignedStaffType != _windowStaffListSelectedTab)
             continue;
         sprite_set_flashing(peep, true);
 
@@ -342,7 +342,7 @@ void window_staff_list_update(rct_window* w)
             {
                 sprite_set_flashing(peep, false);
 
-                if (peep->StaffType == _windowStaffListSelectedTab)
+                if (peep->AssignedStaffType == _windowStaffListSelectedTab)
                 {
                     sprite_set_flashing(peep, true);
                 }
@@ -378,7 +378,7 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
 
         for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
-            if (peep->StaffType != selectedPeepType)
+            if (peep->AssignedStaffType != selectedPeepType)
                 continue;
 
             if (isPatrolAreaSet)
@@ -726,7 +726,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             }
 
             auto staffOrderIcon_x = nameColumnSize + 20;
-            if (peep->StaffType != 3)
+            if (peep->AssignedStaffType != 3)
             {
                 auto staffOrders = peep->StaffOrders;
                 auto staffOrderSprite = staffOrderBaseSprites[_windowStaffListSelectedTab];

@@ -67,7 +67,7 @@ public:
         // Update each staff member's uniform
         for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
-            if (peep->StaffType == _staffType)
+            if (peep->AssignedStaffType == _staffType)
             {
                 peep->TshirtColour = _colour;
                 peep->TrousersColour = _colour;

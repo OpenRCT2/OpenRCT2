@@ -184,7 +184,7 @@ private:
                 ++newStaffId;
                 for (auto searchPeep : EntityList<Staff>(EntityListId::Peep))
                 {
-                    if (searchPeep->StaffType != _staffType)
+                    if (searchPeep->AssignedStaffType != _staffType)
                         continue;
 
                     if (searchPeep->Id == newStaffId)
@@ -199,7 +199,7 @@ private:
             }
 
             newPeep->Id = newStaffId;
-            newPeep->StaffType = _staffType;
+            newPeep->AssignedStaffType = _staffType;
 
             PeepSpriteType spriteType = spriteTypes[_staffType];
             if (_staffType == STAFF_TYPE_ENTERTAINER)

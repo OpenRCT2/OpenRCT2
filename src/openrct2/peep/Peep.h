@@ -609,7 +609,7 @@ struct Peep : SpriteBase
     PeepType AssignedPeepType;
     union
     {
-        uint8_t StaffType;
+        uint8_t AssignedStaffType;
         uint8_t GuestNumRides;
     };
     uint8_t TshirtColour;

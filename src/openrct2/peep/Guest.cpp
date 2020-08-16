@@ -6277,7 +6277,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
 
     for (auto inner_peep : EntityList<Staff>(EntityListId::Peep))
     {
-        if (inner_peep->StaffType != STAFF_TYPE_SECURITY)
+        if (inner_peep->AssignedStaffType != STAFF_TYPE_SECURITY)
             continue;
 
         if (inner_peep->x == LOCATION_NULL)

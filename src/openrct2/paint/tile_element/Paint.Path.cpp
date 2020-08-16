@@ -912,7 +912,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
                 {
                     patrolColour = COLOUR_GREY;
                 }
-                staffType = staff->StaffType;
+                staffType = staff->AssignedStaffType;
             }
         }
 

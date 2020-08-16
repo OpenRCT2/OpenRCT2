@@ -1095,7 +1095,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
                 {
                     patrolColour = COLOUR_GREY;
                 }
-                staffType = staff->StaffType;
+                staffType = staff->AssignedStaffType;
             }
         }
 

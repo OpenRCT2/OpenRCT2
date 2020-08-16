@@ -439,7 +439,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", peep->sprite_index, peep->StaffType, peep->Energy,
+                    "staff id %03d type: %02u energy %03u name %s", peep->sprite_index, peep->AssignedStaffType, peep->Energy,
                     name.c_str());
             }
         }
@@ -494,7 +494,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                     console.WriteLineError("Invalid staff ID");
                     return 1;
                 }
-                if (staff->StaffType != STAFF_TYPE_ENTERTAINER)
+                if (staff->AssignedStaffType != STAFF_TYPE_ENTERTAINER)
                 {
                     console.WriteLineError("Specified staff is not entertainer");
                     return 1;
