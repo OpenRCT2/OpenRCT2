@@ -2428,7 +2428,15 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
                 uint8_t rideType = RideDropdownData[rideLabelId].ride_type_id;
                 if (rideType < RIDE_TYPE_COUNT)
                 {
-                    set_operating_setting(w->number, RideSetSetting::RideType, rideType);
+                    auto rideSetSetting = RideSetSettingAction(w->number, RideSetSetting::RideType, rideType);
+                    rideSetSetting.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+                        // Reset ghost track if ride construction window is open, prevents a crash
+                        // Will get set to the correct Alternative variable during set_default_next_piece.
+                        // TODO: Rework construction window to prevent the need for this.
+                        _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
+                        ride_construction_set_default_next_piece();
+                    });
+                    GameActions::Execute(&rideSetSetting);
                 }
             }
     }
