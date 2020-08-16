@@ -201,6 +201,7 @@ declare global {
          * @param callback The function to be called with the result of the action.
          */
         queryAction(action: ActionType, args: object, callback: (result: GameActionResult) => void): void;
+        queryAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
 
         /**
          * Executes a game action. In a network game, this will send a request to the server and wait
@@ -210,6 +211,7 @@ declare global {
          * @param callback The function to be called with the result of the action.
          */
         executeAction(action: ActionType, args: object, callback: (result: GameActionResult) => void): void;
+        executeAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
 
         /**
          * Subscribes to the given hook.
@@ -309,9 +311,6 @@ declare global {
         "research" |
         "interest";
 
-    /**
-     * All the possible internal game actions are listed. Custom game actions are also allowed (the string type)
-     */
     type ActionType =
         "balloonpress" |
         "bannerplace" |
@@ -389,8 +388,7 @@ declare global {
         "wallsetcolour" |
         "waterlower" |
         "waterraise" |
-        "watersetheight" |
-        string;
+        "watersetheight";
 
     interface GameActionEventArgs {
         readonly player: number;
