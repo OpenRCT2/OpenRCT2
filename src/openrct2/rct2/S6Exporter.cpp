@@ -1124,7 +1124,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
                 STR_SECURITY_GUARD_X,
                 STR_ENTERTAINER_X,
             };
-            dst->name_string_idx = staffNames[src->AssignedStaffType % sizeof(staffNames)];
+            dst->name_string_idx = staffNames[static_cast<uint8_t>(src->AssignedStaffType) % sizeof(staffNames)];
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {

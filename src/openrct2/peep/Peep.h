@@ -60,6 +60,16 @@ enum class PeepType : uint8_t
     Invalid = 0xFF
 };
 
+enum class StaffType : uint8_t
+{
+    Handyman,
+    Mechanic,
+    Security,
+    Entertainer,
+
+    Count
+};
+
 enum PeepThoughtType : uint8_t
 {
     PEEP_THOUGHT_TYPE_CANT_AFFORD_0 = 0,      // "I can't afford"
@@ -609,7 +619,7 @@ struct Peep : SpriteBase
     PeepType AssignedPeepType;
     union
     {
-        uint8_t AssignedStaffType;
+        StaffType AssignedStaffType;
         uint8_t GuestNumRides;
     };
     uint8_t TshirtColour;

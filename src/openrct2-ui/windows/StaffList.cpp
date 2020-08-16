@@ -192,7 +192,7 @@ void WindowStaffListRefresh()
     for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
         sprite_set_flashing(peep, false);
-        if (peep->AssignedStaffType != _windowStaffListSelectedTab)
+        if (static_cast<uint8_t>(peep->AssignedStaffType) != _windowStaffListSelectedTab)
             continue;
         sprite_set_flashing(peep, true);
 
@@ -230,9 +230,9 @@ static void window_staff_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         case WIDX_STAFF_LIST_HIRE_BUTTON:
         {
-            STAFF_TYPE staffType = static_cast<STAFF_TYPE>(_windowStaffListSelectedTab);
+            StaffType staffType = static_cast<StaffType>(_windowStaffListSelectedTab);
             ENTERTAINER_COSTUME costume = ENTERTAINER_COSTUME_COUNT;
-            if (staffType == STAFF_TYPE_ENTERTAINER)
+            if (staffType == StaffType::Entertainer)
             {
                 costume = static_cast<ENTERTAINER_COSTUME>(window_staff_list_get_random_entertainer_costume());
             }
@@ -301,7 +301,8 @@ static void window_staff_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             window_staff_list_cancel_tools(w);
             break;
         case WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER:
-            window_dropdown_show_colour(w, widget, w->colours[1], staff_get_colour(_windowStaffListSelectedTab));
+            window_dropdown_show_colour(
+                w, widget, w->colours[1], staff_get_colour(static_cast<StaffType>(_windowStaffListSelectedTab)));
             break;
     }
 }
@@ -314,7 +315,7 @@ static void window_staff_list_dropdown(rct_window* w, rct_widgetindex widgetInde
 {
     if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER && dropdownIndex != -1)
     {
-        auto action = StaffSetColourAction(_windowStaffListSelectedTab, dropdownIndex);
+        auto action = StaffSetColourAction(static_cast<StaffType>(_windowStaffListSelectedTab), dropdownIndex);
         GameActions::Execute(&action);
     }
 }
@@ -342,7 +343,7 @@ void window_staff_list_update(rct_window* w)
             {
                 sprite_set_flashing(peep, false);
 
-                if (peep->AssignedStaffType == _windowStaffListSelectedTab)
+                if (static_cast<uint8_t>(peep->AssignedStaffType) == _windowStaffListSelectedTab)
                 {
                     sprite_set_flashing(peep, true);
                 }
@@ -371,14 +372,14 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         if (footpathCoords.isNull())
             return;
 
-        bool isPatrolAreaSet = staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(selectedPeepType), footpathCoords);
+        bool isPatrolAreaSet = staff_is_patrol_area_set_for_type(static_cast<StaffType>(selectedPeepType), footpathCoords);
 
         Peep* closestPeep = nullptr;
         int32_t closestPeepDistance = std::numeric_limits<int32_t>::max();
 
         for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
-            if (peep->AssignedStaffType != selectedPeepType)
+            if (static_cast<uint8_t>(peep->AssignedStaffType) != selectedPeepType)
                 continue;
 
             if (isPatrolAreaSet)
@@ -529,7 +530,8 @@ void window_staff_list_invalidate(rct_window* w)
     if (tabIndex < 3)
     {
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
-        auto spriteIdPalette = SPRITE_ID_PALETTE_COLOUR_1(static_cast<uint32_t>(staff_get_colour(tabIndex)));
+        auto spriteIdPalette = SPRITE_ID_PALETTE_COLOUR_1(
+            static_cast<uint32_t>(staff_get_colour(static_cast<StaffType>(tabIndex))));
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = spriteIdPalette | IMAGE_TYPE_TRANSPARENT
             | SPR_PALETTE_BTN;
     }
@@ -726,7 +728,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             }
 
             auto staffOrderIcon_x = nameColumnSize + 20;
-            if (peep->AssignedStaffType != 3)
+            if (peep->AssignedStaffType != StaffType::Entertainer)
             {
                 auto staffOrders = peep->StaffOrders;
                 auto staffOrderSprite = staffOrderBaseSprites[_windowStaffListSelectedTab];

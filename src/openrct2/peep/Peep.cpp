@@ -1940,7 +1940,7 @@ void Peep::FormatNameTo(Formatter& ft) const
                 STR_ENTERTAINER_X,
             };
 
-            auto staffNameIndex = AssignedStaffType;
+            auto staffNameIndex = static_cast<uint8_t>(AssignedStaffType);
             if (staffNameIndex > sizeof(staffNames))
             {
                 staffNameIndex = 0;

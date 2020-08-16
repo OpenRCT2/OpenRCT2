@@ -494,7 +494,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                     console.WriteLineError("Invalid staff ID");
                     return 1;
                 }
-                if (staff->AssignedStaffType != STAFF_TYPE_ENTERTAINER)
+                if (staff->AssignedStaffType != StaffType::Entertainer)
                 {
                     console.WriteLineError("Specified staff is not entertainer");
                     return 1;

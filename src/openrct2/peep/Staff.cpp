@@ -47,7 +47,7 @@
  *
  * rct2: 0x00992A00
  */
-const money32 gStaffWageTable[STAFF_TYPE_COUNT] = {
+const money32 gStaffWageTable[static_cast<uint8_t>(StaffType::Count)] = {
     MONEY(50, 00), // Handyman
     MONEY(80, 00), // Mechanic
     MONEY(60, 00), // Security guard
@@ -72,8 +72,8 @@ const rct_string_id StaffCostumeNames[] = {
 
 // Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their StaffId
 // Additionally there is a patrol area for each staff type, which is the union of the patrols of all staff members of that type
-uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
-uint8_t gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
+uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)) * STAFF_PATROL_AREA_SIZE];
+uint8_t gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
 uint16_t gStaffDrawPatrolAreas;
 colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
@@ -94,7 +94,7 @@ void staff_reset_modes()
     for (int32_t i = 0; i < STAFF_MAX_COUNT; i++)
         gStaffModes[i] = STAFF_MODE_NONE;
 
-    for (int32_t i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + STAFF_TYPE_COUNT); i++)
+    for (int32_t i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)); i++)
         gStaffModes[i] = STAFF_MODE_WALK;
 
     staff_update_greyed_patrol_areas();
@@ -103,7 +103,7 @@ void staff_reset_modes()
 /**
  * Hires a new staff member of the given type.
  */
-bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainerType)
+bool staff_hire_new_member(StaffType staffType, ENTERTAINER_COSTUME entertainerType)
 {
     bool autoPosition = gConfigGeneral.auto_staff_placement;
     if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
@@ -113,7 +113,7 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
 
     uint32_t staffOrders = 0;
 
-    if (staffType == STAFF_TYPE_HANDYMAN)
+    if (staffType == StaffType::Handyman)
     {
         staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
         if (gConfigGeneral.handymen_mow_default)
@@ -121,7 +121,7 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
             staffOrders |= STAFF_ORDERS_MOWING;
         }
     }
-    else if (staffType == STAFF_TYPE_MECHANIC)
+    else if (staffType == StaffType::Mechanic)
     {
         staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
     }
@@ -148,7 +148,7 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
  */
 void staff_update_greyed_patrol_areas()
 {
-    for (int32_t staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
+    for (int32_t staff_type = 0; staff_type < static_cast<uint8_t>(StaffType::Count); ++staff_type)
     {
         int32_t staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
         for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
@@ -158,7 +158,7 @@ void staff_update_greyed_patrol_areas()
 
         for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
-            if (peep->AssignedStaffType == staff_type)
+            if (static_cast<uint8_t>(peep->AssignedStaffType) == staff_type)
             {
                 int32_t peepPatrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
                 for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
@@ -398,9 +398,9 @@ bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
     return staff_is_patrol_area_set(StaffId, coords);
 }
 
-bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords)
+bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords)
 {
-    return staff_is_patrol_area_set(STAFF_MAX_COUNT + type, coords);
+    return staff_is_patrol_area_set(STAFF_MAX_COUNT + static_cast<uint8_t>(type), coords);
 }
 
 void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool value)
@@ -1075,13 +1075,13 @@ bool Staff::DoPathFinding()
 {
     switch (AssignedStaffType)
     {
-        case STAFF_TYPE_HANDYMAN:
+        case StaffType::Handyman:
             return DoHandymanPathFinding();
-        case STAFF_TYPE_MECHANIC:
+        case StaffType::Mechanic:
             return DoMechanicPathFinding();
-        case STAFF_TYPE_SECURITY:
+        case StaffType::Security:
             return DoMiscPathFinding();
-        case STAFF_TYPE_ENTERTAINER:
+        case StaffType::Entertainer:
             return DoEntertainerPathFinding();
 
         default:
@@ -1100,17 +1100,17 @@ void Staff::SetCostume(uint8_t value)
     SpriteType = static_cast<PeepSpriteType>(value + PEEP_SPRITE_TYPE_ENTERTAINER_PANDA);
 }
 
-colour_t staff_get_colour(uint8_t staffType)
+colour_t staff_get_colour(StaffType staffType)
 {
     switch (staffType)
     {
-        case STAFF_TYPE_HANDYMAN:
+        case StaffType::Handyman:
             return gStaffHandymanColour;
-        case STAFF_TYPE_MECHANIC:
+        case StaffType::Mechanic:
             return gStaffMechanicColour;
-        case STAFF_TYPE_SECURITY:
+        case StaffType::Security:
             return gStaffSecurityColour;
-        case STAFF_TYPE_ENTERTAINER:
+        case StaffType::Entertainer:
             return 0;
         default:
             assert(false);
@@ -1118,17 +1118,17 @@ colour_t staff_get_colour(uint8_t staffType)
     }
 }
 
-bool staff_set_colour(uint8_t staffType, colour_t value)
+bool staff_set_colour(StaffType staffType, colour_t value)
 {
     switch (staffType)
     {
-        case STAFF_TYPE_HANDYMAN:
+        case StaffType::Handyman:
             gStaffHandymanColour = value;
             break;
-        case STAFF_TYPE_MECHANIC:
+        case StaffType::Mechanic:
             gStaffMechanicColour = value;
             break;
-        case STAFF_TYPE_SECURITY:
+        case StaffType::Security:
             gStaffSecurityColour = value;
             break;
         default:
@@ -1828,7 +1828,7 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
 
 void Staff::Tick128UpdateStaff()
 {
-    if (AssignedStaffType != STAFF_TYPE_SECURITY)
+    if (AssignedStaffType != StaffType::Security)
         return;
 
     PeepSpriteType newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
@@ -1857,7 +1857,8 @@ void Staff::Tick128UpdateStaff()
 bool Staff::IsMechanic() const
 {
     return (
-        sprite_identifier == SPRITE_IDENTIFIER_PEEP && AssignedPeepType == PeepType::Staff && AssignedStaffType == STAFF_TYPE_MECHANIC);
+        sprite_identifier == SPRITE_IDENTIFIER_PEEP && AssignedPeepType == PeepType::Staff
+        && AssignedStaffType == StaffType::Mechanic);
 }
 
 void Staff::UpdateStaff(uint32_t stepsToTake)
@@ -1928,7 +1929,7 @@ void Staff::UpdatePatrolling()
         }
     }
 
-    if (AssignedStaffType != STAFF_TYPE_HANDYMAN)
+    if (AssignedStaffType != StaffType::Handyman)
         return;
 
     if (peep_update_patrolling_find_sweeping(this))

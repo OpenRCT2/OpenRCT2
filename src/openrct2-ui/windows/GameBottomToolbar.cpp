@@ -613,7 +613,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
 
             auto clipCoords = ScreenCoordsXY{ 10, 19 };
 
-            if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == STAFF_TYPE_ENTERTAINER)
+            if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
             {
                 clipCoords.y += 3;
             }

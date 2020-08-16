@@ -908,7 +908,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         return;
     }
 
-    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == STAFF_TYPE_ENTERTAINER)
+    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
     int32_t animationFrame = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
