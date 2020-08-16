@@ -393,7 +393,7 @@ declare global {
     interface GameActionEventArgs {
         readonly player: number;
         readonly type: number;
-        readonly action: ActionType;
+        readonly action: string;
         readonly isClientOnly: boolean;
         readonly args: object;
         result: GameActionResult;
