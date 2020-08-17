@@ -449,31 +449,37 @@ namespace OpenRCT2::Scripting
 #    endif
         }
 
+#    ifndef DISABLE_NETWORK
         std::shared_ptr<ScSocketServer> createServer()
         {
-#    ifndef DISABLE_NETWORK
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
             auto socket = std::make_shared<ScSocketServer>(plugin);
             scriptEngine.AddSocket(socket);
             return socket;
-#    else
-            duk_error(_context, DUK_ERR_ERROR, "Networking has been disabled.");
-#    endif
         }
+#    else
+        void createServer()
+        {
+            duk_error(_context, DUK_ERR_ERROR, "Networking has been disabled.");
+        }
+#    endif
 
+#    ifndef DISABLE_NETWORK
         std::shared_ptr<ScSocket> createSocket()
         {
-#    ifndef DISABLE_NETWORK
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
             auto socket = std::make_shared<ScSocket>(plugin);
             scriptEngine.AddSocket(socket);
             return socket;
-#    else
-            duk_error(_context, DUK_ERR_ERROR, "Networking has been disabled.");
-#    endif
         }
+#    else
+        void createSocket()
+        {
+            duk_error(_context, DUK_ERR_ERROR, "Networking has been disabled.");
+        }
+#    endif
 
         static void Register(duk_context* ctx)
         {

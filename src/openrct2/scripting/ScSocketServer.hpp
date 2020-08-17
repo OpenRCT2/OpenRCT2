@@ -10,14 +10,15 @@
 #pragma once
 
 #ifdef ENABLE_SCRIPTING
+#    ifndef DISABLE_NETWORK
 
-#    include "../Context.h"
-#    include "../network/Socket.h"
-#    include "Duktape.hpp"
-#    include "ScriptEngine.h"
+#        include "../Context.h"
+#        include "../network/Socket.h"
+#        include "Duktape.hpp"
+#        include "ScriptEngine.h"
 
-#    include <algorithm>
-#    include <vector>
+#        include <algorithm>
+#        include <vector>
 
 namespace OpenRCT2::Scripting
 {
@@ -500,4 +501,5 @@ namespace OpenRCT2::Scripting
     };
 } // namespace OpenRCT2::Scripting
 
+#    endif
 #endif

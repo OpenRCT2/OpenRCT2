@@ -394,8 +394,10 @@ void ScriptEngine::Initialise()
     ScVehicle::Register(ctx);
     ScPeep::Register(ctx);
     ScGuest::Register(ctx);
+#    ifndef DISABLE_NETWORK
     ScSocket::Register(ctx);
     ScSocketServer::Register(ctx);
+#    endif
     ScStaff::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
@@ -1132,13 +1134,16 @@ void ScriptEngine::SaveSharedStorage()
     }
 }
 
+#    ifndef DISABLE_NETWORK
 void ScriptEngine::AddSocket(const std::shared_ptr<ScSocketBase>& socket)
 {
     _sockets.push_back(socket);
 }
+#    endif
 
 void ScriptEngine::UpdateSockets()
 {
+#    ifndef DISABLE_NETWORK
     // Use simple for i loop as Update calls can modify the list
     for (size_t i = 0; i < _sockets.size(); i++)
     {
@@ -1149,10 +1154,12 @@ void ScriptEngine::UpdateSockets()
             i--;
         }
     }
+#    endif
 }
 
 void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
 {
+#    ifndef DISABLE_NETWORK
     for (auto it = _sockets.begin(); it != _sockets.end();)
     {
         if ((*it)->GetPlugin() == plugin)
@@ -1165,6 +1172,7 @@ void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
             it++;
         }
     }
+#    endif
 }
 
 std::string OpenRCT2::Scripting::Stringify(const DukValue& val)

@@ -42,7 +42,9 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
+#    ifndef DISABLE_NETWORK
     class ScSocketBase;
+#    endif
 
     class ScriptExecutionInfo
     {
@@ -191,7 +193,9 @@ namespace OpenRCT2::Scripting
 
         void SaveSharedStorage();
 
+#    ifndef DISABLE_NETWORK
         void AddSocket(const std::shared_ptr<ScSocketBase>& socket);
+#    endif
 
     private:
         void Initialise();
