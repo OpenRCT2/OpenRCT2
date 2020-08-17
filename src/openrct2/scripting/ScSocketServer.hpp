@@ -67,6 +67,12 @@ namespace OpenRCT2::Scripting
                 listeners.erase(it);
             }
         }
+
+        void RemoveAllListeners(uint32_t id)
+        {
+            auto& listeners = GetListenerList(id);
+            listeners.clear();
+        }
     };
 
     class ScSocketBase
@@ -105,10 +111,13 @@ namespace OpenRCT2::Scripting
         static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
         static constexpr uint32_t EVENT_CLOSE = 0;
         static constexpr uint32_t EVENT_DATA = 1;
+        static constexpr uint32_t EVENT_CONNECT_ONCE = 2;
+        static constexpr uint32_t EVENT_ERROR = 3;
 
         EventList _eventList;
         std::unique_ptr<ITcpSocket> _socket;
         bool _disposed{};
+        bool _connecting{};
 
     public:
         ScSocket(const std::shared_ptr<Plugin>& plugin)
@@ -138,6 +147,31 @@ namespace OpenRCT2::Scripting
             if (_socket != nullptr)
             {
                 _socket->SetNoDelay(noDelay);
+            }
+            return this;
+        }
+
+        ScSocket* connect(uint16_t port, const std::string& host, const DukValue& callback)
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            if (_socket != nullptr)
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Socket has already been created.");
+            }
+            else if (_disposed)
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Socket is disposed.");
+            }
+            else if (_connecting)
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Socket is already connecting.");
+            }
+            else
+            {
+                _socket = CreateTcpSocket();
+                _socket->Connect(host, port);
+                _eventList.AddListener(EVENT_CONNECT_ONCE, callback);
+                _connecting = true;
             }
             return this;
         }
@@ -224,6 +258,8 @@ namespace OpenRCT2::Scripting
                 return EVENT_CLOSE;
             if (name == "data")
                 return EVENT_DATA;
+            if (name == "error")
+                return EVENT_ERROR;
             return EVENT_NONE;
         }
 
@@ -235,9 +271,24 @@ namespace OpenRCT2::Scripting
 
             if (_socket != nullptr)
             {
-                if (_socket->GetStatus() == SOCKET_STATUS_CONNECTED)
+                auto status = _socket->GetStatus();
+                if (_connecting)
                 {
-                    char buffer[128];
+                    if (status == SOCKET_STATUS_CONNECTED)
+                    {
+                        _connecting = false;
+                        _eventList.Raise(EVENT_CONNECT_ONCE, GetPlugin(), {}, false);
+                        _eventList.RemoveAllListeners(EVENT_CONNECT_ONCE);
+                    }
+                    else if (status == SOCKET_STATUS_CLOSED)
+                    {
+                        _connecting = false;
+                        _eventList.Raise(EVENT_ERROR, GetPlugin(), {}, false);
+                    }
+                }
+                else if (status == SOCKET_STATUS_CONNECTED)
+                {
+                    char buffer[2048];
                     size_t bytesRead{};
                     auto result = _socket->ReceiveData(buffer, sizeof(buffer), &bytesRead);
                     switch (result)
@@ -278,6 +329,7 @@ namespace OpenRCT2::Scripting
         {
             dukglue_register_method(ctx, &ScSocket::destroy, "destroy");
             dukglue_register_method(ctx, &ScSocket::setNoDelay, "setNoDelay");
+            dukglue_register_method(ctx, &ScSocket::connect, "connect");
             dukglue_register_method(ctx, &ScSocket::end, "end");
             dukglue_register_method(ctx, &ScSocket::write, "write");
             dukglue_register_method(ctx, &ScSocket::on, "on");
