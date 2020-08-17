@@ -233,6 +233,14 @@ public:
         return _error.empty() ? nullptr : _error.c_str();
     }
 
+    void SetNoDelay(bool noDelay) override
+    {
+        if (_socket != INVALID_SOCKET)
+        {
+            SetOption(_socket, IPPROTO_TCP, TCP_NODELAY, noDelay);
+        }
+    }
+
     void Listen(uint16_t port) override
     {
         Listen("", port);
@@ -334,7 +342,7 @@ public:
                 int32_t rc = getnameinfo(
                     reinterpret_cast<struct sockaddr*>(&client_addr), client_len, hostName, sizeof(hostName), nullptr, 0,
                     NI_NUMERICHOST | NI_NUMERICSERV);
-                SetOption(socket, IPPROTO_TCP, TCP_NODELAY, true);
+                SetNoDelay(true);
 
                 if (rc == 0)
                 {
@@ -375,7 +383,7 @@ public:
                 throw SocketException("Unable to create socket.");
             }
 
-            SetOption(_socket, IPPROTO_TCP, TCP_NODELAY, true);
+            SetNoDelay(true);
             if (!SetNonBlocking(_socket, true))
             {
                 throw SocketException("Failed to set non-blocking mode.");

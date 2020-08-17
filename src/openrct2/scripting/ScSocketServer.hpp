@@ -133,6 +133,15 @@ namespace OpenRCT2::Scripting
             return this;
         }
 
+        ScSocket* setNoDelay(bool noDelay)
+        {
+            if (_socket != nullptr)
+            {
+                _socket->SetNoDelay(noDelay);
+            }
+            return this;
+        }
+
         ScSocket* end(const DukValue& data)
         {
             if (_disposed)
@@ -268,6 +277,7 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_register_method(ctx, &ScSocket::destroy, "destroy");
+            dukglue_register_method(ctx, &ScSocket::setNoDelay, "setNoDelay");
             dukglue_register_method(ctx, &ScSocket::end, "end");
             dukglue_register_method(ctx, &ScSocket::write, "write");
             dukglue_register_method(ctx, &ScSocket::on, "on");
@@ -365,6 +375,9 @@ namespace OpenRCT2::Scripting
                 auto client = _socket->Accept();
                 if (client != nullptr)
                 {
+                    // Default to using Nagle's algorithm like node.js does
+                    client->SetNoDelay(false);
+
                     auto& scriptEngine = GetContext()->GetScriptEngine();
                     auto clientSocket = std::make_shared<ScSocket>(GetPlugin(), std::move(client));
                     scriptEngine.AddSocket(clientSocket);

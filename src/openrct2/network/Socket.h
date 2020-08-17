@@ -67,6 +67,8 @@ public:
     virtual size_t SendData(const void* buffer, size_t size) abstract;
     virtual NetworkReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) abstract;
 
+    virtual void SetNoDelay(bool noDelay) abstract;
+
     virtual void Finish() abstract;
     virtual void Disconnect() abstract;
     virtual void Close() abstract;
