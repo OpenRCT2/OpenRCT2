@@ -1946,29 +1946,25 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17594, 0, 6, 32, 20, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17594, 0, 6, 32, 20, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17602, 0, 6, 32, 20, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17602, 0, 6, 32, 20, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17601, 0, 6, 32, 20, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17601, 0, 6, 32, 20, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17609, 0, 6, 32, 20, 7,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17609, 0, 6, 32, 20, 7, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
