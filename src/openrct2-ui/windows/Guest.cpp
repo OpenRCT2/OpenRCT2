@@ -76,14 +76,14 @@ static constexpr int32_t TabWidth = 30;
 
 #define MAIN_GUEST_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({  0, 43}, {192, 114}, WWT_RESIZE, 1                                              ), /* Resize */ \
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_VIEW_TIP         ), /* Tab 1 */ \
-    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_NEEDS_TIP        ), /* Tab 2 */ \
-    MakeRemapWidget({ 65, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_VISITED_RIDES_TIP), /* Tab 3 */ \
-    MakeRemapWidget({ 96, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_FINANCE_TIP      ), /* Tab 4 */ \
-    MakeRemapWidget({127, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_THOUGHTS_TIP     ), /* Tab 5 */ \
-    MakeRemapWidget({158, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_ITEMS_TIP        ), /* Tab 6 */ \
-    MakeRemapWidget({189, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_DEBUG_TIP                   )  /* Tab 7 */
+    MakeWidget({  0, 43}, {192, 114}, WWT_RESIZE, 1       ), /* Resize */ \
+    MakeTab   ({  3, 17}, STR_SHOW_GUEST_VIEW_TIP         ), /* Tab 1 */ \
+    MakeTab   ({ 34, 17}, STR_SHOW_GUEST_NEEDS_TIP        ), /* Tab 2 */ \
+    MakeTab   ({ 65, 17}, STR_SHOW_GUEST_VISITED_RIDES_TIP), /* Tab 3 */ \
+    MakeTab   ({ 96, 17}, STR_SHOW_GUEST_FINANCE_TIP      ), /* Tab 4 */ \
+    MakeTab   ({127, 17}, STR_SHOW_GUEST_THOUGHTS_TIP     ), /* Tab 5 */ \
+    MakeTab   ({158, 17}, STR_SHOW_GUEST_ITEMS_TIP        ), /* Tab 6 */ \
+    MakeTab   ({189, 17}, STR_DEBUG_TIP                   )  /* Tab 7 */
 
 static rct_widget window_guest_overview_widgets[] = {
     MAIN_GUEST_WIDGETS,

@@ -86,12 +86,12 @@ enum
 #pragma region Widgets
 
 #define TAB_WIDGETS \
-    MakeRemapWidget({  3, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_SUMMARY_TAB_TIP      ), \
-    MakeRemapWidget({ 34, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_CASH_TAB_TIP         ), \
-    MakeRemapWidget({ 65, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP   ), \
-    MakeRemapWidget({ 96, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP), \
-    MakeRemapWidget({127, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_MARKETING_TAB_TIP    ), \
-    MakeRemapWidget({158, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_RESEARCH_TIP              )
+    MakeTab({  3, 17}, STR_FINANCES_SHOW_SUMMARY_TAB_TIP      ), \
+    MakeTab({ 34, 17}, STR_FINANCES_SHOW_CASH_TAB_TIP         ), \
+    MakeTab({ 65, 17}, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP   ), \
+    MakeTab({ 96, 17}, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP), \
+    MakeTab({127, 17}, STR_FINANCES_SHOW_MARKETING_TAB_TIP    ), \
+    MakeTab({158, 17}, STR_FINANCES_RESEARCH_TIP              )
 
 static rct_widget _windowFinancesSummaryWidgets[] =
 {

@@ -69,17 +69,17 @@ static constexpr const rct_string_id viewNames[VIEW_COUNT] = {
 
 static rct_widget window_guest_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({  0, 43}, {350, 287}, WWT_RESIZE,   1                                                   ), // tab content panel
-    MakeWidget     ({  5, 59}, { 80,  12}, WWT_DROPDOWN, 1, STR_ARG_4_PAGE_X                                 ), // page dropdown
-    MakeWidget     ({ 73, 60}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                               ), // page dropdown button
-    MakeWidget     ({120, 59}, {142,  12}, WWT_DROPDOWN, 1, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
-    MakeWidget     ({250, 60}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
-    MakeWidget     ({273, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_MAP,            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
-    MakeWidget     ({297, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_G2_SEARCH,      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
-    MakeWidget     ({321, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_TRACK_PEEP,     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,            STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
-    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,            STR_SUMMARISED_GUESTS_TIP    ), // tab 2
-    MakeWidget     ({  3, 72}, {344, 255}, WWT_SCROLL,   1, SCROLL_BOTH                                      ), // guest list
+    MakeWidget({  0, 43}, {350, 287}, WWT_RESIZE,   1                                                   ), // tab content panel
+    MakeWidget({  5, 59}, { 80,  12}, WWT_DROPDOWN, 1, STR_ARG_4_PAGE_X                                 ), // page dropdown
+    MakeWidget({ 73, 60}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                               ), // page dropdown button
+    MakeWidget({120, 59}, {142,  12}, WWT_DROPDOWN, 1, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
+    MakeWidget({250, 60}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
+    MakeWidget({273, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_MAP,            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
+    MakeWidget({297, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_G2_SEARCH,      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
+    MakeWidget({321, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_TRACK_PEEP,     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
+    MakeTab   ({  3, 17},                                                  STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
+    MakeTab   ({ 34, 17},                                                  STR_SUMMARISED_GUESTS_TIP    ), // tab 2
+    MakeWidget({  3, 72}, {344, 255}, WWT_SCROLL,   1, SCROLL_BOTH                                      ), // guest list
     { WIDGETS_END },
 };
 
