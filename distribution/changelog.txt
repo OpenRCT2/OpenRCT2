@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Fix: [#12691] Ride graph tooltip incorrectly used count instead of number string.
 - Fix: [#12694] Crash when switching ride types with construction window open.
+- Fix: [#12701] Silent NSIS setup flag /S isn't silent, upgrade pop-up appears anyway
 
 0.3.0 (2020-08-15)
 ------------------------------------------------------------------------
