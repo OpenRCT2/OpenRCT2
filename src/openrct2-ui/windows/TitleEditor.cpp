@@ -148,11 +148,11 @@ static constexpr int32_t SCROLL_WIDTH = 350;
 
 static rct_widget window_title_editor_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({   0,  43},  { 320,  84}, WWT_RESIZE,          1                                                                                   ), // tab content panel
-    MakeRemapWidget({   3,  17},  {  31,  27}, WWT_TAB,             1, SPR_TAB,                           STR_THEMES_TAB_SETTINGS_TIP                   ), // presets tab
-    MakeRemapWidget({  34,  17},  {  31,  27}, WWT_TAB,             1, SPR_TAB,                           STR_TITLE_EDITOR_SAVES_TAB_TIP                ), // saves tab
-    MakeRemapWidget({  65,  17},  {  31,  27}, WWT_TAB,             1, SPR_TAB,                           STR_TITLE_EDITOR_SCRIPT_TAB_TIP               ), // script tab
-    MakeWidget     ({  89,  48},  { 228, 219}, WWT_SCROLL,          1, SCROLL_BOTH                                                                      ), // command/save list
+    MakeWidget({   0,  43}, { 320,  84}, WWT_RESIZE,        1             ), // tab content panel
+    MakeTab   ({   3,  17}, STR_THEMES_TAB_SETTINGS_TIP                   ), // presets tab
+    MakeTab   ({  34,  17}, STR_TITLE_EDITOR_SAVES_TAB_TIP                ), // saves tab
+    MakeTab   ({  65,  17}, STR_TITLE_EDITOR_SCRIPT_TAB_TIP               ), // script tab
+    MakeWidget({  89,  48}, { 228, 219}, WWT_SCROLL,        1, SCROLL_BOTH), // command/save list
 
     // Presets Tab
     MakeWidget     ({ 125,  60},  { 175,  14}, WWT_DROPDOWN,        1                                                                                   ), // Preset title sequences
