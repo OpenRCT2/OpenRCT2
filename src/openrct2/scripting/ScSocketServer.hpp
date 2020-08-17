@@ -80,6 +80,12 @@ namespace OpenRCT2::Scripting
     private:
         std::shared_ptr<Plugin> _plugin;
 
+    protected:
+        static bool IsLocalhostAddress(const std::string_view& s)
+        {
+            return s == "localhost" || s == "127.0.0.1" || s == "::";
+        }
+
     public:
         ScSocketBase(const std::shared_ptr<Plugin>& plugin)
             : _plugin(plugin)
@@ -165,6 +171,10 @@ namespace OpenRCT2::Scripting
             else if (_connecting)
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Socket is already connecting.");
+            }
+            else if (!IsLocalhostAddress(host))
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "For security reasons, only connecting to localhost is allowed.");
             }
             else
             {
@@ -354,11 +364,11 @@ namespace OpenRCT2::Scripting
             return this;
         }
 
-        ScSocketServer* listen(int32_t port, const DukValue& callback)
+        ScSocketServer* listen(int32_t port, const DukValue& dukHost)
         {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (_disposed)
             {
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
                 duk_error(ctx, DUK_ERR_ERROR, "Socket is disposed.");
             }
             else
@@ -370,12 +380,26 @@ namespace OpenRCT2::Scripting
 
                 if (_socket->GetStatus() == SOCKET_STATUS_LISTENING)
                 {
-                    auto ctx = GetContext()->GetScriptEngine().GetContext();
                     duk_error(ctx, DUK_ERR_ERROR, "Server is already listening.");
                 }
                 else
                 {
-                    _socket->Listen(port);
+                    if (dukHost.type() == DukValue::Type::STRING)
+                    {
+                        auto host = dukHost.as_string();
+                        if (IsLocalhostAddress(host))
+                        {
+                            _socket->Listen(host, port);
+                        }
+                        else
+                        {
+                            duk_error(ctx, DUK_ERR_ERROR, "For security reasons, only binding to localhost is allowed.");
+                        }
+                    }
+                    else
+                    {
+                        _socket->Listen("127.0.0.1", port);
+                    }
                 }
             }
             return this;
