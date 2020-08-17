@@ -209,17 +209,17 @@ constexpr int32_t RCT1_LIGHT_OFFSET = 4;
 
 #define MAIN_RIDE_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({  0, 43}, {316, 137}, WWT_RESIZE, 1                                                 ), \
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_VIEW_OF_RIDE_ATTRACTION_TIP    ), \
-    MakeRemapWidget({ 34, 17}, { 31,  30}, WWT_TAB,    1, SPR_TAB,    STR_VEHICLE_DETAILS_AND_OPTIONS_TIP), \
-    MakeRemapWidget({ 65, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_OPERATING_OPTIONS_TIP          ), \
-    MakeRemapWidget({ 96, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_MAINTENANCE_OPTIONS_TIP        ), \
-    MakeRemapWidget({127, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_COLOUR_SCHEME_OPTIONS_TIP      ), \
-    MakeRemapWidget({158, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SOUND_AND_MUSIC_OPTIONS_TIP    ), \
-    MakeRemapWidget({189, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_MEASUREMENTS_AND_TEST_DATA_TIP ), \
-    MakeRemapWidget({220, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_GRAPHS_TIP                     ), \
-    MakeRemapWidget({251, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_INCOME_AND_COSTS_TIP           ), \
-    MakeRemapWidget({282, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_CUSTOMER_INFORMATION_TIP       )
+    MakeWidget({  0, 43}, {316, 137}, WWT_RESIZE, 1          ), \
+    MakeTab   ({  3, 17}, STR_VIEW_OF_RIDE_ATTRACTION_TIP    ), \
+    MakeTab   ({ 34, 17}, STR_VEHICLE_DETAILS_AND_OPTIONS_TIP), \
+    MakeTab   ({ 65, 17}, STR_OPERATING_OPTIONS_TIP          ), \
+    MakeTab   ({ 96, 17}, STR_MAINTENANCE_OPTIONS_TIP        ), \
+    MakeTab   ({127, 17}, STR_COLOUR_SCHEME_OPTIONS_TIP      ), \
+    MakeTab   ({158, 17}, STR_SOUND_AND_MUSIC_OPTIONS_TIP    ), \
+    MakeTab   ({189, 17}, STR_MEASUREMENTS_AND_TEST_DATA_TIP ), \
+    MakeTab   ({220, 17}, STR_GRAPHS_TIP                     ), \
+    MakeTab   ({251, 17}, STR_INCOME_AND_COSTS_TIP           ), \
+    MakeTab   ({282, 17}, STR_CUSTOMER_INFORMATION_TIP       )
 
 // 0x009ADC34
 static rct_widget window_ride_main_widgets[] = {
