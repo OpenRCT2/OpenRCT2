@@ -1686,10 +1686,14 @@ declare global {
      * Based on node.js net.Server, see https://nodejs.org/api/net.html for more information.
      */
     interface SocketServer {
+        readonly listening: boolean;
+
         listen(port: number): SocketServer;
         close(): SocketServer;
 
         on(event: 'connection', callback: (socket: Socket) => void): SocketServer;
+
+        off(event: 'connection', callback: (socket: Socket) => void): SocketServer;
     }
 
     /**
@@ -1703,7 +1707,12 @@ declare global {
         end(data?: string): Socket;
         write(data: string): boolean;
 
-        on(event: 'data', callback: (data: string) => void): Socket;
         on(event: 'close', callback: (hadError: boolean) => void): Socket;
+        on(event: 'error', callback: (hadError: boolean) => void): Socket;
+        on(event: 'data', callback: (data: string) => void): Socket;
+
+        off(event: 'close', callback: (hadError: boolean) => void): Socket;
+        off(event: 'error', callback: (hadError: boolean) => void): Socket;
+        off(event: 'data', callback: (data: string) => void): Socket;
     }
 }

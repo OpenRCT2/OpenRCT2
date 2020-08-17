@@ -358,6 +358,15 @@ namespace OpenRCT2::Scripting
         std::vector<std::shared_ptr<ScSocket>> _scClientSockets;
         bool _disposed{};
 
+        bool listening_get()
+        {
+            if (_socket != nullptr)
+            {
+                return _socket->GetStatus() == SOCKET_STATUS_LISTENING;
+            }
+            return false;
+        }
+
         ScSocketServer* close()
         {
             Dispose();
@@ -482,6 +491,7 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
+            dukglue_register_property(ctx, &ScSocketServer::listening_get, nullptr, "listening");
             dukglue_register_method(ctx, &ScSocketServer::close, "close");
             dukglue_register_method(ctx, &ScSocketServer::listen, "listen");
             dukglue_register_method(ctx, &ScSocketServer::on, "on");
