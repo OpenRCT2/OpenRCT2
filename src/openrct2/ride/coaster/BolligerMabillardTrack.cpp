@@ -2020,23 +2020,23 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17596, 16, 0, 3, 16, 119,
-                            trackHeight, 16, 0, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17596, 16, 0, 3, 16, 119, trackHeight, 16,
+                            0, trackHeight);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17604, 12, 0, 3, 16, 119,
-                            trackHeight, 12, 0, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17604, 12, 0, 3, 16, 119, trackHeight, 12,
+                            0, trackHeight);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17599, 10, 16, 4, 16, 119,
-                            trackHeight, 10, 16, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17599, 10, 16, 4, 16, 119, trackHeight,
+                            10, 16, trackHeight);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17607, 16, 16, 2, 16, 119,
-                            trackHeight, 16, 16, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17607, 16, 16, 2, 16, 119, trackHeight,
+                            16, 16, trackHeight);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2049,13 +2049,11 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17597, 0, 0, 32, 16, 3,
-                            trackHeight + 32);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17597, 0, 0, 32, 16, 3, trackHeight + 32);
                         break;
                     case 1:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17605, 0, 0, 32, 16, 3,
-                            trackHeight + 32);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17605, 0, 0, 32, 16, 3, trackHeight + 32);
                         break;
                     case 2:
                         sub_98196C_rotated(
@@ -2096,13 +2094,11 @@ void bolliger_mabillard_track_left_vertical_loop(
                         break;
                     case 2:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17597, 0, 0, 32, 16, 3,
-                            trackHeight + 32);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17597, 0, 0, 32, 16, 3, trackHeight + 32);
                         break;
                     case 3:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17605, 0, 0, 32, 16, 3,
-                            trackHeight + 32);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17605, 0, 0, 32, 16, 3, trackHeight + 32);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2117,23 +2113,23 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17599, 10, 16, 4, 16, 119,
-                            trackHeight, 10, 16, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17599, 10, 16, 4, 16, 119, trackHeight,
+                            10, 16, trackHeight);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17607, 16, 16, 2, 16, 119,
-                            trackHeight, 16, 16, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17607, 16, 16, 2, 16, 119, trackHeight,
+                            16, 16, trackHeight);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17596, 16, 0, 3, 16, 119,
-                            trackHeight, 16, 0, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17596, 16, 0, 3, 16, 119, trackHeight, 16,
+                            0, trackHeight);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17604, 12, 0, 3, 16, 119,
-                            trackHeight, 12, 0, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17604, 12, 0, 3, 16, 119, trackHeight, 12,
+                            0, trackHeight);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2146,29 +2142,25 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17600, 0, 6, 32, 26, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17600, 0, 6, 32, 26, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 16, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17608, 0, 6, 32, 26, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17608, 0, 6, 32, 26, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 10, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17595, 0, 0, 32, 26, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17595, 0, 0, 32, 26, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 20, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17603, 0, 14, 32, 2, 63,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17603, 0, 14, 32, 2, 63, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 11, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2185,29 +2177,25 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17601, 0, 6, 32, 20, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17601, 0, 6, 32, 20, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17609, 0, 6, 32, 20, 7,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17609, 0, 6, 32, 20, 7, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17594, 0, 6, 32, 20, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17594, 0, 6, 32, 20, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17602, 0, 6, 32, 20, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17602, 0, 6, 32, 20, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2239,23 +2227,23 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27355, 0, 6, 32, 2, 3,
-                            trackHeight + 24, 0, 29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27355, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27363, 0, 6, 32, 2, 3,
-                            trackHeight + 24, 0, 29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27363, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27362, 0, 6, 32, 2, 3,
-                            trackHeight + 24, 0, 29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27362, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27370, 0, 6, 32, 10, 7,
-                            trackHeight + 24, 0, 6, trackHeight + 40);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27370, 0, 6, 32, 10, 7, trackHeight + 24,
+                            0, 6, trackHeight + 40);
                         break;
                 }
 
@@ -2269,23 +2257,19 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         metal_a_supports_paint_setup(
-                            session, supportType, 6, 0, trackHeight + 50,
-                            session->TrackColours[SCHEME_SUPPORTS]);
+                            session, supportType, 6, 0, trackHeight + 50, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         metal_a_supports_paint_setup(
-                            session, supportType, 8, 0, trackHeight + 50,
-                            session->TrackColours[SCHEME_SUPPORTS]);
+                            session, supportType, 8, 0, trackHeight + 50, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         metal_a_supports_paint_setup(
-                            session, supportType, 7, 0, trackHeight + 50,
-                            session->TrackColours[SCHEME_SUPPORTS]);
+                            session, supportType, 7, 0, trackHeight + 50, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         metal_a_supports_paint_setup(
-                            session, supportType, 5, 0, trackHeight + 50,
-                            session->TrackColours[SCHEME_SUPPORTS]);
+                            session, supportType, 5, 0, trackHeight + 50, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -2300,23 +2284,23 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27356, 0, 0, 32, 2, 3,
-                            trackHeight + 24, 0, 29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27356, 0, 0, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27364, 0, 14, 32, 2, 63,
-                            trackHeight + 24, 0, 29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27364, 0, 14, 32, 2, 63, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27361, 0, 6, 32, 2, 3,
-                            trackHeight + 24, 0, 0, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27361, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 0, trackHeight + 24);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27369, 0, 6, 2, 2, 3,
-                            trackHeight + 24, 29, 20, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27369, 0, 6, 2, 2, 3, trackHeight + 24,
+                            29, 20, trackHeight + 24);
                         break;
                 }
                 paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -2327,23 +2311,23 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27357, 16, 0, 5, 2, 119,
-                            trackHeight - 3, 16, 29, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27357, 16, 0, 5, 2, 119, trackHeight - 3,
+                            16, 29, trackHeight - 3);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27365, 12, 0, 32, 2, 119,
-                            trackHeight - 3, 0, -6, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27365, 12, 0, 32, 2, 119, trackHeight - 3,
+                            0, -6, trackHeight - 3);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27360, 10, 16, 4, 2, 119,
-                            trackHeight - 3, 10, 0, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27360, 10, 16, 4, 2, 119, trackHeight - 3,
+                            10, 0, trackHeight - 3);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27368, 16, 16, 2, 2, 119,
-                            trackHeight - 3, 29, 29, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27368, 16, 16, 2, 2, 119, trackHeight - 3,
+                            29, 29, trackHeight - 3);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2356,23 +2340,23 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27358, 0, 0, 32, 2, 3,
-                            trackHeight + 29, 0, 0, trackHeight - 6);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27358, 0, 0, 32, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 6);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27366, 0, 0, 2, 2, 3,
-                            trackHeight + 29, 0, 0, trackHeight - 6);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27366, 0, 0, 2, 2, 3, trackHeight + 29, 0,
+                            0, trackHeight - 6);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27359, 0, 16, 32, 2, 3,
-                            trackHeight + 29, 0, 0, trackHeight - 6);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27359, 0, 16, 32, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 6);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27367, 0, 16, 2, 2, 3,
-                            trackHeight + 29, 0, 0, trackHeight - 6);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27367, 0, 16, 2, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 6);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2393,23 +2377,23 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27359, 0, 16, 32, 2, 3,
-                            trackHeight + 29, 0, 0, trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27359, 0, 16, 32, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 11);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27367, 0, 16, 2, 2, 3,
-                            trackHeight + 29, 0, 0, trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27367, 0, 16, 2, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 11);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27358, 0, 0, 32, 2, 3,
-                            trackHeight + 29, 0, 0, trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27358, 0, 0, 32, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 11);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27366, 0, 0, 2, 2, 3,
-                            trackHeight + 29, 0, 0, trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27366, 0, 0, 2, 2, 3, trackHeight + 29, 0,
+                            0, trackHeight - 11);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2424,23 +2408,23 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27360, 10, 16, 4, 2, 119,
-                            trackHeight - 3, 10, 0, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27360, 10, 16, 4, 2, 119, trackHeight - 3,
+                            10, 0, trackHeight - 3);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27368, 16, 16, 2, 2, 119,
-                            trackHeight - 3, 29, 29, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27368, 16, 16, 2, 2, 119, trackHeight - 3,
+                            29, 29, trackHeight - 3);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27357, 16, 0, 5, 2, 119,
-                            trackHeight - 3, 16, 29, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27357, 16, 0, 5, 2, 119, trackHeight - 3,
+                            16, 29, trackHeight - 3);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27365, 12, 0, 32, 2, 119,
-                            trackHeight - 3, 0, -6, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27365, 12, 0, 32, 2, 119, trackHeight - 3,
+                            0, -6, trackHeight - 3);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2453,23 +2437,23 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27361, 0, 6, 32, 2, 3,
-                            trackHeight + 24, 0, 0, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27361, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 0, trackHeight + 24);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27369, 0, 6, 2, 2, 3,
-                            trackHeight + 24, 29, 20, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27369, 0, 6, 2, 2, 3, trackHeight + 24,
+                            29, 20, trackHeight + 24);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27356, 0, 0, 32, 2, 3,
-                            trackHeight + 24, 0, 29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27356, 0, 0, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27364, 0, 14, 32, 2, 63,
-                            trackHeight + 24, 0, 29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27364, 0, 14, 32, 2, 63, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                 }
                 paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -2480,23 +2464,23 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27362, 0, 6, 32, 2, 3,
-                            trackHeight + 24, 0, 29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27362, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27370, 0, 6, 32, 10, 7,
-                            trackHeight + 24, 0, 6, trackHeight + 40);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27370, 0, 6, 32, 10, 7, trackHeight + 24,
+                            0, 6, trackHeight + 40);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27355, 0, 6, 32, 2, 3,
-                            trackHeight + 24, 0, 29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27355, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27363, 0, 6, 32, 2, 3,
-                            trackHeight + 24, 0, 29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27363, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                 }
 
@@ -2510,23 +2494,19 @@ void bolliger_mabillard_track_left_vertical_loop(
                 {
                     case 0:
                         metal_a_supports_paint_setup(
-                            session, supportType, 7, 0, trackHeight + 50,
-                            session->TrackColours[SCHEME_SUPPORTS]);
+                            session, supportType, 7, 0, trackHeight + 50, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         metal_a_supports_paint_setup(
-                            session, supportType, 5, 0, trackHeight + 50,
-                            session->TrackColours[SCHEME_SUPPORTS]);
+                            session, supportType, 5, 0, trackHeight + 50, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         metal_a_supports_paint_setup(
-                            session, supportType, 6, 0, trackHeight + 50,
-                            session->TrackColours[SCHEME_SUPPORTS]);
+                            session, supportType, 6, 0, trackHeight + 50, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         metal_a_supports_paint_setup(
-                            session, supportType, 8, 0, trackHeight + 50,
-                            session->TrackColours[SCHEME_SUPPORTS]);
+                            session, supportType, 8, 0, trackHeight + 50, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
 
@@ -2562,27 +2542,22 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17625, 0, 6, 32, 20, 7,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17625, 0, 6, 32, 20, 7, trackHeight);
                         break;
                     case 1:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17617, 0, 6, 32, 20, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17617, 0, 6, 32, 20, 3, trackHeight);
                         break;
                     case 2:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17618, 0, 6, 32, 20, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17618, 0, 6, 32, 20, 3, trackHeight);
                         break;
                     case 3:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17610, 0, 6, 32, 20, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17610, 0, 6, 32, 20, 3, trackHeight);
                         break;
                 }
-                metal_a_supports_paint_setup(
-                    session, supportType, 4, 8, trackHeight, session->TrackColours[SCHEME_SUPPORTS]);
+                metal_a_supports_paint_setup(session, supportType, 4, 8, trackHeight, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
                     paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
@@ -2594,29 +2569,25 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17624, 0, 6, 32, 26, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17624, 0, 6, 32, 26, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 8, trackHeight, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17616, 0, 6, 32, 26, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17616, 0, 6, 32, 26, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 16, trackHeight, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17619, 0, 14, 32, 2, 63,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17619, 0, 14, 32, 2, 63, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 10, trackHeight, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17611, 0, 0, 32, 26, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17611, 0, 0, 32, 26, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 20, trackHeight, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2628,23 +2599,23 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17623, 16, 16, 2, 16, 119,
-                            trackHeight, 16, 16, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17623, 16, 16, 2, 16, 119, trackHeight,
+                            16, 16, trackHeight);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17615, 10, 16, 4, 16, 119,
-                            trackHeight, 10, 16, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17615, 10, 16, 4, 16, 119, trackHeight,
+                            10, 16, trackHeight);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17620, 12, 0, 3, 16, 119,
-                            trackHeight, 12, 0, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17620, 12, 0, 3, 16, 119, trackHeight, 12,
+                            0, trackHeight);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17612, 16, 0, 2, 16, 119,
-                            trackHeight, 16, 0, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17612, 16, 0, 2, 16, 119, trackHeight, 16,
+                            0, trackHeight);
                         break;
                 }
                 paint_util_set_general_support_height(session, supportHeight + 168, 0x20);
@@ -2664,13 +2635,11 @@ void bolliger_mabillard_track_right_vertical_loop(
                         break;
                     case 2:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17621, 0, 0, 32, 16, 3,
-                            trackHeight + 32);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17621, 0, 0, 32, 16, 3, trackHeight + 32);
                         break;
                     case 3:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17613, 0, 0, 32, 16, 3,
-                            trackHeight + 32);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17613, 0, 0, 32, 16, 3, trackHeight + 32);
                         break;
                 }
                 paint_util_set_general_support_height(session, supportHeight + 48, 0x20);
@@ -2686,13 +2655,11 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17621, 0, 0, 32, 16, 3,
-                            trackHeight + 32);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17621, 0, 0, 32, 16, 3, trackHeight + 32);
                         break;
                     case 1:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17613, 0, 0, 32, 16, 3,
-                            trackHeight + 32);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17613, 0, 0, 32, 16, 3, trackHeight + 32);
                         break;
                     case 2:
                         sub_98196C_rotated(
@@ -2712,23 +2679,23 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17620, 12, 0, 3, 16, 119,
-                            trackHeight, 12, 0, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17620, 12, 0, 3, 16, 119, trackHeight, 12,
+                            0, trackHeight);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17612, 16, 0, 2, 16, 119,
-                            trackHeight, 16, 0, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17612, 16, 0, 2, 16, 119, trackHeight, 16,
+                            0, trackHeight);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17623, 16, 16, 2, 16, 119,
-                            trackHeight, 16, 16, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17623, 16, 16, 2, 16, 119, trackHeight,
+                            16, 16, trackHeight);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17615, 10, 16, 4, 16, 119,
-                            trackHeight, 10, 16, trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17615, 10, 16, 4, 16, 119, trackHeight,
+                            10, 16, trackHeight);
                         break;
                 }
                 paint_util_set_general_support_height(session, supportHeight + 168, 0x20);
@@ -2738,15 +2705,13 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17619, 0, 14, 32, 2, 63,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17619, 0, 14, 32, 2, 63, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 10, trackHeight, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         sub_98196C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 17611, 0, 0, 32, 26, 3,
-                            trackHeight);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 17611, 0, 0, 32, 26, 3, trackHeight);
                         metal_a_supports_paint_setup(
                             session, supportType, 4, 20, trackHeight, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -2810,23 +2775,23 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27386, 0, 6, 32, 10, 7, trackHeight + 24, 0, 6,
-                            trackHeight + 40);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27386, 0, 6, 32, 10, 7, trackHeight + 24,
+                            0, 6, trackHeight + 40);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27378, 0, 6, 32, 2, 3, trackHeight + 24, 0, 29,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27378, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27379, 0, 6, 32, 2, 3, trackHeight + 24, 0, 29,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27379, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27371, 0, 6, 32, 2, 3, trackHeight + 24, 0, 29,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27371, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                 }
 
@@ -2867,23 +2832,23 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27385, 0, 6, 2, 2, 3, trackHeight + 24, 29, 20,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27385, 0, 6, 2, 2, 3, trackHeight + 24,
+                            29, 20, trackHeight + 24);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27377, 0, 6, 32, 2, 3, trackHeight + 24, 0, 0,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27377, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 0, trackHeight + 24);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27380, 0, 14, 32, 2, 63, trackHeight + 24, 0,
-                            29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27380, 0, 14, 32, 2, 63, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27372, 0, 0, 32, 2, 3, trackHeight + 24, 0, 29,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27372, 0, 0, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                 }
                 paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -2894,23 +2859,23 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27384, 16, 16, 2, 2, 119, trackHeight - 3, 29,
-                            29, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27384, 16, 16, 2, 2, 119, trackHeight - 3,
+                            29, 29, trackHeight - 3);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27376, 10, 16, 4, 2, 119, trackHeight - 3, 10,
-                            0, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27376, 10, 16, 4, 2, 119, trackHeight - 3,
+                            10, 0, trackHeight - 3);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27381, 12, 0, 32, 2, 119, trackHeight - 3, 0,
-                            -6, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27381, 12, 0, 32, 2, 119, trackHeight - 3,
+                            0, -6, trackHeight - 3);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27373, 16, 0, 5, 2, 119, trackHeight - 3, 16,
-                            29, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27373, 16, 0, 5, 2, 119, trackHeight - 3,
+                            16, 29, trackHeight - 3);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2923,23 +2888,23 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27383, 0, 16, 2, 2, 3, trackHeight + 29, 0, 0,
-                            trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27383, 0, 16, 2, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 11);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27375, 0, 16, 32, 2, 3, trackHeight + 29, 0, 0,
-                            trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27375, 0, 16, 32, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 11);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27382, 0, 0, 2, 2, 3, trackHeight + 29, 0, 0,
-                            trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27382, 0, 0, 2, 2, 3, trackHeight + 29, 0,
+                            0, trackHeight - 11);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27374, 0, 0, 32, 2, 3, trackHeight + 29, 0, 0,
-                            trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27374, 0, 0, 32, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 11);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2960,23 +2925,23 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27382, 0, 0, 2, 2, 3, trackHeight + 29, 0, 0,
-                            trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27382, 0, 0, 2, 2, 3, trackHeight + 29, 0,
+                            0, trackHeight - 11);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27374, 0, 0, 32, 2, 3, trackHeight + 29, 0, 0,
-                            trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27374, 0, 0, 32, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 11);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27383, 0, 16, 2, 2, 3, trackHeight + 29, 0, 0,
-                            trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27383, 0, 16, 2, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 11);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27375, 0, 16, 32, 2, 3, trackHeight + 29, 0, 0,
-                            trackHeight - 11);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27375, 0, 16, 32, 2, 3, trackHeight + 29,
+                            0, 0, trackHeight - 11);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2991,23 +2956,23 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27381, 12, 0, 32, 2, 119, trackHeight - 3, 0,
-                            -6, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27381, 12, 0, 32, 2, 119, trackHeight - 3,
+                            0, -6, trackHeight - 3);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27373, 16, 0, 5, 2, 119, trackHeight - 3, 16,
-                            29, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27373, 16, 0, 5, 2, 119, trackHeight - 3,
+                            16, 29, trackHeight - 3);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27384, 16, 16, 2, 2, 119, trackHeight - 3, 29,
-                            29, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27384, 16, 16, 2, 2, 119, trackHeight - 3,
+                            29, 29, trackHeight - 3);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27376, 10, 16, 4, 2, 119, trackHeight - 3, 10,
-                            0, trackHeight - 3);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27376, 10, 16, 4, 2, 119, trackHeight - 3,
+                            10, 0, trackHeight - 3);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -3020,23 +2985,23 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27380, 0, 14, 32, 2, 63, trackHeight + 24, 0,
-                            29, trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27380, 0, 14, 32, 2, 63, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27372, 0, 0, 32, 2, 3, trackHeight + 24, 0, 29,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27372, 0, 0, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27385, 0, 6, 2, 2, 3, trackHeight + 24, 29, 20,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27385, 0, 6, 2, 2, 3, trackHeight + 24,
+                            29, 20, trackHeight + 24);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27377, 0, 6, 32, 2, 3, trackHeight + 24, 0, 0,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27377, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 0, trackHeight + 24);
                         break;
                 }
                 paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -3047,23 +3012,23 @@ void bolliger_mabillard_track_right_vertical_loop(
                 {
                     case 0:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27379, 0, 6, 32, 2, 3, trackHeight + 24, 0, 29,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27379, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 1:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27371, 0, 6, 32, 2, 3, trackHeight + 24, 0, 29,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27371, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                     case 2:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27386, 0, 6, 32, 10, 7, trackHeight + 24, 0, 6,
-                            trackHeight + 40);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27386, 0, 6, 32, 10, 7, trackHeight + 24,
+                            0, 6, trackHeight + 40);
                         break;
                     case 3:
                         sub_98197C_rotated(
-                            session, direction, session->TrackColours[SCHEME_TRACK] | 27378, 0, 6, 32, 2, 3, trackHeight + 24, 0, 29,
-                            trackHeight + 24);
+                            session, direction, session->TrackColours[SCHEME_TRACK] | 27378, 0, 6, 32, 2, 3, trackHeight + 24,
+                            0, 29, trackHeight + 24);
                         break;
                 }
 
