@@ -16,8 +16,59 @@
 #    include "Duktape.hpp"
 #    include "ScriptEngine.h"
 
+#    include <algorithm>
+#    include <vector>
+
 namespace OpenRCT2::Scripting
 {
+    class EventList
+    {
+    private:
+        std::vector<std::vector<DukValue>> _listeners;
+
+        std::vector<DukValue>& GetListenerList(uint32_t id)
+        {
+            if (_listeners.size() <= id)
+            {
+                _listeners.resize(static_cast<size_t>(id) + 1);
+            }
+            return _listeners[id];
+        }
+
+    public:
+        void Raise(
+            uint32_t id, const std::shared_ptr<Plugin>& plugin, const std::vector<DukValue>& args, bool isGameStateMutable)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+
+            // Use simple for i loop in case listeners is modified during the loop
+            auto listeners = GetListenerList(id);
+            for (size_t i = 0; i < listeners.size(); i++)
+            {
+                scriptEngine.ExecutePluginCall(plugin, listeners[i], args, isGameStateMutable);
+
+                // Safety, listeners might get reallocated
+                listeners = GetListenerList(id);
+            }
+        }
+
+        void AddListener(uint32_t id, const DukValue& listener)
+        {
+            auto& listeners = GetListenerList(id);
+            listeners.push_back(listener);
+        }
+
+        void RemoveListener(uint32_t id, const DukValue& value)
+        {
+            auto& listeners = GetListenerList(id);
+            auto it = std::find(listeners.begin(), listeners.end(), value);
+            if (it != listeners.end())
+            {
+                listeners.erase(it);
+            }
+        }
+    };
+
     class ScSocketBase
     {
     private:
@@ -51,11 +102,13 @@ namespace OpenRCT2::Scripting
     class ScSocket : public ScSocketBase
     {
     private:
+        static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
+        static constexpr uint32_t EVENT_CLOSE = 0;
+        static constexpr uint32_t EVENT_DATA = 1;
+
+        EventList _eventList;
         std::unique_ptr<ITcpSocket> _socket;
         bool _disposed{};
-
-        DukValue _onClose;
-        DukValue _onData;
 
     public:
         ScSocket(const std::shared_ptr<Plugin>& plugin)
@@ -115,13 +168,20 @@ namespace OpenRCT2::Scripting
 
         ScSocket* on(const std::string& eventType, const DukValue& callback)
         {
-            if (eventType == "close")
+            auto eventId = GetEventType(eventType);
+            if (eventId != EVENT_NONE)
             {
-                _onClose = callback;
+                _eventList.AddListener(eventId, callback);
             }
-            else if (eventType == "data")
+            return this;
+        }
+
+        ScSocket* off(const std::string& eventType, const DukValue& callback)
+        {
+            auto eventId = GetEventType(eventType);
+            if (eventId != EVENT_NONE)
             {
-                _onData = callback;
+                _eventList.RemoveListener(eventId, callback);
             }
             return this;
         }
@@ -138,16 +198,24 @@ namespace OpenRCT2::Scripting
 
         void RaiseOnClose(bool hadError)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
-            scriptEngine.ExecutePluginCall(GetPlugin(), _onClose, { ToDuk(ctx, hadError) }, false);
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            _eventList.Raise(EVENT_CLOSE, GetPlugin(), { ToDuk(ctx, hadError) }, false);
         }
 
         void RaiseOnData(const std::string& data)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto ctx = scriptEngine.GetContext();
-            scriptEngine.ExecutePluginCall(GetPlugin(), _onData, { ToDuk(ctx, data) }, false);
+            _eventList.Raise(EVENT_DATA, GetPlugin(), { ToDuk(ctx, data) }, false);
+        }
+
+        uint32_t GetEventType(const std::string_view& name)
+        {
+            if (name == "close")
+                return EVENT_CLOSE;
+            if (name == "data")
+                return EVENT_DATA;
+            return EVENT_NONE;
         }
 
     public:
@@ -203,14 +271,18 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScSocket::end, "end");
             dukglue_register_method(ctx, &ScSocket::write, "write");
             dukglue_register_method(ctx, &ScSocket::on, "on");
+            dukglue_register_method(ctx, &ScSocket::off, "off");
         }
     };
 
     class ScSocketServer : public ScSocketBase
     {
     private:
+        static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
+        static constexpr uint32_t EVENT_CONNECTION = 0;
+
+        EventList _eventList;
         std::unique_ptr<ITcpSocket> _socket;
-        DukValue _onConnection;
         std::vector<std::shared_ptr<ScSocket>> _scClientSockets;
         bool _disposed{};
 
@@ -249,11 +321,29 @@ namespace OpenRCT2::Scripting
 
         ScSocketServer* on(const std::string& eventType, const DukValue& callback)
         {
-            if (eventType == "connection")
+            auto eventId = GetEventType(eventType);
+            if (eventId != EVENT_NONE)
             {
-                _onConnection = callback;
+                _eventList.AddListener(eventId, callback);
             }
             return this;
+        }
+
+        ScSocketServer* off(const std::string& eventType, const DukValue& callback)
+        {
+            auto eventId = GetEventType(eventType);
+            if (eventId != EVENT_NONE)
+            {
+                _eventList.RemoveListener(eventId, callback);
+            }
+            return this;
+        }
+
+        uint32_t GetEventType(const std::string_view& name)
+        {
+            if (name == "connection")
+                return EVENT_CONNECTION;
+            return EVENT_NONE;
         }
 
     public:
@@ -281,7 +371,7 @@ namespace OpenRCT2::Scripting
 
                     auto ctx = scriptEngine.GetContext();
                     auto dukClientSocket = GetObjectAsDukValue(ctx, clientSocket);
-                    scriptEngine.ExecutePluginCall(GetPlugin(), _onConnection, { dukClientSocket }, false);
+                    _eventList.Raise(EVENT_CONNECTION, GetPlugin(), { dukClientSocket }, false);
                 }
             }
         }
@@ -306,6 +396,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScSocketServer::close, "close");
             dukglue_register_method(ctx, &ScSocketServer::listen, "listen");
             dukglue_register_method(ctx, &ScSocketServer::on, "on");
+            dukglue_register_method(ctx, &ScSocketServer::off, "off");
         }
     };
 } // namespace OpenRCT2::Scripting
