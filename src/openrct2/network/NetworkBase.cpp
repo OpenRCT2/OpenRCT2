@@ -148,11 +148,6 @@ void NetworkBase::SetEnvironment(const std::shared_ptr<IPlatformEnvironment>& en
 
 bool NetworkBase::Init()
 {
-    if (!InitialiseWSA())
-    {
-        return false;
-    }
-
     status = NETWORK_STATUS_READY;
 
     ServerName = std::string();
@@ -240,8 +235,6 @@ void NetworkBase::CloseConnection()
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
-
-    DisposeWSA();
 }
 
 bool NetworkBase::BeginClient(const std::string& host, uint16_t port)

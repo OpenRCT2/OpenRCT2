@@ -97,8 +97,6 @@ public:
     virtual void Close() abstract;
 };
 
-bool InitialiseWSA();
-void DisposeWSA();
 std::unique_ptr<ITcpSocket> CreateTcpSocket();
 std::unique_ptr<IUdpSocket> CreateUdpSocket();
 std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses();

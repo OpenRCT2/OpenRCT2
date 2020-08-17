@@ -70,8 +70,56 @@
 
 constexpr auto CONNECT_TIMEOUT = std::chrono::milliseconds(3000);
 
+// RAII WSA initialisation needed for Windows
 #    ifdef _WIN32
-static bool _wsaInitialised = false;
+class WSA
+{
+private:
+    bool _isInitialised{};
+
+public:
+    bool IsInitialised() const
+    {
+        return _isInitialised;
+    }
+
+    bool Initialise()
+    {
+        if (!_isInitialised)
+        {
+            log_verbose("WSAStartup()");
+            WSADATA wsa_data;
+            if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0)
+            {
+                log_error("Unable to initialise winsock.");
+                return false;
+            }
+            _isInitialised = true;
+        }
+        return true;
+    }
+
+    ~WSA()
+    {
+        if (_isInitialised)
+        {
+            log_verbose("WSACleanup()");
+            WSACleanup();
+            _isInitialised = false;
+        }
+    }
+};
+
+static bool InitialiseWSA()
+{
+    static WSA wsa;
+    return wsa.Initialise();
+}
+#    else
+static bool InitialiseWSA()
+{
+    return true;
+}
 #    endif
 
 class SocketException : public std::runtime_error
@@ -830,37 +878,6 @@ private:
     }
 };
 
-bool InitialiseWSA()
-{
-#    ifdef _WIN32
-    if (!_wsaInitialised)
-    {
-        log_verbose("Initialising WSA");
-        WSADATA wsa_data;
-        if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0)
-        {
-            log_error("Unable to initialise winsock.");
-            return false;
-        }
-        _wsaInitialised = true;
-    }
-    return _wsaInitialised;
-#    else
-    return true;
-#    endif
-}
-
-void DisposeWSA()
-{
-#    ifdef _WIN32
-    if (_wsaInitialised)
-    {
-        WSACleanup();
-        _wsaInitialised = false;
-    }
-#    endif
-}
-
 std::unique_ptr<ITcpSocket> CreateTcpSocket()
 {
     InitialiseWSA();
@@ -869,12 +886,15 @@ std::unique_ptr<ITcpSocket> CreateTcpSocket()
 
 std::unique_ptr<IUdpSocket> CreateUdpSocket()
 {
+    InitialiseWSA();
     return std::make_unique<UdpSocket>();
 }
 
 #    ifdef _WIN32
 static std::vector<INTERFACE_INFO> GetNetworkInterfaces()
 {
+    InitialiseWSA();
+
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock == -1)
     {
