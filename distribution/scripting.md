@@ -199,4 +199,4 @@ This is up to you. The OpenRCT2 licence does not enforce any licence requirement
 
 > Is there a good place to distribute my script to other players?
 
-There is currently no official database for this. For now the recommendation is to upload releases of your script on GitHub alongside your source code (if public). Some people like to make a GitHub repository that just consists of a list of content (scripts in this case) which anyone can add to via pull requests.
+The recommendation is to upload releases of your script on GitHub alongside your source code (if public). There is a community driven repository for sharing plugins available at http://openrct2plugins.org/.
