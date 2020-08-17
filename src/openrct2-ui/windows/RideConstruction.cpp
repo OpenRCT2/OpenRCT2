@@ -1845,7 +1845,7 @@ static void window_ride_construction_construct(rct_window* w)
     }
 
     auto tpar = dynamic_cast<TrackPlaceActionResult*>(res.get());
-    if (tpar != nullptr && tpar->GroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
+    if (tpar != nullptr && tpar->GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
         viewport_set_visibility(1);
     }
