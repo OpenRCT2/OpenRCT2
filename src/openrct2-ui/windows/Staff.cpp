@@ -50,8 +50,8 @@ enum WINDOW_STAFF_WIDGET_IDX {
     WIDX_TAB_1,
     WIDX_TAB_2,
     WIDX_TAB_3,
-    WIDX_TAB_4,
-    WIDX_VIEWPORT,
+
+    WIDX_VIEWPORT = 7,
     WIDX_BTM_LABEL,
     WIDX_PICKUP,
     WIDX_PATROL,
@@ -59,7 +59,7 @@ enum WINDOW_STAFF_WIDGET_IDX {
     WIDX_LOCATE,
     WIDX_FIRE,
 
-    WIDX_CHECKBOX_1 = 8,
+    WIDX_CHECKBOX_1 = 7,
     WIDX_CHECKBOX_2,
     WIDX_CHECKBOX_3,
     WIDX_CHECKBOX_4,
@@ -75,8 +75,7 @@ validate_global_widx(WC_STAFF, WIDX_PICKUP);
     MakeWidget     ({      0,      43}, {190, 137}, WWT_RESIZE,        1                                        ), /* Resize */ \
     MakeRemapWidget({      3,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_OVERVIEW_TIP), /* Tab 1 */ \
     MakeRemapWidget({     34,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_OPTIONS_TIP ), /* Tab 2 */ \
-    MakeRemapWidget({     65,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_STATS_TIP   ), /* Tab 3 */ \
-    MakeRemapWidget({     96,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB                               )  /* Tab 4 */
+    MakeRemapWidget({     65,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_STATS_TIP   ) /* Tab 3 */
 
 static rct_widget window_staff_overview_widgets[] = {
     MAIN_STAFF_WIDGETS,
@@ -358,7 +357,7 @@ void window_staff_disable_widgets(rct_window* w)
     {
         return;
     }
-    uint64_t disabled_widgets = (1 << WIDX_TAB_4);
+    uint64_t disabled_widgets = 0;
 
     if (peep != nullptr && peep->StaffType == STAFF_TYPE_SECURITY)
     {
