@@ -3663,6 +3663,11 @@ STR_6375    :Neznámá atrakce
 STR_6376    :{WINDOW_COLOUR_2}Vozy atrakce:{NEWLINE}{BLACK}{STRINGID} pro {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} pro {STRINGID}
 STR_6378    :Stahování seznamu objektů: {INT32} / {INT32}
+STR_6379    :Stažena neplatná data
+STR_6380    :Dostupná aktualizace!
+STR_6381    :Připojte se na OpenRCT2 Discord!
+STR_6382    :Je k dispozici nová verze OpenRCT2: {STRING}!
+STR_6383    :Otevřít stránku Ke Stažení
 
 ###############################################################################
 ## RCT2 Scenarios
