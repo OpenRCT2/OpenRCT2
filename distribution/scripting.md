@@ -159,6 +159,21 @@ if (!h) {
 
 All plugins have access to the same shared storage.
 
+> Can plugins communicate with other processes, or the internet?
+
+There is a socket API (based on net.Server and net.Socket from node.js) available for listening and communicating across TCP streams. For security purposes, plugins can only listen and connect to localhost. If you want to extend the communication further, you will need to provide your own separate reverse proxy. What port you can listen on is subject to your operating system, and how elevated the OpenRCT2 process is.
+
+```js
+var server = network.createServer();
+server.on('connection', function (conn) {
+    conn.on('data', function(data) {
+        console.log("Received data: ", data);
+        conn.write("Reply data");
+    });
+});
+server.listen(8080);
+```
+
 > Can I use third party JavaScript libraries?
 
 Absolutely, just embed the library in your JavaScript file. There are a number of tools to help you do this.
