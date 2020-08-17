@@ -42,6 +42,8 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
+    class ScSocketBase;
+
     class ScriptExecutionInfo
     {
     private:
@@ -133,6 +135,9 @@ namespace OpenRCT2::Scripting
         };
 
         std::unordered_map<std::string, CustomActionInfo> _customActions;
+#    ifndef DISABLE_NETWORK
+        std::vector<std::shared_ptr<ScSocketBase>> _sockets;
+#    endif
 
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
@@ -186,6 +191,8 @@ namespace OpenRCT2::Scripting
 
         void SaveSharedStorage();
 
+        void AddSocket(const std::shared_ptr<ScSocketBase>& socket);
+
     private:
         void Initialise();
         void StartPlugins();
@@ -206,6 +213,9 @@ namespace OpenRCT2::Scripting
 
         void InitSharedStorage();
         void LoadSharedStorage();
+
+        void UpdateSockets();
+        void RemoveSockets(const std::shared_ptr<Plugin>& plugin);
     };
 
     bool IsGameStateMutable();

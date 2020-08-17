@@ -33,6 +33,7 @@
 #    include "ScObject.hpp"
 #    include "ScPark.hpp"
 #    include "ScRide.hpp"
+#    include "ScSocketServer.hpp"
 #    include "ScTile.hpp"
 
 #    include <iostream>
@@ -41,7 +42,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 3;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 4;
 
 struct ExpressionStringifier final
 {
@@ -393,6 +394,8 @@ void ScriptEngine::Initialise()
     ScVehicle::Register(ctx);
     ScPeep::Register(ctx);
     ScGuest::Register(ctx);
+    ScSocket::Register(ctx);
+    ScSocketServer::Register(ctx);
     ScStaff::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
@@ -479,6 +482,7 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
     if (plugin->HasStarted())
     {
         RemoveCustomGameActions(plugin);
+        RemoveSockets(plugin);
         _hookEngine.UnsubscribeAll(plugin);
         for (auto callback : _pluginStoppedSubscriptions)
         {
@@ -640,6 +644,7 @@ void ScriptEngine::Update()
         }
     }
 
+    UpdateSockets();
     ProcessREPL();
 }
 
@@ -1124,6 +1129,41 @@ void ScriptEngine::SaveSharedStorage()
     catch (const std::exception&)
     {
         fprintf(stderr, "Unable to write to '%s'\n", path.c_str());
+    }
+}
+
+void ScriptEngine::AddSocket(const std::shared_ptr<ScSocketBase>& socket)
+{
+    _sockets.push_back(socket);
+}
+
+void ScriptEngine::UpdateSockets()
+{
+    // Use simple for i loop as Update calls can modify the list
+    for (size_t i = 0; i < _sockets.size(); i++)
+    {
+        _sockets[i]->Update();
+        if (_sockets[i]->IsDisposed())
+        {
+            _sockets.erase(_sockets.begin() + i);
+            i--;
+        }
+    }
+}
+
+void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
+{
+    for (auto it = _sockets.begin(); it != _sockets.end();)
+    {
+        if ((*it)->GetPlugin() == plugin)
+        {
+            (*it)->Dispose();
+            it = _sockets.erase(it);
+        }
+        else
+        {
+            it++;
+        }
     }
 }
 

@@ -410,6 +410,7 @@
     <ClInclude Include="scripting\ScPark.hpp" />
     <ClInclude Include="scripting\ScRide.hpp" />
     <ClInclude Include="scripting\ScriptEngine.h" />
+    <ClInclude Include="scripting\ScSocketServer.hpp" />
     <ClInclude Include="scripting\ScTile.hpp" />
     <ClInclude Include="sprites.h" />
     <ClInclude Include="title\TitleScreen.h" />

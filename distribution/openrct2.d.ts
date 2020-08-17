@@ -1221,6 +1221,9 @@ declare global {
         kickPlayer(index: number): void;
         sendMessage(message: string): void;
         sendMessage(message: string, players: number[]): void;
+
+        createServer(): SocketServer;
+        createSocket(): Socket;
     }
 
     type NetworkMode = "none" | "server" | "client";
@@ -1676,5 +1679,31 @@ declare global {
         getCentrePosition(): CoordsXY;
         moveTo(position: CoordsXY | CoordsXYZ): void;
         scrollTo(position: CoordsXY | CoordsXYZ): void;
+    }
+
+    /**
+     * Represents a server that can listen for incomming connections.
+     * Based on node.js net.Server, see https://nodejs.org/api/net.html for more information.
+     */
+    interface SocketServer {
+        listen(port: number): SocketServer;
+        close(): SocketServer;
+
+        on(event: 'connection', callback: (socket: Socket) => void): SocketServer;
+    }
+
+    /**
+     * Represents a socket such as a TCP connection.
+     * Based on node.js net.Socket, see https://nodejs.org/api/net.html for more information.
+     */
+    interface Socket {
+        connect(port: number, host: string, callback: Function): Socket;
+        destroy(error: object): Socket;
+        setNoDelay(noDelay: boolean): Socket;
+        end(data?: string): Socket;
+        write(data: string): boolean;
+
+        on(event: 'data', callback: (data: string) => void): Socket;
+        on(event: 'close', callback: (hadError: boolean) => void): Socket;
     }
 }
