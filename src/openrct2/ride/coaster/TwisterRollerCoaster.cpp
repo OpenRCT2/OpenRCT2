@@ -363,7 +363,7 @@ static void twister_rc_track_left_vertical_loop(
     const TileElement* tileElement)
 {
     bolliger_mabillard_track_left_vertical_loop(
-        session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES);
+        session, rideIndex, trackSequence, direction, height, tileElement, 0, 0, false, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008ABA94 */
@@ -372,7 +372,7 @@ static void twister_rc_track_right_vertical_loop(
     const TileElement* tileElement)
 {
     bolliger_mabillard_track_right_vertical_loop(
-        session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES);
+        session, rideIndex, trackSequence, direction, height, tileElement, 0, 0, false, METAL_SUPPORTS_TUBES);
 }
 
 /** rct2: 0x008AB924 */
