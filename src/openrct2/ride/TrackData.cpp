@@ -3678,8 +3678,8 @@ const uint8_t TrackPieceLengths[TrackElemType::Count] = {
     165,    // TrackElemType::FlatToUp60LongBase
     165,    // TrackElemType::Up60ToFlatLongBase
     32,     // TrackElemType::Whirlpool
+    165,    // TrackElemType::Down60ToFlatLongBase
     165,    // TrackElemType::FlatToDown60LongBase
-    165,    // TrackElemType::Up60ToFlatLongBase
     138,    // TrackElemType::CableLiftHill
     32,     // TrackElemType::ReverseFreefallSlope
     32,     // TrackElemType::ReverseFreefallVertical
@@ -4863,8 +4863,8 @@ const money32 TrackPricing[] = {
     376832, // TrackElemType::FlatToUp60LongBase
     376832, // TrackElemType::Up60ToFlatLongBase
     126976, // TrackElemType::Whirlpool
+    376832, // TrackElemType::Down60ToFlatLongBase
     376832, // TrackElemType::FlatToDown60LongBase
-    376832, // TrackElemType::Up60ToFlatLongBase
     643072, // TrackElemType::CableLiftHill
     491520, // TrackElemType::ReverseFreefallSlope
     65536,  // TrackElemType::ReverseFreefallVertical
@@ -5637,8 +5637,8 @@ const uint8_t TrackElementMirrorMap[] = {
     TrackElemType::FlatToUp60LongBase,
     TrackElemType::Up60ToFlatLongBase,
     TrackElemType::Whirlpool,
+    TrackElemType::Down60ToFlatLongBase,
     TrackElemType::FlatToDown60LongBase,
-    TrackElemType::Up60ToFlatLongBase,
     TrackElemType::CableLiftHill,
     TrackElemType::ReverseFreefallSlope,
     TrackElemType::ReverseFreefallVertical,
@@ -5897,8 +5897,8 @@ const uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
     (1 << 0) | (1 << 3), // TrackElemType::FlatToUp60LongBase
     (1 << 0) | (1 << 3), // TrackElemType::Up60ToFlatLongBase
     (1 << 0), // TrackElemType::Whirlpool
-    (1 << 0) | (1 << 3), // TrackElemType::FlatToDown60LongBase
-    (1 << 0) | (1 << 3), // TrackElemType::Up60ToFlatLongBase
+    (1 << 0) | (1 << 3), // TrackElemType::Down60ToFlatLongBase
+    (1 << 0) | (1 << 3), // TrackElemType::FlatToUp60LongBase
     (1 << 0) | (1 << 3), // TrackElemType::CableLiftHill
     (1 << 0) | (1 << 5), // TrackElemType::ReverseFreefallSlope
     (1 << 0), // TrackElemType::ReverseFreefallVertical
@@ -6157,8 +6157,8 @@ const uint8_t TrackSequenceElementAllowedWallEdges[][16] = {
     { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToUp60LongBase
     { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up60ToFlatLongBase
     { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Whirlpool
+    { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Down60ToFlatLongBase
     { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::FlatToDown60LongBase
-    { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Up60ToFlatLongBase
     { 0b1010, 0b1010, 0b1010, 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::CableLiftHill
     { 0b1010, 0b1010, 0b1010, 0b1010, 0b1010, 0b1011,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::ReverseFreefallSlope
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::ReverseFreefallVertical
@@ -6932,8 +6932,8 @@ const uint16_t TrackFlags[] = {
     /* TrackElemType::FlatToUp60LongBase                            */   TRACK_ELEM_FLAG_UP,
     /* TrackElemType::Up60ToFlatLongBase                            */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
     /* TrackElemType::Whirlpool                                     */   0,
-    /* TrackElemType::FlatToDown60LongBase                          */   TRACK_ELEM_FLAG_DOWN,
-    /* TrackElemType::Up60ToFlatLongBase                            */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
+    /* TrackElemType::Down60ToFlatLongBase                          */   TRACK_ELEM_FLAG_DOWN,
+    /* TrackElemType::FlatToDown60LongBase                          */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
     /* TrackElemType::CableLiftHill                                 */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT,
     /* TrackElemType::ReverseFreefallSlope                          */ TRACK_ELEM_FLAG_UP,
     /* TrackElemType::ReverseFreefallVertical                       */ TRACK_ELEM_FLAG_UP,

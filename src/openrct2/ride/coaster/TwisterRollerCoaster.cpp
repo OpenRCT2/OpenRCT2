@@ -1491,7 +1491,7 @@ static void twister_rc_track_60_deg_up_to_flat_long_base(
 }
 
 /** rct2: 0x008AC114 */
-static void twister_rc_track_flat_to_60_deg_down_long_base(
+static void twister_rc_track_60_deg_down_to_flat_long_base(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
@@ -1500,7 +1500,7 @@ static void twister_rc_track_flat_to_60_deg_down_long_base(
 }
 
 /** rct2: 0x008AC124 */
-static void twister_rc_track_60_deg_up_to_flat_long_base122(
+static void twister_rc_track_flat_to_60_deg_down_long_base(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
@@ -1952,10 +1952,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(int32_t trackType)
             return twister_rc_track_flat_to_60_deg_up_long_base;
         case TrackElemType::Up60ToFlatLongBase:
             return twister_rc_track_60_deg_up_to_flat_long_base;
+        case TrackElemType::Down60ToFlatLongBase:
+            return twister_rc_track_60_deg_down_to_flat_long_base;
         case TrackElemType::FlatToDown60LongBase:
             return twister_rc_track_flat_to_60_deg_down_long_base;
-        case TrackElemType::Up60ToFlatLongBase122:
-            return twister_rc_track_60_deg_up_to_flat_long_base122;
         case TrackElemType::LeftBarrelRollUpToDown:
             return twister_rc_track_left_barrel_roll_up_to_down;
         case TrackElemType::RightBarrelRollUpToDown:

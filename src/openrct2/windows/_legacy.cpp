@@ -285,11 +285,11 @@ bool window_ride_construction_update_state(
                 break;
 
             case TrackElemType::FlatToDown60:
-                trackType = TrackElemType::Up60ToFlatLongBase122;
+                trackType = TrackElemType::FlatToDown60LongBase;
                 break;
 
             case TrackElemType::Down60ToFlat:
-                trackType = TrackElemType::FlatToDown60LongBase;
+                trackType = TrackElemType::Down60ToFlatLongBase;
                 break;
 
             case TrackElemType::DiagFlatToUp60:

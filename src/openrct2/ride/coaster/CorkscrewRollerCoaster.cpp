@@ -4906,7 +4906,7 @@ static void corkscrew_rc_track_60_deg_up_to_flat_long_base(
 }
 
 /** rct2: 0x008A81B8 */
-static void corkscrew_rc_track_flat_to_60_deg_down_long_base(
+static void corkscrew_rc_track_60_deg_down_to_flat_long_base(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
@@ -4915,7 +4915,7 @@ static void corkscrew_rc_track_flat_to_60_deg_down_long_base(
 }
 
 /** rct2: 0x008A81C8 */
-static void corkscrew_rc_track_60_deg_up_to_flat_long_base122(
+static void corkscrew_rc_track_flat_to_60_deg_down_long_base(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
@@ -8728,10 +8728,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(int32_t trackType)
             return corkscrew_rc_track_flat_to_60_deg_up_long_base;
         case TrackElemType::Up60ToFlatLongBase:
             return corkscrew_rc_track_60_deg_up_to_flat_long_base;
+        case TrackElemType::Down60ToFlatLongBase:
+            return corkscrew_rc_track_60_deg_down_to_flat_long_base;
         case TrackElemType::FlatToDown60LongBase:
             return corkscrew_rc_track_flat_to_60_deg_down_long_base;
-        case TrackElemType::Up60ToFlatLongBase122:
-            return corkscrew_rc_track_60_deg_up_to_flat_long_base122;
         case TrackElemType::LeftEighthToDiag:
             return corkscrew_rc_track_left_eighth_to_diag;
         case TrackElemType::RightEighthToDiag:

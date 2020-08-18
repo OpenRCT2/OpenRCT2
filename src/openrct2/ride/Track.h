@@ -365,8 +365,8 @@ namespace TrackElemType
     constexpr uint16_t FlatToUp60LongBase = 118;
     constexpr uint16_t Up60ToFlatLongBase = 119;
     constexpr uint16_t Whirlpool = 120;
-    constexpr uint16_t FlatToDown60LongBase = 121;
-    constexpr uint16_t Up60ToFlatLongBase122 = 122;
+    constexpr uint16_t Down60ToFlatLongBase = 121;
+    constexpr uint16_t FlatToDown60LongBase = 122;
     constexpr uint16_t CableLiftHill = 123;
     constexpr uint16_t ReverseFreefallSlope = 124;
     constexpr uint16_t ReverseFreefallVertical = 125;

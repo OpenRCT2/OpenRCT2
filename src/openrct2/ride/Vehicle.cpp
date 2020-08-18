@@ -5976,12 +5976,12 @@ GForces Vehicle::GetGForces() const
             // 6d7408
             break;
         case TrackElemType::FlatToUp60LongBase:
-        case TrackElemType::FlatToDown60LongBase:
+        case TrackElemType::Down60ToFlatLongBase:
             vertFactor = 160;
             // 6d74F1
             break;
         case TrackElemType::Up60ToFlatLongBase:
-        case TrackElemType::Up60ToFlatLongBase122:
+        case TrackElemType::FlatToDown60LongBase:
             vertFactor = -160;
             // 6d74FD
             break;
