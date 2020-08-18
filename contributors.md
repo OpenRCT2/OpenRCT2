@@ -153,6 +153,7 @@ The following people are not part of the development team, but have been contrib
 * (quale)
 * Arran Ireland (ion232)
 * Ryan Bello (ryan-bello)
+* Simon Jarrett (mwnciau)
 
 ## Toolchain
 * (Balletie) - macOS
