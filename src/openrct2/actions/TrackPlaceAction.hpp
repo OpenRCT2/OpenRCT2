@@ -281,7 +281,7 @@ public:
             {
                 if (FlatTrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
                 {
-                    if (res->GroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
+                    if (res->GroundFlags & ELEMENT_IS_UNDERGROUND)
                     {
                         return std::make_unique<TrackPlaceActionResult>(
                             GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
@@ -292,7 +292,7 @@ public:
             {
                 if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND)
                 {
-                    if (res->GroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND)
+                    if (res->GroundFlags & ELEMENT_IS_UNDERGROUND)
                     {
                         return std::make_unique<TrackPlaceActionResult>(
                             GA_ERROR::DISALLOWED, STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND);
