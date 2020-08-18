@@ -5357,147 +5357,147 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mine_ride(int32_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return mine_ride_track_flat;
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
+        case TrackElemType::EndStation:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
             return mine_ride_track_station;
-        case TRACK_ELEM_25_DEG_UP:
+        case TrackElemType::Up25:
             return mine_ride_track_25_deg_up;
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+        case TrackElemType::FlatToUp25:
             return mine_ride_track_flat_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
             return mine_ride_track_25_deg_up_to_flat;
-        case TRACK_ELEM_25_DEG_DOWN:
+        case TrackElemType::Down25:
             return mine_ride_track_25_deg_down;
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::FlatToDown25:
             return mine_ride_track_flat_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::Down25ToFlat:
             return mine_ride_track_25_deg_down_to_flat;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
+        case TrackElemType::LeftQuarterTurn5Tiles:
             return mine_ride_track_left_quarter_turn_5;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
+        case TrackElemType::RightQuarterTurn5Tiles:
             return mine_ride_track_right_quarter_turn_5;
-        case TRACK_ELEM_FLAT_TO_LEFT_BANK:
+        case TrackElemType::FlatToLeftBank:
             return mine_ride_track_flat_to_left_bank;
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANK:
+        case TrackElemType::FlatToRightBank:
             return mine_ride_track_flat_to_right_bank;
-        case TRACK_ELEM_LEFT_BANK_TO_FLAT:
+        case TrackElemType::LeftBankToFlat:
             return mine_ride_track_left_bank_to_flat;
-        case TRACK_ELEM_RIGHT_BANK_TO_FLAT:
+        case TrackElemType::RightBankToFlat:
             return mine_ride_track_right_bank_to_flat;
-        case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
+        case TrackElemType::BankedLeftQuarterTurn5Tiles:
             return mine_ride_track_banked_left_quarter_turn_5;
-        case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
+        case TrackElemType::BankedRightQuarterTurn5Tiles:
             return mine_ride_track_banked_right_quarter_turn_5;
-        case TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP:
+        case TrackElemType::LeftBankToUp25:
             return mine_ride_track_left_bank_to_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP:
+        case TrackElemType::RightBankToUp25:
             return mine_ride_track_right_bank_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK:
+        case TrackElemType::Up25ToLeftBank:
             return mine_ride_track_25_deg_up_to_left_bank;
-        case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK:
+        case TrackElemType::Up25ToRightBank:
             return mine_ride_track_25_deg_up_to_right_bank;
-        case TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::LeftBankToDown25:
             return mine_ride_track_left_bank_to_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::RightBankToDown25:
             return mine_ride_track_right_bank_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK:
+        case TrackElemType::Down25ToLeftBank:
             return mine_ride_track_25_deg_down_to_left_bank;
-        case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TrackElemType::Down25ToRightBank:
             return mine_ride_track_25_deg_down_to_right_bank;
-        case TRACK_ELEM_LEFT_BANK:
+        case TrackElemType::LeftBank:
             return mine_ride_track_left_bank;
-        case TRACK_ELEM_RIGHT_BANK:
+        case TrackElemType::RightBank:
             return mine_ride_track_right_bank;
-        case TRACK_ELEM_S_BEND_LEFT:
+        case TrackElemType::SBendLeft:
             return mine_ride_track_s_bend_left;
-        case TRACK_ELEM_S_BEND_RIGHT:
+        case TrackElemType::SBendRight:
             return mine_ride_track_s_bend_right;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
+        case TrackElemType::LeftQuarterTurn3Tiles:
             return mine_ride_track_left_quarter_turn_3;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+        case TrackElemType::RightQuarterTurn3Tiles:
             return mine_ride_track_right_quarter_turn_3;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
+        case TrackElemType::LeftBankedQuarterTurn3Tiles:
             return mine_ride_track_left_quarter_turn_3_bank;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
+        case TrackElemType::RightBankedQuarterTurn3Tiles:
             return mine_ride_track_right_quarter_turn_3_bank;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
+        case TrackElemType::LeftHalfBankedHelixUpSmall:
             return mine_ride_track_left_half_banked_helix_up_small;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
+        case TrackElemType::RightHalfBankedHelixUpSmall:
             return mine_ride_track_right_half_banked_helix_up_small;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL:
+        case TrackElemType::LeftHalfBankedHelixDownSmall:
             return mine_ride_track_left_half_banked_helix_down_small;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL:
+        case TrackElemType::RightHalfBankedHelixDownSmall:
             return mine_ride_track_right_half_banked_helix_down_small;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE:
+        case TrackElemType::LeftHalfBankedHelixUpLarge:
             return mine_ride_track_left_half_banked_helix_up_large;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE:
+        case TrackElemType::RightHalfBankedHelixUpLarge:
             return mine_ride_track_right_half_banked_helix_up_large;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE:
+        case TrackElemType::LeftHalfBankedHelixDownLarge:
             return mine_ride_track_left_half_banked_helix_down_large;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE:
+        case TrackElemType::RightHalfBankedHelixDownLarge:
             return mine_ride_track_right_half_banked_helix_down_large;
-        case TRACK_ELEM_ON_RIDE_PHOTO:
+        case TrackElemType::OnRidePhoto:
             return mine_ride_track_on_ride_photo;
-        case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
+        case TrackElemType::LeftEighthToDiag:
             return mine_ride_track_left_eighth_to_diag;
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG:
+        case TrackElemType::RightEighthToDiag:
             return mine_ride_track_right_eighth_to_diag;
-        case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthToOrthogonal:
             return mine_ride_track_left_eighth_to_orthogonal;
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthToOrthogonal:
             return mine_ride_track_right_eighth_to_orthogonal;
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG:
+        case TrackElemType::LeftEighthBankToDiag:
             return mine_ride_track_left_eighth_bank_to_diag;
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
+        case TrackElemType::RightEighthBankToDiag:
             return mine_ride_track_right_eighth_bank_to_diag;
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthBankToOrthogonal:
             return mine_ride_track_left_eighth_bank_to_orthogonal;
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthBankToOrthogonal:
             return mine_ride_track_right_eighth_bank_to_orthogonal;
-        case TRACK_ELEM_DIAG_FLAT:
+        case TrackElemType::DiagFlat:
             return mine_ride_track_diag_flat;
-        case TRACK_ELEM_DIAG_25_DEG_UP:
+        case TrackElemType::DiagUp25:
             return mine_ride_track_diag_25_deg_up;
-        case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP:
+        case TrackElemType::DiagFlatToUp25:
             return mine_ride_track_diag_flat_to_25_deg_up;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+        case TrackElemType::DiagUp25ToFlat:
             return mine_ride_track_diag_25_deg_up_to_flat;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN:
+        case TrackElemType::DiagDown25:
             return mine_ride_track_diag_25_deg_down;
-        case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::DiagFlatToDown25:
             return mine_ride_track_diag_flat_to_25_deg_down;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::DiagDown25ToFlat:
             return mine_ride_track_diag_25_deg_down_to_flat;
-        case TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK:
+        case TrackElemType::DiagFlatToLeftBank:
             return mine_ride_track_diag_flat_to_left_bank;
-        case TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK:
+        case TrackElemType::DiagFlatToRightBank:
             return mine_ride_track_diag_flat_to_right_bank;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT:
+        case TrackElemType::DiagLeftBankToFlat:
             return mine_ride_track_diag_left_bank_to_flat;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT:
+        case TrackElemType::DiagRightBankToFlat:
             return mine_ride_track_diag_right_bank_to_flat;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP:
+        case TrackElemType::DiagLeftBankToUp25:
             return mine_ride_track_diag_left_bank_to_25_deg_up;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP:
+        case TrackElemType::DiagRightBankToUp25:
             return mine_ride_track_diag_right_bank_to_25_deg_up;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK:
+        case TrackElemType::DiagUp25ToLeftBank:
             return mine_ride_track_diag_25_deg_up_to_left_bank;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK:
+        case TrackElemType::DiagUp25ToRightBank:
             return mine_ride_track_diag_25_deg_up_to_right_bank;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::DiagLeftBankToDown25:
             return mine_ride_track_diag_left_bank_to_25_deg_down;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::DiagRightBankToDown25:
             return mine_ride_track_diag_right_bank_to_25_deg_down;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK:
+        case TrackElemType::DiagDown25ToLeftBank:
             return mine_ride_track_diag_25_deg_down_to_left_bank;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TrackElemType::DiagDown25ToRightBank:
             return mine_ride_track_diag_25_deg_down_to_right_bank;
-        case TRACK_ELEM_DIAG_LEFT_BANK:
+        case TrackElemType::DiagLeftBank:
             return mine_ride_track_diag_left_bank;
-        case TRACK_ELEM_DIAG_RIGHT_BANK:
+        case TrackElemType::DiagRightBank:
             return mine_ride_track_diag_right_bank;
     }
     return nullptr;

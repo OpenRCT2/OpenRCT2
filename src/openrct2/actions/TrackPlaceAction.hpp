@@ -130,7 +130,7 @@ public:
 
         uint32_t rideTypeFlags = RideTypeDescriptors[ride->type].Flags;
 
-        if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TRACK_ELEM_END_STATION)
+        if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
         {
             return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_NOT_ALLOWED_TO_MODIFY_STATION);
         }
@@ -146,14 +146,14 @@ public:
 
         if (!(rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE))
         {
-            if (_trackType == TRACK_ELEM_ON_RIDE_PHOTO)
+            if (_trackType == TrackElemType::OnRidePhoto)
             {
                 if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
                 {
                     return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_ONLY_ONE_ON_RIDE_PHOTO_PER_RIDE);
                 }
             }
-            else if (_trackType == TRACK_ELEM_CABLE_LIFT_HILL)
+            else if (_trackType == TrackElemType::CableLiftHill)
             {
                 if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
                 {
@@ -248,7 +248,7 @@ public:
             }
 
             uint8_t crossingMode = (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
-                                    && _trackType == TRACK_ELEM_FLAT)
+                                    && _trackType == TrackElemType::Flat)
                 ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                 : CREATE_CROSSING_MODE_NONE;
             if (!map_can_construct_with_clear_at(
@@ -483,7 +483,7 @@ public:
             const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
             uint8_t crossingMode = (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
-                                    && _trackType == TRACK_ELEM_FLAT)
+                                    && _trackType == TrackElemType::Flat)
                 ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
                 : CREATE_CROSSING_MODE_NONE;
             if (!map_can_construct_with_clear_at(
@@ -542,16 +542,16 @@ public:
             invalidate_test_results(ride);
             switch (_trackType)
             {
-                case TRACK_ELEM_ON_RIDE_PHOTO:
+                case TrackElemType::OnRidePhoto:
                     ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                     break;
-                case TRACK_ELEM_CABLE_LIFT_HILL:
+                case TrackElemType::CableLiftHill:
                     if (trackBlock->index != 0)
                         break;
                     ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                     ride->CableLiftLoc = mapLoc;
                     break;
-                case TRACK_ELEM_BLOCK_BRAKES:
+                case TrackElemType::BlockBrakes:
                     ride->num_block_brakes++;
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
@@ -566,14 +566,14 @@ public:
             {
                 switch (_trackType)
                 {
-                    case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-                    case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-                    case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-                    case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+                    case TrackElemType::Up25ToFlat:
+                    case TrackElemType::Up60ToFlat:
+                    case TrackElemType::DiagUp25ToFlat:
+                    case TrackElemType::DiagUp60ToFlat:
                         if (!(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED))
                             break;
                         [[fallthrough]];
-                    case TRACK_ELEM_CABLE_LIFT_HILL:
+                    case TrackElemType::CableLiftHill:
                         ride->num_block_brakes++;
                         break;
                 }
@@ -620,16 +620,16 @@ public:
 
             switch (_trackType)
             {
-                case TRACK_ELEM_WATERFALL:
+                case TrackElemType::Waterfall:
                     map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, CoordsXYZ{ mapLoc, tileElement->GetBaseZ() });
                     break;
-                case TRACK_ELEM_RAPIDS:
+                case TrackElemType::Rapids:
                     map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, CoordsXYZ{ mapLoc, tileElement->GetBaseZ() });
                     break;
-                case TRACK_ELEM_WHIRLPOOL:
+                case TrackElemType::Whirlpool:
                     map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, CoordsXYZ{ mapLoc, tileElement->GetBaseZ() });
                     break;
-                case TRACK_ELEM_SPINNING_TUNNEL:
+                case TrackElemType::SpinningTunnel:
                     map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, tileElement->GetBaseZ() });
                     break;
             }

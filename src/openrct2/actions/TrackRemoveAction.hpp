@@ -70,9 +70,9 @@ public:
         auto comparableTrackType = _trackType;
         switch (_trackType)
         {
-            case TRACK_ELEM_BEGIN_STATION:
-            case TRACK_ELEM_MIDDLE_STATION:
-                comparableTrackType = TRACK_ELEM_END_STATION;
+            case TrackElemType::BeginStation:
+            case TrackElemType::MiddleStation:
+                comparableTrackType = TrackElemType::EndStation;
                 break;
         }
 
@@ -103,9 +103,9 @@ public:
             auto tileTrackType = tileElement->AsTrack()->GetTrackType();
             switch (tileTrackType)
             {
-                case TRACK_ELEM_BEGIN_STATION:
-                case TRACK_ELEM_MIDDLE_STATION:
-                    tileTrackType = TRACK_ELEM_END_STATION;
+                case TrackElemType::BeginStation:
+                case TrackElemType::MiddleStation:
+                    tileTrackType = TrackElemType::EndStation;
                     break;
             }
 
@@ -270,9 +270,9 @@ public:
         auto comparableTrackType = _trackType;
         switch (_trackType)
         {
-            case TRACK_ELEM_BEGIN_STATION:
-            case TRACK_ELEM_MIDDLE_STATION:
-                comparableTrackType = TRACK_ELEM_END_STATION;
+            case TrackElemType::BeginStation:
+            case TrackElemType::MiddleStation:
+                comparableTrackType = TrackElemType::EndStation;
                 break;
         }
 
@@ -303,9 +303,9 @@ public:
             auto tileTrackType = tileElement->AsTrack()->GetTrackType();
             switch (tileTrackType)
             {
-                case TRACK_ELEM_BEGIN_STATION:
-                case TRACK_ELEM_MIDDLE_STATION:
-                    tileTrackType = TRACK_ELEM_END_STATION;
+                case TrackElemType::BeginStation:
+                case TrackElemType::MiddleStation:
+                    tileTrackType = TrackElemType::EndStation;
                     break;
             }
 
@@ -456,13 +456,13 @@ public:
 
         switch (trackType)
         {
-            case TRACK_ELEM_ON_RIDE_PHOTO:
+            case TrackElemType::OnRidePhoto:
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                 break;
-            case TRACK_ELEM_CABLE_LIFT_HILL:
+            case TrackElemType::CableLiftHill:
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                 break;
-            case TRACK_ELEM_BLOCK_BRAKES:
+            case TrackElemType::BlockBrakes:
                 ride->num_block_brakes--;
                 if (ride->num_block_brakes == 0)
                 {
@@ -478,14 +478,14 @@ public:
 
         switch (trackType)
         {
-            case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
+            case TrackElemType::DiagUp25ToFlat:
+            case TrackElemType::DiagUp60ToFlat:
                 if (!isLiftHill)
                     break;
                 [[fallthrough]];
-            case TRACK_ELEM_CABLE_LIFT_HILL:
+            case TrackElemType::CableLiftHill:
                 ride->num_block_brakes--;
                 break;
         }

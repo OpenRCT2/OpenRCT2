@@ -1614,7 +1614,7 @@ void Vehicle::UpdateMeasurements()
             return;
 
         uint16_t trackElemType = GetTrackType();
-        if (trackElemType == TRACK_ELEM_POWERED_LIFT || HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
+        if (trackElemType == TrackElemType::PoweredLift || HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             if (!(curRide->testing_flags & RIDE_TESTING_POWERED_LIFT))
             {
@@ -1632,7 +1632,7 @@ void Vehicle::UpdateMeasurements()
 
         if (curRide->type == RIDE_TYPE_WATER_COASTER)
         {
-            if (trackElemType >= TRACK_ELEM_FLAT_COVERED && trackElemType <= TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED)
+            if (trackElemType >= TrackElemType::FlatCovered && trackElemType <= TrackElemType::RightQuarterTurn3TilesCovered)
             {
                 curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
             }
@@ -1640,18 +1640,18 @@ void Vehicle::UpdateMeasurements()
 
         switch (trackElemType)
         {
-            case TRACK_ELEM_RAPIDS:
-            case TRACK_ELEM_SPINNING_TUNNEL:
+            case TrackElemType::Rapids:
+            case TrackElemType::SpinningTunnel:
                 curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
                 break;
-            case TRACK_ELEM_WATERFALL:
-            case TRACK_ELEM_LOG_FLUME_REVERSER:
+            case TrackElemType::Waterfall:
+            case TrackElemType::LogFlumeReverser:
                 curRide->special_track_elements |= RIDE_ELEMENT_REVERSER_OR_WATERFALL;
                 break;
-            case TRACK_ELEM_WHIRLPOOL:
+            case TrackElemType::Whirlpool:
                 curRide->special_track_elements |= RIDE_ELEMENT_WHIRLPOOL;
                 break;
-            case TRACK_ELEM_WATER_SPLASH:
+            case TrackElemType::Watersplash:
                 if (velocity >= 0xB0000)
                 {
                     curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
@@ -3102,7 +3102,7 @@ bool Vehicle::CurrentTowerElementIsTop()
         {
             tileElement++;
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
-                && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_TOWER_SECTION)
+                && tileElement->AsTrack()->GetTrackType() == TrackElemType::TowerSection)
             {
                 return false;
             }
@@ -5687,279 +5687,279 @@ GForces Vehicle::GetGForces() const
     // unsigned. Possibly an original bug but will be left implemented.
     switch (GetTrackType())
     {
-        case TRACK_ELEM_FLAT:
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
-        case TRACK_ELEM_25_DEG_UP:
-        case TRACK_ELEM_60_DEG_UP: //
-        case TRACK_ELEM_25_DEG_DOWN:
-        case TRACK_ELEM_60_DEG_DOWN: //
-        case TRACK_ELEM_FLAT_TO_LEFT_BANK:
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANK:
-        case TRACK_ELEM_LEFT_BANK_TO_FLAT:
-        case TRACK_ELEM_RIGHT_BANK_TO_FLAT: //
-        case TRACK_ELEM_LEFT_BANK:
-        case TRACK_ELEM_RIGHT_BANK:
-        case TRACK_ELEM_TOWER_BASE:
-        case TRACK_ELEM_TOWER_SECTION:
-        case TRACK_ELEM_FLAT_COVERED:
-        case TRACK_ELEM_25_DEG_UP_COVERED:
-        case TRACK_ELEM_60_DEG_UP_COVERED:
-        case TRACK_ELEM_25_DEG_DOWN_COVERED:
-        case TRACK_ELEM_60_DEG_DOWN_COVERED:
-        case TRACK_ELEM_BRAKES:
-        case TRACK_ELEM_ROTATION_CONTROL_TOGGLE:
-        case TRACK_ELEM_MAZE:
-        case TRACK_ELEM_25_DEG_UP_LEFT_BANKED:
-        case TRACK_ELEM_25_DEG_UP_RIGHT_BANKED:
-        case TRACK_ELEM_WATERFALL:
-        case TRACK_ELEM_RAPIDS:
-        case TRACK_ELEM_ON_RIDE_PHOTO:
-        case TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED:
-        case TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED:
-        case TRACK_ELEM_WHIRLPOOL:
-        case TRACK_ELEM_REVERSE_FREEFALL_VERTICAL:
-        case TRACK_ELEM_90_DEG_UP:
-        case TRACK_ELEM_90_DEG_DOWN:
-        case TRACK_ELEM_DIAG_FLAT:
-        case TRACK_ELEM_DIAG_25_DEG_UP:
-        case TRACK_ELEM_DIAG_60_DEG_UP:
-        case TRACK_ELEM_DIAG_25_DEG_DOWN:
-        case TRACK_ELEM_DIAG_60_DEG_DOWN:
-        case TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK:
-        case TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK:
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT:
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT:
-        case TRACK_ELEM_DIAG_LEFT_BANK:
-        case TRACK_ELEM_DIAG_RIGHT_BANK:
-        case TRACK_ELEM_LOG_FLUME_REVERSER:
-        case TRACK_ELEM_SPINNING_TUNNEL:
-        case TRACK_ELEM_POWERED_LIFT:
-        case TRACK_ELEM_MINI_GOLF_HOLE_A:
-        case TRACK_ELEM_MINI_GOLF_HOLE_B:
-        case TRACK_ELEM_MINI_GOLF_HOLE_C:
-        case TRACK_ELEM_MINI_GOLF_HOLE_D:
-        case TRACK_ELEM_MINI_GOLF_HOLE_E:
-        case TRACK_ELEM_LEFT_REVERSER:
-        case TRACK_ELEM_RIGHT_REVERSER:
-        case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN:
-        case TRACK_ELEM_BLOCK_BRAKES:
-        case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP:
-        case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP:
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP:
-        case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN:
-        case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN:
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
+        case TrackElemType::Flat:
+        case TrackElemType::EndStation:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
+        case TrackElemType::Up25:
+        case TrackElemType::Up60: //
+        case TrackElemType::Down25:
+        case TrackElemType::Down60: //
+        case TrackElemType::FlatToLeftBank:
+        case TrackElemType::FlatToRightBank:
+        case TrackElemType::LeftBankToFlat:
+        case TrackElemType::RightBankToFlat: //
+        case TrackElemType::LeftBank:
+        case TrackElemType::RightBank:
+        case TrackElemType::TowerBase:
+        case TrackElemType::TowerSection:
+        case TrackElemType::FlatCovered:
+        case TrackElemType::Up25Covered:
+        case TrackElemType::Up60Covered:
+        case TrackElemType::Down25Covered:
+        case TrackElemType::Down60Covered:
+        case TrackElemType::Brakes:
+        case TrackElemType::RotationControlToggle:
+        case TrackElemType::Maze:
+        case TrackElemType::Up25LeftBanked:
+        case TrackElemType::Up25RightBanked:
+        case TrackElemType::Waterfall:
+        case TrackElemType::Rapids:
+        case TrackElemType::OnRidePhoto:
+        case TrackElemType::Down25LeftBanked:
+        case TrackElemType::Down25RightBanked:
+        case TrackElemType::Whirlpool:
+        case TrackElemType::ReverseFreefallVertical:
+        case TrackElemType::Up90:
+        case TrackElemType::Down90:
+        case TrackElemType::DiagFlat:
+        case TrackElemType::DiagUp25:
+        case TrackElemType::DiagUp60:
+        case TrackElemType::DiagDown25:
+        case TrackElemType::DiagDown60:
+        case TrackElemType::DiagFlatToLeftBank:
+        case TrackElemType::DiagFlatToRightBank:
+        case TrackElemType::DiagLeftBankToFlat:
+        case TrackElemType::DiagRightBankToFlat:
+        case TrackElemType::DiagLeftBank:
+        case TrackElemType::DiagRightBank:
+        case TrackElemType::LogFlumeReverser:
+        case TrackElemType::SpinningTunnel:
+        case TrackElemType::PoweredLift:
+        case TrackElemType::MinigolfHoleA:
+        case TrackElemType::MinigolfHoleB:
+        case TrackElemType::MinigolfHoleC:
+        case TrackElemType::MinigolfHoleD:
+        case TrackElemType::MinigolfHoleE:
+        case TrackElemType::LeftReverser:
+        case TrackElemType::RightReverser:
+        case TrackElemType::AirThrustVerticalDown:
+        case TrackElemType::BlockBrakes:
+        case TrackElemType::Up25ToLeftBankedUp25:
+        case TrackElemType::Up25ToRightBankedUp25:
+        case TrackElemType::LeftBankedUp25ToUp25:
+        case TrackElemType::RightBankedUp25ToUp25:
+        case TrackElemType::Down25ToLeftBankedDown25:
+        case TrackElemType::Down25ToRightBankedDown25:
+        case TrackElemType::LeftBankedDown25ToDown25:
+        case TrackElemType::RightBankedDown25ToDown25:
+        case TrackElemType::LeftQuarterTurn1TileUp90:
+        case TrackElemType::RightQuarterTurn1TileUp90:
+        case TrackElemType::LeftQuarterTurn1TileDown90:
+        case TrackElemType::RightQuarterTurn1TileDown90:
             // 6d73FF
             // Do nothing
             break;
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP:   //
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT: //
-        case TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP:
-        case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK:
-        case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK:
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP_COVERED:
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT_COVERED:
-        case TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT:
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT:
-        case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP:
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT:
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::FlatToUp25:   //
+        case TrackElemType::Down25ToFlat: //
+        case TrackElemType::LeftBankToUp25:
+        case TrackElemType::RightBankToUp25:
+        case TrackElemType::Down25ToLeftBank:
+        case TrackElemType::Down25ToRightBank:
+        case TrackElemType::FlatToUp25Covered:
+        case TrackElemType::Down25ToFlatCovered:
+        case TrackElemType::LeftBankedFlatToLeftBankedUp25:
+        case TrackElemType::RightBankedFlatToRightBankedUp25:
+        case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
+        case TrackElemType::RightBankedDown25ToRightBankedFlat:
+        case TrackElemType::FlatToLeftBankedUp25:
+        case TrackElemType::FlatToRightBankedUp25:
+        case TrackElemType::LeftBankedDown25ToFlat:
+        case TrackElemType::RightBankedDown25ToFlat:
             vertFactor = 103;
             // 6d7509
             break;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:   //
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN: //
-        case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK:
-        case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK:
-        case TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN:
-        case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN:
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT_COVERED:
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN_COVERED:
-        case TRACK_ELEM_CABLE_LIFT_HILL:
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT:
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT:
-        case TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
-        case TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
+        case TrackElemType::Up25ToFlat:   //
+        case TrackElemType::FlatToDown25: //
+        case TrackElemType::Up25ToLeftBank:
+        case TrackElemType::Up25ToRightBank:
+        case TrackElemType::LeftBankToDown25:
+        case TrackElemType::RightBankToDown25:
+        case TrackElemType::Up25ToFlatCovered:
+        case TrackElemType::FlatToDown25Covered:
+        case TrackElemType::CableLiftHill:
+        case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
+        case TrackElemType::RightBankedUp25ToRightBankedFlat:
+        case TrackElemType::LeftBankedFlatToLeftBankedDown25:
+        case TrackElemType::RightBankedFlatToRightBankedDown25:
+        case TrackElemType::LeftBankedUp25ToFlat:
+        case TrackElemType::RightBankedUp25ToFlat:
+        case TrackElemType::FlatToLeftBankedDown25:
+        case TrackElemType::FlatToRightBankedDown25:
             vertFactor = -103;
             // 6d7569
             break;
-        case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:     //
-        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN: //
-        case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP_COVERED:
-        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED:
+        case TrackElemType::Up25ToUp60:     //
+        case TrackElemType::Down60ToDown25: //
+        case TrackElemType::Up25ToUp60Covered:
+        case TrackElemType::Down60ToDown25Covered:
             vertFactor = 82;
             // 6d7545
             break;
-        case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:     //
-        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN: //
-        case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP_COVERED:
-        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED:
+        case TrackElemType::Up60ToUp25:     //
+        case TrackElemType::Down25ToDown60: //
+        case TrackElemType::Up60ToUp25Covered:
+        case TrackElemType::Down25ToDown60Covered:
             vertFactor = -82;
             // 6d7551
             break;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES: //
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
-        case TRACK_ELEM_LEFT_TWIST_DOWN_TO_UP:
-        case TRACK_ELEM_LEFT_TWIST_UP_TO_DOWN:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED:
-        case TRACK_ELEM_LEFT_QUARTER_HELIX_LARGE_UP:
-        case TRACK_ELEM_LEFT_QUARTER_HELIX_LARGE_DOWN:
-        case TRACK_ELEM_LEFT_FLYER_TWIST_UP:
-        case TRACK_ELEM_LEFT_FLYER_TWIST_DOWN:
-        case TRACK_ELEM_LEFT_HEARTLINE_ROLL:
+        case TrackElemType::LeftQuarterTurn5Tiles: //
+        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::LeftTwistDownToUp:
+        case TrackElemType::LeftTwistUpToDown:
+        case TrackElemType::LeftQuarterTurn5TilesCovered:
+        case TrackElemType::LeftQuarterHelixLargeUp:
+        case TrackElemType::LeftQuarterHelixLargeDown:
+        case TrackElemType::LeftFlyerTwistUp:
+        case TrackElemType::LeftFlyerTwistDown:
+        case TrackElemType::LeftHeartLineRoll:
             lateralFactor = 98;
             // 6d7590
             break;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES: //
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
-        case TRACK_ELEM_RIGHT_TWIST_DOWN_TO_UP:
-        case TRACK_ELEM_RIGHT_TWIST_UP_TO_DOWN:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED:
-        case TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_DOWN:
-        case TRACK_ELEM_RIGHT_FLYER_TWIST_UP:
-        case TRACK_ELEM_RIGHT_FLYER_TWIST_DOWN:
-        case TRACK_ELEM_RIGHT_HEARTLINE_ROLL:
+        case TrackElemType::RightQuarterTurn5Tiles: //
+        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::RightTwistDownToUp:
+        case TrackElemType::RightTwistUpToDown:
+        case TrackElemType::RightQuarterTurn5TilesCovered:
+        case TrackElemType::RightQuarterHelixLargeUp:
+        case TrackElemType::RightQuarterHelixLargeDown:
+        case TrackElemType::RightFlyerTwistUp:
+        case TrackElemType::RightFlyerTwistDown:
+        case TrackElemType::RightHeartLineRoll:
             lateralFactor = -98;
             // 6d75B7
             break;
-        case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE:
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE:
-        case TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP:
-        case TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN:
+        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::LeftQuarterBankedHelixLargeUp:
+        case TrackElemType::LeftQuarterBankedHelixLargeDown:
             vertFactor = 200;
             lateralFactor = 160;
             // 6d75E1
             break;
-        case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE:
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE:
-        case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN:
+        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::RightHalfBankedHelixDownLarge:
+        case TrackElemType::RightQuarterBankedHelixLargeUp:
+        case TrackElemType::RightQuarterBankedHelixLargeDown:
             vertFactor = 200;
             lateralFactor = -160;
             // 6d75F0
             break;
-        case TRACK_ELEM_S_BEND_LEFT:
-        case TRACK_ELEM_S_BEND_LEFT_COVERED:
+        case TrackElemType::SBendLeft:
+        case TrackElemType::SBendLeftCovered:
             lateralFactor = (track_progress < 48) ? 98 : -98;
             // 6d75FF
             break;
-        case TRACK_ELEM_S_BEND_RIGHT:
-        case TRACK_ELEM_S_BEND_RIGHT_COVERED:
+        case TrackElemType::SBendRight:
+        case TrackElemType::SBendRightCovered:
             lateralFactor = (track_progress < 48) ? -98 : 98;
             // 6d7608
             break;
-        case TRACK_ELEM_LEFT_VERTICAL_LOOP:
-        case TRACK_ELEM_RIGHT_VERTICAL_LOOP:
+        case TrackElemType::LeftVerticalLoop:
+        case TrackElemType::RightVerticalLoop:
             vertFactor = (abs(track_progress - 155) / 2) + 28;
             // 6d7690
             break;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED:
-        case TRACK_ELEM_LEFT_CURVED_LIFT_HILL:
+        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::LeftQuarterTurn3TilesCovered:
+        case TrackElemType::LeftCurvedLiftHill:
             lateralFactor = 59;
             // 6d7704
             break;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED:
-        case TRACK_ELEM_RIGHT_CURVED_LIFT_HILL:
+        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::RightQuarterTurn3TilesCovered:
+        case TrackElemType::RightCurvedLiftHill:
             lateralFactor = -59;
             // 6d7710
             break;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL:
+        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::LeftHalfBankedHelixDownSmall:
             vertFactor = 100;
             lateralFactor = 100;
             // 6d7782
             break;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL:
+        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::RightHalfBankedHelixDownSmall:
             vertFactor = 100;
             lateralFactor = -100;
             // 6d778E
             break;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
+        case TrackElemType::LeftQuarterTurn1Tile:
             lateralFactor = 45;
             // 6d779A
             break;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
+        case TrackElemType::RightQuarterTurn1Tile:
             lateralFactor = -45;
             // 6d77A3
             break;
-        case TRACK_ELEM_HALF_LOOP_UP:
-        case TRACK_ELEM_FLYER_HALF_LOOP_UP:
+        case TrackElemType::HalfLoopUp:
+        case TrackElemType::FlyerHalfLoopUp:
             vertFactor = ((static_cast<uint16_t>(-(track_progress - 155))) / 2) + 28;
             // 6d763E
             break;
-        case TRACK_ELEM_HALF_LOOP_DOWN:
-        case TRACK_ELEM_FLYER_HALF_LOOP_DOWN:
+        case TrackElemType::HalfLoopDown:
+        case TrackElemType::FlyerHalfLoopDown:
             vertFactor = (track_progress / 2) + 28;
             // 6d7656
             break;
-        case TRACK_ELEM_LEFT_CORKSCREW_UP:
-        case TRACK_ELEM_RIGHT_CORKSCREW_DOWN:
-        case TRACK_ELEM_LEFT_FLYER_CORKSCREW_UP:
-        case TRACK_ELEM_RIGHT_FLYER_CORKSCREW_DOWN:
+        case TrackElemType::LeftCorkscrewUp:
+        case TrackElemType::RightCorkscrewDown:
+        case TrackElemType::LeftFlyerCorkscrewUp:
+        case TrackElemType::RightFlyerCorkscrewDown:
             vertFactor = 52;
             lateralFactor = 70;
             // 6d76AA
             break;
-        case TRACK_ELEM_RIGHT_CORKSCREW_UP:
-        case TRACK_ELEM_LEFT_CORKSCREW_DOWN:
-        case TRACK_ELEM_RIGHT_FLYER_CORKSCREW_UP:
-        case TRACK_ELEM_LEFT_FLYER_CORKSCREW_DOWN:
+        case TrackElemType::RightCorkscrewUp:
+        case TrackElemType::LeftCorkscrewDown:
+        case TrackElemType::RightFlyerCorkscrewUp:
+        case TrackElemType::LeftFlyerCorkscrewDown:
             vertFactor = 52;
             lateralFactor = -70;
             // 6d76B9
             break;
-        case TRACK_ELEM_FLAT_TO_60_DEG_UP:
-        case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
+        case TrackElemType::FlatToUp60:
+        case TrackElemType::Down60ToFlat:
             vertFactor = 56;
             // 6d747C
             break;
-        case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
-        case TRACK_ELEM_BRAKE_FOR_DROP:
+        case TrackElemType::Up60ToFlat:
+        case TrackElemType::FlatToDown60:
+        case TrackElemType::BrakeForDrop:
             vertFactor = -56;
             // 6d7488
             break;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn1TileUp60:
+        case TrackElemType::LeftQuarterTurn1TileDown60:
             lateralFactor = 88;
             // 6d7770
             break;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn1TileUp60:
+        case TrackElemType::RightQuarterTurn1TileDown60:
             lateralFactor = -88;
             // 6d7779
             break;
-        case TRACK_ELEM_WATER_SPLASH:
+        case TrackElemType::Watersplash:
             vertFactor = -150;
             if (track_progress < 32)
                 break;
@@ -5975,134 +5975,134 @@ GForces Vehicle::GetGForces() const
             vertFactor = -150;
             // 6d7408
             break;
-        case TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE:
-        case TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE:
+        case TrackElemType::FlatToUp60LongBase:
+        case TrackElemType::FlatToDown60LongBase:
             vertFactor = 160;
             // 6d74F1
             break;
-        case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE:
-        case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122:
+        case TrackElemType::Up60ToFlatLongBase:
+        case TrackElemType::Up60ToFlatLongBase122:
             vertFactor = -160;
             // 6d74FD
             break;
-        case TRACK_ELEM_REVERSE_FREEFALL_SLOPE:
-        case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL:
+        case TrackElemType::ReverseFreefallSlope:
+        case TrackElemType::AirThrustVerticalDownToLevel:
             vertFactor = 120;
             // 6d7458
             break;
-        case TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP:
-        case TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::Up60ToUp90:
+        case TrackElemType::Down90ToDown60:
             vertFactor = 110;
             // 6d7515
             break;
-        case TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP:
-        case TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN:
+        case TrackElemType::Up90ToUp60:
+        case TrackElemType::Down60ToDown90:
             vertFactor = -110;
             // 6d7521
             break;
-        case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
-        case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::LeftEighthToOrthogonal:
             lateralFactor = 137;
             // 6d7575
             break;
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG:
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::RightEighthToOrthogonal:
             lateralFactor = -137;
             // 6d759C
             break;
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG:
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::LeftEighthBankToOrthogonal:
             vertFactor = 270;
             lateralFactor = 200;
             // 6d75C3
             break;
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::RightEighthBankToOrthogonal:
             vertFactor = 270;
             lateralFactor = -200;
             // 6d75D2
             break;
-        case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP:
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP:
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP:
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK:
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TrackElemType::DiagFlatToUp25:
+        case TrackElemType::DiagDown25ToFlat:
+        case TrackElemType::DiagLeftBankToUp25:
+        case TrackElemType::DiagRightBankToUp25:
+        case TrackElemType::DiagDown25ToLeftBank:
+        case TrackElemType::DiagDown25ToRightBank:
             vertFactor = 113;
             // 6d7494
             break;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK:
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK:
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN:
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::DiagFlatToDown25:
+        case TrackElemType::DiagUp25ToLeftBank:
+        case TrackElemType::DiagUp25ToRightBank:
+        case TrackElemType::DiagLeftBankToDown25:
+        case TrackElemType::DiagRightBankToDown25:
             vertFactor = -113;
             // 6d755D
             break;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
-        case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::DiagUp25ToUp60:
+        case TrackElemType::DiagDown60ToDown25:
             vertFactor = 95;
             // 6D752D
             break;
-        case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::DiagUp60ToUp25:
+        case TrackElemType::DiagDown25ToDown60:
             vertFactor = -95;
             // 6D7539
             break;
-        case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
-        case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
+        case TrackElemType::DiagFlatToUp60:
+        case TrackElemType::DiagDown60ToFlat:
             vertFactor = 60;
             // 6D7464
             break;
-        case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
+        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::DiagFlatToDown60:
             vertFactor = -60;
             // 6d7470
             break;
-        case TRACK_ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN:
-        case TRACK_ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP:
+        case TrackElemType::LeftBarrelRollUpToDown:
+        case TrackElemType::LeftBarrelRollDownToUp:
             vertFactor = 170;
             lateralFactor = 115;
             // 6d7581
             break;
-        case TRACK_ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN:
-        case TRACK_ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP:
+        case TrackElemType::RightBarrelRollUpToDown:
+        case TrackElemType::RightBarrelRollDownToUp:
             vertFactor = 170;
             lateralFactor = -115;
             // 6d75A8
             break;
-        case TRACK_ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
+        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
             vertFactor = -(track_progress / 2) + 134;
             lateralFactor = 90;
             // 6d771C
             break;
-        case TRACK_ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
+        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
             vertFactor = -(track_progress / 2) + 134;
             lateralFactor = -90;
             // 6D7746
             break;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK:
+        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
             vertFactor = -(track_progress / 2) + 134;
             lateralFactor = 90;
             // 6D7731 identical to 6d771c
             break;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
             vertFactor = -(track_progress / 2) + 134;
             lateralFactor = -90;
             // 6D775B identical to 6d7746
             break;
-        case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP:
-        case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP:
+        case TrackElemType::LeftLargeHalfLoopUp:
+        case TrackElemType::RightLargeHalfLoopUp:
             vertFactor = ((static_cast<uint16_t>(-(track_progress - 311))) / 4) + 46;
             // 6d7666
             break;
-        case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN:
-        case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN:
+        case TrackElemType::RightLargeHalfLoopDown:
+        case TrackElemType::LeftLargeHalfLoopDown:
             vertFactor = (track_progress / 4) + 46;
             // 6d767F
             break;
-        case TRACK_ELEM_HEARTLINE_TRANSFER_UP:
+        case TrackElemType::HeartLineTransferUp:
             vertFactor = 103;
             if (track_progress < 32)
                 break;
@@ -6118,7 +6118,7 @@ GForces Vehicle::GetGForces() const
             vertFactor = -103;
             // 6d74A0
             break;
-        case TRACK_ELEM_HEARTLINE_TRANSFER_DOWN:
+        case TrackElemType::HeartLineTransferDown:
             vertFactor = -103;
             if (track_progress < 32)
                 break;
@@ -6134,42 +6134,42 @@ GForces Vehicle::GetGForces() const
             vertFactor = 103;
             // 6D74CA
             break;
-        case TRACK_ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
-        case TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN:
-        case TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP:
+        case TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop:
+        case TrackElemType::InvertedFlatToDown90QuarterLoop:
+        case TrackElemType::MultiDimFlatToDown90QuarterLoop:
             vertFactor = (track_progress / 4) + 55;
             // 6d762D
             break;
-        case TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP:
-        case TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP:
-        case TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP:
+        case TrackElemType::Up90ToInvertedFlatQuarterLoop:
+        case TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop:
+        case TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop:
             vertFactor = ((static_cast<uint16_t>(-(track_progress - 137))) / 4) + 55;
             // 6D7614
             break;
-        case TRACK_ELEM_AIR_THRUST_TOP_CAP:
+        case TrackElemType::AirThrustTopCap:
             vertFactor = -60;
             // 6D744C
             break;
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
+        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
             vertFactor = 200;
             lateralFactor = 100;
             // 6d76C8
             break;
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+        case TrackElemType::RightBankedQuarterTurn3TileUp25:
+        case TrackElemType::RightBankedQuarterTurn3TileDown25:
             vertFactor = 200;
             lateralFactor = -100;
             // 6d76d7
             break;
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
+        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
             vertFactor = 200;
             lateralFactor = 160;
             // 6D76E6
             break;
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+        case TrackElemType::RightBankedQuarterTurn5TileUp25:
+        case TrackElemType::RightBankedQuarterTurn5TileDown25:
             vertFactor = 200;
             lateralFactor = -160;
             // 6d76F5
@@ -6650,26 +6650,26 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
 
     switch (trackType)
     {
-        case TRACK_ELEM_BLOCK_BRAKES:
+        case TrackElemType::BlockBrakes:
             if (curRide->IsBlockSectioned() && trackElement->AsTrack()->BlockBrakeClosed())
                 ApplyStopBlockBrake();
             else
                 ApplyNonStopBlockBrake();
 
             break;
-        case TRACK_ELEM_END_STATION:
+        case TrackElemType::EndStation:
             if (trackElement->AsTrack()->BlockBrakeClosed())
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 
             break;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_CABLE_LIFT_HILL:
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
+        case TrackElemType::Up60ToFlat:
+        case TrackElemType::CableLiftHill:
+        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::DiagUp60ToFlat:
             if (curRide->IsBlockSectioned())
             {
-                if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || trackElement->AsTrack()->HasChain())
+                if (trackType == TrackElemType::CableLiftHill || trackElement->AsTrack()->HasChain())
                 {
                     if (trackElement->AsTrack()->BlockBrakeClosed())
                     {
@@ -6763,7 +6763,7 @@ static void block_brakes_open_previous_section(Ride& ride, const CoordsXYZ& vehi
     map_invalidate_element(location, reinterpret_cast<TileElement*>(trackElement));
 
     int32_t trackType = trackElement->GetTrackType();
-    if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
+    if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::EndStation)
     {
         if (ride.IsBlockSectioned())
         {
@@ -6777,40 +6777,40 @@ int32_t Vehicle::GetSwingAmount() const
     int32_t trackType = GetTrackType();
     switch (trackType)
     {
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
-        case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED:
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE:
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE:
-        case TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP:
-        case TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN:
-        case TRACK_ELEM_LEFT_QUARTER_HELIX_LARGE_UP:
-        case TRACK_ELEM_LEFT_QUARTER_HELIX_LARGE_DOWN:
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn5Tiles:
+        case TrackElemType::BankedLeftQuarterTurn5Tiles:
+        case TrackElemType::LeftQuarterTurn5TilesUp25:
+        case TrackElemType::LeftQuarterTurn5TilesDown25:
+        case TrackElemType::LeftQuarterTurn5TilesCovered:
+        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::LeftQuarterBankedHelixLargeUp:
+        case TrackElemType::LeftQuarterBankedHelixLargeDown:
+        case TrackElemType::LeftQuarterHelixLargeUp:
+        case TrackElemType::LeftQuarterHelixLargeDown:
+        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
+        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
             // loc_6D67E1
             return 14;
 
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
-        case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED:
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE:
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE:
-        case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN:
-        case TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_DOWN:
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn5Tiles:
+        case TrackElemType::BankedRightQuarterTurn5Tiles:
+        case TrackElemType::RightQuarterTurn5TilesUp25:
+        case TrackElemType::RightQuarterTurn5TilesDown25:
+        case TrackElemType::RightQuarterTurn5TilesCovered:
+        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::RightHalfBankedHelixDownLarge:
+        case TrackElemType::RightQuarterBankedHelixLargeUp:
+        case TrackElemType::RightQuarterBankedHelixLargeDown:
+        case TrackElemType::RightQuarterHelixLargeUp:
+        case TrackElemType::RightQuarterHelixLargeDown:
+        case TrackElemType::RightBankedQuarterTurn5TileUp25:
+        case TrackElemType::RightBankedQuarterTurn5TileDown25:
             // loc_6D6804
             return -14;
 
-        case TRACK_ELEM_S_BEND_LEFT:
-        case TRACK_ELEM_S_BEND_LEFT_COVERED:
+        case TrackElemType::SBendLeft:
+        case TrackElemType::SBendLeftCovered:
             // loc_6D67EF
             if (track_progress < 48)
             {
@@ -6821,8 +6821,8 @@ int32_t Vehicle::GetSwingAmount() const
                 return -15;
             }
 
-        case TRACK_ELEM_S_BEND_RIGHT:
-        case TRACK_ELEM_S_BEND_RIGHT_COVERED:
+        case TrackElemType::SBendRight:
+        case TrackElemType::SBendRightCovered:
             // loc_6D67CC
             if (track_progress < 48)
             {
@@ -6833,59 +6833,59 @@ int32_t Vehicle::GetSwingAmount() const
                 return 15;
             }
 
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED:
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL:
-        case TRACK_ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK:
-        case TRACK_ELEM_LEFT_CURVED_LIFT_HILL:
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn3Tiles:
+        case TrackElemType::LeftBankedQuarterTurn3Tiles:
+        case TrackElemType::LeftQuarterTurn3TilesUp25:
+        case TrackElemType::LeftQuarterTurn3TilesDown25:
+        case TrackElemType::LeftQuarterTurn3TilesCovered:
+        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::LeftHalfBankedHelixDownSmall:
+        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
+        case TrackElemType::LeftCurvedLiftHill:
+        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
+        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
             // loc_6D67BE
             return 13;
 
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED:
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL:
-        case TRACK_ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK:
-        case TRACK_ELEM_RIGHT_CURVED_LIFT_HILL:
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn3Tiles:
+        case TrackElemType::RightBankedQuarterTurn3Tiles:
+        case TrackElemType::RightQuarterTurn3TilesUp25:
+        case TrackElemType::RightQuarterTurn3TilesDown25:
+        case TrackElemType::RightQuarterTurn3TilesCovered:
+        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::RightHalfBankedHelixDownSmall:
+        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
+        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
+        case TrackElemType::RightCurvedLiftHill:
+        case TrackElemType::RightBankedQuarterTurn3TileUp25:
+        case TrackElemType::RightBankedQuarterTurn3TileDown25:
             // loc_6D67B0
             return -13;
 
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn1Tile:
+        case TrackElemType::LeftQuarterTurn1TileUp60:
+        case TrackElemType::LeftQuarterTurn1TileDown60:
             // loc_6D67A2
             return 12;
 
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn1Tile:
+        case TrackElemType::RightQuarterTurn1TileUp60:
+        case TrackElemType::RightQuarterTurn1TileDown60:
             // loc_6D6794
             return -12;
 
-        case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
-        case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG:
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthToDiag:
+        case TrackElemType::LeftEighthToOrthogonal:
+        case TrackElemType::LeftEighthBankToDiag:
+        case TrackElemType::LeftEighthBankToOrthogonal:
             // loc_6D67D3
             return 15;
 
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG:
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthToDiag:
+        case TrackElemType::RightEighthToOrthogonal:
+        case TrackElemType::RightEighthBankToDiag:
+        case TrackElemType::RightEighthBankToOrthogonal:
             // loc_6D67F6
             return -15;
     }
@@ -6934,21 +6934,21 @@ void Vehicle::UpdateSwingingCar()
         int32_t trackType = GetTrackType();
         switch (trackType)
         {
-            case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
-            case TRACK_ELEM_LEFT_BANK:
-            case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
+            case TrackElemType::BankedLeftQuarterTurn5Tiles:
+            case TrackElemType::LeftBank:
+            case TrackElemType::LeftBankedQuarterTurn3Tiles:
                 dx = 10831;
                 cx = -819;
                 break;
-            case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
-            case TRACK_ELEM_RIGHT_BANK:
-            case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
+            case TrackElemType::BankedRightQuarterTurn5Tiles:
+            case TrackElemType::RightBank:
+            case TrackElemType::RightBankedQuarterTurn3Tiles:
                 dx = 819;
                 cx = -10831;
                 break;
         }
 
-        if (track_type_is_station(trackType) || trackType == TRACK_ELEM_BRAKES || trackType == TRACK_ELEM_BLOCK_BRAKES)
+        if (track_type_is_station(trackType) || trackType == TrackElemType::Brakes || trackType == TrackElemType::BlockBrakes)
         {
             dx = 0;
             cx = 0;
@@ -7552,7 +7552,7 @@ void Vehicle::UpdateHandleWaterSplash() const
     }
     else
     {
-        if (trackType == TRACK_ELEM_25_DEG_DOWN_TO_FLAT)
+        if (trackType == TrackElemType::Down25ToFlat)
         {
             if (track_progress == 12)
             {
@@ -7562,7 +7562,7 @@ void Vehicle::UpdateHandleWaterSplash() const
     }
     if (IsHead())
     {
-        if (trackType == TRACK_ELEM_WATER_SPLASH)
+        if (trackType == TrackElemType::Watersplash)
         {
             if (track_progress == 48)
             {
@@ -7841,7 +7841,7 @@ void Vehicle::Sub6DBF3E()
         _vehicleStationIndex = tileElement->AsTrack()->GetStationIndex();
     }
 
-    if (trackType == TRACK_ELEM_TOWER_BASE && this == gCurrentVehicle)
+    if (trackType == TrackElemType::TowerBase && this == gCurrentVehicle)
     {
         if (track_progress > 3 && !HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
         {
@@ -7861,7 +7861,7 @@ void Vehicle::Sub6DBF3E()
         }
     }
 
-    if (trackType != TRACK_ELEM_END_STATION || this != gCurrentVehicle)
+    if (trackType != TrackElemType::EndStation || this != gCurrentVehicle)
     {
         return;
     }
@@ -7912,7 +7912,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         return false;
     }
 
-    if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && this == gCurrentVehicle)
+    if (trackType == TrackElemType::CableLiftHill && this == gCurrentVehicle)
     {
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
     }
@@ -7922,7 +7922,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         if (next_vehicle_on_train == SPRITE_INDEX_NULL)
         {
             tileElement->AsTrack()->SetBlockBrakeClosed(true);
-            if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
+            if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::EndStation)
             {
                 if (!(rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_POWERED))
                 {
@@ -7983,8 +7983,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
             tileElement = xyElement.element;
             location = { xyElement, curZ, static_cast<Direction>(direction) };
         }
-        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_LEFT_REVERSER
-            || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RIGHT_REVERSER)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::LeftReverser
+            || tileElement->AsTrack()->GetTrackType() == TrackElemType::RightReverser)
         {
             if (IsHead() && velocity <= 0x30000)
             {
@@ -8023,7 +8023,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         && TrackSubposition < VehicleTrackSubposition::GoKartsMovingToRightLane)
     {
         trackType = tileElement->AsTrack()->GetTrackType();
-        if (trackType == TRACK_ELEM_FLAT
+        if (trackType == TrackElemType::Flat
             || ((curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && tileElement->AsTrack()->IsStation()))
         {
             UpdateGoKartAttemptSwitchLanes();
@@ -8054,14 +8054,14 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
     }
 
     trackType = tileElement->AsTrack()->GetTrackType();
-    if (trackType != TRACK_ELEM_BRAKES)
+    if (trackType != TrackElemType::Brakes)
     {
         target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
     track_direction = location.direction % NumOrthogonalDirections;
     track_type |= trackType << 2;
     brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
-    if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
+    if (trackType == TrackElemType::OnRidePhoto)
     {
         trigger_on_ride_photo(TrackLocation, tileElement);
     }
@@ -8070,7 +8070,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         if (curRide != nullptr)
         {
             uint16_t rideType = curRide->type;
-            if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_SPINNING_WILD_MOUSE)
+            if (trackType == TrackElemType::RotationControlToggle && rideType == RIDE_TYPE_SPINNING_WILD_MOUSE)
             {
                 update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
             }
@@ -8093,7 +8093,7 @@ bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ri
 loc_6DAEB9:
     regs.cx = GetTrackType();
     int32_t trackType = GetTrackType();
-    if (trackType == TRACK_ELEM_HEARTLINE_TRANSFER_UP || trackType == TRACK_ELEM_HEARTLINE_TRANSFER_DOWN)
+    if (trackType == TrackElemType::HeartLineTransferUp || trackType == TrackElemType::HeartLineTransferDown)
     {
         if (track_progress == 80)
         {
@@ -8109,7 +8109,7 @@ loc_6DAEB9:
             acceleration = 0x50000;
         }
     }
-    else if (trackType == TRACK_ELEM_BRAKES)
+    else if (trackType == TrackElemType::Brakes)
     {
         bool hasBrakesFailure = curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN
             && curRide->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE;
@@ -8141,12 +8141,12 @@ loc_6DAEB9:
         }
     }
 
-    if ((trackType == TRACK_ELEM_FLAT && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
-        || (trackType == TRACK_ELEM_POWERED_LIFT))
+    if ((trackType == TrackElemType::Flat && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+        || (trackType == TrackElemType::PoweredLift))
     {
         acceleration = RideTypeDescriptors[curRide->type].OperatingSettings.PoweredLiftAcceleration << 16;
     }
-    if (trackType == TRACK_ELEM_BRAKE_FOR_DROP)
+    if (trackType == TrackElemType::BrakeForDrop)
     {
         if (IsHead())
         {
@@ -8164,7 +8164,7 @@ loc_6DAEB9:
             }
         }
     }
-    if (trackType == TRACK_ELEM_LOG_FLUME_REVERSER)
+    if (trackType == TrackElemType::LogFlumeReverser)
     {
         if (track_progress != 16 || velocity < 0x40000)
         {
@@ -8223,14 +8223,14 @@ loc_6DAEB9:
         }
 
         if (TrackSubposition == VehicleTrackSubposition::ReverserRCFrontBogie
-            && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress >= 30
+            && (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser) && track_progress >= 30
             && track_progress <= 66)
         {
             regs.ebx |= 8;
         }
 
         if (TrackSubposition == VehicleTrackSubposition::ReverserRCRearBogie
-            && (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER) && track_progress == 96)
+            && (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser) && track_progress == 96)
         {
             ReverseReverserCar();
 
@@ -8376,7 +8376,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
         tileElement = trackBeginEnd.begin_element;
 
         trackType = tileElement->AsTrack()->GetTrackType();
-        if (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER)
+        if (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser)
         {
             return false;
         }
@@ -8467,7 +8467,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
     }
 
     trackType = tileElement->AsTrack()->GetTrackType();
-    if (trackType != TRACK_ELEM_BRAKES)
+    if (trackType != TrackElemType::Brakes)
     {
         target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
@@ -8493,7 +8493,7 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
 
 loc_6DBA33:;
     uint16_t trackType = GetTrackType();
-    if (trackType == TRACK_ELEM_FLAT && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
+    if (trackType == TrackElemType::Flat && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
     {
         int32_t unkVelocity = _vehicleVelocityF64E08;
         if (unkVelocity < -524288)
@@ -8503,7 +8503,7 @@ loc_6DBA33:;
         }
     }
 
-    if (trackType == TRACK_ELEM_BRAKES)
+    if (trackType == TrackElemType::Brakes)
     {
         regs.eax = -(brake_speed << 16);
         if (regs.eax > _vehicleVelocityF64E08)
@@ -9113,7 +9113,7 @@ loc_6DCE02:
             return;
         }
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
-        if (trackType != TRACK_ELEM_END_STATION)
+        if (trackType != TrackElemType::EndStation)
         {
             return;
         }
@@ -9300,11 +9300,11 @@ static uint8_t modified_speed(uint16_t trackType, VehicleTrackSubposition trackS
 
     uint8_t speedModifier = FULL_SPEED;
 
-    if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE)
+    if (trackType == TrackElemType::LeftQuarterTurn1Tile)
     {
         speedModifier = (trackSubposition == VehicleTrackSubposition::GoKartsLeftLane) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
-    else if (trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE)
+    else if (trackType == TrackElemType::RightQuarterTurn1Tile)
     {
         speedModifier = (trackSubposition == VehicleTrackSubposition::GoKartsRightLane) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
@@ -9603,7 +9603,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
     }
 
-    if ((vehicle->GetTrackType()) == TRACK_ELEM_WATER_SPLASH)
+    if ((vehicle->GetTrackType()) == TrackElemType::Watersplash)
     {
         if (vehicle->track_progress >= 48 && vehicle->track_progress <= 128)
         {

@@ -562,9 +562,9 @@ static void window_track_place_draw_mini_preview_track(
     for (const auto& trackElement : td6->track_elements)
     {
         int32_t trackType = trackElement.type;
-        if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS)
+        if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
         {
-            trackType = TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP;
+            trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
         }
 
         // Follow a single track piece shape

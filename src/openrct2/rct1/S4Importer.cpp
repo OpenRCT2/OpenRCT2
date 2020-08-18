@@ -2141,7 +2141,7 @@ private:
                 {
                     dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 }
-                else if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
+                else if (trackType == TrackElemType::OnRidePhoto)
                 {
                     dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 }
@@ -3096,10 +3096,10 @@ private:
                         auto trackType = tileElement->AsTrack()->GetTrackType();
                         switch (trackType)
                         {
-                            case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-                            case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-                            case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-                            case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+                            case TrackElemType::Up25ToFlat:
+                            case TrackElemType::Up60ToFlat:
+                            case TrackElemType::DiagUp25ToFlat:
+                            case TrackElemType::DiagUp60ToFlat:
                                 break;
                             default:
                                 continue;

@@ -184,9 +184,9 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
 
     switch (curve & 0xFF)
     {
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_S_BEND_LEFT:
-        case TRACK_ELEM_S_BEND_RIGHT:
+        case TrackElemType::EndStation:
+        case TrackElemType::SBendLeft:
+        case TrackElemType::SBendRight:
             if (startSlope != TRACK_SLOPE_NONE || endSlope != TRACK_SLOPE_NONE)
             {
                 return std::make_tuple(false, 0);
@@ -199,8 +199,8 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
 
             return std::make_tuple(true, curve & 0xFF);
 
-        case TRACK_ELEM_LEFT_VERTICAL_LOOP:
-        case TRACK_ELEM_RIGHT_VERTICAL_LOOP:
+        case TrackElemType::LeftVerticalLoop:
+        case TrackElemType::RightVerticalLoop:
             if (startBank != TRACK_BANK_NONE || endBank != TRACK_BANK_NONE)
             {
                 return std::make_tuple(false, 0);
@@ -276,26 +276,26 @@ bool window_ride_construction_update_state(
     {
         switch (trackType)
         {
-            case TRACK_ELEM_FLAT_TO_60_DEG_UP:
-                trackType = TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE;
+            case TrackElemType::FlatToUp60:
+                trackType = TrackElemType::FlatToUp60LongBase;
                 break;
 
-            case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-                trackType = TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE;
+            case TrackElemType::Up60ToFlat:
+                trackType = TrackElemType::Up60ToFlatLongBase;
                 break;
 
-            case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
-                trackType = TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122;
+            case TrackElemType::FlatToDown60:
+                trackType = TrackElemType::Up60ToFlatLongBase122;
                 break;
 
-            case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
-                trackType = TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE;
+            case TrackElemType::Down60ToFlat:
+                trackType = TrackElemType::FlatToDown60LongBase;
                 break;
 
-            case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
-            case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
-            case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
+            case TrackElemType::DiagFlatToUp60:
+            case TrackElemType::DiagUp60ToFlat:
+            case TrackElemType::DiagFlatToDown60:
+            case TrackElemType::DiagDown60ToFlat:
                 return true;
         }
     }
@@ -361,7 +361,7 @@ bool window_ride_construction_update_state(
         liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
 
-        if (trackType == TRACK_ELEM_LEFT_CURVED_LIFT_HILL || trackType == TRACK_ELEM_RIGHT_CURVED_LIFT_HILL)
+        if (trackType == TrackElemType::LeftCurvedLiftHill || trackType == TrackElemType::RightCurvedLiftHill)
         {
             liftHillAndInvertedState |= CONSTRUCTION_LIFT_HILL_SELECTED;
         }
@@ -468,16 +468,16 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
         if (_rideConstructionState2 == RIDE_CONSTRUCTION_STATE_SELECTED
             || _rideConstructionState2 == RIDE_CONSTRUCTION_STATE_FRONT)
         {
-            if (type == TRACK_ELEM_MIDDLE_STATION || type == TRACK_ELEM_BEGIN_STATION)
+            if (type == TrackElemType::MiddleStation || type == TrackElemType::BeginStation)
             {
-                type = TRACK_ELEM_END_STATION;
+                type = TrackElemType::EndStation;
             }
         }
         if (_rideConstructionState2 == RIDE_CONSTRUCTION_STATE_BACK)
         {
-            if (type == TRACK_ELEM_MIDDLE_STATION)
+            if (type == TrackElemType::MiddleStation)
             {
-                type = TRACK_ELEM_BEGIN_STATION;
+                type = TrackElemType::BeginStation;
             }
         }
         if (network_get_mode() == NETWORK_MODE_CLIENT)

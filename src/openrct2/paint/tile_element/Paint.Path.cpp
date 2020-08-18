@@ -1039,7 +1039,7 @@ void path_paint_box_support(
     //  can clip above gravel part of the track sprite
     if (session->TrackElementOnSameHeight)
     {
-        if (session->TrackElementOnSameHeight->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
+        if (session->TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
         {
             boundingBoxZOffset = 2;
         }
@@ -1189,7 +1189,7 @@ void path_paint_pole_support(
     //  can clip above gravel part of the track sprite
     if (session->TrackElementOnSameHeight)
     {
-        if (session->TrackElementOnSameHeight->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
+        if (session->TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
         {
             boundingBoxZOffset = 2;
         }

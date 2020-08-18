@@ -107,7 +107,7 @@ static void giga_rc_track_station(
         { 18085, 18077, SPR_STATION_BASE_A_NW_SE },
     };
 
-    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
+    if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
     {
         sub_98197C_rotated(
             session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
@@ -8953,284 +8953,284 @@ TRACK_PAINT_FUNCTION get_track_paint_function_giga_rc(int32_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return giga_rc_track_flat;
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
+        case TrackElemType::EndStation:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
             return giga_rc_track_station;
-        case TRACK_ELEM_25_DEG_UP:
+        case TrackElemType::Up25:
             return giga_rc_track_25_deg_up;
-        case TRACK_ELEM_60_DEG_UP:
+        case TrackElemType::Up60:
             return giga_rc_track_60_deg_up;
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+        case TrackElemType::FlatToUp25:
             return giga_rc_track_flat_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
+        case TrackElemType::Up25ToUp60:
             return giga_rc_track_25_deg_up_to_60_deg_up;
-        case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::Up60ToUp25:
             return giga_rc_track_60_deg_up_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
             return giga_rc_track_25_deg_up_to_flat;
-        case TRACK_ELEM_25_DEG_DOWN:
+        case TrackElemType::Down25:
             return giga_rc_track_25_deg_down;
-        case TRACK_ELEM_60_DEG_DOWN:
+        case TrackElemType::Down60:
             return giga_rc_track_60_deg_down;
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::FlatToDown25:
             return giga_rc_track_flat_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::Down25ToDown60:
             return giga_rc_track_25_deg_down_to_60_deg_down;
-        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::Down60ToDown25:
             return giga_rc_track_60_deg_down_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::Down25ToFlat:
             return giga_rc_track_25_deg_down_to_flat;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
+        case TrackElemType::LeftQuarterTurn5Tiles:
             return giga_rc_track_left_quarter_turn_5;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
+        case TrackElemType::RightQuarterTurn5Tiles:
             return giga_rc_track_right_quarter_turn_5;
-        case TRACK_ELEM_FLAT_TO_LEFT_BANK:
+        case TrackElemType::FlatToLeftBank:
             return giga_rc_track_flat_to_left_bank;
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANK:
+        case TrackElemType::FlatToRightBank:
             return giga_rc_track_flat_to_right_bank;
-        case TRACK_ELEM_LEFT_BANK_TO_FLAT:
+        case TrackElemType::LeftBankToFlat:
             return giga_rc_track_left_bank_to_flat;
-        case TRACK_ELEM_RIGHT_BANK_TO_FLAT:
+        case TrackElemType::RightBankToFlat:
             return giga_rc_track_right_bank_to_flat;
-        case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
+        case TrackElemType::BankedLeftQuarterTurn5Tiles:
             return giga_rc_track_banked_left_quarter_turn_5;
-        case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
+        case TrackElemType::BankedRightQuarterTurn5Tiles:
             return giga_rc_track_banked_right_quarter_turn_5;
-        case TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP:
+        case TrackElemType::LeftBankToUp25:
             return giga_rc_track_left_bank_to_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP:
+        case TrackElemType::RightBankToUp25:
             return giga_rc_track_right_bank_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK:
+        case TrackElemType::Up25ToLeftBank:
             return giga_rc_track_25_deg_up_to_left_bank;
-        case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK:
+        case TrackElemType::Up25ToRightBank:
             return giga_rc_track_25_deg_up_to_right_bank;
-        case TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::LeftBankToDown25:
             return giga_rc_track_left_bank_to_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::RightBankToDown25:
             return giga_rc_track_right_bank_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK:
+        case TrackElemType::Down25ToLeftBank:
             return giga_rc_track_25_deg_down_to_left_bank;
-        case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TrackElemType::Down25ToRightBank:
             return giga_rc_track_25_deg_down_to_right_bank;
-        case TRACK_ELEM_LEFT_BANK:
+        case TrackElemType::LeftBank:
             return giga_rc_track_left_bank;
-        case TRACK_ELEM_RIGHT_BANK:
+        case TrackElemType::RightBank:
             return giga_rc_track_right_bank;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP:
+        case TrackElemType::LeftQuarterTurn5TilesUp25:
             return giga_rc_track_left_quarter_turn_5_25_deg_up;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP:
+        case TrackElemType::RightQuarterTurn5TilesUp25:
             return giga_rc_track_right_quarter_turn_5_25_deg_up;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn5TilesDown25:
             return giga_rc_track_left_quarter_turn_5_25_deg_down;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn5TilesDown25:
             return giga_rc_track_right_quarter_turn_5_25_deg_down;
-        case TRACK_ELEM_S_BEND_LEFT:
+        case TrackElemType::SBendLeft:
             return giga_rc_track_s_bend_left;
-        case TRACK_ELEM_S_BEND_RIGHT:
+        case TrackElemType::SBendRight:
             return giga_rc_track_s_bend_right;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
+        case TrackElemType::LeftQuarterTurn3Tiles:
             return giga_rc_track_left_quarter_turn_3;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+        case TrackElemType::RightQuarterTurn3Tiles:
             return giga_rc_track_right_quarter_turn_3;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
+        case TrackElemType::LeftBankedQuarterTurn3Tiles:
             return giga_rc_track_left_quarter_turn_3_bank;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
+        case TrackElemType::RightBankedQuarterTurn3Tiles:
             return giga_rc_track_right_quarter_turn_3_bank;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
+        case TrackElemType::LeftQuarterTurn3TilesUp25:
             return giga_rc_track_left_quarter_turn_3_25_deg_up;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
+        case TrackElemType::RightQuarterTurn3TilesUp25:
             return giga_rc_track_right_quarter_turn_3_25_deg_up;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn3TilesDown25:
             return giga_rc_track_left_quarter_turn_3_25_deg_down;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn3TilesDown25:
             return giga_rc_track_right_quarter_turn_3_25_deg_down;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
+        case TrackElemType::LeftHalfBankedHelixUpSmall:
             return giga_rc_track_left_half_banked_helix_up_small;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
+        case TrackElemType::RightHalfBankedHelixUpSmall:
             return giga_rc_track_right_half_banked_helix_up_small;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL:
+        case TrackElemType::LeftHalfBankedHelixDownSmall:
             return giga_rc_track_left_half_banked_helix_down_small;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL:
+        case TrackElemType::RightHalfBankedHelixDownSmall:
             return giga_rc_track_right_half_banked_helix_down_small;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE:
+        case TrackElemType::LeftHalfBankedHelixUpLarge:
             return giga_rc_track_left_half_banked_helix_up_large;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE:
+        case TrackElemType::RightHalfBankedHelixUpLarge:
             return giga_rc_track_right_half_banked_helix_up_large;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE:
+        case TrackElemType::LeftHalfBankedHelixDownLarge:
             return giga_rc_track_left_half_banked_helix_down_large;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE:
+        case TrackElemType::RightHalfBankedHelixDownLarge:
             return giga_rc_track_right_half_banked_helix_down_large;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP:
+        case TrackElemType::LeftQuarterTurn1TileUp60:
             return giga_rc_track_left_quarter_turn_1_60_deg_up;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP:
+        case TrackElemType::RightQuarterTurn1TileUp60:
             return giga_rc_track_right_quarter_turn_1_60_deg_up;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn1TileDown60:
             return giga_rc_track_left_quarter_turn_1_60_deg_down;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn1TileDown60:
             return giga_rc_track_right_quarter_turn_1_60_deg_down;
-        case TRACK_ELEM_BRAKES:
+        case TrackElemType::Brakes:
             return giga_rc_track_brakes;
-        case TRACK_ELEM_25_DEG_UP_LEFT_BANKED:
+        case TrackElemType::Up25LeftBanked:
             return giga_rc_track_25_deg_up_left_banked;
-        case TRACK_ELEM_25_DEG_UP_RIGHT_BANKED:
+        case TrackElemType::Up25RightBanked:
             return giga_rc_track_25_deg_up_right_banked;
-        case TRACK_ELEM_ON_RIDE_PHOTO:
+        case TrackElemType::OnRidePhoto:
             return giga_rc_track_on_ride_photo;
-        case TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED:
+        case TrackElemType::Down25LeftBanked:
             return giga_rc_track_25_deg_down_left_banked;
-        case TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED:
+        case TrackElemType::Down25RightBanked:
             return giga_rc_track_25_deg_down_right_banked;
-        case TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE:
+        case TrackElemType::FlatToUp60LongBase:
             return giga_rc_track_flat_to_60_deg_up_long_base;
-        case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE:
+        case TrackElemType::Up60ToFlatLongBase:
             return giga_rc_track_60_deg_up_to_flat_long_base;
-        case TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE:
+        case TrackElemType::FlatToDown60LongBase:
             return giga_rc_track_flat_to_60_deg_down_long_base;
-        case TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122:
+        case TrackElemType::Up60ToFlatLongBase122:
             return giga_rc_track_60_deg_up_to_flat_long_base122;
-        case TRACK_ELEM_CABLE_LIFT_HILL:
+        case TrackElemType::CableLiftHill:
             return giga_rc_track_cable_lift_hill;
-        case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
+        case TrackElemType::LeftEighthToDiag:
             return giga_rc_track_left_eighth_to_diag;
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG:
+        case TrackElemType::RightEighthToDiag:
             return giga_rc_track_right_eighth_to_diag;
-        case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthToOrthogonal:
             return giga_rc_track_left_eighth_to_orthogonal;
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthToOrthogonal:
             return giga_rc_track_right_eighth_to_orthogonal;
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG:
+        case TrackElemType::LeftEighthBankToDiag:
             return giga_rc_track_left_eighth_bank_to_diag;
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
+        case TrackElemType::RightEighthBankToDiag:
             return giga_rc_track_right_eighth_bank_to_diag;
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthBankToOrthogonal:
             return giga_rc_track_left_eighth_bank_to_orthogonal;
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthBankToOrthogonal:
             return giga_rc_track_right_eighth_bank_to_orthogonal;
-        case TRACK_ELEM_DIAG_FLAT:
+        case TrackElemType::DiagFlat:
             return giga_rc_track_diag_flat;
-        case TRACK_ELEM_DIAG_25_DEG_UP:
+        case TrackElemType::DiagUp25:
             return giga_rc_track_diag_25_deg_up;
-        case TRACK_ELEM_DIAG_60_DEG_UP:
+        case TrackElemType::DiagUp60:
             return giga_rc_track_diag_60_deg_up;
-        case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP:
+        case TrackElemType::DiagFlatToUp25:
             return giga_rc_track_diag_flat_to_25_deg_up;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
+        case TrackElemType::DiagUp25ToUp60:
             return giga_rc_track_diag_25_deg_up_to_60_deg_up;
-        case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::DiagUp60ToUp25:
             return giga_rc_track_diag_60_deg_up_to_25_deg_up;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+        case TrackElemType::DiagUp25ToFlat:
             return giga_rc_track_diag_25_deg_up_to_flat;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN:
+        case TrackElemType::DiagDown25:
             return giga_rc_track_diag_25_deg_down;
-        case TRACK_ELEM_DIAG_60_DEG_DOWN:
+        case TrackElemType::DiagDown60:
             return giga_rc_track_diag_60_deg_down;
-        case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::DiagFlatToDown25:
             return giga_rc_track_diag_flat_to_25_deg_down;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::DiagDown25ToDown60:
             return giga_rc_track_diag_25_deg_down_to_60_deg_down;
-        case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::DiagDown60ToDown25:
             return giga_rc_track_diag_60_deg_down_to_25_deg_down;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::DiagDown25ToFlat:
             return giga_rc_track_diag_25_deg_down_to_flat;
-        case TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK:
+        case TrackElemType::DiagFlatToLeftBank:
             return giga_rc_track_diag_flat_to_left_bank;
-        case TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK:
+        case TrackElemType::DiagFlatToRightBank:
             return giga_rc_track_diag_flat_to_right_bank;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT:
+        case TrackElemType::DiagLeftBankToFlat:
             return giga_rc_track_diag_left_bank_to_flat;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT:
+        case TrackElemType::DiagRightBankToFlat:
             return giga_rc_track_diag_right_bank_to_flat;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP:
+        case TrackElemType::DiagLeftBankToUp25:
             return giga_rc_track_diag_left_bank_to_25_deg_up;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP:
+        case TrackElemType::DiagRightBankToUp25:
             return giga_rc_track_diag_right_bank_to_25_deg_up;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK:
+        case TrackElemType::DiagUp25ToLeftBank:
             return giga_rc_track_diag_25_deg_up_to_left_bank;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK:
+        case TrackElemType::DiagUp25ToRightBank:
             return giga_rc_track_diag_25_deg_up_to_right_bank;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::DiagLeftBankToDown25:
             return giga_rc_track_diag_left_bank_to_25_deg_down;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::DiagRightBankToDown25:
             return giga_rc_track_diag_right_bank_to_25_deg_down;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK:
+        case TrackElemType::DiagDown25ToLeftBank:
             return giga_rc_track_diag_25_deg_down_to_left_bank;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TrackElemType::DiagDown25ToRightBank:
             return giga_rc_track_diag_25_deg_down_to_right_bank;
-        case TRACK_ELEM_DIAG_LEFT_BANK:
+        case TrackElemType::DiagLeftBank:
             return giga_rc_track_diag_left_bank;
-        case TRACK_ELEM_DIAG_RIGHT_BANK:
+        case TrackElemType::DiagRightBank:
             return giga_rc_track_diag_right_bank;
-        case TRACK_ELEM_BLOCK_BRAKES:
+        case TrackElemType::BlockBrakes:
             return giga_rc_track_block_brakes;
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
+        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
             return giga_rc_track_left_banked_quarter_turn_3_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
+        case TrackElemType::RightBankedQuarterTurn3TileUp25:
             return giga_rc_track_right_banked_quarter_turn_3_25_deg_up;
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
             return giga_rc_track_left_banked_quarter_turn_3_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+        case TrackElemType::RightBankedQuarterTurn3TileDown25:
             return giga_rc_track_right_banked_quarter_turn_3_25_deg_down;
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
+        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
             return giga_rc_track_left_banked_quarter_turn_5_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
+        case TrackElemType::RightBankedQuarterTurn5TileUp25:
             return giga_rc_track_right_banked_quarter_turn_5_25_deg_up;
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
             return giga_rc_track_left_banked_quarter_turn_5_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+        case TrackElemType::RightBankedQuarterTurn5TileDown25:
             return giga_rc_track_right_banked_quarter_turn_5_25_deg_down;
-        case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP:
+        case TrackElemType::Up25ToLeftBankedUp25:
             return giga_rc_track_25_deg_up_to_left_banked_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP:
+        case TrackElemType::Up25ToRightBankedUp25:
             return giga_rc_track_25_deg_up_to_right_banked_25_deg_up;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::LeftBankedUp25ToUp25:
             return giga_rc_track_left_banked_25_deg_up_to_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::RightBankedUp25ToUp25:
             return giga_rc_track_right_banked_25_deg_up_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN:
+        case TrackElemType::Down25ToLeftBankedDown25:
             return giga_rc_track_25_deg_down_to_left_banked_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN:
+        case TrackElemType::Down25ToRightBankedDown25:
             return giga_rc_track_25_deg_down_to_right_banked_25_deg_down;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::LeftBankedDown25ToDown25:
             return giga_rc_track_left_banked_25_deg_down_to_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::RightBankedDown25ToDown25:
             return giga_rc_track_right_banked_25_deg_down_to_25_deg_down;
-        case TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP:
+        case TrackElemType::LeftBankedFlatToLeftBankedUp25:
             return giga_rc_track_left_banked_flat_to_left_banked_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
+        case TrackElemType::RightBankedFlatToRightBankedUp25:
             return giga_rc_track_right_banked_flat_to_right_banked_25_deg_up;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT:
+        case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
             return giga_rc_track_left_banked_25_deg_up_to_left_banked_flat;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT:
+        case TrackElemType::RightBankedUp25ToRightBankedFlat:
             return giga_rc_track_right_banked_25_deg_up_to_right_banked_flat;
-        case TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
+        case TrackElemType::LeftBankedFlatToLeftBankedDown25:
             return giga_rc_track_left_banked_flat_to_left_banked_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
+        case TrackElemType::RightBankedFlatToRightBankedDown25:
             return giga_rc_track_right_banked_flat_to_right_banked_25_deg_down;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT:
+        case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
             return giga_rc_track_left_banked_25_deg_down_to_left_banked_flat;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT:
+        case TrackElemType::RightBankedDown25ToRightBankedFlat:
             return giga_rc_track_right_banked_25_deg_down_to_right_banked_flat;
-        case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP:
+        case TrackElemType::FlatToLeftBankedUp25:
             return giga_rc_track_flat_to_left_banked_25_deg_up;
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
+        case TrackElemType::FlatToRightBankedUp25:
             return giga_rc_track_flat_to_right_banked_25_deg_up;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT:
+        case TrackElemType::LeftBankedUp25ToFlat:
             return giga_rc_track_left_banked_25_deg_up_to_flat;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT:
+        case TrackElemType::RightBankedUp25ToFlat:
             return giga_rc_track_right_banked_25_deg_up_to_flat;
-        case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
+        case TrackElemType::FlatToLeftBankedDown25:
             return giga_rc_track_flat_to_left_banked_25_deg_down;
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
+        case TrackElemType::FlatToRightBankedDown25:
             return giga_rc_track_flat_to_right_banked_25_deg_down;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::LeftBankedDown25ToFlat:
             return giga_rc_track_left_banked_25_deg_down_to_flat;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::RightBankedDown25ToFlat:
             return giga_rc_track_right_banked_25_deg_down_to_flat;
 
-        case TRACK_ELEM_BOOSTER:
+        case TrackElemType::Booster:
             return giga_rc_track_booster;
     }
     return nullptr;

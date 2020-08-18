@@ -447,8 +447,8 @@ bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output)
 
         // Check if it's not the station or ??? (but allow end piece of station)
         bool specialTrackPiece
-            = (it.element->AsTrack()->GetTrackType() != TRACK_ELEM_BEGIN_STATION
-               && it.element->AsTrack()->GetTrackType() != TRACK_ELEM_MIDDLE_STATION
+            = (it.element->AsTrack()->GetTrackType() != TrackElemType::BeginStation
+               && it.element->AsTrack()->GetTrackType() != TrackElemType::MiddleStation
                && (TrackSequenceProperties[it.element->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN));
 
         // Set result tile to this track piece if first found track or a ???
@@ -1471,7 +1471,7 @@ void ride_construction_set_default_next_piece()
             {
                 if (TrackTypeIsBooster(ride->type, trackType))
                 {
-                    curve = RideConstructionSpecialPieceSelected | TRACK_ELEM_BOOSTER;
+                    curve = RideConstructionSpecialPieceSelected | TrackElemType::Booster;
                 }
                 else
                 {
@@ -1532,7 +1532,7 @@ void ride_construction_set_default_next_piece()
             {
                 if (TrackTypeIsBooster(ride->type, trackType))
                 {
-                    curve = RideConstructionSpecialPieceSelected | TRACK_ELEM_BOOSTER;
+                    curve = RideConstructionSpecialPieceSelected | TrackElemType::Booster;
                 }
                 else
                 {
@@ -2884,9 +2884,9 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
     }
 
     uint8_t trackType = (vehicle->GetTrackType()) & 0xFF;
-    if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_CABLE_LIFT_HILL
-        || trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT
-        || trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
+    if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
+        || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
+        || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
         if (vehicle->velocity == 0)
             return;
 
@@ -3907,23 +3907,23 @@ static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
     track_circuit_iterator_begin(&it, *input);
     while (track_circuit_iterator_next(&it))
     {
-        if (it.current.element->AsTrack()->GetTrackType() == TRACK_ELEM_BLOCK_BRAKES)
+        if (it.current.element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
         {
             type = it.last.element->AsTrack()->GetTrackType();
-            if (type == TRACK_ELEM_END_STATION)
+            if (type == TrackElemType::EndStation)
             {
                 gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
                 *output = it.current;
                 return 0;
             }
-            if (type == TRACK_ELEM_BLOCK_BRAKES)
+            if (type == TrackElemType::BlockBrakes)
             {
                 gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER;
                 *output = it.current;
                 return 0;
             }
-            if (it.last.element->AsTrack()->HasChain() && type != TRACK_ELEM_LEFT_CURVED_LIFT_HILL
-                && type != TRACK_ELEM_RIGHT_CURVED_LIFT_HILL)
+            if (it.last.element->AsTrack()->HasChain() && type != TrackElemType::LeftCurvedLiftHill
+                && type != TrackElemType::RightCurvedLiftHill)
             {
                 gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL;
                 *output = it.current;
@@ -4246,13 +4246,13 @@ static void ride_set_block_points(CoordsXYE* startElement)
         int32_t trackType = currentElement.element->AsTrack()->GetTrackType();
         switch (trackType)
         {
-            case TRACK_ELEM_END_STATION:
-            case TRACK_ELEM_CABLE_LIFT_HILL:
-            case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_BLOCK_BRAKES:
+            case TrackElemType::EndStation:
+            case TrackElemType::CableLiftHill:
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
+            case TrackElemType::DiagUp25ToFlat:
+            case TrackElemType::DiagUp60ToFlat:
+            case TrackElemType::BlockBrakes:
                 currentElement.element->AsTrack()->SetBlockBrakeClosed(false);
                 break;
         }
@@ -4631,16 +4631,16 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
         int32_t trackType = trackElement->GetTrackType();
         switch (trackType)
         {
-            case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
                 if (trackElement->HasChain())
                 {
                     *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
                     return;
                 }
                 break;
-            case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+            case TrackElemType::DiagUp25ToFlat:
+            case TrackElemType::DiagUp60ToFlat:
                 if (trackElement->HasChain())
                 {
                     TileElement* tileElement = map_get_track_element_at_of_type_seq(
@@ -4655,9 +4655,9 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
                     }
                 }
                 break;
-            case TRACK_ELEM_END_STATION:
-            case TRACK_ELEM_CABLE_LIFT_HILL:
-            case TRACK_ELEM_BLOCK_BRAKES:
+            case TrackElemType::EndStation:
+            case TrackElemType::CableLiftHill:
+            case TrackElemType::BlockBrakes:
                 *outXYElement = { trackPos, reinterpret_cast<TileElement*>(trackElement) };
                 return;
         }
@@ -4791,7 +4791,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
         {
             car->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
             car->SetState(Vehicle::Status::Travelling, car->sub_state);
-            if ((car->GetTrackType()) == TRACK_ELEM_END_STATION)
+            if ((car->GetTrackType()) == TrackElemType::EndStation)
             {
                 car->SetState(Vehicle::Status::MovingToEndOfStation, car->sub_state);
             }
@@ -4861,7 +4861,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
         {
             case STATE_FIND_CABLE_LIFT:
                 // Search for a cable lift hill track element
-                if (trackType == TRACK_ELEM_CABLE_LIFT_HILL)
+                if (trackType == TrackElemType::CableLiftHill)
                 {
                     flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE;
                     state = STATE_FIND_STATION;
@@ -4871,17 +4871,17 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
                 // Search for the start of the hill
                 switch (trackType)
                 {
-                    case TRACK_ELEM_FLAT:
-                    case TRACK_ELEM_25_DEG_UP:
-                    case TRACK_ELEM_60_DEG_UP:
-                    case TRACK_ELEM_FLAT_TO_25_DEG_UP:
-                    case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-                    case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
-                    case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
-                    case TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE:
+                    case TrackElemType::Flat:
+                    case TrackElemType::Up25:
+                    case TrackElemType::Up60:
+                    case TrackElemType::FlatToUp25:
+                    case TrackElemType::Up25ToFlat:
+                    case TrackElemType::Up25ToUp60:
+                    case TrackElemType::Up60ToUp25:
+                    case TrackElemType::FlatToUp60LongBase:
                         flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_TRUE;
                         break;
-                    case TRACK_ELEM_END_STATION:
+                    case TrackElemType::EndStation:
                         state = STATE_REST_OF_TRACK;
                         break;
                     default:
@@ -6044,7 +6044,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
             {
                 if (TrackSequenceProperties[info.Element->AsTrack()->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                 {
-                    if (info.Element->AsTrack()->GetTrackType() == TRACK_ELEM_MAZE)
+                    if (info.Element->AsTrack()->GetTrackType() == TrackElemType::Maze)
                     {
                         gRideEntranceExitPlaceStationIndex = 0;
                     }
@@ -6121,7 +6121,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                         continue;
                     if (tileElement->AsTrack()->GetRideIndex() != gRideEntranceExitPlaceRideIndex)
                         continue;
-                    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_MAZE)
+                    if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Maze)
                     {
                         entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
                         gRideEntranceExitPlaceDirection = entranceExitCoords.direction;
@@ -6979,7 +6979,7 @@ void sub_6CB945(Ride* ride)
                 }
 
                 StationIndex stationId = 0;
-                if (trackType != TRACK_ELEM_MAZE)
+                if (trackType != TrackElemType::Maze)
                 {
                     stationId = trackElement->AsTrack()->GetStationIndex();
                 }

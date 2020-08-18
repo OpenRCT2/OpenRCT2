@@ -689,7 +689,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
         stationElement = find_station_element(loc, rideIndex);
         if (stationElement != nullptr)
         {
-            if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
+            if (stationElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
@@ -711,7 +711,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
         stationElement = find_station_element(loc, rideIndex);
         if (stationElement != nullptr)
         {
-            if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
+            if (stationElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
@@ -768,15 +768,15 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
                         ride->num_stations++;
                     }
 
-                    targetTrackType = TRACK_ELEM_END_STATION;
+                    targetTrackType = TrackElemType::EndStation;
                 }
                 else if (stationBackLoc == loc)
                 {
-                    targetTrackType = TRACK_ELEM_BEGIN_STATION;
+                    targetTrackType = TrackElemType::BeginStation;
                 }
                 else
                 {
-                    targetTrackType = TRACK_ELEM_MIDDLE_STATION;
+                    targetTrackType = TrackElemType::MiddleStation;
                 }
                 stationElement->AsTrack()->SetTrackType(targetTrackType);
 
@@ -828,7 +828,7 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
     CoordsXYZD currentLoc = stationBackLoc;
     while ((stationElement = find_station_element(currentLoc, rideIndex)) != nullptr)
     {
-        if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
+        if (stationElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
@@ -851,7 +851,7 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
         stationElement = find_station_element(currentLoc, rideIndex);
         if (stationElement != nullptr)
         {
-            if (stationElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
+            if (stationElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
@@ -905,23 +905,23 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
                     }
 
                     stationLength = 0;
-                    targetTrackType = TRACK_ELEM_END_STATION;
+                    targetTrackType = TrackElemType::EndStation;
                 }
                 else
                 {
                     if (currentLoc - CoordsDirectionDelta[currentLoc.direction] == removeLoc)
                     {
-                        targetTrackType = TRACK_ELEM_BEGIN_STATION;
+                        targetTrackType = TrackElemType::BeginStation;
                     }
                     else
                     {
                         if (currentLoc == stationBackLoc)
                         {
-                            targetTrackType = TRACK_ELEM_BEGIN_STATION;
+                            targetTrackType = TrackElemType::BeginStation;
                         }
                         else
                         {
-                            targetTrackType = TRACK_ELEM_MIDDLE_STATION;
+                            targetTrackType = TrackElemType::MiddleStation;
                         }
                     }
                 }
@@ -1089,14 +1089,14 @@ bool TrackElement::IsBlockStart() const
 {
     switch (GetTrackType())
     {
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_CABLE_LIFT_HILL:
-        case TRACK_ELEM_BLOCK_BRAKES:
+        case TrackElemType::EndStation:
+        case TrackElemType::CableLiftHill:
+        case TrackElemType::BlockBrakes:
             return true;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-        case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
+        case TrackElemType::Up60ToFlat:
+        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::DiagUp60ToFlat:
             if (HasChain())
             {
                 return true;
@@ -1157,9 +1157,9 @@ bool track_type_is_station(track_type_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
+        case TrackElemType::EndStation:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
             return true;
         default:
             return false;
@@ -1170,25 +1170,25 @@ bool track_element_is_covered(track_type_t trackElementType)
 {
     switch (trackElementType)
     {
-        case TRACK_ELEM_FLAT_COVERED:
-        case TRACK_ELEM_25_DEG_UP_COVERED:
-        case TRACK_ELEM_60_DEG_UP_COVERED:
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP_COVERED:
-        case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP_COVERED:
-        case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP_COVERED:
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT_COVERED:
-        case TRACK_ELEM_25_DEG_DOWN_COVERED:
-        case TRACK_ELEM_60_DEG_DOWN_COVERED:
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN_COVERED:
-        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED:
-        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED:
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT_COVERED:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED:
-        case TRACK_ELEM_S_BEND_LEFT_COVERED:
-        case TRACK_ELEM_S_BEND_RIGHT_COVERED:
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED:
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED:
+        case TrackElemType::FlatCovered:
+        case TrackElemType::Up25Covered:
+        case TrackElemType::Up60Covered:
+        case TrackElemType::FlatToUp25Covered:
+        case TrackElemType::Up25ToUp60Covered:
+        case TrackElemType::Up60ToUp25Covered:
+        case TrackElemType::Up25ToFlatCovered:
+        case TrackElemType::Down25Covered:
+        case TrackElemType::Down60Covered:
+        case TrackElemType::FlatToDown25Covered:
+        case TrackElemType::Down25ToDown60Covered:
+        case TrackElemType::Down60ToDown25Covered:
+        case TrackElemType::Down25ToFlatCovered:
+        case TrackElemType::LeftQuarterTurn5TilesCovered:
+        case TrackElemType::RightQuarterTurn5TilesCovered:
+        case TrackElemType::SBendLeftCovered:
+        case TrackElemType::SBendRightCovered:
+        case TrackElemType::LeftQuarterTurn3TilesCovered:
+        case TrackElemType::RightQuarterTurn3TilesCovered:
             return true;
         default:
             return false;
@@ -1198,14 +1198,14 @@ bool track_element_is_covered(track_type_t trackElementType)
 bool TrackTypeIsBooster(uint8_t rideType, track_type_t trackType)
 {
     // Boosters share their ID with the Spinning Control track.
-    return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && trackType == TRACK_ELEM_BOOSTER;
+    return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && trackType == TrackElemType::Booster;
 }
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
     // This does not check if the element is really a Spinning Control track instead of a booster,
     // but this does not cause problems.
-    return trackType == TRACK_ELEM_BRAKES || trackType == TRACK_ELEM_BOOSTER;
+    return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster;
 }
 
 uint8_t TrackElement::GetSeatRotation() const

@@ -22,7 +22,7 @@ constexpr const RideTypeDescriptor RotoDropRTD =
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),
     SET_FIELD(ExtraTrackPieces, 0),
     SET_FIELD(CoveredTrackPieces, 0),
-    SET_FIELD(StartTrackPiece, TRACK_ELEM_TOWER_BASE),
+    SET_FIELD(StartTrackPiece, TrackElemType::TowerBase),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_roto_drop),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS |

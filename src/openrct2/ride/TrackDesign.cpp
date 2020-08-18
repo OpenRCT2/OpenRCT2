@@ -212,9 +212,9 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         TrackDesignTrackElement track{};
         track.type = trackElement.element->AsTrack()->GetTrackType();
         // TODO move to RCT2 limit
-        if (track.type == TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+        if (track.type == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
         {
-            track.type = TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS;
+            track.type = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
         }
 
         uint8_t trackFlags;
@@ -1521,9 +1521,9 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
     for (const auto& track : td6->track_elements)
     {
         uint8_t trackType = track.type;
-        if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS)
+        if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
         {
-            trackType = TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP;
+            trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
         }
 
         track_design_update_max_min_coordinates(newCoords);

@@ -174,7 +174,7 @@ static void maze_paint_setup(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_maze(int32_t trackType)
 {
-    if (trackType != TRACK_ELEM_MAZE)
+    if (trackType != TrackElemType::Maze)
     {
         return nullptr;
     }

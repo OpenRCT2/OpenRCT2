@@ -72,7 +72,7 @@ Vehicle* cable_lift_segment_create(
     z += RideTypeDescriptors[ride.type].Heights.VehicleZOffset;
 
     current->MoveTo({ 16, 16, z });
-    current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
+    current->track_type = (TrackElemType::CableLiftHill << 2) | (current->sprite_direction >> 3);
     current->track_progress = 164;
     current->update_flags = VEHICLE_UPDATE_FLAG_1;
     current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
@@ -234,7 +234,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
     for (; remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
         uint8_t trackType = GetTrackType();
-        if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && track_progress == 160)
+        if (trackType == TrackElemType::CableLiftHill && track_progress == 160)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
         }
@@ -322,7 +322,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             track_direction = output.begin_direction;
             track_type |= output.begin_element->AsTrack()->GetTrackType() << 2;
 
-            if (output.begin_element->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
+            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }

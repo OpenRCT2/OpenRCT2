@@ -4185,7 +4185,7 @@ void Guest::UpdateRideLeaveVehicle()
             for (; vehicle != nullptr && !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
                 uint16_t trackType = vehicle->GetTrackType();
-                if (trackType == TRACK_ELEM_FLAT || trackType > TRACK_ELEM_MIDDLE_STATION)
+                if (trackType == TrackElemType::Flat || trackType > TrackElemType::MiddleStation)
                     continue;
 
                 TileElement* inner_map = map_get_first_element_at(vehicle->TrackLocation);

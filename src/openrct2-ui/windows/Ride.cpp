@@ -2684,9 +2684,9 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter& ft
     if (vehicle->status != Vehicle::Status::Crashing && vehicle->status != Vehicle::Status::Crashed)
     {
         int32_t trackType = vehicle->GetTrackType();
-        if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_CABLE_LIFT_HILL
-            || trackType == TRACK_ELEM_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_60_DEG_UP_TO_FLAT
-            || trackType == TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT || trackType == TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT)
+        if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
+            || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
+            || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
         {
             if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
             {
