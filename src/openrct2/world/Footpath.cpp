@@ -759,6 +759,73 @@ static bool footpath_disconnect_queue_from_path(const CoordsXY& footpathPos, Til
  *
  *  rct2: 0x006A6D7E
  */
+
+static void loc_6A6FD2(const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, bool query)
+{
+    if ((initialTileElement)->GetType() == TILE_ELEMENT_TYPE_PATH)
+    {
+        if (!query)
+        {
+            initialTileElement->AsPath()->SetEdges(initialTileElement->AsPath()->GetEdges() | (1 << direction));
+            map_invalidate_element(initialTileElementPos, initialTileElement);
+        }
+    }
+}
+
+static void loc_6A6F1F(
+    const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* tileElement, TileElement* initialTileElement,
+    const CoordsXY& targetPos, int32_t flags, bool query, rct_neighbour_list* neighbourList)
+{
+    if (query)
+    {
+        if (fence_in_the_way(
+                { targetPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction_reverse(direction)))
+        {
+            return;
+        }
+        if (tileElement->AsPath()->IsQueue())
+        {
+            if (connected_path_count[tileElement->AsPath()->GetEdges()] < 2)
+            {
+                neighbour_list_push(
+                    neighbourList, 4, direction, tileElement->AsPath()->GetRideIndex(),
+                    tileElement->AsPath()->GetStationIndex());
+            }
+            else
+            {
+                if ((initialTileElement)->GetType() == TILE_ELEMENT_TYPE_PATH && initialTileElement->AsPath()->IsQueue())
+                {
+                    if (footpath_disconnect_queue_from_path(targetPos, tileElement, 0))
+                    {
+                        neighbour_list_push(
+                            neighbourList, 3, direction, tileElement->AsPath()->GetRideIndex(),
+                            tileElement->AsPath()->GetStationIndex());
+                    }
+                }
+            }
+        }
+        else
+        {
+            neighbour_list_push(neighbourList, 2, direction, 255, 255);
+        }
+    }
+    else
+    {
+        footpath_disconnect_queue_from_path(targetPos, tileElement, 1 + ((flags >> 6) & 1));
+        tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction_reverse(direction)));
+        if (tileElement->AsPath()->IsQueue())
+        {
+            footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
+        }
+    }
+    if (!(flags & (GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)))
+    {
+        footpath_interrupt_peeps({ targetPos, tileElement->GetBaseZ() });
+    }
+    map_invalidate_element(targetPos, tileElement);
+    loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+}
+
 static void loc_6A6D7E(
     const CoordsXYZ& initialTileElementPos, int32_t direction, TileElement* initialTileElement, int32_t flags, bool query,
     rct_neighbour_list* neighbourList)
@@ -781,25 +848,26 @@ static void loc_6A6D7E(
             switch (tileElement->GetType())
             {
                 case TILE_ELEMENT_TYPE_PATH:
-                    if (initialTileElementPos.z == tileElement->GetBaseZ())
+                    if (tileElement->GetBaseZ() == initialTileElementPos.z)
                     {
-                        if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() != direction)
+                        if (!tileElement->AsPath()->IsSloped() || tileElement->AsPath()->GetSlopeDirection() == direction)
                         {
-                            return;
+                            loc_6A6F1F(
+                                initialTileElementPos, direction, tileElement, initialTileElement, targetPos, flags, query,
+                                neighbourList);
                         }
-                        else
-                        {
-                            goto loc_6A6F1F;
-                        }
+                        return;
                     }
-                    if (initialTileElementPos.z - LAND_HEIGHT_STEP == tileElement->GetBaseZ())
+                    else if (tileElement->GetBaseZ() == initialTileElementPos.z - LAND_HEIGHT_STEP)
                     {
-                        if (!tileElement->AsPath()->IsSloped()
-                            || tileElement->AsPath()->GetSlopeDirection() != direction_reverse(direction))
+                        if (tileElement->AsPath()->IsSloped()
+                            && tileElement->AsPath()->GetSlopeDirection() == direction_reverse(direction))
                         {
-                            return;
+                            loc_6A6F1F(
+                                initialTileElementPos, direction, tileElement, initialTileElement, targetPos, flags, query,
+                                neighbourList);
                         }
-                        goto loc_6A6F1F;
+                        return;
                     }
                     break;
                 case TILE_ELEMENT_TYPE_TRACK:
@@ -827,7 +895,8 @@ static void loc_6A6D7E(
                         {
                             neighbour_list_push(neighbourList, 1, direction, tileElement->AsTrack()->GetRideIndex(), 255);
                         }
-                        goto loc_6A6FD2;
+                        loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+                        return;
                     }
                     break;
                 case TILE_ELEMENT_TYPE_ENTRANCE:
@@ -848,72 +917,14 @@ static void loc_6A6D7E(
                                     footpath_queue_chain_push(tileElement->AsEntrance()->GetRideIndex());
                                 }
                             }
-                            goto loc_6A6FD2;
+                            loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
+                            return;
                         }
                     }
                     break;
             }
+
         } while (!(tileElement++)->IsLastForTile());
-        return;
-
-    loc_6A6F1F:
-        if (query)
-        {
-            if (fence_in_the_way(
-                    { targetPos, tileElement->GetBaseZ(), tileElement->GetClearanceZ() }, direction_reverse(direction)))
-            {
-                return;
-            }
-            if (tileElement->AsPath()->IsQueue())
-            {
-                if (connected_path_count[tileElement->AsPath()->GetEdges()] < 2)
-                {
-                    neighbour_list_push(
-                        neighbourList, 4, direction, tileElement->AsPath()->GetRideIndex(),
-                        tileElement->AsPath()->GetStationIndex());
-                }
-                else
-                {
-                    if ((initialTileElement)->GetType() == TILE_ELEMENT_TYPE_PATH && initialTileElement->AsPath()->IsQueue())
-                    {
-                        if (footpath_disconnect_queue_from_path(targetPos, tileElement, 0))
-                        {
-                            neighbour_list_push(
-                                neighbourList, 3, direction, tileElement->AsPath()->GetRideIndex(),
-                                tileElement->AsPath()->GetStationIndex());
-                        }
-                    }
-                }
-            }
-            else
-            {
-                neighbour_list_push(neighbourList, 2, direction, 255, 255);
-            }
-        }
-        else
-        {
-            footpath_disconnect_queue_from_path(targetPos, tileElement, 1 + ((flags >> 6) & 1));
-            tileElement->AsPath()->SetEdges(tileElement->AsPath()->GetEdges() | (1 << direction_reverse(direction)));
-            if (tileElement->AsPath()->IsQueue())
-            {
-                footpath_queue_chain_push(tileElement->AsPath()->GetRideIndex());
-            }
-        }
-        if (!(flags & (GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)))
-        {
-            footpath_interrupt_peeps({ targetPos, tileElement->GetBaseZ() });
-        }
-        map_invalidate_element(targetPos, tileElement);
-    }
-
-loc_6A6FD2:
-    if ((initialTileElement)->GetType() == TILE_ELEMENT_TYPE_PATH)
-    {
-        if (!query)
-        {
-            initialTileElement->AsPath()->SetEdges(initialTileElement->AsPath()->GetEdges() | (1 << direction));
-            map_invalidate_element(initialTileElementPos, initialTileElement);
-        }
     }
 }
 
