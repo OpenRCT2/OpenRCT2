@@ -954,24 +954,17 @@ paint_struct* sub_98198C(
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
  */
 paint_struct* sub_98199C(
-    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    const CoordsXYZ& boundBoxOffset)
 {
-    assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
-    assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
-
     if (session->LastRootPS == nullptr)
     {
         return sub_98197C(
-            session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
-            bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
+            session, image_id, offset.x, offset.y, boundBoxLength.x, boundBoxLength.y, boundBoxLength.z, offset.z,
+            boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
     }
 
-    CoordsXYZ offset = { x_offset, y_offset, z_offset };
-    CoordsXYZ boundBox = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-    CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
-    paint_struct* ps = sub_9819_c(session, image_id, offset, boundBox, boundBoxOffset);
+    paint_struct* ps = sub_9819_c(session, image_id, offset, boundBoxLength, boundBoxOffset);
 
     if (ps == nullptr)
     {
@@ -984,6 +977,18 @@ paint_struct* sub_98199C(
     session->LastRootPS = ps;
     session->NextFreePaintStruct++;
     return ps;
+}
+
+paint_struct* sub_98199C(
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+{
+    assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
+    assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
+    return sub_98199C(
+        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
+        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
 }
 
 /**
