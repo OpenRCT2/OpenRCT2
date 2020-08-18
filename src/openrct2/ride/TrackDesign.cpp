@@ -198,12 +198,13 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     z = newCoords->z;
 
     const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackElement.element->AsTrack()->GetTrackType()];
+    auto trackBlock = get_track_def_from_ride_index(trackElement.element->AsTrack()->GetRideIndex(), trackType);
     // Used in the following loop to know when we have
     // completed all of the elements and are back at the
     // start.
     TileElement* initialMap = trackElement.element;
 
-    CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->z_begin };
+    CoordsXYZ startPos = { trackElement.x, trackElement.y, z + trackCoordinates->z_begin - trackBlock->z };
     _trackPreviewOrigin = startPos;
 
     do
