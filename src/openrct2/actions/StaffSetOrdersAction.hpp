@@ -54,7 +54,8 @@ public:
         }
 
         auto* staff = TryGetEntity<Staff>(_spriteIndex);
-        if (staff == nullptr || (staff->StaffType != STAFF_TYPE_HANDYMAN && staff->StaffType != STAFF_TYPE_MECHANIC))
+        if (staff == nullptr
+            || (staff->AssignedStaffType != StaffType::Handyman && staff->AssignedStaffType != StaffType::Mechanic))
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);

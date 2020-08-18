@@ -359,7 +359,7 @@ void window_staff_disable_widgets(rct_window* w)
     }
     uint64_t disabled_widgets = 0;
 
-    if (peep != nullptr && peep->StaffType == STAFF_TYPE_SECURITY)
+    if (peep != nullptr && peep->AssignedStaffType == StaffType::Security)
     {
         disabled_widgets |= (1 << WIDX_TAB_2);
     }
@@ -848,9 +848,9 @@ void window_staff_options_invalidate(rct_window* w)
     auto ft = Formatter::Common();
     peep->FormatNameTo(ft);
 
-    switch (peep->StaffType)
+    switch (peep->AssignedStaffType)
     {
-        case STAFF_TYPE_ENTERTAINER:
+        case StaffType::Entertainer:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_EMPTY;
             window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_EMPTY;
             window_staff_options_widgets[WIDX_CHECKBOX_3].type = WWT_EMPTY;
@@ -859,7 +859,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_BUTTON;
             window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[peep->SpriteType - 4];
             break;
-        case STAFF_TYPE_HANDYMAN:
+        case StaffType::Handyman:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
             window_staff_options_widgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
             window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_CHECKBOX;
@@ -874,7 +874,7 @@ void window_staff_options_invalidate(rct_window* w)
                 (1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2) | (1 << WIDX_CHECKBOX_3) | (1 << WIDX_CHECKBOX_4));
             w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
-        case STAFF_TYPE_MECHANIC:
+        case StaffType::Mechanic:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
             window_staff_options_widgets[WIDX_CHECKBOX_1].text = STR_INSPECT_RIDES;
             window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_CHECKBOX;
@@ -886,8 +886,10 @@ void window_staff_options_invalidate(rct_window* w)
             w->pressed_widgets &= ~((1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2));
             w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
-        case STAFF_TYPE_SECURITY:
+        case StaffType::Security:
             // Security guards don't have an options screen.
+            break;
+        case StaffType::Count:
             break;
     }
 
@@ -1073,7 +1075,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    if (peep->AssignedPeepType == PeepType::Staff && peep->StaffType == STAFF_TYPE_ENTERTAINER)
+    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
     int32_t ebx = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
@@ -1149,7 +1151,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        Formatter::Common().Add<money32>(gStaffWageTable[peep->StaffType]);
+        Formatter::Common().Add<money32>(gStaffWageTable[static_cast<uint8_t>(peep->AssignedStaffType)]);
         gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1157,9 +1159,9 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, static_cast<void*>(&peep->TimeInPark), COLOUR_BLACK, screenCoords);
     screenCoords.y += LIST_ROW_HEIGHT;
 
-    switch (peep->StaffType)
+    switch (peep->AssignedStaffType)
     {
-        case STAFF_TYPE_HANDYMAN:
+        case StaffType::Handyman:
             gfx_draw_string_left(
                 dpi, STR_STAFF_STAT_LAWNS_MOWN, static_cast<void*>(&peep->StaffLawnsMown), COLOUR_BLACK, screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
@@ -1173,13 +1175,17 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_draw_string_left(
                 dpi, STR_STAFF_STAT_BINS_EMPTIED, static_cast<void*>(&peep->StaffBinsEmptied), COLOUR_BLACK, screenCoords);
             break;
-        case STAFF_TYPE_MECHANIC:
+        case StaffType::Mechanic:
             gfx_draw_string_left(
                 dpi, STR_STAFF_STAT_RIDES_INSPECTED, static_cast<void*>(&peep->StaffRidesInspected), COLOUR_BLACK,
                 screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
                 dpi, STR_STAFF_STAT_RIDES_FIXED, static_cast<void*>(&peep->StaffRidesFixed), COLOUR_BLACK, screenCoords);
+            break;
+        case StaffType::Security:
+        case StaffType::Entertainer:
+        case StaffType::Count:
             break;
     }
 }

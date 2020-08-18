@@ -54,15 +54,15 @@ DEFINE_GAME_ACTION(StaffHireNewAction, GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, Staff
 {
 private:
     bool _autoPosition = false;
-    uint8_t _staffType = STAFF_TYPE::STAFF_TYPE_COUNT;
+    uint8_t _staffType = static_cast<uint8_t>(StaffType::Count);
     uint8_t _entertainerType = ENTERTAINER_COSTUME::ENTERTAINER_COSTUME_COUNT;
     uint32_t _staffOrders = 0;
 
 public:
     StaffHireNewAction() = default;
-    StaffHireNewAction(bool autoPosition, STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainerType, uint32_t staffOrders)
+    StaffHireNewAction(bool autoPosition, StaffType staffType, ENTERTAINER_COSTUME entertainerType, uint32_t staffOrders)
         : _autoPosition(autoPosition)
-        , _staffType(staffType)
+        , _staffType(static_cast<uint8_t>(staffType))
         , _entertainerType(entertainerType)
         , _staffOrders(staffOrders)
     {
@@ -97,7 +97,7 @@ private:
 
         res->Expenditure = ExpenditureType::Wages;
 
-        if (_staffType >= STAFF_TYPE_COUNT)
+        if (_staffType >= static_cast<uint8_t>(StaffType::Count))
         {
             // Invalid staff type.
             log_error("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
@@ -110,7 +110,7 @@ private:
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
-        if (_staffType == STAFF_TYPE_ENTERTAINER)
+        if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
         {
             if (_entertainerType >= ENTERTAINER_COSTUME_COUNT)
             {
@@ -184,7 +184,7 @@ private:
                 ++newStaffId;
                 for (auto searchPeep : EntityList<Staff>(EntityListId::Peep))
                 {
-                    if (searchPeep->StaffType != _staffType)
+                    if (static_cast<uint8_t>(searchPeep->AssignedStaffType) != _staffType)
                         continue;
 
                     if (searchPeep->Id == newStaffId)
@@ -199,10 +199,10 @@ private:
             }
 
             newPeep->Id = newStaffId;
-            newPeep->StaffType = _staffType;
+            newPeep->AssignedStaffType = static_cast<StaffType>(_staffType);
 
             PeepSpriteType spriteType = spriteTypes[_staffType];
-            if (_staffType == STAFF_TYPE_ENTERTAINER)
+            if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
             {
                 spriteType = static_cast<PeepSpriteType>(PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + _entertainerType);
             }
@@ -233,7 +233,7 @@ private:
             newPeep->PathfindGoal.z = 0xFF;
             newPeep->PathfindGoal.direction = INVALID_DIRECTION;
 
-            uint8_t colour = staff_get_colour(_staffType);
+            uint8_t colour = staff_get_colour(static_cast<StaffType>(_staffType));
             newPeep->TshirtColour = colour;
             newPeep->TrousersColour = colour;
 

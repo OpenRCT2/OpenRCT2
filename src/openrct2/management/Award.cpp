@@ -273,7 +273,7 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
         if (peep->AssignedPeepType == PeepType::Staff)
         {
             staffCount++;
-            staffTypeFlags |= (1 << peep->StaffType);
+            staffTypeFlags |= (1 << static_cast<uint8_t>(peep->AssignedStaffType));
         }
         else
         {
