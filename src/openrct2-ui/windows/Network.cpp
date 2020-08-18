@@ -40,7 +40,7 @@ enum WINDOW_NETWORK_WIDGET_IDX {
 static rct_widget window_network_information_widgets[] = {
     WINDOW_SHIM(STR_NONE, WW, WH),
     MakeWidget({  0, 43}, {450, 167}, WWT_RESIZE,   1), // content panel
-    MakeTab   ({  3, 17}, STR_SHOW_SERVER_INFO_TIP),    // tab
+    MakeTab   ({  3, 17}, STR_SHOW_SERVER_INFO_TIP   ), // tab
     { WIDGETS_END }
 };
 

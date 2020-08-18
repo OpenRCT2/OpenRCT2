@@ -62,10 +62,10 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
     MakeWidget({  1,  1}, {338,  14}, WWT_CAPTION,  0, STR_NONE,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
     MakeWidget({327,  2}, { 11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
     MakeWidget({  0, 43}, {340, 197}, WWT_RESIZE,   1                                       ), /* content panel */ \
-    MakeTab   ({  3, 17}, STR_SHOW_SERVER_INFO_TIP), /* tab */ \
-    MakeTab   ({ 34, 17}, STR_PLAYERS_TIP         ), /* tab */ \
-    MakeTab   ({ 65, 17}, STR_GROUPS_TIP          ), /* tab */ \
-    MakeTab   ({ 96, 17}, STR_OPTIONS_TIP         )  /* tab */
+    MakeTab   ({  3, 17},                                           STR_SHOW_SERVER_INFO_TIP), /* tab */ \
+    MakeTab   ({ 34, 17},                                           STR_PLAYERS_TIP         ), /* tab */ \
+    MakeTab   ({ 65, 17},                                           STR_GROUPS_TIP          ), /* tab */ \
+    MakeTab   ({ 96, 17},                                           STR_OPTIONS_TIP         )  /* tab */
 
 static rct_widget window_multiplayer_information_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,

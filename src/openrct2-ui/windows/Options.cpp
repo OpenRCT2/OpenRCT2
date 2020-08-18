@@ -194,7 +194,7 @@ static constexpr const int32_t WH = 332;
 
 #define MAIN_OPTIONS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0, 43}, {WW, 289}, WWT_RESIZE, 1), \
+    MakeWidget({  0, 43}, {WW, 289}, WWT_RESIZE, 1              ), \
     MakeTab   ({  3, 17}, STR_OPTIONS_DISPLAY_TIP               ), \
     MakeTab   ({ 34, 17}, STR_OPTIONS_RENDERING_TIP             ), \
     MakeTab   ({ 65, 17}, STR_OPTIONS_CULTURE_TIP               ), \

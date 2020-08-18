@@ -62,9 +62,9 @@ enum {
 
 static rct_widget window_research_development_widgets[] = {
     WINDOW_SHIM(STR_RESEARCH_AND_DEVELOPMENT, WW_DEVELOPMENT, WH_DEVELOPMENT),
-    MakeWidget({  0,  43}, {     WW_DEVELOPMENT, 153}, WWT_RESIZE,   1),
-    MakeTab   ({  3,  17}, STR_RESEARCH_AND_DEVELOPMENT_TIP           ),
-    MakeTab   ({ 34,  17}, STR_FINANCES_RESEARCH_TIP                  ),
+    MakeWidget({  0,  43}, {     WW_DEVELOPMENT, 153}, WWT_RESIZE,   1                                                                ),
+    MakeTab   ({  3,  17},                                                                            STR_RESEARCH_AND_DEVELOPMENT_TIP),
+    MakeTab   ({ 34,  17},                                                                            STR_FINANCES_RESEARCH_TIP       ),
     MakeWidget({  3,  47}, {WW_DEVELOPMENT - 10,  70}, WWT_GROUPBOX, 2, STR_CURRENTLY_IN_DEVELOPMENT                                  ),
     MakeWidget({  3, 124}, {WW_DEVELOPMENT - 10,  65}, WWT_GROUPBOX, 2, STR_LAST_DEVELOPMENT                                          ),
     MakeWidget({265, 161}, {                 24,  24}, WWT_FLATBTN,  2, 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   ),
@@ -73,9 +73,9 @@ static rct_widget window_research_development_widgets[] = {
 
 static rct_widget window_research_funding_widgets[] = {
     WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_FUNDING, WH_FUNDING),
-    MakeWidget({  0,  43}, {     WW_FUNDING, 164}, WWT_RESIZE,   1),
-    MakeTab   ({  3,  17}, STR_RESEARCH_AND_DEVELOPMENT_TIP       ),
-    MakeTab   ({ 34,  17}, STR_FINANCES_RESEARCH_TIP              ),
+    MakeWidget({  0,  43}, {     WW_FUNDING, 164}, WWT_RESIZE,   1                                                                                    ),
+    MakeTab   ({  3,  17},                                                                                STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
+    MakeTab   ({ 34,  17},                                                                                STR_FINANCES_RESEARCH_TIP                   ),
     MakeWidget({  3,  47}, { WW_FUNDING - 6,  45}, WWT_GROUPBOX, 2, STR_RESEARCH_FUNDING_                                                             ),
     MakeWidget({  8,  59}, {            160,  14}, WWT_DROPDOWN, 2, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
     MakeWidget({156,  60}, {             11,  12}, WWT_BUTTON,   2, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
