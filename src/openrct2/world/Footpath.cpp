@@ -837,6 +837,7 @@ static void loc_6A6D7E(
         {
             neighbour_list_push(neighbourList, 7, direction, 255, 255);
         }
+        loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
     }
     else
     {
