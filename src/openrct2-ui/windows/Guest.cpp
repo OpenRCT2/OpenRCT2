@@ -76,24 +76,24 @@ static constexpr int32_t TabWidth = 30;
 
 #define MAIN_GUEST_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0, 43}, {192, 114}, WWT_RESIZE, 1       ), /* Resize */ \
-    MakeTab   ({  3, 17}, STR_SHOW_GUEST_VIEW_TIP         ), /* Tab 1 */ \
-    MakeTab   ({ 34, 17}, STR_SHOW_GUEST_NEEDS_TIP        ), /* Tab 2 */ \
-    MakeTab   ({ 65, 17}, STR_SHOW_GUEST_VISITED_RIDES_TIP), /* Tab 3 */ \
-    MakeTab   ({ 96, 17}, STR_SHOW_GUEST_FINANCE_TIP      ), /* Tab 4 */ \
-    MakeTab   ({127, 17}, STR_SHOW_GUEST_THOUGHTS_TIP     ), /* Tab 5 */ \
-    MakeTab   ({158, 17}, STR_SHOW_GUEST_ITEMS_TIP        ), /* Tab 6 */ \
-    MakeTab   ({189, 17}, STR_DEBUG_TIP                   )  /* Tab 7 */
+    MakeWidget({  0, 43}, {192, 114}, WWT_RESIZE, WindowColour::Secondary), /* Resize */ \
+    MakeTab   ({  3, 17}, STR_SHOW_GUEST_VIEW_TIP                        ), /* Tab 1 */ \
+    MakeTab   ({ 34, 17}, STR_SHOW_GUEST_NEEDS_TIP                       ), /* Tab 2 */ \
+    MakeTab   ({ 65, 17}, STR_SHOW_GUEST_VISITED_RIDES_TIP               ), /* Tab 3 */ \
+    MakeTab   ({ 96, 17}, STR_SHOW_GUEST_FINANCE_TIP                     ), /* Tab 4 */ \
+    MakeTab   ({127, 17}, STR_SHOW_GUEST_THOUGHTS_TIP                    ), /* Tab 5 */ \
+    MakeTab   ({158, 17}, STR_SHOW_GUEST_ITEMS_TIP                       ), /* Tab 6 */ \
+    MakeTab   ({189, 17}, STR_DEBUG_TIP                                  )  /* Tab 7 */
 
 static rct_widget window_guest_overview_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    MakeWidget({  3,  45}, {164, 12}, WWT_LABEL_CENTRED, 1                                               ), // Label Thought marquee
-    MakeWidget({  3,  57}, {164, 87}, WWT_VIEWPORT,      1                                               ), // Viewport
-    MakeWidget({  3, 144}, {164, 11}, WWT_LABEL_CENTRED, 1                                               ), // Label Action
-    MakeWidget({167,  45}, { 24, 24}, WWT_FLATBTN,       1, SPR_PICKUP_BTN, STR_PICKUP_TIP               ), // Pickup Button
-    MakeWidget({167,  69}, { 24, 24}, WWT_FLATBTN,       1, SPR_RENAME,     STR_NAME_GUEST_TIP           ), // Rename Button
-    MakeWidget({167,  93}, { 24, 24}, WWT_FLATBTN,       1, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
-    MakeWidget({167, 117}, { 24, 24}, WWT_FLATBTN,       1, SPR_TRACK_PEEP, STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
+    MakeWidget({  3,  45}, {164, 12}, WWT_LABEL_CENTRED, WindowColour::Secondary                                               ), // Label Thought marquee
+    MakeWidget({  3,  57}, {164, 87}, WWT_VIEWPORT,      WindowColour::Secondary                                               ), // Viewport
+    MakeWidget({  3, 144}, {164, 11}, WWT_LABEL_CENTRED, WindowColour::Secondary                                               ), // Label Action
+    MakeWidget({167,  45}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_PICKUP_BTN, STR_PICKUP_TIP               ), // Pickup Button
+    MakeWidget({167,  69}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_GUEST_TIP           ), // Rename Button
+    MakeWidget({167,  93}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
+    MakeWidget({167, 117}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_TRACK_PEEP, STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
     { WIDGETS_END },
 };
 
@@ -104,7 +104,7 @@ static rct_widget window_guest_stats_widgets[] = {
 
 static rct_widget window_guest_rides_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    MakeWidget({3, 57}, {186, 87}, WWT_SCROLL, 1, SCROLL_VERTICAL),
+    MakeWidget({3, 57}, {186, 87}, WWT_SCROLL, WindowColour::Secondary, SCROLL_VERTICAL),
     { WIDGETS_END },
 };
 

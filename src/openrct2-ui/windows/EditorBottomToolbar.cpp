@@ -36,10 +36,10 @@ enum {
 };
 
 static rct_widget window_editor_bottom_toolbar_widgets[] = {
-    MakeWidget({  0, 0}, {200, 34}, WWT_IMGBTN,  0),
-    MakeWidget({  2, 2}, {196, 30}, WWT_FLATBTN, 0),
-    MakeWidget({440, 0}, {200, 34}, WWT_IMGBTN,  0),
-    MakeWidget({442, 2}, {196, 30}, WWT_FLATBTN, 0),
+    MakeWidget({  0, 0}, {200, 34}, WWT_IMGBTN,  WindowColour::Primary),
+    MakeWidget({  2, 2}, {196, 30}, WWT_FLATBTN, WindowColour::Primary),
+    MakeWidget({440, 0}, {200, 34}, WWT_IMGBTN,  WindowColour::Primary),
+    MakeWidget({442, 2}, {196, 30}, WWT_FLATBTN, WindowColour::Primary),
     { WIDGETS_END },
 };
 
