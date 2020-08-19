@@ -50,21 +50,21 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 
 #define WIDGETS_MAIN \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WWT_IMGBTN, 1               ), /* page background */       \
-    MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WWT_TAB,    1, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
-    MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WWT_TAB,    1, SPR_TAB_LARGE)  /* about RCT2 button */
+    MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WWT_IMGBTN, WindowColour::Secondary               ), /* page background */       \
+    MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
+    MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */
 
 static rct_widget window_about_openrct2_widgets[] = {
     WIDGETS_MAIN,
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 2}, {200, 14}, WWT_BUTTON,      1, STR_CHANGELOG_ELLIPSIS), // changelog button
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 1}, {200, 14}, WWT_BUTTON,      1, STR_JOIN_DISCORD      ), // "join discord" button
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 0}, {200, 14}, WWT_PLACEHOLDER, 1, STR_UPDATE_AVAILABLE  ), // "new version" button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 2}, {200, 14}, WWT_BUTTON,      WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 1}, {200, 14}, WWT_BUTTON,      WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 0}, {200, 14}, WWT_PLACEHOLDER, WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
     { WIDGETS_END }
 };
 
 static rct_widget window_about_rct2_widgets[] = {
     WIDGETS_MAIN,
-    MakeWidget({100, WH - TABHEIGHT}, {200, 14}, WWT_BUTTON, 1, STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS), // music credits button
+    MakeWidget({100, WH - TABHEIGHT}, {200, 14}, WWT_BUTTON, WindowColour::Secondary, STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS), // music credits button
     { WIDGETS_END },
 };
 
