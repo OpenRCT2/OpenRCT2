@@ -34,11 +34,11 @@ enum {
 static ScreenRect _filterRect;
 
 static rct_widget window_title_menu_widgets[] = {
-    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, 2, SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
-    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, 2, SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
-    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, 2, SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
-    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, 2, SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
-    MakeWidget({0,  0}, {82 * 4, 28}, WWT_EMPTY,  1, STR_UPDATE_AVAILABLE),
+    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, WindowColour::Tertiary , SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
+    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, WindowColour::Tertiary , SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
+    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, WindowColour::Tertiary , SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
+    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, WindowColour::Tertiary , SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
+    MakeWidget({0,  0}, {82 * 4, 28}, WWT_EMPTY,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
     { WIDGETS_END },
 };
 

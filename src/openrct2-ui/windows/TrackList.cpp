@@ -46,13 +46,13 @@ validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
 static rct_widget window_track_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  4,  18}, {218,  13}, WWT_TABLE_HEADER, 0, STR_SELECT_OTHER_RIDE                                       ),
-    MakeWidget({  4,  32}, {124,  13}, WWT_TEXT_BOX,     1                                                              ),
-    MakeWidget({130,  32}, { 92,  13}, WWT_BUTTON,       0, STR_OBJECT_SEARCH_CLEAR                                     ),
-    MakeWidget({  4,  46}, {218, 381}, WWT_SCROLL,       0, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
-    MakeWidget({224,  18}, {372, 219}, WWT_FLATBTN,      0                                                              ),
-    MakeWidget({574, 405}, { 24,  24}, WWT_FLATBTN,      0, SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
-    MakeWidget({574, 381}, { 24,  24}, WWT_FLATBTN,      0, SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
+    MakeWidget({  4,  18}, {218,  13}, WWT_TABLE_HEADER, WindowColour::Primary  , STR_SELECT_OTHER_RIDE                                       ),
+    MakeWidget({  4,  32}, {124,  13}, WWT_TEXT_BOX,     WindowColour::Secondary                                                              ),
+    MakeWidget({130,  32}, { 92,  13}, WWT_BUTTON,       WindowColour::Primary  , STR_OBJECT_SEARCH_CLEAR                                     ),
+    MakeWidget({  4,  46}, {218, 381}, WWT_SCROLL,       WindowColour::Primary  , SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
+    MakeWidget({224,  18}, {372, 219}, WWT_FLATBTN,      WindowColour::Primary                                                                ),
+    MakeWidget({574, 405}, { 24,  24}, WWT_FLATBTN,      WindowColour::Primary  , SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
+    MakeWidget({574, 381}, { 24,  24}, WWT_FLATBTN,      WindowColour::Primary  , SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
     { WIDGETS_END },
 };
 

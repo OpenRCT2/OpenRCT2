@@ -41,8 +41,8 @@ enum WINDOW_TEXT_INPUT_WIDGET_IDX {
 // 0x9DE4E0
 static rct_widget window_text_input_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({170, 68}, {71, 14}, WWT_BUTTON, 1, STR_CANCEL),
-    MakeWidget({ 10, 68}, {71, 14}, WWT_BUTTON, 1, STR_OK    ),
+    MakeWidget({170, 68}, {71, 14}, WWT_BUTTON, WindowColour::Secondary, STR_CANCEL),
+    MakeWidget({ 10, 68}, {71, 14}, WWT_BUTTON, WindowColour::Secondary, STR_OK    ),
     { WIDGETS_END }
 };
 
