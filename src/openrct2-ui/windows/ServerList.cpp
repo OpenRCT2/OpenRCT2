@@ -58,14 +58,14 @@ enum {
 };
 
 static rct_widget window_server_list_widgets[] = {
-    MakeWidget({  0,  0}, {341, 91}, WWT_FRAME,    0                                         ), // panel / background
-    MakeWidget({  1,  1}, {338, 14}, WWT_CAPTION,  0, STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
-    MakeWidget({327,  2}, { 11, 12}, WWT_CLOSEBOX, 0, STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
-    MakeWidget({100, 20}, {245, 12}, WWT_TEXT_BOX, 1                                         ), // player name text box
-    MakeWidget({  6, 37}, {332, 14}, WWT_SCROLL,   1                                         ), // server list
-    MakeWidget({  6, 53}, {101, 14}, WWT_BUTTON,   1, STR_FETCH_SERVERS                      ), // fetch servers button
-    MakeWidget({112, 53}, {101, 14}, WWT_BUTTON,   1, STR_ADD_SERVER                         ), // add server button
-    MakeWidget({218, 53}, {101, 14}, WWT_BUTTON,   1, STR_START_SERVER                       ), // start server button
+    MakeWidget({  0,  0}, {341, 91}, WWT_FRAME,    WindowColour::Primary                                           ), // panel / background
+    MakeWidget({  1,  1}, {338, 14}, WWT_CAPTION,  WindowColour::Primary  , STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
+    MakeWidget({327,  2}, { 11, 12}, WWT_CLOSEBOX, WindowColour::Primary  , STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
+    MakeWidget({100, 20}, {245, 12}, WWT_TEXT_BOX, WindowColour::Secondary                                         ), // player name text box
+    MakeWidget({  6, 37}, {332, 14}, WWT_SCROLL,   WindowColour::Secondary                                         ), // server list
+    MakeWidget({  6, 53}, {101, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
+    MakeWidget({112, 53}, {101, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_ADD_SERVER                         ), // add server button
+    MakeWidget({218, 53}, {101, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
     { WIDGETS_END },
 };
 

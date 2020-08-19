@@ -44,11 +44,11 @@ enum WINDOW_SIGN_WIDGET_IDX {
 // 0x9AEE00
 static rct_widget window_sign_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({      3,      17}, {85, 60}, WWT_VIEWPORT,  1, STR_VIEWPORT                                 ), // Viewport
-    MakeWidget({WW - 25,      19}, {24, 24}, WWT_FLATBTN,   1, SPR_RENAME,   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
-    MakeWidget({WW - 25,      67}, {24, 24}, WWT_FLATBTN,   1, SPR_DEMOLISH, STR_DEMOLISH_SIGN_TIP          ), // demolish button
-    MakeWidget({      5, WH - 16}, {12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
-    MakeWidget({     17, WH - 16}, {12, 12}, WWT_COLOURBTN, 1, 0xFFFFFFFF,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
+    MakeWidget({      3,      17}, {85, 60}, WWT_VIEWPORT,  WindowColour::Secondary, STR_VIEWPORT                                 ), // Viewport
+    MakeWidget({WW - 25,      19}, {24, 24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_RENAME,   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
+    MakeWidget({WW - 25,      67}, {24, 24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_DEMOLISH, STR_DEMOLISH_SIGN_TIP          ), // demolish button
+    MakeWidget({      5, WH - 16}, {12, 12}, WWT_COLOURBTN, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
+    MakeWidget({     17, WH - 16}, {12, 12}, WWT_COLOURBTN, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
     { WIDGETS_END },
 };
 

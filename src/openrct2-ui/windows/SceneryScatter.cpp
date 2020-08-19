@@ -35,18 +35,18 @@ ScatterToolDensity gWindowSceneryScatterDensity;
 
 // clang-format off
 static rct_widget window_scenery_scatter_widgets[] = {
-    MakeWidget     ({ 0,  0}, {86, 100}, WWT_FRAME,    1                                                                ), // panel / background
-    MakeWidget     ({ 1,  1}, {84,  14}, WWT_CAPTION,  0, STR_SCENERY_SCATTER,           STR_WINDOW_TITLE_TIP           ), // title bar
-    MakeWidget     ({73,  2}, {11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X,                   STR_CLOSE_WINDOW_TIP           ), // close x button
+    MakeWidget     ({ 0,  0}, {86, 100}, WWT_FRAME,    WindowColour::Secondary                                                                ), // panel / background
+    MakeWidget     ({ 1,  1}, {84,  14}, WWT_CAPTION,  WindowColour::Primary  , STR_SCENERY_SCATTER,           STR_WINDOW_TITLE_TIP           ), // title bar
+    MakeWidget     ({73,  2}, {11,  12}, WWT_CLOSEBOX, WindowColour::Primary  , STR_CLOSE_X,                   STR_CLOSE_WINDOW_TIP           ), // close x button
 
-    MakeWidget     ({20, 17}, {44,  32}, WWT_IMGBTN,   1, SPR_LAND_TOOL_SIZE_0                                          ), // preview box
-    MakeRemapWidget({21, 18}, {16,  16}, WWT_TRNBTN,   1, SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP    ), // decrement size
-    MakeRemapWidget({47, 32}, {16,  16}, WWT_TRNBTN,   1, SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP     ), // increment size
+    MakeWidget     ({20, 17}, {44,  32}, WWT_IMGBTN,   WindowColour::Secondary, SPR_LAND_TOOL_SIZE_0                                          ), // preview box
+    MakeRemapWidget({21, 18}, {16,  16}, WWT_TRNBTN,   WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP    ), // decrement size
+    MakeRemapWidget({47, 32}, {16,  16}, WWT_TRNBTN,   WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP     ), // increment size
 
-    MakeWidget     ({ 3, 55}, {80,  42}, WWT_GROUPBOX, 1, STR_SCATTER_TOOL_DENSITY                                      ),
-    MakeRemapWidget({ 7, 68}, {24,  24}, WWT_FLATBTN,  1, SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW   ), // low amount
-    MakeRemapWidget({31, 68}, {24,  24}, WWT_FLATBTN,  1, SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM), // medium amount
-    MakeRemapWidget({55, 68}, {24,  24}, WWT_FLATBTN,  1, SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH  ), // high amount
+    MakeWidget     ({ 3, 55}, {80,  42}, WWT_GROUPBOX, WindowColour::Secondary, STR_SCATTER_TOOL_DENSITY                                      ),
+    MakeRemapWidget({ 7, 68}, {24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW   ), // low amount
+    MakeRemapWidget({31, 68}, {24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM), // medium amount
+    MakeRemapWidget({55, 68}, {24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH  ), // high amount
     { WIDGETS_END },
 };
 // clang-format on

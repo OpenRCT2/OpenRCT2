@@ -72,32 +72,32 @@ validate_global_widx(WC_STAFF, WIDX_PICKUP);
 
 #define MAIN_STAFF_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({ 0, 43}, {190, 137}, WWT_RESIZE, 1), /* Resize */ \
-    MakeTab   ({ 3, 17}, STR_STAFF_OVERVIEW_TIP   ), /* Tab 1 */ \
-    MakeTab   ({34, 17}, STR_STAFF_OPTIONS_TIP    ), /* Tab 2 */ \
-    MakeTab   ({65, 17}, STR_STAFF_STATS_TIP      )  /* Tab 3 */
+    MakeWidget({ 0, 43}, {190, 137}, WWT_RESIZE, WindowColour::Secondary), /* Resize */ \
+    MakeTab   ({ 3, 17}, STR_STAFF_OVERVIEW_TIP                         ), /* Tab 1 */ \
+    MakeTab   ({34, 17}, STR_STAFF_OPTIONS_TIP                          ), /* Tab 2 */ \
+    MakeTab   ({65, 17}, STR_STAFF_STATS_TIP                            )  /* Tab 3 */
 
 static rct_widget window_staff_overview_widgets[] = {
     MAIN_STAFF_WIDGETS,
-    MakeWidget     ({      3,      47}, {162, 120}, WWT_VIEWPORT,      1                                        ), // Viewport
-    MakeWidget     ({      3, WH - 13}, {162,  11}, WWT_LABEL_CENTRED, 1                                        ), // Label at bottom of viewport
-    MakeWidget     ({WW - 25,      45}, { 24,  24}, WWT_FLATBTN,       1, SPR_PICKUP_BTN, STR_PICKUP_TIP        ), // Pickup Button
-    MakeWidget     ({WW - 25,      69}, { 24,  24}, WWT_FLATBTN,       1, SPR_PATROL_BTN, STR_SET_PATROL_TIP    ), // Patrol Button
-    MakeWidget     ({WW - 25,      93}, { 24,  24}, WWT_FLATBTN,       1, SPR_RENAME,     STR_NAME_STAFF_TIP    ), // Rename Button
-    MakeWidget     ({WW - 25,     117}, { 24,  24}, WWT_FLATBTN,       1, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP), // Locate Button
-    MakeWidget     ({WW - 25,     141}, { 24,  24}, WWT_FLATBTN,       1, SPR_DEMOLISH,   STR_FIRE_STAFF_TIP    ), // Fire Button
+    MakeWidget     ({      3,      47}, {162, 120}, WWT_VIEWPORT,      WindowColour::Secondary                                        ), // Viewport
+    MakeWidget     ({      3, WH - 13}, {162,  11}, WWT_LABEL_CENTRED, WindowColour::Secondary                                        ), // Label at bottom of viewport
+    MakeWidget     ({WW - 25,      45}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_PICKUP_BTN, STR_PICKUP_TIP        ), // Pickup Button
+    MakeWidget     ({WW - 25,      69}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_PATROL_BTN, STR_SET_PATROL_TIP    ), // Patrol Button
+    MakeWidget     ({WW - 25,      93}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_STAFF_TIP    ), // Rename Button
+    MakeWidget     ({WW - 25,     117}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP), // Locate Button
+    MakeWidget     ({WW - 25,     141}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_DEMOLISH,   STR_FIRE_STAFF_TIP    ), // Fire Button
     { WIDGETS_END },
 };
 
 //0x9AF910
 static rct_widget window_staff_options_widgets[] = {
     MAIN_STAFF_WIDGETS,
-    MakeWidget     ({      5,  50}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 1
-    MakeWidget     ({      5,  67}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 2
-    MakeWidget     ({      5,  84}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 3
-    MakeWidget     ({      5, 101}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 4
-    MakeWidget     ({      5,  50}, {180,  12}, WWT_DROPDOWN, 1                                            ), // Costume Dropdown
-    MakeWidget     ({WW - 17,  51}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
+    MakeWidget     ({      5,  50}, {180,  12}, WWT_CHECKBOX, WindowColour::Secondary                                            ), // Checkbox 1
+    MakeWidget     ({      5,  67}, {180,  12}, WWT_CHECKBOX, WindowColour::Secondary                                            ), // Checkbox 2
+    MakeWidget     ({      5,  84}, {180,  12}, WWT_CHECKBOX, WindowColour::Secondary                                            ), // Checkbox 3
+    MakeWidget     ({      5, 101}, {180,  12}, WWT_CHECKBOX, WindowColour::Secondary                                            ), // Checkbox 4
+    MakeWidget     ({      5,  50}, {180,  12}, WWT_DROPDOWN, WindowColour::Secondary                                            ), // Costume Dropdown
+    MakeWidget     ({WW - 17,  51}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
     { WIDGETS_END },
 };
 

@@ -112,17 +112,17 @@ constexpr int32_t MAX_WH = 450;
 
 static rct_widget window_staff_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {    WW, WH - 43}, WWT_RESIZE,    1                                                 ), // tab content panel
-    MakeTab   ({  3, 17},                                                       STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab
-    MakeTab   ({ 34, 17},                                                       STR_STAFF_MECHANICS_TAB_TIP   ), // mechanics tab
-    MakeTab   ({ 65, 17},                                                       STR_STAFF_SECURITY_TAB_TIP    ), // security guards tab
-    MakeTab   ({ 96, 17},                                                       STR_STAFF_ENTERTAINERS_TAB_TIP), // entertainers tab
-    MakeWidget({  3, 72}, {WW - 6,     195}, WWT_SCROLL,    1, SCROLL_VERTICAL                                ), // staff list
-    MakeWidget({130, 58}, {    12,      12}, WWT_COLOURBTN, 1, STR_NONE,        STR_UNIFORM_COLOUR_TIP        ), // uniform colour picker
-    MakeWidget({165, 17}, {   145,      13}, WWT_BUTTON,    0, STR_NONE,        STR_HIRE_STAFF_TIP            ), // hire button
-    MakeWidget({243, 46}, {    24,      24}, WWT_FLATBTN,   1, SPR_DEMOLISH,    STR_QUICK_FIRE_STAFF          ), // quick fire staff
-    MakeWidget({267, 46}, {    24,      24}, WWT_FLATBTN,   1, SPR_PATROL_BTN,  STR_SHOW_PATROL_AREA_TIP      ), // show staff patrol area tool
-    MakeWidget({291, 46}, {    24,      24}, WWT_FLATBTN,   1, SPR_MAP,         STR_SHOW_STAFF_ON_MAP_TIP     ), // show staff on map button
+    MakeWidget({  0, 43}, {    WW, WH - 43}, WWT_RESIZE,    WindowColour::Secondary                                                 ), // tab content panel
+    MakeTab   ({  3, 17},                                                                             STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab
+    MakeTab   ({ 34, 17},                                                                             STR_STAFF_MECHANICS_TAB_TIP   ), // mechanics tab
+    MakeTab   ({ 65, 17},                                                                             STR_STAFF_SECURITY_TAB_TIP    ), // security guards tab
+    MakeTab   ({ 96, 17},                                                                             STR_STAFF_ENTERTAINERS_TAB_TIP), // entertainers tab
+    MakeWidget({  3, 72}, {WW - 6,     195}, WWT_SCROLL,    WindowColour::Secondary, SCROLL_VERTICAL                                ), // staff list
+    MakeWidget({130, 58}, {    12,      12}, WWT_COLOURBTN, WindowColour::Secondary, STR_NONE,        STR_UNIFORM_COLOUR_TIP        ), // uniform colour picker
+    MakeWidget({165, 17}, {   145,      13}, WWT_BUTTON,    WindowColour::Primary  , STR_NONE,        STR_HIRE_STAFF_TIP            ), // hire button
+    MakeWidget({243, 46}, {    24,      24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_DEMOLISH,    STR_QUICK_FIRE_STAFF          ), // quick fire staff
+    MakeWidget({267, 46}, {    24,      24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_PATROL_BTN,  STR_SHOW_PATROL_AREA_TIP      ), // show staff patrol area tool
+    MakeWidget({291, 46}, {    24,      24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_MAP,         STR_SHOW_STAFF_ON_MAP_TIP     ), // show staff on map button
     { WIDGETS_END },
 };
 
