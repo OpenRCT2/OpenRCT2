@@ -27,7 +27,7 @@ enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
 
 static rct_widget window_music_credits_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({4, 18}, {502, 292}, WWT_SCROLL, 0, SCROLL_VERTICAL), // scroll
+    MakeWidget({4, 18}, {502, 292}, WWT_SCROLL, WindowColour::Primary, SCROLL_VERTICAL), // scroll
     { WIDGETS_END },
 };
 

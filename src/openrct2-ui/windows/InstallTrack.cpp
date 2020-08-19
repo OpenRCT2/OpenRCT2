@@ -43,11 +43,11 @@ constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
 
 static rct_widget window_install_track_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({                   4,  18}, {372, 219}, WWT_FLATBTN, 0                                                              ),
-    MakeWidget({PREVIEW_BUTTONS_LEFT, 422}, { 22,  24}, WWT_FLATBTN, 0, SPR_ROTATE_ARROW,                     STR_ROTATE_90_TIP     ),
-    MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WWT_FLATBTN, 0, SPR_SCENERY,                          STR_TOGGLE_SCENERY_TIP),
-    MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WWT_BUTTON,  0, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
-    MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WWT_BUTTON,  0, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
+    MakeWidget({                   4,  18}, {372, 219}, WWT_FLATBTN, WindowColour::Primary                                                              ),
+    MakeWidget({PREVIEW_BUTTONS_LEFT, 422}, { 22,  24}, WWT_FLATBTN, WindowColour::Primary, SPR_ROTATE_ARROW,                     STR_ROTATE_90_TIP     ),
+    MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WWT_FLATBTN, WindowColour::Primary, SPR_SCENERY,                          STR_TOGGLE_SCENERY_TIP),
+    MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WWT_BUTTON,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
+    MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WWT_BUTTON,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
     { WIDGETS_END },
 };
 
