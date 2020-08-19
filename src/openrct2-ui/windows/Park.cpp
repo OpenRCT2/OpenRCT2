@@ -80,25 +80,25 @@ enum WINDOW_PARK_WIDGET_IDX {
 
 #define MAIN_PARK_WIDGETS(WW) \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0, 43}, {WW, 131}, WWT_RESIZE, 1  ), /* tab content panel */ \
-    MakeTab   ({  3, 17}, STR_PARK_ENTRANCE_TAB_TIP ), /* tab 1 */ \
-    MakeTab   ({ 34, 17}, STR_PARK_RATING_TAB_TIP   ), /* tab 2 */ \
-    MakeTab   ({ 65, 17}, STR_PARK_GUESTS_TAB_TIP   ), /* tab 3 */ \
-    MakeTab   ({ 96, 17}, STR_PARK_PRICE_TAB_TIP    ), /* tab 4 */ \
-    MakeTab   ({127, 17}, STR_PARK_STATS_TAB_TIP    ), /* tab 5 */ \
-    MakeTab   ({158, 17}, STR_PARK_OBJECTIVE_TAB_TIP), /* tab 6 */ \
-    MakeTab   ({189, 17}, STR_PARK_AWARDS_TAB_TIP   )  /* tab 7 */
+    MakeWidget({  0, 43}, {WW, 131}, WWT_RESIZE, WindowColour::Secondary), /* tab content panel */ \
+    MakeTab   ({  3, 17}, STR_PARK_ENTRANCE_TAB_TIP                     ), /* tab 1 */ \
+    MakeTab   ({ 34, 17}, STR_PARK_RATING_TAB_TIP                       ), /* tab 2 */ \
+    MakeTab   ({ 65, 17}, STR_PARK_GUESTS_TAB_TIP                       ), /* tab 3 */ \
+    MakeTab   ({ 96, 17}, STR_PARK_PRICE_TAB_TIP                        ), /* tab 4 */ \
+    MakeTab   ({127, 17}, STR_PARK_STATS_TAB_TIP                        ), /* tab 5 */ \
+    MakeTab   ({158, 17}, STR_PARK_OBJECTIVE_TAB_TIP                    ), /* tab 6 */ \
+    MakeTab   ({189, 17}, STR_PARK_AWARDS_TAB_TIP                       )  /* tab 7 */
 
 static rct_widget window_park_entrance_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    MakeWidget({  3,  46}, {202, 115}, WWT_VIEWPORT,      1                                                                      ), // viewport
-    MakeWidget({  3, 161}, {202,  11}, WWT_LABEL_CENTRED, 1                                                                      ), // status
-    MakeWidget({205,  49}, { 24,  24}, WWT_FLATBTN,       1, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
-    MakeWidget({205,  73}, { 24,  24}, WWT_FLATBTN,       1, SPR_BUY_LAND_RIGHTS,        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
-    MakeWidget({205,  97}, { 24,  24}, WWT_FLATBTN,       1, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP                  ), // locate
-    MakeWidget({205, 121}, { 24,  24}, WWT_FLATBTN,       1, SPR_RENAME,                 STR_NAME_PARK_TIP                       ), // rename
-    MakeWidget({210,  51}, { 14,  15}, WWT_IMGBTN,        1, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_PARK_TIP                      ),
-    MakeWidget({210,  66}, { 14,  14}, WWT_IMGBTN,        1, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_PARK_TIP                       ),
+    MakeWidget({  3,  46}, {202, 115}, WWT_VIEWPORT,      WindowColour::Secondary                                                                      ), // viewport
+    MakeWidget({  3, 161}, {202,  11}, WWT_LABEL_CENTRED, WindowColour::Secondary                                                                      ), // status
+    MakeWidget({205,  49}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
+    MakeWidget({205,  73}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
+    MakeWidget({205,  97}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP                  ), // locate
+    MakeWidget({205, 121}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_RENAME,                 STR_NAME_PARK_TIP                       ), // rename
+    MakeWidget({210,  51}, { 14,  15}, WWT_IMGBTN,        WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_PARK_TIP                      ),
+    MakeWidget({210,  66}, { 14,  14}, WWT_IMGBTN,        WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_PARK_TIP                       ),
     { WIDGETS_END },
 };
 
@@ -114,8 +114,8 @@ static rct_widget window_park_guests_widgets[] = {
 
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    MakeWidget        ({ 21, 50}, {126, 14}, WWT_LABEL,   1, STR_ADMISSION_PRICE),
-    MakeSpinnerWidgets({147, 50}, { 76, 14}, WWT_SPINNER, 1                     ), // Price (3 widgets)
+    MakeWidget        ({ 21, 50}, {126, 14}, WWT_LABEL,   WindowColour::Secondary, STR_ADMISSION_PRICE),
+    MakeSpinnerWidgets({147, 50}, { 76, 14}, WWT_SPINNER, WindowColour::Secondary                     ), // Price (3 widgets)
     { WIDGETS_END },
 };
 
@@ -126,7 +126,7 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    MakeWidget({7, 207}, {216, 14}, WWT_BUTTON, 1, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
+    MakeWidget({7, 207}, {216, 14}, WWT_BUTTON, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
     { WIDGETS_END },
 };
 

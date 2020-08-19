@@ -48,20 +48,20 @@ enum WINDOW_PLAYER_WIDGET_IDX {
 };
 
 #define WINDOW_PLAYER_COMMON_WIDGETS                                                                                                    \
-    MakeWidget({  0,  0}, {192, 157}, WWT_FRAME,    0                                   ), /* Panel / Background */ \
-    MakeWidget({  1,  1}, {190,  14}, WWT_CAPTION,  0, STR_STRING,  STR_WINDOW_TITLE_TIP), /* Title              */ \
-    MakeWidget({179,  2}, { 11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), /* Close x button     */ \
-    MakeWidget({  0, 43}, {192, 114}, WWT_RESIZE,   1                                   ), /* Resize             */ \
-    MakeTab   ({  3, 17}                                                                ), /* Tab 1              */ \
-    MakeTab   ({ 34, 17}                                                                )  /* Tab 2              */
+    MakeWidget({  0,  0}, {192, 157}, WWT_FRAME,    WindowColour::Primary                                     ), /* Panel / Background */ \
+    MakeWidget({  1,  1}, {190,  14}, WWT_CAPTION,  WindowColour::Primary  , STR_STRING,  STR_WINDOW_TITLE_TIP), /* Title              */ \
+    MakeWidget({179,  2}, { 11,  12}, WWT_CLOSEBOX, WindowColour::Primary  , STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), /* Close x button     */ \
+    MakeWidget({  0, 43}, {192, 114}, WWT_RESIZE,   WindowColour::Secondary                                   ), /* Resize             */ \
+    MakeTab   ({  3, 17}                                                                                      ), /* Tab 1              */ \
+    MakeTab   ({ 34, 17}                                                                                      )  /* Tab 2              */
 
 static rct_widget window_player_overview_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
-    MakeWidget({  3, 46}, {175, 12}, WWT_DROPDOWN, 1                                           ), // Permission group
-    MakeWidget({167, 47}, { 11, 10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                       ),
-    MakeWidget({179, 45}, { 12, 24}, WWT_FLATBTN,  1, SPR_LOCATE,         STR_LOCATE_PLAYER_TIP), // Locate button
-    MakeWidget({179, 69}, { 12, 24}, WWT_FLATBTN,  1, SPR_DEMOLISH,       STR_KICK_PLAYER_TIP  ), // Kick button
-    MakeWidget({  3, 60}, {175, 61}, WWT_VIEWPORT, 1                                           ), // Viewport
+    MakeWidget({  3, 46}, {175, 12}, WWT_DROPDOWN, WindowColour::Secondary                                           ), // Permission group
+    MakeWidget({167, 47}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                       ),
+    MakeWidget({179, 45}, { 12, 24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_LOCATE,         STR_LOCATE_PLAYER_TIP), // Locate button
+    MakeWidget({179, 69}, { 12, 24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_DEMOLISH,       STR_KICK_PLAYER_TIP  ), // Kick button
+    MakeWidget({  3, 60}, {175, 61}, WWT_VIEWPORT, WindowColour::Secondary                                           ), // Viewport
     { WIDGETS_END },
 };
 
