@@ -33,6 +33,9 @@ protected:
 
         load_from_sv6(parkPath.c_str());
         game_load_init();
+
+        // Changed in some tests. Store to restore its value
+        _gScreenFlags = gScreenFlags;
         SUCCEED();
     }
 
@@ -40,13 +43,17 @@ protected:
     {
         if (_context)
             _context.reset();
+
+        gScreenFlags = _gScreenFlags;
     }
 
 private:
     static std::shared_ptr<IContext> _context;
+    static uint8_t _gScreenFlags;
 };
 
 std::shared_ptr<IContext> TileElementWantsFootpathConnection::_context;
+uint8_t TileElementWantsFootpathConnection::_gScreenFlags;
 
 TEST_F(TileElementWantsFootpathConnection, FlatPath)
 {
@@ -139,4 +146,28 @@ TEST_F(TileElementWantsFootpathConnection, DifferentHeight)
     EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 8, 24, 0 }, nullptr));
     EXPECT_FALSE(tile_element_wants_path_connection_towards({ 18, 10, 24, 1 }, nullptr));
     SUCCEED();
+}
+
+TEST_F(TileElementWantsFootpathConnection, MapEdge)
+{
+    // Paths at the map edge should have edge flags turned on when placed in scenario editor
+    // This tile is a single, unconnected footpath on the map edge - on load, GetEdges() returns 0
+    TileElement* pathElement = map_get_footpath_element(TileCoordsXYZ{ 1, 4, 14 }.ToCoordsXYZ());
+
+    // Enable flag to simulate enabling the scenario editor
+    gScreenFlags |= SCREEN_FLAGS_SCENARIO_EDITOR;
+
+    // Calculate the connected edges and set the appropriate edge flags
+    footpath_connect_edges({ 16, 64 }, pathElement, 0);
+    auto edges = pathElement->AsPath()->GetEdges();
+
+    // The tiles alongside in the Y direction are both on the map edge so should be marked as an edge
+    EXPECT_TRUE(edges & (1 << 1));
+    EXPECT_TRUE(edges & (1 << 3));
+
+    // The tile in the -X direction is off the map so should be marked as an edge
+    EXPECT_TRUE(edges & (1 << 0));
+
+    // The tile in the -X direction is a normal tile and should not be marked as an edge
+    EXPECT_FALSE(edges & (1 << 2));
 }
