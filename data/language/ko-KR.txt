@@ -3142,8 +3142,8 @@ STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}새로 만든 놀이기구에 기본적으로 설정할 점검 간격을 설정합니다.
 STR_5853    :{SMALLFONT}{BLACK}효과음 켜기/끄기
 STR_5854    :{SMALLFONT}{BLACK}놀이기구 음악 켜기/끄기
-STR_5855    :{SMALLFONT}{BLACK}전체화면, 창 모드, 전체화면 (창모드) 중에서 선택합니다.
-STR_5856    :{SMALLFONT}{BLACK}전체화면에서 사용할 게임 해상도를 설정합니다.
+STR_5855    :{SMALLFONT}{BLACK}전체 화면, 창 모드, 전체 화면 (창 모드) 중에서 선택합니다.
+STR_5856    :{SMALLFONT}{BLACK}전체 화면에서 사용할 게임 해상도를 설정합니다.
 STR_5857    :{SMALLFONT}{BLACK}게임 설정
 STR_5858    :{SMALLFONT}{BLACK}CPU 대신 GPU를 이용하여 화면을 표시합니다. 스크린 캡처 소프트웨어의 호환성을 향상시켜줍니다. 약간의 속도 저하가 발생할 수 있습니다.
 STR_5859    :{SMALLFONT}{BLACK}시각적으로 더 부드러운 게임 플레이를 위해 프레임 제한을 해제합니다. 설정을 끄면 게임이 40 FPS로 실행됩니다.
