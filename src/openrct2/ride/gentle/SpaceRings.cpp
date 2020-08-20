@@ -44,7 +44,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
         int32_t frameNum = direction;
 
         uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
-        auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+        auto vehicle = GetEntity<Vehicle>(ride->vehicles[vehicleIndex]);
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
         {
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
