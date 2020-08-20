@@ -306,10 +306,24 @@ Peep* Ride::GetQueueHeadGuest(StationIndex stationIndex) const
     Peep* peep;
     Peep* result = nullptr;
     uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
+    Peep* slow = try_get_guest(spriteIndex);
+    bool increment_slow = false;
     while ((peep = try_get_guest(spriteIndex)) != nullptr)
     {
         spriteIndex = peep->GuestNextInQueue;
         result = peep;
+
+        // increment slow only every second iteration
+        if (increment_slow)
+        {
+            slow = try_get_guest(slow->GuestNextInQueue);
+        }
+        increment_slow = !increment_slow;
+        if (peep == slow)
+        {
+            log_warning("Detected cycle in queuefor ride %u, station %u\n", id, stationIndex);
+            break;
+        }
     }
     return result;
 }
@@ -319,10 +333,23 @@ void Ride::UpdateQueueLength(StationIndex stationIndex)
     uint16_t count = 0;
     Peep* peep;
     uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
+    Peep* slow = try_get_guest(spriteIndex);
+    bool increment_slow = false;
     while ((peep = try_get_guest(spriteIndex)) != nullptr)
     {
         spriteIndex = peep->GuestNextInQueue;
         count++;
+        // increment slow only every second iteration
+        if (increment_slow)
+        {
+            slow = try_get_guest(slow->GuestNextInQueue);
+        }
+        increment_slow = !increment_slow;
+        if (peep == slow)
+        {
+            log_warning("Detected cycle in queuefor ride %u, station %u\n", id, stationIndex);
+            break;
+        }
     }
     stations[stationIndex].QueueLength = count;
 }
