@@ -65,7 +65,7 @@ void keyboard_shortcut_handle(int32_t key)
 void keyboard_shortcut_handle_command(Input::Shortcut shortcut)
 {
     size_t shortcutIndex = static_cast<size_t>(shortcut);
-    if (shortcutIndex >= 0 && shortcutIndex < std::size(shortcut_table))
+    if (shortcutIndex < std::size(shortcut_table))
     {
         shortcut_action action = shortcut_table[shortcutIndex];
         if (action != nullptr)
