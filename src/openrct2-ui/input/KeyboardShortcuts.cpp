@@ -149,7 +149,7 @@ void KeyboardShortcuts::Set(int32_t key)
     auto shortcut = GetFromKey(key);
     if (shortcut != Input::Shortcut::Undefined)
     {
-        _keys[static_cast<size_t>(shortcut)] = static_cast<uint16_t>(Input::Shortcut::Undefined);
+        _keys[static_cast<size_t>(shortcut)] = static_cast<uint16_t>(Input::ScanCodeUndefined);
     }
 
     // Map shortcut to this key
