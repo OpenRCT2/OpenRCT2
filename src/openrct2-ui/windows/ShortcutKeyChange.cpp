@@ -70,13 +70,13 @@ static rct_window_event_list window_shortcut_change_events = {
 
 static rct_string_id CurrentShortcutKeyStringId{};
 
-rct_window* window_shortcut_change_open(int32_t selected_key, rct_string_id key_string_id)
+rct_window* window_shortcut_change_open(Input::Shortcut shortcut, rct_string_id key_string_id)
 {
     // Move this to window_shortcut_change_open
     window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
 
     // Save the item we are selecting for new window
-    gKeyboardShortcutChangeId = selected_key;
+    gKeyboardShortcutChangeId = shortcut;
     CurrentShortcutKeyStringId = key_string_id;
 
     rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);

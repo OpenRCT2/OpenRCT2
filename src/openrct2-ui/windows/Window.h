@@ -9,12 +9,14 @@
 
 #pragma once
 
+#include <openrct2-ui/input/KeyboardShortcuts.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/windows/tile_inspector.h>
 #include <string_view>
 
+using namespace OpenRCT2;
 using loadsave_callback = void (*)(int32_t result, const utf8* path);
 using scenarioselect_callback = void (*)(const utf8* path);
 struct Peep;
@@ -62,7 +64,7 @@ rct_window* window_save_prompt_open();
 rct_window* window_server_list_open();
 rct_window* window_server_start_open();
 #endif
-rct_window* window_shortcut_change_open(int32_t selected_key, rct_string_id key_string_id);
+rct_window* window_shortcut_change_open(Input::Shortcut shortcut, rct_string_id key_string_id);
 rct_window* window_shortcut_keys_open();
 rct_window* window_staff_list_open();
 rct_window* window_staff_open(Peep* peep);
