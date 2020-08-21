@@ -618,7 +618,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Return from %d,%d,%d; At start", counter, x >> 5, y >> 5, z);
+            log_info("[%03d] Return from %d,%d,%d; At start", counter, loc.x >> 5, loc.y >> 5, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         return;
@@ -636,7 +636,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Return from %d,%d,%d; Left patrol area", counter, x >> 5, y >> 5, z);
+                log_info("[%03d] Return from %d,%d,%d; Left patrol area", counter, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             return;
@@ -783,7 +783,7 @@ static void peep_pathfind_heuristic_search(
         if (gPathFindDebug)
         {
             log_info(
-                "[%03d] Checking map element at %d,%d,%d; Type: %s", counter, x >> 5, y >> 5, z,
+                "[%03d] Checking map element at %d,%d,%d; Type: %s", counter, loc.x >> 5, loc.y >> 5, loc.z,
                 gPathFindSearchText[searchResult]);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -824,7 +824,9 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, new_score);
+                log_info(
+                    "[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                    new_score);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -840,7 +842,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Search path ends at %d,%d,%d; Not a path", counter, x >> 5, y >> 5, z);
+                log_info("[%03d] Search path ends at %d,%d,%d; Not a path", counter, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -882,7 +884,9 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, new_score);
+                log_info(
+                    "[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                    new_score);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -898,8 +902,8 @@ static void peep_pathfind_heuristic_search(
         if (gPathFindDebug)
         {
             log_info(
-                "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, x >> 5, y >> 5, z, edges & 1,
-                (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
+                "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -915,7 +919,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Search path ends at %d,%d,%d; No more edges/dead end", counter, x >> 5, y >> 5, z);
+                log_info("[%03d] Search path ends at %d,%d,%d; No more edges/dead end", counter, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -951,8 +955,8 @@ static void peep_pathfind_heuristic_search(
             if (gPathFindDebug)
             {
                 log_info(
-                    "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", counter, x >> 5, y >> 5, z,
-                    new_score);
+                    "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", counter, loc.x >> 5, loc.y >> 5,
+                    loc.z, new_score);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -1026,7 +1030,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     if (gPathFindDebug)
                     {
-                        log_info("[%03d] Search path ends at %d,%d,%d; Loop", counter, x >> 5, y >> 5, z);
+                        log_info("[%03d] Search path ends at %d,%d,%d; Loop", counter, loc.x >> 5, loc.y >> 5, loc.z);
                     }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     continue;
@@ -1061,8 +1065,8 @@ static void peep_pathfind_heuristic_search(
                     if (gPathFindDebug)
                     {
                         log_info(
-                            "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z,
-                            new_score);
+                            "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, loc.x >> 5, loc.y >> 5,
+                            loc.z, new_score);
                     }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     continue;
@@ -1098,14 +1102,18 @@ static void peep_pathfind_heuristic_search(
                 {
                     if (thin_junction)
                         log_info(
-                            "[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, next_test_edge);
+                            "[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                            next_test_edge);
                     else
                         log_info(
-                            "[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, next_test_edge);
+                            "[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                            next_test_edge);
                 }
                 else
                 {
-                    log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, next_test_edge);
+                    log_info(
+                        "[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                        next_test_edge);
                 }
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1125,7 +1133,8 @@ static void peep_pathfind_heuristic_search(
             if (gPathFindDebug)
             {
                 log_info(
-                    "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, next_test_edge, *endScore);
+                    "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z, next_test_edge,
+                    *endScore);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         } while ((next_test_edge = bitscanforward(edges)) != -1);
@@ -1139,7 +1148,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Returning from %d,%d,%d; No relevant map element found", counter, x >> 5, y >> 5, z);
+            log_info("[%03d] Returning from %d,%d,%d; No relevant map element found", counter, loc.x >> 5, loc.y >> 5, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
     }
@@ -1148,7 +1157,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Returning from %d,%d,%d; All map elements checked", counter, x >> 5, y >> 5, z);
+            log_info("[%03d] Returning from %d,%d,%d; All map elements checked", counter, loc.x >> 5, loc.y >> 5, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
     }
