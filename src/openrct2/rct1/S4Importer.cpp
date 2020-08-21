@@ -2667,7 +2667,7 @@ private:
 
     void ImportClimate()
     {
-        gClimate = _s4.climate;
+        gClimate = ClimateType{ _s4.climate };
         gClimateUpdateTimer = _s4.climate_timer;
         gClimateCurrent.Temperature = _s4.temperature;
         gClimateCurrent.Weather = _s4.weather;

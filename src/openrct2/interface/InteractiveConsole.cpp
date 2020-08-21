@@ -637,7 +637,8 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "climate")
         {
-            console.WriteFormatLine("climate %s  (%d)", ClimateNames[gClimate], gClimate);
+            console.WriteFormatLine(
+                "climate %s  (%d)", ClimateNames[static_cast<uint8_t>(gClimate)], static_cast<uint8_t>(gClimate));
         }
         else if (argv[0] == "game_speed")
         {
@@ -859,35 +860,37 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "climate")
         {
+            uint8_t newClimate = static_cast<uint8_t>(ClimateType::Count);
+            invalidArgs = true;
+
             if (int_valid[0])
             {
-                const auto newClimate = int_val[0];
-                if (newClimate < 0 || newClimate >= CLIMATE_COUNT)
-                {
-                    console.WriteLine(language_get_string(STR_INVALID_CLIMATE_ID));
-                }
-                else
-                {
-                    auto gameAction = ClimateSetAction(newClimate);
-                    GameActions::Execute(&gameAction);
-                }
+                newClimate = static_cast<uint8_t>(int_val[0]);
+                invalidArgs = false;
             }
             else
             {
-                for (i = 0; i < CLIMATE_COUNT; i++)
+                for (newClimate = 0; newClimate < static_cast<uint8_t>(ClimateType::Count); newClimate++)
                 {
-                    if (argv[1] == ClimateNames[i])
+                    if (argv[1] == ClimateNames[newClimate])
                     {
-                        gClimate = i;
+                        invalidArgs = false;
                         break;
                     }
                 }
             }
 
-            if (i == CLIMATE_COUNT)
-                invalidArgs = true;
+            if (invalidArgs)
+            {
+                console.WriteLine(language_get_string(STR_INVALID_CLIMATE_ID));
+            }
             else
+            {
+                auto gameAction = ClimateSetAction(ClimateType{ newClimate });
+                GameActions::Execute(&gameAction);
+
                 console.Execute("get climate");
+            }
         }
         else if (argv[0] == "game_speed" && invalidArguments(&invalidArgs, int_valid[0]))
         {
