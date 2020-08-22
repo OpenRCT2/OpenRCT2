@@ -4498,6 +4498,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -4506,6 +4507,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -4659,7 +4661,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_BUNDLE_IDENTIFIER = io.openrct2.OpenRCT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -4705,7 +4707,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_BUNDLE_IDENTIFIER = io.openrct2.OpenRCT2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -4827,7 +4829,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -4862,7 +4864,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
