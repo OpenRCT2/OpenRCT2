@@ -10,6 +10,7 @@
 #pragma once
 
 #include "common.h"
+#include "util/Enum.hpp"
 
 #include <memory>
 #include <string>
@@ -25,9 +26,9 @@ namespace OpenRCT2
         CONFIG,        // Base directory for OpenRCT2 configuration.
         CACHE,         // Base directory for OpenRCT2 cache files.
         DOCUMENTATION, // Base directory for OpenRCT2 doc files.
+        Count
     };
-    constexpr size_t DIRBASE_COUNT = 7;
-    using DIRBASE_VALUES = std::string[DIRBASE_COUNT];
+    using DIRBASE_VALUES = EnumeratedArray<std::string, DIRBASE>;
 
     enum class DIRID
     {
