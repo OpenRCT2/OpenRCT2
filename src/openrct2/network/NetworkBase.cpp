@@ -1389,9 +1389,8 @@ void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
         objects = objManager.GetPackableObjects();
     }
 
-    size_t out_size;
-    uint8_t* header = save_for_network(out_size, objects);
-    if (header == nullptr)
+    auto header = save_for_network(objects);
+    if (header.empty())
     {
         if (connection)
         {
@@ -1401,11 +1400,11 @@ void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
         return;
     }
     size_t chunksize = CHUNK_SIZE;
-    for (size_t i = 0; i < out_size; i += chunksize)
+    for (size_t i = 0; i < header.size(); i += chunksize)
     {
-        size_t datasize = std::min(chunksize, out_size - i);
+        size_t datasize = std::min(chunksize, header.size() - i);
         NetworkPacket packet(NetworkCommand::Map);
-        packet << static_cast<uint32_t>(out_size) << static_cast<uint32_t>(i);
+        packet << static_cast<uint32_t>(header.size()) << static_cast<uint32_t>(i);
         packet.Write(&header[i], datasize);
         if (connection)
         {
@@ -1416,13 +1415,11 @@ void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
             SendPacketToClients(packet);
         }
     }
-    free(header);
 }
 
-uint8_t* NetworkBase::save_for_network(size_t& out_size, const std::vector<const ObjectRepositoryItem*>& objects) const
+std::vector<uint8_t> NetworkBase::save_for_network(const std::vector<const ObjectRepositoryItem*>& objects) const
 {
-    uint8_t* header = nullptr;
-    out_size = 0;
+    std::vector<uint8_t> header;
     bool RLEState = gUseRLE;
     gUseRLE = false;
 
@@ -1430,7 +1427,7 @@ uint8_t* NetworkBase::save_for_network(size_t& out_size, const std::vector<const
     if (!SaveMap(&ms, objects))
     {
         log_warning("Failed to export map.");
-        return nullptr;
+        return header;
     }
     gUseRLE = RLEState;
 
@@ -1440,34 +1437,17 @@ uint8_t* NetworkBase::save_for_network(size_t& out_size, const std::vector<const
     auto compressed = util_zlib_deflate(static_cast<const uint8_t*>(data), size);
     if (compressed != std::nullopt)
     {
-        out_size = compressed->size();
-        header = reinterpret_cast<uint8_t*>(_strdup("open2_sv6_zlib"));
-        size_t header_len = strlen(reinterpret_cast<char*>(header)) + 1; // account for null terminator
-        header = static_cast<uint8_t*>(realloc(header, header_len + out_size));
-        if (header == nullptr)
-        {
-            log_error("Failed to allocate %u bytes.", header_len + out_size);
-        }
-        else
-        {
-            std::memcpy(&header[header_len], compressed->data(), out_size);
-            out_size += header_len;
-            log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, out_size);
-        }
+        std::string headerString = "open2_sv6_zlib";
+        header.resize(headerString.size() + 1 + compressed->size());
+        std::memcpy(&header[0], headerString.c_str(), headerString.size() + 1);
+        std::memcpy(&header[headerString.size() + 1], compressed->data(), compressed->size());
+        log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, headerString.size() + 1 + compressed->size());
     }
     else
     {
         log_warning("Failed to compress the data, falling back to non-compressed sv6.");
-        header = static_cast<uint8_t*>(malloc(size));
-        if (header == nullptr)
-        {
-            log_error("Failed to allocate %u bytes.", size);
-        }
-        else
-        {
-            out_size = size;
-            std::memcpy(header, data, size);
-        }
+        header.resize(size);
+        std::memcpy(header.data(), data, size);
     }
     return header;
 }
