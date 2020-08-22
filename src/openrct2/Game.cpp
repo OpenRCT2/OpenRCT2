@@ -571,9 +571,8 @@ void game_load_init()
     if (network_get_mode() != NETWORK_MODE_CLIENT)
     {
         GameActions::ClearQueue();
-        reset_sprite_spatial_index();
     }
-    reset_all_sprite_quadrant_placements();
+    reset_sprite_spatial_index();
     scenery_set_default_placement_configuration();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
