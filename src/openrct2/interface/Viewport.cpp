@@ -937,6 +937,8 @@ void viewport_paint(
     dpi1.height = height;
     dpi1.pitch = (dpi->width + dpi->pitch) - (width / viewport->zoom);
     dpi1.zoom_level = viewport->zoom;
+    dpi1.remX = std::max(0, dpi->x - x);
+    dpi1.remY = std::max(0, dpi->y - y);
 
     // make sure, the compare operation is done in int16_t to avoid the loop becoming an infiniteloop.
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.

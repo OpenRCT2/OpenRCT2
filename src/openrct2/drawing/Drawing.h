@@ -109,6 +109,9 @@ struct rct_drawpixelinfo
     int16_t pitch{}; // note: this is actually (pitch - width)
     ZoomLevel zoom_level{};
 
+    uint8_t remX{};
+    uint8_t remY{};
+
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 
     rct_drawpixelinfo Crop(int32_t newX, int32_t newY, int32_t newWidth, int32_t newHeight);
