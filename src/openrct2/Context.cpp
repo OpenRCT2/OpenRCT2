@@ -535,6 +535,8 @@ namespace OpenRCT2
                     }
                 }
             }
+
+            window_check_all_valid_zoom();
         }
 
         void DisposeDrawingEngine() final override

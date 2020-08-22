@@ -17,6 +17,7 @@
 #include "../core/Guard.hpp"
 #include "../core/JobPool.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../paint/Paint.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
@@ -1924,5 +1925,17 @@ void viewport_set_saved_view()
 
         gSavedViewZoom = viewport->zoom;
         gSavedViewRotation = get_current_rotation();
+    }
+}
+
+ZoomLevel ZoomLevel::min()
+{
+    if (drawing_engine_get_type() == DRAWING_ENGINE_OPENGL)
+    {
+        return -2;
+    }
+    else
+    {
+        return 0;
     }
 }

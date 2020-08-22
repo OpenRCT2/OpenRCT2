@@ -1001,6 +1001,19 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int
                         centreLoc->y + rebased_y + (offset_y / w->viewport->zoom) };
 }
 
+/**
+ * For all windows with viewports, ensure they do not have a zoom level less than the minimum.
+ */
+void window_check_all_valid_zoom()
+{
+    window_visit_each([](rct_window* w) {
+        if (w->viewport != nullptr && w->viewport->zoom < ZoomLevel::min())
+        {
+            window_zoom_set(w, ZoomLevel::min(), false);
+        }
+    });
+}
+
 void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor)
 {
     rct_viewport* v = w->viewport;

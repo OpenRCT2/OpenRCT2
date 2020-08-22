@@ -136,10 +136,7 @@ public:
             return lhs >> rhs._level;
     }
 
-    static constexpr ZoomLevel min()
-    {
-        return -2;
-    }
+    static ZoomLevel min();
 
     static constexpr ZoomLevel max()
     {
