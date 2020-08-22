@@ -887,15 +887,10 @@ void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, const
 
     const auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 
-    int32_t drawOffsetX = g1Element->x_offset;
-    int32_t drawOffsetY = g1Element->y_offset;
-    int32_t drawWidth = static_cast<uint16_t>(g1Element->width);
-    int32_t drawHeight = static_cast<uint16_t>(g1Element->height);
-
-    int32_t left = x + drawOffsetX;
-    int32_t top = y + drawOffsetY;
-    int32_t right = left + drawWidth;
-    int32_t bottom = top + drawHeight;
+    int32_t left = x + g1Element->x_offset;
+    int32_t top = y + g1Element->y_offset;
+    int32_t right = left + static_cast<uint16_t>(g1Element->width);
+    int32_t bottom = top + static_cast<uint16_t>(g1Element->height);
 
     if (left > right)
     {
@@ -906,10 +901,20 @@ void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, const
         std::swap(top, bottom);
     }
 
-    left += _offsetX;
-    top += _offsetY;
-    right += _offsetX;
-    bottom += _offsetY;
+    left -= _dpi->x;
+    top -= _dpi->y;
+    right -= _dpi->x;
+    bottom -= _dpi->y;
+
+    left = left / _dpi->zoom_level;
+    top = top / _dpi->zoom_level;
+    right = right / _dpi->zoom_level;
+    bottom = bottom / _dpi->zoom_level;
+
+    left += _spriteOffsetX;
+    top += _spriteOffsetY;
+    right += _spriteOffsetX;
+    bottom += _spriteOffsetY;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
