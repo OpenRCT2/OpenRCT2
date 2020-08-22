@@ -345,13 +345,13 @@ bool window_ride_construction_update_state(
     bool turnOffLiftHill = false;
     if (!(_enabledRidePieces & (1ULL << TRACK_LIFT_HILL_CURVE)))
     {
-        if (TrackFlags[trackType] & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
+        if (!!(TrackFlags[trackType] & TrackElemFlag::AllowLiftCurve))
         {
             turnOffLiftHill = true;
         }
     }
 
-    if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_ALLOW_LIFT_HILL))
+    if (!(TrackFlags[trackType] & TrackElemFlag::AllowLiftHill))
     {
         turnOffLiftHill = true;
     }

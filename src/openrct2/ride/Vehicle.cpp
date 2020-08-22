@@ -1658,15 +1658,15 @@ void Vehicle::UpdateMeasurements()
                 }
         }
 
-        uint16_t trackFlags = TrackFlags[trackElemType];
+        TrackElemFlag trackFlags = TrackFlags[trackElemType];
 
         uint32_t testingFlags = curRide->testing_flags;
-        if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
+        if (testingFlags & RIDE_TESTING_TURN_LEFT && !!(trackFlags & TrackElemFlag::LeftTurn))
         {
             // 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
             curRide->turn_count_default += 0x800;
         }
-        else if (testingFlags & RIDE_TESTING_TURN_RIGHT && trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
+        else if (testingFlags & RIDE_TESTING_TURN_RIGHT && !!(trackFlags & TrackElemFlag::RightTurn))
         {
             // 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
             curRide->turn_count_default += 0x800;
@@ -1703,31 +1703,31 @@ void Vehicle::UpdateMeasurements()
         }
         else
         {
-            if (trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
+            if (!!(trackFlags & TrackElemFlag::LeftTurn))
             {
                 curRide->testing_flags |= RIDE_TESTING_TURN_LEFT;
                 curRide->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
 
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
+                if (!!(trackFlags & TrackElemFlag::BankedTurn))
                 {
                     curRide->testing_flags |= RIDE_TESTING_TURN_BANKED;
                 }
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_SLOPED)
+                if (!!(trackFlags & TrackElemFlag::SlopedTurn))
                 {
                     curRide->testing_flags |= RIDE_TESTING_TURN_SLOPED;
                 }
             }
 
-            if (trackFlags & TRACK_ELEM_FLAG_TURN_RIGHT)
+            if (!!(trackFlags & TrackElemFlag::RightTurn))
             {
                 curRide->testing_flags |= RIDE_TESTING_TURN_RIGHT;
                 curRide->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
 
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_BANKED)
+                if (!!(trackFlags & TrackElemFlag::BankedTurn))
                 {
                     curRide->testing_flags |= RIDE_TESTING_TURN_BANKED;
                 }
-                if (trackFlags & TRACK_ELEM_FLAG_TURN_SLOPED)
+                if (!!(trackFlags & TrackElemFlag::SlopedTurn))
                 {
                     curRide->testing_flags |= RIDE_TESTING_TURN_SLOPED;
                 }
@@ -1736,7 +1736,7 @@ void Vehicle::UpdateMeasurements()
 
         if (testingFlags & RIDE_TESTING_DROP_DOWN)
         {
-            if (velocity < 0 || !(trackFlags & TRACK_ELEM_FLAG_DOWN))
+            if (velocity < 0 || !(trackFlags & TrackElemFlag::Down))
             {
                 curRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
 
@@ -1751,7 +1751,7 @@ void Vehicle::UpdateMeasurements()
                 }
             }
         }
-        else if (trackFlags & TRACK_ELEM_FLAG_DOWN && velocity >= 0)
+        else if (!!(trackFlags & TrackElemFlag::Down) && velocity >= 0)
         {
             curRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
             curRide->testing_flags |= RIDE_TESTING_DROP_DOWN;
@@ -1768,7 +1768,7 @@ void Vehicle::UpdateMeasurements()
 
         if (testingFlags & RIDE_TESTING_DROP_UP)
         {
-            if (velocity > 0 || !(trackFlags & TRACK_ELEM_FLAG_UP))
+            if (velocity > 0 || !(trackFlags & TrackElemFlag::Up))
             {
                 curRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
 
@@ -1783,7 +1783,7 @@ void Vehicle::UpdateMeasurements()
                 }
             }
         }
-        else if (trackFlags & TRACK_ELEM_FLAG_UP && velocity <= 0)
+        else if (!!(trackFlags & TrackElemFlag::Up) && velocity <= 0)
         {
             curRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
             curRide->testing_flags |= RIDE_TESTING_DROP_UP;
@@ -1799,7 +1799,7 @@ void Vehicle::UpdateMeasurements()
 
         if (curRide->type == RIDE_TYPE_MINI_GOLF)
         {
-            if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
+            if (!!(trackFlags & TrackElemFlag::GolfHole))
             {
                 if (curRide->holes < MAX_GOLF_HOLES)
                     curRide->holes++;
@@ -1807,14 +1807,14 @@ void Vehicle::UpdateMeasurements()
         }
         else
         {
-            if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
+            if (!!(trackFlags & TrackElemFlag::NormalToInversion))
             {
                 if (curRide->inversions < MAX_INVERSIONS)
                     curRide->inversions++;
             }
         }
 
-        if (trackFlags & TRACK_ELEM_FLAG_HELIX)
+        if (!!(trackFlags & TrackElemFlag::Helix))
         {
             uint8_t helixes = ride_get_helix_sections(curRide);
             if (helixes != MAX_HELICES)
@@ -8443,7 +8443,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
             if (next_vehicle_on_train == SPRITE_INDEX_NULL)
             {
                 trackType = tileElement->AsTrack()->GetTrackType();
-                if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_DOWN))
+                if (!(TrackFlags[trackType] & TrackElemFlag::Down))
                 {
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
                 }

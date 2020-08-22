@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../object/Object.h"
+#include "../util/Enum.hpp"
 #include "Ride.h"
 
 constexpr const uint16_t RideConstructionSpecialPieceSelected = 0x100;
@@ -217,26 +218,31 @@ enum
     TRACK_BANK_UPSIDE_DOWN = 15,
 };
 
-enum
+enum class TrackElemFlag : uint16_t
 {
-    TRACK_ELEM_FLAG_ONLY_UNDERWATER = (1 << 0),
-    TRACK_ELEM_FLAG_TURN_LEFT = (1 << 1),
-    TRACK_ELEM_FLAG_TURN_RIGHT = (1 << 2),
-    TRACK_ELEM_FLAG_TURN_BANKED = (1 << 3),
-    TRACK_ELEM_FLAG_TURN_SLOPED = (1 << 4),
-    TRACK_ELEM_FLAG_DOWN = (1 << 5),
-    TRACK_ELEM_FLAG_UP = (1 << 6),
-    TRACK_ELEM_FLAG_NORMAL_TO_INVERSION = (1 << 7),
-    TRACK_ELEM_FLAG_IS_GOLF_HOLE = (1 << 7),
-    TRACK_ELEM_FLAG_STARTS_AT_HALF_HEIGHT = (1 << 8),
-    TRACK_ELEM_FLAG_ONLY_ABOVE_GROUND = (1 << 9),
-    TRACK_ELEM_FLAG_IS_STEEP_UP = (1 << 10), // Used to allow steep backwards lifts on roller coasters that do not allow steep
-                                             // forward lift hills
-    TRACK_ELEM_FLAG_HELIX = (1 << 11),
-    TRACK_ELEM_FLAG_ALLOW_LIFT_HILL = (1 << 12),
-    TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT = (1 << 13),
-    TRACK_ELEM_FLAG_INVERSION_TO_NORMAL = (1 << 14),
-    TRACK_ELEM_FLAG_BANKED = (1 << 15), // Also set on Spinning Tunnel and Log Flume reverser, probably to save a flag.
+    // clang-format off
+    Null,
+    UnderwaterOnly      = (1 << 0),
+    LeftTurn            = (1 << 1),
+    RightTurn           = (1 << 2),
+    BankedTurn          = (1 << 3),
+    SlopedTurn          = (1 << 4),
+    Down                = (1 << 5),
+    Up                  = (1 << 6),
+    NormalToInversion   = (1 << 7),
+    // NB: repeated value
+    GolfHole            = (1 << 7),
+    StartsAtHalfHeight  = (1 << 8),
+    AboveGroundOnly     = (1 << 9),
+    // Used to allow steep backwards lifts on roller coasters that do not allow steep forward lift hills
+    SteepUp             = (1 << 10),
+    Helix               = (1 << 11),
+    AllowLiftHill       = (1 << 12),
+    AllowLiftCurve      = (1 << 13),
+    InversionToNormal   = (1 << 14),
+    // Also set on Spinning Tunnel and Log Flume reverser, probably to save a flag.
+    Banked              = (1 << 15),
+    // clang-format on
 };
 
 enum
