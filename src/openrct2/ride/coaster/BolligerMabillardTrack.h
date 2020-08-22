@@ -131,10 +131,12 @@ void bolliger_mabillard_track_s_bend_right(
     const TileElement* tileElement, int32_t supportType);
 void bolliger_mabillard_track_left_vertical_loop(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement, int32_t supportType);
+    const TileElement* tileElement, int32_t trackHeightOffset, int32_t supportHeightOffset, bool flipInverted,
+    int32_t supportType);
 void bolliger_mabillard_track_right_vertical_loop(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
-    const TileElement* tileElement, int32_t supportType);
+    const TileElement* tileElement, int32_t trackHeightOffset, int32_t supportHeightOffset, bool flipInverted,
+    int32_t supportType);
 void bolliger_mabillard_track_left_quarter_turn_3(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement, int32_t supportType);
