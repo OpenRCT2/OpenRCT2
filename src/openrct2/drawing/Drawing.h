@@ -110,6 +110,8 @@ struct rct_drawpixelinfo
     ZoomLevel zoom_level{};
 
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
+
+    rct_drawpixelinfo Crop(int32_t newX, int32_t newY, int32_t newWidth, int32_t newHeight);
 };
 
 struct rct_g1_element_32bit

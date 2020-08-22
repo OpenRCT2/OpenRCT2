@@ -84,8 +84,7 @@ namespace WindowCloseFlags
     static constexpr uint32_t CloseSingle = (1 << 1);
 } // namespace WindowCloseFlags
 
-static int32_t window_draw_split(
-    rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void window_draw_core(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 std::list<std::shared_ptr<rct_window>>::iterator window_get_iterator(const rct_window* w)
@@ -1088,51 +1087,14 @@ void main_window_zoom(bool zoomIn, bool atCursor)
 }
 
 /**
- * Draws a window that is in the specified region.
- *  rct2: 0x006E756C
- * left (ax)
- * top (bx)
- * right (dx)
- * bottom (bp)
+ * Splits a drawing of a window into regions that can be seen and are not hidden
+ * by other opaque overlapping windows.
  */
 void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     if (!window_is_visible(w))
         return;
 
-    // Split window into only the regions that require drawing
-    if (window_draw_split(dpi, w, left, top, right, bottom))
-        return;
-
-    // Clamp region
-    left = std::max<int32_t>(left, w->windowPos.x);
-    top = std::max<int32_t>(top, w->windowPos.y);
-    right = std::min<int32_t>(right, w->windowPos.x + w->width);
-    bottom = std::min<int32_t>(bottom, w->windowPos.y + w->height);
-    if (left >= right)
-        return;
-    if (top >= bottom)
-        return;
-
-    // Draw the window in this region
-    for (auto it = window_get_iterator(w); it != g_window_list.end(); it++)
-    {
-        // Don't draw overlapping opaque windows, they won't have changed
-        auto v = (*it).get();
-        if ((w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(v))
-        {
-            window_draw_single(dpi, v, left, top, right, bottom);
-        }
-    }
-}
-
-/**
- * Splits a drawing of a window into regions that can be seen and are not hidden
- * by other opaque overlapping windows.
- */
-static int32_t window_draw_split(
-    rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
-{
     // Divide the draws up for only the visible regions of the window recursively
     auto itPos = window_get_iterator(w);
     for (auto it = std::next(itPos); it != g_window_list.end(); it++)
@@ -1150,34 +1112,60 @@ static int32_t window_draw_split(
         if (topwindow->windowPos.x > left)
         {
             // Split draw at topwindow.left
-            window_draw(dpi, w, left, top, topwindow->windowPos.x, bottom);
-            window_draw(dpi, w, topwindow->windowPos.x, top, right, bottom);
+            window_draw_core(dpi, w, left, top, topwindow->windowPos.x, bottom);
+            window_draw_core(dpi, w, topwindow->windowPos.x, top, right, bottom);
         }
         else if (topwindow->windowPos.x + topwindow->width < right)
         {
             // Split draw at topwindow.right
-            window_draw(dpi, w, left, top, topwindow->windowPos.x + topwindow->width, bottom);
-            window_draw(dpi, w, topwindow->windowPos.x + topwindow->width, top, right, bottom);
+            window_draw_core(dpi, w, left, top, topwindow->windowPos.x + topwindow->width, bottom);
+            window_draw_core(dpi, w, topwindow->windowPos.x + topwindow->width, top, right, bottom);
         }
         else if (topwindow->windowPos.y > top)
         {
             // Split draw at topwindow.top
-            window_draw(dpi, w, left, top, right, topwindow->windowPos.y);
-            window_draw(dpi, w, left, topwindow->windowPos.y, right, bottom);
+            window_draw_core(dpi, w, left, top, right, topwindow->windowPos.y);
+            window_draw_core(dpi, w, left, topwindow->windowPos.y, right, bottom);
         }
         else if (topwindow->windowPos.y + topwindow->height < bottom)
         {
             // Split draw at topwindow.bottom
-            window_draw(dpi, w, left, top, right, topwindow->windowPos.y + topwindow->height);
-            window_draw(dpi, w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
+            window_draw_core(dpi, w, left, top, right, topwindow->windowPos.y + topwindow->height);
+            window_draw_core(dpi, w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
         }
 
         // Drawing for this region should be done now, exit
-        return 1;
+        return;
     }
 
     // No windows overlap
-    return 0;
+    window_draw_core(dpi, w, left, top, right, bottom);
+}
+
+/**
+ * Draws the given window and any other overlapping transparent windows.
+ */
+static void window_draw_core(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+{
+    // Clamp region
+    left = std::max<int32_t>(left, w->windowPos.x);
+    top = std::max<int32_t>(top, w->windowPos.y);
+    right = std::min<int32_t>(right, w->windowPos.x + w->width);
+    bottom = std::min<int32_t>(bottom, w->windowPos.y + w->height);
+    if (left >= right)
+        return;
+    if (top >= bottom)
+        return;
+
+    // Draw the window and any other overlapping transparent windows
+    for (auto it = window_get_iterator(w); it != g_window_list.end(); it++)
+    {
+        auto v = (*it).get();
+        if ((w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(v))
+        {
+            window_draw_single(dpi, v, left, top, right, bottom);
+        }
+    }
 }
 
 static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
@@ -2018,15 +2006,7 @@ bool window_is_visible(rct_window* w)
  */
 void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom)
 {
-    rct_drawpixelinfo windowDPI = *dpi;
-    windowDPI.bits = dpi->bits + left + ((dpi->width + dpi->pitch) * top);
-    windowDPI.x = left;
-    windowDPI.y = top;
-    windowDPI.width = right - left;
-    windowDPI.height = bottom - top;
-    windowDPI.pitch = dpi->width + dpi->pitch + left - right;
-    windowDPI.zoom_level = 0;
-
+    auto windowDPI = dpi->Crop(left, top, right - left, bottom - top);
     window_visit_each([&windowDPI, left, top, right, bottom](rct_window* w) {
         if (w->flags & WF_TRANSPARENT)
             return;

@@ -772,3 +772,15 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     }
     return std::nullopt;
 }
+
+rct_drawpixelinfo rct_drawpixelinfo::Crop(int32_t newX, int32_t newY, int32_t newWidth, int32_t newHeight)
+{
+    rct_drawpixelinfo result = *this;
+    result.bits = bits + newX + (((size_t)width + pitch) * newY);
+    result.x = static_cast<int16_t>(newX);
+    result.y = static_cast<int16_t>(newY);
+    result.width = static_cast<int16_t>(newWidth);
+    result.height = static_cast<int16_t>(newHeight);
+    result.pitch = static_cast<int16_t>(width + pitch - newWidth);
+    return result;
+}
