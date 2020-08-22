@@ -244,7 +244,7 @@ private:
 
             newPeep->StaffId = staffIndex;
 
-            gStaffModes[staffIndex] = STAFF_MODE_WALK;
+            gStaffModes[staffIndex] = static_cast<uint8_t>(StaffMode::Walk);
 
             for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
             {

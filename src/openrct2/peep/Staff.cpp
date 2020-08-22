@@ -92,10 +92,10 @@ template<> bool SpriteBase::Is<Staff>() const
 void staff_reset_modes()
 {
     for (int32_t i = 0; i < STAFF_MAX_COUNT; i++)
-        gStaffModes[i] = STAFF_MODE_NONE;
+        gStaffModes[i] = static_cast<uint8_t>(StaffMode::None);
 
     for (int32_t i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)); i++)
-        gStaffModes[i] = STAFF_MODE_WALK;
+        gStaffModes[i] = static_cast<uint8_t>(StaffMode::Walk);
 
     staff_update_greyed_patrol_areas();
 }

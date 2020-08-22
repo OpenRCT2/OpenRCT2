@@ -18,11 +18,11 @@
 // Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
 #define STAFF_PATROL_AREA_SIZE 128
 
-enum STAFF_MODE
+enum class StaffMode : uint8_t
 {
-    STAFF_MODE_NONE,
-    STAFF_MODE_WALK,
-    STAFF_MODE_PATROL = 3
+    None,
+    Walk,
+    Patrol = 3
 };
 
 enum STAFF_ORDERS
