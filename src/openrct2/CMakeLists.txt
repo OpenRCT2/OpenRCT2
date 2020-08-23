@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 project(libopenrct2 CXX)
 
+add_definitions("-fstack-protector-strong")
 if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif ()
@@ -150,7 +151,7 @@ endif ()
 
 if (MINGW)
     # Hardcode libraries used by libzip on mingw
-    target_link_libraries(${PROJECT_NAME} crypto ws2_32)
+    target_link_libraries(${PROJECT_NAME} crypto ws2_32 -fstack-protector-strong)
 endif()
 
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
@@ -177,7 +178,7 @@ endif ()
 
 if (NOT DISABLE_TTF)
     if (STATIC)
-        target_link_libraries(${PROJECT_NAME} ${FREETYPE_STATIC_LIBRARIES})
+        target_link_libraries(${PROJECT_NAME} ${FREETYPE_STATIC_LIBRARIES} harfbuzz graphite2 freetype)
             
         if (UNIX AND NOT APPLE)
             target_link_libraries(${PROJECT_NAME} ${FONTCONFIG_STATIC_LIBRARIES})
