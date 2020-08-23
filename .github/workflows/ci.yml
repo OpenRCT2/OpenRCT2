@@ -99,7 +99,7 @@ jobs:
       - name: Build OpenRCT2
         run: |
           . scripts/setenv
-          xcodebuild
+          xcodebuild -configuration Release
           mkdir -p artifacts
           mv build/Release/OpenRCT2.app artifacts
           echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
