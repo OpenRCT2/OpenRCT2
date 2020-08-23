@@ -501,58 +501,11 @@ bool platform_process_is_elevated()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// File association setup
+// URI protocol association setup
 ///////////////////////////////////////////////////////////////////////////////
 
 #    define SOFTWARE_CLASSES L"Software\\Classes"
 #    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
-
-static std::wstring get_progIdName(const std::string_view& extension)
-{
-    auto progIdName = std::string(OPENRCT2_NAME) + std::string(extension);
-    auto progIdNameW = String::ToWideChar(progIdName);
-    return progIdNameW;
-}
-
-static void windows_remove_file_association(const utf8* extension)
-{
-#    if _WIN32_WINNT >= 0x0600
-    // [HKEY_CURRENT_USER\Software\Classes]
-    HKEY hRootKey;
-    if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
-    {
-        // [hRootKey\.ext]
-        RegDeleteTreeA(hRootKey, extension);
-
-        // [hRootKey\OpenRCT2.ext]
-        auto progIdName = get_progIdName(extension);
-        RegDeleteTreeW(hRootKey, progIdName.c_str());
-
-        RegCloseKey(hRootKey);
-    }
-#    endif
-}
-
-void platform_remove_file_associations()
-{
-    // Remove file extensions
-    windows_remove_file_association(".sc4");
-    windows_remove_file_association(".sc6");
-    windows_remove_file_association(".sv4");
-    windows_remove_file_association(".sv6");
-    windows_remove_file_association(".sv7");
-    windows_remove_file_association(".td4");
-    windows_remove_file_association(".td6");
-
-    // Refresh explorer
-    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// URI protocol association setup
-///////////////////////////////////////////////////////////////////////////////
 
 bool platform_setup_uri_protocol()
 {
