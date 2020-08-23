@@ -37,6 +37,10 @@
 
 #    include <iterator>
 
+#    if _WIN32_WINNT < 0x600
+#        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
+#    endif
+
 constexpr wchar_t SOFTWARE_CLASSES[] = L"Software\\Classes";
 
 namespace Platform
@@ -366,6 +370,7 @@ namespace Platform
         SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
     }
 
+#    if _WIN32_WINNT >= 0x0600
     static HMODULE _dllModule = nullptr;
     static HMODULE GetDLLModule()
     {
@@ -382,11 +387,13 @@ namespace Platform
         auto progIdNameW = String::ToWideChar(progIdName);
         return progIdNameW;
     }
+#    endif
 
     bool SetUpFileAssociation(
         const std::string extension, const std::string fileTypeText, const std::string commandText,
         const std::string commandArgs, const uint32_t iconIndex)
     {
+#    if _WIN32_WINNT >= 0x0600
         wchar_t exePathW[MAX_PATH];
         wchar_t dllPathW[MAX_PATH];
 
@@ -469,7 +476,42 @@ namespace Platform
             RegCloseKey(hRootKey);
             return false;
         }
+#    endif
         return true;
+    }
+
+    static void RemoveFileAssociation(const utf8* extension)
+    {
+#    if _WIN32_WINNT >= 0x0600
+        // [HKEY_CURRENT_USER\Software\Classes]
+        HKEY hRootKey;
+        if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
+        {
+            // [hRootKey\.ext]
+            RegDeleteTreeA(hRootKey, extension);
+
+            // [hRootKey\OpenRCT2.ext]
+            auto progIdName = get_progIdName(extension);
+            RegDeleteTreeW(hRootKey, progIdName.c_str());
+
+            RegCloseKey(hRootKey);
+        }
+#    endif
+    }
+
+    void RemoveFileAssociations()
+    {
+        // Remove file extensions
+        RemoveFileAssociation(".sc4");
+        RemoveFileAssociation(".sc6");
+        RemoveFileAssociation(".sv4");
+        RemoveFileAssociation(".sv6");
+        RemoveFileAssociation(".sv7");
+        RemoveFileAssociation(".td4");
+        RemoveFileAssociation(".td6");
+
+        // Refresh explorer
+        SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
     }
 
     bool HandleSpecialCommandLineArgument(const char* argument)

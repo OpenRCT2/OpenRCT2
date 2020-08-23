@@ -427,7 +427,7 @@ static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnum
     }
     else
     {
-        platform_remove_file_associations();
+        Platform::RemoveFileAssociations();
     }
     return EXITCODE_OK;
 }
