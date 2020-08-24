@@ -57,7 +57,7 @@ extern const money32 gStaffWageTable[static_cast<uint8_t>(StaffType::Count)];
 extern const rct_string_id StaffCostumeNames[ENTERTAINER_COSTUME_COUNT];
 
 extern uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)) * STAFF_PATROL_AREA_SIZE];
-extern uint8_t gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
+extern StaffMode gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
 extern uint16_t gStaffDrawPatrolAreas;
 extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;

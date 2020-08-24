@@ -1232,7 +1232,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     int32_t staffCount = 0;
     for (int32_t i = 0; i < STAFF_MAX_COUNT; ++i)
     {
-        if (gStaffModes[i] & 1)
+        if (gStaffModes[i] != StaffMode::None)
         {
             staffCount++;
         }

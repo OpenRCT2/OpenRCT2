@@ -88,10 +88,13 @@ public:
             }
         }
 
-        gStaffModes[staff->StaffId] &= ~(1 << 1);
         if (isPatrolling)
         {
-            gStaffModes[staff->StaffId] |= (1 << 1);
+            gStaffModes[staff->StaffId] = StaffMode::Patrol;
+        }
+        else if (gStaffModes[staff->StaffId] == StaffMode::Patrol)
+        {
+            gStaffModes[staff->StaffId] = StaffMode::Walk;
         }
 
         for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)
