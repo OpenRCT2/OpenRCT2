@@ -518,6 +518,42 @@ static int32_t CalculateHeuristicPathingScore(const TileCoordsXYZ& loc1, const T
     return xDelta + yDelta + zDelta;
 }
 
+#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+static constexpr const char* pathSearchToString(uint8_t pathFindSearchResult)
+{
+    switch (pathFindSearchResult)
+    {
+        case PATH_SEARCH_DEAD_END:
+            return "DeadEnd";
+        case PATH_SEARCH_WIDE:
+            return "Wide";
+        case PATH_SEARCH_THIN:
+            return "Thin";
+        case PATH_SEARCH_JUNCTION:
+            return "Junction";
+        case PATH_SEARCH_RIDE_QUEUE:
+            return "RideQueue";
+        case PATH_SEARCH_RIDE_ENTRANCE:
+            return "RideEntrance";
+        case PATH_SEARCH_RIDE_EXIT:
+            return "RideExit";
+        case PATH_SEARCH_PARK_EXIT:
+            return "ParkEntryExit";
+        case PATH_SEARCH_SHOP_ENTRANCE:
+            return "ShopEntrance";
+        case PATH_SEARCH_LIMIT_REACHED:
+            return "LimitReached";
+        case PATH_SEARCH_OTHER:
+            return "Other";
+        case PATH_SEARCH_FAILED:
+            return "Failed";
+            // The default case is omitted intentionally.
+    }
+
+    return "Unknown";
+}
+#endif
+
 /**
  * Searches for the tile with the best heuristic score within the search limits
  * starting from the given tile x,y,z and going in the given direction test_edge.
@@ -784,7 +820,7 @@ static void peep_pathfind_heuristic_search(
         {
             log_info(
                 "[%03d] Checking map element at %d,%d,%d; Type: %s", counter, loc.x >> 5, loc.y >> 5, loc.z,
-                gPathFindSearchText[searchResult]);
+                pathSearchToString(searchResult));
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -1420,7 +1456,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_verbose("Pathfind searching in direction: %d from %d,%d,%d", test_edge, x >> 5, y >> 5, z);
+                log_verbose("Pathfind searching in direction: %d from %d,%d,%d", test_edge, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
