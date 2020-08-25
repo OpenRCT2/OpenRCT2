@@ -875,7 +875,7 @@ private:
         SetRideColourScheme(dst, src);
 
         // Maintenance
-        dst->build_date = src->build_date;
+        dst->build_date = static_cast<int32_t>(src->build_date);
         dst->inspection_interval = src->inspection_interval;
         dst->last_inspection = src->last_inspection;
         dst->reliability = src->reliability;

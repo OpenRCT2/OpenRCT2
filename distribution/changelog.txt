@@ -4,6 +4,7 @@
 - Fix: [#12694] Crash when switching ride types with construction window open.
 - Fix: [#12701] Silent NSIS setup flag /S isn't silent, upgrade pop-up appears anyway.
 - Fix: [#12737] Space Rings draw the same vehicle 4 times.
+- Fix: [#12764] Rides don't start aged anymore.
 - Fix: Incomplete loop collision box allowed overlapping track (original bug).
 
 0.3.0 (2020-08-15)

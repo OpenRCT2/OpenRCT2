@@ -932,7 +932,7 @@ void reset_all_ride_build_dates()
 {
     for (auto& ride : GetRideManager())
     {
-        ride.build_date = gDateMonthsElapsed;
+        ride.build_date -= static_cast<int32_t>(gDateMonthsElapsed);
     }
 }
 
@@ -7114,7 +7114,7 @@ void Ride::Delete()
 void Ride::Renew()
 {
     // Set build date to current date (so the ride is brand new)
-    build_date = gDateMonthsElapsed;
+    build_date = static_cast<int32_t>(gDateMonthsElapsed);
     reliability = RIDE_INITIAL_RELIABILITY;
 }
 

@@ -256,7 +256,7 @@ struct rct2_ride
     uint8_t pad_16F[0x7];              // 0x16F
     uint8_t spiral_slide_progress;     // 0x176
     uint8_t pad_177[0x9];              // 0x177
-    uint16_t build_date;               // 0x180
+    int16_t build_date;                // 0x180
     money16 upkeep_cost;               // 0x182
     uint16_t race_winner;              // 0x184
     uint8_t pad_186[0x02];             // 0x186
