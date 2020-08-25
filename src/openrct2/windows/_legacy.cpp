@@ -104,7 +104,10 @@ money32 place_provisional_track_piece(
 
         _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
-        viewport_set_visibility((tpar->GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
+        if (tpar != nullptr)
+        {
+            viewport_set_visibility((tpar->GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
+        }
         if (_currentTrackSlopeEnd != 0)
             viewport_set_visibility(2);
 
