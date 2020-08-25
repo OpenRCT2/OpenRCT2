@@ -37,16 +37,16 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        uint32_t monthsElapsed_get() const
+        int32_t monthsElapsed_get() const
         {
             const auto& date = GetDate();
             return date.GetMonthsElapsed();
         }
 
-        void monthsElapsed_set(uint32_t value)
+        void monthsElapsed_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            gDateMonthsElapsed = value;
+            gDateMonthsElapsed = static_cast<int32_t>(value);
         }
 
         uint32_t monthProgress_get() const

@@ -715,7 +715,7 @@ static void scenario_objective_check_guests_by()
 {
     uint8_t objectiveYear = gScenarioObjectiveYear;
     int16_t parkRating = gParkRating;
-    int16_t currentMonthYear = gDateMonthsElapsed;
+    int32_t currentMonthYear = gDateMonthsElapsed;
 
     if (currentMonthYear == MONTH_COUNT * objectiveYear || gConfigGeneral.allow_early_completion)
     {
@@ -733,7 +733,7 @@ static void scenario_objective_check_guests_by()
 static void scenario_objective_check_park_value_by()
 {
     uint8_t objectiveYear = gScenarioObjectiveYear;
-    int16_t currentMonthYear = gDateMonthsElapsed;
+    int32_t currentMonthYear = gDateMonthsElapsed;
     money32 objectiveParkValue = gScenarioObjectiveCurrency;
     money32 parkValue = gParkValue;
 

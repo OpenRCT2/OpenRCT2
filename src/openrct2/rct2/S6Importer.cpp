@@ -216,7 +216,7 @@ public:
             safe_strcpy(gS6Info.details, _s6.info.details, sizeof(gS6Info.details));
         }
 
-        gDateMonthsElapsed = _s6.elapsed_months;
+        gDateMonthsElapsed = static_cast<int32_t>(_s6.elapsed_months);
         gDateMonthTicks = _s6.current_day;
         gScenarioTicks = _s6.scenario_ticks;
 

@@ -286,7 +286,7 @@ public:
         ride->num_riders = 0;
         ride->slide_in_use = 0;
         ride->maze_tiles = 0;
-        ride->build_date = static_cast<int32_t>(gDateMonthsElapsed);
+        ride->build_date = gDateMonthsElapsed;
         ride->music_tune_id = 255;
 
         ride->breakdown_reason = 255;

@@ -318,7 +318,7 @@ News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t
     newsItem->Flags = 0;
     newsItem->Assoc = assoc;
     newsItem->Ticks = 0;
-    newsItem->MonthYear = gDateMonthsElapsed;
+    newsItem->MonthYear = static_cast<uint16_t>(gDateMonthsElapsed);
     newsItem->Day = ((days_in_month[date_get_month(newsItem->MonthYear)] * gDateMonthTicks) >> 16) + 1;
     safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
 
