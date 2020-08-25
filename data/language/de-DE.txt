@@ -28,7 +28,7 @@ STR_0023    :Spiralgleitbahn
 STR_0024    :Go-Karts
 STR_0025    :Wildwasserbahn
 STR_0026    :Stromschnellen
-STR_0027    :Autoskooter
+STR_0027    :Autoscooter
 STR_0028    :Piratenschiff
 STR_0029    :Schwingendes Überkopfschiff
 STR_0030    :Imbissstand
@@ -41,7 +41,7 @@ STR_0036    :Stand
 STR_0037    :Kiosk
 STR_0038    :Toiletten
 STR_0039    :Riesenrad
-STR_0040    :Bewegungssimluator
+STR_0040    :Bewegungssimulator
 STR_0041    :3D-Kino
 STR_0042    :Top Spin
 STR_0043    :Weltraumringe
@@ -119,7 +119,7 @@ STR_0533    :
 STR_0534    :Die Gäste fahren auf einer Asphaltstrecke Rennen gegeneinander
 STR_0535    :Boote fahren in einem Wasserkanal und rutschen steile Gefälle herunter, damit die Fahrgäste unten nass werden
 STR_0536    :Runde Boote gleiten durch einen breiten Wasserkanal, zischen durch Wasserfälle und schäumende Stromschnellen
-STR_0537    :Die Gäste kollidieren miteinander in selbstgesteuerten Autoskootern
+STR_0537    :Die Gäste kollidieren miteinander in selbstgesteuerten Autoscootern
 STR_0538    :
 STR_0539    :
 STR_0540    :
@@ -133,7 +133,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :Der Wagen wird mit Hilfe von linearen Induktionsmotoren aus der Station entlang einer langen, ebenen Bahn beschleunigt und dann vertikal nach oben geschossen, von wo er wieder im freien Fall zur Station zurückzukehrt
+STR_0554    :Der Wagen wird mit Hilfe von linearen Induktionsmotoren aus der Station entlang einer langen, ebenen Bahn beschleunigt und dann vertikal nach oben geschossen, von wo er wieder im freien Fall zur Station zurückkehrt
 STR_0555    :Die Besucher fahren in einem Aufzug einen Turm hinauf oder hinab, um in ein anderes Stockwerk zu gelangen
 STR_0556    :Besonders breite Wagen fallen eine vollständige Vertikale herunter - das ultimative Erlebnis des freien Falls
 STR_0557    :
@@ -454,7 +454,7 @@ STR_1070    :Einzelfahrt pro Eintritt
 STR_1071    :Unbegrenzte Fahrten pro Eintritt
 STR_1072    :Labyrinthmodus
 STR_1073    :Rennmodus
-STR_1074    :Autoskooter-Modus
+STR_1074    :Autoscooter-Modus
 STR_1075    :Schwingmodus
 STR_1076    :Ladenmodus
 STR_1077    :Rotationsmodus
@@ -978,7 +978,7 @@ STR_1594    :{SMALLFONT}„Diese Wonton-Suppe von {STRINGID} ist ihr Geld wert�
 STR_1595    :{SMALLFONT}„Diese Fleischklößchensuppe von {STRINGID} ist ihr Geld wert“
 STR_1596    :{SMALLFONT}„Dieser Fruchtsaft von {STRINGID} ist sein Geld wert“
 STR_1597    :{SMALLFONT}„Diese Sojamilch von {STRINGID} ist ihr Geld wert“
-STR_1598    :{SMALLFONT}„Diese Sujongkwa von {STRINGID} ist ihr Geld wert“
+STR_1598    :{SMALLFONT}„Diese Sujeonggwa von {STRINGID} ist ihr Geld wert“
 STR_1599    :{SMALLFONT}„Dieses Sandwich von {STRINGID} ist sein Geld wert“
 STR_1600    :{SMALLFONT}„Dieser Keks von {STRINGID} ist sein Geld wert“
 STR_1601    :
@@ -1010,7 +1010,7 @@ STR_1626    :{SMALLFONT}„Ich bezahle nicht so viel für eine Wonton-Suppe von 
 STR_1627    :{SMALLFONT}„Ich bezahle nicht so viel für eine Fleischklößchensuppe von {STRINGID}“
 STR_1628    :{SMALLFONT}„Ich bezahle nicht so viel für einen Fruchtsaft von {STRINGID}“
 STR_1629    :{SMALLFONT}„Ich bezahle nicht so viel für Sojamilch von {STRINGID}“
-STR_1630    :{SMALLFONT}„Ich bezahle nicht so viel für Sujongkwa von {STRINGID}“
+STR_1630    :{SMALLFONT}„Ich bezahle nicht so viel für Sujeonggwa von {STRINGID}“
 STR_1631    :{SMALLFONT}„Ich bezahle nicht so viel für ein Sandwich von {STRINGID}“
 STR_1632    :{SMALLFONT}„Ich bezahle nicht so viel für einen Keks von {STRINGID}“
 STR_1633    :
@@ -1498,7 +1498,7 @@ STR_2132    :Wonton-Suppe
 STR_2133    :Fleischklößchensuppe
 STR_2134    :Fruchtsaft
 STR_2135    :Sojamilch
-STR_2136    :Sujongkwa
+STR_2136    :Sujeonggwa
 STR_2137    :Sandwich
 STR_2138    :Keks
 STR_2139    :Leere Schüssel
@@ -1517,7 +1517,7 @@ STR_2154    :Wonton-Suppe
 STR_2155    :Fleischklößchensuppe
 STR_2156    :Fruchtsäfte
 STR_2157    :Sojamilch
-STR_2158    :Sujongkwa
+STR_2158    :Sujeonggwa
 STR_2159    :Sandwiches
 STR_2160    :Kekse
 STR_2161    :Leere Schüsseln
@@ -1536,7 +1536,7 @@ STR_2176    :Wonton-Suppe
 STR_2177    :Fleischklößchensuppe
 STR_2178    :ein Fruchtsaft
 STR_2179    :Sojamilch
-STR_2180    :Sujongkwa
+STR_2180    :Sujeonggwa
 STR_2181    :ein Sandwich
 STR_2182    :ein Keks
 STR_2183    :eine leere Schüssel
@@ -1555,7 +1555,7 @@ STR_2198    :Wonton-Suppe
 STR_2199    :Fleischklößchensuppe
 STR_2200    :Fruchtsaft
 STR_2201    :Sojamilch
-STR_2202    :Sujongkwa
+STR_2202    :Sujeonggwa
 STR_2203    :Sandwich
 STR_2204    :Keks
 STR_2205    :Leere Schüssel
@@ -1572,7 +1572,7 @@ STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} bei {STRINGID} ist noch nicht zu {STRINGID} zurückgekehrt!{NEWLINE}Überprüfen Sie, ob es steckengeblieben ist oder angehalten hat
-STR_2219    :{RED}{COMMA16} Menschen sind in einem Unfall bei {STRINGID} gestorben
+STR_2219    :{RED}{COMMA16} Menschen sind bei einem Unfall in {STRINGID} gestorben
 STR_2220    :{WINDOW_COLOUR_2}Parkbewertung: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Parkbewertung: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
@@ -2142,7 +2142,7 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Datei kann nicht geladen werden...
 STR_3011    :Datei enthält ungültige Daten
-STR_3012    :Autoskooter-Beat-Stil
+STR_3012    :Autoscooter-Beat-Stil
 STR_3013    :Jahrmarktsorgelstil
 STR_3014    :Römischer Fanfarenstil
 STR_3015    :Orientstil
@@ -2912,7 +2912,7 @@ STR_5587    :{SMALLFONT}{BLACK}Läden und Stände werden nach dem{NEWLINE}Bauen 
 STR_5588    :{SMALLFONT}{BLACK}Mit anderen Spielern spielen
 STR_5589    :Benachrichtigungseinstellungen
 STR_5590    :Parkauszeichnungen
-STR_5591    :Marketingkampage wurde beendet
+STR_5591    :Marketingkampagne wurde beendet
 STR_5592    :Parkwarnungen
 STR_5593    :Parkbewertungswarnungen
 STR_5594    :Attraktion ist ausgefallen
@@ -2922,7 +2922,7 @@ STR_5597    :Attraktion / Szenerie erforscht
 STR_5598    :Besucherwarnungen
 STR_5599    :Besucher hat sich verirrt
 STR_5600    :Besucher hat den Park verlassen
-STR_5601    :Besucher steht für eine Attraktion schlange
+STR_5601    :Besucher steht für eine Attraktion Schlange
 STR_5602    :Besucher ist auf einer Attraktion
 STR_5603    :Besucher hat eine Attraktion verlassen
 STR_5604    :Besucher hat einen Gegenstand gekauft
@@ -3254,7 +3254,7 @@ STR_5970    :{WINDOW_COLOUR_2}Eingangs-ID: {BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}Ausgangs-ID: {BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}Attraktions-ID: {BLACK}{COMMA16}
 STR_5973    :An nächsten heften
-STR_5974    :{SMALLFONT}{BLACK}Ändert die Basis- und lichte Höhe, sodass{NEWLINE}sie der des nächsten Elements auf der aktuellen Kachel entspricht entspricht
+STR_5974    :{SMALLFONT}{BLACK}Ändert die Basis- und lichte Höhe, sodass{NEWLINE}sie der des nächsten Elements auf der aktuellen Kachel entspricht
 STR_5975    :Steigung:
 STR_5976    :Flach
 STR_5977    :Rechte Seite hoch
@@ -3445,7 +3445,7 @@ STR_6162    :Rotierende Wilde Maus
 STR_6163    :Mausförmige Wagen rasen um enge Kurven und kurze Gefälle herunter, wobei sie sich sanft drehen, um die Fahrgäste zu desorientieren
 STR_6164    :{WHITE}❌
 STR_6165    :Vertikale Synchr.
-STR_6166    :{SMALLFONT}{BLACK}Synchronisiert die angezeigten Frames mit der Bildwiederholrate des Monitors, dies verhindert Screen Tearing
+STR_6166    :{SMALLFONT}{BLACK}Synchronisiert die angezeigten Frames mit der Bildwiederholrate des Monitors, dies verhindert Screen-Tearing
 STR_6167    :{SMALLFONT}{BLACK}Erweitert
 STR_6168    :Titelsequenz
 STR_6169    :Szenarioauswahl
