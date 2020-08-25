@@ -9,6 +9,7 @@
 
 #include "Ui.h"
 
+#include "SDLException.h"
 #include "UiContext.h"
 #include "audio/AudioContext.h"
 #include "drawing/BitmapReader.h"
@@ -55,7 +56,16 @@ int main(int argc, const char** argv)
         {
             // Run OpenRCT2 with a UI context
             auto env = to_shared(CreatePlatformEnvironment());
-            auto audioContext = to_shared(CreateAudioContext());
+            std::shared_ptr<IAudioContext> audioContext;
+            try
+            {
+                audioContext = to_shared(CreateAudioContext());
+            }
+            catch (const SDLException&)
+            {
+                log_warning("Failed to create audio context. Using dummy audio context.");
+                audioContext = to_shared(CreateDummyAudioContext());
+            }
             auto uiContext = to_shared(CreateUiContext(env));
             context = CreateContext(env, audioContext, uiContext);
         }

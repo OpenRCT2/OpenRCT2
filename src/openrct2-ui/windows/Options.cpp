@@ -1776,7 +1776,7 @@ static void window_options_invalidate(rct_window* w)
             // Sound device
             rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
             const char* audioDeviceName = nullptr;
-            if (gAudioCurrentDevice == -1)
+            if (gAudioCurrentDevice == -1 || gAudioDeviceCount == 0)
             {
                 audioDeviceStringId = STR_SOUND_NONE;
             }
