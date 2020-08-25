@@ -13,6 +13,7 @@
 #include "../common.h"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.hpp"
+#include "../world/Location.hpp"
 #include "Text.h"
 
 #include <optional>
@@ -114,7 +115,9 @@ struct rct_drawpixelinfo
 
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
 
-    rct_drawpixelinfo Crop(int32_t newX, int32_t newY, int32_t newWidth, int32_t newHeight);
+    size_t GetBytesPerRow() const;
+    uint8_t* GetBitsOffset(const ScreenCoordsXY& pos) const;
+    rct_drawpixelinfo Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
 };
 
 struct rct_g1_element_32bit

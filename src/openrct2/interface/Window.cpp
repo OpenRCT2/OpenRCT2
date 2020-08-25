@@ -2019,7 +2019,7 @@ bool window_is_visible(rct_window* w)
  */
 void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom)
 {
-    auto windowDPI = dpi->Crop(left, top, right - left, bottom - top);
+    auto windowDPI = dpi->Crop({ left, top }, { right - left, bottom - top });
     window_visit_each([&windowDPI, left, top, right, bottom](rct_window* w) {
         if (w->flags & WF_TRANSPARENT)
             return;

@@ -69,8 +69,7 @@ private:
     int32_t _clipTop = 0;
     int32_t _clipRight = 0;
     int32_t _clipBottom = 0;
-    int32_t _spriteOffsetX = 0;
-    int32_t _spriteOffsetY = 0;
+    ScreenCoordsXY _spriteOffset;
 
     int32_t _drawCount = 0;
 
@@ -695,10 +694,10 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
     right = right / _dpi->zoom_level;
     bottom = bottom / _dpi->zoom_level;
 
-    left += _spriteOffsetX;
-    top += _spriteOffsetY;
-    right += _spriteOffsetX;
-    bottom += _spriteOffsetY;
+    left += _spriteOffset.x;
+    top += _spriteOffset.y;
+    right += _spriteOffset.x;
+    bottom += _spriteOffset.y;
 
     const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
@@ -807,10 +806,10 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t ma
     right = right * _dpi->zoom_level;
     bottom = bottom * _dpi->zoom_level;
 
-    left += _spriteOffsetX;
-    top += _spriteOffsetY;
-    right += _spriteOffsetX;
-    bottom += _spriteOffsetY;
+    left += _spriteOffset.x;
+    top += _spriteOffset.y;
+    right += _spriteOffset.x;
+    bottom += _spriteOffset.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -911,10 +910,10 @@ void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, const
     right = right / _dpi->zoom_level;
     bottom = bottom / _dpi->zoom_level;
 
-    left += _spriteOffsetX;
-    top += _spriteOffsetY;
-    right += _spriteOffsetX;
-    bottom += _spriteOffsetY;
+    left += _spriteOffset.x;
+    top += _spriteOffset.y;
+    right += _spriteOffset.x;
+    bottom += _spriteOffset.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -1008,22 +1007,22 @@ void OpenGLDrawingContext::HandleTransparency()
 
 void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo* dpi)
 {
-    rct_drawpixelinfo* screenDPI = _engine->GetDPI();
+    auto screenDPI = _engine->GetDPI();
+    auto bytesPerRow = screenDPI->GetBytesPerRow();
+    auto bitsOffset = static_cast<size_t>(dpi->bits - screenDPI->bits);
 #    ifndef NDEBUG
-    size_t bitsSize = static_cast<size_t>(screenDPI->height) * static_cast<size_t>(screenDPI->width + screenDPI->pitch);
-#    endif
-    size_t bitsOffset = static_cast<size_t>(dpi->bits - screenDPI->bits);
-
+    auto bitsSize = static_cast<size_t>(screenDPI->height) * bytesPerRow;
     assert(bitsOffset < bitsSize);
+#    endif
 
-    _clipLeft = static_cast<int32_t>(bitsOffset % (screenDPI->width + screenDPI->pitch)) + dpi->remX;
-    _clipTop = static_cast<int32_t>(bitsOffset / (screenDPI->width + screenDPI->pitch)) + dpi->remY;
+    _clipLeft = static_cast<int32_t>(bitsOffset % bytesPerRow) + dpi->remX;
+    _clipTop = static_cast<int32_t>(bitsOffset / bytesPerRow) + dpi->remY;
     _clipRight = _clipLeft + (dpi->width / dpi->zoom_level);
     _clipBottom = _clipTop + (dpi->height / dpi->zoom_level);
     _offsetX = _clipLeft - dpi->x;
     _offsetY = _clipTop - dpi->y;
-    _spriteOffsetX = _clipLeft - dpi->remX;
-    _spriteOffsetY = _clipTop - dpi->remY;
+    _spriteOffset.x = _clipLeft - dpi->remX;
+    _spriteOffset.y = _clipTop - dpi->remY;
 
     _dpi = dpi;
 }
