@@ -755,9 +755,10 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_FINANCES_SUMMARY_MONTH_HEADING);
         ft.Add<uint16_t>(monthyear);
-        draw_string_right_underline(
-            dpi, monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, gCommonFormatArgs,
-            COLOUR_BLACK, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
+        DrawTextBasic(
+            dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
+            monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK,
+            TextAlignment::RIGHT, true);
         screenCoords.y += 14;
 
         // Month expenditures
