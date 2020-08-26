@@ -355,7 +355,7 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class ScSocketServer final : public ScSocketBase
+    class ScListener final : public ScSocketBase
     {
     private:
         static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
@@ -375,13 +375,13 @@ namespace OpenRCT2::Scripting
             return false;
         }
 
-        ScSocketServer* close()
+        ScListener* close()
         {
             CloseSocket();
             return this;
         }
 
-        ScSocketServer* listen(int32_t port, const DukValue& dukHost)
+        ScListener* listen(int32_t port, const DukValue& dukHost)
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (_disposed)
@@ -429,7 +429,7 @@ namespace OpenRCT2::Scripting
             return this;
         }
 
-        ScSocketServer* on(const std::string& eventType, const DukValue& callback)
+        ScListener* on(const std::string& eventType, const DukValue& callback)
         {
             auto eventId = GetEventType(eventType);
             if (eventId != EVENT_NONE)
@@ -439,7 +439,7 @@ namespace OpenRCT2::Scripting
             return this;
         }
 
-        ScSocketServer* off(const std::string& eventType, const DukValue& callback)
+        ScListener* off(const std::string& eventType, const DukValue& callback)
         {
             auto eventId = GetEventType(eventType);
             if (eventId != EVENT_NONE)
@@ -457,7 +457,7 @@ namespace OpenRCT2::Scripting
         }
 
     public:
-        ScSocketServer(const std::shared_ptr<Plugin>& plugin)
+        ScListener(const std::shared_ptr<Plugin>& plugin)
             : ScSocketBase(plugin)
         {
         }
@@ -511,11 +511,11 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
-            dukglue_register_property(ctx, &ScSocketServer::listening_get, nullptr, "listening");
-            dukglue_register_method(ctx, &ScSocketServer::close, "close");
-            dukglue_register_method(ctx, &ScSocketServer::listen, "listen");
-            dukglue_register_method(ctx, &ScSocketServer::on, "on");
-            dukglue_register_method(ctx, &ScSocketServer::off, "off");
+            dukglue_register_property(ctx, &ScListener::listening_get, nullptr, "listening");
+            dukglue_register_method(ctx, &ScListener::close, "close");
+            dukglue_register_method(ctx, &ScListener::listen, "listen");
+            dukglue_register_method(ctx, &ScListener::on, "on");
+            dukglue_register_method(ctx, &ScListener::off, "off");
         }
     };
 } // namespace OpenRCT2::Scripting

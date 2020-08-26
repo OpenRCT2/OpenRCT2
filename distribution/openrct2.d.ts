@@ -1222,7 +1222,7 @@ declare global {
         sendMessage(message: string): void;
         sendMessage(message: string, players: number[]): void;
 
-        createServer(): SocketServer;
+        createListener(): Listener;
         createSocket(): Socket;
     }
 
@@ -1682,18 +1682,18 @@ declare global {
     }
 
     /**
-     * Represents a server that can listen for incomming connections.
+     * Listens for incomming connections.
      * Based on node.js net.Server, see https://nodejs.org/api/net.html for more information.
      */
-    interface SocketServer {
+    interface Listener {
         readonly listening: boolean;
 
-        listen(port: number): SocketServer;
-        close(): SocketServer;
+        listen(port: number): Listener;
+        close(): Listener;
 
-        on(event: 'connection', callback: (socket: Socket) => void): SocketServer;
+        on(event: 'connection', callback: (socket: Socket) => void): Listener;
 
-        off(event: 'connection', callback: (socket: Socket) => void): SocketServer;
+        off(event: 'connection', callback: (socket: Socket) => void): Listener;
     }
 
     /**

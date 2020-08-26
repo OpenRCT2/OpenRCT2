@@ -33,7 +33,7 @@
 #    include "ScObject.hpp"
 #    include "ScPark.hpp"
 #    include "ScRide.hpp"
-#    include "ScSocketServer.hpp"
+#    include "ScSocket.hpp"
 #    include "ScTile.hpp"
 
 #    include <iostream>
@@ -396,7 +396,7 @@ void ScriptEngine::Initialise()
     ScGuest::Register(ctx);
 #    ifndef DISABLE_NETWORK
     ScSocket::Register(ctx);
-    ScSocketServer::Register(ctx);
+    ScListener::Register(ctx);
 #    endif
     ScStaff::Register(ctx);
 
