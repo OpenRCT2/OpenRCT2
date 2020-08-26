@@ -1145,13 +1145,18 @@ void ScriptEngine::UpdateSockets()
 {
 #    ifndef DISABLE_NETWORK
     // Use simple for i loop as Update calls can modify the list
-    for (size_t i = 0; i < _sockets.size(); i++)
+    auto it = _sockets.begin();
+    while (it != _sockets.end())
     {
-        _sockets[i]->Update();
-        if (_sockets[i]->IsDisposed())
+        auto& socket = *it;
+        socket->Update();
+        if (socket->IsDisposed())
         {
-            _sockets.erase(_sockets.begin() + i);
-            i--;
+            it = _sockets.erase(it);
+        }
+        else
+        {
+            it++;
         }
     }
 #    endif
@@ -1160,18 +1165,10 @@ void ScriptEngine::UpdateSockets()
 void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
 {
 #    ifndef DISABLE_NETWORK
-    for (auto it = _sockets.begin(); it != _sockets.end();)
-    {
-        if ((*it)->GetPlugin() == plugin)
-        {
-            (*it)->Dispose();
-            it = _sockets.erase(it);
-        }
-        else
-        {
-            it++;
-        }
-    }
+    _sockets.erase(
+        std::remove_if(
+            _sockets.begin(), _sockets.end(), [&plugin](const auto& socket) { return socket->GetPlugin() == plugin; }),
+        _sockets.end());
 #    endif
 }
 

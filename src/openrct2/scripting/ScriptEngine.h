@@ -19,6 +19,7 @@
 #    include "Plugin.h"
 
 #    include <future>
+#    include <list>
 #    include <memory>
 #    include <mutex>
 #    include <queue>
@@ -138,7 +139,7 @@ namespace OpenRCT2::Scripting
 
         std::unordered_map<std::string, CustomActionInfo> _customActions;
 #    ifndef DISABLE_NETWORK
-        std::vector<std::shared_ptr<ScSocketBase>> _sockets;
+        std::list<std::shared_ptr<ScSocketBase>> _sockets;
 #    endif
 
     public:

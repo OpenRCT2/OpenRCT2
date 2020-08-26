@@ -62,11 +62,7 @@ namespace OpenRCT2::Scripting
         void RemoveListener(uint32_t id, const DukValue& value)
         {
             auto& listeners = GetListenerList(id);
-            auto it = std::find(listeners.begin(), listeners.end(), value);
-            if (it != listeners.end())
-            {
-                listeners.erase(it);
-            }
+            listeners.erase(std::remove(listeners.begin(), listeners.end(), value), listeners.end());
         }
 
         void RemoveAllListeners(uint32_t id)
@@ -82,7 +78,7 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<Plugin> _plugin;
 
     protected:
-        static bool IsLocalhostAddress(const std::string_view& s)
+        static bool IsLocalhostAddress(std::string_view s)
         {
             return s == "localhost" || s == "127.0.0.1" || s == "::";
         }
@@ -112,7 +108,7 @@ namespace OpenRCT2::Scripting
         virtual bool IsDisposed() const = 0;
     };
 
-    class ScSocket : public ScSocketBase
+    class ScSocket final : public ScSocketBase
     {
     private:
         static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
@@ -199,8 +195,14 @@ namespace OpenRCT2::Scripting
                 if (data.type() == DukValue::Type::STRING)
                 {
                     write(data.as_string());
+                    _socket->Finish();
                 }
-                _socket->Finish();
+                else
+                {
+                    _socket->Finish();
+                    auto ctx = GetContext()->GetScriptEngine().GetContext();
+                    duk_error(ctx, DUK_ERR_ERROR, "Only sending strings is currently supported.");
+                }
             }
             return this;
         }
@@ -214,8 +216,15 @@ namespace OpenRCT2::Scripting
             }
             else if (_socket != nullptr)
             {
-                _socket->SendData(data.c_str(), data.size());
-                return true;
+                try
+                {
+                    auto sentBytes = _socket->SendData(data.c_str(), data.size());
+                    return sentBytes != data.size();
+                }
+                catch (const std::exception&)
+                {
+                    return false;
+                }
             }
             return false;
         }
@@ -263,7 +272,7 @@ namespace OpenRCT2::Scripting
             _eventList.Raise(EVENT_DATA, GetPlugin(), { ToDuk(ctx, data) }, false);
         }
 
-        uint32_t GetEventType(const std::string_view& name)
+        uint32_t GetEventType(std::string_view name)
         {
             if (name == "close")
                 return EVENT_CLOSE;
@@ -312,15 +321,13 @@ namespace OpenRCT2::Scripting
                         case NETWORK_READPACKET_MORE_DATA:
                             break;
                         case NETWORK_READPACKET_DISCONNECTED:
-                            CloseSocket();
-                            _disposed = true;
+                            Dispose();
                             break;
                     }
                 }
                 else
                 {
-                    CloseSocket();
-                    _disposed = true;
+                    Dispose();
                 }
             }
         }
@@ -348,7 +355,7 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    class ScSocketServer : public ScSocketBase
+    class ScSocketServer final : public ScSocketBase
     {
     private:
         static constexpr uint32_t EVENT_NONE = std::numeric_limits<uint32_t>::max();
@@ -370,7 +377,7 @@ namespace OpenRCT2::Scripting
 
         ScSocketServer* close()
         {
-            Dispose();
+            CloseSocket();
             return this;
         }
 
@@ -399,7 +406,14 @@ namespace OpenRCT2::Scripting
                         auto host = dukHost.as_string();
                         if (IsLocalhostAddress(host))
                         {
-                            _socket->Listen(host, port);
+                            try
+                            {
+                                _socket->Listen(host, port);
+                            }
+                            catch (const std::exception& e)
+                            {
+                                duk_error(ctx, DUK_ERR_ERROR, e.what());
+                            }
                         }
                         else
                         {
@@ -475,13 +489,18 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        void Dispose() override
+        void CloseSocket()
         {
             if (_socket != nullptr)
             {
                 _socket->Close();
                 _socket = nullptr;
             }
+        }
+
+        void Dispose() override
+        {
+            CloseSocket();
             _disposed = true;
         }
 
