@@ -2651,14 +2651,13 @@ static void window_ride_main_invalidate(rct_window* w)
  *
  *  rct2: 0x006AF10A
  */
-static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* arguments)
+static rct_string_id window_ride_get_status_overall_view(rct_window* w, Formatter* ft)
 {
     auto stringId = STR_NONE;
     auto ride = get_ride(w->number);
     if (ride != nullptr)
     {
-        auto ft = Formatter(static_cast<uint8_t*>(arguments));
-        ride->FormatStatusTo(ft);
+        ride->FormatStatusTo(*ft);
         stringId = STR_BLACK_STRING;
         if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
         {
@@ -2672,7 +2671,7 @@ static rct_string_id window_ride_get_status_overall_view(rct_window* w, void* ar
  *
  *  rct2: 0x006AEFEF
  */
-static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* arguments)
+static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter* ft)
 {
     auto ride = get_ride(w->number);
     if (ride == nullptr)
@@ -2691,32 +2690,28 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
         {
             if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
             {
-                *reinterpret_cast<rct_string_id*>(reinterpret_cast<uintptr_t>(arguments)) = STR_STOPPED_BY_BLOCK_BRAKES;
+                ft->Add<rct_string_id>(STR_STOPPED_BY_BLOCK_BRAKES);
                 return STR_BLACK_STRING;
             }
         }
     }
 
-    auto stringId = VehicleStatusNames[static_cast<size_t>(vehicle->status)];
-
-    // Get speed in mph
-    *(reinterpret_cast<uint16_t*>(reinterpret_cast<uintptr_t>(arguments) + 2)) = (abs(vehicle->velocity) * 9) >> 18;
-
     if (ride->type == RIDE_TYPE_MINI_GOLF)
-        return 0;
+        return STR_EMPTY;
 
+    auto stringId = VehicleStatusNames[static_cast<size_t>(vehicle->status)];
     if ((RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_SINGLE_SESSION)
         && vehicle->status <= Vehicle::Status::UnloadingPassengers)
     {
         stringId = SingleSessionVehicleStatusNames[static_cast<size_t>(vehicle->status)];
     }
 
+    ft->Add<rct_string_id>(stringId);
+    uint16_t speedInMph = (abs(vehicle->velocity) * 9) >> 18;
+    ft->Add<uint16_t>(speedInMph);
     const RideComponentName stationName = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station];
-    *reinterpret_cast<rct_string_id*>(reinterpret_cast<uintptr_t>(arguments) + 4) = (ride->num_stations > 1)
-        ? stationName.number
-        : stationName.singular;
-    *(reinterpret_cast<uint16_t*>(reinterpret_cast<uintptr_t>(arguments) + 6)) = vehicle->current_station + 1;
-    *reinterpret_cast<rct_string_id*>(reinterpret_cast<uintptr_t>(arguments) + 0) = stringId;
+    ft->Add<rct_string_id>(ride->num_stations > 1 ? stationName.number : stationName.singular);
+    ft->Add<uint16_t>(vehicle->current_station + 1);
     return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
 }
 
@@ -2724,7 +2719,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, void* argumen
  *
  *  rct2: 0x006AEF65
  */
-static rct_string_id window_ride_get_status_station(rct_window* w, void* arguments)
+static rct_string_id window_ride_get_status_station(rct_window* w, Formatter* ft)
 {
     auto ride = get_ride(w->number);
     if (ride == nullptr)
@@ -2732,7 +2727,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
 
     int32_t count = w->ride.view - ride->num_vehicles - 1;
     StationIndex stationIndex = STATION_INDEX_NULL;
-    rct_string_id stringId = 0;
+    rct_string_id stringId = STR_EMPTY;
 
     do
     {
@@ -2756,18 +2751,23 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
     }
 
     // Queue length
-    if (stringId == 0)
+    if (stringId == STR_EMPTY)
     {
-        int32_t queueLength = ride->stations[stationIndex].QueueLength;
-        set_format_arg_body(static_cast<uint8_t*>(arguments), 2, static_cast<uintptr_t>(queueLength), sizeof(uint16_t));
         stringId = STR_QUEUE_EMPTY;
+        uint16_t queueLength = ride->stations[stationIndex].QueueLength;
         if (queueLength == 1)
             stringId = STR_QUEUE_ONE_PERSON;
         else if (queueLength > 1)
             stringId = STR_QUEUE_PEOPLE;
+
+        ft->Add<rct_string_id>(stringId);
+        ft->Add<uint16_t>(queueLength);
+    }
+    else
+    {
+        ft->Add<rct_string_id>(stringId);
     }
 
-    set_format_arg_body(static_cast<uint8_t*>(arguments), 0, static_cast<uintptr_t>(stringId), sizeof(rct_string_id));
     return STR_BLACK_STRING;
 }
 
@@ -2775,16 +2775,16 @@ static rct_string_id window_ride_get_status_station(rct_window* w, void* argumen
  *
  *  rct2: 0x006AEE73
  */
-static rct_string_id window_ride_get_status(rct_window* w, void* arguments)
+static rct_string_id window_ride_get_status(rct_window* w, Formatter* ft)
 {
     auto ride = get_ride(w->number);
     if (w->ride.view == 0)
-        return window_ride_get_status_overall_view(w, arguments);
+        return window_ride_get_status_overall_view(w, ft);
     if (ride != nullptr && w->ride.view <= ride->num_vehicles)
-        return window_ride_get_status_vehicle(w, arguments);
+        return window_ride_get_status_vehicle(w, ft);
     if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
-        return window_ride_get_status_overall_view(w, arguments);
-    return window_ride_get_status_station(w, arguments);
+        return window_ride_get_status_overall_view(w, ft);
+    return window_ride_get_status_station(w, ft);
 }
 
 /**
@@ -2837,10 +2837,11 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gCommonFormatArgs);
 
     // Status
+    ft = Formatter::Common();
     widget = &window_ride_main_widgets[WIDX_STATUS];
-    rct_string_id ride_status = window_ride_get_status(w, gCommonFormatArgs);
+    rct_string_id rideStatus = window_ride_get_status(w, &ft);
     gfx_draw_string_centred_clipped(
-        dpi, ride_status, gCommonFormatArgs, COLOUR_BLACK,
+        dpi, rideStatus, gCommonFormatArgs, COLOUR_BLACK,
         w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width());
 }
 
