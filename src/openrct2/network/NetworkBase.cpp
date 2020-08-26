@@ -2443,11 +2443,11 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
             {
                 log_info("Wrote desync report to '%s'", outputFile.c_str());
 
-                uint8_t args[32]{};
-                Formatter(args).Add<char*>(uniqueFileName);
+                Formatter ft;
+                ft.Add<char*>(uniqueFileName);
 
                 char str_desync[1024];
-                format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, args);
+                format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, ft.Data());
 
                 auto intent = Intent(WC_NETWORK_STATUS);
                 intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });

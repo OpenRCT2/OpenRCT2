@@ -5498,15 +5498,13 @@ static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour*
 bool Ride::NameExists(const std::string_view& name, ride_id_t excludeRideId)
 {
     char buffer[256]{};
-    uint8_t formatArgs[32]{};
-
     for (auto& ride : GetRideManager())
     {
         if (ride.id != excludeRideId)
         {
-            Formatter ft(formatArgs);
+            Formatter ft;
             ride.FormatNameTo(ft);
-            format_string(buffer, 256, STR_STRINGID, formatArgs);
+            format_string(buffer, 256, STR_STRINGID, ft.Data());
             if (std::string_view(buffer) == name && ride_has_any_track_elements(&ride))
             {
                 return true;
@@ -5590,7 +5588,6 @@ money32 ride_get_common_price(Ride* forRide)
 void Ride::SetNameToDefault()
 {
     char rideNameBuffer[256]{};
-    uint8_t rideNameArgs[32]{};
 
     // Increment default name number until we find a unique name
     custom_name = {};
@@ -5598,9 +5595,9 @@ void Ride::SetNameToDefault()
     do
     {
         default_name_number++;
-        Formatter ft(rideNameArgs);
+        Formatter ft;
         FormatNameTo(ft);
-        format_string(rideNameBuffer, 256, STR_STRINGID, &rideNameArgs);
+        format_string(rideNameBuffer, 256, STR_STRINGID, ft.Data());
     } while (Ride::NameExists(rideNameBuffer, id));
 }
 
@@ -7565,11 +7562,9 @@ void ride_clear_leftover_entrances(Ride* ride)
 
 std::string Ride::GetName() const
 {
-    uint8_t args[32]{};
-
-    Formatter ft(args);
+    Formatter ft;
     FormatNameTo(ft);
-    return format_string(STR_STRINGID, args);
+    return format_string(STR_STRINGID, ft.Data());
 }
 
 void Ride::FormatNameTo(Formatter& ft) const

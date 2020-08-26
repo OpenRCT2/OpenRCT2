@@ -1967,11 +1967,9 @@ void Peep::FormatNameTo(Formatter& ft) const
 
 std::string Peep::GetName() const
 {
-    uint8_t args[32]{};
-
-    Formatter ft(args);
+    Formatter ft;
     FormatNameTo(ft);
-    return format_string(STR_STRINGID, args);
+    return format_string(STR_STRINGID, ft.Data());
 }
 
 bool Peep::SetName(const std::string_view& value)
@@ -3230,17 +3228,15 @@ int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_
     }
 
     // Compare their names as strings
-    uint8_t args[32]{};
-
     char nameA[256]{};
-    Formatter ft(args);
+    Formatter ft;
     peep_a->FormatNameTo(ft);
-    format_string(nameA, sizeof(nameA), STR_STRINGID, args);
+    format_string(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
 
     char nameB[256]{};
-    ft = Formatter(args);
+    ft.Rewind();
     peep_b->FormatNameTo(ft);
-    format_string(nameB, sizeof(nameB), STR_STRINGID, args);
+    format_string(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
     return strlogicalcmp(nameA, nameB);
 }
 

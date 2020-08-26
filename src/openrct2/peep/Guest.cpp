@@ -536,12 +536,11 @@ void Guest::UpdateEasterEggInteractions()
 
 int32_t Guest::GetEasterEggNameId() const
 {
-    uint8_t args[32]{};
     char buffer[256]{};
 
-    Formatter ft(args);
+    Formatter ft;
     FormatNameTo(ft);
-    format_string(buffer, sizeof(buffer), STR_STRINGID, args);
+    format_string(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
     for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
         if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
@@ -684,12 +683,11 @@ void Guest::HandleEasterEggName()
  */
 int32_t Guest::CheckEasterEggName(int32_t index) const
 {
-    uint8_t args[32]{};
     char buffer[256]{};
 
-    Formatter ft(args);
+    Formatter ft;
     FormatNameTo(ft);
-    format_string(buffer, sizeof(buffer), STR_STRINGID, args);
+    format_string(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
     return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
 }
