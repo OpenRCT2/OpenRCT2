@@ -72,10 +72,10 @@ validate_global_widx(WC_STAFF, WIDX_PICKUP);
 
 #define MAIN_STAFF_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({      0,      43}, {190, 137}, WWT_RESIZE,        1                                        ), /* Resize */ \
-    MakeRemapWidget({      3,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_OVERVIEW_TIP), /* Tab 1 */ \
-    MakeRemapWidget({     34,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_OPTIONS_TIP ), /* Tab 2 */ \
-    MakeRemapWidget({     65,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_STATS_TIP   ) /* Tab 3 */
+    MakeWidget({ 0, 43}, {190, 137}, WWT_RESIZE, 1), /* Resize */ \
+    MakeTab   ({ 3, 17}, STR_STAFF_OVERVIEW_TIP   ), /* Tab 1 */ \
+    MakeTab   ({34, 17}, STR_STAFF_OPTIONS_TIP    ), /* Tab 2 */ \
+    MakeTab   ({65, 17}, STR_STAFF_STATS_TIP      )  /* Tab 3 */
 
 static rct_widget window_staff_overview_widgets[] = {
     MAIN_STAFF_WIDGETS,

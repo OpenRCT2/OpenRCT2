@@ -116,11 +116,11 @@ static constexpr const int32_t WH = 273;
 
 #define SHARED_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), /* WIDX_BACKGROUND, WIDX_TITLE, WIDX_CLOSE */ \
-    MakeWidget     ({ 0, 43}, {WW, 229}, WWT_RESIZE, 1         ), /* WIDX_PAGE_BACKGROUND */ \
-    MakeRemapWidget({ 3, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB), /* WIDX_TAB_1 */ \
-    MakeRemapWidget({34, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB), /* WIDX_TAB_2 */ \
-    MakeRemapWidget({65, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB), /* WIDX_TAB_3 */ \
-    MakeRemapWidget({96, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB) /* WIDX_TAB_4 */
+    MakeWidget({ 0, 43}, {WW, 229}, WWT_RESIZE, 1), /* WIDX_PAGE_BACKGROUND */ \
+    MakeTab   ({ 3, 17}                          ), /* WIDX_TAB_1 */ \
+    MakeTab   ({34, 17}                          ), /* WIDX_TAB_2 */ \
+    MakeTab   ({65, 17}                          ), /* WIDX_TAB_3 */ \
+    MakeTab   ({96, 17}                          )  /* WIDX_TAB_4 */
 
 static rct_widget MapWidgets[] = {
     SHARED_WIDGETS,

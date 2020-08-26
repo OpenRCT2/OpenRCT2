@@ -48,12 +48,12 @@ enum WINDOW_PLAYER_WIDGET_IDX {
 };
 
 #define WINDOW_PLAYER_COMMON_WIDGETS                                                                                                    \
-    MakeWidget     ({  0,  0}, {192, 157}, WWT_FRAME,    0                                   ), /* Panel / Background */ \
-    MakeWidget     ({  1,  1}, {190,  14}, WWT_CAPTION,  0, STR_STRING,  STR_WINDOW_TITLE_TIP), /* Title              */ \
-    MakeWidget     ({179,  2}, { 11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), /* Close x button     */ \
-    MakeWidget     ({  0, 43}, {192, 114}, WWT_RESIZE,   1                                   ), /* Resize             */ \
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB                          ), /* Tab 1              */ \
-    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB                          )  /* Tab 2              */
+    MakeWidget({  0,  0}, {192, 157}, WWT_FRAME,    0                                   ), /* Panel / Background */ \
+    MakeWidget({  1,  1}, {190,  14}, WWT_CAPTION,  0, STR_STRING,  STR_WINDOW_TITLE_TIP), /* Title              */ \
+    MakeWidget({179,  2}, { 11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), /* Close x button     */ \
+    MakeWidget({  0, 43}, {192, 114}, WWT_RESIZE,   1                                   ), /* Resize             */ \
+    MakeTab   ({  3, 17}                                                                ), /* Tab 1              */ \
+    MakeTab   ({ 34, 17}                                                                )  /* Tab 2              */
 
 static rct_widget window_player_overview_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,

@@ -195,11 +195,11 @@ static constexpr const int32_t TAB_START = 3;
 
 #define MAIN_CHEATS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({ 0, 43}, {WW, 257}, WWT_IMGBTN, 1                                      ), /* tab content panel */ \
-    MakeRemapWidget({ 3, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_FINANCIAL_CHEATS_TIP), /* tab 1 */ \
-    MakeRemapWidget({34, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_GUEST_CHEATS_TIP    ), /* tab 2 */ \
-    MakeRemapWidget({65, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_PARK_CHEATS_TIP     ), /* tab 3 */ \
-    MakeRemapWidget({96, 17}, {TAB_WIDTH, TAB_HEIGHT}, WWT_TAB,    1, SPR_TAB,    STR_RIDE_CHEATS_TIP     )  /* tab 4 */
+    MakeWidget({ 0, 43}, {WW, 257}, WWT_IMGBTN, 1), /* tab content panel */ \
+    MakeTab   ({ 3, 17}, STR_FINANCIAL_CHEATS_TIP), /* tab 1 */ \
+    MakeTab   ({34, 17}, STR_GUEST_CHEATS_TIP    ), /* tab 2 */ \
+    MakeTab   ({65, 17}, STR_PARK_CHEATS_TIP     ), /* tab 3 */ \
+    MakeTab   ({96, 17}, STR_RIDE_CHEATS_TIP     )  /* tab 4 */
 
 static rct_widget window_cheats_money_widgets[] =
 {

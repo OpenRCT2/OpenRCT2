@@ -120,9 +120,9 @@ enum {
 static rct_widget window_editor_scenario_options_financial_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
     MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WWT_RESIZE,   1),
-    MakeRemapWidget   ({  3,  17}, {               31,  27}, WWT_TAB,      1, SPR_TAB,                STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
-    MakeRemapWidget   ({ 34,  17}, {               31,  30}, WWT_TAB,      1, SPR_TAB,                STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
-    MakeRemapWidget   ({ 65,  17}, {               31,  27}, WWT_TAB,      1, SPR_TAB,                STR_SCENARIO_OPTIONS_PARK_TIP     ),
+    MakeTab           ({  3,  17},                                                                    STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+    MakeTab           ({ 34,  17},                                                                    STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+    MakeTab           ({ 65,  17},                                                                    STR_SCENARIO_OPTIONS_PARK_TIP     ),
     MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WWT_CHECKBOX, 1, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
     MakeSpinnerWidgets({168,  65}, {              100,  12}, WWT_SPINNER,  1                                                            ), // NB: 3 widgets
     MakeSpinnerWidgets({168,  82}, {              100,  12}, WWT_SPINNER,  1                                                            ), // NB: 3 widgets

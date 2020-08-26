@@ -87,9 +87,9 @@ enum {
 
 #define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({  0,  43}, {280, 106}, WWT_RESIZE, 1                                                 ), \
-    MakeRemapWidget({  3,  17}, { 31,  27}, WWT_TAB,    1, SPR_TAB, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP), \
-    MakeRemapWidget({ 34,  17}, { 31,  27}, WWT_TAB,    1, SPR_TAB, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP  )
+    MakeWidget({  0,  43}, {280, 106}, WWT_RESIZE, 1             ), \
+    MakeTab   ({  3,  17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP), \
+    MakeTab   ({ 34,  17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP  )
 
 static rct_widget window_editor_objective_options_main_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,

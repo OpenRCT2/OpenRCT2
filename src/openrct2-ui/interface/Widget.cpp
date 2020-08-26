@@ -215,8 +215,20 @@ static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
-    if (static_cast<int32_t>(widget->image) == -1)
+    if (widget->type != WWT_TAB && static_cast<int32_t>(widget->image) == -1)
         return;
+
+    if (widget->type == WWT_TAB)
+    {
+        if (widget_is_disabled(w, widgetIndex))
+            return;
+
+        if (widget->image != (IMAGE_TYPE_REMAP | SPR_TAB_LARGE))
+        {
+            // Set standard tab sprite to use.
+            widget->image = IMAGE_TYPE_REMAP | SPR_TAB;
+        }
+    }
 
     // Draw widgets that aren't explicitly disabled.
     if (!widget_is_disabled(w, widgetIndex))
@@ -224,10 +236,6 @@ static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
         widget_draw_image(dpi, w, widgetIndex);
         return;
     }
-
-    // Do not draw hidden tabs, unless given a sprite.
-    if (widget->type == WWT_TAB && widget->image != (IMAGE_TYPE_REMAP | SPR_G2_TAB_DISABLED))
-        return;
 
     if (widget->type != WWT_TRNBTN)
     {
