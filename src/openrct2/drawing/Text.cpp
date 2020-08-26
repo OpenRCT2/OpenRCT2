@@ -116,7 +116,7 @@ static void DrawText(
 }
 
 void DrawTextBasic(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, uint8_t colour,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, colour_t colour,
     TextAlignment alignment, bool underline)
 {
     TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, underline, alignment };
@@ -125,15 +125,15 @@ void DrawTextBasic(
 }
 
 void DrawTextBasic(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, uint8_t colour,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, colour_t colour,
     TextAlignment alignment, bool underline)
 {
     return DrawTextBasic(dpi, coords, format, ft.GetStartBuf(), colour, alignment, underline);
 }
 
 void DrawTextEllipsised(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const void* args, uint8_t colour,
-    TextAlignment alignment, bool underline)
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const void* args,
+    colour_t colour, TextAlignment alignment, bool underline)
 {
     TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, underline, alignment };
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
@@ -147,7 +147,7 @@ void DrawTextEllipsised(
 
 void DrawTextEllipsised(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
-    uint8_t colour, TextAlignment alignment, bool underline)
+    colour_t colour, TextAlignment alignment, bool underline)
 {
     return DrawTextEllipsised(dpi, coords, width, format, ft.GetStartBuf(), colour, alignment, underline);
 }
