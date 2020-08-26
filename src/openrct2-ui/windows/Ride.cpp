@@ -2651,13 +2651,13 @@ static void window_ride_main_invalidate(rct_window* w)
  *
  *  rct2: 0x006AF10A
  */
-static rct_string_id window_ride_get_status_overall_view(rct_window* w, Formatter* ft)
+static rct_string_id window_ride_get_status_overall_view(rct_window* w, Formatter& ft)
 {
     auto stringId = STR_NONE;
     auto ride = get_ride(w->number);
     if (ride != nullptr)
     {
-        ride->FormatStatusTo(*ft);
+        ride->FormatStatusTo(ft);
         stringId = STR_BLACK_STRING;
         if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) || (ride->lifecycle_flags & RIDE_LIFECYCLE_CRASHED))
         {
@@ -2671,7 +2671,7 @@ static rct_string_id window_ride_get_status_overall_view(rct_window* w, Formatte
  *
  *  rct2: 0x006AEFEF
  */
-static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter* ft)
+static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter& ft)
 {
     auto ride = get_ride(w->number);
     if (ride == nullptr)
@@ -2690,7 +2690,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter* ft
         {
             if (RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0)
             {
-                ft->Add<rct_string_id>(STR_STOPPED_BY_BLOCK_BRAKES);
+                ft.Add<rct_string_id>(STR_STOPPED_BY_BLOCK_BRAKES);
                 return STR_BLACK_STRING;
             }
         }
@@ -2706,12 +2706,12 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter* ft
         stringId = SingleSessionVehicleStatusNames[static_cast<size_t>(vehicle->status)];
     }
 
-    ft->Add<rct_string_id>(stringId);
+    ft.Add<rct_string_id>(stringId);
     uint16_t speedInMph = (abs(vehicle->velocity) * 9) >> 18;
-    ft->Add<uint16_t>(speedInMph);
+    ft.Add<uint16_t>(speedInMph);
     const RideComponentName stationName = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station];
-    ft->Add<rct_string_id>(ride->num_stations > 1 ? stationName.number : stationName.singular);
-    ft->Add<uint16_t>(vehicle->current_station + 1);
+    ft.Add<rct_string_id>(ride->num_stations > 1 ? stationName.number : stationName.singular);
+    ft.Add<uint16_t>(vehicle->current_station + 1);
     return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
 }
 
@@ -2719,7 +2719,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter* ft
  *
  *  rct2: 0x006AEF65
  */
-static rct_string_id window_ride_get_status_station(rct_window* w, Formatter* ft)
+static rct_string_id window_ride_get_status_station(rct_window* w, Formatter& ft)
 {
     auto ride = get_ride(w->number);
     if (ride == nullptr)
@@ -2760,12 +2760,12 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter* ft
         else if (queueLength > 1)
             stringId = STR_QUEUE_PEOPLE;
 
-        ft->Add<rct_string_id>(stringId);
-        ft->Add<uint16_t>(queueLength);
+        ft.Add<rct_string_id>(stringId);
+        ft.Add<uint16_t>(queueLength);
     }
     else
     {
-        ft->Add<rct_string_id>(stringId);
+        ft.Add<rct_string_id>(stringId);
     }
 
     return STR_BLACK_STRING;
@@ -2775,7 +2775,7 @@ static rct_string_id window_ride_get_status_station(rct_window* w, Formatter* ft
  *
  *  rct2: 0x006AEE73
  */
-static rct_string_id window_ride_get_status(rct_window* w, Formatter* ft)
+static rct_string_id window_ride_get_status(rct_window* w, Formatter& ft)
 {
     auto ride = get_ride(w->number);
     if (w->ride.view == 0)
@@ -2839,7 +2839,7 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Status
     ft = Formatter::Common();
     widget = &window_ride_main_widgets[WIDX_STATUS];
-    rct_string_id rideStatus = window_ride_get_status(w, &ft);
+    rct_string_id rideStatus = window_ride_get_status(w, ft);
     gfx_draw_string_centred_clipped(
         dpi, rideStatus, gCommonFormatArgs, COLOUR_BLACK,
         w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width());
