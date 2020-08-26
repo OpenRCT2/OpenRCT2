@@ -429,7 +429,7 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
             }
             else
             {
-                context_show_error(STR_CHAT_UNAVAILABLE, STR_NONE);
+                context_show_error(STR_CHAT_UNAVAILABLE, STR_NONE, {});
             }
             break;
     }
@@ -2013,7 +2013,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             auto bannerIndex = create_new_banner(0);
             if (bannerIndex == BANNER_INDEX_NULL)
             {
-                context_show_error(STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                context_show_error(STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME, {});
                 break;
             }
             auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, bannerIndex, primaryColour);

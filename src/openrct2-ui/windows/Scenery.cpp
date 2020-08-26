@@ -607,7 +607,7 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
             else
             {
-                context_show_error(STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
+                context_show_error(STR_CANT_DO_THIS, STR_PERMISSION_DENIED, {});
             }
             w->Invalidate();
             break;

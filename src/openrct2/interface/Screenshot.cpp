@@ -84,7 +84,7 @@ void screenshot_check()
             }
             else
             {
-                context_show_error(STR_SCREENSHOT_FAILED, STR_NONE);
+                context_show_error(STR_SCREENSHOT_FAILED, STR_NONE, {});
             }
 
             // redraw_weather();
@@ -414,15 +414,15 @@ void screenshot_giant()
         WriteDpiToFile(path->c_str(), &dpi, gPalette);
 
         // Show user that screenshot saved successfully
-        auto ft = Formatter::Common();
+        Formatter ft;
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(path_get_filename(path->c_str()));
-        context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE);
+        context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
     }
     catch (const std::exception& e)
     {
         log_error("%s", e.what());
-        context_show_error(STR_SCREENSHOT_FAILED, STR_NONE);
+        context_show_error(STR_SCREENSHOT_FAILED, STR_NONE, {});
     }
 
     ReleaseDPI(dpi);

@@ -599,7 +599,7 @@ void NetworkBase::UpdateClient()
 
                     Close();
                     context_force_close_window_by_class(WC_NETWORK_STATUS);
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
+                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
                     break;
                 }
             }
@@ -3116,7 +3116,7 @@ void NetworkBase::Client_Handle_SHOWERROR([[maybe_unused]] NetworkConnection& co
 {
     rct_string_id title, message;
     packet >> title >> message;
-    context_show_error(title, message);
+    context_show_error(title, message, {});
 }
 
 void NetworkBase::Client_Handle_GROUPLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)

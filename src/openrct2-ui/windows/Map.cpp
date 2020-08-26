@@ -1341,7 +1341,7 @@ static void map_window_increase_map_size()
 {
     if (gMapSize >= MAXIMUM_MAP_SIZE_TECHNICAL)
     {
-        context_show_error(STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
+        context_show_error(STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE, {});
         return;
     }
 
@@ -1363,7 +1363,7 @@ static void map_window_decrease_map_size()
 {
     if (gMapSize < 16)
     {
-        context_show_error(STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
+        context_show_error(STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE, {});
         return;
     }
 

@@ -3842,7 +3842,7 @@ static void window_ride_locate_mechanic(rct_window* w)
         mechanic = ride_find_closest_mechanic(ride, 1);
 
     if (mechanic == nullptr)
-        context_show_error(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE);
+        context_show_error(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE, {});
     else
     {
         auto intent = Intent(WC_PEEP);
@@ -3976,7 +3976,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             }
             if (num_items == 1)
             {
-                context_show_error(STR_DEBUG_NO_BREAKDOWNS_AVAILABLE, STR_NONE);
+                context_show_error(STR_DEBUG_NO_BREAKDOWNS_AVAILABLE, STR_NONE, {});
             }
             else
             {
@@ -4088,11 +4088,11 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
             if (ride->lifecycle_flags
                 & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
             {
-                context_show_error(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_ALREADY_BROKEN);
+                context_show_error(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_ALREADY_BROKEN, {});
             }
             else if (ride->status == RIDE_STATUS_CLOSED)
             {
-                context_show_error(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_IS_CLOSED);
+                context_show_error(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_IS_CLOSED, {});
             }
             else
             {
@@ -5393,7 +5393,7 @@ static void window_ride_measurements_design_save(rct_window* w)
         auto errMessage = _trackDesign->CreateTrackDesignScenery();
         if (errMessage != STR_NONE)
         {
-            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage);
+            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage, {});
             return;
         }
     }

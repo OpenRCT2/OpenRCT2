@@ -1016,7 +1016,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             if (!gCheatsShowAllOperatingModes)
             {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
             }
             CheatsSet(CheatType::ShowAllOperatingModes, !gCheatsShowAllOperatingModes);
         }
@@ -1025,7 +1025,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             if (!gCheatsShowVehiclesFromOtherTrackTypes)
             {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
             }
             CheatsSet(CheatType::ShowVehiclesFromOtherTrackTypes, !gCheatsShowVehiclesFromOtherTrackTypes);
         }
@@ -1034,7 +1034,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             if (!gCheatsDisableTrainLengthLimit)
             {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
             }
             CheatsSet(CheatType::DisableTrainLengthLimit, !gCheatsDisableTrainLengthLimit);
         }
@@ -1046,7 +1046,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             if (!gCheatsAllowArbitraryRideTypeChanges)
             {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
             }
             CheatsSet(CheatType::AllowArbitraryRideTypeChanges, !gCheatsAllowArbitraryRideTypeChanges);
         }
@@ -1064,7 +1064,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             if (!gCheatsAllowTrackPlaceInvalidHeights)
             {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
             }
             CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gCheatsAllowTrackPlaceInvalidHeights);
         }

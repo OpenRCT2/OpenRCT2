@@ -942,27 +942,26 @@ void reset_all_ride_build_dates()
 
 static int32_t ride_check_if_construction_allowed(Ride* ride)
 {
+    Formatter ft;
     rct_ride_entry* rideEntry = ride->GetRideEntry();
     if (rideEntry == nullptr)
     {
-        context_show_error(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE);
+        context_show_error(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE, ft);
         return 0;
     }
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
     {
-        auto ft = Formatter::Common();
         ft.Increment(6);
         ride->FormatNameTo(ft);
-        context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
+        context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING, ft);
         return 0;
     }
 
     if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
     {
-        auto ft = Formatter::Common();
         ft.Increment(6);
         ride->FormatNameTo(ft);
-        context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);
+        context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST, ft);
         return 0;
     }
 
@@ -1827,11 +1826,11 @@ bool ride_modify(CoordsXYE* input)
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
     {
-        auto ft = Formatter::Common();
+        Formatter ft;
         ft.Increment(6);
         ride->FormatNameTo(ft);
         context_show_error(
-            STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
+            STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE, ft);
         return false;
     }
 
@@ -1991,13 +1990,13 @@ std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign() const
 {
     if (!(lifecycle_flags & RIDE_LIFECYCLE_TESTED))
     {
-        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
         return nullptr;
     }
 
     if (!ride_has_ratings(this))
     {
-        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
         return nullptr;
     }
 
@@ -2005,7 +2004,7 @@ std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign() const
     auto errMessage = td->CreateTrackDesign(*this);
     if (errMessage != STR_NONE)
     {
-        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage);
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, errMessage, {});
         return nullptr;
     }
 

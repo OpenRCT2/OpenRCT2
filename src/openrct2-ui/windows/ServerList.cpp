@@ -196,9 +196,9 @@ static void window_server_list_mouseup(rct_window* w, rct_widgetindex widgetInde
                 }
                 else
                 {
-                    auto ft = Formatter::Common();
+                    Formatter ft;
                     ft.Add<const char*>(server.Version.c_str());
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
                 }
             }
             break;
@@ -235,9 +235,9 @@ static void window_server_list_dropdown(rct_window* w, rct_widgetindex widgetInd
                 }
                 else
                 {
-                    auto ft = Formatter::Common();
+                    Formatter ft;
                     ft.Add<const char*>(server.Version.c_str());
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
                 }
                 break;
             case DDIDX_FAVOURITE:
@@ -553,7 +553,7 @@ static void join_server(std::string address)
 
     if (!network_begin_client(address.c_str(), port))
     {
-        context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
+        context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
     }
 }
 

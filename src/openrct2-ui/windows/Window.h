@@ -107,7 +107,7 @@ void window_title_editor_open(int32_t tab);
 void window_title_command_editor_open(struct TitleSequence* sequence, int32_t command, bool insert);
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
 
-rct_window* window_error_open(rct_string_id title, rct_string_id message);
+rct_window* window_error_open(rct_string_id title, rct_string_id message, const class Formatter& formatter);
 rct_window* window_error_open(const std::string_view& title, const std::string_view& message);
 struct TrackDesign;
 rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);

@@ -72,10 +72,10 @@ static uint16_t _window_error_num_lines;
  * bx: title
  * dx: message
  */
-rct_window* window_error_open(rct_string_id title, rct_string_id message)
+rct_window* window_error_open(rct_string_id title, rct_string_id message, const Formatter& args)
 {
-    auto titlez = format_string(title, gCommonFormatArgs);
-    auto messagez = format_string(message, gCommonFormatArgs);
+    auto titlez = format_string(title, args.Data());
+    auto messagez = format_string(message, args.Data());
     return window_error_open(titlez, messagez);
 }
 
