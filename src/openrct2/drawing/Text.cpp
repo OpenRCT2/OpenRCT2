@@ -125,7 +125,7 @@ void DrawTextBasic(
 }
 
 void DrawTextEllipsised(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, void* args, uint8_t colour,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const void* args, uint8_t colour,
     TextAlignment alignment, bool underline)
 {
     TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, underline, alignment };
