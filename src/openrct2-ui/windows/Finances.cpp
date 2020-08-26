@@ -669,7 +669,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 51 };
 
     // Expenditure / Income heading
-    draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, TextAlignment::LEFT, true);
     screenCoords.y += 14;
 
     // Expenditure / Income row labels

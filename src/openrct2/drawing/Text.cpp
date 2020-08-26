@@ -162,12 +162,6 @@ void gfx_draw_string_right(
 {
     DrawTextBasic(dpi, coords, format, args, colour, TextAlignment::RIGHT);
 }
-// Underline
-void draw_string_left_underline(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
-{
-    DrawTextBasic(dpi, coords, format, args, colour, TextAlignment::LEFT, true);
-}
 
 // Ellipsised
 void gfx_draw_string_left_clipped(
