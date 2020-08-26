@@ -669,7 +669,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 51 };
 
     // Expenditure / Income heading
-    draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, TextAlignment::LEFT, true);
     screenCoords.y += 14;
 
     // Expenditure / Income row labels
@@ -755,9 +755,10 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_FINANCES_SUMMARY_MONTH_HEADING);
         ft.Add<uint16_t>(monthyear);
-        draw_string_right_underline(
-            dpi, monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, gCommonFormatArgs,
-            COLOUR_BLACK, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
+        DrawTextBasic(
+            dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
+            monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft, COLOUR_BLACK,
+            TextAlignment::RIGHT, true);
         screenCoords.y += 14;
 
         // Month expenditures
