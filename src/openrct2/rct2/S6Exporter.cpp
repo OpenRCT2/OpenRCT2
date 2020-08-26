@@ -186,7 +186,7 @@ void S6Exporter::Export()
         }
     }
 
-    _s6.elapsed_months = gDateMonthsElapsed;
+    _s6.elapsed_months = static_cast<uint16_t>(gDateMonthsElapsed);
     _s6.current_day = gDateMonthTicks;
     _s6.scenario_ticks = gScenarioTicks;
 
@@ -703,7 +703,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     // pad_16F[0x7];
     dst->spiral_slide_progress = src->spiral_slide_progress;
     // pad_177[0x9];
-    dst->build_date = src->build_date;
+    dst->build_date = static_cast<int16_t>(src->build_date);
     dst->upkeep_cost = src->upkeep_cost;
     dst->race_winner = src->race_winner;
     // pad_186[0x02];

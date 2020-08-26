@@ -546,12 +546,12 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int16_t buildDate_get() const
+        int32_t buildDate_get() const
         {
             auto ride = GetRide();
             return ride != nullptr ? ride->build_date : 0;
         }
-        void buildDate_set(int16_t value)
+        void buildDate_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
             auto ride = GetRide();

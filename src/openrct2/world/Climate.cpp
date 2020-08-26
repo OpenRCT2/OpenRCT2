@@ -258,7 +258,7 @@ static int8_t climate_step_weather_level(int8_t currentWeatherLevel, int8_t next
  */
 static void climate_determine_future_weather(int32_t randomDistribution)
 {
-    int8_t month = date_get_month(gDateMonthsElapsed);
+    int32_t month = date_get_month(gDateMonthsElapsed);
 
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
     // accordingly

@@ -276,7 +276,7 @@ void GameState::UpdateLogic()
 #endif
 
     date_update();
-    _date = Date(gDateMonthsElapsed, gDateMonthTicks);
+    _date = Date(static_cast<uint32_t>(gDateMonthsElapsed), gDateMonthTicks);
 
     scenario_update();
     climate_update();

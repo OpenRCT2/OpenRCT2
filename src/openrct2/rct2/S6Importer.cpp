@@ -216,7 +216,7 @@ public:
             safe_strcpy(gS6Info.details, _s6.info.details, sizeof(gS6Info.details));
         }
 
-        gDateMonthsElapsed = _s6.elapsed_months;
+        gDateMonthsElapsed = static_cast<int32_t>(_s6.elapsed_months);
         gDateMonthTicks = _s6.current_day;
         gScenarioTicks = _s6.scenario_ticks;
 
@@ -718,7 +718,7 @@ public:
         // pad_16F[0x7];
         dst->spiral_slide_progress = src->spiral_slide_progress;
         // pad_177[0x9];
-        dst->build_date = src->build_date;
+        dst->build_date = static_cast<int32_t>(src->build_date);
         dst->upkeep_cost = src->upkeep_cost;
         dst->race_winner = src->race_winner;
         // pad_186[0x02];

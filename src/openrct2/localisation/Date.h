@@ -48,7 +48,7 @@ extern const rct_string_id DateFormatStringIds[];
 extern const rct_string_id DateFormatStringFormatIds[];
 
 extern uint16_t gDateMonthTicks;
-extern uint16_t gDateMonthsElapsed;
+extern int32_t gDateMonthsElapsed;
 
 extern openrct2_timeofday gRealTimeOfDay;
 

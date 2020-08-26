@@ -742,7 +742,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
     }
 
     // Expenditure / Income values for each month
-    int16_t currentMonthYear = gDateMonthsElapsed;
+    int16_t currentMonthYear = static_cast<int16_t>(gDateMonthsElapsed);
     for (int32_t i = summary_max_available_month(); i >= 0; i--)
     {
         screenCoords.y = 0;

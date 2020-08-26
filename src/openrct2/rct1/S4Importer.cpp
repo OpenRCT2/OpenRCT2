@@ -875,7 +875,7 @@ private:
         SetRideColourScheme(dst, src);
 
         // Maintenance
-        dst->build_date = src->build_date;
+        dst->build_date = static_cast<int32_t>(src->build_date);
         dst->inspection_interval = src->inspection_interval;
         dst->last_inspection = src->last_inspection;
         dst->reliability = src->reliability;
@@ -2523,7 +2523,7 @@ private:
         // Date and srand
         gScenarioTicks = _s4.ticks;
         scenario_rand_seed(_s4.random_a, _s4.random_b);
-        gDateMonthsElapsed = _s4.month;
+        gDateMonthsElapsed = static_cast<int32_t>(_s4.month);
         gDateMonthTicks = _s4.day;
 
         // Park rating

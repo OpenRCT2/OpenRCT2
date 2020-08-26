@@ -280,7 +280,7 @@ size_t Ride::GetNumPrices() const
 
 int32_t Ride::GetAge() const
 {
-    return static_cast<int32_t>(gDateMonthsElapsed) - build_date;
+    return gDateMonthsElapsed - build_date;
 }
 
 int32_t Ride::GetTotalQueueLength() const
@@ -932,7 +932,7 @@ void reset_all_ride_build_dates()
 {
     for (auto& ride : GetRideManager())
     {
-        ride.build_date = gDateMonthsElapsed;
+        ride.build_date -= gDateMonthsElapsed;
     }
 }
 

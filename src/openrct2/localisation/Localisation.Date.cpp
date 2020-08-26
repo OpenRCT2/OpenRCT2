@@ -15,7 +15,7 @@
 #include <time.h>
 
 uint16_t gDateMonthTicks;
-uint16_t gDateMonthsElapsed;
+int32_t gDateMonthsElapsed;
 
 // rct2: 0x00993988
 const int16_t days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
