@@ -110,6 +110,11 @@ struct rct_drawpixelinfo
     int16_t pitch{}; // note: this is actually (pitch - width)
     ZoomLevel zoom_level{};
 
+    /**
+     * As x and y are based on 1:1 units, zooming in will cause a reduction in precision when mapping zoomed-in
+     * pixels to 1:1 pixels. When x, y are not a multiple of the zoom level, the remainder will be non-zero.
+     * The drawing of sprites will need to be offset by this amount.
+     */
     uint8_t remX{};
     uint8_t remY{};
 
