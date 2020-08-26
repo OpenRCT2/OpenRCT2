@@ -48,3 +48,10 @@ public:
     int32_t GetWidth();
     int32_t GetLineCount();
 };
+
+void DrawTextBasic(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, uint8_t colour,
+    TextAlignment alignment, bool underline = false);
+void DrawTextEllipsised(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, void* args, uint8_t colour,
+    TextAlignment alignment, bool underline = false);

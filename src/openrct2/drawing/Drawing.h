@@ -13,6 +13,7 @@
 #include "../common.h"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.hpp"
+#include "Text.h"
 
 #include <optional>
 #include <vector>
