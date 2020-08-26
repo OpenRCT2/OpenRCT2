@@ -371,7 +371,8 @@ declare global {
          */
         readonly ticksElapsed: number;
         /**
-         * The total number of months that have elapsed. This will equate to 16 on 1st March, Year 2.
+         * The total number of months that have elapsed. This will equate to 0 in March, Year 1 and
+         * increase by 1 every month, i.e. by 8 every year.
          * Note: this represents the current date and may be reset by cheats or scripts.
          */
         monthsElapsed: number;
