@@ -80,11 +80,6 @@ extern const rct_string_id DateDayNames[31];
 extern const rct_string_id DateGameMonthNames[MONTH_COUNT];
 extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
 
-[[maybe_unused]] static inline void set_format_arg_body(uint8_t* args, size_t offset, uintptr_t value, size_t size)
-{
-    std::memcpy(args + offset, &value, size);
-}
-
 class Formatter
 {
     const uint8_t* StartBuf;
@@ -156,7 +151,7 @@ public:
         {
             convertedValue = reinterpret_cast<uintptr_t>(value);
         }
-        set_format_arg_body(CurrentBuf, 0, convertedValue, sizeof(TSpecified));
+        std::memcpy(CurrentBuf, &convertedValue, sizeof(TSpecified));
         Increment(sizeof(TSpecified));
         return *this;
     }
