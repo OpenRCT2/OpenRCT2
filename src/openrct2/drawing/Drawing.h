@@ -649,17 +649,23 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
 // string
 void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords);
 
+/** @deprecated */
 void gfx_draw_string_left(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
+/** @deprecated */
 void gfx_draw_string_centred(
     rct_drawpixelinfo* dpi, rct_string_id format, const ScreenCoordsXY& coords, uint8_t colour, const void* args);
+/** @deprecated */
 void gfx_draw_string_right(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
 
+/** @deprecated */
 void gfx_draw_string_left_clipped(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords, int32_t width);
+/** @deprecated */
 void gfx_draw_string_centred_clipped(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords, int32_t width);
+/** @deprecated */
 void gfx_draw_string_right_clipped(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords, int32_t width);
 
