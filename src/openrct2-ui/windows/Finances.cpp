@@ -757,7 +757,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         ft.Add<uint16_t>(monthyear);
         DrawTextBasic(
             dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
-            monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK,
+            monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft, COLOUR_BLACK,
             TextAlignment::RIGHT, true);
         screenCoords.y += 14;
 

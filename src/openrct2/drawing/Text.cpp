@@ -124,6 +124,13 @@ void DrawTextBasic(
     DrawText(dpi, coords, textPaint, format, args);
 }
 
+void DrawTextBasic(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, uint8_t colour,
+    TextAlignment alignment, bool underline)
+{
+    return DrawTextBasic(dpi, coords, format, ft.GetStartBuf(), colour, alignment, underline);
+}
+
 void DrawTextEllipsised(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const void* args, uint8_t colour,
     TextAlignment alignment, bool underline)
@@ -136,6 +143,13 @@ void DrawTextEllipsised(
     gfx_clip_string(buffer, width);
 
     DrawText(dpi, coords, textPaint, buffer);
+}
+
+void DrawTextEllipsised(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
+    uint8_t colour, TextAlignment alignment, bool underline)
+{
+    return DrawTextEllipsised(dpi, coords, width, format, ft.GetStartBuf(), colour, alignment, underline);
 }
 
 void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)

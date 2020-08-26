@@ -112,6 +112,11 @@ public:
         return CurrentBuf;
     }
 
+    auto GetStartBuf() const
+    {
+        return StartBuf;
+    }
+
     void Increment(size_t count)
     {
         CurrentBuf += count;
