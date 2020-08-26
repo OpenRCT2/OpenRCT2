@@ -223,7 +223,7 @@ static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
         if (widget_is_disabled(w, widgetIndex))
             return;
 
-        if (widget->image != (IMAGE_TYPE_REMAP | SPR_TAB_LARGE))
+        if (widget->image == static_cast<uint32_t>(SPR_NONE))
         {
             // Set standard tab sprite to use.
             widget->image = IMAGE_TYPE_REMAP | SPR_TAB;
