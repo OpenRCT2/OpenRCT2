@@ -169,12 +169,6 @@ void draw_string_left_underline(
     DrawTextBasic(dpi, coords, format, args, colour, TextAlignment::LEFT, true);
 }
 
-void draw_string_centred_underline(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
-{
-    DrawTextBasic(dpi, coords, format, args, colour, TextAlignment::CENTRE, true);
-}
-
 void draw_string_right_underline(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
 {
