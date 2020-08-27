@@ -144,7 +144,7 @@ namespace Platform
         }
     }
 
-    static std::string GetCurrentExecutableDirectory()
+    std::string GetCurrentExecutableDirectory()
     {
         auto exePath = GetCurrentExecutablePath();
         auto exeDirectory = Path::GetDirectory(exePath);
