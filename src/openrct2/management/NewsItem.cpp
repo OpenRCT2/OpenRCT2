@@ -301,13 +301,12 @@ News::Item* News::ItemQueues::FirstOpenOrNewSlot()
  *
  *  rct2: 0x0066DF55
  */
-News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc)
+News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc, const Formatter& formatter)
 {
     utf8 buffer[256];
-    void* args = gCommonFormatArgs;
 
     // overflows possible?
-    format_string(buffer, 256, string_id, args);
+    format_string(buffer, 256, string_id, formatter.Data());
     return News::AddItemToQueue(type, buffer, assoc);
 }
 

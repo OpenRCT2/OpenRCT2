@@ -2528,11 +2528,11 @@ void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason)
  */
 void ride_breakdown_add_news_item(Ride* ride)
 {
-    auto ft = Formatter::Common();
-    ride->FormatNameTo(ft);
     if (gConfigNotifications.ride_broken_down)
     {
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, ride->id);
+        Formatter ft;
+        ride->FormatNameTo(ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, ride->id, ft);
     }
 }
 
@@ -2555,11 +2555,11 @@ static void ride_breakdown_status_update(Ride* ride)
         if (!(ride->not_fixed_timeout & 15) && ride->mechanic_status != RIDE_MECHANIC_STATUS_FIXING
             && ride->mechanic_status != RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            auto ft = Formatter::Common();
-            ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, ride->id);
+                Formatter ft;
+                ride->FormatNameTo(ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, ride->id, ft);
             }
         }
     }
@@ -3184,6 +3184,7 @@ static void ride_entrance_exit_connected(Ride* ride)
 {
     for (int32_t i = 0; i < MAX_STATIONS; ++i)
     {
+        Formatter ft;
         auto station_start = ride->stations[i].Start;
         auto entrance = ride_get_entrance_location(ride, i);
         auto exit = ride_get_exit_location(ride, i);
@@ -3193,11 +3194,10 @@ static void ride_entrance_exit_connected(Ride* ride)
         if (!entrance.isNull() && !ride_entrance_exit_is_reachable(entrance))
         {
             // name of ride is parameter of the format string
-            auto ft = Formatter::Common();
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id);
+                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id, ft);
             }
             ride->connected_message_throttle = 3;
         }
@@ -3205,11 +3205,10 @@ static void ride_entrance_exit_connected(Ride* ride)
         if (!exit.isNull() && !ride_entrance_exit_is_reachable(exit))
         {
             // name of ride is parameter of the format string
-            auto ft = Formatter::Common();
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, ride->id);
+                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, ride->id, ft);
             }
             ride->connected_message_throttle = 3;
         }
@@ -3281,11 +3280,11 @@ static void ride_shop_connected(Ride* ride)
     }
 
     // Name of ride is parameter of the format string
-    auto ft = Formatter::Common();
-    ride->FormatNameTo(ft);
     if (gConfigNotifications.ride_warnings)
     {
-        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id);
+        Formatter ft;
+        ride->FormatNameTo(ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id, ft);
     }
 
     ride->connected_message_throttle = 3;
@@ -7053,11 +7052,11 @@ void Ride::Crash(uint8_t vehicleIndex)
         }
     }
 
-    auto ft = Formatter::Common();
-    FormatNameTo(ft);
     if (gConfigNotifications.ride_crashed)
     {
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, id);
+        Formatter ft;
+        FormatNameTo(ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, id, ft);
     }
 }
 

@@ -17,6 +17,7 @@
 #include <optional>
 
 struct CoordsXYZ;
+class Formatter;
 
 namespace News
 {
@@ -288,7 +289,7 @@ namespace News
 
     std::optional<CoordsXYZ> GetSubjectLocation(News::ItemType type, int32_t subject);
 
-    News::Item* AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc);
+    News::Item* AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc, const Formatter& formatter);
     News::Item* AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc);
 
     void OpenSubject(News::ItemType type, int32_t subject);

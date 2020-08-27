@@ -88,7 +88,7 @@ class Formatter
     uint8_t* CurrentBuf{};
 
 public:
-    Formatter(uint8_t* buf)
+    explicit Formatter(uint8_t* buf)
         : StartBuf(buf)
         , CurrentBuf(buf)
     {

@@ -3469,7 +3469,7 @@ void Vehicle::CheckIfMissing()
 
     if (gConfigNotifications.ride_stalled_vehicles)
     {
-        auto ft = Formatter::Common();
+        Formatter ft;
         ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.vehicle].number);
 
         uint8_t vehicleIndex = 0;
@@ -3482,7 +3482,7 @@ void Vehicle::CheckIfMissing()
         curRide->FormatNameTo(ft);
         ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.station].singular);
 
-        News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride);
+        News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride, ft);
     }
 }
 
@@ -5191,7 +5191,7 @@ static TileElement* vehicle_check_collision(const CoordsXYZ& vehiclePosition)
 
 static void ride_train_crash(Ride* ride, uint16_t numFatalities)
 {
-    auto ft = Formatter::Common();
+    Formatter ft;
     ft.Add<uint16_t>(numFatalities);
 
     uint8_t crashType = numFatalities == 0 ? RIDE_CRASH_TYPE_NO_FATALITIES : RIDE_CRASH_TYPE_FATALITIES;
@@ -5205,7 +5205,7 @@ static void ride_train_crash(Ride* ride, uint16_t numFatalities)
         {
             ride->FormatNameTo(ft);
             News::AddItemToQueue(
-                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, ride->id);
+                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, ride->id, ft);
         }
 
         if (gParkRatingCasualtyPenalty < 500)

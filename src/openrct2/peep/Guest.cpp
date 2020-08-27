@@ -1700,7 +1700,7 @@ loc_69B221:
         ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
         }
     }
 
@@ -3733,7 +3733,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
                 ride->FormatNameTo(ft);
                 if (gConfigNotifications.ride_warnings)
                 {
-                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide);
+                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide, ft);
                 }
             }
 
@@ -3903,7 +3903,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
 
         if (gConfigNotifications.guest_on_ride)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, sprite_index);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, sprite_index, ft);
         }
     }
 
@@ -5014,7 +5014,7 @@ void Guest::UpdateRideLeaveExit()
 
         if (gConfigNotifications.guest_left_ride)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, sprite_index);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, sprite_index, ft);
         }
     }
 

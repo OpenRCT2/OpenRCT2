@@ -135,7 +135,14 @@ void DrawTextEllipsised(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
     colour_t colour, TextAlignment alignment, bool underline)
 {
-    return DrawTextEllipsised(dpi, coords, width, format, ft.Data(), colour, alignment, underline);
+    TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, underline, alignment };
+    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+
+    utf8 buffer[512];
+    format_string(buffer, sizeof(buffer), format, ft.Data());
+    gfx_clip_string(buffer, width);
+
+    DrawText(dpi, coords, textPaint, buffer);
 }
 
 void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)

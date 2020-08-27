@@ -11,6 +11,7 @@
 
 #include "../config/Config.h"
 #include "../interface/Window.h"
+#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../peep/Peep.h"
 #include "../ride/Ride.h"
@@ -636,7 +637,7 @@ void award_update_all()
                 gCurrentAwards[freeAwardEntryIndex].Time = 5;
                 if (gConfigNotifications.park_award)
                 {
-                    News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[awardType], 0);
+                    News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[awardType], 0, {});
                 }
                 window_invalidate_by_class(WC_PARK_INFORMATION);
             }
