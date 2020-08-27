@@ -18,6 +18,7 @@
 enum class MeasurementFormat : int32_t;
 enum class TemperatureUnit : int32_t;
 enum class ScaleQuality : int32_t;
+enum class VirtualFloorStyles : int32_t;
 
 struct GeneralConfiguration
 {
@@ -44,7 +45,7 @@ struct GeneralConfiguration
     // Map rendering
     bool landscape_smoothing;
     bool always_show_gridlines;
-    int32_t virtual_floor_style;
+    VirtualFloorStyles virtual_floor_style;
     bool day_night_cycle;
     bool enable_light_fx;
     bool enable_light_fx_for_vehicles;

@@ -170,7 +170,7 @@ void input_handle_keyboard(bool isTitle)
         }
     }
 
-    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
         if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
             virtual_floor_enable();

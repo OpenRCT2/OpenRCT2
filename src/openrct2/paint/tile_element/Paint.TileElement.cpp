@@ -161,7 +161,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 
     bool partOfVirtualFloor = false;
 #ifndef __TESTPAINT__
-    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
         partOfVirtualFloor = virtual_floor_tile_is_floor(session->MapPosition);
     }
@@ -330,7 +330,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     } while (!(tile_element++)->IsLastForTile());
 
 #ifndef __TESTPAINT__
-    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF && partOfVirtualFloor)
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off && partOfVirtualFloor)
     {
         virtual_floor_paint(session);
     }
