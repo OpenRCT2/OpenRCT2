@@ -749,17 +749,363 @@ namespace OpenRCT2
         void ReadWriteSpritesChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::SPRITES, [](OrcaStream::ChunkStream& cs) {
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    reset_sprite_list();
+                }
+
                 for (size_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
                 {
                     cs.ReadWrite(gSpriteListHead[i]);
                     cs.ReadWrite(gSpriteListCount[i]);
                 }
-                for (size_t i = 0; i < MAX_SPRITES; i++)
+
+                std::vector<uint16_t> entityIndices;
+                if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    auto& sprite = *(get_sprite(i));
-                    cs.ReadWrite(sprite);
+                    cs.ReadWriteVector(entityIndices, [&cs](uint16_t& index) {
+                        cs.ReadWrite(index);
+                        auto& entity = *(get_sprite(index));
+                        ReadWriteEntity(cs, entity);
+                    });
+                }
+                else
+                {
+                    for (uint16_t i = 0; i < MAX_SPRITES; i++)
+                    {
+                        auto entity = get_sprite(i);
+                        if (entity->sprite_identifier != SPRITE_IDENTIFIER_NULL)
+                        {
+                            entityIndices.push_back(i);
+                        }
+                    }
+                    cs.ReadWriteVector(entityIndices, [&cs](uint16_t index) {
+                        auto& entity = *(get_sprite(index));
+                        cs.ReadWrite(index);
+                        ReadWriteEntity(cs, entity);
+                    });
                 }
             });
+        }
+
+        static void ReadWriteEntity(OrcaStream::ChunkStream& cs, SpriteBase& entity)
+        {
+            ReadWriteEntityCommon(cs, entity);
+            switch (entity.sprite_identifier)
+            {
+                case SPRITE_IDENTIFIER_VEHICLE:
+                    ReadWriteEntityVehicle(cs, *entity.As<Vehicle>());
+                    break;
+                case SPRITE_IDENTIFIER_PEEP:
+                    ReadWriteEntityPeep(cs, *entity.As<Peep>());
+                    break;
+                case SPRITE_IDENTIFIER_MISC:
+                    ReadWriteEntityMisc(cs, entity);
+                    break;
+                case SPRITE_IDENTIFIER_LITTER:
+                    ReadWriteEntityLitter(cs, *entity.As<Litter>());
+                    break;
+            }
+        }
+
+        static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, SpriteBase& entity)
+        {
+            cs.ReadWrite(entity.sprite_identifier);
+            cs.ReadWrite(entity.type);
+            cs.ReadWrite(entity.next_in_quadrant);
+            cs.ReadWrite(entity.next);
+            cs.ReadWrite(entity.previous);
+            cs.ReadWrite(entity.sprite_height_negative);
+            cs.ReadWrite(entity.sprite_index);
+            cs.ReadWrite(entity.flags);
+            cs.ReadWrite(entity.x);
+            cs.ReadWrite(entity.y);
+            cs.ReadWrite(entity.z);
+            cs.ReadWrite(entity.sprite_width);
+            cs.ReadWrite(entity.sprite_height_positive);
+            cs.ReadWrite(entity.sprite_left);
+            cs.ReadWrite(entity.sprite_top);
+            cs.ReadWrite(entity.sprite_right);
+            cs.ReadWrite(entity.sprite_bottom);
+            cs.ReadWrite(entity.sprite_direction);
+        }
+
+        static void ReadWriteEntityVehicle(OrcaStream::ChunkStream& cs, Vehicle& entity)
+        {
+            auto ride = entity.GetRide();
+
+            cs.ReadWrite(entity.vehicle_sprite_type);
+            cs.ReadWrite(entity.bank_rotation);
+            cs.ReadWrite(entity.remaining_distance);
+            cs.ReadWrite(entity.velocity);
+            cs.ReadWrite(entity.acceleration);
+            cs.ReadWrite(entity.ride);
+            cs.ReadWrite(entity.vehicle_type);
+            cs.ReadWrite(entity.colours);
+            cs.ReadWrite(entity.track_progress);
+            if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE && entity.status == Vehicle::Status::TravellingBoat)
+            {
+                cs.ReadWrite(entity.BoatLocation);
+            }
+            else
+            {
+                // Track direction and type are in the same field
+                cs.ReadWrite(entity.track_direction);
+            }
+            cs.ReadWrite(entity.TrackLocation.x);
+            cs.ReadWrite(entity.TrackLocation.y);
+            cs.ReadWrite(entity.TrackLocation.z);
+            cs.ReadWrite(entity.next_vehicle_on_train);
+            cs.ReadWrite(entity.prev_vehicle_on_ride);
+            cs.ReadWrite(entity.next_vehicle_on_ride);
+            cs.ReadWrite(entity.var_44);
+            cs.ReadWrite(entity.mass);
+            cs.ReadWrite(entity.update_flags);
+            cs.ReadWrite(entity.SwingSprite);
+            cs.ReadWrite(entity.current_station);
+            cs.ReadWrite(entity.current_time);
+            cs.ReadWrite(entity.crash_z);
+            cs.ReadWrite(entity.status);
+            cs.ReadWrite(entity.sub_state);
+            for (size_t i = 0; i < std::size(entity.peep); i++)
+            {
+                cs.ReadWrite(entity.peep[i]);
+                cs.ReadWrite(entity.peep_tshirt_colours[i]);
+            }
+            cs.ReadWrite(entity.num_seats);
+            cs.ReadWrite(entity.num_peeps);
+            cs.ReadWrite(entity.next_free_seat);
+            cs.ReadWrite(entity.restraints_position);
+            cs.ReadWrite(entity.crash_x);
+            cs.ReadWrite(entity.sound2_flags);
+            cs.ReadWrite(entity.spin_sprite);
+            cs.ReadWrite(entity.sound1_id);
+            cs.ReadWrite(entity.sound1_volume);
+            cs.ReadWrite(entity.sound2_id);
+            cs.ReadWrite(entity.sound2_volume);
+            cs.ReadWrite(entity.sound_vector_factor);
+            cs.ReadWrite(entity.time_waiting);
+            cs.ReadWrite(entity.speed);
+            cs.ReadWrite(entity.powered_acceleration);
+            cs.ReadWrite(entity.dodgems_collision_direction);
+            cs.ReadWrite(entity.animation_frame);
+            cs.ReadWrite(entity.var_C8);
+            cs.ReadWrite(entity.var_CA);
+            cs.ReadWrite(entity.scream_sound_id);
+            cs.ReadWrite(entity.TrackSubposition);
+            cs.ReadWrite(entity.var_CE);
+            cs.ReadWrite(entity.var_CF);
+            cs.ReadWrite(entity.lost_time_out);
+            cs.ReadWrite(entity.vertical_drop_countdown);
+            cs.ReadWrite(entity.var_D3);
+            cs.ReadWrite(entity.mini_golf_current_animation);
+            cs.ReadWrite(entity.mini_golf_flags);
+            cs.ReadWrite(entity.ride_subtype);
+            cs.ReadWrite(entity.colours_extended);
+            cs.ReadWrite(entity.seat_rotation);
+            cs.ReadWrite(entity.target_seat_rotation);
+        }
+
+        static void ReadWriteEntityPeep(OrcaStream::ChunkStream& cs, Peep& entity)
+        {
+            cs.ReadWrite(entity.Name);
+            cs.ReadWrite(entity.NextLoc);
+            cs.ReadWrite(entity.NextFlags);
+            cs.ReadWrite(entity.OutsideOfPark);
+            cs.ReadWrite(entity.State);
+            cs.ReadWrite(entity.SubState);
+            cs.ReadWrite(entity.SpriteType);
+            cs.ReadWrite(entity.AssignedPeepType);
+            cs.ReadWrite(entity.GuestNumRides);
+            cs.ReadWrite(entity.TshirtColour);
+            cs.ReadWrite(entity.TrousersColour);
+            cs.ReadWrite(entity.DestinationX);
+            cs.ReadWrite(entity.DestinationY);
+            cs.ReadWrite(entity.DestinationTolerance);
+            cs.ReadWrite(entity.Var37);
+            cs.ReadWrite(entity.Energy);
+            cs.ReadWrite(entity.EnergyTarget);
+            cs.ReadWrite(entity.Happiness);
+            cs.ReadWrite(entity.HappinessTarget);
+            cs.ReadWrite(entity.Nausea);
+            cs.ReadWrite(entity.NauseaTarget);
+            cs.ReadWrite(entity.Hunger);
+            cs.ReadWrite(entity.Thirst);
+            cs.ReadWrite(entity.Toilet);
+            cs.ReadWrite(entity.Mass);
+            cs.ReadWrite(entity.TimeToConsume);
+            cs.ReadWrite(entity.Intensity);
+            cs.ReadWrite(entity.NauseaTolerance);
+            cs.ReadWrite(entity.WindowInvalidateFlags);
+            cs.ReadWrite(entity.PaidOnDrink);
+            cs.ReadWriteArray(entity.RideTypesBeenOn, [&cs](uint8_t& rideType) {
+                cs.ReadWrite(rideType);
+                return true;
+            });
+            cs.ReadWrite(entity.ItemExtraFlags);
+            cs.ReadWrite(entity.Photo2RideRef);
+            cs.ReadWrite(entity.Photo3RideRef);
+            cs.ReadWrite(entity.Photo4RideRef);
+            cs.ReadWrite(entity.CurrentRide);
+            cs.ReadWrite(entity.CurrentRideStation);
+            cs.ReadWrite(entity.CurrentTrain);
+            cs.ReadWrite(entity.TimeToSitdown);
+            cs.ReadWrite(entity.SpecialSprite);
+            cs.ReadWrite(entity.ActionSpriteType);
+            cs.ReadWrite(entity.NextActionSpriteType);
+            cs.ReadWrite(entity.ActionSpriteImageOffset);
+            cs.ReadWrite(entity.Action);
+            cs.ReadWrite(entity.ActionFrame);
+            cs.ReadWrite(entity.StepProgress);
+            cs.ReadWrite(entity.GuestNextInQueue);
+            cs.ReadWrite(entity.PeepDirection);
+            cs.ReadWrite(entity.InteractionRideIndex);
+            cs.ReadWrite(entity.TimeInQueue);
+            cs.ReadWriteArray(entity.RidesBeenOn, [&cs](ride_id_t rideId) {
+                cs.ReadWrite(rideId);
+                return true;
+            });
+            cs.ReadWrite(entity.Id);
+            cs.ReadWrite(entity.CashInPocket);
+            cs.ReadWrite(entity.CashSpent);
+            cs.ReadWrite(entity.TimeInPark);
+            cs.ReadWrite(entity.RejoinQueueTimeout);
+            cs.ReadWrite(entity.PreviousRide);
+            cs.ReadWrite(entity.PreviousRideTimeOut);
+            cs.ReadWriteArray(entity.Thoughts, [&cs](rct_peep_thought thought) {
+                if (thought.type != PEEP_THOUGHT_TYPE_NONE)
+                {
+                    cs.ReadWrite(thought.type);
+                    cs.ReadWrite(thought.item);
+                    cs.ReadWrite(thought.freshness);
+                    cs.ReadWrite(thought.fresh_timeout);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            });
+            cs.ReadWrite(entity.PathCheckOptimisation);
+            cs.ReadWrite(entity.GuestHeadingToRideId);
+            cs.ReadWrite(entity.GuestIsLostCountdown);
+            cs.ReadWrite(entity.Photo1RideRef);
+            cs.ReadWrite(entity.PeepFlags);
+            cs.ReadWrite(entity.PathfindGoal);
+            for (size_t i = 0; i < std::size(entity.PathfindHistory); i++)
+            {
+                cs.ReadWrite(entity.PathfindHistory[i]);
+            }
+            cs.ReadWrite(entity.WalkingFrameNum);
+            cs.ReadWrite(entity.LitterCount);
+            cs.ReadWrite(entity.GuestTimeOnRide);
+            cs.ReadWrite(entity.DisgustingCount);
+            cs.ReadWrite(entity.PaidToEnter);
+            cs.ReadWrite(entity.PaidOnRides);
+            cs.ReadWrite(entity.PaidOnFood);
+            cs.ReadWrite(entity.PaidOnSouvenirs);
+            cs.ReadWrite(entity.AmountOfFood);
+            cs.ReadWrite(entity.AmountOfDrinks);
+            cs.ReadWrite(entity.AmountOfSouvenirs);
+            cs.ReadWrite(entity.VandalismSeen);
+            cs.ReadWrite(entity.VoucherType);
+            cs.ReadWrite(entity.VoucherRideId);
+            cs.ReadWrite(entity.SurroundingsThoughtTimeout);
+            cs.ReadWrite(entity.Angriness);
+            cs.ReadWrite(entity.TimeLost);
+            cs.ReadWrite(entity.DaysInQueue);
+            cs.ReadWrite(entity.BalloonColour);
+            cs.ReadWrite(entity.UmbrellaColour);
+            cs.ReadWrite(entity.HatColour);
+            cs.ReadWrite(entity.FavouriteRide);
+            cs.ReadWrite(entity.FavouriteRideRating);
+            cs.ReadWrite(entity.ItemStandardFlags);
+        }
+
+        static void ReadWriteEntityMisc(OrcaStream::ChunkStream& cs, SpriteBase& entity)
+        {
+            switch (entity.type)
+            {
+                case SPRITE_MISC_STEAM_PARTICLE:
+                {
+                    auto steamParticle = entity.As<SteamParticle>();
+                    cs.ReadWrite(steamParticle->time_to_move);
+                    cs.ReadWrite(steamParticle->frame);
+                    break;
+                }
+                case SPRITE_MISC_MONEY_EFFECT:
+                {
+                    auto moneyEffect = entity.As<MoneyEffect>();
+                    cs.ReadWrite(moneyEffect->MoveDelay);
+                    cs.ReadWrite(moneyEffect->NumMovements);
+                    cs.ReadWrite(moneyEffect->Vertical);
+                    cs.ReadWrite(moneyEffect->Value);
+                    cs.ReadWrite(moneyEffect->OffsetX);
+                    cs.ReadWrite(moneyEffect->Wiggle);
+                    break;
+                }
+                case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+                {
+                    auto vehicleCrashParticle = entity.As<VehicleCrashParticle>();
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->frame);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->time_to_live);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->frame);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->colour[0]);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->colour[1]);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->crashed_sprite_base);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->velocity_x);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->velocity_y);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->velocity_z);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->acceleration_x);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->acceleration_y);
+                    cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->acceleration_z);
+                    break;
+                }
+                case SPRITE_MISC_EXPLOSION_CLOUD:
+                case SPRITE_MISC_CRASH_SPLASH:
+                case SPRITE_MISC_EXPLOSION_FLARE:
+                {
+                    auto generic = static_cast<SpriteGeneric&>(entity);
+                    cs.ReadWrite(generic.frame);
+                    break;
+                }
+                case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+                {
+                    auto fountain = entity.As<JumpingFountain>();
+                    cs.ReadWrite(fountain->NumTicksAlive);
+                    cs.ReadWrite(fountain->frame);
+                    cs.ReadWrite(fountain->FountainFlags);
+                    cs.ReadWrite(fountain->TargetX);
+                    cs.ReadWrite(fountain->TargetY);
+                    cs.ReadWrite(fountain->TargetY);
+                    cs.ReadWrite(fountain->Iteration);
+                    break;
+                }
+                case SPRITE_MISC_BALLOON:
+                {
+                    auto balloon = entity.As<Balloon>();
+                    cs.ReadWrite(balloon->popped);
+                    cs.ReadWrite(balloon->time_to_move);
+                    cs.ReadWrite(balloon->frame);
+                    cs.ReadWrite(balloon->colour);
+                    break;
+                }
+                case SPRITE_MISC_DUCK:
+                {
+                    auto duck = entity.As<Duck>();
+                    cs.ReadWrite(duck->frame);
+                    cs.ReadWrite(duck->target_x);
+                    cs.ReadWrite(duck->target_y);
+                    cs.ReadWrite(duck->state);
+                    break;
+                }
+            }
+        }
+
+        static void ReadWriteEntityLitter(OrcaStream::ChunkStream& cs, Litter& entity)
+        {
+            cs.ReadWrite(entity.creationTick);
         }
 
         void AutoDeriveVariables()

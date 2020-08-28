@@ -635,7 +635,7 @@ struct Peep : SpriteBase
     };
     ride_id_t InteractionRideIndex;
     uint16_t TimeInQueue;
-    uint8_t RidesBeenOn[32];
+    ride_id_t RidesBeenOn[32];
     // 255 bit bitmap of every ride the peep has been on see
     // window_peep_rides_update for how to use.
     uint32_t Id;
