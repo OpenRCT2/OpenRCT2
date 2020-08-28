@@ -805,6 +805,11 @@ declare global {
         runningCost: number;
 
         /**
+         * The total profit of the ride over the course of its lifetime.
+         */
+        totalProfit: number;
+
+        /**
          * How often the ride should be inspected by a mechanic.
          */
         inspectionInterval: number;
