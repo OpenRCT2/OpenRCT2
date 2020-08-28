@@ -708,6 +708,7 @@
     <ClCompile Include="paint\tile_element\Paint.TileElement.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Wall.cpp" />
     <ClCompile Include="paint\VirtualFloor.cpp" />
+    <ClCompile Include="ParkFile.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
     <ClCompile Include="peep\Guest.cpp" />
     <ClCompile Include="peep\GuestPathfinding.cpp" />

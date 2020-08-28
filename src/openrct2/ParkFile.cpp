@@ -318,7 +318,7 @@ namespace OpenRCT2
                     cs.ReadWrite(cl->Temperature);
                     cs.ReadWrite(cl->WeatherEffect);
                     cs.ReadWrite(cl->WeatherGloom);
-                    cs.ReadWrite(cl->RainLevel);
+                    cs.ReadWrite(cl->Level);
                 }
             });
         }
@@ -392,40 +392,53 @@ namespace OpenRCT2
         void ReadWriteNotificationsChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaStream::ChunkStream& cs) {
-                std::vector<NewsItem> notifications(std::begin(gNewsItems), std::end(gNewsItems));
-                cs.ReadWriteVector(notifications, [&cs](NewsItem& notification) {
-                    cs.ReadWrite(notification.Type);
-                    cs.ReadWrite(notification.Flags);
-                    cs.ReadWrite(notification.Assoc);
-                    cs.ReadWrite(notification.Ticks);
-                    cs.ReadWrite(notification.MonthYear);
-                    cs.ReadWrite(notification.Day);
-                    if (cs.GetMode() == OrcaStream::Mode::READING)
-                    {
-                        auto s = cs.Read<std::string>();
-                        String::Set(notification.Text, sizeof(notification.Text), s.c_str());
-                    }
-                    else
-                    {
-                        cs.Write(std::string(notification.Text));
-                    }
-                });
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    for (size_t i = 0; i < std::size(gNewsItems); i++)
+                    gNewsItems.Clear();
+
+                    std::vector<News::Item> recent;
+                    cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
+                    for (size_t i = 0; i < std::min<size_t>(recent.size(), News::ItemHistoryStart); i++)
                     {
-                        if (notifications.size() > i)
-                        {
-                            gNewsItems[i] = notifications[i];
-                        }
-                        else
-                        {
-                            gNewsItems[i] = {};
-                            gNewsItems[i].Type = NEWS_ITEM_NULL;
-                        }
+                        gNewsItems[i] = recent[i];
+                    }
+
+                    std::vector<News::Item> archived;
+                    cs.ReadWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
+                    size_t offset = News::ItemHistoryStart;
+                    for (size_t i = 0; i < std::min<size_t>(archived.size(), News::MaxItemsArchive); i++)
+                    {
+                        gNewsItems[offset + i] = archived[i];
                     }
                 }
+                else
+                {
+                    std::vector<News::Item> recent(std::begin(gNewsItems.GetRecent()), std::end(gNewsItems.GetRecent()));
+                    cs.ReadWriteVector(recent, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
+
+                    std::vector<News::Item> archived(std::begin(gNewsItems.GetArchived()), std::end(gNewsItems.GetArchived()));
+                    cs.ReadWriteVector(archived, [&cs](News::Item& item) { ReadWriteNewsItem(cs, item); });
+                }
             });
+        }
+
+        static void ReadWriteNewsItem(OrcaStream::ChunkStream& cs, News::Item& item)
+        {
+            cs.ReadWrite(item.Type);
+            cs.ReadWrite(item.Flags);
+            cs.ReadWrite(item.Assoc);
+            cs.ReadWrite(item.Ticks);
+            cs.ReadWrite(item.MonthYear);
+            cs.ReadWrite(item.Day);
+            if (cs.GetMode() == OrcaStream::Mode::READING)
+            {
+                auto s = cs.Read<std::string>();
+                String::Set(item.Text, sizeof(item.Text), s.c_str());
+            }
+            else
+            {
+                cs.Write(std::string_view(item.Text, std::size(item.Text)));
+            }
         }
 
         void ReadWriteDerivedChunk(OrcaStream& os)
@@ -736,7 +749,7 @@ namespace OpenRCT2
         void ReadWriteSpritesChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::SPRITES, [](OrcaStream::ChunkStream& cs) {
-                for (size_t i = 0; i < SPRITE_LIST_COUNT; i++)
+                for (size_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
                 {
                     cs.ReadWrite(gSpriteListHead[i]);
                     cs.ReadWrite(gSpriteListCount[i]);
@@ -751,17 +764,15 @@ namespace OpenRCT2
 
         void AutoDeriveVariables()
         {
-            Peep* peep{};
-            uint16_t spriteIndex{};
             uint16_t numGuestsInPark = 0;
             uint16_t numGuestsHeadingsForPark = 0;
-            FOR_ALL_GUESTS (spriteIndex, peep)
+            for (auto peep : EntityList<Peep>(EntityListId::Peep))
             {
-                if (peep->state == PEEP_STATE_ENTERING_PARK)
+                if (peep->State == PEEP_STATE_ENTERING_PARK)
                 {
                     numGuestsHeadingsForPark++;
                 }
-                if (!peep->outside_of_park)
+                if (!peep->OutsideOfPark)
                 {
                     numGuestsInPark++;
                 }
@@ -904,7 +915,7 @@ public:
     }
 
     ParkLoadResult LoadFromStream(
-        IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) override
+        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) override
     {
         return Load(path);
     }
