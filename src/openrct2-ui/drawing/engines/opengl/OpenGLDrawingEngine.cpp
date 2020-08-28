@@ -69,6 +69,7 @@ private:
     int32_t _clipTop = 0;
     int32_t _clipRight = 0;
     int32_t _clipBottom = 0;
+    ScreenCoordsXY _spriteOffset;
 
     int32_t _drawCount = 0;
 
@@ -693,10 +694,10 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
     right = right / _dpi->zoom_level;
     bottom = bottom / _dpi->zoom_level;
 
-    left += _clipLeft;
-    top += _clipTop;
-    right += _clipLeft;
-    bottom += _clipTop;
+    left += _spriteOffset.x;
+    top += _spriteOffset.y;
+    right += _spriteOffset.x;
+    bottom += _spriteOffset.y;
 
     const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
@@ -805,10 +806,10 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t ma
     right = right * _dpi->zoom_level;
     bottom = bottom * _dpi->zoom_level;
 
-    left += _clipLeft;
-    top += _clipTop;
-    right += _clipLeft;
-    bottom += _clipTop;
+    left += _spriteOffset.x;
+    top += _spriteOffset.y;
+    right += _spriteOffset.x;
+    bottom += _spriteOffset.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -885,15 +886,10 @@ void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, const
 
     const auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 
-    int32_t drawOffsetX = g1Element->x_offset;
-    int32_t drawOffsetY = g1Element->y_offset;
-    int32_t drawWidth = static_cast<uint16_t>(g1Element->width);
-    int32_t drawHeight = static_cast<uint16_t>(g1Element->height);
-
-    int32_t left = x + drawOffsetX;
-    int32_t top = y + drawOffsetY;
-    int32_t right = left + drawWidth;
-    int32_t bottom = top + drawHeight;
+    int32_t left = x + g1Element->x_offset;
+    int32_t top = y + g1Element->y_offset;
+    int32_t right = left + static_cast<uint16_t>(g1Element->width);
+    int32_t bottom = top + static_cast<uint16_t>(g1Element->height);
 
     if (left > right)
     {
@@ -904,10 +900,20 @@ void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, const
         std::swap(top, bottom);
     }
 
-    left += _offsetX;
-    top += _offsetY;
-    right += _offsetX;
-    bottom += _offsetY;
+    left -= _dpi->x;
+    top -= _dpi->y;
+    right -= _dpi->x;
+    bottom -= _dpi->y;
+
+    left = left / _dpi->zoom_level;
+    top = top / _dpi->zoom_level;
+    right = right / _dpi->zoom_level;
+    bottom = bottom / _dpi->zoom_level;
+
+    left += _spriteOffset.x;
+    top += _spriteOffset.y;
+    right += _spriteOffset.x;
+    bottom += _spriteOffset.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -1001,20 +1007,22 @@ void OpenGLDrawingContext::HandleTransparency()
 
 void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo* dpi)
 {
-    rct_drawpixelinfo* screenDPI = _engine->GetDPI();
+    auto screenDPI = _engine->GetDPI();
+    auto bytesPerRow = screenDPI->GetBytesPerRow();
+    auto bitsOffset = static_cast<size_t>(dpi->bits - screenDPI->bits);
 #    ifndef NDEBUG
-    size_t bitsSize = static_cast<size_t>(screenDPI->height) * static_cast<size_t>(screenDPI->width + screenDPI->pitch);
-#    endif
-    size_t bitsOffset = static_cast<size_t>(dpi->bits - screenDPI->bits);
-
+    auto bitsSize = static_cast<size_t>(screenDPI->height) * bytesPerRow;
     assert(bitsOffset < bitsSize);
+#    endif
 
-    _clipLeft = static_cast<int32_t>(bitsOffset % (screenDPI->width + screenDPI->pitch));
-    _clipTop = static_cast<int32_t>(bitsOffset / (screenDPI->width + screenDPI->pitch));
+    _clipLeft = static_cast<int32_t>(bitsOffset % bytesPerRow) + dpi->remX;
+    _clipTop = static_cast<int32_t>(bitsOffset / bytesPerRow) + dpi->remY;
     _clipRight = _clipLeft + (dpi->width / dpi->zoom_level);
     _clipBottom = _clipTop + (dpi->height / dpi->zoom_level);
     _offsetX = _clipLeft - dpi->x;
     _offsetY = _clipTop - dpi->y;
+    _spriteOffset.x = _clipLeft - dpi->remX;
+    _spriteOffset.y = _clipTop - dpi->remY;
 
     _dpi = dpi;
 }

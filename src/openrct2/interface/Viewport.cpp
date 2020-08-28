@@ -17,6 +17,7 @@
 #include "../core/Guard.hpp"
 #include "../core/JobPool.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/IDrawingEngine.h"
 #include "../paint/Paint.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
@@ -937,6 +938,8 @@ void viewport_paint(
     dpi1.height = height;
     dpi1.pitch = (dpi->width + dpi->pitch) - (width / viewport->zoom);
     dpi1.zoom_level = viewport->zoom;
+    dpi1.remX = std::max(0, dpi->x - x);
+    dpi1.remY = std::max(0, dpi->y - y);
 
     // make sure, the compare operation is done in int16_t to avoid the loop becoming an infiniteloop.
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
@@ -1016,7 +1019,13 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
     auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
     if (paletteId != PALETTE_NULL)
     {
-        gfx_filter_rect(dpi, { { dpi->x, dpi->y }, { dpi->width + dpi->x - 1, dpi->height + dpi->y - 1 } }, paletteId);
+        // Only scale width if zoomed in more than 1:1
+        auto zoomLevel = dpi->zoom_level < 0 ? dpi->zoom_level : 0;
+        auto x = dpi->x;
+        auto y = dpi->y;
+        auto w = (dpi->width / zoomLevel) - 1;
+        auto h = (dpi->height / zoomLevel) - 1;
+        gfx_filter_rect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
     }
 }
 
@@ -1916,5 +1925,17 @@ void viewport_set_saved_view()
 
         gSavedViewZoom = viewport->zoom;
         gSavedViewRotation = get_current_rotation();
+    }
+}
+
+ZoomLevel ZoomLevel::min()
+{
+    if (drawing_engine_get_type() == DRAWING_ENGINE_OPENGL)
+    {
+        return -2;
+    }
+    else
+    {
+        return 0;
     }
 }

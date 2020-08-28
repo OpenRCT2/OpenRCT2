@@ -1118,24 +1118,12 @@ void paint_floating_money_effect(
     session->LastPSString = ps;
 }
 
-static rct_drawpixelinfo draw_pixel_info_crop_by_zoom(const rct_drawpixelinfo& dpi)
-{
-    auto result = dpi;
-    result.x = dpi.x * dpi.zoom_level;
-    result.y = dpi.y * dpi.zoom_level;
-    result.width = dpi.width / dpi.zoom_level;
-    result.height = dpi.height / dpi.zoom_level;
-    result.zoom_level = 0;
-    return result;
-}
-
 /**
  *
  *  rct2: 0x006860C3
  */
 void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
 {
-    auto dpi2 = draw_pixel_info_crop_by_zoom(*dpi);
     do
     {
         char buffer[256]{};
@@ -1151,6 +1139,6 @@ void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
         }
 
         gfx_draw_string_with_y_offsets(
-            &dpi2, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont);
+            dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont);
     } while ((ps = ps->next) != nullptr);
 }
