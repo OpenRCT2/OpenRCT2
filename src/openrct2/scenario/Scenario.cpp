@@ -63,7 +63,6 @@ std::string gScenarioName;
 std::string gScenarioDetails;
 std::string gScenarioCompletedBy;
 std::string gScenarioSavePath;
-char gScenarioExpansionPacks[3256];
 bool gFirstTimeSaving = true;
 uint16_t gSavedAge;
 uint32_t gLastAutoSaveUpdate = 0;

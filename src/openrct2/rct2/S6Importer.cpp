@@ -385,7 +385,6 @@ public:
             // For savegames the filename can be arbitrary, so we have no choice but to rely on the name provided
             String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
         }
-        std::memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
         gCurrentTicks = _s6.game_ticks_1;
         gCurrentRealTimeTicks = 0;
 

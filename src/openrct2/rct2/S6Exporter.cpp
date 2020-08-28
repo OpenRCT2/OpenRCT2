@@ -352,7 +352,6 @@ void S6Exporter::Export()
         _s6.park_entrance_direction[i] = entrance.direction;
     }
     safe_strcpy(_s6.scenario_filename, gScenarioFileName, sizeof(_s6.scenario_filename));
-    std::memcpy(_s6.saved_expansion_pack_names, gScenarioExpansionPacks, sizeof(_s6.saved_expansion_pack_names));
     ExportBanners();
     _s6.game_ticks_1 = gCurrentTicks;
 
