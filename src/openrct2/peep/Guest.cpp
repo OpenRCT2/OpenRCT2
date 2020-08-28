@@ -2110,15 +2110,11 @@ bool Guest::HasRidden(const Ride* ride) const
 
 void Guest::SetHasRiddenRideType(int32_t rideType)
 {
-    // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
-    rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
     RideTypesBeenOn[rideType / 8] |= 1 << (rideType % 8);
 }
 
 bool Guest::HasRiddenRideType(int32_t rideType) const
 {
-    // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
-    rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
     return RideTypesBeenOn[rideType / 8] & (1 << (rideType % 8));
 }
 
