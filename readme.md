@@ -155,6 +155,10 @@ cmake ..
 make
 ln -s ../data data
 ```
+If cmake fails with the message "ICU libraries were not found":
+```
+export CMAKE_PREFIX_PATH=/usr/local/opt/icu4c
+```
 Then you can run the game by running `./openrct2`.
 
 ### Linux:
