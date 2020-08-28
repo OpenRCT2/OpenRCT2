@@ -21,7 +21,7 @@ void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* 
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
     _legacyType.text_height = stream->ReadValue<uint8_t>();
 
-    GetStringTable().Read(context, stream, static_cast<uint8_t>(ObjectStringID::NAME));
+    GetStringTable().Read(context, stream, ObjectStringID::NAME);
     GetImageTable().Read(context, stream);
 }
 

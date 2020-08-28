@@ -35,7 +35,7 @@ enum class ObjectStringID : uint8_t
 
 struct StringTableEntry
 {
-    uint8_t Id = static_cast<uint8_t>(ObjectStringID::UNKNOWN);
+    ObjectStringID Id = ObjectStringID::UNKNOWN;
     uint8_t LanguageId = LANGUAGE_UNDEFINED;
     std::string Text;
 };
@@ -50,9 +50,9 @@ public:
     StringTable(const StringTable&) = delete;
     StringTable& operator=(const StringTable&) = delete;
 
-    void Read(IReadObjectContext* context, OpenRCT2::IStream* stream, uint8_t id);
+    void Read(IReadObjectContext* context, OpenRCT2::IStream* stream, ObjectStringID id);
     void Sort();
-    std::string GetString(uint8_t id) const;
-    std::string GetString(uint8_t language, uint8_t id) const;
-    void SetString(uint8_t id, uint8_t language, const std::string& text);
+    std::string GetString(ObjectStringID id) const;
+    std::string GetString(uint8_t language, ObjectStringID id) const;
+    void SetString(ObjectStringID id, uint8_t language, const std::string& text);
 };

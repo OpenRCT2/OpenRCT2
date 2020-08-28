@@ -459,17 +459,17 @@ namespace ObjectJsonHelpers
         return result;
     }
 
-    static uint8_t ParseStringId(const std::string& s)
+    static ObjectStringID ParseStringId(const std::string& s)
     {
         if (s == "name")
-            return static_cast<uint8_t>(ObjectStringID::NAME);
+            return ObjectStringID::NAME;
         if (s == "description")
-            return static_cast<uint8_t>(ObjectStringID::DESCRIPTION);
+            return ObjectStringID::DESCRIPTION;
         if (s == "capacity")
-            return static_cast<uint8_t>(ObjectStringID::CAPACITY);
+            return ObjectStringID::CAPACITY;
         if (s == "vehicleName")
-            return static_cast<uint8_t>(ObjectStringID::VEHICLE_NAME);
-        return static_cast<uint8_t>(ObjectStringID::UNKNOWN);
+            return ObjectStringID::VEHICLE_NAME;
+        return ObjectStringID::UNKNOWN;
     }
 
     void LoadStrings(const json_t* root, StringTable& stringTable)
@@ -480,7 +480,7 @@ namespace ObjectJsonHelpers
         json_object_foreach(jsonStrings, key, jlanguages)
         {
             auto stringId = ParseStringId(key);
-            if (stringId != static_cast<uint8_t>(ObjectStringID::UNKNOWN))
+            if (stringId != ObjectStringID::UNKNOWN)
             {
                 const char* locale;
                 json_t* jstring;

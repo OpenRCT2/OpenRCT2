@@ -51,9 +51,9 @@ std::string Object::GetOverrideString(uint8_t index) const
     return String::ToStd(result);
 }
 
-std::string Object::GetString(uint8_t index) const
+std::string Object::GetString(ObjectStringID index) const
 {
-    auto sz = GetOverrideString(index);
+    auto sz = GetOverrideString(static_cast<uint8_t>(index));
     if (sz.empty())
     {
         sz = GetStringTable().GetString(index);
@@ -61,7 +61,7 @@ std::string Object::GetString(uint8_t index) const
     return sz;
 }
 
-std::string Object::GetString(int32_t language, uint8_t index) const
+std::string Object::GetString(int32_t language, ObjectStringID index) const
 {
     return GetStringTable().GetString(language, index);
 }
@@ -102,12 +102,12 @@ void Object::SetSourceGames(const std::vector<uint8_t>& sourceGames)
 
 std::string Object::GetName() const
 {
-    return GetString(static_cast<uint8_t>(ObjectStringID::NAME));
+    return GetString(ObjectStringID::NAME);
 }
 
 std::string Object::GetName(int32_t language) const
 {
-    return GetString(language, static_cast<uint8_t>(ObjectStringID::NAME));
+    return GetString(language, ObjectStringID::NAME);
 }
 
 void rct_object_entry::SetName(const std::string_view& value)

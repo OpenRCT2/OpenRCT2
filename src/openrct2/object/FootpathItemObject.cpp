@@ -30,7 +30,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     _legacyType.path_bit.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
 
-    GetStringTable().Read(context, stream, static_cast<uint8_t>(ObjectStringID::NAME));
+    GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);
