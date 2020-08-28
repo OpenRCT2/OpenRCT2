@@ -212,15 +212,14 @@ rct_window* window_create_auto_pos(
     {
         if (w->flags & WF_STICK_TO_BACK)
             continue;
-        const std::array<ScreenCoordsXY, 8> offsets = {
-            ScreenCoordsXY{ w->width + 2, 0 },
-            ScreenCoordsXY{ -w->width - 2, 0 },
-            ScreenCoordsXY{ 0, w->height + 2 },
-            ScreenCoordsXY{ 0, -w->height - 2 },
-            ScreenCoordsXY{ w->width + 2, -w->height - 2 },
-            ScreenCoordsXY{ -w->width - 2, -w->height - 2 },
-            ScreenCoordsXY{ w->width + 2, w->height + 2 },
-            ScreenCoordsXY{ -w->width - 2, w->height + 2 } };
+        const std::array<ScreenCoordsXY, 8> offsets = { ScreenCoordsXY{ w->width + 2, 0 },
+                                                        ScreenCoordsXY{ -w->width - 2, 0 },
+                                                        ScreenCoordsXY{ 0, w->height + 2 },
+                                                        ScreenCoordsXY{ 0, -w->height - 2 },
+                                                        ScreenCoordsXY{ w->width + 2, -w->height - 2 },
+                                                        ScreenCoordsXY{ -w->width - 2, -w->height - 2 },
+                                                        ScreenCoordsXY{ w->width + 2, w->height + 2 },
+                                                        ScreenCoordsXY{ -w->width - 2, w->height + 2 } };
         for (const auto& offset : offsets)
         {
             auto screenPos = w->windowPos + offset;
