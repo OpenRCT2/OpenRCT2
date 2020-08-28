@@ -23,7 +23,7 @@ void FootpathObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* 
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
     stream->Seek(1, OpenRCT2::STREAM_SEEK_CURRENT);
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, static_cast<uint8_t>(ObjectStringID::NAME));
     GetImageTable().Read(context, stream);
 
     // Validate properties

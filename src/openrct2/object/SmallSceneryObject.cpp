@@ -37,7 +37,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     _legacyType.small_scenery.num_frames = stream->ReadValue<uint16_t>();
     _legacyType.small_scenery.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, static_cast<uint8_t>(ObjectStringID::NAME));
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);

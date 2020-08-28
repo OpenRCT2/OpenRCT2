@@ -29,7 +29,7 @@ void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stre
     stream->Seek(1, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.wall.scrolling_mode = stream->ReadValue<uint8_t>();
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, static_cast<uint8_t>(ObjectStringID::NAME));
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);

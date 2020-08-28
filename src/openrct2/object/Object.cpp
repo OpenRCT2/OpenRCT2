@@ -102,12 +102,12 @@ void Object::SetSourceGames(const std::vector<uint8_t>& sourceGames)
 
 std::string Object::GetName() const
 {
-    return GetString(OBJ_STRING_ID_NAME);
+    return GetString(static_cast<uint8_t>(ObjectStringID::NAME));
 }
 
 std::string Object::GetName(int32_t language) const
 {
-    return GetString(language, OBJ_STRING_ID_NAME);
+    return GetString(language, static_cast<uint8_t>(ObjectStringID::NAME));
 }
 
 void rct_object_entry::SetName(const std::string_view& value)
