@@ -398,8 +398,7 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Draw item string
                 ScreenCoordsXY screenCoords = { w->windowPos.x + 2 + (cell_x * _dropdown_item_width),
                                                 w->windowPos.y + 2 + (cell_y * _dropdown_item_height) };
-                gfx_draw_string_left_clipped(
-                    dpi, item, static_cast<void*>(&gDropdownItemsArgs[i]), colour, screenCoords, w->width - 5);
+                DrawTextEllipsised(dpi, screenCoords, w->width - 5, item, static_cast<void*>(&gDropdownItemsArgs[i]), colour);
             }
         }
     }

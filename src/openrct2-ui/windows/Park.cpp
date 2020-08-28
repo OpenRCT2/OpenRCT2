@@ -875,9 +875,9 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<rct_string_id>(park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
     labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
-    gfx_draw_string_centred_clipped(
-        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK,
-        w->windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width());
+    DrawTextEllipsised(
+        dpi, w->windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(), STR_BLACK_STRING, ft,
+        COLOUR_BLACK, TextAlignment::CENTRE);
 }
 
 /**

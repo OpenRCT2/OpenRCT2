@@ -377,9 +377,9 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ft = Formatter::Common();
         ft.Add<const char*>(buffer);
 
-        gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top },
-            widget->width() - 8);
+        DrawTextEllipsised(
+            dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
+            COLOUR_BLACK, TextAlignment::CENTRE);
     }
 
     // Draw ping
@@ -405,7 +405,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ft.Add<rct_string_id>(STR_ACTION_NA);
     }
-    gfx_draw_string_centred_clipped(dpi, STR_LAST_ACTION_RAN, gCommonFormatArgs, COLOUR_BLACK, screenCoords, width);
+    DrawTextEllipsised(dpi, screenCoords, width, STR_LAST_ACTION_RAN, ft, COLOUR_BLACK);
 
     if (w->viewport != nullptr && w->var_492 != -1)
     {

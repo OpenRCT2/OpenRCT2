@@ -1026,7 +1026,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                    : STR_NONE;
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], screenPos, widget->width());
+        DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1]);
     }
     widget = &w->widgets[WIDX_LIST_SORT_RIDE];
     if (widget->type != WWT_EMPTY)
@@ -1034,7 +1034,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                    : STR_NONE;
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], screenPos, widget->width());
+        DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1]);
     }
 
     if (w->selected_list_item == -1 || _loadedObject == nullptr)
@@ -1062,7 +1062,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
-        gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
+        DrawTextEllipsised(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::CENTRE);
     }
 
     // Draw description of object
@@ -1121,9 +1121,9 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         }
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(authorsString.c_str());
-        gfx_draw_string_right_clipped(
-            dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + w->width - 5, screenPos.y },
-            w->width - w->widgets[WIDX_LIST].right - 4);
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, w->width - w->widgets[WIDX_LIST].right - 4,
+            STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::RIGHT);
     }
 }
 /**
@@ -1194,7 +1194,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 // Draw ride type
                 rct_string_id rideTypeStringId = get_ride_type_string_id(listItem.repositoryItem);
                 safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
-                gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, screenCoords, width_limit - 15);
+                DrawTextEllipsised(dpi, screenCoords, width_limit - 15, STR_STRING, &bufferWithColour, colour);
                 screenCoords.x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
             }
 
@@ -1207,7 +1207,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
 
                 *buffer = 0;
             }
-            gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, screenCoords, width_limit);
+            DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, &bufferWithColour, colour);
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }

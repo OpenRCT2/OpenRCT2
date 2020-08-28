@@ -609,7 +609,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         // Ride name
         auto ft = Formatter::Common();
         ride->FormatNameTo(ft);
-        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y - 1 }, 159);
+        DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft, COLOUR_BLACK);
 
         // Ride information
         ft.Rewind();
@@ -751,7 +751,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             ft.Rewind();
             ft.Add<rct_string_id>(formatSecondary);
         }
-        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 160, y - 1 }, 157);
+        DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft, COLOUR_BLACK);
         y += SCROLLABLE_ROW_HEIGHT;
     }
 }

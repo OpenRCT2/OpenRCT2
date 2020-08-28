@@ -2840,9 +2840,9 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft = Formatter::Common();
     widget = &window_ride_main_widgets[WIDX_STATUS];
     rct_string_id rideStatus = window_ride_get_status(w, ft);
-    gfx_draw_string_centred_clipped(
-        dpi, rideStatus, gCommonFormatArgs, COLOUR_BLACK,
-        w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width());
+    DrawTextEllipsised(
+        dpi, w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width(), rideStatus, ft,
+        COLOUR_BLACK, TextAlignment::CENTRE);
 }
 
 #pragma endregion
@@ -5027,8 +5027,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
 
-        gfx_draw_string_left_clipped(
-            dpi, STR_STATION_STYLE, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97);
+        DrawTextEllipsised(dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, {}, COLOUR_BLACK);
     }
 }
 
@@ -5765,7 +5764,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     ft.Add<uint16_t>(0);
                     ft.Add<uint16_t>(0);
                     ft.Add<uint16_t>(0);
-                    gfx_draw_string_left_clipped(dpi, STR_RIDE_TIME, gCommonFormatArgs, COLOUR_BLACK, screenCoords, 308);
+                    DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_TIME, ft, COLOUR_BLACK);
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
 
@@ -5803,7 +5802,8 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 ft.Add<uint16_t>(0);
                 ft.Add<uint16_t>(0);
                 ft.Add<uint16_t>(0);
-                gfx_draw_string_left_clipped(dpi, STR_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, screenCoords, 308);
+                DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_LENGTH, ft, COLOUR_BLACK);
+
                 screenCoords.y += LIST_ROW_HEIGHT;
 
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))

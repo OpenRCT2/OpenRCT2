@@ -718,8 +718,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw path text
     auto ft = Formatter::Common();
     ft.Add<utf8*>(Platform::StrDecompToPrecomp(buffer));
-    gfx_draw_string_left_clipped(
-        dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8);
+    DrawTextEllipsised(dpi, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8, STR_STRING, ft, COLOUR_BLACK);
 
     // Name button text
     rct_string_id id = STR_NONE;
@@ -784,7 +783,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(_listItems[i].name.c_str());
         int32_t max_file_width = w->widgets[WIDX_SORT_NAME].width() - 10;
-        gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { 10, y }, max_file_width);
+        DrawTextEllipsised(dpi, { 10, y }, max_file_width, stringId, ft, COLOUR_BLACK);
 
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
@@ -792,14 +791,12 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].date_formatted.c_str());
-            gfx_draw_string_right_clipped(
-                dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth);
+            DrawTextEllipsised(dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, COLOUR_BLACK);
 
             ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].time_formatted.c_str());
-            gfx_draw_string_left_clipped(
-                dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth);
+            DrawTextEllipsised(dpi, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth, stringId, ft, COLOUR_BLACK);
         }
     }
 }

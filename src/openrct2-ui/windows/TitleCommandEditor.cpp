@@ -739,29 +739,30 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY - 14 });
 
     // Command dropdown name
-    gfx_draw_string_left_clipped(
-        dpi, command_info.nameStringId, nullptr, w->colours[1],
-        { w->windowPos.x + w->widgets[WIDX_COMMAND].left + 1, w->windowPos.y + w->widgets[WIDX_COMMAND].top },
-        w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4);
+    DrawTextEllipsised(
+        dpi, { w->windowPos.x + w->widgets[WIDX_COMMAND].left + 1, w->windowPos.y + w->widgets[WIDX_COMMAND].top },
+        w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4, command_info.nameStringId, {},
+        w->colours[1]);
 
     // Label (e.g. "Location:")
     gfx_draw_string_left(dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY2 - 14 });
 
     if (command.Type == TITLE_SCRIPT_SPEED)
     {
-        gfx_draw_string_left_clipped(
-            dpi, SpeedNames[command.Speed - 1], nullptr, w->colours[1],
-            { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
-            w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
+            w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, SpeedNames[command.Speed - 1], {},
+            w->colours[1]);
     }
     if (command.Type == TITLE_SCRIPT_FOLLOW)
     {
         uint8_t colour = COLOUR_BLACK;
         rct_string_id spriteString = STR_TITLE_COMMAND_EDITOR_FORMAT_SPRITE_NAME;
+        auto ft = Formatter::Common();
         if (command.SpriteIndex != SPRITE_INDEX_NULL)
         {
             window_draw_viewport(dpi, w);
-            Formatter::Common().Add<utf8*>(command.SpriteName);
+            ft.Add<utf8*>(command.SpriteName);
         }
         else
         {
@@ -772,37 +773,36 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         gfx_set_dirty_blocks(
             { { w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_VIEWPORT].left, w->widgets[WIDX_VIEWPORT].top } },
               { w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_VIEWPORT].right, w->widgets[WIDX_VIEWPORT].bottom } } });
-        gfx_draw_string_left_clipped(
-            dpi, spriteString, gCommonFormatArgs, colour,
-            { w->windowPos.x + w->widgets[WIDX_VIEWPORT].left + 2, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top + 1 },
-            w->widgets[WIDX_VIEWPORT].width() - 2);
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + w->widgets[WIDX_VIEWPORT].left + 2, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top + 1 },
+            w->widgets[WIDX_VIEWPORT].width() - 2, spriteString, ft, colour);
     }
     else if (command.Type == TITLE_SCRIPT_LOAD)
     {
         if (command.SaveIndex == SAVE_INDEX_INVALID)
         {
-            gfx_draw_string_left_clipped(
-                dpi, STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, nullptr, w->colours[1],
-                { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
-                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+            DrawTextEllipsised(
+                dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4,
+                STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, {}, w->colours[1]);
         }
         else
         {
-            Formatter::Common().Add<utf8*>(_sequence->Saves[command.SaveIndex]);
-            gfx_draw_string_left_clipped(
-                dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
-                { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
-                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+            auto ft = Formatter::Common();
+            ft.Add<utf8*>(_sequence->Saves[command.SaveIndex]);
+            DrawTextEllipsised(
+                dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, STR_STRING, ft, w->colours[1]);
         }
     }
     else if (command.Type == TITLE_SCRIPT_LOADSC)
     {
         if (command.Scenario[0] == '\0')
         {
-            gfx_draw_string_left_clipped(
-                dpi, STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED, nullptr, w->colours[1],
-                { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
-                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+            DrawTextEllipsised(
+                dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4,
+                STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED, {}, w->colours[1]);
         }
         else
         {
@@ -817,11 +817,11 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             {
                 nameString = STR_TITLE_COMMAND_EDITOR_MISSING_SCENARIO;
             }
-            Formatter::Common().Add<const char*>(name);
-            gfx_draw_string_left_clipped(
-                dpi, nameString, gCommonFormatArgs, w->colours[1],
-                { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
-                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+            auto ft = Formatter::Common();
+            ft.Add<const char*>(name);
+            DrawTextEllipsised(
+                dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, nameString, ft, w->colours[1]);
         }
     }
 }

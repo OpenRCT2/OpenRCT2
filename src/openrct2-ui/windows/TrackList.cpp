@@ -558,7 +558,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         // Vehicle design not available
-        gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, nullptr, COLOUR_BLACK, screenPos, 368);
+        DrawTextEllipsised(dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
         screenPos.y -= SCROLLABLE_ROW_HEIGHT;
     }
 
@@ -567,15 +567,15 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (!gTrackDesignSceneryToggle)
         {
             // Scenery not available
-            gfx_draw_string_centred_clipped(
-                dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, screenPos, 368);
+            DrawTextEllipsised(
+                dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
             screenPos.y -= SCROLLABLE_ROW_HEIGHT;
         }
     }
 
     // Track design name
     utf8* trackName = _trackDesigns[trackIndex].name;
-    gfx_draw_string_centred_clipped(dpi, STR_TRACK_PREVIEW_NAME_FORMAT, &trackName, COLOUR_BLACK, screenPos, 368);
+    DrawTextEllipsised(dpi, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, &trackName, COLOUR_BLACK, TextAlignment::CENTRE);
 
     // Information
     screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->bottom + 2 };
@@ -622,7 +622,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             auto ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
             ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
-            gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, screenPos, 214);
+            DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft, COLOUR_BLACK);
             screenPos.y += LIST_ROW_HEIGHT;
         }
 

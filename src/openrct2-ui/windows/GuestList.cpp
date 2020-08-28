@@ -724,7 +724,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         format = STR_ALL_GUESTS_SUMMARISED;
     }
-    gfx_draw_string_left_clipped(dpi, format, _window_guest_list_filter_arguments.args, COLOUR_BLACK, screenCoords, 310);
+    DrawTextEllipsised(dpi, screenCoords, 310, format, _window_guest_list_filter_arguments.args, COLOUR_BLACK);
 
     // Number of guests (list items)
     if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
@@ -782,7 +782,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     }
                     auto ft = Formatter::Common();
                     peep->FormatNameTo(ft);
-                    gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, 113);
+                    DrawTextEllipsised(dpi, { 0, y }, 113, format, ft, COLOUR_BLACK);
 
                     switch (_window_guest_list_selected_view)
                     {
@@ -797,7 +797,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                             // Action
                             ft = Formatter::Common();
                             peep->FormatActionTo(ft);
-                            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 133, y }, 314);
+                            DrawTextEllipsised(dpi, { 133, y }, 314, format, ft, COLOUR_BLACK);
                             break;
                         case VIEW_THOUGHTS:
                             // For each thought
@@ -812,7 +812,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                     break;
 
                                 peep_thought_set_format_args(&peep->Thoughts[j]);
-                                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 118, y }, 329);
+                                DrawTextEllipsised(dpi, { 118, y }, 329, format, gCommonFormatArgs, COLOUR_BLACK);
                                 break;
                             }
                             break;
@@ -857,7 +857,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     std::memcpy(
                         gCommonFormatArgs, _window_guest_list_groups_arguments[i].args,
                         std::min(sizeof(gCommonFormatArgs), sizeof(_window_guest_list_groups_arguments[i].args)));
-                    gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, 414);
+                    DrawTextEllipsised(dpi, { 0, y }, 414, format, gCommonFormatArgs, COLOUR_BLACK);
 
                     // Draw guest count
                     auto ft = Formatter::Common();

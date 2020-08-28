@@ -1126,7 +1126,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->top - 1 };
     int32_t width = widget->width();
-    gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
+    DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::CENTRE);
 
     // Draw the marquee thought
     widget = &w->widgets[WIDX_MARQUEE];
@@ -1774,7 +1774,7 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
             ride->FormatNameTo(ft);
         }
     }
-    gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, COLOUR_BLACK, screenCoords, w->width - 14);
+    DrawTextEllipsised(dpi, screenCoords, w->width - 14, STR_FAVOURITE_RIDE, ft, COLOUR_BLACK);
 }
 
 /**

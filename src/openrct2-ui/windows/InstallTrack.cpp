@@ -241,8 +241,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (!gTrackDesignSceneryToggle)
         {
             // Scenery not available
-            gfx_draw_string_centred_clipped(
-                dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, screenPos, 368);
+            DrawTextEllipsised(dpi, screenPos, 308, STR_BLACK_STRING, {}, COLOUR_BLACK, TextAlignment::CENTRE);
             screenPos.y -= LIST_ROW_HEIGHT;
         }
     }
@@ -314,7 +313,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
         ft.Add<uint16_t>(td6->ride_length);
-        gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, screenPos, 214);
+        DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft, COLOUR_BLACK);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 

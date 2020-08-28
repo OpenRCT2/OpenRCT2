@@ -831,17 +831,19 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
         {
-            auto ft = Formatter::Common();
-            ft.Add<const char*>(_sequenceName);
             gfx_draw_string_left(
                 dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1],
                 w->windowPos + ScreenCoordsXY{ 10, window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 });
-            gfx_draw_string_left_clipped(
-                dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
-                { w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
-                  w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top },
-                w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
-                    - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4);
+
+            auto ft = Formatter::Common();
+            ft.Add<const char*>(_sequenceName);
+
+            ScreenCoordsXY screenPos = { w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
+                                         w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top };
+            auto width = w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
+                - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4;
+
+            DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, w->colours[1]);
             break;
         }
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
