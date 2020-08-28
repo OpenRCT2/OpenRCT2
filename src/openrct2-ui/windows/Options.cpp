@@ -1087,7 +1087,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
 
                     window_options_show_dropdown(w, widget, 3);
 
-                    dropdown_set_checked(gConfigGeneral.virtual_floor_style, true);
+                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
                     break;
             }
             break;
@@ -1382,7 +1382,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
             switch (widgetIndex)
             {
                 case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-                    gConfigGeneral.virtual_floor_style = dropdownIndex;
+                    gConfigGeneral.virtual_floor_style = static_cast<VirtualFloorStyles>(dropdownIndex);
                     config_save_default();
                     break;
             }
@@ -1684,8 +1684,8 @@ static void window_options_invalidate(rct_window* w)
             rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
                                                          STR_VIRTUAL_FLOOR_STYLE_GLASSY };
 
-            window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[gConfigGeneral
-                                                                                                     .virtual_floor_style];
+            window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
+                gConfigGeneral.virtual_floor_style)];
 
             widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
             if (gConfigGeneral.day_night_cycle

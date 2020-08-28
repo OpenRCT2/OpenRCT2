@@ -99,10 +99,10 @@ namespace Config
         ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNearestNeighbour),
     });
 
-    static const auto Enum_VirtualFloorStyle = ConfigEnum<int32_t>({
-        ConfigEnumEntry<int32_t>("OFF", VIRTUAL_FLOOR_STYLE_OFF),
-        ConfigEnumEntry<int32_t>("CLEAR", VIRTUAL_FLOOR_STYLE_CLEAR),
-        ConfigEnumEntry<int32_t>("GLASSY", VIRTUAL_FLOOR_STYLE_GLASSY),
+    static const auto Enum_VirtualFloorStyle = ConfigEnum<VirtualFloorStyles>({
+        ConfigEnumEntry<VirtualFloorStyles>("OFF", VirtualFloorStyles::Off),
+        ConfigEnumEntry<VirtualFloorStyles>("CLEAR", VirtualFloorStyles::Clear),
+        ConfigEnumEntry<VirtualFloorStyles>("GLASSY", VirtualFloorStyles::Glassy),
     });
 
     /**
@@ -171,8 +171,8 @@ namespace Config
             model->drawing_engine = reader->GetEnum<int32_t>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
             model->use_vsync = reader->GetBoolean("use_vsync", true);
-            model->virtual_floor_style = reader->GetEnum<int32_t>(
-                "virtual_floor_style", VIRTUAL_FLOOR_STYLE_GLASSY, Enum_VirtualFloorStyle);
+            model->virtual_floor_style = reader->GetEnum<VirtualFloorStyles>(
+                "virtual_floor_style", VirtualFloorStyles::Glassy, Enum_VirtualFloorStyle);
             model->date_format = reader->GetEnum<int32_t>("date_format", platform_get_locale_date_format(), Enum_DateFormat);
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
@@ -288,7 +288,7 @@ namespace Config
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
-        writer->WriteEnum<int32_t>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
+        writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
         writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
         writer->WriteInt64("last_version_check_time", model->last_version_check_time);
     }
