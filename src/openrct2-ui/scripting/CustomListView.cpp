@@ -670,7 +670,7 @@ void CustomListView::PaintCell(
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(text);
-    DrawTextEllipsised(dpi, pos, size.width, stringId, gCommonFormatArgs, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, pos, size.width, stringId, ft, COLOUR_BLACK);
 }
 
 std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& pos)

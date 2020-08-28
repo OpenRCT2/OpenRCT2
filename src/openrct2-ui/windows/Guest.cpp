@@ -1160,8 +1160,8 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     screenPos.x = widget->width() - w->list_information_type;
-    peep_thought_set_format_args(&peep->Thoughts[i]);
-    gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { screenPos.x, 0 });
+    peep_thought_set_format_args(&peep->Thoughts[i], ft);
+    DrawTextBasic(&dpi_marquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK);
 }
 
 /**
@@ -1984,9 +1984,10 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
         int32_t width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
             - window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left - 8;
 
-        peep_thought_set_format_args(thought);
+        auto ft = Formatter::Common();
+        peep_thought_set_format_args(thought, ft);
         screenCoords.y += gfx_draw_string_left_wrapped(
-            dpi, gCommonFormatArgs, screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
+            dpi, const_cast<unsigned char*>(ft.GetStartBuf()), screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
 
         // If this is the last visible line end drawing.
         if (screenCoords.y > w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)

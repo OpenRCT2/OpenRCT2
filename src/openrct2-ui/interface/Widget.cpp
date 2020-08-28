@@ -358,15 +358,14 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         topLeft.y += widget->top;
 
     auto stringId = widget->text;
-    void* formatArgs = gCommonFormatArgs;
+    auto ft = Formatter::Common();
     if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
     {
         stringId = STR_STRING;
-        formatArgs = &widget->string;
+        ft.Add<utf8*>(widget->string);
     }
     DrawTextEllipsised(
-        dpi, { (topLeft.x + r + 1) / 2 - 1, topLeft.y }, widget->width() - 2, stringId, formatArgs, colour,
-        TextAlignment::CENTRE);
+        dpi, { (topLeft.x + r + 1) / 2 - 1, topLeft.y }, widget->width() - 2, stringId, ft, colour, TextAlignment::CENTRE);
 }
 
 /**
@@ -400,13 +399,13 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
         t = w->windowPos.y + widget->top;
 
     auto stringId = widget->text;
-    void* formatArgs = gCommonFormatArgs;
+    auto ft = Formatter::Common();
     if (widget->flags & WIDGET_FLAGS::TEXT_IS_STRING)
     {
         stringId = STR_STRING;
-        formatArgs = &widget->string;
+        ft.Add<utf8*>(widget->string);
     }
-    DrawTextEllipsised(dpi, { l + 1, t }, r - l, stringId, formatArgs, colour);
+    DrawTextEllipsised(dpi, { l + 1, t }, r - l, stringId, ft, colour);
 }
 
 /**
@@ -558,7 +557,7 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
     }
     topLeft.x += width / 2;
     DrawTextEllipsised(
-        dpi, topLeft, width, widget->text, gCommonFormatArgs, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::CENTRE);
+        dpi, topLeft, width, widget->text, Formatter::Common(), COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::CENTRE);
 }
 
 /**
@@ -595,7 +594,7 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget_is_disabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
-    DrawTextEllipsised(dpi, topLeft, widget->width() - 2, widget->text, gCommonFormatArgs, colour, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, topLeft, widget->width() - 2, widget->text, Formatter::Common(), colour, TextAlignment::CENTRE);
 }
 
 /**

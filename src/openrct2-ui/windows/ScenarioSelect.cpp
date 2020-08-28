@@ -477,7 +477,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
                                   window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
             DrawTextEllipsised(
-                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, COLOUR_BLACK, TextAlignment::CENTRE);
+                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, Formatter::Common(), COLOUR_BLACK,
+                TextAlignment::CENTRE);
             gfx_draw_string_left_wrapped(
                 dpi, nullptr, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK);
         }

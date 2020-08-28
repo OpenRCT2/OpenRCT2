@@ -241,7 +241,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (!gTrackDesignSceneryToggle)
         {
             // Scenery not available
-            DrawTextEllipsised(dpi, screenPos, 308, STR_BLACK_STRING, {}, COLOUR_BLACK, TextAlignment::CENTRE);
+            DrawTextEllipsised(dpi, screenPos, 308, STR_BLACK_STRING, Formatter::Common(), COLOUR_BLACK, TextAlignment::CENTRE);
             screenPos.y -= LIST_ROW_HEIGHT;
         }
     }

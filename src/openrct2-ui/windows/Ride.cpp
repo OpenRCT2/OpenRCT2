@@ -5027,7 +5027,8 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
 
-        DrawTextEllipsised(dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, {}, COLOUR_BLACK);
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, Formatter::Common(), COLOUR_BLACK);
     }
 }
 

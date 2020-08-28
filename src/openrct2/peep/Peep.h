@@ -1039,7 +1039,7 @@ void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-void peep_thought_set_format_args(const rct_peep_thought* thought);
+void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft);
 int32_t get_peep_face_sprite_small(Peep* peep);
 int32_t get_peep_face_sprite_large(Peep* peep);
 void game_command_pickup_guest(

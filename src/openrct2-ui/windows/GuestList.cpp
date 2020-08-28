@@ -724,7 +724,11 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         format = STR_ALL_GUESTS_SUMMARISED;
     }
-    DrawTextEllipsised(dpi, screenCoords, 310, format, _window_guest_list_filter_arguments.args, COLOUR_BLACK);
+
+    {
+        Formatter ft(_window_guest_list_filter_arguments.args);
+        DrawTextEllipsised(dpi, screenCoords, 310, format, ft, COLOUR_BLACK);
+    }
 
     // Number of guests (list items)
     if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
@@ -811,8 +815,8 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                 if (thought->freshness > 5)
                                     break;
 
-                                peep_thought_set_format_args(&peep->Thoughts[j]);
-                                DrawTextEllipsised(dpi, { 118, y }, 329, format, gCommonFormatArgs, COLOUR_BLACK);
+                                peep_thought_set_format_args(&peep->Thoughts[j], ft);
+                                DrawTextEllipsised(dpi, { 118, y }, 329, format, ft, COLOUR_BLACK);
                                 break;
                             }
                             break;
@@ -854,13 +858,11 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                             { static_cast<int32_t>(j) * 8, y + 12 }, 0);
 
                     // Draw action
-                    std::memcpy(
-                        gCommonFormatArgs, _window_guest_list_groups_arguments[i].args,
-                        std::min(sizeof(gCommonFormatArgs), sizeof(_window_guest_list_groups_arguments[i].args)));
-                    DrawTextEllipsised(dpi, { 0, y }, 414, format, gCommonFormatArgs, COLOUR_BLACK);
+                    Formatter ft(_window_guest_list_groups_arguments[i].args);
+                    DrawTextEllipsised(dpi, { 0, y }, 414, format, ft, COLOUR_BLACK);
 
                     // Draw guest count
-                    auto ft = Formatter::Common();
+                    ft = Formatter::Common();
                     ft.Add<rct_string_id>(STR_GUESTS_COUNT_COMMA_SEP);
                     ft.Add<uint32_t>(numGuests);
                     gfx_draw_string_right(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 326, y });
@@ -926,9 +928,7 @@ static FilterArguments get_arguments_from_peep(const Peep* peep)
             auto thought = &peep->Thoughts[0];
             if (thought->freshness <= 5 && thought->type != PEEP_THOUGHT_TYPE_NONE)
             {
-                std::memset(gCommonFormatArgs, 0, sizeof(gCommonFormatArgs));
-                peep_thought_set_format_args(thought);
-                std::memcpy(result.args, gCommonFormatArgs, std::min(sizeof(gCommonFormatArgs), sizeof(result.args)));
+                peep_thought_set_format_args(thought, ft);
             }
             break;
         }
