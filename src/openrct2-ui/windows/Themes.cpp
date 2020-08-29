@@ -115,29 +115,29 @@ static constexpr const int32_t WH = 107;
 
 static rct_widget window_themes_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {320,  64}, WWT_RESIZE,       1                                                                                     ), // tab content panel
-    MakeTab   ({  3, 17},                                                                                  STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
-    MakeTab   ({ 34, 17},                                                                                  STR_THEMES_TAB_MAIN_TIP            ), // main ui tab
-    MakeTab   ({ 65, 17},                                                                                  STR_THEMES_TAB_PARK_TIP            ), // park tab
-    MakeTab   ({ 96, 17},                                                                                  STR_THEMES_TAB_TOOLS_TIP           ), // tools tab
-    MakeTab   ({127, 17},                                                                                  STR_THEMES_TAB_RIDES_AND_GUESTS_TIP), // rides and peeps tab
-    MakeTab   ({158, 17},                                                                                  STR_THEMES_TAB_EDITORS_TIP         ), // editors tab
-    MakeTab   ({189, 17},                                                                                  STR_THEMES_TAB_MISC_TIP            ), // misc tab
-    MakeTab   ({220, 17},                                                                                  STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
-    MakeTab   ({251, 17},                                                                                  STR_THEMES_TAB_FEATURES_TIP        ), // features tab
-    MakeWidget({  5, 46}, {214,  15}, WWT_TABLE_HEADER, 1, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
-    MakeWidget({219, 46}, { 97,  15}, WWT_TABLE_HEADER, 1, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
-    MakeWidget({125, 60}, {175,  12}, WWT_DROPDOWN,     1                                                                                     ), // Preset colour schemes
-    MakeWidget({288, 61}, { 11,  10}, WWT_BUTTON,       1, STR_DROPDOWN_GLYPH                                                                 ),
-    MakeWidget({ 10, 82}, { 91,  12}, WWT_BUTTON,       1, STR_TITLE_EDITOR_ACTION_DUPLICATE,              STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
-    MakeWidget({110, 82}, { 91,  12}, WWT_BUTTON,       1, STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP       ), // Delete button
-    MakeWidget({210, 82}, { 91,  12}, WWT_BUTTON,       1, STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP       ), // Rename button
-    MakeWidget({  0,  0}, {  1,   1}, WWT_COLOURBTN,    1                                                                                     ), // colour button mask
-    MakeWidget({  3, 60}, {314,  44}, WWT_SCROLL,       1, SCROLL_VERTICAL                                                                    ), // staff list
-    MakeWidget({ 10, 54}, {290,  12}, WWT_CHECKBOX,     1, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                               ), // rct1 ride lights
-    MakeWidget({ 10, 69}, {290,  12}, WWT_CHECKBOX,     1, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                               ), // rct1 park lights
-    MakeWidget({ 10, 84}, {290,  12}, WWT_CHECKBOX,     1, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                     ), // rct1 scenario font
-    MakeWidget({ 10, 99}, {290,  12}, WWT_CHECKBOX,     1, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                              ), // rct1 bottom toolbar
+    MakeWidget({  0, 43}, {320,  64}, WWT_RESIZE,       WindowColour::Secondary                                                                                     ), // tab content panel
+    MakeTab   ({  3, 17},                                                                                                        STR_THEMES_TAB_SETTINGS_TIP        ), // settings tab
+    MakeTab   ({ 34, 17},                                                                                                        STR_THEMES_TAB_MAIN_TIP            ), // main ui tab
+    MakeTab   ({ 65, 17},                                                                                                        STR_THEMES_TAB_PARK_TIP            ), // park tab
+    MakeTab   ({ 96, 17},                                                                                                        STR_THEMES_TAB_TOOLS_TIP           ), // tools tab
+    MakeTab   ({127, 17},                                                                                                        STR_THEMES_TAB_RIDES_AND_GUESTS_TIP), // rides and peeps tab
+    MakeTab   ({158, 17},                                                                                                        STR_THEMES_TAB_EDITORS_TIP         ), // editors tab
+    MakeTab   ({189, 17},                                                                                                        STR_THEMES_TAB_MISC_TIP            ), // misc tab
+    MakeTab   ({220, 17},                                                                                                        STR_THEMES_TAB_PROMPTS_TIP         ), // prompts tab
+    MakeTab   ({251, 17},                                                                                                        STR_THEMES_TAB_FEATURES_TIP        ), // features tab
+    MakeWidget({  5, 46}, {214,  15}, WWT_TABLE_HEADER, WindowColour::Secondary, STR_THEMES_HEADER_WINDOW                                                           ), // Window header
+    MakeWidget({219, 46}, { 97,  15}, WWT_TABLE_HEADER, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
+    MakeWidget({125, 60}, {175,  12}, WWT_DROPDOWN,     WindowColour::Secondary                                                                                     ), // Preset colour schemes
+    MakeWidget({288, 61}, { 11,  10}, WWT_BUTTON,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                                 ),
+    MakeWidget({ 10, 82}, { 91,  12}, WWT_BUTTON,       WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_DUPLICATE,              STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
+    MakeWidget({110, 82}, { 91,  12}, WWT_BUTTON,       WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP       ), // Delete button
+    MakeWidget({210, 82}, { 91,  12}, WWT_BUTTON,       WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP       ), // Rename button
+    MakeWidget({  0,  0}, {  1,   1}, WWT_COLOURBTN,    WindowColour::Secondary                                                                                     ), // colour button mask
+    MakeWidget({  3, 60}, {314,  44}, WWT_SCROLL,       WindowColour::Secondary, SCROLL_VERTICAL                                                                    ), // staff list
+    MakeWidget({ 10, 54}, {290,  12}, WWT_CHECKBOX,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_RIDE_CONTROLS                                               ), // rct1 ride lights
+    MakeWidget({ 10, 69}, {290,  12}, WWT_CHECKBOX,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_PARK_CONTROLS                                               ), // rct1 park lights
+    MakeWidget({ 10, 84}, {290,  12}, WWT_CHECKBOX,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_SCENARIO_SELECTION_FONT                                     ), // rct1 scenario font
+    MakeWidget({ 10, 99}, {290,  12}, WWT_CHECKBOX,     WindowColour::Secondary, STR_THEMES_OPTION_RCT1_BOTTOM_TOOLBAR                                              ), // rct1 bottom toolbar
     { WIDGETS_END },
 };
 

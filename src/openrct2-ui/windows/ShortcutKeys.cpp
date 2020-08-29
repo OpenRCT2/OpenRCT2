@@ -36,8 +36,8 @@ enum WINDOW_SHORTCUT_WIDGET_IDX {
 // 0x9DE48C
 static rct_widget window_shortcut_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({4,    18}, {412, 245}, WWT_SCROLL, 0, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
-    MakeWidget({4, WH-15}, {150,  12}, WWT_BUTTON, 0, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
+    MakeWidget({4,    18}, {412, 245}, WWT_SCROLL, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
+    MakeWidget({4, WH-15}, {150,  12}, WWT_BUTTON, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
     { WIDGETS_END }
 };
 

@@ -18,7 +18,7 @@
 
 // clang-format off
 static rct_widget window_map_tooltip_widgets[] = {
-    MakeWidget({0, 0}, {200, 30}, WWT_IMGBTN, 0),
+    MakeWidget({0, 0}, {200, 30}, WWT_IMGBTN, WindowColour::Primary),
     { WIDGETS_END }
 };
 

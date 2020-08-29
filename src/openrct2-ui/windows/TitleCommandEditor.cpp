@@ -86,24 +86,24 @@ static TitleSequence * _sequence = nullptr;
 
 static rct_widget window_title_command_editor_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({ 16, 32}, { 168,  12}, WWT_DROPDOWN, 1                                                 ), // Command dropdown
-    MakeWidget({172, 33}, {  11,  12}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                             ),
-    MakeWidget({ 16, 70}, { 168,  12}, WWT_TEXT_BOX, 1                                                 ), // full textbox
+    MakeWidget({ 16, 32}, { 168,  12}, WWT_DROPDOWN, WindowColour::Secondary                                                 ), // Command dropdown
+    MakeWidget({172, 33}, {  11,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                             ),
+    MakeWidget({ 16, 70}, { 168,  12}, WWT_TEXT_BOX, WindowColour::Secondary                                                 ), // full textbox
 
-    MakeWidget({ 16, 70}, {  81,  12}, WWT_TEXT_BOX, 1                                                 ), // x textbox
-    MakeWidget({103, 70}, {  81,  12}, WWT_TEXT_BOX, 1                                                 ), // y textbox
+    MakeWidget({ 16, 70}, {  81,  12}, WWT_TEXT_BOX, WindowColour::Secondary                                                 ), // x textbox
+    MakeWidget({103, 70}, {  81,  12}, WWT_TEXT_BOX, WindowColour::Secondary                                                 ), // y textbox
 
-    MakeWidget({ 16, 70}, { 168,  12}, WWT_DROPDOWN, 1                                                 ), // Save dropdown
-    MakeWidget({172, 71}, {  11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                             ),
+    MakeWidget({ 16, 70}, { 168,  12}, WWT_DROPDOWN, WindowColour::Secondary                                                 ), // Save dropdown
+    MakeWidget({172, 71}, {  11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                             ),
 
-    MakeWidget({103, 56}, {  81,  12}, WWT_BUTTON,   1, STR_TITLE_COMMAND_EDITOR_ACTION_GET_LOCATION   ), // Get location/zoom/etc
-    MakeWidget({112, 56}, {  72,  12}, WWT_BUTTON,   1, STR_TITLE_COMMAND_EDITOR_ACTION_SELECT_SCENARIO), // Select scenario
+    MakeWidget({103, 56}, {  81,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_TITLE_COMMAND_EDITOR_ACTION_GET_LOCATION   ), // Get location/zoom/etc
+    MakeWidget({112, 56}, {  72,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_TITLE_COMMAND_EDITOR_ACTION_SELECT_SCENARIO), // Select scenario
 
-    MakeWidget({ 16, 56}, { 168,  12}, WWT_BUTTON,   1, STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE         ), // Select sprite
-    MakeWidget({ 16, 70}, { 168,  24}, WWT_VIEWPORT, 1                                                 ), // Viewport
+    MakeWidget({ 16, 56}, { 168,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE         ), // Select sprite
+    MakeWidget({ 16, 70}, { 168,  24}, WWT_VIEWPORT, WindowColour::Secondary                                                 ), // Viewport
 
-    MakeWidget({ 10, 99}, {  71,  14}, WWT_BUTTON,   1, STR_OK                                         ), // OKAY
-    MakeWidget({120, 99}, {  71,  14}, WWT_BUTTON,   1, STR_CANCEL                                     ), // Cancel
+    MakeWidget({ 10, 99}, {  71,  14}, WWT_BUTTON,   WindowColour::Secondary, STR_OK                                         ), // OKAY
+    MakeWidget({120, 99}, {  71,  14}, WWT_BUTTON,   WindowColour::Secondary, STR_CANCEL                                     ), // Cancel
     { WIDGETS_END },
 };
 

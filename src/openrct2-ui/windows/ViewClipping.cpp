@@ -51,13 +51,13 @@ static constexpr const int32_t WH = 155;
 
 static rct_widget window_view_clipping_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({     11,  19}, {    159,  11}, WWT_CHECKBOX, 0, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
-    MakeWidget        ({      5,  36}, {WW - 10,  48}, WWT_GROUPBOX, 0, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
-    MakeSpinnerWidgets({     90,  51}, {     79,  12}, WWT_SPINNER,  0, STR_NONE,                              STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
-    MakeWidget        ({     11,  66}, {    158,  13}, WWT_SCROLL,   0, SCROLL_HORIZONTAL,                     STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP  ), // clip height scrollbar
-    MakeWidget        ({      5,  90}, {WW - 10,  60}, WWT_GROUPBOX, 0, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                       ),
-    MakeWidget        ({     11, 105}, {    158,  17}, WWT_BUTTON,   0, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
-    MakeWidget        ({     11, 126}, {    158,  18}, WWT_BUTTON,   0, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
+    MakeWidget        ({     11,  19}, {    159,  11}, WWT_CHECKBOX, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
+    MakeWidget        ({      5,  36}, {WW - 10,  48}, WWT_GROUPBOX, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
+    MakeSpinnerWidgets({     90,  51}, {     79,  12}, WWT_SPINNER,  WindowColour::Primary, STR_NONE,                              STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
+    MakeWidget        ({     11,  66}, {    158,  13}, WWT_SCROLL,   WindowColour::Primary, SCROLL_HORIZONTAL,                     STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP  ), // clip height scrollbar
+    MakeWidget        ({      5,  90}, {WW - 10,  60}, WWT_GROUPBOX, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                       ),
+    MakeWidget        ({     11, 105}, {    158,  17}, WWT_BUTTON,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
+    MakeWidget        ({     11, 126}, {    158,  18}, WWT_BUTTON,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
 
     { WIDGETS_END }
 };

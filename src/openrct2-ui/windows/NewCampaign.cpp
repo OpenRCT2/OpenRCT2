@@ -42,12 +42,12 @@ enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
 
 static rct_widget window_new_campaign_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({ 14, 24}, {126, 12}, WWT_LABEL,    0, STR_EMPTY                                  ), // ride label
-    MakeWidget        ({100, 24}, {242, 12}, WWT_DROPDOWN, 0, STR_EMPTY                                  ), // ride dropdown
-    MakeWidget        ({330, 25}, { 11, 10}, WWT_BUTTON,   0, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
-    MakeWidget        ({ 14, 41}, {126, 14}, WWT_LABEL,    0, STR_LENGTH_OF_TIME                         ), // weeks label
-    MakeSpinnerWidgets({120, 41}, {100, 14}, WWT_SPINNER,  0, STR_EMPTY                                  ), // weeks (3 widgets)
-    MakeWidget        ({ 14, 89}, {322, 14}, WWT_BUTTON,   0, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
+    MakeWidget        ({ 14, 24}, {126, 12}, WWT_LABEL,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
+    MakeWidget        ({100, 24}, {242, 12}, WWT_DROPDOWN, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
+    MakeWidget        ({330, 25}, { 11, 10}, WWT_BUTTON,   WindowColour::Primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
+    MakeWidget        ({ 14, 41}, {126, 14}, WWT_LABEL,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
+    MakeSpinnerWidgets({120, 41}, {100, 14}, WWT_SPINNER,  WindowColour::Primary, STR_EMPTY                                  ), // weeks (3 widgets)
+    MakeWidget        ({ 14, 89}, {322, 14}, WWT_BUTTON,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
     { WIDGETS_END }
 };
 

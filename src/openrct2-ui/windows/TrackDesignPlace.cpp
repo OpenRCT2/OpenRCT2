@@ -62,10 +62,10 @@ validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
 static rct_widget window_track_place_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({173,  83}, { 24, 24}, WWT_FLATBTN, 0, SPR_ROTATE_ARROW,              STR_ROTATE_90_TIP                         ),
-    MakeWidget({173,  59}, { 24, 24}, WWT_FLATBTN, 0, SPR_MIRROR_ARROW,              STR_MIRROR_IMAGE_TIP                      ),
-    MakeWidget({  4, 109}, {192, 12}, WWT_BUTTON,  0, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
-    MakeWidget({  0,   0}, {  1,  1}, WWT_EMPTY,   0),
+    MakeWidget({173,  83}, { 24, 24}, WWT_FLATBTN, WindowColour::Primary, SPR_ROTATE_ARROW,              STR_ROTATE_90_TIP                         ),
+    MakeWidget({173,  59}, { 24, 24}, WWT_FLATBTN, WindowColour::Primary, SPR_MIRROR_ARROW,              STR_MIRROR_IMAGE_TIP                      ),
+    MakeWidget({  4, 109}, {192, 12}, WWT_BUTTON,  WindowColour::Primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
+    MakeWidget({  0,   0}, {  1,  1}, WWT_EMPTY,   WindowColour::Primary),
     { WIDGETS_END },
 };
 

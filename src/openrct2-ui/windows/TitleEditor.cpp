@@ -148,40 +148,40 @@ static constexpr int32_t SCROLL_WIDTH = 350;
 
 static rct_widget window_title_editor_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({   0,  43}, { 320,  84}, WWT_RESIZE,        1             ), // tab content panel
-    MakeTab   ({   3,  17}, STR_THEMES_TAB_SETTINGS_TIP                   ), // presets tab
-    MakeTab   ({  34,  17}, STR_TITLE_EDITOR_SAVES_TAB_TIP                ), // saves tab
-    MakeTab   ({  65,  17}, STR_TITLE_EDITOR_SCRIPT_TAB_TIP               ), // script tab
-    MakeWidget({  89,  48}, { 228, 219}, WWT_SCROLL,        1, SCROLL_BOTH), // command/save list
+    MakeWidget({   0,  43}, { 320,  84}, WWT_RESIZE,        WindowColour::Secondary             ), // tab content panel
+    MakeTab   ({   3,  17}, STR_THEMES_TAB_SETTINGS_TIP                                         ), // presets tab
+    MakeTab   ({  34,  17}, STR_TITLE_EDITOR_SAVES_TAB_TIP                                      ), // saves tab
+    MakeTab   ({  65,  17}, STR_TITLE_EDITOR_SCRIPT_TAB_TIP                                     ), // script tab
+    MakeWidget({  89,  48}, { 228, 219}, WWT_SCROLL,        WindowColour::Secondary, SCROLL_BOTH), // command/save list
 
     // Presets Tab
-    MakeWidget     ({ 125,  60},  { 175,  14}, WWT_DROPDOWN,        1                                                                                   ), // Preset title sequences
-    MakeWidget     ({ 288,  61},  {  11,  10}, WWT_BUTTON,          1, STR_DROPDOWN_GLYPH                                                               ),
-    MakeWidget     ({  10,  82},   ACTION_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_CREATE,    STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP   ), // Create button
-    MakeWidget     ({  10, 102},   ACTION_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP), // Duplicate button
-    MakeWidget     ({ 110,  82},   ACTION_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP   ), // Delete button
-    MakeWidget     ({ 210,  82},   ACTION_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP   ), // Rename button
+    MakeWidget     ({ 125,  60},  { 175,  14}, WWT_DROPDOWN,        WindowColour::Secondary                                                                                   ), // Preset title sequences
+    MakeWidget     ({ 288,  61},  {  11,  10}, WWT_BUTTON,          WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                               ),
+    MakeWidget     ({  10,  82},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_CREATE,    STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP   ), // Create button
+    MakeWidget     ({  10, 102},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP), // Duplicate button
+    MakeWidget     ({ 110,  82},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP   ), // Delete button
+    MakeWidget     ({ 210,  82},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP   ), // Rename button
 
     // Saves Tab
-    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_ADD,       STR_TITLE_EDITOR_ACTION_ADD_TIP               ), // Add
-    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_REMOVE,    STR_TITLE_EDITOR_ACTION_REMOVE_TIP            ), // Remove
-    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_TIP            ), // Rename
-    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_LOAD,      STR_TITLE_EDITOR_ACTION_LOAD_TIP              ), // Load
+    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_ADD,       STR_TITLE_EDITOR_ACTION_ADD_TIP               ), // Add
+    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_REMOVE,    STR_TITLE_EDITOR_ACTION_REMOVE_TIP            ), // Remove
+    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_TIP            ), // Rename
+    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_LOAD,      STR_TITLE_EDITOR_ACTION_LOAD_TIP              ), // Load
 
     // Script Tab
-    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_INSERT,    STR_TITLE_EDITOR_ACTION_INSERT_TIP            ), // Insert
-    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_EDIT,      STR_TITLE_EDITOR_ACTION_EDIT_TIP              ), // Edit
-    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_TIP            ), // Delete
-    // MakeWidget  ({   8, 106},     EDIT_BTN, WWT_DROPDOWN_BUTTON, 1, STR_TITLE_EDITOR_ACTION_RELOAD,    STR_TITLE_EDITOR_ACTION_RELOAD_TIP            ), // Reload
-    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_SKIP_TO,   STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP           ), // Skip to
+    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_INSERT,    STR_TITLE_EDITOR_ACTION_INSERT_TIP            ), // Insert
+    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_EDIT,      STR_TITLE_EDITOR_ACTION_EDIT_TIP              ), // Edit
+    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_TIP            ), // Delete
+    // MakeWidget  ({   8, 106},     EDIT_BTN, WWT_DROPDOWN_BUTTON, WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_RELOAD,    STR_TITLE_EDITOR_ACTION_RELOAD_TIP            ), // Reload
+    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_SKIP_TO,   STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP           ), // Skip to
 
-    MakeWidget     ({   8, 142},  REORDER_BTN, WWT_BUTTON,          1, STR_DOWN,                          STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP         ), // Move down
-    MakeWidget     ({  44, 142},  REORDER_BTN, WWT_BUTTON,          1, STR_UP,                            STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP           ), // Move up
+    MakeWidget     ({   8, 142},  REORDER_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_DOWN,                          STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP         ), // Move down
+    MakeWidget     ({  44, 142},  REORDER_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_UP,                            STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP           ), // Move up
 
-    MakeWidget     ({   8, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_RESTART,              STR_TITLE_EDITOR_ACTION_REPLAY_TIP            ), // Replay
-    MakeWidget     ({  26, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_STOP,                 STR_TITLE_EDITOR_ACTION_STOP_TIP              ), // Stop
-    MakeWidget     ({  44, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_PLAY,                 STR_TITLE_EDITOR_ACTION_PLAY_TIP              ), // Play
-    MakeWidget     ({  62, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
+    MakeWidget     ({   8, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_RESTART,              STR_TITLE_EDITOR_ACTION_REPLAY_TIP            ), // Replay
+    MakeWidget     ({  26, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_STOP,                 STR_TITLE_EDITOR_ACTION_STOP_TIP              ), // Stop
+    MakeWidget     ({  44, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_PLAY,                 STR_TITLE_EDITOR_ACTION_PLAY_TIP              ), // Play
+    MakeWidget     ({  62, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
     { WIDGETS_END },
 };
 

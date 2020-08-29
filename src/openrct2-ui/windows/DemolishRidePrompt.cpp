@@ -34,15 +34,15 @@ enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
 // 0x009AEBA0
 static rct_widget window_ride_demolish_widgets[] = {
     WINDOW_SHIM_WHITE(STR_DEMOLISH_RIDE, WW, WH),
-    MakeWidget({     10, WH - 22}, {85, 14}, WWT_BUTTON, 0, STR_DEMOLISH          ),
-    MakeWidget({WW - 95, WH - 22}, {85, 14}, WWT_BUTTON, 0, STR_SAVE_PROMPT_CANCEL),
+    MakeWidget({     10, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_DEMOLISH          ),
+    MakeWidget({WW - 95, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     { WIDGETS_END }
 };
 
 static rct_widget window_ride_refurbish_widgets[] = {
     WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
-    MakeWidget({     10, WH - 22}, {85, 14}, WWT_BUTTON, 0, STR_REFURBISH         ),
-    MakeWidget({WW - 95, WH - 22}, {85, 14}, WWT_BUTTON, 0, STR_SAVE_PROMPT_CANCEL),
+    MakeWidget({     10, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_REFURBISH         ),
+    MakeWidget({WW - 95, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     { WIDGETS_END }
 };
 

@@ -35,12 +35,12 @@ static constexpr const int32_t WH = 94;
 
 static rct_widget window_clear_scenery_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({27, 17}, {44, 32}, WWT_IMGBTN,  0, SPR_LAND_TOOL_SIZE_0,        STR_NONE),                                   // preview box
-    MakeRemapWidget({28, 18}, {16, 16}, WWT_TRNBTN,  1, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP),                // decrement size
-    MakeRemapWidget({54, 32}, {16, 16}, WWT_TRNBTN,  1, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP),                 // increment size
-    MakeRemapWidget({ 7, 53}, {24, 24}, WWT_FLATBTN, 1, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
-    MakeRemapWidget({37, 53}, {24, 24}, WWT_FLATBTN, 1, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
-    MakeRemapWidget({67, 53}, {24, 24}, WWT_FLATBTN, 1, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP),     // footpaths
+    MakeWidget     ({27, 17}, {44, 32}, WWT_IMGBTN,  WindowColour::Primary  , SPR_LAND_TOOL_SIZE_0,        STR_NONE),                                   // preview box
+    MakeRemapWidget({28, 18}, {16, 16}, WWT_TRNBTN,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP),                // decrement size
+    MakeRemapWidget({54, 32}, {16, 16}, WWT_TRNBTN,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP),                 // increment size
+    MakeRemapWidget({ 7, 53}, {24, 24}, WWT_FLATBTN, WindowColour::Secondary, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
+    MakeRemapWidget({37, 53}, {24, 24}, WWT_FLATBTN, WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
+    MakeRemapWidget({67, 53}, {24, 24}, WWT_FLATBTN, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP),     // footpaths
     { WIDGETS_END },
 };
 

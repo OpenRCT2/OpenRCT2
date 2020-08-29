@@ -87,27 +87,27 @@ enum {
 
 #define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0,  43}, {280, 106}, WWT_RESIZE, 1             ), \
-    MakeTab   ({  3,  17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP), \
-    MakeTab   ({ 34,  17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP  )
+    MakeWidget({  0,  43}, {280, 106}, WWT_RESIZE, WindowColour::Secondary), \
+    MakeTab   ({  3,  17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
+    MakeTab   ({ 34,  17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP           )
 
 static rct_widget window_editor_objective_options_main_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
-    MakeWidget        ({ 98,  48}, {344,  12}, WWT_DROPDOWN, 1, STR_NONE,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
-    MakeWidget        ({430,  49}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
-    MakeSpinnerWidgets({158,  65}, {120,  12}, WWT_BUTTON,   1                                                                     ), // NB: 3 widgets
-    MakeSpinnerWidgets({158,  82}, {120,  12}, WWT_BUTTON,   1                                                                     ), // NB: 3 widgets
-    MakeWidget        ({370,  99}, { 75,  12}, WWT_BUTTON,   1, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
-    MakeWidget        ({370, 116}, { 75,  12}, WWT_BUTTON,   1, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
-    MakeWidget        ({ 98, 133}, {180,  12}, WWT_DROPDOWN, 1, STR_NONE,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
-    MakeWidget        ({266, 134}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
-    MakeWidget        ({370, 150}, { 75,  12}, WWT_BUTTON,   1, STR_CHANGE,         STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP),
+    MakeWidget        ({ 98,  48}, {344,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
+    MakeWidget        ({430,  49}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
+    MakeSpinnerWidgets({158,  65}, {120,  12}, WWT_BUTTON,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
+    MakeSpinnerWidgets({158,  82}, {120,  12}, WWT_BUTTON,   WindowColour::Secondary                                                                     ), // NB: 3 widgets
+    MakeWidget        ({370,  99}, { 75,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_PARK_TIP                    ),
+    MakeWidget        ({370, 116}, { 75,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_NAME_OF_SCENARIO_TIP                ),
+    MakeWidget        ({ 98, 133}, {180,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,           STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
+    MakeWidget        ({266, 134}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN),
+    MakeWidget        ({370, 150}, { 75,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_CHANGE,         STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_objective_options_rides_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
-    MakeWidget({  3,  60}, {374, 161}, WWT_SCROLL,   1, SCROLL_VERTICAL),
+    MakeWidget({  3,  60}, {374, 161}, WWT_SCROLL, WindowColour::Secondary, SCROLL_VERTICAL),
     { WIDGETS_END }
 };
 

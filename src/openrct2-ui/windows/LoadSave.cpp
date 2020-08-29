@@ -63,15 +63,15 @@ enum
 static rct_widget window_loadsave_widgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({               0,  WH - 1}, { WW,   1}, WWT_RESIZE,       1                                                             ), // tab content panel
-    MakeWidget({               4,      36}, { 84,  14}, WWT_BUTTON,       0, STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // Go to default directory
-    MakeWidget({              88,      36}, { 84,  14}, WWT_BUTTON,       0, STR_FILEBROWSER_ACTION_UP                                  ), // Up
-    MakeWidget({             172,      36}, { 87,  14}, WWT_BUTTON,       0, STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // New
-    MakeWidget({             259,      36}, { 87,  14}, WWT_BUTTON,       0, STR_FILEBROWSER_ACTION_NEW_FILE                            ), // New
-    MakeWidget({               4,      55}, {170,  14}, WWT_TABLE_HEADER, 0                                                             ), // Name
-    MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WWT_TABLE_HEADER, 0                                                             ), // Date
-    MakeWidget({               4,      68}, {342, 303}, WWT_SCROLL,       0, SCROLL_VERTICAL                                            ), // File list
-    MakeWidget({               4, WH - 24}, {197,  19}, WWT_BUTTON,       0, STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // Use native browser
+    MakeWidget({               0,  WH - 1}, { WW,   1}, WWT_RESIZE,       WindowColour::Secondary                                                             ), // tab content panel
+    MakeWidget({               4,      36}, { 84,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // Go to default directory
+    MakeWidget({              88,      36}, { 84,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_UP                                  ), // Up
+    MakeWidget({             172,      36}, { 87,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // New
+    MakeWidget({             259,      36}, { 87,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_NEW_FILE                            ), // New
+    MakeWidget({               4,      55}, {170,  14}, WWT_TABLE_HEADER, WindowColour::Primary                                                               ), // Name
+    MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WWT_TABLE_HEADER, WindowColour::Primary                                                               ), // Date
+    MakeWidget({               4,      68}, {342, 303}, WWT_SCROLL,       WindowColour::Primary  , SCROLL_VERTICAL                                            ), // File list
+    MakeWidget({               4, WH - 24}, {197,  19}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // Use native browser
     { WIDGETS_END }
 };
 

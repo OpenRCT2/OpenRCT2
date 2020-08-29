@@ -270,14 +270,14 @@ constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
 static rct_widget window_object_load_error_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WWT_TABLE_HEADER, 0, STR_OBJECT_NAME                                   ), // 'Object name' header
-    MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, 0, STR_OBJECT_SOURCE                                 ), // 'Object source' header
-    MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, 0, STR_OBJECT_TYPE                                   ), // 'Object type' header
-    MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WWT_SCROLL,       0, SCROLL_VERTICAL                                   ), // Scrollable list area
-    MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WWT_BUTTON,       0, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
-    MakeWidget({            152, 377}, {145,  14}, WWT_BUTTON,       0, STR_COPY_ALL,                STR_COPY_ALL_TIP     ), // Copy all button
+    MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_NAME                                   ), // 'Object name' header
+    MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_SOURCE                                 ), // 'Object source' header
+    MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_TYPE                                   ), // 'Object type' header
+    MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WWT_SCROLL,       WindowColour::Primary, SCROLL_VERTICAL                                   ), // Scrollable list area
+    MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WWT_BUTTON,       WindowColour::Primary, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
+    MakeWidget({            152, 377}, {145,  14}, WWT_BUTTON,       WindowColour::Primary, STR_COPY_ALL,                STR_COPY_ALL_TIP     ), // Copy all button
 #ifndef DISABLE_HTTP
-    MakeWidget({            300, 377}, {146,  14}, WWT_BUTTON,       0, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
+    MakeWidget({            300, 377}, {146,  14}, WWT_BUTTON,       WindowColour::Primary, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
 #endif
     { WIDGETS_END },
 };
