@@ -95,44 +95,6 @@ public:
     }
 
     /**
-     * Like Clear, only will guarantee freeing of the underlying buffer.
-     */
-    void Reset()
-    {
-        _length = 0;
-        _capacity = 0;
-        SafeFree(_buffer);
-    }
-
-    /**
-     * Resets the StringBuilder and returns the working buffer (resized to the string size).
-     */
-    utf8* StealString()
-    {
-        utf8* result = _buffer;
-        result = Memory::ReallocateArray<utf8>(result, _length + 1);
-        result[_length] = 0;
-
-        _length = 0;
-        _capacity = 0;
-        _buffer = nullptr;
-
-        return result;
-    }
-
-    /**
-     * Returns the current string buffer as a new fire-and-forget string.
-     */
-    utf8* GetString() const
-    {
-        // If buffer is null, length should be 0 which will create a new one byte memory block containing a null terminator
-        utf8* result = Memory::AllocateArray<utf8>(_length + 1);
-        std::copy_n(_buffer, _length, result);
-        result[_length] = 0;
-        return result;
-    }
-
-    /**
      * Returns the current string buffer as a standard string.
      */
     std::string GetStdString() const
@@ -150,14 +112,6 @@ public:
         if (_buffer == nullptr)
             return "";
         return _buffer;
-    }
-
-    /**
-     * Gets the amount of allocated memory for the string buffer.
-     */
-    size_t GetCapacity() const
-    {
-        return _capacity;
     }
 
     /**
