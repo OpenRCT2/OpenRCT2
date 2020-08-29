@@ -14,6 +14,7 @@
 #    include "../Context.h"
 #    include "../GameState.h"
 #    include "../OpenRCT2.h"
+#    include "../platform/Platform2.h"
 #    include "../platform/platform.h"
 
 #    include <benchmark/benchmark.h>
@@ -33,11 +34,51 @@ static void BM_update(benchmark::State& state, const std::string& filename)
             state.SkipWithError("Failed to load file!");
         }
 
+        std::vector<LogicTimings> timings(1);
+        timings.reserve(100);
+        int currentTimingIdx = 0;
         for (auto _ : state)
         {
-            context->GetGameState()->UpdateLogic();
+            if (timings[currentTimingIdx].CurrentIdx == (LOGIC_UPDATE_MEASURMENTS_COUNT - 1))
+            {
+                timings.resize(timings.size() + 1);
+                currentTimingIdx++;
+            }
+            LogicTimings* timingToUse = &timings[currentTimingIdx];
+            context->GetGameState()->UpdateLogic(timingToUse);
         }
         state.SetItemsProcessed(state.iterations());
+        auto accumulator = [timings](LogicTimePart part) -> double {
+            std::chrono::duration<double> timesum;
+            for (const auto& timing : timings)
+            {
+                for (const auto& PartTime : timing.TimingInfo.at(part))
+                    timesum += PartTime;
+            }
+            return std::chrono::duration_cast<std::chrono::milliseconds>(timesum).count();
+        };
+        state.counters["NetworkUpdateAcc_ms"] = accumulator(LogicTimePart::NetworkUpdate);
+        state.counters["DateAcc_ms"] = accumulator(LogicTimePart::Date);
+        state.counters["ScenarioAcc_ms"] = accumulator(LogicTimePart::Scenario);
+        state.counters["ClimateAcc_ms"] = accumulator(LogicTimePart::Climate);
+        state.counters["MapTilesAcc_ms"] = accumulator(LogicTimePart::MapTiles);
+        state.counters["MapStashProvisionalElementsAcc_ms"] = accumulator(LogicTimePart::MapStashProvisionalElements);
+        state.counters["MapPathWideFlagsAcc_ms"] = accumulator(LogicTimePart::MapPathWideFlags);
+        state.counters["PeepAcc_ms"] = accumulator(LogicTimePart::Peep);
+        state.counters["MapRestoreProvisionalElementsAcc_ms"] = accumulator(LogicTimePart::MapRestoreProvisionalElements);
+        state.counters["VehicleAcc_ms"] = accumulator(LogicTimePart::Vehicle);
+        state.counters["MiscAcc_ms"] = accumulator(LogicTimePart::Misc);
+        state.counters["RideAcc_ms"] = accumulator(LogicTimePart::Ride);
+        state.counters["ParkAcc_ms"] = accumulator(LogicTimePart::Park);
+        state.counters["ResearchAcc_ms"] = accumulator(LogicTimePart::Research);
+        state.counters["RideRatingsAcc_ms"] = accumulator(LogicTimePart::RideRatings);
+        state.counters["RideMeasurmentsAcc_ms"] = accumulator(LogicTimePart::RideMeasurments);
+        state.counters["NewsAcc_ms"] = accumulator(LogicTimePart::News);
+        state.counters["MapAnimationAcc_ms"] = accumulator(LogicTimePart::MapAnimation);
+        state.counters["SoundsAcc_ms"] = accumulator(LogicTimePart::Sounds);
+        state.counters["GameActionsAcc_ms"] = accumulator(LogicTimePart::GameActions);
+        state.counters["NetworkFlushAcc_ms"] = accumulator(LogicTimePart::NetworkFlush);
+        state.counters["ScriptsAcc_ms"] = accumulator(LogicTimePart::Scripts);
     }
     else
     {
@@ -60,7 +101,7 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
     // Extract file names from argument list. If there is no such file, consider it benchmark option.
     for (int i = 0; i < argc; i++)
     {
-        if (platform_file_exists(argv[i]))
+        if (Platform::FileExists(argv[i]))
         {
             // Register benchmark for sv6 if valid
             benchmark::RegisterBenchmark(argv[i], BM_update, argv[i]);
