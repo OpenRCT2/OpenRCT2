@@ -782,16 +782,16 @@ bool NetworkBase::CheckSRAND(uint32_t tick, uint32_t srand0)
 
 bool NetworkBase::IsDesynchronised()
 {
-    return _serverState.state == NETWORK_SERVER_STATE_DESYNCED;
+    return _serverState.state == NetworkServerState::Desynced;
 }
 
 bool NetworkBase::CheckDesynchronizaton()
 {
     // Check synchronisation
-    if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NETWORK_SERVER_STATE_DESYNCED
+    if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerState::Desynced
         && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
     {
-        _serverState.state = NETWORK_SERVER_STATE_DESYNCED;
+        _serverState.state = NetworkServerState::Desynced;
         _serverState.desyncTick = gCurrentTicks;
 
         char str_desync[256];
@@ -2697,7 +2697,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
             game_load_scripts();
             _serverState.tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
-            _serverState.state = NETWORK_SERVER_STATE_OK;
+            _serverState.state = NetworkServerState::Ok;
             _clientMapLoaded = true;
             gFirstTimeSaving = true;
 
