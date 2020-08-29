@@ -49,7 +49,7 @@ public:
     void AcceptParameters(GameActionParameterVisitor & visitor) override
     {
         visitor.Visit("ride", _rideIndex);
-        //visitor.Visit("setting", _setting);
+        visitor.Visit("setting", _setting);
         visitor.Visit("value", _value);
     }
 

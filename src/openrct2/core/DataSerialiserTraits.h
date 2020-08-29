@@ -258,14 +258,14 @@ template<> struct DataSerializerTraits_t<OpenRCT2::MemoryStream>
 {
     static void encode(OpenRCT2::IStream* stream, const OpenRCT2::MemoryStream& val)
     {
-        DataSerializerTraits_t<uint32_t> s;
+        DataSerializerTraits<uint32_t> s;
         s.encode(stream, val.GetLength());
 
         stream->Write(val.GetData(), val.GetLength());
     }
     static void decode(OpenRCT2::IStream* stream, OpenRCT2::MemoryStream& val)
     {
-        DataSerializerTraits_t<uint32_t> s;
+        DataSerializerTraits<uint32_t> s;
 
         uint32_t length = 0;
         s.decode(stream, length);
@@ -288,7 +288,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraitsPODArray
         uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
 
-        DataSerializerTraits_t<uint8_t> s;
+        DataSerializerTraits<uint8_t> s;
         for (auto&& sub : val)
         {
             s.encode(stream, sub);
@@ -303,7 +303,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraitsPODArray
         if (len != _Size)
             throw std::runtime_error("Invalid size, can't decode");
 
-        DataSerializerTraits_t<_Ty> s;
+        DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
         {
             s.decode(stream, sub);
@@ -312,7 +312,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraitsPODArray
     static void log(OpenRCT2::IStream* stream, const _Ty (&val)[_Size])
     {
         stream->Write("{", 1);
-        DataSerializerTraits_t<_Ty> s;
+        DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
         {
             s.log(stream, sub);
@@ -346,7 +346,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraits_t<std::array<_T
         uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
 
-        DataSerializerTraits_t<_Ty> s;
+        DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
         {
             s.encode(stream, sub);
@@ -361,7 +361,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraits_t<std::array<_T
         if (len != _Size)
             throw std::runtime_error("Invalid size, can't decode");
 
-        DataSerializerTraits_t<_Ty> s;
+        DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
         {
             s.decode(stream, sub);
@@ -370,7 +370,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraits_t<std::array<_T
     static void log(OpenRCT2::IStream* stream, const std::array<_Ty, _Size>& val)
     {
         stream->Write("{", 1);
-        DataSerializerTraits_t<_Ty> s;
+        DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
         {
             s.log(stream, sub);
@@ -388,7 +388,7 @@ template<typename _Ty> struct DataSerializerTraits_t<std::vector<_Ty>>
         uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
 
-        DataSerializerTraits_t<_Ty> s;
+        DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
         {
             s.encode(stream, sub);
@@ -400,7 +400,7 @@ template<typename _Ty> struct DataSerializerTraits_t<std::vector<_Ty>>
         stream->Read(&len);
         len = ByteSwapBE(len);
 
-        DataSerializerTraits_t<_Ty> s;
+        DataSerializerTraits<_Ty> s;
         for (auto i = 0; i < len; ++i)
         {
             _Ty sub;
@@ -411,7 +411,7 @@ template<typename _Ty> struct DataSerializerTraits_t<std::vector<_Ty>>
     static void log(OpenRCT2::IStream* stream, const std::vector<_Ty>& val)
     {
         stream->Write("{", 1);
-        DataSerializerTraits_t<_Ty> s;
+        DataSerializerTraits<_Ty> s;
         for (auto&& sub : val)
         {
             s.log(stream, sub);
@@ -686,7 +686,7 @@ template<> struct DataSerializerTraits_t<TrackDesignSceneryElement>
         stream->Write(&val.flags);
         stream->Write(&val.primary_colour);
         stream->Write(&val.secondary_colour);
-        DataSerializerTraits_t<rct_object_entry> s;
+        DataSerializerTraits<rct_object_entry> s;
         s.encode(stream, val.scenery_object);
     }
     static void decode(OpenRCT2::IStream* stream, TrackDesignSceneryElement& val)
@@ -697,7 +697,7 @@ template<> struct DataSerializerTraits_t<TrackDesignSceneryElement>
         stream->Read(&val.flags);
         stream->Read(&val.primary_colour);
         stream->Read(&val.secondary_colour);
-        DataSerializerTraits_t<rct_object_entry> s;
+        DataSerializerTraits<rct_object_entry> s;
         s.decode(stream, val.scenery_object);
     }
     static void log(OpenRCT2::IStream* stream, const TrackDesignSceneryElement& val)

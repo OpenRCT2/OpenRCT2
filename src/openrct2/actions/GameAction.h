@@ -182,7 +182,7 @@ public:
 
     template<typename T> void Visit(const std::string_view& name, T& param)
     {
-        static_assert(std::is_arithmetic<T>::value, "Not an arithmetic type");
+        static_assert(std::is_arithmetic_v<T> || std::is_enum_v<T>, "Not an arithmetic type");
         auto value = static_cast<int32_t>(param);
         Visit(name, value);
         param = static_cast<T>(value);
