@@ -157,6 +157,8 @@ ln -s ../data data
 ```
 Then you can run the game by running `./openrct2`.
 
+Detailed instructions can be found on [Building OpenRCT2 on macOS using CMake](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-macOS-using-CMake).
+
 ### Linux:
 The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#linux), then:
 ```
