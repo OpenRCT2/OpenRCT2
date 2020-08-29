@@ -37,14 +37,12 @@ static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts);
 static std::vector<uint8_t> ReadScriptFile(const utf8* path);
 static std::string LegacyScriptWrite(TitleSequence* seq);
 
-TitleSequence* CreateTitleSequence()
+std::unique_ptr<TitleSequence> CreateTitleSequence()
 {
-    TitleSequence* seq = Memory::Allocate<TitleSequence>();
-    *seq = {};
-    return seq;
+    return std::make_unique<TitleSequence>();
 }
 
-TitleSequence* LoadTitleSequence(const utf8* path)
+std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
 {
     std::vector<uint8_t> script;
     std::vector<utf8*> saves;
@@ -90,7 +88,7 @@ TitleSequence* LoadTitleSequence(const utf8* path)
 
     auto commands = LegacyScriptRead(reinterpret_cast<utf8*>(script.data()), script.size(), saves);
 
-    TitleSequence* seq = CreateTitleSequence();
+    auto seq = CreateTitleSequence();
     seq->Name = Path::GetFileNameWithoutExtension(path);
     seq->Path = String::Duplicate(path);
     seq->NumSaves = saves.size();
@@ -101,9 +99,9 @@ TitleSequence* LoadTitleSequence(const utf8* path)
     return seq;
 }
 
-void FreeTitleSequence(TitleSequence* seq)
+void FreeTitleSequence(std::unique_ptr<TitleSequence>& seq)
 {
-    if (seq != nullptr)
+    if (seq)
     {
         Memory::Free(seq->Name);
         Memory::Free(seq->Path);
@@ -113,7 +111,7 @@ void FreeTitleSequence(TitleSequence* seq)
             Memory::Free(seq->Saves[i]);
         }
         Memory::Free(seq->Saves);
-        Memory::Free(seq);
+        seq.reset();
     }
 }
 

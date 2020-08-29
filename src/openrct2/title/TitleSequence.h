@@ -78,9 +78,9 @@ enum TITLE_SCRIPT
 constexpr const utf8* TITLE_SEQUENCE_EXTENSION = ".parkseq";
 constexpr uint8_t SAVE_INDEX_INVALID = UINT8_MAX;
 
-TitleSequence* CreateTitleSequence();
-TitleSequence* LoadTitleSequence(const utf8* path);
-void FreeTitleSequence(TitleSequence* seq);
+std::unique_ptr<TitleSequence> CreateTitleSequence();
+std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path);
+void FreeTitleSequence(std::unique_ptr<TitleSequence>& seq);
 
 TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence* seq, size_t index);
 

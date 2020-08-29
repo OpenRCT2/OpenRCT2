@@ -47,7 +47,7 @@ class TitleSequencePlayer final : public ITitleSequencePlayer
 private:
     GameState& _gameState;
 
-    TitleSequence* _sequence = nullptr;
+    std::unique_ptr<TitleSequence> _sequence;
     int32_t _position = 0;
     int32_t _waitCounter = 0;
 
@@ -74,7 +74,6 @@ public:
     void Eject() override
     {
         FreeTitleSequence(_sequence);
-        _sequence = nullptr;
     }
 
     bool Begin(size_t titleSequenceId) override
@@ -93,7 +92,7 @@ public:
         }
 
         Eject();
-        _sequence = sequence;
+        _sequence = std::move(sequence);
 
         Reset();
         return true;
@@ -277,7 +276,7 @@ private:
             {
                 bool loadSuccess = false;
                 uint8_t saveIndex = command->SaveIndex;
-                TitleSequenceParkHandle* parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
+                TitleSequenceParkHandle* parkHandle = TitleSequenceGetParkHandle(_sequence.get(), saveIndex);
                 if (parkHandle != nullptr)
                 {
                     loadSuccess = LoadParkFromStream(static_cast<OpenRCT2::IStream*>(parkHandle->Stream), parkHandle->HintPath);
