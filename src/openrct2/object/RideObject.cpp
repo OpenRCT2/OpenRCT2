@@ -86,9 +86,9 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.shop_item[0] = stream->ReadValue<uint8_t>();
     _legacyType.shop_item[1] = stream->ReadValue<uint8_t>();
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_DESCRIPTION);
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_CAPACITY);
+    GetStringTable().Read(context, stream, ObjectStringID::NAME);
+    GetStringTable().Read(context, stream, ObjectStringID::DESCRIPTION);
+    GetStringTable().Read(context, stream, ObjectStringID::CAPACITY);
 
     // Read preset colours, by default there are 32
     _presetColours.count = stream->ReadValue<uint8_t>();
@@ -393,12 +393,12 @@ void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t wi
 
 std::string RideObject::GetDescription() const
 {
-    return GetString(OBJ_STRING_ID_DESCRIPTION);
+    return GetString(ObjectStringID::DESCRIPTION);
 }
 
 std::string RideObject::GetCapacity() const
 {
-    return GetString(OBJ_STRING_ID_CAPACITY);
+    return GetString(ObjectStringID::CAPACITY);
 }
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const

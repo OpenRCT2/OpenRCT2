@@ -21,21 +21,21 @@ namespace OpenRCT2
     struct IStream;
 }
 
-enum OBJ_STRING_ID : uint8_t
+enum class ObjectStringID : uint8_t
 {
-    OBJ_STRING_ID_UNKNOWN = 255,
-    OBJ_STRING_ID_NAME = 0,
-    OBJ_STRING_ID_DESCRIPTION,
-    OBJ_STRING_ID_SCENARIO_NAME = 0,
-    OBJ_STRING_ID_PARK_NAME = 1,
-    OBJ_STRING_ID_SCENARIO_DETAILS = 2,
-    OBJ_STRING_ID_CAPACITY = 2,
-    OBJ_STRING_ID_VEHICLE_NAME = 3,
+    UNKNOWN = 255,
+    NAME = 0,
+    DESCRIPTION,
+    SCENARIO_NAME = 0,
+    PARK_NAME = 1,
+    SCENARIO_DETAILS = 2,
+    CAPACITY = 2,
+    VEHICLE_NAME = 3,
 };
 
 struct StringTableEntry
 {
-    uint8_t Id = OBJ_STRING_ID_UNKNOWN;
+    ObjectStringID Id = ObjectStringID::UNKNOWN;
     uint8_t LanguageId = LANGUAGE_UNDEFINED;
     std::string Text;
 };
@@ -50,9 +50,9 @@ public:
     StringTable(const StringTable&) = delete;
     StringTable& operator=(const StringTable&) = delete;
 
-    void Read(IReadObjectContext* context, OpenRCT2::IStream* stream, uint8_t id);
+    void Read(IReadObjectContext* context, OpenRCT2::IStream* stream, ObjectStringID id);
     void Sort();
-    std::string GetString(uint8_t id) const;
-    std::string GetString(uint8_t language, uint8_t id) const;
-    void SetString(uint8_t id, uint8_t language, const std::string& text);
+    std::string GetString(ObjectStringID id) const;
+    std::string GetString(uint8_t language, ObjectStringID id) const;
+    void SetString(ObjectStringID id, uint8_t language, const std::string& text);
 };

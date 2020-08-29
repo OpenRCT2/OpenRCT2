@@ -26,7 +26,7 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* st
     _legacyType.banner.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);

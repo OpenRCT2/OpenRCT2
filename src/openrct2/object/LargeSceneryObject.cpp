@@ -35,7 +35,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     _legacyType.large_scenery.scrolling_mode = stream->ReadValue<uint8_t>();
     stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);

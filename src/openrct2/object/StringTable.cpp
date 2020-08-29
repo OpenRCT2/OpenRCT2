@@ -47,7 +47,7 @@ static bool StringIsBlank(const utf8* str)
     return true;
 }
 
-void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, uint8_t id)
+void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, ObjectStringID id)
 {
     try
     {
@@ -78,7 +78,7 @@ void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, u
     Sort();
 }
 
-std::string StringTable::GetString(uint8_t id) const
+std::string StringTable::GetString(ObjectStringID id) const
 {
     for (auto& string : _strings)
     {
@@ -90,7 +90,7 @@ std::string StringTable::GetString(uint8_t id) const
     return std::string();
 }
 
-std::string StringTable::GetString(uint8_t language, uint8_t id) const
+std::string StringTable::GetString(uint8_t language, ObjectStringID id) const
 {
     for (auto& string : _strings)
     {
@@ -102,7 +102,7 @@ std::string StringTable::GetString(uint8_t language, uint8_t id) const
     return std::string();
 }
 
-void StringTable::SetString(uint8_t id, uint8_t language, const std::string& text)
+void StringTable::SetString(ObjectStringID id, uint8_t language, const std::string& text)
 {
     StringTableEntry entry;
     entry.Id = id;
