@@ -553,6 +553,7 @@
     <ClCompile Include="CmdlineSprite.cpp" />
     <ClCompile Include="cmdline\BenchGfxCommmands.cpp" />
     <ClCompile Include="cmdline\BenchSpriteSort.cpp" />
+    <ClCompile Include="cmdline/BenchUpdate.cpp" />
     <ClCompile Include="cmdline\CommandLine.cpp" />
     <ClCompile Include="cmdline\ConvertCommand.cpp" />
     <ClCompile Include="cmdline\RootCommands.cpp" />
