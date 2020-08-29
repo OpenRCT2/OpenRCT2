@@ -40,7 +40,7 @@ public:
     NetworkConnection();
     ~NetworkConnection();
 
-    int32_t ReadPacket();
+    NetworkReadPacket ReadPacket();
     void QueuePacket(NetworkPacket&& packet, bool front = false);
     void QueuePacket(const NetworkPacket& packet, bool front = false)
     {
