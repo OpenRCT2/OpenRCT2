@@ -30,9 +30,9 @@
 #include <memory>
 #include <vector>
 
-static std::vector<utf8*> GetSaves(const utf8* path);
-static std::vector<utf8*> GetSaves(IZipArchive* zip);
-static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, std::vector<utf8*> saves);
+static std::vector<std::string> GetSaves(const utf8* path);
+static std::vector<std::string> GetSaves(IZipArchive* zip);
+static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, const std::vector<std::string>& saves);
 static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts);
 static std::vector<uint8_t> ReadScriptFile(const utf8* path);
 static std::string LegacyScriptWrite(TitleSequence* seq);
@@ -45,7 +45,7 @@ std::unique_ptr<TitleSequence> CreateTitleSequence()
 std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
 {
     std::vector<uint8_t> script;
-    std::vector<utf8*> saves;
+    std::vector<std::string> saves;
     bool isZip;
 
     log_verbose("Loading title sequence: %s", path);
@@ -91,8 +91,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
     auto seq = CreateTitleSequence();
     seq->Path = String::ToStd(path);
     seq->Name = Path::GetFileNameWithoutExtension(seq->Path);
-    seq->NumSaves = saves.size();
-    seq->Saves = Collections::ToArray(saves);
+    seq->Saves = std::move(saves);
     seq->Commands = std::move(commands);
     seq->IsZip = isZip;
     return seq;
@@ -102,11 +101,6 @@ void FreeTitleSequence(std::unique_ptr<TitleSequence>& seq)
 {
     if (seq)
     {
-        for (size_t i = 0; i < seq->NumSaves; i++)
-        {
-            Memory::Free(seq->Saves[i]);
-        }
-        Memory::Free(seq->Saves);
         seq.reset();
     }
 }
@@ -114,9 +108,9 @@ void FreeTitleSequence(std::unique_ptr<TitleSequence>& seq)
 TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence* seq, size_t index)
 {
     TitleSequenceParkHandle* handle = nullptr;
-    if (index <= seq->NumSaves)
+    if (index <= seq->NumSaves())
     {
-        const utf8* filename = seq->Saves[index];
+        const utf8* filename = seq->Saves[index].c_str();
         if (seq->IsZip)
         {
             auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(seq->Path, ZIP_ACCESS::READ));
@@ -202,9 +196,9 @@ bool TitleSequenceAddPark(TitleSequence* seq, const utf8* path, const utf8* name
 {
     // Get new save index
     size_t index = SIZE_MAX;
-    for (size_t i = 0; i < seq->NumSaves; i++)
+    for (size_t i = 0; i < seq->NumSaves(); i++)
     {
-        if (String::Equals(seq->Saves[i], path, true))
+        if (String::Equals(seq->Saves[i].c_str(), path, true))
         {
             index = i;
             break;
@@ -212,12 +206,9 @@ bool TitleSequenceAddPark(TitleSequence* seq, const utf8* path, const utf8* name
     }
     if (index == SIZE_MAX)
     {
-        seq->Saves = Memory::ReallocateArray(seq->Saves, seq->NumSaves + 1);
-        Guard::Assert(seq->Saves != nullptr, GUARD_LINE);
-        index = seq->NumSaves;
-        seq->NumSaves++;
+        index = seq->NumSaves();
     }
-    seq->Saves[index] = String::Duplicate(name);
+    seq->Saves.insert(seq->Saves.begin() + index, std::string(name));
 
     if (seq->IsZip)
     {
@@ -254,9 +245,9 @@ bool TitleSequenceAddPark(TitleSequence* seq, const utf8* path, const utf8* name
 
 bool TitleSequenceRenamePark(TitleSequence* seq, size_t index, const utf8* name)
 {
-    Guard::Assert(index < seq->NumSaves, GUARD_LINE);
+    Guard::Assert(index < seq->NumSaves(), GUARD_LINE);
 
-    utf8* oldRelativePath = seq->Saves[index];
+    const utf8* oldRelativePath = seq->Saves[index].c_str();
     if (seq->IsZip)
     {
         auto zip = Zip::TryOpen(seq->Path, ZIP_ACCESS::WRITE);
@@ -282,17 +273,16 @@ bool TitleSequenceRenamePark(TitleSequence* seq, size_t index, const utf8* name)
         }
     }
 
-    Memory::Free(seq->Saves[index]);
-    seq->Saves[index] = String::Duplicate(name);
+    seq->Saves[index] = name;
     return true;
 }
 
 bool TitleSequenceRemovePark(TitleSequence* seq, size_t index)
 {
-    Guard::Assert(index < seq->NumSaves, GUARD_LINE);
+    Guard::Assert(index < seq->NumSaves(), GUARD_LINE);
 
     // Delete park file
-    utf8* relativePath = seq->Saves[index];
+    std::string& relativePath = seq->Saves[index];
     if (seq->IsZip)
     {
         auto zip = Zip::TryOpen(seq->Path, ZIP_ACCESS::WRITE);
@@ -307,7 +297,7 @@ bool TitleSequenceRemovePark(TitleSequence* seq, size_t index)
     {
         utf8 absolutePath[MAX_PATH];
         String::Set(absolutePath, sizeof(absolutePath), seq->Path.c_str());
-        Path::Append(absolutePath, sizeof(absolutePath), relativePath);
+        Path::Append(absolutePath, sizeof(absolutePath), relativePath.c_str());
         if (!File::Delete(absolutePath))
         {
             Console::Error::WriteLine("Unable to delete '%s'", absolutePath);
@@ -316,12 +306,7 @@ bool TitleSequenceRemovePark(TitleSequence* seq, size_t index)
     }
 
     // Remove from sequence
-    Memory::Free(relativePath);
-    for (size_t i = index; i < seq->NumSaves - 1; i++)
-    {
-        seq->Saves[i] = seq->Saves[i + 1];
-    }
-    seq->NumSaves--;
+    seq->Saves.erase(seq->Saves.begin() + index);
 
     // Update load commands
     for (size_t i = 0; i < seq->NumCommands(); i++)
@@ -345,9 +330,9 @@ bool TitleSequenceRemovePark(TitleSequence* seq, size_t index)
     return true;
 }
 
-static std::vector<utf8*> GetSaves(const utf8* directory)
+static std::vector<std::string> GetSaves(const utf8* directory)
 {
-    std::vector<utf8*> saves;
+    std::vector<std::string> saves;
 
     utf8 pattern[MAX_PATH];
     String::Set(pattern, sizeof(pattern), directory);
@@ -357,14 +342,14 @@ static std::vector<utf8*> GetSaves(const utf8* directory)
     while (scanner->Next())
     {
         const utf8* path = scanner->GetPathRelative();
-        saves.push_back(String::Duplicate(path));
+        saves.emplace_back(path);
     }
     return saves;
 }
 
-static std::vector<utf8*> GetSaves(IZipArchive* zip)
+static std::vector<std::string> GetSaves(IZipArchive* zip)
 {
-    std::vector<utf8*> saves;
+    std::vector<std::string> saves;
     size_t numFiles = zip->GetNumFiles();
     for (size_t i = 0; i < numFiles; i++)
     {
@@ -372,13 +357,13 @@ static std::vector<utf8*> GetSaves(IZipArchive* zip)
         auto ext = Path::GetExtension(name);
         if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true))
         {
-            saves.push_back(String::Duplicate(name));
+            saves.emplace_back(name);
         }
     }
     return saves;
 }
 
-static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, std::vector<utf8*> saves)
+static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, const std::vector<std::string>& saves)
 {
     std::vector<TitleCommand> commands;
     auto fs = OpenRCT2::MemoryStream(script, scriptLength);
@@ -401,7 +386,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLen
                 command.SaveIndex = SAVE_INDEX_INVALID;
                 for (size_t i = 0; i < saves.size(); i++)
                 {
-                    if (String::Equals(part1, saves[i], true))
+                    if (String::Equals(part1, saves[i].c_str(), true))
                     {
                         command.SaveIndex = static_cast<uint8_t>(i);
                         break;
@@ -567,7 +552,7 @@ static std::string LegacyScriptWrite(TitleSequence* seq)
                 else
                 {
                     sb.Append("LOAD ");
-                    sb.Append(seq->Saves[command->SaveIndex]);
+                    sb.Append(seq->Saves[command->SaveIndex].c_str());
                 }
                 break;
             case TITLE_SCRIPT_LOADSC:

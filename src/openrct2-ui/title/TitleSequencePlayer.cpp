@@ -284,9 +284,9 @@ private:
                 }
                 if (!loadSuccess)
                 {
-                    if (_sequence->NumSaves > saveIndex)
+                    if (_sequence->NumSaves() > saveIndex)
                     {
-                        const utf8* path = _sequence->Saves[saveIndex];
+                        const utf8* path = _sequence->Saves[saveIndex].c_str();
                         Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
                     }
                     return false;

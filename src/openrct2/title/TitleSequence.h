@@ -46,8 +46,8 @@ struct TitleSequence
     std::vector<TitleCommand> Commands;
     size_t NumCommands() const { return Commands.size(); }
 
-    size_t NumSaves;
-    utf8** Saves;
+    std::vector<std::string> Saves;
+    size_t NumSaves() const { return Saves.size(); }
 
     bool IsZip;
 };
