@@ -242,8 +242,8 @@ static void window_title_menu_cursor(
 
 static void window_title_menu_invalidate(rct_window* w)
 {
-    _filterRect = { w->windowPos.x, w->windowPos.y + UpdateButtonDims.width, w->windowPos.x + w->width - 1,
-                    w->windowPos.y + MenuButtonDims.width + UpdateButtonDims.width - 1 };
+    _filterRect = { w->windowPos.x, w->windowPos.y + UpdateButtonDims.height, w->windowPos.x + w->width - 1,
+                    w->windowPos.y + MenuButtonDims.height + UpdateButtonDims.height - 1 };
     if (OpenRCT2::GetContext()->HasNewVersionInfo())
     {
         w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
