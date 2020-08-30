@@ -121,6 +121,7 @@ namespace OpenRCT2::Scripting
         std::unique_ptr<ITcpSocket> _socket;
         bool _disposed{};
         bool _connecting{};
+        bool _wasConnected{};
 
     public:
         ScSocket(const std::shared_ptr<Plugin>& plugin)
@@ -137,11 +138,7 @@ namespace OpenRCT2::Scripting
     private:
         ScSocket* destroy(const DukValue& error)
         {
-            if (_socket != nullptr)
-            {
-                _socket->Close();
-                _socket = nullptr;
-            }
+            CloseSocket();
             return this;
         }
 
@@ -176,9 +173,16 @@ namespace OpenRCT2::Scripting
             else
             {
                 _socket = CreateTcpSocket();
-                _socket->Connect(host, port);
-                _eventList.AddListener(EVENT_CONNECT_ONCE, callback);
-                _connecting = true;
+                try
+                {
+                    _socket->ConnectAsync(host, port);
+                    _eventList.AddListener(EVENT_CONNECT_ONCE, callback);
+                    _connecting = true;
+                }
+                catch (const std::exception& e)
+                {
+                    duk_error(ctx, DUK_ERR_ERROR, e.what());
+                }
             }
             return this;
         }
@@ -255,7 +259,11 @@ namespace OpenRCT2::Scripting
             {
                 _socket->Close();
                 _socket = nullptr;
-                RaiseOnClose(false);
+                if (_wasConnected)
+                {
+                    _wasConnected = false;
+                    RaiseOnClose(false);
+                }
             }
         }
 
@@ -297,13 +305,23 @@ namespace OpenRCT2::Scripting
                     if (status == SOCKET_STATUS_CONNECTED)
                     {
                         _connecting = false;
+                        _wasConnected = true;
                         _eventList.Raise(EVENT_CONNECT_ONCE, GetPlugin(), {}, false);
                         _eventList.RemoveAllListeners(EVENT_CONNECT_ONCE);
                     }
                     else if (status == SOCKET_STATUS_CLOSED)
                     {
                         _connecting = false;
-                        _eventList.Raise(EVENT_ERROR, GetPlugin(), {}, false);
+
+                        auto& scriptEngine = GetContext()->GetScriptEngine();
+                        auto ctx = scriptEngine.GetContext();
+                        auto err = _socket->GetError();
+                        if (err == nullptr)
+                        {
+                            err = "";
+                        }
+                        auto dukErr = ToDuk(ctx, std::string_view(err));
+                        _eventList.Raise(EVENT_ERROR, GetPlugin(), { dukErr }, true);
                     }
                 }
                 else if (status == SOCKET_STATUS_CONNECTED)
@@ -321,13 +339,13 @@ namespace OpenRCT2::Scripting
                         case NETWORK_READPACKET_MORE_DATA:
                             break;
                         case NETWORK_READPACKET_DISCONNECTED:
-                            Dispose();
+                            CloseSocket();
                             break;
                     }
                 }
                 else
                 {
-                    Dispose();
+                    CloseSocket();
                 }
             }
         }

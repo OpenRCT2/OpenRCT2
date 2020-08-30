@@ -407,7 +407,7 @@ public:
 
     void Connect(const std::string& address, uint16_t port) override
     {
-        if (_status != SOCKET_STATUS_CLOSED)
+        if (_status != SOCKET_STATUS_CLOSED && _status != SOCKET_STATUS_WAITING)
         {
             throw std::runtime_error("Socket not closed.");
         }
@@ -503,6 +503,11 @@ public:
         {
             throw std::runtime_error("Socket not closed.");
         }
+
+        // When connect is called, the status is set to resolving, but we want to make sure
+        // the status is changed before this async method exits. Otherwise, the consumer
+        // might think the status has closed before it started to connect.
+        _status = SOCKET_STATUS_WAITING;
 
         auto saddress = std::string(address);
         std::promise<void> barrier;
