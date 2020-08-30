@@ -68,6 +68,7 @@
 		9308DA03209908090079EE96 /* Surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FB209908080079EE96 /* Surface.cpp */; };
 		9308DA04209908090079EE96 /* TileElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 9308D9FC209908080079EE96 /* TileElement.h */; };
 		9308DA05209908090079EE96 /* Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 9308D9FD209908090079EE96 /* Surface.h */; };
+		930EEA6A24FC00950070314E /* ScenarioSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 930EEA6924FC00940070314E /* ScenarioSelect.cpp */; };
 		932A211E22D73CFA00C57EDB /* GameActionCompat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A20CF22D73CEE00C57EDB /* GameActionCompat.cpp */; };
 		932A211F22D73CFA00C57EDB /* GameActionRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A20D322D73CEF00C57EDB /* GameActionRegistration.cpp */; };
 		932A212022D73CFA00C57EDB /* GameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A211C22D73CFA00C57EDB /* GameAction.cpp */; };
@@ -196,7 +197,6 @@
 		C654DF381F69C0430040F43D /* StaffFirePrompt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF271F69C0430040F43D /* StaffFirePrompt.cpp */; };
 		C654DF391F69C0430040F43D /* TitleCommandEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF281F69C0430040F43D /* TitleCommandEditor.cpp */; };
 		C654DF3A1F69C0430040F43D /* TitleEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF291F69C0430040F43D /* TitleEditor.cpp */; };
-		C654DF3B1F69C0430040F43D /* TitleScenarioSelect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF2A1F69C0430040F43D /* TitleScenarioSelect.cpp */; };
 		C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF2B1F69C0430040F43D /* TrackDesignManage.cpp */; };
 		C654DF3D1F69C0430040F43D /* TrackDesignPlace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF2C1F69C0430040F43D /* TrackDesignPlace.cpp */; };
 		C6607F481FE2B97E00D3FC0D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E81FE00C5D00660D62 /* Input.cpp */; };
@@ -983,6 +983,7 @@
 		9308D9FB209908080079EE96 /* Surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Surface.cpp; sourceTree = "<group>"; };
 		9308D9FC209908080079EE96 /* TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileElement.h; sourceTree = "<group>"; };
 		9308D9FD209908090079EE96 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
+		930EEA6924FC00940070314E /* ScenarioSelect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScenarioSelect.cpp; sourceTree = "<group>"; };
 		932A20CD22D73CEE00C57EDB /* GuestSetNameAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GuestSetNameAction.hpp; sourceTree = "<group>"; };
 		932A20CE22D73CEE00C57EDB /* RideSetVehiclesAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetVehiclesAction.hpp; sourceTree = "<group>"; };
 		932A20CF22D73CEE00C57EDB /* GameActionCompat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameActionCompat.cpp; sourceTree = "<group>"; };
@@ -1408,7 +1409,6 @@
 		C654DF271F69C0430040F43D /* StaffFirePrompt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaffFirePrompt.cpp; sourceTree = "<group>"; };
 		C654DF281F69C0430040F43D /* TitleCommandEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleCommandEditor.cpp; sourceTree = "<group>"; };
 		C654DF291F69C0430040F43D /* TitleEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleEditor.cpp; sourceTree = "<group>"; };
-		C654DF2A1F69C0430040F43D /* TitleScenarioSelect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleScenarioSelect.cpp; sourceTree = "<group>"; };
 		C654DF2B1F69C0430040F43D /* TrackDesignManage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignManage.cpp; sourceTree = "<group>"; };
 		C654DF2C1F69C0430040F43D /* TrackDesignPlace.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignPlace.cpp; sourceTree = "<group>"; };
 		C654DF3E1F69C18C0040F43D /* Intent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Intent.cpp; sourceTree = "<group>"; };
@@ -3606,6 +3606,7 @@
 				C6E415501FAFD6DB00D4A52A /* RideConstruction.cpp */,
 				C632C81E1F8A445700781F6D /* RideList.cpp */,
 				C666EE611F37ACB10061AA04 /* SavePrompt.cpp */,
+				930EEA6924FC00940070314E /* ScenarioSelect.cpp */,
 				C61ADB201FB7DC060024F2EF /* Scenery.cpp */,
 				304FE94F23A2996600470197 /* SceneryScatter.cpp */,
 				C666EE621F37ACB10061AA04 /* ServerList.cpp */,
@@ -3625,7 +3626,6 @@
 				C666EE661F37ACB10061AA04 /* TitleLogo.cpp */,
 				C666EE671F37ACB10061AA04 /* TitleMenu.cpp */,
 				C666EE681F37ACB10061AA04 /* TitleOptions.cpp */,
-				C654DF2A1F69C0430040F43D /* TitleScenarioSelect.cpp */,
 				C68313C91FDB4EEC006DB3D8 /* Tooltip.cpp */,
 				C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */,
 				C654DF2B1F69C0430040F43D /* TrackDesignManage.cpp */,
@@ -4027,8 +4027,8 @@
 				C632C81F1F8A445700781F6D /* RideList.cpp in Sources */,
 				C68878C420289B710084B384 /* OpenGLAPI.cpp in Sources */,
 				933CBDBB20CB1B3F00134678 /* TitleSequencePlayer.cpp in Sources */,
+				930EEA6A24FC00950070314E /* ScenarioSelect.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
-				C654DF3B1F69C0430040F43D /* TitleScenarioSelect.cpp in Sources */,
 				C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */,
 				C68878C020289B710084B384 /* ApplyPaletteShader.cpp in Sources */,
 				C666EE791F37ACB10061AA04 /* ServerStart.cpp in Sources */,
