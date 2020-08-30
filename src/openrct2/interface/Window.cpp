@@ -1630,7 +1630,7 @@ void window_resize_gui(int32_t width, int32_t height)
     if (titleWind != nullptr)
     {
         titleWind->windowPos.x = (width - titleWind->width) / 2;
-        titleWind->windowPos.y = height - 182;
+        titleWind->windowPos.y = height - 154;
     }
 
     rct_window* exitWind = window_find_by_class(WC_TITLE_EXIT);
@@ -1643,7 +1643,7 @@ void window_resize_gui(int32_t width, int32_t height)
     rct_window* optionsWind = window_find_by_class(WC_TITLE_OPTIONS);
     if (optionsWind != nullptr)
     {
-        optionsWind->windowPos.x = width - 80;
+        optionsWind->windowPos.x = width - 205;
     }
 
     gfx_invalidate_screen();
