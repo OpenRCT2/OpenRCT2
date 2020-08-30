@@ -73,7 +73,7 @@ public:
 
     void Eject() override
     {
-        FreeTitleSequence(_sequence);
+        _sequence.reset();
     }
 
     bool Begin(size_t titleSequenceId) override
@@ -84,18 +84,19 @@ public:
             return false;
         }
 
-        auto seqItem = TitleSequenceManager::GetItem(titleSequenceId);
-        auto sequence = LoadTitleSequence(seqItem->Path.c_str());
-        if (sequence == nullptr)
+        try
+        {
+            auto seqItem = TitleSequenceManager::GetItem(titleSequenceId);
+            auto sequence = std::make_unique<TitleSequence>(seqItem->Path.c_str());
+            Eject();
+            _sequence = std::move(sequence);
+            Reset();
+            return true;
+        }
+        catch (std::exception&)
         {
             return false;
         }
-
-        Eject();
-        _sequence = std::move(sequence);
-
-        Reset();
-        return true;
     }
 
     bool Update() override
@@ -276,11 +277,11 @@ private:
             {
                 bool loadSuccess = false;
                 uint8_t saveIndex = command->SaveIndex;
-                TitleSequenceParkHandle* parkHandle = TitleSequenceGetParkHandle(_sequence.get(), saveIndex);
+                auto parkHandle = _sequence->GetParkHandle(saveIndex);
                 if (parkHandle != nullptr)
                 {
                     loadSuccess = LoadParkFromStream(static_cast<OpenRCT2::IStream*>(parkHandle->Stream), parkHandle->HintPath);
-                    TitleSequenceCloseParkHandle(parkHandle);
+                    _sequence->CloseParkHandle(parkHandle);
                 }
                 if (!loadSuccess)
                 {

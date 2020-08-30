@@ -269,7 +269,7 @@ static void window_title_editor_close(rct_window* w)
     // Close the related windows
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 
-    FreeTitleSequence(_editingTitleSequence);
+    _editingTitleSequence.reset();
     _sequenceName = nullptr;
 
     SafeFree(_renameSavePath);
@@ -335,7 +335,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 if (w->selected_list_item != -1)
                 {
-                    TitleSequenceRemovePark(_editingTitleSequence.get(), w->selected_list_item);
+                    _editingTitleSequence->RemovePark(w->selected_list_item);
                     if (w->selected_list_item >= static_cast<int16_t>(_editingTitleSequence->NumSaves()))
                     {
                         w->selected_list_item--;
@@ -357,7 +357,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_TITLE_EDITOR_LOAD_SAVE:
             if (w->selected_list_item >= 0 && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumSaves()))
             {
-                auto handle = TitleSequenceGetParkHandle(_editingTitleSequence.get(), w->selected_list_item);
+                auto handle = _editingTitleSequence->GetParkHandle(w->selected_list_item);
                 auto stream = static_cast<OpenRCT2::IStream*>(handle->Stream);
                 auto hintPath = String::ToStd(handle->HintPath);
                 bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
@@ -374,7 +374,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                     else
                         game_load_init();
 
-                    TitleSequenceCloseParkHandle(handle);
+                    _editingTitleSequence->CloseParkHandle(handle);
                     window_title_editor_open(WINDOW_TITLE_EDITOR_TAB_SAVES);
                 }
                 catch (const std::exception&)
@@ -414,12 +414,12 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                     && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands()))
                 {
                     _editingTitleSequence->Commands.erase(_editingTitleSequence->Commands.begin() + w->selected_list_item);
-                    
+
                     if (w->selected_list_item >= static_cast<int16_t>(_editingTitleSequence->NumCommands()))
                     {
                         w->selected_list_item--;
                     }
-                    TitleSequenceSave(_editingTitleSequence.get());
+                    _editingTitleSequence->Save();
                 }
             }
             break;
@@ -441,11 +441,9 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 if (w->selected_list_item != -1
                     && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands() - 1))
                 {
-                    TitleCommand& a = _editingTitleSequence->Commands[w->selected_list_item];
-                    TitleCommand& b = _editingTitleSequence->Commands[w->selected_list_item + 1];
-                    std::swap(a, b);
+                    _editingTitleSequence->SwapConsecutiveCommands(w->selected_list_item);
                     w->selected_list_item++;
-                    TitleSequenceSave(_editingTitleSequence.get());
+                    _editingTitleSequence->Save();
                 }
             }
             break;
@@ -455,11 +453,9 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 if (w->selected_list_item > 0
                     && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands()))
                 {
-                    TitleCommand& a = _editingTitleSequence->Commands[w->selected_list_item - 1];
-                    TitleCommand& b = _editingTitleSequence->Commands[w->selected_list_item];
-                    std::swap(a, b);
+                    _editingTitleSequence->SwapConsecutiveCommands(w->selected_list_item - 1);
                     w->selected_list_item--;
-                    TitleSequenceSave(_editingTitleSequence.get());
+                    _editingTitleSequence->Save();
                 }
             }
             break;
@@ -865,7 +861,8 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
     if (_editingTitleSequence == nullptr)
         return;
 
-    for (int32_t i = 0; i < static_cast<int32_t>(_editingTitleSequence->NumSaves()); i++, screenCoords.y += SCROLLABLE_ROW_HEIGHT)
+    for (int32_t i = 0; i < static_cast<int32_t>(_editingTitleSequence->NumSaves());
+         i++, screenCoords.y += SCROLLABLE_ROW_HEIGHT)
     {
         bool selected = false;
         bool hover = false;
@@ -1061,22 +1058,22 @@ static void window_title_editor_load_sequence(size_t index)
     if (index >= title_sequence_manager_get_count())
         return;
 
-    const char* path = title_sequence_manager_get_path(index);
-    auto titleSequence = LoadTitleSequence(path);
-    if (titleSequence == nullptr)
+    try
+    {
+        const char* path = title_sequence_manager_get_path(index);
+        auto titleSequence = std::make_unique<TitleSequence>(path);
+        _selectedTitleSequence = index;
+        size_t predefinedIndex = title_sequence_manager_get_predefined_index(index);
+        _isSequenceReadOnly = (predefinedIndex != SIZE_MAX);
+        _sequenceName = title_sequence_manager_get_name(index);
+        _editingTitleSequence = std::move(titleSequence);
+        window_close_by_class(WC_TITLE_COMMAND_EDITOR);
+    }
+    catch (std::exception&)
     {
         context_show_error(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE);
         return;
     }
-
-    _selectedTitleSequence = index;
-    size_t predefinedIndex = title_sequence_manager_get_predefined_index(index);
-    _isSequenceReadOnly = (predefinedIndex != SIZE_MAX);
-    _sequenceName = title_sequence_manager_get_name(index);
-    FreeTitleSequence(_editingTitleSequence);
-    _editingTitleSequence = std::move(titleSequence);
-
-    window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 }
 
 static ITitleSequencePlayer* window_title_editor_get_player()
@@ -1102,7 +1099,7 @@ static bool window_title_editor_check_can_edit()
 
 static bool save_filename_exists(const utf8* filename)
 {
-    auto seq = _editingTitleSequence.get();
+    auto& seq = _editingTitleSequence;
     for (size_t i = 0; i < seq->NumSaves(); i++)
     {
         const utf8* savePath = seq->Saves[i].c_str();
@@ -1130,8 +1127,7 @@ static void window_title_editor_add_park_callback(int32_t result, const utf8* pa
             reinterpret_cast<uintptr_t>(_renameSavePath), 52 - 1);
         return;
     }
-
-    TitleSequenceAddPark(_editingTitleSequence.get(), path, filename);
+    _editingTitleSequence->AddPark(path, filename);
 }
 
 static void window_title_editor_rename_park(size_t index, const utf8* name)
@@ -1155,8 +1151,8 @@ static void window_title_editor_rename_park(size_t index, const utf8* name)
         }
     }
 
-    if (TitleSequenceRenamePark(_editingTitleSequence.get(), index, name))
+    if (_editingTitleSequence->RenamePark(index, name))
     {
-        TitleSequenceSave(_editingTitleSequence.get());
+        _editingTitleSequence->Save();
     }
 }

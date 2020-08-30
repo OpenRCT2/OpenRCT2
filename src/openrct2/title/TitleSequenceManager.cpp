@@ -140,13 +140,14 @@ namespace TitleSequenceManager
     size_t CreateItem(const utf8* name)
     {
         std::string path = GetNewTitleSequencePath(std::string(name), true);
-        auto seq = CreateTitleSequence();
-        seq->Name = String::Duplicate(name);
-        seq->Path = String::Duplicate(path.c_str());
+        auto seq = std::make_unique<TitleSequence>();
+
+        seq->Name = name;
+        seq->Path = path;
         seq->IsZip = true;
 
-        bool success = TitleSequenceSave(seq.get());
-        FreeTitleSequence(seq);
+        bool success = seq->Save();
+        seq.reset();
 
         size_t index = SIZE_MAX;
         if (success)
