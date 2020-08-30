@@ -7,6 +7,7 @@
 - Fix: [#12701] Silent NSIS setup flag /S isn't silent, upgrade pop-up appears anyway.
 - Fix: [#12737] Space Rings draw the same vehicle 4 times.
 - Fix: [#12764] Rides don't start aged anymore.
+- Fix: [#12820] Title menu buttons not invalidating properly
 - Fix: Incomplete loop collision box allowed overlapping track (original bug).
 - Technical: The required version of macOS has been lowered to 10.13 (High Sierra).
 

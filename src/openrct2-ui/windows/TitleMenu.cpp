@@ -43,7 +43,6 @@ static rct_widget window_title_menu_widgets[] = {
     MakeWidget({0,                       0}, UpdateButtonDims, WWT_EMPTY,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
     { WIDGETS_END },
 };
-// clang-format on
 
 static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_title_menu_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
@@ -82,6 +81,7 @@ static rct_window_event_list window_title_menu_events = {
     window_title_menu_paint,
     nullptr
 };
+// clang-format on
 
 /**
  * Creates the window containing the menu buttons on the title screen.
