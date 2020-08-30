@@ -159,6 +159,7 @@
     <ClCompile Include="windows\RideConstruction.cpp" />
     <ClCompile Include="windows\RideList.cpp" />
     <ClCompile Include="windows\SavePrompt.cpp" />
+    <ClCompile Include="windows\ScenarioSelect.cpp" />
     <ClCompile Include="windows\Scenery.cpp" />
     <ClCompile Include="windows\SceneryScatter.cpp" />
     <ClCompile Include="windows\ServerList.cpp" />
@@ -178,7 +179,6 @@
     <ClCompile Include="windows\TitleLogo.cpp" />
     <ClCompile Include="windows\TitleMenu.cpp" />
     <ClCompile Include="windows\TitleOptions.cpp" />
-    <ClCompile Include="windows\TitleScenarioSelect.cpp" />
     <ClCompile Include="windows\Tooltip.cpp" />
     <ClCompile Include="windows\TopToolbar.cpp" />
     <ClCompile Include="windows\TrackDesignManage.cpp" />
