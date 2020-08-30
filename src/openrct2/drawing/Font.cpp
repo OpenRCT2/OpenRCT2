@@ -89,6 +89,18 @@ static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::t_comma_uc, SPR_G2_T_COMMA_UPPER - SPR_CHAR_START },
     { UnicodeChar::t_comma, SPR_G2_T_COMMA_LOWER - SPR_CHAR_START },
     { UnicodeChar::sharp_s_uc, 223 - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::c_circumflex_uc, SPR_G2_C_CIRCUMFLEX_UPPER - SPR_CHAR_START },
+    { UnicodeChar::c_circumflex, SPR_G2_C_CIRCUMFLEX_LOWER - SPR_CHAR_START },
+    { UnicodeChar::g_circumflex_uc, SPR_G2_G_CIRCUMFLEX_UPPER - SPR_CHAR_START },
+    { UnicodeChar::g_circumflex, SPR_G2_G_CIRCUMFLEX_LOWER - SPR_CHAR_START },
+    { UnicodeChar::h_circumflex_uc, SPR_G2_H_CIRCUMFLEX_UPPER - SPR_CHAR_START },
+    { UnicodeChar::h_circumflex, SPR_G2_H_CIRCUMFLEX_LOWER - SPR_CHAR_START },
+    { UnicodeChar::j_circumflex_uc, SPR_G2_J_CIRCUMFLEX_UPPER - SPR_CHAR_START },
+    { UnicodeChar::j_circumflex, SPR_G2_J_CIRCUMFLEX_LOWER - SPR_CHAR_START },
+    { UnicodeChar::s_circumflex_uc, SPR_G2_S_CIRCUMFLEX_UPPER - SPR_CHAR_START },
+    { UnicodeChar::s_circumflex, SPR_G2_S_CIRCUMFLEX_LOWER - SPR_CHAR_START },
+    { UnicodeChar::u_breve_uc, SPR_G2_U_BREVE_UPPER - SPR_CHAR_START },
+    { UnicodeChar::u_breve, SPR_G2_U_BREVE_LOWER - SPR_CHAR_START },
 
     // Cyrillic alphabet
     { UnicodeChar::cyrillic_io_uc, 203 - CS_SPRITE_FONT_OFFSET }, // Looks just like Ë
