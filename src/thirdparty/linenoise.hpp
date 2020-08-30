@@ -1119,7 +1119,6 @@ enum KEY_ACTION {
 void linenoiseAtExit(void);
 bool AddHistory(const char *line);
 void refreshLine(struct linenoiseState *l);
-static ssize_t writeFixed(int fd, const void *buf, size_t n);
 
 /* ============================ UTF8 utilities ============================== */
 
@@ -2333,6 +2332,7 @@ inline std::string Readline(const char *prompt) {
 
 /* ================================ History ================================= */
 
+#ifndef _WIN32
 // HLP Added enable/disableRawModeOutput()
 // These two functions enable/disable the raw output mode of the terminal
 static int enableRawModeOutput(int fd)
@@ -2358,11 +2358,14 @@ static int disableRawModeOutput(int fd)
     }
     return 0;
 }
+#endif
 
 /* At exit we'll try to fix the terminal to the initial conditions. */
 inline void linenoiseAtExit(void) {
     disableRawMode(STDIN_FILENO);
+#ifndef _WIN32
     disableRawModeOutput(STDIN_FILENO);
+#endif
 }
 
 /* This is the API call to add a new entry in the linenoise history.
@@ -2428,13 +2431,6 @@ inline bool LoadHistory(const char* path) {
 
 inline const std::vector<std::string>& GetHistory() {
     return history;
-}
-
-static ssize_t writeFixed(int fd, const void *buf, size_t n)
-{
-    enableRawModeOutput(fd);
-    write(fd, buf, n);
-    disableRawModeOutput(fd);
 }
 
 } // namespace linenoise
