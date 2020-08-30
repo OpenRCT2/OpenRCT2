@@ -155,7 +155,7 @@ public:
                 {
                     if (!SkipToNextLoadCommand() || _position == entryPosition)
                     {
-                        Console::Error::WriteLine("Unable to load any parks from %s.", _sequence->Name);
+                        Console::Error::WriteLine("Unable to load any parks from %s.", _sequence->Name.c_str());
                         return false;
                     }
                 }

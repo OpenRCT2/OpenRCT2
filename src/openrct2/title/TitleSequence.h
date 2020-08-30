@@ -40,8 +40,8 @@ struct TitleCommand
 
 struct TitleSequence
 {
-    const utf8* Name;
-    const utf8* Path;
+    std::string Path;
+    std::string Name;
 
     size_t NumCommands;
     TitleCommand* Commands;
