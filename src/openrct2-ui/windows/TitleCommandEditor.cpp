@@ -347,13 +347,7 @@ static void window_title_command_editor_mouseup(rct_window* w, rct_widgetindex w
             if (_window_title_command_editor_insert)
             {
                 size_t insertIndex = _window_title_command_editor_index;
-                _sequence->NumCommands++;
-                _sequence->Commands = Memory::ReallocateArray(_sequence->Commands, _sequence->NumCommands);
-                for (size_t i = _sequence->NumCommands - 1; i > insertIndex; i--)
-                {
-                    _sequence->Commands[i] = _sequence->Commands[i - 1];
-                }
-                _sequence->Commands[insertIndex] = command;
+                _sequence->Commands.insert(_sequence->Commands.begin() + insertIndex, command);
             }
             else
             {

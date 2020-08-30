@@ -43,8 +43,8 @@ struct TitleSequence
     std::string Path;
     std::string Name;
 
-    size_t NumCommands;
-    TitleCommand* Commands;
+    std::vector<TitleCommand> Commands;
+    size_t NumCommands() const { return Commands.size(); }
 
     size_t NumSaves;
     utf8** Saves;

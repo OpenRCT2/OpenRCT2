@@ -93,8 +93,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
     seq->Name = Path::GetFileNameWithoutExtension(seq->Path);
     seq->NumSaves = saves.size();
     seq->Saves = Collections::ToArray(saves);
-    seq->NumCommands = commands.size();
-    seq->Commands = Collections::ToArray(commands);
+    seq->Commands = std::move(commands);
     seq->IsZip = isZip;
     return seq;
 }
@@ -103,7 +102,6 @@ void FreeTitleSequence(std::unique_ptr<TitleSequence>& seq)
 {
     if (seq)
     {
-        Memory::Free(seq->Commands);
         for (size_t i = 0; i < seq->NumSaves; i++)
         {
             Memory::Free(seq->Saves[i]);
@@ -326,7 +324,7 @@ bool TitleSequenceRemovePark(TitleSequence* seq, size_t index)
     seq->NumSaves--;
 
     // Update load commands
-    for (size_t i = 0; i < seq->NumCommands; i++)
+    for (size_t i = 0; i < seq->NumCommands(); i++)
     {
         TitleCommand* command = &seq->Commands[i];
         if (command->Type == TITLE_SCRIPT_LOAD)
@@ -556,7 +554,7 @@ static std::string LegacyScriptWrite(TitleSequence* seq)
     sb.Append("# SCRIPT FOR ");
     sb.Append(seq->Name.c_str());
     sb.Append("\n");
-    for (size_t i = 0; i < seq->NumCommands; i++)
+    for (size_t i = 0; i < seq->NumCommands(); i++)
     {
         const TitleCommand* command = &seq->Commands[i];
         switch (command->Type)
