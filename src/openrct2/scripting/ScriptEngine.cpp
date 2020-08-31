@@ -1165,10 +1165,20 @@ void ScriptEngine::UpdateSockets()
 void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
 {
 #    ifndef DISABLE_NETWORK
-    _sockets.erase(
-        std::remove_if(
-            _sockets.begin(), _sockets.end(), [&plugin](const auto& socket) { return socket->GetPlugin() == plugin; }),
-        _sockets.end());
+    auto it = _sockets.begin();
+    while (it != _sockets.end())
+    {
+        auto socket = it->get();
+        if (socket->GetPlugin() == plugin)
+        {
+            socket->Dispose();
+            it = _sockets.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
 #    endif
 }
 
