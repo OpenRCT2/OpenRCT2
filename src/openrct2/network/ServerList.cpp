@@ -257,7 +257,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
                 size_t recievedLen{};
                 std::unique_ptr<INetworkEndpoint> endpoint;
                 auto p = udpSocket->ReceiveData(buffer, sizeof(buffer) - 1, &recievedLen, &endpoint);
-                if (p == NETWORK_READPACKET_SUCCESS)
+                if (p == NetworkReadPacket::Success)
                 {
                     auto sender = endpoint->GetHostname();
                     log_verbose("Received %zu bytes back from %s", recievedLen, sender.c_str());

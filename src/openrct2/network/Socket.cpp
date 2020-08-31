@@ -494,7 +494,7 @@ public:
         return totalSent;
     }
 
-    NETWORK_READPACKET ReceiveData(void* buffer, size_t size, size_t* sizeReceived) override
+    NetworkReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) override
     {
         if (_status != SOCKET_STATUS_CONNECTED)
         {
@@ -505,7 +505,7 @@ public:
         if (readBytes == 0)
         {
             *sizeReceived = 0;
-            return NETWORK_READPACKET_DISCONNECTED;
+            return NetworkReadPacket::Disconnected;
         }
         else if (readBytes == SOCKET_ERROR)
         {
@@ -524,17 +524,17 @@ public:
 #    endif // _WIN32
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
             {
-                return NETWORK_READPACKET_DISCONNECTED;
+                return NetworkReadPacket::Disconnected;
             }
             else
             {
-                return NETWORK_READPACKET_NO_DATA;
+                return NetworkReadPacket::NoData;
             }
         }
         else
         {
             *sizeReceived = readBytes;
-            return NETWORK_READPACKET_SUCCESS;
+            return NetworkReadPacket::Success;
         }
     }
 
@@ -720,7 +720,7 @@ public:
         return totalSent;
     }
 
-    NETWORK_READPACKET ReceiveData(
+    NetworkReadPacket ReceiveData(
         void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender) override
     {
         sockaddr_in senderAddr{};
@@ -736,7 +736,7 @@ public:
         if (readBytes <= 0)
         {
             *sizeReceived = 0;
-            return NETWORK_READPACKET_NO_DATA;
+            return NetworkReadPacket::NoData;
         }
         else
         {
@@ -745,7 +745,7 @@ public:
             {
                 *sender = std::make_unique<NetworkEndpoint>(reinterpret_cast<sockaddr*>(&senderAddr), senderAddrLen);
             }
-            return NETWORK_READPACKET_SUCCESS;
+            return NetworkReadPacket::Success;
         }
     }
 

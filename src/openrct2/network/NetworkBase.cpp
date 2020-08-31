@@ -1673,20 +1673,20 @@ void NetworkBase::Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, 
 
 bool NetworkBase::ProcessConnection(NetworkConnection& connection)
 {
-    int32_t packetStatus;
+    NetworkReadPacket packetStatus;
     do
     {
         packetStatus = connection.ReadPacket();
         switch (packetStatus)
         {
-            case NETWORK_READPACKET_DISCONNECTED:
+            case NetworkReadPacket::Disconnected:
                 // closed connection or network error
                 if (!connection.GetLastDisconnectReason())
                 {
                     connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
                 }
                 return false;
-            case NETWORK_READPACKET_SUCCESS:
+            case NetworkReadPacket::Success:
                 // done reading in packet
                 ProcessPacket(connection, connection.InboundPacket);
                 if (connection.Socket == nullptr)
@@ -1694,14 +1694,14 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
                     return false;
                 }
                 break;
-            case NETWORK_READPACKET_MORE_DATA:
+            case NetworkReadPacket::MoreData:
                 // more data required to be read
                 break;
-            case NETWORK_READPACKET_NO_DATA:
+            case NetworkReadPacket::NoData:
                 // could not read anything from socket
                 break;
         }
-    } while (packetStatus == NETWORK_READPACKET_SUCCESS);
+    } while (packetStatus == NetworkReadPacket::Success);
 
     connection.SendQueuedPackets();
 
