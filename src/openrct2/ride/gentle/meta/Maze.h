@@ -26,8 +26,8 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(TrackPaintFunction, get_track_paint_function_maze),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_MAZE))),
-    SET_FIELD(DefaultMode, static_cast<uint8_t>(RideMode::RIDE_MODE_MAZE)),
+    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::MAZE))),
+    SET_FIELD(DefaultMode, RideMode::MAZE),
     SET_FIELD(OperatingSettings, { 1, 64, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),

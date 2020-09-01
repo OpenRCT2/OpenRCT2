@@ -78,7 +78,7 @@ struct TrackDesignMazeElement
 };
 
 class DataSerialiser;
-
+enum class RideMode : uint8_t;
 struct TrackDesign
 {
     uint8_t type;
