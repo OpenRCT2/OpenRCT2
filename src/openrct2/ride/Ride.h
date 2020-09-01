@@ -29,7 +29,6 @@ struct Ride;
 struct RideTypeDescriptor;
 struct Staff;
 
-
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
 // The max number of different types of vehicle.
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
