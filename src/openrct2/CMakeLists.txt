@@ -196,6 +196,8 @@ if (HAVE_DISCORD_RPC)
     target_link_libraries(libopenrct2 discord-rpc)
 endif()
 
+target_link_libraries(libopenrct2 fribidi)
+
 # Includes
 target_include_directories(${PROJECT_NAME} PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PNG_INCLUDE_DIRS}
