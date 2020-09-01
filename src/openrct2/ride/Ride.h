@@ -29,7 +29,6 @@ struct Ride;
 struct RideTypeDescriptor;
 struct Staff;
 
-//enum class RideMode : uint8_t;
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
 // The max number of different types of vehicle.
@@ -191,7 +190,7 @@ enum class RideClassification
 };
 
 struct TrackDesign;
-
+enum class RideMode : uint8_t;
 /**
  * Ride structure.
  *
@@ -205,7 +204,7 @@ struct Ride
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
     ObjectEntryIndex subtype;
-    uint8_t mode;
+    RideMode mode;
     uint8_t colour_scheme_type;
     VehicleColour vehicle_colours[MAX_CARS_PER_TRAIN];
     // 0 = closed, 1 = open, 2 = test
@@ -407,7 +406,7 @@ public:
 
     void StopGuestsQueuing();
 
-    uint8_t GetDefaultMode() const;
+    RideMode GetDefaultMode() const;
 
     void SetColourPreset(uint8_t index);
 
@@ -643,46 +642,46 @@ enum
 
 enum class RideMode : uint8_t
 {
-    RIDE_MODE_NORMAL,
-    RIDE_MODE_CONTINUOUS_CIRCUIT,
-    RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
-    RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, // RCT2 style, pass through station
-    RIDE_MODE_SHUTTLE,
-    RIDE_MODE_BOAT_HIRE,
-    RIDE_MODE_UPWARD_LAUNCH,
-    RIDE_MODE_ROTATING_LIFT,
-    RIDE_MODE_STATION_TO_STATION,
-    RIDE_MODE_SINGLE_RIDE_PER_ADMISSION,
-    RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION = 10,
-    RIDE_MODE_MAZE,
-    RIDE_MODE_RACE,
-    RIDE_MODE_DODGEMS,
-    RIDE_MODE_SWING,
-    RIDE_MODE_SHOP_STALL,
-    RIDE_MODE_ROTATION,
-    RIDE_MODE_FORWARD_ROTATION,
-    RIDE_MODE_BACKWARD_ROTATION,
-    RIDE_MODE_FILM_AVENGING_AVIATORS,
-    RIDE_MODE_3D_FILM_MOUSE_TAILS = 20,
-    RIDE_MODE_SPACE_RINGS,
-    RIDE_MODE_BEGINNERS,
-    RIDE_MODE_LIM_POWERED_LAUNCH,
-    RIDE_MODE_FILM_THRILL_RIDERS,
-    RIDE_MODE_3D_FILM_STORM_CHASERS,
-    RIDE_MODE_3D_FILM_SPACE_RAIDERS,
-    RIDE_MODE_INTENSE,
-    RIDE_MODE_BERSERK,
-    RIDE_MODE_HAUNTED_HOUSE,
-    RIDE_MODE_CIRCUS_SHOW = 30,
-    RIDE_MODE_DOWNWARD_LAUNCH,
-    RIDE_MODE_CROOKED_HOUSE,
-    RIDE_MODE_FREEFALL_DROP,
-    RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
-    RIDE_MODE_POWERED_LAUNCH, // RCT1 style, don't pass through station
-    RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED,
+    NORMAL,
+    CONTINUOUS_CIRCUIT,
+    REVERSE_INCLINE_LAUNCHED_SHUTTLE,
+    POWERED_LAUNCH_PASSTROUGH, // RCT2 style, pass through station
+    SHUTTLE,
+    BOAT_HIRE,
+    UPWARD_LAUNCH,
+    ROTATING_LIFT,
+    STATION_TO_STATION,
+    SINGLE_RIDE_PER_ADMISSION,
+    UNLIMITED_RIDES_PER_ADMISSION = 10,
+    MAZE,
+    RACE,
+    DODGEMS,
+    SWING,
+    SHOP_STALL,
+    ROTATION,
+    FORWARD_ROTATION,
+    BACKWARD_ROTATION,
+    FILM_AVENGING_AVIATORS,
+    MOUSE_TAILS_3D_FILM = 20,
+    SPACE_RINGS,
+    BEGINNERS,
+    LIM_POWERED_LAUNCH,
+    FILM_THRILL_RIDERS,
+    STORM_CHASERS_3D_FILM,
+    SPACE_RAIDERS_3D_FILM,
+    INTENSE,
+    BERSERK,
+    HAUNTED_HOUSE,
+    CIRCUS_SHOW = 30,
+    DOWNWARD_LAUNCH,
+    CROOKED_HOUSE,
+    FREEFALL_DROP,
+    CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
+    POWERED_LAUNCH, // RCT1 style, don't pass through station
+    POWERED_LAUNCH_BLOCK_SECTIONED,
 
-    RIDE_MODE_COUNT,
-    RIDE_MODE_NULL = 255,
+    COUNT,
+    NULL_MODE = 255,
 };
 
 enum

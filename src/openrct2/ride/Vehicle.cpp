@@ -2067,10 +2067,10 @@ void Vehicle::UpdateMovingToEndOfStation()
 
     switch (curRide->mode)
     {
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_UPWARD_LAUNCH):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATING_LIFT):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_DOWNWARD_LAUNCH):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FREEFALL_DROP):
+        case RideMode::UPWARD_LAUNCH:
+        case RideMode::ROTATING_LIFT:
+        case RideMode::DOWNWARD_LAUNCH:
+        case RideMode::FREEFALL_DROP:
             if (velocity >= -131940)
             {
                 acceleration = -3298;
@@ -2084,23 +2084,23 @@ void Vehicle::UpdateMovingToEndOfStation()
             if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 break;
             [[fallthrough]];
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_DODGEMS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_SWING):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATION):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_BACKWARD_ROTATION):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FILM_AVENGING_AVIATORS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FILM_THRILL_RIDERS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_BEGINNERS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_INTENSE):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_BERSERK):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_MOUSE_TAILS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_STORM_CHASERS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_SPACE_RAIDERS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_SPACE_RINGS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_HAUNTED_HOUSE):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_CROOKED_HOUSE):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_CIRCUS_SHOW):
+        case RideMode::DODGEMS:
+        case RideMode::SWING:
+        case RideMode::ROTATION:
+        case RideMode::FORWARD_ROTATION:
+        case RideMode::BACKWARD_ROTATION:
+        case RideMode::FILM_AVENGING_AVIATORS:
+        case RideMode::FILM_THRILL_RIDERS:
+        case RideMode::BEGINNERS:
+        case RideMode::INTENSE:
+        case RideMode::BERSERK:
+        case RideMode::MOUSE_TAILS_3D_FILM:
+        case RideMode::STORM_CHASERS_3D_FILM:
+        case RideMode::SPACE_RAIDERS_3D_FILM:
+        case RideMode::SPACE_RINGS:
+        case RideMode::HAUNTED_HOUSE:
+        case RideMode::CROOKED_HOUSE:
+        case RideMode::CIRCUS_SHOW:
             current_station = 0;
             velocity = 0;
             acceleration = 0;
@@ -2137,7 +2137,7 @@ void Vehicle::UpdateMovingToEndOfStation()
                 acceleration = 0;
                 sub_state++;
 
-                if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_RACE) && sub_state >= 40)
+                if (curRide->mode == RideMode::RACE && sub_state >= 40)
                 {
                     SetState(Vehicle::Status::WaitingForPassengers);
                     break;
@@ -2194,7 +2194,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         }
     }
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION) || curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_BACKWARD_ROTATION))
+    if (curRide->mode == RideMode::FORWARD_ROTATION || curRide->mode == RideMode::BACKWARD_ROTATION)
     {
         uint8_t seat = ((-vehicle_sprite_type) / 8) & 0xF;
         if (peep[seat] != SPRITE_INDEX_NULL)
@@ -2481,7 +2481,7 @@ void Vehicle::UpdateWaitingToDepart()
     bool skipCheck = false;
     if (shouldBreak || curRide->status != RIDE_STATUS_OPEN)
     {
-        if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION) || curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_BACKWARD_ROTATION))
+        if (curRide->mode == RideMode::FORWARD_ROTATION || curRide->mode == RideMode::BACKWARD_ROTATION)
         {
             uint8_t seat = ((-vehicle_sprite_type) >> 3) & 0xF;
             if (peep[seat * 2] == SPRITE_INDEX_NULL)
@@ -2558,102 +2558,112 @@ void Vehicle::UpdateWaitingToDepart()
 
     switch (curRide->mode)
     {
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_DODGEMS):
+        case RideMode::DODGEMS:
             // Dodgems mode uses sub_state / var_CE to tell how long
             // the vehicle has been ridden.
             SetState(Vehicle::Status::TravellingDodgems);
             var_CE = 0;
             UpdateDodgemsMode();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_SWING):
+        case RideMode::SWING:
             SetState(Vehicle::Status::Swinging);
             var_CE = 0;
             current_time = -1;
             UpdateSwinging();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATION):
+        case RideMode::ROTATION:
             SetState(Vehicle::Status::Rotating);
             var_CE = 0;
             current_time = -1;
             UpdateRotating();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FILM_AVENGING_AVIATORS):
+        case RideMode::FILM_AVENGING_AVIATORS:
             SetState(Vehicle::Status::SimulatorOperating);
             current_time = -1;
             UpdateSimulatorOperating();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FILM_THRILL_RIDERS):
+        case RideMode::FILM_THRILL_RIDERS:
             SetState(Vehicle::Status::SimulatorOperating, 1);
             current_time = -1;
             UpdateSimulatorOperating();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_BEGINNERS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_INTENSE):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_BERSERK):
+        case RideMode::BEGINNERS:
+        case RideMode::INTENSE:
+        case RideMode::BERSERK:
             SetState(Vehicle::Status::TopSpinOperating, sub_state);
 
             switch (curRide->mode)
             {
-                case static_cast<uint8_t>(RideMode::RIDE_MODE_BEGINNERS):
+                case RideMode::BEGINNERS:
                     sub_state = 0;
                     break;
-                case static_cast<uint8_t>(RideMode::RIDE_MODE_INTENSE):
+                case RideMode::INTENSE:
                     sub_state = 1;
                     break;
-                case static_cast<uint8_t>(RideMode::RIDE_MODE_BERSERK):
+                case RideMode::BERSERK:
                     sub_state = 2;
                     break;
+                default:
+                {
+                    // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled in switch
+                    // [-Werror=switch]"
+                }
             }
             current_time = -1;
             vehicle_sprite_type = 0;
             bank_rotation = 0;
             UpdateTopSpinOperating();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_BACKWARD_ROTATION):
+        case RideMode::FORWARD_ROTATION:
+        case RideMode::BACKWARD_ROTATION:
             SetState(Vehicle::Status::FerrisWheelRotating, vehicle_sprite_type);
             var_CE = 0;
             ferris_wheel_var_0 = 8;
             ferris_wheel_var_1 = 8;
             UpdateFerrisWheelRotating();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_MOUSE_TAILS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_STORM_CHASERS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_SPACE_RAIDERS):
+        case RideMode::MOUSE_TAILS_3D_FILM:
+        case RideMode::STORM_CHASERS_3D_FILM:
+        case RideMode::SPACE_RAIDERS_3D_FILM:
             SetState(Vehicle::Status::ShowingFilm, sub_state);
             switch (curRide->mode)
             {
-                case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_MOUSE_TAILS):
+                case RideMode::MOUSE_TAILS_3D_FILM:
                     sub_state = 0;
                     break;
-                case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_STORM_CHASERS):
+                case RideMode::STORM_CHASERS_3D_FILM:
                     sub_state = 1;
                     break;
-                case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_SPACE_RAIDERS):
+                case RideMode::SPACE_RAIDERS_3D_FILM:
                     sub_state = 2;
                     break;
+                default:
+                {
+                    // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled in switch
+                    // [-Werror=switch]"
+                }
             }
             current_time = -1;
             UpdateShowingFilm();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_CIRCUS_SHOW):
+        case RideMode::CIRCUS_SHOW:
             SetState(Vehicle::Status::DoingCircusShow);
             current_time = -1;
             UpdateDoingCircusShow();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_SPACE_RINGS):
+        case RideMode::SPACE_RINGS:
             SetState(Vehicle::Status::SpaceRingsOperating);
             vehicle_sprite_type = 0;
             current_time = -1;
             UpdateSpaceRingsOperating();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_HAUNTED_HOUSE):
+        case RideMode::HAUNTED_HOUSE:
             SetState(Vehicle::Status::HauntedHouseOperating);
             vehicle_sprite_type = 0;
             current_time = -1;
             UpdateHauntedHouseOperating();
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_CROOKED_HOUSE):
+        case RideMode::CROOKED_HOUSE:
             SetState(Vehicle::Status::CrookedHouseOperating);
             vehicle_sprite_type = 0;
             current_time = -1;
@@ -3196,7 +3206,7 @@ void Vehicle::UpdateDeparting()
             audio_play_sound_at_location(soundId, { x, y, z });
         }
 
-        if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_UPWARD_LAUNCH) || (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_DOWNWARD_LAUNCH) && var_CE > 1))
+        if ((curRide->mode == RideMode::UPWARD_LAUNCH || curRide->mode == RideMode::DOWNWARD_LAUNCH) && var_CE > 1)
         {
             audio_play_sound_at_location(SoundId::RideLaunch2, { x, y, z });
         }
@@ -3226,15 +3236,15 @@ void Vehicle::UpdateDeparting()
 
     switch (curRide->mode)
     {
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE):
+        case RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE:
             if (velocity >= -131940)
                 acceleration = -3298;
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_PASSTROUGH):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_LIM_POWERED_LAUNCH):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_UPWARD_LAUNCH):
+        case RideMode::POWERED_LAUNCH_PASSTROUGH:
+        case RideMode::POWERED_LAUNCH:
+        case RideMode::POWERED_LAUNCH_BLOCK_SECTIONED:
+        case RideMode::LIM_POWERED_LAUNCH:
+        case RideMode::UPWARD_LAUNCH:
             if (curRide->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER)
             {
                 if ((curRide->launch_speed << 16) > velocity)
@@ -3247,7 +3257,7 @@ void Vehicle::UpdateDeparting()
             if ((curRide->launch_speed << 16) > velocity)
                 acceleration = curRide->launch_speed << 12;
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_DOWNWARD_LAUNCH):
+        case RideMode::DOWNWARD_LAUNCH:
             if (var_CE >= 1)
             {
                 if ((14 << 16) > velocity)
@@ -3255,24 +3265,29 @@ void Vehicle::UpdateDeparting()
                 break;
             }
             [[fallthrough]];
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATING_LIFT):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FREEFALL_DROP):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_BOAT_HIRE):
+        case RideMode::CONTINUOUS_CIRCUIT:
+        case RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
+        case RideMode::ROTATING_LIFT:
+        case RideMode::FREEFALL_DROP:
+        case RideMode::BOAT_HIRE:
             if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
                 break;
 
             if (velocity <= 131940)
                 acceleration = 3298;
             break;
+        default:
+        {
+            // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled in switch
+            // [-Werror=switch]"
+        }
     }
 
     uint32_t curFlags = UpdateTrackMotion(nullptr);
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_8)
     {
-        if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE))
+        if (curRide->mode == RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
             velocity = -velocity;
             FinishDeparting();
@@ -3282,18 +3297,18 @@ void Vehicle::UpdateDeparting()
 
     if (curFlags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_12))
     {
-        if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_BOAT_HIRE))
+        if (curRide->mode == RideMode::BOAT_HIRE)
         {
             UpdateDepartingBoatHire();
             return;
         }
-        else if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE))
+        else if (curRide->mode == RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
             velocity = -velocity;
             FinishDeparting();
             return;
         }
-        else if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_SHUTTLE))
+        else if (curRide->mode == RideMode::SHUTTLE)
         {
             update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
             velocity = 0;
@@ -3306,7 +3321,7 @@ void Vehicle::UpdateDeparting()
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL)
     {
         sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        if (curRide->mode != static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE))
+        if (curRide->mode != RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
             int32_t curSpeed = curRide->lift_hill_speed * 31079;
             if (velocity <= curSpeed)
@@ -3344,14 +3359,14 @@ void Vehicle::UpdateDeparting()
         }
     }
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_FREEFALL_DROP))
+    if (curRide->mode == RideMode::FREEFALL_DROP)
     {
         animation_frame++;
     }
     else
     {
         bool shouldLaunch = true;
-        if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_DOWNWARD_LAUNCH))
+        if (curRide->mode == RideMode::DOWNWARD_LAUNCH)
         {
             if (var_CE < 1)
                 shouldLaunch = false;
@@ -3367,8 +3382,8 @@ void Vehicle::UpdateDeparting()
 
             if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 return;
-            if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_BOAT_HIRE) || curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATING_LIFT)
-                || curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_SHUTTLE))
+            if (curRide->mode == RideMode::BOAT_HIRE || curRide->mode == RideMode::ROTATING_LIFT
+                || curRide->mode == RideMode::SHUTTLE)
                 return;
 
             UpdateCrashSetup();
@@ -3378,7 +3393,7 @@ void Vehicle::UpdateDeparting()
 
     if (!CurrentTowerElementIsTop())
     {
-        if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_FREEFALL_DROP))
+        if (curRide->mode == RideMode::FREEFALL_DROP)
             Invalidate();
         return;
     }
@@ -3401,7 +3416,7 @@ void Vehicle::FinishDeparting()
     if (curRide == nullptr)
         return;
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_DOWNWARD_LAUNCH))
+    if (curRide->mode == RideMode::DOWNWARD_LAUNCH)
     {
         if (var_CE >= 1 && (14 << 16) > velocity)
             return;
@@ -3409,7 +3424,7 @@ void Vehicle::FinishDeparting()
         audio_play_sound_at_location(SoundId::RideLaunch1, { x, y, z });
     }
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_UPWARD_LAUNCH))
+    if (curRide->mode == RideMode::UPWARD_LAUNCH)
     {
         if ((curRide->launch_speed << 16) > velocity)
             return;
@@ -3417,8 +3432,8 @@ void Vehicle::FinishDeparting()
         audio_play_sound_at_location(SoundId::RideLaunch1, { x, y, z });
     }
 
-    if (curRide->mode != static_cast<uint8_t>(RideMode::RIDE_MODE_RACE) && curRide->mode != static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED)
-        && curRide->mode != static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
+    if (curRide->mode != RideMode::RACE && curRide->mode != RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
+        && curRide->mode != RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
     {
         curRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
         uint8_t waitingTime = 3;
@@ -3449,8 +3464,8 @@ void Vehicle::CheckIfMissing()
     if (curRide->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         return;
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED)
-        || curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
+    if (curRide->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
+        || curRide->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
         return;
 
     if (!ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_CHECK_FOR_STALLING))
@@ -3675,7 +3690,7 @@ void Vehicle::UpdateTravelling()
     CheckIfMissing();
 
     auto curRide = GetRide();
-    if (curRide == nullptr || (_vehicleBreakdown == 0 && curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATING_LIFT)))
+    if (curRide == nullptr || (_vehicleBreakdown == 0 && curRide->mode == RideMode::ROTATING_LIFT))
         return;
 
     if (sub_state == 2)
@@ -3687,7 +3702,7 @@ void Vehicle::UpdateTravelling()
             sub_state = 0;
     }
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_FREEFALL_DROP) && animation_frame != 0)
+    if (curRide->mode == RideMode::FREEFALL_DROP && animation_frame != 0)
     {
         animation_frame++;
         velocity = 0;
@@ -3700,7 +3715,7 @@ void Vehicle::UpdateTravelling()
 
     bool skipCheck = false;
     if (curFlags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_8 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_9)
-        && curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) && sub_state == 0)
+        && curRide->mode == RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE && sub_state == 0)
     {
         sub_state = 1;
         velocity = 0;
@@ -3723,7 +3738,7 @@ void Vehicle::UpdateTravelling()
 
         if (curFlags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_12))
         {
-            if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATING_LIFT))
+            if (curRide->mode == RideMode::ROTATING_LIFT)
             {
                 if (sub_state <= 1)
                 {
@@ -3732,12 +3747,12 @@ void Vehicle::UpdateTravelling()
                     return;
                 }
             }
-            else if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_BOAT_HIRE))
+            else if (curRide->mode == RideMode::BOAT_HIRE)
             {
                 UpdateTravellingBoatHireSetup();
                 return;
             }
-            else if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_SHUTTLE))
+            else if (curRide->mode == RideMode::SHUTTLE)
             {
                 update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
                 velocity = 0;
@@ -3755,7 +3770,7 @@ void Vehicle::UpdateTravelling()
         }
     }
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATING_LIFT) && sub_state <= 1)
+    if (curRide->mode == RideMode::ROTATING_LIFT && sub_state <= 1)
     {
         if (sub_state == 0)
         {
@@ -3781,7 +3796,7 @@ void Vehicle::UpdateTravelling()
 
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL)
     {
-        if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE))
+        if (curRide->mode == RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
             if (sub_state == 0)
             {
@@ -3828,12 +3843,12 @@ void Vehicle::UpdateTravelling()
     if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3))
         return;
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE) && velocity >= 0 && !HasUpdateFlag(VEHICLE_UPDATE_FLAG_12))
+    if (curRide->mode == RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE && velocity >= 0 && !HasUpdateFlag(VEHICLE_UPDATE_FLAG_12))
     {
         return;
     }
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_PASSTROUGH) && velocity < 0)
+    if (curRide->mode == RideMode::POWERED_LAUNCH_PASSTROUGH && velocity < 0)
         return;
 
     SetState(Vehicle::Status::Arriving);
@@ -3856,27 +3871,32 @@ void Vehicle::UpdateArriving()
     uint8_t unkF64E35 = 1;
     switch (curRide->mode)
     {
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_SWING):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATION):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_BACKWARD_ROTATION):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FILM_AVENGING_AVIATORS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_FILM_THRILL_RIDERS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_BEGINNERS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_INTENSE):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_BERSERK):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_MOUSE_TAILS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_STORM_CHASERS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_SPACE_RAIDERS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_CIRCUS_SHOW):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_SPACE_RINGS):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_HAUNTED_HOUSE):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_CROOKED_HOUSE):
+        case RideMode::SWING:
+        case RideMode::ROTATION:
+        case RideMode::FORWARD_ROTATION:
+        case RideMode::BACKWARD_ROTATION:
+        case RideMode::FILM_AVENGING_AVIATORS:
+        case RideMode::FILM_THRILL_RIDERS:
+        case RideMode::BEGINNERS:
+        case RideMode::INTENSE:
+        case RideMode::BERSERK:
+        case RideMode::MOUSE_TAILS_3D_FILM:
+        case RideMode::STORM_CHASERS_3D_FILM:
+        case RideMode::SPACE_RAIDERS_3D_FILM:
+        case RideMode::CIRCUS_SHOW:
+        case RideMode::SPACE_RINGS:
+        case RideMode::HAUNTED_HOUSE:
+        case RideMode::CROOKED_HOUSE:
             ClearUpdateFlag(VEHICLE_UPDATE_FLAG_12);
             velocity = 0;
             acceleration = 0;
             SetState(Vehicle::Status::UnloadingPassengers);
             return;
+        default:
+        {
+            // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled in switch
+            // [-Werror=switch]"
+        }
     }
 
     bool hasBrakesFailure = curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN
@@ -3892,7 +3912,7 @@ void Vehicle::UpdateArriving()
 
     if (sub_state == 0)
     {
-        if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_RACE) && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+        if (curRide->mode == RideMode::RACE && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         {
             goto loc_6D8E36;
         }
@@ -3960,7 +3980,7 @@ void Vehicle::UpdateArriving()
         }
 
         if (RideTypeDescriptors[curRide->type].Flags & RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS
-            && curRide->mode != static_cast<uint8_t>(RideMode::RIDE_MODE_SHUTTLE) && curRide->mode != static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH))
+            && curRide->mode != RideMode::SHUTTLE && curRide->mode != RideMode::POWERED_LAUNCH)
         {
             SetUpdateFlag(VEHICLE_UPDATE_FLAG_12);
         }
@@ -4032,7 +4052,7 @@ loc_6D8E36:
         return;
     }
 
-    if ((curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_UPWARD_LAUNCH) || curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_DOWNWARD_LAUNCH)) && var_CE < 2)
+    if ((curRide->mode == RideMode::UPWARD_LAUNCH || curRide->mode == RideMode::DOWNWARD_LAUNCH) && var_CE < 2)
     {
         audio_play_sound_at_location(SoundId::RideLaunch2, { x, y, z });
         velocity = 0;
@@ -4041,7 +4061,7 @@ loc_6D8E36:
         return;
     }
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_RACE) && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    if (curRide->mode == RideMode::RACE && curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
     {
         SetState(Vehicle::Status::Departing, 1);
         return;
@@ -4071,7 +4091,7 @@ void Vehicle::UpdateUnloadingPassengers()
     if (curRide == nullptr)
         return;
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION) || curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_BACKWARD_ROTATION))
+    if (curRide->mode == RideMode::FORWARD_ROTATION || curRide->mode == RideMode::BACKWARD_ROTATION)
     {
         uint8_t seat = ((-vehicle_sprite_type) >> 3) & 0xF;
         if (restraints_position == 255 && (peep[seat * 2] != SPRITE_INDEX_NULL))
@@ -4247,8 +4267,8 @@ void Vehicle::UpdateTravellingCableLift()
 
     sub_state = 2;
 
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED)
-        || curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
+    if (curRide->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
+        || curRide->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
         return;
 
     // This is slightly different to the vanilla function
@@ -4799,7 +4819,7 @@ void Vehicle::UpdateFerrisWheelRotating()
     }
 
     uint8_t rotation = vehicle_sprite_type;
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION))
+    if (curRide->mode == RideMode::FORWARD_ROTATION)
         rotation++;
     else
         rotation--;
@@ -4813,7 +4833,7 @@ void Vehicle::UpdateFerrisWheelRotating()
     Invalidate();
 
     uint8_t subState = sub_state;
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION))
+    if (curRide->mode == RideMode::FORWARD_ROTATION)
         subState++;
     else
         subState--;
@@ -4840,7 +4860,7 @@ void Vehicle::UpdateFerrisWheelRotating()
         return;
 
     subState = sub_state;
-    if (curRide->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION))
+    if (curRide->mode == RideMode::FORWARD_ROTATION)
         subState += 8;
     else
         subState -= 8;

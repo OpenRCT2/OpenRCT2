@@ -29,8 +29,8 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION |
                      RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_SWING))),
-    SET_FIELD(DefaultMode, static_cast<uint8_t>(RideMode::RIDE_MODE_SWING)),
+    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::SWING))),
+    SET_FIELD(DefaultMode, RideMode::SWING),
     SET_FIELD(OperatingSettings, { 7, 15, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),

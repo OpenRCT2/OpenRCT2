@@ -33,14 +33,14 @@ void ride_update_station(Ride* ride, StationIndex stationIndex)
 
     switch (ride->mode)
     {
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_RACE):
+        case RideMode::RACE:
             ride_update_station_race(ride, stationIndex);
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_DODGEMS):
+        case RideMode::DODGEMS:
             ride_update_station_dodgems(ride, stationIndex);
             break;
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED):
-        case static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED):
+        case RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
+        case RideMode::POWERED_LAUNCH_BLOCK_SECTIONED:
             ride_update_station_blocksection(ride, stationIndex);
             break;
         default:

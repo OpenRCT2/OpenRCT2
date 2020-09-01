@@ -143,7 +143,7 @@ private:
         td->ride_mode = td4Base.mode;
         if (td4Base.mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
         {
-            td->ride_mode = static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH);
+            td->ride_mode = static_cast<uint8_t>(RideMode::POWERED_LAUNCH);
         }
 
         // Convert RCT1 vehicle type to RCT2 vehicle type. Intialise with an string consisting of 8 spaces.

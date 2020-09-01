@@ -186,7 +186,7 @@ public:
                 ride_clear_for_construction(ride);
                 ride_remove_peeps(ride);
 
-                ride->mode = _value;
+                ride->mode = static_cast<RideMode>(_value);
                 ride->UpdateMaxVehicles();
                 ride->UpdateNumberOfCircuits();
                 break;
@@ -297,17 +297,17 @@ private:
     {
         switch (ride->mode)
         {
-            case static_cast<uint8_t>(RideMode::RIDE_MODE_STATION_TO_STATION):
+            case RideMode::STATION_TO_STATION:
                 return STR_CANT_CHANGE_SPEED;
-            case static_cast<uint8_t>(RideMode::RIDE_MODE_RACE):
+            case RideMode::RACE:
                 return STR_CANT_CHANGE_NUMBER_OF_LAPS;
-            case static_cast<uint8_t>(RideMode::RIDE_MODE_DODGEMS):
+            case RideMode::DODGEMS:
                 return STR_CANT_CHANGE_TIME_LIMIT;
-            case static_cast<uint8_t>(RideMode::RIDE_MODE_SWING):
+            case RideMode::SWING:
                 return STR_CANT_CHANGE_NUMBER_OF_SWINGS;
-            case static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATION):
-            case static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION):
-            case static_cast<uint8_t>(RideMode::RIDE_MODE_BACKWARD_ROTATION):
+            case RideMode::ROTATION:
+            case RideMode::FORWARD_ROTATION:
+            case RideMode::BACKWARD_ROTATION:
                 return STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
             default:
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))

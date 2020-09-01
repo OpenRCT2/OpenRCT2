@@ -109,7 +109,7 @@ rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
     // not the extended as we don't need the chunk size.
     std::memcpy(&vehicle_object, object, sizeof(rct_object_entry));
 
-    ride_mode = ride.mode;
+    ride_mode = static_cast<uint8_t>(ride.mode);
     colour_scheme = ride.colour_scheme_type & 3;
 
     for (int32_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)

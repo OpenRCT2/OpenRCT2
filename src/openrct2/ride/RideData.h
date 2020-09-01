@@ -143,7 +143,7 @@ struct RideTypeDescriptor
     uint64_t Flags;
     /** rct2: 0x0097C8AC */
     uint64_t RideModes;
-    uint8_t DefaultMode;
+    RideMode DefaultMode;
     /** rct2: 0x0097CF40 */
     RideOperatingSettings OperatingSettings;
     RideNaming Naming;
@@ -289,26 +289,36 @@ constexpr const RideComponentName RideComponentNames[] =
 };
 // clang-format on
 
-constexpr const uint64_t AllRideModesAvailable = (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_PASSTROUGH)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_SHUTTLE)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_NORMAL))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_BOAT_HIRE)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_UPWARD_LAUNCH)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATING_LIFT))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_STATION_TO_STATION)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_SINGLE_RIDE_PER_ADMISSION))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_MAZE)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_RACE))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_DODGEMS)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_SWING)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_SHOP_STALL)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATION))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_BACKWARD_ROTATION)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_FILM_AVENGING_AVIATORS))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_MOUSE_TAILS)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_SPACE_RINGS)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_BEGINNERS))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_LIM_POWERED_LAUNCH)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_FILM_THRILL_RIDERS))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_STORM_CHASERS)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_3D_FILM_SPACE_RAIDERS)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_INTENSE))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_BERSERK)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_HAUNTED_HOUSE)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_CIRCUS_SHOW))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_DOWNWARD_LAUNCH)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_CROOKED_HOUSE)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_FREEFALL_DROP))
-    | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH)) | (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED));
+constexpr const uint64_t AllRideModesAvailable = (1ULL << static_cast<uint8_t>(RideMode::CONTINUOUS_CIRCUIT))
+    | (1ULL << static_cast<uint8_t>(RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED))
+    | (1ULL << static_cast<uint8_t>(RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE))
+    | (1ULL << static_cast<uint8_t>(RideMode::POWERED_LAUNCH_PASSTROUGH)) | (1ULL << static_cast<uint8_t>(RideMode::SHUTTLE))
+    | (1ULL << static_cast<uint8_t>(RideMode::NORMAL)) | (1ULL << static_cast<uint8_t>(RideMode::BOAT_HIRE))
+    | (1ULL << static_cast<uint8_t>(RideMode::UPWARD_LAUNCH)) | (1ULL << static_cast<uint8_t>(RideMode::ROTATING_LIFT))
+    | (1ULL << static_cast<uint8_t>(RideMode::STATION_TO_STATION))
+    | (1ULL << static_cast<uint8_t>(RideMode::SINGLE_RIDE_PER_ADMISSION))
+    | (1ULL << static_cast<uint8_t>(RideMode::UNLIMITED_RIDES_PER_ADMISSION)) | (1ULL << static_cast<uint8_t>(RideMode::MAZE))
+    | (1ULL << static_cast<uint8_t>(RideMode::RACE)) | (1ULL << static_cast<uint8_t>(RideMode::DODGEMS))
+    | (1ULL << static_cast<uint8_t>(RideMode::SWING)) | (1ULL << static_cast<uint8_t>(RideMode::SHOP_STALL))
+    | (1ULL << static_cast<uint8_t>(RideMode::ROTATION)) | (1ULL << static_cast<uint8_t>(RideMode::FORWARD_ROTATION))
+    | (1ULL << static_cast<uint8_t>(RideMode::BACKWARD_ROTATION))
+    | (1ULL << static_cast<uint8_t>(RideMode::FILM_AVENGING_AVIATORS))
+    | (1ULL << static_cast<uint8_t>(RideMode::MOUSE_TAILS_3D_FILM)) | (1ULL << static_cast<uint8_t>(RideMode::SPACE_RINGS))
+    | (1ULL << static_cast<uint8_t>(RideMode::BEGINNERS)) | (1ULL << static_cast<uint8_t>(RideMode::LIM_POWERED_LAUNCH))
+    | (1ULL << static_cast<uint8_t>(RideMode::FILM_THRILL_RIDERS))
+    | (1ULL << static_cast<uint8_t>(RideMode::STORM_CHASERS_3D_FILM))
+    | (1ULL << static_cast<uint8_t>(RideMode::SPACE_RAIDERS_3D_FILM)) | (1ULL << static_cast<uint8_t>(RideMode::INTENSE))
+    | (1ULL << static_cast<uint8_t>(RideMode::BERSERK)) | (1ULL << static_cast<uint8_t>(RideMode::HAUNTED_HOUSE))
+    | (1ULL << static_cast<uint8_t>(RideMode::CIRCUS_SHOW)) | (1ULL << static_cast<uint8_t>(RideMode::DOWNWARD_LAUNCH))
+    | (1ULL << static_cast<uint8_t>(RideMode::CROOKED_HOUSE)) | (1ULL << static_cast<uint8_t>(RideMode::FREEFALL_DROP))
+    | (1ULL << static_cast<uint8_t>(RideMode::POWERED_LAUNCH))
+    | (1ULL << static_cast<uint8_t>(RideMode::POWERED_LAUNCH_BLOCK_SECTIONED));
 
 extern const rct_ride_entry_vehicle CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
 
-extern const rct_string_id RideModeNames[static_cast<uint8_t>(RideMode::RIDE_MODE_COUNT)];
+extern const rct_string_id RideModeNames[static_cast<uint8_t>(RideMode::COUNT)];
 
 // clang-format off
 constexpr const RideTypeDescriptor DummyRTD =
@@ -321,8 +331,8 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(StartTrackPiece, TRACK_ELEM_END_STATION),
     SET_FIELD(TrackPaintFunction, nullptr),
     SET_FIELD(Flags, 0),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT))),
-    SET_FIELD(DefaultMode, static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT)),
+    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::CONTINUOUS_CIRCUIT))),
+    SET_FIELD(DefaultMode, RideMode::CONTINUOUS_CIRCUIT),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
