@@ -218,6 +218,7 @@ jobs:
           path: artifacts
   linux-flathub-beta:
     name: Linux (Flathub beta channel)
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Send dispatch event to OpenRCT2 Flathub repository
