@@ -29,12 +29,12 @@ STR_0027    :Botsauto's
 STR_0028    :Schommelschip
 STR_0029    :Loopingschip
 STR_0030    :Eetkraam
-STR_0031    :Onbekende kraam (1D)
+STR_0031    :Onbekend kraam (1D)
 STR_0032    :Drankkraam
-STR_0033    :Onbekende kraam (1F)
+STR_0033    :Onbekend kraam (1F)
 STR_0034    :Winkel
 STR_0035    :Draaimolen
-STR_0036    :Onbekende kraam (22)
+STR_0036    :Onbekend kraam (22)
 STR_0037    :Informatiekiosk
 STR_0038    :Toilet
 STR_0039    :Reuzenrad
