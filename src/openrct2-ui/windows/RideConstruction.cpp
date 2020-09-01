@@ -618,7 +618,7 @@ static void window_ride_construction_close(rct_window* w)
     if (ride_try_get_origin_element(ride, nullptr))
     {
         // Auto open shops if required.
-        if (ride->mode == RIDE_MODE_SHOP_STALL && gConfigGeneral.auto_open_shops)
+        if (ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_SHOP_STALL) && gConfigGeneral.auto_open_shops)
         {
             // HACK: Until we find a good a way to defer the game command for opening the shop, stop this
             //       from getting stuck in an infinite loop as opening the ride will try to close this window

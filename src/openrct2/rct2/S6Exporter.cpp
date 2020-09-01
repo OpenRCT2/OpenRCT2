@@ -1023,7 +1023,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     dst->vehicle_type = src->vehicle_type;
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;
-    if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE && src->status == Vehicle::Status::TravellingBoat)
+    if (ride != nullptr && ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_BOAT_HIRE) && src->status == Vehicle::Status::TravellingBoat)
     {
         if (src->BoatLocation.isNull())
         {

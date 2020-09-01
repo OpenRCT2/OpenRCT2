@@ -1349,7 +1349,7 @@ public:
         dst->colours = src->colours;
         dst->track_progress = src->track_progress;
         dst->track_direction = src->track_direction;
-        if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE
+        if (src->boat_location.isNull() || ride.mode != static_cast<uint8_t>(RideMode::RIDE_MODE_BOAT_HIRE)
             || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
         {
             dst->BoatLocation.setNull();

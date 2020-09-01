@@ -297,17 +297,17 @@ private:
     {
         switch (ride->mode)
         {
-            case RIDE_MODE_STATION_TO_STATION:
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_STATION_TO_STATION):
                 return STR_CANT_CHANGE_SPEED;
-            case RIDE_MODE_RACE:
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_RACE):
                 return STR_CANT_CHANGE_NUMBER_OF_LAPS;
-            case RIDE_MODE_DODGEMS:
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_DODGEMS):
                 return STR_CANT_CHANGE_TIME_LIMIT;
-            case RIDE_MODE_SWING:
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_SWING):
                 return STR_CANT_CHANGE_NUMBER_OF_SWINGS;
-            case RIDE_MODE_ROTATION:
-            case RIDE_MODE_FORWARD_ROTATION:
-            case RIDE_MODE_BACKWARD_ROTATION:
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_ROTATION):
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_FORWARD_ROTATION):
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_BACKWARD_ROTATION):
                 return STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
             default:
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
