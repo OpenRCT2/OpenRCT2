@@ -90,11 +90,6 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     WriteConvertFromAndToMessage(sourceFileType, destinationFileType);
 
     gOpenRCT2Headless = true;
-    // if (!openrct2_initialise())
-    // {
-    //     Console::Error::WriteLine("Error while initialising OpenRCT2.");
-    //     return EXITCODE_FAIL;
-    // }
 
     try
     {
