@@ -2605,8 +2605,8 @@ void Vehicle::UpdateWaitingToDepart()
                     break;
                 default:
                 {
-                    // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled in switch
-                    // [-Werror=switch]"
+                    // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
+                    // in switch [-Werror=switch]"
                 }
             }
             current_time = -1;
@@ -2639,8 +2639,8 @@ void Vehicle::UpdateWaitingToDepart()
                     break;
                 default:
                 {
-                    // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled in switch
-                    // [-Werror=switch]"
+                    // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
+                    // in switch [-Werror=switch]"
                 }
             }
             current_time = -1;
@@ -3278,8 +3278,8 @@ void Vehicle::UpdateDeparting()
             break;
         default:
         {
-            // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled in switch
-            // [-Werror=switch]"
+            // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
+            // in switch [-Werror=switch]"
         }
     }
 
@@ -3894,8 +3894,8 @@ void Vehicle::UpdateArriving()
             return;
         default:
         {
-            // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled in switch
-            // [-Werror=switch]"
+            // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
+            // in switch [-Werror=switch]"
         }
     }
 
