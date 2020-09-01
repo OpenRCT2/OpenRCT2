@@ -597,9 +597,6 @@ static void window_themes_dropdown(rct_window* w, rct_widgetindex widgetIndex, i
                 window_invalidate_all();
                 _colour_index_1 = -1;
                 _colour_index_2 = -1;
-
-                // if (gCurrentTheme >= 2)
-                //  themes_save_preset(gCurrentTheme);
             }
             break;
         case WIDX_THEMES_PRESETS_DROPDOWN:
@@ -708,8 +705,6 @@ void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, const Scr
 
 void window_themes_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    // if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
-    //  return;
 }
 
 static void window_themes_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)

@@ -423,9 +423,6 @@ rct_window* window_editor_object_selection_open()
  */
 static void window_editor_object_selection_close(rct_window* w)
 {
-    // if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
-    //  return;
-
     unload_unselected_objects();
     editor_load_selected_objects();
     editor_object_flags_free();
