@@ -835,7 +835,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
     {
         ft.Add<rct_string_id>(STR_TEST_RUN);
     }
-    else if (mode == RIDE_MODE_RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING))
+    else if (mode == static_cast<uint8_t>(RideMode::RIDE_MODE_RACE) && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING))
     {
         auto peep = GetEntity<Peep>(race_winner);
         if (peep != nullptr)
@@ -882,8 +882,8 @@ bool Ride::CanHaveMultipleCircuits() const
         return false;
 
     // Only allow circuit or launch modes
-    if (mode != RIDE_MODE_CONTINUOUS_CIRCUIT && mode != RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE
-        && mode != RIDE_MODE_POWERED_LAUNCH_PASSTROUGH)
+    if (mode != static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT) && mode != static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
+        && mode != static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_PASSTROUGH))
     {
         return false;
     }
@@ -2404,7 +2404,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     // Brakes failure can not happen if block brakes are used (so long as there is more than one vehicle)
     // However if this is the case, brake failure should be taken out the equation, otherwise block brake
     // rides have a lower probability to break down due to a random implementation reason.
-    if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED) || ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
         if (ride->num_vehicles != 1)
             return -1;
 
@@ -3752,15 +3752,15 @@ static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
 
     switch (ride->mode)
     {
-        case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
-        case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
-        case RIDE_MODE_POWERED_LAUNCH:
-        case RIDE_MODE_LIM_POWERED_LAUNCH:
+        case static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE):
+        case static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_PASSTROUGH):
+        case static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH):
+        case static_cast<uint8_t>(RideMode::RIDE_MODE_LIM_POWERED_LAUNCH):
             if (numStations <= 1)
                 return 1;
             gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
             return 0;
-        case RIDE_MODE_SHUTTLE:
+        case static_cast<uint8_t>(RideMode::RIDE_MODE_SHUTTLE):
             if (numStations >= 2)
                 return 1;
             gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE;
@@ -4699,7 +4699,7 @@ static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t i
     int32_t direction = tileElement->GetDirection();
 
     //
-    if (ride->mode == RIDE_MODE_STATION_TO_STATION)
+    if (ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_STATION_TO_STATION))
     {
         vehiclePos -= CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
 
@@ -4912,7 +4912,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
     if (ride == nullptr)
         return false;
 
-    if (ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT)
+    if (ride->mode != static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED) && ride->mode != static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT))
     {
         gGameCommandErrorText = STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE;
         return false;
@@ -5127,12 +5127,12 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
             return 0;
     }
 
-    if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
-        || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT) || ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED)
+        || ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
     {
         if (ride_find_track_gap(ride, &trackElement, &problematicTrackElement)
-            && (status != RIDE_STATUS_SIMULATING || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
-                || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
+            && (status != RIDE_STATUS_SIMULATING || ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED)
+                || ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)))
         {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);
@@ -5140,7 +5140,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         }
     }
 
-    if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED) || ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
     {
         if (!ride_check_block_brakes(&trackElement, &problematicTrackElement))
         {
@@ -5172,7 +5172,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         }
     }
 
-    if (ride->mode == RIDE_MODE_STATION_TO_STATION)
+    if (ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_STATION_TO_STATION))
     {
         if (!ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
@@ -5263,8 +5263,8 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
             return 0;
     }
 
-    if (ride->mode == RIDE_MODE_RACE || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT
-        || ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_RACE) || ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT)
+        || ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED) || ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
     {
         if (ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
@@ -5274,7 +5274,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         }
     }
 
-    if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED) || ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED))
     {
         if (!ride_check_block_brakes(&trackElement, &problematicTrackElement))
         {
@@ -5306,7 +5306,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         }
     }
 
-    if (ride->mode == RIDE_MODE_STATION_TO_STATION)
+    if (ride->mode == static_cast<uint8_t>(RideMode::RIDE_MODE_STATION_TO_STATION))
     {
         if (!ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
@@ -5864,13 +5864,13 @@ uint8_t ride_get_helix_sections(Ride* ride)
 
 bool Ride::IsPoweredLaunched() const
 {
-    return mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH || mode == RIDE_MODE_POWERED_LAUNCH
-        || mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
+    return mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_PASSTROUGH) || mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH)
+        || mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED);
 }
 
 bool Ride::IsBlockSectioned() const
 {
-    return mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED;
+    return mode == static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED) || mode == static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED);
 }
 
 bool ride_has_any_track_elements(const Ride* ride)
@@ -6681,15 +6681,15 @@ void Ride::UpdateMaxVehicles()
 
         switch (mode)
         {
-            case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
-            case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED):
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED):
                 maxNumTrains = std::clamp(num_stations + num_block_brakes - 1, 1, 31);
                 break;
-            case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
-            case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
-            case RIDE_MODE_SHUTTLE:
-            case RIDE_MODE_LIM_POWERED_LAUNCH:
-            case RIDE_MODE_POWERED_LAUNCH:
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE):
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH_PASSTROUGH):
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_SHUTTLE):
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_LIM_POWERED_LAUNCH):
+            case static_cast<uint8_t>(RideMode::RIDE_MODE_POWERED_LAUNCH):
                 maxNumTrains = 1;
                 break;
             default:
@@ -6712,7 +6712,7 @@ void Ride::UpdateMaxVehicles()
                     totalLength += trainLength;
                 } while (totalLength <= stationLength);
 
-                if ((mode != RIDE_MODE_STATION_TO_STATION && mode != RIDE_MODE_CONTINUOUS_CIRCUIT)
+                if ((mode != static_cast<uint8_t>(RideMode::RIDE_MODE_STATION_TO_STATION) && mode != static_cast<uint8_t>(RideMode::RIDE_MODE_CONTINUOUS_CIRCUIT))
                     || !(RideTypeDescriptors[type].Flags & RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS))
                 {
                     maxNumTrains = std::min(maxNumTrains, 31);

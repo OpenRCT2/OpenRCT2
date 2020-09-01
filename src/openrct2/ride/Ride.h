@@ -29,6 +29,8 @@ struct Ride;
 struct RideTypeDescriptor;
 struct Staff;
 
+//enum class RideMode : uint8_t;
+
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
 // The max number of different types of vehicle.
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
@@ -639,7 +641,7 @@ enum
     RIDE_STATUS_COUNT,
 };
 
-enum : uint8_t
+enum class RideMode : uint8_t
 {
     RIDE_MODE_NORMAL,
     RIDE_MODE_CONTINUOUS_CIRCUIT,
