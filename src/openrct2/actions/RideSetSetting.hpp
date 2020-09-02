@@ -297,17 +297,17 @@ private:
     {
         switch (ride->mode)
         {
-            case RideMode::STATION_TO_STATION:
+            case RideMode::StationToStation:
                 return STR_CANT_CHANGE_SPEED;
-            case RideMode::RACE:
+            case RideMode::Race:
                 return STR_CANT_CHANGE_NUMBER_OF_LAPS;
-            case RideMode::DODGEMS:
+            case RideMode::Dodgems:
                 return STR_CANT_CHANGE_TIME_LIMIT;
-            case RideMode::SWING:
+            case RideMode::Swing:
                 return STR_CANT_CHANGE_NUMBER_OF_SWINGS;
-            case RideMode::ROTATION:
-            case RideMode::FORWARD_ROTATION:
-            case RideMode::BACKWARD_ROTATION:
+            case RideMode::Rotation:
+            case RideMode::ForwardRotation:
+            case RideMode::BackwardRotation:
                 return STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
             default:
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))

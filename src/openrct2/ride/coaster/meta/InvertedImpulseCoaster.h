@@ -27,8 +27,8 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES |
                      RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG_IS_SUSPENDED),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::POWERED_LAUNCH_PASSTROUGH)) | (1ULL << static_cast<uint8_t>(RideMode::POWERED_LAUNCH))),
-    SET_FIELD(DefaultMode, RideMode::POWERED_LAUNCH_PASSTROUGH),
+    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::PoweredLaunchPasstrough)) | (1ULL << static_cast<uint8_t>(RideMode::PoweredLaunch))),
+    SET_FIELD(DefaultMode, RideMode::PoweredLaunchPasstrough),
     SET_FIELD(OperatingSettings, { 10, 33, 30, 25, 25, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_INVERTED_IMPULSE_COASTER, STR_RIDE_DESCRIPTION_INVERTED_IMPULSE_COASTER }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),

@@ -35,8 +35,8 @@ constexpr const RideTypeDescriptor TwisterRollerCoasterRTD =
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::CONTINUOUS_CIRCUIT)) | (1ULL << static_cast<uint8_t>(RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED))),
-    SET_FIELD(DefaultMode, RideMode::CONTINUOUS_CIRCUIT),
+    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuit)) | (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuitBlockSectioned))),
+    SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 10, 27, 30, 17, 68, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_TWISTER_ROLLER_COASTER, STR_RIDE_DESCRIPTION_TWISTER_ROLLER_COASTER }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),

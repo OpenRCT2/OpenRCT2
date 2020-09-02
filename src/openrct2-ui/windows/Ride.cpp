@@ -3253,7 +3253,7 @@ static void window_ride_mode_tweak_increase(rct_window* w)
         maxValue = 255;
     }
 
-    uint8_t increment = ride->mode == RideMode::DODGEMS ? 10 : 1;
+    uint8_t increment = ride->mode == RideMode::Dodgems ? 10 : 1;
 
     set_operating_setting(
         w->number, RideSetSetting::Operation, std::clamp<int16_t>(ride->operation_option + increment, minValue, maxValue));
@@ -3277,7 +3277,7 @@ static void window_ride_mode_tweak_decrease(rct_window* w)
         maxValue = 255;
     }
 
-    uint8_t decrement = ride->mode == RideMode::DODGEMS ? 10 : 1;
+    uint8_t decrement = ride->mode == RideMode::Dodgems ? 10 : 1;
 
     set_operating_setting(
         w->number, RideSetSetting::Operation, std::clamp<int16_t>(ride->operation_option - decrement, minValue, maxValue));
@@ -3301,14 +3301,14 @@ static void window_ride_mode_dropdown(rct_window* w, rct_widget* widget)
     // Create dropdown list
     auto numAvailableModes = 0;
     auto checkedIndex = -1;
-    for (auto i = 0; i < static_cast<uint8_t>(RideMode::COUNT); i++)
+    for (auto i = 0; i < static_cast<uint8_t>(RideMode::Count); i++)
     {
         if (availableModes & (1ULL << i))
         {
             gDropdownItemsFormat[numAvailableModes] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[numAvailableModes] = RideModeNames[i];
 
-            if (static_cast<int>(ride->mode) == i)
+            if (ride->mode == static_cast<RideMode>(i))
                 checkedIndex = numAvailableModes;
 
             numAvailableModes++;
@@ -3505,10 +3505,10 @@ static void window_ride_operating_dropdown(rct_window* w, rct_widgetindex widget
     {
         case WIDX_MODE_DROPDOWN:
         {
-            uint8_t rideMode = static_cast<uint8_t>(RideMode::NULL_MODE);
+            uint8_t rideMode = static_cast<uint8_t>(RideMode::NullMode);
             auto availableModes = ride->GetAvailableModes();
             auto modeInDropdownIndex = -1;
-            for (uint8_t rideModeIndex = 0; rideModeIndex < static_cast<uint8_t>(RideMode::COUNT); rideModeIndex++)
+            for (uint8_t rideModeIndex = 0; rideModeIndex < static_cast<uint8_t>(RideMode::Count); rideModeIndex++)
             {
                 if (availableModes & (1ULL << rideModeIndex))
                 {
@@ -3520,7 +3520,7 @@ static void window_ride_operating_dropdown(rct_window* w, rct_widgetindex widget
                     }
                 }
             }
-            if (rideMode != static_cast<uint8_t>(RideMode::NULL_MODE))
+            if (rideMode != static_cast<uint8_t>(RideMode::NullMode))
                 set_operating_setting(w->number, RideSetSetting::Mode, rideMode);
             break;
         }
@@ -3623,8 +3623,8 @@ static void window_ride_operating_invalidate(rct_window* w)
 
     // Leave if another vehicle arrives at station
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION)
-        && ride->num_vehicles > 1 && ride->mode != RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
-        && ride->mode != RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
+        && ride->num_vehicles > 1 && ride->mode != RideMode::ContinuousCircuitBlockSectioned
+        && ride->mode != RideMode::PoweredLaunchBlockSectioned)
     {
         window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WWT_CHECKBOX;
         window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip
@@ -3717,10 +3717,10 @@ static void window_ride_operating_invalidate(rct_window* w)
     ft.Add<uint16_t>(ride->operation_option);
     switch (ride->mode)
     {
-        case RideMode::POWERED_LAUNCH_PASSTROUGH:
-        case RideMode::POWERED_LAUNCH:
-        case RideMode::UPWARD_LAUNCH:
-        case RideMode::POWERED_LAUNCH_BLOCK_SECTIONED:
+        case RideMode::PoweredLaunchPasstrough:
+        case RideMode::PoweredLaunch:
+        case RideMode::UpwardLaunch:
+        case RideMode::PoweredLaunchBlockSectioned:
             ft.Rewind();
             ft.Increment(18);
             ft.Add<uint16_t>((ride->launch_speed * 9) / 4);
@@ -3728,7 +3728,7 @@ static void window_ride_operating_invalidate(rct_window* w)
             caption = STR_LAUNCH_SPEED;
             tooltip = STR_LAUNCH_SPEED_TIP;
             break;
-        case RideMode::STATION_TO_STATION:
+        case RideMode::StationToStation:
             ft.Rewind();
             ft.Increment(18);
             ft.Add<uint16_t>((ride->speed * 9) / 4);
@@ -3736,7 +3736,7 @@ static void window_ride_operating_invalidate(rct_window* w)
             caption = STR_SPEED;
             tooltip = STR_SPEED_TIP;
             break;
-        case RideMode::RACE:
+        case RideMode::Race:
             ft.Rewind();
             ft.Increment(18);
             ft.Add<uint16_t>(ride->num_laps);
@@ -3744,19 +3744,19 @@ static void window_ride_operating_invalidate(rct_window* w)
             caption = STR_NUMBER_OF_LAPS;
             tooltip = STR_NUMBER_OF_LAPS_TIP;
             break;
-        case RideMode::DODGEMS:
+        case RideMode::Dodgems:
             format = STR_RIDE_MODE_TIME_LIMIT_VALUE;
             caption = STR_TIME_LIMIT;
             tooltip = STR_TIME_LIMIT_TIP;
             break;
-        case RideMode::SWING:
+        case RideMode::Swing:
             format = STR_RIDE_MODE_NUMBER_OF_SWINGS_VALUE;
             caption = STR_NUMBER_OF_SWINGS;
             tooltip = STR_NUMBER_OF_SWINGS_TIP;
             break;
-        case RideMode::ROTATION:
-        case RideMode::FORWARD_ROTATION:
-        case RideMode::BACKWARD_ROTATION:
+        case RideMode::Rotation:
+        case RideMode::ForwardRotation:
+        case RideMode::BackwardRotation:
             format = STR_NUMBER_OF_ROTATIONS_VALUE;
             caption = STR_NUMBER_OF_ROTATIONS;
             tooltip = STR_NUMBER_OF_ROTATIONS_TIP;
@@ -3823,12 +3823,12 @@ static void window_ride_operating_paint(rct_window* w, rct_drawpixelinfo* dpi)
         w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Number of block sections
-    if (ride->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == RideMode::ContinuousCircuitBlockSectioned || ride->mode == RideMode::PoweredLaunchBlockSectioned)
     {
         auto blockSections = ride->num_block_brakes + ride->num_stations;
         gfx_draw_string_left(
             dpi, STR_BLOCK_SECTIONS, &blockSections, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ 21, ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED ? 89 : 61 });
+            w->windowPos + ScreenCoordsXY{ 21, ride->mode == RideMode::PoweredLaunchBlockSectioned ? 89 : 61 });
     }
 }
 
@@ -3975,8 +3975,8 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
                 if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                 {
                     if (i == BREAKDOWN_BRAKES_FAILURE
-                        && (ride->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
-                            || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED))
+                        && (ride->mode == RideMode::ContinuousCircuitBlockSectioned
+                            || ride->mode == RideMode::PoweredLaunchBlockSectioned))
                     {
                         if (ride->num_vehicles != 1)
                             continue;
@@ -4005,8 +4005,8 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
                         if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                         {
                             if (i == BREAKDOWN_BRAKES_FAILURE
-                                && (ride->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
-                                    || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED))
+                                && (ride->mode == RideMode::ContinuousCircuitBlockSectioned
+                                    || ride->mode == RideMode::PoweredLaunchBlockSectioned))
                             {
                                 if (ride->num_vehicles != 1)
                                     continue;
@@ -4122,8 +4122,8 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                     if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                     {
                         if (i == BREAKDOWN_BRAKES_FAILURE
-                            && (ride->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
-                                || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED))
+                            && (ride->mode == RideMode::ContinuousCircuitBlockSectioned
+                                || ride->mode == RideMode::PoweredLaunchBlockSectioned))
                         {
                             if (ride->num_vehicles != 1)
                                 continue;
