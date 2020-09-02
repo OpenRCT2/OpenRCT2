@@ -40,8 +40,8 @@ struct TitleCommand
 
 struct TitleSequenceParkHandle
 {
-    const utf8* HintPath;
-    void* Stream;
+    std::string HintPath;
+    std::unique_ptr<OpenRCT2::IStream> Stream;
 };
 
 struct TitleSequence
@@ -57,9 +57,7 @@ struct TitleSequence
     std::string LegacyScriptWrite();
     void SwapConsecutiveCommands(size_t index);
 
-    // TODO: TitleSequenceParkHandle should also be migrated to RAII
-    TitleSequenceParkHandle* GetParkHandle(size_t index);
-    void CloseParkHandle(TitleSequenceParkHandle* handle);
+    std::unique_ptr<TitleSequenceParkHandle> GetParkHandle(size_t index);
 
     static bool IsLoadCommand(const TitleCommand* command);
 

@@ -300,9 +300,9 @@ void TitleSequence::SwapConsecutiveCommands(size_t index)
     std::swap(first, second);
 }
 
-TitleSequenceParkHandle* TitleSequence::GetParkHandle(size_t index)
+std::unique_ptr<TitleSequenceParkHandle> TitleSequence::GetParkHandle(size_t index)
 {
-    TitleSequenceParkHandle* handle = nullptr;
+    std::unique_ptr<TitleSequenceParkHandle> handle;
     if (index <= NumSaves())
     {
         const utf8* filename = Saves[index].c_str();
@@ -311,15 +311,21 @@ TitleSequenceParkHandle* TitleSequence::GetParkHandle(size_t index)
             auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(Path, ZIP_ACCESS::READ));
             if (zip != nullptr)
             {
-                auto data = zip->GetFileData(filename);
-                auto dataForMs = Memory::Allocate<uint8_t>(data.size());
-                std::copy_n(data.data(), data.size(), dataForMs);
-                auto ms = new OpenRCT2::MemoryStream(
-                    dataForMs, data.size(), OpenRCT2::MEMORY_ACCESS::READ | OpenRCT2::MEMORY_ACCESS::OWNER);
-
-                handle = Memory::Allocate<TitleSequenceParkHandle>();
-                handle->Stream = ms;
-                handle->HintPath = String::Duplicate(filename);
+                try
+                {
+                    auto data = zip->GetFileData(filename);
+                    auto dataForMs = Memory::Allocate<uint8_t>(data.size());
+                    std::copy_n(data.data(), data.size(), dataForMs);
+                    handle = std::make_unique<TitleSequenceParkHandle>();
+                    handle->Stream = std::make_unique<OpenRCT2::MemoryStream>(
+                        dataForMs, data.size(), OpenRCT2::MEMORY_ACCESS::READ | OpenRCT2::MEMORY_ACCESS::OWNER);
+                    handle->HintPath = filename;
+                }
+                catch (const std::exception& e)
+                {
+                    Console::Error::WriteLine(e.what());
+                    throw;
+                }
             }
             else
             {
@@ -332,35 +338,20 @@ TitleSequenceParkHandle* TitleSequence::GetParkHandle(size_t index)
             String::Set(absolutePath, sizeof(absolutePath), Path.c_str());
             Path::Append(absolutePath, sizeof(absolutePath), filename);
 
-            OpenRCT2::FileStream* fileStream = nullptr;
             try
             {
-                fileStream = new OpenRCT2::FileStream(absolutePath, OpenRCT2::FILE_MODE_OPEN);
+                handle = std::make_unique<TitleSequenceParkHandle>();
+                handle->Stream = std::make_unique<OpenRCT2::FileStream>(absolutePath, OpenRCT2::FILE_MODE_OPEN);
+                handle->HintPath = filename;
             }
-            catch (const IOException& exception)
+            catch (const std::exception& exception)
             {
                 Console::Error::WriteLine(exception.what());
-            }
-
-            if (fileStream != nullptr)
-            {
-                handle = Memory::Allocate<TitleSequenceParkHandle>();
-                handle->Stream = fileStream;
-                handle->HintPath = String::Duplicate(filename);
+                throw;
             }
         }
     }
     return handle;
-}
-
-void TitleSequence::CloseParkHandle(TitleSequenceParkHandle* handle)
-{
-    if (handle != nullptr)
-    {
-        Memory::Free(handle->HintPath);
-        delete (static_cast<OpenRCT2::IStream*>(handle->Stream));
-        Memory::Free(handle);
-    }
 }
 
 bool TitleSequence::IsLoadCommand(const TitleCommand* command)

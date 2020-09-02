@@ -19,6 +19,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/IStream.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/scenario/Scenario.h>
@@ -357,15 +358,13 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_TITLE_EDITOR_LOAD_SAVE:
             if (w->selected_list_item >= 0 && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumSaves()))
             {
-                auto handle = _editingTitleSequence->GetParkHandle(w->selected_list_item);
-                auto stream = static_cast<OpenRCT2::IStream*>(handle->Stream);
-                auto hintPath = String::ToStd(handle->HintPath);
-                bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
                 try
                 {
+                    auto handle = _editingTitleSequence->GetParkHandle(w->selected_list_item);
+                    bool isScenario = ParkImporter::ExtensionIsScenario(handle->HintPath);
                     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-                    auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
-                    auto result = parkImporter->LoadFromStream(stream, isScenario);
+                    auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(handle->HintPath));
+                    auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
                     objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                     parkImporter->Import();
 
@@ -374,7 +373,6 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                     else
                         game_load_init();
 
-                    _editingTitleSequence->CloseParkHandle(handle);
                     window_title_editor_open(WINDOW_TITLE_EDITOR_TAB_SAVES);
                 }
                 catch (const std::exception&)

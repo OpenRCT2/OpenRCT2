@@ -21,6 +21,7 @@
 #include <openrct2/common.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/core/IStream.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/interface/Viewport.h>
@@ -275,15 +276,13 @@ private:
                 break;
             case TITLE_SCRIPT_LOAD:
             {
-                bool loadSuccess = false;
                 uint8_t saveIndex = command->SaveIndex;
-                auto parkHandle = _sequence->GetParkHandle(saveIndex);
-                if (parkHandle != nullptr)
+                try
                 {
-                    loadSuccess = LoadParkFromStream(static_cast<OpenRCT2::IStream*>(parkHandle->Stream), parkHandle->HintPath);
-                    _sequence->CloseParkHandle(parkHandle);
+                    auto parkHandle = _sequence->GetParkHandle(saveIndex);
+                    LoadParkFromHandle(parkHandle);
                 }
-                if (!loadSuccess)
+                catch (const std::exception&)
                 {
                     if (_sequence->NumSaves() > saveIndex)
                     {
@@ -386,42 +385,44 @@ private:
     }
 
     /**
-     * @param stream The stream to read the park data from.
-     * @param hintPath Hint path, the extension is grabbed to determine what importer to use.
+     * @param Stream The stream to read the park data from.
+     * @param HintPath Hint path, the extension is grabbed to determine what importer to use.
      */
-    bool LoadParkFromStream(OpenRCT2::IStream* stream, const std::string& hintPath)
+    void LoadParkFromHandle(std::unique_ptr<TitleSequenceParkHandle>& handle)
     {
-        log_verbose("TitleSequencePlayer::LoadParkFromStream(%s)", hintPath.c_str());
-        bool success = false;
+        struct finally
+        {
+            ~finally()
+            {
+                gLoadKeepWindowsOpen = false;
+            }
+        } f;
+
+        log_verbose("TitleSequencePlayer::LoadParkFromHandle(%s)", handle->HintPath.c_str());
         try
         {
             if (gPreviewingTitleSequenceInGame)
             {
                 gLoadKeepWindowsOpen = true;
                 CloseParkSpecificWindows();
-                context_load_park_from_stream(stream);
+                context_load_park_from_stream(handle->Stream.get());
             }
             else
             {
-                std::string extension = Path::GetExtension(hintPath);
-                bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
-                auto parkImporter = ParkImporter::Create(hintPath);
-                auto result = parkImporter->LoadFromStream(stream, isScenario);
-
+                bool isScenario = ParkImporter::ExtensionIsScenario(handle->HintPath);
+                auto parkImporter = ParkImporter::Create(handle->HintPath);
+                auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
                 auto& objectManager = GetContext()->GetObjectManager();
                 objectManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
-
                 parkImporter->Import();
             }
             PrepareParkForPlayback();
-            success = true;
         }
         catch (const std::exception&)
         {
-            Console::Error::WriteLine("Unable to load park: %s", hintPath.c_str());
+            Console::Error::WriteLine("Unable to load park: %s", handle->HintPath.c_str());
+            throw;
         }
-        gLoadKeepWindowsOpen = false;
-        return success;
     }
 
     void CloseParkSpecificWindows()
