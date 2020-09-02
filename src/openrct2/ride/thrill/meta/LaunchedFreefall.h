@@ -28,8 +28,8 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
                      RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN |
                      RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR |
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::UPWARD_LAUNCH)) | (1ULL << static_cast<uint8_t>(RideMode::DOWNWARD_LAUNCH))),
-    SET_FIELD(DefaultMode, RideMode::UPWARD_LAUNCH),
+    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::UpwardLaunch)) | (1ULL << static_cast<uint8_t>(RideMode::DownwardLaunch))),
+    SET_FIELD(DefaultMode, RideMode::UpwardLaunch),
     SET_FIELD(OperatingSettings, { 10, 40, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_LAUNCHED_FREEFALL, STR_RIDE_DESCRIPTION_LAUNCHED_FREEFALL }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),

@@ -467,10 +467,10 @@ public:
                 if (ride->num_block_brakes == 0)
                 {
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                    ride->mode = RideMode::CONTINUOUS_CIRCUIT;
+                    ride->mode = RideMode::ContinuousCircuit;
                     if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
                     {
-                        ride->mode = RideMode::POWERED_LAUNCH;
+                        ride->mode = RideMode::PoweredLaunch;
                     }
                 }
                 break;

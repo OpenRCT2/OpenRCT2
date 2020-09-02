@@ -555,9 +555,9 @@ public:
                     ride->num_block_brakes++;
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
-                    ride->mode = RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED;
+                    ride->mode = RideMode::ContinuousCircuitBlockSectioned;
                     if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
-                        ride->mode = RideMode::POWERED_LAUNCH_BLOCK_SECTIONED;
+                        ride->mode = RideMode::PoweredLaunchBlockSectioned;
 
                     break;
             }

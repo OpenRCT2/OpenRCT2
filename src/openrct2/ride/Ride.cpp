@@ -835,7 +835,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
     {
         ft.Add<rct_string_id>(STR_TEST_RUN);
     }
-    else if (mode == RideMode::RACE && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING))
+    else if (mode == RideMode::Race && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING))
     {
         auto peep = GetEntity<Peep>(race_winner);
         if (peep != nullptr)
@@ -882,8 +882,8 @@ bool Ride::CanHaveMultipleCircuits() const
         return false;
 
     // Only allow circuit or launch modes
-    if (mode != RideMode::CONTINUOUS_CIRCUIT && mode != RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE
-        && mode != RideMode::POWERED_LAUNCH_PASSTROUGH)
+    if (mode != RideMode::ContinuousCircuit && mode != RideMode::ReverseInclineLaunchedShuttle
+        && mode != RideMode::PoweredLaunchPasstrough)
     {
         return false;
     }
@@ -2404,7 +2404,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     // Brakes failure can not happen if block brakes are used (so long as there is more than one vehicle)
     // However if this is the case, brake failure should be taken out the equation, otherwise block brake
     // rides have a lower probability to break down due to a random implementation reason.
-    if (ride->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == RideMode::ContinuousCircuitBlockSectioned || ride->mode == RideMode::PoweredLaunchBlockSectioned)
         if (ride->num_vehicles != 1)
             return -1;
 
@@ -3752,15 +3752,15 @@ static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
 
     switch (ride->mode)
     {
-        case RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE:
-        case RideMode::POWERED_LAUNCH_PASSTROUGH:
-        case RideMode::POWERED_LAUNCH:
-        case RideMode::LIM_POWERED_LAUNCH:
+        case RideMode::ReverseInclineLaunchedShuttle:
+        case RideMode::PoweredLaunchPasstrough:
+        case RideMode::PoweredLaunch:
+        case RideMode::LimPoweredLaunch:
             if (numStations <= 1)
                 return 1;
             gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
             return 0;
-        case RideMode::SHUTTLE:
+        case RideMode::Shuttle:
             if (numStations >= 2)
                 return 1;
             gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE;
@@ -4704,7 +4704,7 @@ static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t i
     int32_t direction = tileElement->GetDirection();
 
     //
-    if (ride->mode == RideMode::STATION_TO_STATION)
+    if (ride->mode == RideMode::StationToStation)
     {
         vehiclePos -= CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
 
@@ -4917,7 +4917,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
     if (ride == nullptr)
         return false;
 
-    if (ride->mode != RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED && ride->mode != RideMode::CONTINUOUS_CIRCUIT)
+    if (ride->mode != RideMode::ContinuousCircuitBlockSectioned && ride->mode != RideMode::ContinuousCircuit)
     {
         gGameCommandErrorText = STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE;
         return false;
@@ -5132,12 +5132,12 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
             return 0;
     }
 
-    if (ride->mode == RideMode::CONTINUOUS_CIRCUIT || ride->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
-        || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == RideMode::ContinuousCircuit || ride->mode == RideMode::ContinuousCircuitBlockSectioned
+        || ride->mode == RideMode::PoweredLaunchBlockSectioned)
     {
         if (ride_find_track_gap(ride, &trackElement, &problematicTrackElement)
-            && (status != RIDE_STATUS_SIMULATING || ride->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED
-                || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED))
+            && (status != RIDE_STATUS_SIMULATING || ride->mode == RideMode::ContinuousCircuitBlockSectioned
+                || ride->mode == RideMode::PoweredLaunchBlockSectioned))
         {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);
@@ -5145,7 +5145,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         }
     }
 
-    if (ride->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == RideMode::ContinuousCircuitBlockSectioned || ride->mode == RideMode::PoweredLaunchBlockSectioned)
     {
         if (!ride_check_block_brakes(&trackElement, &problematicTrackElement))
         {
@@ -5177,7 +5177,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         }
     }
 
-    if (ride->mode == RideMode::STATION_TO_STATION)
+    if (ride->mode == RideMode::StationToStation)
     {
         if (!ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
@@ -5268,8 +5268,8 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
             return 0;
     }
 
-    if (ride->mode == RideMode::RACE || ride->mode == RideMode::CONTINUOUS_CIRCUIT
-        || ride->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == RideMode::Race || ride->mode == RideMode::ContinuousCircuit
+        || ride->mode == RideMode::ContinuousCircuitBlockSectioned || ride->mode == RideMode::PoweredLaunchBlockSectioned)
     {
         if (ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
@@ -5279,7 +5279,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         }
     }
 
-    if (ride->mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
+    if (ride->mode == RideMode::ContinuousCircuitBlockSectioned || ride->mode == RideMode::PoweredLaunchBlockSectioned)
     {
         if (!ride_check_block_brakes(&trackElement, &problematicTrackElement))
         {
@@ -5311,7 +5311,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         }
     }
 
-    if (ride->mode == RideMode::STATION_TO_STATION)
+    if (ride->mode == RideMode::StationToStation)
     {
         if (!ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
@@ -5869,13 +5869,13 @@ uint8_t ride_get_helix_sections(Ride* ride)
 
 bool Ride::IsPoweredLaunched() const
 {
-    return mode == RideMode::POWERED_LAUNCH_PASSTROUGH || mode == RideMode::POWERED_LAUNCH
-        || mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED;
+    return mode == RideMode::PoweredLaunchPasstrough || mode == RideMode::PoweredLaunch
+        || mode == RideMode::PoweredLaunchBlockSectioned;
 }
 
 bool Ride::IsBlockSectioned() const
 {
-    return mode == RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED;
+    return mode == RideMode::ContinuousCircuitBlockSectioned || mode == RideMode::PoweredLaunchBlockSectioned;
 }
 
 bool ride_has_any_track_elements(const Ride* ride)
@@ -6686,15 +6686,15 @@ void Ride::UpdateMaxVehicles()
 
         switch (mode)
         {
-            case RideMode::CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
-            case RideMode::POWERED_LAUNCH_BLOCK_SECTIONED:
+            case RideMode::ContinuousCircuitBlockSectioned:
+            case RideMode::PoweredLaunchBlockSectioned:
                 maxNumTrains = std::clamp(num_stations + num_block_brakes - 1, 1, 31);
                 break;
-            case RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE:
-            case RideMode::POWERED_LAUNCH_PASSTROUGH:
-            case RideMode::SHUTTLE:
-            case RideMode::LIM_POWERED_LAUNCH:
-            case RideMode::POWERED_LAUNCH:
+            case RideMode::ReverseInclineLaunchedShuttle:
+            case RideMode::PoweredLaunchPasstrough:
+            case RideMode::Shuttle:
+            case RideMode::LimPoweredLaunch:
+            case RideMode::PoweredLaunch:
                 maxNumTrains = 1;
                 break;
             default:
@@ -6717,7 +6717,7 @@ void Ride::UpdateMaxVehicles()
                     totalLength += trainLength;
                 } while (totalLength <= stationLength);
 
-                if ((mode != RideMode::STATION_TO_STATION && mode != RideMode::CONTINUOUS_CIRCUIT)
+                if ((mode != RideMode::StationToStation && mode != RideMode::ContinuousCircuit)
                     || !(RideTypeDescriptors[type].Flags & RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS))
                 {
                     maxNumTrains = std::min(maxNumTrains, 31);

@@ -918,19 +918,19 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     // flume/rapids, 10 for roller coaster, 28 for giga coaster
     upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerStation * ride->num_stations;
 
-    if (ride->mode == RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE)
+    if (ride->mode == RideMode::ReverseInclineLaunchedShuttle)
     {
         upkeep += 30;
     }
-    else if (ride->mode == RideMode::POWERED_LAUNCH_PASSTROUGH)
+    else if (ride->mode == RideMode::PoweredLaunchPasstrough)
     {
         upkeep += 160;
     }
-    else if (ride->mode == RideMode::LIM_POWERED_LAUNCH)
+    else if (ride->mode == RideMode::LimPoweredLaunch)
     {
         upkeep += 320;
     }
-    else if (ride->mode == RideMode::POWERED_LAUNCH || ride->mode == RideMode::POWERED_LAUNCH_BLOCK_SECTIONED)
+    else if (ride->mode == RideMode::PoweredLaunch || ride->mode == RideMode::PoweredLaunchBlockSectioned)
     {
         upkeep += 220;
     }
@@ -2190,7 +2190,7 @@ void ride_ratings_calculate_launched_freefall(Ride* ride)
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 70), RIDE_RATING(3, 00), RIDE_RATING(3, 50));
 
-    if (ride->mode == RideMode::DOWNWARD_LAUNCH)
+    if (ride->mode == RideMode::DownwardLaunch)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 30), RIDE_RATING(0, 65), RIDE_RATING(0, 45));
     }
@@ -2202,7 +2202,7 @@ void ride_ratings_calculate_launched_freefall(Ride* ride)
     ride_ratings_apply_operation_option(&ratings, ride, 0, 1355917, 451972);
 #else
     // Only apply "launch speed" effects when the setting can be modified
-    if (ride->mode == RideMode::UPWARD_LAUNCH)
+    if (ride->mode == RideMode::UpwardLaunch)
     {
         ride_ratings_apply_operation_option(&ratings, ride, 0, 1355917, 451972);
     }
@@ -2547,7 +2547,7 @@ void ride_ratings_calculate_spiral_slide(Ride* ride)
     ride_ratings_set(&ratings, RIDE_RATING(1, 50), RIDE_RATING(1, 40), RIDE_RATING(0, 90));
 
     // Unlimited slides boost
-    if (ride->mode == RideMode::UNLIMITED_RIDES_PER_ADMISSION)
+    if (ride->mode == RideMode::UnlimitedRidesPerAdmission)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 25));
     }
@@ -2577,7 +2577,7 @@ void ride_ratings_calculate_go_karts(Ride* ride)
     ride_ratings_set(&ratings, RIDE_RATING(1, 42), RIDE_RATING(1, 73), RIDE_RATING(0, 40));
     ride_ratings_apply_length(&ratings, ride, 700, 32768);
 
-    if (ride->mode == RideMode::RACE && ride->num_vehicles >= 4)
+    if (ride->mode == RideMode::Race && ride->num_vehicles >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(1, 40), RIDE_RATING(0, 50), 0);
 
@@ -2839,7 +2839,7 @@ void ride_ratings_calculate_motion_simulator(Ride* ride)
 
     // Base ratings
     RatingTuple ratings;
-    if (ride->mode == RideMode::FILM_THRILL_RIDERS)
+    if (ride->mode == RideMode::FilmThrillRiders)
     {
         ratings.Excitement = RIDE_RATING(3, 25);
         ratings.Intensity = RIDE_RATING(4, 10);
@@ -2875,17 +2875,17 @@ void ride_ratings_calculate_3d_cinema(Ride* ride)
     switch (ride->mode)
     {
         default:
-        case RideMode::MOUSE_TAILS_3D_FILM:
+        case RideMode::MouseTails3DFilm:
             ratings.Excitement = RIDE_RATING(3, 50);
             ratings.Intensity = RIDE_RATING(2, 40);
             ratings.Nausea = RIDE_RATING(1, 40);
             break;
-        case RideMode::STORM_CHASERS_3D_FILM:
+        case RideMode::StormChasers3DFilm:
             ratings.Excitement = RIDE_RATING(4, 00);
             ratings.Intensity = RIDE_RATING(2, 65);
             ratings.Nausea = RIDE_RATING(1, 55);
             break;
-        case RideMode::SPACE_RAIDERS_3D_FILM:
+        case RideMode::SpaceRaiders3DFilm:
             ratings.Excitement = RIDE_RATING(4, 20);
             ratings.Intensity = RIDE_RATING(2, 60);
             ratings.Nausea = RIDE_RATING(1, 48);
@@ -2915,17 +2915,17 @@ void ride_ratings_calculate_top_spin(Ride* ride)
     switch (ride->mode)
     {
         default:
-        case RideMode::BEGINNERS:
+        case RideMode::Beginners:
             ratings.Excitement = RIDE_RATING(2, 00);
             ratings.Intensity = RIDE_RATING(4, 80);
             ratings.Nausea = RIDE_RATING(5, 74);
             break;
-        case RideMode::INTENSE:
+        case RideMode::Intense:
             ratings.Excitement = RIDE_RATING(3, 00);
             ratings.Intensity = RIDE_RATING(5, 75);
             ratings.Nausea = RIDE_RATING(6, 64);
             break;
-        case RideMode::BERSERK:
+        case RideMode::Berserk:
             ratings.Excitement = RIDE_RATING(3, 20);
             ratings.Intensity = RIDE_RATING(6, 80);
             ratings.Nausea = RIDE_RATING(7, 94);
@@ -3927,7 +3927,7 @@ void ride_ratings_calculate_compact_inverted_coaster(Ride* ride)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
 
-    ride->unreliability_factor = ride->mode == RideMode::REVERSE_INCLINE_LAUNCHED_SHUTTLE ? 31 : 21;
+    ride->unreliability_factor = ride->mode == RideMode::ReverseInclineLaunchedShuttle ? 31 : 21;
     set_unreliability_factor(ride);
 
     RatingTuple ratings;

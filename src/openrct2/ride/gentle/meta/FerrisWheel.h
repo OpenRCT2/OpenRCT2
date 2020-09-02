@@ -28,8 +28,8 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
                      RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
                      RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
                      RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::FORWARD_ROTATION)) | (1ULL << static_cast<uint8_t>(RideMode::BACKWARD_ROTATION))),
-    SET_FIELD(DefaultMode, RideMode::FORWARD_ROTATION),
+    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ForwardRotation)) | (1ULL << static_cast<uint8_t>(RideMode::BackwardRotation))),
+    SET_FIELD(DefaultMode, RideMode::ForwardRotation),
     SET_FIELD(OperatingSettings, { 1, 3, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FERRIS_WHEEL, STR_RIDE_DESCRIPTION_FERRIS_WHEEL }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_WHEEL, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),

@@ -156,7 +156,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 if (argv.size() > 1 && argv[1] == "mode")
                 {
                     console.WriteFormatLine("Ride modes are specified using integer IDs as given below:");
-                    for (int32_t i = 0; i < static_cast<uint8_t>(RideMode::COUNT); i++)
+                    for (int32_t i = 0; i < static_cast<uint8_t>(RideMode::Count); i++)
                     {
                         char mode_name[128] = { 0 };
                         rct_string_id mode_string_id = RideModeNames[i];
@@ -214,7 +214,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 else
                 {
                     auto ride = get_ride(ride_index);
-                    if (mode <= 0 || mode > (static_cast<uint8_t>(RideMode::COUNT) - 1))
+                    if (mode <= 0 || mode > (static_cast<uint8_t>(RideMode::Count) - 1))
                     {
                         console.WriteFormatLine("Invalid ride mode.");
                     }
