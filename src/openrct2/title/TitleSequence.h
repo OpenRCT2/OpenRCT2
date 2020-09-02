@@ -61,6 +61,11 @@ struct TitleSequence
     TitleSequenceParkHandle* GetParkHandle(size_t index);
     void CloseParkHandle(TitleSequenceParkHandle* handle);
 
+    static bool IsLoadCommand(const TitleCommand* command);
+
+    static constexpr const utf8* Extension = ".parkseq";
+    static constexpr uint8_t SaveIndexInvalid = std::numeric_limits<uint8_t>::max();
+
     size_t NumSaves() const
     {
         return Saves.size();
@@ -95,8 +100,3 @@ enum TITLE_SCRIPT
     TITLE_SCRIPT_ENDLOOP,
     TITLE_SCRIPT_LOADSC,
 };
-
-constexpr const utf8* TITLE_SEQUENCE_EXTENSION = ".parkseq";
-constexpr uint8_t SAVE_INDEX_INVALID = UINT8_MAX;
-
-bool TitleSequenceIsLoadCommand(const TitleCommand* command);

@@ -104,7 +104,7 @@ namespace TitleSequenceManager
         Path::Append(newPath, sizeof(newPath), newName);
         if (item->IsZip)
         {
-            String::Append(newPath, sizeof(newPath), TITLE_SEQUENCE_EXTENSION);
+            String::Append(newPath, sizeof(newPath), TitleSequence::Extension);
             platform_file_move(oldPath, newPath);
         }
         else
@@ -164,7 +164,7 @@ namespace TitleSequenceManager
         auto path = Path::Combine(GetUserSequencesPath(), name);
         if (isZip)
         {
-            path += TITLE_SEQUENCE_EXTENSION;
+            path += TitleSequence::Extension;
         }
         return path;
     }

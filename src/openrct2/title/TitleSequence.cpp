@@ -31,132 +31,31 @@
 #include <sstream>
 #include <vector>
 
-static std::vector<std::string> GetSaves(const utf8* path);
-static std::vector<std::string> GetSaves(IZipArchive* zip);
-static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, const std::vector<std::string>& saves);
-static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts);
-static std::vector<uint8_t> ReadScriptFile(const utf8* path);
+namespace
+{
+    std::vector<std::string> GetSaves(const utf8* directory);
+    std::vector<std::string> GetSaves(IZipArchive* zip);
+    std::vector<uint8_t> ReadScriptFile(const utf8* path);
+    void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts);
+    std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, const std::vector<std::string>& saves);
+
+    using ScriptType = std::vector<uint8_t>;
+    using SaveType = std::vector<std::string>;
+    using ScriptResult = std::pair<ScriptType, SaveType>;
+
+    ScriptResult GetZipScript(const utf8* path);
+    ScriptResult GetFileScript(const utf8* path);
+} // namespace
 
 TitleSequence::TitleSequence(const utf8* path)
+    : Path(path)
+    , Name(Path::GetFileNameWithoutExtension(Path))
+    , IsZip(String::Equals(Path::GetExtension(path), Extension))
 {
-    std::vector<uint8_t> script;
-    std::vector<std::string> saves;
-    bool is_zip = false;
-
     log_verbose("Loading title sequence: %s", path);
-
-    const utf8* ext = Path::GetExtension(path);
-    if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
-    {
-        auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(path, ZIP_ACCESS::READ));
-        if (zip == nullptr)
-        {
-            Console::Error::WriteLine("Unable to open '%s'", path);
-            throw std::exception();
-        }
-
-        script = zip->GetFileData("script.txt");
-        if (script.empty())
-        {
-            Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
-            throw std::exception();
-        }
-
-        saves = GetSaves(zip.get());
-        is_zip = true;
-    }
-    else
-    {
-        utf8 scriptPath[MAX_PATH];
-        String::Set(scriptPath, sizeof(scriptPath), path);
-        Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
-        script = ReadScriptFile(scriptPath);
-        if (script.empty())
-        {
-            Console::Error::WriteLine("Unable to open '%s'", scriptPath);
-            throw std::exception();
-        }
-
-        saves = GetSaves(path);
-        is_zip = false;
-    }
-
-    auto commands = LegacyScriptRead(reinterpret_cast<utf8*>(script.data()), script.size(), saves);
-    Path = path;
-    Name = Path::GetFileNameWithoutExtension(Path);
-    Saves = std::move(saves);
-    Commands = std::move(commands);
-    IsZip = is_zip;
-}
-
-TitleSequenceParkHandle* TitleSequence::GetParkHandle(size_t index)
-{
-    TitleSequenceParkHandle* handle = nullptr;
-    if (index <= NumSaves())
-    {
-        const utf8* filename = Saves[index].c_str();
-        if (IsZip)
-        {
-            auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(Path, ZIP_ACCESS::READ));
-            if (zip != nullptr)
-            {
-                auto data = zip->GetFileData(filename);
-                auto dataForMs = Memory::Allocate<uint8_t>(data.size());
-                std::copy_n(data.data(), data.size(), dataForMs);
-                auto ms = new OpenRCT2::MemoryStream(
-                    dataForMs, data.size(), OpenRCT2::MEMORY_ACCESS::READ | OpenRCT2::MEMORY_ACCESS::OWNER);
-
-                handle = Memory::Allocate<TitleSequenceParkHandle>();
-                handle->Stream = ms;
-                handle->HintPath = String::Duplicate(filename);
-            }
-            else
-            {
-                Console::Error::WriteLine("Failed to open zipped path '%s' from zip '%s'", filename, Path.c_str());
-            }
-        }
-        else
-        {
-            utf8 absolutePath[MAX_PATH];
-            String::Set(absolutePath, sizeof(absolutePath), Path.c_str());
-            Path::Append(absolutePath, sizeof(absolutePath), filename);
-
-            OpenRCT2::FileStream* fileStream = nullptr;
-            try
-            {
-                fileStream = new OpenRCT2::FileStream(absolutePath, OpenRCT2::FILE_MODE_OPEN);
-            }
-            catch (const IOException& exception)
-            {
-                Console::Error::WriteLine(exception.what());
-            }
-
-            if (fileStream != nullptr)
-            {
-                handle = Memory::Allocate<TitleSequenceParkHandle>();
-                handle->Stream = fileStream;
-                handle->HintPath = String::Duplicate(filename);
-            }
-        }
-    }
-    return handle;
-}
-
-void TitleSequence::CloseParkHandle(TitleSequenceParkHandle* handle)
-{
-    if (handle != nullptr)
-    {
-        Memory::Free(handle->HintPath);
-        delete (static_cast<OpenRCT2::IStream*>(handle->Stream));
-        Memory::Free(handle);
-    }
-}
-
-void TitleSequence::SwapConsecutiveCommands(size_t index)
-{
-    TitleCommand* first = &Commands[index];
-    TitleCommand* second = &Commands[index + 1];
-    std::swap(first, second);
+    std::vector<uint8_t> script;
+    std::tie(script, Saves) = IsZip ? GetZipScript(path) : GetFileScript(path);
+    Commands = LegacyScriptRead(reinterpret_cast<utf8*>(script.data()), script.size(), Saves);
 }
 
 bool TitleSequence::Save()
@@ -309,7 +208,7 @@ bool TitleSequence::RemovePark(size_t index)
             if (command->SaveIndex == index)
             {
                 // Park no longer exists, so reset load command to invalid
-                command->SaveIndex = SAVE_INDEX_INVALID;
+                command->SaveIndex = TitleSequence::SaveIndexInvalid;
             }
             else if (command->SaveIndex > index)
             {
@@ -320,207 +219,6 @@ bool TitleSequence::RemovePark(size_t index)
     }
 
     return true;
-}
-
-static std::vector<std::string> GetSaves(const utf8* directory)
-{
-    std::vector<std::string> saves;
-
-    utf8 pattern[MAX_PATH];
-    String::Set(pattern, sizeof(pattern), directory);
-    Path::Append(pattern, sizeof(pattern), "*.sc6;*.sv6");
-
-    IFileScanner* scanner = Path::ScanDirectory(pattern, true);
-    while (scanner->Next())
-    {
-        const utf8* path = scanner->GetPathRelative();
-        saves.emplace_back(path);
-    }
-    return saves;
-}
-
-static std::vector<std::string> GetSaves(IZipArchive* zip)
-{
-    std::vector<std::string> saves;
-    size_t numFiles = zip->GetNumFiles();
-    for (size_t i = 0; i < numFiles; i++)
-    {
-        auto name = zip->GetFileName(i);
-        auto ext = Path::GetExtension(name);
-        if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true))
-        {
-            saves.emplace_back(name);
-        }
-    }
-    return saves;
-}
-
-static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, const std::vector<std::string>& saves)
-{
-    std::vector<TitleCommand> commands;
-    auto fs = OpenRCT2::MemoryStream(script, scriptLength);
-    do
-    {
-        char parts[3 * 128], *token, *part1, *part2;
-        LegacyScriptGetLine(&fs, parts);
-
-        token = &parts[0 * 128];
-        part1 = &parts[1 * 128];
-        part2 = &parts[2 * 128];
-        TitleCommand command = {};
-        command.Type = TITLE_SCRIPT_UNDEFINED;
-
-        if (token[0] != 0)
-        {
-            if (_stricmp(token, "LOAD") == 0)
-            {
-                command.Type = TITLE_SCRIPT_LOAD;
-                command.SaveIndex = SAVE_INDEX_INVALID;
-                for (size_t i = 0; i < saves.size(); i++)
-                {
-                    if (String::Equals(part1, saves[i].c_str(), true))
-                    {
-                        command.SaveIndex = static_cast<uint8_t>(i);
-                        break;
-                    }
-                }
-            }
-            else if (_stricmp(token, "LOCATION") == 0)
-            {
-                command.Type = TITLE_SCRIPT_LOCATION;
-                command.X = atoi(part1) & 0xFF;
-                command.Y = atoi(part2) & 0xFF;
-            }
-            else if (_stricmp(token, "ROTATE") == 0)
-            {
-                command.Type = TITLE_SCRIPT_ROTATE;
-                command.Rotations = atoi(part1) & 0xFF;
-            }
-            else if (_stricmp(token, "ZOOM") == 0)
-            {
-                command.Type = TITLE_SCRIPT_ZOOM;
-                command.Zoom = atoi(part1) & 0xFF;
-            }
-            else if (_stricmp(token, "SPEED") == 0)
-            {
-                command.Type = TITLE_SCRIPT_SPEED;
-                command.Speed = std::max(1, std::min(4, atoi(part1) & 0xFF));
-            }
-            else if (_stricmp(token, "FOLLOW") == 0)
-            {
-                command.Type = TITLE_SCRIPT_FOLLOW;
-                command.SpriteIndex = atoi(part1) & 0xFFFF;
-                safe_strcpy(command.SpriteName, part2, USER_STRING_MAX_LENGTH);
-            }
-            else if (_stricmp(token, "WAIT") == 0)
-            {
-                command.Type = TITLE_SCRIPT_WAIT;
-                command.Milliseconds = atoi(part1) & 0xFFFF;
-            }
-            else if (_stricmp(token, "RESTART") == 0)
-            {
-                command.Type = TITLE_SCRIPT_RESTART;
-            }
-            else if (_stricmp(token, "END") == 0)
-            {
-                command.Type = TITLE_SCRIPT_END;
-            }
-            else if (_stricmp(token, "LOADSC") == 0)
-            {
-                command.Type = TITLE_SCRIPT_LOADSC;
-                safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
-            }
-        }
-        if (command.Type != TITLE_SCRIPT_UNDEFINED)
-        {
-            commands.push_back(command);
-        }
-    } while (fs.GetPosition() < scriptLength);
-    return commands;
-}
-
-static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts)
-{
-    for (int32_t i = 0; i < 3; i++)
-    {
-        parts[i * 128] = 0;
-    }
-    int32_t part = 0;
-    int32_t cindex = 0;
-    int32_t whitespace = 1;
-    int32_t comment = 0;
-    bool load = false;
-    bool sprite = false;
-    for (; part < 3;)
-    {
-        int32_t c = 0;
-        if (stream->TryRead(&c, 1) != 1)
-        {
-            c = EOF;
-        }
-        if (c == '\n' || c == '\r' || c == EOF)
-        {
-            parts[part * 128 + cindex] = 0;
-            return;
-        }
-        else if (c == '#')
-        {
-            parts[part * 128 + cindex] = 0;
-            comment = 1;
-        }
-        else if (c == ' ' && !comment && !load && (!sprite || part != 2))
-        {
-            if (!whitespace)
-            {
-                if (part == 0
-                    && ((cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0)
-                        || (cindex == 6 && _strnicmp(parts, "LOADSC", 6) == 0)))
-                {
-                    load = true;
-                }
-                else if (part == 0 && cindex == 6 && _strnicmp(parts, "FOLLOW", 6) == 0)
-                {
-                    sprite = true;
-                }
-                parts[part * 128 + cindex] = 0;
-                part++;
-                cindex = 0;
-            }
-        }
-        else if (!comment)
-        {
-            whitespace = 0;
-            if (cindex < 127)
-            {
-                parts[part * 128 + cindex] = c;
-                cindex++;
-            }
-            else
-            {
-                parts[part * 128 + cindex] = 0;
-                part++;
-                cindex = 0;
-            }
-        }
-    }
-}
-
-static std::vector<uint8_t> ReadScriptFile(const utf8* path)
-{
-    std::vector<uint8_t> result;
-    try
-    {
-        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
-        auto size = static_cast<size_t>(fs.GetLength());
-        result.resize(size);
-        fs.Read(result.data(), size);
-    }
-    catch (const std::exception&)
-    {
-        result.clear();
-        result.shrink_to_fit();
-    }
-    return result;
 }
 
 std::string TitleSequence::LegacyScriptWrite()
@@ -595,7 +293,77 @@ std::string TitleSequence::LegacyScriptWrite()
     return sb.GetBuffer();
 }
 
-bool TitleSequenceIsLoadCommand(const TitleCommand* command)
+void TitleSequence::SwapConsecutiveCommands(size_t index)
+{
+    TitleCommand* first = &Commands[index];
+    TitleCommand* second = &Commands[index + 1];
+    std::swap(first, second);
+}
+
+TitleSequenceParkHandle* TitleSequence::GetParkHandle(size_t index)
+{
+    TitleSequenceParkHandle* handle = nullptr;
+    if (index <= NumSaves())
+    {
+        const utf8* filename = Saves[index].c_str();
+        if (IsZip)
+        {
+            auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(Path, ZIP_ACCESS::READ));
+            if (zip != nullptr)
+            {
+                auto data = zip->GetFileData(filename);
+                auto dataForMs = Memory::Allocate<uint8_t>(data.size());
+                std::copy_n(data.data(), data.size(), dataForMs);
+                auto ms = new OpenRCT2::MemoryStream(
+                    dataForMs, data.size(), OpenRCT2::MEMORY_ACCESS::READ | OpenRCT2::MEMORY_ACCESS::OWNER);
+
+                handle = Memory::Allocate<TitleSequenceParkHandle>();
+                handle->Stream = ms;
+                handle->HintPath = String::Duplicate(filename);
+            }
+            else
+            {
+                Console::Error::WriteLine("Failed to open zipped path '%s' from zip '%s'", filename, Path.c_str());
+            }
+        }
+        else
+        {
+            utf8 absolutePath[MAX_PATH];
+            String::Set(absolutePath, sizeof(absolutePath), Path.c_str());
+            Path::Append(absolutePath, sizeof(absolutePath), filename);
+
+            OpenRCT2::FileStream* fileStream = nullptr;
+            try
+            {
+                fileStream = new OpenRCT2::FileStream(absolutePath, OpenRCT2::FILE_MODE_OPEN);
+            }
+            catch (const IOException& exception)
+            {
+                Console::Error::WriteLine(exception.what());
+            }
+
+            if (fileStream != nullptr)
+            {
+                handle = Memory::Allocate<TitleSequenceParkHandle>();
+                handle->Stream = fileStream;
+                handle->HintPath = String::Duplicate(filename);
+            }
+        }
+    }
+    return handle;
+}
+
+void TitleSequence::CloseParkHandle(TitleSequenceParkHandle* handle)
+{
+    if (handle != nullptr)
+    {
+        Memory::Free(handle->HintPath);
+        delete (static_cast<OpenRCT2::IStream*>(handle->Stream));
+        Memory::Free(handle);
+    }
+}
+
+bool TitleSequence::IsLoadCommand(const TitleCommand* command)
 {
     switch (command->Type)
     {
@@ -606,3 +374,246 @@ bool TitleSequenceIsLoadCommand(const TitleCommand* command)
             return false;
     }
 }
+
+namespace
+{
+    std::vector<std::string> GetSaves(const utf8* directory)
+    {
+        std::vector<std::string> saves;
+
+        utf8 pattern[MAX_PATH];
+        String::Set(pattern, sizeof(pattern), directory);
+        Path::Append(pattern, sizeof(pattern), "*.sc6;*.sv6");
+
+        IFileScanner* scanner = Path::ScanDirectory(pattern, true);
+        while (scanner->Next())
+        {
+            const utf8* path = scanner->GetPathRelative();
+            saves.emplace_back(path);
+        }
+        return saves;
+    }
+
+    std::vector<std::string> GetSaves(IZipArchive* zip)
+    {
+        std::vector<std::string> saves;
+        size_t numFiles = zip->GetNumFiles();
+        for (size_t i = 0; i < numFiles; i++)
+        {
+            auto name = zip->GetFileName(i);
+            auto ext = Path::GetExtension(name);
+            if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true))
+            {
+                saves.emplace_back(name);
+            }
+        }
+        return saves;
+    }
+
+    std::vector<uint8_t> ReadScriptFile(const utf8* path)
+    {
+        std::vector<uint8_t> result;
+        try
+        {
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
+            auto size = static_cast<size_t>(fs.GetLength());
+            result.resize(size);
+            fs.Read(result.data(), size);
+        }
+        catch (const std::exception&)
+        {
+            result.clear();
+            result.shrink_to_fit();
+        }
+        return result;
+    }
+
+    using ScriptType = std::vector<uint8_t>;
+    using SaveType = std::vector<std::string>;
+    using ScriptResult = std::pair<ScriptType, SaveType>;
+
+    ScriptResult GetZipScript(const utf8* path)
+    {
+        auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(path, ZIP_ACCESS::READ));
+        if (zip == nullptr)
+        {
+            Console::Error::WriteLine("Unable to open '%s'", path);
+            throw std::exception();
+        }
+
+        auto script = zip->GetFileData("script.txt");
+        if (script.empty())
+        {
+            Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
+            throw std::exception();
+        }
+
+        auto saves = GetSaves(zip.get());
+        return { script, saves };
+    }
+
+    ScriptResult GetFileScript(const utf8* path)
+    {
+        std::stringstream scriptPath;
+        scriptPath << path << "script.txt";
+        auto script = ReadScriptFile(scriptPath.str().c_str());
+        if (script.empty())
+        {
+            Console::Error::WriteLine("Unable to open '%s'", scriptPath.str().c_str());
+            throw std::exception();
+        }
+
+        auto saves = GetSaves(path);
+        return { script, saves };
+    }
+
+    void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts)
+    {
+        for (int32_t i = 0; i < 3; i++)
+        {
+            parts[i * 128] = 0;
+        }
+        int32_t part = 0;
+        int32_t cindex = 0;
+        int32_t whitespace = 1;
+        int32_t comment = 0;
+        bool load = false;
+        bool sprite = false;
+        for (; part < 3;)
+        {
+            int32_t c = 0;
+            if (stream->TryRead(&c, 1) != 1)
+            {
+                c = EOF;
+            }
+            if (c == '\n' || c == '\r' || c == EOF)
+            {
+                parts[part * 128 + cindex] = 0;
+                return;
+            }
+            else if (c == '#')
+            {
+                parts[part * 128 + cindex] = 0;
+                comment = 1;
+            }
+            else if (c == ' ' && !comment && !load && (!sprite || part != 2))
+            {
+                if (!whitespace)
+                {
+                    if (part == 0
+                        && ((cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0)
+                            || (cindex == 6 && _strnicmp(parts, "LOADSC", 6) == 0)))
+                    {
+                        load = true;
+                    }
+                    else if (part == 0 && cindex == 6 && _strnicmp(parts, "FOLLOW", 6) == 0)
+                    {
+                        sprite = true;
+                    }
+                    parts[part * 128 + cindex] = 0;
+                    part++;
+                    cindex = 0;
+                }
+            }
+            else if (!comment)
+            {
+                whitespace = 0;
+                if (cindex < 127)
+                {
+                    parts[part * 128 + cindex] = c;
+                    cindex++;
+                }
+                else
+                {
+                    parts[part * 128 + cindex] = 0;
+                    part++;
+                    cindex = 0;
+                }
+            }
+        }
+    }
+
+    std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, const std::vector<std::string>& saves)
+    {
+        std::vector<TitleCommand> commands;
+        auto fs = OpenRCT2::MemoryStream(script, scriptLength);
+        do
+        {
+            char parts[3 * 128], *token, *part1, *part2;
+            LegacyScriptGetLine(&fs, parts);
+
+            token = &parts[0 * 128];
+            part1 = &parts[1 * 128];
+            part2 = &parts[2 * 128];
+            TitleCommand command = {};
+            command.Type = TITLE_SCRIPT_UNDEFINED;
+
+            if (token[0] != 0)
+            {
+                if (_stricmp(token, "LOAD") == 0)
+                {
+                    command.Type = TITLE_SCRIPT_LOAD;
+                    command.SaveIndex = TitleSequence::SaveIndexInvalid;
+                    for (size_t i = 0; i < saves.size(); i++)
+                    {
+                        if (String::Equals(part1, saves[i].c_str(), true))
+                        {
+                            command.SaveIndex = static_cast<uint8_t>(i);
+                            break;
+                        }
+                    }
+                }
+                else if (_stricmp(token, "LOCATION") == 0)
+                {
+                    command.Type = TITLE_SCRIPT_LOCATION;
+                    command.X = atoi(part1) & 0xFF;
+                    command.Y = atoi(part2) & 0xFF;
+                }
+                else if (_stricmp(token, "ROTATE") == 0)
+                {
+                    command.Type = TITLE_SCRIPT_ROTATE;
+                    command.Rotations = atoi(part1) & 0xFF;
+                }
+                else if (_stricmp(token, "ZOOM") == 0)
+                {
+                    command.Type = TITLE_SCRIPT_ZOOM;
+                    command.Zoom = atoi(part1) & 0xFF;
+                }
+                else if (_stricmp(token, "SPEED") == 0)
+                {
+                    command.Type = TITLE_SCRIPT_SPEED;
+                    command.Speed = std::max(1, std::min(4, atoi(part1) & 0xFF));
+                }
+                else if (_stricmp(token, "FOLLOW") == 0)
+                {
+                    command.Type = TITLE_SCRIPT_FOLLOW;
+                    command.SpriteIndex = atoi(part1) & 0xFFFF;
+                    safe_strcpy(command.SpriteName, part2, USER_STRING_MAX_LENGTH);
+                }
+                else if (_stricmp(token, "WAIT") == 0)
+                {
+                    command.Type = TITLE_SCRIPT_WAIT;
+                    command.Milliseconds = atoi(part1) & 0xFFFF;
+                }
+                else if (_stricmp(token, "RESTART") == 0)
+                {
+                    command.Type = TITLE_SCRIPT_RESTART;
+                }
+                else if (_stricmp(token, "END") == 0)
+                {
+                    command.Type = TITLE_SCRIPT_END;
+                }
+                else if (_stricmp(token, "LOADSC") == 0)
+                {
+                    command.Type = TITLE_SCRIPT_LOADSC;
+                    safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
+                }
+            }
+            if (command.Type != TITLE_SCRIPT_UNDEFINED)
+            {
+                commands.push_back(command);
+            }
+        } while (fs.GetPosition() < scriptLength);
+        return commands;
+    }
+} // namespace

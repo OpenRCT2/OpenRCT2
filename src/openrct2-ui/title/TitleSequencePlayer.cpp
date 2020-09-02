@@ -190,7 +190,7 @@ public:
         for (int32_t i = targetPosition; i >= 0; i--)
         {
             const TitleCommand* command = &_sequence->Commands[i];
-            if ((_position == i && _position != targetPosition) || TitleSequenceIsLoadCommand(command))
+            if ((_position == i && _position != targetPosition) || TitleSequence::IsLoadCommand(command))
             {
                 // Break if we have a new load command or if we're already in the range of the correct load command
                 _position = i;
@@ -236,7 +236,7 @@ private:
         {
             IncrementPosition();
             command = &_sequence->Commands[_position];
-        } while (!TitleSequenceIsLoadCommand(command) && _position != entryPosition);
+        } while (!TitleSequence::IsLoadCommand(command) && _position != entryPosition);
         return _position != entryPosition;
     }
 

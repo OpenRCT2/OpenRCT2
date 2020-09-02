@@ -257,7 +257,7 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     {
         case TITLE_SCRIPT_LOAD:
             if (command.SaveIndex >= _sequence->NumSaves())
-                command.SaveIndex = SAVE_INDEX_INVALID;
+                command.SaveIndex = TitleSequence::SaveIndexInvalid;
             break;
         case TITLE_SCRIPT_LOCATION:
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
@@ -772,7 +772,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
     }
     else if (command.Type == TITLE_SCRIPT_LOAD)
     {
-        if (command.SaveIndex == SAVE_INDEX_INVALID)
+        if (command.SaveIndex == TitleSequence::SaveIndexInvalid)
         {
             gfx_draw_string_left_clipped(
                 dpi, STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, nullptr, w->colours[1],
