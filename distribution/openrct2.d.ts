@@ -1344,6 +1344,12 @@ declare global {
         rating: number;
         bankLoan: number;
         maxBankLoan: number;
+
+        /**
+         * The current entrance fee for the park.
+         */
+        entranceFee: number;
+
         name: string;
         messages: ParkMessage[];
 
