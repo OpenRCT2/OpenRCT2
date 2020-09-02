@@ -216,11 +216,11 @@ constexpr int32_t BUTTONH = 17;
 
 #define MAIN_TILE_INSPECTOR_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    { WindowWidgetType::Scroll,       1,  3,              WW - 4,             57,             WH - PADDING_BOTTOM,    2,              STR_NONE },                /* Element list */          \
-    /* X and Y spinners */                                                                                                                                                                   \
-      SPINNER_WIDGETS  (1,  20,             70,                 23,             34,         STR_NONE,                   STR_NONE),                               /* Spinner X (3 widgets) */ \
-      SPINNER_WIDGETS  (1,  90,             140,                23,             34,         STR_NONE,                   STR_NONE),                               /* Spinner Y (3 widgets) */ \
-    /* Top buttons */                                                                                                                                                                        \
+    { WindowWidgetType::Scroll, 1, 3, WW - 4, 57, WH - PADDING_BOTTOM, 2, STR_NONE }, /* Element list */ \
+    /* X and Y spinners */ \
+      SPINNER_WIDGETS  (1,  20, 70,  23, 34, STR_NONE, STR_NONE), /* Spinner X (3 widgets) */ \
+      SPINNER_WIDGETS  (1,  90, 140, 23, 34, STR_NONE, STR_NONE), /* Spinner Y (3 widgets) */ \
+    /* Top buttons */ \
     MakeWidget({BX, BY},           {24, 24},     WindowWidgetType::FlatBtn ,    WindowColour::Secondary, SPR_MAP,          STR_INSERT_CORRUPT_TIP),              /* Insert corrupt button */ \
     MakeWidget({BX - 24, BY},      {24, 24},     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_DEMOLISH,     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */         \
     MakeWidget({BX - 48, BY},      {24, 12},     WindowWidgetType::Button,      WindowColour::Secondary, STR_UP,           STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */               \
@@ -229,15 +229,15 @@ constexpr int32_t BUTTONH = 17;
     MakeWidget({BX - 96, BY},      {24, 24},     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_SORT,      STR_TILE_INSPECTOR_SORT_TIP),         /* Sort button */           \
     MakeWidget({BX - 120, BY},     {24, 24},     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_PASTE,     STR_TILE_INSPECTOR_PASTE_TIP),        /* Paste button */          \
     MakeWidget({BX - 144, BY},     {24, 24},     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_COPY,      STR_TILE_INSPECTOR_COPY_TIP),         /* Copy button */           \
-    /* Column headers */                                                                                                                                                                     \
-    MakeWidget({COL_X_TYPE, 42},   {312, 14},    WindowWidgetType::TableHeader, WindowColour::Secondary, STR_NONE,         STR_NONE),                            /* Type */                  \
-    MakeWidget({COL_X_BH,   42},   {20, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_NONE,         STR_TILE_INSPECTOR_BASE_HEIGHT),      /* Base height */           \
-    MakeWidget({COL_X_CH,   42},   {20, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_NONE,         STR_TILE_INSPECTOR_CLEARANCE_HEIGHT), /* Clearance height */      \
-    MakeWidget({COL_X_GF,   42},   {12, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_NONE,         STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */            \
-    MakeWidget({COL_X_LF,   42},   {30, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_NONE,         STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */     \
-    /* Group boxes */                                                                                                                                                                        \
-    MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_NONE,                               STR_NONE ),     /* Details group box */     \
-    MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, STR_NONE )      /* Properties group box */
+    /* Column headers */ \
+    MakeWidget({COL_X_TYPE, 42},   {312, 14},    WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_ELEMENT_TYPE),                                                /* Type */              \
+    MakeWidget({COL_X_BH,   42},   {20, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT,      STR_TILE_INSPECTOR_BASE_HEIGHT),      /* Base height */       \
+    MakeWidget({COL_X_CH,   42},   {20, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, STR_TILE_INSPECTOR_CLEARANCE_HEIGHT), /* Clearance height */  \
+    MakeWidget({COL_X_GF,   42},   {12, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,       STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */        \
+    MakeWidget({COL_X_LF,   42},   {30, 14},     WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_LAST_SHORT,        STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */ \
+    /* Group boxes */ \
+    MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_NONE,                               STR_NONE ), /* Details group box */     \
+    MakeWidget({6, 0},             {WW - 12, 0}, WindowWidgetType::Groupbox,    WindowColour::Secondary, STR_TILE_INSPECTOR_GROUPBOX_PROPERTIES, STR_NONE )  /* Properties group box */
 
 static rct_widget DefaultWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
@@ -1743,39 +1743,6 @@ static void window_tile_inspector_invalidate(rct_window* w)
 static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-
-    // Draw column headers
-    rct_widget* widget;
-    if ((widget = &w->widgets[WIDX_COLUMN_TYPE])->type != WindowWidgetType::Empty)
-    {
-        DrawTextEllipsised(
-            dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_ELEMENT_TYPE, {}, { w->colours[1] });
-    }
-    if ((widget = &w->widgets[WIDX_COLUMN_BASEHEIGHT])->type != WindowWidgetType::Empty)
-    {
-        DrawTextEllipsised(
-            dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, {}, { w->colours[1] });
-    }
-    if ((widget = &w->widgets[WIDX_COLUMN_CLEARANCEHEIGHT])->type != WindowWidgetType::Empty)
-    {
-        DrawTextEllipsised(
-            dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, {}, { w->colours[1] });
-    }
-    if ((widget = &w->widgets[WIDX_COLUMN_GHOSTFLAG])->type != WindowWidgetType::Empty)
-    {
-        DrawTextEllipsised(
-            dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, {}, { w->colours[1] });
-    }
-    if ((widget = &w->widgets[WIDX_COLUMN_LASTFLAG])->type != WindowWidgetType::Empty)
-    {
-        DrawTextEllipsised(
-            dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_FLAG_LAST_SHORT, {}, { w->colours[1] });
-    }
 
     ScreenCoordsXY screenCoords(w->windowPos.x, w->windowPos.y);
 
