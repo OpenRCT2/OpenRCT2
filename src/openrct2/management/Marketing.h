@@ -67,3 +67,4 @@ void marketing_set_guest_campaign(Peep* peep, int32_t campaign);
 bool marketing_is_campaign_type_applicable(int32_t campaignType);
 MarketingCampaign* marketing_get_campaign(int32_t campaignType);
 void marketing_new_campaign(const MarketingCampaign& campaign);
+void MarketingCancelCampaignsForRide(const ride_id_t rideId);

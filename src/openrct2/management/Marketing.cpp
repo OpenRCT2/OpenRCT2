@@ -237,3 +237,18 @@ void marketing_new_campaign(const MarketingCampaign& campaign)
         gMarketingCampaigns.push_back(campaign);
     }
 }
+
+void MarketingCancelCampaignsForRide(const ride_id_t rideId)
+{
+    auto isCampaignForRideFn = [&rideId](MarketingCampaign& campaign) {
+        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+        {
+            return campaign.RideId == rideId;
+        }
+        return false;
+    };
+
+    auto& v = gMarketingCampaigns;
+    auto removedIt = std::remove_if(v.begin(), v.end(), isCampaignForRideFn);
+    v.erase(removedIt, v.end());
+}
