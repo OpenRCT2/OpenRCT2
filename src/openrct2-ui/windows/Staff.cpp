@@ -616,10 +616,8 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
         {
             gStaffPatrolAreas[peep->StaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
         }
-        if (gStaffModes[peep->StaffId] != StaffMode::None)
-        {
-            gStaffModes[peep->StaffId] = StaffMode::Walk;
-        }
+        assert(gStaffModes[peep->StaffId] == StaffMode::Patrol);
+        gStaffModes[peep->StaffId] = StaffMode::Walk;
 
         gfx_invalidate_screen();
         staff_update_greyed_patrol_areas();
