@@ -820,7 +820,7 @@ void peep_sprite_remove(Peep* peep)
     }
     else
     {
-        gStaffModes[peep->StaffId] = 0;
+        gStaffModes[peep->StaffId] = StaffMode::None;
         peep->AssignedPeepType = PeepType::Invalid;
         staff_update_greyed_patrol_areas();
         peep->AssignedPeepType = PeepType::Staff;

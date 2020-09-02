@@ -18,11 +18,11 @@
 // Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
 #define STAFF_PATROL_AREA_SIZE 128
 
-enum STAFF_MODE
+enum class StaffMode : uint8_t
 {
-    STAFF_MODE_NONE,
-    STAFF_MODE_WALK,
-    STAFF_MODE_PATROL = 3
+    None,
+    Walk,
+    Patrol = 3
 };
 
 enum STAFF_ORDERS
@@ -57,7 +57,7 @@ extern const money32 gStaffWageTable[static_cast<uint8_t>(StaffType::Count)];
 extern const rct_string_id StaffCostumeNames[ENTERTAINER_COSTUME_COUNT];
 
 extern uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)) * STAFF_PATROL_AREA_SIZE];
-extern uint8_t gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
+extern StaffMode gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
 extern uint16_t gStaffDrawPatrolAreas;
 extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;

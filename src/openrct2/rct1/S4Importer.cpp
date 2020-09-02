@@ -1379,10 +1379,10 @@ private:
         }
 
         // The RCT2/OpenRCT2 structures are bigger than in RCT1, so set them to zero
-        std::fill(std::begin(gStaffModes), std::end(gStaffModes), 0);
+        std::fill(std::begin(gStaffModes), std::end(gStaffModes), StaffMode::None);
         std::fill(std::begin(gStaffPatrolAreas), std::end(gStaffPatrolAreas), 0);
 
-        std::copy(std::begin(_s4.staff_modes), std::end(_s4.staff_modes), gStaffModes);
+        std::fill(std::begin(_s4.staff_modes), std::end(_s4.staff_modes), 0);
 
         for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {

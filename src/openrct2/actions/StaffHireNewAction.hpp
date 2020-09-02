@@ -134,7 +134,7 @@ private:
         int32_t staffIndex;
         for (staffIndex = 0; staffIndex < STAFF_MAX_COUNT; ++staffIndex)
         {
-            if (!(gStaffModes[staffIndex] & 1))
+            if (gStaffModes[staffIndex] == StaffMode::None)
                 break;
         }
 
@@ -244,7 +244,7 @@ private:
 
             newPeep->StaffId = staffIndex;
 
-            gStaffModes[staffIndex] = STAFF_MODE_WALK;
+            gStaffModes[staffIndex] = StaffMode::Walk;
 
             for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
             {

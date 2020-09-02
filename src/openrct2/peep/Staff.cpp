@@ -73,7 +73,7 @@ const rct_string_id StaffCostumeNames[] = {
 // Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their StaffId
 // Additionally there is a patrol area for each staff type, which is the union of the patrols of all staff members of that type
 uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)) * STAFF_PATROL_AREA_SIZE];
-uint8_t gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
+StaffMode gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
 uint16_t gStaffDrawPatrolAreas;
 colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
@@ -92,10 +92,10 @@ template<> bool SpriteBase::Is<Staff>() const
 void staff_reset_modes()
 {
     for (int32_t i = 0; i < STAFF_MAX_COUNT; i++)
-        gStaffModes[i] = STAFF_MODE_NONE;
+        gStaffModes[i] = StaffMode::None;
 
     for (int32_t i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)); i++)
-        gStaffModes[i] = STAFF_MODE_WALK;
+        gStaffModes[i] = StaffMode::Walk;
 
     staff_update_greyed_patrol_areas();
 }
@@ -181,7 +181,7 @@ bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
         return false;
 
     // Check if staff has patrol area
-    if (!(gStaffModes[StaffId] & 2))
+    if (gStaffModes[StaffId] != StaffMode::Patrol)
         return true;
 
     return IsPatrolAreaSet(loc);
