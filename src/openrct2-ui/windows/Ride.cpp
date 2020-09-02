@@ -6833,7 +6833,7 @@ static void window_ride_customer_mouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_SHOW_GUESTS_THOUGHTS:
         {
             auto intent = Intent(WC_GUEST_LIST);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_THINKING_ABOUT_RIDE);
+            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingAboutRide));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
             context_open_intent(&intent);
             break;
@@ -6841,7 +6841,7 @@ static void window_ride_customer_mouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_SHOW_GUESTS_ON_RIDE:
         {
             auto intent = Intent(WC_GUEST_LIST);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_ON_RIDE);
+            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsOnRide));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
             context_open_intent(&intent);
             break;
@@ -6849,7 +6849,7 @@ static void window_ride_customer_mouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_SHOW_GUESTS_QUEUING:
         {
             auto intent = Intent(WC_GUEST_LIST);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_IN_QUEUE);
+            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsInQueue));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
             context_open_intent(&intent);
             break;

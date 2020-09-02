@@ -394,7 +394,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         case News::ItemType::Peeps:
         {
             auto intent = Intent(WC_GUEST_LIST);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_THINKING_X);
+            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingX));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
             context_open_intent(&intent);
             break;

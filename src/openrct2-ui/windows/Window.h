@@ -21,6 +21,7 @@ using scenarioselect_callback = void (*)(const utf8* path);
 struct Peep;
 struct TileElement;
 struct Vehicle;
+enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
 extern ScenerySelection gWindowSceneryTabSelections[];
@@ -100,7 +101,7 @@ rct_window* window_install_track_open(const utf8* path);
 void window_guest_list_init_vars();
 void window_guest_list_refresh_list();
 rct_window* window_guest_list_open();
-rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index);
+rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t index);
 rct_window* window_staff_fire_prompt_open(Peep* peep);
 void window_title_editor_open(int32_t tab);
 void window_title_command_editor_open(struct TitleSequence* sequence, int32_t command, bool insert);

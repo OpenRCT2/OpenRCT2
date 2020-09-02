@@ -228,7 +228,8 @@ public:
                 return window_install_track_open(intent->GetStringExtra(INTENT_EXTRA_PATH).c_str());
             case WC_GUEST_LIST:
                 return window_guest_list_open_with_filter(
-                    intent->GetSIntExtra(INTENT_EXTRA_GUEST_LIST_FILTER), intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+                    static_cast<GuestListFilterType>(intent->GetSIntExtra(INTENT_EXTRA_GUEST_LIST_FILTER)),
+                    intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
             case WC_LOADSAVE:
             {
                 uint32_t type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
