@@ -143,12 +143,12 @@ to all files in this distribution, except as noted below.
 
 dukglue          | MIT licence.
 duktape          | MIT licence.
-Jansson          | MIT licence.
 libcURL          | MIT (or Modified BSD-style) licence.
 libicu           | Unicode licence.
-libspeex         | BSD-style licence.
 libpng           | libpng licence.
+libspeex         | BSD-style licence.
 libzip           | BSD 3 clause licence.
+nlohmann-json    | MIT licence.
 OpenSSL          | OpenSSL Licence
 SDL2             | zlib licence.
 zlib             | zlib licence.
