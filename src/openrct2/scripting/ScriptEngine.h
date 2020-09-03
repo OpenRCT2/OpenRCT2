@@ -19,6 +19,7 @@
 #    include "Plugin.h"
 
 #    include <future>
+#    include <list>
 #    include <memory>
 #    include <mutex>
 #    include <queue>
@@ -42,6 +43,10 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
+#    ifndef DISABLE_NETWORK
+    class ScSocketBase;
+#    endif
+
     class ScriptExecutionInfo
     {
     private:
@@ -133,6 +138,9 @@ namespace OpenRCT2::Scripting
         };
 
         std::unordered_map<std::string, CustomActionInfo> _customActions;
+#    ifndef DISABLE_NETWORK
+        std::list<std::shared_ptr<ScSocketBase>> _sockets;
+#    endif
 
     public:
         ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& env);
@@ -186,6 +194,10 @@ namespace OpenRCT2::Scripting
 
         void SaveSharedStorage();
 
+#    ifndef DISABLE_NETWORK
+        void AddSocket(const std::shared_ptr<ScSocketBase>& socket);
+#    endif
+
     private:
         void Initialise();
         void StartPlugins();
@@ -206,6 +218,9 @@ namespace OpenRCT2::Scripting
 
         void InitSharedStorage();
         void LoadSharedStorage();
+
+        void UpdateSockets();
+        void RemoveSockets(const std::shared_ptr<Plugin>& plugin);
     };
 
     bool IsGameStateMutable();

@@ -18,6 +18,7 @@
 enum SOCKET_STATUS
 {
     SOCKET_STATUS_CLOSED,
+    SOCKET_STATUS_WAITING,
     SOCKET_STATUS_RESOLVING,
     SOCKET_STATUS_CONNECTING,
     SOCKET_STATUS_CONNECTED,
@@ -67,6 +68,9 @@ public:
     virtual size_t SendData(const void* buffer, size_t size) abstract;
     virtual NetworkReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) abstract;
 
+    virtual void SetNoDelay(bool noDelay) abstract;
+
+    virtual void Finish() abstract;
     virtual void Disconnect() abstract;
     virtual void Close() abstract;
 };
@@ -94,8 +98,6 @@ public:
     virtual void Close() abstract;
 };
 
-bool InitialiseWSA();
-void DisposeWSA();
 std::unique_ptr<ITcpSocket> CreateTcpSocket();
 std::unique_ptr<IUdpSocket> CreateUdpSocket();
 std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses();
