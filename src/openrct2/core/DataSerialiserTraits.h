@@ -28,12 +28,36 @@
 #include <sstream>
 #include <stdexcept>
 
-template<typename T> struct DataSerializerTraits
+template<typename T> struct DataSerializerTraits_t
 {
     static void encode(OpenRCT2::IStream* stream, const T& v) = delete;
     static void decode(OpenRCT2::IStream* stream, T& val) = delete;
     static void log(OpenRCT2::IStream* stream, const T& val) = delete;
 };
+
+template<typename T> struct DataSerializerTraits_enum
+{
+    static void encode(OpenRCT2::IStream* stream, const T& val)
+    {
+        stream->Write(&val);
+    }
+    static void decode(OpenRCT2::IStream* stream, T& val)
+    {
+        stream->Read(&val);
+    }
+    static void log(OpenRCT2::IStream* stream, const T& val)
+    {
+        using underlying = std::underlying_type_t<T>;
+        std::stringstream ss;
+        ss << std::hex << std::setw(sizeof(underlying) * 2) << std::setfill('0') << static_cast<underlying>(val);
+
+        std::string str = ss.str();
+        stream->Write(str.c_str(), str.size());
+    }
+};
+
+template<typename T>
+using DataSerializerTraits = std::conditional_t<std::is_enum_v<T>, DataSerializerTraits_enum<T>, DataSerializerTraits_t<T>>;
 
 template<typename T> struct DataSerializerTraitsIntegral
 {
@@ -58,7 +82,7 @@ template<typename T> struct DataSerializerTraitsIntegral
     }
 };
 
-template<> struct DataSerializerTraits<bool>
+template<> struct DataSerializerTraits_t<bool>
 {
     static void encode(OpenRCT2::IStream* stream, const bool& val)
     {
@@ -77,39 +101,39 @@ template<> struct DataSerializerTraits<bool>
     }
 };
 
-template<> struct DataSerializerTraits<uint8_t> : public DataSerializerTraitsIntegral<uint8_t>
+template<> struct DataSerializerTraits_t<uint8_t> : public DataSerializerTraitsIntegral<uint8_t>
 {
 };
 
-template<> struct DataSerializerTraits<int8_t> : public DataSerializerTraitsIntegral<int8_t>
+template<> struct DataSerializerTraits_t<int8_t> : public DataSerializerTraitsIntegral<int8_t>
 {
 };
 
-template<> struct DataSerializerTraits<uint16_t> : public DataSerializerTraitsIntegral<uint16_t>
+template<> struct DataSerializerTraits_t<uint16_t> : public DataSerializerTraitsIntegral<uint16_t>
 {
 };
 
-template<> struct DataSerializerTraits<int16_t> : public DataSerializerTraitsIntegral<int16_t>
+template<> struct DataSerializerTraits_t<int16_t> : public DataSerializerTraitsIntegral<int16_t>
 {
 };
 
-template<> struct DataSerializerTraits<uint32_t> : public DataSerializerTraitsIntegral<uint32_t>
+template<> struct DataSerializerTraits_t<uint32_t> : public DataSerializerTraitsIntegral<uint32_t>
 {
 };
 
-template<> struct DataSerializerTraits<int32_t> : public DataSerializerTraitsIntegral<int32_t>
+template<> struct DataSerializerTraits_t<int32_t> : public DataSerializerTraitsIntegral<int32_t>
 {
 };
 
-template<> struct DataSerializerTraits<uint64_t> : public DataSerializerTraitsIntegral<uint64_t>
+template<> struct DataSerializerTraits_t<uint64_t> : public DataSerializerTraitsIntegral<uint64_t>
 {
 };
 
-template<> struct DataSerializerTraits<int64_t> : public DataSerializerTraitsIntegral<int64_t>
+template<> struct DataSerializerTraits_t<int64_t> : public DataSerializerTraitsIntegral<int64_t>
 {
 };
 
-template<> struct DataSerializerTraits<std::string>
+template<> struct DataSerializerTraits_t<std::string>
 {
     static void encode(OpenRCT2::IStream* stream, const std::string& str)
     {
@@ -137,7 +161,7 @@ template<> struct DataSerializerTraits<std::string>
     }
 };
 
-template<> struct DataSerializerTraits<NetworkPlayerId_t>
+template<> struct DataSerializerTraits_t<NetworkPlayerId_t>
 {
     static void encode(OpenRCT2::IStream* stream, const NetworkPlayerId_t& val)
     {
@@ -172,7 +196,7 @@ template<> struct DataSerializerTraits<NetworkPlayerId_t>
     }
 };
 
-template<> struct DataSerializerTraits<NetworkRideId_t>
+template<> struct DataSerializerTraits_t<NetworkRideId_t>
 {
     static void encode(OpenRCT2::IStream* stream, const NetworkRideId_t& val)
     {
@@ -205,7 +229,7 @@ template<> struct DataSerializerTraits<NetworkRideId_t>
     }
 };
 
-template<typename T> struct DataSerializerTraits<DataSerialiserTag<T>>
+template<typename T> struct DataSerializerTraits_t<DataSerialiserTag<T>>
 {
     static void encode(OpenRCT2::IStream* stream, const DataSerialiserTag<T>& tag)
     {
@@ -230,7 +254,7 @@ template<typename T> struct DataSerializerTraits<DataSerialiserTag<T>>
     }
 };
 
-template<> struct DataSerializerTraits<OpenRCT2::MemoryStream>
+template<> struct DataSerializerTraits_t<OpenRCT2::MemoryStream>
 {
     static void encode(OpenRCT2::IStream* stream, const OpenRCT2::MemoryStream& val)
     {
@@ -298,23 +322,23 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraitsPODArray
     }
 };
 
-template<size_t _Size> struct DataSerializerTraits<uint8_t[_Size]> : public DataSerializerTraitsPODArray<uint8_t, _Size>
+template<size_t _Size> struct DataSerializerTraits_t<uint8_t[_Size]> : public DataSerializerTraitsPODArray<uint8_t, _Size>
 {
 };
 
-template<size_t _Size> struct DataSerializerTraits<uint16_t[_Size]> : public DataSerializerTraitsPODArray<uint16_t, _Size>
+template<size_t _Size> struct DataSerializerTraits_t<uint16_t[_Size]> : public DataSerializerTraitsPODArray<uint16_t, _Size>
 {
 };
 
-template<size_t _Size> struct DataSerializerTraits<uint32_t[_Size]> : public DataSerializerTraitsPODArray<uint32_t, _Size>
+template<size_t _Size> struct DataSerializerTraits_t<uint32_t[_Size]> : public DataSerializerTraitsPODArray<uint32_t, _Size>
 {
 };
 
-template<size_t _Size> struct DataSerializerTraits<uint64_t[_Size]> : public DataSerializerTraitsPODArray<uint64_t, _Size>
+template<size_t _Size> struct DataSerializerTraits_t<uint64_t[_Size]> : public DataSerializerTraitsPODArray<uint64_t, _Size>
 {
 };
 
-template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty, _Size>>
+template<typename _Ty, size_t _Size> struct DataSerializerTraits_t<std::array<_Ty, _Size>>
 {
     static void encode(OpenRCT2::IStream* stream, const std::array<_Ty, _Size>& val)
     {
@@ -356,7 +380,7 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraits<std::array<_Ty,
     }
 };
 
-template<typename _Ty> struct DataSerializerTraits<std::vector<_Ty>>
+template<typename _Ty> struct DataSerializerTraits_t<std::vector<_Ty>>
 {
     static void encode(OpenRCT2::IStream* stream, const std::vector<_Ty>& val)
     {
@@ -397,7 +421,7 @@ template<typename _Ty> struct DataSerializerTraits<std::vector<_Ty>>
     }
 };
 
-template<> struct DataSerializerTraits<MapRange>
+template<> struct DataSerializerTraits_t<MapRange>
 {
     static void encode(OpenRCT2::IStream* stream, const MapRange& v)
     {
@@ -425,7 +449,7 @@ template<> struct DataSerializerTraits<MapRange>
     }
 };
 
-template<> struct DataSerializerTraits<TileElement>
+template<> struct DataSerializerTraits_t<TileElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TileElement& tileElement)
     {
@@ -467,7 +491,7 @@ template<> struct DataSerializerTraits<TileElement>
     }
 };
 
-template<> struct DataSerializerTraits<CoordsXY>
+template<> struct DataSerializerTraits_t<CoordsXY>
 {
     static void encode(OpenRCT2::IStream* stream, const CoordsXY& coords)
     {
@@ -488,7 +512,7 @@ template<> struct DataSerializerTraits<CoordsXY>
     }
 };
 
-template<> struct DataSerializerTraits<CoordsXYZ>
+template<> struct DataSerializerTraits_t<CoordsXYZ>
 {
     static void encode(OpenRCT2::IStream* stream, const CoordsXYZ& coord)
     {
@@ -513,7 +537,7 @@ template<> struct DataSerializerTraits<CoordsXYZ>
     }
 };
 
-template<> struct DataSerializerTraits<CoordsXYZD>
+template<> struct DataSerializerTraits_t<CoordsXYZD>
 {
     static void encode(OpenRCT2::IStream* stream, const CoordsXYZD& coord)
     {
@@ -541,7 +565,7 @@ template<> struct DataSerializerTraits<CoordsXYZD>
     }
 };
 
-template<> struct DataSerializerTraits<NetworkCheatType_t>
+template<> struct DataSerializerTraits_t<NetworkCheatType_t>
 {
     static void encode(OpenRCT2::IStream* stream, const NetworkCheatType_t& val)
     {
@@ -561,7 +585,7 @@ template<> struct DataSerializerTraits<NetworkCheatType_t>
     }
 };
 
-template<> struct DataSerializerTraits<rct_object_entry>
+template<> struct DataSerializerTraits_t<rct_object_entry>
 {
     static void encode(OpenRCT2::IStream* stream, const rct_object_entry& val)
     {
@@ -583,7 +607,7 @@ template<> struct DataSerializerTraits<rct_object_entry>
     }
 };
 
-template<> struct DataSerializerTraits<TrackDesignTrackElement>
+template<> struct DataSerializerTraits_t<TrackDesignTrackElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignTrackElement& val)
     {
@@ -603,7 +627,7 @@ template<> struct DataSerializerTraits<TrackDesignTrackElement>
     }
 };
 
-template<> struct DataSerializerTraits<TrackDesignMazeElement>
+template<> struct DataSerializerTraits_t<TrackDesignMazeElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignMazeElement& val)
     {
@@ -624,7 +648,7 @@ template<> struct DataSerializerTraits<TrackDesignMazeElement>
     }
 };
 
-template<> struct DataSerializerTraits<TrackDesignEntranceElement>
+template<> struct DataSerializerTraits_t<TrackDesignEntranceElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignEntranceElement& val)
     {
@@ -652,7 +676,7 @@ template<> struct DataSerializerTraits<TrackDesignEntranceElement>
     }
 };
 
-template<> struct DataSerializerTraits<TrackDesignSceneryElement>
+template<> struct DataSerializerTraits_t<TrackDesignSceneryElement>
 {
     static void encode(OpenRCT2::IStream* stream, const TrackDesignSceneryElement& val)
     {
@@ -687,7 +711,7 @@ template<> struct DataSerializerTraits<TrackDesignSceneryElement>
     }
 };
 
-template<> struct DataSerializerTraits<rct_vehicle_colour>
+template<> struct DataSerializerTraits_t<rct_vehicle_colour>
 {
     static void encode(OpenRCT2::IStream* stream, const rct_vehicle_colour& val)
     {
