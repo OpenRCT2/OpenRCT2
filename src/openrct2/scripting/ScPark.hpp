@@ -280,11 +280,20 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
+        money16 entranceFee_get() const
+        {
+            return gParkEntranceFee;
+        }
+        void entranceFee_set(money16 value)
+        {
+            ThrowIfGameStateNotMutable();
+            gParkEntranceFee = value;
+        }
+
         std::string name_get() const
         {
             return GetContext()->GetGameState()->GetPark().Name;
         }
-
         void name_set(std::string value)
         {
             ThrowIfGameStateNotMutable();
@@ -383,6 +392,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPark::rating_get, &ScPark::rating_set, "rating");
             dukglue_register_property(ctx, &ScPark::bankLoan_get, &ScPark::bankLoan_set, "bankLoan");
             dukglue_register_property(ctx, &ScPark::maxBankLoan_get, &ScPark::maxBankLoan_set, "maxBankLoan");
+            dukglue_register_property(ctx, &ScPark::entranceFee_get, &ScPark::entranceFee_set, "entranceFee");
             dukglue_register_property(ctx, &ScPark::name_get, &ScPark::name_set, "name");
             dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
             dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
