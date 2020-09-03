@@ -1,4 +1,4 @@
-Last updated:    2020-08-15
+Last updated:    2020-09-03
 Release version: 0.3.0
 ------------------------------------------------------------------------
 
@@ -55,7 +55,7 @@ following information in your bug report:
  * Bug details, including instructions how to reproduce it
  * Platform (Windows, Linux, FreeBSD, ...) and compiler (including version) if
    you compiled OpenRCT2 yourself.
- * The processor architecture of your OS (32 bits Windows, 64 bits Windows,
+ * The processor architecture of your OS (x86 Windows, x86-64 Windows,
    Android on an ARM, Linux on a PowerPC, ...)
  * The language and culture your operating system is using.
  * Attach a saved game *and* a screenshot if possible
@@ -66,8 +66,8 @@ following information in your bug report:
 
 3.0) Supported platforms
 ---- -------------------
-OpenRCT2 is currently supported on Windows 7 and above, many distributions of
-Linux, macOS 10.9 or higher, Android, FreeBSD and OpenBSD. OpenRCT2 will only work on
+OpenRCT2 is currently supported on Windows Vista and above, many distributions of
+Linux, macOS 10.13 or higher, Android, FreeBSD and OpenBSD. OpenRCT2 will only work on
 little-endian architectures.
 Further instructions can be found on GitHub.
 
