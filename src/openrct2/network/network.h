@@ -54,7 +54,7 @@ void network_update();
 void network_process_pending();
 void network_flush();
 
-int32_t network_get_authstatus();
+NetworkAuth network_get_authstatus();
 uint32_t network_get_server_tick();
 uint8_t network_get_current_player_id();
 int32_t network_get_num_players();

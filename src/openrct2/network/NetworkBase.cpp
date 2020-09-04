@@ -414,7 +414,7 @@ int32_t NetworkBase::GetStatus()
     return status;
 }
 
-int32_t NetworkBase::GetAuthStatus()
+NetworkAuth NetworkBase::GetAuthStatus()
 {
     if (GetMode() == NETWORK_MODE_CLIENT)
     {
@@ -422,9 +422,9 @@ int32_t NetworkBase::GetAuthStatus()
     }
     else if (GetMode() == NETWORK_MODE_SERVER)
     {
-        return NETWORK_AUTH_OK;
+        return NetworkAuth::Ok;
     }
-    return NETWORK_AUTH_NONE;
+    return NetworkAuth::None;
 }
 
 uint32_t NetworkBase::GetServerTick()
@@ -610,7 +610,7 @@ void NetworkBase::UpdateClient()
             if (!ProcessConnection(*_serverConnection))
             {
                 // Do not show disconnect message window when password window closed/canceled
-                if (_serverConnection->AuthStatus == NETWORK_AUTH_REQUIREPASSWORD)
+                if (_serverConnection->AuthStatus == NetworkAuth::RequirePassword)
                 {
                     context_force_close_window_by_class(WC_NETWORK_STATUS);
                 }
@@ -1211,7 +1211,7 @@ void NetworkBase::Client_Send_TOKEN()
 {
     log_verbose("requesting token");
     NetworkPacket packet(NetworkCommand::Token);
-    _serverConnection->AuthStatus = NETWORK_AUTH_REQUESTED;
+    _serverConnection->AuthStatus = NetworkAuth::Requested;
     _serverConnection->QueuePacket(std::move(packet));
 }
 
@@ -1226,7 +1226,7 @@ void NetworkBase::Client_Send_AUTH(
     assert(signature.size() <= static_cast<size_t>(UINT32_MAX));
     packet << static_cast<uint32_t>(signature.size());
     packet.Write(signature.data(), signature.size());
-    _serverConnection->AuthStatus = NETWORK_AUTH_REQUESTED;
+    _serverConnection->AuthStatus = NetworkAuth::Requested;
     _serverConnection->QueuePacket(std::move(packet));
 }
 
@@ -1355,12 +1355,12 @@ void NetworkBase::Server_Send_AUTH(NetworkConnection& connection)
     }
     NetworkPacket packet(NetworkCommand::Auth);
     packet << static_cast<uint32_t>(connection.AuthStatus) << new_playerid;
-    if (connection.AuthStatus == NETWORK_AUTH_BADVERSION)
+    if (connection.AuthStatus == NetworkAuth::BadVersion)
     {
         packet.WriteString(network_get_version().c_str());
     }
     connection.QueuePacket(std::move(packet));
-    if (connection.AuthStatus != NETWORK_AUTH_OK && connection.AuthStatus != NETWORK_AUTH_REQUIREPASSWORD)
+    if (connection.AuthStatus != NetworkAuth::Ok && connection.AuthStatus != NetworkAuth::RequirePassword)
     {
         connection.Socket->Disconnect();
     }
@@ -1717,7 +1717,7 @@ void NetworkBase::ProcessPacket(NetworkConnection& connection, NetworkPacket& pa
     if (it != handlerList.end())
     {
         auto commandHandler = it->second;
-        if (connection.AuthStatus == NETWORK_AUTH_OK || !packet.CommandRequiresAuth())
+        if (connection.AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
         {
             (this->*commandHandler)(connection, packet);
         }
@@ -2222,39 +2222,39 @@ void NetworkBase::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacke
 {
     uint32_t auth_status;
     packet >> auth_status >> const_cast<uint8_t&>(player_id);
-    connection.AuthStatus = static_cast<NETWORK_AUTH>(auth_status);
+    connection.AuthStatus = static_cast<NetworkAuth>(auth_status);
     switch (connection.AuthStatus)
     {
-        case NETWORK_AUTH_OK:
+        case NetworkAuth::Ok:
             Client_Send_GAMEINFO();
             break;
-        case NETWORK_AUTH_BADNAME:
+        case NetworkAuth::BadName:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
             connection.Socket->Disconnect();
             break;
-        case NETWORK_AUTH_BADVERSION:
+        case NetworkAuth::BadVersion:
         {
             const char* version = packet.ReadString();
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &version);
             connection.Socket->Disconnect();
             break;
         }
-        case NETWORK_AUTH_BADPASSWORD:
+        case NetworkAuth::BadPassword:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
             connection.Socket->Disconnect();
             break;
-        case NETWORK_AUTH_VERIFICATIONFAILURE:
+        case NetworkAuth::VerificationFailure:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
             connection.Socket->Disconnect();
             break;
-        case NETWORK_AUTH_FULL:
+        case NetworkAuth::Full:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
             connection.Socket->Disconnect();
             break;
-        case NETWORK_AUTH_REQUIREPASSWORD:
+        case NetworkAuth::RequirePassword:
             context_open_window_view(WV_NETWORK_PASSWORD);
             break;
-        case NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED:
+        case NetworkAuth::UnknownKeyDisallowed:
             connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
             connection.Socket->Disconnect();
             break;
@@ -2507,7 +2507,7 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
 
 void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet)
 {
-    if (connection.AuthStatus != NETWORK_AUTH_OK)
+    if (connection.AuthStatus != NetworkAuth::Ok)
     {
         const char* gameversion = packet.ReadString();
         const char* name = packet.ReadString();
@@ -2517,7 +2517,7 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
         packet >> sigsize;
         if (pubkey == nullptr)
         {
-            connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+            connection.AuthStatus = NetworkAuth::VerificationFailure;
         }
         else
         {
@@ -2548,70 +2548,70 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
                     if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr)
                     {
                         log_verbose("Hash %s, not known", hash.c_str());
-                        connection.AuthStatus = NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED;
+                        connection.AuthStatus = NetworkAuth::UnknownKeyDisallowed;
                     }
                     else
                     {
-                        connection.AuthStatus = NETWORK_AUTH_VERIFIED;
+                        connection.AuthStatus = NetworkAuth::Verified;
                     }
                 }
                 else
                 {
-                    connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+                    connection.AuthStatus = NetworkAuth::VerificationFailure;
                     log_verbose("Signature verification failed!");
                 }
             }
             catch (const std::exception&)
             {
-                connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+                connection.AuthStatus = NetworkAuth::VerificationFailure;
                 log_verbose("Signature verification failed, invalid data!");
             }
         }
 
         bool passwordless = false;
-        if (connection.AuthStatus == NETWORK_AUTH_VERIFIED)
+        if (connection.AuthStatus == NetworkAuth::Verified)
         {
             const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
             passwordless = group->CanPerformCommand(MISC_COMMAND_PASSWORDLESS_LOGIN);
         }
         if (!gameversion || network_get_version() != gameversion)
         {
-            connection.AuthStatus = NETWORK_AUTH_BADVERSION;
+            connection.AuthStatus = NetworkAuth::BadVersion;
         }
         else if (!name)
         {
-            connection.AuthStatus = NETWORK_AUTH_BADNAME;
+            connection.AuthStatus = NetworkAuth::BadName;
         }
         else if (!passwordless)
         {
             if ((!password || strlen(password) == 0) && !_password.empty())
             {
-                connection.AuthStatus = NETWORK_AUTH_REQUIREPASSWORD;
+                connection.AuthStatus = NetworkAuth::RequirePassword;
             }
             else if (password && _password != password)
             {
-                connection.AuthStatus = NETWORK_AUTH_BADPASSWORD;
+                connection.AuthStatus = NetworkAuth::BadPassword;
             }
         }
 
         if (static_cast<size_t>(gConfigNetwork.maxplayers) <= player_list.size())
         {
-            connection.AuthStatus = NETWORK_AUTH_FULL;
+            connection.AuthStatus = NetworkAuth::Full;
         }
-        else if (connection.AuthStatus == NETWORK_AUTH_VERIFIED)
+        else if (connection.AuthStatus == NetworkAuth::Verified)
         {
             const std::string hash = connection.Key.PublicKeyHash();
             if (ProcessPlayerAuthenticatePluginHooks(connection, name, hash))
             {
-                connection.AuthStatus = NETWORK_AUTH_OK;
+                connection.AuthStatus = NetworkAuth::Ok;
                 Server_Client_Joined(name, hash, connection);
             }
             else
             {
-                connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
+                connection.AuthStatus = NetworkAuth::VerificationFailure;
             }
         }
-        else if (connection.AuthStatus != NETWORK_AUTH_REQUIREPASSWORD)
+        else if (connection.AuthStatus != NetworkAuth::RequirePassword)
         {
             log_error("Unknown failure (%d) while authenticating client", connection.AuthStatus);
         }
@@ -3283,7 +3283,7 @@ void network_send_tick()
     gNetwork.Server_Send_TICK();
 }
 
-int32_t network_get_authstatus()
+NetworkAuth network_get_authstatus()
 {
     return gNetwork.GetAuthStatus();
 }
@@ -3990,9 +3990,9 @@ int32_t network_get_status()
 {
     return NETWORK_STATUS_NONE;
 }
-int32_t network_get_authstatus()
+NetworkAuth network_get_authstatus()
 {
-    return NETWORK_AUTH_NONE;
+    return NetworkAuth::None;
 }
 uint32_t network_get_server_tick()
 {

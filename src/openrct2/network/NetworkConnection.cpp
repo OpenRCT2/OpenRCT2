@@ -131,7 +131,7 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
 
 void NetworkConnection::QueuePacket(NetworkPacket&& packet, bool front)
 {
-    if (AuthStatus == NETWORK_AUTH_OK || !packet.CommandRequiresAuth())
+    if (AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
     {
         packet.Header.Size = static_cast<uint16_t>(packet.Data.size());
         if (front)
