@@ -81,7 +81,7 @@ void ApplyTransparencyShader::SetTextures(
     OpenGLAPI::SetTexture(1, GL_TEXTURE_2D, opaqueDepth);
     OpenGLAPI::SetTexture(2, GL_TEXTURE_2D, transparentTex);
     OpenGLAPI::SetTexture(3, GL_TEXTURE_2D, transparentDepth);
-    OpenGLAPI::SetTexture(4, GL_TEXTURE_RECTANGLE, paletteTex);
+    OpenGLAPI::SetTexture(4, GL_TEXTURE_2D, paletteTex);
 }
 
 void ApplyTransparencyShader::Draw()

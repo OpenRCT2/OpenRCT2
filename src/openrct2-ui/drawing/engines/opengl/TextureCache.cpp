@@ -156,9 +156,9 @@ void TextureCache::CreateTextures()
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
         glGenTextures(1, &_paletteTexture);
-        glBindTexture(GL_TEXTURE_RECTANGLE, _paletteTexture);
-        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glBindTexture(GL_TEXTURE_2D, _paletteTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         GeneratePaletteTexture();
 
@@ -193,8 +193,8 @@ void TextureCache::GeneratePaletteTexture()
         }
     }
 
-    glBindTexture(GL_TEXTURE_RECTANGLE, _paletteTexture);
-    glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_R8UI, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
+    glBindTexture(GL_TEXTURE_2D, _paletteTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8UI, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
     DeleteDPI(dpi);
 }
 
