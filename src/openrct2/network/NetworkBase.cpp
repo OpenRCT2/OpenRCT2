@@ -993,7 +993,7 @@ void NetworkBase::SetupDefaultGroups()
     // Spectator group
     auto spectator = std::make_unique<NetworkGroup>();
     spectator->SetName("Spectator");
-    spectator->ToggleActionPermission(NETWORK_PERMISSION_CHAT);
+    spectator->ToggleActionPermission(NetworkPermission::Chat);
     spectator->Id = 1;
     group_list.push_back(std::move(spectator));
 
@@ -1001,13 +1001,13 @@ void NetworkBase::SetupDefaultGroups()
     auto user = std::make_unique<NetworkGroup>();
     user->SetName("User");
     user->ActionsAllowed.fill(0xFF);
-    user->ToggleActionPermission(NETWORK_PERMISSION_KICK_PLAYER);
-    user->ToggleActionPermission(NETWORK_PERMISSION_MODIFY_GROUPS);
-    user->ToggleActionPermission(NETWORK_PERMISSION_SET_PLAYER_GROUP);
-    user->ToggleActionPermission(NETWORK_PERMISSION_CHEAT);
-    user->ToggleActionPermission(NETWORK_PERMISSION_PASSWORDLESS_LOGIN);
-    user->ToggleActionPermission(NETWORK_PERMISSION_MODIFY_TILE);
-    user->ToggleActionPermission(NETWORK_PERMISSION_EDIT_SCENARIO_OPTIONS);
+    user->ToggleActionPermission(NetworkPermission::KickPlayer);
+    user->ToggleActionPermission(NetworkPermission::ModifyGroups);
+    user->ToggleActionPermission(NetworkPermission::SetPlayerGroup);
+    user->ToggleActionPermission(NetworkPermission::Cheat);
+    user->ToggleActionPermission(NetworkPermission::PasswordlessLogin);
+    user->ToggleActionPermission(NetworkPermission::ModifyTile);
+    user->ToggleActionPermission(NetworkPermission::EditScenarioOptions);
     user->Id = 2;
     group_list.push_back(std::move(user));
 
@@ -3380,7 +3380,7 @@ void network_set_player_last_action(uint32_t index, int32_t command)
 {
     Guard::IndexInRange(index, gNetwork.player_list);
 
-    gNetwork.player_list[index]->LastAction = NetworkActions::FindCommand(command);
+    gNetwork.player_list[index]->LastAction = static_cast<int32_t>(NetworkActions::FindCommand(command));
     gNetwork.player_list[index]->LastActionTime = platform_get_ticks();
 }
 
@@ -3596,10 +3596,11 @@ GameActionResult::Ptr network_modify_groups(
             }
             NetworkGroup* mygroup = nullptr;
             NetworkPlayer* player = gNetwork.GetPlayerByID(actionPlayerId);
+            auto networkPermission = static_cast<NetworkPermission>(permissionIndex);
             if (player != nullptr && permissionState == PermissionState::Toggle)
             {
                 mygroup = gNetwork.GetGroupByID(player->Group);
-                if (mygroup == nullptr || !mygroup->CanPerformAction(permissionIndex))
+                if (mygroup == nullptr || !mygroup->CanPerformAction(networkPermission))
                 {
                     return std::make_unique<GameActionResult>(
                         GA_ERROR::DISALLOWED, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF);
@@ -3626,7 +3627,7 @@ GameActionResult::Ptr network_modify_groups(
                     }
                     else
                     {
-                        group->ToggleActionPermission(permissionIndex);
+                        group->ToggleActionPermission(networkPermission);
                     }
                 }
             }
@@ -3731,7 +3732,7 @@ rct_string_id network_get_action_name_string_id(uint32_t index)
     }
 }
 
-int32_t network_can_perform_action(uint32_t groupindex, uint32_t index)
+int32_t network_can_perform_action(uint32_t groupindex, NetworkPermission index)
 {
     Guard::IndexInRange(groupindex, gNetwork.group_list);
 
@@ -4146,7 +4147,7 @@ rct_string_id network_get_action_name_string_id(uint32_t index)
 {
     return -1;
 }
-int32_t network_can_perform_action(uint32_t groupindex, uint32_t index)
+int32_t network_can_perform_action(uint32_t groupindex, NetworkPermission index)
 {
     return 0;
 }
