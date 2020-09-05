@@ -120,6 +120,8 @@ add_test(NAME sawyercoding COMMAND test_sawyercoding)
 set(LANGUAGEPACK_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/LanguagePackTest.cpp"
         "${ROOT_DIR}/src/openrct2/localisation/LanguagePack.cpp"
+        "${ROOT_DIR}/src/openrct2/localisation/RTL.FriBidi.cpp"
+        "${ROOT_DIR}/src/openrct2/localisation/RTL.ICU.cpp"
         )
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
