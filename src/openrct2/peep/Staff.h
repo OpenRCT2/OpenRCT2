@@ -78,6 +78,6 @@ bool staff_set_colour(StaffType staffType, colour_t value);
 uint32_t staff_get_available_entertainer_costumes();
 int32_t staff_get_available_entertainer_costume_list(uint8_t* costumeList);
 
-PeepSpriteType map_costume_to_sprite(EntertainerCostume entertainerType);
+PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType);
 
 #endif

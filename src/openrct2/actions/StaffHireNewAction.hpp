@@ -204,7 +204,7 @@ private:
             PeepSpriteType spriteType = spriteTypes[_staffType];
             if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
             {
-                spriteType = map_costume_to_sprite(_entertainerType);
+                spriteType = EntertainerCostumeToSprite(_entertainerType);
             }
             newPeep->Name = nullptr;
             newPeep->SpriteType = spriteType;

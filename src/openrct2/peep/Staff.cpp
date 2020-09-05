@@ -1100,7 +1100,7 @@ void Staff::SetCostume(uint8_t value)
     SpriteType = static_cast<PeepSpriteType>(value + PEEP_SPRITE_TYPE_ENTERTAINER_PANDA);
 }
 
-PeepSpriteType map_costume_to_sprite(EntertainerCostume entertainerType)
+PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
 {
     uint8_t value = static_cast<uint8_t>(entertainerType);
     PeepSpriteType newSpriteType = static_cast<PeepSpriteType>(value + PEEP_SPRITE_TYPE_ENTERTAINER_PANDA);
