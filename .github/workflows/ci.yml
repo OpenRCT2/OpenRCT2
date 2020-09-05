@@ -29,6 +29,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Run clang-format
+        shell: sh
         run: scripts/check-code-formatting
   windows:
     name: Windows
