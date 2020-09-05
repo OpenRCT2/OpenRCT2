@@ -1523,7 +1523,7 @@ private:
             auto srcThought = &src->thoughts[i];
             auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
-            dstThought->item = srcThought->type;
+            dstThought->item = srcThought->item;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
