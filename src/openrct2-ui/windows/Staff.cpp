@@ -282,7 +282,7 @@ static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
 };
 // clang-format on
 
-static uint8_t _availableCostumes[ENTERTAINER_COSTUME_COUNT];
+static uint8_t _availableCostumes[static_cast<uint8_t>(EntertainerCostume::Count)];
 
 enum class PatrolAreaValue
 {

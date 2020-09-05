@@ -115,7 +115,7 @@ void SceneryGroupObject::ReadJson(IReadObjectContext* context, const json_t* roo
     auto properties = json_object_get(root, "properties");
     _legacyType.priority = json_integer_value(json_object_get(properties, "priority"));
 
-    // Entertainer cosumes
+    // Entertainer costumes
     auto jCostumes = json_object_get(properties, "entertainerCostumes");
     if (jCostumes != nullptr)
     {
@@ -150,28 +150,28 @@ uint32_t SceneryGroupObject::ReadJsonEntertainerCostumes(const json_t* jCostumes
 uint32_t SceneryGroupObject::ParseEntertainerCostume(const std::string& s)
 {
     if (s == "panda")
-        return ENTERTAINER_COSTUME_PANDA;
+        return static_cast<uint32_t>(EntertainerCostume::Panda);
     if (s == "tiger")
-        return ENTERTAINER_COSTUME_TIGER;
+        return static_cast<uint32_t>(EntertainerCostume::Tiger);
     if (s == "elephant")
-        return ENTERTAINER_COSTUME_ELEPHANT;
+        return static_cast<uint32_t>(EntertainerCostume::Elephant);
     if (s == "roman")
-        return ENTERTAINER_COSTUME_ROMAN;
+        return static_cast<uint32_t>(EntertainerCostume::Roman);
     if (s == "gorilla")
-        return ENTERTAINER_COSTUME_GORILLA;
+        return static_cast<uint32_t>(EntertainerCostume::Gorilla);
     if (s == "snowman")
-        return ENTERTAINER_COSTUME_SNOWMAN;
+        return static_cast<uint32_t>(EntertainerCostume::Snowman);
     if (s == "knight")
-        return ENTERTAINER_COSTUME_KNIGHT;
+        return static_cast<uint32_t>(EntertainerCostume::Knight);
     if (s == "astronaut")
-        return ENTERTAINER_COSTUME_ASTRONAUT;
+        return static_cast<uint32_t>(EntertainerCostume::Astronaut);
     if (s == "bandit")
-        return ENTERTAINER_COSTUME_BANDIT;
+        return static_cast<uint32_t>(EntertainerCostume::Bandit);
     if (s == "sheriff")
-        return ENTERTAINER_COSTUME_SHERIFF;
+        return static_cast<uint32_t>(EntertainerCostume::Sheriff);
     if (s == "pirate")
-        return ENTERTAINER_COSTUME_PIRATE;
-    return ENTERTAINER_COSTUME_PANDA;
+        return static_cast<uint32_t>(EntertainerCostume::Pirate);
+    return static_cast<uint32_t>(EntertainerCostume::Panda);
 }
 
 std::vector<rct_object_entry> SceneryGroupObject::ReadJsonEntries(const json_t* jEntries)

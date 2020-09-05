@@ -103,7 +103,7 @@ void staff_reset_modes()
 /**
  * Hires a new staff member of the given type.
  */
-bool staff_hire_new_member(StaffType staffType, ENTERTAINER_COSTUME entertainerType)
+bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerType)
 {
     bool autoPosition = gConfigGeneral.auto_staff_placement;
     if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
@@ -1153,8 +1153,8 @@ uint32_t staff_get_available_entertainer_costumes()
     entertainerCostumes >>= 4;
 
     // Fix #6593: force enable the default costumes, which normally get enabled through the default scenery groups.
-    entertainerCostumes |= (1 << ENTERTAINER_COSTUME_PANDA) | (1 << ENTERTAINER_COSTUME_TIGER)
-        | (1 << ENTERTAINER_COSTUME_ELEPHANT);
+    entertainerCostumes |= (1 << static_cast<uint8_t>(EntertainerCostume::Panda))
+        | (1 << static_cast<uint8_t>(EntertainerCostume::Tiger)) | (1 << static_cast<uint8_t>(EntertainerCostume::Elephant));
 
     return entertainerCostumes;
 }
@@ -1163,7 +1163,7 @@ int32_t staff_get_available_entertainer_costume_list(uint8_t* costumeList)
 {
     uint32_t availableCostumes = staff_get_available_entertainer_costumes();
     int32_t numCostumes = 0;
-    for (uint8_t i = 0; i < ENTERTAINER_COSTUME_COUNT; i++)
+    for (uint8_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
     {
         if (availableCostumes & (1 << i))
         {
