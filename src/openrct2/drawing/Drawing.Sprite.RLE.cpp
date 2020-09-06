@@ -92,7 +92,6 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
     auto srcY = args.SrcY;
     auto width = args.Width;
     auto height = args.Height;
-    auto& paletteMap = args.PalMap;
     auto zoom = 1 << TZoom;
     auto dstLineWidth = (static_cast<size_t>(dpi->width) >> TZoom) + dpi->pitch;
 
@@ -166,6 +165,7 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
             }
             else
             {
+                auto& paletteMap = args.PalMap;
                 while (numPixels > 0)
                 {
                     BlitPixel<TBlendOp>(src, dst, paletteMap);
