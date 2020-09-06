@@ -1473,12 +1473,12 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     for (int32_t i = 0; i < numCostumes; i++)
     {
         EntertainerCostume costume = _availableCostumes[i];
-        uint8_t costume_value = static_cast<uint8_t>(costume);
-        if (peep->SpriteType == PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + costume_value)
+        uint8_t costumeValue = static_cast<uint8_t>(costume);
+        if (peep->SpriteType == PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + costumeValue)
         {
             checkedIndex = i;
         }
-        gDropdownItemsArgs[i] = StaffCostumeNames[costume_value];
+        gDropdownItemsArgs[i] = StaffCostumeNames[costumeValue];
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
     }
 
