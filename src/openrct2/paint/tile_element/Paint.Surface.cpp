@@ -1015,7 +1015,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         descriptor.corner_heights.left = baseHeight + ch.left;
     }
 
-    if ((session->ViewFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0))
+    if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_LAND_HEIGHTS))
     {
         const int16_t x = session->MapPosition.x;
         const int16_t y = session->MapPosition.y;

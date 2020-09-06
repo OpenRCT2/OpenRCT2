@@ -2143,8 +2143,6 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
         return;
     }
 
-    rct_drawpixelinfo* dpi = &session->DPI;
-
     if ((!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex)
         && !(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
@@ -2152,7 +2150,7 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
         int32_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
         int32_t trackColourScheme = tileElement->AsTrack()->GetColourScheme();
 
-        if ((session->ViewFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level <= 0)
+        if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_TRACK_HEIGHTS))
         {
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
             if (TrackHeightMarkerPositions[trackType] & (1 << trackSequence))
