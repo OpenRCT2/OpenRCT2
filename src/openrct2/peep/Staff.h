@@ -76,7 +76,7 @@ void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords);
 colour_t staff_get_colour(StaffType staffType);
 bool staff_set_colour(StaffType staffType, colour_t value);
 uint32_t staff_get_available_entertainer_costumes();
-int32_t staff_get_available_entertainer_costume_list(uint8_t* costumeList);
+int32_t staff_get_available_entertainer_costume_list(EntertainerCostume* costumeList);
 
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType);
 

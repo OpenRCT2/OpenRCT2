@@ -505,7 +505,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                     return 1;
                 }
 
-                uint8_t costume = int_val[1];
+                EntertainerCostume costume = static_cast<EntertainerCostume>(int_val[1]);
                 auto staffSetCostumeAction = StaffSetCostumeAction(int_val[0], costume);
                 GameActions::Execute(&staffSetCostumeAction);
             }

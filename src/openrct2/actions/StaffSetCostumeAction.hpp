@@ -42,13 +42,13 @@ DEFINE_GAME_ACTION(StaffSetCostumeAction, GAME_COMMAND_SET_STAFF_COSTUME, GameAc
 {
 private:
     uint16_t _spriteIndex;
-    uint8_t _costume;
+    EntertainerCostume _costume;
 
 public:
     StaffSetCostumeAction()
     {
     }
-    StaffSetCostumeAction(uint16_t spriteIndex, uint8_t costume)
+    StaffSetCostumeAction(uint16_t spriteIndex, EntertainerCostume costume)
         : _spriteIndex(spriteIndex)
         , _costume(costume)
     {
@@ -80,7 +80,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        auto spriteType = static_cast<PeepSpriteType>(_costume + 4);
+        auto spriteType = EntertainerCostumeToSprite(_costume);
         if (spriteType > std::size(peep_slow_walking_types))
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
@@ -98,7 +98,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        auto spriteType = static_cast<PeepSpriteType>(_costume + 4);
+        auto spriteType = EntertainerCostumeToSprite(_costume);
         staff->SpriteType = spriteType;
         staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
         if (peep_slow_walking_types[spriteType])

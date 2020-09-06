@@ -1166,7 +1166,7 @@ uint32_t staff_get_available_entertainer_costumes()
     return entertainerCostumes;
 }
 
-int32_t staff_get_available_entertainer_costume_list(uint8_t* costumeList)
+int32_t staff_get_available_entertainer_costume_list(EntertainerCostume* costumeList)
 {
     uint32_t availableCostumes = staff_get_available_entertainer_costumes();
     int32_t numCostumes = 0;
@@ -1174,7 +1174,7 @@ int32_t staff_get_available_entertainer_costume_list(uint8_t* costumeList)
     {
         if (availableCostumes & (1 << i))
         {
-            costumeList[numCostumes++] = i;
+            costumeList[numCostumes++] = static_cast<EntertainerCostume>(i);
         }
     }
     return numCostumes;
