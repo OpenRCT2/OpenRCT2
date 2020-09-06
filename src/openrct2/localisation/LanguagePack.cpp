@@ -12,12 +12,12 @@
 #include "../common.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
+#include "../core/RTL.h"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
 #include "../core/StringReader.hpp"
 #include "Language.h"
 #include "Localisation.h"
-#include "RTL.h"
 
 #include <algorithm>
 #include <string>

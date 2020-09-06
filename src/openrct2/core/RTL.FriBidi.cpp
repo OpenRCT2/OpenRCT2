@@ -24,7 +24,7 @@ static constexpr const uint16_t BufferLength = 1024;
 std::string FixRTL(std::string& input)
 {
     FriBidiChar utf32String[BufferLength] = { 0 };
-    FriBidiStrIndex len = input.length() + 1;
+    auto len = static_cast<FriBidiStrIndex>(input.length() + 1);
     fribidi_charset_to_unicode(FRIBIDI_CHAR_SET_UTF8, input.c_str(), len, utf32String);
 
     FriBidiStrIndex utf32len = 0;
