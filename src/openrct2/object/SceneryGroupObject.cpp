@@ -139,10 +139,8 @@ uint32_t SceneryGroupObject::ReadJsonEntertainerCostumes(const json_t* jCostumes
     for (const auto& szCostume : szCostumes)
     {
         auto entertainer = ParseEntertainerCostume(szCostume);
-
-        // For some reason the flags are +4 from the actual costume IDs
-        // See staff_get_available_entertainer_costumes
-        costumes |= 1 << (static_cast<uint8_t>(entertainer) + 4);
+        auto peepSprite  = EntertainerCostumeToSprite(entertainer);
+        costumes |= 1 << (static_cast<uint8_t>(peepSprite));
     }
     return costumes;
 }

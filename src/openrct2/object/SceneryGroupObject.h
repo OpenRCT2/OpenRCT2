@@ -9,13 +9,14 @@
 
 #pragma once
 
-#include "../peep/Staff.h"
 #include "../world/Scenery.h"
 #include "Object.h"
 
 #include <vector>
 
 struct ObjectRepositoryItem;
+
+enum class EntertainerCostume : uint8_t;
 
 class SceneryGroupObject final : public Object
 {

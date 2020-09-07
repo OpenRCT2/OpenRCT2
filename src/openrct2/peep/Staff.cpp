@@ -1097,7 +1097,8 @@ uint8_t Staff::GetCostume() const
 
 void Staff::SetCostume(uint8_t value)
 {
-    SpriteType = static_cast<PeepSpriteType>(value + PEEP_SPRITE_TYPE_ENTERTAINER_PANDA);
+    auto costume = static_cast<EntertainerCostume>(value);
+    SpriteType = EntertainerCostumeToSprite(costume);
 }
 
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
