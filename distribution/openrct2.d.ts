@@ -1424,6 +1424,21 @@ declare global {
         subject?: number;
     }
 
+    type ParkFlags =
+        "difficultGuestGeneration" |
+        "difficultParkRating" |
+        "forbidHighConstruction" |
+        "forbidLandscapeChanges" |
+        "forbidMarketingCampaigns" |
+        "forbidTreeRemoval" |
+        "freeParkEntry" |
+        "noMoney" |
+        "open" |
+        "preferLessIntenseRides" |
+        "preferMoreIntenseRides" |
+        "scenarioCompleteNameInput" |
+        "unlockAllPrices";
+
     interface Park {
         cash: number;
         rating: number;
@@ -1437,6 +1452,19 @@ declare global {
 
         name: string;
         messages: ParkMessage[];
+
+        /**
+         * Gets whether a given flag is set or not.
+         * @param key The flag to test.
+         */
+        getFlag(flag: ParkFlags): boolean;
+
+        /**
+         * Sets the given flag to the given value.
+         * @param key The flag to set.
+         * @param value Whether to set or clear the flag.
+         */
+        setFlag(flag: ParkFlags, value: boolean): void;
 
         postMessage(message: string): void;
         postMessage(message: ParkMessageDesc): void;
