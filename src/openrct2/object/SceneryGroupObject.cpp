@@ -139,7 +139,7 @@ uint32_t SceneryGroupObject::ReadJsonEntertainerCostumes(const json_t* jCostumes
     for (const auto& szCostume : szCostumes)
     {
         auto entertainer = ParseEntertainerCostume(szCostume);
-        auto peepSprite  = EntertainerCostumeToSprite(entertainer);
+        auto peepSprite = EntertainerCostumeToSprite(entertainer);
         costumes |= 1 << (static_cast<uint8_t>(peepSprite));
     }
     return costumes;
