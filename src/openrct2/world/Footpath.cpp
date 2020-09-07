@@ -2219,34 +2219,34 @@ void PathElement::SetAdditionStatus(uint8_t newStatus)
 
 uint8_t PathElement::GetEdges() const
 {
-    return Edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+    return EdgesAndCorners & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
 }
 
 void PathElement::SetEdges(uint8_t newEdges)
 {
-    Edges &= ~FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
-    Edges |= (newEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK);
+    EdgesAndCorners &= ~FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+    EdgesAndCorners |= (newEdges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK);
 }
 
 uint8_t PathElement::GetCorners() const
 {
-    return Edges >> 4;
+    return EdgesAndCorners >> 4;
 }
 
 void PathElement::SetCorners(uint8_t newCorners)
 {
-    Edges &= ~FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK;
-    Edges |= (newCorners << 4);
+    EdgesAndCorners &= ~FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK;
+    EdgesAndCorners |= (newCorners << 4);
 }
 
 uint8_t PathElement::GetEdgesAndCorners() const
 {
-    return Edges;
+    return EdgesAndCorners;
 }
 
 void PathElement::SetEdgesAndCorners(uint8_t newEdgesAndCorners)
 {
-    Edges = newEdgesAndCorners;
+    EdgesAndCorners = newEdgesAndCorners;
 }
 
 bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
