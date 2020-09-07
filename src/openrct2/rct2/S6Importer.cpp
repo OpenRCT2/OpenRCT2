@@ -919,7 +919,7 @@ public:
     void ImportResearchList()
     {
         bool invented = true;
-        for (size_t i = 0; i < sizeof(_s6.research_items); i++)
+        for (size_t i = 0; i < std::size(_s6.research_items); i++)
         {
             if (_s6.research_items[i].IsInventedEndMarker())
             {
