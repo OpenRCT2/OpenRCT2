@@ -919,23 +919,22 @@ public:
     void ImportResearchList()
     {
         bool invented = true;
-        for (size_t i = 0; i < std::size(_s6.research_items); i++)
+        for (const auto& researchItem : _s6.research_items)
         {
-            if (_s6.research_items[i].IsInventedEndMarker())
+            if (researchItem.IsInventedEndMarker())
             {
                 invented = false;
                 continue;
             }
-            else if (_s6.research_items[i].IsUninventedEndMarker() || _s6.research_items[i].IsRandomEndMarker())
+            else if (researchItem.IsUninventedEndMarker() || researchItem.IsRandomEndMarker())
             {
                 break;
             }
 
-            RCT12ResearchItem* ri = &_s6.research_items[i];
             if (invented)
-                gResearchItemsInvented.push_back(ResearchItem(*ri));
+                gResearchItemsInvented.push_back(ResearchItem(researchItem));
             else
-                gResearchItemsUninvented.push_back(ResearchItem(*ri));
+                gResearchItemsUninvented.push_back(ResearchItem(researchItem));
         }
     }
 
