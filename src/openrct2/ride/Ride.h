@@ -1198,7 +1198,7 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
 uint32_t ride_customers_per_hour(const Ride* ride);
 uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
 
-Vehicle* ride_get_broken_vehicle(Ride* ride);
+Vehicle* ride_get_broken_vehicle(const Ride* ride);
 
 void window_ride_construction_do_station_check();
 void window_ride_construction_do_entrance_exit_check();

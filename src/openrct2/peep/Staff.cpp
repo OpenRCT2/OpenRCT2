@@ -2160,7 +2160,7 @@ void Staff::UpdateFixing(int32_t steps)
  * rct2: 0x006C0EEC
  * fixing SubState: enter_station - applies to fixing all break down reasons and ride inspections.
  */
-bool Staff::UpdateFixingEnterStation(Ride* ride)
+bool Staff::UpdateFixingEnterStation(Ride* ride) const
 {
     ride->mechanic_status = RIDE_MECHANIC_STATUS_FIXING;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -2173,7 +2173,7 @@ bool Staff::UpdateFixingEnterStation(Ride* ride)
  * fixing SubState: move_to_broken_down_vehicle - applies to fixing all vehicle specific breakdown reasons
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
@@ -2227,7 +2227,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride)
  * 4. doors stuck open.
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
@@ -2269,7 +2269,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, Ride* ride)
  * fixing SubState: fix_vehicle_malfunction - applies fixing to vehicle malfunction.
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
@@ -2319,7 +2319,7 @@ static constexpr const CoordsXY _StationFixingOffsets[] = {
  * inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
@@ -2407,7 +2407,7 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
  * 3. applies to inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
@@ -2487,7 +2487,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, Ride* ride)
  * 2. applies to inspection.
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingFixStationStart(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
@@ -2560,7 +2560,7 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
  * fixing SubState: move_to_station_exit - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingMoveToStationExit(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
@@ -2646,7 +2646,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
  * fixing SubState: leave_by_entrance_exit - applies to fixing all failures & inspections
  * - see FixingSubstatesForBreakdown[]
  */
-bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
+bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
