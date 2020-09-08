@@ -1009,19 +1009,19 @@ bool Staff::DoMiscPathFinding()
  *
  *  rct2: 0x006C086D
  */
-static void staff_entertainer_update_nearby_peeps(Peep* peep)
+void Staff::EntertainerUpdateNearbyPeeps() const
 {
     for (auto guest : EntityList<Guest>(EntityListId::Peep))
     {
         if (guest->x == LOCATION_NULL)
             continue;
 
-        int16_t z_dist = abs(peep->z - guest->z);
+        int16_t z_dist = abs(z - guest->z);
         if (z_dist > 48)
             continue;
 
-        int16_t x_dist = abs(peep->x - guest->x);
-        int16_t y_dist = abs(peep->y - guest->y);
+        int16_t x_dist = abs(x - guest->x);
+        int16_t y_dist = abs(y - guest->y);
 
         if (x_dist > 96)
             continue;
@@ -1029,21 +1029,14 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
         if (y_dist > 96)
             continue;
 
-        if (peep->State == PEEP_STATE_WALKING)
+        if (guest->State == PEEP_STATE_WALKING)
         {
-            peep->HappinessTarget = std::min(peep->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
+            guest->HappinessTarget = std::min(guest->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
         }
-        else if (peep->State == PEEP_STATE_QUEUING)
+        else if (guest->State == PEEP_STATE_QUEUING)
         {
-            if (peep->TimeInQueue > 200)
-            {
-                peep->TimeInQueue -= 200;
-            }
-            else
-            {
-                peep->TimeInQueue = 0;
-            }
-            peep->HappinessTarget = std::min(peep->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
+            guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
+            guest->HappinessTarget = std::min(guest->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
         }
     }
 }
@@ -1061,7 +1054,7 @@ bool Staff::DoEntertainerPathFinding()
         ActionSpriteImageOffset = 0;
 
         UpdateCurrentActionSpriteType();
-        staff_entertainer_update_nearby_peeps(this);
+        EntertainerUpdateNearbyPeeps();
     }
 
     return DoMiscPathFinding();

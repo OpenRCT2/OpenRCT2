@@ -946,6 +946,8 @@ private:
     bool DoMiscPathFinding();
 
     int32_t HandymanDirectionRandSurface(uint8_t validDirections);
+
+    void EntertainerUpdateNearbyPeeps() const;
 };
 
 static_assert(sizeof(Peep) <= 512);
