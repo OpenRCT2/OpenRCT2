@@ -2191,7 +2191,7 @@ void track_paint(paint_session* session, uint8_t direction, int32_t height, cons
         TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeDescriptors[ride->type].TrackPaintFunction;
         if (paintFunctionGetter != nullptr)
         {
-            TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);
+            TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);
             if (paintFunction != nullptr)
             {
                 paintFunction(session, rideIndex, trackSequence, direction, height, tileElement);

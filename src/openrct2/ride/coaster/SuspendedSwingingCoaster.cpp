@@ -4405,7 +4405,7 @@ static void suspended_swinging_rc_track_block_brakes(
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_suspended_swinging_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_suspended_swinging_rc(int32_t trackType)
 {
     switch (trackType)
     {

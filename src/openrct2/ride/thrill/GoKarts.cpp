@@ -536,7 +536,7 @@ static void paint_go_karts_track_right_quarter_turn_1_tile(
 /**
  * rct2: 0x0074A668
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_go_karts(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_go_karts(int32_t trackType)
 {
     switch (trackType)
     {

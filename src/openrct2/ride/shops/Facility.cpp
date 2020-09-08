@@ -83,7 +83,7 @@ static void facility_paint_setup(
 }
 
 /* 0x00762D44 */
-TRACK_PAINT_FUNCTION get_track_paint_function_facility(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_facility(int32_t trackType)
 {
     switch (trackType)
     {

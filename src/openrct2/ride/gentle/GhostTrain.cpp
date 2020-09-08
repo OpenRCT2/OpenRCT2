@@ -459,7 +459,7 @@ static void paint_ghost_train_track_brakes(
 /**
  * rct2: 0x00770924
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(int32_t trackType)
 {
     switch (trackType)
     {

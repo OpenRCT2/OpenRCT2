@@ -1614,7 +1614,7 @@ static void twister_rc_track_booster(
     bolliger_mabillard_track_booster(session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_TUBES);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_twister_rc(int32_t trackType)
 {
     switch (trackType)
     {

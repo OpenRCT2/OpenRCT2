@@ -272,7 +272,7 @@ static void paint_magic_carpet(
  *
  *  rct2: 0x00898384
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int32_t trackType)
 {
     switch (trackType)
     {

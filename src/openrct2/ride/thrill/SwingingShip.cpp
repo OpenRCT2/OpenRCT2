@@ -318,7 +318,7 @@ static void paint_swinging_ship(
 /**
  * rct2: 0x008A83E0
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_swinging_ship(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_swinging_ship(int32_t trackType)
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_5)
     {

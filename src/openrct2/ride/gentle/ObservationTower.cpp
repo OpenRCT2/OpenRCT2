@@ -183,7 +183,7 @@ static void paint_observation_tower_section(
 /**
  * rct2: 0x0070DC5C
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int32_t trackType)
 {
     switch (trackType)
     {

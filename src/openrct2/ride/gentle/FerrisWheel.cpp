@@ -203,7 +203,7 @@ static void paint_ferris_wheel(
 /**
  * rct2: 0x008A8CC8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType)
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_4_C)
     {

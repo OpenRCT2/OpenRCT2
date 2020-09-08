@@ -532,7 +532,7 @@ static void paint_virginia_reel_track_right_quarter_turn_1_tile(
 /**
  * rct2: 0x00811184
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_virginia_reel(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_virginia_reel(int32_t trackType)
 {
     switch (trackType)
     {

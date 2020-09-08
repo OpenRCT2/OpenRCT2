@@ -760,7 +760,7 @@ static void inverted_impulse_rc_track_right_quarter_turn_1_90_deg_down(
         session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_inverted_impulse_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_inverted_impulse_rc(int32_t trackType)
 {
     switch (trackType)
     {

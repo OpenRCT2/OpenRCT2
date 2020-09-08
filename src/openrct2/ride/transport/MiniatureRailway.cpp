@@ -2148,7 +2148,7 @@ static void miniature_railway_track_diag_25_deg_down_to_flat(
 /**
  * rct2: 0x008ACE48
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_miniature_railway(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_miniature_railway(int32_t trackType)
 {
     switch (trackType)
     {
