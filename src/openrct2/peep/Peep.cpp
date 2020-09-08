@@ -331,6 +331,11 @@ Staff* Peep::AsStaff()
     return AssignedPeepType == PeepType::Staff ? static_cast<Staff*>(this) : nullptr;
 }
 
+const Staff* Peep::AsStaff() const
+{
+    return AssignedPeepType == PeepType::Staff ? static_cast<const Staff*>(this) : nullptr;
+}
+
 void Peep::Invalidate()
 {
     Invalidate2();

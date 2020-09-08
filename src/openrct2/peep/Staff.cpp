@@ -191,22 +191,21 @@ bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
     return IsPatrolAreaSet(loc);
 }
 
-bool staff_is_location_on_patrol_edge(Peep* mechanic, const CoordsXY& loc)
+// Check whether the location x,y is inside and on the edge of the
+// patrol zone for mechanic.
+bool staff_is_location_on_patrol_edge(const Peep* mechanic, const CoordsXY& loc)
 {
-    // Check whether the location x,y is inside and on the edge of the
-    // patrol zone for mechanic.
+    const Staff* staff = mechanic->AsStaff();
     bool onZoneEdge = false;
-    int32_t neighbourDir = 0;
-    while (!onZoneEdge && neighbourDir <= 7)
+    for (uint8_t neighbourDir = 0; !onZoneEdge && neighbourDir <= 7; neighbourDir++)
     {
         auto neighbourPos = loc + CoordsDirectionDelta[neighbourDir];
-        onZoneEdge = !mechanic->AsStaff()->IsLocationInPatrol(neighbourPos);
-        neighbourDir++;
+        onZoneEdge = !staff->IsLocationInPatrol(neighbourPos);
     }
     return onZoneEdge;
 }
 
-bool staff_can_ignore_wide_flag(Peep* staff, const CoordsXYZ& staffPos, TileElement* path)
+bool staff_can_ignore_wide_flag(const Peep* staff, const CoordsXYZ& staffPos, TileElement* path)
 {
     /* Wide flags can potentially wall off parts of a staff patrol zone
      * for the heuristic search.
@@ -327,7 +326,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, const CoordsXYZ& staffPos, TileElem
  *  rct2: 0x006C095B
  *  returns 0xF if not in a valid patrol area
  */
-static uint8_t staff_get_valid_patrol_directions(Staff* staff, const CoordsXY& loc)
+static uint8_t staff_get_valid_patrol_directions(const Staff* staff, const CoordsXY& loc)
 {
     uint8_t directions = 0;
 
@@ -435,7 +434,7 @@ void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords)
  *
  * Returns INVALID_DIRECTION when no nearby litter or unpathable litter
  */
-static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
+static Direction staff_handyman_direction_to_nearest_litter(const Peep* peep)
 {
     uint16_t nearestLitterDist = 0xFFFF;
     Litter* nearestLitter = nullptr;
@@ -520,7 +519,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
  *
  *  rct2: 0x006BF931
  */
-static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid_directions)
+static uint8_t staff_handyman_direction_to_uncut_grass(const Peep* peep, uint8_t valid_directions)
 {
     if (!(peep->GetNextIsSurface()))
     {
@@ -574,7 +573,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
  *
  *  rct2: 0x006BFD9C
  */
-int32_t Staff::HandymanDirectionRandSurface(uint8_t validDirections)
+Direction Staff::HandymanDirectionRandSurface(uint8_t validDirections) const
 {
     Direction newDirection = scenario_rand() % NumOrthogonalDirections;
     for (int32_t i = 0; i < NumOrthogonalDirections; ++i, ++newDirection)
@@ -695,7 +694,7 @@ bool Staff::DoHandymanPathFinding()
     return false;
 }
 
-static uint8_t staff_direction_surface(Peep* peep, uint8_t initialDirection)
+static Direction staff_direction_surface(const Peep* peep, Direction initialDirection)
 {
     uint8_t direction = initialDirection;
     for (int32_t i = 0; i < 3; ++i)
@@ -738,7 +737,7 @@ static uint8_t staff_direction_surface(Peep* peep, uint8_t initialDirection)
  *
  *  rct2: 0x006BFF45
  */
-static uint8_t staff_mechanic_direction_surface(Peep* peep)
+static Direction staff_mechanic_direction_surface(const Peep* peep)
 {
     Direction direction = scenario_rand() & 3;
 
@@ -774,7 +773,7 @@ static uint8_t staff_mechanic_direction_surface(Peep* peep)
  *
  *  rct2: 0x006C02D1
  */
-static uint8_t staff_mechanic_direction_path_rand(Peep* peep, uint8_t pathDirections)
+static Direction staff_mechanic_direction_path_rand(const Peep* peep, uint8_t pathDirections)
 {
     if (scenario_rand() & 1)
     {
@@ -929,7 +928,7 @@ bool Staff::DoMechanicPathFinding()
  *
  *  rct2: 0x006C050B
  */
-static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathElement* pathElement)
+static Direction staff_direction_path(const Peep* peep, uint8_t validDirections, PathElement* pathElement)
 {
     uint8_t pathDirections = pathElement->GetEdges();
     if (peep->State != PEEP_STATE_ANSWERING && peep->State != PEEP_STATE_HEADING_TO_INSPECTION)

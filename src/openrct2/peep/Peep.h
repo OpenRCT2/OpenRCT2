@@ -777,6 +777,7 @@ struct Peep : SpriteBase
 public: // Peep
     Guest* AsGuest();
     Staff* AsStaff();
+    const Staff* AsStaff() const;
 
     void Update();
     std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
@@ -953,7 +954,7 @@ private:
     bool DoEntertainerPathFinding();
     bool DoMiscPathFinding();
 
-    int32_t HandymanDirectionRandSurface(uint8_t validDirections);
+    Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
     void EntertainerUpdateNearbyPeeps() const;
 };
