@@ -33,6 +33,7 @@
 #    include "ScObject.hpp"
 #    include "ScPark.hpp"
 #    include "ScRide.hpp"
+#    include "ScScenario.hpp"
 #    include "ScSocket.hpp"
 #    include "ScTile.hpp"
 
@@ -398,6 +399,8 @@ void ScriptEngine::Initialise()
     ScSocket::Register(ctx);
     ScListener::Register(ctx);
 #    endif
+    ScScenario::Register(ctx);
+    ScScenarioObjective::Register(ctx);
     ScStaff::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
@@ -407,6 +410,7 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
     dukglue_register_global(ctx, std::make_shared<ScPark>(), "park");
+    dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
 
     _initialised = true;
     _pluginsLoaded = false;
