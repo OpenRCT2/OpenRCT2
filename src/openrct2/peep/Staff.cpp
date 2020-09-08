@@ -467,7 +467,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
     int16_t x_diff = litterTile.x - peep->x;
     int16_t y_diff = litterTile.y - peep->y;
 
-    uint8_t nextDirection = 0;
+    Direction nextDirection = 0;
 
     if (abs(x_diff) <= abs(y_diff))
     {
@@ -576,7 +576,7 @@ static uint8_t staff_handyman_direction_to_uncut_grass(Peep* peep, uint8_t valid
  */
 int32_t Staff::HandymanDirectionRandSurface(uint8_t validDirections)
 {
-    uint8_t newDirection = scenario_rand() % NumOrthogonalDirections;
+    Direction newDirection = scenario_rand() % NumOrthogonalDirections;
     for (int32_t i = 0; i < NumOrthogonalDirections; ++i, ++newDirection)
     {
         newDirection %= NumOrthogonalDirections;
@@ -605,7 +605,7 @@ bool Staff::DoHandymanPathFinding()
 {
     StaffMowingTimeout++;
 
-    uint8_t litterDirection = INVALID_DIRECTION;
+    Direction litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = staff_get_valid_patrol_directions(this, NextLoc);
 
     if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + sprite_index) & 0xFFF) > 110)
@@ -673,8 +673,8 @@ bool Staff::DoHandymanPathFinding()
         }
     }
 
-    // countof(CoordsDirectionDelta)
-    assert(newDirection < 8);
+    // newDirection can only contain a cardinal direction at this point, no diagonals
+    assert(direction_valid(newDirection));
 
     CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
@@ -740,7 +740,7 @@ static uint8_t staff_direction_surface(Peep* peep, uint8_t initialDirection)
  */
 static uint8_t staff_mechanic_direction_surface(Peep* peep)
 {
-    uint8_t direction = scenario_rand() & 3;
+    Direction direction = scenario_rand() & 3;
 
     auto ride = get_ride(peep->CurrentRide);
     if (ride != nullptr && (peep->State == PEEP_STATE_ANSWERING || peep->State == PEEP_STATE_HEADING_TO_INSPECTION)
@@ -798,9 +798,8 @@ static uint8_t staff_mechanic_direction_path_rand(Peep* peep, uint8_t pathDirect
  *
  *  rct2: 0x006C0121
  */
-static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections, PathElement* pathElement)
+static Direction staff_mechanic_direction_path(Peep* peep, uint8_t validDirections, PathElement* pathElement)
 {
-    Direction direction = INVALID_DIRECTION;
     uint8_t pathDirections = pathElement->GetEdges();
     pathDirections &= validDirections;
 
@@ -816,7 +815,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
         pathDirections |= (1 << direction_reverse(peep->PeepDirection));
     }
 
-    direction = bitscanforward(pathDirections);
+    Direction direction = bitscanforward(pathDirections);
     pathDirections &= ~(1 << direction);
     if (pathDirections == 0)
     {
@@ -881,7 +880,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
             return staff_mechanic_direction_path_rand(peep, pathDirections);
         }
 
-        return static_cast<uint8_t>(pathfindDirection);
+        return pathfindDirection;
     }
     return staff_mechanic_direction_path_rand(peep, pathDirections);
 }
@@ -908,7 +907,7 @@ bool Staff::DoMechanicPathFinding()
     }
 
     // countof(CoordsDirectionDelta)
-    assert(newDirection < 8);
+    assert(direction_valid(newDirection));
 
     CoordsXY chosenTile = CoordsXY{ NextLoc } + CoordsDirectionDelta[newDirection];
 
@@ -932,7 +931,6 @@ bool Staff::DoMechanicPathFinding()
  */
 static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathElement* pathElement)
 {
-    Direction direction = INVALID_DIRECTION;
     uint8_t pathDirections = pathElement->GetEdges();
     if (peep->State != PEEP_STATE_ANSWERING && peep->State != PEEP_STATE_HEADING_TO_INSPECTION)
     {
@@ -950,19 +948,16 @@ static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathEle
         pathDirections |= (1 << direction_reverse(peep->PeepDirection));
     }
 
-    direction = bitscanforward(pathDirections);
-    pathDirections &= ~(1 << direction);
-    if (pathDirections == 0)
+    Direction direction = bitscanforward(pathDirections);
+    // If this is the only direction they can go, then go
+    if (pathDirections == (1 << direction))
     {
         return direction;
     }
 
-    pathDirections |= (1 << direction);
-
     direction = scenario_rand() & 3;
-    for (int32_t i = 0; i < 4; ++i, ++direction)
+    for (uint8_t i = 0; i < 4; ++i, direction = direction_next(direction))
     {
-        direction &= 3;
         if (pathDirections & (1 << direction))
             return direction;
     }
