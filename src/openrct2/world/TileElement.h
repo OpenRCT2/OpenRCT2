@@ -202,10 +202,10 @@ private:
 #pragma clang diagnostic ignored "-Wunused-private-field"
     PathRailingsIndex RailingsIndex; // 6
 #pragma clang diagnostic pop
-    uint8_t Additions;      // 7 (0 means no addition)
-    uint8_t EdgesAndCorners;// 8 (edges in lower 4 bits, corners in upper 4)
-    uint8_t Flags2;         // 9
-    uint8_t SlopeDirection; // 10
+    uint8_t Additions;       // 7 (0 means no addition)
+    uint8_t EdgesAndCorners; // 8 (edges in lower 4 bits, corners in upper 4)
+    uint8_t Flags2;          // 9
+    uint8_t SlopeDirection;  // 10
     union
     {
         uint8_t AdditionStatus; // 11, only used for litter bins

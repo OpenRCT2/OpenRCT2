@@ -1932,8 +1932,7 @@ void track_paint_util_left_quarter_turn_3_tiles_tunnel(
 
 void track_paint_util_left_quarter_turn_1_tile_paint(
     paint_session* session, int8_t thickness, int16_t height, int16_t boundBoxZOffset, Direction direction,
-    uint32_t colourFlags,
-    const uint32_t* sprites)
+    uint32_t colourFlags, const uint32_t* sprites)
 {
     uint32_t imageId = sprites[direction] | colourFlags;
 

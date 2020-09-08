@@ -306,7 +306,8 @@ bool track_paint_util_should_paint_supports(const CoordsXY& position);
 void track_paint_util_draw_pier(
     paint_session* session, Ride* ride, const StationObject* stationObject, const CoordsXY& position, Direction direction,
     int32_t height, const TileElement* tileElement, uint8_t rotation);
-void track_paint_util_draw_station_metal_supports(paint_session* session, Direction direction, uint16_t height, uint32_t colour);
+void track_paint_util_draw_station_metal_supports(
+    paint_session* session, Direction direction, uint16_t height, uint32_t colour);
 void track_paint_util_draw_station_metal_supports_2(
     paint_session* session, Direction direction, uint16_t height, uint32_t colour, uint8_t type);
 
@@ -358,8 +359,7 @@ void track_paint_util_left_quarter_turn_3_tiles_tunnel(
     paint_session* session, int16_t height, uint8_t tunnelType, Direction direction, uint8_t trackSequence);
 void track_paint_util_left_quarter_turn_1_tile_paint(
     paint_session* session, int8_t thickness, int16_t height, int16_t boundBoxZOffset, Direction direction,
-    uint32_t colourFlags,
-    const uint32_t* sprites);
+    uint32_t colourFlags, const uint32_t* sprites);
 void track_paint_util_spinning_tunnel_paint(paint_session* session, int8_t thickness, int16_t height, Direction direction);
 void track_paint_util_onride_photo_small_paint(
     paint_session* session, Direction direction, int32_t height, const TileElement* tileElement);
