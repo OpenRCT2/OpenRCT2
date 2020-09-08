@@ -4,6 +4,7 @@
 - Feature: [#12712] Add TCP / socket plugin APIs.
 - Feature: [#12840] Add Park.entranceFee to the plugin API.
 - Fix: [#400] Unable to place some saved tracks flush to the ground (original bug).
+- Fix: [#5753]: Entertainers make themselves happy instead of the guests.
 - Fix: [#7037] Unable to save tracks starting with a sloped turn or helix.
 - Fix: [#12691] Ride graph tooltip incorrectly used count instead of number string.
 - Fix: [#12694] Crash when switching ride types with construction window open.
