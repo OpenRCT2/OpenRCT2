@@ -282,7 +282,7 @@ static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
 };
 // clang-format on
 
-static uint8_t _availableCostumes[ENTERTAINER_COSTUME_COUNT];
+static EntertainerCostume _availableCostumes[static_cast<uint8_t>(EntertainerCostume::Count)];
 
 enum class PatrolAreaValue
 {
@@ -1472,12 +1472,12 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     int32_t numCostumes = staff_get_available_entertainer_costume_list(_availableCostumes);
     for (int32_t i = 0; i < numCostumes; i++)
     {
-        uint8_t costume = _availableCostumes[i];
-        if (peep->SpriteType == PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + costume)
+        EntertainerCostume costume = _availableCostumes[i];
+        if (peep->SpriteType == EntertainerCostumeToSprite(costume))
         {
             checkedIndex = i;
         }
-        gDropdownItemsArgs[i] = StaffCostumeNames[costume];
+        gDropdownItemsArgs[i] = StaffCostumeNames[static_cast<uint8_t>(costume)];
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
     }
 
@@ -1510,7 +1510,7 @@ void window_staff_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, i
     if (dropdownIndex == -1)
         return;
 
-    uint8_t costume = _availableCostumes[dropdownIndex];
+    EntertainerCostume costume = _availableCostumes[dropdownIndex];
     auto staffSetCostumeAction = StaffSetCostumeAction(w->number, costume);
     GameActions::Execute(&staffSetCostumeAction);
 }

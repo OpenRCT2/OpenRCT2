@@ -16,6 +16,8 @@
 
 struct ObjectRepositoryItem;
 
+enum class EntertainerCostume : uint8_t;
+
 class SceneryGroupObject final : public Object
 {
 private:
@@ -46,6 +48,6 @@ public:
 private:
     static std::vector<rct_object_entry> ReadItems(OpenRCT2::IStream* stream);
     static uint32_t ReadJsonEntertainerCostumes(const json_t* jCostumes);
-    static uint32_t ParseEntertainerCostume(const std::string& s);
+    static EntertainerCostume ParseEntertainerCostume(const std::string& s);
     static std::vector<rct_object_entry> ReadJsonEntries(const json_t* jEntries);
 };

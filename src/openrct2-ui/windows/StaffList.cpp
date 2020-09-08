@@ -129,7 +129,7 @@ static rct_widget window_staff_list_widgets[] = {
 static int32_t _windowStaffListHighlightedIndex;
 static int32_t _windowStaffListSelectedTab = WINDOW_STAFF_LIST_TAB_HANDYMEN;
 
-static uint8_t window_staff_list_get_random_entertainer_costume();
+static EntertainerCostume window_staff_list_get_random_entertainer_costume();
 
 struct staff_naming_convention
 {
@@ -231,10 +231,10 @@ static void window_staff_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_STAFF_LIST_HIRE_BUTTON:
         {
             StaffType staffType = static_cast<StaffType>(_windowStaffListSelectedTab);
-            ENTERTAINER_COSTUME costume = ENTERTAINER_COSTUME_COUNT;
+            auto costume = EntertainerCostume::Count;
             if (staffType == StaffType::Entertainer)
             {
-                costume = static_cast<ENTERTAINER_COSTUME>(window_staff_list_get_random_entertainer_costume());
+                costume = window_staff_list_get_random_entertainer_costume();
             }
             staff_hire_new_member(staffType, costume);
             break;
@@ -756,10 +756,10 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     }
 }
 
-static uint8_t window_staff_list_get_random_entertainer_costume()
+static EntertainerCostume window_staff_list_get_random_entertainer_costume()
 {
-    uint8_t result = ENTERTAINER_COSTUME_PANDA;
-    uint8_t costumeList[ENTERTAINER_COSTUME_COUNT];
+    auto result = EntertainerCostume::Panda;
+    EntertainerCostume costumeList[static_cast<uint8_t>(EntertainerCostume::Count)];
     int32_t numCostumes = staff_get_available_entertainer_costume_list(costumeList);
     if (numCostumes > 0)
     {

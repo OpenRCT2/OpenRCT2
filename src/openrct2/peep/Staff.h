@@ -35,26 +35,26 @@ enum STAFF_ORDERS
     STAFF_ORDERS_FIX_RIDES = (1 << 1)
 };
 
-enum ENTERTAINER_COSTUME : uint8_t
+enum class EntertainerCostume : uint8_t
 {
-    ENTERTAINER_COSTUME_PANDA,
-    ENTERTAINER_COSTUME_TIGER,
-    ENTERTAINER_COSTUME_ELEPHANT,
-    ENTERTAINER_COSTUME_ROMAN,
-    ENTERTAINER_COSTUME_GORILLA,
-    ENTERTAINER_COSTUME_SNOWMAN,
-    ENTERTAINER_COSTUME_KNIGHT,
-    ENTERTAINER_COSTUME_ASTRONAUT,
-    ENTERTAINER_COSTUME_BANDIT,
-    ENTERTAINER_COSTUME_SHERIFF,
-    ENTERTAINER_COSTUME_PIRATE,
+    Panda,
+    Tiger,
+    Elephant,
+    Roman,
+    Gorilla,
+    Snowman,
+    Knight,
+    Astronaut,
+    Bandit,
+    Sheriff,
+    Pirate,
 
-    ENTERTAINER_COSTUME_COUNT
+    Count
 };
 
 extern const money32 gStaffWageTable[static_cast<uint8_t>(StaffType::Count)];
 
-extern const rct_string_id StaffCostumeNames[ENTERTAINER_COSTUME_COUNT];
+extern const rct_string_id StaffCostumeNames[static_cast<uint8_t>(EntertainerCostume::Count)];
 
 extern uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)) * STAFF_PATROL_AREA_SIZE];
 extern StaffMode gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
@@ -65,7 +65,7 @@ extern colour_t gStaffSecurityColour;
 
 void staff_reset_modes();
 void staff_set_name(uint16_t spriteIndex, const char* name);
-bool staff_hire_new_member(StaffType staffType, ENTERTAINER_COSTUME entertainerType);
+bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerType);
 void staff_update_greyed_patrol_areas();
 bool staff_is_location_on_patrol_edge(Peep* mechanic, const CoordsXY& loc);
 bool staff_can_ignore_wide_flag(Peep* mechanic, const CoordsXYZ& staffPos, TileElement* path);
@@ -76,6 +76,8 @@ void staff_toggle_patrol_area(int32_t staffIndex, const CoordsXY& coords);
 colour_t staff_get_colour(StaffType staffType);
 bool staff_set_colour(StaffType staffType, colour_t value);
 uint32_t staff_get_available_entertainer_costumes();
-int32_t staff_get_available_entertainer_costume_list(uint8_t* costumeList);
+int32_t staff_get_available_entertainer_costume_list(EntertainerCostume* costumeList);
+
+PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType);
 
 #endif
