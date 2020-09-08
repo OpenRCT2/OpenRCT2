@@ -34,6 +34,11 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags();
