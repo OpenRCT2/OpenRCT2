@@ -80,6 +80,9 @@ colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
 
+// Maximum manhattan distance that litter can be for a handyman to seek to it
+const uint16_t MAX_LITTER_DISTANCE = 0x60;
+
 template<> bool SpriteBase::Is<Staff>() const
 {
     auto peep = As<Peep>();
@@ -447,7 +450,7 @@ static uint8_t staff_handyman_direction_to_nearest_litter(Peep* peep)
         }
     }
 
-    if (nearestLitterDist > 0x60)
+    if (nearestLitterDist > MAX_LITTER_DISTANCE)
     {
         return INVALID_DIRECTION;
     }
