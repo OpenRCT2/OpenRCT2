@@ -1638,10 +1638,10 @@ static constexpr const CoordsXY _WateringUseOffsets[] = {
  *
  *  rct2: 0x006BF483
  */
-static int32_t peep_update_patrolling_find_watering(Peep* peep)
+static bool peep_update_patrolling_find_watering(Peep* peep)
 {
     if (!(peep->StaffOrders & STAFF_ORDERS_WATER_FLOWERS))
-        return 0;
+        return false;
 
     uint8_t chosen_position = scenario_rand() & 7;
     for (int32_t i = 0; i < 8; ++i, ++chosen_position)
@@ -1700,27 +1700,27 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
             peep->DestinationY = (peep->y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
             peep->DestinationTolerance = 3;
 
-            return 1;
+            return true;
         } while (!(tile_element++)->IsLastForTile());
     }
-    return 0;
+    return false;
 }
 
 /**
  *
  *  rct2: 0x006BF3A1
  */
-static int32_t peep_update_patrolling_find_bin(Peep* peep)
+static bool peep_update_patrolling_find_bin(Peep* peep)
 {
     if (!(peep->StaffOrders & STAFF_ORDERS_EMPTY_BINS))
-        return 0;
+        return false;
 
     if (peep->GetNextIsSurface())
-        return 0;
+        return false;
 
     TileElement* tileElement = map_get_first_element_at(peep->NextLoc);
     if (tileElement == nullptr)
-        return 0;
+        return false;
 
     for (;; tileElement++)
     {
@@ -1728,23 +1728,23 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
             break;
 
         if (tileElement->IsLastForTile())
-            return 0;
+            return false;
     }
 
     if (!tileElement->AsPath()->HasAddition())
-        return 0;
+        return false;
     rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
     if (sceneryEntry == nullptr)
-        return 0;
+        return false;
 
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
-        return 0;
+        return false;
 
     if (tileElement->AsPath()->IsBroken())
-        return 0;
+        return false;
 
     if (tileElement->AsPath()->AdditionIsGhost())
-        return 0;
+        return false;
 
     uint8_t bin_positions = tileElement->AsPath()->GetEdges();
     uint8_t bin_quantity = tileElement->AsPath()->GetAdditionStatus();
@@ -1759,7 +1759,7 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
     }
 
     if (chosen_position == 4)
-        return 0;
+        return false;
 
     peep->Var37 = chosen_position;
     peep->SetState(PEEP_STATE_EMPTYING_BIN);
@@ -1768,23 +1768,23 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
     peep->DestinationX = (peep->x & 0xFFE0) + BinUseOffsets[chosen_position].x;
     peep->DestinationY = (peep->y & 0xFFE0) + BinUseOffsets[chosen_position].y;
     peep->DestinationTolerance = 3;
-    return 1;
+    return true;
 }
 
 /**
  *
  *  rct2: 0x006BF322
  */
-static int32_t peep_update_patrolling_find_grass(Peep* peep)
+static bool peep_update_patrolling_find_grass(Peep* peep)
 {
     if (!(peep->StaffOrders & STAFF_ORDERS_MOWING))
-        return 0;
+        return false;
 
     if (peep->StaffMowingTimeout < 12)
-        return 0;
+        return false;
 
     if (!(peep->GetNextIsSurface()))
-        return 0;
+        return false;
 
     auto surfaceElement = map_get_surface_element_at(peep->NextLoc);
     if (surfaceElement != nullptr && surfaceElement->CanGrassGrow())
@@ -1797,20 +1797,20 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
             peep->DestinationX = peep->NextLoc.x + _MowingWaypoints[0].x;
             peep->DestinationY = peep->NextLoc.y + _MowingWaypoints[0].y;
             peep->DestinationTolerance = 3;
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
 }
 
 /**
  *
  *  rct2: 0x006BF295
  */
-static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
+static bool peep_update_patrolling_find_sweeping(Peep* peep)
 {
     if (!(peep->StaffOrders & STAFF_ORDERS_SWEEPING))
-        return 0;
+        return false;
     auto quad = EntityTileList<Litter>({ peep->x, peep->y });
     for (auto litter : quad)
     {
@@ -1825,10 +1825,10 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
         peep->DestinationX = litter->x;
         peep->DestinationY = litter->y;
         peep->DestinationTolerance = 5;
-        return 1;
+        return true;
     }
 
-    return 0;
+    return false;
 }
 
 void Staff::Tick128UpdateStaff()
