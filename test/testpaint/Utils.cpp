@@ -54,7 +54,7 @@ namespace Utils
             return false;
         }
 
-        if (newPaintGetter(trackType, 0) == nullptr)
+        if (newPaintGetter(trackType) == nullptr)
         {
             return false;
         }

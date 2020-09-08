@@ -1323,7 +1323,7 @@ static void reverser_rc_track_right_reverser(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_reverser_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_reverser_rc(int32_t trackType)
 {
     switch (trackType)
     {

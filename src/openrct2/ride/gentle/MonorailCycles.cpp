@@ -631,7 +631,7 @@ static void paint_monorail_cycles_track_s_bend_right(
 /**
  * rct2: 0x0088ac88
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_monorail_cycles(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_monorail_cycles(int32_t trackType)
 {
     switch (trackType)
     {

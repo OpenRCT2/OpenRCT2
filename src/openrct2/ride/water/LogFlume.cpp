@@ -807,7 +807,7 @@ static void paint_log_flume_track_reverser(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(int32_t trackType)
 {
     switch (trackType)
     {

@@ -179,7 +179,7 @@ static void paint_space_rings(
 /**
  * rct2: 0x0x00767A40
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int32_t trackType)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

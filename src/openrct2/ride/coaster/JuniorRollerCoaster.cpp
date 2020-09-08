@@ -5707,7 +5707,7 @@ static void junior_rc_track_on_ride_photo(
 }
 
 /* 0x008AAA0C */
-TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int32_t trackType)
 {
     switch (trackType)
     {

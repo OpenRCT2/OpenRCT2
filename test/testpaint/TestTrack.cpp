@@ -194,7 +194,7 @@ static void CallNew(
     uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height, TileElement* tileElement)
 {
     TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = RideTypeDescriptors[rideType].TrackPaintFunction;
-    TRACK_PAINT_FUNCTION newPaintFunction = newPaintFunctionGetter(trackType, direction);
+    TRACK_PAINT_FUNCTION newPaintFunction = newPaintFunctionGetter(trackType);
 
     newPaintFunction(&gPaintSession, 0, trackSequence, direction, height, tileElement);
 }

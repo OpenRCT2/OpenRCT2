@@ -170,7 +170,7 @@ static void paint_motionsimulator(
  *
  *  rct2: 0x00763520
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(int32_t trackType)
 {
     switch (trackType)
     {

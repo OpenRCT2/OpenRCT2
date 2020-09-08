@@ -1580,7 +1580,7 @@ static void heartline_twister_rc_track_right_heartline_roll(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_heartline_twister_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_heartline_twister_rc(int32_t trackType)
 {
     switch (trackType)
     {

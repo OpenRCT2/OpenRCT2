@@ -5353,7 +5353,7 @@ static void mine_ride_track_diag_right_bank(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_mine_ride(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_mine_ride(int32_t trackType)
 {
     switch (trackType)
     {

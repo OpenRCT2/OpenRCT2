@@ -192,7 +192,7 @@ static void paint_swinging_inverter_ship(
 /**
  * rct2: 0x00760070
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int32_t trackType)
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_4_B)
     {

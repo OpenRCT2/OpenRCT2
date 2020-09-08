@@ -233,7 +233,7 @@ static void paint_spiral_slide(
 /**
  * rct2: 0x0074840C
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int32_t trackType)
 {
     if (trackType != FLAT_TRACK_ELEM_2_X_2)
     {

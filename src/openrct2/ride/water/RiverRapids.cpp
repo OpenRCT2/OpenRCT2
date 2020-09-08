@@ -837,7 +837,7 @@ static void paint_river_rapids_track_whirlpool(
 /**
  * rct2: 0x0075745C
  **/
-TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int32_t trackType)
 {
     switch (trackType)
     {

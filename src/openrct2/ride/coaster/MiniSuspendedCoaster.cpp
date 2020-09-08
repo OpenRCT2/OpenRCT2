@@ -2445,7 +2445,7 @@ static void mini_suspended_rc_track_diag_25_deg_down_to_flat(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_mini_suspended_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_mini_suspended_rc(int32_t trackType)
 {
     switch (trackType)
     {

@@ -8582,7 +8582,7 @@ static void corkscrew_rc_track_booster(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(int32_t trackType)
 {
     switch (trackType)
     {

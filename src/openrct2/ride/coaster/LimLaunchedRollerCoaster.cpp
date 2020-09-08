@@ -1777,7 +1777,7 @@ static void lim_launched_rc_track_right_quarter_turn_1_90_deg_down(
         session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int32_t trackType)
 {
     switch (trackType)
     {
@@ -1911,7 +1911,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int32_t trackType,
         case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
         case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT:
         case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
-            return get_track_paint_function_looping_rc(trackType, direction);
+            return get_track_paint_function_looping_rc(trackType);
 
         case TRACK_ELEM_END_STATION:
         case TRACK_ELEM_BEGIN_STATION:

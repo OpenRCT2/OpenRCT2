@@ -67,7 +67,7 @@ static void shop_paint_setup(
 }
 
 /* 0x00761160 */
-TRACK_PAINT_FUNCTION get_track_paint_function_shop(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_shop(int32_t trackType)
 {
     switch (trackType)
     {
