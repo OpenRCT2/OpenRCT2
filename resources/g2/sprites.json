@@ -966,6 +966,7 @@
         "palette": "keep",
         "forceBmp": true
     },
+    {
         "path": "font/latin/c-circumflex-uc-small.png",
         "y_offset": -1,
         "palette": "keep",
@@ -1530,6 +1531,7 @@
         "palette": "keep",
         "forceBmp": true
     },
+    {
         "path": "font/latin/c-circumflex-uc-bold.png",
         "y_offset": -1,
         "palette": "keep",
@@ -2102,6 +2104,7 @@
         "palette": "keep",
         "forceBmp": true
     },
+    {
         "path": "font/latin/c-circumflex-uc-tiny.png",
         "y_offset": -1,
         "palette": "keep",
