@@ -292,16 +292,16 @@ public:
         gGuestInitialCash = _s6.guest_initial_cash;
         gGuestInitialHunger = _s6.guest_initial_hunger;
         gGuestInitialThirst = _s6.guest_initial_thirst;
-        gScenarioObjectiveType = _s6.objective_type;
-        gScenarioObjectiveYear = _s6.objective_year;
+        gScenarioObjective.Type = _s6.objective_type;
+        gScenarioObjective.Year = _s6.objective_year;
         // pad_013580FA
-        gScenarioObjectiveCurrency = _s6.objective_currency;
+        gScenarioObjective.Currency = _s6.objective_currency;
         // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
         // This is not always the case in OpenRCT2, so we use the actual ride ID.
-        if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
-            gScenarioObjectiveNumGuests = _s6.objective_guests - RCT2_RIDE_STRING_START;
+        if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+            gScenarioObjective.RideId = _s6.objective_guests - RCT2_RIDE_STRING_START;
         else
-            gScenarioObjectiveNumGuests = _s6.objective_guests;
+            gScenarioObjective.NumGuests = _s6.objective_guests;
         ImportMarketingCampaigns();
 
         gCurrentExpenditure = _s6.current_expenditure;

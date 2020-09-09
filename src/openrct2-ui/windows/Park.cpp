@@ -789,7 +789,7 @@ static void window_park_entrance_invalidate(rct_window* w)
         + widget_is_pressed(w, WIDX_OPEN_LIGHT);
 
     // Only allow closing of park for guest / rating objective
-    if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
+    if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
         w->disabled_widgets |= (1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
     else
         w->disabled_widgets &= ~((1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT));
@@ -813,7 +813,7 @@ static void window_park_entrance_invalidate(rct_window* w)
     if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_PARK)
     {
         window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
-        if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
+        if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
         {
             window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_FLATBTN;
             window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_FLATBTN;
@@ -1610,10 +1610,10 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Objective
     ft = Formatter::Common();
-    if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
+    if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
     {
         rct_string_id rideTypeString = STR_NONE;
-        auto rideTypeId = gScenarioObjectiveNumGuests;
+        auto rideTypeId = gScenarioObjective.RideId;
         if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
         {
             rideTypeString = RideTypeDescriptors[rideTypeId].Naming.Name;
@@ -1622,13 +1622,13 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     else
     {
-        ft.Add<uint16_t>(gScenarioObjectiveNumGuests);
-        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjectiveYear));
-        ft.Add<money32>(gScenarioObjectiveCurrency);
+        ft.Add<uint16_t>(gScenarioObjective.NumGuests);
+        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.Year));
+        ft.Add<money32>(gScenarioObjective.Currency);
     }
 
     screenCoords.y += gfx_draw_string_left_wrapped(
-        dpi, gCommonFormatArgs, screenCoords, 221, ObjectiveNames[gScenarioObjectiveType], COLOUR_BLACK);
+        dpi, gCommonFormatArgs, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], COLOUR_BLACK);
     screenCoords.y += 5;
 
     // Objective outcome

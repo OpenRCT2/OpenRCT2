@@ -2715,21 +2715,21 @@ private:
 
     void ImportScenarioObjective()
     {
-        gScenarioObjectiveType = _s4.scenario_objective_type;
-        gScenarioObjectiveYear = _s4.scenario_objective_years;
-        gScenarioObjectiveNumGuests = _s4.scenario_objective_num_guests;
+        gScenarioObjective.Type = _s4.scenario_objective_type;
+        gScenarioObjective.Year = _s4.scenario_objective_years;
+        gScenarioObjective.NumGuests = _s4.scenario_objective_num_guests;
 
         // RCT1 used a different way of calculating the park value.
         // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
         // we need to check the goal to avoid affecting scenarios like Volcania.
         if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
-            gScenarioObjectiveCurrency = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
+            gScenarioObjective.Currency = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
         else
-            gScenarioObjectiveCurrency = _s4.scenario_objective_currency;
+            gScenarioObjective.Currency = _s4.scenario_objective_currency;
 
         // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
         if (_s4.scenario_objective_type == OBJECTIVE_BUILD_THE_BEST)
-            gScenarioObjectiveNumGuests = GetBuildTheBestRideId();
+            gScenarioObjective.RideId = GetBuildTheBestRideId();
     }
 
     void ImportSavedView()

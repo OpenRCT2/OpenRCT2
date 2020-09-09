@@ -272,16 +272,17 @@ void S6Exporter::Export()
     _s6.guest_initial_cash = gGuestInitialCash;
     _s6.guest_initial_hunger = gGuestInitialHunger;
     _s6.guest_initial_thirst = gGuestInitialThirst;
-    _s6.objective_type = gScenarioObjectiveType;
-    _s6.objective_year = gScenarioObjectiveYear;
+    _s6.objective_type = gScenarioObjective.Type;
+    _s6.objective_year = gScenarioObjective.Year;
     // pad_013580FA
-    _s6.objective_currency = gScenarioObjectiveCurrency;
+    _s6.objective_currency = gScenarioObjective.Currency;
     // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
     // This is not always the case in OpenRCT2, so we use the actual ride ID.
-    if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
-        _s6.objective_guests = gScenarioObjectiveNumGuests + RCT2_RIDE_STRING_START;
+    if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+        _s6.objective_guests = gScenarioObjective.RideId + RCT2_RIDE_STRING_START;
     else
-        _s6.objective_guests = gScenarioObjectiveNumGuests;
+        _s6.objective_guests = gScenarioObjective.NumGuests;
+
     ExportMarketingCampaigns();
 
     std::memcpy(_s6.balance_history, gCashHistory, sizeof(_s6.balance_history));

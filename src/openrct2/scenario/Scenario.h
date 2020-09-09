@@ -349,6 +349,58 @@ enum
     OBJECTIVE_COUNT
 };
 
+bool ObjectiveNeedsMoney(const uint8_t objective);
+
+enum class ObjectiveStatus : uint8_t
+{
+    Undecided,
+    Success,
+    Failure,
+};
+
+struct Objective
+{
+    uint8_t Type;
+    uint8_t Year;
+    union
+    {
+        uint16_t NumGuests;
+        rct_string_id RideId;
+        uint16_t MinimumLength; // For the "Build 10 coasters of minimum length" objective.
+    };
+    union
+    {
+        money32 Currency;
+        uint16_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
+    };
+
+    bool NeedsMoney() const
+    {
+        return ObjectiveNeedsMoney(Type);
+    }
+
+    bool IsValid(bool useMoney, bool canAskMoneyForRides) const
+    {
+        const bool objectiveAllowedByMoneyUsage = useMoney || !NeedsMoney();
+        // This objective can only work if the player can ask money for rides.
+        const bool objectiveAllowedByPaymentSettings = (Type != OBJECTIVE_MONTHLY_RIDE_INCOME) || canAskMoneyForRides;
+        return objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings;
+    }
+
+    ObjectiveStatus Check() const;
+
+private:
+    ObjectiveStatus CheckGuestsBy() const;
+    ObjectiveStatus CheckParkValueBy() const;
+    ObjectiveStatus Check10RollerCoasters() const;
+    ObjectiveStatus CheckGuestsAndRating() const;
+    ObjectiveStatus CheckMonthlyRideIncome() const;
+    ObjectiveStatus Check10RollerCoastersLength() const;
+    ObjectiveStatus CheckFinish5RollerCoasters() const;
+    ObjectiveStatus CheckRepayLoanAndParkValue() const;
+    ObjectiveStatus CheckMonthlyFoodIncome() const;
+};
+
 enum
 {
     SCENARIO_SELECT_MODE_DIFFICULTY,
@@ -375,10 +427,7 @@ extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 extern uint32_t gScenarioTicks;
 extern random_engine_t gScenarioRand;
 
-extern uint8_t gScenarioObjectiveType;
-extern uint8_t gScenarioObjectiveYear;
-extern uint16_t gScenarioObjectiveNumGuests;
-extern money32 gScenarioObjectiveCurrency;
+extern Objective gScenarioObjective;
 
 extern uint16_t gScenarioParkRatingWarningDays;
 extern money32 gScenarioCompletedCompanyValue;
@@ -422,6 +471,5 @@ void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char* name);
 void scenario_autosave_check();
-bool ObjectiveNeedsMoney(const uint8_t objective);
 
 #endif

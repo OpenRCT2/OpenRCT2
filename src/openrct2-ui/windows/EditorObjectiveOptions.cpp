@@ -350,7 +350,7 @@ static void window_editor_objective_options_set_page(rct_window* w, int32_t page
  */
 static void window_editor_objective_options_set_objective(rct_window* w, int32_t objective)
 {
-    gScenarioObjectiveType = objective;
+    gScenarioObjective.Type = objective;
     w->Invalidate();
 
     // Set default objective arguments
@@ -362,30 +362,30 @@ static void window_editor_objective_options_set_objective(rct_window* w, int32_t
         case OBJECTIVE_10_ROLLERCOASTERS:
             break;
         case OBJECTIVE_GUESTS_BY:
-            gScenarioObjectiveYear = 3;
-            gScenarioObjectiveNumGuests = 1500;
+            gScenarioObjective.Year = 3;
+            gScenarioObjective.NumGuests = 1500;
             break;
         case OBJECTIVE_PARK_VALUE_BY:
-            gScenarioObjectiveYear = 3;
-            gScenarioObjectiveCurrency = MONEY(50000, 00);
+            gScenarioObjective.Year = 3;
+            gScenarioObjective.Currency = MONEY(50000, 00);
             break;
         case OBJECTIVE_GUESTS_AND_RATING:
-            gScenarioObjectiveNumGuests = 2000;
+            gScenarioObjective.NumGuests = 2000;
             break;
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-            gScenarioObjectiveCurrency = MONEY(10000, 00);
+            gScenarioObjective.Currency = MONEY(10000, 00);
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-            gScenarioObjectiveNumGuests = 1200;
+            gScenarioObjective.MinimumLength = 1200;
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-            gScenarioObjectiveCurrency = FIXED_2DP(6, 70);
+            gScenarioObjective.MinimumExcitement = FIXED_2DP(6, 70);
             break;
         case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-            gScenarioObjectiveCurrency = MONEY(50000, 00);
+            gScenarioObjective.Currency = MONEY(50000, 00);
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            gScenarioObjectiveCurrency = MONEY(1000, 00);
+            gScenarioObjective.Currency = MONEY(1000, 00);
             break;
     }
 }
@@ -459,7 +459,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
         w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, dropdownWidget->width() - 3);
 
-    objectiveType = gScenarioObjectiveType;
+    objectiveType = gScenarioObjective.Type;
     for (int32_t j = 0; j < numItems; j++)
     {
         if (gDropdownItemsArgs[j] - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
@@ -490,62 +490,62 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
 
 static void window_editor_objective_options_arg_1_increase(rct_window* w)
 {
-    switch (gScenarioObjectiveType)
+    switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-            if (gScenarioObjectiveCurrency >= MONEY(2000000, 00))
+            if (gScenarioObjective.Currency >= MONEY(2000000, 00))
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
             else
             {
-                gScenarioObjectiveCurrency += MONEY(1000, 0);
+                gScenarioObjective.Currency += MONEY(1000, 0);
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (gScenarioObjectiveCurrency >= MONEY(2000000, 00))
+            if (gScenarioObjective.Currency >= MONEY(2000000, 00))
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
             else
             {
-                gScenarioObjectiveCurrency += MONEY(100, 0);
+                gScenarioObjective.Currency += MONEY(100, 0);
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-            if (gScenarioObjectiveNumGuests >= 5000)
+            if (gScenarioObjective.MinimumLength >= 5000)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
             else
             {
-                gScenarioObjectiveNumGuests += 100;
+                gScenarioObjective.MinimumLength += 100;
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-            if (gScenarioObjectiveCurrency >= FIXED_2DP(9, 90))
+            if (gScenarioObjective.MinimumExcitement >= FIXED_2DP(9, 90))
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
             else
             {
-                gScenarioObjectiveCurrency += FIXED_2DP(0, 10);
+                gScenarioObjective.MinimumExcitement += FIXED_2DP(0, 10);
                 w->Invalidate();
             }
             break;
         default:
-            if (gScenarioObjectiveNumGuests >= 5000)
+            if (gScenarioObjective.NumGuests >= 5000)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
             }
             else
             {
-                gScenarioObjectiveNumGuests += 50;
+                gScenarioObjective.NumGuests += 50;
                 w->Invalidate();
             }
             break;
@@ -554,62 +554,62 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
 
 static void window_editor_objective_options_arg_1_decrease(rct_window* w)
 {
-    switch (gScenarioObjectiveType)
+    switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
-            if (gScenarioObjectiveCurrency <= MONEY(1000, 00))
+            if (gScenarioObjective.Currency <= MONEY(1000, 00))
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
             else
             {
-                gScenarioObjectiveCurrency -= MONEY(1000, 0);
+                gScenarioObjective.Currency -= MONEY(1000, 0);
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (gScenarioObjectiveCurrency <= MONEY(1000, 00))
+            if (gScenarioObjective.Currency <= MONEY(1000, 00))
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
             else
             {
-                gScenarioObjectiveCurrency -= MONEY(100, 0);
+                gScenarioObjective.Currency -= MONEY(100, 0);
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-            if (gScenarioObjectiveNumGuests <= 1000)
+            if (gScenarioObjective.MinimumLength <= 1000)
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
             else
             {
-                gScenarioObjectiveNumGuests -= 100;
+                gScenarioObjective.MinimumLength -= 100;
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-            if (gScenarioObjectiveCurrency <= FIXED_2DP(4, 00))
+            if (gScenarioObjective.MinimumExcitement <= FIXED_2DP(4, 00))
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
             else
             {
-                gScenarioObjectiveCurrency -= FIXED_2DP(0, 10);
+                gScenarioObjective.MinimumExcitement -= FIXED_2DP(0, 10);
                 w->Invalidate();
             }
             break;
         default:
-            if (gScenarioObjectiveNumGuests <= 250)
+            if (gScenarioObjective.NumGuests <= 250)
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
             }
             else
             {
-                gScenarioObjectiveNumGuests -= 50;
+                gScenarioObjective.NumGuests -= 50;
                 w->Invalidate();
             }
             break;
@@ -618,26 +618,26 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
 
 static void window_editor_objective_options_arg_2_increase(rct_window* w)
 {
-    if (gScenarioObjectiveYear >= 25)
+    if (gScenarioObjective.Year >= 25)
     {
         context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
     }
     else
     {
-        gScenarioObjectiveYear++;
+        gScenarioObjective.Year++;
         w->Invalidate();
     }
 }
 
 static void window_editor_objective_options_arg_2_decrease(rct_window* w)
 {
-    if (gScenarioObjectiveYear <= 1)
+    if (gScenarioObjective.Year <= 1)
     {
         context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
     }
     else
     {
-        gScenarioObjectiveYear--;
+        gScenarioObjective.Year--;
         w->Invalidate();
     }
 }
@@ -687,7 +687,7 @@ static void window_editor_objective_options_main_dropdown(rct_window* w, rct_wid
         case WIDX_OBJECTIVE_DROPDOWN:
             // TODO: Don't rely on string ID order
             newObjectiveType = static_cast<uint8_t>(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
-            if (gScenarioObjectiveType != newObjectiveType)
+            if (gScenarioObjective.Type != newObjectiveType)
                 window_editor_objective_options_set_objective(w, newObjectiveType);
             break;
         case WIDX_CATEGORY_DROPDOWN:
@@ -714,7 +714,7 @@ static void window_editor_objective_options_main_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_1);
 
     parkFlags = gParkFlags;
-    objectiveType = gScenarioObjectiveType;
+    objectiveType = gScenarioObjective.Type;
 
     // Check if objective is allowed by money and pay-per-ride settings.
     const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
@@ -778,7 +778,7 @@ static void window_editor_objective_options_main_invalidate(rct_window* w)
 
     window_editor_objective_options_set_pressed_tab(w);
 
-    switch (gScenarioObjectiveType)
+    switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_GUESTS_BY:
         case OBJECTIVE_PARK_VALUE_BY:
@@ -838,14 +838,14 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
 
     // Objective value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE].left + 1, w->widgets[WIDX_OBJECTIVE].top };
-    stringId = ObjectiveDropdownOptionNames[gScenarioObjectiveType];
+    stringId = ObjectiveDropdownOptionNames[gScenarioObjective.Type];
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
 
     if (w->widgets[WIDX_OBJECTIVE_ARG_1].type != WWT_EMPTY)
     {
         // Objective argument 1 label
         screenCoords = w->windowPos + ScreenCoordsXY{ 28, w->widgets[WIDX_OBJECTIVE_ARG_1].top };
-        switch (gScenarioObjectiveType)
+        switch (gScenarioObjective.Type)
         {
             case OBJECTIVE_GUESTS_BY:
             case OBJECTIVE_GUESTS_AND_RATING:
@@ -873,27 +873,27 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         // Objective argument 1 value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_1].left + 1, w->widgets[WIDX_OBJECTIVE_ARG_1].top };
-        switch (gScenarioObjectiveType)
+        switch (gScenarioObjective.Type)
         {
             case OBJECTIVE_GUESTS_BY:
             case OBJECTIVE_GUESTS_AND_RATING:
                 stringId = STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT;
-                arg = gScenarioObjectiveNumGuests;
+                arg = gScenarioObjective.NumGuests;
                 break;
             case OBJECTIVE_PARK_VALUE_BY:
             case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
                 stringId = STR_CURRENCY_FORMAT_LABEL;
-                arg = gScenarioObjectiveCurrency;
+                arg = gScenarioObjective.Currency;
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
                 stringId = STR_WINDOW_OBJECTIVE_VALUE_LENGTH;
-                arg = gScenarioObjectiveNumGuests;
+                arg = gScenarioObjective.MinimumLength;
                 break;
             default:
                 stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
-                arg = gScenarioObjectiveCurrency;
+                arg = gScenarioObjective.Currency;
                 break;
         }
         gfx_draw_string_left(dpi, stringId, &arg, COLOUR_BLACK, screenCoords);
@@ -908,7 +908,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         // Objective argument 2 value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_OBJECTIVE_ARG_2].left + 1, w->widgets[WIDX_OBJECTIVE_ARG_2].top };
-        arg = (gScenarioObjectiveYear * MONTH_COUNT) - 1;
+        arg = (gScenarioObjective.Year * MONTH_COUNT) - 1;
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_DATE, &arg, COLOUR_BLACK, screenCoords);
     }
 
