@@ -469,8 +469,26 @@ void ImageTable::AddImage(const rct_g1_element* g1)
     }
     else
     {
-        newg1.offset = new uint8_t[length];
-        std::copy_n(g1->offset, length, newg1.offset);
+        PaletteMap pm{};
+        rct_drawpixelinfo dpi{};
+        dpi.width = g1->width;
+        DrawSpriteArgs dsa(
+            &dpi, ImageId{}, pm, *g1, /*srcX*/ 0,
+            /*srcY*/ 0, /*width*/ g1->width, g1->height, nullptr);
+        bool ok;
+        if ((g1->flags & G1_FLAG_PALETTE) == 0 && (g1->flags & G1_FLAG_RLE_COMPRESSION) == G1_FLAG_RLE_COMPRESSION)
+            ok = check_gfx_rle_sprite_to_buffer(dsa, length);
+        else
+            ok = true;
+        if (!ok)
+        {
+            newg1.offset = nullptr;
+        }
+        else
+        {
+            newg1.offset = new uint8_t[length];
+            std::copy_n(g1->offset, length, newg1.offset);
+        }
     }
     _entries.push_back(std::move(newg1));
 }
