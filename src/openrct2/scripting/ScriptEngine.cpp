@@ -948,7 +948,13 @@ public:
 };
 
 const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
+    { "bannerplace", GAME_COMMAND_PLACE_BANNER },
+    { "bannerremove", GAME_COMMAND_REMOVE_BANNER },
+    { "footpathplace", GAME_COMMAND_PLACE_PATH },
+    { "footpathremove", GAME_COMMAND_REMOVE_PATH },
     { "guestsetname", GAME_COMMAND_SET_GUEST_NAME },
+    { "largesceneryplace", GAME_COMMAND_PLACE_LARGE_SCENERY },
+    { "largesceneryremove", GAME_COMMAND_REMOVE_LARGE_SCENERY },
     { "parksetname", GAME_COMMAND_SET_PARK_NAME },
     { "ridecreate", GAME_COMMAND_CREATE_RIDE },
     { "ridedemolish", GAME_COMMAND_DEMOLISH_RIDE },
@@ -963,10 +969,13 @@ const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
     { "ridesetvehicles", GAME_COMMAND_SET_RIDE_VEHICLES },
     { "setcheataction", GAME_COMMAND_CHEAT },
     { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
+    { "smallsceneryremove", GAME_COMMAND_REMOVE_SCENERY },
     { "trackdesign", GAME_COMMAND_PLACE_TRACK_DESIGN },
     { "trackplace", GAME_COMMAND_PLACE_TRACK },
     { "trackremove", GAME_COMMAND_REMOVE_TRACK },
     { "tracksetbrakespeed", GAME_COMMAND_SET_BRAKES_SPEED },
+    { "wallplace", GAME_COMMAND_PLACE_WALL },
+    { "wallremove", GAME_COMMAND_REMOVE_WALL },
 };
 
 static std::string GetActionName(uint32_t commandId)
