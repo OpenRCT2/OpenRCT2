@@ -962,6 +962,11 @@
         "forceBmp": true
     },
     {
+        "path": "font/latin/l-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1445,6 +1450,11 @@
     {
         "path": "font/latin/j-bold.png",
         "x_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/l-bold.png",
         "palette": "keep",
         "forceBmp": true
     },
@@ -1940,6 +1950,11 @@
     {
         "path": "font/latin/j-tiny.png",
         "x_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/latin/l-tiny.png",
         "palette": "keep",
         "forceBmp": true
     }
