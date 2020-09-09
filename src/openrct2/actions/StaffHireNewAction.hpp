@@ -55,12 +55,12 @@ DEFINE_GAME_ACTION(StaffHireNewAction, GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, Staff
 private:
     bool _autoPosition = false;
     uint8_t _staffType = static_cast<uint8_t>(StaffType::Count);
-    uint8_t _entertainerType = ENTERTAINER_COSTUME::ENTERTAINER_COSTUME_COUNT;
+    EntertainerCostume _entertainerType = EntertainerCostume::Count;
     uint32_t _staffOrders = 0;
 
 public:
     StaffHireNewAction() = default;
-    StaffHireNewAction(bool autoPosition, StaffType staffType, ENTERTAINER_COSTUME entertainerType, uint32_t staffOrders)
+    StaffHireNewAction(bool autoPosition, StaffType staffType, EntertainerCostume entertainerType, uint32_t staffOrders)
         : _autoPosition(autoPosition)
         , _staffType(static_cast<uint8_t>(staffType))
         , _entertainerType(entertainerType)
@@ -112,7 +112,7 @@ private:
 
         if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
         {
-            if (_entertainerType >= ENTERTAINER_COSTUME_COUNT)
+            if (static_cast<uint8_t>(_entertainerType) >= static_cast<uint8_t>(EntertainerCostume::Count))
             {
                 // Invalid entertainer costume
                 log_error("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
@@ -121,7 +121,7 @@ private:
             }
 
             uint32_t availableCostumes = staff_get_available_entertainer_costumes();
-            if (!(availableCostumes & (1 << _entertainerType)))
+            if (!(availableCostumes & (1 << static_cast<uint8_t>(_entertainerType))))
             {
                 // Entertainer costume unavailable
                 log_error("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
@@ -134,7 +134,7 @@ private:
         int32_t staffIndex;
         for (staffIndex = 0; staffIndex < STAFF_MAX_COUNT; ++staffIndex)
         {
-            if (!(gStaffModes[staffIndex] & 1))
+            if (gStaffModes[staffIndex] == StaffMode::None)
                 break;
         }
 
@@ -204,7 +204,7 @@ private:
             PeepSpriteType spriteType = spriteTypes[_staffType];
             if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
             {
-                spriteType = static_cast<PeepSpriteType>(PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + _entertainerType);
+                spriteType = EntertainerCostumeToSprite(_entertainerType);
             }
             newPeep->Name = nullptr;
             newPeep->SpriteType = spriteType;
@@ -244,7 +244,7 @@ private:
 
             newPeep->StaffId = staffIndex;
 
-            gStaffModes[staffIndex] = STAFF_MODE_WALK;
+            gStaffModes[staffIndex] = StaffMode::Walk;
 
             for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
             {

@@ -3654,6 +3654,12 @@ STR_6374    :M
 STR_6375    :Attrazione sconosciuta
 STR_6376    :{WINDOW_COLOUR_2}Veicolo attrazione:{NEWLINE}{BLACK}{STRINGID} per {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} per {STRINGID}
+STR_6378    :Scaricamento lista oggetti: {INT32} / {INT32}
+STR_6379    :Ricevuti dati non validi
+STR_6380    :Aggiornamento disponibile!
+STR_6381    :Unisciti al Discord di OpenRCT2!
+STR_6382    :È disponibile una nuova versione di OpenRCT2: {STRING}!
+STR_6383    :Apri pagina download
 
 #############
 # Scenarios #

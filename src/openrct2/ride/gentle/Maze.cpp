@@ -172,7 +172,7 @@ static void maze_paint_setup(
 /**
  * rct2: 0x008A81E8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_maze(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_maze(int32_t trackType)
 {
     if (trackType != TRACK_ELEM_MAZE)
     {

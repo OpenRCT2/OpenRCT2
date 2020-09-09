@@ -3560,7 +3560,7 @@ static void bobsleigh_rc_track_on_ride_photo(
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_bobsleigh_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_bobsleigh_rc(int32_t trackType)
 {
     switch (trackType)
     {

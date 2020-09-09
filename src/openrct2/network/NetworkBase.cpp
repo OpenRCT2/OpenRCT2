@@ -33,7 +33,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "2"
+#define NETWORK_STREAM_VERSION "6"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -148,11 +148,6 @@ void NetworkBase::SetEnvironment(const std::shared_ptr<IPlatformEnvironment>& en
 
 bool NetworkBase::Init()
 {
-    if (!InitialiseWSA())
-    {
-        return false;
-    }
-
     status = NETWORK_STATUS_READY;
 
     ServerName = std::string();
@@ -240,8 +235,6 @@ void NetworkBase::CloseConnection()
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
     _lastConnectStatus = SOCKET_STATUS_CLOSED;
-
-    DisposeWSA();
 }
 
 bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
@@ -782,16 +775,16 @@ bool NetworkBase::CheckSRAND(uint32_t tick, uint32_t srand0)
 
 bool NetworkBase::IsDesynchronised()
 {
-    return _serverState.state == NETWORK_SERVER_STATE_DESYNCED;
+    return _serverState.state == NetworkServerState::Desynced;
 }
 
 bool NetworkBase::CheckDesynchronizaton()
 {
     // Check synchronisation
-    if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NETWORK_SERVER_STATE_DESYNCED
+    if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerState::Desynced
         && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
     {
-        _serverState.state = NETWORK_SERVER_STATE_DESYNCED;
+        _serverState.state = NetworkServerState::Desynced;
         _serverState.desyncTick = gCurrentTicks;
 
         char str_desync[256];
@@ -1673,20 +1666,20 @@ void NetworkBase::Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, 
 
 bool NetworkBase::ProcessConnection(NetworkConnection& connection)
 {
-    int32_t packetStatus;
+    NetworkReadPacket packetStatus;
     do
     {
         packetStatus = connection.ReadPacket();
         switch (packetStatus)
         {
-            case NETWORK_READPACKET_DISCONNECTED:
+            case NetworkReadPacket::Disconnected:
                 // closed connection or network error
                 if (!connection.GetLastDisconnectReason())
                 {
                     connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
                 }
                 return false;
-            case NETWORK_READPACKET_SUCCESS:
+            case NetworkReadPacket::Success:
                 // done reading in packet
                 ProcessPacket(connection, connection.InboundPacket);
                 if (connection.Socket == nullptr)
@@ -1694,14 +1687,14 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
                     return false;
                 }
                 break;
-            case NETWORK_READPACKET_MORE_DATA:
+            case NetworkReadPacket::MoreData:
                 // more data required to be read
                 break;
-            case NETWORK_READPACKET_NO_DATA:
+            case NetworkReadPacket::NoData:
                 // could not read anything from socket
                 break;
         }
-    } while (packetStatus == NETWORK_READPACKET_SUCCESS);
+    } while (packetStatus == NetworkReadPacket::Success);
 
     connection.SendQueuedPackets();
 
@@ -2697,7 +2690,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
             game_load_scripts();
             _serverState.tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
-            _serverState.state = NETWORK_SERVER_STATE_OK;
+            _serverState.state = NetworkServerState::Ok;
             _clientMapLoaded = true;
             gFirstTimeSaving = true;
 

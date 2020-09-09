@@ -449,7 +449,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             {
                 console.WriteFormatLine("staff set energy <staff id> <value 0-255>");
                 console.WriteFormatLine("staff set costume <staff id> <costume id>");
-                for (int32_t i = 0; i < ENTERTAINER_COSTUME_COUNT; i++)
+                for (int32_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
                 {
                     char costume_name[128] = { 0 };
                     rct_string_id costume = StaffCostumeNames[i];
@@ -499,13 +499,13 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                     console.WriteLineError("Specified staff is not entertainer");
                     return 1;
                 }
-                if (!int_valid[1] || int_val[1] < 0 || int_val[1] >= ENTERTAINER_COSTUME_COUNT)
+                if (!int_valid[1] || int_val[1] < 0 || int_val[1] >= static_cast<uint8_t>(EntertainerCostume::Count))
                 {
                     console.WriteLineError("Invalid costume ID");
                     return 1;
                 }
 
-                uint8_t costume = int_val[1];
+                EntertainerCostume costume = static_cast<EntertainerCostume>(int_val[1]);
                 auto staffSetCostumeAction = StaffSetCostumeAction(int_val[0], costume);
                 GameActions::Execute(&staffSetCostumeAction);
             }
@@ -1232,7 +1232,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     int32_t staffCount = 0;
     for (int32_t i = 0; i < STAFF_MAX_COUNT; ++i)
     {
-        if (gStaffModes[i] & 1)
+        if (gStaffModes[i] != StaffMode::None)
         {
             staffCount++;
         }

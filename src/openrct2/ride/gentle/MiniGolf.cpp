@@ -1141,7 +1141,7 @@ static void paint_mini_golf_hole_e(
 /**
  * rct2: 0x0087EDC4
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int32_t trackType)
 {
     switch (trackType)
     {

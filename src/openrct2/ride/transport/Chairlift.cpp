@@ -643,7 +643,7 @@ static void chairlift_paint_right_quarter_turn_1_tile(
 }
 
 /* 0x008AAA0C */
-TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int32_t trackType)
 {
     switch (trackType)
     {

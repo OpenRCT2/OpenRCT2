@@ -33,6 +33,7 @@
 #    include "ScObject.hpp"
 #    include "ScPark.hpp"
 #    include "ScRide.hpp"
+#    include "ScSocket.hpp"
 #    include "ScTile.hpp"
 
 #    include <iostream>
@@ -41,7 +42,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 2;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 4;
 
 struct ExpressionStringifier final
 {
@@ -393,6 +394,10 @@ void ScriptEngine::Initialise()
     ScVehicle::Register(ctx);
     ScPeep::Register(ctx);
     ScGuest::Register(ctx);
+#    ifndef DISABLE_NETWORK
+    ScSocket::Register(ctx);
+    ScListener::Register(ctx);
+#    endif
     ScStaff::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
@@ -479,6 +484,7 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
     if (plugin->HasStarted())
     {
         RemoveCustomGameActions(plugin);
+        RemoveSockets(plugin);
         _hookEngine.UnsubscribeAll(plugin);
         for (auto callback : _pluginStoppedSubscriptions)
         {
@@ -640,6 +646,7 @@ void ScriptEngine::Update()
         }
     }
 
+    UpdateSockets();
     ProcessREPL();
 }
 
@@ -1125,6 +1132,54 @@ void ScriptEngine::SaveSharedStorage()
     {
         fprintf(stderr, "Unable to write to '%s'\n", path.c_str());
     }
+}
+
+#    ifndef DISABLE_NETWORK
+void ScriptEngine::AddSocket(const std::shared_ptr<ScSocketBase>& socket)
+{
+    _sockets.push_back(socket);
+}
+#    endif
+
+void ScriptEngine::UpdateSockets()
+{
+#    ifndef DISABLE_NETWORK
+    // Use simple for i loop as Update calls can modify the list
+    auto it = _sockets.begin();
+    while (it != _sockets.end())
+    {
+        auto& socket = *it;
+        socket->Update();
+        if (socket->IsDisposed())
+        {
+            it = _sockets.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
+#    endif
+}
+
+void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
+{
+#    ifndef DISABLE_NETWORK
+    auto it = _sockets.begin();
+    while (it != _sockets.end())
+    {
+        auto socket = it->get();
+        if (socket->GetPlugin() == plugin)
+        {
+            socket->Dispose();
+            it = _sockets.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
+#    endif
 }
 
 std::string OpenRCT2::Scripting::Stringify(const DukValue& val)

@@ -207,12 +207,6 @@ static void window_install_track_invalidate(rct_window* w)
     {
         w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
     }
-
-    // if (w->track_list.var_482 != 0xFFFF) {
-    //  w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
-    // } else {
-    //  w->disabled_widgets |= (1 << WIDX_TRACK_PREVIEW);
-    // }
 }
 
 /**

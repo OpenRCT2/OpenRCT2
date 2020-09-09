@@ -115,7 +115,7 @@ void SceneryGroupObject::ReadJson(IReadObjectContext* context, const json_t* roo
     auto properties = json_object_get(root, "properties");
     _legacyType.priority = json_integer_value(json_object_get(properties, "priority"));
 
-    // Entertainer cosumes
+    // Entertainer costumes
     auto jCostumes = json_object_get(properties, "entertainerCostumes");
     if (jCostumes != nullptr)
     {
@@ -139,39 +139,37 @@ uint32_t SceneryGroupObject::ReadJsonEntertainerCostumes(const json_t* jCostumes
     for (const auto& szCostume : szCostumes)
     {
         auto entertainer = ParseEntertainerCostume(szCostume);
-
-        // For some reason the flags are +4 from the actual costume IDs
-        // See staff_get_available_entertainer_costumes
-        costumes |= 1 << (entertainer + 4);
+        auto peepSprite = EntertainerCostumeToSprite(entertainer);
+        costumes |= 1 << (static_cast<uint8_t>(peepSprite));
     }
     return costumes;
 }
 
-uint32_t SceneryGroupObject::ParseEntertainerCostume(const std::string& s)
+EntertainerCostume SceneryGroupObject::ParseEntertainerCostume(const std::string& s)
 {
     if (s == "panda")
-        return ENTERTAINER_COSTUME_PANDA;
+        return EntertainerCostume::Panda;
     if (s == "tiger")
-        return ENTERTAINER_COSTUME_TIGER;
+        return EntertainerCostume::Tiger;
     if (s == "elephant")
-        return ENTERTAINER_COSTUME_ELEPHANT;
+        return EntertainerCostume::Elephant;
     if (s == "roman")
-        return ENTERTAINER_COSTUME_ROMAN;
+        return EntertainerCostume::Roman;
     if (s == "gorilla")
-        return ENTERTAINER_COSTUME_GORILLA;
+        return EntertainerCostume::Gorilla;
     if (s == "snowman")
-        return ENTERTAINER_COSTUME_SNOWMAN;
+        return EntertainerCostume::Snowman;
     if (s == "knight")
-        return ENTERTAINER_COSTUME_KNIGHT;
+        return EntertainerCostume::Knight;
     if (s == "astronaut")
-        return ENTERTAINER_COSTUME_ASTRONAUT;
+        return EntertainerCostume::Astronaut;
     if (s == "bandit")
-        return ENTERTAINER_COSTUME_BANDIT;
+        return EntertainerCostume::Bandit;
     if (s == "sheriff")
-        return ENTERTAINER_COSTUME_SHERIFF;
+        return EntertainerCostume::Sheriff;
     if (s == "pirate")
-        return ENTERTAINER_COSTUME_PIRATE;
-    return ENTERTAINER_COSTUME_PANDA;
+        return EntertainerCostume::Pirate;
+    return EntertainerCostume::Panda;
 }
 
 std::vector<rct_object_entry> SceneryGroupObject::ReadJsonEntries(const json_t* jEntries)

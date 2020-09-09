@@ -88,15 +88,15 @@ enum class NetworkCommand : uint32_t
 
 static_assert(NetworkCommand::GameInfo == static_cast<NetworkCommand>(9), "Master server expects this to be 9");
 
-enum NETWORK_SERVER_STATE
+enum class NetworkServerState
 {
-    NETWORK_SERVER_STATE_OK,
-    NETWORK_SERVER_STATE_DESYNCED,
+    Ok,
+    Desynced
 };
 
 struct NetworkServerState_t
 {
-    NETWORK_SERVER_STATE state = NETWORK_SERVER_STATE_OK;
+    NetworkServerState state = NetworkServerState::Ok;
     uint32_t desyncTick = 0;
     uint32_t tick = 0;
     uint32_t srand0 = 0;

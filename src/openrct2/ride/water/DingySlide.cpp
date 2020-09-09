@@ -1819,7 +1819,7 @@ static void dinghy_slide_track_60_deg_down_to_25_deg_down_covered(
         session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_dinghy_slide(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_dinghy_slide(int32_t trackType)
 {
     switch (trackType)
     {

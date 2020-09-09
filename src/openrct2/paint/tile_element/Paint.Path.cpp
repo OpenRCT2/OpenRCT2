@@ -930,7 +930,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         }
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_PATH_HEIGHTS)
+    if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
         uint16_t heightMarkerBaseZ = tile_element->GetBaseZ() + 3;
         if (tile_element->AsPath()->IsSloped())

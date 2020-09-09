@@ -1593,7 +1593,7 @@ static void vertical_drop_rc_track_booster(
     bolliger_mabillard_track_booster(session, rideIndex, trackSequence, direction, height, tileElement, METAL_SUPPORTS_BOXED);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_vertical_drop_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_vertical_drop_rc(int32_t trackType)
 {
     switch (trackType)
     {

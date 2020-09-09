@@ -457,12 +457,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLen
             else if (_stricmp(token, "LOADSC") == 0)
             {
                 command.Type = TITLE_SCRIPT_LOADSC;
-                // Confirm the scenario exists
-                // source_desc desc;
-                // if (ScenarioSources::TryGetByName(part1, &desc))
-                //{
                 safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
-                //}
             }
         }
         if (command.Type != TITLE_SCRIPT_UNDEFINED)

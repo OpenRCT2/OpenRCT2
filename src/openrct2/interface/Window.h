@@ -633,12 +633,12 @@ enum VISIBILITY_CACHE
     VC_COVERED
 };
 
-enum GUEST_LIST_FILTER_TYPE
+enum class GuestListFilterType : int32_t
 {
-    GLFT_GUESTS_ON_RIDE,
-    GLFT_GUESTS_IN_QUEUE,
-    GLFT_GUESTS_THINKING_ABOUT_RIDE,
-    GLFT_GUESTS_THINKING_X,
+    GuestsOnRide,
+    GuestsInQueue,
+    GuestsThinkingAboutRide,
+    GuestsThinkingX,
 };
 
 enum TOOL_IDX

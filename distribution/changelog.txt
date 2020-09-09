@@ -1,12 +1,20 @@
 0.3.0+ (in development)
 ------------------------------------------------------------------------
 - Feature: [#10807] Add 2x and 4x zoom levels (currently limited to OpenGL).
+- Feature: [#12712] Add TCP / socket plugin APIs.
+- Feature: [#12840] Add Park.entranceFee to the plugin API.
+- Fix: [#400] Unable to place some saved tracks flush to the ground (original bug).
+- Fix: [#5753]: Entertainers make themselves happy instead of the guests.
 - Fix: [#7037] Unable to save tracks starting with a sloped turn or helix.
 - Fix: [#12691] Ride graph tooltip incorrectly used count instead of number string.
 - Fix: [#12694] Crash when switching ride types with construction window open.
 - Fix: [#12701] Silent NSIS setup flag /S isn't silent, upgrade pop-up appears anyway.
 - Fix: [#12737] Space Rings draw the same vehicle 4 times.
 - Fix: [#12764] Rides don't start aged anymore.
+- Fix: [#12818] Ride price not ignored in free-rides parks.
+- Fix: [#12820] Title menu buttons not invalidating properly
+- Fix: [#12845] Deleting ride with active ad campaign creates incorrect notification.
+- Fix: [#12857] Incorrect Peep thoughts in imported RCT1 parks.
 - Fix: Incomplete loop collision box allowed overlapping track (original bug).
 - Technical: The required version of macOS has been lowered to 10.13 (High Sierra).
 

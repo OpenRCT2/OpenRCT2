@@ -3343,7 +3343,7 @@ static void side_friction_rc_track_diag_60_deg_down_to_25_deg_down(
         session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);
 };
 
-TRACK_PAINT_FUNCTION get_track_paint_function_side_friction_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_side_friction_rc(int32_t trackType)
 {
     switch (trackType)
     {

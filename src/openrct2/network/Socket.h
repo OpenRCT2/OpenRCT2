@@ -18,18 +18,19 @@
 enum SOCKET_STATUS
 {
     SOCKET_STATUS_CLOSED,
+    SOCKET_STATUS_WAITING,
     SOCKET_STATUS_RESOLVING,
     SOCKET_STATUS_CONNECTING,
     SOCKET_STATUS_CONNECTED,
     SOCKET_STATUS_LISTENING,
 };
 
-enum NETWORK_READPACKET
+enum class NetworkReadPacket : int32_t
 {
-    NETWORK_READPACKET_SUCCESS,
-    NETWORK_READPACKET_NO_DATA,
-    NETWORK_READPACKET_MORE_DATA,
-    NETWORK_READPACKET_DISCONNECTED
+    Success,
+    NoData,
+    MoreData,
+    Disconnected
 };
 
 /**
@@ -65,8 +66,11 @@ public:
     virtual void ConnectAsync(const std::string& address, uint16_t port) abstract;
 
     virtual size_t SendData(const void* buffer, size_t size) abstract;
-    virtual NETWORK_READPACKET ReceiveData(void* buffer, size_t size, size_t* sizeReceived) abstract;
+    virtual NetworkReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) abstract;
 
+    virtual void SetNoDelay(bool noDelay) abstract;
+
+    virtual void Finish() abstract;
     virtual void Disconnect() abstract;
     virtual void Close() abstract;
 };
@@ -88,14 +92,12 @@ public:
 
     virtual size_t SendData(const std::string& address, uint16_t port, const void* buffer, size_t size) abstract;
     virtual size_t SendData(const INetworkEndpoint& destination, const void* buffer, size_t size) abstract;
-    virtual NETWORK_READPACKET ReceiveData(
+    virtual NetworkReadPacket ReceiveData(
         void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender) abstract;
 
     virtual void Close() abstract;
 };
 
-bool InitialiseWSA();
-void DisposeWSA();
 std::unique_ptr<ITcpSocket> CreateTcpSocket();
 std::unique_ptr<IUdpSocket> CreateUdpSocket();
 std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses();

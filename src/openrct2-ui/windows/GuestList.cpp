@@ -273,7 +273,7 @@ void window_guest_list_refresh_list()
  *
  * @param index The number of the ride or index of the thought
  */
-rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
+rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t index)
 {
     rct_window* w = window_guest_list_open();
 
@@ -286,7 +286,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
 
     switch (type)
     {
-        case GLFT_GUESTS_ON_RIDE:
+        case GuestListFilterType::GuestsOnRide:
         {
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
@@ -301,7 +301,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             }
             break;
         }
-        case GLFT_GUESTS_IN_QUEUE:
+        case GuestListFilterType::GuestsInQueue:
         {
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
@@ -316,7 +316,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             }
             break;
         }
-        case GLFT_GUESTS_THINKING_ABOUT_RIDE:
+        case GuestListFilterType::GuestsThinkingAboutRide:
         {
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
@@ -331,7 +331,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             }
             break;
         }
-        case GLFT_GUESTS_THINKING_X:
+        case GuestListFilterType::GuestsThinkingX:
         {
             ft.Add<rct_string_id>(PeepThoughts[index & 0xFF]);
 

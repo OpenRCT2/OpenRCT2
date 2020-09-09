@@ -190,7 +190,7 @@ static void paint_launched_freefall_tower_section(
 /**
  * rct2: 0x006FD0E8
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(int32_t trackType)
 {
     switch (trackType)
     {

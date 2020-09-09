@@ -163,7 +163,7 @@ static void paint_twist(
 /**
  * rct2: 0x0076D658
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_twist(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_twist(int32_t trackType)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

@@ -438,7 +438,6 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     {
         if (screenCoords.y >= dpi->y + dpi->height)
             continue;
-        // if (y + ITEM_HEIGHT < dpi->y) continue;
 
         const auto& serverDetails = _serverList.GetServer(i);
         bool highlighted = i == w->selected_list_item;

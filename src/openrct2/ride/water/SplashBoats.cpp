@@ -1188,7 +1188,7 @@ static void paint_splash_boats_track_on_ride_photo(
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType)
 {
     switch (trackType)
     {
