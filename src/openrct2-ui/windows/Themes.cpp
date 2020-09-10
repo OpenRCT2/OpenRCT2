@@ -833,19 +833,22 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
     {
-        size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
-        const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-        Formatter::Common().Add<const utf8*>(activeThemeName);
         gfx_draw_string_left(
             dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1],
             w->windowPos + ScreenCoordsXY{ 10, window_themes_widgets[WIDX_THEMES_PRESETS].top + 1 });
-        gfx_draw_string_left_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
-            w->windowPos
-                + ScreenCoordsXY{ window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
-                                  window_themes_widgets[WIDX_THEMES_PRESETS].top },
-            w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left
-                - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4);
+
+        size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
+        const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
+        auto ft = Formatter::Common();
+        ft.Add<const utf8*>(activeThemeName);
+
+        auto screenPos = w->windowPos
+            + ScreenCoordsXY{ window_themes_widgets[WIDX_THEMES_PRESETS].left + 1,
+                              window_themes_widgets[WIDX_THEMES_PRESETS].top };
+        auto width = w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left
+            - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4;
+
+        DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, w->colours[1]);
     }
 }
 

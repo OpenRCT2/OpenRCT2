@@ -2004,9 +2004,8 @@ bool Peep::SetName(const std::string_view& value)
  * argument_1 (esi & ebx)
  * argument_2 (esi+2)
  */
-void peep_thought_set_format_args(const rct_peep_thought* thought)
+void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft)
 {
-    auto ft = Formatter::Common();
     ft.Add<rct_string_id>(PeepThoughts[thought->type]);
 
     PeepThoughtToActionFlag flags = PeepThoughtToActionMap[thought->type].flags;

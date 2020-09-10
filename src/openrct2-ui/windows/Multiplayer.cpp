@@ -703,7 +703,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             {
                 ft.Add<rct_string_id>(STR_ACTION_NA);
             }
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, { 256, screenCoords.y }, 100);
+            DrawTextEllipsised(dpi, { 256, screenCoords.y }, 100, STR_BLACK_STRING, ft, COLOUR_BLACK);
 
             // Draw ping
             lineCh = buffer;
@@ -914,9 +914,9 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
         auto ft = Formatter::Common();
         ft.Add<const char*>(buffer);
-        gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top },
-            widget->width() - 8);
+        DrawTextEllipsised(
+            dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
+            COLOUR_BLACK, TextAlignment::CENTRE);
     }
 
     auto screenPos = w->windowPos
@@ -941,9 +941,9 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
         auto ft = Formatter::Common();
         ft.Add<const char*>(buffer);
-        gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top },
-            widget->width() - 8);
+        DrawTextEllipsised(
+            dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
+            COLOUR_BLACK, TextAlignment::CENTRE);
     }
 }
 

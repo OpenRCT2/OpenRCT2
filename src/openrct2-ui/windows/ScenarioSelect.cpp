@@ -476,8 +476,9 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
             auto screenPos = w->windowPos
                 + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
                                   window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
-            gfx_draw_string_centred_clipped(
-                dpi, STR_SCENARIO_LOCKED, nullptr, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 85, 0 }, 170);
+            DrawTextEllipsised(
+                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, Formatter::Common(), COLOUR_BLACK,
+                TextAlignment::CENTRE);
             gfx_draw_string_left_wrapped(
                 dpi, nullptr, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK);
         }
@@ -505,8 +506,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->name);
-    gfx_draw_string_centred_clipped(
-        dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 85, 0 }, 170);
+    DrawTextEllipsised(
+        dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::CENTRE);
     screenPos.y += 15;
 
     // Scenario details

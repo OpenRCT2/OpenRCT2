@@ -925,8 +925,9 @@ static void window_new_ride_paint_ride_information(
     if (availabilityString[0] != 0)
     {
         const char* drawString = availabilityString;
-        gfx_draw_string_left_clipped(
-            dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2);
+        ft = Formatter::Common();
+        ft.Add<const char*>(drawString);
+        DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft, COLOUR_BLACK);
     }
 
     if (item.Type != _lastTrackDesignCountRideType.Type || item.EntryIndex != _lastTrackDesignCountRideType.EntryIndex)

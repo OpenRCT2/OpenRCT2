@@ -566,8 +566,7 @@ static void window_object_load_error_paint(rct_window* w, rct_drawpixelinfo* dpi
     ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_FILE);
     ft.Add<utf8*>(file_path.c_str());
-    gfx_draw_string_left_clipped(
-        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + 5, w->windowPos.y + 43 }, WW - 5);
+    DrawTextEllipsised(dpi, { w->windowPos.x + 5, w->windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft, COLOUR_BLACK);
 }
 
 static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)

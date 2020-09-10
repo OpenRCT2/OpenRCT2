@@ -715,11 +715,11 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
 
             auto ft = Formatter::Common();
             peep->FormatNameTo(ft);
-            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, nameColumnSize);
+            DrawTextEllipsised(dpi, { 0, y }, nameColumnSize, format, ft, COLOUR_BLACK);
 
             ft = Formatter::Common();
             peep->FormatActionTo(ft);
-            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { actionOffset, y }, actionColumnSize);
+            DrawTextEllipsised(dpi, { actionOffset, y }, actionColumnSize, format, ft, COLOUR_BLACK);
 
             // True if a patrol path is set for the worker
             if (gStaffModes[peep->StaffId] == StaffMode::Patrol)

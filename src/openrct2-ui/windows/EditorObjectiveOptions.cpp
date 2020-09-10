@@ -923,7 +923,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(parkName);
-        gfx_draw_string_left_clipped(dpi, STR_WINDOW_PARK_NAME, gCommonFormatArgs, COLOUR_BLACK, screenCoords, width);
+        DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft, COLOUR_BLACK);
     }
 
     // Scenario name
@@ -933,7 +933,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gS6Info.name);
-    gfx_draw_string_left_clipped(dpi, STR_WINDOW_SCENARIO_NAME, gCommonFormatArgs, COLOUR_BLACK, screenCoords, width);
+    DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft, COLOUR_BLACK);
 
     // Scenario details label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_DETAILS].top };
