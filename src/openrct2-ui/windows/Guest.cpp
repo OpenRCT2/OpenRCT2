@@ -1765,22 +1765,16 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
     auto ft = Formatter::Common();
-    if (peep->FavouriteRide != RIDE_ID_NULL)
+    auto ride = get_ride(peep->FavouriteRide);
+    if (ride != nullptr)
     {
-        auto ride = get_ride(peep->FavouriteRide);
-        if (ride != nullptr)
-        {
-            ride->FormatNameTo(ft);
-        }
-        else
-        {
-            ft.Add<rct_string_id>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
-        }
+        ride->FormatNameTo(ft);
     }
     else
     {
         ft.Add<rct_string_id>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
     }
+
     DrawTextEllipsised(dpi, screenCoords, w->width - 14, STR_FAVOURITE_RIDE, ft, COLOUR_BLACK);
 }
 

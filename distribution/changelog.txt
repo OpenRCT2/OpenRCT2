@@ -16,7 +16,7 @@
 - Fix: [#12820] Title menu buttons not invalidating properly
 - Fix: [#12845] Deleting ride with active ad campaign creates incorrect notification.
 - Fix: [#12857] Incorrect Peep thoughts in imported RCT1 parks.
-- Fix: [#12881] Guests have no favorite ride.
+- Fix: [#12881] Guests' favourite rides are not listed in the guest window.
 - Fix: Incomplete loop collision box allowed overlapping track (original bug).
 - Technical: The required version of macOS has been lowered to 10.13 (High Sierra).
 
