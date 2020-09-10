@@ -791,7 +791,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].date_formatted.c_str());
-            DrawTextEllipsised(dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, COLOUR_BLACK);
+            DrawTextEllipsised(dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, COLOUR_BLACK, TextAlignment::RIGHT);
 
             ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_STRING);
