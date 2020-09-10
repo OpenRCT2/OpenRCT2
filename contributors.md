@@ -155,6 +155,7 @@ The following people are not part of the development team, but have been contrib
 * Ryan Bello (ryan-bello)
 * Simon Jarrett (mwnciau)
 * Richard Fine (richard-fine)
+* Tom Parsons (tombomp)
 
 ## Toolchain
 * (Balletie) - macOS
