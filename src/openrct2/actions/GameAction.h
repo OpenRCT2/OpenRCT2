@@ -172,6 +172,13 @@ public:
         Visit("y", param.y);
     }
 
+    void Visit(CoordsXYZ& param)
+    {
+        Visit("x", param.x);
+        Visit("y", param.y);
+        Visit("z", param.z);
+    }
+
     void Visit(CoordsXYZD& param)
     {
         Visit("x", param.x);
