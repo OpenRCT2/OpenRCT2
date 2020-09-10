@@ -2591,24 +2591,7 @@ void Vehicle::UpdateWaitingToDepart()
         case RideMode::Intense:
         case RideMode::Berserk:
             SetState(Vehicle::Status::TopSpinOperating, sub_state);
-
-            switch (curRide->mode)
-            {
-                case RideMode::Beginners:
-                    sub_state = 0;
-                    break;
-                case RideMode::Intense:
-                    sub_state = 1;
-                    break;
-                case RideMode::Berserk:
-                    sub_state = 2;
-                    break;
-                default:
-                {
-                    // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
-                    // in switch [-Werror=switch]"
-                }
-            }
+            sub_state = curRide->mode == RideMode::Beginners ? 0 : curRide->mode == RideMode::Intense ? 1 : 2;
             current_time = -1;
             vehicle_sprite_type = 0;
             bank_rotation = 0;
@@ -2626,23 +2609,7 @@ void Vehicle::UpdateWaitingToDepart()
         case RideMode::StormChasers3DFilm:
         case RideMode::SpaceRaiders3DFilm:
             SetState(Vehicle::Status::ShowingFilm, sub_state);
-            switch (curRide->mode)
-            {
-                case RideMode::MouseTails3DFilm:
-                    sub_state = 0;
-                    break;
-                case RideMode::StormChasers3DFilm:
-                    sub_state = 1;
-                    break;
-                case RideMode::SpaceRaiders3DFilm:
-                    sub_state = 2;
-                    break;
-                default:
-                {
-                    // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
-                    // in switch [-Werror=switch]"
-                }
-            }
+            sub_state = curRide->mode == RideMode::MouseTails3DFilm ? 0 : curRide->mode == RideMode::StormChasers3DFilm ? 1 : 2;
             current_time = -1;
             UpdateShowingFilm();
             break;
@@ -3276,7 +3243,33 @@ void Vehicle::UpdateDeparting()
             if (velocity <= 131940)
                 acceleration = 3298;
             break;
-        default:
+        case RideMode::Normal:
+        case RideMode::Shuttle:
+        case RideMode::StationToStation:
+        case RideMode::SingleRidePerAdmission:
+        case RideMode::UnlimitedRidesPerAdmission:
+        case RideMode::Maze:
+        case RideMode::Race:
+        case RideMode::Dodgems:
+        case RideMode::Swing:
+        case RideMode::ShopStall:
+        case RideMode::Rotation:
+        case RideMode::ForwardRotation:
+        case RideMode::BackwardRotation:
+        case RideMode::FilmAvengingAviators:
+        case RideMode::MouseTails3DFilm:
+        case RideMode::SpaceRings:
+        case RideMode::Beginners:
+        case RideMode::FilmThrillRiders:
+        case RideMode::StormChasers3DFilm:
+        case RideMode::SpaceRaiders3DFilm:
+        case RideMode::Intense:
+        case RideMode::Berserk:
+        case RideMode::HauntedHouse:
+        case RideMode::CircusShow:
+        case RideMode::CrookedHouse:
+        case RideMode::Count:
+        case RideMode::NullMode:
         {
             // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
             // in switch [-Werror=switch]"
@@ -3891,7 +3884,29 @@ void Vehicle::UpdateArriving()
             acceleration = 0;
             SetState(Vehicle::Status::UnloadingPassengers);
             return;
-        default:
+        case RideMode::Normal:
+        case RideMode::ContinuousCircuit:
+        case RideMode::ReverseInclineLaunchedShuttle:
+        case RideMode::PoweredLaunchPasstrough:
+        case RideMode::Shuttle:
+        case RideMode::BoatHire:
+        case RideMode::UpwardLaunch:
+        case RideMode::RotatingLift:
+        case RideMode::StationToStation:
+        case RideMode::SingleRidePerAdmission:
+        case RideMode::UnlimitedRidesPerAdmission:
+        case RideMode::Maze:
+        case RideMode::Race:
+        case RideMode::Dodgems:
+        case RideMode::ShopStall:
+        case RideMode::LimPoweredLaunch:
+        case RideMode::DownwardLaunch:
+        case RideMode::FreefallDrop:
+        case RideMode::ContinuousCircuitBlockSectioned:
+        case RideMode::PoweredLaunch:
+        case RideMode::PoweredLaunchBlockSectioned:
+        case RideMode::Count:
+        case RideMode::NullMode:
         {
             // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
             // in switch [-Werror=switch]"
