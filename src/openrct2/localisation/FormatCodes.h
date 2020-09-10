@@ -146,6 +146,7 @@ namespace UnicodeChar
 {
     // Latin alphabet
     constexpr char32_t j = 0x6A;
+    constexpr char32_t l = 0x6C;
     constexpr char32_t ae_uc = 0xC6;
     constexpr char32_t o_stroke_uc = 0xD8;
     constexpr char32_t y_acute_uc = 0xDD;

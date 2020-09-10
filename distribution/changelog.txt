@@ -5,7 +5,7 @@
 - Feature: [#12712] Add TCP / socket plugin APIs.
 - Feature: [#12840] Add Park.entranceFee to the plugin API.
 - Fix: [#400] Unable to place some saved tracks flush to the ground (original bug).
-- Fix: [#5753]: Entertainers make themselves happy instead of the guests.
+- Fix: [#5753] Entertainers make themselves happy instead of the guests.
 - Fix: [#7037] Unable to save tracks starting with a sloped turn or helix.
 - Fix: [#12691] Ride graph tooltip incorrectly used count instead of number string.
 - Fix: [#12694] Crash when switching ride types with construction window open.
@@ -18,6 +18,8 @@
 - Fix: [#12857] Incorrect Peep thoughts in imported RCT1 parks.
 - Fix: [#12881] Guests' favourite rides are not listed in the guest window.
 - Fix: Incomplete loop collision box allowed overlapping track (original bug).
+- Improved: [#12806] Add Esperanto diacritics to the sprite font.
+- Improved: [#12890] Add stroke to lowercase 'L' to differentiate from capital 'I'.
 - Technical: The required version of macOS has been lowered to 10.13 (High Sierra).
 
 0.3.0 (2020-08-15)
