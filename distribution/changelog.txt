@@ -16,8 +16,8 @@
 - Fix: [#12845] Deleting ride with active ad campaign creates incorrect notification.
 - Fix: [#12857] Incorrect Peep thoughts in imported RCT1 parks.
 - Fix: Incomplete loop collision box allowed overlapping track (original bug).
-- Change: [#12806] Add Esperanto diacritics to the sprite font.
-- Change: [#12890] Add stroke to lowercase 'L' to differentiate from capital 'I'.
+- Improved: [#12806] Add Esperanto diacritics to the sprite font.
+- Improved: [#12890] Add stroke to lowercase 'L' to differentiate from capital 'I'.
 - Technical: The required version of macOS has been lowered to 10.13 (High Sierra).
 
 0.3.0 (2020-08-15)
