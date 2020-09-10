@@ -48,8 +48,8 @@ protected:
     {
         RatingTuple ratings = ride.ratings;
         std::string line = String::StdFormat(
-            "%s: (%d, %d, %d)", RideTypeDescriptors[ride.type].EnumName, (int)ratings.Excitement, (int)ratings.Intensity,
-            (int)ratings.Nausea);
+            "%s: (%d, %d, %d)", RideTypeDescriptors[ride.type].EnumName, static_cast<int>(ratings.Excitement),
+            static_cast<int>(ratings.Intensity), static_cast<int>(ratings.Nausea));
         return line;
     }
 };

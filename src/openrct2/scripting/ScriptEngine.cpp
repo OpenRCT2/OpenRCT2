@@ -369,7 +369,7 @@ ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& en
 
 void ScriptEngine::Initialise()
 {
-    auto ctx = (duk_context*)_context;
+    auto ctx = static_cast<duk_context*>(_context);
     ScCheats::Register(ctx);
     ScConfiguration::Register(ctx);
     ScConsole::Register(ctx);

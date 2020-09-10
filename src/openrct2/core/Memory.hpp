@@ -75,7 +75,7 @@ namespace Memory
 
     template<typename T> static void Free(T* ptr)
     {
-        free((void*)ptr);
+        free(const_cast<void*>(reinterpret_cast<const void*>(ptr)));
     }
 
     template<typename T> static void FreeArray(T* ptr, size_t count)
