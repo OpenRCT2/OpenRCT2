@@ -77,7 +77,7 @@ public:
 
         td->cost = 0;
         td->flags = td6.flags;
-        td->ride_mode = td6.ride_mode;
+        td->ride_mode = static_cast<RideMode>(td6.ride_mode);
         td->track_flags = 0;
         td->colour_scheme = td6.version_and_colour_scheme & 0x3;
         for (auto i = 0; i < RCT2_MAX_CARS_PER_TRAIN; ++i)

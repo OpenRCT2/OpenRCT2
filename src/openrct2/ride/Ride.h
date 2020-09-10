@@ -190,6 +190,7 @@ enum class RideClassification
 
 struct TrackDesign;
 enum class RideMode : uint8_t;
+
 /**
  * Ride structure.
  *
