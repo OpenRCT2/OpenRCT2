@@ -127,7 +127,7 @@ static void widget_frame_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     uint8_t colour = w->colours[widget->colour];
 
     // Draw the frame
-    gfx_fill_rect_inset(dpi, leftTop.x, leftTop.y, r, b, colour, press);
+    gfx_fill_rect_inset(dpi, { leftTop, { r, b } }, colour, press);
 
     // Check if the window can be resized
     if (!(w->flags & WF_RESIZABLE))
@@ -158,7 +158,7 @@ static void widget_resize_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     uint8_t colour = w->colours[widget->colour];
 
     // Draw the panel
-    gfx_fill_rect_inset(dpi, leftTop.x, leftTop.y, r, b, colour, 0);
+    gfx_fill_rect_inset(dpi, { leftTop, { r, b } }, colour, 0);
 
     // Check if the window can be resized
     if (!(w->flags & WF_RESIZABLE))
@@ -181,10 +181,8 @@ static void widget_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
-    int32_t r = w->windowPos.x + widget->right;
-    int32_t b = w->windowPos.y + widget->bottom;
+    ScreenRect rect{ w->windowPos + ScreenCoordsXY{ widget->left, widget->top },
+                     w->windowPos + ScreenCoordsXY{ widget->right, widget->bottom } };
 
     // Check if the button is pressed down
     uint8_t press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET
@@ -196,12 +194,12 @@ static void widget_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     if (static_cast<int32_t>(widget->image) == -2)
     {
         // Draw border with no fill
-        gfx_fill_rect_inset(dpi, l, t, r, b, colour, press | INSET_RECT_FLAG_FILL_NONE);
+        gfx_fill_rect_inset(dpi, rect, colour, press | INSET_RECT_FLAG_FILL_NONE);
         return;
     }
 
     // Draw the border with fill
-    gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
+    gfx_fill_rect_inset(dpi, rect, colour, press);
 
     widget_draw_image(dpi, w, widgetIndex);
 }
@@ -270,10 +268,8 @@ static void widget_flat_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_w
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
-    int32_t r = w->windowPos.x + widget->right;
-    int32_t b = w->windowPos.y + widget->bottom;
+    ScreenRect rect{ w->windowPos + ScreenCoordsXY{ widget->left, widget->top },
+                     w->windowPos + ScreenCoordsXY{ widget->right, widget->bottom } };
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -284,12 +280,12 @@ static void widget_flat_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_w
         if (static_cast<int32_t>(widget->image) == -2)
         {
             // Draw border with no fill
-            gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
+            gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
             return;
         }
 
         // Draw the border with fill
-        gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_FLAG_BORDER_INSET);
+        gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_FLAG_BORDER_INSET);
     }
 
     // Draw image
@@ -306,10 +302,8 @@ static void widget_text_button(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
-    int32_t r = w->windowPos.x + widget->right;
-    int32_t b = w->windowPos.y + widget->bottom;
+    ScreenRect rect{ w->windowPos + ScreenCoordsXY{ widget->left, widget->top },
+                     w->windowPos + ScreenCoordsXY{ widget->right, widget->bottom } };
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -317,7 +311,7 @@ static void widget_text_button(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     // Border
     uint8_t press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET
                                                                                                : 0;
-    gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
+    gfx_fill_rect_inset(dpi, rect, colour, press);
 
     // Button caption
     if (widget->type != WWT_TABLE_HEADER)
@@ -418,15 +412,13 @@ static void widget_text_inset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
-    int32_t r = w->windowPos.x + widget->right;
-    int32_t b = w->windowPos.y + widget->bottom;
+    ScreenRect rect{ w->windowPos + ScreenCoordsXY{ widget->left, widget->top },
+                     w->windowPos + ScreenCoordsXY{ widget->right, widget->bottom } };
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
 
-    gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_F_60);
+    gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_F_60);
     widget_text(dpi, w, widgetIndex);
 }
 
@@ -533,7 +525,7 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
     if (w->flags & WF_10)
         press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
 
-    gfx_fill_rect_inset(dpi, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, colour, press);
+    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, press);
 
     // Black caption bars look slightly green, this fixes that
     if (colour == 0)
@@ -584,7 +576,7 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     uint8_t colour = w->colours[widget->colour];
 
     // Draw the button
-    gfx_fill_rect_inset(dpi, topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, colour, press);
+    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, press);
 
     if (widget->text == STR_NONE)
         return;
@@ -607,16 +599,15 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
-    int32_t b = w->windowPos.y + widget->bottom;
-    int32_t yMid = (b + t) / 2;
+    ScreenCoordsXY topLeft = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    ScreenCoordsXY bottomRight = w->windowPos + ScreenCoordsXY{ widget->right, widget->bottom };
+    ScreenCoordsXY midLeft = { topLeft.x, (topLeft.y + bottomRight.y) / 2 };
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
 
     // checkbox
-    gfx_fill_rect_inset(dpi, l, yMid - 5, l + 9, yMid + 4, colour, INSET_RECT_F_60);
+    gfx_fill_rect_inset(dpi, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
 
     if (widget_is_disabled(w, widgetIndex))
     {
@@ -627,7 +618,8 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (widget_is_pressed(w, widgetIndex))
     {
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), { l, yMid - 5 });
+        gfx_draw_string(
+            dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), { midLeft.x, midLeft.y - 5 });
     }
 
     // draw the text
@@ -635,7 +627,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
         return;
 
     auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
-    gfx_draw_string_left_centred(dpi, stringId, formatArgs, colour, { l + 14, yMid });
+    gfx_draw_string_left_centred(dpi, stringId, formatArgs, colour, { midLeft.x + 14, midLeft.y });
 }
 
 /**
@@ -650,58 +642,57 @@ static void widget_scroll_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     rct_scroll* scroll = &w->scrolls[scrollIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
-    int32_t r = w->windowPos.x + widget->right;
-    int32_t b = w->windowPos.y + widget->bottom;
+    ScreenCoordsXY topLeft = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
+    ScreenCoordsXY bottomRight = w->windowPos + ScreenCoordsXY{ widget->right, widget->bottom };
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
 
     // Draw the border
-    gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_F_60);
+    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
     // Inflate by -1
-    l++;
-    t++;
-    r--;
-    b--;
+    topLeft.x++;
+    topLeft.y++;
+    bottomRight.x--;
+    bottomRight.y--;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
     // Horizontal scrollbar
     if (scroll->flags & HSCROLLBAR_VISIBLE)
         widget_hscrollbar_draw(
-            dpi, scroll, l, b - SCROLLBAR_WIDTH, ((scroll->flags & VSCROLLBAR_VISIBLE) ? r - (SCROLLBAR_WIDTH + 1) : r), b,
+            dpi, scroll, topLeft.x, bottomRight.y - SCROLLBAR_WIDTH,
+            ((scroll->flags & VSCROLLBAR_VISIBLE) ? bottomRight.x - (SCROLLBAR_WIDTH + 1) : bottomRight.x), bottomRight.y,
             colour);
 
     // Vertical scrollbar
     if (scroll->flags & VSCROLLBAR_VISIBLE)
         widget_vscrollbar_draw(
-            dpi, scroll, r - SCROLLBAR_WIDTH, t, r, ((scroll->flags & HSCROLLBAR_VISIBLE) ? b - (SCROLLBAR_WIDTH + 1) : b),
-            colour);
+            dpi, scroll, bottomRight.x - SCROLLBAR_WIDTH, topLeft.y, bottomRight.x,
+            ((scroll->flags & HSCROLLBAR_VISIBLE) ? bottomRight.y - (SCROLLBAR_WIDTH + 1) : bottomRight.y), colour);
 
     // Contents
     if (scroll->flags & HSCROLLBAR_VISIBLE)
-        b -= (SCROLLBAR_WIDTH + 1);
+        bottomRight.y -= (SCROLLBAR_WIDTH + 1);
     if (scroll->flags & VSCROLLBAR_VISIBLE)
-        r -= (SCROLLBAR_WIDTH + 1);
+        bottomRight.x -= (SCROLLBAR_WIDTH + 1);
 
-    b++;
-    r++;
+    bottomRight.y++;
+    bottomRight.x++;
 
     // Create a new inner scroll dpi
     rct_drawpixelinfo scroll_dpi = *dpi;
 
     // Clip the scroll dpi against the outer dpi
-    int32_t cl = std::max<int32_t>(dpi->x, l);
-    int32_t ct = std::max<int32_t>(dpi->y, t);
-    int32_t cr = std::min<int32_t>(dpi->x + dpi->width, r);
-    int32_t cb = std::min<int32_t>(dpi->y + dpi->height, b);
+    int32_t cl = std::max<int32_t>(dpi->x, topLeft.x);
+    int32_t ct = std::max<int32_t>(dpi->y, topLeft.y);
+    int32_t cr = std::min<int32_t>(dpi->x + dpi->width, bottomRight.x);
+    int32_t cb = std::min<int32_t>(dpi->y + dpi->height, bottomRight.y);
 
     // Set the respective dpi attributes
-    scroll_dpi.x = cl - l + scroll->h_left;
-    scroll_dpi.y = ct - t + scroll->v_top;
+    scroll_dpi.x = cl - topLeft.x + scroll->h_left;
+    scroll_dpi.y = ct - topLeft.y + scroll->v_top;
     scroll_dpi.width = cr - cl;
     scroll_dpi.height = cb - ct;
     scroll_dpi.bits += cl - dpi->x;
@@ -729,7 +720,7 @@ static void widget_hscrollbar_draw(
     {
         uint8_t flags = (scroll->flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, l, t, l + (SCROLLBAR_WIDTH - 1), b, colour, flags);
+        gfx_fill_rect_inset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
         gfx_draw_string(dpi, static_cast<const char*>(BlackLeftArrowString), COLOUR_BLACK, { l + 1, t });
     }
 
@@ -739,14 +730,14 @@ static void widget_hscrollbar_draw(
         int16_t right = std::min(r - SCROLLBAR_WIDTH, l + scroll->h_thumb_right - 1);
         uint8_t flags = (scroll->flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, left, t, right, b, colour, flags);
+        gfx_fill_rect_inset(dpi, { { left, t }, { right, b } }, colour, flags);
     }
 
     // Right button
     {
         uint8_t flags = (scroll->flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
-        gfx_fill_rect_inset(dpi, r - (SCROLLBAR_WIDTH - 1), t, r, b, colour, flags);
+        gfx_fill_rect_inset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
         gfx_draw_string(dpi, static_cast<const char*>(BlackRightArrowString), COLOUR_BLACK, { r - 6, t });
     }
 }
@@ -765,19 +756,20 @@ static void widget_vscrollbar_draw(
 
     // Up button
     gfx_fill_rect_inset(
-        dpi, l, t, r, t + (SCROLLBAR_WIDTH - 1), colour,
+        dpi, { { l, t }, { r, t + (SCROLLBAR_WIDTH - 1) } }, colour,
         ((scroll->flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
     gfx_draw_string(dpi, static_cast<const char*>(BlackUpArrowString), COLOUR_BLACK, { l + 1, t - 1 });
 
     // Thumb
     gfx_fill_rect_inset(
-        dpi, l, std::max(t + SCROLLBAR_WIDTH, t + scroll->v_thumb_top - 1), r,
-        std::min(b - SCROLLBAR_WIDTH, t + scroll->v_thumb_bottom - 1), colour,
-        ((scroll->flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
+        dpi,
+        { { l, std::max(t + SCROLLBAR_WIDTH, t + scroll->v_thumb_top - 1) },
+          { r, std::min(b - SCROLLBAR_WIDTH, t + scroll->v_thumb_bottom - 1) } },
+        colour, ((scroll->flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Down button
     gfx_fill_rect_inset(
-        dpi, l, b - (SCROLLBAR_WIDTH - 1), r, b, colour,
+        dpi, { { l, b - (SCROLLBAR_WIDTH - 1) }, { r, b } }, colour,
         ((scroll->flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
     gfx_draw_string(dpi, static_cast<const char*>(BlackDownArrowString), COLOUR_BLACK, { l + 1, b - (SCROLLBAR_WIDTH - 1) });
 }
@@ -1039,10 +1031,8 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     rct_widget* widget = &w->widgets[widgetIndex];
 
     // Resolve the absolute ltrb
-    int32_t l = w->windowPos.x + widget->left;
-    int32_t t = w->windowPos.y + widget->top;
-    int32_t r = w->windowPos.x + widget->right;
-    int32_t b = w->windowPos.y + widget->bottom;
+    ScreenCoordsXY topLeft{ w->windowPos + ScreenCoordsXY{ widget->left, widget->top } };
+    ScreenCoordsXY bottomRight{ w->windowPos + ScreenCoordsXY{ widget->right, widget->bottom } };
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -1051,21 +1041,21 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
         && widgetIndex == gCurrentTextBox.widget_index;
 
     // gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
-    gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_F_60);
+    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gCurrentFontFlags = 0;
 
     // Figure out where the text should be positioned vertically.
-    t = w->windowPos.y + widget->textTop();
+    topLeft.y = w->windowPos.y + widget->textTop();
 
     if (!active || gTextInput == nullptr)
     {
         if (w->widgets[widgetIndex].text != 0)
         {
             safe_strcpy(wrapped_string, w->widgets[widgetIndex].string, 512);
-            gfx_wrap_string(wrapped_string, r - l - 5, &no_lines, &font_height);
-            gfx_draw_string(dpi, wrapped_string, w->colours[1], { l + 2, t });
+            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, &no_lines, &font_height);
+            gfx_draw_string(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
         }
         return;
     }
@@ -1074,16 +1064,16 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
 
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
-    gfx_wrap_string(wrapped_string, r - l - 5 - 6, &no_lines, &font_height);
+    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, &no_lines, &font_height);
 
-    gfx_draw_string(dpi, wrapped_string, w->colours[1], { l + 2, t });
+    gfx_draw_string(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
 
     size_t string_length = get_string_size(wrapped_string) - 1;
 
     // Make a copy of the string for measuring the width.
     char temp_string[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(temp_string, wrapped_string, std::min(string_length, gTextInput->SelectionStart));
-    int32_t cur_x = l + gfx_get_string_width(temp_string) + 3;
+    int32_t cur_x = topLeft.x + gfx_get_string_width(temp_string) + 3;
 
     int32_t width = 6;
     if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
@@ -1098,7 +1088,7 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (gTextBoxFrameNo <= 15)
     {
         colour = ColourMapA[w->colours[1]].mid_light;
-        auto y = t + (widget->height() - 1);
+        auto y = topLeft.x + (widget->height() - 1);
         gfx_fill_rect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
     }
 }
