@@ -815,6 +815,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                 if (thought->freshness > 5)
                                     break;
 
+                                ft = Formatter::Common();
                                 peep_thought_set_format_args(&peep->Thoughts[j], ft);
                                 DrawTextEllipsised(dpi, { 118, y }, 329, format, ft, COLOUR_BLACK);
                                 break;
