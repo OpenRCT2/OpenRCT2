@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "GuestPathfinding.h"
+
 #include "../core/Guard.hpp"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
@@ -25,6 +27,17 @@ static int8_t _peepPathFindNumJunctions;
 static int8_t _peepPathFindMaxJunctions;
 static int32_t _peepPathFindTilesChecked;
 static uint8_t _peepPathFindFewestNumSteps;
+
+TileCoordsXYZ gPeepPathFindGoalPosition;
+bool gPeepPathFindIgnoreForeignQueues;
+ride_id_t gPeepPathFindQueueRideIndex;
+
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+// Use to guard calls to log messages
+bool gPathFindDebug = false;
+// Use to put the peep name in the log message
+utf8 gPathFindDebugPeepName[256];
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 static int32_t guest_surface_path_finding(Peep* peep);
 
@@ -2217,3 +2230,81 @@ int32_t guest_path_finding(Guest* peep)
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     return peep_move_one_tile(direction, peep);
 }
+
+bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection)
+{
+    if (tileElement->AsPath()->IsSloped())
+    {
+        int32_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
+        if (slopeDirection == currentDirection)
+        {
+            if (currentZ != tileElement->base_height)
+                return false;
+        }
+        else
+        {
+            slopeDirection = direction_reverse(slopeDirection);
+            if (slopeDirection != currentDirection)
+                return false;
+            if (currentZ != tileElement->base_height + 2)
+                return false;
+        }
+    }
+    else
+    {
+        if (currentZ != tileElement->base_height)
+            return false;
+    }
+    return true;
+}
+
+/**
+ *
+ *  rct2: 0x0069A98C
+ */
+void peep_reset_pathfind_goal(Peep* peep)
+{
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+    if (gPathFindDebug)
+    {
+        log_info("Resetting PathfindGoal for %s", gPathFindDebugPeepName);
+    }
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+    peep->PathfindGoal.x = 0xFF;
+    peep->PathfindGoal.y = 0xFF;
+    peep->PathfindGoal.z = 0xFF;
+    peep->PathfindGoal.direction = INVALID_DIRECTION;
+}
+
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+void pathfind_logging_enable([[maybe_unused]] Peep* peep)
+{
+#    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+    /* Determine if the pathfinding debugging is wanted for this peep. */
+    format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->Id));
+
+    /* For guests, use the existing PEEP_FLAGS_TRACKING flag to
+     * determine for which guest(s) the pathfinding debugging will
+     * be output for. */
+    if (peep->type == PEEP_TYPE_GUEST)
+    {
+        gPathFindDebug = peep->PeepFlags & PEEP_FLAGS_TRACKING;
+    }
+    /* For staff, there is no tracking button (any other similar
+     * suitable existing mechanism?), so fall back to a crude
+     * string comparison with a compile time hardcoded name. */
+    else
+    {
+        gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
+    }
+#    endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+}
+
+void pathfind_logging_disable()
+{
+#    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+    gPathFindDebug = false;
+#    endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+}
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

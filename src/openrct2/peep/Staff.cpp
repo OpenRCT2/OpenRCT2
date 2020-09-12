@@ -37,6 +37,7 @@
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "GuestPathfinding.h"
 #include "Peep.h"
 
 #include <algorithm>

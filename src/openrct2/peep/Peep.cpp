@@ -44,16 +44,12 @@
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "GuestPathfinding.h"
 #include "Staff.h"
 
 #include <algorithm>
 #include <iterator>
 #include <limits>
-
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-bool gPathFindDebug = false;
-utf8 gPathFindDebugPeepName[256];
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 uint8_t gGuestChangeModifier;
 uint32_t gNumGuestsInPark;
@@ -68,10 +64,6 @@ uint8_t gGuestInitialThirst;
 uint32_t gNextGuestNumber;
 
 uint8_t gPeepWarningThrottle[16];
-
-TileCoordsXYZ gPeepPathFindGoalPosition;
-bool gPeepPathFindIgnoreForeignQueues;
-ride_id_t gPeepPathFindQueueRideIndex;
 
 static uint8_t _unk_F1AEF0;
 static TileElement* _peepRideEntranceExitElement;
@@ -1715,10 +1707,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->CashInPocket = cash;
     peep->CashSpent = 0;
     peep->TimeInPark = -1;
-    peep->PathfindGoal.x = 0xFF;
-    peep->PathfindGoal.y = 0xFF;
-    peep->PathfindGoal.z = 0xFF;
-    peep->PathfindGoal.direction = INVALID_DIRECTION;
+    peep_reset_pathfind_goal(peep);
     peep->ItemStandardFlags = 0;
     peep->ItemExtraFlags = 0;
     peep->GuestHeadingToRideId = RIDE_ID_NULL;
@@ -2954,33 +2943,6 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
     return true;
 }
 
-bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection)
-{
-    if (tileElement->AsPath()->IsSloped())
-    {
-        int32_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
-        if (slopeDirection == currentDirection)
-        {
-            if (currentZ != tileElement->base_height)
-                return false;
-        }
-        else
-        {
-            slopeDirection = direction_reverse(slopeDirection);
-            if (slopeDirection != currentDirection)
-                return false;
-            if (currentZ != tileElement->base_height + 2)
-                return false;
-        }
-    }
-    else
-    {
-        if (currentZ != tileElement->base_height)
-            return false;
-    }
-    return true;
-}
-
 void Peep::PerformNextAction(uint8_t& pathing_result)
 {
     TileElement* tmpTile;
@@ -3141,25 +3103,6 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 }
 
 /**
- *
- *  rct2: 0x0069A98C
- */
-void peep_reset_pathfind_goal(Peep* peep)
-{
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    if (gPathFindDebug)
-    {
-        log_info("Resetting PathfindGoal for %s", gPathFindDebugPeepName);
-    }
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
-    peep->PathfindGoal.x = 0xFF;
-    peep->PathfindGoal.y = 0xFF;
-    peep->PathfindGoal.z = 0xFF;
-    peep->PathfindGoal.direction = INVALID_DIRECTION;
-}
-
-/**
  * Gets the height including the bit depending on how far up the slope the peep
  * is.
  *  rct2: 0x00694921
@@ -3265,38 +3208,6 @@ void peep_update_names(bool realNames)
     context_broadcast_intent(&intent);
     gfx_invalidate_screen();
 }
-
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-void pathfind_logging_enable([[maybe_unused]] Peep* peep)
-{
-#    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
-    /* Determine if the pathfinding debugging is wanted for this peep. */
-    format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->Id));
-
-    /* For guests, use the existing PEEP_FLAGS_TRACKING flag to
-     * determine for which guest(s) the pathfinding debugging will
-     * be output for. */
-    if (peep->type == PEEP_TYPE_GUEST)
-    {
-        gPathFindDebug = peep->PeepFlags & PEEP_FLAGS_TRACKING;
-    }
-    /* For staff, there is no tracking button (any other similar
-     * suitable existing mechanism?), so fall back to a crude
-     * string comparison with a compile time hardcoded name. */
-    else
-    {
-        gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
-    }
-#    endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
-}
-
-void pathfind_logging_disable()
-{
-#    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
-    gPathFindDebug = false;
-#    endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
-}
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 void increment_guests_in_park()
 {

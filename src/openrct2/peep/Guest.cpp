@@ -36,6 +36,7 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "GuestPathfinding.h"
 #include "Peep.h"
 #include "Staff.h"
 

@@ -1026,10 +1026,6 @@ extern uint32_t gNextGuestNumber;
 
 extern uint8_t gPeepWarningThrottle[16];
 
-extern TileCoordsXYZ gPeepPathFindGoalPosition;
-extern bool gPeepPathFindIgnoreForeignQueues;
-extern ride_id_t gPeepPathFindQueueRideIndex;
-
 Peep* try_get_guest(uint16_t spriteIndex);
 int32_t peep_get_staff_count();
 bool peep_can_be_picked_up(Peep* peep);
@@ -1056,26 +1052,6 @@ void SwitchToSpecialSprite(Peep* peep, uint8_t special_sprite_id);
 void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
-
-Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep);
-void peep_reset_pathfind_goal(Peep* peep);
-
-bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
-int32_t guest_path_finding(Guest* peep);
-
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-#    define PATHFIND_DEBUG                                                                                                     \
-        0 // Set to 0 to disable pathfinding debugging;
-          // Set to 1 to enable pathfinding debugging.
-// Some variables used for the path finding debugging.
-extern bool gPathFindDebug;              // Use to guard calls to log messages
-extern utf8 gPathFindDebugPeepName[256]; // Use to put the peep name in the log message
-
-// The following calls set the above two variables for a peep.
-// ... when PATHFIND_DEBUG is 1 (nonzero)
-void pathfind_logging_enable(Peep* peep);
-void pathfind_logging_disable();
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 void increment_guests_in_park();
 void increment_guests_heading_for_park();

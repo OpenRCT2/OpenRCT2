@@ -1,5 +1,6 @@
 #include "TestData.h"
 #include "openrct2/core/StringReader.hpp"
+#include "openrct2/peep/GuestPathfinding.h"
 #include "openrct2/peep/Peep.h"
 #include "openrct2/ride/Station.h"
 #include "openrct2/scenario/Scenario.h"
