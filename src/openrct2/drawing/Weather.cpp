@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Rain.h"
+#include "Weather.h"
 
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
