@@ -244,8 +244,8 @@ enum PeepState : uint8_t
 
 enum class PeepSittingSubState
 {
-    TryingToSit, //PEEP_SITTING_TRYING_TO_SIT = 0,
-    SatDown      //PEEP_SITTING_SAT_DOWN
+    TryingToSit, // PEEP_SITTING_TRYING_TO_SIT = 0,
+    SatDown      // PEEP_SITTING_SAT_DOWN
 };
 
 enum PeepRideSubState
