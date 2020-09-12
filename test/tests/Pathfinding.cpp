@@ -215,13 +215,13 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
 INSTANTIATE_TEST_CASE_P(
     ForScenario, SimplePathfindingTest,
     ::testing::Values(
-        SimplePathfindingScenario("StraightFlat", { 19, 15, 14 }, 24), SimplePathfindingScenario("SBend", { 15, 12, 14 }, 88),
-        SimplePathfindingScenario("UBend", { 17, 9, 14 }, 86), SimplePathfindingScenario("CBend", { 14, 5, 14 }, 164),
-        SimplePathfindingScenario("TwoEqualRoutes", { 9, 13, 14 }, 87),
-        SimplePathfindingScenario("TwoUnequalRoutes", { 3, 13, 14 }, 87),
+        SimplePathfindingScenario("StraightFlat", { 19, 15, 14 }, 24), SimplePathfindingScenario("SBend", { 15, 12, 14 }, 87),
+        SimplePathfindingScenario("UBend", { 17, 9, 14 }, 87), SimplePathfindingScenario("CBend", { 14, 5, 14 }, 164),
+        SimplePathfindingScenario("TwoEqualRoutes", { 9, 13, 14 }, 89),
+        SimplePathfindingScenario("TwoUnequalRoutes", { 3, 13, 14 }, 89),
         SimplePathfindingScenario("StraightUpBridge", { 12, 15, 14 }, 24),
         SimplePathfindingScenario("StraightUpSlope", { 14, 15, 14 }, 24),
-        SimplePathfindingScenario("SelfCrossingPath", { 6, 5, 14 }, 213)),
+        SimplePathfindingScenario("SelfCrossingPath", { 6, 5, 14 }, 211)),
     SimplePathfindingScenario::ToName);
 
 class ImpossiblePathfindingTest : public PathfindingTestBase, public ::testing::WithParamInterface<SimplePathfindingScenario>
