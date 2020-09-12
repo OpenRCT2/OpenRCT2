@@ -110,6 +110,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<ListViewColumn> ListViewColumns;
         ScrollbarType Scrollbars{};
         int32_t SelectedIndex{};
+        std::optional<RowColumn> SelectedCell;
         bool IsChecked{};
         bool IsDisabled{};
         bool IsPressed{};
@@ -177,6 +178,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 result.ListViewColumns = FromDuk<std::vector<ListViewColumn>>(desc["columns"]);
                 result.ListViewItems = FromDuk<std::vector<ListViewItem>>(desc["items"]);
+                result.SelectedCell = FromDuk<std::optional<RowColumn>>(desc["selectedCell"]);
                 result.ShowColumnHeaders = AsOrDefault(desc["showColumnHeaders"], false);
                 result.IsStriped = AsOrDefault(desc["isStriped"], false);
                 result.OnClick = desc["onClick"];
@@ -1007,6 +1009,7 @@ namespace OpenRCT2::Ui::Windows
                 listView.SetScrollbars(widgetDesc.Scrollbars, true);
                 listView.SetColumns(widgetDesc.ListViewColumns, true);
                 listView.SetItems(widgetDesc.ListViewItems, true);
+                listView.SelectedCell = widgetDesc.SelectedCell;
                 listView.ShowColumnHeaders = widgetDesc.ShowColumnHeaders;
                 listView.IsStriped = widgetDesc.IsStriped;
                 listView.OnClick = widgetDesc.OnClick;
