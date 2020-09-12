@@ -242,7 +242,7 @@ enum PeepState : uint8_t
     PEEP_STATE_INSPECTING = 23
 };
 
-enum class PeepSittingSubState
+enum class PeepSittingSubState : uint8_t
 {
     TryingToSit, // PEEP_SITTING_TRYING_TO_SIT = 0,
     SatDown      // PEEP_SITTING_SAT_DOWN
