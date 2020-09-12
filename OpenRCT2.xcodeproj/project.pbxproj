@@ -483,7 +483,7 @@
 		F76C85EE1EC4E88300FA49E2 /* Zip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83991EC4E7CC00FA49E2 /* Zip.cpp */; };
 		F76C85F91EC4E88300FA49E2 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A51EC4E7CC00FA49E2 /* Image.cpp */; };
 		F76C85FD1EC4E88300FA49E2 /* NewDrawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83A91EC4E7CC00FA49E2 /* NewDrawing.cpp */; };
-		F76C85FF1EC4E88300FA49E2 /* Rain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AB1EC4E7CC00FA49E2 /* Rain.cpp */; };
+		F76C85FF1EC4E88300FA49E2 /* Weather.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AB1EC4E7CC00FA49E2 /* Weather.cpp */; };
 		F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */; };
 		F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */; };
 		F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */; };
@@ -1706,8 +1706,8 @@
 		F76C83A71EC4E7CC00FA49E2 /* lightfx.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lightfx.h; sourceTree = "<group>"; };
 		F76C83A91EC4E7CC00FA49E2 /* NewDrawing.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NewDrawing.cpp; sourceTree = "<group>"; };
 		F76C83AA1EC4E7CC00FA49E2 /* NewDrawing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NewDrawing.h; sourceTree = "<group>"; };
-		F76C83AB1EC4E7CC00FA49E2 /* Rain.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Rain.cpp; sourceTree = "<group>"; };
-		F76C83AC1EC4E7CC00FA49E2 /* Rain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rain.h; sourceTree = "<group>"; };
+		F76C83AB1EC4E7CC00FA49E2 /* Weather.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Weather.cpp; sourceTree = "<group>"; };
+		F76C83AC1EC4E7CC00FA49E2 /* Weather.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Weather.h; sourceTree = "<group>"; };
 		F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = Editor.cpp; sourceTree = "<group>"; };
 		F76C83B21EC4E7CC00FA49E2 /* Editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Editor.h; sourceTree = "<group>"; };
 		F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileClassifier.cpp; sourceTree = "<group>"; };
@@ -2871,8 +2871,8 @@
 				4C7B53CD200029CE00A52E21 /* Line.cpp */,
 				F76C83A91EC4E7CC00FA49E2 /* NewDrawing.cpp */,
 				F76C83AA1EC4E7CC00FA49E2 /* NewDrawing.h */,
-				F76C83AB1EC4E7CC00FA49E2 /* Rain.cpp */,
-				F76C83AC1EC4E7CC00FA49E2 /* Rain.h */,
+				F76C83AB1EC4E7CC00FA49E2 /* Weather.cpp */,
+				F76C83AC1EC4E7CC00FA49E2 /* Weather.h */,
 				4C7B53CF200029D900A52E21 /* Rect.cpp */,
 				4C7B53D0200029D900A52E21 /* ScrollingText.cpp */,
 				4C6A66BB1FED04EE00694CB6 /* SSE41Drawing.cpp */,
@@ -4254,7 +4254,7 @@
 				C68878F120289B9B0084B384 /* FlyingRollerCoaster.cpp in Sources */,
 				C688792B20289B9B0084B384 /* MiniatureRailway.cpp in Sources */,
 				F76C85FD1EC4E88300FA49E2 /* NewDrawing.cpp in Sources */,
-				F76C85FF1EC4E88300FA49E2 /* Rain.cpp in Sources */,
+				F76C85FF1EC4E88300FA49E2 /* Weather.cpp in Sources */,
 				C688785920289A0A0084B384 /* Banner.cpp in Sources */,
 				C68878EC20289B9B0084B384 /* AirPoweredVerticalCoaster.cpp in Sources */,
 				C688790B20289B9B0084B384 /* WoodenWildMouse.cpp in Sources */,

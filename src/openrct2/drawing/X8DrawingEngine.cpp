@@ -21,7 +21,7 @@
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 #include "LightFX.h"
-#include "Rain.h"
+#include "Weather.h"
 
 #include <algorithm>
 #include <cstring>
