@@ -1082,7 +1082,7 @@ void footpath_chain_ride_queue(
 
         auto targetQueuePos = curQueuePos + CoordsDirectionDelta[direction];
         tileElement = map_get_first_element_at(targetQueuePos);
-        bool move = false;
+        bool foundQueue = false;
         if (tileElement != nullptr)
         {
             do
@@ -1098,9 +1098,8 @@ void footpath_chain_ride_queue(
                         if (tileElement->AsPath()->GetSlopeDirection() != direction)
                             break;
                     }
-                    move = true;
+                    foundQueue = true;
                     break;
-                    
                 }
                 if (tileElement->GetBaseZ() == baseZ - LAND_HEIGHT_STEP)
                 {
@@ -1111,15 +1110,14 @@ void footpath_chain_ride_queue(
                         break;
 
                     baseZ -= LAND_HEIGHT_STEP;
-                    move = true;
+                    foundQueue = true;
                     break;
                 }
             } while (!(tileElement++)->IsLastForTile());
         }
-        if(!move)
-        break;
+        if (!foundQueue)
+            break;
 
-  
         if (tileElement->AsPath()->IsQueue())
         {
             // Fix #2051: Stop queue paths that are already connected to two other tiles
