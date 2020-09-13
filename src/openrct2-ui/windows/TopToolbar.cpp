@@ -3447,33 +3447,22 @@ static void top_toolbar_rotate_menu_dropdown(int16_t dropdownIndex)
     }
 }
 
+constexpr Dropdown::Item cheatsMenuItems[] = {
+    Dropdown::ToggleOption(DDIDX_CHEATS, STR_CHEAT_TITLE),
+    Dropdown::ToggleOption(DDIDX_TILE_INSPECTOR, STR_DEBUG_DROPDOWN_TILE_INSPECTOR),
+    Dropdown::ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
+    Dropdown::ToggleOption(DDIDX_INVENTIONS_LIST, STR_DEBUG_DROPDOWN_INVENTIONS_LIST),
+    Dropdown::ToggleOption(DDIDX_SCENARIO_OPTIONS, STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS),
+    Dropdown::Separator(),
+    Dropdown::ToggleOption(DDIDX_ENABLE_SANDBOX_MODE, STR_ENABLE_SANDBOX_MODE),
+    Dropdown::ToggleOption(DDIDX_DISABLE_CLEARANCE_CHECKS, STR_DISABLE_CLEARANCE_CHECKS),
+    Dropdown::ToggleOption(DDIDX_DISABLE_SUPPORT_LIMITS, STR_DISABLE_SUPPORT_LIMITS),
+};
+static_assert(Dropdown::ItemIDsMatchIndices(cheatsMenuItems));
+
 static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[DDIDX_CHEATS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_CHEATS] = STR_CHEAT_TITLE;
-
-    gDropdownItemsFormat[DDIDX_TILE_INSPECTOR] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_TILE_INSPECTOR] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
-
-    gDropdownItemsFormat[DDIDX_OBJECT_SELECTION] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_OBJECT_SELECTION] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
-
-    gDropdownItemsFormat[DDIDX_INVENTIONS_LIST] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_INVENTIONS_LIST] = STR_DEBUG_DROPDOWN_INVENTIONS_LIST;
-
-    gDropdownItemsFormat[DDIDX_SCENARIO_OPTIONS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_SCENARIO_OPTIONS] = STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS;
-
-    gDropdownItemsFormat[5] = STR_EMPTY;
-
-    gDropdownItemsFormat[DDIDX_ENABLE_SANDBOX_MODE] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_ENABLE_SANDBOX_MODE] = STR_ENABLE_SANDBOX_MODE;
-
-    gDropdownItemsFormat[DDIDX_DISABLE_CLEARANCE_CHECKS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_DISABLE_CLEARANCE_CHECKS] = STR_DISABLE_CLEARANCE_CHECKS;
-
-    gDropdownItemsFormat[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_DISABLE_SUPPORT_LIMITS;
+    Dropdown::SetItems(cheatsMenuItems);
 
     window_dropdown_show_text(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
