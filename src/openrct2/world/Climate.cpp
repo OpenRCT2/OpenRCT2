@@ -186,11 +186,15 @@ void climate_update()
 
 void climate_force_weather(uint8_t weather)
 {
+    int32_t month = date_get_month(gDateMonthsElapsed);
+    const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gClimate)][month];
     const auto weatherState = &ClimateWeatherData[weather];
+
     gClimateCurrent.Weather = weather;
     gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
     gClimateCurrent.Level = weatherState->Level;
     gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
+    gClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
     gClimateUpdateTimer = 1920;
 
     climate_update();
