@@ -81,7 +81,7 @@ colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
 
 // Maximum manhattan distance that litter can be for a handyman to seek to it
-const uint16_t MAX_LITTER_DISTANCE = 0x60;
+const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
 
 template<> bool SpriteBase::Is<Staff>() const
 {
