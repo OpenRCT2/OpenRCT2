@@ -3618,42 +3618,33 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
     }
 }
 
+constexpr Dropdown::Item viewMenuItems[] = {
+    Dropdown::ToggleOption(DDIDX_UNDERGROUND_INSIDE, STR_UNDERGROUND_VIEW),
+    Dropdown::ToggleOption(DDIDX_HIDE_BASE, STR_REMOVE_BASE_LAND),
+    Dropdown::ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
+    Dropdown::Separator(),
+    Dropdown::ToggleOption(DDIDX_SEETHROUGH_RIDES, STR_SEE_THROUGH_RIDES),
+    Dropdown::ToggleOption(DDIDX_SEETHROUGH_SCENARY, STR_SEE_THROUGH_SCENERY),
+    Dropdown::ToggleOption(DDIDX_SEETHROUGH_PATHS, STR_SEE_THROUGH_PATHS),
+    Dropdown::ToggleOption(DDIDX_INVISIBLE_SUPPORTS, STR_INVISIBLE_SUPPORTS),
+    Dropdown::ToggleOption(DDIDX_INVISIBLE_PEEPS, STR_INVISIBLE_PEOPLE),
+    Dropdown::Separator(),
+    Dropdown::ToggleOption(DDIDX_LAND_HEIGHTS, STR_HEIGHT_MARKS_ON_LAND),
+    Dropdown::ToggleOption(DDIDX_TRACK_HEIGHTS, STR_HEIGHT_MARKS_ON_RIDE_TRACKS),
+    Dropdown::ToggleOption(DDIDX_PATH_HEIGHTS, STR_HEIGHT_MARKS_ON_PATHS),
+    Dropdown::Separator(),
+    Dropdown::ToggleOption(DDIDX_VIEW_CLIPPING, STR_VIEW_CLIPPING_MENU),
+    Dropdown::ToggleOption(DDIDX_HIGHLIGHT_PATH_ISSUES, STR_HIGHLIGHT_PATH_ISSUES_MENU),
+};
+static_assert(Dropdown::ItemIDsMatchIndices(viewMenuItems));
+
 /**
  *
  *  rct2: 0x0066CDE4
  */
 static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[1] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[3] = STR_EMPTY;
-    gDropdownItemsFormat[4] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[6] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[7] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[8] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[9] = STR_EMPTY;
-    gDropdownItemsFormat[10] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[11] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[12] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[13] = DROPDOWN_SEPARATOR;
-    gDropdownItemsFormat[DDIDX_VIEW_CLIPPING] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_TOGGLE_OPTION;
-
-    gDropdownItemsArgs[0] = STR_UNDERGROUND_VIEW;
-    gDropdownItemsArgs[1] = STR_REMOVE_BASE_LAND;
-    gDropdownItemsArgs[2] = STR_REMOVE_VERTICAL_FACES;
-    gDropdownItemsArgs[4] = STR_SEE_THROUGH_RIDES;
-    gDropdownItemsArgs[5] = STR_SEE_THROUGH_SCENERY;
-    gDropdownItemsArgs[6] = STR_SEE_THROUGH_PATHS;
-    gDropdownItemsArgs[7] = STR_INVISIBLE_SUPPORTS;
-    gDropdownItemsArgs[8] = STR_INVISIBLE_PEOPLE;
-    gDropdownItemsArgs[10] = STR_HEIGHT_MARKS_ON_LAND;
-    gDropdownItemsArgs[11] = STR_HEIGHT_MARKS_ON_RIDE_TRACKS;
-    gDropdownItemsArgs[12] = STR_HEIGHT_MARKS_ON_PATHS;
-    gDropdownItemsArgs[DDIDX_VIEW_CLIPPING] = STR_VIEW_CLIPPING_MENU;
-    gDropdownItemsArgs[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_HIGHLIGHT_PATH_ISSUES_MENU;
+    Dropdown::SetItems(viewMenuItems);
 
     window_dropdown_show_text(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0,
