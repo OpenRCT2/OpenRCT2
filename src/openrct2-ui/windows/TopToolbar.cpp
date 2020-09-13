@@ -3447,22 +3447,24 @@ static void top_toolbar_rotate_menu_dropdown(int16_t dropdownIndex)
     }
 }
 
-constexpr Dropdown::Item cheatsMenuItems[] = {
-    Dropdown::ToggleOption(DDIDX_CHEATS, STR_CHEAT_TITLE),
-    Dropdown::ToggleOption(DDIDX_TILE_INSPECTOR, STR_DEBUG_DROPDOWN_TILE_INSPECTOR),
-    Dropdown::ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
-    Dropdown::ToggleOption(DDIDX_INVENTIONS_LIST, STR_DEBUG_DROPDOWN_INVENTIONS_LIST),
-    Dropdown::ToggleOption(DDIDX_SCENARIO_OPTIONS, STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS),
-    Dropdown::Separator(),
-    Dropdown::ToggleOption(DDIDX_ENABLE_SANDBOX_MODE, STR_ENABLE_SANDBOX_MODE),
-    Dropdown::ToggleOption(DDIDX_DISABLE_CLEARANCE_CHECKS, STR_DISABLE_CLEARANCE_CHECKS),
-    Dropdown::ToggleOption(DDIDX_DISABLE_SUPPORT_LIMITS, STR_DISABLE_SUPPORT_LIMITS),
-};
-static_assert(Dropdown::ItemIDsMatchIndices(cheatsMenuItems));
-
 static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
 {
-    Dropdown::SetItems(cheatsMenuItems);
+    using namespace Dropdown;
+
+    constexpr Item items[] = {
+        ToggleOption(DDIDX_CHEATS, STR_CHEAT_TITLE),
+        ToggleOption(DDIDX_TILE_INSPECTOR, STR_DEBUG_DROPDOWN_TILE_INSPECTOR),
+        ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
+        ToggleOption(DDIDX_INVENTIONS_LIST, STR_DEBUG_DROPDOWN_INVENTIONS_LIST),
+        ToggleOption(DDIDX_SCENARIO_OPTIONS, STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS),
+        Separator(),
+        ToggleOption(DDIDX_ENABLE_SANDBOX_MODE, STR_ENABLE_SANDBOX_MODE),
+        ToggleOption(DDIDX_DISABLE_CLEARANCE_CHECKS, STR_DISABLE_CLEARANCE_CHECKS),
+        ToggleOption(DDIDX_DISABLE_SUPPORT_LIMITS, STR_DISABLE_SUPPORT_LIMITS),
+    };
+    static_assert(ItemIDsMatchIndices(items));
+
+    SetItems(items);
 
     window_dropdown_show_text(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
@@ -3607,33 +3609,35 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
     }
 }
 
-constexpr Dropdown::Item viewMenuItems[] = {
-    Dropdown::ToggleOption(DDIDX_UNDERGROUND_INSIDE, STR_UNDERGROUND_VIEW),
-    Dropdown::ToggleOption(DDIDX_HIDE_BASE, STR_REMOVE_BASE_LAND),
-    Dropdown::ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
-    Dropdown::Separator(),
-    Dropdown::ToggleOption(DDIDX_SEETHROUGH_RIDES, STR_SEE_THROUGH_RIDES),
-    Dropdown::ToggleOption(DDIDX_SEETHROUGH_SCENARY, STR_SEE_THROUGH_SCENERY),
-    Dropdown::ToggleOption(DDIDX_SEETHROUGH_PATHS, STR_SEE_THROUGH_PATHS),
-    Dropdown::ToggleOption(DDIDX_INVISIBLE_SUPPORTS, STR_INVISIBLE_SUPPORTS),
-    Dropdown::ToggleOption(DDIDX_INVISIBLE_PEEPS, STR_INVISIBLE_PEOPLE),
-    Dropdown::Separator(),
-    Dropdown::ToggleOption(DDIDX_LAND_HEIGHTS, STR_HEIGHT_MARKS_ON_LAND),
-    Dropdown::ToggleOption(DDIDX_TRACK_HEIGHTS, STR_HEIGHT_MARKS_ON_RIDE_TRACKS),
-    Dropdown::ToggleOption(DDIDX_PATH_HEIGHTS, STR_HEIGHT_MARKS_ON_PATHS),
-    Dropdown::Separator(),
-    Dropdown::ToggleOption(DDIDX_VIEW_CLIPPING, STR_VIEW_CLIPPING_MENU),
-    Dropdown::ToggleOption(DDIDX_HIGHLIGHT_PATH_ISSUES, STR_HIGHLIGHT_PATH_ISSUES_MENU),
-};
-static_assert(Dropdown::ItemIDsMatchIndices(viewMenuItems));
-
 /**
  *
  *  rct2: 0x0066CDE4
  */
 static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
 {
-    Dropdown::SetItems(viewMenuItems);
+    using namespace Dropdown;
+
+    constexpr Item items[] = {
+        ToggleOption(DDIDX_UNDERGROUND_INSIDE, STR_UNDERGROUND_VIEW),
+        ToggleOption(DDIDX_HIDE_BASE, STR_REMOVE_BASE_LAND),
+        ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
+        Separator(),
+        ToggleOption(DDIDX_SEETHROUGH_RIDES, STR_SEE_THROUGH_RIDES),
+        ToggleOption(DDIDX_SEETHROUGH_SCENARY, STR_SEE_THROUGH_SCENERY),
+        ToggleOption(DDIDX_SEETHROUGH_PATHS, STR_SEE_THROUGH_PATHS),
+        ToggleOption(DDIDX_INVISIBLE_SUPPORTS, STR_INVISIBLE_SUPPORTS),
+        ToggleOption(DDIDX_INVISIBLE_PEEPS, STR_INVISIBLE_PEOPLE),
+        Separator(),
+        ToggleOption(DDIDX_LAND_HEIGHTS, STR_HEIGHT_MARKS_ON_LAND),
+        ToggleOption(DDIDX_TRACK_HEIGHTS, STR_HEIGHT_MARKS_ON_RIDE_TRACKS),
+        ToggleOption(DDIDX_PATH_HEIGHTS, STR_HEIGHT_MARKS_ON_PATHS),
+        Separator(),
+        ToggleOption(DDIDX_VIEW_CLIPPING, STR_VIEW_CLIPPING_MENU),
+        ToggleOption(DDIDX_HIGHLIGHT_PATH_ISSUES, STR_HIGHLIGHT_PATH_ISSUES_MENU),
+    };
+    static_assert(ItemIDsMatchIndices(items));
+
+    SetItems(items);
 
     window_dropdown_show_text(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0,
