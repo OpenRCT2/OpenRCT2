@@ -525,14 +525,17 @@ static scenery_item window_scenery_count_rows_with_selected_item(int32_t tabInde
     ScenerySelection currentEntry = { 0, 0 };
     ScenerySelection scenerySelection = gWindowSceneryTabSelections[tabIndex];
 
-    while ((currentEntry = window_scenery_tab_entries[tabIndex][totalItems]), !currentEntry.IsUndefined())
+    for (totalItems = 0; totalItems < SCENERY_ENTRIES_PER_TAB + 1; ++totalItems)
     {
+        currentEntry = window_scenery_tab_entries[tabIndex][totalItems];
+        if (currentEntry.IsUndefined())
+            break;
+
         if (currentEntry == scenerySelection)
         {
             sceneryItem.selected_item = totalItems;
             sceneryItem.scenerySelection = scenerySelection;
         }
-        totalItems++;
     }
     sceneryItem.allRows = count_rows(totalItems + 8);
     return sceneryItem;
@@ -1202,13 +1205,14 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
 
     uint8_t tabIndex = gWindowSceneryActiveTabIndex;
 
-    int32_t sceneryTabItemIndex = 0;
-    ScenerySelection currentSceneryGlobal = ScenerySelection::CreateUndefined();
     int16_t left = 0, top = 0;
 
-    while ((currentSceneryGlobal = window_scenery_tab_entries[tabIndex][sceneryTabItemIndex]),
-           !currentSceneryGlobal.IsUndefined())
+    for (int32_t sceneryTabItemIndex = 0; sceneryTabItemIndex < SCENERY_ENTRIES_PER_TAB + 1; ++sceneryTabItemIndex)
     {
+        ScenerySelection currentSceneryGlobal = window_scenery_tab_entries[tabIndex][sceneryTabItemIndex];
+        if (currentSceneryGlobal.IsUndefined())
+            break;
+
         ScenerySelection tabSelectedScenery = gWindowSceneryTabSelections[tabIndex];
 
         if (gWindowSceneryPaintEnabled == 1 || gWindowSceneryEyedropperEnabled)
@@ -1354,7 +1358,6 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             top += SCENERY_BUTTON_HEIGHT;
             left = 0;
         }
-        sceneryTabItemIndex++;
     }
 }
 

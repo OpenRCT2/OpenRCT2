@@ -336,7 +336,10 @@ int32_t strlogicalcmp(const char* s1, const char* s2)
             if (tolower(*s1) != tolower(*s2))
                 return tolower(*s1) - tolower(*s2);
             else
-                (++s1, ++s2);
+            {
+                ++s1;
+                ++s2;
+            }
         }
         else
         {
