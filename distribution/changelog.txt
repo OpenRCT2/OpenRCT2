@@ -1,9 +1,12 @@
 0.3.0+ (in development)
 ------------------------------------------------------------------------
 - Feature: [#10807] Add 2x and 4x zoom levels (currently limited to OpenGL).
+- Feature: [#12703] Add scenario plugin APIs.
 - Feature: [#12708] Add plugin-accessible names to all game actions.
 - Feature: [#12712] Add TCP / socket plugin APIs.
 - Feature: [#12840] Add Park.entranceFee to the plugin API.
+- Feature: [#12884] Add BaseTileElement.occupiedQuadrants to the plugin API.
+- Feature: [#12885] Add SmallSceneryElement.quadrant to the plugin API.
 - Feature: [#12886] Make all scenery placement and remove actions available to the plugin API.
 - Fix: [#400] Unable to place some saved tracks flush to the ground (original bug).
 - Fix: [#5753] Entertainers make themselves happy instead of the guests.
