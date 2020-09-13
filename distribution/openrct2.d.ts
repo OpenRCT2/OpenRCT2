@@ -506,6 +506,7 @@ declare global {
         type: TileElementType;
         baseHeight: number;
         clearanceHeight: number;
+        occupiedQuadrants: number;
         isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
     }
 
@@ -554,6 +555,7 @@ declare global {
         primaryColour: number;
         secondaryColour: number;
         direction: Direction;
+        quadrant: number;
     }
 
     interface EntranceElement extends BaseTileElement {
