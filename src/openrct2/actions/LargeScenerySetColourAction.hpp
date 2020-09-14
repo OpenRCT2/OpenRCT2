@@ -33,6 +33,14 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("tileIndex", _tileIndex);
+        visitor.Visit("primaryColour", _primaryColour);
+        visitor.Visit("secondaryColour", _secondaryColour);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
