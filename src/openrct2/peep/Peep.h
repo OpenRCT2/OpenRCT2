@@ -242,10 +242,10 @@ enum PeepState : uint8_t
     PEEP_STATE_INSPECTING = 23
 };
 
-enum PeepSittingSubState
+enum class PeepSittingSubState : uint8_t
 {
-    PEEP_SITTING_TRYING_TO_SIT = 0,
-    PEEP_SITTING_SAT_DOWN
+    TryingToSit, // was = 0
+    SatDown      // was unassigned
 };
 
 enum PeepRideSubState
@@ -614,7 +614,11 @@ struct Peep : SpriteBase
     uint8_t NextFlags;
     bool OutsideOfPark;
     PeepState State;
-    uint8_t SubState;
+    union
+    {
+        uint8_t SubState;
+        PeepSittingSubState SittingSubState;
+    };
     PeepSpriteType SpriteType;
     PeepType AssignedPeepType;
     union
