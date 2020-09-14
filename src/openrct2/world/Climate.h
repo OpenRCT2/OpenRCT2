@@ -38,7 +38,7 @@ enum class WeatherEffectType : uint8_t
     Storm,
 };
 
-enum class RainLevel
+enum class WeatherLevel
 {
     None,
     Light,
@@ -50,7 +50,7 @@ struct WeatherState
     int8_t TemperatureDelta;
     WeatherEffectType EffectLevel;
     int8_t GloomLevel;
-    RainLevel Level;
+    WeatherLevel Level;
     uint32_t SpriteId;
 };
 
@@ -60,7 +60,7 @@ struct ClimateState
     int8_t Temperature;
     WeatherEffectType WeatherEffect;
     uint8_t WeatherGloom;
-    RainLevel Level;
+    WeatherLevel Level;
 };
 
 extern ClimateType gClimate;

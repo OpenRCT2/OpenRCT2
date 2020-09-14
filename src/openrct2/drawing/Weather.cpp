@@ -21,14 +21,14 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
-static void DrawLightRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
-static void DrawHeavyRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+static void DrawLightRain(IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+static void DrawHeavyRain(IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
 
 /**
  *
  *  rct2: 0x009AC058
  */
-const DrawRainFunc DrawRainFunctions[] = {
+const DrawWeatherFunc DrawRainFunctions[] = {
     nullptr,
     &DrawLightRain,
     &DrawHeavyRain,
@@ -38,7 +38,7 @@ const DrawRainFunc DrawRainFunctions[] = {
  *
  *  rct2: 0x00684218
  */
-void DrawRain(rct_drawpixelinfo* dpi, IRainDrawer* rainDrawer)
+void DrawWeather(rct_drawpixelinfo* dpi, IWeatherDrawer* weatherDrawer)
 {
     if (gConfigGeneral.render_weather_effects)
     {
@@ -49,12 +49,12 @@ void DrawRain(rct_drawpixelinfo* dpi, IRainDrawer* rainDrawer)
             viewFlags = viewport->flags;
 
         // Get rain draw function and draw rain
-        RainLevel rainType = gClimateCurrent.Level;
-        if (rainType != RainLevel::None && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+        WeatherLevel rainType = gClimateCurrent.Level;
+        if (rainType != WeatherLevel::None && !gTrackDesignSaveMode && !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
             auto drawFunc = DrawRainFunctions[static_cast<int8_t>(rainType)];
             auto uiContext = GetContext()->GetUiContext();
-            uiContext->DrawRainAnimation(rainDrawer, dpi, drawFunc);
+            uiContext->DrawWeatherAnimation(weatherDrawer, dpi, drawFunc);
         }
     }
 }
@@ -63,54 +63,54 @@ void DrawRain(rct_drawpixelinfo* dpi, IRainDrawer* rainDrawer)
  *
  *  rct2: 0x00684114
  */
-static void DrawLightRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+static void DrawLightRain(IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     int32_t x_start = -static_cast<int32_t>(gScenarioTicks) + 8;
     int32_t y_start = (gScenarioTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    rainDrawer->Draw(left, top, width, height, x_start, y_start);
+    weatherDrawer->Draw(left, top, width, height, x_start, y_start);
 
     x_start = -static_cast<int32_t>(gScenarioTicks) + 0x18;
     y_start = (gScenarioTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    rainDrawer->Draw(left, top, width, height, x_start, y_start);
+    weatherDrawer->Draw(left, top, width, height, x_start, y_start);
 }
 
 /**
  *
  *  rct2: 0x0068416D
  */
-static void DrawHeavyRain(IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
+static void DrawHeavyRain(IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     int32_t x_start = -static_cast<int32_t>(gScenarioTicks);
     int32_t y_start = gScenarioTicks * 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    rainDrawer->Draw(left, top, width, height, x_start, y_start);
+    weatherDrawer->Draw(left, top, width, height, x_start, y_start);
 
     x_start = -static_cast<int32_t>(gScenarioTicks) + 0x10;
     y_start = (gScenarioTicks * 6) + 5;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    rainDrawer->Draw(left, top, width, height, x_start, y_start);
+    weatherDrawer->Draw(left, top, width, height, x_start, y_start);
 
     x_start = -static_cast<int32_t>(gScenarioTicks) + 8;
     y_start = (gScenarioTicks * 3) + 7;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    rainDrawer->Draw(left, top, width, height, x_start, y_start);
+    weatherDrawer->Draw(left, top, width, height, x_start, y_start);
 
     x_start = -static_cast<int32_t>(gScenarioTicks) + 0x18;
     y_start = (gScenarioTicks * 4) + 0x0D;
     y_start = -y_start;
     x_start += left;
     y_start += top;
-    rainDrawer->Draw(left, top, width, height, x_start, y_start);
+    weatherDrawer->Draw(left, top, width, height, x_start, y_start);
 }

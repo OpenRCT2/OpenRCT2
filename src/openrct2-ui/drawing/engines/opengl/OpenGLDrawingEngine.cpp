@@ -121,12 +121,12 @@ public:
     }
 };
 
-class OpenGLRainDrawer final : public IRainDrawer
+class OpenGLWeatherDrawer final : public IWeatherDrawer
 {
     OpenGLDrawingContext* _drawingContext;
 
 public:
-    explicit OpenGLRainDrawer(OpenGLDrawingContext* drawingContext)
+    explicit OpenGLWeatherDrawer(OpenGLDrawingContext* drawingContext)
         : _drawingContext(drawingContext)
     {
     }
@@ -194,7 +194,7 @@ private:
     OpenGLFramebuffer* _screenFramebuffer = nullptr;
     OpenGLFramebuffer* _scaleFramebuffer = nullptr;
     OpenGLFramebuffer* _smoothScaleFramebuffer = nullptr;
-    OpenGLRainDrawer _rainDrawer;
+    OpenGLWeatherDrawer _weatherDrawer;
 
 public:
     SDL_Color Palette[256];
@@ -203,7 +203,7 @@ public:
     explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : _uiContext(uiContext)
         , _drawingContext(new OpenGLDrawingContext(this))
-        , _rainDrawer(_drawingContext)
+        , _weatherDrawer(_drawingContext)
     {
         _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
         _bitsDPI.DrawingEngine = this;
@@ -340,10 +340,10 @@ public:
         window_update_all();
     }
 
-    void PaintRain() override
+    void PaintWeather() override
     {
         _drawingContext->SetDPI(&_bitsDPI);
-        DrawRain(&_bitsDPI, &_rainDrawer);
+        DrawWeather(&_bitsDPI, &_weatherDrawer);
     }
 
     std::string Screenshot() override

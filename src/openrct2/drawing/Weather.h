@@ -15,7 +15,7 @@ struct rct_drawpixelinfo;
 
 namespace OpenRCT2::Drawing
 {
-    struct IRainDrawer;
+    struct IWeatherDrawer;
 }
 
 // clang-format off
@@ -28,4 +28,4 @@ static constexpr const uint8_t RainPattern[] =
 };
 // clang-format on
 
-void DrawRain(rct_drawpixelinfo* dpi, OpenRCT2::Drawing::IRainDrawer* rainDrawer);
+void DrawWeather(rct_drawpixelinfo* dpi, OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer);

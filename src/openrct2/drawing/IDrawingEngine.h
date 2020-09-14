@@ -63,7 +63,7 @@ namespace OpenRCT2::Drawing
         virtual void EndDraw() abstract;
         virtual void PaintWindows() abstract;
         virtual void UpdateWindows() abstract;
-        virtual void PaintRain() abstract;
+        virtual void PaintWeather() abstract;
         virtual void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) abstract;
         virtual std::string Screenshot() abstract;
 
@@ -84,9 +84,9 @@ namespace OpenRCT2::Drawing
             DRAWING_ENGINE_TYPE type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
     };
 
-    struct IRainDrawer
+    struct IWeatherDrawer
     {
-        virtual ~IRainDrawer()
+        virtual ~IWeatherDrawer()
         {
         }
         virtual void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart) abstract;

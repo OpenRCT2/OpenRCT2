@@ -397,8 +397,8 @@ void S6Exporter::Export()
     _s6.next_weather_effect = static_cast<uint8_t>(gClimateNext.WeatherEffect);
     _s6.current_weather_gloom = gClimateCurrent.WeatherGloom;
     _s6.next_weather_gloom = gClimateNext.WeatherGloom;
-    _s6.current_rain_level = static_cast<uint8_t>(gClimateCurrent.Level);
-    _s6.next_rain_level = static_cast<uint8_t>(gClimateNext.Level);
+    _s6.current_weather_level = static_cast<uint8_t>(gClimateCurrent.Level);
+    _s6.next_weather_level = static_cast<uint8_t>(gClimateNext.Level);
 
     // News items
     for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
