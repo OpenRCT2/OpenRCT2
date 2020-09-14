@@ -228,7 +228,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             if (subjectLoc->x != LOCATION_NULL)
                 break;
 
-            if (peep->State != PEEP_STATE_ON_RIDE && peep->State != PEEP_STATE_ENTERING_RIDE)
+            if (peep->State != PeepState::OnRide && peep->State != PeepState::EnteringRide)
             {
                 subjectLoc = std::nullopt;
                 break;

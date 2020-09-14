@@ -1117,14 +1117,14 @@ void ride_remove_peeps(Ride* ride)
     // Place all the peeps at exit
     for (auto peep : EntityList<Peep>(EntityListId::Peep))
     {
-        if (peep->State == PEEP_STATE_QUEUING_FRONT || peep->State == PEEP_STATE_ENTERING_RIDE
-            || peep->State == PEEP_STATE_LEAVING_RIDE || peep->State == PEEP_STATE_ON_RIDE)
+        if (peep->State == PeepState::QueuingFront || peep->State == PeepState::EnteringRide
+            || peep->State == PeepState::LeavingRide || peep->State == PeepState::OnRide)
         {
             if (peep->CurrentRide != ride->id)
                 continue;
 
             peep_decrement_num_riders(peep);
-            if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->SubState == PEEP_RIDE_AT_ENTRANCE)
+            if (peep->State == PeepState::QueuingFront && peep->SubState == PEEP_RIDE_AT_ENTRANCE)
                 peep->RemoveFromQueue();
 
             if (exitPosition.direction == INVALID_DIRECTION)
@@ -1141,7 +1141,7 @@ void ride_remove_peeps(Ride* ride)
                 peep->sprite_direction = exitPosition.direction;
             }
 
-            peep->State = PEEP_STATE_FALLING;
+            peep->State = PeepState::Falling;
             peep->SwitchToSpecialSprite(0);
 
             peep->Happiness = std::min(peep->Happiness, peep->HappinessTarget) / 2;
@@ -2612,7 +2612,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
         {
             auto mechanic = ride_get_mechanic(ride);
             if (mechanic == nullptr
-                || (mechanic->State != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->State != PEEP_STATE_ANSWERING)
+                || (mechanic->State != PeepState::HeadingToInspection && mechanic->State != PeepState::Answering)
                 || mechanic->CurrentRide != ride->id)
             {
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
@@ -2625,8 +2625,8 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
         {
             auto mechanic = ride_get_mechanic(ride);
             if (mechanic == nullptr
-                || (mechanic->State != PEEP_STATE_HEADING_TO_INSPECTION && mechanic->State != PEEP_STATE_FIXING
-                    && mechanic->State != PEEP_STATE_INSPECTING && mechanic->State != PEEP_STATE_ANSWERING))
+                || (mechanic->State != PeepState::HeadingToInspection && mechanic->State != PeepState::Fixing
+                    && mechanic->State != PeepState::Inspecting && mechanic->State != PeepState::Answering))
             {
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -2643,7 +2643,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
  */
 static void ride_call_mechanic(Ride* ride, Peep* mechanic, int32_t forInspection)
 {
-    mechanic->SetState(forInspection ? PEEP_STATE_HEADING_TO_INSPECTION : PEEP_STATE_ANSWERING);
+    mechanic->SetState(forInspection ? PeepState::HeadingToInspection : PeepState::Answering);
     mechanic->SubState = 0;
     ride->mechanic_status = RIDE_MECHANIC_STATUS_HEADING;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -2705,12 +2705,12 @@ Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspect
 
         if (!forInspection)
         {
-            if (peep->State == PEEP_STATE_HEADING_TO_INSPECTION)
+            if (peep->State == PeepState::HeadingToInspection)
             {
                 if (peep->SubState >= 4)
                     continue;
             }
-            else if (peep->State != PEEP_STATE_PATROLLING)
+            else if (peep->State != PeepState::Patrolling)
                 continue;
 
             if (!(peep->StaffOrders & STAFF_ORDERS_FIX_RIDES))
@@ -2718,7 +2718,7 @@ Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspect
         }
         else
         {
-            if (peep->State != PEEP_STATE_PATROLLING || !(peep->StaffOrders & STAFF_ORDERS_INSPECT_RIDES))
+            if (peep->State != PeepState::Patrolling || !(peep->StaffOrders & STAFF_ORDERS_INSPECT_RIDES))
                 continue;
         }
 
@@ -5500,13 +5500,13 @@ void Ride::StopGuestsQueuing()
 {
     for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
-        if (peep->State != PEEP_STATE_QUEUING)
+        if (peep->State != PeepState::Queuing)
             continue;
         if (peep->CurrentRide != id)
             continue;
 
         peep->RemoveFromQueue();
-        peep->SetState(PEEP_STATE_FALLING);
+        peep->SetState(PeepState::Falling);
     }
 }
 

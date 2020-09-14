@@ -214,32 +214,32 @@ enum PeepThoughtType : uint8_t
     PEEP_THOUGHT_TYPE_NONE = 255
 };
 
-enum PeepState : uint8_t
+enum class PeepState : uint8_t
 {
-    PEEP_STATE_FALLING = 0, // Drowning is part of falling
-    PEEP_STATE_1 = 1,
-    PEEP_STATE_QUEUING_FRONT = 2,
-    PEEP_STATE_ON_RIDE = 3,
-    PEEP_STATE_LEAVING_RIDE = 4,
-    PEEP_STATE_WALKING = 5,
-    PEEP_STATE_QUEUING = 6,
-    PEEP_STATE_ENTERING_RIDE = 7,
-    PEEP_STATE_SITTING = 8,
-    PEEP_STATE_PICKED = 9,
-    PEEP_STATE_PATROLLING = 10, // Not sure
-    PEEP_STATE_MOWING = 11,
-    PEEP_STATE_SWEEPING = 12,
-    PEEP_STATE_ENTERING_PARK = 13,
-    PEEP_STATE_LEAVING_PARK = 14,
-    PEEP_STATE_ANSWERING = 15,
-    PEEP_STATE_FIXING = 16,
-    PEEP_STATE_BUYING = 17,
-    PEEP_STATE_WATCHING = 18,
-    PEEP_STATE_EMPTYING_BIN = 19,
-    PEEP_STATE_USING_BIN = 20,
-    PEEP_STATE_WATERING = 21,
-    PEEP_STATE_HEADING_TO_INSPECTION = 22,
-    PEEP_STATE_INSPECTING = 23
+    Falling = 0, // Drowning is part of falling
+    One = 1, //was PEEP_STATE_1
+    QueuingFront = 2,
+    OnRide = 3,
+    LeavingRide = 4,
+    Walking = 5,
+    Queuing = 6,
+    EnteringRide = 7,
+    Sitting = 8,
+    Picked = 9,
+    Patrolling = 10, // Not sure
+    Mowing = 11,
+    Sweeping = 12,
+    EnteringPark = 13,
+    LeavingPark = 14,
+    Answering = 15,
+    Fixing = 16,
+    Buying = 17,
+    Watching = 18,
+    EmptyingBin = 19,
+    UsingBin = 20,
+    Watering = 21,
+    HeadingToInspection = 22,
+    Inspecting = 23
 };
 
 enum PeepSittingSubState

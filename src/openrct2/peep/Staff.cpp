@@ -684,7 +684,7 @@ bool Staff::DoHandymanPathFinding()
     DestinationX = chosenTile.x + 16;
     DestinationY = chosenTile.y + 16;
     DestinationTolerance = 3;
-    if (State == PEEP_STATE_QUEUING)
+    if (State == PeepState::Queuing)
     {
         DestinationTolerance = (scenario_rand() & 7) + 2;
     }
@@ -739,7 +739,7 @@ static uint8_t staff_mechanic_direction_surface(Peep* peep)
     uint8_t direction = scenario_rand() & 3;
 
     auto ride = get_ride(peep->CurrentRide);
-    if (ride != nullptr && (peep->State == PEEP_STATE_ANSWERING || peep->State == PEEP_STATE_HEADING_TO_INSPECTION)
+    if (ride != nullptr && (peep->State == PeepState::Answering || peep->State == PeepState::HeadingToInspection)
         && (scenario_rand() & 1))
     {
         auto location = ride_get_exit_location(ride, peep->CurrentRideStation);
@@ -816,7 +816,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
     pathDirections &= ~(1 << direction);
     if (pathDirections == 0)
     {
-        if (peep->State != PEEP_STATE_ANSWERING && peep->State != PEEP_STATE_HEADING_TO_INSPECTION)
+        if (peep->State != PeepState::Answering && peep->State != PeepState::HeadingToInspection)
         {
             return direction;
         }
@@ -832,7 +832,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
 
     // Mechanic is heading to ride (either broken down or for inspection).
     auto ride = get_ride(peep->CurrentRide);
-    if (ride != nullptr && (peep->State == PEEP_STATE_ANSWERING || peep->State == PEEP_STATE_HEADING_TO_INSPECTION))
+    if (ride != nullptr && (peep->State == PeepState::Answering || peep->State == PeepState::HeadingToInspection))
     {
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
@@ -930,7 +930,7 @@ static uint8_t staff_direction_path(Peep* peep, uint8_t validDirections, PathEle
 {
     Direction direction = INVALID_DIRECTION;
     uint8_t pathDirections = pathElement->GetEdges();
-    if (peep->State != PEEP_STATE_ANSWERING && peep->State != PEEP_STATE_HEADING_TO_INSPECTION)
+    if (peep->State != PeepState::Answering && peep->State != PeepState::HeadingToInspection)
     {
         pathDirections &= validDirections;
     }
@@ -1029,11 +1029,11 @@ void Staff::EntertainerUpdateNearbyPeeps() const
         if (y_dist > 96)
             continue;
 
-        if (guest->State == PEEP_STATE_WALKING)
+        if (guest->State == PeepState::Walking)
         {
             guest->HappinessTarget = std::min(guest->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
         }
-        else if (guest->State == PEEP_STATE_QUEUING)
+        else if (guest->State == PeepState::Queuing)
         {
             guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
             guest->HappinessTarget = std::min(guest->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
@@ -1416,20 +1416,20 @@ void Staff::UpdateHeadingToInspect()
     auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
     {
-        SetState(PEEP_STATE_FALLING);
+        SetState(PeepState::Falling);
         return;
     }
 
     if (ride_get_exit_location(ride, CurrentRideStation).isNull())
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
-        SetState(PEEP_STATE_FALLING);
+        SetState(PeepState::Falling);
         return;
     }
 
     if (ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING || !(ride->lifecycle_flags & RIDE_LIFECYCLE_DUE_INSPECTION))
     {
-        SetState(PEEP_STATE_FALLING);
+        SetState(PeepState::Falling);
         return;
     }
 
@@ -1449,7 +1449,7 @@ void Staff::UpdateHeadingToInspect()
             {
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             }
-            SetState(PEEP_STATE_FALLING);
+            SetState(PeepState::Falling);
             return;
         }
 
@@ -1510,7 +1510,7 @@ void Staff::UpdateHeadingToInspect()
         return;
     }
 
-    SetState(PEEP_STATE_INSPECTING);
+    SetState(PeepState::Inspecting);
     SubState = 0;
 }
 
@@ -1523,7 +1523,7 @@ void Staff::UpdateAnswering()
     auto ride = get_ride(CurrentRide);
     if (ride == nullptr || ride->mechanic_status != RIDE_MECHANIC_STATUS_HEADING)
     {
-        SetState(PEEP_STATE_FALLING);
+        SetState(PeepState::Falling);
         return;
     }
 
@@ -1560,7 +1560,7 @@ void Staff::UpdateAnswering()
         {
             ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
-            SetState(PEEP_STATE_FALLING);
+            SetState(PeepState::Falling);
             return;
         }
 
@@ -1621,7 +1621,7 @@ void Staff::UpdateAnswering()
         return;
     }
 
-    SetState(PEEP_STATE_FIXING);
+    SetState(PeepState::Fixing);
     SubState = 0;
 }
 
@@ -1688,7 +1688,7 @@ static int32_t peep_update_patrolling_find_watering(Peep* peep)
                 }
             }
 
-            peep->SetState(PEEP_STATE_WATERING);
+            peep->SetState(PeepState::Watering);
             peep->Var37 = chosen_position;
 
             peep->SubState = 0;
@@ -1758,7 +1758,7 @@ static int32_t peep_update_patrolling_find_bin(Peep* peep)
         return 0;
 
     peep->Var37 = chosen_position;
-    peep->SetState(PEEP_STATE_EMPTYING_BIN);
+    peep->SetState(PeepState::EmptyingBin);
 
     peep->SubState = 0;
     peep->DestinationX = (peep->x & 0xFFE0) + BinUseOffsets[chosen_position].x;
@@ -1787,7 +1787,7 @@ static int32_t peep_update_patrolling_find_grass(Peep* peep)
     {
         if ((surfaceElement->GetGrassLength() & 0x7) >= GRASS_LENGTH_CLEAR_1)
         {
-            peep->SetState(PEEP_STATE_MOWING);
+            peep->SetState(PeepState::Mowing);
             peep->Var37 = 0;
             // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
             peep->DestinationX = peep->NextLoc.x + _MowingWaypoints[0].x;
@@ -1815,7 +1815,7 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
         if (z_diff >= 16)
             continue;
 
-        peep->SetState(PEEP_STATE_SWEEPING);
+        peep->SetState(PeepState::Sweeping);
 
         peep->Var37 = 0;
         peep->DestinationX = litter->x;
@@ -1833,7 +1833,7 @@ void Staff::Tick128UpdateStaff()
         return;
 
     PeepSpriteType newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
-    if (State != PEEP_STATE_PATROLLING)
+    if (State != PeepState::Patrolling)
         newSpriteType = PEEP_SPRITE_TYPE_SECURITY;
 
     if (SpriteType == newSpriteType)
@@ -1866,31 +1866,31 @@ void Staff::UpdateStaff(uint32_t stepsToTake)
 {
     switch (State)
     {
-        case PEEP_STATE_PATROLLING:
+        case PeepState::Patrolling:
             UpdatePatrolling();
             break;
-        case PEEP_STATE_MOWING:
+        case PeepState::Mowing:
             UpdateMowing();
             break;
-        case PEEP_STATE_SWEEPING:
+        case PeepState::Sweeping:
             UpdateSweeping();
             break;
-        case PEEP_STATE_ANSWERING:
+        case PeepState::Answering:
             UpdateAnswering();
             break;
-        case PEEP_STATE_FIXING:
+        case PeepState::Fixing:
             UpdateFixing(stepsToTake);
             break;
-        case PEEP_STATE_INSPECTING:
+        case PeepState::Inspecting:
             UpdateFixing(stepsToTake);
             break;
-        case PEEP_STATE_EMPTYING_BIN:
+        case PeepState::EmptyingBin:
             UpdateEmptyingBin();
             break;
-        case PEEP_STATE_WATERING:
+        case PeepState::Watering:
             UpdateWatering();
             break;
-        case PEEP_STATE_HEADING_TO_INSPECTION:
+        case PeepState::HeadingToInspection:
             UpdateHeadingToInspect();
             break;
         default:
@@ -1924,7 +1924,7 @@ void Staff::UpdatePatrolling()
             if (water_height > 0)
             {
                 MoveTo({ x, y, water_height });
-                SetState(PEEP_STATE_FALLING);
+                SetState(PeepState::Falling);
                 return;
             }
         }
@@ -2055,19 +2055,19 @@ void Staff::UpdateFixing(int32_t steps)
     auto ride = get_ride(CurrentRide);
     if (ride == nullptr)
     {
-        SetState(PEEP_STATE_FALLING);
+        SetState(PeepState::Falling);
         return;
     }
 
     bool progressToNextSubstate = true;
     bool firstRun = true;
 
-    if ((State == PEEP_STATE_INSPECTING)
+    if ((State == PeepState::Inspecting)
         && (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)))
     {
         // Ride has broken down since Mechanic was called to inspect it.
         // Mechanic identifies the breakdown and switches to fixing it.
-        State = PEEP_STATE_FIXING;
+        State = PeepState::Fixing;
     }
 
     while (progressToNextSubstate)
@@ -2141,7 +2141,7 @@ void Staff::UpdateFixing(int32_t steps)
         int32_t subState = SubState;
         uint32_t sub_state_sequence_mask = FixingSubstatesForBreakdown[8];
 
-        if (State != PEEP_STATE_INSPECTING)
+        if (State != PeepState::Inspecting)
         {
             sub_state_sequence_mask = FixingSubstatesForBreakdown[ride->breakdown_reason_pending];
         }
@@ -2607,7 +2607,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
     {
         ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
 
-        if (State == PEEP_STATE_INSPECTING)
+        if (State == PeepState::Inspecting)
         {
             UpdateRideInspected(CurrentRide);
 
@@ -2656,7 +2656,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
 
             if (exitPosition.isNull())
             {
-                SetState(PEEP_STATE_FALLING);
+                SetState(PeepState::Falling);
                 return false;
             }
         }
@@ -2685,7 +2685,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride)
         MoveTo({ *loc, stationHeight });
         return false;
     }
-    SetState(PEEP_STATE_FALLING);
+    SetState(PeepState::Falling);
     return false;
 }
 
