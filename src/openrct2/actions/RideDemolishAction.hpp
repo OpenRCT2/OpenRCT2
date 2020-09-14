@@ -160,7 +160,7 @@ private:
 
             // clear ride from potentially being in RidesBeenOn
             peep->RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
-            if (peep->State == PEEP_STATE_WATCHING)
+            if (peep->State == PeepState::Watching)
             {
                 if (peep->CurrentRide == _rideIndex)
                 {

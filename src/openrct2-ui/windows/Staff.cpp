@@ -340,7 +340,7 @@ rct_window* window_staff_open(Peep* peep)
     window_init_scroll_widgets(w);
     window_staff_viewport_init(w);
 
-    if (peep->State == PEEP_STATE_PICKED)
+    if (peep->State == PeepState::Picked)
         window_event_mouse_up_call(w, WIDX_CHECKBOX_3);
 
     return w;
@@ -1391,7 +1391,7 @@ void window_staff_viewport_init(rct_window* w)
         return;
     }
 
-    if (peep->State == PEEP_STATE_PICKED)
+    if (peep->State == PeepState::Picked)
     {
         focus.sprite_id = SPRITE_INDEX_NULL;
     }
@@ -1427,7 +1427,7 @@ void window_staff_viewport_init(rct_window* w)
     w->viewport_focus_sprite.type = focus.type;
     w->viewport_focus_sprite.rotation = focus.rotation;
 
-    if (peep->State != PEEP_STATE_PICKED)
+    if (peep->State != PeepState::Picked)
     {
         if (!(w->viewport))
         {
