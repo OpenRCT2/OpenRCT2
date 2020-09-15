@@ -38,8 +38,8 @@ NetworkGroup NetworkGroup::FromJson(const json_t* json)
         {
             continue;
         }
-        int32_t action_id = NetworkActions::FindCommandByPermissionName(perm_name);
-        if (action_id != -1)
+        NetworkPermission action_id = NetworkActions::FindCommandByPermissionName(perm_name);
+        if (action_id != NetworkPermission::Count)
         {
             group.ToggleActionPermission(action_id);
         }
@@ -55,7 +55,7 @@ json_t* NetworkGroup::ToJson() const
     json_t* actionsArray = json_array();
     for (size_t i = 0; i < NetworkActions::Actions.size(); i++)
     {
-        if (CanPerformAction(i))
+        if (CanPerformAction(static_cast<NetworkPermission>(i)))
         {
             const char* perm_name = NetworkActions::Actions[i].PermissionName.c_str();
             json_array_append_new(actionsArray, json_string(perm_name));
@@ -95,10 +95,11 @@ void NetworkGroup::Write(NetworkPacket& packet)
     }
 }
 
-void NetworkGroup::ToggleActionPermission(size_t index)
+void NetworkGroup::ToggleActionPermission(NetworkPermission index)
 {
-    size_t byte = index / 8;
-    size_t bit = index % 8;
+    size_t index_st = static_cast<size_t>(index);
+    size_t byte = index_st / 8;
+    size_t bit = index_st % 8;
     if (byte >= ActionsAllowed.size())
     {
         return;
@@ -106,10 +107,11 @@ void NetworkGroup::ToggleActionPermission(size_t index)
     ActionsAllowed[byte] ^= (1 << bit);
 }
 
-bool NetworkGroup::CanPerformAction(size_t index) const
+bool NetworkGroup::CanPerformAction(NetworkPermission index) const
 {
-    size_t byte = index / 8;
-    size_t bit = index % 8;
+    size_t index_st = static_cast<size_t>(index);
+    size_t byte = index_st / 8;
+    size_t bit = index_st % 8;
     if (byte >= ActionsAllowed.size())
     {
         return false;
@@ -119,8 +121,8 @@ bool NetworkGroup::CanPerformAction(size_t index) const
 
 bool NetworkGroup::CanPerformCommand(int32_t command) const
 {
-    int32_t action = NetworkActions::FindCommand(command);
-    if (action != -1)
+    NetworkPermission action = NetworkActions::FindCommand(command);
+    if (action != NetworkPermission::Count)
     {
         return CanPerformAction(action);
     }

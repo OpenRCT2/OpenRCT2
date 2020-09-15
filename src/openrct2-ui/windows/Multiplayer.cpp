@@ -972,7 +972,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
             int32_t groupindex = network_get_group_index(_selectedGroup);
             if (groupindex != -1)
             {
-                if (network_can_perform_action(groupindex, i))
+                if (network_can_perform_action(groupindex, static_cast<NetworkPermission>(i)))
                 {
                     char* lineCh = buffer;
                     lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);

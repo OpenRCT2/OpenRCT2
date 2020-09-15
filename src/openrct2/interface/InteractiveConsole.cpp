@@ -1364,7 +1364,7 @@ static int32_t cc_save_park([[maybe_unused]] InteractiveConsole& console, [[mayb
 static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
 {
     if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED
-        || network_get_authstatus() != NETWORK_AUTH_OK)
+        || network_get_authstatus() != NetworkAuth::Ok)
     {
         console.WriteFormatLine("This command only works in multiplayer mode.");
         return 0;
