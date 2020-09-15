@@ -8,6 +8,7 @@
 - Feature: [#12884] Add BaseTileElement.occupiedQuadrants to the plugin API.
 - Feature: [#12885] Add SmallSceneryElement.quadrant to the plugin API.
 - Feature: [#12886] Make all scenery placement and remove actions available to the plugin API.
+- Feature: Make all staff, park, banner, and scenery painting actions available to plugin API.
 - Fix: [#400] Unable to place some saved tracks flush to the ground (original bug).
 - Fix: [#5753] Entertainers make themselves happy instead of the guests.
 - Fix: [#7037] Unable to save tracks starting with a sloped turn or helix.
