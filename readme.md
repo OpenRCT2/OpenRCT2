@@ -148,7 +148,7 @@ The recommended way of building OpenRCT2 for macOS is with Xcode. The Xcode buil
 #### CMake:
 A command line version of OpenRCT2 can be built using CMake. This type of build requires you to provide the dependencies yourself. The supported method of doing this is with [Homebrew](http://brew.sh). Once you have Homebrew installed, you can download all the required libraries with this command:
 ```
-brew install cmake duktape freetype icu4c nlohmann-json libpng libzip openssl pkg-config sdl2 speexdsp
+brew install cmake duktape freetype icu4c libpng libzip nlohmann-json openssl pkg-config sdl2 speexdsp
 ```
 
 Once you have the dependencies installed, you can build the project using CMake using the following commands:
