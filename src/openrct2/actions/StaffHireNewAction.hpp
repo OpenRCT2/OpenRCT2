@@ -68,6 +68,14 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("isAutoPosition", _autoPosition);
+        visitor.Visit("staffType", _staffType);
+        visitor.Visit("entertainerType", _entertainerType);
+        visitor.Visit("staffOrders", _staffOrders);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
