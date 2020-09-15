@@ -42,6 +42,13 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_coords);
+        visitor.Visit("height", _height);
+        visitor.Visit("style", _style);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::EDITOR_ONLY;

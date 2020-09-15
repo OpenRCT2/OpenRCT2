@@ -41,11 +41,6 @@ public:
         visitor.Visit("year", _year);
         visitor.Visit("month", _month);
         visitor.Visit("day", _day);
-    }void AcceptParameters(GameActionParameterVisitor & visitor) override
-    {
-        visitor.Visit("year", _year);
-        visitor.Visit("month", _month);
-        visitor.Visit("day", _day);
     }
 
     uint16_t GetActionFlags() const override

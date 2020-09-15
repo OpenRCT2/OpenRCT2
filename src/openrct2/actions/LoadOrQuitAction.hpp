@@ -36,6 +36,12 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("mode", _mode);
+        visitor.Visit("savePromptMode", _savePromptMode);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::CLIENT_ONLY | GA_FLAGS::ALLOW_WHILE_PAUSED;
