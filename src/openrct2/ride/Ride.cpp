@@ -1124,7 +1124,7 @@ void ride_remove_peeps(Ride* ride)
                 continue;
 
             peep_decrement_num_riders(peep);
-            if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->SubState == PEEP_RIDE_AT_ENTRANCE)
+            if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->RideSubState == PeepRideSubState::AtEntrance)
                 peep->RemoveFromQueue();
 
             if (exitPosition.direction == INVALID_DIRECTION)

@@ -2924,7 +2924,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
 
         peep->CurrentRide = rideIndex;
         peep->SetState(PEEP_STATE_ENTERING_RIDE);
-        peep->SubState = PEEP_SHOP_APPROACH;
+        peep->RideSubState = PeepRideSubState::ApproachShop;
 
         peep->GuestTimeOnRide = 0;
         ride->cur_num_customers++;
