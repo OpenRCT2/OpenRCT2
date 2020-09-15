@@ -16,7 +16,7 @@
 
 #    include <algorithm>
 
-int32_t NetworkActions::FindCommand(int32_t command)
+NetworkPermission NetworkActions::FindCommand(int32_t command)
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const& action) {
         for (int currentCommand : action.Commands)
@@ -30,24 +30,24 @@ int32_t NetworkActions::FindCommand(int32_t command)
     });
     if (it != Actions.end())
     {
-        return static_cast<int32_t>(it - Actions.begin());
+        return static_cast<NetworkPermission>(it - Actions.begin());
     }
-    return -1;
+    return NetworkPermission::Count;
 }
 
-int32_t NetworkActions::FindCommandByPermissionName(const std::string& permission_name)
+NetworkPermission NetworkActions::FindCommandByPermissionName(const std::string& permission_name)
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const& action) {
         return action.PermissionName == permission_name;
     });
     if (it != Actions.end())
     {
-        return static_cast<int32_t>(it - Actions.begin());
+        return static_cast<NetworkPermission>(it - Actions.begin());
     }
-    return -1;
+    return NetworkPermission::Count;
 }
 
-const std::array<NetworkAction, NETWORK_PERMISSION_COUNT> NetworkActions::Actions = {
+const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> NetworkActions::Actions = {
     NetworkAction{
         STR_ACTION_CHAT,
         "PERMISSION_CHAT",

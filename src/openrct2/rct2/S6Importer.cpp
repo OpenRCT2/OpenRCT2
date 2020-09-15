@@ -423,8 +423,8 @@ public:
         gClimateNext.WeatherEffect = WeatherEffectType{ _s6.next_weather_effect };
         gClimateCurrent.WeatherGloom = _s6.current_weather_gloom;
         gClimateNext.WeatherGloom = _s6.next_weather_gloom;
-        gClimateCurrent.Level = static_cast<RainLevel>(_s6.current_rain_level);
-        gClimateNext.Level = static_cast<RainLevel>(_s6.next_rain_level);
+        gClimateCurrent.Level = static_cast<WeatherLevel>(_s6.current_weather_level);
+        gClimateNext.Level = static_cast<WeatherLevel>(_s6.next_weather_level);
 
         // News items
         News::InitQueue();

@@ -56,7 +56,7 @@ void Painter::Paint(IDrawingEngine& de)
         gfx_draw_pickedup_peep(dpi);
         gfx_invalidate_pickedup_peep();
 
-        de.PaintRain();
+        de.PaintWeather();
     }
 
     auto* replayManager = GetContext()->GetReplayManager();

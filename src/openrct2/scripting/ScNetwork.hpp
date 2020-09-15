@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
             auto permissionIndex = 0;
             for (const auto& action : NetworkActions::Actions)
             {
-                if (network_can_perform_action(index, permissionIndex))
+                if (network_can_perform_action(index, static_cast<NetworkPermission>(permissionIndex)))
                 {
                     auto p = TransformPermissionKeyToJS(action.PermissionName);
                     result.push_back(p);
@@ -113,7 +113,8 @@ namespace OpenRCT2::Scripting
             for (size_t i = 0; i < enabledPermissions.size(); i++)
             {
                 auto toggle
-                    = (enabledPermissions[i] != (network_can_perform_action(groupIndex, static_cast<uint32_t>(i)) != 0));
+                    = (enabledPermissions[i]
+                       != (network_can_perform_action(groupIndex, static_cast<NetworkPermission>(i)) != 0));
                 if (toggle)
                 {
                     auto networkAction2 = NetworkModifyGroupAction(

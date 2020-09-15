@@ -28,7 +28,7 @@ class NetworkConnection final
 public:
     std::unique_ptr<ITcpSocket> Socket = nullptr;
     NetworkPacket InboundPacket;
-    NETWORK_AUTH AuthStatus = NETWORK_AUTH_NONE;
+    NetworkAuth AuthStatus = NetworkAuth::None;
     NetworkStats_t Stats = {};
     NetworkPlayer* Player = nullptr;
     uint32_t PingTime = 0;

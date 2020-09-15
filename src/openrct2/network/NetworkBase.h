@@ -107,7 +107,7 @@ public: // Server
 public: // Client
     void Reconnect();
     int32_t GetMode();
-    int32_t GetAuthStatus();
+    NetworkAuth GetAuthStatus();
     int32_t GetStatus();
     uint8_t GetPlayerID();
     void ProcessPlayerInfo();

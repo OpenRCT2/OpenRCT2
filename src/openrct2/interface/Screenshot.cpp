@@ -75,7 +75,7 @@ void screenshot_check()
         gScreenshotCountdown--;
         if (gScreenshotCountdown == 0)
         {
-            // update_rain_animation();
+            // update_weather_animation();
             std::string screenshotPath = screenshot_dump();
 
             if (!screenshotPath.empty())
@@ -87,7 +87,7 @@ void screenshot_check()
                 context_show_error(STR_SCREENSHOT_FAILED, STR_NONE);
             }
 
-            // redraw_rain();
+            // redraw_weather();
         }
     }
 }

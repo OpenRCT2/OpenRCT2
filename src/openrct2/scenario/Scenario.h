@@ -286,8 +286,8 @@ struct rct_s6_data
     uint8_t next_weather_effect;
     uint8_t current_weather_gloom;
     uint8_t next_weather_gloom;
-    uint8_t current_rain_level;
-    uint8_t next_rain_level;
+    uint8_t current_weather_level;
+    uint8_t next_weather_level;
     rct12_news_item news_items[RCT12_MAX_NEWS_ITEMS];
     char rct1_scenario_name[62];       // Unused in RCT2
     uint16_t rct1_scenario_slot_index; // Unused in RCT2

@@ -3639,6 +3639,9 @@ STR_6380    :Update available!
 STR_6381    :Join OpenRCT2 Discord!
 STR_6382    :Newer release of OpenRCT2 is available: {STRING}!
 STR_6383    :Open download page
+STR_6384    :Snow
+STR_6385    :Heavy Snow
+STR_6386    :Blizzard
 
 #############
 # Scenarios #

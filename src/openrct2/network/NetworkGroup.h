@@ -16,6 +16,8 @@
 #include <jansson.h>
 #include <string>
 
+enum class NetworkPermission : uint32_t;
+
 class NetworkGroup final
 {
 public:
@@ -29,8 +31,8 @@ public:
 
     void Read(NetworkPacket& packet);
     void Write(NetworkPacket& packet);
-    void ToggleActionPermission(size_t index);
-    bool CanPerformAction(size_t index) const;
+    void ToggleActionPermission(NetworkPermission index);
+    bool CanPerformAction(NetworkPermission index) const;
     bool CanPerformCommand(int32_t command) const;
 
     json_t* ToJson() const;

@@ -112,7 +112,7 @@ void GameState::Update()
     network_update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NETWORK_AUTH_OK)
+        && network_get_authstatus() == NetworkAuth::Ok)
     {
         numUpdates = std::clamp<uint32_t>(network_get_server_tick() - gCurrentTicks, 0, 10);
     }

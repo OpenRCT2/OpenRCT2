@@ -44,19 +44,19 @@ enum
     NETWORK_STATUS_CONNECTED
 };
 
-enum NETWORK_AUTH
+enum class NetworkAuth : int32_t
 {
-    NETWORK_AUTH_NONE,
-    NETWORK_AUTH_REQUESTED,
-    NETWORK_AUTH_OK,
-    NETWORK_AUTH_BADVERSION,
-    NETWORK_AUTH_BADNAME,
-    NETWORK_AUTH_BADPASSWORD,
-    NETWORK_AUTH_VERIFICATIONFAILURE,
-    NETWORK_AUTH_FULL,
-    NETWORK_AUTH_REQUIREPASSWORD,
-    NETWORK_AUTH_VERIFIED,
-    NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED,
+    None,
+    Requested,
+    Ok,
+    BadVersion,
+    BadName,
+    BadPassword,
+    VerificationFailure,
+    Full,
+    RequirePassword,
+    Verified,
+    UnknownKeyDisallowed
 };
 
 enum class NetworkCommand : uint32_t

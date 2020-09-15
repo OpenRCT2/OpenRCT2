@@ -161,7 +161,7 @@ extern bool gGameSoundsOff;
 extern int32_t gVolumeAdjustZoom;
 
 extern void* gTitleMusicChannel;
-extern void* gRainSoundChannel;
+extern void* gWeatherSoundChannel;
 
 extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_info gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
@@ -220,9 +220,9 @@ void audio_populate_devices();
  */
 void audio_start_title_music();
 /**
- * Stops the rain sound effect from playing.
+ * Stops the weather sound effect from playing.
  */
-void audio_stop_rain_sound();
+void audio_stop_weather_sound();
 /**
  * Stops ride music from playing.
  * rct2: 0x006BCA9F
