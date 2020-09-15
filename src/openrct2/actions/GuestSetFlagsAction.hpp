@@ -31,6 +31,12 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("peep", _peepId);
+        visitor.Visit("newFlags", _newFlags);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
