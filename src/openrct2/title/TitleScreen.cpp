@@ -174,7 +174,7 @@ void TitleScreen::Update()
             _gameState.UpdateLogic();
         }
         update_palette_effects();
-        // update_rain_animation();
+        // update_weather_animation();
     }
 
     input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
