@@ -3805,9 +3805,10 @@ static void window_ride_operating_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Horizontal rule between mode settings and depart settings
     gfx_fill_rect_inset(
-        dpi, w->windowPos.x + window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].left + 4, w->windowPos.y + 103,
-        w->windowPos.x + window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].right - 5, w->windowPos.y + 104, w->colours[1],
-        INSET_RECT_FLAG_BORDER_INSET);
+        dpi,
+        { w->windowPos + ScreenCoordsXY{ window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].left + 4, 103 },
+          w->windowPos + ScreenCoordsXY{ window_ride_operating_widgets[WIDX_PAGE_BACKGROUND].right - 5, 104 } },
+        w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Number of block sections
     if (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
@@ -3857,7 +3858,8 @@ static void window_ride_locate_mechanic(rct_window* w)
 static void window_ride_maintenance_draw_bar(
     rct_window* w, rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t value, int32_t colour)
 {
-    gfx_fill_rect_inset(dpi, x, y, x + 149, y + 8, w->colours[1], INSET_RECT_F_30);
+    ScreenCoordsXY coords{ x, y };
+    gfx_fill_rect_inset(dpi, { coords, coords + ScreenCoordsXY{ 149, 8 } }, w->colours[1], INSET_RECT_F_30);
     if (colour & BAR_BLINK)
     {
         colour &= ~BAR_BLINK;
@@ -3868,7 +3870,7 @@ static void window_ride_maintenance_draw_bar(
     value = ((186 * ((value * 2) & 0xFF)) >> 8) & 0xFF;
     if (value > 2)
     {
-        gfx_fill_rect_inset(dpi, x + 2, y + 1, x + value + 1, y + 7, colour, 0);
+        gfx_fill_rect_inset(dpi, { coords + ScreenCoordsXY{ 2, 1 }, coords + ScreenCoordsXY{ value + 1, 7 } }, colour, 0);
     }
 }
 
@@ -5657,8 +5659,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
         widgetCoords.x = w->windowPos.x + 4;
         widgetCoords.y = w->windowPos.y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
         gfx_fill_rect_inset(
-            dpi, widgetCoords.x, widgetCoords.y, w->windowPos.x + 312, widgetCoords.y + 1, w->colours[1],
-            INSET_RECT_FLAG_BORDER_INSET);
+            dpi, { widgetCoords, { w->windowPos.x + 312, widgetCoords.y + 1 } }, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
     }
     else
     {
@@ -5708,7 +5709,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
 
             // Horizontal rule
             gfx_fill_rect_inset(
-                dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 303, screenCoords.y - 5, w->colours[1],
+                dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 303, -5 } }, w->colours[1],
                 INSET_RECT_FLAG_BORDER_INSET);
 
             if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_NO_RAW_STATS))

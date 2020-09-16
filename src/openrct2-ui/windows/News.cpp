@@ -256,7 +256,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
 
         // Background
         gfx_fill_rect_inset(
-            dpi, -1, y, 383, y + itemHeight - 1, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+            dpi, { -1, y, 383, y + itemHeight - 1 }, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
         // Date text
         auto ft = Formatter::Common();
@@ -280,8 +280,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                 if (i == w->news.var_480 && w->news.var_482 == 1)
                     press = INSET_RECT_FLAG_BORDER_INSET;
             }
-            gfx_fill_rect_inset(
-                dpi, screenCoords.x, screenCoords.y, screenCoords.x + 23, screenCoords.y + 23, w->colours[2], press);
+            gfx_fill_rect_inset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, w->colours[2], press);
 
             switch (newsItem.Type)
             {
@@ -356,8 +355,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                 if (i == w->news.var_480 && w->news.var_482 == 2)
                     press = 0x20;
             }
-            gfx_fill_rect_inset(
-                dpi, screenCoords.x, screenCoords.y, screenCoords.x + 23, screenCoords.y + 23, w->colours[2], press);
+            gfx_fill_rect_inset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, w->colours[2], press);
             gfx_draw_sprite(dpi, SPR_LOCATE, screenCoords, 0);
         }
 
