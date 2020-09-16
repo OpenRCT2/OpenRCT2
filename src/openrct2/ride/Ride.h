@@ -1036,7 +1036,6 @@ ride_id_t GetNextFreeRideId();
 Ride* GetOrAllocateRide(ride_id_t index);
 rct_ride_entry* get_ride_entry(ObjectEntryIndex index);
 std::string_view get_ride_entry_name(ObjectEntryIndex index);
-RideMeasurement* get_ride_measurement(int32_t index);
 
 extern money16 gTotalRideValueForMoney;
 
@@ -1083,7 +1082,6 @@ extern bool gGotoStartPlacementMode;
 
 extern uint8_t gLastEntranceStyle;
 
-ride_id_t ride_get_empty_slot();
 int32_t ride_get_count();
 void ride_init_all();
 void reset_all_ride_build_dates();

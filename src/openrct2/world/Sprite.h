@@ -255,7 +255,6 @@ void balloon_update(Balloon* balloon);
 // Duck
 ///////////////////////////////////////////////////////////////
 void create_duck(const CoordsXY& pos);
-void duck_update(Duck* duck);
 void duck_press(Duck* duck);
 void duck_remove_all();
 
@@ -263,9 +262,7 @@ void duck_remove_all();
 // Crash particles
 ///////////////////////////////////////////////////////////////
 void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos);
-void crashed_vehicle_particle_update(VehicleCrashParticle* particle);
 void crash_splash_create(const CoordsXYZ& splashPos);
-void crash_splash_update(CrashSplashParticle* splash);
 
 rct_sprite_checksum sprite_checksum();
 

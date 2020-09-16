@@ -452,15 +452,7 @@ bool scenario_create_ducks();
 
 const random_engine_t::state_type& scenario_rand_state();
 void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1);
-#ifdef DEBUG_DESYNC
-uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data);
-#    define scenario_rand() dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, NULL)
-#    define scenario_rand_data(data) dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, data)
-void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, const char* clientHash, const char* serverHash);
-#else
 random_engine_t::result_type scenario_rand();
-#endif
-
 uint32_t scenario_rand_max(uint32_t max);
 
 bool scenario_prepare_for_save();

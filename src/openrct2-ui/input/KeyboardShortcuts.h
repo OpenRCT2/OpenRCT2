@@ -167,6 +167,5 @@ void keyboard_shortcuts_format_string(char* buffer, size_t bufferSize, int32_t s
 
 void keyboard_shortcut_handle(int32_t key);
 void keyboard_shortcut_handle_command(OpenRCT2::Input::Shortcut shortcut);
-void keyboard_shortcut_format_string(char* buffer, size_t size, uint16_t shortcutKey);
 
 ScreenCoordsXY get_keyboard_map_scroll(const uint8_t* keysState);

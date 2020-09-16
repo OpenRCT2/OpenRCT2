@@ -246,8 +246,6 @@ namespace News
         uint16_t IncrementTicks();
         News::Item& Current();
         const News::Item& Current() const;
-        News::Item& Oldest();
-        const News::Item& Oldest() const;
         bool CurrentShouldBeArchived() const;
         void ArchiveCurrent();
         News::Item* FirstOpenOrNewSlot();
@@ -278,7 +276,6 @@ namespace News
 
     private:
         int32_t RemoveTime() const;
-        void AppendToArchive(News::Item& item);
 
         News::ItemQueue<News::ItemHistoryStart> Recent;
         News::ItemQueue<News::MaxItemsArchive> Archived;

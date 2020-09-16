@@ -1046,8 +1046,6 @@ void peep_applause();
 void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft);
 int32_t get_peep_face_sprite_small(Peep* peep);
 int32_t get_peep_face_sprite_large(Peep* peep);
-void game_command_pickup_guest(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void peep_sprite_remove(Peep* peep);
 
 void peep_window_state_update(Peep* peep);
@@ -1056,7 +1054,6 @@ void peep_decrement_num_riders(Peep* peep);
 void peep_set_map_tooltip(Peep* peep);
 int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_b);
 
-void SwitchToSpecialSprite(Peep* peep, uint8_t special_sprite_id);
 void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
