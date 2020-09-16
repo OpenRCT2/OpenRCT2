@@ -921,15 +921,13 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                 }
                 gfx_draw_sprite(dpi, image, { _button_offset_x + 12 * j, screenCoords.y + _button_offset_y }, 0);
 
-                gfx_fill_rect_inset(
-                    dpi, _button_offset_x + 12 * j, screenCoords.y + _check_offset_y, _button_offset_x + 12 * j + 9,
-                    screenCoords.y + _check_offset_y + 10, w->colours[1], INSET_RECT_F_E0);
+                ScreenCoordsXY topLeft{ _button_offset_x + 12 * j, screenCoords.y + _check_offset_y };
+                ScreenCoordsXY bottomRight{ _button_offset_x + 12 * j + 9, screenCoords.y + _check_offset_y + 10 };
+                gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_E0);
                 if (colour & COLOUR_FLAG_TRANSLUCENT)
                 {
                     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
-                    gfx_draw_string(
-                        dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F,
-                        { _button_offset_x + 12 * j, screenCoords.y + _check_offset_y });
+                    gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, topLeft);
                 }
             }
         }

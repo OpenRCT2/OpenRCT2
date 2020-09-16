@@ -274,7 +274,8 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
     gfx_fill_rect_inset(
-        dpi, w->windowPos.x + 10, screenCoords.y, w->windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3,
+        dpi,
+        { { w->windowPos.x + 10, screenCoords.y }, { w->windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
         w->colours[1], INSET_RECT_F_60);
 
     screenCoords.y += 1;

@@ -1205,7 +1205,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
 
     uint8_t tabIndex = gWindowSceneryActiveTabIndex;
 
-    int16_t left = 0, top = 0;
+    ScreenCoordsXY topLeft{ 0, 0 };
 
     for (int32_t sceneryTabItemIndex = 0; sceneryTabItemIndex < SCENERY_ENTRIES_PER_TAB + 1; ++sceneryTabItemIndex)
     {
@@ -1220,8 +1220,8 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             if (w->scenery.SelectedScenery == currentSceneryGlobal)
             {
                 gfx_fill_rect_inset(
-                    dpi, left, top, left + SCENERY_BUTTON_WIDTH - 1, top + SCENERY_BUTTON_HEIGHT - 1, w->colours[1],
-                    INSET_RECT_FLAG_FILL_MID_LIGHT);
+                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                    w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
             }
         }
         else
@@ -1229,20 +1229,21 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             if (tabSelectedScenery == currentSceneryGlobal)
             {
                 gfx_fill_rect_inset(
-                    dpi, left, top, left + SCENERY_BUTTON_WIDTH - 1, top + SCENERY_BUTTON_HEIGHT - 1, w->colours[1],
-                    (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
+                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                    w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
             }
             else if (w->scenery.SelectedScenery == currentSceneryGlobal)
             {
                 gfx_fill_rect_inset(
-                    dpi, left, top, left + SCENERY_BUTTON_WIDTH - 1, top + SCENERY_BUTTON_HEIGHT - 1, w->colours[1],
-                    INSET_RECT_FLAG_FILL_MID_LIGHT);
+                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                    w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
             }
         }
 
         rct_scenery_entry* sceneryEntry;
         rct_drawpixelinfo clipdpi;
-        if (clip_drawpixelinfo(&clipdpi, dpi, { left + 1, top + 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
+        if (clip_drawpixelinfo(
+                &clipdpi, dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
         {
             if (currentSceneryGlobal.SceneryType == SCENERY_TYPE_BANNER)
             {
@@ -1352,11 +1353,11 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
             }
         }
 
-        left += SCENERY_BUTTON_WIDTH;
-        if (left >= 594)
+        topLeft.x += SCENERY_BUTTON_WIDTH;
+        if (topLeft.x >= 594)
         {
-            top += SCENERY_BUTTON_HEIGHT;
-            left = 0;
+            topLeft.y += SCENERY_BUTTON_HEIGHT;
+            topLeft.x = 0;
         }
     }
 }

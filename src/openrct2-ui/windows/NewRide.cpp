@@ -815,8 +815,7 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 
     gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
 
-    int32_t x = 1;
-    int32_t y = 1;
+    ScreenCoordsXY coords{ 1, 1 };
     RideSelection* listItem = _windowNewRideListItems;
     while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != RIDE_ENTRY_INDEX_NULL)
     {
@@ -826,7 +825,8 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (w->new_ride.SelectedRide == *listItem)
             flags |= INSET_RECT_FLAG_BORDER_INSET;
         if (w->new_ride.HighlightedRide == *listItem || flags != 0)
-            gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT | flags);
+            gfx_fill_rect_inset(
+                dpi, { coords, coords + ScreenCoordsXY{ 115, 115 } }, w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT | flags);
 
         // Draw ride image with feathered border
         rideEntry = get_ride_entry(listItem->EntryIndex);
@@ -840,14 +840,14 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
                 imageId++;
         }
 
-        gfx_draw_sprite_raw_masked(dpi, { x + 2, y + 2 }, SPR_NEW_RIDE_MASK, imageId);
+        gfx_draw_sprite_raw_masked(dpi, coords + ScreenCoordsXY{ 2, 2 }, SPR_NEW_RIDE_MASK, imageId);
 
         // Next position
-        x += 116;
-        if (x >= 116 * 5 + 1)
+        coords.x += 116;
+        if (coords.x >= 116 * 5 + 1)
         {
-            x = 1;
-            y += 116;
+            coords.x = 1;
+            coords.y += 116;
         }
 
         // Next item

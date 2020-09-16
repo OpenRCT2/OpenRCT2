@@ -1055,8 +1055,10 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Graph border
     gfx_fill_rect_inset(
-        dpi, screenPos.x + widget->left + 4, screenPos.y + widget->top + 15, screenPos.x + widget->right - 4,
-        screenPos.y + widget->bottom - 4, w->colours[1], INSET_RECT_F_30);
+        dpi,
+        { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
+          screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
+        w->colours[1], INSET_RECT_F_30);
 
     // Y axis labels
     screenPos = screenPos + ScreenCoordsXY{ widget->left + 27, widget->top + 23 };
@@ -1065,7 +1067,7 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
         uint32_t axisValue = i * 200;
         gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 10, 0 });
         gfx_fill_rect_inset(
-            dpi, screenPos.x + 15, screenPos.y + 5, screenPos.x + w->width - 32, screenPos.y + 5, w->colours[2],
+            dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ w->width - 32, 5 } }, w->colours[2],
             INSET_RECT_FLAG_BORDER_INSET);
         screenPos.y += 20;
     }
@@ -1186,8 +1188,10 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Graph border
     gfx_fill_rect_inset(
-        dpi, screenPos.x + widget->left + 4, screenPos.y + widget->top + 15, screenPos.x + widget->right - 4,
-        screenPos.y + widget->bottom - 4, w->colours[1], INSET_RECT_F_30);
+        dpi,
+        { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
+          screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
+        w->colours[1], INSET_RECT_F_30);
 
     // Y axis labels
     screenPos = screenPos + ScreenCoordsXY{ widget->left + 27, widget->top + 23 };
@@ -1196,7 +1200,7 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
         uint32_t axisValue = i * 1000;
         gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 10, 0 });
         gfx_fill_rect_inset(
-            dpi, screenPos.x + 15, screenPos.y + 5, screenPos.x + w->width - 32, screenPos.y + 5, w->colours[2],
+            dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ w->width - 32, 5 } }, w->colours[2],
             INSET_RECT_FLAG_BORDER_INSET);
         screenPos.y += 20;
     }
