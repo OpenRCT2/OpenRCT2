@@ -3184,7 +3184,6 @@ static void ride_entrance_exit_connected(Ride* ride)
 {
     for (int32_t i = 0; i < MAX_STATIONS; ++i)
     {
-        Formatter ft;
         auto station_start = ride->stations[i].Start;
         auto entrance = ride_get_entrance_location(ride, i);
         auto exit = ride_get_exit_location(ride, i);
@@ -3194,6 +3193,7 @@ static void ride_entrance_exit_connected(Ride* ride)
         if (!entrance.isNull() && !ride_entrance_exit_is_reachable(entrance))
         {
             // name of ride is parameter of the format string
+            Formatter ft;
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
@@ -3205,6 +3205,7 @@ static void ride_entrance_exit_connected(Ride* ride)
         if (!exit.isNull() && !ride_entrance_exit_is_reachable(exit))
         {
             // name of ride is parameter of the format string
+            Formatter ft;
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {

@@ -68,9 +68,9 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
 
 static void marketing_raise_finished_notification(const MarketingCampaign& campaign)
 {
-    Formatter ft;
     if (gConfigNotifications.park_marketing_campaign_finished)
     {
+        Formatter ft;
         // This sets the string parameters for the marketing types that have an argument.
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {

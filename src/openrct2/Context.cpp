@@ -672,8 +672,7 @@ namespace OpenRCT2
             catch (const UnsupportedRCTCFlagException& e)
             {
                 auto windowManager = _uiContext->GetWindowManager();
-                Formatter ft;
-                ft.Add<uint16_t>(e.Flag);
+                auto ft = Formatter().Add<uint16_t>(e.Flag);
                 windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE, ft);
             }
             catch (const std::exception& e)
