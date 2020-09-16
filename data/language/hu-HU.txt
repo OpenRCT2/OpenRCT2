@@ -2865,7 +2865,7 @@ STR_5554    :{SMALLFONT}{BLACK}A hegy-eszköz bekapcsolása
 STR_5555    :Más pályatípusok járműveinek mutatása
 STR_5556    :{SMALLFONT}{BLACK}Játékos kirúgása
 STR_5557    :Kapcsolat fenntartása hiba esetén (többjátékos mód)
-STR_5558    :A beállítás érvénybe lépéséhez újraindítás szükséges
+STR_5558    :A beállítás érvénybe lépéséhez az OpenRCT2 újraindítása szükséges
 STR_5559    :10 perces ellenőrzés
 STR_5560    :{SMALLFONT}{BLACK}Az ellenőrzési időt „minden 10. percben”-re állítja az összes játékon
 STR_5561    :A nyelv betöltése sikertelen
@@ -3607,6 +3607,16 @@ STR_6374    :Ű
 STR_6375    :Ismeretlen játék
 STR_6376    :{WINDOW_COLOUR_2}Jármű egy játékhoz:{NEWLINE}{BLACK}{STRINGID} a(z) {STRINGID} számára
 STR_6377    :{WINDOW_COLOUR_2}Típus: {BLACK}{STRINGID} a(z) {STRINGID} számára
+STR_6378    :Objektumlista fogadása: {INT32} / {INT32}
+STR_6379    :Érvénytelen adatok érkeztek
+STR_6380    :Frissítés érhető el!
+STR_6381    :Csatlakozz az OpenRCT2 Discord-hoz!
+STR_6382    :Újabb OpenRCT2 kiadás érhető el: {STRING}!
+STR_6383    :A letöltési oldal megnyitása
+STR_6384    :Havazás
+STR_6385    :Erős havazás
+STR_6386    :Hóvihar
+
 
 #############
 # Scenarios #

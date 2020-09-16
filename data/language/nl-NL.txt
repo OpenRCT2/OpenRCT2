@@ -3664,6 +3664,9 @@ STR_6380    :Update beschikbaar!
 STR_6381    :Meepraten op de OpenRCT2-Discord
 STR_6382    :Er is een nieuwe versie van OpenRCT2 beschikbaar: {STRING}
 STR_6383    :Downloadpagina openen
+STR_6384    :Sneeuw
+STR_6385    :Zware sneeuw
+STR_6386    :Sneeuwstorm
 
 #############
 # Scenarios #
