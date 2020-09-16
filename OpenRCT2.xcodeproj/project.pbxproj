@@ -1692,7 +1692,6 @@
 		F76C838E1EC4E7CC00FA49E2 /* Nullable.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Nullable.hpp; sourceTree = "<group>"; };
 		F76C838F1EC4E7CC00FA49E2 /* Path.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
 		F76C83901EC4E7CC00FA49E2 /* Path.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Path.hpp; sourceTree = "<group>"; };
-		F76C83911EC4E7CC00FA49E2 /* Registration.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Registration.hpp; sourceTree = "<group>"; };
 		F76C83921EC4E7CC00FA49E2 /* String.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
 		F76C83931EC4E7CC00FA49E2 /* String.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = String.hpp; sourceTree = "<group>"; };
 		F76C83941EC4E7CC00FA49E2 /* StringBuilder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StringBuilder.hpp; sourceTree = "<group>"; };
@@ -2838,7 +2837,6 @@
 				F76C838F1EC4E7CC00FA49E2 /* Path.cpp */,
 				F76C83901EC4E7CC00FA49E2 /* Path.hpp */,
 				2ADE2F21224418B1002598AF /* Random.hpp */,
-				F76C83911EC4E7CC00FA49E2 /* Registration.hpp */,
 				F76C83921EC4E7CC00FA49E2 /* String.cpp */,
 				F76C83931EC4E7CC00FA49E2 /* String.hpp */,
 				F76C83941EC4E7CC00FA49E2 /* StringBuilder.hpp */,
