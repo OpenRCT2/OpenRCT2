@@ -103,7 +103,7 @@ void IIniWriter::WriteString(const std::string& name, const utf8* value)
     WriteString(name, String::ToStd(value));
 }
 
-IIniWriter* CreateIniWriter(OpenRCT2::IStream* stream)
+std::unique_ptr<IIniWriter> CreateIniWriter(OpenRCT2::IStream* stream)
 {
-    return new IniWriter(stream);
+    return std::make_unique<IniWriter>(stream);
 }
