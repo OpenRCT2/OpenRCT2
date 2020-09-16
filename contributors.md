@@ -157,6 +157,7 @@ The following people are not part of the development team, but have been contrib
 * Richard Fine (richard-fine)
 * Tom Parsons (tombomp)
 * Stephan Spengler (Sadret)
+* Roger Seekell (rpstester)
 
 ## Toolchain
 * (Balletie) - macOS
