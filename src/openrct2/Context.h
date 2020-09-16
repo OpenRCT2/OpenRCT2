@@ -259,7 +259,6 @@ void context_force_close_window_by_class(rct_windowclass wc);
 void context_update_map_tooltip();
 void context_handle_input();
 void context_input_handle_keyboard(bool isTitle);
-bool context_read_bmp(void** outPixels, uint32_t* outWidth, uint32_t* outHeight, const utf8* path);
 void context_quit();
 const utf8* context_get_path_legacy(int32_t pathId);
 bool context_load_park_from_file(const utf8* path);

@@ -437,12 +437,12 @@ utf8* IIniReader::GetCString(const std::string& name, const utf8* defaultValue) 
     return String::Duplicate(szValue.c_str());
 }
 
-IIniReader* CreateIniReader(OpenRCT2::IStream* stream)
+std::unique_ptr<IIniReader> CreateIniReader(OpenRCT2::IStream* stream)
 {
-    return new IniReader(stream);
+    return std::make_unique<IniReader>(stream);
 }
 
-IIniReader* CreateDefaultIniReader()
+std::unique_ptr<IIniReader> CreateDefaultIniReader()
 {
-    return new DefaultIniReader();
+    return std::make_unique<DefaultIniReader>();
 }

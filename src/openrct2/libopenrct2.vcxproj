@@ -175,7 +175,6 @@
     <ClInclude Include="core\Numerics.hpp" />
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
-    <ClInclude Include="core\Registration.hpp" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.hpp" />
     <ClInclude Include="core\StringReader.hpp" />

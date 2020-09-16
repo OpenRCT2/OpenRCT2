@@ -29,15 +29,14 @@ TEST_F(IniWriterTest, create_empty)
     OpenRCT2::MemoryStream ms(0);
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), true);
-    IIniWriter* iw = CreateIniWriter(&ms);
+    auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
-    delete iw;
 }
 
 TEST_F(IniWriterTest, create_one_section)
 {
     OpenRCT2::MemoryStream ms(1000);
-    IIniWriter* iw = CreateIniWriter(&ms);
+    auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteSection("OpenRCT2");
     uint8_t null_terminator = 0;
@@ -49,13 +48,12 @@ TEST_F(IniWriterTest, create_one_section)
     const char* ini = reinterpret_cast<const char*>(ms.ReadString());
     ASSERT_STREQ(ini, "[OpenRCT2]" PLATFORM_NEWLINE);
     Memory::Free(ini);
-    delete iw;
 }
 
 TEST_F(IniWriterTest, create_multiple_sections)
 {
     OpenRCT2::MemoryStream ms(1000);
-    IIniWriter* iw = CreateIniWriter(&ms);
+    auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteSection("OpenRCT1");
     iw->WriteSection("OpenRCT2");
@@ -73,13 +71,12 @@ TEST_F(IniWriterTest, create_multiple_sections)
         "[OpenRCT1]" PLATFORM_NEWLINE PLATFORM_NEWLINE "[OpenRCT2]" PLATFORM_NEWLINE PLATFORM_NEWLINE
         "[OpenRCT3]" PLATFORM_NEWLINE PLATFORM_NEWLINE "[OpenRCT4]" PLATFORM_NEWLINE);
     Memory::Free(ini);
-    delete iw;
 }
 
 TEST_F(IniWriterTest, create_loose_bool_entry)
 {
     OpenRCT2::MemoryStream ms(1000);
-    IIniWriter* iw = CreateIniWriter(&ms);
+    auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteBoolean("boolval", true);
     uint8_t null_terminator = 0;
@@ -91,13 +88,12 @@ TEST_F(IniWriterTest, create_loose_bool_entry)
     const char* ini = reinterpret_cast<const char*>(ms.ReadString());
     ASSERT_STREQ(ini, "boolval = true" PLATFORM_NEWLINE);
     Memory::Free(ini);
-    delete iw;
 }
 
 TEST_F(IniWriterTest, create_loose_enum_entry)
 {
     OpenRCT2::MemoryStream ms(1000);
-    IIniWriter* iw = CreateIniWriter(&ms);
+    auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteEnum("by_string", "stringval");
     iw->WriteEnum<int32_t>("int32_t", 0, Enum_Currency);
@@ -110,13 +106,12 @@ TEST_F(IniWriterTest, create_loose_enum_entry)
     const char* ini = reinterpret_cast<const char*>(ms.ReadString());
     ASSERT_STREQ(ini, "by_string = stringval" PLATFORM_NEWLINE "int32_t = 0" PLATFORM_NEWLINE);
     Memory::Free(ini);
-    delete iw;
 }
 
 TEST_F(IniWriterTest, create_loose_float_entry)
 {
     OpenRCT2::MemoryStream ms(1000);
-    IIniWriter* iw = CreateIniWriter(&ms);
+    auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteFloat("one", 1.);
     uint8_t null_terminator = 0;
@@ -129,13 +124,12 @@ TEST_F(IniWriterTest, create_loose_float_entry)
     // This will be non-fatal due to float.
     EXPECT_STREQ(ini, "one = 1.000000" PLATFORM_NEWLINE);
     Memory::Free(ini);
-    delete iw;
 }
 
 TEST_F(IniWriterTest, create_loose_int32_t_entry)
 {
     OpenRCT2::MemoryStream ms(1000);
-    IIniWriter* iw = CreateIniWriter(&ms);
+    auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteInt32("one", 1);
     iw->WriteInt32("zero", 0);
@@ -154,13 +148,12 @@ TEST_F(IniWriterTest, create_loose_int32_t_entry)
         "one = 1" PLATFORM_NEWLINE "zero = 0" PLATFORM_NEWLINE "minusone = -1" PLATFORM_NEWLINE
         "intmin = -2147483648" PLATFORM_NEWLINE "intmax = 2147483647" PLATFORM_NEWLINE);
     Memory::Free(ini);
-    delete iw;
 }
 
 TEST_F(IniWriterTest, create_loose_string_entry)
 {
     OpenRCT2::MemoryStream ms(1000);
-    IIniWriter* iw = CreateIniWriter(&ms);
+    auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteString("path", u8"C:'\\some/dir\\here/神鷹暢遊");
     uint8_t null_terminator = 0;
@@ -172,13 +165,12 @@ TEST_F(IniWriterTest, create_loose_string_entry)
     const char* ini = reinterpret_cast<const char*>(ms.ReadString());
     ASSERT_STREQ(ini, "path = \"C:'\\\\some/dir\\\\here/\xE7\xA5\x9E\xE9\xB7\xB9\xE6\x9A\xA2\xE9\x81\x8A\"" PLATFORM_NEWLINE);
     Memory::Free(ini);
-    delete iw;
 }
 
 TEST_F(IniWriterTest, create_multiple_section_with_values)
 {
     OpenRCT2::MemoryStream ms(1000);
-    IIniWriter* iw = CreateIniWriter(&ms);
+    auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteSection("bool");
     iw->WriteBoolean("boolval", true);
@@ -200,13 +192,12 @@ TEST_F(IniWriterTest, create_multiple_section_with_values)
         "one = 1" PLATFORM_NEWLINE "zero = 0" PLATFORM_NEWLINE PLATFORM_NEWLINE "[string]" PLATFORM_NEWLINE "path = "
         "\"C:'\\\\some/dir\\\\here/\xE7\xA5\x9E\xE9\xB7\xB9\xE6\x9A\xA2\xE9\x81\x8A\"" PLATFORM_NEWLINE);
     Memory::Free(ini);
-    delete iw;
 }
 
 TEST_F(IniWriterTest, create_duplicate_sections)
 {
     OpenRCT2::MemoryStream ms(1000);
-    IIniWriter* iw = CreateIniWriter(&ms);
+    auto iw = CreateIniWriter(&ms);
     ASSERT_NE(iw, nullptr);
     iw->WriteSection("section");
     iw->WriteSection("section");
@@ -223,5 +214,4 @@ TEST_F(IniWriterTest, create_duplicate_sections)
         "[section]" PLATFORM_NEWLINE PLATFORM_NEWLINE "[section]" PLATFORM_NEWLINE PLATFORM_NEWLINE
         "[section]" PLATFORM_NEWLINE);
     Memory::Free(ini);
-    delete iw;
 }
