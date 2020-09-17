@@ -3668,6 +3668,9 @@ STR_6380    :Dostupná aktualizace!
 STR_6381    :Připojte se na OpenRCT2 Discord!
 STR_6382    :Je k dispozici nová verze OpenRCT2: {STRING}!
 STR_6383    :Otevřít stránku Ke Stažení
+STR_6384    :Jemné sněžení
+STR_6385    :Silné sněžení
+STR_6386    :Vánice
 
 ###############################################################################
 ## RCT2 Scenarios
