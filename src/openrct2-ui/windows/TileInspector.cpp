@@ -2085,11 +2085,10 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     auto banner = tileElement->AsWall()->GetBanner();
                     if (banner != nullptr && !banner->IsNull())
                     {
-                        uint8_t args[32]{};
-                        Formatter ft(args);
+                        Formatter ft;
                         banner->FormatTextTo(ft);
                         gfx_draw_string_left(
-                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE,
+                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft.Data(), COLOUR_WHITE,
                             screenCoords + ScreenCoordsXY{ 0, 11 });
                     }
                 }
@@ -2152,11 +2151,10 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     auto banner = sceneryElement->GetBanner();
                     if (banner != nullptr && !banner->IsNull())
                     {
-                        uint8_t args[32]{};
-                        Formatter ft(args);
+                        Formatter ft;
                         banner->FormatTextTo(ft);
                         gfx_draw_string_left(
-                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE,
+                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft.Data(), COLOUR_WHITE,
                             screenCoords + ScreenCoordsXY{ 0, 22 });
                     }
                 }
@@ -2186,10 +2184,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 auto banner = tileElement->AsBanner()->GetBanner();
                 if (banner != nullptr && !banner->IsNull())
                 {
-                    uint8_t args[32]{};
-                    Formatter ft(args);
+                    Formatter ft;
                     banner->FormatTextTo(ft);
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE, screenCoords);
+                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft.Data(), COLOUR_WHITE, screenCoords);
                 }
 
                 // Properties

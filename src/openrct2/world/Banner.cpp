@@ -59,10 +59,9 @@ static constexpr CodePointToUtf8<FORMAT_COLOUR_CODE_START, FORMAT_COLOUR_CODE_EN
 
 std::string Banner::GetText() const
 {
-    uint8_t args[32]{};
-    Formatter ft(args);
+    Formatter ft;
     FormatTextTo(ft);
-    return format_string(STR_STRINGID, args);
+    return format_string(STR_STRINGID, ft.Data());
 }
 
 void Banner::FormatTextTo(Formatter& ft, bool addColour) const
@@ -79,7 +78,7 @@ void Banner::FormatTextTo(Formatter& ft) const
 {
     if (flags & BANNER_FLAG_NO_ENTRY)
     {
-        ft.Add<rct_string_id>(STR_NO_ENTRY).NumBytes();
+        ft.Add<rct_string_id>(STR_NO_ENTRY);
     }
     else if (flags & BANNER_FLAG_LINKED_TO_RIDE)
     {
@@ -90,16 +89,16 @@ void Banner::FormatTextTo(Formatter& ft) const
         }
         else
         {
-            ft.Add<rct_string_id>(STR_DEFAULT_SIGN).NumBytes();
+            ft.Add<rct_string_id>(STR_DEFAULT_SIGN);
         }
     }
     else if (text.empty())
     {
-        ft.Add<rct_string_id>(STR_DEFAULT_SIGN).NumBytes();
+        ft.Add<rct_string_id>(STR_DEFAULT_SIGN);
     }
     else
     {
-        ft.Add<rct_string_id>(STR_STRING).Add<const char*>(text.c_str()).NumBytes();
+        ft.Add<rct_string_id>(STR_STRING).Add<const char*>(text.c_str());
     }
 }
 

@@ -111,14 +111,13 @@ private:
             else
             {
                 char str_downloading_objects[256]{};
-                uint8_t args[32]{};
-                Formatter ft(args);
+                Formatter ft;
                 if (_downloadStatusInfo.Source.empty())
                 {
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
                     ft.Add<char*>(_downloadStatusInfo.Name.c_str());
-                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, args);
+                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, ft.Data());
                 }
                 else
                 {
@@ -126,7 +125,8 @@ private:
                     ft.Add<char*>(_downloadStatusInfo.Source.c_str());
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
-                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, args);
+                    format_string(
+                        str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, ft.Data());
                 }
 
                 auto intent = Intent(WC_NETWORK_STATUS);

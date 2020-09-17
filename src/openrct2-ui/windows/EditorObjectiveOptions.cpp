@@ -497,7 +497,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
             if (gScenarioObjective.Currency >= MONEY(2000000, 00))
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -508,7 +508,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             if (gScenarioObjective.Currency >= MONEY(2000000, 00))
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -519,7 +519,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             if (gScenarioObjective.MinimumLength >= 5000)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -530,7 +530,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             if (gScenarioObjective.MinimumExcitement >= FIXED_2DP(9, 90))
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -541,7 +541,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         default:
             if (gScenarioObjective.NumGuests >= 5000)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -561,7 +561,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
             if (gScenarioObjective.Currency <= MONEY(1000, 00))
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -572,7 +572,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             if (gScenarioObjective.Currency <= MONEY(1000, 00))
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -583,7 +583,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             if (gScenarioObjective.MinimumLength <= 1000)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -594,7 +594,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             if (gScenarioObjective.MinimumExcitement <= FIXED_2DP(4, 00))
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -605,7 +605,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         default:
             if (gScenarioObjective.NumGuests <= 250)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -620,7 +620,7 @@ static void window_editor_objective_options_arg_2_increase(rct_window* w)
 {
     if (gScenarioObjective.Year >= 25)
     {
-        context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+        context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
     }
     else
     {
@@ -633,7 +633,7 @@ static void window_editor_objective_options_arg_2_decrease(rct_window* w)
 {
     if (gScenarioObjective.Year <= 1)
     {
-        context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+        context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
     }
     else
     {
@@ -1139,11 +1139,10 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
             }
 
             // Ride name
-            uint8_t args[32]{};
 
-            Formatter ft(args);
+            Formatter ft;
             ride->FormatNameTo(ft);
-            gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, { 15, y });
+            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, { 15, y });
         }
     }
 }

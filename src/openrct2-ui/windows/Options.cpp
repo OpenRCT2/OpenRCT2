@@ -934,24 +934,24 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                                     gConfigGeneral.rct1_path = rct1path;
                                     gConfigInterface.scenarioselect_last_tab = 0;
                                     config_save_default();
-                                    context_show_error(STR_RESTART_REQUIRED, STR_NONE);
+                                    context_show_error(STR_RESTART_REQUIRED, STR_NONE, {});
                                 }
                                 else
                                 {
                                     SafeFree(rct1path);
-                                    context_show_error(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE);
+                                    context_show_error(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE, {});
                                 }
                             }
                             else
                             {
                                 SafeFree(rct1path);
-                                context_show_error(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE);
+                                context_show_error(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE, {});
                             }
                         }
                         else
                         {
                             SafeFree(rct1path);
-                            context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE);
+                            context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE, {});
                         }
                     }
                     w->Invalidate();
@@ -1440,7 +1440,7 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                             if (language_open(fallbackLanguage))
                             {
                                 // It worked, so we can say it with error message in-game
-                                context_show_error(STR_LANGUAGE_LOAD_FAILED, STR_NONE);
+                                context_show_error(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
                             }
                             // report error to console regardless
                             log_error("Failed to open language file.");
@@ -1494,7 +1494,8 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     if ((dropdownIndex == 1 || dropdownIndex == 3)
                         && !Platform::FileExists(context_get_path_legacy(PATH_ID_CSS50)))
                     {
-                        context_show_error(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT);
+                        context_show_error(
+                            STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT, {});
                     }
                     else
                     {

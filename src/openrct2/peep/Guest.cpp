@@ -536,12 +536,11 @@ void Guest::UpdateEasterEggInteractions()
 
 int32_t Guest::GetEasterEggNameId() const
 {
-    uint8_t args[32]{};
     char buffer[256]{};
 
-    Formatter ft(args);
+    Formatter ft;
     FormatNameTo(ft);
-    format_string(buffer, sizeof(buffer), STR_STRINGID, args);
+    format_string(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
     for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
         if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
@@ -684,12 +683,11 @@ void Guest::HandleEasterEggName()
  */
 int32_t Guest::CheckEasterEggName(int32_t index) const
 {
-    uint8_t args[32]{};
     char buffer[256]{};
 
-    Formatter ft(args);
+    Formatter ft;
     FormatNameTo(ft);
-    format_string(buffer, sizeof(buffer), STR_STRINGID, args);
+    format_string(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
     return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
 }
@@ -1702,7 +1700,7 @@ loc_69B221:
         ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
         }
     }
 
@@ -3735,7 +3733,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
                 ride->FormatNameTo(ft);
                 if (gConfigNotifications.ride_warnings)
                 {
-                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide);
+                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide, ft);
                 }
             }
 
@@ -3905,7 +3903,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
 
         if (gConfigNotifications.guest_on_ride)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, sprite_index);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, sprite_index, ft);
         }
     }
 
@@ -5016,7 +5014,7 @@ void Guest::UpdateRideLeaveExit()
 
         if (gConfigNotifications.guest_left_ride)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, sprite_index);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, sprite_index, ft);
         }
     }
 

@@ -254,7 +254,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
     // Displays a message if the ride can't load, fix #4080
     if (_loadedTrackDesign == nullptr)
     {
-        context_show_error(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR);
+        context_show_error(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR, {});
         return;
     }
 
@@ -276,7 +276,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
         if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED
             && (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE))
         {
-            context_show_error(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
+            context_show_error(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
         }
 
         auto intent = Intent(WC_TRACK_DESIGN_PLACE);

@@ -619,8 +619,7 @@ static void window_title_command_editor_tool_down(
         if (peep != nullptr)
         {
             validSprite = true;
-            uint8_t formatArgs[32]{};
-            Formatter ft(formatArgs);
+            Formatter ft;
             peep->FormatNameTo(ft);
             format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->Id);
         }
@@ -631,10 +630,9 @@ static void window_title_command_editor_tool_down(
             auto ride = vehicle->GetRide();
             if (ride != nullptr)
             {
-                uint8_t formatArgs[32]{};
-                Formatter ft(formatArgs);
+                Formatter ft;
                 ride->FormatNameTo(ft);
-                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, formatArgs);
+                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, ft.Data());
             }
         }
         else if (litter != nullptr)

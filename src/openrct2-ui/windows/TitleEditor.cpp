@@ -380,7 +380,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 }
                 catch (const std::exception&)
                 {
-                    context_show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
+                    context_show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA, {});
                 }
             }
             break;
@@ -491,7 +491,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 if (!title_preview_sequence(_selectedTitleSequence))
                 {
-                    context_show_error(STR_ERR_FAILED_TO_LOAD_TITLE_SEQUENCE, STR_NONE);
+                    context_show_error(STR_ERR_FAILED_TO_LOAD_TITLE_SEQUENCE, STR_NONE, {});
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
                 {
@@ -547,7 +547,7 @@ static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetI
         case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
             if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr)
             {
-                context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
+                context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE, {});
             }
             else
             {
@@ -697,17 +697,17 @@ static void window_title_editor_textinput(rct_window* w, rct_widgetindex widgetI
                     }
                     else
                     {
-                        context_show_error(STR_ERROR_RESERVED_NAME, STR_NONE);
+                        context_show_error(STR_ERROR_RESERVED_NAME, STR_NONE, {});
                     }
                 }
                 else
                 {
-                    context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE);
+                    context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE, {});
                 }
             }
             else
             {
-                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
             }
             break;
         case WIDX_TITLE_EDITOR_RENAME_SAVE:
@@ -1076,7 +1076,7 @@ static void window_title_editor_load_sequence(size_t index)
     TitleSequence* titleSequence = LoadTitleSequence(path);
     if (titleSequence == nullptr)
     {
-        context_show_error(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE);
+        context_show_error(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE, {});
         return;
     }
 
@@ -1100,11 +1100,11 @@ static bool window_title_editor_check_can_edit()
     bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr);
 
     if (_isSequenceReadOnly)
-        context_show_error(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
+        context_show_error(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE, {});
     else if (title_is_previewing_sequence())
-        context_show_error(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING);
+        context_show_error(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING, {});
     else if (commandEditorOpen)
-        context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
+        context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE, {});
     else
         return true;
 
@@ -1149,7 +1149,7 @@ static void window_title_editor_rename_park(size_t index, const utf8* name)
 {
     if (!filename_valid_characters(name))
     {
-        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
         return;
     }
 
@@ -1160,7 +1160,7 @@ static void window_title_editor_rename_park(size_t index, const utf8* name)
             const utf8* savePath = _editingTitleSequence->Saves[i];
             if (_strcmpi(savePath, name) == 0)
             {
-                context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE);
+                context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE, {});
                 return;
             }
         }

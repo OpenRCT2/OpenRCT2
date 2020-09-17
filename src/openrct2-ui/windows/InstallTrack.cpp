@@ -106,7 +106,7 @@ rct_window* window_install_track_open(const utf8* path)
     _trackDesign = track_design_open(path);
     if (_trackDesign == nullptr)
     {
-        context_show_error(STR_UNABLE_TO_LOAD_FILE, STR_NONE);
+        context_show_error(STR_UNABLE_TO_LOAD_FILE, STR_NONE, {});
         return nullptr;
     }
 
@@ -416,7 +416,7 @@ static void window_install_track_design(rct_window* w)
     if (!platform_ensure_directory_exists(destPath))
     {
         log_error("Unable to create directory '%s'", destPath);
-        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
         return;
     }
 
@@ -426,7 +426,7 @@ static void window_install_track_design(rct_window* w)
     if (Platform::FileExists(destPath))
     {
         log_info("%s already exists, prompting user for a different track design name", destPath);
-        context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
         window_text_input_raw_open(
             w, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN, STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME,
             _trackName.c_str(), 255);
@@ -439,7 +439,7 @@ static void window_install_track_design(rct_window* w)
         }
         else
         {
-            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
+            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
         }
     }
 }

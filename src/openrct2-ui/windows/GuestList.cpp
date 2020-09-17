@@ -1066,11 +1066,10 @@ static bool guest_should_be_visible(Peep* peep)
     if (_window_guest_list_filter_name[0] != '\0')
     {
         char name[256]{};
-        uint8_t args[32]{};
 
-        Formatter ft(args);
+        Formatter ft;
         peep->FormatNameTo(ft);
-        format_string(name, sizeof(name), STR_STRINGID, args);
+        format_string(name, sizeof(name), STR_STRINGID, ft.Data());
         if (strcasestr(name, _window_guest_list_filter_name) == nullptr)
         {
             return false;

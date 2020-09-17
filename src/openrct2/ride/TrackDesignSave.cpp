@@ -73,7 +73,7 @@ void track_design_save_select_tile_element(int32_t interactionType, const Coords
             {
                 context_show_error(
                     STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY,
-                    STR_SAVE_TRACK_SCENERY_TOO_MANY_ITEMS_SELECTED);
+                    STR_SAVE_TRACK_SCENERY_TOO_MANY_ITEMS_SELECTED, {});
             }
         }
     }

@@ -17,6 +17,7 @@
 #include "Language.h"
 #include "StringIds.h"
 
+#include <array>
 #include <cstring>
 #include <string>
 
@@ -82,8 +83,9 @@ extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
 
 class Formatter
 {
-    const uint8_t* StartBuf;
-    uint8_t* CurrentBuf;
+    std::array<uint8_t, 80> Buffer{};
+    uint8_t* StartBuf{};
+    uint8_t* CurrentBuf{};
 
 public:
     explicit Formatter(uint8_t* buf)
@@ -92,14 +94,21 @@ public:
     {
     }
 
+    Formatter()
+        : Buffer{}
+        , StartBuf(Buffer.data())
+        , CurrentBuf(StartBuf)
+    {
+    }
+
     static Formatter Common()
     {
-        return Formatter(gCommonFormatArgs);
+        return Formatter{ gCommonFormatArgs };
     }
 
     static Formatter MapTooltip()
     {
-        return Formatter(gMapTooltipFormatArgs);
+        return Formatter{ gMapTooltipFormatArgs };
     }
 
     auto Buf()
@@ -107,7 +116,7 @@ public:
         return CurrentBuf;
     }
 
-    auto GetStartBuf() const
+    auto Data() const
     {
         return StartBuf;
     }

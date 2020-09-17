@@ -1696,9 +1696,9 @@ static void show_error(uint8_t errorType, rct_string_id errorStringId)
 {
     if (errorType == ERROR_TYPE_GENERIC)
     {
-        context_show_error(errorStringId, 0xFFFF);
+        context_show_error(errorStringId, STR_NONE, {});
     }
-    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId);
+    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId, {});
 }
 
 void load_from_sv6(const char* path)

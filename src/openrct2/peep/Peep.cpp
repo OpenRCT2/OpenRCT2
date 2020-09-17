@@ -872,7 +872,7 @@ void Peep::UpdateFalling()
         {
             auto ft = Formatter::Common();
             FormatNameTo(ft);
-            News::AddItemToQueue(News::ItemType::Blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16));
+            News::AddItemToQueue(News::ItemType::Blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
         }
 
         gParkRatingCasualtyPenalty = std::min(gParkRatingCasualtyPenalty + 25, 1000);
@@ -1238,7 +1238,7 @@ void peep_problem_warnings_update()
         warning_throttle[0] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, 20);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, 20, {});
         }
     }
 
@@ -1249,7 +1249,7 @@ void peep_problem_warnings_update()
         warning_throttle[1] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, 21);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, 21, {});
         }
     }
 
@@ -1260,7 +1260,7 @@ void peep_problem_warnings_update()
         warning_throttle[2] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, 22);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, 22, {});
         }
     }
 
@@ -1271,7 +1271,7 @@ void peep_problem_warnings_update()
         warning_throttle[3] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, 26);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, 26, {});
         }
     }
 
@@ -1282,7 +1282,7 @@ void peep_problem_warnings_update()
         warning_throttle[4] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, 31);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, 31, {});
         }
     }
 
@@ -1293,7 +1293,7 @@ void peep_problem_warnings_update()
         warning_throttle[5] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, 33);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, 33, {});
         }
     }
 
@@ -1304,7 +1304,7 @@ void peep_problem_warnings_update()
         warning_throttle[6] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 27);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 27, {});
         }
     }
     else if (lost_counter >= PEEP_LOST_WARNING_THRESHOLD)
@@ -1312,7 +1312,7 @@ void peep_problem_warnings_update()
         warning_throttle[6] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 16);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 16, {});
         }
     }
 }
@@ -1967,11 +1967,9 @@ void Peep::FormatNameTo(Formatter& ft) const
 
 std::string Peep::GetName() const
 {
-    uint8_t args[32]{};
-
-    Formatter ft(args);
+    Formatter ft;
     FormatNameTo(ft);
-    return format_string(STR_STRINGID, args);
+    return format_string(STR_STRINGID, ft.Data());
 }
 
 bool Peep::SetName(const std::string_view& value)
@@ -2398,7 +2396,8 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             ride->FormatNameTo(ft);
             if (gConfigNotifications.guest_queuing_for_ride)
             {
-                News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
+                News::AddItemToQueue(
+                    News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index, ft);
             }
         }
     }
@@ -2459,7 +2458,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                 peep->FormatNameTo(ft);
                 if (gConfigNotifications.guest_left_park)
                 {
-                    News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index);
+                    News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index, ft);
                 }
             }
             return;
@@ -2827,7 +2826,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                         if (gConfigNotifications.guest_queuing_for_ride)
                         {
                             News::AddItemToQueue(
-                                News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
+                                News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index, ft);
                         }
                     }
 
@@ -2937,7 +2936,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
                                                                                              : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (gConfigNotifications.guest_used_facility)
             {
-                News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, peep->sprite_index);
+                News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, peep->sprite_index, ft);
             }
         }
     }
@@ -3230,17 +3229,15 @@ int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_
     }
 
     // Compare their names as strings
-    uint8_t args[32]{};
-
     char nameA[256]{};
-    Formatter ft(args);
+    Formatter ft;
     peep_a->FormatNameTo(ft);
-    format_string(nameA, sizeof(nameA), STR_STRINGID, args);
+    format_string(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
 
     char nameB[256]{};
-    ft = Formatter(args);
+    ft.Rewind();
     peep_b->FormatNameTo(ft);
-    format_string(nameB, sizeof(nameB), STR_STRINGID, args);
+    format_string(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
     return strlogicalcmp(nameA, nameB);
 }
 

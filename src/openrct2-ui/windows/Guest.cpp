@@ -1989,7 +1989,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ft = Formatter::Common();
         peep_thought_set_format_args(thought, ft);
         screenCoords.y += gfx_draw_string_left_wrapped(
-            dpi, const_cast<unsigned char*>(ft.GetStartBuf()), screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
+            dpi, const_cast<unsigned char*>(ft.Data()), screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
 
         // If this is the last visible line end drawing.
         if (screenCoords.y > w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
