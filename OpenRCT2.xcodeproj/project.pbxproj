@@ -50,11 +50,11 @@
 		4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */; };
 		4C724B2221F0AD790012ADD0 /* BenchSpriteSort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C724B2121F0AD790012ADD0 /* BenchSpriteSort.cpp */; };
 		4C81F7E124672C4D000E61BF /* CustomListView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C81F7DF24672C4D000E61BF /* CustomListView.cpp */; };
-		4C8972E22503BB7000C26857 /* RTL.ICU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8972E02503BB6F00C26857 /* RTL.ICU.cpp */; };
-		4C8972E32503BB7000C26857 /* RTL.FriBidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8972E12503BB6F00C26857 /* RTL.FriBidi.cpp */; };
 		4C8A6FF323EB5326001A8255 /* Http.cURL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8A6FF223EB5326001A8255 /* Http.cURL.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
+		4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */; };
+		4CA39E522513F8A00094066B /* RTL.FriBidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E502513F8A00094066B /* RTL.FriBidi.cpp */; };
 		4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */; };
 		4CB2716A24195B45000CF9EE /* VehicleSubpositionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */; };
 		4CB30179249E382B0034A7F6 /* RCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB30178249E382B0034A7F6 /* RCT2.cpp */; };
@@ -842,9 +842,6 @@
 		4C81F7DF24672C4D000E61BF /* CustomListView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomListView.cpp; path = scripting/CustomListView.cpp; sourceTree = "<group>"; };
 		4C81F7E024672C4D000E61BF /* CustomListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomListView.h; path = scripting/CustomListView.h; sourceTree = "<group>"; };
 		4C81F7E224672C58000E61BF /* ScTileSelection.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScTileSelection.hpp; path = scripting/ScTileSelection.hpp; sourceTree = "<group>"; };
-		4C8972DF2503BB6F00C26857 /* RTL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTL.h; sourceTree = "<group>"; };
-		4C8972E02503BB6F00C26857 /* RTL.ICU.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTL.ICU.cpp; sourceTree = "<group>"; };
-		4C8972E12503BB6F00C26857 /* RTL.FriBidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTL.FriBidi.cpp; sourceTree = "<group>"; };
 		4C8A6FF123EB5325001A8255 /* Http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Http.h; sourceTree = "<group>"; };
 		4C8A6FF223EB5326001A8255 /* Http.cURL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Http.cURL.cpp; sourceTree = "<group>"; };
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
@@ -938,6 +935,9 @@
 		4C93F1B71F8E185600A9330D /* NewsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsItem.h; sourceTree = "<group>"; };
 		4C93F1B81F8E185600A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
 		4C93F1B91F8E185600A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
+		4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTL.ICU.cpp; sourceTree = "<group>"; };
+		4CA39E4F2513F8A00094066B /* RTL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTL.h; sourceTree = "<group>"; };
+		4CA39E502513F8A00094066B /* RTL.FriBidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTL.FriBidi.cpp; sourceTree = "<group>"; };
 		4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SimulateCommands.cpp; sourceTree = "<group>"; };
 		4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VehicleSubpositionData.cpp; sourceTree = "<group>"; };
 		4CB2716924195B45000CF9EE /* VehicleSubpositionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VehicleSubpositionData.h; sourceTree = "<group>"; };
@@ -2840,6 +2840,9 @@
 				F76C838F1EC4E7CC00FA49E2 /* Path.cpp */,
 				F76C83901EC4E7CC00FA49E2 /* Path.hpp */,
 				2ADE2F21224418B1002598AF /* Random.hpp */,
+				4CA39E502513F8A00094066B /* RTL.FriBidi.cpp */,
+				4CA39E4F2513F8A00094066B /* RTL.h */,
+				4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */,
 				F76C83921EC4E7CC00FA49E2 /* String.cpp */,
 				F76C83931EC4E7CC00FA49E2 /* String.hpp */,
 				F76C83941EC4E7CC00FA49E2 /* StringBuilder.hpp */,
@@ -2939,9 +2942,6 @@
 				933F2CB620935653001B33FD /* LocalisationService.cpp */,
 				933F2CBA20935668001B33FD /* LocalisationService.h */,
 				4C7B53B71FFF935B00A52E21 /* RealNames.cpp */,
-				4C8972E12503BB6F00C26857 /* RTL.FriBidi.cpp */,
-				4C8972DF2503BB6F00C26857 /* RTL.h */,
-				4C8972E02503BB6F00C26857 /* RTL.ICU.cpp */,
 				4C7B53B81FFF935B00A52E21 /* StringIds.h */,
 				4C7B53BB1FFF935B00A52E21 /* UTF8.cpp */,
 			);
@@ -4072,7 +4072,7 @@
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
 				C68878C720289B710084B384 /* OpenGLShaderProgram.cpp in Sources */,
-				4C8972E22503BB7000C26857 /* RTL.ICU.cpp in Sources */,
+				4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */,
 				93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
 				C666EE701F37ACB10061AA04 /* LandRights.cpp in Sources */,
@@ -4099,7 +4099,7 @@
 				C654DF381F69C0430040F43D /* StaffFirePrompt.cpp in Sources */,
 				C68313D51FDB4F4C006DB3D8 /* Graph.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
-				4C8972E32503BB7000C26857 /* RTL.FriBidi.cpp in Sources */,
+				4CA39E522513F8A00094066B /* RTL.FriBidi.cpp in Sources */,
 				01C6F0C422FD51B70057E2F7 /* T4Importer.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
 				93F60050213DD7E400EEB83E /* StationObject.cpp in Sources */,
