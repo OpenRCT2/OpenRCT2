@@ -114,6 +114,9 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
     WIDX_TRACK_SPINNER_HEIGHT,
     WIDX_TRACK_SPINNER_HEIGHT_INCREASE,
     WIDX_TRACK_SPINNER_HEIGHT_DECREASE,
+    WIDX_TRACK_SPINNER_SPEED,
+    WIDX_TRACK_SPINNER_SPEED_INCREASE,
+    WIDX_TRACK_SPINNER_SPEED_DECREASE,
     WIDX_TRACK_CHECK_CHAIN_LIFT,
     WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED,
     WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE,
@@ -282,16 +285,17 @@ static rct_widget PathWidgets[] = {
 };
 
 constexpr int32_t TRA_GBPB = PADDING_BOTTOM;               // Track group box properties bottom
-constexpr int32_t TRA_GBPT = TRA_GBPB + 16 + 5 * 21;       // Track group box properties top
+constexpr int32_t TRA_GBPT = TRA_GBPB + 16 + 6 * 21;       // Track group box properties top
 constexpr int32_t TRA_GBDB = TRA_GBPT + GROUPBOX_PADDING;  // Track group box info bottom
 constexpr int32_t TRA_GBDT = TRA_GBDB + 20 + 7 * 11;       // Track group box info top
 static rct_widget TrackWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 0),  STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE,    STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - TRA_GBPT, 1) + 3, GBBB(WH - TRA_GBPT, 1) - 3,   STR_NONE, STR_NONE),  // WIDX_TRACK_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
-    { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 2),  STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT,            STR_NONE }, // WIDX_TRACK_CHECK_CHAIN_LIFT
-    { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 3),  STR_TILE_INSPECTOR_TRACK_BLOCK_BRAKE,           STR_NONE }, // WIDX_PATH_CHECK_BLOCK_BRAKE_CLOSED
-    { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 4),  STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE,     STR_NONE }, // WIDX_PATH_CHECK_IS_INDESTRUCTIBLE
+      SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - TRA_GBPT, 2) + 3, GBBB(WH - TRA_GBPT, 2) - 3,   STR_NONE, STR_NONE), //WIDX_TRACK_SPEED{,_INCREASE,_DECREASE}
+    { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 3),  STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT,            STR_NONE }, // WIDX_TRACK_CHECK_CHAIN_LIFT
+    { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 4),  STR_TILE_INSPECTOR_TRACK_BLOCK_BRAKE,           STR_NONE }, // WIDX_PATH_CHECK_BLOCK_BRAKE_CLOSED
+    { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 5),  STR_TILE_INSPECTOR_TRACK_IS_INDESTRUCTIBLE,     STR_NONE }, // WIDX_PATH_CHECK_IS_INDESTRUCTIBLE
     { WIDGETS_END },
 };
 
@@ -474,7 +478,7 @@ static uint64_t PageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_SLOPED) | (1ULL << WIDX_PATH_CHECK_BROKEN) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT) | (1ULL << WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED) | (1ULL << WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT) | (1ULL << WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED) | (1ULL << WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE) | (1ULL << WIDX_TRACK_SPINNER_SPEED_DECREASE) | (1ULL << WIDX_TRACK_SPINNER_SPEED_INCREASE),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_ENTRANCE_BUTTON_MAKE_USABLE),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_WALL_DROPDOWN_SLOPE) | (1ULL << WIDX_WALL_DROPDOWN_SLOPE_BUTTON) | (1ULL << WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE) | (1ULL << WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE),
@@ -487,7 +491,7 @@ static uint64_t PageHoldDownWidgets[] = {
     (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE),
     (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE),
     (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE),
-    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE),
+    (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_SPINNER_SPEED_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_SPEED_DECREASE),
     (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE),
     (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE),
     (1ULL << WIDX_SPINNER_X_INCREASE) | (1ULL << WIDX_SPINNER_X_DECREASE) | (1ULL << WIDX_SPINNER_Y_INCREASE) | (1ULL << WIDX_SPINNER_Y_DECREASE) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE) | (1ULL << WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE),
@@ -558,6 +562,14 @@ static void window_tile_inspector_select_element_from_list(rct_window* w, int32_
     else
     {
         windowTileInspectorSelectedIndex = index;
+
+        // update the brake speed to current one
+        auto element = map_get_nth_element_at(windowTileInspectorToolMap, windowTileInspectorSelectedIndex);
+        auto trackElement = element->AsTrack();
+        if (trackElement)
+        {
+            windowTileInspectorTrackSpeed = trackElement->GetBrakeBoosterSpeed();
+        }
     }
 
     w->Invalidate();
@@ -709,6 +721,12 @@ static void window_tile_inspector_track_block_height_offset(int32_t elementIndex
 {
     auto modifyTile = TileModifyAction(
         windowTileInspectorToolMap, TileModifyType::TrackBaseHeightOffset, elementIndex, heightOffset);
+    GameActions::Execute(&modifyTile);
+}
+
+static void window_tile_inspector_track_set_speed(uint32_t elementIndex, uint8_t speed)
+{
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::TrackSetSpeed, elementIndex, speed);
     GameActions::Execute(&modifyTile);
 }
 
@@ -1052,6 +1070,22 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
                     else
                     {
                         window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
+                    }
+                    break;
+                case WIDX_TRACK_SPINNER_SPEED_INCREASE:
+                    if (static_cast<uint32_t>(windowTileInspectorTrackSpeed + 2) < 0xFF)
+                    {
+                        window_tile_inspector_track_set_speed(
+                            windowTileInspectorSelectedIndex, windowTileInspectorTrackSpeed + 2);
+                        windowTileInspectorTrackSpeed += 2;
+                    }
+                    break;
+                case WIDX_TRACK_SPINNER_SPEED_DECREASE:
+                    if (windowTileInspectorTrackSpeed != 0)
+                    {
+                        window_tile_inspector_track_set_speed(
+                            windowTileInspectorSelectedIndex, windowTileInspectorTrackSpeed - 2);
+                        windowTileInspectorTrackSpeed -= 2;
                     }
                     break;
             } // switch widget index
@@ -1555,12 +1589,55 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_TRACK_SPINNER_HEIGHT_INCREASE].bottom = GBBB(propertiesAnchor, 1) - 4;
             w->widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 1) + 4;
             w->widgets[WIDX_TRACK_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 1) - 4;
-            w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].top = GBBT(propertiesAnchor, 2);
-            w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].bottom = GBBB(propertiesAnchor, 2);
-            w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].top = GBBT(propertiesAnchor, 3);
-            w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].bottom = GBBB(propertiesAnchor, 3);
-            w->widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].top = GBBT(propertiesAnchor, 4);
-            w->widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].bottom = GBBB(propertiesAnchor, 4);
+
+            // check if track type is either a brake or boost section
+            if (tileElement->AsTrack())
+            {
+                if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_BOOSTER
+                    || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_BRAKES)
+                {
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED].type = WWT_SPINNER;
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED_INCREASE].type = WWT_BUTTON;
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED_DECREASE].type = WWT_BUTTON;
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED].top = GBBT(propertiesAnchor, 2) + 3;
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED].bottom = GBBB(propertiesAnchor, 2) - 3;
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED_INCREASE].top = GBBT(propertiesAnchor, 2) + 4;
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED_INCREASE].bottom = GBBB(propertiesAnchor, 2) - 4;
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED_DECREASE].top = GBBT(propertiesAnchor, 2) + 4;
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED_DECREASE].bottom = GBBB(propertiesAnchor, 2) - 4;
+                    w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].top = GBBT(propertiesAnchor, 3);
+                    w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].bottom = GBBB(propertiesAnchor, 3);
+                    w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].top = GBBT(propertiesAnchor, 4);
+                    w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].bottom = GBBB(propertiesAnchor, 4);
+                    w->widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].top = GBBT(propertiesAnchor, 5);
+                    w->widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].bottom = GBBB(propertiesAnchor, 5);
+                }
+                else
+                {
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED].type = WWT_EMPTY;
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED_INCREASE].type = WWT_EMPTY;
+                    w->widgets[WIDX_TRACK_SPINNER_SPEED_DECREASE].type = WWT_EMPTY;
+                    w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].top = GBBT(propertiesAnchor, 2);
+                    w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].bottom = GBBB(propertiesAnchor, 2);
+                    w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].top = GBBT(propertiesAnchor, 3);
+                    w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].bottom = GBBB(propertiesAnchor, 3);
+                    w->widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].top = GBBT(propertiesAnchor, 4);
+                    w->widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].bottom = GBBB(propertiesAnchor, 4);
+                }
+            }
+            else
+            {
+                w->widgets[WIDX_TRACK_SPINNER_SPEED].type = WWT_EMPTY;
+                w->widgets[WIDX_TRACK_SPINNER_SPEED_INCREASE].type = WWT_EMPTY;
+                w->widgets[WIDX_TRACK_SPINNER_SPEED_DECREASE].type = WWT_EMPTY;
+                w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].top = GBBT(propertiesAnchor, 2);
+                w->widgets[WIDX_TRACK_CHECK_CHAIN_LIFT].bottom = GBBB(propertiesAnchor, 2);
+                w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].top = GBBT(propertiesAnchor, 3);
+                w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].bottom = GBBB(propertiesAnchor, 3);
+                w->widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].top = GBBT(propertiesAnchor, 4);
+                w->widgets[WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE].bottom = GBBB(propertiesAnchor, 4);
+            }
+
             widget_set_checkbox_value(w, WIDX_TRACK_CHECK_APPLY_TO_ALL, windowTileInspectorApplyToAll);
             widget_set_checkbox_value(w, WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->AsTrack()->HasChain());
             widget_set_checkbox_value(w, WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED, tileElement->AsTrack()->BlockBrakeClosed());
@@ -1949,10 +2026,33 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 screenCoords.y = w->windowPos.y + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top;
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_FULL, nullptr, COLOUR_WHITE, screenCoords);
 
+                // brakes/booster speed label
+                if (tileElement->AsTrack())
+                {
+                    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_BRAKES
+                        || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_BOOSTER)
+                    {
+                        screenCoords.y = w->windowPos.y + w->widgets[WIDX_TRACK_SPINNER_SPEED].top;
+                        gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_SPEED, nullptr, COLOUR_WHITE, screenCoords);
+
+                        // brakes/booster speed spinner value
+                        screenCoords.x = w->windowPos.x + w->widgets[WIDX_TRACK_SPINNER_SPEED].left + 3;
+                        screenCoords.y = w->windowPos.y + w->widgets[WIDX_TRACK_SPINNER_SPEED].top;
+                        int32_t speed = static_cast<int32_t>(tileElement->AsTrack()->GetBrakeBoosterSpeed());
+
+                        // convert the speed to a readable format
+                        auto ft = Formatter().Add<int32_t>(speed);
+
+                        DrawTextBasic(dpi, screenCoords, STR_FORMAT_INTEGER, ft, COLOUR_WHITE);
+                    }
+                }
+
                 // Current base height
                 screenCoords.x = w->windowPos.x + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].left + 3;
+                screenCoords.y = w->windowPos.y + w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top;
                 int32_t baseHeight = tileElement->base_height;
                 gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
+
                 break;
             }
 
