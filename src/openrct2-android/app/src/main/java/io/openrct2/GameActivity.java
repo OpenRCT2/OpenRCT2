@@ -15,7 +15,6 @@ public class GameActivity extends SDLActivity {
         return new String[]{
                 "c++_shared",
                 "speexdsp",
-                "jansson",
                 "png16",
                 "SDL2-2.0",
 

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/Json.hpp"
 #include "ImageTable.h"
 #include "StringTable.h"
 
@@ -141,7 +142,6 @@ namespace OpenRCT2
 }
 struct ObjectRepositoryItem;
 struct rct_drawpixelinfo;
-struct json_t;
 
 struct IReadObjectContext
 {
@@ -186,6 +186,16 @@ protected:
         return _imageTable;
     }
 
+    /**
+     * Populates the image and string tables from a JSON object
+     * @param context
+     * @param root JSON node of type object containing image and string info
+     * @note root is deliberately left non-const: json_t behaviour changes when const
+     */
+    void PopulateTablesFromJson(IReadObjectContext* context, json_t& root);
+
+    static rct_object_entry ParseObjectEntry(const std::string& s);
+
     std::string GetOverrideString(uint8_t index) const;
     std::string GetString(ObjectStringID index) const;
     std::string GetString(int32_t language, ObjectStringID index) const;
@@ -224,7 +234,10 @@ public:
     }
     virtual void* GetLegacyData();
 
-    virtual void ReadJson(IReadObjectContext* /*context*/, const json_t* /*root*/)
+    /**
+     * @note root is deliberately left non-const: json_t behaviour changes when const
+     */
+    virtual void ReadJson(IReadObjectContext* /*context*/, json_t& /*root*/)
     {
     }
     virtual void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream);

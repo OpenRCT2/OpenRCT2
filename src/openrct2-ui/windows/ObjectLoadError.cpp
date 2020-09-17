@@ -211,18 +211,17 @@ private:
                 if (response.status == Http::Status::OK)
                 {
                     auto jresponse = Json::FromString(response.body);
-                    if (jresponse != nullptr)
+                    if (jresponse.is_object())
                     {
-                        auto objName = json_string_value(json_object_get(jresponse, "name"));
-                        auto source = json_string_value(json_object_get(jresponse, "source"));
-                        auto downloadLink = json_string_value(json_object_get(jresponse, "download"));
-                        if (downloadLink != nullptr)
+                        auto objName = Json::GetString(jresponse["name"]);
+                        auto source = Json::GetString(jresponse["source"]);
+                        auto downloadLink = Json::GetString(jresponse["download"]);
+                        if (!downloadLink.empty())
                         {
                             _lastDownloadSource = source;
                             UpdateProgress({ name, source, _currentDownloadIndex, _entries.size() });
                             DownloadObject(entry, objName, downloadLink);
                         }
-                        json_decref(jresponse);
                     }
                 }
                 else if (response.status == Http::Status::NotFound)

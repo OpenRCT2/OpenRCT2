@@ -18,7 +18,6 @@
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../peep/Staff.h"
-#include "ObjectJsonHelpers.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 
@@ -110,35 +109,29 @@ std::vector<rct_object_entry> SceneryGroupObject::ReadItems(IStream* stream)
     return items;
 }
 
-void SceneryGroupObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void SceneryGroupObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
-    _legacyType.priority = json_integer_value(json_object_get(properties, "priority"));
+    Guard::Assert(root.is_object(), "SceneryGroupObject::ReadJson expects parameter root to be object");
 
-    // Entertainer costumes
-    auto jCostumes = json_object_get(properties, "entertainerCostumes");
-    if (jCostumes != nullptr)
+    auto properties = root["properties"];
+
+    if (properties.is_object())
     {
-        _legacyType.entertainer_costumes = ReadJsonEntertainerCostumes(jCostumes);
+        _legacyType.priority = Json::GetNumber<uint8_t>(properties["priority"]);
+        _legacyType.entertainer_costumes = ReadJsonEntertainerCostumes(properties["entertainerCostumes"]);
+
+        _items = ReadJsonEntries(properties["entries"]);
     }
 
-    auto jEntries = json_object_get(properties, "entries");
-    if (jEntries != nullptr)
-    {
-        _items = ReadJsonEntries(jEntries);
-    }
-
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    PopulateTablesFromJson(context, root);
 }
 
-uint32_t SceneryGroupObject::ReadJsonEntertainerCostumes(const json_t* jCostumes)
+uint32_t SceneryGroupObject::ReadJsonEntertainerCostumes(json_t& jCostumes)
 {
     uint32_t costumes = 0;
-    auto szCostumes = ObjectJsonHelpers::GetJsonStringArray(jCostumes);
-    for (const auto& szCostume : szCostumes)
+    for (auto& jCostume : jCostumes)
     {
-        auto entertainer = ParseEntertainerCostume(szCostume);
+        auto entertainer = ParseEntertainerCostume(Json::GetString(jCostume));
         auto peepSprite = EntertainerCostumeToSprite(entertainer);
         costumes |= 1 << (static_cast<uint8_t>(peepSprite));
     }
@@ -172,19 +165,14 @@ EntertainerCostume SceneryGroupObject::ParseEntertainerCostume(const std::string
     return EntertainerCostume::Panda;
 }
 
-std::vector<rct_object_entry> SceneryGroupObject::ReadJsonEntries(const json_t* jEntries)
+std::vector<rct_object_entry> SceneryGroupObject::ReadJsonEntries(json_t& jEntries)
 {
     std::vector<rct_object_entry> entries;
-    size_t index;
-    json_t* jEntry;
-    json_array_foreach(jEntries, index, jEntry)
+
+    for (auto& jEntry : jEntries)
     {
-        auto entryId = json_string_value(jEntry);
-        if (entryId != nullptr)
-        {
-            auto entry = ObjectJsonHelpers::ParseObjectEntry(entryId);
-            entries.push_back(entry);
-        }
+        auto entry = ParseObjectEntry(Json::GetString(jEntry));
+        entries.push_back(entry);
     }
     return entries;
 }

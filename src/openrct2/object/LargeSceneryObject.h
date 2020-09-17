@@ -35,7 +35,7 @@ public:
     }
 
     void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
-    void ReadJson(IReadObjectContext* context, const json_t* root) override;
+    void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;
 
@@ -43,8 +43,8 @@ public:
 
 private:
     static std::vector<rct_large_scenery_tile> ReadTiles(OpenRCT2::IStream* stream);
-    static std::vector<rct_large_scenery_tile> ReadJsonTiles(const json_t* jTiles);
-    static std::unique_ptr<rct_large_scenery_text> ReadJson3dFont(const json_t* j3dFont);
-    static std::vector<LocationXY16> ReadJsonOffsets(const json_t* jOffsets);
-    static std::vector<rct_large_scenery_text_glyph> ReadJsonGlyphs(const json_t* jGlpyhs);
+    static std::vector<rct_large_scenery_tile> ReadJsonTiles(json_t& jTiles);
+    static std::unique_ptr<rct_large_scenery_text> ReadJson3dFont(json_t& j3dFont);
+    static std::vector<LocationXY16> ReadJsonOffsets(json_t& jOffsets);
+    static std::vector<rct_large_scenery_text_glyph> ReadJsonGlyphs(json_t& jGlyphs);
 };

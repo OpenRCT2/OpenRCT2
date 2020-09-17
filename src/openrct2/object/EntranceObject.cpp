@@ -13,7 +13,6 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
-#include "ObjectJsonHelpers.h"
 
 void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
@@ -51,12 +50,17 @@ void EntranceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t 
     gfx_draw_sprite(dpi, imageId + 2, screenCoords + ScreenCoordsXY{ 32, 44 }, 0);
 }
 
-void EntranceObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void EntranceObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
-    _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
-    _legacyType.text_height = json_integer_value(json_object_get(properties, "textHeight"));
+    Guard::Assert(root.is_object(), "EntranceObject::ReadJson expects parameter root to be object");
 
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    json_t properties = root["properties"];
+
+    if (properties.is_object())
+    {
+        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
+        _legacyType.text_height = Json::GetNumber<uint8_t>(properties["textHeight"]);
+    }
+
+    PopulateTablesFromJson(context, root);
 }

@@ -10,10 +10,10 @@
 #include "FootpathObject.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../world/Footpath.h"
-#include "ObjectJsonHelpers.h"
 
 void FootpathObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
@@ -83,21 +83,25 @@ static RailingEntrySupportType ParseSupportType(const std::string& s)
         return RailingEntrySupportType::Box;
 }
 
-void FootpathObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void FootpathObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
-    _legacyType.support_type = ParseSupportType(ObjectJsonHelpers::GetString(json_object_get(properties, "supportType")));
-    _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
+    Guard::Assert(root.is_object(), "FootpathObject::ReadJson expects parameter root to be object");
 
-    // Flags
-    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
-        properties,
-        {
-            { "hasSupportImages", RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
-            { "hasElevatedPathImages", RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS },
-            { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR },
-        });
+    auto properties = root["properties"];
 
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    if (properties.is_object())
+    {
+        _legacyType.support_type = ParseSupportType(Json::GetString(properties["supportType"]));
+        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
+
+        _legacyType.flags = Json::GetFlags<uint8_t>(
+            properties,
+            {
+                { "hasSupportImages", RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
+                { "hasElevatedPathImages", RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS },
+                { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR },
+            });
+    }
+
+    PopulateTablesFromJson(context, root);
 }

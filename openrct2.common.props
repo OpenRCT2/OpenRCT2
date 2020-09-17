@@ -76,7 +76,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>benchmarkd.lib;libbreakpadd.lib;libbreakpad_clientd.lib;bz2d.lib;discord-rpc.lib;duktape.lib;freetyped.lib;jansson_d.lib;libpng16d.lib;libspeexdsp.lib;SDL2d.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>benchmarkd.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;libbreakpadd.lib;libbreakpad_clientd.lib;bz2d.lib;discord-rpc.lib;duktape.lib;freetyped.lib;libpng16d.lib;libspeexdsp.lib;SDL2d.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -94,7 +94,7 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>benchmark.lib;libbreakpad.lib;libbreakpad_client.lib;bz2.lib;discord-rpc.lib;duktape.lib;freetype.lib;jansson.lib;libpng16.lib;libspeexdsp.lib;SDL2.lib;zip.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>benchmark.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;libbreakpad.lib;libbreakpad_client.lib;bz2.lib;discord-rpc.lib;duktape.lib;freetype.lib;libpng16.lib;libspeexdsp.lib;SDL2.lib;zip.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 

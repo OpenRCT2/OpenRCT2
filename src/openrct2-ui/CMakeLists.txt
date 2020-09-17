@@ -9,11 +9,9 @@ option(DISABLE_OPENGL "Disable OpenGL support.")
 
 # Third party libraries
 if (MSVC)
-    find_package(jansson REQUIRED)
     find_package(SDL2 REQUIRED)
     find_library(SPEEX_LDFLAGS libspeexdsp)
 else ()
-    PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.5)
     PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
     PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 endif ()

@@ -13,6 +13,7 @@
 
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
+#    include "../core/Guard.hpp"
 #    include "../core/Http.h"
 #    include "../core/Json.hpp"
 #    include "../core/String.hpp"
@@ -119,12 +120,10 @@ private:
                     if (String::Equals(buffer, NETWORK_LAN_BROADCAST_MSG))
                     {
                         auto body = GetBroadcastJson();
-                        auto bodyDump = json_dumps(body, JSON_COMPACT);
-                        size_t sendLen = strlen(bodyDump) + 1;
+                        auto bodyDump = body.dump();
+                        size_t sendLen = bodyDump.size() + 1;
                         log_verbose("Sending %zu bytes back to %s", sendLen, sender.c_str());
-                        _lanListener->SendData(*endpoint, bodyDump, sendLen);
-                        free(bodyDump);
-                        json_decref(body);
+                        _lanListener->SendData(*endpoint, bodyDump.c_str(), sendLen);
                     }
                 }
             }
@@ -132,10 +131,10 @@ private:
         }
     }
 
-    json_t* GetBroadcastJson()
+    json_t GetBroadcastJson()
     {
-        auto root = network_get_server_info_as_json();
-        json_object_set(root, "port", json_integer(_port));
+        json_t root = network_get_server_info_as_json();
+        root["port"] = _port;
         return root;
     }
 
@@ -172,20 +171,18 @@ private:
         request.method = Http::Method::POST;
         request.forceIPv4 = forceIPv4;
 
-        json_t* body = json_object();
-        json_object_set_new(body, "key", json_string(_key.c_str()));
-        json_object_set_new(body, "port", json_integer(_port));
+        json_t body = {
+            { "key", _key },
+            { "port", _port },
+        };
 
         if (!gConfigNetwork.advertise_address.empty())
         {
-            json_object_set_new(body, "address", json_string(gConfigNetwork.advertise_address.c_str()));
+            body["address"] = gConfigNetwork.advertise_address;
         }
 
-        char* bodyDump = json_dumps(body, JSON_COMPACT);
-        request.body = bodyDump;
+        request.body = body.dump();
         request.header["Content-Type"] = "application/json";
-        free(bodyDump);
-        json_decref(body);
 
         Http::DoAsync(request, [&](Http::Response response) -> void {
             if (response.status != Http::Status::OK)
@@ -194,9 +191,9 @@ private:
                 return;
             }
 
-            json_t* root = Json::FromString(response.body);
+            json_t root = Json::FromString(response.body);
+            root = Json::AsObject(root);
             this->OnRegistrationResponse(root);
-            json_decref(root);
         });
     }
 
@@ -206,12 +203,9 @@ private:
         request.url = GetMasterServerUrl();
         request.method = Http::Method::PUT;
 
-        json_t* body = GetHeartbeatJson();
-        char* bodyDump = json_dumps(body, JSON_COMPACT);
-        request.body = bodyDump;
+        json_t body = GetHeartbeatJson();
+        request.body = body.dump();
         request.header["Content-Type"] = "application/json";
-        free(bodyDump);
-        json_decref(body);
 
         _lastHeartbeatTime = platform_get_ticks();
         Http::DoAsync(request, [&](Http::Response response) -> void {
@@ -221,86 +215,90 @@ private:
                 return;
             }
 
-            json_t* root = Json::FromString(response.body);
+            json_t root = Json::FromString(response.body);
+            root = Json::AsObject(root);
             this->OnHeartbeatResponse(root);
-            json_decref(root);
         });
     }
 
-    void OnRegistrationResponse(json_t* jsonRoot)
+    /**
+     * @param jsonRoot must be of JSON type object or null
+     * @note jsonRoot is deliberately left non-const: json_t behaviour changes when const
+     */
+    void OnRegistrationResponse(json_t& jsonRoot)
     {
-        json_t* jsonStatus = json_object_get(jsonRoot, "status");
-        if (json_is_integer(jsonStatus))
+        Guard::Assert(jsonRoot.is_object(), "OnRegistrationResponse expects parameter jsonRoot to be object");
+
+        int32_t status = Json::GetNumber<int32_t>(jsonRoot["status"]);
+
+        if (status == MASTER_SERVER_STATUS_OK)
         {
-            int32_t status = static_cast<int32_t>(json_integer_value(jsonStatus));
-            if (status == MASTER_SERVER_STATUS_OK)
+            json_t jsonToken = jsonRoot["token"];
+            if (jsonToken.is_string())
             {
-                json_t* jsonToken = json_object_get(jsonRoot, "token");
-                if (json_is_string(jsonToken))
-                {
-                    _token = std::string(json_string_value(jsonToken));
-                    _status = ADVERTISE_STATUS::REGISTERED;
-                }
+                _token = Json::GetString(jsonToken);
+                _status = ADVERTISE_STATUS::REGISTERED;
             }
-            else
+        }
+        else
+        {
+            std::string message = Json::GetString(jsonRoot["message"]);
+            if (message.empty())
             {
-                const char* message = "Invalid response from server";
-                json_t* jsonMessage = json_object_get(jsonRoot, "message");
-                if (json_is_string(jsonMessage))
-                {
-                    message = json_string_value(jsonMessage);
-                }
-                Console::Error::WriteLine("Unable to advertise (%d): %s", status, message);
-                // Hack for https://github.com/OpenRCT2/OpenRCT2/issues/6277
-                // Master server may not reply correctly if using IPv6, retry forcing IPv4,
-                // don't wait the full timeout.
-                if (!_forceIPv4 && status == 500)
-                {
-                    _forceIPv4 = true;
-                    _lastAdvertiseTime = 0;
-                    log_info("Retry with ipv4 only");
-                }
+                message = "Invalid response from server";
+            }
+            Console::Error::WriteLine("Unable to advertise (%d): %s", status, message.c_str());
+            // Hack for https://github.com/OpenRCT2/OpenRCT2/issues/6277
+            // Master server may not reply correctly if using IPv6, retry forcing IPv4,
+            // don't wait the full timeout.
+            if (!_forceIPv4 && status == 500)
+            {
+                _forceIPv4 = true;
+                _lastAdvertiseTime = 0;
+                log_info("Retry with ipv4 only");
             }
         }
     }
 
-    void OnHeartbeatResponse(json_t* jsonRoot)
+    /**
+     * @param jsonRoot must be of JSON type object or null
+     * @note jsonRoot is deliberately left non-const: json_t behaviour changes when const
+     */
+    void OnHeartbeatResponse(json_t& jsonRoot)
     {
-        json_t* jsonStatus = json_object_get(jsonRoot, "status");
-        if (json_is_integer(jsonStatus))
+        Guard::Assert(jsonRoot.is_object(), "OnHeartbeatResponse expects parameter jsonRoot to be object");
+
+        int32_t status = Json::GetNumber<int32_t>(jsonRoot["status"]);
+        if (status == MASTER_SERVER_STATUS_OK)
         {
-            int32_t status = static_cast<int32_t>(json_integer_value(jsonStatus));
-            if (status == MASTER_SERVER_STATUS_OK)
-            {
-                // Master server has successfully updated our server status
-            }
-            else if (status == MASTER_SERVER_STATUS_INVALID_TOKEN)
-            {
-                _status = ADVERTISE_STATUS::UNREGISTERED;
-                Console::WriteLine("Master server heartbeat failed: Invalid Token");
-            }
+            // Master server has successfully updated our server status
+        }
+        else if (status == MASTER_SERVER_STATUS_INVALID_TOKEN)
+        {
+            _status = ADVERTISE_STATUS::UNREGISTERED;
+            Console::WriteLine("Master server heartbeat failed: Invalid Token");
         }
     }
 
-    json_t* GetHeartbeatJson()
+    json_t GetHeartbeatJson()
     {
         uint32_t numPlayers = network_get_num_players();
 
-        json_t* root = json_object();
-        json_object_set_new(root, "token", json_string(_token.c_str()));
-        json_object_set_new(root, "players", json_integer(numPlayers));
+        json_t root = {
+            { "token", _token },
+            { "players", numPlayers },
+        };
 
-        json_t* gameInfo = json_object();
-        json_object_set_new(gameInfo, "mapSize", json_integer(gMapSize - 2));
-        json_object_set_new(gameInfo, "day", json_integer(gDateMonthTicks));
-        json_object_set_new(gameInfo, "month", json_integer(gDateMonthsElapsed));
-        json_object_set_new(gameInfo, "guests", json_integer(gNumGuestsInPark));
-        json_object_set_new(gameInfo, "parkValue", json_integer(gParkValue));
+        json_t gameInfo = {
+            { "mapSize", gMapSize - 2 },    { "day", gDateMonthTicks },  { "month", gDateMonthsElapsed },
+            { "guests", gNumGuestsInPark }, { "parkValue", gParkValue },
+        };
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            json_object_set_new(gameInfo, "cash", json_integer(gCash));
+            gameInfo["cash"] = gCash;
         }
-        json_object_set_new(root, "gameInfo", gameInfo);
+
+        root["gameInfo"] = gameInfo;
 
         return root;
     }

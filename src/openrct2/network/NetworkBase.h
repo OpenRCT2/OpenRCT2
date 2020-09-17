@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../actions/GameAction.h"
+#include "../core/Json.hpp"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkPlayer.h"
@@ -42,7 +43,7 @@ public: // Common
     void AppendChatLog(const std::string& s);
     void CloseChatLog();
     NetworkStats_t GetStats() const;
-    json_t* GetServerInfoAsJson() const;
+    json_t GetServerInfoAsJson() const;
     bool ProcessConnection(NetworkConnection& connection);
     void CloseConnection();
     NetworkPlayer* AddPlayer(const std::string& name, const std::string& keyhash);

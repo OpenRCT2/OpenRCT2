@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/Json.hpp"
 #include "../localisation/Language.h"
 
 #include <string>
@@ -44,6 +45,7 @@ class StringTable
 {
 private:
     std::vector<StringTableEntry> _strings;
+    static ObjectStringID ParseStringId(const std::string& s);
 
 public:
     StringTable() = default;
@@ -51,6 +53,10 @@ public:
     StringTable& operator=(const StringTable&) = delete;
 
     void Read(IReadObjectContext* context, OpenRCT2::IStream* stream, ObjectStringID id);
+    /**
+     * @note root is deliberately left non-const: json_t behaviour changes when const
+     */
+    void ReadJson(json_t& root);
     void Sort();
     std::string GetString(ObjectStringID id) const;
     std::string GetString(uint8_t language, ObjectStringID id) const;
