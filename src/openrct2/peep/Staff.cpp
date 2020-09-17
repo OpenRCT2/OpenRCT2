@@ -283,7 +283,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, const CoordsXYZ& staffPos, TileElem
             }
 
             /* test_element is a path */
-            if (!is_valid_path_z_and_direction(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
+            if (!IsValidPathZAndDirection(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
@@ -857,13 +857,13 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
         gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        pathfind_logging_enable(peep);
+        PathfindLoggingEnable(peep);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
         Direction pathfindDirection = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        pathfind_logging_disable();
+        PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
         if (pathfindDirection == INVALID_DIRECTION)
@@ -874,7 +874,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
              * This lets the heuristic search "try again" in case the player has
              * edited the path layout or the mechanic was already stuck in the
              * save game (e.g. with a worse version of the pathfinding). */
-            peep_reset_pathfind_goal(peep);
+            peep->ResetPathfindGoal();
             return staff_mechanic_direction_path_rand(peep, pathDirections);
         }
 
@@ -1437,7 +1437,7 @@ void Staff::UpdateHeadingToInspect()
     if (SubState == 0)
     {
         MechanicTimeSinceCall = 0;
-        peep_reset_pathfind_goal(this);
+        ResetPathfindGoal();
         SubState = 2;
     }
 
@@ -1547,7 +1547,7 @@ void Staff::UpdateAnswering()
             SubState = 2;
             peep_window_state_update(this);
             MechanicTimeSinceCall = 0;
-            peep_reset_pathfind_goal(this);
+            ResetPathfindGoal();
             return;
         }
         UpdateAction();

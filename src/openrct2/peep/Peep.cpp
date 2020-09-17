@@ -1707,7 +1707,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->CashInPocket = cash;
     peep->CashSpent = 0;
     peep->TimeInPark = -1;
-    peep_reset_pathfind_goal(peep);
+    peep->ResetPathfindGoal();
     peep->ItemStandardFlags = 0;
     peep->ItemExtraFlags = 0;
     peep->GuestHeadingToRideId = RIDE_ID_NULL;

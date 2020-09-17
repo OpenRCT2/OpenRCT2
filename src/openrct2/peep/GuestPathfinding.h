@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef _GUESTPATHFINDING_H_
-#define _GUESTPATHFINDING_H_
+#pragma once
 
 #include "../common.h"
 #include "../ride/RideTypes.h"
@@ -42,13 +41,9 @@ extern bool gPeepPathFindIgnoreForeignQueues;
 // the direction the peep should walk in from the current tile.
 Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep);
 
-// Reset the peep's stored goal, which means they will forget any stored pathfinding history
-// on the next choose_direction call.
-void peep_reset_pathfind_goal(Peep* peep);
-
 // Test whether the given tile can be walked onto, if the peep is currently at height currentZ and
 // moving in direction currentDirection.
-bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
+bool IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
 
 // Overall guest pathfinding AI. Sets up Peep::DestinationX/DestinationY (which they move to in a
 // straight line, no pathfinding). Called whenever the guest has arrived at their previously set destination.
@@ -65,8 +60,6 @@ int32_t guest_path_finding(Guest* peep);
 // The following calls configure debug logging for the given peep
 // If they're a guest, pathfinding will be logged if they have PEEP_FLAGS_TRACKING set
 // If they're staff, pathfinding will be logged if their name is "Mechanic Debug"
-void pathfind_logging_enable(Peep* peep);
-void pathfind_logging_disable();
+void PathfindLoggingEnable(Peep* peep);
+void PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
-#endif

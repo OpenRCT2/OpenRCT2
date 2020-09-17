@@ -800,6 +800,10 @@ public: // Peep
     std::string GetName() const;
     bool SetName(const std::string_view& value);
 
+    // Reset the peep's stored goal, which means they will forget any stored pathfinding history
+    // on the next peep_pathfind_choose_direction call.
+    void ResetPathfindGoal();
+
     // TODO: Make these private again when done refactoring
 public: // Peep
     bool CheckForPath();

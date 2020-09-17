@@ -1677,7 +1677,7 @@ loc_69B221:
         UmbrellaColour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_MAP)
-        peep_reset_pathfind_goal(this);
+        ResetPathfindGoal();
 
     uint16_t consumptionTime = item_consumption_time[shopItem];
     TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
@@ -1814,7 +1814,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
     {
         GuestHeadingToRideId = rideIndex;
         GuestIsLostCountdown = 200;
-        peep_reset_pathfind_goal(this);
+        ResetPathfindGoal();
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
     }
 
@@ -1877,7 +1877,7 @@ void Guest::PickRideToGoOn()
         // Head to that ride
         GuestHeadingToRideId = ride->id;
         GuestIsLostCountdown = 200;
-        peep_reset_pathfind_goal(this);
+        ResetPathfindGoal();
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
@@ -3254,7 +3254,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         // Head to that ride
         peep->GuestHeadingToRideId = closestRide->id;
         peep->GuestIsLostCountdown = 200;
-        peep_reset_pathfind_goal(peep);
+        peep->ResetPathfindGoal();
         peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
         peep->TimeLost = 0;
     }
