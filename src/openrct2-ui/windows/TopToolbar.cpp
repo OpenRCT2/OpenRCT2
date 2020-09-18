@@ -3449,31 +3449,22 @@ static void top_toolbar_rotate_menu_dropdown(int16_t dropdownIndex)
 
 static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[DDIDX_CHEATS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_CHEATS] = STR_CHEAT_TITLE;
+    using namespace Dropdown;
 
-    gDropdownItemsFormat[DDIDX_TILE_INSPECTOR] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_TILE_INSPECTOR] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
+    constexpr Item items[] = {
+        ToggleOption(DDIDX_CHEATS, STR_CHEAT_TITLE),
+        ToggleOption(DDIDX_TILE_INSPECTOR, STR_DEBUG_DROPDOWN_TILE_INSPECTOR),
+        ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
+        ToggleOption(DDIDX_INVENTIONS_LIST, STR_DEBUG_DROPDOWN_INVENTIONS_LIST),
+        ToggleOption(DDIDX_SCENARIO_OPTIONS, STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS),
+        Separator(),
+        ToggleOption(DDIDX_ENABLE_SANDBOX_MODE, STR_ENABLE_SANDBOX_MODE),
+        ToggleOption(DDIDX_DISABLE_CLEARANCE_CHECKS, STR_DISABLE_CLEARANCE_CHECKS),
+        ToggleOption(DDIDX_DISABLE_SUPPORT_LIMITS, STR_DISABLE_SUPPORT_LIMITS),
+    };
+    static_assert(ItemIDsMatchIndices(items));
 
-    gDropdownItemsFormat[DDIDX_OBJECT_SELECTION] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_OBJECT_SELECTION] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
-
-    gDropdownItemsFormat[DDIDX_INVENTIONS_LIST] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_INVENTIONS_LIST] = STR_DEBUG_DROPDOWN_INVENTIONS_LIST;
-
-    gDropdownItemsFormat[DDIDX_SCENARIO_OPTIONS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_SCENARIO_OPTIONS] = STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS;
-
-    gDropdownItemsFormat[5] = STR_EMPTY;
-
-    gDropdownItemsFormat[DDIDX_ENABLE_SANDBOX_MODE] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_ENABLE_SANDBOX_MODE] = STR_ENABLE_SANDBOX_MODE;
-
-    gDropdownItemsFormat[DDIDX_DISABLE_CLEARANCE_CHECKS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_DISABLE_CLEARANCE_CHECKS] = STR_DISABLE_CLEARANCE_CHECKS;
-
-    gDropdownItemsFormat[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_DISABLE_SUPPORT_LIMITS;
+    SetItems(items);
 
     window_dropdown_show_text(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
@@ -3624,36 +3615,29 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
  */
 static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[1] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[3] = STR_EMPTY;
-    gDropdownItemsFormat[4] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[6] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[7] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[8] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[9] = STR_EMPTY;
-    gDropdownItemsFormat[10] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[11] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[12] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[13] = DROPDOWN_SEPARATOR;
-    gDropdownItemsFormat[DDIDX_VIEW_CLIPPING] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_TOGGLE_OPTION;
+    using namespace Dropdown;
 
-    gDropdownItemsArgs[0] = STR_UNDERGROUND_VIEW;
-    gDropdownItemsArgs[1] = STR_REMOVE_BASE_LAND;
-    gDropdownItemsArgs[2] = STR_REMOVE_VERTICAL_FACES;
-    gDropdownItemsArgs[4] = STR_SEE_THROUGH_RIDES;
-    gDropdownItemsArgs[5] = STR_SEE_THROUGH_SCENERY;
-    gDropdownItemsArgs[6] = STR_SEE_THROUGH_PATHS;
-    gDropdownItemsArgs[7] = STR_INVISIBLE_SUPPORTS;
-    gDropdownItemsArgs[8] = STR_INVISIBLE_PEOPLE;
-    gDropdownItemsArgs[10] = STR_HEIGHT_MARKS_ON_LAND;
-    gDropdownItemsArgs[11] = STR_HEIGHT_MARKS_ON_RIDE_TRACKS;
-    gDropdownItemsArgs[12] = STR_HEIGHT_MARKS_ON_PATHS;
-    gDropdownItemsArgs[DDIDX_VIEW_CLIPPING] = STR_VIEW_CLIPPING_MENU;
-    gDropdownItemsArgs[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_HIGHLIGHT_PATH_ISSUES_MENU;
+    constexpr Item items[] = {
+        ToggleOption(DDIDX_UNDERGROUND_INSIDE, STR_UNDERGROUND_VIEW),
+        ToggleOption(DDIDX_HIDE_BASE, STR_REMOVE_BASE_LAND),
+        ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
+        Separator(),
+        ToggleOption(DDIDX_SEETHROUGH_RIDES, STR_SEE_THROUGH_RIDES),
+        ToggleOption(DDIDX_SEETHROUGH_SCENARY, STR_SEE_THROUGH_SCENERY),
+        ToggleOption(DDIDX_SEETHROUGH_PATHS, STR_SEE_THROUGH_PATHS),
+        ToggleOption(DDIDX_INVISIBLE_SUPPORTS, STR_INVISIBLE_SUPPORTS),
+        ToggleOption(DDIDX_INVISIBLE_PEEPS, STR_INVISIBLE_PEOPLE),
+        Separator(),
+        ToggleOption(DDIDX_LAND_HEIGHTS, STR_HEIGHT_MARKS_ON_LAND),
+        ToggleOption(DDIDX_TRACK_HEIGHTS, STR_HEIGHT_MARKS_ON_RIDE_TRACKS),
+        ToggleOption(DDIDX_PATH_HEIGHTS, STR_HEIGHT_MARKS_ON_PATHS),
+        Separator(),
+        ToggleOption(DDIDX_VIEW_CLIPPING, STR_VIEW_CLIPPING_MENU),
+        ToggleOption(DDIDX_HIGHLIGHT_PATH_ISSUES, STR_HIGHLIGHT_PATH_ISSUES_MENU),
+    };
+    static_assert(ItemIDsMatchIndices(items));
+
+    SetItems(items);
 
     window_dropdown_show_text(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0,
