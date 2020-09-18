@@ -415,7 +415,8 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         }
         else
         {
-            auto ft = Formatter().Add<rct_string_id>(StaffNamingConvention[selectedPeepType].plural);
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(StaffNamingConvention[selectedPeepType].plural);
             context_show_error(STR_NO_THING_IN_PARK_YET, STR_NONE, ft);
         }
     }

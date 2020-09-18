@@ -2443,7 +2443,8 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
             {
                 log_info("Wrote desync report to '%s'", outputFile.c_str());
 
-                auto ft = Formatter().Add<char*>(uniqueFileName);
+                auto ft = Formatter();
+                ft.Add<char*>(uniqueFileName);
 
                 char str_desync[1024];
                 format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, ft.Data());
