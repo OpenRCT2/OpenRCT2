@@ -28,7 +28,7 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
                      RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
                      RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION | 
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::CrookedHouse))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::CrookedHouse)),
     SET_FIELD(DefaultMode, RideMode::CrookedHouse),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE }),

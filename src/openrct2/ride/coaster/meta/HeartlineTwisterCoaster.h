@@ -26,7 +26,7 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
     SET_FIELD(TrackPaintFunction, get_track_paint_function_heartline_twister_rc),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuit))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 10, 27, 30, 25, 25, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_HEARTLINE_TWISTER_COASTER, STR_RIDE_DESCRIPTION_HEARTLINE_TWISTER_COASTER }),

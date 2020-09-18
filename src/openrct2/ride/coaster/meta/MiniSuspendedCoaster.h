@@ -28,7 +28,7 @@ constexpr const RideTypeDescriptor MiniSuspendedCoasterRTD =
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_IS_SUSPENDED),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuit))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MINI_SUSPENDED_COASTER, STR_RIDE_DESCRIPTION_MINI_SUSPENDED_COASTER }),

@@ -28,7 +28,7 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
                      RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
                      RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | 
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::SingleRidePerAdmission)) | (1ULL << static_cast<uint8_t>(RideMode::UnlimitedRidesPerAdmission))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission)),
     SET_FIELD(DefaultMode, RideMode::SingleRidePerAdmission),
     SET_FIELD(OperatingSettings, { 1, 5, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SPIRAL_SLIDE, STR_RIDE_DESCRIPTION_SPIRAL_SLIDE }),

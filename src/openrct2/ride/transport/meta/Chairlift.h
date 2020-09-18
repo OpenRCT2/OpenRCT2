@@ -29,7 +29,7 @@ constexpr const RideTypeDescriptor ChairliftRTD =
                      RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
                      RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG_TRANSPORT_RIDE | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER |
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_IS_SUSPENDED),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::StationToStation))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::StationToStation)),
     SET_FIELD(DefaultMode, RideMode::StationToStation),
     SET_FIELD(OperatingSettings, { 1, 4, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT }),

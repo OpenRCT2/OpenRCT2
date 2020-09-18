@@ -23,6 +23,7 @@
 #include "../common.h"
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
+#include "../util/Util.h"
 #include "Ride.h"
 #include "ShopItem.h"
 #include "Track.h"
@@ -289,29 +290,16 @@ constexpr const RideComponentName RideComponentNames[] =
 };
 // clang-format on
 
-constexpr const uint64_t AllRideModesAvailable = (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuit))
-    | (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuitBlockSectioned))
-    | (1ULL << static_cast<uint8_t>(RideMode::ReverseInclineLaunchedShuttle))
-    | (1ULL << static_cast<uint8_t>(RideMode::PoweredLaunchPasstrough)) | (1ULL << static_cast<uint8_t>(RideMode::Shuttle))
-    | (1ULL << static_cast<uint8_t>(RideMode::Normal)) | (1ULL << static_cast<uint8_t>(RideMode::BoatHire))
-    | (1ULL << static_cast<uint8_t>(RideMode::UpwardLaunch)) | (1ULL << static_cast<uint8_t>(RideMode::RotatingLift))
-    | (1ULL << static_cast<uint8_t>(RideMode::StationToStation))
-    | (1ULL << static_cast<uint8_t>(RideMode::SingleRidePerAdmission))
-    | (1ULL << static_cast<uint8_t>(RideMode::UnlimitedRidesPerAdmission)) | (1ULL << static_cast<uint8_t>(RideMode::Maze))
-    | (1ULL << static_cast<uint8_t>(RideMode::Race)) | (1ULL << static_cast<uint8_t>(RideMode::Dodgems))
-    | (1ULL << static_cast<uint8_t>(RideMode::Swing)) | (1ULL << static_cast<uint8_t>(RideMode::ShopStall))
-    | (1ULL << static_cast<uint8_t>(RideMode::Rotation)) | (1ULL << static_cast<uint8_t>(RideMode::ForwardRotation))
-    | (1ULL << static_cast<uint8_t>(RideMode::BackwardRotation))
-    | (1ULL << static_cast<uint8_t>(RideMode::FilmAvengingAviators))
-    | (1ULL << static_cast<uint8_t>(RideMode::MouseTails3DFilm)) | (1ULL << static_cast<uint8_t>(RideMode::SpaceRings))
-    | (1ULL << static_cast<uint8_t>(RideMode::Beginners)) | (1ULL << static_cast<uint8_t>(RideMode::LimPoweredLaunch))
-    | (1ULL << static_cast<uint8_t>(RideMode::FilmThrillRiders)) | (1ULL << static_cast<uint8_t>(RideMode::StormChasers3DFilm))
-    | (1ULL << static_cast<uint8_t>(RideMode::SpaceRaiders3DFilm)) | (1ULL << static_cast<uint8_t>(RideMode::Intense))
-    | (1ULL << static_cast<uint8_t>(RideMode::Berserk)) | (1ULL << static_cast<uint8_t>(RideMode::HauntedHouse))
-    | (1ULL << static_cast<uint8_t>(RideMode::CircusShow)) | (1ULL << static_cast<uint8_t>(RideMode::DownwardLaunch))
-    | (1ULL << static_cast<uint8_t>(RideMode::CrookedHouse)) | (1ULL << static_cast<uint8_t>(RideMode::FreefallDrop))
-    | (1ULL << static_cast<uint8_t>(RideMode::PoweredLaunch))
-    | (1ULL << static_cast<uint8_t>(RideMode::PoweredLaunchBlockSectioned));
+constexpr const uint64_t AllRideModesAvailable = EnumsToFlags(
+    RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle,
+    RideMode::PoweredLaunchPasstrough, RideMode::Shuttle, RideMode::Normal, RideMode::BoatHire, RideMode::UpwardLaunch,
+    RideMode::RotatingLift, RideMode::StationToStation, RideMode::SingleRidePerAdmission, RideMode::UnlimitedRidesPerAdmission,
+    RideMode::Maze, RideMode::Race, RideMode::Dodgems, RideMode::Swing, RideMode::ShopStall, RideMode::Rotation,
+    RideMode::ForwardRotation, RideMode::BackwardRotation, RideMode::FilmAvengingAviators, RideMode::MouseTails3DFilm,
+    RideMode::SpaceRings, RideMode::Beginners, RideMode::LimPoweredLaunch, RideMode::FilmThrillRiders,
+    RideMode::StormChasers3DFilm, RideMode::SpaceRaiders3DFilm, RideMode::Intense, RideMode::Berserk, RideMode::HauntedHouse,
+    RideMode::CircusShow, RideMode::DownwardLaunch, RideMode::CrookedHouse, RideMode::FreefallDrop, RideMode::PoweredLaunch,
+    RideMode::PoweredLaunchBlockSectioned);
 
 extern const rct_ride_entry_vehicle CableLiftVehicle;
 
@@ -330,7 +318,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(StartTrackPiece, TRACK_ELEM_END_STATION),
     SET_FIELD(TrackPaintFunction, nullptr),
     SET_FIELD(Flags, 0),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuit))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN }),

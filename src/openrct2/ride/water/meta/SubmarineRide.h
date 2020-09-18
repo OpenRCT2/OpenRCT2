@@ -29,7 +29,7 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
                      RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR |
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | 
                      RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuit))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SUBMARINE_RIDE, STR_RIDE_DESCRIPTION_SUBMARINE_RIDE }),

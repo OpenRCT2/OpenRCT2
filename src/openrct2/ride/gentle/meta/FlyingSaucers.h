@@ -29,7 +29,7 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT |
                      RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::Dodgems))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::Dodgems)),
     SET_FIELD(DefaultMode, RideMode::Dodgems),
     SET_FIELD(OperatingSettings, { 20, 180, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FLYING_SAUCERS, STR_RIDE_DESCRIPTION_FLYING_SAUCERS }),

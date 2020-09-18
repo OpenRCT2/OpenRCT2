@@ -26,7 +26,7 @@ constexpr const RideTypeDescriptor FoodStallRTD =
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
                      RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
                      RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ShopStall))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ShopStall)),
     SET_FIELD(DefaultMode, RideMode::ShopStall),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_FOOD_STALL, STR_RIDE_DESCRIPTION_FOOD_STALL }),

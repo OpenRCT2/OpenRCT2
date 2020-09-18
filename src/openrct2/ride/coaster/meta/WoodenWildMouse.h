@@ -28,7 +28,7 @@ constexpr const RideTypeDescriptor WoodenWildMouseRTD =
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT |
                      RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION | RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuit))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_WOODEN_WILD_MOUSE, STR_RIDE_DESCRIPTION_WOODEN_WILD_MOUSE }),

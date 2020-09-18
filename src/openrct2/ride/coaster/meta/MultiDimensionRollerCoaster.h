@@ -28,7 +28,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE | RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES |
                      RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuit)) | (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuitBlockSectioned))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 10, 27, 30, 25, 25, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MULTI_DIMENSION_ROLLER_COASTER, STR_RIDE_DESCRIPTION_MULTI_DIMENSION_ROLLER_COASTER }),
@@ -66,7 +66,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     SET_FIELD(TrackPaintFunction, nullptr),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAG_HAS_LARGE_CURVES),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuit)) | (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuitBlockSectioned))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 10, 27, 30, 25, 25, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_38, STR_RIDE_DESCRIPTION_UNKNOWN }),

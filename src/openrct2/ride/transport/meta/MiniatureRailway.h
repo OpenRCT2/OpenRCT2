@@ -30,7 +30,7 @@ constexpr const RideTypeDescriptor MiniatureRailwayRTD =
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS |
                      RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG_TRANSPORT_RIDE | RIDE_TYPE_FLAG_SHOW_IN_TRACK_DESIGNER |
                      RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS),
-    SET_FIELD(RideModes, (1ULL << static_cast<uint8_t>(RideMode::ContinuousCircuit)) | (1ULL << static_cast<uint8_t>(RideMode::Shuttle))),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ContinuousCircuit, RideMode::Shuttle)),
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MINIATURE_RAILWAY, STR_RIDE_DESCRIPTION_MINIATURE_RAILWAY }),
