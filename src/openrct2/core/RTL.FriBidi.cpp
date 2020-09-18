@@ -28,7 +28,7 @@ std::string FixRTL(std::string& input)
     fribidi_charset_to_unicode(FRIBIDI_CHAR_SET_UTF8, input.c_str(), len, utf32String);
 
     FriBidiStrIndex utf32len = 0;
-    for (; utf32len < std::size(utf32String); utf32len++)
+    for (; utf32len < static_cast<FriBidiStrIndex>(std::size(utf32String)); utf32len++)
     {
         if (utf32String[utf32len] == 0)
         {
@@ -48,6 +48,11 @@ std::string FixRTL(std::string& input)
     return std::string(outputString);
 }
 #elif defined(_WIN32)
+#    include "../Diagnostic.h"
+#    include "RTL.h"
+
+#    include <string>
+
 static bool hasWarned = false;
 
 std::string FixRTL(std::string& input)
