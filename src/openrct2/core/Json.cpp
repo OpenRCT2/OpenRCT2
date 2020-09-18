@@ -32,7 +32,7 @@ namespace Json
 
         try
         {
-            json = json_t::parse(fileData, nullptr, true);
+            json = json_t::parse(fileData);
         }
         catch (const json_t::exception& e)
         {
@@ -58,7 +58,7 @@ namespace Json
 
         try
         {
-            json = json_t::parse(raw, nullptr, true);
+            json = json_t::parse(raw);
         }
         catch (const json_t::exception& e)
         {
