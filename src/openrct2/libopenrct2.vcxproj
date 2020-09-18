@@ -34,6 +34,7 @@
     <ClCompile>
       <PreprocessorDefinitions>__ENABLE_DISCORD__;__ENABLE_LIGHTFX__;USE_BENCHMARK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Breakpad)'=='true'">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">USE_FRIBIDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
@@ -175,6 +176,7 @@
     <ClInclude Include="core\Numerics.hpp" />
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
+    <ClInclude Include="core\RTL.h" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.hpp" />
     <ClInclude Include="core\StringReader.hpp" />
@@ -493,6 +495,8 @@
     <ClCompile Include="core\Json.cpp" />
     <ClCompile Include="core\MemoryStream.cpp" />
     <ClCompile Include="core\Path.cpp" />
+    <ClCompile Include="core\RTL.FriBidi.cpp" />
+    <ClCompile Include="core\RTL.ICU.cpp" />
     <ClCompile Include="core\String.cpp" />
     <ClCompile Include="core\Zip.cpp" />
     <ClCompile Include="core\ZipAndroid.cpp" />
