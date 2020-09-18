@@ -26,6 +26,7 @@
 - Fix: [#12912] Plugin: selectedCell of CustomListView is being ignored on creation.
 - Fix: Incomplete loop collision box allowed overlapping track (original bug).
 - Improved: [#12806] Add Esperanto diacritics to the sprite font.
+- Improved: [#12837] Arabic text is now drawn and shaped correctly on Windows.
 - Improved: [#12890] Add stroke to lowercase 'L' to differentiate from capital 'I'.
 - Technical: The required version of macOS has been lowered to 10.13 (High Sierra).
 
