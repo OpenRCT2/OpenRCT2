@@ -164,12 +164,6 @@ void gfx_draw_string_centred(
     DrawTextBasic(dpi, coords, format, args, colour, TextAlignment::CENTRE);
 }
 
-void gfx_draw_string_right(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
-{
-    DrawTextBasic(dpi, coords, format, args, colour, TextAlignment::RIGHT);
-}
-
 // Wrapping
 int32_t gfx_draw_string_left_wrapped(
     rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)

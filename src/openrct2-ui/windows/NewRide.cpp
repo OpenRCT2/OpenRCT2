@@ -973,7 +973,9 @@ static void window_new_ride_paint_ride_information(
         if (!ride_type_has_flag(item.Type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
             stringId = STR_NEW_RIDE_COST_FROM;
 
-        gfx_draw_string_right(dpi, stringId, &price, COLOUR_BLACK, screenPos + ScreenCoordsXY{ width, 51 });
+        ft = Formatter();
+        ft.Add<money32>(price);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ width, 51 }, stringId, ft, COLOUR_BLACK, TextAlignment::RIGHT);
     }
 }
 
