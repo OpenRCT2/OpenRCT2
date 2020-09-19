@@ -2041,7 +2041,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                         int32_t speed = static_cast<int32_t>(tileElement->AsTrack()->GetBrakeBoosterSpeed());
 
                         // convert the speed to a readable format
-                        auto ft = Formatter().Add<int32_t>(speed);
+                        auto ft = Formatter();
+                        ft.Add<int32_t>(speed);
 
                         DrawTextBasic(dpi, screenCoords, STR_FORMAT_INTEGER, ft, COLOUR_WHITE);
                     }
