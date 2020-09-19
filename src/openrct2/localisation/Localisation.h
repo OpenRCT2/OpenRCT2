@@ -101,6 +101,27 @@ public:
     {
     }
 
+    Formatter(const Formatter& other)
+    {
+        *this = other;
+    }
+
+    Formatter& operator=(const Formatter& other)
+    {
+        // If using global or not
+        if (other.StartBuf == other.Buffer.data())
+        {
+            std::copy(std::begin(other.Buffer), std::end(other.Buffer), std::begin(Buffer));
+            StartBuf = Buffer.data();
+        }
+        else
+        {
+            StartBuf = other.StartBuf;
+        }
+        CurrentBuf = StartBuf + other.NumBytes();
+        return *this;
+    }
+
     static Formatter Common()
     {
         return Formatter{ gCommonFormatArgs };
