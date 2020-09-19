@@ -777,7 +777,6 @@ struct Peep : SpriteBase
 public: // Peep
     Guest* AsGuest();
     Staff* AsStaff();
-    const Staff* AsStaff() const;
 
     void Update();
     std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
