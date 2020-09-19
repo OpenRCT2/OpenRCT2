@@ -135,51 +135,6 @@ constexpr Enum& operator^=(Enum& lhs, const Enum& rhs)
 }
 
 /**
- * Left bit shift for enum classes and an integral type
- *
- * @param lhs A strong enum
- * @param rhs An integral type
- * @return A strong enum
- */
-template<
-    class Enum, typename Integral, typename = std::enable_if_t<std::is_enum<Enum>::value>,
-    typename = std::enable_if_t<std::is_integral<Integral>::value>>
-constexpr Enum operator<<(const Enum& lhs, const Integral& rhs)
-{
-    return static_cast<Enum>(static_cast<std::underlying_type_t<Enum>>(lhs) << rhs);
-}
-
-/**
- * Right bit shift for enum classes and an integral type
- *
- * @param lhs A strong enum
- * @param rhs An integral type
- * @return A strong enum
- */
-template<
-    class Enum, typename Integral, typename = std::enable_if_t<std::is_enum<Enum>::value>,
-    typename = std::enable_if_t<std::is_integral<Integral>::value>>
-constexpr Enum operator>>(const Enum& lhs, const Integral& rhs)
-{
-    return static_cast<Enum>(static_cast<std::underlying_type_t<Enum>>(lhs) >> rhs);
-}
-
-/**
- * Can be used to convert an index enum to a flag, e.g. the RideMode enum
- *
- * @param lhs An integral type, usually 1
- * @param rhs A strong enum
- * @return An integral type
- */
-template<
-    class Enum, typename Integral, typename = std::enable_if_t<std::is_enum<Enum>::value>,
-    typename = std::enable_if_t<std::is_integral<Integral>::value>>
-constexpr Integral operator<<(const Integral& lhs, const Enum& rhs)
-{
-    return lhs << static_cast<std::underlying_type_t<Enum>>(rhs);
-}
-
-/**
  * Array wrappers
  */
 
