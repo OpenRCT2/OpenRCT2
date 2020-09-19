@@ -166,7 +166,7 @@ public:
                 && !RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_LIFT_HILL_STEEP)
                 && !gCheatsEnableChainLiftOnAllTrack)
             {
-                if (!!(TrackFlags[_trackType] & TrackElemFlag::SteepUp))
+                if (FlagHas(TrackFlags[_trackType], TrackElemFlag::SteepUp))
                 {
                     return std::make_unique<TrackPlaceActionResult>(GA_ERROR::DISALLOWED, STR_TOO_STEEP_FOR_LIFT_HILL);
                 }
@@ -197,7 +197,7 @@ public:
         const TrackElemFlag* trackFlags = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatTrackFlags : TrackFlags;
         if (!gCheatsAllowTrackPlaceInvalidHeights)
         {
-            if (!!(trackFlags[_trackType] & TrackElemFlag::StartsAtHalfHeight))
+            if (FlagHas(trackFlags[_trackType], TrackElemFlag::StartsAtHalfHeight))
             {
                 if ((_origin.z & 0x0F) != 8)
                 {
@@ -279,7 +279,7 @@ public:
             res->GroundFlags = mapGroundFlags;
             if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE)
             {
-                if (!!(FlatTrackFlags[_trackType] & TrackElemFlag::AboveGroundOnly))
+                if (FlagHas(FlatTrackFlags[_trackType], TrackElemFlag::AboveGroundOnly))
                 {
                     if (res->GroundFlags & ELEMENT_IS_UNDERGROUND)
                     {
@@ -290,7 +290,7 @@ public:
             }
             else
             {
-                if (!!(TrackFlags[_trackType] & TrackElemFlag::AboveGroundOnly))
+                if (FlagHas(TrackFlags[_trackType], TrackElemFlag::AboveGroundOnly))
                 {
                     if (res->GroundFlags & ELEMENT_IS_UNDERGROUND)
                     {
@@ -302,7 +302,7 @@ public:
 
             if (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE)
             {
-                if (!!(FlatTrackFlags[_trackType] & TrackElemFlag::UnderwaterOnly))
+                if (FlagHas(FlatTrackFlags[_trackType], TrackElemFlag::UnderwaterOnly))
                 {
                     if (!(gMapGroundFlags & ELEMENT_IS_UNDERWATER))
                     {
@@ -313,7 +313,7 @@ public:
             }
             else
             {
-                if (!!(TrackFlags[_trackType] & TrackElemFlag::UnderwaterOnly))
+                if (FlagHas(TrackFlags[_trackType], TrackElemFlag::UnderwaterOnly))
                 { // No element has this flag
                     if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
                     {

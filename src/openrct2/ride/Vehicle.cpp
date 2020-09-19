@@ -1661,12 +1661,12 @@ void Vehicle::UpdateMeasurements()
         TrackElemFlag trackFlags = TrackFlags[trackElemType];
 
         uint32_t testingFlags = curRide->testing_flags;
-        if (testingFlags & RIDE_TESTING_TURN_LEFT && !!(trackFlags & TrackElemFlag::LeftTurn))
+        if (testingFlags & RIDE_TESTING_TURN_LEFT && FlagHas(trackFlags, TrackElemFlag::LeftTurn))
         {
             // 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
             curRide->turn_count_default += 0x800;
         }
-        else if (testingFlags & RIDE_TESTING_TURN_RIGHT && !!(trackFlags & TrackElemFlag::RightTurn))
+        else if (testingFlags & RIDE_TESTING_TURN_RIGHT && FlagHas(trackFlags, TrackElemFlag::RightTurn))
         {
             // 0x800 as this is masked to CURRENT_TURN_COUNT_MASK
             curRide->turn_count_default += 0x800;
@@ -1703,31 +1703,31 @@ void Vehicle::UpdateMeasurements()
         }
         else
         {
-            if (!!(trackFlags & TrackElemFlag::LeftTurn))
+            if (FlagHas(trackFlags, TrackElemFlag::LeftTurn))
             {
                 curRide->testing_flags |= RIDE_TESTING_TURN_LEFT;
                 curRide->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
 
-                if (!!(trackFlags & TrackElemFlag::BankedTurn))
+                if (FlagHas(trackFlags, TrackElemFlag::BankedTurn))
                 {
                     curRide->testing_flags |= RIDE_TESTING_TURN_BANKED;
                 }
-                if (!!(trackFlags & TrackElemFlag::SlopedTurn))
+                if (FlagHas(trackFlags, TrackElemFlag::SlopedTurn))
                 {
                     curRide->testing_flags |= RIDE_TESTING_TURN_SLOPED;
                 }
             }
 
-            if (!!(trackFlags & TrackElemFlag::RightTurn))
+            if (FlagHas(trackFlags, TrackElemFlag::RightTurn))
             {
                 curRide->testing_flags |= RIDE_TESTING_TURN_RIGHT;
                 curRide->turn_count_default &= ~CURRENT_TURN_COUNT_MASK;
 
-                if (!!(trackFlags & TrackElemFlag::BankedTurn))
+                if (FlagHas(trackFlags, TrackElemFlag::BankedTurn))
                 {
                     curRide->testing_flags |= RIDE_TESTING_TURN_BANKED;
                 }
-                if (!!(trackFlags & TrackElemFlag::SlopedTurn))
+                if (FlagHas(trackFlags, TrackElemFlag::SlopedTurn))
                 {
                     curRide->testing_flags |= RIDE_TESTING_TURN_SLOPED;
                 }
@@ -1751,7 +1751,7 @@ void Vehicle::UpdateMeasurements()
                 }
             }
         }
-        else if (!!(trackFlags & TrackElemFlag::Down) && velocity >= 0)
+        else if (FlagHas(trackFlags, TrackElemFlag::Down) && velocity >= 0)
         {
             curRide->testing_flags &= ~RIDE_TESTING_DROP_UP;
             curRide->testing_flags |= RIDE_TESTING_DROP_DOWN;
@@ -1783,7 +1783,7 @@ void Vehicle::UpdateMeasurements()
                 }
             }
         }
-        else if (!!(trackFlags & TrackElemFlag::Up) && velocity <= 0)
+        else if (FlagHas(trackFlags, TrackElemFlag::Up) && velocity <= 0)
         {
             curRide->testing_flags &= ~RIDE_TESTING_DROP_DOWN;
             curRide->testing_flags |= RIDE_TESTING_DROP_UP;
@@ -1799,7 +1799,7 @@ void Vehicle::UpdateMeasurements()
 
         if (curRide->type == RIDE_TYPE_MINI_GOLF)
         {
-            if (!!(trackFlags & TrackElemFlag::GolfHole))
+            if (FlagHas(trackFlags, TrackElemFlag::GolfHole))
             {
                 if (curRide->holes < MAX_GOLF_HOLES)
                     curRide->holes++;
@@ -1807,14 +1807,14 @@ void Vehicle::UpdateMeasurements()
         }
         else
         {
-            if (!!(trackFlags & TrackElemFlag::NormalToInversion))
+            if (FlagHas(trackFlags, TrackElemFlag::NormalToInversion))
             {
                 if (curRide->inversions < MAX_INVERSIONS)
                     curRide->inversions++;
             }
         }
 
-        if (!!(trackFlags & TrackElemFlag::Helix))
+        if (FlagHas(trackFlags, TrackElemFlag::Helix))
         {
             uint8_t helixes = ride_get_helix_sections(curRide);
             if (helixes != MAX_HELICES)

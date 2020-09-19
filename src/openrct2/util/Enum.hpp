@@ -169,6 +169,69 @@ constexpr Enum& operator^=(Enum& lhs, const Enum& rhs)
 }
 
 /**
+ * Helper functions
+ */
+
+/**
+ * Returns true if all types in the template parameter list are the same
+ */
+template<typename... Types> struct AreSameType;
+template<typename First, typename Second, typename... Tail> struct AreSameType<First, Second, Tail...>
+{
+    static const bool value = std::is_same_v<First, Second> && AreSameType<Second, Tail...>::value;
+};
+template<typename First, typename Second> struct AreSameType<First, Second>
+{
+    static const bool value = std::is_same_v<First, Second>;
+};
+
+/**
+ * Checks whether a given flag has any of the other given flags enabled
+ */
+template<typename Enum, typename... Enums> constexpr bool FlagHasAny(Enum flag, Enums... flags)
+{
+    static_assert(AreSameType<Enum, Enums...>::value, "Incompatible type passed to FlagHasAny");
+    static_assert(sizeof...(Enums) > 2, "FlagHasAll must be called with at least three parameters");
+    static_assert(IsFlagType<Enum>::value, "FlagHasAny is only defined for enum classes with a Null member");
+
+    auto flagsCombined = (flags | ...);
+    return (flag & flagsCombined) != Enum::Null;
+};
+
+/**
+ * Checks whether a given flag has any flag enabled
+ */
+template<typename Enum> constexpr bool FlagHasAny(const Enum& flag)
+{
+    static_assert(IsFlagType<Enum>::value, "FlagHasAny is only defined for enum classes with a Null member");
+
+    return flag != Enum::Null;
+};
+
+/**
+ * Checks whether a given flag has any of the other given flags enabled
+ */
+template<typename Enum, typename... Enums> constexpr bool FlagHas(const Enum& flag, Enums... flags)
+{
+    static_assert(AreSameType<Enum, Enums...>::value, "Incompatible type passed to FlagHas");
+    static_assert(IsFlagType<Enum>::value, "FlagHas is only defined for enum classes with a Null member");
+    static_assert(sizeof...(Enums) > 0, "FlagHas must be called with at least two parameters");
+
+    auto flagsCombined = (flags | ...);
+    return (flag & flagsCombined) == flag;
+};
+
+/**
+ * Checks whether a given flag has the other given flag enabled
+ */
+template<typename Enum, typename EnumOther> constexpr bool FlagHas(const Enum& flag, const EnumOther& other)
+{
+    static_assert(IsFlagType<Enum>::value, "FlagHas is only defined for enum classes with a Null member");
+
+    return (flag & other) != Enum::Null;
+};
+
+/**
  * Array wrappers
  */
 

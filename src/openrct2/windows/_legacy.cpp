@@ -345,7 +345,7 @@ bool window_ride_construction_update_state(
     bool turnOffLiftHill = false;
     if (!(_enabledRidePieces & (1ULL << TRACK_LIFT_HILL_CURVE)))
     {
-        if (!!(TrackFlags[trackType] & TrackElemFlag::AllowLiftCurve))
+        if (FlagHas(TrackFlags[trackType], TrackElemFlag::AllowLiftCurve))
         {
             turnOffLiftHill = true;
         }
