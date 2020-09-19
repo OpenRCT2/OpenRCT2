@@ -6207,13 +6207,16 @@ void Vehicle::SetMapToolbar() const
             if (curRide->vehicles[vehicleIndex] == vehicle->sprite_index)
                 break;
 
-        auto ft = Formatter::MapTooltip();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
         ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_STRINGID);
         curRide->FormatNameTo(ft);
         ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.vehicle].capitalised);
         ft.Add<uint16_t>(vehicleIndex + 1);
         curRide->FormatStatusTo(ft);
+        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+        intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+        context_broadcast_intent(&intent);
     }
 }
 

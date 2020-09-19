@@ -472,6 +472,16 @@ public:
             case INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL:
                 TrackPlaceRestoreProvisional();
                 break;
+
+            case INTENT_ACTION_SET_MAP_TOOLTIP:
+            {
+                auto ft = static_cast<Formatter*>(intent.GetPointerExtra(INTENT_EXTRA_FORMATTER));
+                if (ft != nullptr)
+                {
+                    SetMapTooltip(*ft);
+                }
+                break;
+            }
         }
     }
 

@@ -64,6 +64,18 @@ static int32_t _cursorHoldDuration;
 
 static void window_map_tooltip_open();
 
+static Formatter _mapTooltipArgs;
+
+void SetMapTooltip(Formatter& ft)
+{
+    _mapTooltipArgs = ft;
+}
+
+const Formatter& GetMapTooltip()
+{
+    return _mapTooltipArgs;
+}
+
 /**
  *
  *  rct2: 0x006EE77A
@@ -90,7 +102,7 @@ void window_map_tooltip_update_visibility()
 
     // Show or hide tooltip
     rct_string_id stringId;
-    std::memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+    std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(rct_string_id));
 
     if (_cursorHoldDuration < 25 || stringId == STR_NONE
         || input_test_place_object_modifier(
@@ -151,12 +163,13 @@ static void window_map_tooltip_update(rct_window* w)
 static void window_map_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id stringId;
-    std::memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+    std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(rct_string_id));
     if (stringId == STR_NONE)
     {
         return;
     }
 
     ScreenCoordsXY stringCoords(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
-    gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, stringCoords, w->width, STR_MAP_TOOLTIP_STRINGID, COLOUR_BLACK);
+    gfx_draw_string_centred_wrapped(
+        dpi, _mapTooltipArgs.Data(), stringCoords, w->width, STR_MAP_TOOLTIP_STRINGID, COLOUR_BLACK);
 }

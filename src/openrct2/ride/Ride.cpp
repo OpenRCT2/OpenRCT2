@@ -3301,10 +3301,13 @@ static void ride_track_set_map_tooltip(TileElement* tileElement)
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
-        auto ft = Formatter::MapTooltip();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
         ride->FormatNameTo(ft);
         ride->FormatStatusTo(ft);
+        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+        intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+        context_broadcast_intent(&intent);
     }
 }
 
@@ -3314,10 +3317,13 @@ static void ride_queue_banner_set_map_tooltip(TileElement* tileElement)
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
-        auto ft = Formatter::MapTooltip();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
         ride->FormatNameTo(ft);
         ride->FormatStatusTo(ft);
+        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+        intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+        context_broadcast_intent(&intent);
     }
 }
 
@@ -3332,13 +3338,16 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
             if (ride->stations[i].Start.isNull())
                 stationIndex--;
 
-        auto ft = Formatter::MapTooltip();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
         ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
         ride->FormatNameTo(ft);
         ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].capitalised);
         ft.Add<uint16_t>(stationIndex + 1);
         ride->FormatStatusTo(ft);
+        auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+        intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+        context_broadcast_intent(&intent);
     }
 }
 
@@ -3361,7 +3370,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
             if (!ride_get_entrance_location(ride, stationIndex).isNull())
                 queueLength = ride->stations[stationIndex].QueueLength;
 
-            auto ft = Formatter::MapTooltip();
+            auto ft = Formatter();
             ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
             ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_ENTRANCE : STR_RIDE_STATION_X_ENTRANCE);
             ride->FormatNameTo(ft);
@@ -3383,6 +3392,9 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
                 ft.Add<rct_string_id>(STR_QUEUE_PEOPLE);
             }
             ft.Add<uint16_t>(queueLength);
+            auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+            intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+            context_broadcast_intent(&intent);
         }
         else
         {
@@ -3392,7 +3404,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
                 if (ride->stations[i].Start.isNull())
                     stationIndex--;
 
-            auto ft = Formatter::MapTooltip();
+            auto ft = Formatter();
             ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_EXIT : STR_RIDE_STATION_X_EXIT);
             ride->FormatNameTo(ft);
 
@@ -3400,6 +3412,9 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
             ft.Increment(sizeof(uint16_t));
 
             ft.Add<uint16_t>(stationIndex + 1);
+            auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+            intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+            context_broadcast_intent(&intent);
         }
     }
 }

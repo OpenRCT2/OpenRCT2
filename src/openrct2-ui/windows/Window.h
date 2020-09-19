@@ -141,6 +141,8 @@ void window_ride_measurements_design_cancel();
 extern RideSelection _window_track_list_item;
 rct_window* window_track_list_open(RideSelection item);
 
+void SetMapTooltip(Formatter& ft);
+const Formatter& GetMapTooltip();
 void window_map_tooltip_update_visibility();
 
 rct_window* window_maze_construction_open();
