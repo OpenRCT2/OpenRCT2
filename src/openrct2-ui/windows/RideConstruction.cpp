@@ -147,36 +147,23 @@ static void window_ride_construction_paint(rct_window *w, rct_drawpixelinfo *dpi
 static bool track_piece_direction_is_diagonal(const uint8_t direction);
 
 //0x993EEC
-static rct_window_event_list window_ride_construction_events = {
-    window_ride_construction_close,
-    window_ride_construction_mouseup,
-    window_ride_construction_resize,
-    window_ride_construction_mousedown,
-    window_ride_construction_dropdown,
-    nullptr,
-    window_ride_construction_update,
-    nullptr,
-    nullptr,
-    window_ride_construction_toolupdate,
-    window_ride_construction_tooldown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_ride_construction_invalidate,
-    window_ride_construction_paint,
-    nullptr
-};
+static rct_window_event_list window_ride_construction_events = {};
+
+static void window_ride_construction_events_init()
+{
+    auto& events = window_ride_construction_events;
+
+    events.close = window_ride_construction_close;
+    events.mouse_up = window_ride_construction_mouseup;
+    events.resize = window_ride_construction_resize;
+    events.mouse_down = window_ride_construction_mousedown;
+    events.dropdown = window_ride_construction_dropdown;
+    events.update = window_ride_construction_update;
+    events.tool_update = window_ride_construction_toolupdate;
+    events.tool_down = window_ride_construction_tooldown;
+    events.invalidate = window_ride_construction_invalidate;
+    events.paint = window_ride_construction_paint;
+}
 
 #pragma endregion
 
@@ -535,6 +522,7 @@ rct_window* window_ride_construction_open()
         return context_open_window_view(WV_MAZE_CONSTRUCTION);
     }
 
+    window_ride_construction_events_init();
     auto w = window_create(
         ScreenCoordsXY(0, 29), 166, 394, &window_ride_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
 

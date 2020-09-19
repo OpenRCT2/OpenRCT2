@@ -31,36 +31,15 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
 static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
-static rct_window_event_list window_title_logo_events = {
-    nullptr,
-    window_title_menu_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_title_logo_paint,
-    nullptr
-};
+static rct_window_event_list window_title_logo_events = {};
+
+static void window_title_logo_events_init()
+{
+    auto& events = window_title_logo_events;
+
+    events.mouse_up = window_title_menu_mouseup;
+    events.paint = window_title_logo_paint;
+}
 // clang-format on
 
 /**
@@ -69,6 +48,7 @@ static rct_window_event_list window_title_logo_events = {
  */
 rct_window* window_title_logo_open()
 {
+    window_title_logo_events_init();
     rct_window* window = window_create(
         ScreenCoordsXY(0, 0), WW, WH, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_logo_widgets;

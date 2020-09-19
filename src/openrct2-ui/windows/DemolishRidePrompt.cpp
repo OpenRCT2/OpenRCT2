@@ -52,68 +52,32 @@ static void window_ride_refurbish_mouseup(rct_window *w, rct_widgetindex widgetI
 static void window_ride_refurbish_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x0098E2E4
-static rct_window_event_list window_ride_demolish_events = {
-    nullptr,
-    window_ride_demolish_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_ride_demolish_paint,
-    nullptr,
-};
+static rct_window_event_list window_ride_demolish_events = {};
+
+static void window_ride_demolish_events_init()
+{
+    auto& events = window_ride_demolish_events;
+
+    events.mouse_up = window_ride_demolish_mouseup;
+    events.paint = window_ride_demolish_paint;
+}
 // clang-format on
 
-static rct_window_event_list window_ride_refurbish_events = {
-    nullptr,
-    window_ride_refurbish_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_ride_refurbish_paint,
-    nullptr,
-};
+static rct_window_event_list window_ride_refurbish_events = {};
+
+static void window_ride_refurbish_events_init()
+{
+    auto& events = window_ride_refurbish_events;
+
+    events.mouse_up = window_ride_refurbish_mouseup;
+    events.paint = window_ride_refurbish_paint;
+}
+
+static void window_demolish_ride_prompt_events_init_all()
+{
+    window_ride_demolish_events_init();
+    window_ride_refurbish_events_init();
+}
 
 /** Based off of rct2: 0x006B486A */
 rct_window* window_ride_demolish_prompt_open(Ride* ride)
@@ -125,10 +89,12 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride)
     {
         auto windowPos = w->windowPos;
         window_close(w);
+        window_demolish_ride_prompt_events_init_all();
         w = window_create(windowPos, WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
     else
     {
+        window_demolish_ride_prompt_events_init_all();
         w = window_create_centred(WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
 
@@ -150,10 +116,12 @@ rct_window* window_ride_refurbish_prompt_open(Ride* ride)
     {
         auto windowPos = w->windowPos;
         window_close(w);
+        window_demolish_ride_prompt_events_init_all();
         w = window_create(windowPos, WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
     else
     {
+        window_demolish_ride_prompt_events_init_all();
         w = window_create_centred(WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
 

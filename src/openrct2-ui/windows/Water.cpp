@@ -47,36 +47,20 @@ static void window_water_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_water_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_water_inputsize(rct_window *w);
 
-static rct_window_event_list window_water_events = {
-    window_water_close,
-    window_water_mouseup,
-    nullptr,
-    window_water_mousedown,
-    nullptr,
-    nullptr,
-    window_water_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_water_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_water_invalidate,
-    window_water_paint,
-    nullptr
-};
+static rct_window_event_list window_water_events = {};
+
+static void window_water_events_init()
+{
+    auto& events = window_water_events;
+
+    events.close = window_water_close;
+    events.mouse_up = window_water_mouseup;
+    events.mouse_down = window_water_mousedown;
+    events.update = window_water_update;
+    events.text_input = window_water_textinput;
+    events.invalidate = window_water_invalidate;
+    events.paint = window_water_paint;
+}
 // clang-format on
 
 /**
@@ -92,6 +76,7 @@ rct_window* window_water_open()
     if (window != nullptr)
         return window;
 
+    window_water_events_init();
     window = window_create(ScreenCoordsXY(context_get_width() - 76, 29), 76, 77, &window_water_events, WC_WATER, 0);
     window->widgets = window_water_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW);

@@ -112,36 +112,24 @@ static void window_footpath_toolup(rct_window * w, rct_widgetindex widgetIndex, 
 static void window_footpath_invalidate(rct_window * w);
 static void window_footpath_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
-static rct_window_event_list window_footpath_events = {
-    window_footpath_close,
-    window_footpath_mouseup,
-    nullptr,
-    window_footpath_mousedown,
-    window_footpath_dropdown,
-    nullptr,
-    window_footpath_update,
-    nullptr,
-    nullptr,
-    window_footpath_toolupdate,
-    window_footpath_tooldown,
-    window_footpath_tooldrag,
-    window_footpath_toolup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_footpath_invalidate,
-    window_footpath_paint,
-    nullptr
-};
+static rct_window_event_list window_footpath_events = {};
+
+static void window_footpath_events_init()
+{
+    auto& events = window_footpath_events;
+
+    events.close = window_footpath_close;
+    events.mouse_up = window_footpath_mouseup;
+    events.mouse_down = window_footpath_mousedown;
+    events.dropdown = window_footpath_dropdown;
+    events.update = window_footpath_update;
+    events.tool_update = window_footpath_toolupdate;
+    events.tool_down = window_footpath_tooldown;
+    events.tool_drag = window_footpath_tooldrag;
+    events.tool_up = window_footpath_toolup;
+    events.invalidate = window_footpath_invalidate;
+    events.paint = window_footpath_paint;
+}
 // clang-format on
 
 static money32 _window_footpath_cost;
@@ -219,6 +207,7 @@ rct_window* window_footpath_open()
         return window;
     }
 
+    window_footpath_events_init();
     window = window_create(ScreenCoordsXY(0, 29), 106, 381, &window_footpath_events, WC_FOOTPATH, 0);
     window->widgets = window_footpath_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_FOOTPATH_TYPE) | (1 << WIDX_QUEUELINE_TYPE)

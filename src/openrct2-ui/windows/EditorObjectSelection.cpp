@@ -186,36 +186,27 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 static void window_editor_object_selection_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_editor_object_selection_events = {
-    window_editor_object_selection_close,
-    window_editor_object_selection_mouseup,
-    window_editor_object_selection_resize,
-    window_editor_object_selection_mousedown,
-    window_editor_object_selection_dropdown,
-    nullptr,
-    window_editor_object_selection_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_object_selection_scrollgetsize,
-    window_editor_object_selection_scroll_mousedown,
-    nullptr,
-    window_editor_object_selection_scroll_mouseover,
-    window_editor_object_selection_textinput,
-    nullptr,
-    nullptr,
-    window_editor_object_selection_tooltip,
-    nullptr,
-    nullptr,
-    window_editor_object_selection_invalidate,
-    window_editor_object_selection_paint,
-    window_editor_object_selection_scrollpaint
-};
+static rct_window_event_list window_editor_object_selection_events = {};
+
+static void window_editor_object_selection_events_init()
+{
+    auto& events = window_editor_object_selection_events;
+
+    events.close = window_editor_object_selection_close;
+    events.mouse_up = window_editor_object_selection_mouseup;
+    events.resize = window_editor_object_selection_resize;
+    events.mouse_down = window_editor_object_selection_mousedown;
+    events.dropdown = window_editor_object_selection_dropdown;
+    events.update = window_editor_object_selection_update;
+    events.get_scroll_size = window_editor_object_selection_scrollgetsize;
+    events.scroll_mousedown = window_editor_object_selection_scroll_mousedown;
+    events.scroll_mouseover = window_editor_object_selection_scroll_mouseover;
+    events.text_input = window_editor_object_selection_textinput;
+    events.tooltip = window_editor_object_selection_tooltip;
+    events.invalidate = window_editor_object_selection_invalidate;
+    events.paint = window_editor_object_selection_paint;
+    events.scroll_paint = window_editor_object_selection_scrollpaint;
+}
 // clang-format on
 
 #pragma endregion
@@ -386,6 +377,7 @@ rct_window* window_editor_object_selection_open()
     sub_6AB211();
     reset_selected_object_count_and_size();
 
+    window_editor_object_selection_events_init();
     window = window_create_centred(
         600, 400, &window_editor_object_selection_events, WC_EDITOR_OBJECT_SELECTION, WF_10 | WF_RESIZABLE);
     window->widgets = _window_editor_object_selection_widgets.data();

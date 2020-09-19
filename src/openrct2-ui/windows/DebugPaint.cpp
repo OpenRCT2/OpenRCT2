@@ -49,36 +49,16 @@ static void window_debug_paint_mouseup(rct_window * w, rct_widgetindex widgetInd
 static void window_debug_paint_invalidate(rct_window * w);
 static void window_debug_paint_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
-static rct_window_event_list window_debug_paint_events = {
-    nullptr,
-    window_debug_paint_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_debug_paint_invalidate,
-    window_debug_paint_paint,
-    nullptr
-};
+static rct_window_event_list window_debug_paint_events = {};
+
+static void window_debug_paint_events_init()
+{
+    auto& events = window_debug_paint_events;
+
+    events.mouse_up = window_debug_paint_mouseup;
+    events.invalidate = window_debug_paint_invalidate;
+    events.paint = window_debug_paint_paint;
+}
 // clang-format on
 
 rct_window* window_debug_paint_open()
@@ -90,6 +70,7 @@ rct_window* window_debug_paint_open()
     if (window != nullptr)
         return window;
 
+    window_debug_paint_events_init();
     window = window_create(
         ScreenCoordsXY(16, context_get_height() - 16 - 33 - WINDOW_HEIGHT), WINDOW_WIDTH, WINDOW_HEIGHT,
         &window_debug_paint_events, WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);

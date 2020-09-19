@@ -439,36 +439,27 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 static void window_tile_inspector_set_page(rct_window* w, const TILE_INSPECTOR_PAGE page);
 
 // clang-format off
-static rct_window_event_list TileInspectorWindowEvents = {
-    nullptr,
-    window_tile_inspector_mouseup,
-    window_tile_inspector_resize,
-    window_tile_inspector_mousedown,
-    window_tile_inspector_dropdown,
-    nullptr,
-    window_tile_inspector_update,
-    nullptr,
-    nullptr,
-    window_tile_inspector_tool_update,
-    window_tile_inspector_tool_down,
-    window_tile_inspector_tool_drag,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_tile_inspector_scrollgetsize,
-    window_tile_inspector_scrollmousedown,
-    nullptr,
-    window_tile_inspector_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_tile_inspector_invalidate,
-    window_tile_inspector_paint,
-    window_tile_inspector_scrollpaint
-};
+static rct_window_event_list TileInspectorWindowEvents = {};
+
+static void TileInspectorWindowEvents_init()
+{
+    auto& events = TileInspectorWindowEvents;
+
+    events.mouse_up = window_tile_inspector_mouseup;
+    events.resize = window_tile_inspector_resize;
+    events.mouse_down = window_tile_inspector_mousedown;
+    events.dropdown = window_tile_inspector_dropdown;
+    events.update = window_tile_inspector_update;
+    events.tool_update = window_tile_inspector_tool_update;
+    events.tool_down = window_tile_inspector_tool_down;
+    events.tool_drag = window_tile_inspector_tool_drag;
+    events.get_scroll_size = window_tile_inspector_scrollgetsize;
+    events.scroll_mousedown = window_tile_inspector_scrollmousedown;
+    events.scroll_mouseover = window_tile_inspector_scrollmouseover;
+    events.invalidate = window_tile_inspector_invalidate;
+    events.paint = window_tile_inspector_paint;
+    events.scroll_paint = window_tile_inspector_scrollpaint;
+}
 
 static uint64_t PageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_CORRUPT),
@@ -519,6 +510,7 @@ rct_window* window_tile_inspector_open()
     if (window != nullptr)
         return window;
 
+    TileInspectorWindowEvents_init();
     window = window_create(ScreenCoordsXY(0, 29), WW, WH, &TileInspectorWindowEvents, WC_TILE_INSPECTOR, WF_RESIZABLE);
 
     window_tile_inspector_set_page(window, TILE_INSPECTOR_PAGE_DEFAULT);

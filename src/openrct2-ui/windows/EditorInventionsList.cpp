@@ -86,68 +86,42 @@ static void window_editor_inventions_list_drag_paint(rct_window *w, rct_drawpixe
 static std::pair<rct_string_id, Formatter> window_editor_inventions_list_prepare_name(const ResearchItem * researchItem, bool withGap);
 
 // 0x0098177C
-static rct_window_event_list window_editor_inventions_list_events = {
-    window_editor_inventions_list_close,
-    window_editor_inventions_list_mouseup,
-    window_editor_inventions_list_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_inventions_list_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_inventions_list_scrollgetheight,
-    window_editor_inventions_list_scrollmousedown,
-    nullptr,
-    window_editor_inventions_list_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_inventions_list_cursor,
-    nullptr,
-    window_editor_inventions_list_invalidate,
-    window_editor_inventions_list_paint,
-    window_editor_inventions_list_scrollpaint
-};
+static rct_window_event_list window_editor_inventions_list_events = {};
+
+static void window_editor_inventions_list_events_init()
+{
+    auto& events = window_editor_inventions_list_events;
+
+    events.close = window_editor_inventions_list_close;
+    events.mouse_up = window_editor_inventions_list_mouseup;
+    events.resize = window_editor_inventions_list_resize;
+    events.update = window_editor_inventions_list_update;
+    events.get_scroll_size = window_editor_inventions_list_scrollgetheight;
+    events.scroll_mousedown = window_editor_inventions_list_scrollmousedown;
+    events.scroll_mouseover = window_editor_inventions_list_scrollmouseover;
+    events.cursor = window_editor_inventions_list_cursor;
+    events.invalidate = window_editor_inventions_list_invalidate;
+    events.paint = window_editor_inventions_list_paint;
+    events.scroll_paint = window_editor_inventions_list_scrollpaint;
+}
 
 // 0x009817EC
-static rct_window_event_list window_editor_inventions_list_drag_events = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_inventions_list_drag_cursor,
-    window_editor_inventions_list_drag_moved,
-    nullptr,
-    window_editor_inventions_list_drag_paint,
-    nullptr
-};
+static rct_window_event_list window_editor_inventions_list_drag_events = {};
+
+static void window_editor_inventions_list_drag_events_init()
+{
+    auto& events = window_editor_inventions_list_drag_events;
+
+    events.cursor = window_editor_inventions_list_drag_cursor;
+    events.moved = window_editor_inventions_list_drag_moved;
+    events.paint = window_editor_inventions_list_drag_paint;
+}
+
+static void window_editor_inventions_list_events_init_all()
+{
+    window_editor_inventions_list_events_init();
+    window_editor_inventions_list_drag_events_init();
+}
 
 #pragma endregion
 
@@ -302,6 +276,7 @@ rct_window* window_editor_inventions_list_open()
 
     research_rides_setup();
 
+    window_editor_inventions_list_events_init_all();
     w = window_create_centred(
         WW, WH, &window_editor_inventions_list_events, WC_EDITOR_INVENTION_LIST, WF_NO_SCROLLING | WF_RESIZABLE);
     w->widgets = window_editor_inventions_list_widgets;
@@ -753,6 +728,7 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
     stringWidth = gfx_get_string_width(buffer);
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
+    window_editor_inventions_list_events_init_all();
     w = window_create(
         ScreenCoordsXY(gTooltipCursorX - (stringWidth / 2), gTooltipCursorY - 7), stringWidth, 14,
         &window_editor_inventions_list_drag_events, WC_EDITOR_INVENTION_LIST_DRAG,

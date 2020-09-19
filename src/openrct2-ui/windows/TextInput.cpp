@@ -54,36 +54,18 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int cursorY);
 
 //0x9A3F7C
-static rct_window_event_list window_text_input_events = {
-    window_text_input_close,
-    window_text_input_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_text_input_periodic_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_text_input_invalidate,
-    window_text_input_paint,
-    nullptr
-};
+static rct_window_event_list window_text_input_events = {};
+
+static void window_text_input_events_init()
+{
+    auto& events = window_text_input_events;
+
+    events.close = window_text_input_close;
+    events.mouse_up = window_text_input_mouseup;
+    events.periodic_update = window_text_input_periodic_update;
+    events.invalidate = window_text_input_invalidate;
+    events.paint = window_text_input_paint;
+}
 // clang-format on
 
 static rct_string_id input_text_description;
@@ -140,6 +122,7 @@ void window_text_input_raw_open(
     int32_t height = no_lines * 10 + WH;
 
     // Window will be in the centre of the screen
+    window_text_input_events_init();
     rct_window* w = window_create_centred(WW, height, &window_text_input_events, WC_TEXTINPUT, WF_STICK_TO_FRONT);
 
     w->widgets = window_text_input_widgets;

@@ -182,222 +182,117 @@ static void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_guest_debug_update(rct_window *w);
 static void window_guest_debug_paint(rct_window *w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_guest_overview_events = {
-    window_guest_overview_close,
-    window_guest_overview_mouse_up,
-    window_guest_overview_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_overview_update,
-    nullptr,
-    nullptr,
-    window_guest_overview_tool_update,
-    window_guest_overview_tool_down,
-    nullptr,
-    nullptr,
-    window_guest_overview_tool_abort,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_overview_text_input,
-    window_guest_overview_viewport_rotate,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_overview_invalidate,
-    window_guest_overview_paint,
-    nullptr
-};
+static rct_window_event_list window_guest_overview_events = {};
 
-static rct_window_event_list window_guest_stats_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_stats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_common_invalidate,
-    window_guest_stats_paint,
-    nullptr
-};
+static void window_guest_overview_events_init()
+{
+    auto& events = window_guest_overview_events;
 
-static rct_window_event_list window_guest_rides_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_rides_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_rides_scroll_get_size,
-    window_guest_rides_scroll_mouse_down,
-    nullptr,
-    window_guest_rides_scroll_mouse_over,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_rides_invalidate,
-    window_guest_rides_paint,
-    window_guest_rides_scroll_paint
-};
+    events.close = window_guest_overview_close;
+    events.mouse_up = window_guest_overview_mouse_up;
+    events.resize = window_guest_overview_resize;
+    events.update = window_guest_overview_update;
+    events.tool_update = window_guest_overview_tool_update;
+    events.tool_down = window_guest_overview_tool_down;
+    events.tool_abort = window_guest_overview_tool_abort;
+    events.text_input = window_guest_overview_text_input;
+    events.viewport_rotate = window_guest_overview_viewport_rotate;
+    events.invalidate = window_guest_overview_invalidate;
+    events.paint = window_guest_overview_paint;
+}
 
-static rct_window_event_list window_guest_finance_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_finance_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_common_invalidate,
-    window_guest_finance_paint,
-    nullptr
-};
+static rct_window_event_list window_guest_stats_events = {};
 
-static rct_window_event_list window_guest_thoughts_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_thoughts_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_common_invalidate,
-    window_guest_thoughts_paint,
-    nullptr
-};
+static void window_guest_stats_events_init()
+{
+    auto& events = window_guest_stats_events;
 
-static rct_window_event_list window_guest_inventory_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_inventory_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_common_invalidate,
-    window_guest_inventory_paint,
-    nullptr
-};
+    events.mouse_up = window_guest_mouse_up;
+    events.resize = window_guest_common_resize;
+    events.update = window_guest_stats_update;
+    events.invalidate = window_guest_common_invalidate;
+    events.paint = window_guest_stats_paint;
+}
 
-static rct_window_event_list window_guest_debug_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_debug_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_common_invalidate,
-    window_guest_debug_paint,
-    nullptr
-};
+static rct_window_event_list window_guest_rides_events = {};
+
+static void window_guest_rides_events_init()
+{
+    auto& events = window_guest_rides_events;
+
+    events.mouse_up = window_guest_mouse_up;
+    events.resize = window_guest_common_resize;
+    events.update = window_guest_rides_update;
+    events.get_scroll_size = window_guest_rides_scroll_get_size;
+    events.scroll_mousedown = window_guest_rides_scroll_mouse_down;
+    events.scroll_mouseover = window_guest_rides_scroll_mouse_over;
+    events.invalidate = window_guest_rides_invalidate;
+    events.paint = window_guest_rides_paint;
+    events.scroll_paint = window_guest_rides_scroll_paint;
+}
+
+static rct_window_event_list window_guest_finance_events = {};
+
+static void window_guest_finance_events_init()
+{
+    auto& events = window_guest_finance_events;
+
+    events.mouse_up = window_guest_mouse_up;
+    events.resize = window_guest_common_resize;
+    events.update = window_guest_finance_update;
+    events.invalidate = window_guest_common_invalidate;
+    events.paint = window_guest_finance_paint;
+}
+
+static rct_window_event_list window_guest_thoughts_events = {};
+
+static void window_guest_thoughts_events_init()
+{
+    auto& events = window_guest_thoughts_events;
+
+    events.mouse_up = window_guest_mouse_up;
+    events.resize = window_guest_common_resize;
+    events.update = window_guest_thoughts_update;
+    events.invalidate = window_guest_common_invalidate;
+    events.paint = window_guest_thoughts_paint;
+}
+
+static rct_window_event_list window_guest_inventory_events = {};
+
+static void window_guest_inventory_events_init()
+{
+    auto& events = window_guest_inventory_events;
+
+    events.mouse_up = window_guest_mouse_up;
+    events.resize = window_guest_common_resize;
+    events.update = window_guest_inventory_update;
+    events.invalidate = window_guest_common_invalidate;
+    events.paint = window_guest_inventory_paint;
+}
+
+static rct_window_event_list window_guest_debug_events = {};
+
+static void window_guest_debug_events_init()
+{
+    auto& events = window_guest_debug_events;
+
+    events.mouse_up = window_guest_mouse_up;
+    events.resize = window_guest_common_resize;
+    events.update = window_guest_debug_update;
+    events.invalidate = window_guest_common_invalidate;
+    events.paint = window_guest_debug_paint;
+}
+
+static void window_guest_events_init_all()
+{
+    window_guest_overview_events_init();
+    window_guest_stats_events_init();
+    window_guest_rides_events_init();
+    window_guest_finance_events_init();
+    window_guest_thoughts_events_init();
+    window_guest_inventory_events_init();
+    window_guest_debug_events_init();
+}
 
 // 0x981D24
 static rct_window_event_list *window_guest_page_events[] = {
@@ -530,6 +425,7 @@ rct_window* window_guest_open(Peep* peep)
         if (gConfigGeneral.debugging_tools)
             windowWidth += TabWidth;
 
+        window_guest_events_init_all();
         window = window_create_auto_pos(windowWidth, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
         window->widgets = window_guest_overview_widgets;
         window->enabled_widgets = window_guest_page_enabled_widgets[0];

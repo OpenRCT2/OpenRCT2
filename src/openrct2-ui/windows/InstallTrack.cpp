@@ -57,36 +57,18 @@ static void window_install_track_invalidate(rct_window *w);
 static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_install_track_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_install_track_events = {
-    window_install_track_close,
-    window_install_track_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_install_track_text_input,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_install_track_invalidate,
-    window_install_track_paint,
-    nullptr
-};
+static rct_window_event_list window_install_track_events = {};
+
+static void window_install_track_events_init()
+{
+    auto& events = window_install_track_events;
+
+    events.close = window_install_track_close;
+    events.mouse_up = window_install_track_mouseup;
+    events.text_input = window_install_track_text_input;
+    events.invalidate = window_install_track_invalidate;
+    events.paint = window_install_track_paint;
+}
 // clang-format on
 
 static std::unique_ptr<TrackDesign> _trackDesign;
@@ -133,6 +115,7 @@ rct_window* window_install_track_open(const utf8* path)
     int32_t x = screenWidth / 2 - 201;
     int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
+    window_install_track_events_init();
     rct_window* w = window_create(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL)

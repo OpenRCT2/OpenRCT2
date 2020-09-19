@@ -27,36 +27,15 @@ static rct_widget window_title_options_widgets[] = {
 static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_title_options_events = {
-    nullptr,
-    window_title_options_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_title_options_paint,
-    nullptr
-};
+static rct_window_event_list window_title_options_events = {};
+
+static void window_title_options_events_init()
+{
+    auto& events = window_title_options_events;
+
+    events.mouse_up = window_title_options_mouseup;
+    events.paint = window_title_options_paint;
+}
 // clang-format on
 
 /**
@@ -64,6 +43,7 @@ static rct_window_event_list window_title_options_events = {
  */
 rct_window* window_title_options_open()
 {
+    window_title_options_events_init();
     rct_window* window = window_create(
         ScreenCoordsXY(context_get_width() - 80, 0), 80, 15, &window_title_options_events, WC_TITLE_OPTIONS,
         WF_STICK_TO_BACK | WF_TRANSPARENT);

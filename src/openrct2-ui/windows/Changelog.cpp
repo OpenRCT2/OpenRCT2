@@ -57,36 +57,20 @@ static void window_changelog_invalidate(rct_window *w);
 static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_changelog_events = {
-    window_changelog_close,
-    window_changelog_mouseup,
-    window_changelog_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_changelog_scrollgetsize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_changelog_invalidate,
-    window_changelog_paint,
-    window_changelog_scrollpaint
-};
+static rct_window_event_list window_changelog_events = {};
+
+static void window_changelog_events_init()
+{
+    auto& events = window_changelog_events;
+
+    events.close = window_changelog_close;
+    events.mouse_up = window_changelog_mouseup;
+    events.resize = window_changelog_resize;
+    events.get_scroll_size = window_changelog_scrollgetsize;
+    events.invalidate = window_changelog_invalidate;
+    events.paint = window_changelog_paint;
+    events.scroll_paint = window_changelog_scrollpaint;
+}
 // clang-format on
 
 static void window_new_version_process_info();
@@ -143,6 +127,7 @@ rct_window* window_changelog_open(int personality)
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
 
+    window_changelog_events_init();
     window = window_create_centred(
         screenWidth * 4 / 5, screenHeight * 4 / 5, &window_changelog_events, WC_CHANGELOG, WF_RESIZABLE);
     window->widgets = window_changelog_widgets;

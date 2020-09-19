@@ -197,222 +197,113 @@ static void window_park_awards_update(rct_window *w);
 static void window_park_awards_invalidate(rct_window *w);
 static void window_park_awards_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_park_entrance_events = {
-    window_park_entrance_close,
-    window_park_entrance_mouseup,
-    window_park_entrance_resize,
-    window_park_entrance_mousedown,
-    window_park_entrance_dropdown,
-    nullptr,
-    window_park_entrance_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_entrance_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_entrance_invalidate,
-    window_park_entrance_paint,
-    nullptr
-};
+static rct_window_event_list window_park_entrance_events = {};
 
-static rct_window_event_list window_park_rating_events = {
-    nullptr,
-    window_park_rating_mouseup,
-    window_park_rating_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_rating_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_rating_invalidate,
-    window_park_rating_paint,
-    nullptr
-};
+static void window_park_entrance_events_init()
+{
+    auto& events = window_park_entrance_events;
 
-static rct_window_event_list window_park_guests_events = {
-    nullptr,
-    window_park_guests_mouseup,
-    window_park_guests_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_guests_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_guests_invalidate,
-    window_park_guests_paint,
-    nullptr
-};
+    events.close = window_park_entrance_close;
+    events.mouse_up = window_park_entrance_mouseup;
+    events.resize = window_park_entrance_resize;
+    events.mouse_down = window_park_entrance_mousedown;
+    events.dropdown = window_park_entrance_dropdown;
+    events.update = window_park_entrance_update;
+    events.text_input = window_park_entrance_textinput;
+    events.invalidate = window_park_entrance_invalidate;
+    events.paint = window_park_entrance_paint;
+}
 
-static rct_window_event_list window_park_price_events = {
-    nullptr,
-    window_park_price_mouseup,
-    window_park_price_resize,
-    window_park_price_mousedown,
-    nullptr,
-    nullptr,
-    window_park_price_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_price_invalidate,
-    window_park_price_paint,
-    nullptr
-};
+static rct_window_event_list window_park_rating_events = {};
 
-static rct_window_event_list window_park_stats_events = {
-    nullptr,
-    window_park_stats_mouseup,
-    window_park_stats_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_stats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_stats_invalidate,
-    window_park_stats_paint,
-    nullptr
-};
+static void window_park_rating_events_init()
+{
+    auto& events = window_park_rating_events;
 
-static rct_window_event_list window_park_objective_events = {
-    nullptr,
-    window_park_objective_mouseup,
-    window_park_objective_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_objective_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_objective_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_objective_invalidate,
-    window_park_objective_paint,
-    nullptr
-};
+    events.mouse_up = window_park_rating_mouseup;
+    events.resize = window_park_rating_resize;
+    events.update = window_park_rating_update;
+    events.invalidate = window_park_rating_invalidate;
+    events.paint = window_park_rating_paint;
+}
 
-static rct_window_event_list window_park_awards_events = {
-    nullptr,
-    window_park_awards_mouseup,
-    window_park_awards_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_awards_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_park_awards_invalidate,
-    window_park_awards_paint,
-    nullptr
-};
+static rct_window_event_list window_park_guests_events = {};
+
+static void window_park_guests_events_init()
+{
+    auto& events = window_park_guests_events;
+
+    events.mouse_up = window_park_guests_mouseup;
+    events.resize = window_park_guests_resize;
+    events.update = window_park_guests_update;
+    events.invalidate = window_park_guests_invalidate;
+    events.paint = window_park_guests_paint;
+}
+
+static rct_window_event_list window_park_price_events = {};
+
+static void window_park_price_events_init()
+{
+    auto& events = window_park_price_events;
+
+    events.mouse_up = window_park_price_mouseup;
+    events.resize = window_park_price_resize;
+    events.mouse_down = window_park_price_mousedown;
+    events.update = window_park_price_update;
+    events.invalidate = window_park_price_invalidate;
+    events.paint = window_park_price_paint;
+}
+
+static rct_window_event_list window_park_stats_events = {};
+
+static void window_park_stats_events_init()
+{
+    auto& events = window_park_stats_events;
+
+    events.mouse_up = window_park_stats_mouseup;
+    events.resize = window_park_stats_resize;
+    events.update = window_park_stats_update;
+    events.invalidate = window_park_stats_invalidate;
+    events.paint = window_park_stats_paint;
+}
+
+static rct_window_event_list window_park_objective_events = {};
+
+static void window_park_objective_events_init()
+{
+    auto& events = window_park_objective_events;
+
+    events.mouse_up = window_park_objective_mouseup;
+    events.resize = window_park_objective_resize;
+    events.update = window_park_objective_update;
+    events.text_input = window_park_objective_textinput;
+    events.invalidate = window_park_objective_invalidate;
+    events.paint = window_park_objective_paint;
+}
+
+static rct_window_event_list window_park_awards_events = {};
+
+static void window_park_awards_events_init()
+{
+    auto& events = window_park_awards_events;
+
+    events.mouse_up = window_park_awards_mouseup;
+    events.resize = window_park_awards_resize;
+    events.update = window_park_awards_update;
+    events.invalidate = window_park_awards_invalidate;
+    events.paint = window_park_awards_paint;
+}
+
+static void window_park_events_init_all()
+{
+    window_park_entrance_events_init();
+    window_park_rating_events_init();
+    window_park_guests_events_init();
+    window_park_price_events_init();
+    window_park_stats_events_init();
+    window_park_objective_events_init();
+    window_park_awards_events_init();
+}
 
 static rct_window_event_list *window_park_page_events[] = {
     &window_park_entrance_events,
@@ -558,6 +449,7 @@ static rct_window* window_park_open()
 {
     rct_window* w;
 
+    window_park_events_init_all();
     w = window_create_auto_pos(230, 174 + 9, &window_park_entrance_events, WC_PARK_INFORMATION, WF_10);
     w->widgets = window_park_entrance_widgets;
     w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];

@@ -56,36 +56,27 @@ static void window_staff_list_invalidate(rct_window *w);
 static void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_staff_list_events = {
-    window_staff_list_close,
-    window_staff_list_mouseup,
-    window_staff_list_resize,
-    window_staff_list_mousedown,
-    window_staff_list_dropdown,
-    nullptr,
-    window_staff_list_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_list_tooldown,
-    nullptr,
-    nullptr,
-    window_staff_list_toolabort,
-    nullptr,
-    window_staff_list_scrollgetsize,
-    window_staff_list_scrollmousedown,
-    nullptr,
-    window_staff_list_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_list_invalidate,
-    window_staff_list_paint,
-    window_staff_list_scrollpaint,
-};
+static rct_window_event_list window_staff_list_events = {};
+
+static void window_staff_list_events_init()
+{
+    auto& events = window_staff_list_events;
+
+    events.close = window_staff_list_close;
+    events.mouse_up = window_staff_list_mouseup;
+    events.resize = window_staff_list_resize;
+    events.mouse_down = window_staff_list_mousedown;
+    events.dropdown = window_staff_list_dropdown;
+    events.update = window_staff_list_update;
+    events.tool_down = window_staff_list_tooldown;
+    events.tool_abort = window_staff_list_toolabort;
+    events.get_scroll_size = window_staff_list_scrollgetsize;
+    events.scroll_mousedown = window_staff_list_scrollmousedown;
+    events.scroll_mouseover = window_staff_list_scrollmouseover;
+    events.invalidate = window_staff_list_invalidate;
+    events.paint = window_staff_list_paint;
+    events.scroll_paint = window_staff_list_scrollpaint;
+}
 
 enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_STAFF_LIST_BACKGROUND,
@@ -158,6 +149,7 @@ rct_window* window_staff_list_open()
     if (window != nullptr)
         return window;
 
+    window_staff_list_events_init();
     window = window_create_auto_pos(WW, WH, &window_staff_list_events, WC_STAFF_LIST, WF_10 | WF_RESIZABLE);
     window->widgets = window_staff_list_widgets;
     window->enabled_widgets = (1 << WIDX_STAFF_LIST_CLOSE) | (1 << WIDX_STAFF_LIST_HANDYMEN_TAB)

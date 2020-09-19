@@ -96,36 +96,22 @@ static void window_maze_construction_invalidate(rct_window *w);
 static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x993F6C
-static rct_window_event_list window_maze_construction_events = {
-    window_maze_construction_close,
-    window_maze_construction_mouseup,
-    window_maze_construction_resize,
-    window_maze_construction_mousedown,
-    nullptr,
-    nullptr,
-    window_maze_construction_update,
-    nullptr,
-    nullptr,
-    window_maze_construction_toolupdate,
-    window_maze_construction_tooldown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_maze_construction_invalidate,
-    window_maze_construction_paint,
-    nullptr
-};
+static rct_window_event_list window_maze_construction_events = {};
+
+static void window_maze_construction_events_init()
+{
+    auto& events = window_maze_construction_events;
+
+    events.close = window_maze_construction_close;
+    events.mouse_up = window_maze_construction_mouseup;
+    events.resize = window_maze_construction_resize;
+    events.mouse_down = window_maze_construction_mousedown;
+    events.update = window_maze_construction_update;
+    events.tool_update = window_maze_construction_toolupdate;
+    events.tool_down = window_maze_construction_tooldown;
+    events.invalidate = window_maze_construction_invalidate;
+    events.paint = window_maze_construction_paint;
+}
 // clang-format on
 
 #pragma endregion
@@ -138,6 +124,7 @@ static void window_maze_construction_construct(int32_t direction);
  */
 rct_window* window_maze_construction_open()
 {
+    window_maze_construction_events_init();
     rct_window* w = window_create(
         ScreenCoordsXY(0, 29), 166, 200, &window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
     w->widgets = window_maze_construction_widgets;

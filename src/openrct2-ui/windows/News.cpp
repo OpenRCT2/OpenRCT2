@@ -46,36 +46,19 @@ static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, cons
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_news_events = {
-    nullptr,
-    window_news_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_scrollgetsize,
-    window_news_scrollmousedown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_paint,
-    window_news_scrollpaint
-};
+static rct_window_event_list window_news_events = {};
+
+static void window_news_events_init()
+{
+    auto& events = window_news_events;
+
+    events.mouse_up = window_news_mouseup;
+    events.update = window_news_update;
+    events.get_scroll_size = window_news_scrollgetsize;
+    events.scroll_mousedown = window_news_scrollmousedown;
+    events.paint = window_news_paint;
+    events.scroll_paint = window_news_scrollpaint;
+}
 // clang-format on
 
 /**
@@ -90,6 +73,7 @@ rct_window* window_news_open()
     window = window_bring_to_front_by_class(WC_RECENT_NEWS);
     if (window == nullptr)
     {
+        window_news_events_init();
         window = window_create_auto_pos(400, 300, &window_news_events, WC_RECENT_NEWS, 0);
         window->widgets = window_news_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);

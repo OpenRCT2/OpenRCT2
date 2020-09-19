@@ -61,68 +61,34 @@ static void window_track_delete_prompt_mouseup(rct_window *w, rct_widgetindex wi
 static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x009940EC
-static rct_window_event_list window_track_manage_events = {
-    window_track_manage_close,
-    window_track_manage_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_manage_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_manage_paint,
-    nullptr
-};
+static rct_window_event_list window_track_manage_events = {};
+
+static void window_track_manage_events_init()
+{
+    auto& events = window_track_manage_events;
+
+    events.close = window_track_manage_close;
+    events.mouse_up = window_track_manage_mouseup;
+    events.text_input = window_track_manage_textinput;
+    events.paint = window_track_manage_paint;
+}
 
 // 0x0099415C
-static rct_window_event_list window_track_delete_prompt_events = {
-    nullptr,
-    window_track_delete_prompt_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_delete_prompt_paint,
-    nullptr
-};
+static rct_window_event_list window_track_delete_prompt_events = {};
+
+static void window_track_delete_prompt_events_init()
+{
+    auto& events = window_track_delete_prompt_events;
+
+    events.mouse_up = window_track_delete_prompt_mouseup;
+    events.paint = window_track_delete_prompt_paint;
+}
+
+static void window_track_events_init_all()
+{
+    window_track_manage_events_init();
+    window_track_delete_prompt_events_init();
+}
 // clang-format on
 
 #pragma endregion
@@ -140,6 +106,7 @@ rct_window* window_track_manage_open(track_design_file_ref* tdFileRef)
 {
     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 
+    window_track_events_init_all();
     rct_window* w = window_create_centred(
         250, 44, &window_track_manage_events, WC_MANAGE_TRACK_DESIGN, WF_STICK_TO_FRONT | WF_TRANSPARENT);
     w->widgets = window_track_manage_widgets;
@@ -247,6 +214,7 @@ static void window_track_delete_prompt_open()
 
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
+    window_track_events_init_all();
     rct_window* w = window_create(
         ScreenCoordsXY(std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - 250) / 2), (screenHeight - 44) / 2), 250, 74,
         &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);

@@ -213,202 +213,97 @@ static void window_finances_research_invalidate(rct_window *w);
 static void window_finances_research_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x00988EB8
-static rct_window_event_list _windowFinancesSummaryEvents =
+static rct_window_event_list _windowFinancesSummaryEvents = {};
+
+static void _windowFinancesSummaryEvents_init()
 {
-    nullptr,
-    window_finances_summary_mouseup,
-    nullptr,
-    window_finances_summary_mousedown,
-    nullptr,
-    nullptr,
-    window_finances_summary_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_summary_scrollgetsize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_summary_invalidate,
-    window_finances_summary_paint,
-    window_finances_summary_scrollpaint
-};
+    auto& events = _windowFinancesSummaryEvents;
+
+    events.mouse_up = window_finances_summary_mouseup;
+    events.mouse_down = window_finances_summary_mousedown;
+    events.update = window_finances_summary_update;
+    events.get_scroll_size = window_finances_summary_scrollgetsize;
+    events.invalidate = window_finances_summary_invalidate;
+    events.paint = window_finances_summary_paint;
+    events.scroll_paint = window_finances_summary_scrollpaint;
+}
 
 // 0x00988F28
-static rct_window_event_list _windowFinancesFinancialGraphEvents =
+static rct_window_event_list _windowFinancesFinancialGraphEvents = {};
+
+static void _windowFinancesFinancialGraphEvents_init()
 {
-    nullptr,
-    window_finances_financial_graph_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_financial_graph_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_financial_graph_invalidate,
-    window_finances_financial_graph_paint,
-    nullptr
-};
+    auto& events = _windowFinancesFinancialGraphEvents;
+
+    events.mouse_up = window_finances_financial_graph_mouseup;
+    events.update = window_finances_financial_graph_update;
+    events.invalidate = window_finances_financial_graph_invalidate;
+    events.paint = window_finances_financial_graph_paint;
+}
 
 // 0x00988F98
-static rct_window_event_list _windowFinancesValueGraphEvents =
+static rct_window_event_list _windowFinancesValueGraphEvents = {};
+
+static void _windowFinancesValueGraphEvents_init()
 {
-    nullptr,
-    window_finances_park_value_graph_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_park_value_graph_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_park_value_graph_invalidate,
-    window_finances_park_value_graph_paint,
-    nullptr
-};
+    auto& events = _windowFinancesValueGraphEvents;
+
+    events.mouse_up = window_finances_park_value_graph_mouseup;
+    events.update = window_finances_park_value_graph_update;
+    events.invalidate = window_finances_park_value_graph_invalidate;
+    events.paint = window_finances_park_value_graph_paint;
+}
 
 // 0x00989008
-static rct_window_event_list _windowFinancesProfitGraphEvents =
+static rct_window_event_list _windowFinancesProfitGraphEvents = {};
+
+static void _windowFinancesProfitGraphEvents_init()
 {
-    nullptr,
-    window_finances_profit_graph_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_profit_graph_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_profit_graph_invalidate,
-    window_finances_profit_graph_paint,
-    nullptr
-};
+    auto& events = _windowFinancesProfitGraphEvents;
+
+    events.mouse_up = window_finances_profit_graph_mouseup;
+    events.update = window_finances_profit_graph_update;
+    events.invalidate = window_finances_profit_graph_invalidate;
+    events.paint = window_finances_profit_graph_paint;
+}
 
 // 0x00989078
-static rct_window_event_list _windowFinancesMarketingEvents =
+static rct_window_event_list _windowFinancesMarketingEvents = {};
+
+static void _windowFinancesMarketingEvents_init()
 {
-    nullptr,
-    window_finances_marketing_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_marketing_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_marketing_invalidate,
-    window_finances_marketing_paint,
-    nullptr
-};
+    auto& events = _windowFinancesMarketingEvents;
+
+    events.mouse_up = window_finances_marketing_mouseup;
+    events.update = window_finances_marketing_update;
+    events.invalidate = window_finances_marketing_invalidate;
+    events.paint = window_finances_marketing_paint;
+}
 
 // 0x009890E8
-static rct_window_event_list _windowFinancesResearchEvents =
+static rct_window_event_list _windowFinancesResearchEvents = {};
+
+static void _windowFinancesResearchEvents_init()
 {
-    nullptr,
-    window_finances_research_mouseup,
-    nullptr,
-    window_finances_research_mousedown,
-    window_finances_research_dropdown,
-    nullptr,
-    window_finances_research_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_research_invalidate,
-    window_finances_research_paint,
-    nullptr
-};
+    auto& events = _windowFinancesResearchEvents;
+
+    events.mouse_up = window_finances_research_mouseup;
+    events.mouse_down = window_finances_research_mousedown;
+    events.dropdown = window_finances_research_dropdown;
+    events.update = window_finances_research_update;
+    events.invalidate = window_finances_research_invalidate;
+    events.paint = window_finances_research_paint;
+}
+
+static void window_finances_events_init_all()
+{
+    _windowFinancesSummaryEvents_init();
+    _windowFinancesFinancialGraphEvents_init();
+    _windowFinancesValueGraphEvents_init();
+    _windowFinancesProfitGraphEvents_init();
+    _windowFinancesMarketingEvents_init();
+    _windowFinancesResearchEvents_init();
+}
 
 static rct_window_event_list *const _windowFinancesPageEvents[] =
 {
@@ -522,6 +417,7 @@ rct_window* window_finances_open()
     w = window_bring_to_front_by_class(WC_FINANCES);
     if (w == nullptr)
     {
+        window_finances_events_init_all();
         w = window_create_auto_pos(WW_OTHER_TABS, WH_SUMMARY, _windowFinancesPageEvents[0], WC_FINANCES, WF_10);
         w->number = 0;
         w->frame_no = 0;

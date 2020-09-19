@@ -58,36 +58,18 @@ static void window_new_campaign_dropdown(rct_window *w, rct_widgetindex widgetIn
 static void window_new_campaign_invalidate(rct_window *w);
 static void window_new_campaign_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_new_campaign_events = {
-    nullptr,
-    window_new_campaign_mouseup,
-    nullptr,
-    window_new_campaign_mousedown,
-    window_new_campaign_dropdown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_new_campaign_invalidate,
-    window_new_campaign_paint,
-    nullptr
-};
+static rct_window_event_list window_new_campaign_events = {};
+
+static void window_new_campaign_events_init()
+{
+    auto& events = window_new_campaign_events;
+
+    events.mouse_up = window_new_campaign_mouseup;
+    events.mouse_down = window_new_campaign_mousedown;
+    events.dropdown = window_new_campaign_dropdown;
+    events.invalidate = window_new_campaign_invalidate;
+    events.paint = window_new_campaign_paint;
+}
 // clang-format on
 
 static std::vector<ride_id_t> window_new_campaign_rides;
@@ -138,6 +120,7 @@ rct_window* window_new_campaign_open(int16_t campaignType)
         window_close(w);
     }
 
+    window_new_campaign_events_init();
     w = window_create_auto_pos(WW, WH, &window_new_campaign_events, WC_NEW_CAMPAIGN, 0);
     w->widgets = window_new_campaign_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RIDE_DROPDOWN) | (1 << WIDX_RIDE_DROPDOWN_BUTTON)

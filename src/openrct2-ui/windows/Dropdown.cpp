@@ -91,36 +91,14 @@ void dropdown_set_disabled(int32_t index, bool value)
 static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
-static rct_window_event_list window_dropdown_events = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_dropdown_paint,
-    nullptr
-};
+static rct_window_event_list window_dropdown_events = {};
+
+static void window_dropdown_events_init()
+{
+    auto& events = window_dropdown_events;
+
+    events.paint = window_dropdown_paint;
+}
 // clang-format on
 
 /**
@@ -209,6 +187,7 @@ void window_dropdown_show_text_custom_width(
     window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 
     // Create the window
+    window_dropdown_events_init();
     w = window_create(
         boundedScreenPos + ScreenCoordsXY{ 0, extray }, window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
         window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
@@ -289,6 +268,7 @@ void window_dropdown_show_image(
     window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 
     // Create the window
+    window_dropdown_events_init();
     w = window_create(
         ScreenCoordsXY(x, y + extray), window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
         window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
