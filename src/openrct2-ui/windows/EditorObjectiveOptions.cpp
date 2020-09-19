@@ -920,7 +920,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto parkName = park.Name.c_str();
 
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(parkName);
         DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft, COLOUR_BLACK);
@@ -930,7 +930,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_SCENARIO_NAME].top };
     width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gS6Info.name);
     DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft, COLOUR_BLACK);
@@ -943,10 +943,10 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     screenCoords = w->windowPos + ScreenCoordsXY{ 16, w->widgets[WIDX_DETAILS].top + 10 };
     width = w->widgets[WIDX_DETAILS].left - 4;
 
-    ft = Formatter::Common();
+    ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gS6Info.details);
-    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
+    gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Scenario category label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CATEGORY].top };

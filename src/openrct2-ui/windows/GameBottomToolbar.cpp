@@ -425,14 +425,14 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(),
                                             w->windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<money32>(gCash);
         gfx_draw_string_centred(
             dpi, (gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH), screenCoords,
             (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
                  ? COLOUR_WHITE
                  : NOT_TRANSLUCENT(w->colours[0])),
-            gCommonFormatArgs);
+            ft.Data());
     }
 
     static constexpr const rct_string_id guestCountFormats[] = {
@@ -515,7 +515,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
     rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(DateDayNames[day]);
     ft.Add<int16_t>(month);
     ft.Add<int16_t>(year);
@@ -524,7 +524,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
         (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
              ? COLOUR_WHITE
              : NOT_TRANSLUCENT(w->colours[0])),
-        gCommonFormatArgs);
+        ft.Data());
 
     // Figure out how much line height we have to work with.
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
@@ -540,9 +540,9 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
         temperature = climate_celsius_to_fahrenheit(temperature);
         format = STR_FAHRENHEIT_VALUE;
     }
-    ft = Formatter::Common();
+    ft = Formatter();
     ft.Add<int16_t>(temperature);
-    gfx_draw_string_left(dpi, format, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 0, 6 });
+    gfx_draw_string_left(dpi, format, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 0, 6 });
     screenCoords.x += 30;
 
     // Current weather

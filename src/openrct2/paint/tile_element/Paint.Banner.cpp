@@ -101,17 +101,16 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     scrollingMode += direction;
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     banner->FormatTextTo(ft, /*addColour*/ true);
 
     if (gConfigGeneral.upper_case_banners)
     {
-        format_string_to_upper(
-            gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+        format_string_to_upper(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
     else
     {
-        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

@@ -693,10 +693,10 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Loan and interest rate
     gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_LOAN, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 8, 279 });
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<uint16_t>(gBankLoanInterestRate);
     gfx_draw_string_left(
-        dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 167, 279 });
+        dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, ft.Data(), COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 167, 279 });
 
     // Current cash
     rct_string_id stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
@@ -706,10 +706,10 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
     {
         money32 lastMonthProfit = finance_get_last_month_shop_profit();
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<money32>(lastMonthProfit);
         gfx_draw_string_left(
-            dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, gCommonFormatArgs, COLOUR_BLACK,
+            dpi, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, ft.Data(), COLOUR_BLACK,
             w->windowPos + ScreenCoordsXY{ 280, 279 });
     }
     else
@@ -752,7 +752,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
             continue;
 
         // Month heading
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_FINANCES_SUMMARY_MONTH_HEADING);
         ft.Add<uint16_t>(monthyear);
         DrawTextBasic(
@@ -1211,7 +1211,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
             continue;
 
         noCampaignsActive = 0;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
 
         // Set special parameters
         switch (i)

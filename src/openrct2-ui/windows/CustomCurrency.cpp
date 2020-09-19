@@ -243,10 +243,10 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_RATE, nullptr, w->colours[1], screenCoords);
 
     int32_t baseExchange = CurrencyDescriptors[CURRENCY_POUNDS].rate;
-    ft = Formatter::Common();
+    ft = Formatter();
     ft.Add<int32_t>(baseExchange);
     gfx_draw_string_left(
-        dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, gCommonFormatArgs, w->colours[1], screenCoords + ScreenCoordsXY{ 200, 0 });
+        dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 200, 0 });
 
     screenCoords.y += 20;
 
