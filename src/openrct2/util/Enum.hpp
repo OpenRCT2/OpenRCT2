@@ -42,11 +42,11 @@ constexpr std::underlying_type_t<Enum> operator+(const Enum& lhs)
  * @return true if underlying value is 0
  */
 template<
-    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>>
+    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>,
+    typename = std::enable_if_t<!std::is_convertible<Enum, int>::value>>
 constexpr std::underlying_type_t<Enum> operator!(const Enum& lhs)
 {
     static_assert(IsFlagType<Enum>::value, "Bitwise operators are only defined for enum classes with a Null member");
-
 
     // underlying types of enum classes must be integral
     return static_cast<std::underlying_type_t<Enum>>(lhs) == 0;
@@ -81,7 +81,8 @@ template<class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>> con
  * Bitwise inversion for enum classes
  */
 template<
-    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>>
+    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>,
+    typename = std::enable_if_t<!std::is_convertible<Enum, int>::value>>
 constexpr Enum operator~(const Enum& lhs)
 {
     static_assert(IsFlagType<Enum>::value, "Bitwise operators are only defined for enum classes with a Null member");
@@ -97,7 +98,8 @@ constexpr Enum operator~(const Enum& lhs)
  * Bitwise OR for enum classes
  */
 template<
-    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>>
+    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>,
+    typename = std::enable_if_t<!std::is_convertible<Enum, int>::value>>
 constexpr Enum operator|(const Enum& lhs, const Enum& rhs)
 {
     static_assert(IsFlagType<Enum>::value, "Bitwise operators are only defined for enum classes with a Null member");
@@ -109,7 +111,8 @@ constexpr Enum operator|(const Enum& lhs, const Enum& rhs)
  * Augmented bitwise OR assignment for enum classes
  */
 template<
-    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>>
+    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>,
+    typename = std::enable_if_t<!std::is_convertible<Enum, int>::value>>
 constexpr Enum& operator|=(Enum& lhs, const Enum& rhs)
 {
     static_assert(IsFlagType<Enum>::value, "Bitwise operators are only defined for enum classes with a Null member");
@@ -122,7 +125,8 @@ constexpr Enum& operator|=(Enum& lhs, const Enum& rhs)
  * Bitwise AND for enum classes
  */
 template<
-    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>>
+    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>,
+    typename = std::enable_if_t<!std::is_convertible<Enum, int>::value>>
 constexpr Enum operator&(const Enum& lhs, const Enum& rhs)
 {
     static_assert(IsFlagType<Enum>::value, "Bitwise operators are only defined for enum classes with a Null member");
@@ -134,7 +138,8 @@ constexpr Enum operator&(const Enum& lhs, const Enum& rhs)
  * Augmented bitwise AND assignment for enum classes
  */
 template<
-    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>>
+    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>,
+    typename = std::enable_if_t<!std::is_convertible<Enum, int>::value>>
 constexpr Enum& operator&=(Enum& lhs, const Enum& rhs)
 {
     static_assert(IsFlagType<Enum>::value, "Bitwise operators are only defined for enum classes with a Null member");
@@ -147,7 +152,8 @@ constexpr Enum& operator&=(Enum& lhs, const Enum& rhs)
  * Bitwise XOR for enum classes
  */
 template<
-    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>>
+    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>,
+    typename = std::enable_if_t<!std::is_convertible<Enum, int>::value>>
 constexpr Enum operator^(const Enum& lhs, const Enum& rhs)
 {
     static_assert(IsFlagType<Enum>::value, "Bitwise operators are only defined for enum classes with a Null member");
@@ -159,7 +165,8 @@ constexpr Enum operator^(const Enum& lhs, const Enum& rhs)
  * Augmented bitwise XOR assignment for enum classes
  */
 template<
-    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>>
+    class Enum, typename = std::enable_if_t<std::is_enum<Enum>::value>,
+    typename = std::enable_if_t<!std::is_convertible<Enum, int>::value>>
 constexpr Enum& operator^=(Enum& lhs, const Enum& rhs)
 {
     static_assert(IsFlagType<Enum>::value, "Bitwise operators are only defined for enum classes with a Null member");
