@@ -922,9 +922,14 @@ public:
     bool IsMechanic() const;
     bool IsPatrolAreaSet(const CoordsXY& coords) const;
     bool IsLocationInPatrol(const CoordsXY& loc) const;
+    bool IsLocationOnPatrolEdge(const CoordsXY& loc) const;
     bool DoPathFinding();
     uint8_t GetCostume() const;
     void SetCostume(uint8_t value);
+    
+    bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
+    
+    static void ResetStats();
 
 private:
     void UpdatePatrolling();
@@ -957,6 +962,20 @@ private:
     Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
     void EntertainerUpdateNearbyPeeps() const;
+    
+    uint8_t GetValidPatrolDirections(const CoordsXY& loc) const;
+    Direction HandymanDirectionToNearestLitter() const;
+    uint8_t HandymanDirectionToUncutGrass(uint8_t valid_directions) const;
+    Direction DirectionSurface(Direction initialDirection) const;
+    Direction DirectionPath(uint8_t validDirections, PathElement* pathElement) const;
+    Direction MechanicDirectionSurface() const;
+    Direction MechanicDirectionPathRand(uint8_t pathDirections) const;
+    Direction MechanicDirectionPath(uint8_t validDirections, PathElement* pathElement);
+    bool UpdatePatrollingFindWatering();
+    bool UpdatePatrollingFindBin();
+    bool UpdatePatrollingFindSweeping();
+    bool UpdatePatrollingFindGrass();
+
 };
 
 static_assert(sizeof(Peep) <= 512);
