@@ -903,9 +903,9 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Draw an overlay if clearance checks are disabled
         if (gCheatsDisableClearanceChecks)
         {
-            gfx_draw_string_right(
-                dpi, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, nullptr, COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE,
-                screenPos + ScreenCoordsXY{ 26, 2 });
+            DrawTextBasic(
+                dpi, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
+                COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT);
         }
     }
 
@@ -980,10 +980,12 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_sprite(dpi, imgId, screenPos + ScreenCoordsXY{ 3, 11 }, 0);
 
         // Draw number of players.
-        int32_t player_count = network_get_num_players();
+        auto ft = Formatter();
+        ft.Add<int32_t>(network_get_num_players());
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        gfx_draw_string_right(
-            dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, screenPos + ScreenCoordsXY{ 23, 1 });
+        DrawTextBasic(
+            dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, COLOUR_WHITE | COLOUR_FLAG_OUTLINE,
+            TextAlignment::RIGHT);
     }
 }
 

@@ -1065,7 +1065,9 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 200;
-        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 10, 0 });
+        auto ft = Formatter();
+        ft.Add<uint32_t>(axisValue);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft, COLOUR_BLACK, TextAlignment::RIGHT);
         gfx_fill_rect_inset(
             dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ w->width - 32, 5 } }, w->colours[2],
             INSET_RECT_FLAG_BORDER_INSET);
@@ -1198,7 +1200,9 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 1000;
-        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 10, 0 });
+        auto ft = Formatter();
+        ft.Add<uint32_t>(axisValue);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft, COLOUR_BLACK, TextAlignment::RIGHT);
         gfx_fill_rect_inset(
             dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ w->width - 32, 5 } }, w->colours[2],
             INSET_RECT_FLAG_BORDER_INSET);

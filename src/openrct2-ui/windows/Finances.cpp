@@ -769,18 +769,25 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
             if (expenditure != 0)
             {
                 profit += expenditure;
-                gfx_draw_string_right(
-                    dpi, expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE,
-                    &expenditure, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
+                const rct_string_id format = expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE
+                                                              : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE;
+                ft = Formatter();
+                ft.Add<money32>(expenditure);
+                DrawTextBasic(
+                    dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, COLOUR_BLACK,
+                    TextAlignment::RIGHT);
             }
             screenCoords.y += TABLE_CELL_HEIGHT;
         }
         screenCoords.y += 4;
 
         // Month profit
-        gfx_draw_string_right(
-            dpi, profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE, &profit, COLOUR_BLACK,
-            screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
+        const rct_string_id format = profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE;
+        ft = Formatter();
+        ft.Add<money32>(profit);
+        DrawTextBasic(
+            dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+
         gfx_fill_rect(
             dpi, { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
             PALETTE_INDEX_10);
@@ -888,7 +895,9 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
         money32 axisValue = axisBase << yAxisScale;
-        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, { x + 70, y });
+        auto ft = Formatter();
+        ft.Add<money32>(axisValue);
+        DrawTextBasic(dpi, { x + 70, y }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, COLOUR_BLACK, TextAlignment::RIGHT);
         gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 39;
     }
@@ -991,7 +1000,9 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
     for (axisBase = MONEY(24, 00); axisBase >= MONEY(0, 00); axisBase -= MONEY(6, 00))
     {
         money32 axisValue = axisBase << yAxisScale;
-        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, { x + 70, y });
+        auto ft = Formatter();
+        ft.Add<money32>(axisValue);
+        DrawTextBasic(dpi, { x + 70, y }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, COLOUR_BLACK, TextAlignment::RIGHT);
         gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 39;
     }
@@ -1094,8 +1105,11 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
         money32 axisValue = axisBase << yAxisScale;
-        gfx_draw_string_right(
-            dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 70, 0 });
+        auto ft = Formatter();
+        ft.Add<money32>(axisValue);
+        DrawTextBasic(
+            dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, COLOUR_BLACK,
+            TextAlignment::RIGHT);
         gfx_fill_rect_inset(
             dpi, screenPos.x + 70, screenPos.y + 5, graphLeft + 482, screenPos.y + 5, w->colours[2],
             INSET_RECT_FLAG_BORDER_INSET);

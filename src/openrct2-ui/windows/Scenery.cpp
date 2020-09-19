@@ -1180,13 +1180,13 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<uint32_t>(price);
 
         // -14
-        gfx_draw_string_right(
-            dpi, STR_COST_LABEL, gCommonFormatArgs, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ w->width - 0x1A, w->height - 13 });
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ w->width - 0x1A, w->height - 13 }, STR_COST_LABEL, ft, COLOUR_BLACK,
+            TextAlignment::RIGHT);
     }
 
     auto ft = Formatter::Common();

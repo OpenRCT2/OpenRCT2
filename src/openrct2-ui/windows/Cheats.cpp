@@ -1225,19 +1225,27 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_string_left(dpi, STR_YEAR, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 198 });
         gfx_draw_string_left(dpi, STR_MONTH, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 219 });
         gfx_draw_string_left(dpi, STR_DAY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 240 });
-        gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_yearSpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 198 });
-        gfx_draw_string_right(
-            dpi, STR_FORMAT_MONTH, &actual_month, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 219 });
-        gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_daySpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 240 });
+        ft = Formatter();
+        ft.Add<int32_t>(_yearSpinnerValue);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ X_RCOL, 198 }, STR_FORMAT_INTEGER, ft, w->colours[1], TextAlignment::RIGHT);
+        ft = Formatter();
+        ft.Add<int32_t>(actual_month);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ X_RCOL, 219 }, STR_FORMAT_MONTH, ft, w->colours[1], TextAlignment::RIGHT);
+        ft = Formatter();
+        ft.Add<int32_t>(_daySpinnerValue);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ X_RCOL, 240 }, STR_FORMAT_INTEGER, ft, w->colours[1], TextAlignment::RIGHT);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
         gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 408 });
         gfx_draw_string_left(dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 261 });
-        gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_parkRatingSpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 156 });
+        auto ft = Formatter();
+        ft.Add<int32_t>(_parkRatingSpinnerValue);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ X_RCOL, 156 }, STR_FORMAT_INTEGER, ft, w->colours[1], TextAlignment::RIGHT);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
     {
