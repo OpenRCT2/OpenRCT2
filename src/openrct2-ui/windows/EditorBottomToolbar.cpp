@@ -60,7 +60,7 @@ static void window_editor_bottom_toolbar_jump_forward_to_save_scenario();
 
 static rct_window_event_list window_editor_bottom_toolbar_events = {
     nullptr,
-    window_editor_bottom_toolbar_mouseup, // 0x0066f5ae,
+    window_editor_bottom_toolbar_mouseup,
     nullptr,
     nullptr,
     nullptr,
@@ -84,8 +84,8 @@ static rct_window_event_list window_editor_bottom_toolbar_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_editor_bottom_toolbar_invalidate, // 0x0066f1c9,
-    window_editor_bottom_toolbar_paint, // 0x0066f25c,
+    window_editor_bottom_toolbar_invalidate,
+    window_editor_bottom_toolbar_paint,
     nullptr
 };
 

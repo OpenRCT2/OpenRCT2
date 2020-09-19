@@ -179,8 +179,8 @@ static rct_window_event_list window_staff_overview_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_staff_overview_invalidate, //Invalidate
-    window_staff_overview_paint, //Paint
+    window_staff_overview_invalidate,
+    window_staff_overview_paint,
     nullptr
 };
 
@@ -211,8 +211,8 @@ static rct_window_event_list window_staff_options_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_staff_options_invalidate, //Invalidate
-    window_staff_options_paint, //Paint
+    window_staff_options_invalidate,
+    window_staff_options_paint,
     nullptr
 };
 
@@ -243,8 +243,8 @@ static rct_window_event_list window_staff_stats_events = {
     nullptr,
     nullptr,
     nullptr,
-    window_staff_stats_invalidate, //Invalidate
-    window_staff_stats_paint, //Paint
+    window_staff_stats_invalidate,
+    window_staff_stats_paint,
     nullptr
 };
 

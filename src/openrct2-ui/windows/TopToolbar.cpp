@@ -279,12 +279,12 @@ static rct_window_event_list window_top_toolbar_events = {
     nullptr,
     nullptr,
     nullptr,
-    nullptr,                                           // check if editor versions are significantly different...
-    window_top_toolbar_tool_update,                 // editor: 0x0066fB0E
-    window_top_toolbar_tool_down,                   // editor: 0x0066fB5C
-    window_top_toolbar_tool_drag,                   // editor: 0x0066fB37
-    window_top_toolbar_tool_up,                     // editor: 0x0066fC44 (Exactly the same)
-    window_top_toolbar_tool_abort,                  // editor: 0x0066fA74 (Exactly the same)
+    nullptr,
+    window_top_toolbar_tool_update,
+    window_top_toolbar_tool_down,
+    window_top_toolbar_tool_drag,
+    window_top_toolbar_tool_up,
+    window_top_toolbar_tool_abort,
     nullptr,
     nullptr,
     nullptr,
