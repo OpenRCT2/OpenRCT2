@@ -925,9 +925,9 @@ public:
     bool DoPathFinding();
     uint8_t GetCostume() const;
     void SetCostume(uint8_t value);
-    
+
     bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
-    
+
     static void ResetStats();
 
 private:
@@ -961,7 +961,7 @@ private:
     Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
     void EntertainerUpdateNearbyPeeps() const;
-    
+
     uint8_t GetValidPatrolDirections(const CoordsXY& loc) const;
     Direction HandymanDirectionToNearestLitter() const;
     uint8_t HandymanDirectionToUncutGrass(uint8_t valid_directions) const;
@@ -974,7 +974,6 @@ private:
     bool UpdatePatrollingFindBin();
     bool UpdatePatrollingFindSweeping();
     bool UpdatePatrollingFindGrass();
-
 };
 
 static_assert(sizeof(Peep) <= 512);
