@@ -242,8 +242,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Scenery not available
             DrawTextEllipsised(
-                dpi, screenPos, 308, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, Formatter::Common(), COLOUR_BLACK,
-                TextAlignment::CENTRE);
+                dpi, screenPos, 308, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
             screenPos.y -= LIST_ROW_HEIGHT;
         }
     }
@@ -253,9 +252,13 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // 0x006D3CF1 -- 0x006d3d71 missing
 
     // Track design name & type
-    auto trackName = _trackName.c_str();
-    gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, &trackName, COLOUR_BLACK, screenPos - ScreenCoordsXY{ 1, 0 });
-    screenPos.y += LIST_ROW_HEIGHT;
+    {
+        auto trackName = _trackName.c_str();
+        auto ft = Formatter();
+        ft.Add<const char*>(trackName);
+        gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, ft.Data(), COLOUR_BLACK, screenPos - ScreenCoordsXY{ 1, 0 });
+        screenPos.y += LIST_ROW_HEIGHT;
+    }
 
     RideNaming rideName;
     rct_string_id friendlyTrackName;

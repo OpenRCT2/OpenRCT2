@@ -465,8 +465,7 @@ static void sub_6A4101(
             }
             else
             {
-                format_string(
-                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
+                format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
 
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

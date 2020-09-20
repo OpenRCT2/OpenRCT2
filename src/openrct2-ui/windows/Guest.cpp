@@ -1121,7 +1121,6 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-
     rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->top - 1 };
 

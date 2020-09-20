@@ -734,10 +734,10 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
     {
         screenCoords = w->windowPos + ScreenCoordsXY{ 4, window_guest_list_widgets[WIDX_GUEST_LIST].bottom + 2 };
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<int32_t>(static_cast<int32_t>(GuestList.size()));
         gfx_draw_string_left(
-            dpi, (GuestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), gCommonFormatArgs,
+            dpi, (GuestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), ft.Data(),
             COLOUR_BLACK, screenCoords);
     }
 }
@@ -784,7 +784,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     {
                         continue;
                     }
-                    auto ft = Formatter::Common();
+                    auto ft = Formatter();
                     peep->FormatNameTo(ft);
                     DrawTextEllipsised(dpi, { 0, y }, 113, format, ft, COLOUR_BLACK);
 
@@ -799,7 +799,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                 gfx_draw_sprite(dpi, STR_ENTER_SELECTION_SIZE, { 112, y + 1 }, 0);
 
                             // Action
-                            ft = Formatter::Common();
+                            ft = Formatter();
                             peep->FormatActionTo(ft);
                             DrawTextEllipsised(dpi, { 133, y }, 314, format, ft, COLOUR_BLACK);
                             break;
@@ -815,7 +815,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                 if (thought->freshness > 5)
                                     break;
 
-                                ft = Formatter::Common();
+                                ft = Formatter();
                                 peep_thought_set_format_args(&peep->Thoughts[j], ft);
                                 DrawTextEllipsised(dpi, { 118, y }, 329, format, ft, COLOUR_BLACK);
                                 break;
@@ -863,7 +863,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     DrawTextEllipsised(dpi, { 0, y }, 414, format, ft, COLOUR_BLACK);
 
                     // Draw guest count
-                    ft = Formatter::Common();
+                    ft = Formatter();
                     ft.Add<rct_string_id>(STR_GUESTS_COUNT_COMMA_SEP);
                     ft.Add<uint32_t>(numGuests);
                     DrawTextBasic(dpi, { 326, y }, format, ft, COLOUR_BLACK, TextAlignment::RIGHT);
