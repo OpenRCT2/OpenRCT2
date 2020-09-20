@@ -207,12 +207,9 @@ jobs:
       - name: Get pre-reqs
         shell: bash
         run: . scripts/setenv -q && get-discord-rpc
-      - name: Fake ccache
-        shell: bash
-        run: mkdir -p $HOME/.ccache && touch $HOME/.ccache/ccache.conf
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON
+        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=off
       - name: Build AppImage
         shell: bash
         run: . scripts/setenv -q && build-appimage
