@@ -648,7 +648,7 @@ static void peep_pathfind_heuristic_search(
     Direction test_edge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16],
     TileCoordsXYZ* endXYZ, uint8_t* endSteps)
 {
-    uint8_t searchResult = PATH_SEARCH_FAILED;   
+    uint8_t searchResult = PATH_SEARCH_FAILED;
 
     bool currentElementIsWide = currentTileElement->AsPath()->IsWide();
     if (currentElementIsWide)
