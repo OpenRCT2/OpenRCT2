@@ -114,7 +114,7 @@ void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
             properties,
             {
                 { "hasPrimaryColour",       WALL_SCENERY_HAS_PRIMARY_COLOUR,    Json::FlagType::Normal },
-                { "IsAllowedOnSlope",       WALL_SCENERY_CANT_BUILD_ON_SLOPE,   Json::FlagType::Inverted },
+                { "isAllowedOnSlope",       WALL_SCENERY_CANT_BUILD_ON_SLOPE,   Json::FlagType::Inverted },
                 { "hasSecondaryColour",     WALL_SCENERY_HAS_SECONDARY_COLOUR,  Json::FlagType::Normal },
                 { "hasTernaryColour",       WALL_SCENERY_HAS_TERNARY_COLOUR,    Json::FlagType::Normal },
                 { "hasGlass",               WALL_SCENERY_HAS_GLASS,             Json::FlagType::Normal },
