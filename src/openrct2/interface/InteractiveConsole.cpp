@@ -214,7 +214,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 else
                 {
                     auto ride = get_ride(ride_index);
-                    if (mode <= 0 || mode > (static_cast<uint8_t>(RideMode::Count) - 1))
+                    if (mode >= static_cast<uint8_t>(RideMode::Count))
                     {
                         console.WriteFormatLine("Invalid ride mode.");
                     }

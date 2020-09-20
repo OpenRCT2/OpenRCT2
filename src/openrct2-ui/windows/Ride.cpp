@@ -3505,12 +3505,12 @@ static void window_ride_operating_dropdown(rct_window* w, rct_widgetindex widget
     {
         case WIDX_MODE_DROPDOWN:
         {
-            uint8_t rideMode = static_cast<uint8_t>(RideMode::NullMode);
+            RideMode rideMode = RideMode::NullMode;
             auto availableModes = ride->GetAvailableModes();
             auto modeInDropdownIndex = -1;
-            for (uint8_t rideModeIndex = 0; rideModeIndex < static_cast<uint8_t>(RideMode::Count); rideModeIndex++)
+            for (RideMode rideModeIndex = RideMode::Normal; rideModeIndex < RideMode::Count; rideModeIndex++)
             {
-                if (availableModes & (1ULL << rideModeIndex))
+                if (availableModes & EnumToFlag(rideModeIndex))
                 {
                     modeInDropdownIndex++;
                     if (modeInDropdownIndex == dropdownIndex)
@@ -3520,8 +3520,8 @@ static void window_ride_operating_dropdown(rct_window* w, rct_widgetindex widget
                     }
                 }
             }
-            if (rideMode != static_cast<uint8_t>(RideMode::NullMode))
-                set_operating_setting(w->number, RideSetSetting::Mode, rideMode);
+            if (rideMode != RideMode::NullMode)
+                set_operating_setting(w->number, RideSetSetting::Mode, static_cast<uint8_t>(rideMode));
             break;
         }
         case WIDX_LOAD_DROPDOWN:

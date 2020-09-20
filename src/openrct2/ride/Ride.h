@@ -672,7 +672,7 @@ enum class RideMode : uint8_t
     Intense,
     Berserk,
     HauntedHouse,
-    CircusShow = 30,
+    Circus = 30,
     DownwardLaunch,
     CrookedHouse,
     FreefallDrop,
@@ -683,6 +683,8 @@ enum class RideMode : uint8_t
     Count,
     NullMode = 255,
 };
+
+RideMode& operator++(RideMode& d, int);
 
 enum
 {

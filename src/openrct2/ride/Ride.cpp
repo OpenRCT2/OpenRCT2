@@ -72,6 +72,11 @@
 
 using namespace OpenRCT2;
 
+RideMode& operator++(RideMode& d, int)
+{
+    return d = (d == RideMode::Count) ? RideMode::Normal : static_cast<RideMode>(static_cast<uint8_t>(d) + 1);
+}
+
 static constexpr const int32_t RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0,
 };
@@ -3790,7 +3795,7 @@ static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
         case RideMode::Intense:
         case RideMode::Berserk:
         case RideMode::HauntedHouse:
-        case RideMode::CircusShow:
+        case RideMode::Circus:
         case RideMode::DownwardLaunch:
         case RideMode::CrookedHouse:
         case RideMode::FreefallDrop:
