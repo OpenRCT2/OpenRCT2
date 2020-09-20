@@ -3660,6 +3660,9 @@ STR_6380    :Aggiornamento disponibile!
 STR_6381    :Unisciti al Discord di OpenRCT2!
 STR_6382    :È disponibile una nuova versione di OpenRCT2: {STRING}!
 STR_6383    :Apri pagina download
+STR_6384    :Neve
+STR_6385    :Forte neve
+STR_6386    :Tormenta
 
 #############
 # Scenarios #
