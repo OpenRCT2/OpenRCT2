@@ -648,11 +648,15 @@ static void peep_pathfind_heuristic_search(
     Direction test_edge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16],
     TileCoordsXYZ* endXYZ, uint8_t* endSteps)
 {
-    uint8_t searchResult = PATH_SEARCH_FAILED;
+    uint8_t searchResult = PATH_SEARCH_FAILED;   
 
-    bool currentElementIsWide
-        = (currentTileElement->AsPath()->IsWide()
-           && (!peep->Is<Staff>() || !static_cast<Staff*>(peep)->CanIgnoreWideFlag(loc.ToCoordsXYZ(), currentTileElement)));
+    bool currentElementIsWide = currentTileElement->AsPath()->IsWide();
+    if (currentElementIsWide)
+    {
+        const Staff* staff = peep->As<Staff>();
+        if (staff != nullptr && staff->CanIgnoreWideFlag(loc.ToCoordsXYZ(), currentTileElement))
+            currentElementIsWide = false;
+    }
 
     loc += TileDirectionDelta[test_edge];
 
@@ -786,7 +790,8 @@ static void peep_pathfind_heuristic_search(
                 if (tileElement->AsPath()->IsWide())
                 {
                     /* Check if staff can ignore this wide flag. */
-                    if (!peep->Is<Staff>() || !static_cast<Staff*>(peep)->CanIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
+                    const Staff* staff = peep->As<Staff>();
+                    if (staff == nullptr || !staff->CanIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
                     {
                         searchResult = PATH_SEARCH_WIDE;
                         found = true;
