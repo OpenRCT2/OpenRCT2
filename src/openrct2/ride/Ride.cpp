@@ -3769,40 +3769,7 @@ static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
                 return 1;
             gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE;
             return 0;
-        case RideMode::Normal:
-        case RideMode::ContinuousCircuit:
-        case RideMode::BoatHire:
-        case RideMode::UpwardLaunch:
-        case RideMode::RotatingLift:
-        case RideMode::StationToStation:
-        case RideMode::SingleRidePerAdmission:
-        case RideMode::UnlimitedRidesPerAdmission:
-        case RideMode::Maze:
-        case RideMode::Race:
-        case RideMode::Dodgems:
-        case RideMode::Swing:
-        case RideMode::ShopStall:
-        case RideMode::Rotation:
-        case RideMode::ForwardRotation:
-        case RideMode::BackwardRotation:
-        case RideMode::FilmAvengingAviators:
-        case RideMode::MouseTails3DFilm:
-        case RideMode::SpaceRings:
-        case RideMode::Beginners:
-        case RideMode::FilmThrillRiders:
-        case RideMode::StormChasers3DFilm:
-        case RideMode::SpaceRaiders3DFilm:
-        case RideMode::Intense:
-        case RideMode::Berserk:
-        case RideMode::HauntedHouse:
-        case RideMode::Circus:
-        case RideMode::DownwardLaunch:
-        case RideMode::CrookedHouse:
-        case RideMode::FreefallDrop:
-        case RideMode::ContinuousCircuitBlockSectioned:
-        case RideMode::PoweredLaunchBlockSectioned:
-        case RideMode::Count:
-        case RideMode::NullMode:
+        default:
         {
             // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
             // in switch [-Werror=switch]"
