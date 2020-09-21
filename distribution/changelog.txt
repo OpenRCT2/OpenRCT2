@@ -24,6 +24,7 @@
 - Fix: [#12881] Guests' favourite rides are not listed in the guest window.
 - Fix: [#12910] Plugin API: getRide sometimes returns null for valid ride IDs.
 - Fix: [#12912] Plugin: selectedCell of CustomListView is being ignored on creation.
+- Fix: [#12918] Cannot place vanilla TD6 tracks of the Hypercoaster, Monster Trucks, Classic Mini Roller Coaster, Spinning Wild Mouse and Hyper-Twister types.
 - Fix: Incomplete loop collision box allowed overlapping track (original bug).
 - Improved: [#12806] Add Esperanto diacritics to the sprite font.
 - Improved: [#12837] Arabic text is now drawn and shaped correctly on Windows.
