@@ -457,24 +457,9 @@ Direction Staff::HandymanDirectionToNearestLitter() const
         return INVALID_DIRECTION;
     }
 
-    litterTile = litterTile.ToTileCentre();
+    nextDirection = direction_from_to(CoordsXY(x, y), litterTile.ToTileCentre());
 
-    int16_t x_diff = litterTile.x - x;
-    int16_t y_diff = litterTile.y - y;
-
-    Direction nextDirection = 0;
-
-    if (abs(x_diff) <= abs(y_diff))
-    {
-        nextDirection = y_diff < 0 ? 3 : 1;
-    }
-    else
-    {
-        nextDirection = x_diff < 0 ? 0 : 2;
-    }
-
-    CoordsXY nextTile = { static_cast<int32_t>((nearestLitter->x & 0xFFE0) - CoordsDirectionDelta[nextDirection].x),
-                          static_cast<int32_t>((nearestLitter->y & 0xFFE0) - CoordsDirectionDelta[nextDirection].y) };
+    CoordsXY nextTile = litterTile.ToTileStart() - CoordsDirectionDelta[nextDirection];
 
     int16_t nextZ = ((z + COORDS_Z_STEP) & 0xFFF0) / COORDS_Z_STEP;
 
@@ -745,20 +730,8 @@ Direction Staff::MechanicDirectionSurface() const
         {
             location = ride_get_entrance_location(ride, CurrentRideStation);
         }
-
-        CoordsXY chosenTile = location.ToCoordsXY();
-
-        int16_t x_diff = chosenTile.x - x;
-        int16_t y_diff = chosenTile.y - y;
-
-        if (abs(x_diff) <= abs(y_diff))
-        {
-            direction = y_diff < 0 ? 3 : 1;
-        }
-        else
-        {
-            direction = x_diff < 0 ? 0 : 2;
-        }
+        
+        direction = direction_from_to(CoordsXY(x, y), location.ToCoordsXY());
     }
 
     return DirectionSurface(direction);
