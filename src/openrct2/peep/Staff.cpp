@@ -729,7 +729,7 @@ Direction Staff::MechanicDirectionSurface() const
         {
             location = ride_get_entrance_location(ride, CurrentRideStation);
         }
-        
+
         direction = direction_from_to(CoordsXY(x, y), location.ToCoordsXY());
     }
 
