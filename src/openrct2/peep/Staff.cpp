@@ -476,7 +476,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
     CoordsXY nextTile = { static_cast<int32_t>((nearestLitter->x & 0xFFE0) - CoordsDirectionDelta[nextDirection].x),
                           static_cast<int32_t>((nearestLitter->y & 0xFFE0) - CoordsDirectionDelta[nextDirection].y) };
 
-    int16_t nextZ = ((z + 8) & 0xFFF0) / 8;
+    int16_t nextZ = ((z + COORDS_Z_STEP) & 0xFFF0) / COORDS_Z_STEP;
 
     TileElement* tileElement = map_get_first_element_at(nextTile);
     if (tileElement == nullptr)
@@ -950,7 +950,7 @@ Direction Staff::DirectionPath(uint8_t validDirections, PathElement* pathElement
     }
 
     direction = scenario_rand() & 3;
-    for (uint8_t i = 0; i < 4; ++i, direction = direction_next(direction))
+    for (uint8_t i = 0; i < NumOrthogonalDirections; ++i, direction = direction_next(direction))
     {
         if (pathDirections & (1 << direction))
             return direction;
