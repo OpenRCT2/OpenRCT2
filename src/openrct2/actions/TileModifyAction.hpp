@@ -101,7 +101,7 @@ private:
         {
             case TileModifyType::AnyRemove:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 res = tile_inspector_remove_element_at(_loc, elementIndex, isExecuting);
                 break;
             }
@@ -114,13 +114,13 @@ private:
             }
             case TileModifyType::AnyInsertCorrupt:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 res = tile_inspector_insert_corrupt_at(_loc, elementIndex, isExecuting);
                 break;
             }
             case TileModifyType::AnyRotate:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 res = tile_inspector_rotate_element_at(_loc, elementIndex, isExecuting);
                 break;
             }
@@ -136,7 +136,7 @@ private:
             }
             case TileModifyType::AnyBaseHeightOffset:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const auto heightOffset = _value2;
                 res = tile_inspector_any_base_height_offset(_loc, elementIndex, heightOffset, isExecuting);
                 break;
@@ -160,69 +160,69 @@ private:
             }
             case TileModifyType::PathSetSlope:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const bool sloped = _value2;
                 res = tile_inspector_path_set_sloped(_loc, elementIndex, sloped, isExecuting);
                 break;
             }
             case TileModifyType::PathSetBroken:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const bool broken = _value2;
                 res = tile_inspector_path_set_broken(_loc, elementIndex, broken, isExecuting);
                 break;
             }
             case TileModifyType::PathToggleEdge:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const auto edgeIndex = _value2;
                 res = tile_inspector_path_toggle_edge(_loc, elementIndex, edgeIndex, isExecuting);
                 break;
             }
             case TileModifyType::EntranceMakeUsable:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 res = tile_inspector_entrance_make_usable(_loc, elementIndex, isExecuting);
                 break;
             }
             case TileModifyType::WallSetSlope:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const auto slopeValue = _value2;
                 res = tile_inspector_wall_set_slope(_loc, elementIndex, slopeValue, isExecuting);
                 break;
             }
             case TileModifyType::WallSetAnimationFrame:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const auto animationFrameOffset = _value2;
                 res = tile_inspector_wall_animation_frame_offset(_loc, elementIndex, animationFrameOffset, isExecuting);
                 break;
             }
             case TileModifyType::TrackBaseHeightOffset:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const auto heightOffset = _value2;
                 res = tile_inspector_track_base_height_offset(_loc, elementIndex, heightOffset, isExecuting);
                 break;
             }
             case TileModifyType::TrackSetChainBlock:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const bool setChain = _value2;
                 res = tile_inspector_track_set_chain(_loc, elementIndex, true, setChain, isExecuting);
                 break;
             }
             case TileModifyType::TrackSetChain:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const bool setChain = _value2;
                 res = tile_inspector_track_set_chain(_loc, elementIndex, false, setChain, isExecuting);
                 break;
             }
             case TileModifyType::TrackSetSpeed:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 uint8_t speed = 0xFF;
                 if (_value2 <= 0xFF)
                     speed = static_cast<uint8_t>(_value2);
@@ -232,42 +232,42 @@ private:
 
             case TileModifyType::TrackSetBlockBrake:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const bool blockBrake = _value2;
                 res = tile_inspector_track_set_block_brake(_loc, elementIndex, blockBrake, isExecuting);
                 break;
             }
             case TileModifyType::TrackSetIndestructible:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const bool isIndestructible = _value2;
                 res = tile_inspector_track_set_indestructible(_loc, elementIndex, isIndestructible, isExecuting);
                 break;
             }
             case TileModifyType::ScenerySetQuarterLocation:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const auto quarterIndex = _value2;
                 res = tile_inspector_scenery_set_quarter_location(_loc, elementIndex, quarterIndex, isExecuting);
                 break;
             }
             case TileModifyType::ScenerySetQuarterCollision:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const auto quarterIndex = _value2;
                 res = tile_inspector_scenery_set_quarter_collision(_loc, elementIndex, quarterIndex, isExecuting);
                 break;
             }
             case TileModifyType::BannerToggleBlockingEdge:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 const auto edgeIndex = _value2;
                 res = tile_inspector_banner_toggle_blocking_edge(_loc, elementIndex, edgeIndex, isExecuting);
                 break;
             }
             case TileModifyType::CorruptClamp:
             {
-                uint32_t elementIndex = _value1;
+                const auto elementIndex = _value1;
                 res = tile_inspector_corrupt_clamp(_loc, elementIndex, isExecuting);
                 break;
             }
