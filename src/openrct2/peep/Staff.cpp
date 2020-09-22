@@ -476,8 +476,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
         }
     } while (!(tileElement++)->IsLastForTile());
 
-    nextTile.x = (x & 0xFFE0) + CoordsDirectionDelta[nextDirection].x;
-    nextTile.y = (y & 0xFFE0) + CoordsDirectionDelta[nextDirection].y;
+    nextTile = CoordsXY(x, y).ToTileStart() + CoordsDirectionDelta[nextDirection];
 
     tileElement = map_get_first_element_at(nextTile);
     if (tileElement == nullptr)
