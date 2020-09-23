@@ -457,7 +457,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
         return INVALID_DIRECTION;
     }
 
-    nextDirection = direction_from_to(CoordsXY(x, y), litterTile.ToTileCentre());
+    Direction nextDirection = DirectionFromTo(CoordsXY(x, y), litterTile.ToTileCentre());
 
     CoordsXY nextTile = litterTile.ToTileStart() - CoordsDirectionDelta[nextDirection];
 
@@ -730,7 +730,7 @@ Direction Staff::MechanicDirectionSurface() const
             location = ride_get_entrance_location(ride, CurrentRideStation);
         }
 
-        direction = direction_from_to(CoordsXY(x, y), location.ToCoordsXY());
+        direction = DirectionFromTo(CoordsXY(x, y), location.ToCoordsXY());
     }
 
     return DirectionSurface(direction);

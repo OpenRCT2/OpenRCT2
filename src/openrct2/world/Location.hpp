@@ -506,11 +506,11 @@ constexpr Direction ALL_DIRECTIONS[] = { 0, 1, 2, 3 };
 /**
  * Given two positions, return the cardinal direction which is closest to the direction from 'from' to 'to'.
  */
-[[maybe_unused]] static constexpr Direction direction_from_to(const CoordsXY& from, const CoordsXY& to)
+[[maybe_unused]] static constexpr Direction DirectionFromTo(const CoordsXY& from, const CoordsXY& to)
 {
     int16_t x_diff = to.x - from.x;
     int16_t y_diff = to.y - from.y;
-    
+
     int16_t abs_x = x_diff < 0 ? -x_diff : x_diff;
     int16_t abs_y = y_diff < 0 ? -y_diff : y_diff;
 
