@@ -384,9 +384,9 @@ struct SmallSceneryElement : TileElementBase
 {
 private:
     ObjectEntryIndex entryIndex; // 4
-    uint8_t age;                 // 5
-    uint8_t colour_1;            // 6
-    uint8_t colour_2;            // 7
+    uint8_t age;                 // 6
+    uint8_t colour_1;            // 7
+    uint8_t colour_2;            // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_09[7];
@@ -454,7 +454,7 @@ private:
     colour_t colour_2;           // 07
     colour_t colour_3;           // 08
     BannerIndex banner_index;    // 09
-    uint8_t animation;           // 0A 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    uint8_t animation;           // 0B 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_0C[4];
@@ -529,12 +529,11 @@ struct BannerElement : TileElementBase
 {
 private:
     BannerIndex index; // 4
-    uint8_t position;  // 5
+    uint8_t position;  // 6
+    uint8_t flags;     // 7
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t flags;  // 6
-    uint8_t unused; // 7
-    uint8_t pad_09[7];
+    uint8_t pad_08[8];
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;

@@ -1089,6 +1089,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
 
             DukObject args(_context);
             DukFromGameActionParameterVisitor visitor(args);
+            const_cast<GameAction&>(action).GameAction::AcceptParameters(visitor);
             const_cast<GameAction&>(action).AcceptParameters(visitor);
             obj.Set("args", args.Take());
         }
@@ -1128,6 +1129,7 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
     {
         DukValue argsCopy = args;
         DukToGameActionParameterVisitor visitor(std::move(argsCopy));
+        action->GameAction::AcceptParameters(visitor);
         action->AcceptParameters(visitor);
         return action;
     }

@@ -225,8 +225,9 @@ public:
 
     virtual const char* GetName() const = 0;
 
-    virtual void AcceptParameters(GameActionParameterVisitor&)
+    virtual void AcceptParameters(GameActionParameterVisitor& visitor)
     {
+        visitor.Visit("flags", _flags);
     }
 
     NetworkPlayerId_t GetPlayer() const
