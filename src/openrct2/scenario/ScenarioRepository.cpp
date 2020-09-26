@@ -18,6 +18,7 @@
 #include "../core/File.h"
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.hpp"
+#include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
@@ -128,7 +129,7 @@ class ScenarioFileIndex final : public FileIndex<scenario_index_entry>
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444953; // SIDX
     static constexpr uint16_t VERSION = 3;
-    static constexpr auto PATTERN = "*.sc4;*.sc6";
+    static constexpr auto PATTERN = "*.sc4;*.sc6;*.sea";
 
 public:
     explicit ScenarioFileIndex(const IPlatformEnvironment& env)
@@ -203,6 +204,19 @@ protected:
     }
 
 private:
+    static IStream* GetStreamFromRCT2Scenario(const std::string& path)
+    {
+        if (String::Equals(Path::GetExtension(path), ".sea", true))
+        {
+            auto data = DecryptSea(fs::u8path(path));
+            auto ms = new MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
+            return ms;
+        }
+
+        auto fs = new FileStream(path, FILE_MODE_OPEN);
+        return fs;
+    }
+
     /**
      * Reads basic information from a scenario file.
      */
@@ -234,9 +248,9 @@ private:
             }
             else
             {
-                // RCT2 scenario
-                auto fs = FileStream(path, FILE_MODE_OPEN);
-                auto chunkReader = SawyerChunkReader(&fs);
+                // RCT2 or RCTC scenario
+                auto stream = GetStreamFromRCT2Scenario(path);
+                auto chunkReader = SawyerChunkReader(stream);
 
                 rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
                 if (header.type == S6_TYPE_SCENARIO)
@@ -251,10 +265,12 @@ private:
                     }
 
                     *entry = CreateNewScenarioEntry(path, timestamp, &info);
+                    delete stream;
                     return true;
                 }
                 else
                 {
+                    delete stream;
                     log_verbose("%s is not a scenario", path.c_str());
                 }
             }
