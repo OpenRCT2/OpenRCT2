@@ -66,6 +66,11 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         return;
     }
 
+    if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_IS_TREE) && session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_TREES)
+    {
+        return;
+    }
+
     baseImageid = entry->image + direction;
     boxlength.x = 2;
     boxlength.y = 2;
