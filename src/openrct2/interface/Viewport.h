@@ -47,6 +47,7 @@ enum
     VIEWPORT_FLAG_CLIP_VIEW = (1 << 17),
     VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES = (1 << 18),
     VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1 << 19),
+    VIEWPORT_FLAG_INVISIBLE_TREES = (1 << 20)
 };
 
 enum ViewportInteractionItem : uint8_t

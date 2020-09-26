@@ -3642,6 +3642,7 @@ STR_6383    :Open download page
 STR_6384    :Snow
 STR_6385    :Heavy Snow
 STR_6386    :Blizzard
+STR_6387    :Invisible Trees
 
 #############
 # Scenarios #

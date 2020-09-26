@@ -134,12 +134,13 @@ enum TOP_TOOLBAR_VIEW_MENU_DDIDX {
     DDIDX_SEETHROUGH_PATHS = 6,
     DDIDX_INVISIBLE_SUPPORTS = 7,
     DDIDX_INVISIBLE_PEEPS = 8,
-    DDIDX_LAND_HEIGHTS = 10,
-    DDIDX_TRACK_HEIGHTS = 11,
-    DDIDX_PATH_HEIGHTS = 12,
+    DDIDX_INVISIBLE_TREES = 9,
+    DDIDX_LAND_HEIGHTS = 11,
+    DDIDX_TRACK_HEIGHTS = 12,
+    DDIDX_PATH_HEIGHTS = 13,
     // 13 is a separator
-    DDIDX_VIEW_CLIPPING = 14,
-    DDIDX_HIGHLIGHT_PATH_ISSUES = 15,
+    DDIDX_VIEW_CLIPPING = 15,
+    DDIDX_HIGHLIGHT_PATH_ISSUES = 16,
 
     TOP_TOOLBAR_VIEW_MENU_COUNT
 };
@@ -3629,6 +3630,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
         ToggleOption(DDIDX_SEETHROUGH_PATHS, STR_SEE_THROUGH_PATHS),
         ToggleOption(DDIDX_INVISIBLE_SUPPORTS, STR_INVISIBLE_SUPPORTS),
         ToggleOption(DDIDX_INVISIBLE_PEEPS, STR_INVISIBLE_PEOPLE),
+        ToggleOption(DDIDX_INVISIBLE_TREES, STR_INVISIBLE_TREES),
         Separator(),
         ToggleOption(DDIDX_LAND_HEIGHTS, STR_HEIGHT_MARKS_ON_LAND),
         ToggleOption(DDIDX_TRACK_HEIGHTS, STR_HEIGHT_MARKS_ON_RIDE_TRACKS),
@@ -3648,27 +3650,30 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
     // Set checkmarks
     rct_viewport* mainViewport = window_get_main()->viewport;
     if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-        dropdown_set_checked(0, true);
+        dropdown_set_checked(DDIDX_UNDERGROUND_INSIDE, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
-        dropdown_set_checked(1, true);
+        dropdown_set_checked(DDIDX_HIDE_BASE, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
-        dropdown_set_checked(2, true);
+        dropdown_set_checked(DDIDX_HIDE_VERTICAL, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
-        dropdown_set_checked(4, true);
+        dropdown_set_checked(DDIDX_SEETHROUGH_RIDES, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-        dropdown_set_checked(5, true);
+        dropdown_set_checked(DDIDX_SEETHROUGH_SCENARY, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
-        dropdown_set_checked(6, true);
+        dropdown_set_checked(DDIDX_SEETHROUGH_PATHS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-        dropdown_set_checked(7, true);
+        dropdown_set_checked(DDIDX_INVISIBLE_SUPPORTS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-        dropdown_set_checked(8, true);
+        dropdown_set_checked(DDIDX_INVISIBLE_PEEPS, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_TREES)
+        dropdown_set_checked(DDIDX_INVISIBLE_TREES, true);
+
     if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
-        dropdown_set_checked(10, true);
+        dropdown_set_checked(DDIDX_LAND_HEIGHTS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
-        dropdown_set_checked(11, true);
+        dropdown_set_checked(DDIDX_TRACK_HEIGHTS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
-        dropdown_set_checked(12, true);
+        dropdown_set_checked(DDIDX_PATH_HEIGHTS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_CLIP_VIEW)
         dropdown_set_checked(DDIDX_VIEW_CLIPPING, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
@@ -3711,6 +3716,9 @@ static void top_toolbar_view_menu_dropdown(int16_t dropdownIndex)
                 break;
             case DDIDX_INVISIBLE_PEEPS:
                 w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+                break;
+            case DDIDX_INVISIBLE_TREES:
+                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_TREES;
                 break;
             case DDIDX_LAND_HEIGHTS:
                 w->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;
