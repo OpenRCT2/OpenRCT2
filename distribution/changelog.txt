@@ -9,6 +9,7 @@
 - Feature: [#12885] Add SmallSceneryElement.quadrant to the plugin API.
 - Feature: [#12886] Make all scenery placement and remove actions available to the plugin API.
 - Feature: [#2350, #12922] Add snow, heavy snow and blizzard to weather types.
+- Feature: [#1659] Add 'Invisible Trees' view toggle option.
 - Fix: [#400] Unable to place some saved tracks flush to the ground (original bug).
 - Fix: [#5753] Entertainers make themselves happy instead of the guests.
 - Fix: [#7037] Unable to save tracks starting with a sloped turn or helix.
