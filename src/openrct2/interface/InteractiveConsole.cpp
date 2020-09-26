@@ -1160,6 +1160,10 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
         {
             context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
         }
+        else if (argv[0] == "objective_options" && invalidArguments(&invalidTitle, !title))
+        {
+            context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
+        }
         else if (argv[0] == "options")
         {
             context_open_window(WC_OPTIONS);
@@ -1736,6 +1740,7 @@ static constexpr const utf8* console_window_table[] = {
     "object_selection",
     "inventions_list",
     "scenario_options",
+    "objective_options",
     "options",
     "themes",
     "title_sequences"
