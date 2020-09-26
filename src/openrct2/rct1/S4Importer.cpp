@@ -1406,9 +1406,9 @@ private:
         dst->ActionFrame = src->action_frame;
 
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->SpriteType].sprite_bounds;
-        dst->sprite_width = spriteBounds[dst->ActionSpriteType].sprite_width;
-        dst->sprite_height_negative = spriteBounds[dst->ActionSpriteType].sprite_height_negative;
-        dst->sprite_height_positive = spriteBounds[dst->ActionSpriteType].sprite_height_positive;
+        dst->sprite_width = spriteBounds[static_cast<uint8_t>(dst->ActionSpriteType)].sprite_width;
+        dst->sprite_height_negative = spriteBounds[static_cast<uint8_t>(dst->ActionSpriteType)].sprite_height_negative;
+        dst->sprite_height_positive = spriteBounds[static_cast<uint8_t>(dst->ActionSpriteType)].sprite_height_positive;
 
         dst->MoveTo({ src->x, src->y, src->z });
         dst->Invalidate2();

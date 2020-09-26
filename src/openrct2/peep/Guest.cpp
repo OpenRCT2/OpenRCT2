@@ -1244,7 +1244,7 @@ void Guest::UpdateSitting()
 
         sprite_direction = ((Var37 + 2) & 3) * 8;
         Action = PEEP_ACTION_NONE_1;
-        NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
+        NextActionSpriteType = PeepActionSpriteType::SittingIdle;
         SwitchNextActionSpriteType();
 
         SittingSubState = PeepSittingSubState::SatDown;
@@ -5618,7 +5618,7 @@ void Guest::UpdateQueuing()
     }
     else
     {
-        if (!(TimeInQueue & 0x3F) && Action == PEEP_ACTION_NONE_1 && NextActionSpriteType == 2)
+        if (!(TimeInQueue & 0x3F) && Action == PEEP_ACTION_NONE_1 && NextActionSpriteType == PeepActionSpriteType::WatchRide)
         {
             switch (SpriteType)
             {
@@ -5757,7 +5757,7 @@ void Guest::UpdateWatching()
         sprite_direction = (Var37 & 3) * 8;
 
         Action = PEEP_ACTION_NONE_1;
-        NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
+        NextActionSpriteType = PeepActionSpriteType::WatchRide;
 
         SwitchNextActionSpriteType();
 
@@ -6777,19 +6777,19 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
 
-    ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_INVALID;
+    ActionSpriteType = PeepActionSpriteType::Invalid;
     UpdateCurrentActionSpriteType();
 
     if (State == PeepState::Sitting)
     {
         Action = PEEP_ACTION_NONE_1;
-        NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
+        NextActionSpriteType = PeepActionSpriteType::SittingIdle;
         SwitchNextActionSpriteType();
     }
     if (State == PeepState::Watching)
     {
         Action = PEEP_ACTION_NONE_1;
-        NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
+        NextActionSpriteType = PeepActionSpriteType::WatchRide;
         SwitchNextActionSpriteType();
     }
 }
