@@ -288,10 +288,10 @@ private:
                 }
                 if (!loadSuccess)
                 {
-                    if (_sequence->NumSaves > saveIndex)
+                    if (_sequence->Saves.size() > saveIndex)
                     {
-                        const utf8* path = _sequence->Saves[saveIndex];
-                        Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
+                        const auto& path = _sequence->Saves[saveIndex];
+                        Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path.c_str());
                     }
                     return false;
                 }

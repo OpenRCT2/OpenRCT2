@@ -48,8 +48,7 @@ struct TitleSequence
     size_t NumCommands = 0;
     TitleCommand* Commands = 0;
 
-    size_t NumSaves = 0;
-    utf8** Saves = nullptr;
+    std::vector<std::string> Saves;
 
     bool IsZip = false;
 };
