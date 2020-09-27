@@ -340,9 +340,8 @@ static void window_title_command_editor_mouseup(rct_window* w, rct_widgetindex w
             else
             {
                 _sequence->Commands[_window_title_command_editor_index] = command;
-                TitleSequenceSave(_sequence);
             }
-            TitleSequenceSave(_sequence);
+            TitleSequenceSave(*_sequence);
 
             rct_window* title_editor_w = window_find_by_class(WC_TITLE_EDITOR);
             if (title_editor_w != nullptr)

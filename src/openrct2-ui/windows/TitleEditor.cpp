@@ -173,7 +173,7 @@ static rct_widget window_title_editor_widgets[] = {
 
 static size_t _selectedTitleSequence = SIZE_MAX;
 static bool _isSequenceReadOnly;
-static TitleSequence * _editingTitleSequence = nullptr;
+static std::unique_ptr<TitleSequence> _editingTitleSequence;
 static const utf8 * _sequenceName;
 
 static utf8 * _renameSavePath = nullptr;
@@ -255,7 +255,7 @@ static void window_title_editor_close(rct_window* w)
     // Close the related windows
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 
-    FreeTitleSequence(_editingTitleSequence);
+    FreeTitleSequence(*_editingTitleSequence);
     _editingTitleSequence = nullptr;
     _sequenceName = nullptr;
 
@@ -322,7 +322,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 if (w->selected_list_item != -1)
                 {
-                    TitleSequenceRemovePark(_editingTitleSequence, w->selected_list_item);
+                    TitleSequenceRemovePark(*_editingTitleSequence, w->selected_list_item);
                     if (w->selected_list_item >= static_cast<int16_t>(_editingTitleSequence->NumSaves))
                     {
                         w->selected_list_item--;
@@ -344,7 +344,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_TITLE_EDITOR_LOAD_SAVE:
             if (w->selected_list_item >= 0 && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumSaves))
             {
-                auto handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
+                auto handle = TitleSequenceGetParkHandle(*_editingTitleSequence, w->selected_list_item);
                 auto stream = static_cast<OpenRCT2::IStream*>(handle->Stream);
                 auto hintPath = String::ToStd(handle->HintPath);
                 bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
@@ -378,10 +378,10 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (window_title_editor_check_can_edit())
             {
                 if (w->selected_list_item != -1)
-                    window_title_command_editor_open(_editingTitleSequence, w->selected_list_item + 1, true);
+                    window_title_command_editor_open(_editingTitleSequence.get(), w->selected_list_item + 1, true);
                 else
                     window_title_command_editor_open(
-                        _editingTitleSequence, static_cast<int32_t>(_editingTitleSequence->NumCommands), true);
+                        _editingTitleSequence.get(), static_cast<int32_t>(_editingTitleSequence->NumCommands), true);
             }
             break;
         case WIDX_TITLE_EDITOR_EDIT:
@@ -390,7 +390,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 if (w->selected_list_item != -1
                     && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands))
                 {
-                    window_title_command_editor_open(_editingTitleSequence, w->selected_list_item, false);
+                    window_title_command_editor_open(_editingTitleSequence.get(), w->selected_list_item, false);
                 }
             }
             break;
@@ -410,7 +410,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                     {
                         w->selected_list_item--;
                     }
-                    TitleSequenceSave(_editingTitleSequence);
+                    TitleSequenceSave(*_editingTitleSequence);
                 }
             }
             break;
@@ -438,7 +438,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                     *a = *b;
                     *b = tmp;
                     w->selected_list_item++;
-                    TitleSequenceSave(_editingTitleSequence);
+                    TitleSequenceSave(*_editingTitleSequence);
                 }
             }
             break;
@@ -454,7 +454,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                     *b = *a;
                     *a = tmp;
                     w->selected_list_item--;
-                    TitleSequenceSave(_editingTitleSequence);
+                    TitleSequenceSave(*_editingTitleSequence);
                 }
             }
             break;
@@ -1059,7 +1059,7 @@ static void window_title_editor_load_sequence(size_t index)
         return;
 
     const char* path = title_sequence_manager_get_path(index);
-    TitleSequence* titleSequence = LoadTitleSequence(path);
+    auto titleSequence = LoadTitleSequence(path);
     if (titleSequence == nullptr)
     {
         context_show_error(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE, {});
@@ -1070,8 +1070,8 @@ static void window_title_editor_load_sequence(size_t index)
     size_t predefinedIndex = title_sequence_manager_get_predefined_index(index);
     _isSequenceReadOnly = (predefinedIndex != SIZE_MAX);
     _sequenceName = title_sequence_manager_get_name(index);
-    FreeTitleSequence(_editingTitleSequence);
-    _editingTitleSequence = titleSequence;
+    FreeTitleSequence(*_editingTitleSequence);
+    _editingTitleSequence = std::move(titleSequence);
 
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 }
@@ -1099,7 +1099,7 @@ static bool window_title_editor_check_can_edit()
 
 static bool save_filename_exists(const utf8* filename)
 {
-    TitleSequence* seq = _editingTitleSequence;
+    auto& seq = _editingTitleSequence;
     for (size_t i = 0; i < seq->NumSaves; i++)
     {
         const utf8* savePath = seq->Saves[i];
@@ -1128,7 +1128,7 @@ static void window_title_editor_add_park_callback(int32_t result, const utf8* pa
         return;
     }
 
-    TitleSequenceAddPark(_editingTitleSequence, path, filename);
+    TitleSequenceAddPark(*_editingTitleSequence, path, filename);
 }
 
 static void window_title_editor_rename_park(size_t index, const utf8* name)
@@ -1152,8 +1152,8 @@ static void window_title_editor_rename_park(size_t index, const utf8* name)
         }
     }
 
-    if (TitleSequenceRenamePark(_editingTitleSequence, index, name))
+    if (TitleSequenceRenamePark(*_editingTitleSequence, index, name))
     {
-        TitleSequenceSave(_editingTitleSequence);
+        TitleSequenceSave(*_editingTitleSequence);
     }
 }

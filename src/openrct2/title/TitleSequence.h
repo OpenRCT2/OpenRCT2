@@ -12,6 +12,8 @@
 #include "../common.h"
 #include "../localisation/Localisation.h"
 
+#include <memory>
+
 #define TITLE_COMMAND_SCENARIO_LENGTH 64
 
 struct TitleCommand
@@ -40,16 +42,16 @@ struct TitleCommand
 
 struct TitleSequence
 {
-    const utf8* Name;
-    const utf8* Path;
+    const utf8* Name = nullptr;
+    const utf8* Path = nullptr;
 
-    size_t NumCommands;
-    TitleCommand* Commands;
+    size_t NumCommands = 0;
+    TitleCommand* Commands = 0;
 
-    size_t NumSaves;
-    utf8** Saves;
+    size_t NumSaves = 0;
+    utf8** Saves = nullptr;
 
-    bool IsZip;
+    bool IsZip = false;
 };
 
 struct TitleSequenceParkHandle
@@ -78,20 +80,20 @@ enum TITLE_SCRIPT
 constexpr const utf8* TITLE_SEQUENCE_EXTENSION = ".parkseq";
 constexpr uint8_t SAVE_INDEX_INVALID = UINT8_MAX;
 
-TitleSequence* CreateTitleSequence();
-TitleSequence* LoadTitleSequence(const utf8* path);
-void FreeTitleSequence(TitleSequence* seq);
+std::unique_ptr<TitleSequence> CreateTitleSequence();
+std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path);
+void FreeTitleSequence(TitleSequence& seq);
 
-TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence* seq, size_t index);
+TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence& seq, size_t index);
 
 /**
  * Close a title sequence park handle.
  * The pointer to the handle is invalid after calling this function.
  */
 void TitleSequenceCloseParkHandle(TitleSequenceParkHandle* handle);
-bool TitleSequenceSave(TitleSequence* seq);
-bool TitleSequenceAddPark(TitleSequence* seq, const utf8* path, const utf8* name);
-bool TitleSequenceRenamePark(TitleSequence* seq, size_t index, const utf8* name);
-bool TitleSequenceRemovePark(TitleSequence* seq, size_t index);
+bool TitleSequenceSave(TitleSequence& seq);
+bool TitleSequenceAddPark(TitleSequence& seq, const utf8* path, const utf8* name);
+bool TitleSequenceRenamePark(TitleSequence& seq, size_t index, const utf8* name);
+bool TitleSequenceRemovePark(TitleSequence& seq, size_t index);
 
 bool TitleSequenceIsLoadCommand(const TitleCommand* command);
