@@ -1678,14 +1678,15 @@ static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[
         console.WriteLine("    8 (News::ItemType::Award)");
         console.WriteLine("    9 (News::ItemType::Graph)");
         console.WriteLine("message is the message to display, wrapped in quotes for multiple words");
-        console.WriteLine("assoc is the associated id of ride/peep/tile/etc. If the selected ItemType doesn't need an assoc (Null, Money, Award, Graph), you can leave this field blank");
+        console.WriteLine("assoc is the associated id of ride/peep/tile/etc. If the selected ItemType doesn't need an assoc "
+                          "(Null, Money, Award, Graph), you can leave this field blank");
         return 1;
     }
-    
+
     auto type = atoi(argv[0].c_str());
     auto msg = argv[1].c_str();
     auto assoc = 0;
-    
+
     News::ItemType itemType = static_cast<News::ItemType>(type);
 
     if (argv.size() == 3) // 3 arguments passed, set assoc
@@ -1699,9 +1700,8 @@ static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[
             console.WriteLine("Selected ItemType requires an assoc");
             return 0;
         }
-        
     }
-    
+
     News::AddItemToQueue(itemType, msg, assoc);
     console.WriteLine("Successfully added News Item");
     return 0;
