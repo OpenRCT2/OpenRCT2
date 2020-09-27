@@ -34,7 +34,7 @@ namespace TitleSequenceManager
         rct_string_id StringId;
     };
 
-    const PredefinedSequence PredefinedSequences[] = {
+    static constexpr PredefinedSequence PredefinedSequences[] = {
         { "*RCT1", "rct1.parkseq", STR_TITLE_SEQUENCE_RCT1 },
         { "*RCT1AA", "rct1aa.parkseq", STR_TITLE_SEQUENCE_RCT1_AA },
         { "*RCT1AALL", "rct1aall.parkseq", STR_TITLE_SEQUENCE_RCT1_AA_LL },
@@ -97,36 +97,34 @@ namespace TitleSequenceManager
     size_t RenameItem(size_t i, const utf8* newName)
     {
         auto item = &_items[i];
-        const utf8* oldPath = item->Path.c_str();
+        const auto& oldPath = item->Path;
 
-        utf8 newPath[MAX_PATH];
-        Path::GetDirectory(newPath, sizeof(newPath), oldPath);
-        Path::Append(newPath, sizeof(newPath), newName);
+        auto newPath = Path::Combine(Path::GetDirectory(oldPath), newName);
         if (item->IsZip)
         {
-            String::Append(newPath, sizeof(newPath), TITLE_SEQUENCE_EXTENSION);
-            platform_file_move(oldPath, newPath);
+            newPath += TITLE_SEQUENCE_EXTENSION;
+            platform_file_move(oldPath.c_str(), newPath.c_str());
         }
         else
         {
-            platform_file_move(oldPath, newPath);
+            platform_file_move(oldPath.c_str(), newPath.c_str());
         }
 
         item->Name = std::string(newName);
         item->Path = std::string(newPath);
 
         SortSequences();
-        size_t index = FindItemIndexByPath(newPath);
+        size_t index = FindItemIndexByPath(newPath.c_str());
         return index;
     }
 
     size_t DuplicateItem(size_t i, const utf8* name)
     {
         auto item = &_items[i];
-        const utf8* srcPath = item->Path.c_str();
+        const auto& srcPath = item->Path;
 
         std::string dstPath = GetNewTitleSequencePath(std::string(name), item->IsZip);
-        if (!platform_file_copy(srcPath, dstPath.c_str(), true))
+        if (!platform_file_copy(srcPath.c_str(), dstPath.c_str(), true))
         {
             return SIZE_MAX;
         }
@@ -237,11 +235,9 @@ namespace TitleSequenceManager
         if (String::Equals(Path::GetExtension(scanPath), ".txt", true))
         {
             // If we are given a .txt file, set the path to the containing directory
-            utf8* utf8Path = Path::GetDirectory(scanPath);
-            path = std::string(utf8Path);
-            Memory::Free(utf8Path);
+            path = Path::GetDirectory(std::string(scanPath));
             isZip = false;
-            item.Name = Path::GetFileName(path.c_str());
+            item.Name = Path::GetFileName(path);
         }
         else
         {
@@ -268,10 +264,8 @@ namespace TitleSequenceManager
 
     static std::string GetNameFromSequencePath(const std::string& path)
     {
-        utf8* name = Path::GetFileNameWithoutExtension(path.c_str());
-        std::string result = std::string(name);
-        Memory::Free(name);
-        return result;
+        auto name = Path::GetFileNameWithoutExtension(path);
+        return name;
     }
 
     static std::string GetDataSequencesPath()
@@ -290,10 +284,8 @@ namespace TitleSequenceManager
     {
         for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
         {
-            const utf8* predefinedName = Path::GetFileNameWithoutExtension(pseq.Filename);
-            std::string reservedName = std::string(predefinedName);
-            Memory::Free(predefinedName);
-            if (String::Equals(name, reservedName, true))
+            auto predefinedName = Path::GetFileNameWithoutExtension(std::string(pseq.Filename));
+            if (String::Equals(name, predefinedName, true))
             {
                 return true;
             }
@@ -314,8 +306,7 @@ const utf8* title_sequence_manager_get_name(size_t index)
     {
         return nullptr;
     }
-    const utf8* name = item->Name.c_str();
-    return name;
+    return item->Name.c_str();
 }
 
 const utf8* title_sequence_manager_get_path(size_t index)
@@ -325,8 +316,7 @@ const utf8* title_sequence_manager_get_path(size_t index)
     {
         return nullptr;
     }
-    const utf8* name = item->Path.c_str();
-    return name;
+    return item->Path.c_str();
 }
 
 const utf8* title_sequence_manager_get_config_id(size_t index)
@@ -336,8 +326,8 @@ const utf8* title_sequence_manager_get_config_id(size_t index)
     {
         return nullptr;
     }
-    const utf8* name = item->Name.c_str();
-    const utf8* filename = Path::GetFileName(item->Path.c_str());
+    const auto& name = item->Name;
+    auto filename = Path::GetFileName(name);
     for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
     {
         if (String::Equals(filename, pseq.Filename, true))
@@ -345,7 +335,7 @@ const utf8* title_sequence_manager_get_config_id(size_t index)
             return pseq.ConfigId;
         }
     }
-    return name;
+    return name.c_str();
 }
 
 size_t title_sequence_manager_get_predefined_index(size_t index)
