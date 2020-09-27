@@ -35,7 +35,7 @@ static std::vector<utf8*> GetSaves(IZipArchive* zip);
 static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, std::vector<utf8*> saves);
 static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts);
 static std::vector<uint8_t> ReadScriptFile(const utf8* path);
-static std::string LegacyScriptWrite(TitleSequence& seq);
+static std::string LegacyScriptWrite(const TitleSequence& seq);
 
 std::unique_ptr<TitleSequence> CreateTitleSequence()
 {
@@ -95,8 +95,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
     {
         seq->Saves.push_back(save);
     }
-    seq->NumCommands = commands.size();
-    seq->Commands = Collections::ToArray(commands);
+    seq->Commands = commands;
     seq->IsZip = isZip;
     return seq;
 }
@@ -105,7 +104,6 @@ void FreeTitleSequence(TitleSequence& seq)
 {
     Memory::Free(seq.Name);
     Memory::Free(seq.Path);
-    Memory::Free(seq.Commands);
 }
 
 TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence& seq, size_t index)
@@ -302,20 +300,19 @@ bool TitleSequenceRemovePark(TitleSequence& seq, size_t index)
     seq.Saves.erase(seq.Saves.begin() + index);
 
     // Update load commands
-    for (size_t i = 0; i < seq.NumCommands; i++)
+    for (auto& command : seq.Commands)
     {
-        TitleCommand* command = &seq.Commands[i];
-        if (command->Type == TITLE_SCRIPT_LOAD)
+        if (command.Type == TITLE_SCRIPT_LOAD)
         {
-            if (command->SaveIndex == index)
+            if (command.SaveIndex == index)
             {
                 // Park no longer exists, so reset load command to invalid
-                command->SaveIndex = SAVE_INDEX_INVALID;
+                command.SaveIndex = SAVE_INDEX_INVALID;
             }
-            else if (command->SaveIndex > index)
+            else if (command.SaveIndex > index)
             {
                 // Park index will have shifted by -1
-                command->SaveIndex--;
+                command.SaveIndex--;
             }
         }
     }
@@ -524,7 +521,7 @@ static std::vector<uint8_t> ReadScriptFile(const utf8* path)
     return result;
 }
 
-static std::string LegacyScriptWrite(TitleSequence& seq)
+static std::string LegacyScriptWrite(const TitleSequence& seq)
 {
     utf8 buffer[128];
     auto sb = StringBuilder(128);
@@ -532,56 +529,55 @@ static std::string LegacyScriptWrite(TitleSequence& seq)
     sb.Append("# SCRIPT FOR ");
     sb.Append(seq.Name);
     sb.Append("\n");
-    for (size_t i = 0; i < seq.NumCommands; i++)
+    for (const auto& command : seq.Commands)
     {
-        const TitleCommand* command = &seq.Commands[i];
-        switch (command->Type)
+        switch (command.Type)
         {
             case TITLE_SCRIPT_LOAD:
-                if (command->SaveIndex == 0xFF)
+                if (command.SaveIndex == 0xFF)
                 {
                     sb.Append("LOAD <No save file>");
                 }
                 else
                 {
                     sb.Append("LOAD ");
-                    sb.Append(seq.Saves[command->SaveIndex].c_str());
+                    sb.Append(seq.Saves[command.SaveIndex].c_str());
                 }
                 break;
             case TITLE_SCRIPT_LOADSC:
-                if (command->Scenario[0] == '\0')
+                if (command.Scenario[0] == '\0')
                 {
                     sb.Append("LOADSC <No scenario name>");
                 }
                 else
                 {
                     sb.Append("LOADSC ");
-                    sb.Append(command->Scenario);
+                    sb.Append(command.Scenario);
                 }
                 break;
             case TITLE_SCRIPT_LOCATION:
-                String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command->X, command->Y);
+                String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command.X, command.Y);
                 sb.Append(buffer);
                 break;
             case TITLE_SCRIPT_ROTATE:
-                String::Format(buffer, sizeof(buffer), "ROTATE %u", command->Rotations);
+                String::Format(buffer, sizeof(buffer), "ROTATE %u", command.Rotations);
                 sb.Append(buffer);
                 break;
             case TITLE_SCRIPT_ZOOM:
-                String::Format(buffer, sizeof(buffer), "ZOOM %u", command->Zoom);
+                String::Format(buffer, sizeof(buffer), "ZOOM %u", command.Zoom);
                 sb.Append(buffer);
                 break;
             case TITLE_SCRIPT_FOLLOW:
-                String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command->SpriteIndex);
+                String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command.SpriteIndex);
                 sb.Append(buffer);
-                sb.Append(command->SpriteName);
+                sb.Append(command.SpriteName);
                 break;
             case TITLE_SCRIPT_SPEED:
-                String::Format(buffer, sizeof(buffer), "SPEED %u", command->Speed);
+                String::Format(buffer, sizeof(buffer), "SPEED %u", command.Speed);
                 sb.Append(buffer);
                 break;
             case TITLE_SCRIPT_WAIT:
-                String::Format(buffer, sizeof(buffer), "WAIT %u", command->Milliseconds);
+                String::Format(buffer, sizeof(buffer), "WAIT %u", command.Milliseconds);
                 sb.Append(buffer);
                 break;
             case TITLE_SCRIPT_RESTART:
@@ -596,9 +592,9 @@ static std::string LegacyScriptWrite(TitleSequence& seq)
     return sb.GetBuffer();
 }
 
-bool TitleSequenceIsLoadCommand(const TitleCommand* command)
+bool TitleSequenceIsLoadCommand(const TitleCommand& command)
 {
-    switch (command->Type)
+    switch (command.Type)
     {
         case TITLE_SCRIPT_LOAD:
         case TITLE_SCRIPT_LOADSC:

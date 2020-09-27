@@ -45,9 +45,7 @@ struct TitleSequence
     const utf8* Name = nullptr;
     const utf8* Path = nullptr;
 
-    size_t NumCommands = 0;
-    TitleCommand* Commands = 0;
-
+    std::vector<TitleCommand> Commands;
     std::vector<std::string> Saves;
 
     bool IsZip = false;
@@ -95,4 +93,4 @@ bool TitleSequenceAddPark(TitleSequence& seq, const utf8* path, const utf8* name
 bool TitleSequenceRenamePark(TitleSequence& seq, size_t index, const utf8* name);
 bool TitleSequenceRemovePark(TitleSequence& seq, size_t index);
 
-bool TitleSequenceIsLoadCommand(const TitleCommand* command);
+bool TitleSequenceIsLoadCommand(const TitleCommand& command);
