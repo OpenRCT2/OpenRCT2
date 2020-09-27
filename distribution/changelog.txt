@@ -16,6 +16,7 @@
 - Fix: [#12694] Crash when switching ride types with construction window open.
 - Fix: [#12701] Silent NSIS setup flag /S isn't silent, upgrade pop-up appears anyway.
 - Fix: [#12737] Space Rings draw the same vehicle 4 times.
+- Fix: [#12756] Scenario Editor crashing the game on macOS.
 - Fix: [#12764] Rides don't start aged anymore.
 - Fix: [#12818] Ride price not ignored in free-rides parks.
 - Fix: [#12820] Title menu buttons not invalidating properly
@@ -29,7 +30,7 @@
 - Improved: [#12806] Add Esperanto diacritics to the sprite font.
 - Improved: [#12837] Arabic text is now drawn and shaped correctly on Windows.
 - Improved: [#12890] Add stroke to lowercase 'L' to differentiate from capital 'I'.
-- Technical: The required version of macOS has been lowered to 10.13 (High Sierra).
+- Technical: [#12749] The required version of macOS has been lowered to 10.13 (High Sierra).
 
 0.3.0 (2020-08-15)
 ------------------------------------------------------------------------
