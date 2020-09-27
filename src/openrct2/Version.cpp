@@ -81,24 +81,12 @@ NewVersionInfo get_latest_version()
             return {};
         }
 
-        json_t* root = Json::FromString(res.body);
+        json_t root = Json::FromString(res.body);
 
-        auto get_as_string = [root](std::string name) {
-            std::string value;
-            json_t* json_value = json_object_get(root, name.c_str());
-            if (json_is_string(json_value))
-            {
-                value = (json_string_value(json_value));
-            }
-            return value;
-        };
-
-        verinfo.tag = get_as_string("tag_name");
-        verinfo.name = get_as_string("name");
-        verinfo.changelog = get_as_string("body");
-        verinfo.url = get_as_string("html_url");
-
-        json_decref(root);
+        verinfo.tag = Json::GetString(root["tag_name"]);
+        verinfo.name = Json::GetString(root["name"]);
+        verinfo.changelog = Json::GetString(root["body"]);
+        verinfo.url = Json::GetString(root["html_url"]);
 
         gConfigGeneral.last_version_check_time = now;
         config_save_default();

@@ -44,6 +44,11 @@ enum CURSOR_ID
     CURSOR_COUNT,
 };
 
+namespace Cursor
+{
+    uint8_t FromString(const std::string& s, uint8_t defaultValue);
+}
+
 namespace OpenRCT2::Ui
 {
     constexpr size_t CURSOR_BIT_WIDTH = 32;

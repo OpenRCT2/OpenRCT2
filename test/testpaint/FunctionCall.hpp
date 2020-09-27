@@ -26,6 +26,7 @@ enum
     SUPPORTS_WOOD_B,
 
     SET_SEGMENT_HEIGHT,
+    PAINT_98198C_COORDS
 };
 
 struct function_call

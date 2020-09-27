@@ -43,11 +43,11 @@ constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
 
 static rct_widget window_install_track_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({                   4,  18}, {372, 219}, WWT_FLATBTN, 0                                                              ),
-    MakeWidget({PREVIEW_BUTTONS_LEFT, 422}, { 22,  24}, WWT_FLATBTN, 0, SPR_ROTATE_ARROW,                     STR_ROTATE_90_TIP     ),
-    MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WWT_FLATBTN, 0, SPR_SCENERY,                          STR_TOGGLE_SCENERY_TIP),
-    MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WWT_BUTTON,  0, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
-    MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WWT_BUTTON,  0, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
+    MakeWidget({                   4,  18}, {372, 219}, WWT_FLATBTN, WindowColour::Primary                                                              ),
+    MakeWidget({PREVIEW_BUTTONS_LEFT, 422}, { 22,  24}, WWT_FLATBTN, WindowColour::Primary, SPR_ROTATE_ARROW,                     STR_ROTATE_90_TIP     ),
+    MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WWT_FLATBTN, WindowColour::Primary, SPR_SCENERY,                          STR_TOGGLE_SCENERY_TIP),
+    MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WWT_BUTTON,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
+    MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WWT_BUTTON,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
     { WIDGETS_END },
 };
 
@@ -106,7 +106,7 @@ rct_window* window_install_track_open(const utf8* path)
     _trackDesign = track_design_open(path);
     if (_trackDesign == nullptr)
     {
-        context_show_error(STR_UNABLE_TO_LOAD_FILE, STR_NONE);
+        context_show_error(STR_UNABLE_TO_LOAD_FILE, STR_NONE, {});
         return nullptr;
     }
 
@@ -207,12 +207,6 @@ static void window_install_track_invalidate(rct_window* w)
     {
         w->pressed_widgets &= ~(1 << WIDX_TOGGLE_SCENERY);
     }
-
-    // if (w->track_list.var_482 != 0xFFFF) {
-    //  w->disabled_widgets &= ~(1 << WIDX_TRACK_PREVIEW);
-    // } else {
-    //  w->disabled_widgets |= (1 << WIDX_TRACK_PREVIEW);
-    // }
 }
 
 /**
@@ -247,8 +241,9 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (!gTrackDesignSceneryToggle)
         {
             // Scenery not available
-            gfx_draw_string_centred_clipped(
-                dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, screenPos, 368);
+            DrawTextEllipsised(
+                dpi, screenPos, 308, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, Formatter::Common(), COLOUR_BLACK,
+                TextAlignment::CENTRE);
             screenPos.y -= LIST_ROW_HEIGHT;
         }
     }
@@ -320,7 +315,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
         ft.Add<uint16_t>(td6->ride_length);
-        gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, screenPos, 214);
+        DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft, COLOUR_BLACK);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
@@ -421,7 +416,7 @@ static void window_install_track_design(rct_window* w)
     if (!platform_ensure_directory_exists(destPath))
     {
         log_error("Unable to create directory '%s'", destPath);
-        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
         return;
     }
 
@@ -431,7 +426,7 @@ static void window_install_track_design(rct_window* w)
     if (Platform::FileExists(destPath))
     {
         log_info("%s already exists, prompting user for a different track design name", destPath);
-        context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
         window_text_input_raw_open(
             w, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN, STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME,
             _trackName.c_str(), 255);
@@ -444,7 +439,7 @@ static void window_install_track_design(rct_window* w)
         }
         else
         {
-            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
+            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
         }
     }
 }

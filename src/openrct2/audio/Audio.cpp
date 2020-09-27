@@ -46,7 +46,7 @@ bool gGameSoundsOff = false;
 int32_t gVolumeAdjustZoom = 0;
 
 void* gTitleMusicChannel = nullptr;
-void* gRainSoundChannel = nullptr;
+void* gWeatherSoundChannel = nullptr;
 
 rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
 rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
@@ -308,7 +308,7 @@ void audio_stop_all_music_and_sounds()
     audio_stop_vehicle_sounds();
     audio_stop_ride_music();
     peep_stop_crowd_noise();
-    audio_stop_rain_sound();
+    audio_stop_weather_sound();
 }
 
 void audio_stop_title_music()
@@ -320,12 +320,12 @@ void audio_stop_title_music()
     }
 }
 
-void audio_stop_rain_sound()
+void audio_stop_weather_sound()
 {
-    if (gRainSoundChannel != nullptr)
+    if (gWeatherSoundChannel != nullptr)
     {
-        Mixer_Stop_Channel(gRainSoundChannel);
-        gRainSoundChannel = nullptr;
+        Mixer_Stop_Channel(gWeatherSoundChannel);
+        gWeatherSoundChannel = nullptr;
     }
 }
 
@@ -381,7 +381,7 @@ void audio_close()
     peep_stop_crowd_noise();
     audio_stop_title_music();
     audio_stop_ride_music();
-    audio_stop_rain_sound();
+    audio_stop_weather_sound();
     gAudioCurrentDevice = -1;
 }
 
@@ -407,7 +407,7 @@ void audio_pause_sounds()
     audio_stop_vehicle_sounds();
     audio_stop_ride_music();
     peep_stop_crowd_noise();
-    audio_stop_rain_sound();
+    audio_stop_weather_sound();
 }
 
 void audio_unpause_sounds()

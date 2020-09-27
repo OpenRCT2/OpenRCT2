@@ -11,6 +11,7 @@
 
 #include "../common.h"
 
+#include <memory>
 #include <string>
 
 namespace OpenRCT2
@@ -51,4 +52,4 @@ struct IIniWriter
     void WriteString(const std::string& name, const utf8* value);
 };
 
-IIniWriter* CreateIniWriter(OpenRCT2::IStream* stream);
+std::unique_ptr<IIniWriter> CreateIniWriter(OpenRCT2::IStream* stream);

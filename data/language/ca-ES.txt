@@ -116,10 +116,10 @@ STR_0530    :Els vagons pengen d'un cable d'acer que recorren contínuament d'un
 STR_0531    :Muntanya russa compacta amb vies d'acer per la qual els vagons passen per tirabuixons i inversions.
 STR_0532    :El laberint està format per bardisses o murs de dos metres. Els visitants es mouen pels camins del laberint buscant la sortida. Només abandonaran l'atracció si aconsegueixen trobar la sortida!
 STR_0533    :Edifici de fusta amb una escala interior i un tobogan exterior que baixa en espiral pel que baixen els visitants amb estores.
-STR_0534    :Karts autopropulsats amb gasolina.
-STR_0535    :Bots amb forma de tronc circulen a través d'una via d'aigua. Quan passen per descensos pronunciats, esquitxen i deixen xops als passatgers.
+STR_0534    :Els passatgers competeixen entre ells amb karts en un circuit d'asfalt.
+STR_0535    :Els bots circulen per una via d'aigua, esquitxant els passatgers quan passen per descensos pronunciats.
 STR_0536    :Bots inflables circulars arrossegats per l'aigua a través d'un canal. Les cascades i els ràpids esquitxen i entusiasmen als passatgers.
-STR_0537    :Cotxes de xoc elèctrics que condueixen els passatgers.
+STR_0537    :Els passatgers condueixen cotxes de xoc elèctrics i xoquen entre ells.
 STR_0538    :Vaixell pirata enorme que es balanceja d'un costat a l'altre.
 STR_0539    :El vaixell està unit a un braç amb un contrapès a l'altre extrem. El vaixell es balanceja i arriba a fer una volta de 360°.
 STR_0540    :Un estand on els visitants poden comprar menjar.
@@ -158,7 +158,7 @@ STR_0578    :Els vagons circulen per anelles circulars, passant per baixades i g
 STR_0579    :Els visitants podran gaudir d'una tranquil·la partida de minigolf.
 STR_0580    :Muntanya russa gegant d'acer capaç de suaus baixades i pujades de més de 90 m.
 STR_0581    :Una anella de seients que puja per una torre alta mentre va rotant suaument, després cau en caiguda lliure i, al final, para delicadament usant frens magnètics.
-STR_0582    :Disposa de vehicles aerolliscadors autoconduïts.
+STR_0582    :Els passatgers condueixen lliurement aquests vehicles aerolliscadors.
 STR_0583    :Edifici format per habitacions deformades i passadissos angulars per desorientar la gent quan hi passa.
 STR_0584    :Bicicletes especials que es mouen per vies monorails gràcies al pedaleig dels passatgers.
 STR_0585    :Els passatgers seuen per parelles suspesos per sota de la via passant per tirabuixons i inversions.
@@ -2426,8 +2426,8 @@ STR_3329    :L'entrada al parc encara no s'ha construït.
 STR_3330    :El parc ha de disposar de terreny.
 STR_3331    :El camí de l'entrada al parc a la vora del mapa no els connecta o bé és massa complex. El camí ha de tenir només una casella d'amplada i ha de tenir pocs girs i cruïlles.
 STR_3332    :L'entrada al parc està a l'inrevés o bé no disposa de camí fins a la vora del mapa.
-STR_3333    :Exporta els complements a les desades
-STR_3334    :{SMALLFONT}{BLACK}Seleccioneu si cal desar els complements addicionals (els que no s'inclouen al producte principal) a les partides o escenaris desats, permetent que puguin ser carregats per algú que no disposi de les dades addicionals.
+STR_3333    :Exporta els objectes personalitzats amb les desades
+STR_3334    :{SMALLFONT}{BLACK}Seleccioneu si cal desar els objectes addicionals (dades que no s'inclouen al producte principal) a les partides o escenaris desats, permetent que puguin ser carregats per algú que no disposi dels objectes addicionals.
 STR_3335    :Dissenyador de circuits - Seleccioneu els vehicles i tipus d'atracció
 STR_3336    :Gestor dels dissenys de vies - Seleccioneu el tipus d'atracció
 STR_3338    :{BLACK}Recorregut personalitzat
@@ -2482,11 +2482,6 @@ STR_3390    :S'han seleccionat massa elements.
 STR_3437    :{SMALLFONT}{BLACK}Treu les decoracions d'una àrea del terreny.
 STR_3438    :No es poden treure totes les decoracions d'aquí...
 STR_3439    :Treu decoracions
-STR_3440    :Pàgina 1
-STR_3441    :Pàgina 2
-STR_3442    :Pàgina 3
-STR_3443    :Pàgina 4
-STR_3444    :Pàgina 5
 STR_3445    :Estableix l'àrea de patrullatge
 STR_3446    :Cancel·la l'àrea de patrullatge
 
@@ -2888,7 +2883,7 @@ STR_5554    :{SMALLFONT}{BLACK}Activa l'eina muntanya
 STR_5555    :Mostra els vehicles d'altres tipus de via
 STR_5556    :{SMALLFONT}{BLACK}Expulsa al jugador
 STR_5557    :Mantén la connexió després de la dessincronització (multijugador)
-STR_5558    :Cal reiniciar el joc perquè aquest canvi tingui efecte.
+STR_5558    :Aquest canvi s'aplicarà quan es reiniciï el joc.
 STR_5559    :Revisions cada 10 min
 STR_5560    :{SMALLFONT}{BLACK}Estableix revisions cada 10 minuts per totes les atraccions.
 STR_5561    :L'idioma no s'ha pogut carregar.
@@ -3061,7 +3056,7 @@ STR_5762    :Iuan xinès (CN¥)
 STR_5763    :Tots els arxius
 STR_5764    :Tipus d'atracció no vàlida
 STR_5765    :Per editar una atracció, cal que tingui un tipus vàlid.
-STR_5766    :<identificador de cadena disponible>
+STR_5766    :Fòrint hongarès (Ft)
 STR_5767    :Ingressos
 STR_5768    :Clients en total
 STR_5769    :Benefici total
@@ -3330,7 +3325,7 @@ STR_6033    :Camí de la instal·lació del RCT1:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Seleccioneu el camí d'instal·lació del RCT1
 STR_6036    :{SMALLFONT}{BLACK}Esborra
-STR_6037    :Seleccioneu una carpeta del RCT1 vàlida.
+STR_6037    :La carpeta seleccionada no conté una instal·lació del RCT1 vàlida.
 STR_6038    :{SMALLFONT}{BLACK}Si teniu instal·lat el RCT1, indiqueu a quina carpeta està per usar-ne els escenaris, la música, etc.
 STR_6039    :{SMALLFONT}{BLACK}Retirada ràpida d'atraccions
 STR_6040    :Opcions d'edició d'escenaris
@@ -3608,7 +3603,61 @@ STR_6325    :{SMALLFONT}{BLACK}Simula l'atracció
 STR_6326    :No es pot simular {POP16}{POP16}{POP16}{STRINGID}...
 STR_6327    :Fons transparent per captures de pantalla gegants
 STR_6328    :{SMALLFONT}{BLACK}Si s'activa, les captures de pantalla gegants tindran un fons transparent en lloc del color negre per defecte.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :S'està descarregant [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Crea ànecs
+STR_6332    :Treu els ànecs
+STR_6333    :Augmenta el factor d'escala
+STR_6334    :Redueix el factor d'escala
+STR_6335    :Inspecció de casella: Insereix un element corromput
+STR_6336    :Inspecció de casella: Copia l'element
+STR_6337    :Inspecció de casella: Enganxa l'element
+STR_6338    :Inspecció de casella: Esborra l'element
+STR_6339    :Inspecció de casella: Mou l'element amunt
+STR_6340    :Inspecció de casella: Mou l'element avall
+STR_6341    :Inspecció de casella: Augmenta la coordenada X
+STR_6342    :Inspecció de casella: Redueix la coordenada X
+STR_6343    :Inspecció de casella: Augmenta la coordenada Y
+STR_6344    :Inspecció de casella: Redueix la coordenada Y
+STR_6345    :Inspecció de casella: Augmenta l'alçada de l'element
+STR_6346    :Inspecció de casella: Redueix l'alçada de l'element
+STR_6347    :No es poden posar elements adicionals en camins en passos a nivell!
+STR_6348    :Treieu el pas de nivell abans!
+STR_6349    :Seqüència de títol aleatòria
+STR_6350    :Escampa
+STR_6351    :Eina d'escenari d'escampar
+STR_6352    :Densitat
+STR_6353    :{SMALLFONT}{BLACK}Densitat baixa
+STR_6354    :{SMALLFONT}{BLACK}Densitat mitjana
+STR_6355    :{SMALLFONT}{BLACK}Densitat alta
+STR_6356    :{SMALLFONT}{BLACK}Apareixeran ànecs si el parc té aigua.
+STR_6357    :{SMALLFONT}{BLACK}Treu tots els ànecs del mapa.
+STR_6358    :Pàgina {UINT16}
+STR_6359    :{POP16}{POP16}Pàgina {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Activa els efectes d'enllumenat de les atraccions (experimental)
+STR_6362    :{SMALLFONT}{BLACK}Si s'activa, els vehicles de les atraccions amb vies s'encendran durant la nit.
+STR_6363    :S'ha copiat el text al porta-retalls.
+STR_6364    :{RED}{COMMA16} persona ha mort en l'accident de {STRINGID}
+STR_6365    :Morts en atraccions
+STR_6366    :Vehicles parats o avariats
+STR_6367    :{WINDOW_COLOUR_2}Fotograma:
+STR_6368    :Per motius de compatibilitat, no es recomana executar l'OpenRCT2 amb el Wine. L'OpenRCT2 té versions natives per a macOS, Linux, FreeBSD i OpenBSD.
+STR_6369    :Permet la construcció de vies a alçades no vàlides
+STR_6370    :{SMALLFONT}{BLACK}Permet posar trossos de via en qualsevol alçada.
+STR_6371    :El camí conté una instal·lació del RollerCoaster Tycoon 1 installation, però el fitxer «csg1i.dat» no hi és. Aquest fitxer s'ha de copiar del CD del RollerCoaster Tycoon 1 a la carpeta «Data» de la instal·lació del RollerCoaster Tycoon 1 del vostre disc dur.
+STR_6372    :El camí conté una instal·lació del RollerCoaster Tycoon 1 installation, però la versió no és adequada. L'OpenRCT2 necessita una instal·lació del Loopy Landscapes o del RCT Deluxe per tal d'emprar-ne els recursos.
+STR_6373    :Commuta les comprovacions d'espai lliure
+STR_6374    :C
+STR_6375    :Atracció desconeguda
+STR_6376    :{WINDOW_COLOUR_2}Vehicle d'atracció:{NEWLINE}{BLACK}{STRINGID} per {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Tipus: {BLACK}{STRINGID} per {STRINGID}
+STR_6378    :S'està rebent la llista d'objectes: {INT32} / {INT32}
+STR_6379    :S'han rebut dades no vàlides.
+STR_6380    :Actualització disponible!
+STR_6381    :Uniu-vos al canal de l'OpenRCT2 de Discord!
+STR_6382    :Hi ha una versió nova de l'OpenRCT2 disponible: {STRING}!
+STR_6383    :Obre la pàgina de descàrrega
 
 #############
 # Scenarios #

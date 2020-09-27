@@ -15,7 +15,6 @@
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Banner.h"
-#include "ObjectJsonHelpers.h"
 
 void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
@@ -29,7 +28,7 @@ void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stre
     stream->Seek(1, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.wall.scrolling_mode = stream->ReadValue<uint8_t>();
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);
@@ -94,66 +93,63 @@ void WallObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t heig
     }
 }
 
-void WallObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
+    Guard::Assert(root.is_object(), "WallObject::ReadJson expects parameter root to be object");
 
-    _legacyType.wall.tool_id = ObjectJsonHelpers::ParseCursor(
-        ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_FENCE_DOWN);
-    _legacyType.wall.height = json_integer_value(json_object_get(properties, "height"));
-    _legacyType.wall.price = json_integer_value(json_object_get(properties, "price"));
+    auto properties = root["properties"];
 
-    auto jScrollingMode = json_object_get(properties, "scrollingMode");
-    _legacyType.wall.scrolling_mode = jScrollingMode != nullptr ? json_integer_value(jScrollingMode) : SCROLLING_MODE_NONE;
-
-    SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
-
-    // Flags
-    _legacyType.wall.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
-        properties,
-        {
-            { "hasPrimaryColour", WALL_SCENERY_HAS_PRIMARY_COLOUR },
-            { "hasSecondaryColour", WALL_SCENERY_HAS_SECONDARY_COLOUR },
-            { "hasTernaryColour", WALL_SCENERY_HAS_TERNARY_COLOUR },
-            { "hasGlass", WALL_SCENERY_HAS_GLASS },
-            { "isBanner", WALL_SCENERY_IS_BANNER },
-            { "isDoor", WALL_SCENERY_IS_DOOR },
-            { "isLongDoorAnimation", WALL_SCENERY_LONG_DOOR_ANIMATION },
-        });
-    _legacyType.wall.flags2 = ObjectJsonHelpers::GetFlags<uint8_t>(
-        properties,
-        {
-            { "isOpaque", WALL_SCENERY_2_IS_OPAQUE },
-            { "isAnimated", WALL_SCENERY_2_ANIMATED },
-        });
-
-    // HACK To avoid 'negated' properties in JSON, handle this separately until
-    //      flag is inverted in this code base.
-    if (!ObjectJsonHelpers::GetBoolean(properties, "isAllowedOnSlope", false))
+    if (properties.is_object())
     {
-        _legacyType.wall.flags |= WALL_SCENERY_CANT_BUILD_ON_SLOPE;
-    }
+        _legacyType.wall.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CURSOR_FENCE_DOWN);
+        _legacyType.wall.height = Json::GetNumber<uint8_t>(properties["height"]);
+        _legacyType.wall.price = Json::GetNumber<int16_t>(properties["price"]);
 
-    // HACK WALL_SCENERY_HAS_PRIMARY_COLOUR actually means, has any colour but we simplify the
-    //      JSON and handle this on load. We should change code base in future to reflect the JSON.
-    if (!(_legacyType.wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR))
-    {
-        if ((_legacyType.wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
-            || (_legacyType.wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR))
+        _legacyType.wall.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+
+        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
+
+        // clang-format off
+        _legacyType.wall.flags = Json::GetFlags<uint8_t>(
+            properties,
+            {
+                { "hasPrimaryColour",       WALL_SCENERY_HAS_PRIMARY_COLOUR,    Json::FlagType::Normal },
+                { "isAllowedOnSlope",       WALL_SCENERY_CANT_BUILD_ON_SLOPE,   Json::FlagType::Inverted },
+                { "hasSecondaryColour",     WALL_SCENERY_HAS_SECONDARY_COLOUR,  Json::FlagType::Normal },
+                { "hasTernaryColour",       WALL_SCENERY_HAS_TERNARY_COLOUR,    Json::FlagType::Normal },
+                { "hasGlass",               WALL_SCENERY_HAS_GLASS,             Json::FlagType::Normal },
+                { "isBanner",               WALL_SCENERY_IS_BANNER,             Json::FlagType::Normal },
+                { "isDoor",                 WALL_SCENERY_IS_DOOR,               Json::FlagType::Normal },
+                { "isLongDoorAnimation",    WALL_SCENERY_LONG_DOOR_ANIMATION,   Json::FlagType::Normal },
+            });
+        // clang-format on
+
+        _legacyType.wall.flags2 = Json::GetFlags<uint8_t>(
+            properties,
+            {
+                { "isOpaque", WALL_SCENERY_2_IS_OPAQUE },
+                { "isAnimated", WALL_SCENERY_2_ANIMATED },
+            });
+
+        // HACK WALL_SCENERY_HAS_PRIMARY_COLOUR actually means, has any colour but we simplify the
+        //      JSON and handle this on load. We should change code base in future to reflect the JSON.
+        if (!(_legacyType.wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR))
         {
-            _legacyType.wall.flags |= WALL_SCENERY_HAS_PRIMARY_COLOUR;
-            _legacyType.wall.flags2 |= WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR;
+            if (_legacyType.wall.flags & (WALL_SCENERY_HAS_SECONDARY_COLOUR | WALL_SCENERY_HAS_TERNARY_COLOUR))
+            {
+                _legacyType.wall.flags |= WALL_SCENERY_HAS_PRIMARY_COLOUR;
+                _legacyType.wall.flags2 |= WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR;
+            }
+        }
+
+        // Door sound
+        auto jDoorSound = properties["doorSound"];
+        if (jDoorSound.is_number())
+        {
+            auto doorSound = Json::GetNumber<uint8_t>(jDoorSound);
+            _legacyType.wall.flags2 |= (doorSound << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
         }
     }
 
-    // Door sound
-    auto jDoorSound = json_object_get(properties, "doorSound");
-    if (jDoorSound != nullptr)
-    {
-        auto doorSound = json_integer_value(jDoorSound);
-        _legacyType.wall.flags2 |= (doorSound << WALL_SCENERY_2_DOOR_SOUND_SHIFT) & WALL_SCENERY_2_DOOR_SOUND_MASK;
-    }
-
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    PopulateTablesFromJson(context, root);
 }

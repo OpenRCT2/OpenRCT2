@@ -58,14 +58,14 @@ enum {
 };
 
 static rct_widget window_server_list_widgets[] = {
-    MakeWidget({  0,  0}, {341, 91}, WWT_FRAME,    0                                         ), // panel / background
-    MakeWidget({  1,  1}, {338, 14}, WWT_CAPTION,  0, STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
-    MakeWidget({327,  2}, { 11, 12}, WWT_CLOSEBOX, 0, STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
-    MakeWidget({100, 20}, {245, 12}, WWT_TEXT_BOX, 1                                         ), // player name text box
-    MakeWidget({  6, 37}, {332, 14}, WWT_SCROLL,   1                                         ), // server list
-    MakeWidget({  6, 53}, {101, 14}, WWT_BUTTON,   1, STR_FETCH_SERVERS                      ), // fetch servers button
-    MakeWidget({112, 53}, {101, 14}, WWT_BUTTON,   1, STR_ADD_SERVER                         ), // add server button
-    MakeWidget({218, 53}, {101, 14}, WWT_BUTTON,   1, STR_START_SERVER                       ), // start server button
+    MakeWidget({  0,  0}, {341, 91}, WWT_FRAME,    WindowColour::Primary                                           ), // panel / background
+    MakeWidget({  1,  1}, {338, 14}, WWT_CAPTION,  WindowColour::Primary  , STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
+    MakeWidget({327,  2}, { 11, 12}, WWT_CLOSEBOX, WindowColour::Primary  , STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
+    MakeWidget({100, 20}, {245, 12}, WWT_TEXT_BOX, WindowColour::Secondary                                         ), // player name text box
+    MakeWidget({  6, 37}, {332, 14}, WWT_SCROLL,   WindowColour::Secondary                                         ), // server list
+    MakeWidget({  6, 53}, {101, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_FETCH_SERVERS                      ), // fetch servers button
+    MakeWidget({112, 53}, {101, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_ADD_SERVER                         ), // add server button
+    MakeWidget({218, 53}, {101, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_START_SERVER                       ), // start server button
     { WIDGETS_END },
 };
 
@@ -196,9 +196,9 @@ static void window_server_list_mouseup(rct_window* w, rct_widgetindex widgetInde
                 }
                 else
                 {
-                    auto ft = Formatter::Common();
+                    Formatter ft;
                     ft.Add<const char*>(server.Version.c_str());
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
                 }
             }
             break;
@@ -235,9 +235,9 @@ static void window_server_list_dropdown(rct_window* w, rct_widgetindex widgetInd
                 }
                 else
                 {
-                    auto ft = Formatter::Common();
+                    Formatter ft;
                     ft.Add<const char*>(server.Version.c_str());
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, ft);
                 }
                 break;
             case DDIDX_FAVOURITE:
@@ -438,7 +438,6 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     {
         if (screenCoords.y >= dpi->y + dpi->height)
             continue;
-        // if (y + ITEM_HEIGHT < dpi->y) continue;
 
         const auto& serverDetails = _serverList.GetServer(i);
         bool highlighted = i == w->selected_list_item;
@@ -482,8 +481,9 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         }
 
         // Finally, draw the server information.
-        gfx_draw_string_left_clipped(
-            dpi, STR_STRING, &serverInfoToShow, colour, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo);
+        auto ft = Formatter::Common();
+        ft.Add<const char*>(serverInfoToShow);
+        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, colour);
 
         int32_t right = width - 7 - SCROLLBAR_WIDTH;
 
@@ -553,7 +553,7 @@ static void join_server(std::string address)
 
     if (!network_begin_client(address.c_str(), port))
     {
-        context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
+        context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
     }
 }
 

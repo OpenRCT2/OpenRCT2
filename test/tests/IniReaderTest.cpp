@@ -32,7 +32,7 @@ TEST_F(IniReaderTest, create_empty)
     OpenRCT2::MemoryStream ms(0);
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), true);
-    IIniReader* ir = CreateIniReader(&ms);
+    auto ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     ASSERT_EQ(ir->GetBoolean("nobody", true), true);
     ASSERT_EQ(ir->GetCString("expects", nullptr), nullptr);
@@ -41,7 +41,6 @@ TEST_F(IniReaderTest, create_empty)
     ASSERT_EQ(ir->GetInt32("universal_answer", 42), 42);
     ASSERT_EQ(
         ir->GetInt64("heat_death_of_the_universe", std::numeric_limits<int64_t>::max()), std::numeric_limits<int64_t>::max());
-    delete ir;
 }
 
 TEST_F(IniReaderTest, read_prepared)
@@ -49,7 +48,7 @@ TEST_F(IniReaderTest, read_prepared)
     OpenRCT2::MemoryStream ms(predefined.c_str(), predefined.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
-    IIniReader* ir = CreateIniReader(&ms);
+    auto ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     ASSERT_EQ(ir->ReadSection("doesnt_exist"), false);
     ASSERT_EQ(ir->ReadSection("bool"), true);
@@ -71,7 +70,6 @@ TEST_F(IniReaderTest, read_prepared)
     // go back a section
     ASSERT_EQ(ir->ReadSection("int"), true);
     ASSERT_EQ(ir->GetInt32("one", 42), 1);
-    delete ir;
 }
 
 TEST_F(IniReaderTest, read_duplicate)
@@ -79,7 +77,7 @@ TEST_F(IniReaderTest, read_duplicate)
     OpenRCT2::MemoryStream ms(duplicate.c_str(), duplicate.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
-    IIniReader* ir = CreateIniReader(&ms);
+    auto ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     // there should only be data from the last section
     ASSERT_EQ(ir->ReadSection("section"), true);
@@ -97,7 +95,6 @@ TEST_F(IniReaderTest, read_duplicate)
     ASSERT_EQ(ir->ReadSection("section"), true);
     // test 4 times, there are only 3 sections
     ASSERT_EQ(ir->ReadSection("section"), true);
-    delete ir;
 }
 
 TEST_F(IniReaderTest, read_untrimmed)
@@ -105,7 +102,7 @@ TEST_F(IniReaderTest, read_untrimmed)
     OpenRCT2::MemoryStream ms(untrimmed.c_str(), untrimmed.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
-    IIniReader* ir = CreateIniReader(&ms);
+    auto ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     // there should only be data from the last section
     ASSERT_EQ(ir->ReadSection("section"), true);
@@ -115,7 +112,6 @@ TEST_F(IniReaderTest, read_untrimmed)
     Memory::Free(str);
     ASSERT_EQ(ir->GetString("str", "yyy"), "  xxx ");
     ASSERT_EQ(ir->GetString("nosuchthing", "  yyy "), "  yyy ");
-    delete ir;
 }
 
 TEST_F(IniReaderTest, read_case_insensitive)
@@ -123,12 +119,11 @@ TEST_F(IniReaderTest, read_case_insensitive)
     OpenRCT2::MemoryStream ms(caseInsensitive.c_str(), caseInsensitive.size());
     ASSERT_EQ(ms.CanRead(), true);
     ASSERT_EQ(ms.CanWrite(), false);
-    IIniReader* ir = CreateIniReader(&ms);
+    auto ir = CreateIniReader(&ms);
     ASSERT_NE(ir, nullptr);
     ASSERT_EQ(ir->ReadSection("section"), true);
     ASSERT_EQ(ir->GetString("foo", "yyy"), "bar");
     ASSERT_EQ(ir->ReadSection("SeCtIoN"), true);
-    delete ir;
 }
 
 const std::string IniReaderTest::predefined = "[bool]\n"

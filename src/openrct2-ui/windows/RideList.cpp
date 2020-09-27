@@ -57,18 +57,18 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
 
 static rct_widget window_ride_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({  0, 43}, {340, 197}, WWT_RESIZE,   1                                                                ), // tab page background
-    MakeWidget     ({315, 60}, { 24,  24}, WWT_FLATBTN,  1, SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
-    MakeWidget     ({150, 46}, {124,  12}, WWT_DROPDOWN, 1                                                                ), // current information type
-    MakeWidget     ({262, 47}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
-    MakeWidget     ({280, 46}, { 54,  12}, WWT_BUTTON,   1, STR_SORT,                   STR_RIDE_LIST_SORT_TIP            ), // sort button
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                    STR_LIST_RIDES_TIP                ), // tab 1
-    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                    STR_LIST_SHOPS_AND_STALLS_TIP     ), // tab 2
-    MakeRemapWidget({ 65, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                    STR_LIST_KIOSKS_AND_FACILITIES_TIP), // tab 3
-    MakeWidget     ({  3, 60}, {334, 177}, WWT_SCROLL,   1, SCROLL_VERTICAL                                               ), // list
-    MakeWidget     ({320, 62}, { 14,  14}, WWT_IMGBTN,   1, SPR_G2_RCT1_CLOSE_BUTTON_0                                    ),
-    MakeWidget     ({320, 76}, { 14,  14}, WWT_IMGBTN,   1, SPR_G2_RCT1_OPEN_BUTTON_0                                     ),
-    MakeWidget     ({315, 90}, { 24,  24}, WWT_FLATBTN,  1, SPR_DEMOLISH,               STR_QUICK_DEMOLISH_RIDE           ),
+    MakeWidget({  0, 43}, {340, 197}, WWT_RESIZE,   WindowColour::Secondary                                                                ), // tab page background
+    MakeWidget({315, 60}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
+    MakeWidget({150, 46}, {124,  12}, WWT_DROPDOWN, WindowColour::Secondary                                                                ), // current information type
+    MakeWidget({262, 47}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
+    MakeWidget({280, 46}, { 54,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_SORT,                   STR_RIDE_LIST_SORT_TIP            ), // sort button
+    MakeTab   ({  3, 17},                                                                                STR_LIST_RIDES_TIP                ), // tab 1
+    MakeTab   ({ 34, 17},                                                                                STR_LIST_SHOPS_AND_STALLS_TIP     ), // tab 2
+    MakeTab   ({ 65, 17},                                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP), // tab 3
+    MakeWidget({  3, 60}, {334, 177}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_VERTICAL                                               ), // list
+    MakeWidget({320, 62}, { 14,  14}, WWT_IMGBTN,   WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0                                    ),
+    MakeWidget({320, 76}, { 14,  14}, WWT_IMGBTN,   WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0                                     ),
+    MakeWidget({315, 90}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_DEMOLISH,               STR_QUICK_DEMOLISH_RIDE           ),
     { WIDGETS_END },
 };
 
@@ -609,7 +609,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         // Ride name
         auto ft = Formatter::Common();
         ride->FormatNameTo(ft);
-        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y - 1 }, 159);
+        DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft, COLOUR_BLACK);
 
         // Ride information
         ft.Rewind();
@@ -751,7 +751,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             ft.Rewind();
             ft.Add<rct_string_id>(formatSecondary);
         }
-        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 160, y - 1 }, 157);
+        DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft, COLOUR_BLACK);
         y += SCROLLABLE_ROW_HEIGHT;
     }
 }

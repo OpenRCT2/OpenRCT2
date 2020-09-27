@@ -33,6 +33,14 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("object", _bannerType);
+        visitor.Visit("primaryColour", _primaryColour);
+        _bannerIndex = create_new_banner(0);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags();

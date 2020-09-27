@@ -186,7 +186,7 @@ void S6Exporter::Export()
         }
     }
 
-    _s6.elapsed_months = gDateMonthsElapsed;
+    _s6.elapsed_months = static_cast<uint16_t>(gDateMonthsElapsed);
     _s6.current_day = gDateMonthTicks;
     _s6.scenario_ticks = gScenarioTicks;
 
@@ -272,16 +272,17 @@ void S6Exporter::Export()
     _s6.guest_initial_cash = gGuestInitialCash;
     _s6.guest_initial_hunger = gGuestInitialHunger;
     _s6.guest_initial_thirst = gGuestInitialThirst;
-    _s6.objective_type = gScenarioObjectiveType;
-    _s6.objective_year = gScenarioObjectiveYear;
+    _s6.objective_type = gScenarioObjective.Type;
+    _s6.objective_year = gScenarioObjective.Year;
     // pad_013580FA
-    _s6.objective_currency = gScenarioObjectiveCurrency;
+    _s6.objective_currency = gScenarioObjective.Currency;
     // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
     // This is not always the case in OpenRCT2, so we use the actual ride ID.
-    if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
-        _s6.objective_guests = gScenarioObjectiveNumGuests + RCT2_RIDE_STRING_START;
+    if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+        _s6.objective_guests = gScenarioObjective.RideId + RCT2_RIDE_STRING_START;
     else
-        _s6.objective_guests = gScenarioObjectiveNumGuests;
+        _s6.objective_guests = gScenarioObjective.NumGuests;
+
     ExportMarketingCampaigns();
 
     std::memcpy(_s6.balance_history, gCashHistory, sizeof(_s6.balance_history));
@@ -383,7 +384,7 @@ void S6Exporter::Export()
     // unk_13CA73E
     // pad_13CA73F
     // unk_13CA740
-    _s6.climate = gClimate;
+    _s6.climate = static_cast<uint8_t>(gClimate);
     // pad_13CA741;
     // byte_13CA742
     // pad_013CA747
@@ -396,8 +397,8 @@ void S6Exporter::Export()
     _s6.next_weather_effect = static_cast<uint8_t>(gClimateNext.WeatherEffect);
     _s6.current_weather_gloom = gClimateCurrent.WeatherGloom;
     _s6.next_weather_gloom = gClimateNext.WeatherGloom;
-    _s6.current_rain_level = static_cast<uint8_t>(gClimateCurrent.Level);
-    _s6.next_rain_level = static_cast<uint8_t>(gClimateNext.Level);
+    _s6.current_weather_level = static_cast<uint8_t>(gClimateCurrent.Level);
+    _s6.next_weather_level = static_cast<uint8_t>(gClimateNext.Level);
 
     // News items
     for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
@@ -703,7 +704,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     // pad_16F[0x7];
     dst->spiral_slide_progress = src->spiral_slide_progress;
     // pad_177[0x9];
-    dst->build_date = src->build_date;
+    dst->build_date = static_cast<int16_t>(src->build_date);
     dst->upkeep_cost = src->upkeep_cost;
     dst->race_winner = src->race_winner;
     // pad_186[0x02];
@@ -1124,7 +1125,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
                 STR_SECURITY_GUARD_X,
                 STR_ENTERTAINER_X,
             };
-            dst->name_string_idx = staffNames[src->StaffType % sizeof(staffNames)];
+            dst->name_string_idx = staffNames[static_cast<uint8_t>(src->AssignedStaffType) % sizeof(staffNames)];
         }
         else if (gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES)
         {

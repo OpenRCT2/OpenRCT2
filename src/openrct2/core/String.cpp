@@ -68,7 +68,7 @@ namespace String
     std::string ToUtf8(const std::wstring_view& src)
     {
 #ifdef _WIN32
-        int srcLen = (int)src.size();
+        int srcLen = static_cast<int>(src.size());
         int sizeReq = WideCharToMultiByte(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
         auto result = std::string(sizeReq, 0);
         WideCharToMultiByte(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
@@ -96,7 +96,7 @@ namespace String
     std::wstring ToWideChar(const std::string_view& src)
     {
 #ifdef _WIN32
-        int srcLen = (int)src.size();
+        int srcLen = static_cast<int>(src.size());
         int sizeReq = MultiByteToWideChar(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, nullptr, 0);
         auto result = std::wstring(sizeReq, 0);
         MultiByteToWideChar(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, result.data(), sizeReq);
@@ -667,7 +667,7 @@ namespace String
         // Convert from source code page to UTF-16
         std::wstring u16;
         {
-            int srcLen = (int)src.size();
+            int srcLen = static_cast<int>(src.size());
             int sizeReq = MultiByteToWideChar(srcCodePage, 0, src.data(), srcLen, nullptr, 0);
             u16 = std::wstring(sizeReq, 0);
             MultiByteToWideChar(srcCodePage, 0, src.data(), srcLen, u16.data(), sizeReq);
@@ -676,7 +676,7 @@ namespace String
         // Convert from UTF-16 to destination code page
         std::string dst;
         {
-            int srcLen = (int)u16.size();
+            int srcLen = static_cast<int>(u16.size());
             int sizeReq = WideCharToMultiByte(dstCodePage, 0, u16.data(), srcLen, nullptr, 0, nullptr, nullptr);
             dst = std::string(sizeReq, 0);
             WideCharToMultiByte(dstCodePage, 0, u16.data(), srcLen, dst.data(), sizeReq, nullptr, nullptr);
@@ -709,16 +709,16 @@ namespace String
 
         // Measure how long the destination needs to be
         auto requiredSize = LCMapStringEx(
-            LOCALE_NAME_USER_DEFAULT, LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING, srcW.c_str(), (int)srcW.length(), nullptr, 0,
-            nullptr, nullptr, 0);
+            LOCALE_NAME_USER_DEFAULT, LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING, srcW.c_str(), static_cast<int>(srcW.length()),
+            nullptr, 0, nullptr, nullptr, 0);
 
         auto dstW = std::wstring();
         dstW.resize(requiredSize);
 
         // Transform the string
         auto result = LCMapStringEx(
-            LOCALE_NAME_USER_DEFAULT, LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING, srcW.c_str(), (int)srcW.length(), dstW.data(),
-            (int)dstW.length(), nullptr, nullptr, 0);
+            LOCALE_NAME_USER_DEFAULT, LCMAP_UPPERCASE | LCMAP_LINGUISTIC_CASING, srcW.c_str(), static_cast<int>(srcW.length()),
+            dstW.data(), static_cast<int>(dstW.length()), nullptr, nullptr, 0);
         if (result == 0)
         {
             // Check the error

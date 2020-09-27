@@ -152,6 +152,12 @@ The following people are not part of the development team, but have been contrib
 * Łukasz Pękalski (Lukasz-Pe)
 * (quale)
 * Arran Ireland (ion232)
+* Ryan Bello (ryan-bello)
+* Simon Jarrett (mwnciau)
+* Richard Fine (richard-fine)
+* Tom Parsons (tombomp)
+* Stephan Spengler (Sadret)
+* Roger Seekell (rpstester)
 
 ## Toolchain
 * (Balletie) - macOS

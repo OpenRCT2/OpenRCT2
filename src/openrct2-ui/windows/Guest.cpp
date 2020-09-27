@@ -76,24 +76,24 @@ static constexpr int32_t TabWidth = 30;
 
 #define MAIN_GUEST_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({  0, 43}, {192, 114}, WWT_RESIZE, 1                                              ), /* Resize */ \
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_VIEW_TIP         ), /* Tab 1 */ \
-    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_NEEDS_TIP        ), /* Tab 2 */ \
-    MakeRemapWidget({ 65, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_VISITED_RIDES_TIP), /* Tab 3 */ \
-    MakeRemapWidget({ 96, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_FINANCE_TIP      ), /* Tab 4 */ \
-    MakeRemapWidget({127, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_THOUGHTS_TIP     ), /* Tab 5 */ \
-    MakeRemapWidget({158, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_SHOW_GUEST_ITEMS_TIP        ), /* Tab 6 */ \
-    MakeRemapWidget({189, 17}, { 31,  27}, WWT_TAB,    1, SPR_TAB,    STR_DEBUG_TIP                   )  /* Tab 7 */
+    MakeWidget({  0, 43}, {192, 114}, WWT_RESIZE, WindowColour::Secondary), /* Resize */ \
+    MakeTab   ({  3, 17}, STR_SHOW_GUEST_VIEW_TIP                        ), /* Tab 1 */ \
+    MakeTab   ({ 34, 17}, STR_SHOW_GUEST_NEEDS_TIP                       ), /* Tab 2 */ \
+    MakeTab   ({ 65, 17}, STR_SHOW_GUEST_VISITED_RIDES_TIP               ), /* Tab 3 */ \
+    MakeTab   ({ 96, 17}, STR_SHOW_GUEST_FINANCE_TIP                     ), /* Tab 4 */ \
+    MakeTab   ({127, 17}, STR_SHOW_GUEST_THOUGHTS_TIP                    ), /* Tab 5 */ \
+    MakeTab   ({158, 17}, STR_SHOW_GUEST_ITEMS_TIP                       ), /* Tab 6 */ \
+    MakeTab   ({189, 17}, STR_DEBUG_TIP                                  )  /* Tab 7 */
 
 static rct_widget window_guest_overview_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    MakeWidget({  3,  45}, {164, 12}, WWT_LABEL_CENTRED, 1                                               ), // Label Thought marquee
-    MakeWidget({  3,  57}, {164, 87}, WWT_VIEWPORT,      1                                               ), // Viewport
-    MakeWidget({  3, 144}, {164, 11}, WWT_LABEL_CENTRED, 1                                               ), // Label Action
-    MakeWidget({167,  45}, { 24, 24}, WWT_FLATBTN,       1, SPR_PICKUP_BTN, STR_PICKUP_TIP               ), // Pickup Button
-    MakeWidget({167,  69}, { 24, 24}, WWT_FLATBTN,       1, SPR_RENAME,     STR_NAME_GUEST_TIP           ), // Rename Button
-    MakeWidget({167,  93}, { 24, 24}, WWT_FLATBTN,       1, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
-    MakeWidget({167, 117}, { 24, 24}, WWT_FLATBTN,       1, SPR_TRACK_PEEP, STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
+    MakeWidget({  3,  45}, {164, 12}, WWT_LABEL_CENTRED, WindowColour::Secondary                                               ), // Label Thought marquee
+    MakeWidget({  3,  57}, {164, 87}, WWT_VIEWPORT,      WindowColour::Secondary                                               ), // Viewport
+    MakeWidget({  3, 144}, {164, 11}, WWT_LABEL_CENTRED, WindowColour::Secondary                                               ), // Label Action
+    MakeWidget({167,  45}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_PICKUP_BTN, STR_PICKUP_TIP               ), // Pickup Button
+    MakeWidget({167,  69}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_GUEST_TIP           ), // Rename Button
+    MakeWidget({167,  93}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
+    MakeWidget({167, 117}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_TRACK_PEEP, STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
     { WIDGETS_END },
 };
 
@@ -104,7 +104,7 @@ static rct_widget window_guest_stats_widgets[] = {
 
 static rct_widget window_guest_rides_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    MakeWidget({3, 57}, {186, 87}, WWT_SCROLL, 1, SCROLL_VERTICAL),
+    MakeWidget({3, 57}, {186, 87}, WWT_SCROLL, WindowColour::Secondary, SCROLL_VERTICAL),
     { WIDGETS_END },
 };
 
@@ -908,7 +908,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         return;
     }
 
-    if (peep->AssignedPeepType == PeepType::Staff && peep->StaffType == STAFF_TYPE_ENTERTAINER)
+    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
     int32_t animationFrame = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
@@ -1126,7 +1126,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &w->widgets[WIDX_ACTION_LBL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->top - 1 };
     int32_t width = widget->width();
-    gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
+    DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::CENTRE);
 
     // Draw the marquee thought
     widget = &w->widgets[WIDX_MARQUEE];
@@ -1160,8 +1160,9 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     screenPos.x = widget->width() - w->list_information_type;
-    peep_thought_set_format_args(&peep->Thoughts[i]);
-    gfx_draw_string_left(&dpi_marquee, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { screenPos.x, 0 });
+    ft = Formatter::Common();
+    peep_thought_set_format_args(&peep->Thoughts[i], ft);
+    DrawTextBasic(&dpi_marquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK);
 }
 
 /**
@@ -1765,16 +1766,17 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
     auto ft = Formatter::Common();
-    ft.Add<rct_string_id>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
-    if (peep->FavouriteRide != RIDE_ID_NULL)
+    auto ride = get_ride(peep->FavouriteRide);
+    if (ride != nullptr)
     {
-        auto ride = get_ride(peep->FavouriteRide);
-        if (ride != nullptr)
-        {
-            ride->FormatNameTo(ft);
-        }
+        ride->FormatNameTo(ft);
     }
-    gfx_draw_string_left_clipped(dpi, STR_FAVOURITE_RIDE, gCommonFormatArgs, COLOUR_BLACK, screenCoords, w->width - 14);
+    else
+    {
+        ft.Add<rct_string_id>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
+    }
+
+    DrawTextEllipsised(dpi, screenCoords, w->width - 14, STR_FAVOURITE_RIDE, ft, COLOUR_BLACK);
 }
 
 /**
@@ -1984,9 +1986,10 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
         int32_t width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
             - window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left - 8;
 
-        peep_thought_set_format_args(thought);
+        auto ft = Formatter::Common();
+        peep_thought_set_format_args(thought, ft);
         screenCoords.y += gfx_draw_string_left_wrapped(
-            dpi, gCommonFormatArgs, screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
+            dpi, const_cast<unsigned char*>(ft.Data()), screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
 
         // If this is the last visible line end drawing.
         if (screenCoords.y > w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)

@@ -60,6 +60,16 @@ enum class PeepType : uint8_t
     Invalid = 0xFF
 };
 
+enum class StaffType : uint8_t
+{
+    Handyman,
+    Mechanic,
+    Security,
+    Entertainer,
+
+    Count
+};
+
 enum PeepThoughtType : uint8_t
 {
     PEEP_THOUGHT_TYPE_CANT_AFFORD_0 = 0,      // "I can't afford"
@@ -232,10 +242,10 @@ enum PeepState : uint8_t
     PEEP_STATE_INSPECTING = 23
 };
 
-enum PeepSittingSubState
+enum class PeepSittingSubState : uint8_t
 {
-    PEEP_SITTING_TRYING_TO_SIT = 0,
-    PEEP_SITTING_SAT_DOWN
+    TryingToSit, // was = 0
+    SatDown      // was unassigned
 };
 
 enum PeepRideSubState
@@ -604,12 +614,16 @@ struct Peep : SpriteBase
     uint8_t NextFlags;
     bool OutsideOfPark;
     PeepState State;
-    uint8_t SubState;
+    union
+    {
+        uint8_t SubState;
+        PeepSittingSubState SittingSubState;
+    };
     PeepSpriteType SpriteType;
     PeepType AssignedPeepType;
     union
     {
-        uint8_t StaffType;
+        StaffType AssignedStaffType;
         uint8_t GuestNumRides;
     };
     uint8_t TshirtColour;
@@ -790,6 +804,10 @@ public: // Peep
     std::string GetName() const;
     bool SetName(const std::string_view& value);
 
+    // Reset the peep's stored goal, which means they will forget any stored pathfinding history
+    // on the next peep_pathfind_choose_direction call.
+    void ResetPathfindGoal();
+
     // TODO: Make these private again when done refactoring
 public: // Peep
     bool CheckForPath();
@@ -936,6 +954,8 @@ private:
     bool DoMiscPathFinding();
 
     int32_t HandymanDirectionRandSurface(uint8_t validDirections);
+
+    void EntertainerUpdateNearbyPeeps() const;
 };
 
 static_assert(sizeof(Peep) <= 512);
@@ -1014,10 +1034,6 @@ extern uint32_t gNextGuestNumber;
 
 extern uint8_t gPeepWarningThrottle[16];
 
-extern TileCoordsXYZ gPeepPathFindGoalPosition;
-extern bool gPeepPathFindIgnoreForeignQueues;
-extern ride_id_t gPeepPathFindQueueRideIndex;
-
 Peep* try_get_guest(uint16_t spriteIndex);
 int32_t peep_get_staff_count();
 bool peep_can_be_picked_up(Peep* peep);
@@ -1027,11 +1043,9 @@ void peep_stop_crowd_noise();
 void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
-void peep_thought_set_format_args(const rct_peep_thought* thought);
+void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft);
 int32_t get_peep_face_sprite_small(Peep* peep);
 int32_t get_peep_face_sprite_large(Peep* peep);
-void game_command_pickup_guest(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void peep_sprite_remove(Peep* peep);
 
 void peep_window_state_update(Peep* peep);
@@ -1040,30 +1054,9 @@ void peep_decrement_num_riders(Peep* peep);
 void peep_set_map_tooltip(Peep* peep);
 int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_b);
 
-void SwitchToSpecialSprite(Peep* peep, uint8_t special_sprite_id);
 void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
-
-Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep);
-void peep_reset_pathfind_goal(Peep* peep);
-
-bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
-int32_t guest_path_finding(Guest* peep);
-
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-#    define PATHFIND_DEBUG                                                                                                     \
-        0 // Set to 0 to disable pathfinding debugging;
-          // Set to 1 to enable pathfinding debugging.
-// Some variables used for the path finding debugging.
-extern bool gPathFindDebug;              // Use to guard calls to log messages
-extern utf8 gPathFindDebugPeepName[256]; // Use to put the peep name in the log message
-
-// The following calls set the above two variables for a peep.
-// ... when PATHFIND_DEBUG is 1 (nonzero)
-void pathfind_logging_enable(Peep* peep);
-void pathfind_logging_disable();
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 void increment_guests_in_park();
 void increment_guests_heading_for_park();

@@ -30,7 +30,7 @@ NetworkConnection::~NetworkConnection()
     delete[] _lastDisconnectReason;
 }
 
-int32_t NetworkConnection::ReadPacket()
+NetworkReadPacket NetworkConnection::ReadPacket()
 {
     size_t bytesRead = 0;
 
@@ -42,8 +42,8 @@ int32_t NetworkConnection::ReadPacket()
 
         uint8_t* buffer = reinterpret_cast<uint8_t*>(&InboundPacket.Header);
 
-        NETWORK_READPACKET status = Socket->ReceiveData(buffer, missingLength, &bytesRead);
-        if (status != NETWORK_READPACKET_SUCCESS)
+        NetworkReadPacket status = Socket->ReceiveData(buffer, missingLength, &bytesRead);
+        if (status != NetworkReadPacket::Success)
         {
             return status;
         }
@@ -52,7 +52,7 @@ int32_t NetworkConnection::ReadPacket()
         if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Header))
         {
             // If still not enough data for header, keep waiting.
-            return NETWORK_READPACKET_MORE_DATA;
+            return NetworkReadPacket::MoreData;
         }
 
         // Normalise values.
@@ -74,8 +74,8 @@ int32_t NetworkConnection::ReadPacket()
 
         if (missingLength > 0)
         {
-            NETWORK_READPACKET status = Socket->ReceiveData(buffer, std::min(missingLength, NetworkBufferSize), &bytesRead);
-            if (status != NETWORK_READPACKET_SUCCESS)
+            NetworkReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, NetworkBufferSize), &bytesRead);
+            if (status != NetworkReadPacket::Success)
             {
                 return status;
             }
@@ -91,11 +91,11 @@ int32_t NetworkConnection::ReadPacket()
 
             RecordPacketStats(InboundPacket, false);
 
-            return NETWORK_READPACKET_SUCCESS;
+            return NetworkReadPacket::Success;
         }
     }
 
-    return NETWORK_READPACKET_MORE_DATA;
+    return NetworkReadPacket::MoreData;
 }
 
 bool NetworkConnection::SendPacket(NetworkPacket& packet)
@@ -131,7 +131,7 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
 
 void NetworkConnection::QueuePacket(NetworkPacket&& packet, bool front)
 {
-    if (AuthStatus == NETWORK_AUTH_OK || !packet.CommandRequiresAuth())
+    if (AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
     {
         packet.Header.Size = static_cast<uint16_t>(packet.Data.size());
         if (front)

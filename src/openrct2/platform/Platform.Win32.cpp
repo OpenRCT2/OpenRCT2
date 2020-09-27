@@ -37,6 +37,10 @@
 
 #    include <iterator>
 
+#    if _WIN32_WINNT < 0x600
+#        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
+#    endif
+
 constexpr wchar_t SOFTWARE_CLASSES[] = L"Software\\Classes";
 
 namespace Platform
@@ -58,7 +62,7 @@ namespace Platform
         std::wstring result;
         auto wname = String::ToWideChar(name);
         wchar_t wvalue[256];
-        auto valueSize = GetEnvironmentVariableW(wname.c_str(), wvalue, (DWORD)std::size(wvalue));
+        auto valueSize = GetEnvironmentVariableW(wname.c_str(), wvalue, static_cast<DWORD>(std::size(wvalue)));
         if (valueSize < std::size(wvalue))
         {
             result = wvalue;
@@ -140,7 +144,7 @@ namespace Platform
         }
     }
 
-    static std::string GetCurrentExecutableDirectory()
+    std::string GetCurrentExecutableDirectory()
     {
         auto exePath = GetCurrentExecutablePath();
         auto exeDirectory = Path::GetDirectory(exePath);
@@ -177,7 +181,7 @@ namespace Platform
         LONGLONG ll = Int32x32To64(timestamp, 10000000) + 116444736000000000;
 
         FILETIME ft;
-        ft.dwLowDateTime = (DWORD)ll;
+        ft.dwLowDateTime = static_cast<DWORD>(ll);
         ft.dwHighDateTime = ll >> 32;
 
         SYSTEMTIME st;
@@ -230,7 +234,7 @@ namespace Platform
 #        pragma GCC diagnostic push
 #        pragma GCC diagnostic ignored "-Wcast-function-type"
 #    endif
-            auto fn = (RtlGetVersionPtr)GetProcAddress(hModule, "RtlGetVersion");
+            auto fn = reinterpret_cast<RtlGetVersionPtr>(GetProcAddress(hModule, "RtlGetVersion"));
 #    if defined(__GNUC__) && __GNUC__ >= 8
 #        pragma GCC diagnostic pop
 #    endif
@@ -366,6 +370,7 @@ namespace Platform
         SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
     }
 
+#    if _WIN32_WINNT >= 0x0600
     static HMODULE _dllModule = nullptr;
     static HMODULE GetDLLModule()
     {
@@ -382,11 +387,13 @@ namespace Platform
         auto progIdNameW = String::ToWideChar(progIdName);
         return progIdNameW;
     }
+#    endif
 
     bool SetUpFileAssociation(
         const std::string extension, const std::string fileTypeText, const std::string commandText,
         const std::string commandArgs, const uint32_t iconIndex)
     {
+#    if _WIN32_WINNT >= 0x0600
         wchar_t exePathW[MAX_PATH];
         wchar_t dllPathW[MAX_PATH];
 
@@ -469,7 +476,42 @@ namespace Platform
             RegCloseKey(hRootKey);
             return false;
         }
+#    endif
         return true;
+    }
+
+    static void RemoveFileAssociation(const utf8* extension)
+    {
+#    if _WIN32_WINNT >= 0x0600
+        // [HKEY_CURRENT_USER\Software\Classes]
+        HKEY hRootKey;
+        if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
+        {
+            // [hRootKey\.ext]
+            RegDeleteTreeA(hRootKey, extension);
+
+            // [hRootKey\OpenRCT2.ext]
+            auto progIdName = get_progIdName(extension);
+            RegDeleteTreeW(hRootKey, progIdName.c_str());
+
+            RegCloseKey(hRootKey);
+        }
+#    endif
+    }
+
+    void RemoveFileAssociations()
+    {
+        // Remove file extensions
+        RemoveFileAssociation(".sc4");
+        RemoveFileAssociation(".sc6");
+        RemoveFileAssociation(".sv4");
+        RemoveFileAssociation(".sv6");
+        RemoveFileAssociation(".sv7");
+        RemoveFileAssociation(".td4");
+        RemoveFileAssociation(".td6");
+
+        // Refresh explorer
+        SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
     }
 
     bool HandleSpecialCommandLineArgument(const char* argument)

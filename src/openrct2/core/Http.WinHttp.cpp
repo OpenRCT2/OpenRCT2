@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if !defined(DISABLE_HTTP) && defined(_WIN32)
+#if !defined(DISABLE_HTTP) && defined(_WIN32) && (!defined(_WIN32_WINNT) || _WIN32_WINNT >= 0x0600)
 
 #    include "Http.h"
 
@@ -48,7 +48,7 @@ namespace Http
     static int32_t ReadStatusCode(HINTERNET hRequest)
     {
         wchar_t headerBuffer[32]{};
-        auto headerBufferLen = (DWORD)std::size(headerBuffer);
+        auto headerBufferLen = static_cast<DWORD>(std::size(headerBuffer));
         if (!WinHttpQueryHeaders(
                 hRequest, WINHTTP_QUERY_STATUS_CODE, L"StatusCode", headerBuffer, &headerBufferLen, WINHTTP_NO_HEADER_INDEX))
         {
@@ -136,7 +136,7 @@ namespace Http
                 dwSizeToRead = 4096;
 
             body.resize(dwRealSize + dwSizeToRead);
-            auto dst = (LPVOID)&body[dwRealSize];
+            auto dst = reinterpret_cast<LPVOID>(&body[dwRealSize]);
 
             dwDownloaded = 0;
             if (!WinHttpReadData(hRequest, dst, dwSizeToRead, &dwDownloaded))
@@ -156,10 +156,10 @@ namespace Http
         {
             URL_COMPONENTS url{};
             url.dwStructSize = sizeof(url);
-            url.dwSchemeLength = (DWORD)-1;
-            url.dwHostNameLength = (DWORD)-1;
-            url.dwUrlPathLength = (DWORD)-1;
-            url.dwExtraInfoLength = (DWORD)-1;
+            url.dwSchemeLength = static_cast<DWORD>(-1);
+            url.dwHostNameLength = static_cast<DWORD>(-1);
+            url.dwUrlPathLength = static_cast<DWORD>(-1);
+            url.dwExtraInfoLength = static_cast<DWORD>(-1);
 
             auto wUrl = String::ToWideChar(req.url);
             if (!WinHttpCrackUrl(wUrl.c_str(), 0, 0, &url))
@@ -192,12 +192,12 @@ namespace Http
             for (auto header : req.header)
             {
                 auto fullHeader = String::ToWideChar(header.first) + L": " + String::ToWideChar(header.second);
-                if (!WinHttpAddRequestHeaders(hRequest, fullHeader.c_str(), (ULONG)-1L, WINHTTP_ADDREQ_FLAG_ADD))
+                if (!WinHttpAddRequestHeaders(hRequest, fullHeader.c_str(), static_cast<ULONG>(-1L), WINHTTP_ADDREQ_FLAG_ADD))
                     ThrowWin32Exception("WinHttpAddRequestHeaders");
             }
 
-            auto reqBody = (LPVOID)req.body.data();
-            auto reqBodyLen = (DWORD)req.body.size();
+            auto reqBody = reinterpret_cast<LPVOID>(const_cast<char*>(req.body.data()));
+            auto reqBodyLen = static_cast<DWORD>(req.body.size());
             if (!WinHttpSendRequest(hRequest, WINHTTP_NO_ADDITIONAL_HEADERS, 0, reqBody, reqBodyLen, reqBodyLen, 0))
                 ThrowWin32Exception("WinHttpSendRequest");
 
@@ -210,7 +210,7 @@ namespace Http
 
             Response response;
             response.body = std::move(body);
-            response.status = (Status)statusCode;
+            response.status = static_cast<Status>(statusCode);
             auto it = headers.find("Content-Type");
             if (it != headers.end())
             {

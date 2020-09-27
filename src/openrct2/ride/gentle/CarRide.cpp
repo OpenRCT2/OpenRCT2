@@ -704,7 +704,7 @@ static void paint_car_ride_track_log_bumps(
 /**
  * rct2: 0x006F7000
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int32_t trackType)
 {
     switch (trackType)
     {

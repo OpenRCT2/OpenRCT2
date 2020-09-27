@@ -63,15 +63,15 @@ enum
 static rct_widget window_loadsave_widgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({               0,  WH - 1}, { WW,   1}, WWT_RESIZE,       1                                                             ), // tab content panel
-    MakeWidget({               4,      36}, { 84,  14}, WWT_BUTTON,       0, STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // Go to default directory
-    MakeWidget({              88,      36}, { 84,  14}, WWT_BUTTON,       0, STR_FILEBROWSER_ACTION_UP                                  ), // Up
-    MakeWidget({             172,      36}, { 87,  14}, WWT_BUTTON,       0, STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // New
-    MakeWidget({             259,      36}, { 87,  14}, WWT_BUTTON,       0, STR_FILEBROWSER_ACTION_NEW_FILE                            ), // New
-    MakeWidget({               4,      55}, {170,  14}, WWT_TABLE_HEADER, 0                                                             ), // Name
-    MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WWT_TABLE_HEADER, 0                                                             ), // Date
-    MakeWidget({               4,      68}, {342, 303}, WWT_SCROLL,       0, SCROLL_VERTICAL                                            ), // File list
-    MakeWidget({               4, WH - 24}, {197,  19}, WWT_BUTTON,       0, STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // Use native browser
+    MakeWidget({               0,  WH - 1}, { WW,   1}, WWT_RESIZE,       WindowColour::Secondary                                                             ), // tab content panel
+    MakeWidget({               4,      36}, { 84,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // Go to default directory
+    MakeWidget({              88,      36}, { 84,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_UP                                  ), // Up
+    MakeWidget({             172,      36}, { 87,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // New
+    MakeWidget({             259,      36}, { 87,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_NEW_FILE                            ), // New
+    MakeWidget({               4,      55}, {170,  14}, WWT_TABLE_HEADER, WindowColour::Primary                                                               ), // Name
+    MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WWT_TABLE_HEADER, WindowColour::Primary                                                               ), // Date
+    MakeWidget({               4,      68}, {342, 303}, WWT_SCROLL,       WindowColour::Primary  , SCROLL_VERTICAL                                            ), // File list
+    MakeWidget({               4, WH - 24}, {197,  19}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // Use native browser
     { WIDGETS_END }
 };
 
@@ -589,7 +589,7 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_NEW_FOLDER:
             if (!filename_valid_characters(text))
             {
-                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
                 return;
             }
 
@@ -598,7 +598,7 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
 
             if (!platform_ensure_directory_exists(path))
             {
-                context_show_error(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE);
+                context_show_error(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE, {});
                 return;
             }
 
@@ -718,8 +718,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw path text
     auto ft = Formatter::Common();
     ft.Add<utf8*>(Platform::StrDecompToPrecomp(buffer));
-    gfx_draw_string_left_clipped(
-        dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8);
+    DrawTextEllipsised(dpi, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8, STR_STRING, ft, COLOUR_BLACK);
 
     // Name button text
     rct_string_id id = STR_NONE;
@@ -784,7 +783,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(_listItems[i].name.c_str());
         int32_t max_file_width = w->widgets[WIDX_SORT_NAME].width() - 10;
-        gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { 10, y }, max_file_width);
+        DrawTextEllipsised(dpi, { 10, y }, max_file_width, stringId, ft, COLOUR_BLACK);
 
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
@@ -792,14 +791,13 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].date_formatted.c_str());
-            gfx_draw_string_right_clipped(
-                dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth);
+            DrawTextEllipsised(
+                dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, COLOUR_BLACK, TextAlignment::RIGHT);
 
             ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].time_formatted.c_str());
-            gfx_draw_string_left_clipped(
-                dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth);
+            DrawTextEllipsised(dpi, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth, stringId, ft, COLOUR_BLACK);
         }
     }
 }
@@ -1000,7 +998,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
 {
     if (!is_valid_path(path))
     {
-        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
         return;
     }
 
@@ -1031,7 +1029,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
+                context_show_error(STR_SAVE_GAME, STR_GAME_SAVE_FAILED, {});
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1047,7 +1045,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             else
             {
                 // Not the best message...
-                context_show_error(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
+                context_show_error(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1064,7 +1062,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
+                context_show_error(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED, {});
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1087,7 +1085,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
+                context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
                 gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
@@ -1123,7 +1121,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
+                context_show_error(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED, {});
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
             }
             break;

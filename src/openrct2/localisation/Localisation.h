@@ -17,6 +17,7 @@
 #include "Language.h"
 #include "StringIds.h"
 
+#include <array>
 #include <cstring>
 #include <string>
 
@@ -80,15 +81,11 @@ extern const rct_string_id DateDayNames[31];
 extern const rct_string_id DateGameMonthNames[MONTH_COUNT];
 extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
 
-[[maybe_unused]] static inline void set_format_arg_body(uint8_t* args, size_t offset, uintptr_t value, size_t size)
-{
-    std::memcpy(args + offset, &value, size);
-}
-
 class Formatter
 {
-    const uint8_t* StartBuf;
-    uint8_t* CurrentBuf;
+    std::array<uint8_t, 80> Buffer{};
+    uint8_t* StartBuf{};
+    uint8_t* CurrentBuf{};
 
 public:
     explicit Formatter(uint8_t* buf)
@@ -97,19 +94,52 @@ public:
     {
     }
 
+    Formatter()
+        : Buffer{}
+        , StartBuf(Buffer.data())
+        , CurrentBuf(StartBuf)
+    {
+    }
+
+    Formatter(const Formatter& other)
+    {
+        *this = other;
+    }
+
+    Formatter& operator=(const Formatter& other)
+    {
+        // If using global or not
+        if (other.StartBuf == other.Buffer.data())
+        {
+            std::copy(std::begin(other.Buffer), std::end(other.Buffer), std::begin(Buffer));
+            StartBuf = Buffer.data();
+        }
+        else
+        {
+            StartBuf = other.StartBuf;
+        }
+        CurrentBuf = StartBuf + other.NumBytes();
+        return *this;
+    }
+
     static Formatter Common()
     {
-        return Formatter(gCommonFormatArgs);
+        return Formatter{ gCommonFormatArgs };
     }
 
     static Formatter MapTooltip()
     {
-        return Formatter(gMapTooltipFormatArgs);
+        return Formatter{ gMapTooltipFormatArgs };
     }
 
     auto Buf()
     {
         return CurrentBuf;
+    }
+
+    auto Data() const
+    {
+        return StartBuf;
     }
 
     void Increment(size_t count)
@@ -156,7 +186,7 @@ public:
         {
             convertedValue = reinterpret_cast<uintptr_t>(value);
         }
-        set_format_arg_body(CurrentBuf, 0, convertedValue, sizeof(TSpecified));
+        std::memcpy(CurrentBuf, &convertedValue, sizeof(TSpecified));
         Increment(sizeof(TSpecified));
         return *this;
     }

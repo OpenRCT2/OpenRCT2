@@ -499,6 +499,7 @@ Function .onInit
     SectionSetFlags 0 17
 
 ShowWelcomeMessage:
+    IfSilent FinishCallback
     ReadRegStr $R8 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version"
     IfErrors FinishCallback
 

@@ -36,10 +36,10 @@ enum {
 };
 
 static rct_widget window_editor_bottom_toolbar_widgets[] = {
-    MakeWidget({  0, 0}, {200, 34}, WWT_IMGBTN,  0),
-    MakeWidget({  2, 2}, {196, 30}, WWT_FLATBTN, 0),
-    MakeWidget({440, 0}, {200, 34}, WWT_IMGBTN,  0),
-    MakeWidget({442, 2}, {196, 30}, WWT_FLATBTN, 0),
+    MakeWidget({  0, 0}, {200, 34}, WWT_IMGBTN,  WindowColour::Primary),
+    MakeWidget({  2, 2}, {196, 30}, WWT_FLATBTN, WindowColour::Primary),
+    MakeWidget({440, 0}, {200, 34}, WWT_IMGBTN,  WindowColour::Primary),
+    MakeWidget({442, 2}, {196, 30}, WWT_FLATBTN, WindowColour::Primary),
     { WIDGETS_END },
 };
 
@@ -207,7 +207,7 @@ static bool window_editor_bottom_toolbar_check_object_selection()
         return true;
     }
 
-    context_show_error(STR_INVALID_SELECTION_OF_OBJECTS, gGameCommandErrorText);
+    context_show_error(STR_INVALID_SELECTION_OF_OBJECTS, gGameCommandErrorText, {});
     w = window_find_by_class(WC_EDITOR_OBJECT_SELECTION);
     if (w != nullptr)
     {
@@ -251,7 +251,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up()
     }
     else
     {
-        context_show_error(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, gGameCommandErrorText);
+        context_show_error(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, gGameCommandErrorText, {});
     }
 
     gfx_invalidate_screen();
@@ -289,7 +289,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 {
     if (!scenario_prepare_for_save())
     {
-        context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, gGameCommandErrorText);
+        context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, gGameCommandErrorText, {});
         gfx_invalidate_screen();
         return;
     }

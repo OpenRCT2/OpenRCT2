@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../common.h"
+#include "../config/Config.h"
 #include "../interface/Cursors.h"
 
 #include <memory>
@@ -26,9 +27,9 @@ namespace OpenRCT2
     namespace Drawing
     {
         struct IDrawingEngineFactory;
-        struct IRainDrawer;
-        using DrawRainFunc = void (*)(
-            OpenRCT2::Drawing::IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+        struct IWeatherDrawer;
+        using DrawWeatherFunc = void (*)(
+            OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
     } // namespace Drawing
 
     namespace Ui
@@ -102,7 +103,7 @@ namespace OpenRCT2
             virtual void* GetWindow() abstract;
             virtual int32_t GetWidth() abstract;
             virtual int32_t GetHeight() abstract;
-            virtual int32_t GetScaleQuality() abstract;
+            virtual ScaleQuality GetScaleQuality() abstract;
             virtual void SetFullscreenMode(FULLSCREEN_MODE mode) abstract;
             virtual const std::vector<Resolution>& GetFullscreenResolutions() abstract;
             virtual bool HasFocus() abstract;
@@ -132,9 +133,9 @@ namespace OpenRCT2
 
             // Drawing
             virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() abstract;
-            virtual void DrawRainAnimation(
-                OpenRCT2::Drawing::IRainDrawer* rainDrawer, rct_drawpixelinfo* dpi,
-                OpenRCT2::Drawing::DrawRainFunc drawFunc) abstract;
+            virtual void DrawWeatherAnimation(
+                OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, rct_drawpixelinfo* dpi,
+                OpenRCT2::Drawing::DrawWeatherFunc drawFunc) abstract;
 
             // Text input
             virtual bool IsTextInputActive() abstract;

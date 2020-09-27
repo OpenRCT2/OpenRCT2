@@ -115,10 +115,10 @@ public:
             }
         }
 
-        int32_t scaleQuality = GetContext()->GetUiContext()->GetScaleQuality();
-        if (scaleQuality == SCALE_QUALITY_SMOOTH_NN)
+        ScaleQuality scaleQuality = GetContext()->GetUiContext()->GetScaleQuality();
+        if (scaleQuality == ScaleQuality::SmoothNearestNeighbour)
         {
-            scaleQuality = SCALE_QUALITY_LINEAR;
+            scaleQuality = ScaleQuality::Linear;
             smoothNN = true;
         }
         else
@@ -134,7 +134,7 @@ public:
             }
 
             char scaleQualityBuffer[4];
-            snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
+            snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", static_cast<int32_t>(scaleQuality));
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
             _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
             SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);

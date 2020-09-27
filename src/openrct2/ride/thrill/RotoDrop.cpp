@@ -204,7 +204,7 @@ static void paint_roto_drop_tower_section(
 /**
  * rct2: 0x00886074
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int32_t trackType)
 {
     switch (trackType)
     {

@@ -112,24 +112,24 @@ constexpr int32_t MAX_WH = 450;
 
 static rct_widget window_staff_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({  0, 43}, {    WW, WH - 43}, WWT_RESIZE,    1                                                 ), // tab content panel
-    MakeRemapWidget({  3, 17}, {    31,      27}, WWT_TAB,       1, SPR_TAB,         STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab
-    MakeRemapWidget({ 34, 17}, {    31,      27}, WWT_TAB,       1, SPR_TAB,         STR_STAFF_MECHANICS_TAB_TIP   ), // mechanics tab
-    MakeRemapWidget({ 65, 17}, {    31,      27}, WWT_TAB,       1, SPR_TAB,         STR_STAFF_SECURITY_TAB_TIP    ), // security guards tab
-    MakeRemapWidget({ 96, 17}, {    31,      27}, WWT_TAB,       1, SPR_TAB,         STR_STAFF_ENTERTAINERS_TAB_TIP), // entertainers tab
-    MakeWidget     ({  3, 72}, {WW - 6,     195}, WWT_SCROLL,    1, SCROLL_VERTICAL                                ), // staff list
-    MakeWidget     ({130, 58}, {    12,      12}, WWT_COLOURBTN, 1, STR_NONE,        STR_UNIFORM_COLOUR_TIP        ), // uniform colour picker
-    MakeWidget     ({165, 17}, {   145,      13}, WWT_BUTTON,    0, STR_NONE,        STR_HIRE_STAFF_TIP            ), // hire button
-    MakeWidget     ({243, 46}, {    24,      24}, WWT_FLATBTN,   1, SPR_DEMOLISH,    STR_QUICK_FIRE_STAFF          ), // quick fire staff
-    MakeWidget     ({267, 46}, {    24,      24}, WWT_FLATBTN,   1, SPR_PATROL_BTN,  STR_SHOW_PATROL_AREA_TIP      ), // show staff patrol area tool
-    MakeWidget     ({291, 46}, {    24,      24}, WWT_FLATBTN,   1, SPR_MAP,         STR_SHOW_STAFF_ON_MAP_TIP     ), // show staff on map button
+    MakeWidget({  0, 43}, {    WW, WH - 43}, WWT_RESIZE,    WindowColour::Secondary                                                 ), // tab content panel
+    MakeTab   ({  3, 17},                                                                             STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab
+    MakeTab   ({ 34, 17},                                                                             STR_STAFF_MECHANICS_TAB_TIP   ), // mechanics tab
+    MakeTab   ({ 65, 17},                                                                             STR_STAFF_SECURITY_TAB_TIP    ), // security guards tab
+    MakeTab   ({ 96, 17},                                                                             STR_STAFF_ENTERTAINERS_TAB_TIP), // entertainers tab
+    MakeWidget({  3, 72}, {WW - 6,     195}, WWT_SCROLL,    WindowColour::Secondary, SCROLL_VERTICAL                                ), // staff list
+    MakeWidget({130, 58}, {    12,      12}, WWT_COLOURBTN, WindowColour::Secondary, STR_NONE,        STR_UNIFORM_COLOUR_TIP        ), // uniform colour picker
+    MakeWidget({165, 17}, {   145,      13}, WWT_BUTTON,    WindowColour::Primary  , STR_NONE,        STR_HIRE_STAFF_TIP            ), // hire button
+    MakeWidget({243, 46}, {    24,      24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_DEMOLISH,    STR_QUICK_FIRE_STAFF          ), // quick fire staff
+    MakeWidget({267, 46}, {    24,      24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_PATROL_BTN,  STR_SHOW_PATROL_AREA_TIP      ), // show staff patrol area tool
+    MakeWidget({291, 46}, {    24,      24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_MAP,         STR_SHOW_STAFF_ON_MAP_TIP     ), // show staff on map button
     { WIDGETS_END },
 };
 
 static int32_t _windowStaffListHighlightedIndex;
 static int32_t _windowStaffListSelectedTab = WINDOW_STAFF_LIST_TAB_HANDYMEN;
 
-static uint8_t window_staff_list_get_random_entertainer_costume();
+static EntertainerCostume window_staff_list_get_random_entertainer_costume();
 
 struct staff_naming_convention
 {
@@ -192,7 +192,7 @@ void WindowStaffListRefresh()
     for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
         sprite_set_flashing(peep, false);
-        if (peep->StaffType != _windowStaffListSelectedTab)
+        if (static_cast<uint8_t>(peep->AssignedStaffType) != _windowStaffListSelectedTab)
             continue;
         sprite_set_flashing(peep, true);
 
@@ -230,11 +230,11 @@ static void window_staff_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         case WIDX_STAFF_LIST_HIRE_BUTTON:
         {
-            STAFF_TYPE staffType = static_cast<STAFF_TYPE>(_windowStaffListSelectedTab);
-            ENTERTAINER_COSTUME costume = ENTERTAINER_COSTUME_COUNT;
-            if (staffType == STAFF_TYPE_ENTERTAINER)
+            StaffType staffType = static_cast<StaffType>(_windowStaffListSelectedTab);
+            auto costume = EntertainerCostume::Count;
+            if (staffType == StaffType::Entertainer)
             {
-                costume = static_cast<ENTERTAINER_COSTUME>(window_staff_list_get_random_entertainer_costume());
+                costume = window_staff_list_get_random_entertainer_costume();
             }
             staff_hire_new_member(staffType, costume);
             break;
@@ -301,7 +301,8 @@ static void window_staff_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             window_staff_list_cancel_tools(w);
             break;
         case WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER:
-            window_dropdown_show_colour(w, widget, w->colours[1], staff_get_colour(_windowStaffListSelectedTab));
+            window_dropdown_show_colour(
+                w, widget, w->colours[1], staff_get_colour(static_cast<StaffType>(_windowStaffListSelectedTab)));
             break;
     }
 }
@@ -314,7 +315,7 @@ static void window_staff_list_dropdown(rct_window* w, rct_widgetindex widgetInde
 {
     if (widgetIndex == WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER && dropdownIndex != -1)
     {
-        auto action = StaffSetColourAction(_windowStaffListSelectedTab, dropdownIndex);
+        auto action = StaffSetColourAction(static_cast<StaffType>(_windowStaffListSelectedTab), dropdownIndex);
         GameActions::Execute(&action);
     }
 }
@@ -342,7 +343,7 @@ void window_staff_list_update(rct_window* w)
             {
                 sprite_set_flashing(peep, false);
 
-                if (peep->StaffType == _windowStaffListSelectedTab)
+                if (static_cast<uint8_t>(peep->AssignedStaffType) == _windowStaffListSelectedTab)
                 {
                     sprite_set_flashing(peep, true);
                 }
@@ -371,19 +372,19 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         if (footpathCoords.isNull())
             return;
 
-        bool isPatrolAreaSet = staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(selectedPeepType), footpathCoords);
+        bool isPatrolAreaSet = staff_is_patrol_area_set_for_type(static_cast<StaffType>(selectedPeepType), footpathCoords);
 
         Peep* closestPeep = nullptr;
         int32_t closestPeepDistance = std::numeric_limits<int32_t>::max();
 
         for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
-            if (peep->StaffType != selectedPeepType)
+            if (static_cast<uint8_t>(peep->AssignedStaffType) != selectedPeepType)
                 continue;
 
             if (isPatrolAreaSet)
             {
-                if (!(gStaffModes[peep->StaffId] & 2))
+                if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
                 {
                     continue;
                 }
@@ -414,8 +415,9 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         }
         else
         {
-            Formatter::Common().Add<rct_string_id>(StaffNamingConvention[selectedPeepType].plural);
-            context_show_error(STR_NO_THING_IN_PARK_YET, STR_NONE);
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(StaffNamingConvention[selectedPeepType].plural);
+            context_show_error(STR_NO_THING_IN_PARK_YET, STR_NONE, ft);
         }
     }
 }
@@ -529,7 +531,8 @@ void window_staff_list_invalidate(rct_window* w)
     if (tabIndex < 3)
     {
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
-        auto spriteIdPalette = SPRITE_ID_PALETTE_COLOUR_1(static_cast<uint32_t>(staff_get_colour(tabIndex)));
+        auto spriteIdPalette = SPRITE_ID_PALETTE_COLOUR_1(
+            static_cast<uint32_t>(staff_get_colour(static_cast<StaffType>(tabIndex))));
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = spriteIdPalette | IMAGE_TYPE_TRANSPARENT
             | SPR_PALETTE_BTN;
     }
@@ -713,20 +716,20 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
 
             auto ft = Formatter::Common();
             peep->FormatNameTo(ft);
-            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, nameColumnSize);
+            DrawTextEllipsised(dpi, { 0, y }, nameColumnSize, format, ft, COLOUR_BLACK);
 
             ft = Formatter::Common();
             peep->FormatActionTo(ft);
-            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { actionOffset, y }, actionColumnSize);
+            DrawTextEllipsised(dpi, { actionOffset, y }, actionColumnSize, format, ft, COLOUR_BLACK);
 
             // True if a patrol path is set for the worker
-            if (gStaffModes[peep->StaffId] & 2)
+            if (gStaffModes[peep->StaffId] == StaffMode::Patrol)
             {
                 gfx_draw_sprite(dpi, SPR_STAFF_PATROL_PATH, { nameColumnSize + 5, y }, 0);
             }
 
             auto staffOrderIcon_x = nameColumnSize + 20;
-            if (peep->StaffType != 3)
+            if (peep->AssignedStaffType != StaffType::Entertainer)
             {
                 auto staffOrders = peep->StaffOrders;
                 auto staffOrderSprite = staffOrderBaseSprites[_windowStaffListSelectedTab];
@@ -754,10 +757,10 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     }
 }
 
-static uint8_t window_staff_list_get_random_entertainer_costume()
+static EntertainerCostume window_staff_list_get_random_entertainer_costume()
 {
-    uint8_t result = ENTERTAINER_COSTUME_PANDA;
-    uint8_t costumeList[ENTERTAINER_COSTUME_COUNT];
+    auto result = EntertainerCostume::Panda;
+    EntertainerCostume costumeList[static_cast<uint8_t>(EntertainerCostume::Count)];
     int32_t numCostumes = staff_get_available_entertainer_costume_list(costumeList);
     if (numCostumes > 0)
     {

@@ -650,15 +650,13 @@ void CustomListView::PaintHeading(
     {
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_UP);
-        gfx_draw_string_right(
-            dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, pos + ScreenCoordsXY{ size.width - 1, 0 });
+        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::RIGHT);
     }
     else if (sortOrder == ColumnSortOrder::Descending)
     {
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_DOWN);
-        gfx_draw_string_right(
-            dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, pos + ScreenCoordsXY{ size.width - 1, 0 });
+        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::RIGHT);
     }
 }
 
@@ -670,7 +668,7 @@ void CustomListView::PaintCell(
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(text);
-    gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, pos, size.width);
+    DrawTextEllipsised(dpi, pos, size.width, stringId, ft, COLOUR_BLACK);
 }
 
 std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& pos)

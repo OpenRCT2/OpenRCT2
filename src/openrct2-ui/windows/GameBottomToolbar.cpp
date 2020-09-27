@@ -48,20 +48,20 @@ enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX
 
 static rct_widget window_game_bottom_toolbar_widgets[] =
 {
-    MakeWidget({  0,  0}, {142, 34}, WWT_IMGBTN,      0                                                    ), // Left outset panel
-    MakeWidget({  2,  2}, {138, 30}, WWT_IMGBTN,      0                                                    ), // Left inset panel
-    MakeWidget({  2,  1}, {138, 12}, WWT_FLATBTN,     0, 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
-    MakeWidget({  2, 11}, {138, 12}, WWT_FLATBTN,     0                                                    ), // Guests window
-    MakeWidget({  2, 21}, {138, 11}, WWT_FLATBTN,     0, 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
+    MakeWidget({  0,  0}, {142, 34}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Left outset panel
+    MakeWidget({  2,  2}, {138, 30}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Left inset panel
+    MakeWidget({  2,  1}, {138, 12}, WWT_FLATBTN,     WindowColour::Primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
+    MakeWidget({  2, 11}, {138, 12}, WWT_FLATBTN,     WindowColour::Primary                                                     ), // Guests window
+    MakeWidget({  2, 21}, {138, 11}, WWT_FLATBTN,     WindowColour::Primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
 
-    MakeWidget({142,  0}, {356, 34}, WWT_IMGBTN,      2                                                    ), // Middle outset panel
-    MakeWidget({144,  2}, {352, 30}, WWT_PLACEHOLDER, 2                                                    ), // Middle inset panel
-    MakeWidget({147,  5}, { 24, 24}, WWT_FLATBTN,     2, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
-    MakeWidget({469,  5}, { 24, 24}, WWT_FLATBTN,     2, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
+    MakeWidget({142,  0}, {356, 34}, WWT_IMGBTN,      WindowColour::Tertiary                                                    ), // Middle outset panel
+    MakeWidget({144,  2}, {352, 30}, WWT_PLACEHOLDER, WindowColour::Tertiary                                                    ), // Middle inset panel
+    MakeWidget({147,  5}, { 24, 24}, WWT_FLATBTN,     WindowColour::Tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
+    MakeWidget({469,  5}, { 24, 24}, WWT_FLATBTN,     WindowColour::Tertiary, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
 
-    MakeWidget({498,  0}, {142, 34}, WWT_IMGBTN,      0                                                    ), // Right outset panel
-    MakeWidget({500,  2}, {138, 30}, WWT_IMGBTN,      0                                                    ), // Right inset panel
-    MakeWidget({500,  2}, {138, 12}, WWT_FLATBTN,     0                                                    ), // Date
+    MakeWidget({498,  0}, {142, 34}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Right outset panel
+    MakeWidget({500,  2}, {138, 30}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Right inset panel
+    MakeWidget({500,  2}, {138, 12}, WWT_FLATBTN,     WindowColour::Primary                                                     ), // Date
     { WIDGETS_END },
 };
 
@@ -613,7 +613,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
 
             auto clipCoords = ScreenCoordsXY{ 10, 19 };
 
-            if (peep->AssignedPeepType == PeepType::Staff && peep->StaffType == STAFF_TYPE_ENTERTAINER)
+            if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
             {
                 clipCoords.y += 3;
             }

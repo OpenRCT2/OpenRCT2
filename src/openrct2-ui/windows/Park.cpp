@@ -80,25 +80,25 @@ enum WINDOW_PARK_WIDGET_IDX {
 
 #define MAIN_PARK_WIDGETS(WW) \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({  0, 43}, {WW, 131}, WWT_RESIZE, 1                                        ), /* tab content panel */ \
-    MakeRemapWidget({  3, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_PARK_ENTRANCE_TAB_TIP ), /* tab 1 */ \
-    MakeRemapWidget({ 34, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_PARK_RATING_TAB_TIP   ), /* tab 2 */ \
-    MakeRemapWidget({ 65, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_PARK_GUESTS_TAB_TIP   ), /* tab 3 */ \
-    MakeRemapWidget({ 96, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_PARK_PRICE_TAB_TIP    ), /* tab 4 */ \
-    MakeRemapWidget({127, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_PARK_STATS_TAB_TIP    ), /* tab 5 */ \
-    MakeRemapWidget({158, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_PARK_OBJECTIVE_TAB_TIP), /* tab 6 */ \
-    MakeRemapWidget({189, 17}, {31,  27}, WWT_TAB,    1, SPR_TAB,    STR_PARK_AWARDS_TAB_TIP   )  /* tab 7 */
+    MakeWidget({  0, 43}, {WW, 131}, WWT_RESIZE, WindowColour::Secondary), /* tab content panel */ \
+    MakeTab   ({  3, 17}, STR_PARK_ENTRANCE_TAB_TIP                     ), /* tab 1 */ \
+    MakeTab   ({ 34, 17}, STR_PARK_RATING_TAB_TIP                       ), /* tab 2 */ \
+    MakeTab   ({ 65, 17}, STR_PARK_GUESTS_TAB_TIP                       ), /* tab 3 */ \
+    MakeTab   ({ 96, 17}, STR_PARK_PRICE_TAB_TIP                        ), /* tab 4 */ \
+    MakeTab   ({127, 17}, STR_PARK_STATS_TAB_TIP                        ), /* tab 5 */ \
+    MakeTab   ({158, 17}, STR_PARK_OBJECTIVE_TAB_TIP                    ), /* tab 6 */ \
+    MakeTab   ({189, 17}, STR_PARK_AWARDS_TAB_TIP                       )  /* tab 7 */
 
 static rct_widget window_park_entrance_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    MakeWidget({  3,  46}, {202, 115}, WWT_VIEWPORT,      1                                                                      ), // viewport
-    MakeWidget({  3, 161}, {202,  11}, WWT_LABEL_CENTRED, 1                                                                      ), // status
-    MakeWidget({205,  49}, { 24,  24}, WWT_FLATBTN,       1, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
-    MakeWidget({205,  73}, { 24,  24}, WWT_FLATBTN,       1, SPR_BUY_LAND_RIGHTS,        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
-    MakeWidget({205,  97}, { 24,  24}, WWT_FLATBTN,       1, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP                  ), // locate
-    MakeWidget({205, 121}, { 24,  24}, WWT_FLATBTN,       1, SPR_RENAME,                 STR_NAME_PARK_TIP                       ), // rename
-    MakeWidget({210,  51}, { 14,  15}, WWT_IMGBTN,        1, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_PARK_TIP                      ),
-    MakeWidget({210,  66}, { 14,  14}, WWT_IMGBTN,        1, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_PARK_TIP                       ),
+    MakeWidget({  3,  46}, {202, 115}, WWT_VIEWPORT,      WindowColour::Secondary                                                                      ), // viewport
+    MakeWidget({  3, 161}, {202,  11}, WWT_LABEL_CENTRED, WindowColour::Secondary                                                                      ), // status
+    MakeWidget({205,  49}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
+    MakeWidget({205,  73}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
+    MakeWidget({205,  97}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP                  ), // locate
+    MakeWidget({205, 121}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_RENAME,                 STR_NAME_PARK_TIP                       ), // rename
+    MakeWidget({210,  51}, { 14,  15}, WWT_IMGBTN,        WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_PARK_TIP                      ),
+    MakeWidget({210,  66}, { 14,  14}, WWT_IMGBTN,        WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_PARK_TIP                       ),
     { WIDGETS_END },
 };
 
@@ -114,8 +114,8 @@ static rct_widget window_park_guests_widgets[] = {
 
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    MakeWidget        ({ 21, 50}, {126, 14}, WWT_LABEL,   1, STR_ADMISSION_PRICE),
-    MakeSpinnerWidgets({147, 50}, { 76, 14}, WWT_SPINNER, 1                     ), // Price (3 widgets)
+    MakeWidget        ({ 21, 50}, {126, 14}, WWT_LABEL,   WindowColour::Secondary, STR_ADMISSION_PRICE),
+    MakeSpinnerWidgets({147, 50}, { 76, 14}, WWT_SPINNER, WindowColour::Secondary                     ), // Price (3 widgets)
     { WIDGETS_END },
 };
 
@@ -126,7 +126,7 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    MakeWidget({7, 207}, {216, 14}, WWT_BUTTON, 1, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
+    MakeWidget({7, 207}, {216, 14}, WWT_BUTTON, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
     { WIDGETS_END },
 };
 
@@ -789,7 +789,7 @@ static void window_park_entrance_invalidate(rct_window* w)
         + widget_is_pressed(w, WIDX_OPEN_LIGHT);
 
     // Only allow closing of park for guest / rating objective
-    if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
+    if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
         w->disabled_widgets |= (1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT);
     else
         w->disabled_widgets &= ~((1 << WIDX_OPEN_OR_CLOSE) | (1 << WIDX_CLOSE_LIGHT) | (1 << WIDX_OPEN_LIGHT));
@@ -813,7 +813,7 @@ static void window_park_entrance_invalidate(rct_window* w)
     if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_PARK)
     {
         window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
-        if (gScenarioObjectiveType == OBJECTIVE_GUESTS_AND_RATING)
+        if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
         {
             window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_FLATBTN;
             window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_FLATBTN;
@@ -875,9 +875,9 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<rct_string_id>(park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
     labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
-    gfx_draw_string_centred_clipped(
-        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK,
-        w->windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width());
+    DrawTextEllipsised(
+        dpi, w->windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(), STR_BLACK_STRING, ft,
+        COLOUR_BLACK, TextAlignment::CENTRE);
 }
 
 /**
@@ -1055,17 +1055,21 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Graph border
     gfx_fill_rect_inset(
-        dpi, screenPos.x + widget->left + 4, screenPos.y + widget->top + 15, screenPos.x + widget->right - 4,
-        screenPos.y + widget->bottom - 4, w->colours[1], INSET_RECT_F_30);
+        dpi,
+        { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
+          screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
+        w->colours[1], INSET_RECT_F_30);
 
     // Y axis labels
     screenPos = screenPos + ScreenCoordsXY{ widget->left + 27, widget->top + 23 };
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 200;
-        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 10, 0 });
+        auto ft = Formatter();
+        ft.Add<uint32_t>(axisValue);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft, COLOUR_BLACK, TextAlignment::RIGHT);
         gfx_fill_rect_inset(
-            dpi, screenPos.x + 15, screenPos.y + 5, screenPos.x + w->width - 32, screenPos.y + 5, w->colours[2],
+            dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ w->width - 32, 5 } }, w->colours[2],
             INSET_RECT_FLAG_BORDER_INSET);
         screenPos.y += 20;
     }
@@ -1186,17 +1190,21 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Graph border
     gfx_fill_rect_inset(
-        dpi, screenPos.x + widget->left + 4, screenPos.y + widget->top + 15, screenPos.x + widget->right - 4,
-        screenPos.y + widget->bottom - 4, w->colours[1], INSET_RECT_F_30);
+        dpi,
+        { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
+          screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
+        w->colours[1], INSET_RECT_F_30);
 
     // Y axis labels
     screenPos = screenPos + ScreenCoordsXY{ widget->left + 27, widget->top + 23 };
     for (int i = 5; i >= 0; i--)
     {
         uint32_t axisValue = i * 1000;
-        gfx_draw_string_right(dpi, STR_GRAPH_AXIS_LABEL, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 10, 0 });
+        auto ft = Formatter();
+        ft.Add<uint32_t>(axisValue);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft, COLOUR_BLACK, TextAlignment::RIGHT);
         gfx_fill_rect_inset(
-            dpi, screenPos.x + 15, screenPos.y + 5, screenPos.x + w->width - 32, screenPos.y + 5, w->colours[2],
+            dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ w->width - 32, 5 } }, w->colours[2],
             INSET_RECT_FLAG_BORDER_INSET);
         screenPos.y += 20;
     }
@@ -1610,10 +1618,10 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Objective
     ft = Formatter::Common();
-    if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
+    if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
     {
         rct_string_id rideTypeString = STR_NONE;
-        auto rideTypeId = gScenarioObjectiveNumGuests;
+        auto rideTypeId = gScenarioObjective.RideId;
         if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
         {
             rideTypeString = RideTypeDescriptors[rideTypeId].Naming.Name;
@@ -1622,13 +1630,13 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     else
     {
-        ft.Add<uint16_t>(gScenarioObjectiveNumGuests);
-        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjectiveYear));
-        ft.Add<money32>(gScenarioObjectiveCurrency);
+        ft.Add<uint16_t>(gScenarioObjective.NumGuests);
+        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.Year));
+        ft.Add<money32>(gScenarioObjective.Currency);
     }
 
     screenCoords.y += gfx_draw_string_left_wrapped(
-        dpi, gCommonFormatArgs, screenCoords, 221, ObjectiveNames[gScenarioObjectiveType], COLOUR_BLACK);
+        dpi, gCommonFormatArgs, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], COLOUR_BLACK);
     screenCoords.y += 5;
 
     // Objective outcome

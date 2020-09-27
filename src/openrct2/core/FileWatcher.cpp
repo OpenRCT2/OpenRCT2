@@ -134,8 +134,8 @@ void FileWatcher::WatchDirectory()
     std::array<char, 1024> eventData;
     DWORD bytesReturned;
     while (ReadDirectoryChangesW(
-        _directoryHandle, eventData.data(), (DWORD)eventData.size(), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE, &bytesReturned,
-        nullptr, nullptr))
+        _directoryHandle, eventData.data(), static_cast<DWORD>(eventData.size()), TRUE, FILE_NOTIFY_CHANGE_LAST_WRITE,
+        &bytesReturned, nullptr, nullptr))
     {
         auto onFileChanged = OnFileChanged;
         if (onFileChanged)
@@ -144,7 +144,7 @@ void FileWatcher::WatchDirectory()
             size_t offset = 0;
             do
             {
-                notifyInfo = (FILE_NOTIFY_INFORMATION*)(eventData.data() + offset);
+                notifyInfo = reinterpret_cast<FILE_NOTIFY_INFORMATION*>(eventData.data() + offset);
                 offset += notifyInfo->NextEntryOffset;
 
                 std::wstring fileNameW(notifyInfo->FileName, notifyInfo->FileNameLength / sizeof(wchar_t));

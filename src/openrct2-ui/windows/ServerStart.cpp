@@ -50,18 +50,18 @@ static constexpr const int32_t WW = 300;
 static constexpr const int32_t WH = 154;
 
 static rct_widget window_server_start_widgets[] = {
-    MakeWidget        ({    0,       0}, { WW, WH}, WWT_FRAME,    0                                                        ), // panel / background
-    MakeWidget        ({    1,       1}, {298, 14}, WWT_CAPTION,  0, STR_START_SERVER,             STR_WINDOW_TITLE_TIP    ), // title bar
-    MakeWidget        ({WW-13,       2}, { 11, 12}, WWT_CLOSEBOX, 0, STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP    ), // close x button
-    MakeWidget        ({  120,      20}, {173, 13}, WWT_TEXT_BOX, 1                                                        ), // port text box
-    MakeWidget        ({  120,      36}, {173, 13}, WWT_TEXT_BOX, 1                                                        ), // name text box
-    MakeWidget        ({  120,      52}, {173, 13}, WWT_TEXT_BOX, 1                                                        ), // description text box
-    MakeWidget        ({  120,      68}, {173, 13}, WWT_TEXT_BOX, 1                                                        ), // greeting text box
-    MakeWidget        ({  120,      84}, {173, 13}, WWT_TEXT_BOX, 1                                                        ), // password text box
-    MakeSpinnerWidgets({  120,     100}, {173, 12}, WWT_SPINNER,  1, STR_SERVER_MAX_PLAYERS_VALUE                          ), // max players (3 widgets)
-    MakeWidget        ({    6,     117}, {287, 14}, WWT_CHECKBOX, 1, STR_ADVERTISE,                STR_ADVERTISE_SERVER_TIP), // advertise checkbox
-    MakeWidget        ({    6, WH-6-13}, {101, 14}, WWT_BUTTON,   1, STR_NEW_GAME                                          ), // start server button
-    MakeWidget        ({  112, WH-6-13}, {101, 14}, WWT_BUTTON,   1, STR_LOAD_GAME                                         ), // None
+    MakeWidget        ({    0,       0}, { WW, WH}, WWT_FRAME,    WindowColour::Primary                                                          ), // panel / background
+    MakeWidget        ({    1,       1}, {298, 14}, WWT_CAPTION,  WindowColour::Primary  , STR_START_SERVER,             STR_WINDOW_TITLE_TIP    ), // title bar
+    MakeWidget        ({WW-13,       2}, { 11, 12}, WWT_CLOSEBOX, WindowColour::Primary  , STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP    ), // close x button
+    MakeWidget        ({  120,      20}, {173, 13}, WWT_TEXT_BOX, WindowColour::Secondary                                                        ), // port text box
+    MakeWidget        ({  120,      36}, {173, 13}, WWT_TEXT_BOX, WindowColour::Secondary                                                        ), // name text box
+    MakeWidget        ({  120,      52}, {173, 13}, WWT_TEXT_BOX, WindowColour::Secondary                                                        ), // description text box
+    MakeWidget        ({  120,      68}, {173, 13}, WWT_TEXT_BOX, WindowColour::Secondary                                                        ), // greeting text box
+    MakeWidget        ({  120,      84}, {173, 13}, WWT_TEXT_BOX, WindowColour::Secondary                                                        ), // password text box
+    MakeSpinnerWidgets({  120,     100}, {173, 12}, WWT_SPINNER,  WindowColour::Secondary, STR_SERVER_MAX_PLAYERS_VALUE                          ), // max players (3 widgets)
+    MakeWidget        ({    6,     117}, {287, 14}, WWT_CHECKBOX, WindowColour::Secondary, STR_ADVERTISE,                STR_ADVERTISE_SERVER_TIP), // advertise checkbox
+    MakeWidget        ({    6, WH-6-13}, {101, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_NEW_GAME                                          ), // start server button
+    MakeWidget        ({  112, WH-6-13}, {101, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_LOAD_GAME                                         ), // None
     { WIDGETS_END },
 };
 

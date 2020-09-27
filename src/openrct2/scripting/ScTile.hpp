@@ -615,6 +615,35 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint8_t quadrant_get() const
+        {
+            auto el = _element->AsSmallScenery();
+            if (el != nullptr)
+                return el->GetSceneryQuadrant();
+            return 0;
+        }
+        void quadrant_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsSmallScenery();
+            if (el != nullptr)
+            {
+                el->SetSceneryQuadrant(value);
+                Invalidate();
+            }
+        }
+
+        uint8_t occupiedQuadrants_get() const
+        {
+            return _element->GetOccupiedQuadrants();
+        }
+        void occupiedQuadrants_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            _element->SetOccupiedQuadrants(value);
+            Invalidate();
+        }
+
         uint8_t primaryColour_get() const
         {
             switch (_element->GetType())
@@ -975,6 +1004,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(
                 ctx, &ScTileElement::clearanceHeight_get, &ScTileElement::clearanceHeight_set, "clearanceHeight");
             dukglue_register_property(ctx, &ScTileElement::direction_get, &ScTileElement::direction_set, "direction");
+            dukglue_register_property(
+                ctx, &ScTileElement::occupiedQuadrants_get, &ScTileElement::occupiedQuadrants_set, "occupiedQuadrants");
 
             // Some
             dukglue_register_property(ctx, &ScTileElement::object_get, &ScTileElement::object_set, "object");
@@ -1010,6 +1041,7 @@ namespace OpenRCT2::Scripting
 
             // Small Scenery only
             dukglue_register_property(ctx, &ScTileElement::age_get, &ScTileElement::age_set, "age");
+            dukglue_register_property(ctx, &ScTileElement::quadrant_get, &ScTileElement::quadrant_set, "quadrant");
 
             // Footpath only
             dukglue_register_property(ctx, &ScTileElement::railings_get, &ScTileElement::railings_set, "railings");

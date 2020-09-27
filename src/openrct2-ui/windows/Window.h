@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <openrct2-ui/input/KeyboardShortcuts.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
@@ -20,6 +21,7 @@ using scenarioselect_callback = void (*)(const utf8* path);
 struct Peep;
 struct TileElement;
 struct Vehicle;
+enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
 extern ScenerySelection gWindowSceneryTabSelections[];
@@ -62,7 +64,7 @@ rct_window* window_save_prompt_open();
 rct_window* window_server_list_open();
 rct_window* window_server_start_open();
 #endif
-rct_window* window_shortcut_change_open(int32_t selected_key, rct_string_id key_string_id);
+rct_window* window_shortcut_change_open(OpenRCT2::Input::Shortcut shortcut, rct_string_id key_string_id);
 rct_window* window_shortcut_keys_open();
 rct_window* window_staff_list_open();
 rct_window* window_staff_open(Peep* peep);
@@ -99,13 +101,13 @@ rct_window* window_install_track_open(const utf8* path);
 void window_guest_list_init_vars();
 void window_guest_list_refresh_list();
 rct_window* window_guest_list_open();
-rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index);
+rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t index);
 rct_window* window_staff_fire_prompt_open(Peep* peep);
 void window_title_editor_open(int32_t tab);
 void window_title_command_editor_open(struct TitleSequence* sequence, int32_t command, bool insert);
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
 
-rct_window* window_error_open(rct_string_id title, rct_string_id message);
+rct_window* window_error_open(rct_string_id title, rct_string_id message, const class Formatter& formatter);
 rct_window* window_error_open(const std::string_view& title, const std::string_view& message);
 struct TrackDesign;
 rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);

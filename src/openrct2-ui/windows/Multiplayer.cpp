@@ -58,14 +58,14 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 };
 
 #define MAIN_MULTIPLAYER_WIDGETS \
-    MakeWidget     ({  0,  0}, {340, 240}, WWT_FRAME,    0                                       ), /* panel / background */ \
-    MakeWidget     ({  1,  1}, {338,  14}, WWT_CAPTION,  0, STR_NONE,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
-    MakeWidget     ({327,  2}, { 11,  12}, WWT_CLOSEBOX, 0, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
-    MakeWidget     ({  0, 43}, {340, 197}, WWT_RESIZE,   1                                       ), /* content panel */ \
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_SHOW_SERVER_INFO_TIP), /* tab */ \
-    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_PLAYERS_TIP         ), /* tab */ \
-    MakeRemapWidget({ 65, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_GROUPS_TIP          ), /* tab */ \
-    MakeRemapWidget({ 96, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,     STR_OPTIONS_TIP         )  /* tab */
+    MakeWidget({  0,  0}, {340, 240}, WWT_FRAME,    WindowColour::Primary                                        ), /* panel / background */ \
+    MakeWidget({  1,  1}, {338,  14}, WWT_CAPTION,  WindowColour::Primary,  STR_NONE,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
+    MakeWidget({327,  2}, { 11,  12}, WWT_CLOSEBOX, WindowColour::Primary,  STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
+    MakeWidget({  0, 43}, {340, 197}, WWT_RESIZE,   WindowColour::Secondary                                      ), /* content panel */ \
+    MakeTab   ({  3, 17},                                                                STR_SHOW_SERVER_INFO_TIP), /* tab */ \
+    MakeTab   ({ 34, 17},                                                                STR_PLAYERS_TIP         ), /* tab */ \
+    MakeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ), /* tab */ \
+    MakeTab   ({ 96, 17},                                                                STR_OPTIONS_TIP         )  /* tab */
 
 static rct_widget window_multiplayer_information_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
@@ -74,32 +74,32 @@ static rct_widget window_multiplayer_information_widgets[] = {
 
 static rct_widget window_multiplayer_players_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
-    MakeWidget({  3, 46}, {173,  15}, WWT_TABLE_HEADER, 0, STR_PLAYER     ), // Player name
-    MakeWidget({176, 46}, { 83,  15}, WWT_TABLE_HEADER, 0, STR_GROUP      ), // Player name
-    MakeWidget({259, 46}, {100,  15}, WWT_TABLE_HEADER, 0, STR_LAST_ACTION), // Player name
-    MakeWidget({359, 46}, { 42,  15}, WWT_TABLE_HEADER, 0, STR_PING       ), // Player name
-    MakeWidget({  3, 60}, {334, 177}, WWT_SCROLL,       1, SCROLL_VERTICAL), // list
+    MakeWidget({  3, 46}, {173,  15}, WWT_TABLE_HEADER, WindowColour::Primary  , STR_PLAYER     ), // Player name
+    MakeWidget({176, 46}, { 83,  15}, WWT_TABLE_HEADER, WindowColour::Primary  , STR_GROUP      ), // Player name
+    MakeWidget({259, 46}, {100,  15}, WWT_TABLE_HEADER, WindowColour::Primary  , STR_LAST_ACTION), // Player name
+    MakeWidget({359, 46}, { 42,  15}, WWT_TABLE_HEADER, WindowColour::Primary  , STR_PING       ), // Player name
+    MakeWidget({  3, 60}, {334, 177}, WWT_SCROLL,       WindowColour::Secondary, SCROLL_VERTICAL), // list
     { WIDGETS_END }
 };
 
 static rct_widget window_multiplayer_groups_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
-    MakeWidget({141, 46}, {175,  12}, WWT_DROPDOWN, 1                    ), // default group
-    MakeWidget({305, 47}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH),
-    MakeWidget({ 11, 65}, { 92,  12}, WWT_BUTTON,   1, STR_ADD_GROUP     ), // add group button
-    MakeWidget({113, 65}, { 92,  12}, WWT_BUTTON,   1, STR_REMOVE_GROUP  ), // remove group button
-    MakeWidget({215, 65}, { 92,  12}, WWT_BUTTON,   1, STR_RENAME_GROUP  ), // rename group button
-    MakeWidget({ 72, 80}, {175,  12}, WWT_DROPDOWN, 1                    ), // selected group
-    MakeWidget({236, 81}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH),
-    MakeWidget({  3, 94}, {314, 207}, WWT_SCROLL,   1, SCROLL_VERTICAL   ), // permissions list
+    MakeWidget({141, 46}, {175,  12}, WWT_DROPDOWN, WindowColour::Secondary                    ), // default group
+    MakeWidget({305, 47}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
+    MakeWidget({ 11, 65}, { 92,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_ADD_GROUP     ), // add group button
+    MakeWidget({113, 65}, { 92,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_REMOVE_GROUP  ), // remove group button
+    MakeWidget({215, 65}, { 92,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_RENAME_GROUP  ), // rename group button
+    MakeWidget({ 72, 80}, {175,  12}, WWT_DROPDOWN, WindowColour::Secondary                    ), // selected group
+    MakeWidget({236, 81}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
+    MakeWidget({  3, 94}, {314, 207}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_VERTICAL   ), // permissions list
     { WIDGETS_END }
 };
 
 static rct_widget window_multiplayer_options_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
-    MakeWidget({3, 50}, {295, 12}, WWT_CHECKBOX, 1, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
-    MakeWidget({3, 64}, {295, 12}, WWT_CHECKBOX, 1, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
-    MakeWidget({3, 78}, {295, 12}, WWT_CHECKBOX, 1, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP),
+    MakeWidget({3, 50}, {295, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
+    MakeWidget({3, 64}, {295, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
+    MakeWidget({3, 78}, {295, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP),
     { WIDGETS_END }
 };
 
@@ -703,7 +703,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             {
                 ft.Add<rct_string_id>(STR_ACTION_NA);
             }
-            gfx_draw_string_left_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, { 256, screenCoords.y }, 100);
+            DrawTextEllipsised(dpi, { 256, screenCoords.y }, 100, STR_BLACK_STRING, ft, COLOUR_BLACK);
 
             // Draw ping
             lineCh = buffer;
@@ -914,9 +914,9 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
         auto ft = Formatter::Common();
         ft.Add<const char*>(buffer);
-        gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top },
-            widget->width() - 8);
+        DrawTextEllipsised(
+            dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
+            COLOUR_BLACK, TextAlignment::CENTRE);
     }
 
     auto screenPos = w->windowPos
@@ -941,9 +941,9 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
         auto ft = Formatter::Common();
         ft.Add<const char*>(buffer);
-        gfx_draw_string_centred_clipped(
-            dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top },
-            widget->width() - 8);
+        DrawTextEllipsised(
+            dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
+            COLOUR_BLACK, TextAlignment::CENTRE);
     }
 }
 
@@ -972,7 +972,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
             int32_t groupindex = network_get_group_index(_selectedGroup);
             if (groupindex != -1)
             {
-                if (network_can_perform_action(groupindex, i))
+                if (network_can_perform_action(groupindex, static_cast<NetworkPermission>(i)))
                 {
                     char* lineCh = buffer;
                     lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);

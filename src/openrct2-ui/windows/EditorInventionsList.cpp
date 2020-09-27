@@ -47,19 +47,19 @@ enum {
 
 static rct_widget window_editor_inventions_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({  0,  43}, {600, 357}, WWT_RESIZE,  1                                             ),
-    MakeRemapWidget({  3,  17}, { 31,  27}, WWT_TAB,     1, SPR_TAB                                    ),
-    MakeWidget     ({  4,  56}, {368, 161}, WWT_SCROLL,  1, SCROLL_VERTICAL                            ),
-    MakeWidget     ({  4, 231}, {368, 157}, WWT_SCROLL,  1, SCROLL_VERTICAL                            ),
-    MakeWidget     ({431, 106}, {114, 114}, WWT_FLATBTN, 1                                             ),
-    MakeWidget     ({375, 343}, {220,  14}, WWT_BUTTON,  1, STR_MOVE_ALL_TOP                           ),
-    MakeWidget     ({375, 358}, {220,  14}, WWT_BUTTON,  1, STR_MOVE_ALL_BOTTOM                        ),
-    MakeWidget     ({375, 373}, {220,  14}, WWT_BUTTON,  1, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
+    MakeWidget({  0,  43}, {600, 357}, WWT_RESIZE,  WindowColour::Secondary                                             ),
+    MakeTab   ({  3,  17}                                                                                               ),
+    MakeWidget({  4,  56}, {368, 161}, WWT_SCROLL,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
+    MakeWidget({  4, 231}, {368, 157}, WWT_SCROLL,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
+    MakeWidget({431, 106}, {114, 114}, WWT_FLATBTN, WindowColour::Secondary                                             ),
+    MakeWidget({375, 343}, {220,  14}, WWT_BUTTON,  WindowColour::Secondary, STR_MOVE_ALL_TOP                           ),
+    MakeWidget({375, 358}, {220,  14}, WWT_BUTTON,  WindowColour::Secondary, STR_MOVE_ALL_BOTTOM                        ),
+    MakeWidget({375, 373}, {220,  14}, WWT_BUTTON,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_inventions_list_drag_widgets[] = {
-    MakeWidget({0, 0}, {150, 14}, WWT_IMGBTN, 0),
+    MakeWidget({0, 0}, {150, 14}, WWT_IMGBTN, WindowColour::Primary),
     { WIDGETS_END }
 };
 
@@ -83,7 +83,7 @@ static void window_editor_inventions_list_drag_cursor(rct_window *w, rct_widgeti
 static void window_editor_inventions_list_drag_moved(rct_window* w, const ScreenCoordsXY& screenCoords);
 static void window_editor_inventions_list_drag_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_string_id window_editor_inventions_list_prepare_name(const ResearchItem * researchItem, bool withGap);
+static std::pair<rct_string_id, Formatter> window_editor_inventions_list_prepare_name(const ResearchItem * researchItem, bool withGap);
 
 // 0x0098177C
 static rct_window_event_list window_editor_inventions_list_events = {
@@ -610,8 +610,8 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     screenPos = w->windowPos + ScreenCoordsXY{ widget->midX() + 1, widget->bottom + 3 };
     width = w->width - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
 
-    rct_string_id drawString = window_editor_inventions_list_prepare_name(researchItem, false);
-    gfx_draw_string_centred_clipped(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
+    auto [drawString, ft] = window_editor_inventions_list_prepare_name(researchItem, false);
+    DrawTextEllipsised(dpi, screenPos, width, drawString, ft, COLOUR_BLACK, TextAlignment::CENTRE);
     screenPos.y += 15;
 
     // Item category
@@ -816,14 +816,14 @@ static void window_editor_inventions_list_drag_moved(rct_window* w, const Screen
  */
 static void window_editor_inventions_list_drag_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    rct_string_id drawString;
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 0, 2 };
 
-    drawString = window_editor_inventions_list_prepare_name(&_editorInventionsListDraggedItem, true);
-    gfx_draw_string_left(dpi, drawString, gCommonFormatArgs, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, screenCoords);
+    auto [drawString, ft] = window_editor_inventions_list_prepare_name(&_editorInventionsListDraggedItem, true);
+    DrawTextBasic(dpi, screenCoords, drawString, ft, COLOUR_BLACK | COLOUR_FLAG_OUTLINE);
 }
 
-static rct_string_id window_editor_inventions_list_prepare_name(const ResearchItem* researchItem, bool withGap)
+static std::pair<rct_string_id, Formatter> window_editor_inventions_list_prepare_name(
+    const ResearchItem* researchItem, bool withGap)
 {
     rct_string_id drawString;
     rct_string_id stringId = researchItem->GetName();
@@ -843,7 +843,7 @@ static rct_string_id window_editor_inventions_list_prepare_name(const ResearchIt
         ft.Add<rct_string_id>(stringId);
     }
 
-    return drawString;
+    return std::make_pair(drawString, ft);
 }
 
 #pragma endregion

@@ -194,11 +194,11 @@ rct_window* window_create_auto_pos(
     auto screenHeight = uiContext->GetHeight();
 
     // Place window in an empty corner of the screen
-    const std::array cornerPositions = {
-        ScreenCoordsXY{ 0, 30 },                                          // topLeft
-        ScreenCoordsXY{ screenWidth - width, 30 },                        // topRight
-        ScreenCoordsXY{ 0, screenHeight - 34 - height },                  // bottomLeft
-        ScreenCoordsXY{ screenWidth - width, screenHeight - 34 - height } // bottomRight
+    const ScreenCoordsXY cornerPositions[] = {
+        { 0, 30 },                                          // topLeft
+        { screenWidth - width, 30 },                        // topRight
+        { 0, screenHeight - 34 - height },                  // bottomLeft
+        { screenWidth - width, screenHeight - 34 - height } // bottomRight
     };
 
     for (const auto& cornerPos : cornerPositions)
@@ -212,14 +212,16 @@ rct_window* window_create_auto_pos(
     {
         if (w->flags & WF_STICK_TO_BACK)
             continue;
-        const std::array offsets = { ScreenCoordsXY{ w->width + 2, 0 },
-                                     ScreenCoordsXY{ -w->width - 2, 0 },
-                                     ScreenCoordsXY{ 0, w->height + 2 },
-                                     ScreenCoordsXY{ 0, -w->height - 2 },
-                                     ScreenCoordsXY{ w->width + 2, -w->height - 2 },
-                                     ScreenCoordsXY{ -w->width - 2, -w->height - 2 },
-                                     ScreenCoordsXY{ w->width + 2, w->height + 2 },
-                                     ScreenCoordsXY{ -w->width - 2, w->height + 2 } };
+
+        const ScreenCoordsXY offsets[] = { { w->width + 2, 0 },
+                                           { -w->width - 2, 0 },
+                                           { 0, w->height + 2 },
+                                           { 0, -w->height - 2 },
+                                           { w->width + 2, -w->height - 2 },
+                                           { -w->width - 2, -w->height - 2 },
+                                           { w->width + 2, w->height + 2 },
+                                           { -w->width - 2, w->height + 2 } };
+
         for (const auto& offset : offsets)
         {
             auto screenPos = w->windowPos + offset;
@@ -236,10 +238,12 @@ rct_window* window_create_auto_pos(
             continue;
 
         // clang-format off
-        const std::array offsets = { ScreenCoordsXY{ w->width + 2, 0 },
-                                     ScreenCoordsXY{ -w->width - 2, 0 },
-                                     ScreenCoordsXY{ 0, w->height + 2 },
-                                     ScreenCoordsXY{ 0, -w->height - 2 } };
+        const ScreenCoordsXY offsets[] = {
+            { w->width + 2, 0 },
+            { -w->width - 2, 0 },
+            { 0, w->height + 2 },
+            { 0, -w->height - 2 }
+        };
         // clang-format on
 
         for (const auto& offset : offsets)

@@ -34,6 +34,9 @@
     #ifndef SHUT_RD
         #define SHUT_RD SD_RECEIVE
     #endif
+    #ifndef SHUT_WR
+        #define SHUT_WR SD_SEND
+    #endif
     #ifndef SHUT_RDWR
         #define SHUT_RDWR SD_BOTH
     #endif
@@ -67,8 +70,56 @@
 
 constexpr auto CONNECT_TIMEOUT = std::chrono::milliseconds(3000);
 
+// RAII WSA initialisation needed for Windows
 #    ifdef _WIN32
-static bool _wsaInitialised = false;
+class WSA
+{
+private:
+    bool _isInitialised{};
+
+public:
+    bool IsInitialised() const
+    {
+        return _isInitialised;
+    }
+
+    bool Initialise()
+    {
+        if (!_isInitialised)
+        {
+            log_verbose("WSAStartup()");
+            WSADATA wsa_data;
+            if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0)
+            {
+                log_error("Unable to initialise winsock.");
+                return false;
+            }
+            _isInitialised = true;
+        }
+        return true;
+    }
+
+    ~WSA()
+    {
+        if (_isInitialised)
+        {
+            log_verbose("WSACleanup()");
+            WSACleanup();
+            _isInitialised = false;
+        }
+    }
+};
+
+static bool InitialiseWSA()
+{
+    static WSA wsa;
+    return wsa.Initialise();
+}
+#    else
+static bool InitialiseWSA()
+{
+    return true;
+}
 #    endif
 
 class SocketException : public std::runtime_error
@@ -230,6 +281,14 @@ public:
         return _error.empty() ? nullptr : _error.c_str();
     }
 
+    void SetNoDelay(bool noDelay) override
+    {
+        if (_socket != INVALID_SOCKET)
+        {
+            SetOption(_socket, IPPROTO_TCP, TCP_NODELAY, noDelay);
+        }
+    }
+
     void Listen(uint16_t port) override
     {
         Listen("", port);
@@ -331,7 +390,7 @@ public:
                 int32_t rc = getnameinfo(
                     reinterpret_cast<struct sockaddr*>(&client_addr), client_len, hostName, sizeof(hostName), nullptr, 0,
                     NI_NUMERICHOST | NI_NUMERICSERV);
-                SetOption(socket, IPPROTO_TCP, TCP_NODELAY, true);
+                SetNoDelay(true);
 
                 if (rc == 0)
                 {
@@ -348,7 +407,7 @@ public:
 
     void Connect(const std::string& address, uint16_t port) override
     {
-        if (_status != SOCKET_STATUS_CLOSED)
+        if (_status != SOCKET_STATUS_CLOSED && _status != SOCKET_STATUS_WAITING)
         {
             throw std::runtime_error("Socket not closed.");
         }
@@ -372,7 +431,7 @@ public:
                 throw SocketException("Unable to create socket.");
             }
 
-            SetOption(_socket, IPPROTO_TCP, TCP_NODELAY, true);
+            SetNoDelay(true);
             if (!SetNonBlocking(_socket, true))
             {
                 throw SocketException("Failed to set non-blocking mode.");
@@ -445,6 +504,11 @@ public:
             throw std::runtime_error("Socket not closed.");
         }
 
+        // When connect is called, the status is set to resolving, but we want to make sure
+        // the status is changed before this async method exits. Otherwise, the consumer
+        // might think the status has closed before it started to connect.
+        _status = SOCKET_STATUS_WAITING;
+
         auto saddress = std::string(address);
         std::promise<void> barrier;
         _connectFuture = barrier.get_future();
@@ -462,6 +526,14 @@ public:
             },
             std::move(barrier));
         thread.detach();
+    }
+
+    void Finish() override
+    {
+        if (_status == SOCKET_STATUS_CONNECTED)
+        {
+            shutdown(_socket, SHUT_WR);
+        }
     }
 
     void Disconnect() override
@@ -494,7 +566,7 @@ public:
         return totalSent;
     }
 
-    NETWORK_READPACKET ReceiveData(void* buffer, size_t size, size_t* sizeReceived) override
+    NetworkReadPacket ReceiveData(void* buffer, size_t size, size_t* sizeReceived) override
     {
         if (_status != SOCKET_STATUS_CONNECTED)
         {
@@ -505,7 +577,7 @@ public:
         if (readBytes == 0)
         {
             *sizeReceived = 0;
-            return NETWORK_READPACKET_DISCONNECTED;
+            return NetworkReadPacket::Disconnected;
         }
         else if (readBytes == SOCKET_ERROR)
         {
@@ -524,17 +596,17 @@ public:
 #    endif // _WIN32
             if (LAST_SOCKET_ERROR() != EWOULDBLOCK)
             {
-                return NETWORK_READPACKET_DISCONNECTED;
+                return NetworkReadPacket::Disconnected;
             }
             else
             {
-                return NETWORK_READPACKET_NO_DATA;
+                return NetworkReadPacket::NoData;
             }
         }
         else
         {
             *sizeReceived = readBytes;
-            return NETWORK_READPACKET_SUCCESS;
+            return NetworkReadPacket::Success;
         }
     }
 
@@ -720,7 +792,7 @@ public:
         return totalSent;
     }
 
-    NETWORK_READPACKET ReceiveData(
+    NetworkReadPacket ReceiveData(
         void* buffer, size_t size, size_t* sizeReceived, std::unique_ptr<INetworkEndpoint>* sender) override
     {
         sockaddr_in senderAddr{};
@@ -736,7 +808,7 @@ public:
         if (readBytes <= 0)
         {
             *sizeReceived = 0;
-            return NETWORK_READPACKET_NO_DATA;
+            return NetworkReadPacket::NoData;
         }
         else
         {
@@ -745,7 +817,7 @@ public:
             {
                 *sender = std::make_unique<NetworkEndpoint>(reinterpret_cast<sockaddr*>(&senderAddr), senderAddrLen);
             }
-            return NETWORK_READPACKET_SUCCESS;
+            return NetworkReadPacket::Success;
         }
     }
 
@@ -811,50 +883,23 @@ private:
     }
 };
 
-bool InitialiseWSA()
-{
-#    ifdef _WIN32
-    if (!_wsaInitialised)
-    {
-        log_verbose("Initialising WSA");
-        WSADATA wsa_data;
-        if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0)
-        {
-            log_error("Unable to initialise winsock.");
-            return false;
-        }
-        _wsaInitialised = true;
-    }
-    return _wsaInitialised;
-#    else
-    return true;
-#    endif
-}
-
-void DisposeWSA()
-{
-#    ifdef _WIN32
-    if (_wsaInitialised)
-    {
-        WSACleanup();
-        _wsaInitialised = false;
-    }
-#    endif
-}
-
 std::unique_ptr<ITcpSocket> CreateTcpSocket()
 {
+    InitialiseWSA();
     return std::make_unique<TcpSocket>();
 }
 
 std::unique_ptr<IUdpSocket> CreateUdpSocket()
 {
+    InitialiseWSA();
     return std::make_unique<UdpSocket>();
 }
 
 #    ifdef _WIN32
 static std::vector<INTERFACE_INFO> GetNetworkInterfaces()
 {
+    InitialiseWSA();
+
     int sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock == -1)
     {
@@ -870,8 +915,8 @@ static std::vector<INTERFACE_INFO> GetNetworkInterfaces()
     {
         interfaces.resize(capacity);
         if (WSAIoctl(
-                sock, SIO_GET_INTERFACE_LIST, nullptr, 0, interfaces.data(), (DWORD)(capacity * sizeof(INTERFACE_INFO)), &len,
-                nullptr, nullptr)
+                sock, SIO_GET_INTERFACE_LIST, nullptr, 0, interfaces.data(),
+                static_cast<DWORD>(capacity * sizeof(INTERFACE_INFO)), &len, nullptr, nullptr)
             == 0)
         {
             break;
@@ -904,9 +949,10 @@ std::vector<std::unique_ptr<INetworkEndpoint>> GetBroadcastAddresses()
         // iiBroadcast is unusable, because it always seems to be set to 255.255.255.255.
         sockaddr_storage address{};
         memcpy(&address, &ifo.iiAddress.Address, sizeof(sockaddr));
-        ((sockaddr_in*)&address)->sin_addr.s_addr = ifo.iiAddress.AddressIn.sin_addr.s_addr
+        (reinterpret_cast<sockaddr_in*>(&address))->sin_addr.s_addr = ifo.iiAddress.AddressIn.sin_addr.s_addr
             | ~ifo.iiNetmask.AddressIn.sin_addr.s_addr;
-        baddresses.push_back(std::make_unique<NetworkEndpoint>((const sockaddr*)&address, (socklen_t)sizeof(sockaddr)));
+        baddresses.push_back(std::make_unique<NetworkEndpoint>(
+            reinterpret_cast<const sockaddr*>(&address), static_cast<socklen_t>(sizeof(sockaddr))));
     }
 #    else
     int sock = socket(AF_INET, SOCK_DGRAM, 0);

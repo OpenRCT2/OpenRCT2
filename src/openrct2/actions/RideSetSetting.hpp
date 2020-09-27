@@ -32,7 +32,7 @@ DEFINE_GAME_ACTION(RideSetSettingAction, GAME_COMMAND_SET_RIDE_SETTING, GameActi
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _setting{ 0 };
+    RideSetSetting _setting{ 0 };
     uint8_t _value{ 0 };
 
 public:
@@ -41,7 +41,7 @@ public:
     }
     RideSetSettingAction(ride_id_t rideIndex, RideSetSetting setting, uint8_t value)
         : _rideIndex(rideIndex)
-        , _setting(static_cast<uint8_t>(setting))
+        , _setting(setting)
         , _value(value)
     {
     }
@@ -74,7 +74,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
         }
 
-        switch (static_cast<RideSetSetting>(_setting))
+        switch (_setting)
         {
             case RideSetSetting::Mode:
                 if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
@@ -162,7 +162,7 @@ public:
                 }
                 break;
             default:
-                log_warning("Invalid RideSetSetting: %u", _setting);
+                log_warning("Invalid RideSetSetting: %u", static_cast<uint8_t>(_setting));
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
                 break;
         }
@@ -179,7 +179,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_OPERATING_MODE);
         }
 
-        switch (static_cast<RideSetSetting>(_setting))
+        switch (_setting)
         {
             case RideSetSetting::Mode:
                 invalidate_test_results(ride);

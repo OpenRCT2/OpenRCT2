@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if !defined(DISABLE_NETWORK) && defined(_WIN32)
+#if !defined(DISABLE_NETWORK) && defined(_WIN32) && (!defined(_WIN32_WINNT) || _WIN32_WINNT >= 0x0600)
 
 #    include "../platform/Platform2.h"
 #    include "Crypt.h"
@@ -24,7 +24,7 @@
 #include <windows.h>
 #include <wincrypt.h>
 #include <bcrypt.h>
-#define NT_SUCCESS(Status) (((NTSTATUS)(Status)) >= 0)
+constexpr bool NT_SUCCESS(NTSTATUS status) {return status >= 0;}
 // clang-format on
 
 using namespace Crypt;
@@ -85,7 +85,7 @@ public:
 
     TBase* Update(const void* data, size_t dataLen) override
     {
-        auto status = BCryptHashData(_hHash, (PBYTE)data, (ULONG)dataLen, 0);
+        auto status = BCryptHashData(_hHash, reinterpret_cast<PBYTE>(const_cast<void*>(data)), static_cast<ULONG>(dataLen), 0);
         CngThrowOnBadStatus("BCryptHashData", status);
         return this;
     }
@@ -93,7 +93,7 @@ public:
     typename TBase::Result Finish() override
     {
         typename TBase::Result result;
-        auto status = BCryptFinishHash(_hHash, result.data(), (ULONG)result.size(), 0);
+        auto status = BCryptFinishHash(_hHash, result.data(), static_cast<ULONG>(result.size()), 0);
         CngThrowOnBadStatus("BCryptFinishHash", status);
         return result;
     }
@@ -108,11 +108,12 @@ private:
         // Calculate the size of the buffer to hold the hash object
         DWORD cbHashObject{};
         DWORD cbData{};
-        status = BCryptGetProperty(_hAlg, BCRYPT_OBJECT_LENGTH, (PBYTE)&cbHashObject, sizeof(DWORD), &cbData, 0);
+        status = BCryptGetProperty(
+            _hAlg, BCRYPT_OBJECT_LENGTH, reinterpret_cast<PBYTE>(&cbHashObject), sizeof(DWORD), &cbData, 0);
         CngThrowOnBadStatus("BCryptGetProperty", status);
 
         // Create a hash
-        _pbHashObject = (PBYTE)HeapAlloc(GetProcessHeap(), 0, cbHashObject);
+        _pbHashObject = reinterpret_cast<PBYTE>(HeapAlloc(GetProcessHeap(), 0, cbHashObject));
         ThrowBadAllocOnNull(_pbHashObject);
         status = BCryptCreateHash(_hAlg, &_hHash, _pbHashObject, cbHashObject, nullptr, 0, 0);
         CngThrowOnBadStatus("BCryptCreateHash", status);
@@ -138,14 +139,14 @@ private:
     template<typename T> T Read(std::istream& stream)
     {
         T value;
-        stream.read((char*)&value, sizeof(T));
+        stream.read(reinterpret_cast<char*>(&value), sizeof(T));
         return value;
     }
 
     template<typename T> std::vector<T> Read(std::istream& stream, size_t count)
     {
         std::vector<T> values(count);
-        stream.read((char*)values.data(), sizeof(T) * count);
+        stream.read(reinterpret_cast<char*>(values.data()), sizeof(T) * count);
         return values;
     }
 
@@ -324,7 +325,7 @@ private:
         static RsaKeyParams FromBlob(const std::vector<uint8_t>& blob)
         {
             RsaKeyParams result;
-            const auto& header = *((BCRYPT_RSAKEY_BLOB*)blob.data());
+            const auto& header = *(reinterpret_cast<const BCRYPT_RSAKEY_BLOB*>(blob.data()));
             size_t offset = sizeof(BCRYPT_RSAKEY_BLOB);
             result.Exponent = ReadBytes(blob, offset, header.cbPublicExp);
             result.Modulus = ReadBytes(blob, offset, header.cbModulus);
@@ -347,13 +348,13 @@ private:
         {
             auto magic = GetMagic();
             std::vector<uint8_t> blob(sizeof(BCRYPT_RSAKEY_BLOB));
-            auto& header = *((BCRYPT_RSAKEY_BLOB*)blob.data());
+            auto& header = *(reinterpret_cast<BCRYPT_RSAKEY_BLOB*>(blob.data()));
             header.Magic = magic;
-            header.BitLength = (ULONG)(Modulus.size() * 8);
-            header.cbPublicExp = (ULONG)Exponent.size();
-            header.cbModulus = (ULONG)Modulus.size();
-            header.cbPrime1 = (ULONG)Prime1.size();
-            header.cbPrime2 = (ULONG)Prime2.size();
+            header.BitLength = static_cast<ULONG>(Modulus.size() * 8);
+            header.cbPublicExp = static_cast<ULONG>(Exponent.size());
+            header.cbModulus = static_cast<ULONG>(Modulus.size());
+            header.cbPrime1 = static_cast<ULONG>(Prime1.size());
+            header.cbPrime2 = static_cast<ULONG>(Prime2.size());
 
             WriteBytes(blob, Exponent);
             WriteBytes(blob, Modulus);
@@ -515,7 +516,7 @@ private:
         Reset();
         auto blob = params.ToBlob();
         _keyBlobType = params.GetMagic() == BCRYPT_RSAFULLPRIVATE_MAGIC ? BCRYPT_RSAFULLPRIVATE_BLOB : BCRYPT_RSAPUBLIC_BLOB;
-        auto status = BCryptImportKeyPair(_hAlg, NULL, _keyBlobType, &_hKey, blob.data(), (ULONG)blob.size(), 0);
+        auto status = BCryptImportKeyPair(_hAlg, NULL, _keyBlobType, &_hKey, blob.data(), static_cast<ULONG>(blob.size()), 0);
         CngThrowOnBadStatus("BCryptImportKeyPair", status);
     }
 
@@ -569,12 +570,12 @@ private:
     {
         DWORD flags = CRYPT_STRING_BASE64 | CRYPT_STRING_NOCR;
         DWORD chString{};
-        if (!CryptBinaryToStringA(input.data(), (DWORD)input.size(), flags, NULL, &chString))
+        if (!CryptBinaryToStringA(input.data(), static_cast<DWORD>(input.size()), flags, NULL, &chString))
         {
             throw std::runtime_error("CryptBinaryToStringA failed");
         }
         std::string result(chString, 0);
-        if (!CryptBinaryToStringA(input.data(), (DWORD)input.size(), flags, result.data(), &chString))
+        if (!CryptBinaryToStringA(input.data(), static_cast<DWORD>(input.size()), flags, result.data(), &chString))
         {
             throw std::runtime_error("CryptBinaryToStringA failed");
         }
@@ -588,12 +589,14 @@ private:
     static std::vector<uint8_t> DecodeBase64(const std::string_view& input)
     {
         DWORD cbBinary{};
-        if (!CryptStringToBinaryA(input.data(), (DWORD)input.size(), CRYPT_STRING_BASE64, NULL, &cbBinary, NULL, NULL))
+        if (!CryptStringToBinaryA(
+                input.data(), static_cast<DWORD>(input.size()), CRYPT_STRING_BASE64, NULL, &cbBinary, NULL, NULL))
         {
             throw std::runtime_error("CryptStringToBinaryA failed");
         }
         std::vector<uint8_t> result(cbBinary);
-        if (!CryptStringToBinaryA(input.data(), (DWORD)input.size(), CRYPT_STRING_BASE64, result.data(), &cbBinary, NULL, NULL))
+        if (!CryptStringToBinaryA(
+                input.data(), static_cast<DWORD>(input.size()), CRYPT_STRING_BASE64, result.data(), &cbBinary, NULL, NULL))
         {
             throw std::runtime_error("CryptStringToBinaryA failed");
         }
@@ -614,7 +617,7 @@ public:
             BCRYPT_PKCS1_PADDING_INFO paddingInfo{ BCRYPT_SHA256_ALGORITHM };
             auto status = BCryptSignHash(hKey, &paddingInfo, pbHash, cbHash, NULL, 0, &cbSignature, BCRYPT_PAD_PKCS1);
             CngThrowOnBadStatus("BCryptSignHash", status);
-            pbSignature = (PBYTE)HeapAlloc(GetProcessHeap(), 0, cbSignature);
+            pbSignature = reinterpret_cast<PBYTE>(HeapAlloc(GetProcessHeap(), 0, cbSignature));
             ThrowBadAllocOnNull(pbSignature);
             status = BCryptSignHash(
                 hKey, &paddingInfo, pbHash, cbHash, pbSignature, cbSignature, &cbSignature, BCRYPT_PAD_PKCS1);
@@ -653,8 +656,8 @@ private:
 
     static std::tuple<DWORD, PBYTE> ToHeap(const void* data, size_t dataLen)
     {
-        auto cbHash = (DWORD)dataLen;
-        auto pbHash = (PBYTE)HeapAlloc(GetProcessHeap(), 0, dataLen);
+        auto cbHash = static_cast<DWORD>(dataLen);
+        auto pbHash = reinterpret_cast<PBYTE>(HeapAlloc(GetProcessHeap(), 0, dataLen));
         ThrowBadAllocOnNull(pbHash);
         std::memcpy(pbHash, data, dataLen);
         return std::make_tuple(cbHash, pbHash);

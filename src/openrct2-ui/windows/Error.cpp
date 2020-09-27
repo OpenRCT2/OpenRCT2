@@ -23,7 +23,7 @@ enum {
 };
 
 static rct_widget window_error_widgets[] = {
-    MakeWidget({0, 0}, {200, 42}, WWT_IMGBTN, 0),
+    MakeWidget({0, 0}, {200, 42}, WWT_IMGBTN, WindowColour::Primary),
     { WIDGETS_END }
 };
 
@@ -72,10 +72,10 @@ static uint16_t _window_error_num_lines;
  * bx: title
  * dx: message
  */
-rct_window* window_error_open(rct_string_id title, rct_string_id message)
+rct_window* window_error_open(rct_string_id title, rct_string_id message, const Formatter& args)
 {
-    auto titlez = format_string(title, gCommonFormatArgs);
-    auto messagez = format_string(message, gCommonFormatArgs);
+    auto titlez = format_string(title, args.Data());
+    auto messagez = format_string(message, args.Data());
     return window_error_open(titlez, messagez);
 }
 

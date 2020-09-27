@@ -33,6 +33,8 @@
 #    include "ScObject.hpp"
 #    include "ScPark.hpp"
 #    include "ScRide.hpp"
+#    include "ScScenario.hpp"
+#    include "ScSocket.hpp"
 #    include "ScTile.hpp"
 
 #    include <iostream>
@@ -41,7 +43,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 1;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 7;
 
 struct ExpressionStringifier final
 {
@@ -368,7 +370,7 @@ ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& en
 
 void ScriptEngine::Initialise()
 {
-    auto ctx = (duk_context*)_context;
+    auto ctx = static_cast<duk_context*>(_context);
     ScCheats::Register(ctx);
     ScConfiguration::Register(ctx);
     ScConsole::Register(ctx);
@@ -393,6 +395,12 @@ void ScriptEngine::Initialise()
     ScVehicle::Register(ctx);
     ScPeep::Register(ctx);
     ScGuest::Register(ctx);
+#    ifndef DISABLE_NETWORK
+    ScSocket::Register(ctx);
+    ScListener::Register(ctx);
+#    endif
+    ScScenario::Register(ctx);
+    ScScenarioObjective::Register(ctx);
     ScStaff::Register(ctx);
 
     dukglue_register_global(ctx, std::make_shared<ScCheats>(), "cheats");
@@ -402,6 +410,7 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
     dukglue_register_global(ctx, std::make_shared<ScPark>(), "park");
+    dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
 
     _initialised = true;
     _pluginsLoaded = false;
@@ -479,6 +488,7 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
     if (plugin->HasStarted())
     {
         RemoveCustomGameActions(plugin);
+        RemoveSockets(plugin);
         _hookEngine.UnsubscribeAll(plugin);
         for (auto callback : _pluginStoppedSubscriptions)
         {
@@ -640,6 +650,7 @@ void ScriptEngine::Update()
         }
     }
 
+    UpdateSockets();
     ProcessREPL();
 }
 
@@ -941,25 +952,84 @@ public:
 };
 
 const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
+    { "balloonpress", GAME_COMMAND_BALLOON_PRESS },
+    { "bannerplace", GAME_COMMAND_PLACE_BANNER },
+    { "bannerremove", GAME_COMMAND_REMOVE_BANNER },
+    { "bannersetcolour", GAME_COMMAND_SET_BANNER_COLOUR },
+    { "bannersetname", GAME_COMMAND_SET_BANNER_NAME },
+    { "bannersetstyle", GAME_COMMAND_SET_BANNER_STYLE },
+    { "clearscenery", GAME_COMMAND_CLEAR_SCENERY },
+    { "climateset", GAME_COMMAND_SET_CLIMATE },
+    { "footpathplace", GAME_COMMAND_PLACE_PATH },
+    { "footpathplacefromtrack", GAME_COMMAND_PLACE_PATH_FROM_TRACK },
+    { "footpathremove", GAME_COMMAND_REMOVE_PATH },
+    { "footpathsceneryplace", GAME_COMMAND_PLACE_FOOTPATH_SCENERY },
+    { "footpathsceneryremove", GAME_COMMAND_REMOVE_FOOTPATH_SCENERY },
+    { "guestsetflags", GAME_COMMAND_GUEST_SET_FLAGS },
     { "guestsetname", GAME_COMMAND_SET_GUEST_NAME },
+    { "landbuyrights", GAME_COMMAND_BUY_LAND_RIGHTS },
+    { "landlower", GAME_COMMAND_LOWER_LAND },
+    { "landraise", GAME_COMMAND_RAISE_LAND },
+    { "landsetheight", GAME_COMMAND_SET_LAND_HEIGHT },
+    { "landsetrights", GAME_COMMAND_SET_LAND_OWNERSHIP },
+    { "landsmoothaction", GAME_COMMAND_EDIT_LAND_SMOOTH },
+    { "largesceneryplace", GAME_COMMAND_PLACE_LARGE_SCENERY },
+    { "largesceneryremove", GAME_COMMAND_REMOVE_LARGE_SCENERY },
+    { "largescenerysetcolour", GAME_COMMAND_SET_SCENERY_COLOUR },
+    { "loadorquit", GAME_COMMAND_LOAD_OR_QUIT },
+    { "mazeplacetrack", GAME_COMMAND_PLACE_MAZE_DESIGN },
+    { "mazesettrack", GAME_COMMAND_SET_MAZE_TRACK },
+    { "networkmodifygroup", GAME_COMMAND_MODIFY_GROUPS },
+    { "parkentranceremove", GAME_COMMAND_REMOVE_PARK_ENTRANCE },
+    { "parkmarketing", GAME_COMMAND_START_MARKETING_CAMPAIGN },
+    { "parksetdate", GAME_COMMAND_SET_DATE },
+    { "parksetloan", GAME_COMMAND_SET_CURRENT_LOAN },
     { "parksetname", GAME_COMMAND_SET_PARK_NAME },
+    { "parksetparameter", GAME_COMMAND_SET_PARK_OPEN },
+    { "parksetresearchfunding", GAME_COMMAND_SET_RESEARCH_FUNDING },
+    { "pausetoggle", GAME_COMMAND_TOGGLE_PAUSE },
+    { "peeppickup", GAME_COMMAND_PICKUP_GUEST },
+    { "placeparkentrance", GAME_COMMAND_PLACE_PARK_ENTRANCE },
+    { "placepeepspawn", GAME_COMMAND_PLACE_PEEP_SPAWN },
+    { "playerkick", GAME_COMMAND_KICK_PLAYER },
+    { "playersetgroup", GAME_COMMAND_SET_PLAYER_GROUP },
     { "ridecreate", GAME_COMMAND_CREATE_RIDE },
     { "ridedemolish", GAME_COMMAND_DEMOLISH_RIDE },
     { "rideentranceexitplace", GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT },
     { "rideentranceexitremove", GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT },
     { "ridesetappearance", GAME_COMMAND_SET_RIDE_APPEARANCE },
-    { "ridesetcolourscheme.hpp", GAME_COMMAND_SET_COLOUR_SCHEME },
+    { "ridesetcolourscheme", GAME_COMMAND_SET_COLOUR_SCHEME },
     { "ridesetname", GAME_COMMAND_SET_RIDE_NAME },
     { "ridesetprice", GAME_COMMAND_SET_RIDE_PRICE },
     { "ridesetsetting", GAME_COMMAND_SET_RIDE_SETTING },
     { "ridesetstatus", GAME_COMMAND_SET_RIDE_STATUS },
     { "ridesetvehicles", GAME_COMMAND_SET_RIDE_VEHICLES },
+    { "scenariosetsetting", GAME_COMMAND_EDIT_SCENARIO_OPTIONS },
     { "setcheataction", GAME_COMMAND_CHEAT },
+    { "setparkentrancefee", GAME_COMMAND_SET_PARK_ENTRANCE_FEE },
+    { "signsetname", GAME_COMMAND_SET_SIGN_NAME },
+    { "signsetstyle", GAME_COMMAND_SET_SIGN_STYLE },
     { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
+    { "smallsceneryremove", GAME_COMMAND_REMOVE_SCENERY },
+    { "stafffire", GAME_COMMAND_FIRE_STAFF_MEMBER },
+    { "staffhire", GAME_COMMAND_HIRE_NEW_STAFF_MEMBER },
+    { "staffsetcolour", GAME_COMMAND_SET_STAFF_COLOUR },
+    { "staffsetcostume", GAME_COMMAND_SET_STAFF_COSTUME },
+    { "staffsetname", GAME_COMMAND_SET_STAFF_NAME },
+    { "staffsetorders", GAME_COMMAND_SET_STAFF_ORDERS },
+    { "staffsetpatrolarea", GAME_COMMAND_SET_STAFF_PATROL },
+    { "surfacesetstyle", GAME_COMMAND_CHANGE_SURFACE_STYLE },
+    { "tilemodify", GAME_COMMAND_MODIFY_TILE },
     { "trackdesign", GAME_COMMAND_PLACE_TRACK_DESIGN },
     { "trackplace", GAME_COMMAND_PLACE_TRACK },
     { "trackremove", GAME_COMMAND_REMOVE_TRACK },
     { "tracksetbrakespeed", GAME_COMMAND_SET_BRAKES_SPEED },
+    { "wallplace", GAME_COMMAND_PLACE_WALL },
+    { "wallremove", GAME_COMMAND_REMOVE_WALL },
+    { "wallsetcolour", GAME_COMMAND_SET_WALL_COLOUR },
+    { "waterlower", GAME_COMMAND_LOWER_WATER },
+    { "waterraise", GAME_COMMAND_RAISE_WATER },
+    { "watersetheight", GAME_COMMAND_SET_WATER_HEIGHT }
 };
 
 static std::string GetActionName(uint32_t commandId)
@@ -1125,6 +1195,54 @@ void ScriptEngine::SaveSharedStorage()
     {
         fprintf(stderr, "Unable to write to '%s'\n", path.c_str());
     }
+}
+
+#    ifndef DISABLE_NETWORK
+void ScriptEngine::AddSocket(const std::shared_ptr<ScSocketBase>& socket)
+{
+    _sockets.push_back(socket);
+}
+#    endif
+
+void ScriptEngine::UpdateSockets()
+{
+#    ifndef DISABLE_NETWORK
+    // Use simple for i loop as Update calls can modify the list
+    auto it = _sockets.begin();
+    while (it != _sockets.end())
+    {
+        auto& socket = *it;
+        socket->Update();
+        if (socket->IsDisposed())
+        {
+            it = _sockets.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
+#    endif
+}
+
+void ScriptEngine::RemoveSockets(const std::shared_ptr<Plugin>& plugin)
+{
+#    ifndef DISABLE_NETWORK
+    auto it = _sockets.begin();
+    while (it != _sockets.end())
+    {
+        auto socket = it->get();
+        if (socket->GetPlugin() == plugin)
+        {
+            socket->Dispose();
+            it = _sockets.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
+#    endif
 }
 
 std::string OpenRCT2::Scripting::Stringify(const DukValue& val)

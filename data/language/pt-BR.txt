@@ -3648,6 +3648,9 @@ STR_6380    :Atualização disponível!
 STR_6381    :Faça parte do Discord do OpenRCT2!
 STR_6382    :Uma versão mais nova do OpenRCT2 está disponível: {STRING}!
 STR_6383    :Abrir página de download
+STR_6384    :Neve
+STR_6385    :Neve Forte
+STR_6386    :Nevasca
 
 #############
 # Scenarios #

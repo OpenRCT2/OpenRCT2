@@ -187,19 +187,19 @@ enum {
 
 static rct_widget window_new_ride_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({  0,  43}, {601, 339}, WWT_RESIZE,   1                                                                ),
-    MakeRemapWidget({  3,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_TRANSPORT_RIDES_TIP         ),
-    MakeRemapWidget({ 34,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_GENTLE_RIDES_TIP            ),
-    MakeRemapWidget({ 65,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_ROLLER_COASTERS_TIP         ),
-    MakeRemapWidget({ 96,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_THRILL_RIDES_TIP            ),
-    MakeRemapWidget({127,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_WATER_RIDES_TIP             ),
-    MakeRemapWidget({158,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_SHOPS_STALLS_TIP            ),
-    MakeRemapWidget({189,  17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_RESEARCH_AND_DEVELOPMENT_TIP),
-    MakeWidget     ({  3,  46}, {595, 272}, WWT_SCROLL,   1, SCROLL_VERTICAL                                               ),
-    MakeWidget     ({  3,  47}, {290,  70}, WWT_GROUPBOX, 2, STR_CURRENTLY_IN_DEVELOPMENT                                  ),
-    MakeWidget     ({  3, 124}, {290,  65}, WWT_GROUPBOX, 2, STR_LAST_DEVELOPMENT                                          ),
-    MakeWidget     ({265, 161}, { 24,  24}, WWT_FLATBTN,  2, 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   ),
-    MakeWidget     ({265,  68}, { 24,  24}, WWT_FLATBTN,  2, SPR_FINANCE,                  STR_FINANCES_RESEARCH_TIP       ),
+    MakeWidget({  0,  43}, {601, 339}, WWT_RESIZE,   WindowColour::Secondary                                                                ),
+    MakeTab   ({  3,  17},                                                                                  STR_TRANSPORT_RIDES_TIP         ),
+    MakeTab   ({ 34,  17},                                                                                  STR_GENTLE_RIDES_TIP            ),
+    MakeTab   ({ 65,  17},                                                                                  STR_ROLLER_COASTERS_TIP         ),
+    MakeTab   ({ 96,  17},                                                                                  STR_THRILL_RIDES_TIP            ),
+    MakeTab   ({127,  17},                                                                                  STR_WATER_RIDES_TIP             ),
+    MakeTab   ({158,  17},                                                                                  STR_SHOPS_STALLS_TIP            ),
+    MakeTab   ({189,  17},                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
+    MakeWidget({  3,  46}, {595, 272}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_VERTICAL                                               ),
+    MakeWidget({  3,  47}, {290,  70}, WWT_GROUPBOX, WindowColour::Tertiary , STR_CURRENTLY_IN_DEVELOPMENT                                  ),
+    MakeWidget({  3, 124}, {290,  65}, WWT_GROUPBOX, WindowColour::Tertiary , STR_LAST_DEVELOPMENT                                          ),
+    MakeWidget({265, 161}, { 24,  24}, WWT_FLATBTN,  WindowColour::Tertiary , 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   ),
+    MakeWidget({265,  68}, { 24,  24}, WWT_FLATBTN,  WindowColour::Tertiary , SPR_FINANCE,                  STR_FINANCES_RESEARCH_TIP       ),
     { WIDGETS_END },
 };
 
@@ -815,8 +815,7 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 
     gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
 
-    int32_t x = 1;
-    int32_t y = 1;
+    ScreenCoordsXY coords{ 1, 1 };
     RideSelection* listItem = _windowNewRideListItems;
     while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != RIDE_ENTRY_INDEX_NULL)
     {
@@ -826,7 +825,8 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (w->new_ride.SelectedRide == *listItem)
             flags |= INSET_RECT_FLAG_BORDER_INSET;
         if (w->new_ride.HighlightedRide == *listItem || flags != 0)
-            gfx_fill_rect_inset(dpi, x, y, x + 115, y + 115, w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT | flags);
+            gfx_fill_rect_inset(
+                dpi, { coords, coords + ScreenCoordsXY{ 115, 115 } }, w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT | flags);
 
         // Draw ride image with feathered border
         rideEntry = get_ride_entry(listItem->EntryIndex);
@@ -840,14 +840,14 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
                 imageId++;
         }
 
-        gfx_draw_sprite_raw_masked(dpi, { x + 2, y + 2 }, SPR_NEW_RIDE_MASK, imageId);
+        gfx_draw_sprite_raw_masked(dpi, coords + ScreenCoordsXY{ 2, 2 }, SPR_NEW_RIDE_MASK, imageId);
 
         // Next position
-        x += 116;
-        if (x >= 116 * 5 + 1)
+        coords.x += 116;
+        if (coords.x >= 116 * 5 + 1)
         {
-            x = 1;
-            y += 116;
+            coords.x = 1;
+            coords.y += 116;
         }
 
         // Next item
@@ -925,8 +925,9 @@ static void window_new_ride_paint_ride_information(
     if (availabilityString[0] != 0)
     {
         const char* drawString = availabilityString;
-        gfx_draw_string_left_clipped(
-            dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2);
+        ft = Formatter::Common();
+        ft.Add<const char*>(drawString);
+        DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft, COLOUR_BLACK);
     }
 
     if (item.Type != _lastTrackDesignCountRideType.Type || item.EntryIndex != _lastTrackDesignCountRideType.EntryIndex)
@@ -972,7 +973,9 @@ static void window_new_ride_paint_ride_information(
         if (!ride_type_has_flag(item.Type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
             stringId = STR_NEW_RIDE_COST_FROM;
 
-        gfx_draw_string_right(dpi, stringId, &price, COLOUR_BLACK, screenPos + ScreenCoordsXY{ width, 51 });
+        ft = Formatter();
+        ft.Add<money32>(price);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ width, 51 }, stringId, ft, COLOUR_BLACK, TextAlignment::RIGHT);
     }
 }
 

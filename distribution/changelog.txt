@@ -1,3 +1,37 @@
+0.3.0+ (in development)
+------------------------------------------------------------------------
+- Feature: [#10807] Add 2x and 4x zoom levels (currently limited to OpenGL).
+- Feature: [#12703] Add scenario plugin APIs.
+- Feature: [#12708] Add plugin-accessible names to all game actions.
+- Feature: [#12712] Add TCP / socket plugin APIs.
+- Feature: [#12840] Add Park.entranceFee to the plugin API.
+- Feature: [#12884] Add BaseTileElement.occupiedQuadrants to the plugin API.
+- Feature: [#12885] Add SmallSceneryElement.quadrant to the plugin API.
+- Feature: [#12886] Make all scenery placement and remove actions available to the plugin API.
+- Feature: [#2350, #12922] Add snow, heavy snow and blizzard to weather types.
+- Fix: [#400] Unable to place some saved tracks flush to the ground (original bug).
+- Fix: [#5753] Entertainers make themselves happy instead of the guests.
+- Fix: [#7037] Unable to save tracks starting with a sloped turn or helix.
+- Fix: [#12691] Ride graph tooltip incorrectly used count instead of number string.
+- Fix: [#12694] Crash when switching ride types with construction window open.
+- Fix: [#12701] Silent NSIS setup flag /S isn't silent, upgrade pop-up appears anyway.
+- Fix: [#12737] Space Rings draw the same vehicle 4 times.
+- Fix: [#12756] Scenario Editor crashing the game on macOS.
+- Fix: [#12764] Rides don't start aged anymore.
+- Fix: [#12818] Ride price not ignored in free-rides parks.
+- Fix: [#12820] Title menu buttons not invalidating properly
+- Fix: [#12845] Deleting ride with active ad campaign creates incorrect notification.
+- Fix: [#12857] Incorrect Peep thoughts in imported RCT1 parks.
+- Fix: [#12881] Guests' favourite rides are not listed in the guest window.
+- Fix: [#12910] Plugin API: getRide sometimes returns null for valid ride IDs.
+- Fix: [#12912] Plugin: selectedCell of CustomListView is being ignored on creation.
+- Fix: [#12918] Cannot place vanilla TD6 tracks of the Hypercoaster, Monster Trucks, Classic Mini Roller Coaster, Spinning Wild Mouse and Hyper-Twister types.
+- Fix: Incomplete loop collision box allowed overlapping track (original bug).
+- Improved: [#12806] Add Esperanto diacritics to the sprite font.
+- Improved: [#12837] Arabic text is now drawn and shaped correctly on Windows.
+- Improved: [#12890] Add stroke to lowercase 'L' to differentiate from capital 'I'.
+- Technical: [#12749] The required version of macOS has been lowered to 10.13 (High Sierra).
+
 0.3.0 (2020-08-15)
 ------------------------------------------------------------------------
 - Feature: [#7648] "Enable all drawable track pieces" now enables more pieces for the Twister, Vertical and Air Powered Vertical coasters.

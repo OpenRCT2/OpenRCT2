@@ -11,7 +11,29 @@
 
 template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMagnify(DrawSpriteArgs& args)
 {
-    // TODO
+    auto& g1 = args.SourceImage;
+    auto src = g1.offset + ((static_cast<size_t>(g1.width) * args.SrcY) + args.SrcX);
+    auto dst = args.DestinationBits;
+    auto& paletteMap = args.PalMap;
+    auto dpi = args.DPI;
+    auto zoomLevel = dpi->zoom_level;
+    size_t srcLineWidth = g1.width;
+    size_t dstLineWidth = (static_cast<size_t>(dpi->width) / zoomLevel) + dpi->pitch;
+    uint8_t zoom = 1 / zoomLevel;
+    auto width = args.Width / zoomLevel;
+    auto height = args.Height / zoomLevel;
+    for (; height > 0; height -= zoom)
+    {
+        auto nextSrc = src + srcLineWidth;
+        auto nextDst = dst + (dstLineWidth * zoom);
+        for (int32_t widthRemaining = width; widthRemaining > 0; widthRemaining -= zoom, src++, dst += zoom)
+        {
+            // Copy src to a block of zoom * zoom on dst
+            BlitPixels<TBlendOp>(src, dst, paletteMap, zoom, dstLineWidth);
+        }
+        src = nextSrc;
+        dst = nextDst;
+    }
 }
 
 template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(DrawSpriteArgs& args)
@@ -19,7 +41,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(DrawSpri
     auto& g1 = args.SourceImage;
     auto src = g1.offset + ((static_cast<size_t>(g1.width) * args.SrcY) + args.SrcX);
     auto dst = args.DestinationBits;
-    [[maybe_unused]] auto& paletteMap = args.PalMap;
+    auto& paletteMap = args.PalMap;
     auto width = args.Width;
     auto height = args.Height;
     auto dpi = args.DPI;
@@ -33,55 +55,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(DrawSpri
         auto nextDst = dst + dstLineWidth;
         for (int32_t widthRemaining = width; widthRemaining > 0; widthRemaining -= zoom, src += zoom, dst++)
         {
-            if constexpr (TBlendOp & BLEND_TRANSPARENT)
-            {
-                // Ignore transparent pixels
-                if (*src == 0)
-                {
-                    continue;
-                }
-            }
-
-            if constexpr (((TBlendOp & BLEND_SRC) != 0) && ((TBlendOp & BLEND_DST) != 0))
-            {
-                auto pixel = paletteMap.Blend(*src, *dst);
-                if constexpr (TBlendOp & BLEND_TRANSPARENT)
-                {
-                    if (pixel == 0)
-                    {
-                        continue;
-                    }
-                }
-                *dst = pixel;
-            }
-            else if constexpr ((TBlendOp & BLEND_SRC) != 0)
-            {
-                auto pixel = paletteMap[*src];
-                if constexpr (TBlendOp & BLEND_TRANSPARENT)
-                {
-                    if (pixel == 0)
-                    {
-                        continue;
-                    }
-                }
-                *dst = pixel;
-            }
-            else if constexpr ((TBlendOp & BLEND_DST) != 0)
-            {
-                auto pixel = paletteMap[*dst];
-                if constexpr (TBlendOp & BLEND_TRANSPARENT)
-                {
-                    if (pixel == 0)
-                    {
-                        continue;
-                    }
-                }
-                *dst = pixel;
-            }
-            else
-            {
-                *dst = *src;
-            }
+            BlitPixel<TBlendOp>(src, dst, paletteMap);
         }
         src = nextSrc;
         dst = nextDst;

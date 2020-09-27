@@ -535,6 +535,8 @@ namespace OpenRCT2
                     }
                 }
             }
+
+            window_check_all_valid_zoom();
         }
 
         void DisposeDrawingEngine() final override
@@ -571,7 +573,7 @@ namespace OpenRCT2
                     title_load();
                 }
                 auto windowManager = _uiContext->GetWindowManager();
-                windowManager->ShowError(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE);
+                windowManager->ShowError(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE, {});
             }
             return false;
         }
@@ -670,8 +672,9 @@ namespace OpenRCT2
             catch (const UnsupportedRCTCFlagException& e)
             {
                 auto windowManager = _uiContext->GetWindowManager();
-                Formatter::Common().Add<uint16_t>(e.Flag);
-                windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE);
+                auto ft = Formatter();
+                ft.Add<uint16_t>(e.Flag);
+                windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE, ft);
             }
             catch (const std::exception& e)
             {
@@ -1367,10 +1370,10 @@ void context_force_close_window_by_class(rct_windowclass windowClass)
     windowManager->ForceClose(windowClass);
 }
 
-rct_window* context_show_error(rct_string_id title, rct_string_id message)
+rct_window* context_show_error(rct_string_id title, rct_string_id message, const Formatter& args)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    return windowManager->ShowError(title, message);
+    return windowManager->ShowError(title, message, args);
 }
 
 void context_update_map_tooltip()

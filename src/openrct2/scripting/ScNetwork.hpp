@@ -11,12 +11,14 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../Context.h"
 #    include "../actions/NetworkModifyGroupAction.hpp"
 #    include "../actions/PlayerKickAction.hpp"
 #    include "../actions/PlayerSetGroupAction.hpp"
 #    include "../network/NetworkAction.h"
 #    include "../network/network.h"
 #    include "Duktape.hpp"
+#    include "ScSocket.hpp"
 
 namespace OpenRCT2::Scripting
 {
@@ -67,7 +69,7 @@ namespace OpenRCT2::Scripting
             auto permissionIndex = 0;
             for (const auto& action : NetworkActions::Actions)
             {
-                if (network_can_perform_action(index, permissionIndex))
+                if (network_can_perform_action(index, static_cast<NetworkPermission>(permissionIndex)))
                 {
                     auto p = TransformPermissionKeyToJS(action.PermissionName);
                     result.push_back(p);
@@ -111,7 +113,8 @@ namespace OpenRCT2::Scripting
             for (size_t i = 0; i < enabledPermissions.size(); i++)
             {
                 auto toggle
-                    = (enabledPermissions[i] != (network_can_perform_action(groupIndex, static_cast<uint32_t>(i)) != 0));
+                    = (enabledPermissions[i]
+                       != (network_can_perform_action(groupIndex, static_cast<NetworkPermission>(i)) != 0));
                 if (toggle)
                 {
                     auto networkAction2 = NetworkModifyGroupAction(
@@ -447,6 +450,38 @@ namespace OpenRCT2::Scripting
 #    endif
         }
 
+#    ifndef DISABLE_NETWORK
+        std::shared_ptr<ScListener> createListener()
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto socket = std::make_shared<ScListener>(plugin);
+            scriptEngine.AddSocket(socket);
+            return socket;
+        }
+#    else
+        void createListener()
+        {
+            duk_error(_context, DUK_ERR_ERROR, "Networking has been disabled.");
+        }
+#    endif
+
+#    ifndef DISABLE_NETWORK
+        std::shared_ptr<ScSocket> createSocket()
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto socket = std::make_shared<ScSocket>(plugin);
+            scriptEngine.AddSocket(socket);
+            return socket;
+        }
+#    else
+        void createSocket()
+        {
+            duk_error(_context, DUK_ERR_ERROR, "Networking has been disabled.");
+        }
+#    endif
+
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScNetwork::mode_get, nullptr, "mode");
@@ -462,6 +497,9 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScNetwork::getPlayer, "getPlayer");
             dukglue_register_method(ctx, &ScNetwork::kickPlayer, "kickPlayer");
             dukglue_register_method(ctx, &ScNetwork::sendMessage, "sendMessage");
+
+            dukglue_register_method(ctx, &ScNetwork::createListener, "createListener");
+            dukglue_register_method(ctx, &ScNetwork::createSocket, "createSocket");
         }
     };
 } // namespace OpenRCT2::Scripting

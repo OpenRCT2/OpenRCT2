@@ -240,6 +240,8 @@ private:
             }
         }
 
+        MarketingCancelCampaignsForRide(_rideIndex);
+
         auto res = std::make_unique<GameActionResult>();
         res->Expenditure = ExpenditureType::RideConstruction;
         res->Cost = refundPrice;

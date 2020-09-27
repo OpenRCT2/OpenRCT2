@@ -457,7 +457,7 @@ bool TrackElement::IsHighlighted() const
 
 uint8_t PathElement::GetEdges() const
 {
-    return Edges & 0xF;
+    return EdgesAndCorners & 0xF;
 }
 
 StationObject* ride_get_station_object(const Ride* ride)

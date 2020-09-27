@@ -3142,8 +3142,8 @@ STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}새로 만든 놀이기구에 기본적으로 설정할 점검 간격을 설정합니다.
 STR_5853    :{SMALLFONT}{BLACK}효과음 켜기/끄기
 STR_5854    :{SMALLFONT}{BLACK}놀이기구 음악 켜기/끄기
-STR_5855    :{SMALLFONT}{BLACK}전체화면, 창 모드, 전체화면 (창모드) 중에서 선택합니다.
-STR_5856    :{SMALLFONT}{BLACK}전체화면에서 사용할 게임 해상도를 설정합니다.
+STR_5855    :{SMALLFONT}{BLACK}전체 화면, 창 모드, 전체 화면 (창 모드) 중에서 선택합니다.
+STR_5856    :{SMALLFONT}{BLACK}전체 화면에서 사용할 게임 해상도를 설정합니다.
 STR_5857    :{SMALLFONT}{BLACK}게임 설정
 STR_5858    :{SMALLFONT}{BLACK}CPU 대신 GPU를 이용하여 화면을 표시합니다. 스크린 캡처 소프트웨어의 호환성을 향상시켜줍니다. 약간의 속도 저하가 발생할 수 있습니다.
 STR_5859    :{SMALLFONT}{BLACK}시각적으로 더 부드러운 게임 플레이를 위해 프레임 제한을 해제합니다. 설정을 끄면 게임이 40 FPS로 실행됩니다.
@@ -3432,7 +3432,7 @@ STR_6142    :{WINDOW_COLOUR_2}트랙 이름: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}놀이기구 종류: {BLACK}{STRINGID}
 STR_6144    :시각적 업데이트 표시
 STR_6145    :{SMALLFONT}{BLACK}부스터 속력 제한 설정
-STR_6146    :모든 표시 가능한 트랙 조각 사용
+STR_6146    :모든 표현 가능한 트랙 조각 사용
 STR_6147    :{SMALLFONT}{BLACK}놀이기구 건설 창에서 해당 놀이기구가 지원하는지의 여부와 관계없이, 그 놀이기구에서 사용할 수 있는 모든 트랙 조각의 사용을 허용합니다.
 STR_6148    :마스터 서버에 접속 중...
 STR_6149    :마스터 서버에 접속할 수 없습니다
@@ -3656,6 +3656,9 @@ STR_6380    :업데이트 사용 가능!
 STR_6381    :OpenRCT2 디스코드에 참여하세요!
 STR_6382    :OpenRCT2 새 버전이 나왔습니다!: {STRING}
 STR_6383    :다운로드 페이지 열기
+STR_6384    :눈
+STR_6385    :폭설
+STR_6386    :눈보라
 
 #############
 # Scenarios #

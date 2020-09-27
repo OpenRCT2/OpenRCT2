@@ -35,10 +35,10 @@ enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
 
 static rct_widget window_custom_currency_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeSpinnerWidgets({100, 30}, {101, 11}, WWT_SPINNER,  1, STR_CHEAT_CURRENCY_FORMAT), // NB: 3 widgets
-    MakeWidget        ({120, 50}, { 81, 11}, WWT_BUTTON,   1, STR_EMPTY                ),
-    MakeWidget        ({220, 50}, {131, 11}, WWT_DROPDOWN, 1                           ),
-    MakeWidget        ({339, 51}, { 11,  9}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH       ),
+    MakeSpinnerWidgets({100, 30}, {101, 11}, WWT_SPINNER,  WindowColour::Secondary, STR_CHEAT_CURRENCY_FORMAT), // NB: 3 widgets
+    MakeWidget        ({120, 50}, { 81, 11}, WWT_BUTTON,   WindowColour::Secondary, STR_EMPTY                ),
+    MakeWidget        ({220, 50}, {131, 11}, WWT_DROPDOWN, WindowColour::Secondary                           ),
+    MakeWidget        ({339, 51}, { 11,  9}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH       ),
     { WIDGETS_END },
 };
 

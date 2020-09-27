@@ -17,6 +17,8 @@
 
 enum class MeasurementFormat : int32_t;
 enum class TemperatureUnit : int32_t;
+enum class ScaleQuality : int32_t;
+enum class VirtualFloorStyles : int32_t;
 
 struct GeneralConfiguration
 {
@@ -33,7 +35,7 @@ struct GeneralConfiguration
     int32_t fullscreen_height;
     float window_scale;
     int32_t drawing_engine;
-    int32_t scale_quality;
+    ScaleQuality scale_quality;
     bool uncap_fps;
     bool use_vsync;
     bool show_fps;
@@ -43,7 +45,7 @@ struct GeneralConfiguration
     // Map rendering
     bool landscape_smoothing;
     bool always_show_gridlines;
-    int32_t virtual_floor_style;
+    VirtualFloorStyles virtual_floor_style;
     bool day_night_cycle;
     bool enable_light_fx;
     bool enable_light_fx_for_vehicles;
@@ -216,11 +218,11 @@ enum class TemperatureUnit : int32_t
     Fahrenheit
 };
 
-enum SCALE_QUALITY
+enum class ScaleQuality : int32_t
 {
-    SCALE_QUALITY_NN,
-    SCALE_QUALITY_LINEAR,
-    SCALE_QUALITY_SMOOTH_NN
+    NearestNeighbour,
+    Linear,
+    SmoothNearestNeighbour
 };
 
 enum class MeasurementFormat : int32_t

@@ -455,7 +455,8 @@ static void CompareStates(
     {
         log_warning(
             "Inconsistent export size! Import Size: %llu bytes, Export Size: %llu bytes",
-            (unsigned long long)importBuffer.GetLength(), (unsigned long long)exportBuffer.GetLength());
+            static_cast<unsigned long long>(importBuffer.GetLength()),
+            static_cast<unsigned long long>(exportBuffer.GetLength()));
     }
 
     for (size_t spriteIdx = 0; spriteIdx < MAX_SPRITES; ++spriteIdx)

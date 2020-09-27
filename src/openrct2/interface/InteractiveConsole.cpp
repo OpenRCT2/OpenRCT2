@@ -439,7 +439,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
-                    "staff id %03d type: %02u energy %03u name %s", peep->sprite_index, peep->StaffType, peep->Energy,
+                    "staff id %03d type: %02u energy %03u name %s", peep->sprite_index, peep->AssignedStaffType, peep->Energy,
                     name.c_str());
             }
         }
@@ -449,7 +449,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
             {
                 console.WriteFormatLine("staff set energy <staff id> <value 0-255>");
                 console.WriteFormatLine("staff set costume <staff id> <costume id>");
-                for (int32_t i = 0; i < ENTERTAINER_COSTUME_COUNT; i++)
+                for (int32_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
                 {
                     char costume_name[128] = { 0 };
                     rct_string_id costume = StaffCostumeNames[i];
@@ -494,18 +494,18 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                     console.WriteLineError("Invalid staff ID");
                     return 1;
                 }
-                if (staff->StaffType != STAFF_TYPE_ENTERTAINER)
+                if (staff->AssignedStaffType != StaffType::Entertainer)
                 {
                     console.WriteLineError("Specified staff is not entertainer");
                     return 1;
                 }
-                if (!int_valid[1] || int_val[1] < 0 || int_val[1] >= ENTERTAINER_COSTUME_COUNT)
+                if (!int_valid[1] || int_val[1] < 0 || int_val[1] >= static_cast<uint8_t>(EntertainerCostume::Count))
                 {
                     console.WriteLineError("Invalid costume ID");
                     return 1;
                 }
 
-                uint8_t costume = int_val[1];
+                EntertainerCostume costume = static_cast<EntertainerCostume>(int_val[1]);
                 auto staffSetCostumeAction = StaffSetCostumeAction(int_val[0], costume);
                 GameActions::Execute(&staffSetCostumeAction);
             }
@@ -637,7 +637,8 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "climate")
         {
-            console.WriteFormatLine("climate %s  (%d)", ClimateNames[gClimate], gClimate);
+            console.WriteFormatLine(
+                "climate %s  (%d)", ClimateNames[static_cast<uint8_t>(gClimate)], static_cast<uint8_t>(gClimate));
         }
         else if (argv[0] == "game_speed")
         {
@@ -859,35 +860,37 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "climate")
         {
+            uint8_t newClimate = static_cast<uint8_t>(ClimateType::Count);
+            invalidArgs = true;
+
             if (int_valid[0])
             {
-                const auto newClimate = int_val[0];
-                if (newClimate < 0 || newClimate >= CLIMATE_COUNT)
-                {
-                    console.WriteLine(language_get_string(STR_INVALID_CLIMATE_ID));
-                }
-                else
-                {
-                    auto gameAction = ClimateSetAction(newClimate);
-                    GameActions::Execute(&gameAction);
-                }
+                newClimate = static_cast<uint8_t>(int_val[0]);
+                invalidArgs = false;
             }
             else
             {
-                for (i = 0; i < CLIMATE_COUNT; i++)
+                for (newClimate = 0; newClimate < static_cast<uint8_t>(ClimateType::Count); newClimate++)
                 {
-                    if (argv[1] == ClimateNames[i])
+                    if (argv[1] == ClimateNames[newClimate])
                     {
-                        gClimate = i;
+                        invalidArgs = false;
                         break;
                     }
                 }
             }
 
-            if (i == CLIMATE_COUNT)
-                invalidArgs = true;
+            if (invalidArgs)
+            {
+                console.WriteLine(language_get_string(STR_INVALID_CLIMATE_ID));
+            }
             else
+            {
+                auto gameAction = ClimateSetAction(ClimateType{ newClimate });
+                GameActions::Execute(&gameAction);
+
                 console.Execute("get climate");
+            }
         }
         else if (argv[0] == "game_speed" && invalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -1229,7 +1232,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     int32_t staffCount = 0;
     for (int32_t i = 0; i < STAFF_MAX_COUNT; ++i)
     {
-        if (gStaffModes[i] & 1)
+        if (gStaffModes[i] != StaffMode::None)
         {
             staffCount++;
         }
@@ -1361,7 +1364,7 @@ static int32_t cc_save_park([[maybe_unused]] InteractiveConsole& console, [[mayb
 static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
 {
     if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED
-        || network_get_authstatus() != NETWORK_AUTH_OK)
+        || network_get_authstatus() != NetworkAuth::Ok)
     {
         console.WriteFormatLine("This command only works in multiplayer mode.");
         return 0;

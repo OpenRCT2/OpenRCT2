@@ -1722,50 +1722,55 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget;
     if ((widget = &w->widgets[WIDX_COLUMN_TYPE])->type != WWT_EMPTY)
     {
-        gfx_draw_string_left_clipped(
-            dpi, STR_TILE_INSPECTOR_ELEMENT_TYPE, gCommonFormatArgs, w->colours[1],
-            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width());
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
+            STR_TILE_INSPECTOR_ELEMENT_TYPE, Formatter::Common(), w->colours[1]);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_BASEHEIGHT])->type != WWT_EMPTY)
     {
-        gfx_draw_string_left_clipped(
-            dpi, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, gCommonFormatArgs, w->colours[1],
-            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width());
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
+            STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, Formatter::Common(), w->colours[1]);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_CLEARANCEHEIGHT])->type != WWT_EMPTY)
     {
-        gfx_draw_string_left_clipped(
-            dpi, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, gCommonFormatArgs, w->colours[1],
-            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width());
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
+            STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, Formatter::Common(), w->colours[1]);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_GHOSTFLAG])->type != WWT_EMPTY)
     {
-        gfx_draw_string_left_clipped(
-            dpi, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, gCommonFormatArgs, w->colours[1],
-            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width());
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
+            STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, Formatter::Common(), w->colours[1]);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_LASTFLAG])->type != WWT_EMPTY)
     {
-        gfx_draw_string_left_clipped(
-            dpi, STR_TILE_INSPECTOR_FLAG_LAST_SHORT, gCommonFormatArgs, w->colours[1],
-            { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width());
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
+            STR_TILE_INSPECTOR_FLAG_LAST_SHORT, Formatter::Common(), w->colours[1]);
     }
 
     ScreenCoordsXY screenCoords(w->windowPos.x, w->windowPos.y);
 
     // Draw coordinates
-    gfx_draw_string(dpi, (char*)"X:", COLOUR_WHITE, screenCoords + ScreenCoordsXY(5, 24));
-    gfx_draw_string(dpi, (char*)"Y:", COLOUR_WHITE, screenCoords + ScreenCoordsXY(74, 24));
+    gfx_draw_string(dpi, "X:", COLOUR_WHITE, screenCoords + ScreenCoordsXY(5, 24));
+    gfx_draw_string(dpi, "Y:", COLOUR_WHITE, screenCoords + ScreenCoordsXY(74, 24));
     if (windowTileInspectorTileSelected)
     {
         auto tileCoords = TileCoordsXY{ windowTileInspectorToolMap };
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &tileCoords.x, COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 43, 24 });
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER, &tileCoords.y, COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 113, 24 });
+        auto ft = Formatter();
+        ft.Add<int32_t>(tileCoords.x);
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 43, 24 }, STR_FORMAT_INTEGER, ft, COLOUR_WHITE, TextAlignment::RIGHT);
+        ft = Formatter();
+        ft.Add<int32_t>(tileCoords.y);
+        DrawTextBasic(
+            dpi, screenCoords + ScreenCoordsXY{ 113, 24 }, STR_FORMAT_INTEGER, ft, COLOUR_WHITE, TextAlignment::RIGHT);
     }
     else
     {
-        gfx_draw_string(dpi, (char*)"-", COLOUR_WHITE, screenCoords + ScreenCoordsXY(43 - 7, 24));
-        gfx_draw_string(dpi, (char*)"-", COLOUR_WHITE, screenCoords + ScreenCoordsXY(113, 24));
+        gfx_draw_string(dpi, "-", COLOUR_WHITE, screenCoords + ScreenCoordsXY(43 - 7, 24));
+        gfx_draw_string(dpi, "-", COLOUR_WHITE, screenCoords + ScreenCoordsXY(113, 24));
     }
 
     if (windowTileInspectorSelectedIndex != -1)
@@ -2085,11 +2090,10 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     auto banner = tileElement->AsWall()->GetBanner();
                     if (banner != nullptr && !banner->IsNull())
                     {
-                        uint8_t args[32]{};
-                        Formatter ft(args);
+                        Formatter ft;
                         banner->FormatTextTo(ft);
                         gfx_draw_string_left(
-                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE,
+                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft.Data(), COLOUR_WHITE,
                             screenCoords + ScreenCoordsXY{ 0, 11 });
                     }
                 }
@@ -2152,11 +2156,10 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     auto banner = sceneryElement->GetBanner();
                     if (banner != nullptr && !banner->IsNull())
                     {
-                        uint8_t args[32]{};
-                        Formatter ft(args);
+                        Formatter ft;
                         banner->FormatTextTo(ft);
                         gfx_draw_string_left(
-                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE,
+                            dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft.Data(), COLOUR_WHITE,
                             screenCoords + ScreenCoordsXY{ 0, 22 });
                     }
                 }
@@ -2186,10 +2189,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 auto banner = tileElement->AsBanner()->GetBanner();
                 if (banner != nullptr && !banner->IsNull())
                 {
-                    uint8_t args[32]{};
-                    Formatter ft(args);
+                    Formatter ft;
                     banner->FormatTextTo(ft);
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, args, COLOUR_WHITE, screenCoords);
+                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, ft.Data(), COLOUR_WHITE, screenCoords);
                 }
 
                 // Properties
@@ -2323,9 +2325,8 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(typeName);
-        gfx_draw_string_left_clipped(
-            dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_TYPE + 3, 0 },
-            COL_X_BH); // 3px padding
+        DrawTextEllipsised(
+            dpi, screenCoords + ScreenCoordsXY{ COL_X_TYPE + 3, 0 }, COL_X_BH, stringFormat, ft, COLOUR_BLACK); // 3px padding
 
         // Base height
         ft = Formatter::Common();

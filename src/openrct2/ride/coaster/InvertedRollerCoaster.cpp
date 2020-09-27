@@ -10403,7 +10403,7 @@ static void inverted_rc_track_right_banked_25_deg_down_to_flat(
         session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int32_t trackType)
 {
     switch (trackType)
     {

@@ -44,16 +44,12 @@
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "GuestPathfinding.h"
 #include "Staff.h"
 
 #include <algorithm>
 #include <iterator>
 #include <limits>
-
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-bool gPathFindDebug = false;
-utf8 gPathFindDebugPeepName[256];
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 uint8_t gGuestChangeModifier;
 uint32_t gNumGuestsInPark;
@@ -68,10 +64,6 @@ uint8_t gGuestInitialThirst;
 uint32_t gNextGuestNumber;
 
 uint8_t gPeepWarningThrottle[16];
-
-TileCoordsXYZ gPeepPathFindGoalPosition;
-bool gPeepPathFindIgnoreForeignQueues;
-ride_id_t gPeepPathFindQueueRideIndex;
 
 static uint8_t _unk_F1AEF0;
 static TileElement* _peepRideEntranceExitElement;
@@ -820,7 +812,7 @@ void peep_sprite_remove(Peep* peep)
     }
     else
     {
-        gStaffModes[peep->StaffId] = 0;
+        gStaffModes[peep->StaffId] = StaffMode::None;
         peep->AssignedPeepType = PeepType::Invalid;
         staff_update_greyed_patrol_areas();
         peep->AssignedPeepType = PeepType::Staff;
@@ -872,7 +864,7 @@ void Peep::UpdateFalling()
         {
             auto ft = Formatter::Common();
             FormatNameTo(ft);
-            News::AddItemToQueue(News::ItemType::Blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16));
+            News::AddItemToQueue(News::ItemType::Blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
         }
 
         gParkRatingCasualtyPenalty = std::min(gParkRatingCasualtyPenalty + 25, 1000);
@@ -1238,7 +1230,7 @@ void peep_problem_warnings_update()
         warning_throttle[0] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, 20);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, 20, {});
         }
     }
 
@@ -1249,7 +1241,7 @@ void peep_problem_warnings_update()
         warning_throttle[1] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, 21);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, 21, {});
         }
     }
 
@@ -1260,7 +1252,7 @@ void peep_problem_warnings_update()
         warning_throttle[2] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, 22);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, 22, {});
         }
     }
 
@@ -1271,7 +1263,7 @@ void peep_problem_warnings_update()
         warning_throttle[3] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, 26);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, 26, {});
         }
     }
 
@@ -1282,7 +1274,7 @@ void peep_problem_warnings_update()
         warning_throttle[4] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, 31);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, 31, {});
         }
     }
 
@@ -1293,7 +1285,7 @@ void peep_problem_warnings_update()
         warning_throttle[5] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, 33);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, 33, {});
         }
     }
 
@@ -1304,7 +1296,7 @@ void peep_problem_warnings_update()
         warning_throttle[6] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 27);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 27, {});
         }
     }
     else if (lost_counter >= PEEP_LOST_WARNING_THRESHOLD)
@@ -1312,7 +1304,7 @@ void peep_problem_warnings_update()
         warning_throttle[6] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 16);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 16, {});
         }
     }
 }
@@ -1715,10 +1707,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->CashInPocket = cash;
     peep->CashSpent = 0;
     peep->TimeInPark = -1;
-    peep->PathfindGoal.x = 0xFF;
-    peep->PathfindGoal.y = 0xFF;
-    peep->PathfindGoal.z = 0xFF;
-    peep->PathfindGoal.direction = INVALID_DIRECTION;
+    peep->ResetPathfindGoal();
     peep->ItemStandardFlags = 0;
     peep->ItemExtraFlags = 0;
     peep->GuestHeadingToRideId = RIDE_ID_NULL;
@@ -1940,7 +1929,7 @@ void Peep::FormatNameTo(Formatter& ft) const
                 STR_ENTERTAINER_X,
             };
 
-            auto staffNameIndex = StaffType;
+            auto staffNameIndex = static_cast<uint8_t>(AssignedStaffType);
             if (staffNameIndex > sizeof(staffNames))
             {
                 staffNameIndex = 0;
@@ -1967,11 +1956,9 @@ void Peep::FormatNameTo(Formatter& ft) const
 
 std::string Peep::GetName() const
 {
-    uint8_t args[32]{};
-
-    Formatter ft(args);
+    Formatter ft;
     FormatNameTo(ft);
-    return format_string(STR_STRINGID, args);
+    return format_string(STR_STRINGID, ft.Data());
 }
 
 bool Peep::SetName(const std::string_view& value)
@@ -2004,9 +1991,8 @@ bool Peep::SetName(const std::string_view& value)
  * argument_1 (esi & ebx)
  * argument_2 (esi+2)
  */
-void peep_thought_set_format_args(const rct_peep_thought* thought)
+void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft)
 {
-    auto ft = Formatter::Common();
     ft.Add<rct_string_id>(PeepThoughts[thought->type]);
 
     PeepThoughtToActionFlag flags = PeepThoughtToActionMap[thought->type].flags;
@@ -2399,7 +2385,8 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             ride->FormatNameTo(ft);
             if (gConfigNotifications.guest_queuing_for_ride)
             {
-                News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
+                News::AddItemToQueue(
+                    News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index, ft);
             }
         }
     }
@@ -2460,7 +2447,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                 peep->FormatNameTo(ft);
                 if (gConfigNotifications.guest_left_park)
                 {
-                    News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index);
+                    News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index, ft);
                 }
             }
             return;
@@ -2828,7 +2815,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                         if (gConfigNotifications.guest_queuing_for_ride)
                         {
                             News::AddItemToQueue(
-                                News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index);
+                                News::ItemType::PeepOnRide, STR_PEEP_TRACKING_PEEP_JOINED_QUEUE_FOR_X, peep->sprite_index, ft);
                         }
                     }
 
@@ -2938,7 +2925,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
                                                                                              : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (gConfigNotifications.guest_used_facility)
             {
-                News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, peep->sprite_index);
+                News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, peep->sprite_index, ft);
             }
         }
     }
@@ -2952,33 +2939,6 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
         peep->SubState = 0;
     }
 
-    return true;
-}
-
-bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection)
-{
-    if (tileElement->AsPath()->IsSloped())
-    {
-        int32_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
-        if (slopeDirection == currentDirection)
-        {
-            if (currentZ != tileElement->base_height)
-                return false;
-        }
-        else
-        {
-            slopeDirection = direction_reverse(slopeDirection);
-            if (slopeDirection != currentDirection)
-                return false;
-            if (currentZ != tileElement->base_height + 2)
-                return false;
-        }
-    }
-    else
-    {
-        if (currentZ != tileElement->base_height)
-            return false;
-    }
     return true;
 }
 
@@ -3142,25 +3102,6 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 }
 
 /**
- *
- *  rct2: 0x0069A98C
- */
-void peep_reset_pathfind_goal(Peep* peep)
-{
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    if (gPathFindDebug)
-    {
-        log_info("Resetting PathfindGoal for %s", gPathFindDebugPeepName);
-    }
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-
-    peep->PathfindGoal.x = 0xFF;
-    peep->PathfindGoal.y = 0xFF;
-    peep->PathfindGoal.z = 0xFF;
-    peep->PathfindGoal.direction = INVALID_DIRECTION;
-}
-
-/**
  * Gets the height including the bit depending on how far up the slope the peep
  * is.
  *  rct2: 0x00694921
@@ -3231,17 +3172,15 @@ int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_
     }
 
     // Compare their names as strings
-    uint8_t args[32]{};
-
     char nameA[256]{};
-    Formatter ft(args);
+    Formatter ft;
     peep_a->FormatNameTo(ft);
-    format_string(nameA, sizeof(nameA), STR_STRINGID, args);
+    format_string(nameA, sizeof(nameA), STR_STRINGID, ft.Data());
 
     char nameB[256]{};
-    ft = Formatter(args);
+    ft.Rewind();
     peep_b->FormatNameTo(ft);
-    format_string(nameB, sizeof(nameB), STR_STRINGID, args);
+    format_string(nameB, sizeof(nameB), STR_STRINGID, ft.Data());
     return strlogicalcmp(nameA, nameB);
 }
 
@@ -3266,38 +3205,6 @@ void peep_update_names(bool realNames)
     context_broadcast_intent(&intent);
     gfx_invalidate_screen();
 }
-
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-void pathfind_logging_enable([[maybe_unused]] Peep* peep)
-{
-#    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
-    /* Determine if the pathfinding debugging is wanted for this peep. */
-    format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->Id));
-
-    /* For guests, use the existing PEEP_FLAGS_TRACKING flag to
-     * determine for which guest(s) the pathfinding debugging will
-     * be output for. */
-    if (peep->type == PEEP_TYPE_GUEST)
-    {
-        gPathFindDebug = peep->PeepFlags & PEEP_FLAGS_TRACKING;
-    }
-    /* For staff, there is no tracking button (any other similar
-     * suitable existing mechanism?), so fall back to a crude
-     * string comparison with a compile time hardcoded name. */
-    else
-    {
-        gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
-    }
-#    endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
-}
-
-void pathfind_logging_disable()
-{
-#    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
-    gPathFindDebug = false;
-#    endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
-}
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 void increment_guests_in_park()
 {

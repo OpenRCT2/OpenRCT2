@@ -28,7 +28,7 @@ class NetworkConnection final
 public:
     std::unique_ptr<ITcpSocket> Socket = nullptr;
     NetworkPacket InboundPacket;
-    NETWORK_AUTH AuthStatus = NETWORK_AUTH_NONE;
+    NetworkAuth AuthStatus = NetworkAuth::None;
     NetworkStats_t Stats = {};
     NetworkPlayer* Player = nullptr;
     uint32_t PingTime = 0;
@@ -40,7 +40,7 @@ public:
     NetworkConnection();
     ~NetworkConnection();
 
-    int32_t ReadPacket();
+    NetworkReadPacket ReadPacket();
     void QueuePacket(NetworkPacket&& packet, bool front = false);
     void QueuePacket(const NetworkPacket& packet, bool front = false)
     {

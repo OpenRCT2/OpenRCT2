@@ -70,7 +70,7 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
 {
     if (gConfigNotifications.park_marketing_campaign_finished)
     {
-        auto ft = Formatter::Common();
+        Formatter ft;
         // This sets the string parameters for the marketing types that have an argument.
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {
@@ -85,7 +85,7 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
             ft.Add<rct_string_id>(ShopItems[campaign.ShopItemType].Naming.Plural);
         }
 
-        News::AddItemToQueue(News::ItemType::Money, MarketingCampaignNames[campaign.Type][2], 0);
+        News::AddItemToQueue(News::ItemType::Money, MarketingCampaignNames[campaign.Type][2], 0, ft);
     }
 }
 
@@ -236,4 +236,19 @@ void marketing_new_campaign(const MarketingCampaign& campaign)
     {
         gMarketingCampaigns.push_back(campaign);
     }
+}
+
+void MarketingCancelCampaignsForRide(const ride_id_t rideId)
+{
+    auto isCampaignForRideFn = [&rideId](MarketingCampaign& campaign) {
+        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
+        {
+            return campaign.RideId == rideId;
+        }
+        return false;
+    };
+
+    auto& v = gMarketingCampaigns;
+    auto removedIt = std::remove_if(v.begin(), v.end(), isCampaignForRideFn);
+    v.erase(removedIt, v.end());
 }

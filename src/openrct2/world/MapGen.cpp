@@ -15,6 +15,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Imaging.h"
 #include "../core/String.hpp"
+#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../object/Object.h"
 #include "../platform/platform.h"
@@ -658,14 +659,14 @@ bool mapgen_load_heightmap(const utf8* path)
         auto image = Imaging::ReadFromFile(path, format);
         if (image.Width != image.Height)
         {
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH);
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH, {});
             return false;
         }
 
         auto size = image.Width;
         if (image.Width > MAXIMUM_MAP_SIZE_PRACTICAL)
         {
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG, {});
             size = std::min<uint32_t>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
         }
 
@@ -696,10 +697,10 @@ bool mapgen_load_heightmap(const utf8* path)
         switch (format)
         {
             case IMAGE_FORMAT::BITMAP:
-                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
+                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP, {});
                 break;
             case IMAGE_FORMAT::PNG_32:
-                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);
+                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG, {});
                 break;
             default:
                 log_error("Unable to load height map image: %s", e.what());
@@ -804,7 +805,7 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
 
         if (minValue == maxValue)
         {
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE);
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE, {});
             delete[] dest;
             return;
         }

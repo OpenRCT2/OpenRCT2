@@ -875,7 +875,7 @@ private:
         SetRideColourScheme(dst, src);
 
         // Maintenance
-        dst->build_date = src->build_date;
+        dst->build_date = static_cast<int32_t>(src->build_date);
         dst->inspection_interval = src->inspection_interval;
         dst->last_inspection = src->last_inspection;
         dst->reliability = src->reliability;
@@ -1379,10 +1379,10 @@ private:
         }
 
         // The RCT2/OpenRCT2 structures are bigger than in RCT1, so set them to zero
-        std::fill(std::begin(gStaffModes), std::end(gStaffModes), 0);
+        std::fill(std::begin(gStaffModes), std::end(gStaffModes), StaffMode::None);
         std::fill(std::begin(gStaffPatrolAreas), std::end(gStaffPatrolAreas), 0);
 
-        std::copy(std::begin(_s4.staff_modes), std::end(_s4.staff_modes), gStaffModes);
+        std::fill(std::begin(_s4.staff_modes), std::end(_s4.staff_modes), 0);
 
         for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
@@ -1523,7 +1523,7 @@ private:
             auto srcThought = &src->thoughts[i];
             auto dstThought = &dst->Thoughts[i];
             dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
-            dstThought->item = srcThought->type;
+            dstThought->item = srcThought->item;
             dstThought->freshness = srcThought->freshness;
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
@@ -2523,7 +2523,7 @@ private:
         // Date and srand
         gScenarioTicks = _s4.ticks;
         scenario_rand_seed(_s4.random_a, _s4.random_b);
-        gDateMonthsElapsed = _s4.month;
+        gDateMonthsElapsed = static_cast<int32_t>(_s4.month);
         gDateMonthTicks = _s4.day;
 
         // Park rating
@@ -2667,18 +2667,18 @@ private:
 
     void ImportClimate()
     {
-        gClimate = _s4.climate;
+        gClimate = ClimateType{ _s4.climate };
         gClimateUpdateTimer = _s4.climate_timer;
         gClimateCurrent.Temperature = _s4.temperature;
         gClimateCurrent.Weather = _s4.weather;
         gClimateCurrent.WeatherEffect = WeatherEffectType::None;
         gClimateCurrent.WeatherGloom = _s4.weather_gloom;
-        gClimateCurrent.Level = static_cast<RainLevel>(_s4.rain);
+        gClimateCurrent.Level = static_cast<WeatherLevel>(_s4.rain);
         gClimateNext.Temperature = _s4.target_temperature;
         gClimateNext.Weather = _s4.target_weather;
         gClimateNext.WeatherEffect = WeatherEffectType::None;
         gClimateNext.WeatherGloom = _s4.target_weather_gloom;
-        gClimateNext.Level = static_cast<RainLevel>(_s4.target_rain);
+        gClimateNext.Level = static_cast<WeatherLevel>(_s4.target_rain);
     }
 
     void ImportScenarioNameDetails()
@@ -2715,21 +2715,21 @@ private:
 
     void ImportScenarioObjective()
     {
-        gScenarioObjectiveType = _s4.scenario_objective_type;
-        gScenarioObjectiveYear = _s4.scenario_objective_years;
-        gScenarioObjectiveNumGuests = _s4.scenario_objective_num_guests;
+        gScenarioObjective.Type = _s4.scenario_objective_type;
+        gScenarioObjective.Year = _s4.scenario_objective_years;
+        gScenarioObjective.NumGuests = _s4.scenario_objective_num_guests;
 
         // RCT1 used a different way of calculating the park value.
         // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
         // we need to check the goal to avoid affecting scenarios like Volcania.
         if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
-            gScenarioObjectiveCurrency = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
+            gScenarioObjective.Currency = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
         else
-            gScenarioObjectiveCurrency = _s4.scenario_objective_currency;
+            gScenarioObjective.Currency = _s4.scenario_objective_currency;
 
         // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
         if (_s4.scenario_objective_type == OBJECTIVE_BUILD_THE_BEST)
-            gScenarioObjectiveNumGuests = GetBuildTheBestRideId();
+            gScenarioObjective.RideId = GetBuildTheBestRideId();
     }
 
     void ImportSavedView()

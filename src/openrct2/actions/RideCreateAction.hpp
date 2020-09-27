@@ -45,14 +45,14 @@ DEFINE_GAME_ACTION(RideCreateAction, GAME_COMMAND_CREATE_RIDE, RideCreateGameAct
 {
 private:
     int32_t _rideType{ RIDE_ID_NULL };
-    int32_t _subType{ RIDE_ENTRY_INDEX_NULL };
+    ObjectEntryIndex _subType{ RIDE_ENTRY_INDEX_NULL };
     uint8_t _colour1{ 0xFF };
     uint8_t _colour2{ 0xFF };
 
 public:
     RideCreateAction() = default;
 
-    RideCreateAction(int32_t rideType, int32_t subType, int32_t colour1, int32_t colour2)
+    RideCreateAction(int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2)
         : _rideType(rideType)
         , _subType(subType)
         , _colour1(colour1)
@@ -229,7 +229,7 @@ public:
                 ride->price[1] = ShopItems[rideEntry->shop_item[1]].DefaultPrice;
             }
 
-            if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
+            if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
             {
                 ride->price[0] = 0;
             }

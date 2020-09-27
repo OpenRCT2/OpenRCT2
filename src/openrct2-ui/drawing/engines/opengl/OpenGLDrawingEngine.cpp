@@ -32,9 +32,10 @@
 #    include <openrct2/drawing/IDrawingContext.h>
 #    include <openrct2/drawing/IDrawingEngine.h>
 #    include <openrct2/drawing/LightFX.h>
-#    include <openrct2/drawing/Rain.h>
+#    include <openrct2/drawing/Weather.h>
 #    include <openrct2/interface/Screenshot.h>
 #    include <openrct2/ui/UiContext.h>
+#    include <openrct2/world/Climate.h>
 #    include <unordered_map>
 
 using namespace OpenRCT2;
@@ -69,6 +70,7 @@ private:
     int32_t _clipTop = 0;
     int32_t _clipRight = 0;
     int32_t _clipBottom = 0;
+    ScreenCoordsXY _spriteOffset;
 
     int32_t _drawCount = 0;
 
@@ -120,20 +122,21 @@ public:
     }
 };
 
-class OpenGLRainDrawer final : public IRainDrawer
+class OpenGLWeatherDrawer final : public IWeatherDrawer
 {
     OpenGLDrawingContext* _drawingContext;
 
 public:
-    explicit OpenGLRainDrawer(OpenGLDrawingContext* drawingContext)
+    explicit OpenGLWeatherDrawer(OpenGLDrawingContext* drawingContext)
         : _drawingContext(drawingContext)
     {
     }
 
-    virtual void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart) override
+    virtual void Draw(
+        int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+        const uint8_t* weatherpattern) override
     {
-        const uint8_t* pattern = RainPattern;
-
+        const uint8_t* pattern = weatherpattern;
         uint8_t patternXSpace = *pattern++;
         uint8_t patternYSpace = *pattern++;
 
@@ -193,7 +196,7 @@ private:
     OpenGLFramebuffer* _screenFramebuffer = nullptr;
     OpenGLFramebuffer* _scaleFramebuffer = nullptr;
     OpenGLFramebuffer* _smoothScaleFramebuffer = nullptr;
-    OpenGLRainDrawer _rainDrawer;
+    OpenGLWeatherDrawer _weatherDrawer;
 
 public:
     SDL_Color Palette[256];
@@ -202,7 +205,7 @@ public:
     explicit OpenGLDrawingEngine(const std::shared_ptr<IUiContext>& uiContext)
         : _uiContext(uiContext)
         , _drawingContext(new OpenGLDrawingContext(this))
-        , _rainDrawer(_drawingContext)
+        , _weatherDrawer(_drawingContext)
     {
         _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
         _bitsDPI.DrawingEngine = this;
@@ -339,10 +342,10 @@ public:
         window_update_all();
     }
 
-    void PaintRain() override
+    void PaintWeather() override
     {
         _drawingContext->SetDPI(&_bitsDPI);
-        DrawRain(&_bitsDPI, &_rainDrawer);
+        DrawWeather(&_bitsDPI, &_weatherDrawer);
     }
 
     std::string Screenshot() override
@@ -465,11 +468,11 @@ private:
             delete _smoothScaleFramebuffer;
             _smoothScaleFramebuffer = nullptr;
         }
-        if (GetContext()->GetUiContext()->GetScaleQuality() > 0)
+        if (GetContext()->GetUiContext()->GetScaleQuality() != ScaleQuality::NearestNeighbour)
         {
             _scaleFramebuffer = new OpenGLFramebuffer(_width, _height, false, false);
         }
-        if (GetContext()->GetUiContext()->GetScaleQuality() == SCALE_QUALITY_SMOOTH_NN)
+        if (GetContext()->GetUiContext()->GetScaleQuality() == ScaleQuality::SmoothNearestNeighbour)
         {
             uint32_t scale = std::ceil(gConfigGeneral.window_scale);
             _smoothScaleFramebuffer = new OpenGLFramebuffer(_width * scale, _height * scale, false, false);
@@ -693,10 +696,10 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
     right = right / _dpi->zoom_level;
     bottom = bottom / _dpi->zoom_level;
 
-    left += _clipLeft;
-    top += _clipTop;
-    right += _clipLeft;
-    bottom += _clipTop;
+    left += _spriteOffset.x;
+    top += _spriteOffset.y;
+    right += _spriteOffset.x;
+    bottom += _spriteOffset.y;
 
     const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
@@ -805,10 +808,10 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t ma
     right = right * _dpi->zoom_level;
     bottom = bottom * _dpi->zoom_level;
 
-    left += _clipLeft;
-    top += _clipTop;
-    right += _clipLeft;
-    bottom += _clipTop;
+    left += _spriteOffset.x;
+    top += _spriteOffset.y;
+    right += _spriteOffset.x;
+    bottom += _spriteOffset.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -885,15 +888,10 @@ void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, const
 
     const auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 
-    int32_t drawOffsetX = g1Element->x_offset;
-    int32_t drawOffsetY = g1Element->y_offset;
-    int32_t drawWidth = static_cast<uint16_t>(g1Element->width);
-    int32_t drawHeight = static_cast<uint16_t>(g1Element->height);
-
-    int32_t left = x + drawOffsetX;
-    int32_t top = y + drawOffsetY;
-    int32_t right = left + drawWidth;
-    int32_t bottom = top + drawHeight;
+    int32_t left = x + g1Element->x_offset;
+    int32_t top = y + g1Element->y_offset;
+    int32_t right = left + static_cast<uint16_t>(g1Element->width);
+    int32_t bottom = top + static_cast<uint16_t>(g1Element->height);
 
     if (left > right)
     {
@@ -904,10 +902,20 @@ void OpenGLDrawingContext::DrawGlyph(uint32_t image, int32_t x, int32_t y, const
         std::swap(top, bottom);
     }
 
-    left += _offsetX;
-    top += _offsetY;
-    right += _offsetX;
-    bottom += _offsetY;
+    left -= _dpi->x;
+    top -= _dpi->y;
+    right -= _dpi->x;
+    bottom -= _dpi->y;
+
+    left = left / _dpi->zoom_level;
+    top = top / _dpi->zoom_level;
+    right = right / _dpi->zoom_level;
+    bottom = bottom / _dpi->zoom_level;
+
+    left += _spriteOffset.x;
+    top += _spriteOffset.y;
+    right += _spriteOffset.x;
+    bottom += _spriteOffset.y;
 
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
@@ -1001,20 +1009,22 @@ void OpenGLDrawingContext::HandleTransparency()
 
 void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo* dpi)
 {
-    rct_drawpixelinfo* screenDPI = _engine->GetDPI();
+    auto screenDPI = _engine->GetDPI();
+    auto bytesPerRow = screenDPI->GetBytesPerRow();
+    auto bitsOffset = static_cast<size_t>(dpi->bits - screenDPI->bits);
 #    ifndef NDEBUG
-    size_t bitsSize = static_cast<size_t>(screenDPI->height) * static_cast<size_t>(screenDPI->width + screenDPI->pitch);
-#    endif
-    size_t bitsOffset = static_cast<size_t>(dpi->bits - screenDPI->bits);
-
+    auto bitsSize = static_cast<size_t>(screenDPI->height) * bytesPerRow;
     assert(bitsOffset < bitsSize);
+#    endif
 
-    _clipLeft = static_cast<int32_t>(bitsOffset % (screenDPI->width + screenDPI->pitch));
-    _clipTop = static_cast<int32_t>(bitsOffset / (screenDPI->width + screenDPI->pitch));
+    _clipLeft = static_cast<int32_t>(bitsOffset % bytesPerRow) + dpi->remX;
+    _clipTop = static_cast<int32_t>(bitsOffset / bytesPerRow) + dpi->remY;
     _clipRight = _clipLeft + (dpi->width / dpi->zoom_level);
     _clipBottom = _clipTop + (dpi->height / dpi->zoom_level);
     _offsetX = _clipLeft - dpi->x;
     _offsetY = _clipTop - dpi->y;
+    _spriteOffset.x = _clipLeft - dpi->remX;
+    _spriteOffset.y = _clipTop - dpi->remY;
 
     _dpi = dpi;
 }

@@ -36,6 +36,7 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "GuestPathfinding.h"
 #include "Peep.h"
 #include "Staff.h"
 
@@ -536,12 +537,11 @@ void Guest::UpdateEasterEggInteractions()
 
 int32_t Guest::GetEasterEggNameId() const
 {
-    uint8_t args[32]{};
     char buffer[256]{};
 
-    Formatter ft(args);
+    Formatter ft;
     FormatNameTo(ft);
-    format_string(buffer, sizeof(buffer), STR_STRINGID, args);
+    format_string(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
     for (uint32_t i = 0; i < std::size(gPeepEasterEggNames); i++)
         if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
@@ -684,12 +684,11 @@ void Guest::HandleEasterEggName()
  */
 int32_t Guest::CheckEasterEggName(int32_t index) const
 {
-    uint8_t args[32]{};
     char buffer[256]{};
 
-    Formatter ft(args);
+    Formatter ft;
     FormatNameTo(ft);
-    format_string(buffer, sizeof(buffer), STR_STRINGID, args);
+    format_string(buffer, sizeof(buffer), STR_STRINGID, ft.Data());
 
     return _stricmp(buffer, gPeepEasterEggNames[index]) == 0;
 }
@@ -1228,7 +1227,7 @@ void Guest::TryGetUpFromSitting()
  */
 void Guest::UpdateSitting()
 {
-    if (SubState == PEEP_SITTING_TRYING_TO_SIT)
+    if (SittingSubState == PeepSittingSubState::TryingToSit)
     {
         if (!CheckForPath())
             return;
@@ -1248,12 +1247,12 @@ void Guest::UpdateSitting()
         NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE;
         SwitchNextActionSpriteType();
 
-        SubState = PEEP_SITTING_SAT_DOWN;
+        SittingSubState = PeepSittingSubState::SatDown;
 
         // Sets time to sit on seat
         TimeToSitdown = (129 - Energy) * 16 + 50;
     }
-    else if (SubState == PEEP_SITTING_SAT_DOWN)
+    else if (SittingSubState == PeepSittingSubState::SatDown)
     {
         if (Action < PEEP_ACTION_NONE_1)
         {
@@ -1676,7 +1675,7 @@ loc_69B221:
         UmbrellaColour = ride->track_colour[0].main;
 
     if (shopItem == SHOP_ITEM_MAP)
-        peep_reset_pathfind_goal(this);
+        ResetPathfindGoal();
 
     uint16_t consumptionTime = item_consumption_time[shopItem];
     TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
@@ -1702,7 +1701,7 @@ loc_69B221:
         ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
         }
     }
 
@@ -1813,7 +1812,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
     {
         GuestHeadingToRideId = rideIndex;
         GuestIsLostCountdown = 200;
-        peep_reset_pathfind_goal(this);
+        ResetPathfindGoal();
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
     }
 
@@ -1876,7 +1875,7 @@ void Guest::PickRideToGoOn()
         // Head to that ride
         GuestHeadingToRideId = ride->id;
         GuestIsLostCountdown = 200;
-        peep_reset_pathfind_goal(this);
+        ResetPathfindGoal();
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
@@ -3253,7 +3252,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         // Head to that ride
         peep->GuestHeadingToRideId = closestRide->id;
         peep->GuestIsLostCountdown = 200;
-        peep_reset_pathfind_goal(peep);
+        peep->ResetPathfindGoal();
         peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
         peep->TimeLost = 0;
     }
@@ -3735,7 +3734,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
                 ride->FormatNameTo(ft);
                 if (gConfigNotifications.ride_warnings)
                 {
-                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide);
+                    News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide, ft);
                 }
             }
 
@@ -3905,7 +3904,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
 
         if (gConfigNotifications.guest_on_ride)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, sprite_index);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, msg_string, sprite_index, ft);
         }
     }
 
@@ -5016,7 +5015,7 @@ void Guest::UpdateRideLeaveExit()
 
         if (gConfigNotifications.guest_left_ride)
         {
-            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, sprite_index);
+            News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_RIDE_X, sprite_index, ft);
         }
     }
 
@@ -6106,7 +6105,7 @@ bool Guest::UpdateWalkingFindBench()
 
     SetState(PEEP_STATE_SITTING);
 
-    SubState = PEEP_SITTING_TRYING_TO_SIT;
+    SittingSubState = PeepSittingSubState::TryingToSit;
 
     int32_t benchX = (x & 0xFFE0) + BenchUseOffsets[Var37 & 0x7].x;
     int32_t benchY = (y & 0xFFE0) + BenchUseOffsets[Var37 & 0x7].y;
@@ -6277,7 +6276,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
 
     for (auto inner_peep : EntityList<Staff>(EntityListId::Peep))
     {
-        if (inner_peep->StaffType != STAFF_TYPE_SECURITY)
+        if (inner_peep->AssignedStaffType != StaffType::Security)
             continue;
 
         if (inner_peep->x == LOCATION_NULL)

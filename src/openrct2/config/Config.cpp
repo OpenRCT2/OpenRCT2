@@ -93,16 +93,16 @@ namespace Config
         ConfigEnumEntry<TemperatureUnit>("FAHRENHEIT", TemperatureUnit::Fahrenheit),
     });
 
-    static const auto Enum_ScaleQuality = ConfigEnum<int32_t>({
-        ConfigEnumEntry<int32_t>("NEAREST_NEIGHBOUR", SCALE_QUALITY_NN),
-        ConfigEnumEntry<int32_t>("LINEAR", SCALE_QUALITY_LINEAR),
-        ConfigEnumEntry<int32_t>("SMOOTH_NEAREST_NEIGHBOUR", SCALE_QUALITY_SMOOTH_NN),
+    static const auto Enum_ScaleQuality = ConfigEnum<ScaleQuality>({
+        ConfigEnumEntry<ScaleQuality>("NEAREST_NEIGHBOUR", ScaleQuality::NearestNeighbour),
+        ConfigEnumEntry<ScaleQuality>("LINEAR", ScaleQuality::Linear),
+        ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNearestNeighbour),
     });
 
-    static const auto Enum_VirtualFloorStyle = ConfigEnum<int32_t>({
-        ConfigEnumEntry<int32_t>("OFF", VIRTUAL_FLOOR_STYLE_OFF),
-        ConfigEnumEntry<int32_t>("CLEAR", VIRTUAL_FLOOR_STYLE_CLEAR),
-        ConfigEnumEntry<int32_t>("GLASSY", VIRTUAL_FLOOR_STYLE_GLASSY),
+    static const auto Enum_VirtualFloorStyle = ConfigEnum<VirtualFloorStyles>({
+        ConfigEnumEntry<VirtualFloorStyles>("OFF", VirtualFloorStyles::Off),
+        ConfigEnumEntry<VirtualFloorStyles>("CLEAR", VirtualFloorStyles::Clear),
+        ConfigEnumEntry<VirtualFloorStyles>("GLASSY", VirtualFloorStyles::Glassy),
     });
 
     /**
@@ -171,8 +171,8 @@ namespace Config
             model->drawing_engine = reader->GetEnum<int32_t>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
             model->use_vsync = reader->GetBoolean("use_vsync", true);
-            model->virtual_floor_style = reader->GetEnum<int32_t>(
-                "virtual_floor_style", VIRTUAL_FLOOR_STYLE_GLASSY, Enum_VirtualFloorStyle);
+            model->virtual_floor_style = reader->GetEnum<VirtualFloorStyles>(
+                "virtual_floor_style", VirtualFloorStyles::Glassy, Enum_VirtualFloorStyle);
             model->date_format = reader->GetEnum<int32_t>("date_format", platform_get_locale_date_format(), Enum_DateFormat);
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
@@ -192,7 +192,8 @@ namespace Config
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
             model->window_scale = reader->GetFloat("window_scale", platform_get_default_scale());
-            model->scale_quality = reader->GetEnum<int32_t>("scale_quality", SCALE_QUALITY_SMOOTH_NN, Enum_ScaleQuality);
+            model->scale_quality = reader->GetEnum<ScaleQuality>(
+                "scale_quality", ScaleQuality::SmoothNearestNeighbour, Enum_ScaleQuality);
             model->show_fps = reader->GetBoolean("show_fps", false);
             model->multithreading = reader->GetBoolean("multi_threading", false);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);
@@ -267,7 +268,7 @@ namespace Config
         writer->WriteBoolean("allow_loading_with_incorrect_checksum", model->allow_loading_with_incorrect_checksum);
         writer->WriteBoolean("steam_overlay_pause", model->steam_overlay_pause);
         writer->WriteFloat("window_scale", model->window_scale);
-        writer->WriteEnum<int32_t>("scale_quality", model->scale_quality, Enum_ScaleQuality);
+        writer->WriteEnum<ScaleQuality>("scale_quality", model->scale_quality, Enum_ScaleQuality);
         writer->WriteBoolean("show_fps", model->show_fps);
         writer->WriteBoolean("multi_threading", model->multithreading);
         writer->WriteBoolean("trap_cursor", model->trap_cursor);
@@ -287,7 +288,7 @@ namespace Config
         writer->WriteBoolean("show_guest_purchases", model->show_guest_purchases);
         writer->WriteBoolean("show_real_names_of_guests", model->show_real_names_of_guests);
         writer->WriteBoolean("allow_early_completion", model->allow_early_completion);
-        writer->WriteEnum<int32_t>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
+        writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
         writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
         writer->WriteInt64("last_version_check_time", model->last_version_check_time);
     }

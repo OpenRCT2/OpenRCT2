@@ -36,15 +36,15 @@ enum {
 
 static rct_widget window_track_manage_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({ 10, 24}, {110, 12}, WWT_BUTTON, 0, STR_TRACK_MANAGE_RENAME),
-    MakeWidget({130, 24}, {110, 12}, WWT_BUTTON, 0, STR_TRACK_MANAGE_DELETE),
+    MakeWidget({ 10, 24}, {110, 12}, WWT_BUTTON, WindowColour::Primary, STR_TRACK_MANAGE_RENAME),
+    MakeWidget({130, 24}, {110, 12}, WWT_BUTTON, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
     { WIDGETS_END }
 };
 
 static rct_widget window_track_delete_prompt_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({ 10, 54}, {110, 12}, WWT_BUTTON, 0, STR_TRACK_MANAGE_DELETE),
-    MakeWidget({130, 54}, {110, 12}, WWT_BUTTON, 0, STR_CANCEL             ),
+    MakeWidget({ 10, 54}, {110, 12}, WWT_BUTTON, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
+    MakeWidget({130, 54}, {110, 12}, WWT_BUTTON, WindowColour::Primary, STR_CANCEL             ),
     { WIDGETS_END }
 };
 
@@ -205,13 +205,13 @@ static void window_track_manage_textinput(rct_window* w, rct_widgetindex widgetI
 
     if (str_is_null_or_empty(text))
     {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE, {});
         return;
     }
 
     if (!filename_valid_characters(text))
     {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS);
+        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS, {});
         return;
     }
 
@@ -223,7 +223,7 @@ static void window_track_manage_textinput(rct_window* w, rct_widgetindex widgetI
     }
     else
     {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED);
+        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED, {});
     }
 }
 
@@ -277,7 +277,7 @@ static void window_track_delete_prompt_mouseup(rct_window* w, rct_widgetindex wi
             }
             else
             {
-                context_show_error(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED);
+                context_show_error(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED, {});
             }
             break;
     }

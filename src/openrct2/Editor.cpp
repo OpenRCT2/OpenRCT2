@@ -130,10 +130,10 @@ namespace Editor
 
         safe_strcpy(gS6Info.name, gScenarioName.c_str(), sizeof(gS6Info.name));
         safe_strcpy(gS6Info.details, gScenarioDetails.c_str(), sizeof(gS6Info.details));
-        gS6Info.objective_type = gScenarioObjectiveType;
-        gS6Info.objective_arg_1 = gScenarioObjectiveYear;
-        gS6Info.objective_arg_2 = gScenarioObjectiveCurrency;
-        gS6Info.objective_arg_3 = gScenarioObjectiveNumGuests;
+        gS6Info.objective_type = gScenarioObjective.Type;
+        gS6Info.objective_arg_1 = gScenarioObjective.Year;
+        gS6Info.objective_arg_2 = gScenarioObjective.Currency;
+        gS6Info.objective_arg_3 = gScenarioObjective.NumGuests;
         climate_reset(gClimate);
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;

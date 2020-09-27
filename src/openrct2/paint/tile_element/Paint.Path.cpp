@@ -912,11 +912,11 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
                 {
                     patrolColour = COLOUR_GREY;
                 }
-                staffType = staff->StaffType;
+                staffType = static_cast<uint8_t>(staff->AssignedStaffType);
             }
         }
 
-        if (staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(staffType), session->MapPosition))
+        if (staff_is_patrol_area_set_for_type(static_cast<StaffType>(staffType), session->MapPosition))
         {
             uint32_t imageId = 2618;
             int32_t patrolAreaBaseZ = tile_element->GetBaseZ();
@@ -930,7 +930,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         }
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_PATH_HEIGHTS)
+    if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
         uint16_t heightMarkerBaseZ = tile_element->GetBaseZ() + 3;
         if (tile_element->AsPath()->IsSloped())

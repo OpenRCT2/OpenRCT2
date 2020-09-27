@@ -17579,7 +17579,7 @@ static void flying_rc_track_right_banked_25_deg_down_to_flat(
     flying_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType)
 {
     switch (trackType)
     {

@@ -3669,6 +3669,11 @@ STR_6375    :Ukendt forlystelse
 STR_6376    :{WINDOW_COLOUR_2}Vogn:{NEWLINE}{BLACK}{STRINGID} til {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} til {STRINGID}
 STR_6378    :Henter objektliste: {INT32} / {INT32}
+STR_6379    :Modtog ugyldig data
+STR_6380    :Opdatering tilgængelig!
+STR_6381    :Deltag i OpenRCT2 Discord gruppe!
+STR_6382    :Nyere version af OpenRCT2 er tilgængelig: {STRING}!
+STR_6383    :Åben hjemmesiden for at hente
 
 #############
 # Scenarios #

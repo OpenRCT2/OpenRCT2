@@ -15851,7 +15851,7 @@ static void lay_down_rc_track_right_quarter_banked_helix_large_down(
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_lay_down_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_lay_down_rc(int32_t trackType)
 {
     switch (trackType)
     {

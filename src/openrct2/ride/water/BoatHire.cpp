@@ -140,7 +140,7 @@ static void paint_boat_hire_track_right_quarter_turn_1_tile(
 /**
  * rct2: 0x008B0D60
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_boat_hire(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_boat_hire(int32_t trackType)
 {
     switch (trackType)
     {

@@ -229,33 +229,33 @@ static constexpr const int32_t right_aligned_widgets_order[] = {
 #pragma endregion
 
 static rct_widget window_top_toolbar_widgets[] = {
-    MakeRemapWidget({  0, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
-    MakeRemapWidget({ 60, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
-    MakeRemapWidget({250, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
-    MakeRemapWidget({100, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 1, SPR_TOOLBAR_ZOOM_OUT,       STR_ZOOM_OUT_TIP                  ), // Zoom out
-    MakeRemapWidget({130, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 1, SPR_TOOLBAR_ZOOM_IN,        STR_ZOOM_IN_TIP                   ), // Zoom in
-    MakeRemapWidget({160, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 1, SPR_TOOLBAR_ROTATE,         STR_ROTATE_TIP                    ), // Rotate camera
-    MakeRemapWidget({190, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 1, SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
-    MakeRemapWidget({220, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 1, SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
-    MakeRemapWidget({267, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
-    MakeRemapWidget({297, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
-    MakeRemapWidget({327, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
-    MakeRemapWidget({357, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
-    MakeRemapWidget({387, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
-    MakeRemapWidget({490, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
-    MakeRemapWidget({520, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
-    MakeRemapWidget({550, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
-    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
-    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 2, SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TAB_TOOLBAR,            STR_CHEATS_TIP                    ), // Cheats
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TAB_TOOLBAR,            STR_DEBUG_TIP                     ), // Debug
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TAB_TOOLBAR,            STR_SCENARIO_OPTIONS_FINANCIAL_TIP), // Finances
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TAB_TOOLBAR,            STR_FINANCES_RESEARCH_TIP         ), // Research
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 3, SPR_TAB_TOOLBAR,            STR_SHOW_RECENT_MESSAGES_TIP      ), // News
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, 0, SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
-    MakeWidget     ({  0, 0}, {10,                      1}, WWT_EMPTY,  0                                                                ), // Artificial widget separator
+    MakeRemapWidget({  0, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
+    MakeRemapWidget({ 60, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
+    MakeRemapWidget({250, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
+    MakeRemapWidget({100, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_OUT,       STR_ZOOM_OUT_TIP                  ), // Zoom out
+    MakeRemapWidget({130, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_IN,        STR_ZOOM_IN_TIP                   ), // Zoom in
+    MakeRemapWidget({160, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Secondary , SPR_TOOLBAR_ROTATE,         STR_ROTATE_TIP                    ), // Rotate camera
+    MakeRemapWidget({190, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Secondary , SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
+    MakeRemapWidget({220, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Secondary , SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
+    MakeRemapWidget({267, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
+    MakeRemapWidget({297, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
+    MakeRemapWidget({327, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
+    MakeRemapWidget({357, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
+    MakeRemapWidget({387, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
+    MakeRemapWidget({490, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
+    MakeRemapWidget({520, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
+    MakeRemapWidget({550, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
+    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
+    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_CHEATS_TIP                    ), // Cheats
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_DEBUG_TIP                     ), // Debug
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SCENARIO_OPTIONS_FINANCIAL_TIP), // Finances
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_FINANCES_RESEARCH_TIP         ), // Research
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SHOW_RECENT_MESSAGES_TIP      ), // News
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
+    MakeWidget     ({  0, 0}, {10,                      1}, WWT_EMPTY,  WindowColour::Primary                                                                   ), // Artificial widget separator
     { WIDGETS_END },
 };
 
@@ -429,7 +429,7 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
             }
             else
             {
-                context_show_error(STR_CHAT_UNAVAILABLE, STR_NONE);
+                context_show_error(STR_CHAT_UNAVAILABLE, STR_NONE, {});
             }
             break;
     }
@@ -903,9 +903,9 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Draw an overlay if clearance checks are disabled
         if (gCheatsDisableClearanceChecks)
         {
-            gfx_draw_string_right(
-                dpi, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, nullptr, COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE,
-                screenPos + ScreenCoordsXY{ 26, 2 });
+            DrawTextBasic(
+                dpi, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
+                COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT);
         }
     }
 
@@ -980,10 +980,12 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_sprite(dpi, imgId, screenPos + ScreenCoordsXY{ 3, 11 }, 0);
 
         // Draw number of players.
-        int32_t player_count = network_get_num_players();
+        auto ft = Formatter();
+        ft.Add<int32_t>(network_get_num_players());
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        gfx_draw_string_right(
-            dpi, STR_COMMA16, &player_count, COLOUR_WHITE | COLOUR_FLAG_OUTLINE, screenPos + ScreenCoordsXY{ 23, 1 });
+        DrawTextBasic(
+            dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, COLOUR_WHITE | COLOUR_FLAG_OUTLINE,
+            TextAlignment::RIGHT);
     }
 }
 
@@ -1373,7 +1375,7 @@ static void sub_6E1F34(
                 *parameter_2 = (quadrant ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
                 *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
 
-                if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
+                if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
                 {
                     virtual_floor_set_height(gSceneryPlaceZ);
                 }
@@ -1664,7 +1666,7 @@ static void sub_6E1F34(
         }
     }
 
-    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
         virtual_floor_set_height(gSceneryPlaceZ);
     }
@@ -2013,7 +2015,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             auto bannerIndex = create_new_banner(0);
             if (bannerIndex == BANNER_INDEX_NULL)
             {
-                context_show_error(STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME);
+                context_show_error(STR_CANT_POSITION_THIS_HERE, STR_TOO_MANY_BANNERS_IN_GAME, {});
                 break;
             }
             auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, bannerIndex, primaryColour);
@@ -2663,7 +2665,7 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
 
-    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
         virtual_floor_invalidate();
     }
@@ -3449,31 +3451,22 @@ static void top_toolbar_rotate_menu_dropdown(int16_t dropdownIndex)
 
 static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[DDIDX_CHEATS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_CHEATS] = STR_CHEAT_TITLE;
+    using namespace Dropdown;
 
-    gDropdownItemsFormat[DDIDX_TILE_INSPECTOR] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_TILE_INSPECTOR] = STR_DEBUG_DROPDOWN_TILE_INSPECTOR;
+    constexpr Item items[] = {
+        ToggleOption(DDIDX_CHEATS, STR_CHEAT_TITLE),
+        ToggleOption(DDIDX_TILE_INSPECTOR, STR_DEBUG_DROPDOWN_TILE_INSPECTOR),
+        ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
+        ToggleOption(DDIDX_INVENTIONS_LIST, STR_DEBUG_DROPDOWN_INVENTIONS_LIST),
+        ToggleOption(DDIDX_SCENARIO_OPTIONS, STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS),
+        Separator(),
+        ToggleOption(DDIDX_ENABLE_SANDBOX_MODE, STR_ENABLE_SANDBOX_MODE),
+        ToggleOption(DDIDX_DISABLE_CLEARANCE_CHECKS, STR_DISABLE_CLEARANCE_CHECKS),
+        ToggleOption(DDIDX_DISABLE_SUPPORT_LIMITS, STR_DISABLE_SUPPORT_LIMITS),
+    };
+    static_assert(ItemIDsMatchIndices(items));
 
-    gDropdownItemsFormat[DDIDX_OBJECT_SELECTION] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_OBJECT_SELECTION] = STR_DEBUG_DROPDOWN_OBJECT_SELECTION;
-
-    gDropdownItemsFormat[DDIDX_INVENTIONS_LIST] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_INVENTIONS_LIST] = STR_DEBUG_DROPDOWN_INVENTIONS_LIST;
-
-    gDropdownItemsFormat[DDIDX_SCENARIO_OPTIONS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_SCENARIO_OPTIONS] = STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS;
-
-    gDropdownItemsFormat[5] = STR_EMPTY;
-
-    gDropdownItemsFormat[DDIDX_ENABLE_SANDBOX_MODE] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_ENABLE_SANDBOX_MODE] = STR_ENABLE_SANDBOX_MODE;
-
-    gDropdownItemsFormat[DDIDX_DISABLE_CLEARANCE_CHECKS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_DISABLE_CLEARANCE_CHECKS] = STR_DISABLE_CLEARANCE_CHECKS;
-
-    gDropdownItemsFormat[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_DISABLE_SUPPORT_LIMITS] = STR_DISABLE_SUPPORT_LIMITS;
+    SetItems(items);
 
     window_dropdown_show_text(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
@@ -3624,36 +3617,29 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
  */
 static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[1] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[3] = STR_EMPTY;
-    gDropdownItemsFormat[4] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[6] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[7] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[8] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[9] = STR_EMPTY;
-    gDropdownItemsFormat[10] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[11] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[12] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[13] = DROPDOWN_SEPARATOR;
-    gDropdownItemsFormat[DDIDX_VIEW_CLIPPING] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_TOGGLE_OPTION;
+    using namespace Dropdown;
 
-    gDropdownItemsArgs[0] = STR_UNDERGROUND_VIEW;
-    gDropdownItemsArgs[1] = STR_REMOVE_BASE_LAND;
-    gDropdownItemsArgs[2] = STR_REMOVE_VERTICAL_FACES;
-    gDropdownItemsArgs[4] = STR_SEE_THROUGH_RIDES;
-    gDropdownItemsArgs[5] = STR_SEE_THROUGH_SCENERY;
-    gDropdownItemsArgs[6] = STR_SEE_THROUGH_PATHS;
-    gDropdownItemsArgs[7] = STR_INVISIBLE_SUPPORTS;
-    gDropdownItemsArgs[8] = STR_INVISIBLE_PEOPLE;
-    gDropdownItemsArgs[10] = STR_HEIGHT_MARKS_ON_LAND;
-    gDropdownItemsArgs[11] = STR_HEIGHT_MARKS_ON_RIDE_TRACKS;
-    gDropdownItemsArgs[12] = STR_HEIGHT_MARKS_ON_PATHS;
-    gDropdownItemsArgs[DDIDX_VIEW_CLIPPING] = STR_VIEW_CLIPPING_MENU;
-    gDropdownItemsArgs[DDIDX_HIGHLIGHT_PATH_ISSUES] = STR_HIGHLIGHT_PATH_ISSUES_MENU;
+    constexpr Item items[] = {
+        ToggleOption(DDIDX_UNDERGROUND_INSIDE, STR_UNDERGROUND_VIEW),
+        ToggleOption(DDIDX_HIDE_BASE, STR_REMOVE_BASE_LAND),
+        ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
+        Separator(),
+        ToggleOption(DDIDX_SEETHROUGH_RIDES, STR_SEE_THROUGH_RIDES),
+        ToggleOption(DDIDX_SEETHROUGH_SCENARY, STR_SEE_THROUGH_SCENERY),
+        ToggleOption(DDIDX_SEETHROUGH_PATHS, STR_SEE_THROUGH_PATHS),
+        ToggleOption(DDIDX_INVISIBLE_SUPPORTS, STR_INVISIBLE_SUPPORTS),
+        ToggleOption(DDIDX_INVISIBLE_PEEPS, STR_INVISIBLE_PEOPLE),
+        Separator(),
+        ToggleOption(DDIDX_LAND_HEIGHTS, STR_HEIGHT_MARKS_ON_LAND),
+        ToggleOption(DDIDX_TRACK_HEIGHTS, STR_HEIGHT_MARKS_ON_RIDE_TRACKS),
+        ToggleOption(DDIDX_PATH_HEIGHTS, STR_HEIGHT_MARKS_ON_PATHS),
+        Separator(),
+        ToggleOption(DDIDX_VIEW_CLIPPING, STR_VIEW_CLIPPING_MENU),
+        ToggleOption(DDIDX_HIGHLIGHT_PATH_ISSUES, STR_HIGHLIGHT_PATH_ISSUES_MENU),
+    };
+    static_assert(ItemIDsMatchIndices(items));
+
+    SetItems(items);
 
     window_dropdown_show_text(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0,

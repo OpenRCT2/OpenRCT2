@@ -303,7 +303,7 @@ static void paint_mini_helicopters_track_right_quarter_turn_1_tile(
 /**
  * rct2: 0x0081F268
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int32_t trackType)
 {
     switch (trackType)
     {

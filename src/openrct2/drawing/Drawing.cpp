@@ -772,3 +772,25 @@ std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
     }
     return std::nullopt;
 }
+
+size_t rct_drawpixelinfo::GetBytesPerRow() const
+{
+    return static_cast<size_t>(width) + pitch;
+}
+
+uint8_t* rct_drawpixelinfo::GetBitsOffset(const ScreenCoordsXY& pos) const
+{
+    return bits + pos.x + (pos.y * GetBytesPerRow());
+}
+
+rct_drawpixelinfo rct_drawpixelinfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
+{
+    rct_drawpixelinfo result = *this;
+    result.bits = GetBitsOffset(pos);
+    result.x = static_cast<int16_t>(pos.x);
+    result.y = static_cast<int16_t>(pos.y);
+    result.width = static_cast<int16_t>(size.width);
+    result.height = static_cast<int16_t>(size.height);
+    result.pitch = static_cast<int16_t>(width + pitch - size.width);
+    return result;
+}

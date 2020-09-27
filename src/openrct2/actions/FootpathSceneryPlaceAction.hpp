@@ -26,14 +26,20 @@ DEFINE_GAME_ACTION(FootpathSceneryPlaceAction, GAME_COMMAND_PLACE_FOOTPATH_SCENE
 {
 private:
     CoordsXYZ _loc;
-    uint8_t _pathItemType;
+    ObjectEntryIndex _pathItemType;
 
 public:
     FootpathSceneryPlaceAction() = default;
-    FootpathSceneryPlaceAction(const CoordsXYZ& loc, uint8_t pathItemType)
+    FootpathSceneryPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType)
         : _loc(loc)
         , _pathItemType(pathItemType)
     {
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("object", _pathItemType);
     }
 
     uint16_t GetActionFlags() const override

@@ -13130,7 +13130,7 @@ static void multi_dimension_rc_track_multidim_inverted_90_deg_up_to_flat_quarter
     }
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_multi_dimension_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_multi_dimension_rc(int32_t trackType)
 {
     switch (trackType)
     {

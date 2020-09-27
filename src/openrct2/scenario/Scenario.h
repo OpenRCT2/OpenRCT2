@@ -286,8 +286,8 @@ struct rct_s6_data
     uint8_t next_weather_effect;
     uint8_t current_weather_gloom;
     uint8_t next_weather_gloom;
-    uint8_t current_rain_level;
-    uint8_t next_rain_level;
+    uint8_t current_weather_level;
+    uint8_t next_weather_level;
     rct12_news_item news_items[RCT12_MAX_NEWS_ITEMS];
     char rct1_scenario_name[62];       // Unused in RCT2
     uint16_t rct1_scenario_slot_index; // Unused in RCT2
@@ -349,6 +349,58 @@ enum
     OBJECTIVE_COUNT
 };
 
+bool ObjectiveNeedsMoney(const uint8_t objective);
+
+enum class ObjectiveStatus : uint8_t
+{
+    Undecided,
+    Success,
+    Failure,
+};
+
+struct Objective
+{
+    uint8_t Type;
+    uint8_t Year;
+    union
+    {
+        uint16_t NumGuests;
+        rct_string_id RideId;
+        uint16_t MinimumLength; // For the "Build 10 coasters of minimum length" objective.
+    };
+    union
+    {
+        money32 Currency;
+        uint16_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
+    };
+
+    bool NeedsMoney() const
+    {
+        return ObjectiveNeedsMoney(Type);
+    }
+
+    bool IsValid(bool useMoney, bool canAskMoneyForRides) const
+    {
+        const bool objectiveAllowedByMoneyUsage = useMoney || !NeedsMoney();
+        // This objective can only work if the player can ask money for rides.
+        const bool objectiveAllowedByPaymentSettings = (Type != OBJECTIVE_MONTHLY_RIDE_INCOME) || canAskMoneyForRides;
+        return objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings;
+    }
+
+    ObjectiveStatus Check() const;
+
+private:
+    ObjectiveStatus CheckGuestsBy() const;
+    ObjectiveStatus CheckParkValueBy() const;
+    ObjectiveStatus Check10RollerCoasters() const;
+    ObjectiveStatus CheckGuestsAndRating() const;
+    ObjectiveStatus CheckMonthlyRideIncome() const;
+    ObjectiveStatus Check10RollerCoastersLength() const;
+    ObjectiveStatus CheckFinish5RollerCoasters() const;
+    ObjectiveStatus CheckRepayLoanAndParkValue() const;
+    ObjectiveStatus CheckMonthlyFoodIncome() const;
+};
+
 enum
 {
     SCENARIO_SELECT_MODE_DIFFICULTY,
@@ -375,10 +427,7 @@ extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 extern uint32_t gScenarioTicks;
 extern random_engine_t gScenarioRand;
 
-extern uint8_t gScenarioObjectiveType;
-extern uint8_t gScenarioObjectiveYear;
-extern uint16_t gScenarioObjectiveNumGuests;
-extern money32 gScenarioObjectiveCurrency;
+extern Objective gScenarioObjective;
 
 extern uint16_t gScenarioParkRatingWarningDays;
 extern money32 gScenarioCompletedCompanyValue;
@@ -403,15 +452,7 @@ bool scenario_create_ducks();
 
 const random_engine_t::state_type& scenario_rand_state();
 void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1);
-#ifdef DEBUG_DESYNC
-uint32_t dbg_scenario_rand(const char* file, const char* function, const uint32_t line, const void* data);
-#    define scenario_rand() dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, NULL)
-#    define scenario_rand_data(data) dbg_scenario_rand(__FILE__, __FUNCTION__, __LINE__, data)
-void dbg_report_desync(uint32_t tick, uint32_t srand0, uint32_t server_srand0, const char* clientHash, const char* serverHash);
-#else
 random_engine_t::result_type scenario_rand();
-#endif
-
 uint32_t scenario_rand_max(uint32_t max);
 
 bool scenario_prepare_for_save();
@@ -422,6 +463,5 @@ void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char* name);
 void scenario_autosave_check();
-bool ObjectiveNeedsMoney(const uint8_t objective);
 
 #endif

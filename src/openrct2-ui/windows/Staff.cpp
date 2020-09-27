@@ -50,8 +50,8 @@ enum WINDOW_STAFF_WIDGET_IDX {
     WIDX_TAB_1,
     WIDX_TAB_2,
     WIDX_TAB_3,
-    WIDX_TAB_4,
-    WIDX_VIEWPORT,
+
+    WIDX_VIEWPORT = 7,
     WIDX_BTM_LABEL,
     WIDX_PICKUP,
     WIDX_PATROL,
@@ -59,7 +59,7 @@ enum WINDOW_STAFF_WIDGET_IDX {
     WIDX_LOCATE,
     WIDX_FIRE,
 
-    WIDX_CHECKBOX_1 = 8,
+    WIDX_CHECKBOX_1 = 7,
     WIDX_CHECKBOX_2,
     WIDX_CHECKBOX_3,
     WIDX_CHECKBOX_4,
@@ -72,33 +72,32 @@ validate_global_widx(WC_STAFF, WIDX_PICKUP);
 
 #define MAIN_STAFF_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({      0,      43}, {190, 137}, WWT_RESIZE,        1                                        ), /* Resize */ \
-    MakeRemapWidget({      3,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_OVERVIEW_TIP), /* Tab 1 */ \
-    MakeRemapWidget({     34,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_OPTIONS_TIP ), /* Tab 2 */ \
-    MakeRemapWidget({     65,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB,        STR_STAFF_STATS_TIP   ), /* Tab 3 */ \
-    MakeRemapWidget({     96,      17}, { 31,  27}, WWT_TAB,           1, SPR_TAB                               )  /* Tab 4 */
+    MakeWidget({ 0, 43}, {190, 137}, WWT_RESIZE, WindowColour::Secondary), /* Resize */ \
+    MakeTab   ({ 3, 17}, STR_STAFF_OVERVIEW_TIP                         ), /* Tab 1 */ \
+    MakeTab   ({34, 17}, STR_STAFF_OPTIONS_TIP                          ), /* Tab 2 */ \
+    MakeTab   ({65, 17}, STR_STAFF_STATS_TIP                            )  /* Tab 3 */
 
 static rct_widget window_staff_overview_widgets[] = {
     MAIN_STAFF_WIDGETS,
-    MakeWidget     ({      3,      47}, {162, 120}, WWT_VIEWPORT,      1                                        ), // Viewport
-    MakeWidget     ({      3, WH - 13}, {162,  11}, WWT_LABEL_CENTRED, 1                                        ), // Label at bottom of viewport
-    MakeWidget     ({WW - 25,      45}, { 24,  24}, WWT_FLATBTN,       1, SPR_PICKUP_BTN, STR_PICKUP_TIP        ), // Pickup Button
-    MakeWidget     ({WW - 25,      69}, { 24,  24}, WWT_FLATBTN,       1, SPR_PATROL_BTN, STR_SET_PATROL_TIP    ), // Patrol Button
-    MakeWidget     ({WW - 25,      93}, { 24,  24}, WWT_FLATBTN,       1, SPR_RENAME,     STR_NAME_STAFF_TIP    ), // Rename Button
-    MakeWidget     ({WW - 25,     117}, { 24,  24}, WWT_FLATBTN,       1, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP), // Locate Button
-    MakeWidget     ({WW - 25,     141}, { 24,  24}, WWT_FLATBTN,       1, SPR_DEMOLISH,   STR_FIRE_STAFF_TIP    ), // Fire Button
+    MakeWidget     ({      3,      47}, {162, 120}, WWT_VIEWPORT,      WindowColour::Secondary                                        ), // Viewport
+    MakeWidget     ({      3, WH - 13}, {162,  11}, WWT_LABEL_CENTRED, WindowColour::Secondary                                        ), // Label at bottom of viewport
+    MakeWidget     ({WW - 25,      45}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_PICKUP_BTN, STR_PICKUP_TIP        ), // Pickup Button
+    MakeWidget     ({WW - 25,      69}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_PATROL_BTN, STR_SET_PATROL_TIP    ), // Patrol Button
+    MakeWidget     ({WW - 25,      93}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_STAFF_TIP    ), // Rename Button
+    MakeWidget     ({WW - 25,     117}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP), // Locate Button
+    MakeWidget     ({WW - 25,     141}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_DEMOLISH,   STR_FIRE_STAFF_TIP    ), // Fire Button
     { WIDGETS_END },
 };
 
 //0x9AF910
 static rct_widget window_staff_options_widgets[] = {
     MAIN_STAFF_WIDGETS,
-    MakeWidget     ({      5,  50}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 1
-    MakeWidget     ({      5,  67}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 2
-    MakeWidget     ({      5,  84}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 3
-    MakeWidget     ({      5, 101}, {180,  12}, WWT_CHECKBOX, 1                                            ), // Checkbox 4
-    MakeWidget     ({      5,  50}, {180,  12}, WWT_DROPDOWN, 1                                            ), // Costume Dropdown
-    MakeWidget     ({WW - 17,  51}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
+    MakeWidget     ({      5,  50}, {180,  12}, WWT_CHECKBOX, WindowColour::Secondary                                            ), // Checkbox 1
+    MakeWidget     ({      5,  67}, {180,  12}, WWT_CHECKBOX, WindowColour::Secondary                                            ), // Checkbox 2
+    MakeWidget     ({      5,  84}, {180,  12}, WWT_CHECKBOX, WindowColour::Secondary                                            ), // Checkbox 3
+    MakeWidget     ({      5, 101}, {180,  12}, WWT_CHECKBOX, WindowColour::Secondary                                            ), // Checkbox 4
+    MakeWidget     ({      5,  50}, {180,  12}, WWT_DROPDOWN, WindowColour::Secondary                                            ), // Costume Dropdown
+    MakeWidget     ({WW - 17,  51}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP), // Costume Dropdown Button
     { WIDGETS_END },
 };
 
@@ -283,7 +282,7 @@ static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
 };
 // clang-format on
 
-static uint8_t _availableCostumes[ENTERTAINER_COSTUME_COUNT];
+static EntertainerCostume _availableCostumes[static_cast<uint8_t>(EntertainerCostume::Count)];
 
 enum class PatrolAreaValue
 {
@@ -358,9 +357,9 @@ void window_staff_disable_widgets(rct_window* w)
     {
         return;
     }
-    uint64_t disabled_widgets = (1 << WIDX_TAB_4);
+    uint64_t disabled_widgets = 0;
 
-    if (peep != nullptr && peep->StaffType == STAFF_TYPE_SECURITY)
+    if (peep != nullptr && peep->AssignedStaffType == StaffType::Security)
     {
         disabled_widgets |= (1 << WIDX_TAB_2);
     }
@@ -588,7 +587,7 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     }
 
     // Disable clear patrol area if no area is set.
-    if (!(gStaffModes[peep->StaffId] & 2))
+    if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
     {
         dropdown_set_disabled(1, true);
     }
@@ -617,7 +616,8 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
         {
             gStaffPatrolAreas[peep->StaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
         }
-        gStaffModes[peep->StaffId] &= ~2;
+        assert(gStaffModes[peep->StaffId] == StaffMode::Patrol);
+        gStaffModes[peep->StaffId] = StaffMode::Walk;
 
         gfx_invalidate_screen();
         staff_update_greyed_patrol_areas();
@@ -849,9 +849,9 @@ void window_staff_options_invalidate(rct_window* w)
     auto ft = Formatter::Common();
     peep->FormatNameTo(ft);
 
-    switch (peep->StaffType)
+    switch (peep->AssignedStaffType)
     {
-        case STAFF_TYPE_ENTERTAINER:
+        case StaffType::Entertainer:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_EMPTY;
             window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_EMPTY;
             window_staff_options_widgets[WIDX_CHECKBOX_3].type = WWT_EMPTY;
@@ -860,7 +860,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_BUTTON;
             window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[peep->SpriteType - 4];
             break;
-        case STAFF_TYPE_HANDYMAN:
+        case StaffType::Handyman:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
             window_staff_options_widgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
             window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_CHECKBOX;
@@ -875,7 +875,7 @@ void window_staff_options_invalidate(rct_window* w)
                 (1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2) | (1 << WIDX_CHECKBOX_3) | (1 << WIDX_CHECKBOX_4));
             w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
-        case STAFF_TYPE_MECHANIC:
+        case StaffType::Mechanic:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
             window_staff_options_widgets[WIDX_CHECKBOX_1].text = STR_INSPECT_RIDES;
             window_staff_options_widgets[WIDX_CHECKBOX_2].type = WWT_CHECKBOX;
@@ -887,8 +887,10 @@ void window_staff_options_invalidate(rct_window* w)
             w->pressed_widgets &= ~((1 << WIDX_CHECKBOX_1) | (1 << WIDX_CHECKBOX_2));
             w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
-        case STAFF_TYPE_SECURITY:
+        case StaffType::Security:
             // Security guards don't have an options screen.
+            break;
+        case StaffType::Count:
             break;
     }
 
@@ -998,7 +1000,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->top };
     int32_t width = widget->width();
-    gfx_draw_string_centred_clipped(dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
+    DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::CENTRE);
 }
 
 /**
@@ -1074,7 +1076,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    if (peep->AssignedPeepType == PeepType::Staff && peep->StaffType == STAFF_TYPE_ENTERTAINER)
+    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
     int32_t ebx = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
@@ -1150,7 +1152,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        Formatter::Common().Add<money32>(gStaffWageTable[peep->StaffType]);
+        Formatter::Common().Add<money32>(gStaffWageTable[static_cast<uint8_t>(peep->AssignedStaffType)]);
         gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1158,9 +1160,9 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, static_cast<void*>(&peep->TimeInPark), COLOUR_BLACK, screenCoords);
     screenCoords.y += LIST_ROW_HEIGHT;
 
-    switch (peep->StaffType)
+    switch (peep->AssignedStaffType)
     {
-        case STAFF_TYPE_HANDYMAN:
+        case StaffType::Handyman:
             gfx_draw_string_left(
                 dpi, STR_STAFF_STAT_LAWNS_MOWN, static_cast<void*>(&peep->StaffLawnsMown), COLOUR_BLACK, screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
@@ -1174,13 +1176,17 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_draw_string_left(
                 dpi, STR_STAFF_STAT_BINS_EMPTIED, static_cast<void*>(&peep->StaffBinsEmptied), COLOUR_BLACK, screenCoords);
             break;
-        case STAFF_TYPE_MECHANIC:
+        case StaffType::Mechanic:
             gfx_draw_string_left(
                 dpi, STR_STAFF_STAT_RIDES_INSPECTED, static_cast<void*>(&peep->StaffRidesInspected), COLOUR_BLACK,
                 screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
             gfx_draw_string_left(
                 dpi, STR_STAFF_STAT_RIDES_FIXED, static_cast<void*>(&peep->StaffRidesFixed), COLOUR_BLACK, screenCoords);
+            break;
+        case StaffType::Security:
+        case StaffType::Entertainer:
+        case StaffType::Count:
             break;
     }
 }
@@ -1466,12 +1472,12 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     int32_t numCostumes = staff_get_available_entertainer_costume_list(_availableCostumes);
     for (int32_t i = 0; i < numCostumes; i++)
     {
-        uint8_t costume = _availableCostumes[i];
-        if (peep->SpriteType == PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + costume)
+        EntertainerCostume costume = _availableCostumes[i];
+        if (peep->SpriteType == EntertainerCostumeToSprite(costume))
         {
             checkedIndex = i;
         }
-        gDropdownItemsArgs[i] = StaffCostumeNames[costume];
+        gDropdownItemsArgs[i] = StaffCostumeNames[static_cast<uint8_t>(costume)];
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
     }
 
@@ -1504,7 +1510,7 @@ void window_staff_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, i
     if (dropdownIndex == -1)
         return;
 
-    uint8_t costume = _availableCostumes[dropdownIndex];
+    EntertainerCostume costume = _availableCostumes[dropdownIndex];
     auto staffSetCostumeAction = StaffSetCostumeAction(w->number, costume);
     GameActions::Execute(&staffSetCostumeAction);
 }

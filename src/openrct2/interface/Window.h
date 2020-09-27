@@ -542,14 +542,14 @@ enum
 #define WC_SCENERY__WIDX_SCENERY_TAB_1 4
 #define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON 25
 #define WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON 30
-#define WC_PEEP__WIDX_PATROL 11
+#define WC_PEEP__WIDX_PATROL 10
 #define WC_PEEP__WIDX_ACTION_LBL 13
 #define WC_PEEP__WIDX_PICKUP 14
 #define WC_TRACK_DESIGN_LIST__WIDX_ROTATE 8
 #define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE 3
 #define WC_MAP__WIDX_ROTATE_90 20
 #define WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 21
-#define WC_STAFF__WIDX_PICKUP 10
+#define WC_STAFF__WIDX_PICKUP 9
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE 14
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_CORRUPT 10
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_COPY 17
@@ -633,12 +633,12 @@ enum VISIBILITY_CACHE
     VC_COVERED
 };
 
-enum GUEST_LIST_FILTER_TYPE
+enum class GuestListFilterType : int32_t
 {
-    GLFT_GUESTS_ON_RIDE,
-    GLFT_GUESTS_IN_QUEUE,
-    GLFT_GUESTS_THINKING_ABOUT_RIDE,
-    GLFT_GUESTS_THINKING_X,
+    GuestsOnRide,
+    GuestsInQueue,
+    GuestsThinkingAboutRide,
+    GuestsThinkingX,
 };
 
 enum TOOL_IDX
@@ -724,6 +724,7 @@ void window_rotate_camera(rct_window* w, int32_t direction);
 void window_viewport_get_map_coords_by_cursor(
     rct_window* w, int16_t* map_x, int16_t* map_y, int16_t* offset_x, int16_t* offset_y);
 void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int16_t map_y, int16_t offset_x, int16_t offset_y);
+void window_check_all_valid_zoom();
 void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor);
 void window_zoom_in(rct_window* w, bool atCursor);
 void window_zoom_out(rct_window* w, bool atCursor);

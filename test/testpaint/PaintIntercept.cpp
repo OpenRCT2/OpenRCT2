@@ -159,6 +159,17 @@ namespace PaintIntercept
         return &call->paint.output_struct;
     }
 
+    static paint_struct* PaintFull(
+        uint8_t function, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+        const CoordsXYZ& boundBoxOffset, uint32_t rotation)
+    {
+        return PaintFull(
+            function, image_id, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y),
+            static_cast<int16_t>(boundBoxLength.x), static_cast<int16_t>(boundBoxLength.y),
+            static_cast<int16_t>(boundBoxLength.z), static_cast<int16_t>(offset.z), static_cast<int16_t>(boundBoxOffset.x),
+            static_cast<int16_t>(boundBoxOffset.y), static_cast<int16_t>(boundBoxOffset.z), rotation);
+    }
+
     void ClearCalls()
     {
         _callCount = 0;
@@ -349,6 +360,14 @@ paint_struct* sub_98197C(
     return PaintIntercept::PaintFull(
         PAINT_98197C, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
         bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, session->CurrentRotation);
+}
+
+paint_struct* sub_98199C(
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    const CoordsXYZ& boundBoxOffset)
+{
+    return PaintIntercept::PaintFull(
+        PAINT_98198C_COORDS, image_id, offset, boundBoxLength, boundBoxOffset, session->CurrentRotation);
 }
 
 paint_struct* sub_98198C(

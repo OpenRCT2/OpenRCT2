@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../actions/GameAction.h"
+#include "../core/Json.hpp"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkPlayer.h"
@@ -42,7 +43,7 @@ public: // Common
     void AppendChatLog(const std::string& s);
     void CloseChatLog();
     NetworkStats_t GetStats() const;
-    json_t* GetServerInfoAsJson() const;
+    json_t GetServerInfoAsJson() const;
     bool ProcessConnection(NetworkConnection& connection);
     void CloseConnection();
     NetworkPlayer* AddPlayer(const std::string& name, const std::string& keyhash);
@@ -69,7 +70,7 @@ public: // Server
     void UpdateServer();
     void ServerClientDisconnected(std::unique_ptr<NetworkConnection>& connection);
     bool SaveMap(OpenRCT2::IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
-    uint8_t* save_for_network(size_t& out_size, const std::vector<const ObjectRepositoryItem*>& objects) const;
+    std::vector<uint8_t> save_for_network(const std::vector<const ObjectRepositoryItem*>& objects) const;
     std::string MakePlayerNameUnique(const std::string& name);
 
     // Packet dispatchers.
@@ -107,7 +108,7 @@ public: // Server
 public: // Client
     void Reconnect();
     int32_t GetMode();
-    int32_t GetAuthStatus();
+    NetworkAuth GetAuthStatus();
     int32_t GetStatus();
     uint8_t GetPlayerID();
     void ProcessPlayerInfo();

@@ -60,7 +60,7 @@ static void paint_flying_saucers(
 /**
  * rct2: 0x00887208
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(int32_t trackType)
 {
     if (trackType != FLAT_TRACK_ELEM_4_X_4)
     {

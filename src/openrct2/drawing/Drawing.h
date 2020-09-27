@@ -13,6 +13,8 @@
 #include "../common.h"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.hpp"
+#include "../world/Location.hpp"
+#include "Text.h"
 
 #include <optional>
 #include <vector>
@@ -108,7 +110,19 @@ struct rct_drawpixelinfo
     int16_t pitch{}; // note: this is actually (pitch - width)
     ZoomLevel zoom_level{};
 
+    /**
+     * As x and y are based on 1:1 units, zooming in will cause a reduction in precision when mapping zoomed-in
+     * pixels to 1:1 pixels. When x, y are not a multiple of the zoom level, the remainder will be non-zero.
+     * The drawing of sprites will need to be offset by this amount.
+     */
+    uint8_t remX{};
+    uint8_t remY{};
+
     OpenRCT2::Drawing::IDrawingEngine* DrawingEngine{};
+
+    size_t GetBytesPerRow() const;
+    uint8_t* GetBitsOffset(const ScreenCoordsXY& pos) const;
+    rct_drawpixelinfo Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const;
 };
 
 struct rct_g1_element_32bit
@@ -543,6 +557,78 @@ struct DrawSpriteArgs
     }
 };
 
+template<DrawBlendOp TBlendOp> bool FASTCALL BlitPixel(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap)
+{
+    if constexpr (TBlendOp & BLEND_TRANSPARENT)
+    {
+        // Ignore transparent pixels
+        if (*src == 0)
+        {
+            return false;
+        }
+    }
+
+    if constexpr (((TBlendOp & BLEND_SRC) != 0) && ((TBlendOp & BLEND_DST) != 0))
+    {
+        auto pixel = paletteMap.Blend(*src, *dst);
+        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        {
+            if (pixel == 0)
+            {
+                return false;
+            }
+        }
+        *dst = pixel;
+        return true;
+    }
+    else if constexpr ((TBlendOp & BLEND_SRC) != 0)
+    {
+        auto pixel = paletteMap[*src];
+        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        {
+            if (pixel == 0)
+            {
+                return false;
+            }
+        }
+        *dst = pixel;
+        return true;
+    }
+    else if constexpr ((TBlendOp & BLEND_DST) != 0)
+    {
+        auto pixel = paletteMap[*dst];
+        if constexpr (TBlendOp & BLEND_TRANSPARENT)
+        {
+            if (pixel == 0)
+            {
+                return false;
+            }
+        }
+        *dst = pixel;
+        return true;
+    }
+    else
+    {
+        *dst = *src;
+        return true;
+    }
+}
+
+template<DrawBlendOp TBlendOp>
+void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& paletteMap, uint8_t zoom, size_t dstPitch)
+{
+    auto yDstSkip = dstPitch - zoom;
+    for (uint8_t yy = 0; yy < zoom; yy++)
+    {
+        for (uint8_t xx = 0; xx < zoom; xx++)
+        {
+            BlitPixel<TBlendOp>(src, dst, paletteMap);
+            dst++;
+        }
+        dst += yDstSkip;
+    }
+}
+
 #define SPRITE_ID_PALETTE_COLOUR_1(colourId) (IMAGE_TYPE_REMAP | ((colourId) << 19))
 #define SPRITE_ID_PALETTE_COLOUR_2(primaryId, secondaryId)                                                                     \
     (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP | (((primaryId) << 19) | ((secondaryId) << 24)))
@@ -648,26 +734,12 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
 // string
 void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords);
 
+/** @deprecated */
 void gfx_draw_string_left(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
+/** @deprecated */
 void gfx_draw_string_centred(
     rct_drawpixelinfo* dpi, rct_string_id format, const ScreenCoordsXY& coords, uint8_t colour, const void* args);
-void gfx_draw_string_right(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
-
-void draw_string_left_underline(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
-void draw_string_centred_underline(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
-void draw_string_right_underline(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
-
-void gfx_draw_string_left_clipped(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords, int32_t width);
-void gfx_draw_string_centred_clipped(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords, int32_t width);
-void gfx_draw_string_right_clipped(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords, int32_t width);
 
 int32_t gfx_draw_string_left_wrapped(
     rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour);

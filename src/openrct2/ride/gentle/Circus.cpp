@@ -123,7 +123,7 @@ static void paint_circus(
 /**
  * rct2: 0x0076F8D4
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_circus(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_circus(int32_t trackType)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

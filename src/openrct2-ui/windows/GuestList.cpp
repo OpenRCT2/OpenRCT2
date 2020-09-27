@@ -69,17 +69,17 @@ static constexpr const rct_string_id viewNames[VIEW_COUNT] = {
 
 static rct_widget window_guest_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({  0, 43}, {350, 287}, WWT_RESIZE,   1                                                   ), // tab content panel
-    MakeWidget     ({  5, 59}, { 80,  12}, WWT_DROPDOWN, 1, STR_ARG_4_PAGE_X                                 ), // page dropdown
-    MakeWidget     ({ 73, 60}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH                               ), // page dropdown button
-    MakeWidget     ({120, 59}, {142,  12}, WWT_DROPDOWN, 1, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
-    MakeWidget     ({250, 60}, { 11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
-    MakeWidget     ({273, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_MAP,            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
-    MakeWidget     ({297, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_G2_SEARCH,      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
-    MakeWidget     ({321, 46}, { 24,  24}, WWT_FLATBTN,  1, SPR_TRACK_PEEP,     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,            STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
-    MakeRemapWidget({ 34, 17}, { 31,  27}, WWT_TAB,      1, SPR_TAB,            STR_SUMMARISED_GUESTS_TIP    ), // tab 2
-    MakeWidget     ({  3, 72}, {344, 255}, WWT_SCROLL,   1, SCROLL_BOTH                                      ), // guest list
+    MakeWidget({  0, 43}, {350, 287}, WWT_RESIZE,   WindowColour::Secondary                                                   ), // tab content panel
+    MakeWidget({  5, 59}, { 80,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
+    MakeWidget({ 73, 60}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                               ), // page dropdown button
+    MakeWidget({120, 59}, {142,  12}, WWT_DROPDOWN, WindowColour::Secondary, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
+    MakeWidget({250, 60}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
+    MakeWidget({273, 46}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_MAP,            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
+    MakeWidget({297, 46}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_G2_SEARCH,      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
+    MakeWidget({321, 46}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_TRACK_PEEP,     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
+    MakeTab   ({  3, 17},                                                                        STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
+    MakeTab   ({ 34, 17},                                                                        STR_SUMMARISED_GUESTS_TIP    ), // tab 2
+    MakeWidget({  3, 72}, {344, 255}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_BOTH                                      ), // guest list
     { WIDGETS_END },
 };
 
@@ -273,7 +273,7 @@ void window_guest_list_refresh_list()
  *
  * @param index The number of the ride or index of the thought
  */
-rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
+rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t index)
 {
     rct_window* w = window_guest_list_open();
 
@@ -286,7 +286,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
 
     switch (type)
     {
-        case GLFT_GUESTS_ON_RIDE:
+        case GuestListFilterType::GuestsOnRide:
         {
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
@@ -301,7 +301,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             }
             break;
         }
-        case GLFT_GUESTS_IN_QUEUE:
+        case GuestListFilterType::GuestsInQueue:
         {
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
@@ -316,7 +316,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             }
             break;
         }
-        case GLFT_GUESTS_THINKING_ABOUT_RIDE:
+        case GuestListFilterType::GuestsThinkingAboutRide:
         {
             auto ride = get_ride(index & 0xFF);
             if (ride != nullptr)
@@ -331,7 +331,7 @@ rct_window* window_guest_list_open_with_filter(int32_t type, int32_t index)
             }
             break;
         }
-        case GLFT_GUESTS_THINKING_X:
+        case GuestListFilterType::GuestsThinkingX:
         {
             ft.Add<rct_string_id>(PeepThoughts[index & 0xFF]);
 
@@ -724,7 +724,11 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         format = STR_ALL_GUESTS_SUMMARISED;
     }
-    gfx_draw_string_left_clipped(dpi, format, _window_guest_list_filter_arguments.args, COLOUR_BLACK, screenCoords, 310);
+
+    {
+        Formatter ft(_window_guest_list_filter_arguments.args);
+        DrawTextEllipsised(dpi, screenCoords, 310, format, ft, COLOUR_BLACK);
+    }
 
     // Number of guests (list items)
     if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
@@ -782,7 +786,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     }
                     auto ft = Formatter::Common();
                     peep->FormatNameTo(ft);
-                    gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, 113);
+                    DrawTextEllipsised(dpi, { 0, y }, 113, format, ft, COLOUR_BLACK);
 
                     switch (_window_guest_list_selected_view)
                     {
@@ -797,7 +801,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                             // Action
                             ft = Formatter::Common();
                             peep->FormatActionTo(ft);
-                            gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 133, y }, 314);
+                            DrawTextEllipsised(dpi, { 133, y }, 314, format, ft, COLOUR_BLACK);
                             break;
                         case VIEW_THOUGHTS:
                             // For each thought
@@ -811,8 +815,9 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                                 if (thought->freshness > 5)
                                     break;
 
-                                peep_thought_set_format_args(&peep->Thoughts[j]);
-                                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 118, y }, 329);
+                                ft = Formatter::Common();
+                                peep_thought_set_format_args(&peep->Thoughts[j], ft);
+                                DrawTextEllipsised(dpi, { 118, y }, 329, format, ft, COLOUR_BLACK);
                                 break;
                             }
                             break;
@@ -854,16 +859,14 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                             { static_cast<int32_t>(j) * 8, y + 12 }, 0);
 
                     // Draw action
-                    std::memcpy(
-                        gCommonFormatArgs, _window_guest_list_groups_arguments[i].args,
-                        std::min(sizeof(gCommonFormatArgs), sizeof(_window_guest_list_groups_arguments[i].args)));
-                    gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 0, y }, 414);
+                    Formatter ft(_window_guest_list_groups_arguments[i].args);
+                    DrawTextEllipsised(dpi, { 0, y }, 414, format, ft, COLOUR_BLACK);
 
                     // Draw guest count
-                    auto ft = Formatter::Common();
+                    ft = Formatter::Common();
                     ft.Add<rct_string_id>(STR_GUESTS_COUNT_COMMA_SEP);
                     ft.Add<uint32_t>(numGuests);
-                    gfx_draw_string_right(dpi, format, gCommonFormatArgs, COLOUR_BLACK, { 326, y });
+                    DrawTextBasic(dpi, { 326, y }, format, ft, COLOUR_BLACK, TextAlignment::RIGHT);
                 }
                 y += SUMMARISED_GUEST_ROW_HEIGHT;
             }
@@ -926,9 +929,7 @@ static FilterArguments get_arguments_from_peep(const Peep* peep)
             auto thought = &peep->Thoughts[0];
             if (thought->freshness <= 5 && thought->type != PEEP_THOUGHT_TYPE_NONE)
             {
-                std::memset(gCommonFormatArgs, 0, sizeof(gCommonFormatArgs));
-                peep_thought_set_format_args(thought);
-                std::memcpy(result.args, gCommonFormatArgs, std::min(sizeof(gCommonFormatArgs), sizeof(result.args)));
+                peep_thought_set_format_args(thought, ft);
             }
             break;
         }
@@ -1065,11 +1066,10 @@ static bool guest_should_be_visible(Peep* peep)
     if (_window_guest_list_filter_name[0] != '\0')
     {
         char name[256]{};
-        uint8_t args[32]{};
 
-        Formatter ft(args);
+        Formatter ft;
         peep->FormatNameTo(ft);
-        format_string(name, sizeof(name), STR_STRINGID, args);
+        format_string(name, sizeof(name), STR_STRINGID, ft.Data());
         if (strcasestr(name, _window_guest_list_filter_name) == nullptr)
         {
             return false;

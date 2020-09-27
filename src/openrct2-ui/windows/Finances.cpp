@@ -86,27 +86,27 @@ enum
 #pragma region Widgets
 
 #define TAB_WIDGETS \
-    MakeRemapWidget({  3, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_SUMMARY_TAB_TIP      ), \
-    MakeRemapWidget({ 34, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_CASH_TAB_TIP         ), \
-    MakeRemapWidget({ 65, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP   ), \
-    MakeRemapWidget({ 96, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP), \
-    MakeRemapWidget({127, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_SHOW_MARKETING_TAB_TIP    ), \
-    MakeRemapWidget({158, 17}, {31, 27}, WWT_TAB, 1, SPR_TAB, STR_FINANCES_RESEARCH_TIP              )
+    MakeTab({  3, 17}, STR_FINANCES_SHOW_SUMMARY_TAB_TIP      ), \
+    MakeTab({ 34, 17}, STR_FINANCES_SHOW_CASH_TAB_TIP         ), \
+    MakeTab({ 65, 17}, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP   ), \
+    MakeTab({ 96, 17}, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP), \
+    MakeTab({127, 17}, STR_FINANCES_SHOW_MARKETING_TAB_TIP    ), \
+    MakeTab({158, 17}, STR_FINANCES_RESEARCH_TIP              )
 
 static rct_widget _windowFinancesSummaryWidgets[] =
 {
     WINDOW_SHIM(STR_FINANCIAL_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
-    MakeWidget        ({  0,  43}, {530, 266}, WWT_RESIZE,  1),
+    MakeWidget        ({  0,  43}, {530, 266}, WWT_RESIZE,  WindowColour::Secondary),
     TAB_WIDGETS,
-    MakeWidget        ({130,  50}, {391, 211}, WWT_SCROLL,  1, SCROLL_HORIZONTAL              ),
-    MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WWT_SPINNER, 1, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
+    MakeWidget        ({130,  50}, {391, 211}, WWT_SCROLL,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
+    MakeSpinnerWidgets({ 64, 279}, { 97,  14}, WWT_SPINNER, WindowColour::Secondary, STR_FINANCES_SUMMARY_LOAN_VALUE), // NB: 3 widgets.
     { WIDGETS_END },
 };
 
 static rct_widget _windowFinancesCashWidgets[] =
 {
     WINDOW_SHIM(STR_FINANCIAL_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
+    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, WindowColour::Secondary),
     TAB_WIDGETS,
     { WIDGETS_END },
 };
@@ -114,7 +114,7 @@ static rct_widget _windowFinancesCashWidgets[] =
 static rct_widget _windowFinancesParkValueWidgets[] =
 {
     WINDOW_SHIM(STR_PARK_VALUE_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
+    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, WindowColour::Secondary),
     TAB_WIDGETS,
     { WIDGETS_END },
 };
@@ -122,7 +122,7 @@ static rct_widget _windowFinancesParkValueWidgets[] =
 static rct_widget _windowFinancesProfitWidgets[] =
 {
     WINDOW_SHIM(STR_PROFIT_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
+    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, WindowColour::Secondary),
     TAB_WIDGETS,
     { WIDGETS_END },
 };
@@ -130,35 +130,35 @@ static rct_widget _windowFinancesProfitWidgets[] =
 static rct_widget _windowFinancesMarketingWidgets[] =
 {
     WINDOW_SHIM(STR_MARKETING, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, 1),
+    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WWT_RESIZE, WindowColour::Secondary),
     TAB_WIDGETS,
-    MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WWT_GROUPBOX, 2, STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
-    MakeWidget({3, 47}, { WW_OTHER_TABS - 6, 206}, WWT_GROUPBOX, 2, STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   1, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WWT_GROUPBOX, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
+    MakeWidget({3, 47}, { WW_OTHER_TABS - 6, 206}, WWT_GROUPBOX, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WWT_IMGBTN,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
     { WIDGETS_END },
 };
 
 static rct_widget _windowFinancesResearchWidgets[] =
 {
     WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_RESEARCH, WH_RESEARCH),
-    MakeWidget({0, 43}, {WW_RESEARCH, 164}, WWT_RESIZE, 1),
+    MakeWidget({0, 43}, {WW_RESEARCH, 164}, WWT_RESIZE, WindowColour::Secondary),
     TAB_WIDGETS,
-    MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WWT_GROUPBOX, 2, STR_RESEARCH_FUNDING_                                                             ),
-    MakeWidget({  8,  59}, {             160,  14}, WWT_DROPDOWN, 2, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-    MakeWidget({156,  60}, {              11,  12}, WWT_BUTTON,   2, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-    MakeWidget({  3,  96}, { WW_RESEARCH - 6, 107}, WWT_GROUPBOX, 2, STR_RESEARCH_PRIORITIES                                                           ),
-    MakeWidget({  8, 108}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
-    MakeWidget({  8, 121}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
-    MakeWidget({  8, 134}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
-    MakeWidget({  8, 147}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
-    MakeWidget({  8, 160}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
-    MakeWidget({  8, 173}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
-    MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, 2, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
+    MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WWT_GROUPBOX, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
+    MakeWidget({  8,  59}, {             160,  14}, WWT_DROPDOWN, WindowColour::Tertiary, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
+    MakeWidget({156,  60}, {              11,  12}, WWT_BUTTON,   WindowColour::Tertiary, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
+    MakeWidget({  3,  96}, { WW_RESEARCH - 6, 107}, WWT_GROUPBOX, WindowColour::Tertiary, STR_RESEARCH_PRIORITIES                                                           ),
+    MakeWidget({  8, 108}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, WindowColour::Tertiary, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
+    MakeWidget({  8, 121}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, WindowColour::Tertiary, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
+    MakeWidget({  8, 134}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, WindowColour::Tertiary, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
+    MakeWidget({  8, 147}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, WindowColour::Tertiary, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
+    MakeWidget({  8, 160}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, WindowColour::Tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
+    MakeWidget({  8, 173}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, WindowColour::Tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
+    MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WWT_CHECKBOX, WindowColour::Tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
     { WIDGETS_END },
 };
 
@@ -669,7 +669,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 51 };
 
     // Expenditure / Income heading
-    draw_string_left_underline(dpi, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_FINANCES_SUMMARY_EXPENDITURE_INCOME, nullptr, COLOUR_BLACK, TextAlignment::LEFT, true);
     screenCoords.y += 14;
 
     // Expenditure / Income row labels
@@ -703,7 +703,7 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, stringId, &gCash, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 8, 294 });
 
     // Objective related financial information
-    if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME)
+    if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
     {
         money32 lastMonthProfit = finance_get_last_month_shop_profit();
         ft = Formatter::Common();
@@ -742,7 +742,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
     }
 
     // Expenditure / Income values for each month
-    int16_t currentMonthYear = gDateMonthsElapsed;
+    int16_t currentMonthYear = static_cast<int16_t>(gDateMonthsElapsed);
     for (int32_t i = summary_max_available_month(); i >= 0; i--)
     {
         screenCoords.y = 0;
@@ -755,9 +755,10 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_FINANCES_SUMMARY_MONTH_HEADING);
         ft.Add<uint16_t>(monthyear);
-        draw_string_right_underline(
-            dpi, monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, gCommonFormatArgs,
-            COLOUR_BLACK, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
+        DrawTextBasic(
+            dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
+            monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft, COLOUR_BLACK,
+            TextAlignment::RIGHT, true);
         screenCoords.y += 14;
 
         // Month expenditures
@@ -768,18 +769,25 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
             if (expenditure != 0)
             {
                 profit += expenditure;
-                gfx_draw_string_right(
-                    dpi, expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE,
-                    &expenditure, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
+                const rct_string_id format = expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE
+                                                              : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE;
+                ft = Formatter();
+                ft.Add<money32>(expenditure);
+                DrawTextBasic(
+                    dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, COLOUR_BLACK,
+                    TextAlignment::RIGHT);
             }
             screenCoords.y += TABLE_CELL_HEIGHT;
         }
         screenCoords.y += 4;
 
         // Month profit
-        gfx_draw_string_right(
-            dpi, profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE, &profit, COLOUR_BLACK,
-            screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 });
+        const rct_string_id format = profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE;
+        ft = Formatter();
+        ft.Add<money32>(profit);
+        DrawTextBasic(
+            dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+
         gfx_fill_rect(
             dpi, { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
             PALETTE_INDEX_10);
@@ -887,7 +895,9 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
         money32 axisValue = axisBase << yAxisScale;
-        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, { x + 70, y });
+        auto ft = Formatter();
+        ft.Add<money32>(axisValue);
+        DrawTextBasic(dpi, { x + 70, y }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, COLOUR_BLACK, TextAlignment::RIGHT);
         gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 39;
     }
@@ -990,7 +1000,9 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
     for (axisBase = MONEY(24, 00); axisBase >= MONEY(0, 00); axisBase -= MONEY(6, 00))
     {
         money32 axisValue = axisBase << yAxisScale;
-        gfx_draw_string_right(dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, { x + 70, y });
+        auto ft = Formatter();
+        ft.Add<money32>(axisValue);
+        DrawTextBasic(dpi, { x + 70, y }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, COLOUR_BLACK, TextAlignment::RIGHT);
         gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 39;
     }
@@ -1093,8 +1105,11 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
         money32 axisValue = axisBase << yAxisScale;
-        gfx_draw_string_right(
-            dpi, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, &axisValue, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 70, 0 });
+        auto ft = Formatter();
+        ft.Add<money32>(axisValue);
+        DrawTextBasic(
+            dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, COLOUR_BLACK,
+            TextAlignment::RIGHT);
         gfx_fill_rect_inset(
             dpi, screenPos.x + 70, screenPos.y + 5, graphLeft + 482, screenPos.y + 5, w->colours[2],
             INSET_RECT_FLAG_BORDER_INSET);
@@ -1228,8 +1243,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
         }
 
         // Advertisement
-        gfx_draw_string_left_clipped(
-            dpi, MarketingCampaignNames[i][1], gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 4, 0 }, 296);
+        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft, COLOUR_BLACK);
 
         // Duration
         uint16_t weeksRemaining = campaign->WeeksLeft;

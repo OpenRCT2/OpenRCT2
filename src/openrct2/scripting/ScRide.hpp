@@ -546,12 +546,12 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int16_t buildDate_get() const
+        int32_t buildDate_get() const
         {
             auto ride = GetRide();
             return ride != nullptr ? ride->build_date : 0;
         }
-        void buildDate_set(int16_t value)
+        void buildDate_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
             auto ride = GetRide();
@@ -579,6 +579,21 @@ namespace OpenRCT2::Scripting
             if (ride != nullptr)
             {
                 ride->upkeep_cost = value;
+            }
+        }
+
+        int32_t totalProfit_get() const
+        {
+            auto ride = GetRide();
+            return ride != nullptr ? ride->total_profit : 0;
+        }
+        void totalProfit_set(int32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                ride->total_profit = value;
             }
         }
 
@@ -660,6 +675,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRide::buildDate_get, &ScRide::buildDate_set, "buildDate");
             dukglue_register_property(ctx, &ScRide::age_get, nullptr, "age");
             dukglue_register_property(ctx, &ScRide::runningCost_get, &ScRide::runningCost_set, "runningCost");
+            dukglue_register_property(ctx, &ScRide::totalProfit_get, &ScRide::totalProfit_set, "totalProfit");
             dukglue_register_property(
                 ctx, &ScRide::inspectionInterval_get, &ScRide::inspectionInterval_set, "inspectionInterval");
             dukglue_register_property(ctx, &ScRide::value_get, &ScRide::value_set, "value");

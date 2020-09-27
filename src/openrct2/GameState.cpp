@@ -61,7 +61,7 @@ void GameState::InitAll(int32_t mapSize)
     reset_sprite_list();
     staff_reset_modes();
     date_reset();
-    climate_reset(CLIMATE_COOL_AND_WET);
+    climate_reset(ClimateType::CoolAndWet);
     News::InitQueue();
 
     gInMapInitCode = false;
@@ -112,7 +112,7 @@ void GameState::Update()
     network_update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NETWORK_AUTH_OK)
+        && network_get_authstatus() == NetworkAuth::Ok)
     {
         numUpdates = std::clamp<uint32_t>(network_get_server_tick() - gCurrentTicks, 0, 10);
     }
@@ -276,7 +276,7 @@ void GameState::UpdateLogic()
 #endif
 
     date_update();
-    _date = Date(gDateMonthsElapsed, gDateMonthTicks);
+    _date = Date(static_cast<uint32_t>(gDateMonthsElapsed), gDateMonthTicks);
 
     scenario_update();
     climate_update();

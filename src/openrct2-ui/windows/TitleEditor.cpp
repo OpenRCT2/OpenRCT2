@@ -148,40 +148,40 @@ static constexpr int32_t SCROLL_WIDTH = 350;
 
 static rct_widget window_title_editor_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({   0,  43},  { 320,  84}, WWT_RESIZE,          1                                                                                   ), // tab content panel
-    MakeRemapWidget({   3,  17},  {  31,  27}, WWT_TAB,             1, SPR_TAB,                           STR_THEMES_TAB_SETTINGS_TIP                   ), // presets tab
-    MakeRemapWidget({  34,  17},  {  31,  27}, WWT_TAB,             1, SPR_TAB,                           STR_TITLE_EDITOR_SAVES_TAB_TIP                ), // saves tab
-    MakeRemapWidget({  65,  17},  {  31,  27}, WWT_TAB,             1, SPR_TAB,                           STR_TITLE_EDITOR_SCRIPT_TAB_TIP               ), // script tab
-    MakeWidget     ({  89,  48},  { 228, 219}, WWT_SCROLL,          1, SCROLL_BOTH                                                                      ), // command/save list
+    MakeWidget({   0,  43}, { 320,  84}, WWT_RESIZE,        WindowColour::Secondary             ), // tab content panel
+    MakeTab   ({   3,  17}, STR_THEMES_TAB_SETTINGS_TIP                                         ), // presets tab
+    MakeTab   ({  34,  17}, STR_TITLE_EDITOR_SAVES_TAB_TIP                                      ), // saves tab
+    MakeTab   ({  65,  17}, STR_TITLE_EDITOR_SCRIPT_TAB_TIP                                     ), // script tab
+    MakeWidget({  89,  48}, { 228, 219}, WWT_SCROLL,        WindowColour::Secondary, SCROLL_BOTH), // command/save list
 
     // Presets Tab
-    MakeWidget     ({ 125,  60},  { 175,  14}, WWT_DROPDOWN,        1                                                                                   ), // Preset title sequences
-    MakeWidget     ({ 288,  61},  {  11,  10}, WWT_BUTTON,          1, STR_DROPDOWN_GLYPH                                                               ),
-    MakeWidget     ({  10,  82},   ACTION_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_CREATE,    STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP   ), // Create button
-    MakeWidget     ({  10, 102},   ACTION_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP), // Duplicate button
-    MakeWidget     ({ 110,  82},   ACTION_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP   ), // Delete button
-    MakeWidget     ({ 210,  82},   ACTION_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP   ), // Rename button
+    MakeWidget     ({ 125,  60},  { 175,  14}, WWT_DROPDOWN,        WindowColour::Secondary                                                                                   ), // Preset title sequences
+    MakeWidget     ({ 288,  61},  {  11,  10}, WWT_BUTTON,          WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                               ),
+    MakeWidget     ({  10,  82},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_CREATE,    STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP   ), // Create button
+    MakeWidget     ({  10, 102},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP), // Duplicate button
+    MakeWidget     ({ 110,  82},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP   ), // Delete button
+    MakeWidget     ({ 210,  82},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP   ), // Rename button
 
     // Saves Tab
-    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_ADD,       STR_TITLE_EDITOR_ACTION_ADD_TIP               ), // Add
-    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_REMOVE,    STR_TITLE_EDITOR_ACTION_REMOVE_TIP            ), // Remove
-    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_TIP            ), // Rename
-    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_LOAD,      STR_TITLE_EDITOR_ACTION_LOAD_TIP              ), // Load
+    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_ADD,       STR_TITLE_EDITOR_ACTION_ADD_TIP               ), // Add
+    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_REMOVE,    STR_TITLE_EDITOR_ACTION_REMOVE_TIP            ), // Remove
+    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_TIP            ), // Rename
+    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_LOAD,      STR_TITLE_EDITOR_ACTION_LOAD_TIP              ), // Load
 
     // Script Tab
-    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_INSERT,    STR_TITLE_EDITOR_ACTION_INSERT_TIP            ), // Insert
-    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_EDIT,      STR_TITLE_EDITOR_ACTION_EDIT_TIP              ), // Edit
-    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          1, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_TIP            ), // Delete
-    // MakeWidget  ({   8, 106},     EDIT_BTN, WWT_DROPDOWN_BUTTON, 1, STR_TITLE_EDITOR_ACTION_RELOAD,    STR_TITLE_EDITOR_ACTION_RELOAD_TIP            ), // Reload
-    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          1, STR_TITLE_EDITOR_ACTION_SKIP_TO,   STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP           ), // Skip to
+    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_INSERT,    STR_TITLE_EDITOR_ACTION_INSERT_TIP            ), // Insert
+    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_EDIT,      STR_TITLE_EDITOR_ACTION_EDIT_TIP              ), // Edit
+    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_TIP            ), // Delete
+    // MakeWidget  ({   8, 106},     EDIT_BTN, WWT_DROPDOWN_BUTTON, WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_RELOAD,    STR_TITLE_EDITOR_ACTION_RELOAD_TIP            ), // Reload
+    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_SKIP_TO,   STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP           ), // Skip to
 
-    MakeWidget     ({   8, 142},  REORDER_BTN, WWT_BUTTON,          1, STR_DOWN,                          STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP         ), // Move down
-    MakeWidget     ({  44, 142},  REORDER_BTN, WWT_BUTTON,          1, STR_UP,                            STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP           ), // Move up
+    MakeWidget     ({   8, 142},  REORDER_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_DOWN,                          STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP         ), // Move down
+    MakeWidget     ({  44, 142},  REORDER_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_UP,                            STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP           ), // Move up
 
-    MakeWidget     ({   8, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_RESTART,              STR_TITLE_EDITOR_ACTION_REPLAY_TIP            ), // Replay
-    MakeWidget     ({  26, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_STOP,                 STR_TITLE_EDITOR_ACTION_STOP_TIP              ), // Stop
-    MakeWidget     ({  44, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_PLAY,                 STR_TITLE_EDITOR_ACTION_PLAY_TIP              ), // Play
-    MakeWidget     ({  62, 238}, PLAYBACK_BTN, WWT_IMGBTN,          1, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
+    MakeWidget     ({   8, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_RESTART,              STR_TITLE_EDITOR_ACTION_REPLAY_TIP            ), // Replay
+    MakeWidget     ({  26, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_STOP,                 STR_TITLE_EDITOR_ACTION_STOP_TIP              ), // Stop
+    MakeWidget     ({  44, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_PLAY,                 STR_TITLE_EDITOR_ACTION_PLAY_TIP              ), // Play
+    MakeWidget     ({  62, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
     { WIDGETS_END },
 };
 
@@ -380,7 +380,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 }
                 catch (const std::exception&)
                 {
-                    context_show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
+                    context_show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA, {});
                 }
             }
             break;
@@ -491,7 +491,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 if (!title_preview_sequence(_selectedTitleSequence))
                 {
-                    context_show_error(STR_ERR_FAILED_TO_LOAD_TITLE_SEQUENCE, STR_NONE);
+                    context_show_error(STR_ERR_FAILED_TO_LOAD_TITLE_SEQUENCE, STR_NONE, {});
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
                 {
@@ -547,7 +547,7 @@ static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetI
         case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
             if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr)
             {
-                context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
+                context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE, {});
             }
             else
             {
@@ -697,17 +697,17 @@ static void window_title_editor_textinput(rct_window* w, rct_widgetindex widgetI
                     }
                     else
                     {
-                        context_show_error(STR_ERROR_RESERVED_NAME, STR_NONE);
+                        context_show_error(STR_ERROR_RESERVED_NAME, STR_NONE, {});
                     }
                 }
                 else
                 {
-                    context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE);
+                    context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE, {});
                 }
             }
             else
             {
-                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
             }
             break;
         case WIDX_TITLE_EDITOR_RENAME_SAVE:
@@ -831,17 +831,19 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
         {
-            auto ft = Formatter::Common();
-            ft.Add<const char*>(_sequenceName);
             gfx_draw_string_left(
                 dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1],
                 w->windowPos + ScreenCoordsXY{ 10, window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 });
-            gfx_draw_string_left_clipped(
-                dpi, STR_STRING, gCommonFormatArgs, w->colours[1],
-                { w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
-                  w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top },
-                w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
-                    - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4);
+
+            auto ft = Formatter::Common();
+            ft.Add<const char*>(_sequenceName);
+
+            ScreenCoordsXY screenPos = { w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
+                                         w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top };
+            auto width = w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
+                - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4;
+
+            DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, w->colours[1]);
             break;
         }
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
@@ -1074,7 +1076,7 @@ static void window_title_editor_load_sequence(size_t index)
     TitleSequence* titleSequence = LoadTitleSequence(path);
     if (titleSequence == nullptr)
     {
-        context_show_error(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE);
+        context_show_error(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE, {});
         return;
     }
 
@@ -1098,11 +1100,11 @@ static bool window_title_editor_check_can_edit()
     bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr);
 
     if (_isSequenceReadOnly)
-        context_show_error(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
+        context_show_error(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE, {});
     else if (title_is_previewing_sequence())
-        context_show_error(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING);
+        context_show_error(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING, {});
     else if (commandEditorOpen)
-        context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
+        context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE, {});
     else
         return true;
 
@@ -1147,7 +1149,7 @@ static void window_title_editor_rename_park(size_t index, const utf8* name)
 {
     if (!filename_valid_characters(name))
     {
-        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
         return;
     }
 
@@ -1158,7 +1160,7 @@ static void window_title_editor_rename_park(size_t index, const utf8* name)
             const utf8* savePath = _editingTitleSequence->Saves[i];
             if (_strcmpi(savePath, name) == 0)
             {
-                context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE);
+                context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE, {});
                 return;
             }
         }

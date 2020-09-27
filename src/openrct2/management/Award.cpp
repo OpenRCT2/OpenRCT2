@@ -11,6 +11,7 @@
 
 #include "../config/Config.h"
 #include "../interface/Window.h"
+#include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../peep/Peep.h"
 #include "../ride/Ride.h"
@@ -273,7 +274,7 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
         if (peep->AssignedPeepType == PeepType::Staff)
         {
             staffCount++;
-            staffTypeFlags |= (1 << peep->StaffType);
+            staffTypeFlags |= (1 << static_cast<uint8_t>(peep->AssignedStaffType));
         }
         else
         {
@@ -636,7 +637,7 @@ void award_update_all()
                 gCurrentAwards[freeAwardEntryIndex].Time = 5;
                 if (gConfigNotifications.park_award)
                 {
-                    News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[awardType], 0);
+                    News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[awardType], 0, {});
                 }
                 window_invalidate_by_class(WC_PARK_INFORMATION);
             }

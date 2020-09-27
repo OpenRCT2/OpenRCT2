@@ -74,16 +74,16 @@ enum {
 
 static rct_widget window_scenarioselect_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({  0, 50}, {734, 284}, WWT_IMGBTN, 1),                  // tab content panel
-    MakeRemapWidget({  3, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 1
-    MakeRemapWidget({ 94, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 2
-    MakeRemapWidget({185, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 3
-    MakeRemapWidget({276, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 4
-    MakeRemapWidget({367, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 5
-    MakeRemapWidget({458, 17}, {136,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 6
-    MakeRemapWidget({594, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 7
-    MakeRemapWidget({685, 17}, { 91,  34}, WWT_TAB,    1, SPR_TAB_LARGE),   // tab 8
-    MakeWidget     ({  3, 54}, {553, 276}, WWT_SCROLL, 1, SCROLL_VERTICAL), // level list
+    MakeWidget     ({  0, 50}, {734, 284}, WWT_IMGBTN, WindowColour::Secondary),                  // tab content panel
+    MakeRemapWidget({  3, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 1
+    MakeRemapWidget({ 94, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 2
+    MakeRemapWidget({185, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 3
+    MakeRemapWidget({276, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 4
+    MakeRemapWidget({367, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 5
+    MakeRemapWidget({458, 17}, {136,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 6
+    MakeRemapWidget({594, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 7
+    MakeRemapWidget({685, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 8
+    MakeWidget     ({  3, 54}, {553, 276}, WWT_SCROLL, WindowColour::Secondary, SCROLL_VERTICAL), // level list
     { WIDGETS_END },
 };
 
@@ -476,8 +476,9 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
             auto screenPos = w->windowPos
                 + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
                                   window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
-            gfx_draw_string_centred_clipped(
-                dpi, STR_SCENARIO_LOCKED, nullptr, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 85, 0 }, 170);
+            DrawTextEllipsised(
+                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, Formatter::Common(), COLOUR_BLACK,
+                TextAlignment::CENTRE);
             gfx_draw_string_left_wrapped(
                 dpi, nullptr, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK);
         }
@@ -505,8 +506,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->name);
-    gfx_draw_string_centred_clipped(
-        dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 85, 0 }, 170);
+    DrawTextEllipsised(
+        dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::CENTRE);
     screenPos.y += 15;
 
     // Scenario details

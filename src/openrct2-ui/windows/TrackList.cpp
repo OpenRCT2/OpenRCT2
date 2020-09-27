@@ -46,13 +46,13 @@ validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
 static rct_widget window_track_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  4,  18}, {218,  13}, WWT_TABLE_HEADER, 0, STR_SELECT_OTHER_RIDE                                       ),
-    MakeWidget({  4,  32}, {124,  13}, WWT_TEXT_BOX,     1                                                              ),
-    MakeWidget({130,  32}, { 92,  13}, WWT_BUTTON,       0, STR_OBJECT_SEARCH_CLEAR                                     ),
-    MakeWidget({  4,  46}, {218, 381}, WWT_SCROLL,       0, SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
-    MakeWidget({224,  18}, {372, 219}, WWT_FLATBTN,      0                                                              ),
-    MakeWidget({574, 405}, { 24,  24}, WWT_FLATBTN,      0, SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
-    MakeWidget({574, 381}, { 24,  24}, WWT_FLATBTN,      0, SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
+    MakeWidget({  4,  18}, {218,  13}, WWT_TABLE_HEADER, WindowColour::Primary  , STR_SELECT_OTHER_RIDE                                       ),
+    MakeWidget({  4,  32}, {124,  13}, WWT_TEXT_BOX,     WindowColour::Secondary                                                              ),
+    MakeWidget({130,  32}, { 92,  13}, WWT_BUTTON,       WindowColour::Primary  , STR_OBJECT_SEARCH_CLEAR                                     ),
+    MakeWidget({  4,  46}, {218, 381}, WWT_SCROLL,       WindowColour::Primary  , SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
+    MakeWidget({224,  18}, {372, 219}, WWT_FLATBTN,      WindowColour::Primary                                                                ),
+    MakeWidget({574, 405}, { 24,  24}, WWT_FLATBTN,      WindowColour::Primary  , SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
+    MakeWidget({574, 381}, { 24,  24}, WWT_FLATBTN,      WindowColour::Primary  , SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
     { WIDGETS_END },
 };
 
@@ -254,7 +254,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
     // Displays a message if the ride can't load, fix #4080
     if (_loadedTrackDesign == nullptr)
     {
-        context_show_error(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR);
+        context_show_error(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR, {});
         return;
     }
 
@@ -276,7 +276,7 @@ static void window_track_list_select(rct_window* w, int32_t listIndex)
         if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED
             && (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE))
         {
-            context_show_error(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
+            context_show_error(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
         }
 
         auto intent = Intent(WC_TRACK_DESIGN_PLACE);
@@ -558,7 +558,8 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         // Vehicle design not available
-        gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, nullptr, COLOUR_BLACK, screenPos, 368);
+        DrawTextEllipsised(
+            dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, Formatter::Common(), COLOUR_BLACK, TextAlignment::CENTRE);
         screenPos.y -= SCROLLABLE_ROW_HEIGHT;
     }
 
@@ -567,15 +568,17 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (!gTrackDesignSceneryToggle)
         {
             // Scenery not available
-            gfx_draw_string_centred_clipped(
-                dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, screenPos, 368);
+            DrawTextEllipsised(
+                dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, Formatter::Common(), COLOUR_BLACK,
+                TextAlignment::CENTRE);
             screenPos.y -= SCROLLABLE_ROW_HEIGHT;
         }
     }
 
     // Track design name
-    utf8* trackName = _trackDesigns[trackIndex].name;
-    gfx_draw_string_centred_clipped(dpi, STR_TRACK_PREVIEW_NAME_FORMAT, &trackName, COLOUR_BLACK, screenPos, 368);
+    auto ft = Formatter::Common();
+    ft.Add<utf8*>(_trackDesigns[trackIndex].name);
+    DrawTextEllipsised(dpi, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, COLOUR_BLACK, TextAlignment::CENTRE);
 
     // Information
     screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->bottom + 2 };
@@ -619,10 +622,10 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
 
             // Ride length
-            auto ft = Formatter::Common();
+            ft = Formatter::Common();
             ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
             ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
-            gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, screenPos, 214);
+            DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft, COLOUR_BLACK);
             screenPos.y += LIST_ROW_HEIGHT;
         }
 
@@ -681,7 +684,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (_loadedTrackDesign->space_required_x != 0xFF)
     {
         // Space required
-        auto ft = Formatter::Common();
+        ft = Formatter::Common();
         ft.Add<uint16_t>(_loadedTrackDesign->space_required_x);
         ft.Add<uint16_t>(_loadedTrackDesign->space_required_y);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, screenPos);

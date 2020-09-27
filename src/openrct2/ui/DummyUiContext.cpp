@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../config/Config.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "UiContext.h"
 #include "WindowManager.h"
@@ -55,9 +56,9 @@ namespace OpenRCT2::Ui
         {
             return 0;
         }
-        int32_t GetScaleQuality() override
+        ScaleQuality GetScaleQuality() override
         {
-            return 0;
+            return ScaleQuality::NearestNeighbour;
         }
         void SetFullscreenMode(FULLSCREEN_MODE /*mode*/) override
         {
@@ -158,7 +159,7 @@ namespace OpenRCT2::Ui
         {
             return std::make_shared<X8DrawingEngineFactory>();
         }
-        void DrawRainAnimation(IRainDrawer* rainDrawer, rct_drawpixelinfo* dpi, DrawRainFunc drawFunc) override
+        void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, rct_drawpixelinfo* dpi, DrawWeatherFunc drawFunc) override
         {
         }
 

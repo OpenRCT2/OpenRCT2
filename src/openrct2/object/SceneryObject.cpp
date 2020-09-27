@@ -9,13 +9,11 @@
 
 #include "SceneryObject.h"
 
-#include "ObjectJsonHelpers.h"
-
 void SceneryObject::SetPrimarySceneryGroup(const std::string& s)
 {
     if (!s.empty())
     {
-        auto sgEntry = ObjectJsonHelpers::ParseObjectEntry(s);
+        auto sgEntry = ParseObjectEntry(s);
         SetPrimarySceneryGroup(&sgEntry);
     }
 }

@@ -216,7 +216,7 @@ public:
             safe_strcpy(gS6Info.details, _s6.info.details, sizeof(gS6Info.details));
         }
 
-        gDateMonthsElapsed = _s6.elapsed_months;
+        gDateMonthsElapsed = static_cast<int32_t>(_s6.elapsed_months);
         gDateMonthTicks = _s6.current_day;
         gScenarioTicks = _s6.scenario_ticks;
 
@@ -292,16 +292,16 @@ public:
         gGuestInitialCash = _s6.guest_initial_cash;
         gGuestInitialHunger = _s6.guest_initial_hunger;
         gGuestInitialThirst = _s6.guest_initial_thirst;
-        gScenarioObjectiveType = _s6.objective_type;
-        gScenarioObjectiveYear = _s6.objective_year;
+        gScenarioObjective.Type = _s6.objective_type;
+        gScenarioObjective.Year = _s6.objective_year;
         // pad_013580FA
-        gScenarioObjectiveCurrency = _s6.objective_currency;
+        gScenarioObjective.Currency = _s6.objective_currency;
         // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
         // This is not always the case in OpenRCT2, so we use the actual ride ID.
-        if (gScenarioObjectiveType == OBJECTIVE_BUILD_THE_BEST)
-            gScenarioObjectiveNumGuests = _s6.objective_guests - RCT2_RIDE_STRING_START;
+        if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
+            gScenarioObjective.RideId = _s6.objective_guests - RCT2_RIDE_STRING_START;
         else
-            gScenarioObjectiveNumGuests = _s6.objective_guests;
+            gScenarioObjective.NumGuests = _s6.objective_guests;
         ImportMarketingCampaigns();
 
         gCurrentExpenditure = _s6.current_expenditure;
@@ -410,7 +410,7 @@ public:
         // unk_13CA73E
         // pad_13CA73F
         // unk_13CA740
-        gClimate = _s6.climate;
+        gClimate = ClimateType{ _s6.climate };
         // pad_13CA741;
         // byte_13CA742
         // pad_013CA747
@@ -423,8 +423,8 @@ public:
         gClimateNext.WeatherEffect = WeatherEffectType{ _s6.next_weather_effect };
         gClimateCurrent.WeatherGloom = _s6.current_weather_gloom;
         gClimateNext.WeatherGloom = _s6.next_weather_gloom;
-        gClimateCurrent.Level = static_cast<RainLevel>(_s6.current_rain_level);
-        gClimateNext.Level = static_cast<RainLevel>(_s6.next_rain_level);
+        gClimateCurrent.Level = static_cast<WeatherLevel>(_s6.current_weather_level);
+        gClimateNext.Level = static_cast<WeatherLevel>(_s6.next_weather_level);
 
         // News items
         News::InitQueue();
@@ -718,7 +718,7 @@ public:
         // pad_16F[0x7];
         dst->spiral_slide_progress = src->spiral_slide_progress;
         // pad_177[0x9];
-        dst->build_date = src->build_date;
+        dst->build_date = static_cast<int32_t>(src->build_date);
         dst->upkeep_cost = src->upkeep_cost;
         dst->race_winner = src->race_winner;
         // pad_186[0x02];
@@ -919,23 +919,22 @@ public:
     void ImportResearchList()
     {
         bool invented = true;
-        for (size_t i = 0; i < sizeof(_s6.research_items); i++)
+        for (const auto& researchItem : _s6.research_items)
         {
-            if (_s6.research_items[i].IsInventedEndMarker())
+            if (researchItem.IsInventedEndMarker())
             {
                 invented = false;
                 continue;
             }
-            else if (_s6.research_items[i].IsUninventedEndMarker() || _s6.research_items[i].IsRandomEndMarker())
+            else if (researchItem.IsUninventedEndMarker() || researchItem.IsRandomEndMarker())
             {
                 break;
             }
 
-            RCT12ResearchItem* ri = &_s6.research_items[i];
             if (invented)
-                gResearchItemsInvented.push_back(ResearchItem(*ri));
+                gResearchItemsInvented.push_back(ResearchItem(researchItem));
             else
-                gResearchItemsUninvented.push_back(ResearchItem(*ri));
+                gResearchItemsUninvented.push_back(ResearchItem(researchItem));
         }
     }
 
@@ -1697,9 +1696,9 @@ static void show_error(uint8_t errorType, rct_string_id errorStringId)
 {
     if (errorType == ERROR_TYPE_GENERIC)
     {
-        context_show_error(errorStringId, 0xFFFF);
+        context_show_error(errorStringId, STR_NONE, {});
     }
-    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId);
+    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId, {});
 }
 
 void load_from_sv6(const char* path)

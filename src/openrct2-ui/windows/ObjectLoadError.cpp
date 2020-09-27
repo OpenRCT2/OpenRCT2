@@ -111,14 +111,13 @@ private:
             else
             {
                 char str_downloading_objects[256]{};
-                uint8_t args[32]{};
-                Formatter ft(args);
+                Formatter ft;
                 if (_downloadStatusInfo.Source.empty())
                 {
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
                     ft.Add<char*>(_downloadStatusInfo.Name.c_str());
-                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, args);
+                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS, ft.Data());
                 }
                 else
                 {
@@ -126,7 +125,8 @@ private:
                     ft.Add<char*>(_downloadStatusInfo.Source.c_str());
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Count));
                     ft.Add<int16_t>(static_cast<int16_t>(_downloadStatusInfo.Total));
-                    format_string(str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, args);
+                    format_string(
+                        str_downloading_objects, sizeof(str_downloading_objects), STR_DOWNLOADING_OBJECTS_FROM, ft.Data());
                 }
 
                 auto intent = Intent(WC_NETWORK_STATUS);
@@ -211,18 +211,17 @@ private:
                 if (response.status == Http::Status::OK)
                 {
                     auto jresponse = Json::FromString(response.body);
-                    if (jresponse != nullptr)
+                    if (jresponse.is_object())
                     {
-                        auto objName = json_string_value(json_object_get(jresponse, "name"));
-                        auto source = json_string_value(json_object_get(jresponse, "source"));
-                        auto downloadLink = json_string_value(json_object_get(jresponse, "download"));
-                        if (downloadLink != nullptr)
+                        auto objName = Json::GetString(jresponse["name"]);
+                        auto source = Json::GetString(jresponse["source"]);
+                        auto downloadLink = Json::GetString(jresponse["download"]);
+                        if (!downloadLink.empty())
                         {
                             _lastDownloadSource = source;
                             UpdateProgress({ name, source, _currentDownloadIndex, _entries.size() });
                             DownloadObject(entry, objName, downloadLink);
                         }
-                        json_decref(jresponse);
                     }
                 }
                 else if (response.status == Http::Status::NotFound)
@@ -270,14 +269,14 @@ constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
 static rct_widget window_object_load_error_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WWT_TABLE_HEADER, 0, STR_OBJECT_NAME                                   ), // 'Object name' header
-    MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, 0, STR_OBJECT_SOURCE                                 ), // 'Object source' header
-    MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, 0, STR_OBJECT_TYPE                                   ), // 'Object type' header
-    MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WWT_SCROLL,       0, SCROLL_VERTICAL                                   ), // Scrollable list area
-    MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WWT_BUTTON,       0, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
-    MakeWidget({            152, 377}, {145,  14}, WWT_BUTTON,       0, STR_COPY_ALL,                STR_COPY_ALL_TIP     ), // Copy all button
+    MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_NAME                                   ), // 'Object name' header
+    MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_SOURCE                                 ), // 'Object source' header
+    MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_TYPE                                   ), // 'Object type' header
+    MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WWT_SCROLL,       WindowColour::Primary, SCROLL_VERTICAL                                   ), // Scrollable list area
+    MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WWT_BUTTON,       WindowColour::Primary, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
+    MakeWidget({            152, 377}, {145,  14}, WWT_BUTTON,       WindowColour::Primary, STR_COPY_ALL,                STR_COPY_ALL_TIP     ), // Copy all button
 #ifndef DISABLE_HTTP
-    MakeWidget({            300, 377}, {146,  14}, WWT_BUTTON,       0, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
+    MakeWidget({            300, 377}, {146,  14}, WWT_BUTTON,       WindowColour::Primary, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
 #endif
     { WIDGETS_END },
 };
@@ -566,8 +565,7 @@ static void window_object_load_error_paint(rct_window* w, rct_drawpixelinfo* dpi
     ft = Formatter::Common();
     ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_FILE);
     ft.Add<utf8*>(file_path.c_str());
-    gfx_draw_string_left_clipped(
-        dpi, STR_BLACK_STRING, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + 5, w->windowPos.y + 43 }, WW - 5);
+    DrawTextEllipsised(dpi, { w->windowPos.x + 5, w->windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft, COLOUR_BLACK);
 }
 
 static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)

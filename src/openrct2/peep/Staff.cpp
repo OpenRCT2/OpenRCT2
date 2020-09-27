@@ -37,6 +37,7 @@
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "GuestPathfinding.h"
 #include "Peep.h"
 
 #include <algorithm>
@@ -47,7 +48,7 @@
  *
  * rct2: 0x00992A00
  */
-const money32 gStaffWageTable[STAFF_TYPE_COUNT] = {
+const money32 gStaffWageTable[static_cast<uint8_t>(StaffType::Count)] = {
     MONEY(50, 00), // Handyman
     MONEY(80, 00), // Mechanic
     MONEY(60, 00), // Security guard
@@ -72,8 +73,8 @@ const rct_string_id StaffCostumeNames[] = {
 
 // Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their StaffId
 // Additionally there is a patrol area for each staff type, which is the union of the patrols of all staff members of that type
-uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
-uint8_t gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
+uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)) * STAFF_PATROL_AREA_SIZE];
+StaffMode gStaffModes[STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)];
 uint16_t gStaffDrawPatrolAreas;
 colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
@@ -92,10 +93,10 @@ template<> bool SpriteBase::Is<Staff>() const
 void staff_reset_modes()
 {
     for (int32_t i = 0; i < STAFF_MAX_COUNT; i++)
-        gStaffModes[i] = STAFF_MODE_NONE;
+        gStaffModes[i] = StaffMode::None;
 
-    for (int32_t i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + STAFF_TYPE_COUNT); i++)
-        gStaffModes[i] = STAFF_MODE_WALK;
+    for (int32_t i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)); i++)
+        gStaffModes[i] = StaffMode::Walk;
 
     staff_update_greyed_patrol_areas();
 }
@@ -103,7 +104,7 @@ void staff_reset_modes()
 /**
  * Hires a new staff member of the given type.
  */
-bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainerType)
+bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerType)
 {
     bool autoPosition = gConfigGeneral.auto_staff_placement;
     if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
@@ -113,7 +114,7 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
 
     uint32_t staffOrders = 0;
 
-    if (staffType == STAFF_TYPE_HANDYMAN)
+    if (staffType == StaffType::Handyman)
     {
         staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
         if (gConfigGeneral.handymen_mow_default)
@@ -121,7 +122,7 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
             staffOrders |= STAFF_ORDERS_MOWING;
         }
     }
-    else if (staffType == STAFF_TYPE_MECHANIC)
+    else if (staffType == StaffType::Mechanic)
     {
         staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
     }
@@ -148,7 +149,7 @@ bool staff_hire_new_member(STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainer
  */
 void staff_update_greyed_patrol_areas()
 {
-    for (int32_t staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
+    for (int32_t staff_type = 0; staff_type < static_cast<uint8_t>(StaffType::Count); ++staff_type)
     {
         int32_t staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
         for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
@@ -158,7 +159,7 @@ void staff_update_greyed_patrol_areas()
 
         for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
-            if (peep->StaffType == staff_type)
+            if (static_cast<uint8_t>(peep->AssignedStaffType) == staff_type)
             {
                 int32_t peepPatrolOffset = peep->StaffId * STAFF_PATROL_AREA_SIZE;
                 for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
@@ -181,7 +182,7 @@ bool Staff::IsLocationInPatrol(const CoordsXY& loc) const
         return false;
 
     // Check if staff has patrol area
-    if (!(gStaffModes[StaffId] & 2))
+    if (gStaffModes[StaffId] != StaffMode::Patrol)
         return true;
 
     return IsPatrolAreaSet(loc);
@@ -282,7 +283,7 @@ bool staff_can_ignore_wide_flag(Peep* staff, const CoordsXYZ& staffPos, TileElem
             }
 
             /* test_element is a path */
-            if (!is_valid_path_z_and_direction(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
+            if (!IsValidPathZAndDirection(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
@@ -398,9 +399,9 @@ bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
     return staff_is_patrol_area_set(StaffId, coords);
 }
 
-bool staff_is_patrol_area_set_for_type(STAFF_TYPE type, const CoordsXY& coords)
+bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords)
 {
-    return staff_is_patrol_area_set(STAFF_MAX_COUNT + type, coords);
+    return staff_is_patrol_area_set(STAFF_MAX_COUNT + static_cast<uint8_t>(type), coords);
 }
 
 void staff_set_patrol_area(int32_t staffIndex, const CoordsXY& coords, bool value)
@@ -856,13 +857,13 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
         gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        pathfind_logging_enable(peep);
+        PathfindLoggingEnable(peep);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
         Direction pathfindDirection = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        pathfind_logging_disable();
+        PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
         if (pathfindDirection == INVALID_DIRECTION)
@@ -873,7 +874,7 @@ static uint8_t staff_mechanic_direction_path(Peep* peep, uint8_t validDirections
              * This lets the heuristic search "try again" in case the player has
              * edited the path layout or the mechanic was already stuck in the
              * save game (e.g. with a worse version of the pathfinding). */
-            peep_reset_pathfind_goal(peep);
+            peep->ResetPathfindGoal();
             return staff_mechanic_direction_path_rand(peep, pathDirections);
         }
 
@@ -1009,19 +1010,19 @@ bool Staff::DoMiscPathFinding()
  *
  *  rct2: 0x006C086D
  */
-static void staff_entertainer_update_nearby_peeps(Peep* peep)
+void Staff::EntertainerUpdateNearbyPeeps() const
 {
     for (auto guest : EntityList<Guest>(EntityListId::Peep))
     {
         if (guest->x == LOCATION_NULL)
             continue;
 
-        int16_t z_dist = abs(peep->z - guest->z);
+        int16_t z_dist = abs(z - guest->z);
         if (z_dist > 48)
             continue;
 
-        int16_t x_dist = abs(peep->x - guest->x);
-        int16_t y_dist = abs(peep->y - guest->y);
+        int16_t x_dist = abs(x - guest->x);
+        int16_t y_dist = abs(y - guest->y);
 
         if (x_dist > 96)
             continue;
@@ -1029,21 +1030,14 @@ static void staff_entertainer_update_nearby_peeps(Peep* peep)
         if (y_dist > 96)
             continue;
 
-        if (peep->State == PEEP_STATE_WALKING)
+        if (guest->State == PEEP_STATE_WALKING)
         {
-            peep->HappinessTarget = std::min(peep->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
+            guest->HappinessTarget = std::min(guest->HappinessTarget + 4, PEEP_MAX_HAPPINESS);
         }
-        else if (peep->State == PEEP_STATE_QUEUING)
+        else if (guest->State == PEEP_STATE_QUEUING)
         {
-            if (peep->TimeInQueue > 200)
-            {
-                peep->TimeInQueue -= 200;
-            }
-            else
-            {
-                peep->TimeInQueue = 0;
-            }
-            peep->HappinessTarget = std::min(peep->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
+            guest->TimeInQueue = std::max(0, guest->TimeInQueue - 200);
+            guest->HappinessTarget = std::min(guest->HappinessTarget + 3, PEEP_MAX_HAPPINESS);
         }
     }
 }
@@ -1061,7 +1055,7 @@ bool Staff::DoEntertainerPathFinding()
         ActionSpriteImageOffset = 0;
 
         UpdateCurrentActionSpriteType();
-        staff_entertainer_update_nearby_peeps(this);
+        EntertainerUpdateNearbyPeeps();
     }
 
     return DoMiscPathFinding();
@@ -1073,15 +1067,15 @@ bool Staff::DoEntertainerPathFinding()
  */
 bool Staff::DoPathFinding()
 {
-    switch (StaffType)
+    switch (AssignedStaffType)
     {
-        case STAFF_TYPE_HANDYMAN:
+        case StaffType::Handyman:
             return DoHandymanPathFinding();
-        case STAFF_TYPE_MECHANIC:
+        case StaffType::Mechanic:
             return DoMechanicPathFinding();
-        case STAFF_TYPE_SECURITY:
+        case StaffType::Security:
             return DoMiscPathFinding();
-        case STAFF_TYPE_ENTERTAINER:
+        case StaffType::Entertainer:
             return DoEntertainerPathFinding();
 
         default:
@@ -1097,20 +1091,28 @@ uint8_t Staff::GetCostume() const
 
 void Staff::SetCostume(uint8_t value)
 {
-    SpriteType = static_cast<PeepSpriteType>(value + PEEP_SPRITE_TYPE_ENTERTAINER_PANDA);
+    auto costume = static_cast<EntertainerCostume>(value);
+    SpriteType = EntertainerCostumeToSprite(costume);
 }
 
-colour_t staff_get_colour(uint8_t staffType)
+PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
+{
+    uint8_t value = static_cast<uint8_t>(entertainerType);
+    PeepSpriteType newSpriteType = static_cast<PeepSpriteType>(value + PEEP_SPRITE_TYPE_ENTERTAINER_PANDA);
+    return newSpriteType;
+}
+
+colour_t staff_get_colour(StaffType staffType)
 {
     switch (staffType)
     {
-        case STAFF_TYPE_HANDYMAN:
+        case StaffType::Handyman:
             return gStaffHandymanColour;
-        case STAFF_TYPE_MECHANIC:
+        case StaffType::Mechanic:
             return gStaffMechanicColour;
-        case STAFF_TYPE_SECURITY:
+        case StaffType::Security:
             return gStaffSecurityColour;
-        case STAFF_TYPE_ENTERTAINER:
+        case StaffType::Entertainer:
             return 0;
         default:
             assert(false);
@@ -1118,17 +1120,17 @@ colour_t staff_get_colour(uint8_t staffType)
     }
 }
 
-bool staff_set_colour(uint8_t staffType, colour_t value)
+bool staff_set_colour(StaffType staffType, colour_t value)
 {
     switch (staffType)
     {
-        case STAFF_TYPE_HANDYMAN:
+        case StaffType::Handyman:
             gStaffHandymanColour = value;
             break;
-        case STAFF_TYPE_MECHANIC:
+        case StaffType::Mechanic:
             gStaffMechanicColour = value;
             break;
-        case STAFF_TYPE_SECURITY:
+        case StaffType::Security:
             gStaffSecurityColour = value;
             break;
         default:
@@ -1153,21 +1155,21 @@ uint32_t staff_get_available_entertainer_costumes()
     entertainerCostumes >>= 4;
 
     // Fix #6593: force enable the default costumes, which normally get enabled through the default scenery groups.
-    entertainerCostumes |= (1 << ENTERTAINER_COSTUME_PANDA) | (1 << ENTERTAINER_COSTUME_TIGER)
-        | (1 << ENTERTAINER_COSTUME_ELEPHANT);
+    entertainerCostumes |= (1 << static_cast<uint8_t>(EntertainerCostume::Panda))
+        | (1 << static_cast<uint8_t>(EntertainerCostume::Tiger)) | (1 << static_cast<uint8_t>(EntertainerCostume::Elephant));
 
     return entertainerCostumes;
 }
 
-int32_t staff_get_available_entertainer_costume_list(uint8_t* costumeList)
+int32_t staff_get_available_entertainer_costume_list(EntertainerCostume* costumeList)
 {
     uint32_t availableCostumes = staff_get_available_entertainer_costumes();
     int32_t numCostumes = 0;
-    for (uint8_t i = 0; i < ENTERTAINER_COSTUME_COUNT; i++)
+    for (uint8_t i = 0; i < static_cast<uint8_t>(EntertainerCostume::Count); i++)
     {
         if (availableCostumes & (1 << i))
         {
-            costumeList[numCostumes++] = i;
+            costumeList[numCostumes++] = static_cast<EntertainerCostume>(i);
         }
     }
     return numCostumes;
@@ -1435,7 +1437,7 @@ void Staff::UpdateHeadingToInspect()
     if (SubState == 0)
     {
         MechanicTimeSinceCall = 0;
-        peep_reset_pathfind_goal(this);
+        ResetPathfindGoal();
         SubState = 2;
     }
 
@@ -1545,7 +1547,7 @@ void Staff::UpdateAnswering()
             SubState = 2;
             peep_window_state_update(this);
             MechanicTimeSinceCall = 0;
-            peep_reset_pathfind_goal(this);
+            ResetPathfindGoal();
             return;
         }
         UpdateAction();
@@ -1828,7 +1830,7 @@ static int32_t peep_update_patrolling_find_sweeping(Peep* peep)
 
 void Staff::Tick128UpdateStaff()
 {
-    if (StaffType != STAFF_TYPE_SECURITY)
+    if (AssignedStaffType != StaffType::Security)
         return;
 
     PeepSpriteType newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
@@ -1857,7 +1859,8 @@ void Staff::Tick128UpdateStaff()
 bool Staff::IsMechanic() const
 {
     return (
-        sprite_identifier == SPRITE_IDENTIFIER_PEEP && AssignedPeepType == PeepType::Staff && StaffType == STAFF_TYPE_MECHANIC);
+        sprite_identifier == SPRITE_IDENTIFIER_PEEP && AssignedPeepType == PeepType::Staff
+        && AssignedStaffType == StaffType::Mechanic);
 }
 
 void Staff::UpdateStaff(uint32_t stepsToTake)
@@ -1928,7 +1931,7 @@ void Staff::UpdatePatrolling()
         }
     }
 
-    if (StaffType != STAFF_TYPE_HANDYMAN)
+    if (AssignedStaffType != StaffType::Handyman)
         return;
 
     if (peep_update_patrolling_find_sweeping(this))

@@ -34,6 +34,7 @@
     <ClCompile>
       <PreprocessorDefinitions>__ENABLE_DISCORD__;__ENABLE_LIGHTFX__;USE_BENCHMARK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Breakpad)'=='true'">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">USE_FRIBIDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
@@ -175,7 +176,7 @@
     <ClInclude Include="core\Numerics.hpp" />
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
-    <ClInclude Include="core\Registration.hpp" />
+    <ClInclude Include="core\RTL.h" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.hpp" />
     <ClInclude Include="core\StringReader.hpp" />
@@ -189,7 +190,7 @@
     <ClInclude Include="drawing\ImageImporter.h" />
     <ClInclude Include="drawing\LightFX.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
-    <ClInclude Include="drawing\Rain.h" />
+    <ClInclude Include="drawing\Weather.h" />
     <ClInclude Include="drawing\Text.h" />
     <ClInclude Include="drawing\TTF.h" />
     <ClInclude Include="drawing\X8DrawingEngine.h" />
@@ -252,7 +253,6 @@
     <ClInclude Include="object\LargeSceneryObject.h" />
     <ClInclude Include="object\Object.h" />
     <ClInclude Include="object\ObjectFactory.h" />
-    <ClInclude Include="object\ObjectJsonHelpers.h" />
     <ClInclude Include="object\ObjectLimits.h" />
     <ClInclude Include="object\ObjectList.h" />
     <ClInclude Include="object\ObjectManager.h" />
@@ -276,6 +276,7 @@
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
     <ClInclude Include="ParkImporter.h" />
+    <ClInclude Include="peep\GuestPathfinding.h" />
     <ClInclude Include="peep\Peep.h" />
     <ClInclude Include="peep\Staff.h" />
     <ClInclude Include="PlatformEnvironment.h" />
@@ -410,6 +411,8 @@
     <ClInclude Include="scripting\ScPark.hpp" />
     <ClInclude Include="scripting\ScRide.hpp" />
     <ClInclude Include="scripting\ScriptEngine.h" />
+    <ClInclude Include="scripting\ScScenario.hpp" />
+    <ClInclude Include="scripting\ScSocket.hpp" />
     <ClInclude Include="scripting\ScTile.hpp" />
     <ClInclude Include="sprites.h" />
     <ClInclude Include="title\TitleScreen.h" />
@@ -492,6 +495,8 @@
     <ClCompile Include="core\Json.cpp" />
     <ClCompile Include="core\MemoryStream.cpp" />
     <ClCompile Include="core\Path.cpp" />
+    <ClCompile Include="core\RTL.FriBidi.cpp" />
+    <ClCompile Include="core\RTL.ICU.cpp" />
     <ClCompile Include="core\String.cpp" />
     <ClCompile Include="core\Zip.cpp" />
     <ClCompile Include="core\ZipAndroid.cpp" />
@@ -509,7 +514,7 @@
     <ClCompile Include="drawing\LightFX.cpp" />
     <ClCompile Include="drawing\Line.cpp" />
     <ClCompile Include="drawing\NewDrawing.cpp" />
-    <ClCompile Include="drawing\Rain.cpp" />
+    <ClCompile Include="drawing\Weather.cpp" />
     <ClCompile Include="drawing\Rect.cpp" />
     <ClCompile Include="drawing\ScrollingText.cpp" />
     <ClCompile Include="drawing\SSE41Drawing.cpp" />
@@ -526,6 +531,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="interface\Chat.cpp" />
     <ClCompile Include="interface\Colour.cpp" />
+    <ClCompile Include="interface\Cursors.cpp" />
     <ClCompile Include="interface\FontFamilies.cpp" />
     <ClCompile Include="interface\Fonts.cpp" />
     <ClCompile Include="interface\InteractiveConsole.cpp" />
@@ -574,7 +580,6 @@
     <ClCompile Include="object\LargeSceneryObject.cpp" />
     <ClCompile Include="object\Object.cpp" />
     <ClCompile Include="object\ObjectFactory.cpp" />
-    <ClCompile Include="object\ObjectJsonHelpers.cpp" />
     <ClCompile Include="object\ObjectList.cpp" />
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />

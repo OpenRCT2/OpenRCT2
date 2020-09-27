@@ -33,6 +33,7 @@ namespace Platform
     std::string GetInstallPath();
     std::string GetDocsPath();
     std::string GetCurrentExecutablePath();
+    std::string GetCurrentExecutableDirectory();
     bool FileExists(const std::string path);
     rct2_time GetTimeLocal();
     rct2_date GetDateLocal();
@@ -51,6 +52,7 @@ namespace Platform
     bool SetUpFileAssociation(
         const std::string extension, const std::string fileTypeText, const std::string commandText,
         const std::string commandArgs, const uint32_t iconIndex);
+    void RemoveFileAssociations();
 #endif
 
     bool IsRunningInWine();

@@ -32,13 +32,15 @@ enum {
 };
 
 static ScreenRect _filterRect;
+static constexpr ScreenSize MenuButtonDims = { 82, 82 };
+static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
 
 static rct_widget window_title_menu_widgets[] = {
-    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, 2, SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
-    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, 2, SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
-    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, 2, SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
-    MakeWidget({0, 28}, {    82, 82}, WWT_IMGBTN, 2, SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
-    MakeWidget({0,  0}, {82 * 4, 28}, WWT_EMPTY,  1, STR_UPDATE_AVAILABLE),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
+    MakeWidget({0,                       0}, UpdateButtonDims, WWT_EMPTY,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
     { WIDGETS_END },
 };
 
@@ -89,9 +91,11 @@ rct_window* window_title_menu_open()
 {
     rct_window* window;
 
+    const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
     window = window_create(
-        ScreenCoordsXY(0, context_get_height() - 182), 0, 100, &window_title_menu_events, WC_TITLE_MENU,
+        ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &window_title_menu_events, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
+
     window->widgets = window_title_menu_widgets;
     window->enabled_widgets
         = ((1 << WIDX_START_NEW_GAME) | (1 << WIDX_CONTINUE_SAVED_GAME) |
@@ -107,9 +111,9 @@ rct_window* window_title_menu_open()
         if (widget_is_enabled(window, i))
         {
             widget->left = x;
-            widget->right = x + 81;
+            widget->right = x + MenuButtonDims.width - 1;
 
-            x += 82;
+            x += MenuButtonDims.width;
         }
         else
         {
@@ -238,7 +242,8 @@ static void window_title_menu_cursor(
 
 static void window_title_menu_invalidate(rct_window* w)
 {
-    _filterRect = { w->windowPos.x, w->windowPos.y + 28, w->windowPos.x + w->width - 1, w->windowPos.y + 82 + 28 - 1 };
+    _filterRect = { w->windowPos.x, w->windowPos.y + UpdateButtonDims.height, w->windowPos.x + w->width - 1,
+                    w->windowPos.y + MenuButtonDims.height + UpdateButtonDims.height - 1 };
     if (OpenRCT2::GetContext()->HasNewVersionInfo())
     {
         w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);

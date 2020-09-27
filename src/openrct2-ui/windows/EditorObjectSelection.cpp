@@ -142,26 +142,26 @@ validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 static bool _window_editor_object_selection_widgets_initialised;
 static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({  0, 43}, {600, 357}, WWT_RESIZE,       1                                                                  ),
-    MakeWidget     ({470, 22}, {122,  14}, WWT_BUTTON,       0, STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
-    MakeWidget     ({  4, 60}, {288, 327}, WWT_SCROLL,       1, SCROLL_VERTICAL                                                 ),
-    MakeWidget     ({391, 45}, {114, 115}, WWT_FLATBTN,      1                                                                  ),
-    MakeWidget     ({470, 22}, {122,  14}, WWT_BUTTON,       0, STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
-    MakeWidget     ({350, 22}, {114,  14}, WWT_BUTTON,       0, STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
-    MakeWidget     ({  4, 45}, {211,  14}, WWT_TEXT_BOX,     1                                                                  ),
-    MakeWidget     ({218, 45}, { 70,  14}, WWT_BUTTON,       1, STR_OBJECT_SEARCH_CLEAR                                         ),
-    MakeWidget     ({  3, 73}, {285,   4}, WWT_IMGBTN,       1                                                                  ),
-    MakeRemapWidget({  3, 47}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                       STR_OBJECT_FILTER_ALL_RIDES_TIP  ),
-    MakeRemapWidget({ 34, 47}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                       STR_TRANSPORT_RIDES_TIP          ),
-    MakeRemapWidget({ 65, 47}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                       STR_GENTLE_RIDES_TIP             ),
-    MakeRemapWidget({ 96, 47}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                       STR_ROLLER_COASTERS_TIP          ),
-    MakeRemapWidget({127, 47}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                       STR_THRILL_RIDES_TIP             ),
-    MakeRemapWidget({158, 47}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                       STR_WATER_RIDES_TIP              ),
-    MakeRemapWidget({189, 47}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                       STR_SHOPS_STALLS_TIP             ),
-    MakeWidget     ({  4, 80}, {145,  14}, WWT_TABLE_HEADER, 1                                                                  ),
-    MakeWidget     ({149, 80}, {143,  14}, WWT_TABLE_HEADER, 1                                                                  ),
+    MakeWidget({  0, 43}, {600, 357}, WWT_RESIZE,       WindowColour::Secondary                                                                  ),
+    MakeWidget({470, 22}, {122,  14}, WWT_BUTTON,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
+    MakeWidget({  4, 60}, {288, 327}, WWT_SCROLL,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
+    MakeWidget({391, 45}, {114, 115}, WWT_FLATBTN,      WindowColour::Secondary                                                                  ),
+    MakeWidget({470, 22}, {122,  14}, WWT_BUTTON,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+    MakeWidget({350, 22}, {114,  14}, WWT_BUTTON,       WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
+    MakeWidget({  4, 45}, {211,  14}, WWT_TEXT_BOX,     WindowColour::Secondary                                                                  ),
+    MakeWidget({218, 45}, { 70,  14}, WWT_BUTTON,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
+    MakeWidget({  3, 73}, {285,   4}, WWT_IMGBTN,       WindowColour::Secondary                                                                  ),
+    MakeTab   ({  3, 47},                                                                                       STR_OBJECT_FILTER_ALL_RIDES_TIP  ),
+    MakeTab   ({ 34, 47},                                                                                       STR_TRANSPORT_RIDES_TIP          ),
+    MakeTab   ({ 65, 47},                                                                                       STR_GENTLE_RIDES_TIP             ),
+    MakeTab   ({ 96, 47},                                                                                       STR_ROLLER_COASTERS_TIP          ),
+    MakeTab   ({127, 47},                                                                                       STR_THRILL_RIDES_TIP             ),
+    MakeTab   ({158, 47},                                                                                       STR_WATER_RIDES_TIP              ),
+    MakeTab   ({189, 47},                                                                                       STR_SHOPS_STALLS_TIP             ),
+    MakeWidget({  4, 80}, {145,  14}, WWT_TABLE_HEADER, WindowColour::Secondary                                                                  ),
+    MakeWidget({149, 80}, {143,  14}, WWT_TABLE_HEADER, WindowColour::Secondary                                                                  ),
 
-    MakeRemapWidget({  3, 17}, { 31,  27}, WWT_TAB,          1, SPR_TAB,                       STR_STRING_DEFINED_TOOLTIP       ),
+    MakeTab   ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
     // Copied object type times...
 
     { WIDGETS_END }
@@ -423,9 +423,6 @@ rct_window* window_editor_object_selection_open()
  */
 static void window_editor_object_selection_close(rct_window* w)
 {
-    // if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
-    //  return;
-
     unload_unselected_objects();
     editor_load_selected_objects();
     editor_object_flags_free();
@@ -721,7 +718,7 @@ static void window_editor_object_selection_scroll_mousedown(
     {
         rct_string_id error_title = (ebx & 1) ? STR_UNABLE_TO_SELECT_THIS_OBJECT : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
-        context_show_error(error_title, gGameCommandErrorText);
+        context_show_error(error_title, gGameCommandErrorText, {});
         return;
     }
 
@@ -734,7 +731,8 @@ static void window_editor_object_selection_scroll_mousedown(
 
     if (_maxObjectsWasHit)
     {
-        context_show_error(STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED);
+        context_show_error(
+            STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, {});
     }
 }
 
@@ -954,7 +952,6 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 {
     int32_t width;
     rct_widget* widget;
-    rct_string_id stringId;
 
     window_draw_widgets(w, dpi);
 
@@ -1026,18 +1023,22 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     widget = &w->widgets[WIDX_LIST_SORT_TYPE];
     if (widget->type != WWT_EMPTY)
     {
-        stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                   : STR_NONE;
+        auto ft = Formatter::Common();
+        auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
+                                                        : STR_NONE;
+        ft.Add<rct_string_id>(stringId);
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_TYPE, &stringId, w->colours[1], screenPos, widget->width());
+        DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_TYPE, ft, w->colours[1]);
     }
     widget = &w->widgets[WIDX_LIST_SORT_RIDE];
     if (widget->type != WWT_EMPTY)
     {
-        stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                   : STR_NONE;
+        auto ft = Formatter::Common();
+        auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
+                                                        : STR_NONE;
+        ft.Add<rct_string_id>(stringId);
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        gfx_draw_string_left_clipped(dpi, STR_OBJECTS_SORT_RIDE, &stringId, w->colours[1], screenPos, widget->width());
+        DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_RIDE, ft, w->colours[1]);
     }
 
     if (w->selected_list_item == -1 || _loadedObject == nullptr)
@@ -1065,7 +1066,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
-        gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, screenPos, width);
+        DrawTextEllipsised(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::CENTRE);
     }
 
     // Draw description of object
@@ -1088,15 +1089,15 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     // Draw ride type.
     if (get_selected_object_type(w) == OBJECT_TYPE_RIDE)
     {
-        stringId = get_ride_type_string_id(listItem->repositoryItem);
-        gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, screenPos);
+        auto stringId = get_ride_type_string_id(listItem->repositoryItem);
+        DrawTextBasic(dpi, screenPos, stringId, {}, COLOUR_WHITE, TextAlignment::RIGHT);
     }
 
     screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object source
-    stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
-    gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, screenPos);
+    auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
+    DrawTextBasic(dpi, screenPos, stringId, {}, COLOUR_WHITE, TextAlignment::RIGHT);
     screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object dat name
@@ -1105,8 +1106,9 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(path);
-        gfx_draw_string_right(
-            dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + w->width - 5, screenPos.y });
+        DrawTextBasic(
+            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK,
+            TextAlignment::RIGHT);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
@@ -1124,9 +1126,9 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         }
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(authorsString.c_str());
-        gfx_draw_string_right_clipped(
-            dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + w->width - 5, screenPos.y },
-            w->width - w->widgets[WIDX_LIST].right - 4);
+        DrawTextEllipsised(
+            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, w->width - w->widgets[WIDX_LIST].right - 4,
+            STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::RIGHT);
     }
 }
 /**
@@ -1197,7 +1199,9 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 // Draw ride type
                 rct_string_id rideTypeStringId = get_ride_type_string_id(listItem.repositoryItem);
                 safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
-                gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, screenCoords, width_limit - 15);
+                auto ft = Formatter::Common();
+                ft.Add<const char*>(gCommonStringFormatBuffer);
+                DrawTextEllipsised(dpi, screenCoords, width_limit - 15, STR_STRING, ft, colour);
                 screenCoords.x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
             }
 
@@ -1210,7 +1214,9 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
 
                 *buffer = 0;
             }
-            gfx_draw_string_left_clipped(dpi, STR_STRING, &bufferWithColour, colour, screenCoords, width_limit);
+            auto ft = Formatter::Common();
+            ft.Add<const char*>(gCommonStringFormatBuffer);
+            DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, ft, colour);
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }

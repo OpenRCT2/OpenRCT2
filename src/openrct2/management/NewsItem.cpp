@@ -301,13 +301,12 @@ News::Item* News::ItemQueues::FirstOpenOrNewSlot()
  *
  *  rct2: 0x0066DF55
  */
-News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc)
+News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc, const Formatter& formatter)
 {
     utf8 buffer[256];
-    void* args = gCommonFormatArgs;
 
     // overflows possible?
-    format_string(buffer, 256, string_id, args);
+    format_string(buffer, 256, string_id, formatter.Data());
     return News::AddItemToQueue(type, buffer, assoc);
 }
 
@@ -318,7 +317,7 @@ News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t
     newsItem->Flags = 0;
     newsItem->Assoc = assoc;
     newsItem->Ticks = 0;
-    newsItem->MonthYear = gDateMonthsElapsed;
+    newsItem->MonthYear = static_cast<uint16_t>(gDateMonthsElapsed);
     newsItem->Day = ((days_in_month[date_get_month(newsItem->MonthYear)] * gDateMonthTicks) >> 16) + 1;
     safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
 
@@ -394,7 +393,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         case News::ItemType::Peeps:
         {
             auto intent = Intent(WC_GUEST_LIST);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_THINKING_X);
+            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingX));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
             context_open_intent(&intent);
             break;

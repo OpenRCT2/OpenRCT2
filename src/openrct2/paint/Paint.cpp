@@ -954,24 +954,17 @@ paint_struct* sub_98198C(
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
  */
 paint_struct* sub_98199C(
-    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    const CoordsXYZ& boundBoxOffset)
 {
-    assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
-    assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
-
     if (session->LastRootPS == nullptr)
     {
         return sub_98197C(
-            session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
-            bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
+            session, image_id, offset.x, offset.y, boundBoxLength.x, boundBoxLength.y, boundBoxLength.z, offset.z,
+            boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
     }
 
-    CoordsXYZ offset = { x_offset, y_offset, z_offset };
-    CoordsXYZ boundBox = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-    CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
-    paint_struct* ps = sub_9819_c(session, image_id, offset, boundBox, boundBoxOffset);
+    paint_struct* ps = sub_9819_c(session, image_id, offset, boundBoxLength, boundBoxOffset);
 
     if (ps == nullptr)
     {
@@ -984,6 +977,18 @@ paint_struct* sub_98199C(
     session->LastRootPS = ps;
     session->NextFreePaintStruct++;
     return ps;
+}
+
+paint_struct* sub_98199C(
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+{
+    assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
+    assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
+    return sub_98199C(
+        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
+        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
 }
 
 /**
@@ -1113,24 +1118,12 @@ void paint_floating_money_effect(
     session->LastPSString = ps;
 }
 
-static rct_drawpixelinfo draw_pixel_info_crop_by_zoom(const rct_drawpixelinfo& dpi)
-{
-    auto result = dpi;
-    result.x = dpi.x * dpi.zoom_level;
-    result.y = dpi.y * dpi.zoom_level;
-    result.width = dpi.width / dpi.zoom_level;
-    result.height = dpi.height / dpi.zoom_level;
-    result.zoom_level = 0;
-    return result;
-}
-
 /**
  *
  *  rct2: 0x006860C3
  */
 void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
 {
-    auto dpi2 = draw_pixel_info_crop_by_zoom(*dpi);
     do
     {
         char buffer[256]{};
@@ -1146,6 +1139,6 @@ void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
         }
 
         gfx_draw_string_with_y_offsets(
-            &dpi2, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont);
+            dpi, buffer, COLOUR_BLACK, { ps->x, ps->y }, reinterpret_cast<int8_t*>(ps->y_offsets), forceSpriteFont);
     } while ((ps = ps->next) != nullptr);
 }

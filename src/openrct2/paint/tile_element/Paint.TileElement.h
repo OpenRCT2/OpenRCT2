@@ -111,4 +111,6 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement);
 void track_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement);
 
+bool PaintShouldShowHeightMarkers(const paint_session* session, const uint32_t viewportFlag);
+
 #endif

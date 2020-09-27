@@ -119,52 +119,52 @@ enum {
 
 static rct_widget window_editor_scenario_options_financial_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
-    MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WWT_RESIZE,   1),
-    MakeRemapWidget   ({  3,  17}, {               31,  27}, WWT_TAB,      1, SPR_TAB,                STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
-    MakeRemapWidget   ({ 34,  17}, {               31,  30}, WWT_TAB,      1, SPR_TAB,                STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
-    MakeRemapWidget   ({ 65,  17}, {               31,  27}, WWT_TAB,      1, SPR_TAB,                STR_SCENARIO_OPTIONS_PARK_TIP     ),
-    MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WWT_CHECKBOX, 1, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
-    MakeSpinnerWidgets({168,  65}, {              100,  12}, WWT_SPINNER,  1                                                            ), // NB: 3 widgets
-    MakeSpinnerWidgets({168,  82}, {              100,  12}, WWT_SPINNER,  1                                                            ), // NB: 3 widgets
-    MakeSpinnerWidgets({168,  99}, {              100,  12}, WWT_SPINNER,  1                                                            ), // NB: 3 widgets
-    MakeSpinnerWidgets({168, 116}, {               70,  12}, WWT_SPINNER,  1                                                            ), // NB: 3 widgets
-    MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WWT_CHECKBOX, 1, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
+    MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WWT_RESIZE,   WindowColour::Secondary                                                            ),
+    MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+    MakeTab           ({ 34,  17},                                                                                          STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+    MakeTab           ({ 65,  17},                                                                                          STR_SCENARIO_OPTIONS_PARK_TIP     ),
+    MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
+    MakeSpinnerWidgets({168,  65}, {              100,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168,  82}, {              100,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168,  99}, {              100,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168, 116}, {               70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_scenario_options_guests_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
-    MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WWT_RESIZE,   1),
-    MakeRemapWidget   ({  3,  17}, {            31,  27}, WWT_TAB,      1, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
-    MakeRemapWidget   ({ 34,  17}, {            31,  30}, WWT_TAB,      1, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP         ),
-    MakeRemapWidget   ({ 65,  17}, {            31,  27}, WWT_TAB,      1, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP           ),
-    MakeSpinnerWidgets({268,  48}, {            70,  12}, WWT_SPINNER,  1                                                                                ), // NB: 3 widgets
-    MakeSpinnerWidgets({268,  65}, {            70,  12}, WWT_SPINNER,  1                                                                                ), // NB: 3 widgets
-    MakeSpinnerWidgets({268,  82}, {            70,  12}, WWT_SPINNER,  1                                                                                ), // NB: 3 widgets
-    MakeSpinnerWidgets({268,  99}, {            70,  12}, WWT_SPINNER,  1                                                                                ), // NB: 3 widgets
-    MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WWT_CHECKBOX, 1, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
-    MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WWT_CHECKBOX, 1, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
+    MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WWT_RESIZE,   WindowColour::Secondary),
+    MakeRemapWidget   ({  3,  17}, {            31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
+    MakeRemapWidget   ({ 34,  17}, {            31,  30}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP         ),
+    MakeRemapWidget   ({ 65,  17}, {            31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP           ),
+    MakeSpinnerWidgets({268,  48}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  65}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  82}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  99}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
+    MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_scenario_options_park_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
-    MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WWT_RESIZE,   1                                                                  ),
-    MakeRemapWidget   ({  3,  17}, {          31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
-    MakeRemapWidget   ({ 34,  17}, {          31,  30}, WWT_TAB,      1, SPR_TAB,                      STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
-    MakeRemapWidget   ({ 65,  17}, {          31,  27}, WWT_TAB,      1, SPR_TAB,                      STR_SCENARIO_OPTIONS_PARK_TIP     ),
-    MakeSpinnerWidgets({188,  48}, {          70,  12}, WWT_SPINNER,  1                                                                  ), // NB: 3 widgets
-    MakeSpinnerWidgets({188,  65}, {          70,  12}, WWT_SPINNER,  1                                                                  ), // NB: 3 widgets
-    MakeWidget        ({  8,  82}, {         210,  12}, WWT_DROPDOWN, 1, STR_NONE,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-    MakeWidget        ({206,  83}, {          11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-    MakeSpinnerWidgets({328,  82}, {          67,  12}, WWT_SPINNER,  1                                                                  ), // NB: 3 widgets
-    MakeWidget        ({188,  99}, {         207,  12}, WWT_DROPDOWN, 1, STR_NONE,                     STR_SELECT_CLIMATE_TIP            ),
-    MakeWidget        ({383, 100}, {          11,  10}, WWT_BUTTON,   1, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
-    MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WWT_CHECKBOX, 1, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
-    MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WWT_CHECKBOX, 1, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
-    MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WWT_CHECKBOX, 1, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
-    MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WWT_CHECKBOX, 1, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
-    MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WWT_CHECKBOX, 1, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
+    MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WWT_RESIZE,   WindowColour::Secondary                                                                  ),
+    MakeRemapWidget   ({  3,  17}, {          31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+    MakeRemapWidget   ({ 34,  17}, {          31,  30}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+    MakeRemapWidget   ({ 65,  17}, {          31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_PARK_TIP     ),
+    MakeSpinnerWidgets({188,  48}, {          70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+    MakeSpinnerWidgets({188,  65}, {          70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+    MakeWidget        ({  8,  82}, {         210,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+    MakeWidget        ({206,  83}, {          11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+    MakeSpinnerWidgets({328,  82}, {          67,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+    MakeWidget        ({188,  99}, {         207,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                     STR_SELECT_CLIMATE_TIP            ),
+    MakeWidget        ({383, 100}, {          11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
+    MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
+    MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
+    MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
+    MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
+    MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
     { WIDGETS_END }
 };
 
@@ -540,15 +540,15 @@ static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
 
     dropdownWidget = &w->widgets[WIDX_CLIMATE];
 
-    for (i = 0; i < CLIMATE_COUNT; i++)
+    for (i = 0; i < static_cast<uint8_t>(ClimateType::Count); i++)
     {
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[i] = ClimateNames[i];
     }
     window_dropdown_show_text_custom_width(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, CLIMATE_COUNT, dropdownWidget->width() - 3);
-    dropdown_set_checked(gClimate, true);
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, static_cast<uint8_t>(ClimateType::Count), dropdownWidget->width() - 3);
+    dropdown_set_checked(static_cast<uint8_t>(gClimate), true);
 }
 
 /**
@@ -568,7 +568,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_CASH, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_CASH, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -581,7 +581,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_CASH, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_CASH, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -594,7 +594,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -607,7 +607,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -620,7 +620,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -633,7 +633,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -646,7 +646,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -659,7 +659,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -852,7 +852,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -865,7 +865,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -878,7 +878,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -891,7 +891,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -904,7 +904,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -917,7 +917,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -930,7 +930,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -943,7 +943,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1157,7 +1157,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1170,7 +1170,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1183,7 +1183,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1196,7 +1196,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1209,7 +1209,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1222,7 +1222,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1275,9 +1275,9 @@ static void window_editor_scenario_options_park_dropdown(rct_window* w, rct_widg
             break;
         }
         case WIDX_CLIMATE_DROPDOWN:
-            if (gClimate != static_cast<uint8_t>(dropdownIndex))
+            if (static_cast<uint8_t>(gClimate) != static_cast<uint8_t>(dropdownIndex))
             {
-                auto gameAction = ClimateSetAction(dropdownIndex);
+                auto gameAction = ClimateSetAction(ClimateType{ static_cast<uint8_t>(dropdownIndex) });
                 GameActions::Execute(&gameAction);
             }
             break;
@@ -1445,7 +1445,7 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
 
     // Climate value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CLIMATE].left + 1, w->widgets[WIDX_CLIMATE].top };
-    stringId = ClimateNames[gClimate];
+    stringId = ClimateNames[static_cast<uint8_t>(gClimate)];
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
 }
 

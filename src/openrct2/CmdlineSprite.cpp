@@ -14,6 +14,7 @@
 #include "Context.h"
 #include "OpenRCT2.h"
 #include "core/Imaging.h"
+#include "core/Json.hpp"
 #include "drawing/Drawing.h"
 #include "drawing/ImageImporter.h"
 #include "object/ObjectLimits.h"
@@ -26,7 +27,6 @@
 
 #include <cmath>
 #include <cstring>
-#include <jansson.h>
 
 #ifdef _WIN32
 #    include "core/String.hpp"
@@ -675,28 +675,16 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         const char* spriteDescriptionPath = argv[2];
         char* directoryPath = path_get_directory(spriteDescriptionPath);
 
-        json_error_t error;
-        auto fp = fopen(spriteDescriptionPath, "rb");
-        if (fp == nullptr)
+        json_t jsonSprites = Json::ReadFromFile(spriteDescriptionPath);
+        if (jsonSprites.is_null())
         {
             fprintf(stderr, "Unable to read sprite description file: %s\n", spriteDescriptionPath);
             return -1;
         }
 
-        json_t* sprite_list = json_loadf(fp, JSON_REJECT_DUPLICATES, &error);
-        fclose(fp);
-        if (sprite_list == nullptr)
-        {
-            fprintf(
-                stderr, "Error parsing sprite description file: %s at line %d column %d\n", error.text, error.line,
-                error.column);
-            return -1;
-        }
-
-        if (!json_is_array(sprite_list))
+        if (!jsonSprites.is_array())
         {
             fprintf(stderr, "Error: expected array\n");
-            json_decref(sprite_list);
             return -1;
         }
 
@@ -708,66 +696,45 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         fprintf(stdout, "Building: %s\n", spriteFilePath);
 
-        size_t i;
-        json_t* sprite_description;
+        json_t sprite_description;
 
-        json_array_foreach(sprite_list, i, sprite_description)
+        // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const
+        for (auto& [jsonKey, jsonSprite] : jsonSprites.items())
         {
-            if (!json_is_object(sprite_description))
+            if (!jsonSprite.is_object())
             {
-                fprintf(stderr, "Error: expected object for sprite %lu\n", static_cast<unsigned long>(i));
-                json_decref(sprite_list);
+                fprintf(stderr, "Error: expected object for sprite %s\n", jsonKey.c_str());
                 return -1;
             }
 
-            json_t* path = json_object_get(sprite_description, "path");
-            if (!json_is_string(path))
+            json_t path = jsonSprite["path"];
+            if (!path.is_string())
             {
-                fprintf(stderr, "Error: no path provided for sprite %lu\n", static_cast<unsigned long>(i));
-                json_decref(sprite_list);
+                fprintf(stderr, "Error: no path provided for sprite %s\n", jsonKey.c_str());
                 return -1;
             }
-            // Get x and y offsets, if present
-            json_t* x_offset = json_object_get(sprite_description, "x_offset");
-            json_t* y_offset = json_object_get(sprite_description, "y_offset");
+            std::string strPath = Json::GetString(path);
 
-            // Get palette option, if present
-            bool keep_palette = false;
-            json_t* palette = json_object_get(sprite_description, "palette");
-            if (json_is_string(palette))
-            {
-                const char* option = json_string_value(palette);
-                if (strncmp(option, "keep", 4) == 0)
-                {
-                    keep_palette = true;
-                }
-            }
+            json_t x_offset = jsonSprite["x_offset"];
+            json_t y_offset = jsonSprite["y_offset"];
 
-            // Get forcebmp option, if present
-            bool forceBmp = false;
-            json_t* forceBmpObject = json_object_get(sprite_description, "forceBmp");
-            if (palette && json_is_boolean(forceBmpObject))
-            {
-                forceBmp = json_boolean_value(forceBmpObject);
-            }
+            bool keep_palette = Json::GetString(jsonSprite["palette"]) == "keep";
+            bool forceBmp = !jsonSprite["palette"].is_null() && Json::GetBoolean(jsonSprite["forceBmp"]);
 
-            // Resolve absolute sprite path
-            auto imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
+            auto imagePath = platform_get_absolute_path(strPath.c_str(), directoryPath);
 
             auto importResult = sprite_file_import(
-                imagePath.c_str(), x_offset == nullptr ? 0 : json_integer_value(x_offset),
-                y_offset == nullptr ? 0 : json_integer_value(y_offset), keep_palette, forceBmp, gSpriteMode);
+                imagePath.c_str(), Json::GetNumber<int16_t>(x_offset), Json::GetNumber<int16_t>(y_offset), keep_palette,
+                forceBmp, gSpriteMode);
             if (importResult == std::nullopt)
             {
                 fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath.c_str());
-                json_decref(sprite_list);
                 return -1;
             }
 
             if (!sprite_file_open(spriteFilePath))
             {
                 fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
-                json_decref(sprite_list);
                 return -1;
             }
 
@@ -790,7 +757,6 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             if (!sprite_file_save(spriteFilePath))
             {
                 fprintf(stderr, "Could not save sprite file: %s\nCanceling\n", imagePath.c_str());
-                json_decref(sprite_list);
                 return -1;
             }
 
@@ -800,7 +766,6 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             sprite_file_close();
         }
 
-        json_decref(sprite_list);
         free(directoryPath);
 
         fprintf(stdout, "Finished\n");

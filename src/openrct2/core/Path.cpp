@@ -174,7 +174,8 @@ namespace Path
 #ifdef _WIN32
         auto relativePathW = String::ToWideChar(relativePath);
         wchar_t absolutePathW[MAX_PATH];
-        DWORD length = GetFullPathNameW(relativePathW.c_str(), (DWORD)std::size(absolutePathW), absolutePathW, nullptr);
+        DWORD length = GetFullPathNameW(
+            relativePathW.c_str(), static_cast<DWORD>(std::size(absolutePathW)), absolutePathW, nullptr);
         if (length == 0)
         {
             return String::Set(buffer, bufferSize, relativePath);

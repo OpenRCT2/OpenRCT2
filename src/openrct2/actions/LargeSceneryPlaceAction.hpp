@@ -72,6 +72,22 @@ public:
         }
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("object", _sceneryType);
+        visitor.Visit("primaryColour", _primaryColour);
+        visitor.Visit("secondaryColour", _secondaryColour);
+        rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_sceneryType);
+        if (sceneryEntry != nullptr)
+        {
+            if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+            {
+                _bannerId = create_new_banner(0);
+            }
+        }
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags();

@@ -16,7 +16,6 @@
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
 #include "../world/Location.hpp"
-#include "ObjectJsonHelpers.h"
 
 #include <memory>
 
@@ -25,7 +24,7 @@ void WaterObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* str
     stream->Seek(14, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.flags = stream->ReadValue<uint16_t>();
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, ObjectStringID::NAME);
     GetImageTable().Read(context, stream);
 }
 
@@ -55,52 +54,57 @@ void WaterObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t hei
     gfx_draw_string_centred(dpi, STR_WINDOW_NO_IMAGE, screenCoords, COLOUR_BLACK, nullptr);
 }
 
-void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, const json_t* root)
+void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
-    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint16_t>(
-        properties,
-        {
-            { "allowDucks", WATER_FLAGS_ALLOW_DUCKS },
-        });
+    Guard::Assert(root.is_object(), "WaterObject::ReadJson expects parameter root to be object");
 
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
+    auto properties = root["properties"];
 
-    // Images which are actually palette data
-    static const char* paletteNames[] = {
-        "general", "waves-0", "waves-1", "waves-2", "sparkles-0", "sparkles-1", "sparkles-2",
-    };
-    for (auto paletteName : paletteNames)
+    PopulateTablesFromJson(context, root);
+
+    if (properties.is_object())
     {
-        auto jPalettes = json_object_get(properties, "palettes");
-        if (jPalettes != nullptr)
-        {
-            auto jPalette = json_object_get(jPalettes, paletteName);
-            if (jPalette != nullptr)
+        _legacyType.flags = Json::GetFlags<uint16_t>(
+            properties,
             {
-                ReadJsonPalette(jPalette);
+                { "allowDucks", WATER_FLAGS_ALLOW_DUCKS },
+            });
+
+        auto jPalettes = properties["palettes"];
+        if (jPalettes.is_object())
+        {
+            // Images which are actually palette data
+            static const char* paletteNames[] = {
+                "general", "waves-0", "waves-1", "waves-2", "sparkles-0", "sparkles-1", "sparkles-2",
+            };
+            for (auto paletteName : paletteNames)
+            {
+                auto jPalette = jPalettes[paletteName];
+                if (jPalette.is_object())
+                {
+                    ReadJsonPalette(jPalette);
+                }
             }
         }
     }
 }
 
-void WaterObject::ReadJsonPalette(const json_t* jPalette)
+void WaterObject::ReadJsonPalette(json_t& jPalette)
 {
-    auto paletteStartIndex = json_integer_value(json_object_get(jPalette, "index"));
-    auto jColours = json_object_get(jPalette, "colours");
-    auto numColours = json_array_size(jColours);
+    Guard::Assert(jPalette.is_object(), "WaterObject::ReadJsonPalette expects parameter jPalette to be object");
 
+    auto jColours = jPalette["colours"];
+    auto numColours = jColours.size();
+
+    // This pointer gets memcopied in ImageTable::AddImage so it's fine for the unique_ptr to go out of scope
     auto data = std::make_unique<uint8_t[]>(numColours * 3);
     size_t dataIndex = 0;
 
-    size_t index;
-    const json_t* jColour;
-    json_array_foreach(jColours, index, jColour)
+    for (auto& jColour : jColours)
     {
-        auto szColour = json_string_value(jColour);
-        if (szColour != nullptr)
+        if (jColour.is_string())
         {
-            auto colour = ParseColour(szColour);
+            auto colour = ParseColour(Json::GetString(jColour));
             data[dataIndex + 0] = (colour >> 16) & 0xFF;
             data[dataIndex + 1] = (colour >> 8) & 0xFF;
             data[dataIndex + 2] = colour & 0xFF;
@@ -111,7 +115,7 @@ void WaterObject::ReadJsonPalette(const json_t* jPalette)
     rct_g1_element g1 = {};
     g1.offset = data.get();
     g1.width = static_cast<int16_t>(numColours);
-    g1.x_offset = static_cast<int16_t>(paletteStartIndex);
+    g1.x_offset = Json::GetNumber<int16_t>(jPalette["index"]);
     g1.flags = G1_FLAG_PALETTE;
 
     auto& imageTable = GetImageTable();

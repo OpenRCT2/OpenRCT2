@@ -13,11 +13,11 @@
 
 struct CoordsXY;
 
-enum VirtualFloorStyles
+enum class VirtualFloorStyles : int32_t
 {
-    VIRTUAL_FLOOR_STYLE_OFF,
-    VIRTUAL_FLOOR_STYLE_CLEAR,
-    VIRTUAL_FLOOR_STYLE_GLASSY
+    Off,
+    Clear,
+    Glassy
 };
 
 struct paint_session;

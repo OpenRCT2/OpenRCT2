@@ -32,7 +32,7 @@ enum
 };
 
 static rct_widget window_dropdown_widgets[] = {
-    MakeWidget({ 0, 0 }, { 1, 1 }, WWT_IMGBTN, 0),
+    MakeWidget({ 0, 0 }, { 1, 1 }, WWT_IMGBTN, WindowColour::Primary),
     { WIDGETS_END },
 };
 
@@ -398,8 +398,8 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Draw item string
                 ScreenCoordsXY screenCoords = { w->windowPos.x + 2 + (cell_x * _dropdown_item_width),
                                                 w->windowPos.y + 2 + (cell_y * _dropdown_item_height) };
-                gfx_draw_string_left_clipped(
-                    dpi, item, static_cast<void*>(&gDropdownItemsArgs[i]), colour, screenCoords, w->width - 5);
+                Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItemsArgs[i]));
+                DrawTextEllipsised(dpi, screenCoords, w->width - 5, item, ft, colour);
             }
         }
     }

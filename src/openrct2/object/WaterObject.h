@@ -30,7 +30,7 @@ public:
         return &_legacyType;
     }
 
-    void ReadJson(IReadObjectContext* context, const json_t* root) override;
+    void ReadJson(IReadObjectContext* context, json_t& root) override;
     void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
     void Load() override;
     void Unload() override;
@@ -38,6 +38,6 @@ public:
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 
 private:
-    void ReadJsonPalette(const json_t* jPalette);
+    void ReadJsonPalette(json_t& jPalette);
     uint32_t ParseColour(const std::string& s) const;
 };

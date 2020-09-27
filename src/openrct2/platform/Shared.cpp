@@ -48,14 +48,14 @@ static mach_timebase_info_data_t _mach_base_info = {};
 char* strndup(const char* src, size_t size)
 {
     size_t len = strnlen(src, size);
-    char* dst = (char*)malloc(len + 1);
+    char* dst = reinterpret_cast<char*>(malloc(len + 1));
 
     if (dst == nullptr)
     {
         return nullptr;
     }
 
-    dst = (char*)std::memcpy(dst, src, len);
+    dst = reinterpret_cast<char*>(std::memcpy(dst, src, len));
     dst[len] = '\0';
     return dst;
 }

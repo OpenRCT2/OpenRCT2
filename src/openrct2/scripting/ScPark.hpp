@@ -229,6 +229,23 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    static const DukEnumMap<uint32_t> ParkFlagMap({
+        { "open", PARK_FLAGS_PARK_OPEN },
+        { "scenarioCompleteNameInput", PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT },
+        { "forbidLandscapeChanges", PARK_FLAGS_FORBID_LANDSCAPE_CHANGES },
+        { "forbidTreeRemoval", PARK_FLAGS_FORBID_TREE_REMOVAL },
+        { "forbidHighConstruction", PARK_FLAGS_FORBID_HIGH_CONSTRUCTION },
+        { "preferLessIntenseRides", PARK_FLAGS_PREF_LESS_INTENSE_RIDES },
+        { "forbidMarketingCampaigns", PARK_FLAGS_FORBID_MARKETING_CAMPAIGN },
+        { "preferMoreIntenseRides", PARK_FLAGS_PREF_MORE_INTENSE_RIDES },
+        { "noMoney", PARK_FLAGS_NO_MONEY },
+        { "difficultGuestGeneration", PARK_FLAGS_DIFFICULT_GUEST_GENERATION },
+        { "freeParkEntry", PARK_FLAGS_PARK_FREE_ENTRY },
+        { "difficultParkRating", PARK_FLAGS_DIFFICULT_PARK_RATING },
+        { "noMoney", PARK_FLAGS_NO_MONEY_SCENARIO },
+        { "unlockAllPrices", PARK_FLAGS_UNLOCK_ALL_PRICES },
+    });
+
     class ScPark
     {
     public:
@@ -280,15 +297,41 @@ namespace OpenRCT2::Scripting
             context_broadcast_intent(&intent);
         }
 
+        money16 entranceFee_get() const
+        {
+            return gParkEntranceFee;
+        }
+        void entranceFee_set(money16 value)
+        {
+            ThrowIfGameStateNotMutable();
+            gParkEntranceFee = value;
+        }
+
         std::string name_get() const
         {
             return GetContext()->GetGameState()->GetPark().Name;
         }
-
         void name_set(std::string value)
         {
             ThrowIfGameStateNotMutable();
             GetContext()->GetGameState()->GetPark().Name = value;
+        }
+
+        bool getFlag(const std::string& key) const
+        {
+            auto mask = ParkFlagMap[key];
+            return (gParkFlags & mask) != 0;
+        }
+
+        void setFlag(const std::string& key, bool value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto mask = ParkFlagMap[key];
+            if (value)
+                gParkFlags |= mask;
+            else
+                gParkFlags &= ~mask;
+            gfx_invalidate_screen();
         }
 
         std::vector<std::shared_ptr<ScParkMessage>> messages_get() const
@@ -383,8 +426,11 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPark::rating_get, &ScPark::rating_set, "rating");
             dukglue_register_property(ctx, &ScPark::bankLoan_get, &ScPark::bankLoan_set, "bankLoan");
             dukglue_register_property(ctx, &ScPark::maxBankLoan_get, &ScPark::maxBankLoan_set, "maxBankLoan");
+            dukglue_register_property(ctx, &ScPark::entranceFee_get, &ScPark::entranceFee_set, "entranceFee");
             dukglue_register_property(ctx, &ScPark::name_get, &ScPark::name_set, "name");
             dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
+            dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");
+            dukglue_register_method(ctx, &ScPark::setFlag, "setFlag");
             dukglue_register_method(ctx, &ScPark::postMessage, "postMessage");
         }
     };

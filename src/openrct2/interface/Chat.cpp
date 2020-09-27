@@ -42,7 +42,7 @@ static void chat_clear_input();
 bool chat_available()
 {
     return network_get_mode() != NETWORK_MODE_NONE && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NETWORK_AUTH_OK;
+        && network_get_authstatus() == NetworkAuth::Ok;
 }
 
 void chat_open()
@@ -131,16 +131,23 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
             _chatHeight = 150;
         }
 
-        gfx_set_dirty_blocks({ { _chatLeft, _chatTop - 5 }, { _chatRight, _chatBottom + 5 } }); // Background area + Textbox
+        ScreenCoordsXY topLeft{ _chatLeft, _chatTop };
+        ScreenCoordsXY bottomRight{ _chatRight, _chatBottom };
+        ScreenCoordsXY bottomLeft{ _chatLeft, _chatBottom };
+        gfx_set_dirty_blocks(
+            { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }); // Background area + Textbox
         gfx_filter_rect(
-            dpi, { { _chatLeft, _chatTop - 5 }, { _chatRight, _chatBottom + 5 } }, PALETTE_51); // Opaque gray background
+            dpi, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } },
+            PALETTE_51); // Opaque gray background
         gfx_fill_rect_inset(
-            dpi, _chatLeft, _chatTop - 5, _chatRight, _chatBottom + 5, chatBackgroundColor, INSET_RECT_FLAG_FILL_NONE);
+            dpi, { topLeft - ScreenCoordsXY{ 0, 5 }, bottomRight + ScreenCoordsXY{ 0, 5 } }, chatBackgroundColor,
+            INSET_RECT_FLAG_FILL_NONE);
         gfx_fill_rect_inset(
-            dpi, _chatLeft + 1, _chatTop - 4, _chatRight - 1, _chatBottom - inputLineHeight - 6, chatBackgroundColor,
-            INSET_RECT_FLAG_BORDER_INSET);
+            dpi, { topLeft + ScreenCoordsXY{ 1, -4 }, bottomRight - ScreenCoordsXY{ 1, inputLineHeight + 6 } },
+            chatBackgroundColor, INSET_RECT_FLAG_BORDER_INSET);
         gfx_fill_rect_inset(
-            dpi, _chatLeft + 1, _chatBottom - inputLineHeight - 5, _chatRight - 1, _chatBottom + 4, chatBackgroundColor,
+            dpi, { bottomLeft + ScreenCoordsXY{ 1, -inputLineHeight - 5 }, bottomRight + ScreenCoordsXY{ -1, 4 } },
+            chatBackgroundColor,
             INSET_RECT_FLAG_BORDER_INSET); // Textbox
     }
 

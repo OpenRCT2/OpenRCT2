@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "GuestPathfinding.h"
+
 #include "../core/Guard.hpp"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
@@ -25,6 +27,17 @@ static int8_t _peepPathFindNumJunctions;
 static int8_t _peepPathFindMaxJunctions;
 static int32_t _peepPathFindTilesChecked;
 static uint8_t _peepPathFindFewestNumSteps;
+
+TileCoordsXYZ gPeepPathFindGoalPosition;
+bool gPeepPathFindIgnoreForeignQueues;
+ride_id_t gPeepPathFindQueueRideIndex;
+
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+// Use to guard calls to log messages
+bool gPathFindDebug = false;
+// Use to put the peep name in the log message
+utf8 gPathFindDebugPeepName[256];
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 static int32_t guest_surface_path_finding(Peep* peep);
 
@@ -242,7 +255,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
             continue;
         if (nextTileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (!is_valid_path_z_and_direction(nextTileElement, loc.z, chosenDirection))
+        if (!IsValidPathZAndDirection(nextTileElement, loc.z, chosenDirection))
             continue;
         if (nextTileElement->AsPath()->IsWide())
             return PATH_SEARCH_WIDE;
@@ -335,7 +348,7 @@ static uint8_t footpath_element_dest_in_dir(
                 }
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                if (!is_valid_path_z_and_direction(tileElement, loc.z, chosenDirection))
+                if (!IsValidPathZAndDirection(tileElement, loc.z, chosenDirection))
                     continue;
                 if (tileElement->AsPath()->IsWide())
                     return PATH_SEARCH_WIDE;
@@ -518,6 +531,42 @@ static int32_t CalculateHeuristicPathingScore(const TileCoordsXYZ& loc1, const T
     return xDelta + yDelta + zDelta;
 }
 
+#if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+static constexpr const char* pathSearchToString(uint8_t pathFindSearchResult)
+{
+    switch (pathFindSearchResult)
+    {
+        case PATH_SEARCH_DEAD_END:
+            return "DeadEnd";
+        case PATH_SEARCH_WIDE:
+            return "Wide";
+        case PATH_SEARCH_THIN:
+            return "Thin";
+        case PATH_SEARCH_JUNCTION:
+            return "Junction";
+        case PATH_SEARCH_RIDE_QUEUE:
+            return "RideQueue";
+        case PATH_SEARCH_RIDE_ENTRANCE:
+            return "RideEntrance";
+        case PATH_SEARCH_RIDE_EXIT:
+            return "RideExit";
+        case PATH_SEARCH_PARK_EXIT:
+            return "ParkEntryExit";
+        case PATH_SEARCH_SHOP_ENTRANCE:
+            return "ShopEntrance";
+        case PATH_SEARCH_LIMIT_REACHED:
+            return "LimitReached";
+        case PATH_SEARCH_OTHER:
+            return "Other";
+        case PATH_SEARCH_FAILED:
+            return "Failed";
+            // The default case is omitted intentionally.
+    }
+
+    return "Unknown";
+}
+#endif
+
 /**
  * Searches for the tile with the best heuristic score within the search limits
  * starting from the given tile x,y,z and going in the given direction test_edge.
@@ -618,14 +667,14 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Return from %d,%d,%d; At start", counter, x >> 5, y >> 5, z);
+            log_info("[%03d] Return from %d,%d,%d; At start", counter, loc.x >> 5, loc.y >> 5, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         return;
     }
 
     bool nextInPatrolArea = inPatrolArea;
-    if (peep->AssignedPeepType == PeepType::Staff && peep->StaffType == STAFF_TYPE_MECHANIC)
+    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Mechanic)
     {
         nextInPatrolArea = peep->AsStaff()->IsLocationInPatrol(loc.ToCoordsXY());
         if (inPatrolArea && !nextInPatrolArea)
@@ -636,7 +685,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Return from %d,%d,%d; Left patrol area", counter, x >> 5, y >> 5, z);
+                log_info("[%03d] Return from %d,%d,%d; Left patrol area", counter, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             return;
@@ -727,7 +776,7 @@ static void peep_pathfind_heuristic_search(
                  * queue path.
                  * Otherwise, peeps walk on path tiles to get to the goal. */
 
-                if (!is_valid_path_z_and_direction(tileElement, loc.z, test_edge))
+                if (!IsValidPathZAndDirection(tileElement, loc.z, test_edge))
                     continue;
 
                 // Path may be sloped, so set z to path base height.
@@ -783,8 +832,8 @@ static void peep_pathfind_heuristic_search(
         if (gPathFindDebug)
         {
             log_info(
-                "[%03d] Checking map element at %d,%d,%d; Type: %s", counter, x >> 5, y >> 5, z,
-                gPathFindSearchText[searchResult]);
+                "[%03d] Checking map element at %d,%d,%d; Type: %s", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                pathSearchToString(searchResult));
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -824,7 +873,9 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", counter, x >> 5, y >> 5, z, new_score);
+                log_info(
+                    "[%03d] Search path ends at %d,%d,%d; At goal; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                    new_score);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -840,7 +891,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Search path ends at %d,%d,%d; Not a path", counter, x >> 5, y >> 5, z);
+                log_info("[%03d] Search path ends at %d,%d,%d; Not a path", counter, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -882,7 +933,9 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", counter, x >> 5, y >> 5, z, new_score);
+                log_info(
+                    "[%03d] Search path ends at %d,%d,%d; Wide path; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                    new_score);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -898,8 +951,8 @@ static void peep_pathfind_heuristic_search(
         if (gPathFindDebug)
         {
             log_info(
-                "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, x >> 5, y >> 5, z, edges & 1,
-                (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
+                "[%03d] Path element at %d,%d,%d; Edges (0123):%d%d%d%d; Reverse: %d", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                edges & 1, (edges & 2) >> 1, (edges & 4) >> 2, (edges & 8) >> 3, test_edge ^ 2);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -915,7 +968,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_info("[%03d] Search path ends at %d,%d,%d; No more edges/dead end", counter, x >> 5, y >> 5, z);
+                log_info("[%03d] Search path ends at %d,%d,%d; No more edges/dead end", counter, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -951,8 +1004,8 @@ static void peep_pathfind_heuristic_search(
             if (gPathFindDebug)
             {
                 log_info(
-                    "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", counter, x >> 5, y >> 5, z,
-                    new_score);
+                    "[%03d] Search path ends at %d,%d,%d; Search limit reached; Score: %d", counter, loc.x >> 5, loc.y >> 5,
+                    loc.z, new_score);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             continue;
@@ -1026,7 +1079,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     if (gPathFindDebug)
                     {
-                        log_info("[%03d] Search path ends at %d,%d,%d; Loop", counter, x >> 5, y >> 5, z);
+                        log_info("[%03d] Search path ends at %d,%d,%d; Loop", counter, loc.x >> 5, loc.y >> 5, loc.z);
                     }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     continue;
@@ -1061,8 +1114,8 @@ static void peep_pathfind_heuristic_search(
                     if (gPathFindDebug)
                     {
                         log_info(
-                            "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, x >> 5, y >> 5, z,
-                            new_score);
+                            "[%03d] Search path ends at %d,%d,%d; NumJunctions < 0; Score: %d", counter, loc.x >> 5, loc.y >> 5,
+                            loc.z, new_score);
                     }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                     continue;
@@ -1098,14 +1151,18 @@ static void peep_pathfind_heuristic_search(
                 {
                     if (thin_junction)
                         log_info(
-                            "[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, x >> 5, y >> 5, z, next_test_edge);
+                            "[%03d] Recurse from %d,%d,%d edge: %d; Thin-Junction", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                            next_test_edge);
                     else
                         log_info(
-                            "[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, x >> 5, y >> 5, z, next_test_edge);
+                            "[%03d] Recurse from %d,%d,%d edge: %d; Wide-Junction", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                            next_test_edge);
                 }
                 else
                 {
-                    log_info("[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, x >> 5, y >> 5, z, next_test_edge);
+                    log_info(
+                        "[%03d] Recurse from %d,%d,%d edge: %d; Segment", counter, loc.x >> 5, loc.y >> 5, loc.z,
+                        next_test_edge);
                 }
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1125,7 +1182,8 @@ static void peep_pathfind_heuristic_search(
             if (gPathFindDebug)
             {
                 log_info(
-                    "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, x >> 5, y >> 5, z, next_test_edge, *endScore);
+                    "[%03d] Returned to %d,%d,%d edge: %d; Score: %d", counter, loc.x >> 5, loc.y >> 5, loc.z, next_test_edge,
+                    *endScore);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         } while ((next_test_edge = bitscanforward(edges)) != -1);
@@ -1139,7 +1197,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Returning from %d,%d,%d; No relevant map element found", counter, x >> 5, y >> 5, z);
+            log_info("[%03d] Returning from %d,%d,%d; No relevant map element found", counter, loc.x >> 5, loc.y >> 5, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
     }
@@ -1148,7 +1206,7 @@ static void peep_pathfind_heuristic_search(
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Returning from %d,%d,%d; All map elements checked", counter, x >> 5, y >> 5, z);
+            log_info("[%03d] Returning from %d,%d,%d; All map elements checked", counter, loc.x >> 5, loc.y >> 5, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
     }
@@ -1400,7 +1458,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
             uint8_t endDirectionList[16] = { 0 };
 
             bool inPatrolArea = false;
-            if (peep->AssignedPeepType == PeepType::Staff && peep->StaffType == STAFF_TYPE_MECHANIC)
+            if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Mechanic)
             {
                 /* Mechanics are the only staff type that
                  * pathfind to a destination. Determine if the
@@ -1411,7 +1469,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug)
             {
-                log_verbose("Pathfind searching in direction: %d from %d,%d,%d", test_edge, x >> 5, y >> 5, z);
+                log_verbose("Pathfind searching in direction: %d from %d,%d,%d", test_edge, loc.x >> 5, loc.y >> 5, loc.z);
             }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -1681,13 +1739,13 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
     gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    pathfind_logging_enable(peep);
+    PathfindLoggingEnable(peep);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
     Direction chosenDirection = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    pathfind_logging_disable();
+    PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
     if (chosenDirection == INVALID_DIRECTION)
@@ -1884,7 +1942,7 @@ static StationIndex guest_pathfinding_select_random_station(
 int32_t guest_path_finding(Guest* peep)
 {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    pathfind_logging_enable(peep);
+    PathfindLoggingEnable(peep);
     if (gPathFindDebug)
     {
         log_info("Starting guest_path_finding for %s", gPathFindDebugPeepName);
@@ -1961,7 +2019,7 @@ int32_t guest_path_finding(Guest* peep)
                 "Completed guest_path_finding for %s - taking only direction available: %d.", gPathFindDebugPeepName,
                 direction);
         }
-        pathfind_logging_disable();
+        PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         return peep_move_one_tile(direction, peep);
     }
@@ -1977,7 +2035,7 @@ int32_t guest_path_finding(Guest* peep)
         {
             log_info("Completed guest_path_finding for %s - peep is outside the park.", gPathFindDebugPeepName);
         }
-        pathfind_logging_disable();
+        PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         switch (peep->State)
         {
@@ -2047,7 +2105,7 @@ int32_t guest_path_finding(Guest* peep)
         {
             log_info("Completed guest_path_finding for %s - peep is leaving the park.", gPathFindDebugPeepName);
         }
-        pathfind_logging_disable();
+        PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         return guest_path_find_park_entrance(peep, edges);
     }
@@ -2059,7 +2117,7 @@ int32_t guest_path_finding(Guest* peep)
         {
             log_info("Completed guest_path_finding for %s - peep is aimless.", gPathFindDebugPeepName);
         }
-        pathfind_logging_disable();
+        PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         return guest_path_find_aimless(peep, edges);
     }
@@ -2075,7 +2133,7 @@ int32_t guest_path_finding(Guest* peep)
             log_info(
                 "Completed guest_path_finding for %s - peep is heading to closed ride == aimless.", gPathFindDebugPeepName);
         }
-        pathfind_logging_disable();
+        PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         return guest_path_find_aimless(peep, edges);
     }
@@ -2151,14 +2209,14 @@ int32_t guest_path_finding(Guest* peep)
          * This lets the heuristic search "try again" in case the player has
          * edited the path layout or the mechanic was already stuck in the
          * save game (e.g. with a worse version of the pathfinding). */
-        peep_reset_pathfind_goal(peep);
+        peep->ResetPathfindGoal();
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (gPathFindDebug)
         {
             log_info("Completed guest_path_finding for %s - failed to choose a direction == aimless.", gPathFindDebugPeepName);
         }
-        pathfind_logging_disable();
+        PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
         return guest_path_find_aimless(peep, edges);
@@ -2168,7 +2226,85 @@ int32_t guest_path_finding(Guest* peep)
     {
         log_info("Completed guest_path_finding for %s - direction chosen: %d.", gPathFindDebugPeepName, direction);
     }
-    pathfind_logging_disable();
+    PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     return peep_move_one_tile(direction, peep);
 }
+
+bool IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_t currentDirection)
+{
+    if (tileElement->AsPath()->IsSloped())
+    {
+        int32_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
+        if (slopeDirection == currentDirection)
+        {
+            if (currentZ != tileElement->base_height)
+                return false;
+        }
+        else
+        {
+            slopeDirection = direction_reverse(slopeDirection);
+            if (slopeDirection != currentDirection)
+                return false;
+            if (currentZ != tileElement->base_height + 2)
+                return false;
+        }
+    }
+    else
+    {
+        if (currentZ != tileElement->base_height)
+            return false;
+    }
+    return true;
+}
+
+/**
+ *
+ *  rct2: 0x0069A98C
+ */
+void Peep::ResetPathfindGoal()
+{
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+    if (gPathFindDebug)
+    {
+        log_info("Resetting PathfindGoal for %s", gPathFindDebugPeepName);
+    }
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+    PathfindGoal.x = 0xFF;
+    PathfindGoal.y = 0xFF;
+    PathfindGoal.z = 0xFF;
+    PathfindGoal.direction = INVALID_DIRECTION;
+}
+
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+void PathfindLoggingEnable([[maybe_unused]] Peep* peep)
+{
+#    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+    /* Determine if the pathfinding debugging is wanted for this peep. */
+    format_string(gPathFindDebugPeepName, sizeof(gPathFindDebugPeepName), peep->name_string_idx, &(peep->Id));
+
+    /* For guests, use the existing PEEP_FLAGS_TRACKING flag to
+     * determine for which guest(s) the pathfinding debugging will
+     * be output for. */
+    if (peep->type == PEEP_TYPE_GUEST)
+    {
+        gPathFindDebug = peep->PeepFlags & PEEP_FLAGS_TRACKING;
+    }
+    /* For staff, there is no tracking button (any other similar
+     * suitable existing mechanism?), so fall back to a crude
+     * string comparison with a compile time hardcoded name. */
+    else
+    {
+        gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
+    }
+#    endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+}
+
+void PathfindLoggingDisable()
+{
+#    if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+    gPathFindDebug = false;
+#    endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
+}
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

@@ -1015,7 +1015,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         descriptor.corner_heights.left = baseHeight + ch.left;
     }
 
-    if ((session->ViewFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0))
+    if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_LAND_HEIGHTS))
     {
         const int16_t x = session->MapPosition.x;
         const int16_t y = session->MapPosition.y;
@@ -1095,11 +1095,11 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
                 {
                     patrolColour = COLOUR_GREY;
                 }
-                staffType = staff->StaffType;
+                staffType = static_cast<uint8_t>(staff->AssignedStaffType);
             }
         }
 
-        if (staff_is_patrol_area_set_for_type(static_cast<STAFF_TYPE>(staffType), session->MapPosition))
+        if (staff_is_patrol_area_set_for_type(static_cast<StaffType>(staffType), session->MapPosition))
         {
             assert(surfaceShape < std::size(byte_97B444));
 
