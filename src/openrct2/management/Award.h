@@ -17,7 +17,8 @@ struct Award
     uint16_t Type;
 };
 
-enum class ParkAward : uint8_t {
+enum class ParkAward : uint8_t
+{
     MostUntidy,
     MostTidy,
     BestRollercoasters, // BestRollercoasters or BestRollerCoasters?
