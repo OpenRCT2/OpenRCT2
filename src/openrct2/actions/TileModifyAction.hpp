@@ -35,6 +35,7 @@ enum class TileModifyType : uint8_t
     TrackSetChainBlock,
     TrackSetBlockBrake,
     TrackSetIndestructible,
+    TrackSetSpeed,
     ScenerySetQuarterLocation,
     ScenerySetQuarterCollision,
     BannerToggleBlockingEdge,
@@ -95,6 +96,7 @@ private:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_LAND_NOT_OWNED_BY_PARK);
         }
         auto res = MakeResult();
+
         switch (static_cast<TileModifyType>(_setting))
         {
             case TileModifyType::AnyRemove:
@@ -218,6 +220,16 @@ private:
                 res = tile_inspector_track_set_chain(_loc, elementIndex, false, setChain, isExecuting);
                 break;
             }
+            case TileModifyType::TrackSetSpeed:
+            {
+                const auto elementIndex = _value1;
+                uint8_t speed = 0xFF;
+                if (_value2 <= 0xFF)
+                    speed = static_cast<uint8_t>(_value2);
+                res = tile_inspector_track_set_speed(_loc, elementIndex, speed, isExecuting);
+                break;
+            }
+
             case TileModifyType::TrackSetBlockBrake:
             {
                 const auto elementIndex = _value1;

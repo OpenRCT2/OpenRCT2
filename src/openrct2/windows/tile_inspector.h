@@ -30,3 +30,4 @@ extern uint32_t windowTileInspectorTileX;
 extern uint32_t windowTileInspectorTileY;
 extern int32_t windowTileInspectorElementCount;
 extern int32_t windowTileInspectorSelectedIndex;
+extern uint8_t windowTileInspectorTrackSpeed;

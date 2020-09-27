@@ -35,6 +35,7 @@ uint32_t windowTileInspectorTileX;
 uint32_t windowTileInspectorTileY;
 int32_t windowTileInspectorElementCount = 0;
 int32_t windowTileInspectorSelectedIndex;
+uint8_t windowTileInspectorTrackSpeed;
 
 static bool map_swap_elements_at(const CoordsXY& loc, int16_t first, int16_t second)
 {
@@ -1053,6 +1054,30 @@ GameActionResult::Ptr tile_inspector_track_set_block_brake(
     if (isExecuting)
     {
         trackElement->AsTrack()->SetBlockBrakeClosed(blockBrake);
+
+        map_invalidate_tile_full(loc);
+
+        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
+        if (tileInspectorWindow != nullptr && static_cast<uint32_t>(loc.x / 32) == windowTileInspectorTileX
+            && static_cast<uint32_t>(loc.y / 32) == windowTileInspectorTileY)
+        {
+            tileInspectorWindow->Invalidate();
+        }
+    }
+
+    return std::make_unique<GameActionResult>();
+}
+
+GameActionResult::Ptr tile_inspector_track_set_speed(const CoordsXY& loc, int32_t elementIndex, uint8_t speed, bool isExecuting)
+{
+    TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
+
+    if (trackElement == nullptr || trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+
+    if (isExecuting)
+    {
+        trackElement->AsTrack()->SetBrakeBoosterSpeed(speed);
 
         map_invalidate_tile_full(loc);
 

@@ -5,6 +5,7 @@
 - Feature: [#12708] Add plugin-accessible names to all game actions.
 - Feature: [#12712] Add TCP / socket plugin APIs.
 - Feature: [#12840] Add Park.entranceFee to the plugin API.
+- Feature: [#12842] Add Booster and Brake speed settings via Tile Inspector.
 - Feature: [#12884] Add BaseTileElement.occupiedQuadrants to the plugin API.
 - Feature: [#12885] Add SmallSceneryElement.quadrant to the plugin API.
 - Feature: [#12886] Make all scenery placement and remove actions available to the plugin API.

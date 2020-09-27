@@ -56,6 +56,7 @@ GameActionResultPtr tile_inspector_track_set_indestructible(
     const CoordsXY& loc, int32_t elementIndex, bool isIndestructible, bool isExecuting);
 GameActionResultPtr tile_inspector_track_set_chain(
     const CoordsXY& loc, int32_t elementIndex, bool entireTrackBlock, bool setChain, bool isExecuting);
+GameActionResultPtr tile_inspector_track_set_speed(const CoordsXY& loc, int32_t elementIndex, uint8_t speed, bool isExecuting);
 GameActionResultPtr tile_inspector_scenery_set_quarter_location(
     const CoordsXY& loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting);
 GameActionResultPtr tile_inspector_scenery_set_quarter_collision(
