@@ -405,7 +405,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ft.Add<rct_string_id>(STR_ACTION_NA);
     }
-    DrawTextEllipsised(dpi, screenCoords, width, STR_LAST_ACTION_RAN, ft, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, screenCoords, width, STR_LAST_ACTION_RAN, ft, COLOUR_BLACK, TextAlignment::CENTRE);
 
     if (w->viewport != nullptr && w->var_492 != -1)
     {
