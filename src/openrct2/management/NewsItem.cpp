@@ -310,28 +310,6 @@ News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, u
     return News::AddItemToQueue(type, buffer, assoc);
 }
 
-/**
- * Checks if News::ItemType requires an assoc
- * @return A boolean if assoc is required.
- */
-
-bool News::CheckIfItemRequiresAssoc(News::ItemType type)
-{
-    switch (type)
-    {
-        case News::ItemType::Null:
-            return false;
-        case News::ItemType::Award:
-            return false;
-        case News::ItemType::Money:
-            return false;
-        case News::ItemType::Graph:
-            return false;
-        default:
-            return true; // Everything else requires assoc
-    }
-}
-
 News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc)
 {
     News::Item* newsItem = gNewsItems.FirstOpenOrNewSlot();
@@ -344,6 +322,25 @@ News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t
     safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
 
     return newsItem;
+}
+
+/**
+ * Checks if News::ItemType requires an assoc
+ * @return A boolean if assoc is required.
+ */
+
+bool News::CheckIfItemRequiresAssoc(News::ItemType type)
+{
+    switch (type)
+    {
+        case News::ItemType::Null:
+        case News::ItemType::Award:
+        case News::ItemType::Money:
+        case News::ItemType::Graph:
+            return false;
+        default:
+            return true; // Everything else requires assoc
+    }
 }
 
 /**
