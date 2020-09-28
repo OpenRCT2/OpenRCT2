@@ -921,9 +921,14 @@ public:
     bool IsMechanic() const;
     bool IsPatrolAreaSet(const CoordsXY& coords) const;
     bool IsLocationInPatrol(const CoordsXY& loc) const;
+    bool IsLocationOnPatrolEdge(const CoordsXY& loc) const;
     bool DoPathFinding();
     uint8_t GetCostume() const;
     void SetCostume(uint8_t value);
+
+    bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
+
+    static void ResetStats();
 
 private:
     void UpdatePatrolling();
@@ -933,18 +938,18 @@ private:
     void UpdateWatering();
     void UpdateAnswering();
     void UpdateFixing(int32_t steps);
-    bool UpdateFixingEnterStation(Ride* ride);
-    bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride);
-    bool UpdateFixingFixVehicle(bool firstRun, Ride* ride);
-    bool UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride);
-    bool UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride);
+    bool UpdateFixingEnterStation(Ride* ride) const;
+    bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride);
+    bool UpdateFixingFixVehicle(bool firstRun, const Ride* ride);
+    bool UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride* ride);
+    bool UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride);
     bool UpdateFixingFixStationEnd(bool firstRun);
-    bool UpdateFixingMoveToStationStart(bool firstRun, Ride* ride);
-    bool UpdateFixingFixStationStart(bool firstRun, Ride* ride);
+    bool UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride);
+    bool UpdateFixingFixStationStart(bool firstRun, const Ride* ride);
     bool UpdateFixingFixStationBrakes(bool firstRun, Ride* ride);
-    bool UpdateFixingMoveToStationExit(bool firstRun, Ride* ride);
+    bool UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride);
     bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride);
-    bool UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride);
+    bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride);
     void UpdateRideInspected(ride_id_t rideIndex);
     void UpdateHeadingToInspect();
 
@@ -953,9 +958,22 @@ private:
     bool DoEntertainerPathFinding();
     bool DoMiscPathFinding();
 
-    int32_t HandymanDirectionRandSurface(uint8_t validDirections);
+    Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
     void EntertainerUpdateNearbyPeeps() const;
+
+    uint8_t GetValidPatrolDirections(const CoordsXY& loc) const;
+    Direction HandymanDirectionToNearestLitter() const;
+    uint8_t HandymanDirectionToUncutGrass(uint8_t valid_directions) const;
+    Direction DirectionSurface(Direction initialDirection) const;
+    Direction DirectionPath(uint8_t validDirections, PathElement* pathElement) const;
+    Direction MechanicDirectionSurface() const;
+    Direction MechanicDirectionPathRand(uint8_t pathDirections) const;
+    Direction MechanicDirectionPath(uint8_t validDirections, PathElement* pathElement);
+    bool UpdatePatrollingFindWatering();
+    bool UpdatePatrollingFindBin();
+    bool UpdatePatrollingFindSweeping();
+    bool UpdatePatrollingFindGrass();
 };
 
 static_assert(sizeof(Peep) <= 512);

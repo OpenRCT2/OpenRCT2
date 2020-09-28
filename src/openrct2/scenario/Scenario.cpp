@@ -155,7 +155,7 @@ void scenario_begin()
     duck_remove_all();
     park_calculate_size();
     map_count_remaining_land_rights();
-    staff_reset_stats();
+    Staff::ResetStats();
     gLastEntranceStyle = 0;
     gMarketingCampaigns.clear();
     gParkRatingCasualtyPenalty = 0;
