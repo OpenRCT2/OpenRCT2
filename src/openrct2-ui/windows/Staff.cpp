@@ -153,100 +153,48 @@ static void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 void window_staff_set_colours();
 
 // 0x992AEC
-static rct_window_event_list window_staff_overview_events = {
-    window_staff_overview_close,
-    window_staff_overview_mouseup,
-    window_staff_overview_resize,
-    window_staff_overview_mousedown,
-    window_staff_overview_dropdown,
-    nullptr,
-    window_staff_overview_update,
-    nullptr,
-    nullptr,
-    window_staff_overview_tool_update,
-    window_staff_overview_tool_down,
-    window_staff_overview_tool_drag,
-    window_staff_overview_tool_up,
-    window_staff_overview_tool_abort,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_overview_text_input,
-    window_staff_overview_viewport_rotate,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_overview_invalidate, //Invalidate
-    window_staff_overview_paint, //Paint
-    nullptr
-};
+static rct_window_event_list window_staff_overview_events([](auto& events)
+{
+    events.close = &window_staff_overview_close;
+    events.mouse_up = &window_staff_overview_mouseup;
+    events.resize = &window_staff_overview_resize;
+    events.mouse_down = &window_staff_overview_mousedown;
+    events.dropdown = &window_staff_overview_dropdown;
+    events.update = &window_staff_overview_update;
+    events.tool_update = &window_staff_overview_tool_update;
+    events.tool_down = &window_staff_overview_tool_down;
+    events.tool_drag = &window_staff_overview_tool_drag;
+    events.tool_up = &window_staff_overview_tool_up;
+    events.tool_abort = &window_staff_overview_tool_abort;
+    events.text_input = &window_staff_overview_text_input;
+    events.viewport_rotate = &window_staff_overview_viewport_rotate;
+    events.invalidate = &window_staff_overview_invalidate;
+    events.paint = &window_staff_overview_paint;
+});
 
 // 0x992B5C
-static rct_window_event_list window_staff_options_events = {
-    nullptr,
-    window_staff_options_mouseup,
-    window_staff_stats_resize,
-    window_staff_options_mousedown,
-    window_staff_options_dropdown,
-    window_staff_unknown_05,
-    window_staff_options_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_options_invalidate, //Invalidate
-    window_staff_options_paint, //Paint
-    nullptr
-};
+static rct_window_event_list window_staff_options_events([](auto& events)
+{
+    events.mouse_up = &window_staff_options_mouseup;
+    events.resize = &window_staff_stats_resize;
+    events.mouse_down = &window_staff_options_mousedown;
+    events.dropdown = &window_staff_options_dropdown;
+    events.unknown_05 = &window_staff_unknown_05;
+    events.update = &window_staff_options_update;
+    events.invalidate = &window_staff_options_invalidate;
+    events.paint = &window_staff_options_paint;
+});
 
 // 0x992BCC
-static rct_window_event_list window_staff_stats_events = {
-    nullptr,
-    window_staff_stats_mouseup,
-    window_staff_stats_resize,
-    nullptr,
-    nullptr,
-    window_staff_unknown_05,
-    window_staff_stats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_stats_invalidate, //Invalidate
-    window_staff_stats_paint, //Paint
-    nullptr
-};
+static rct_window_event_list window_staff_stats_events([](auto& events)
+{
+    events.mouse_up = &window_staff_stats_mouseup;
+    events.resize = &window_staff_stats_resize;
+    events.unknown_05 = &window_staff_unknown_05;
+    events.update = &window_staff_stats_update;
+    events.invalidate = &window_staff_stats_invalidate;
+    events.paint = &window_staff_stats_paint;
+});
 
 static rct_window_event_list *window_staff_page_events[] = {
     &window_staff_overview_events,

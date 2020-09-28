@@ -61,36 +61,20 @@ static void window_land_rights_toolabort(rct_window *w, rct_widgetindex widgetIn
 static bool land_rights_tool_is_active();
 
 
-static rct_window_event_list window_land_rights_events = {
-    window_land_rights_close,
-    window_land_rights_mouseup,
-    nullptr,
-    window_land_rights_mousedown,
-    nullptr,
-    nullptr,
-    window_land_rights_update,
-    nullptr,
-    nullptr,
-    window_land_rights_toolupdate,
-    window_land_rights_tooldown,
-    window_land_rights_tooldrag,
-    nullptr,
-    window_land_rights_toolabort,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_land_rights_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_land_rights_invalidate,
-    window_land_rights_paint,
-    nullptr
-};
+static rct_window_event_list window_land_rights_events([](auto& events)
+{
+    events.close = &window_land_rights_close;
+    events.mouse_up = &window_land_rights_mouseup;
+    events.mouse_down = &window_land_rights_mousedown;
+    events.update = &window_land_rights_update;
+    events.tool_update = &window_land_rights_toolupdate;
+    events.tool_down = &window_land_rights_tooldown;
+    events.tool_drag = &window_land_rights_tooldrag;
+    events.tool_abort = &window_land_rights_toolabort;
+    events.text_input = &window_land_rights_textinput;
+    events.invalidate = &window_land_rights_invalidate;
+    events.paint = &window_land_rights_paint;
+});
 // clang-format on
 
 constexpr uint8_t LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS = 0;

@@ -91,37 +91,19 @@ static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_loadsave_events =
+static rct_window_event_list window_loadsave_events([](auto& events)
 {
-    window_loadsave_close,
-    window_loadsave_mouseup,
-    window_loadsave_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_loadsave_scrollgetsize,
-    window_loadsave_scrollmousedown,
-    nullptr,
-    window_loadsave_scrollmouseover,
-    window_loadsave_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_loadsave_invalidate,
-    window_loadsave_paint,
-    window_loadsave_scrollpaint
-};
+    events.close = &window_loadsave_close;
+    events.mouse_up = &window_loadsave_mouseup;
+    events.resize = &window_loadsave_resize;
+    events.get_scroll_size = &window_loadsave_scrollgetsize;
+    events.scroll_mousedown = &window_loadsave_scrollmousedown;
+    events.scroll_mouseover = &window_loadsave_scrollmouseover;
+    events.text_input = &window_loadsave_textinput;
+    events.invalidate = &window_loadsave_invalidate;
+    events.paint = &window_loadsave_paint;
+    events.scroll_paint = &window_loadsave_scrollpaint;
+});
 // clang-format on
 
 #pragma endregion
@@ -1159,36 +1141,10 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_overwrite_prompt_events = {
-    nullptr,
-    window_overwrite_prompt_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_overwrite_prompt_paint,
-    nullptr,
-};
+static rct_window_event_list window_overwrite_prompt_events([](auto& events) {
+    events.mouse_up = &window_overwrite_prompt_mouseup;
+    events.paint = &window_overwrite_prompt_paint;
+});
 
 static char _window_overwrite_prompt_name[256];
 static char _window_overwrite_prompt_path[MAX_PATH];

@@ -96,36 +96,18 @@ static void window_maze_construction_invalidate(rct_window *w);
 static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x993F6C
-static rct_window_event_list window_maze_construction_events = {
-    window_maze_construction_close,
-    window_maze_construction_mouseup,
-    window_maze_construction_resize,
-    window_maze_construction_mousedown,
-    nullptr,
-    nullptr,
-    window_maze_construction_update,
-    nullptr,
-    nullptr,
-    window_maze_construction_toolupdate,
-    window_maze_construction_tooldown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_maze_construction_invalidate,
-    window_maze_construction_paint,
-    nullptr
-};
+static rct_window_event_list window_maze_construction_events([](auto& events)
+{
+    events.close = &window_maze_construction_close;
+    events.mouse_up = &window_maze_construction_mouseup;
+    events.resize = &window_maze_construction_resize;
+    events.mouse_down = &window_maze_construction_mousedown;
+    events.update = &window_maze_construction_update;
+    events.tool_update = &window_maze_construction_toolupdate;
+    events.tool_down = &window_maze_construction_tooldown;
+    events.invalidate = &window_maze_construction_invalidate;
+    events.paint = &window_maze_construction_paint;
+});
 // clang-format on
 
 #pragma endregion

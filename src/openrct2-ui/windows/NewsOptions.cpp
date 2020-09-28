@@ -88,36 +88,13 @@ static void window_news_options_update(rct_window *w);
 static void window_news_options_invalidate(rct_window *w);
 static void window_news_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_news_options_events = {
-    nullptr,
-    window_news_options_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_options_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_options_invalidate,
-    window_news_options_paint,
-    nullptr
-};
+static rct_window_event_list window_news_options_events([](auto& events)
+{
+    events.mouse_up = &window_news_options_mouseup;
+    events.update = &window_news_options_update;
+    events.invalidate = &window_news_options_invalidate;
+    events.paint = &window_news_options_paint;
+});
 // clang-format on
 
 static void window_news_options_set_page(rct_window* w, int32_t page);

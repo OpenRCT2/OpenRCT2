@@ -161,129 +161,52 @@ static void window_multiplayer_options_update(rct_window *w);
 static void window_multiplayer_options_invalidate(rct_window *w);
 static void window_multiplayer_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_multiplayer_information_events = {
-    nullptr,
-    window_multiplayer_information_mouseup,
-    window_multiplayer_information_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_multiplayer_information_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_multiplayer_information_invalidate,
-    window_multiplayer_information_paint,
-    nullptr
-};
+static rct_window_event_list window_multiplayer_information_events([](auto& events)
+{
+    events.mouse_up = &window_multiplayer_information_mouseup;
+    events.resize = &window_multiplayer_information_resize;
+    events.update = &window_multiplayer_information_update;
+    events.invalidate = &window_multiplayer_information_invalidate;
+    events.paint = &window_multiplayer_information_paint;
+});
 
-static rct_window_event_list window_multiplayer_players_events = {
-    nullptr,
-    window_multiplayer_players_mouseup,
-    window_multiplayer_players_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_multiplayer_players_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_multiplayer_players_scrollgetsize,
-    window_multiplayer_players_scrollmousedown,
-    nullptr,
-    window_multiplayer_players_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_multiplayer_players_invalidate,
-    window_multiplayer_players_paint,
-    window_multiplayer_players_scrollpaint
-};
+static rct_window_event_list window_multiplayer_players_events([](auto& events)
+{
+    events.mouse_up = &window_multiplayer_players_mouseup;
+    events.resize = &window_multiplayer_players_resize;
+    events.update = &window_multiplayer_players_update;
+    events.get_scroll_size = &window_multiplayer_players_scrollgetsize;
+    events.scroll_mousedown = &window_multiplayer_players_scrollmousedown;
+    events.scroll_mouseover = &window_multiplayer_players_scrollmouseover;
+    events.invalidate = &window_multiplayer_players_invalidate;
+    events.paint = &window_multiplayer_players_paint;
+    events.scroll_paint = &window_multiplayer_players_scrollpaint;
+});
 
-static rct_window_event_list window_multiplayer_groups_events = {
-    nullptr,
-    window_multiplayer_groups_mouseup,
-    window_multiplayer_groups_resize,
-    window_multiplayer_groups_mousedown,
-    window_multiplayer_groups_dropdown,
-    nullptr,
-    window_multiplayer_groups_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_multiplayer_groups_scrollgetsize,
-    window_multiplayer_groups_scrollmousedown,
-    nullptr,
-    window_multiplayer_groups_scrollmouseover,
-    window_multiplayer_groups_text_input,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_multiplayer_groups_invalidate,
-    window_multiplayer_groups_paint,
-    window_multiplayer_groups_scrollpaint
-};
+static rct_window_event_list window_multiplayer_groups_events([](auto& events)
+{
+    events.mouse_up = &window_multiplayer_groups_mouseup;
+    events.resize = &window_multiplayer_groups_resize;
+    events.mouse_down = &window_multiplayer_groups_mousedown;
+    events.dropdown = &window_multiplayer_groups_dropdown;
+    events.update = &window_multiplayer_groups_update;
+    events.get_scroll_size = &window_multiplayer_groups_scrollgetsize;
+    events.scroll_mousedown = &window_multiplayer_groups_scrollmousedown;
+    events.scroll_mouseover = &window_multiplayer_groups_scrollmouseover;
+    events.text_input = &window_multiplayer_groups_text_input;
+    events.invalidate = &window_multiplayer_groups_invalidate;
+    events.paint = &window_multiplayer_groups_paint;
+    events.scroll_paint = &window_multiplayer_groups_scrollpaint;
+});
 
-static rct_window_event_list window_multiplayer_options_events = {
-    nullptr,
-    window_multiplayer_options_mouseup,
-    window_multiplayer_options_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_multiplayer_options_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_multiplayer_options_invalidate,
-    window_multiplayer_options_paint,
-    nullptr
-};
+static rct_window_event_list window_multiplayer_options_events([](auto& events)
+{
+    events.mouse_up = &window_multiplayer_options_mouseup;
+    events.resize = &window_multiplayer_options_resize;
+    events.update = &window_multiplayer_options_update;
+    events.invalidate = &window_multiplayer_options_invalidate;
+    events.paint = &window_multiplayer_options_paint;
+});
 
 static rct_window_event_list *window_multiplayer_page_events[] = {
     &window_multiplayer_information_events,

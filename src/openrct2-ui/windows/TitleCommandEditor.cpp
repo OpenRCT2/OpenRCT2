@@ -122,36 +122,18 @@ static TITLE_COMMAND_ORDER get_command_info(int32_t index);
 static TileCoordsXY get_location();
 static uint8_t get_zoom();
 
-static rct_window_event_list window_title_command_editor_events = {
-    window_title_command_editor_close,
-    window_title_command_editor_mouseup,
-    nullptr,
-    window_title_command_editor_mousedown,
-    window_title_command_editor_dropdown,
-    nullptr,
-    window_title_command_editor_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_title_command_editor_tool_down,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_title_command_editor_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_title_command_editor_invalidate,
-    window_title_command_editor_paint,
-    nullptr
-};
+static rct_window_event_list window_title_command_editor_events([](auto& events)
+{
+    events.close = &window_title_command_editor_close;
+    events.mouse_up = &window_title_command_editor_mouseup;
+    events.mouse_down = &window_title_command_editor_mousedown;
+    events.dropdown = &window_title_command_editor_dropdown;
+    events.update = &window_title_command_editor_update;
+    events.tool_down = &window_title_command_editor_tool_down;
+    events.text_input = &window_title_command_editor_textinput;
+    events.invalidate = &window_title_command_editor_invalidate;
+    events.paint = &window_title_command_editor_paint;
+});
 // clang-format on
 
 static void scenario_select_callback(const utf8* path)

@@ -295,36 +295,17 @@ static void window_object_load_error_download_all(rct_window* w);
 static void window_object_load_error_update_list(rct_window* w);
 #endif
 
-static rct_window_event_list window_object_load_error_events = {
-    window_object_load_error_close,
-    window_object_load_error_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_object_load_error_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_object_load_error_scrollgetsize,
-    window_object_load_error_scrollmousedown,
-    nullptr,
-    window_object_load_error_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_object_load_error_paint,
-    window_object_load_error_scrollpaint
-};
+static rct_window_event_list window_object_load_error_events([](auto& events)
+{
+    events.close = &window_object_load_error_close;
+    events.mouse_up = &window_object_load_error_mouseup;
+    events.update = &window_object_load_error_update;
+    events.get_scroll_size = &window_object_load_error_scrollgetsize;
+    events.scroll_mousedown = &window_object_load_error_scrollmousedown;
+    events.scroll_mouseover = &window_object_load_error_scrollmouseover;
+    events.paint = &window_object_load_error_paint;
+    events.scroll_paint = &window_object_load_error_scrollpaint;
+});
 // clang-format on
 
 static std::vector<rct_object_entry> _invalid_entries;

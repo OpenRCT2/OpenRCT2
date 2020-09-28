@@ -102,36 +102,21 @@ static void window_guest_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 static void window_guest_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_guest_list_events = {
-    nullptr,
-    window_guest_list_mouseup,
-    window_guest_list_resize,
-    window_guest_list_mousedown,
-    window_guest_list_dropdown,
-    nullptr,
-    window_guest_list_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_list_scrollgetsize,
-    window_guest_list_scrollmousedown,
-    nullptr,
-    window_guest_list_scrollmouseover,
-    window_guest_list_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_list_invalidate,
-    window_guest_list_paint,
-    window_guest_list_scrollpaint
-};
+static rct_window_event_list window_guest_list_events([](auto& events)
+{
+    events.mouse_up = &window_guest_list_mouseup;
+    events.resize = &window_guest_list_resize;
+    events.mouse_down = &window_guest_list_mousedown;
+    events.dropdown = &window_guest_list_dropdown;
+    events.update = &window_guest_list_update;
+    events.get_scroll_size = &window_guest_list_scrollgetsize;
+    events.scroll_mousedown = &window_guest_list_scrollmousedown;
+    events.scroll_mouseover = &window_guest_list_scrollmouseover;
+    events.text_input = &window_guest_list_textinput;
+    events.invalidate = &window_guest_list_invalidate;
+    events.paint = &window_guest_list_paint;
+    events.scroll_paint = &window_guest_list_scrollpaint;
+});
 // clang-format on
 
 struct FilterArguments

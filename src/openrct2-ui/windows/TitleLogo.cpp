@@ -31,36 +31,11 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
 static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
-static rct_window_event_list window_title_logo_events = {
-    nullptr,
-    window_title_menu_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_title_logo_paint,
-    nullptr
-};
+static rct_window_event_list window_title_logo_events([](auto& events)
+{
+    events.mouse_up = &window_title_menu_mouseup;
+    events.paint = &window_title_logo_paint;
+});
 // clang-format on
 
 /**

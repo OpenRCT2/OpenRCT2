@@ -434,36 +434,17 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_options_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid);
 
-static rct_window_event_list window_options_events = {
-    nullptr,
-    window_options_mouseup,
-    nullptr,
-    window_options_mousedown,
-    window_options_dropdown,
-    nullptr,
-    window_options_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_options_scrollgetsize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_options_tooltip,
-    nullptr,
-    nullptr,
-    window_options_invalidate,
-    window_options_paint,
-    nullptr
-};
+static rct_window_event_list window_options_events([](auto& events)
+{
+    events.mouse_up = &window_options_mouseup;
+    events.mouse_down = &window_options_mousedown;
+    events.dropdown = &window_options_dropdown;
+    events.update = &window_options_update;
+    events.get_scroll_size = &window_options_scrollgetsize;
+    events.tooltip = &window_options_tooltip;
+    events.invalidate = &window_options_invalidate;
+    events.paint = &window_options_paint;
+});
 
 #pragma endregion
 

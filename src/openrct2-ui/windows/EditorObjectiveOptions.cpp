@@ -140,68 +140,31 @@ static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawp
 static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 // 0x009A9DF4
-static rct_window_event_list window_objective_options_main_events = {
-    nullptr,
-    window_editor_objective_options_main_mouseup,
-    window_editor_objective_options_main_resize,
-    window_editor_objective_options_main_mousedown,
-    window_editor_objective_options_main_dropdown,
-    nullptr,
-    window_editor_objective_options_main_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_main_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_main_invalidate,
-    window_editor_objective_options_main_paint,
-    nullptr
-};
+static rct_window_event_list window_objective_options_main_events([](auto& events)
+{
+    events.mouse_up = &window_editor_objective_options_main_mouseup;
+    events.resize = &window_editor_objective_options_main_resize;
+    events.mouse_down = &window_editor_objective_options_main_mousedown;
+    events.dropdown = &window_editor_objective_options_main_dropdown;
+    events.update = &window_editor_objective_options_main_update;
+    events.text_input = &window_editor_objective_options_main_textinput;
+    events.invalidate = &window_editor_objective_options_main_invalidate;
+    events.paint = &window_editor_objective_options_main_paint;
+});
 
 // 0x009A9F58
-static rct_window_event_list window_objective_options_rides_events = {
-    nullptr,
-    window_editor_objective_options_rides_mouseup,
-    window_editor_objective_options_rides_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_rides_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_rides_scrollgetheight,
-    window_editor_objective_options_rides_scrollmousedown,
-    nullptr,
-    window_editor_objective_options_rides_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_rides_invalidate,
-    window_editor_objective_options_rides_paint,
-    window_editor_objective_options_rides_scrollpaint
-};
+static rct_window_event_list window_objective_options_rides_events([](auto& events)
+{
+    events.mouse_up = &window_editor_objective_options_rides_mouseup;
+    events.resize = &window_editor_objective_options_rides_resize;
+    events.update = &window_editor_objective_options_rides_update;
+    events.get_scroll_size = &window_editor_objective_options_rides_scrollgetheight;
+    events.scroll_mousedown = &window_editor_objective_options_rides_scrollmousedown;
+    events.scroll_mouseover = &window_editor_objective_options_rides_scrollmouseover;
+    events.invalidate = &window_editor_objective_options_rides_invalidate;
+    events.paint = &window_editor_objective_options_rides_paint;
+    events.scroll_paint = &window_editor_objective_options_rides_scrollpaint;
+});
 
 static rct_window_event_list *window_editor_objective_options_page_events[] = {
     &window_objective_options_main_events,

@@ -333,133 +333,41 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_cheats_set_page(rct_window *w, int32_t page);
 static void window_cheats_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_cheats_money_events =
+static rct_window_event_list window_cheats_money_events([](auto& events)
 {
-    nullptr,
-    window_cheats_money_mouseup,
-    nullptr,
-    window_cheats_money_mousedown,
-    nullptr,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_text_input,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_money_mouseup;
+    events.mouse_down = &window_cheats_money_mousedown;
+    events.update = &window_cheats_update;
+    events.text_input = &window_cheats_text_input;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-static rct_window_event_list window_cheats_guests_events =
+static rct_window_event_list window_cheats_guests_events([](auto& events)
 {
-    nullptr,
-    window_cheats_guests_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_guests_mouseup;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-static rct_window_event_list window_cheats_misc_events =
+static rct_window_event_list window_cheats_misc_events([](auto& events)
 {
-    nullptr,
-    window_cheats_misc_mouseup,
-    nullptr,
-    window_cheats_misc_mousedown,
-    window_cheats_misc_dropdown,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_misc_mouseup;
+    events.mouse_down = &window_cheats_misc_mousedown;
+    events.dropdown = &window_cheats_misc_dropdown;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-static rct_window_event_list window_cheats_rides_events =
+static rct_window_event_list window_cheats_rides_events([](auto& events)
 {
-    nullptr,
-    window_cheats_rides_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_rides_mouseup;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
 
 static rct_window_event_list *window_cheats_page_events[] =

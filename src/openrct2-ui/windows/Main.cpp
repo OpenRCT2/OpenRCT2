@@ -23,36 +23,10 @@ static rct_widget window_main_widgets[] = {
 
 void window_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_main_events = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_main_paint,
-    nullptr
-};
+static rct_window_event_list window_main_events([](auto& events)
+{
+    events.paint = &window_main_paint;
+});
 // clang-format on
 
 /**

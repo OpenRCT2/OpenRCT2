@@ -213,202 +213,63 @@ static void window_finances_research_invalidate(rct_window *w);
 static void window_finances_research_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x00988EB8
-static rct_window_event_list _windowFinancesSummaryEvents =
+static rct_window_event_list _windowFinancesSummaryEvents([](auto& events)
 {
-    nullptr,
-    window_finances_summary_mouseup,
-    nullptr,
-    window_finances_summary_mousedown,
-    nullptr,
-    nullptr,
-    window_finances_summary_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_summary_scrollgetsize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_summary_invalidate,
-    window_finances_summary_paint,
-    window_finances_summary_scrollpaint
-};
+    events.mouse_up = &window_finances_summary_mouseup;
+    events.mouse_down = &window_finances_summary_mousedown;
+    events.update = &window_finances_summary_update;
+    events.get_scroll_size = &window_finances_summary_scrollgetsize;
+    events.invalidate = &window_finances_summary_invalidate;
+    events.paint = &window_finances_summary_paint;
+    events.scroll_paint = &window_finances_summary_scrollpaint;
+});
 
 // 0x00988F28
-static rct_window_event_list _windowFinancesFinancialGraphEvents =
+static rct_window_event_list _windowFinancesFinancialGraphEvents([](auto& events)
 {
-    nullptr,
-    window_finances_financial_graph_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_financial_graph_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_financial_graph_invalidate,
-    window_finances_financial_graph_paint,
-    nullptr
-};
+    events.mouse_up = &window_finances_financial_graph_mouseup;
+    events.update = &window_finances_financial_graph_update;
+    events.invalidate = &window_finances_financial_graph_invalidate;
+    events.paint = &window_finances_financial_graph_paint;
+});
 
 // 0x00988F98
-static rct_window_event_list _windowFinancesValueGraphEvents =
+static rct_window_event_list _windowFinancesValueGraphEvents([](auto& events)
 {
-    nullptr,
-    window_finances_park_value_graph_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_park_value_graph_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_park_value_graph_invalidate,
-    window_finances_park_value_graph_paint,
-    nullptr
-};
+    events.mouse_up = &window_finances_park_value_graph_mouseup;
+    events.update = &window_finances_park_value_graph_update;
+    events.invalidate = &window_finances_park_value_graph_invalidate;
+    events.paint = &window_finances_park_value_graph_paint;
+});
 
 // 0x00989008
-static rct_window_event_list _windowFinancesProfitGraphEvents =
+static rct_window_event_list _windowFinancesProfitGraphEvents([](auto& events)
 {
-    nullptr,
-    window_finances_profit_graph_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_profit_graph_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_profit_graph_invalidate,
-    window_finances_profit_graph_paint,
-    nullptr
-};
+    events.mouse_up = &window_finances_profit_graph_mouseup;
+    events.update = &window_finances_profit_graph_update;
+    events.invalidate = &window_finances_profit_graph_invalidate;
+    events.paint = &window_finances_profit_graph_paint;
+});
 
 // 0x00989078
-static rct_window_event_list _windowFinancesMarketingEvents =
+static rct_window_event_list _windowFinancesMarketingEvents([](auto& events)
 {
-    nullptr,
-    window_finances_marketing_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_marketing_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_marketing_invalidate,
-    window_finances_marketing_paint,
-    nullptr
-};
+    events.mouse_up = &window_finances_marketing_mouseup;
+    events.update = &window_finances_marketing_update;
+    events.invalidate = &window_finances_marketing_invalidate;
+    events.paint = &window_finances_marketing_paint;
+});
 
 // 0x009890E8
-static rct_window_event_list _windowFinancesResearchEvents =
+static rct_window_event_list _windowFinancesResearchEvents([](auto& events)
 {
-    nullptr,
-    window_finances_research_mouseup,
-    nullptr,
-    window_finances_research_mousedown,
-    window_finances_research_dropdown,
-    nullptr,
-    window_finances_research_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_finances_research_invalidate,
-    window_finances_research_paint,
-    nullptr
-};
+    events.mouse_up = &window_finances_research_mouseup;
+    events.mouse_down = &window_finances_research_mousedown;
+    events.dropdown = &window_finances_research_dropdown;
+    events.update = &window_finances_research_update;
+    events.invalidate = &window_finances_research_invalidate;
+    events.paint = &window_finances_research_paint;
+});
 
 static rct_window_event_list *const _windowFinancesPageEvents[] =
 {

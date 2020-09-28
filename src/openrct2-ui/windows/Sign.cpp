@@ -62,72 +62,32 @@ static void window_sign_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 
 // 0x98E44C
-static rct_window_event_list window_sign_events = {
-    nullptr,
-    window_sign_mouseup,
-    nullptr,
-    window_sign_mousedown,
-    window_sign_dropdown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_sign_textinput,
-    window_sign_viewport_rotate,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_sign_invalidate,
-    window_sign_paint,
-    nullptr
-};
+static rct_window_event_list window_sign_events([](auto& events)
+{
+    events.mouse_up = &window_sign_mouseup;
+    events.mouse_down = &window_sign_mousedown;
+    events.dropdown = &window_sign_dropdown;
+    events.text_input = &window_sign_textinput;
+    events.viewport_rotate = &window_sign_viewport_rotate;
+    events.invalidate = &window_sign_invalidate;
+    events.paint = &window_sign_paint;
+});
 
 static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_sign_small_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_sign_small_invalidate(rct_window *w);
 
 // 0x9A410C
-static rct_window_event_list window_sign_small_events = {
-    nullptr,
-    window_sign_small_mouseup,
-    nullptr,
-    window_sign_mousedown,
-    window_sign_small_dropdown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_sign_textinput,
-    window_sign_viewport_rotate,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_sign_small_invalidate,
-    window_sign_paint,
-    nullptr
-};
+static rct_window_event_list window_sign_small_events([](auto& events)
+{
+    events.mouse_up = &window_sign_small_mouseup;
+    events.mouse_down = &window_sign_mousedown;
+    events.dropdown = &window_sign_small_dropdown;
+    events.text_input = &window_sign_textinput;
+    events.viewport_rotate = &window_sign_viewport_rotate;
+    events.invalidate = &window_sign_small_invalidate;
+    events.paint = &window_sign_paint;
+});
 // clang-format on
 
 static void window_sign_show_text_input(rct_window* w);

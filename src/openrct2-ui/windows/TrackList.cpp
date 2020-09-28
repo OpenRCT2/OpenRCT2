@@ -67,36 +67,19 @@ static void window_track_list_invalidate(rct_window *w);
 static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_track_list_events = {
-    window_track_list_close,
-    window_track_list_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_list_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_list_scrollgetsize,
-    window_track_list_scrollmousedown,
-    nullptr,
-    window_track_list_scrollmouseover,
-    window_track_list_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_list_invalidate,
-    window_track_list_paint,
-    window_track_list_scrollpaint
-};
+static rct_window_event_list window_track_list_events([](auto& events)
+{
+    events.close = &window_track_list_close;
+    events.mouse_up = &window_track_list_mouseup;
+    events.update = &window_track_list_update;
+    events.get_scroll_size = &window_track_list_scrollgetsize;
+    events.scroll_mousedown = &window_track_list_scrollmousedown;
+    events.scroll_mouseover = &window_track_list_scrollmouseover;
+    events.text_input = &window_track_list_textinput;
+    events.invalidate = &window_track_list_invalidate;
+    events.paint = &window_track_list_paint;
+    events.scroll_paint = &window_track_list_scrollpaint;
+});
 // clang-format on
 
 constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;

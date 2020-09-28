@@ -41,36 +41,11 @@ static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex
 static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
-static rct_window_event_list window_staff_fire_events = {
-    nullptr,
-    window_staff_fire_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_fire_paint,
-    nullptr
-};
+static rct_window_event_list window_staff_fire_events([](auto& events)
+{
+    events.mouse_up = &window_staff_fire_mouseup;
+    events.paint = &window_staff_fire_paint;
+});
 // clang-format on
 
 /** Based off of rct2: 0x6C0A77 */

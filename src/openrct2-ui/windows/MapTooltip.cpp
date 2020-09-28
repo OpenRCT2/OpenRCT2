@@ -25,36 +25,11 @@ static rct_widget window_map_tooltip_widgets[] = {
 static void window_map_tooltip_update(rct_window *w);
 static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_map_tooltip_events = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_map_tooltip_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_map_tooltip_paint,
-    nullptr
-};
+static rct_window_event_list window_map_tooltip_events([](auto& events)
+{
+    events.update = &window_map_tooltip_update;
+    events.paint = &window_map_tooltip_paint;
+});
 // clang-format on
 
 #define MAP_TOOLTIP_ARGS

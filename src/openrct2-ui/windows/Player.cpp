@@ -88,36 +88,17 @@ static void window_player_overview_update(rct_window* w);
 static void window_player_overview_invalidate(rct_window *w);
 static void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_player_overview_events = {
-    window_player_overview_close,
-    window_player_overview_mouse_up,
-    window_player_overview_resize,
-    window_player_overview_mouse_down,
-    window_player_overview_dropdown,
-    nullptr,
-    window_player_overview_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_player_overview_invalidate,
-    window_player_overview_paint,
-    nullptr
-};
+static rct_window_event_list window_player_overview_events([](auto& events)
+{
+    events.close = &window_player_overview_close;
+    events.mouse_up = &window_player_overview_mouse_up;
+    events.resize = &window_player_overview_resize;
+    events.mouse_down = &window_player_overview_mouse_down;
+    events.dropdown = &window_player_overview_dropdown;
+    events.update = &window_player_overview_update;
+    events.invalidate = &window_player_overview_invalidate;
+    events.paint = &window_player_overview_paint;
+});
 
 static void window_player_statistics_close(rct_window *w);
 static void window_player_statistics_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
@@ -126,36 +107,15 @@ static void window_player_statistics_update(rct_window* w);
 static void window_player_statistics_invalidate(rct_window *w);
 static void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_player_statistics_events = {
-    window_player_statistics_close,
-    window_player_statistics_mouse_up,
-    window_player_statistics_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_player_statistics_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_player_statistics_invalidate,
-    window_player_statistics_paint,
-    nullptr
-};
+static rct_window_event_list window_player_statistics_events([](auto& events)
+{
+    events.close = &window_player_statistics_close;
+    events.mouse_up = &window_player_statistics_mouse_up;
+    events.resize = &window_player_statistics_resize;
+    events.update = &window_player_statistics_update;
+    events.invalidate = &window_player_statistics_invalidate;
+    events.paint = &window_player_statistics_paint;
+});
 
 static rct_window_event_list *window_player_page_events[] = {
     &window_player_overview_events,

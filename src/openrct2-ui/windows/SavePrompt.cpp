@@ -72,36 +72,12 @@ static void window_save_prompt_mouseup(rct_window *w, rct_widgetindex widgetInde
 static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_save_prompt_callback(int32_t result, const utf8 * path);
 
-static rct_window_event_list window_save_prompt_events = {
-    window_save_prompt_close,
-    window_save_prompt_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_save_prompt_paint,
-    nullptr
-};
+static rct_window_event_list window_save_prompt_events([](auto& events)
+{
+    events.close = &window_save_prompt_close;
+    events.mouse_up = &window_save_prompt_mouseup;
+    events.paint = &window_save_prompt_paint;
+});
 // clang-format on
 
 /**

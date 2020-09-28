@@ -99,36 +99,14 @@ static constexpr int32_t NetworkTrafficGroupNames[NETWORK_STATISTICS_GROUP_MAX] 
     STR_NETWORK_LEGEND_MAPDATA,
 };
 
-static rct_window_event_list window_network_information_events = {
-    nullptr,
-    window_network_information_mouseup,
-    window_network_information_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_network_information_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_network_information_invalidate,
-    window_network_information_paint,
-    nullptr
-};
+static rct_window_event_list window_network_information_events([](auto& events)
+{
+    events.mouse_up = &window_network_information_mouseup;
+    events.resize = &window_network_information_resize;
+    events.update = &window_network_information_update;
+    events.invalidate = &window_network_information_invalidate;
+    events.paint = &window_network_information_paint;
+});
 
 static rct_window_event_list *window_network_page_events[] = {
     &window_network_information_events,

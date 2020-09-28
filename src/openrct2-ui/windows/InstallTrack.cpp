@@ -57,36 +57,14 @@ static void window_install_track_invalidate(rct_window *w);
 static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_install_track_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_install_track_events = {
-    window_install_track_close,
-    window_install_track_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_install_track_text_input,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_install_track_invalidate,
-    window_install_track_paint,
-    nullptr
-};
+static rct_window_event_list window_install_track_events([](auto& events)
+{
+    events.close = &window_install_track_close;
+    events.mouse_up = &window_install_track_mouseup;
+    events.text_input = &window_install_track_text_input;
+    events.invalidate = &window_install_track_invalidate;
+    events.paint = &window_install_track_paint;
+});
 // clang-format on
 
 static std::unique_ptr<TrackDesign> _trackDesign;

@@ -63,36 +63,17 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_land_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_land_inputsize(rct_window *w);
 
-static rct_window_event_list window_land_events = {
-    window_land_close,
-    window_land_mouseup,
-    nullptr,
-    window_land_mousedown,
-    window_land_dropdown,
-    nullptr,
-    window_land_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_land_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_land_invalidate,
-    window_land_paint,
-    nullptr
-};
+static rct_window_event_list window_land_events([](auto& events)
+{
+    events.close = &window_land_close;
+    events.mouse_up = &window_land_mouseup;
+    events.mouse_down = &window_land_mousedown;
+    events.dropdown = &window_land_dropdown;
+    events.update = &window_land_update;
+    events.text_input = &window_land_textinput;
+    events.invalidate = &window_land_invalidate;
+    events.paint = &window_land_paint;
+});
 // clang-format on
 
 static int32_t _selectedFloorTexture;

@@ -36,36 +36,11 @@ static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widget
 static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x9A3F7C
-static rct_window_event_list window_shortcut_change_events = {
-    nullptr,
-    window_shortcut_change_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_shortcut_change_paint,
-    nullptr
-};
+static rct_window_event_list window_shortcut_change_events([](auto& events)
+{
+    events.mouse_up = &window_shortcut_change_mouseup;
+    events.paint = &window_shortcut_change_paint;
+});
 // clang-format on
 
 static rct_string_id CurrentShortcutKeyStringId{};

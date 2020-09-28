@@ -112,68 +112,24 @@ static void window_research_funding_invalidate(rct_window *w);
 static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //
-static rct_window_event_list window_research_development_events = {
-    nullptr,
-    window_research_development_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_research_development_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_research_development_invalidate,
-    window_research_development_paint,
-    nullptr
-};
+static rct_window_event_list window_research_development_events([](auto& events)
+{
+    events.mouse_up = &window_research_development_mouseup;
+    events.update = &window_research_development_update;
+    events.invalidate = &window_research_development_invalidate;
+    events.paint = &window_research_development_paint;
+});
 
 // 0x009890E8
-static rct_window_event_list window_research_funding_events = {
-    nullptr,
-    window_research_funding_mouseup,
-    nullptr,
-    window_research_funding_mousedown,
-    window_research_funding_dropdown,
-    nullptr,
-    window_research_funding_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_research_funding_invalidate,
-    window_research_funding_paint,
-    nullptr
-};
+static rct_window_event_list window_research_funding_events([](auto& events)
+{
+    events.mouse_up = &window_research_funding_mouseup;
+    events.mouse_down = &window_research_funding_mousedown;
+    events.dropdown = &window_research_funding_dropdown;
+    events.update = &window_research_funding_update;
+    events.invalidate = &window_research_funding_invalidate;
+    events.paint = &window_research_funding_paint;
+});
 
 static rct_window_event_list *window_research_page_events[] = {
     &window_research_development_events,

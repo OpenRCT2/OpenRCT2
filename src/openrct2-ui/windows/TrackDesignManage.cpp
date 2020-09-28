@@ -61,68 +61,20 @@ static void window_track_delete_prompt_mouseup(rct_window *w, rct_widgetindex wi
 static void window_track_delete_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x009940EC
-static rct_window_event_list window_track_manage_events = {
-    window_track_manage_close,
-    window_track_manage_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_manage_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_manage_paint,
-    nullptr
-};
+static rct_window_event_list window_track_manage_events([](auto& events)
+{
+    events.close = &window_track_manage_close;
+    events.mouse_up = &window_track_manage_mouseup;
+    events.text_input = &window_track_manage_textinput;
+    events.paint = &window_track_manage_paint;
+});
 
 // 0x0099415C
-static rct_window_event_list window_track_delete_prompt_events = {
-    nullptr,
-    window_track_delete_prompt_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_delete_prompt_paint,
-    nullptr
-};
+static rct_window_event_list window_track_delete_prompt_events([](auto& events)
+{
+    events.mouse_up = &window_track_delete_prompt_mouseup;
+    events.paint = &window_track_delete_prompt_paint;
+});
 // clang-format on
 
 #pragma endregion

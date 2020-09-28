@@ -72,36 +72,15 @@ static void window_server_start_textinput(rct_window *w, rct_widgetindex widgetI
 static void window_server_start_invalidate(rct_window *w);
 static void window_server_start_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_server_start_events = {
-    window_server_start_close,
-    window_server_start_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_server_start_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_server_start_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_server_start_invalidate,
-    window_server_start_paint,
-    nullptr
-};
+static rct_window_event_list window_server_start_events([](auto& events)
+{
+    events.close = &window_server_start_close;
+    events.mouse_up = &window_server_start_mouseup;
+    events.update = &window_server_start_update;
+    events.text_input = &window_server_start_textinput;
+    events.invalidate = &window_server_start_invalidate;
+    events.paint = &window_server_start_paint;
+});
 // clang-format on
 
 rct_window* window_server_start_open()

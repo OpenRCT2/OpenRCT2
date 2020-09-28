@@ -86,36 +86,20 @@ static void window_ride_list_invalidate(rct_window *w);
 static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_ride_list_events = {
-    nullptr,
-    window_ride_list_mouseup,
-    window_ride_list_resize,
-    window_ride_list_mousedown,
-    window_ride_list_dropdown,
-    nullptr,
-    window_ride_list_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_ride_list_scrollgetsize,
-    window_ride_list_scrollmousedown,
-    nullptr,
-    window_ride_list_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_ride_list_invalidate,
-    window_ride_list_paint,
-    window_ride_list_scrollpaint
-};
+static rct_window_event_list window_ride_list_events([](auto& events)
+{
+    events.mouse_up = &window_ride_list_mouseup;
+    events.resize = &window_ride_list_resize;
+    events.mouse_down = &window_ride_list_mousedown;
+    events.dropdown = &window_ride_list_dropdown;
+    events.update = &window_ride_list_update;
+    events.get_scroll_size = &window_ride_list_scrollgetsize;
+    events.scroll_mousedown = &window_ride_list_scrollmousedown;
+    events.scroll_mouseover = &window_ride_list_scrollmouseover;
+    events.invalidate = &window_ride_list_invalidate;
+    events.paint = &window_ride_list_paint;
+    events.scroll_paint = &window_ride_list_scrollpaint;
+});
 
 enum {
     INFORMATION_TYPE_STATUS,

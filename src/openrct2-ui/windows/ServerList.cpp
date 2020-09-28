@@ -82,36 +82,21 @@ static void window_server_list_invalidate(rct_window *w);
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_server_list_events = {
-    window_server_list_close,
-    window_server_list_mouseup,
-    window_server_list_resize,
-    nullptr,
-    window_server_list_dropdown,
-    nullptr,
-    window_server_list_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_server_list_scroll_getsize,
-    window_server_list_scroll_mousedown,
-    nullptr,
-    window_server_list_scroll_mouseover,
-    window_server_list_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_server_list_invalidate,
-    window_server_list_paint,
-    window_server_list_scrollpaint
-};
+static rct_window_event_list window_server_list_events([](auto& events)
+{
+    events.close = &window_server_list_close;
+    events.mouse_up = &window_server_list_mouseup;
+    events.resize = &window_server_list_resize;
+    events.dropdown = &window_server_list_dropdown;
+    events.update = &window_server_list_update;
+    events.get_scroll_size = &window_server_list_scroll_getsize;
+    events.scroll_mousedown = &window_server_list_scroll_mousedown;
+    events.scroll_mouseover = &window_server_list_scroll_mouseover;
+    events.text_input = &window_server_list_textinput;
+    events.invalidate = &window_server_list_invalidate;
+    events.paint = &window_server_list_paint;
+    events.scroll_paint = &window_server_list_scrollpaint;
+});
 // clang-format on
 
 enum

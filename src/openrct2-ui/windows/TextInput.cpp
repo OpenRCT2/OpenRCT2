@@ -54,36 +54,14 @@ static void window_text_input_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void draw_ime_composition(rct_drawpixelinfo * dpi, int cursorX, int cursorY);
 
 //0x9A3F7C
-static rct_window_event_list window_text_input_events = {
-    window_text_input_close,
-    window_text_input_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_text_input_periodic_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_text_input_invalidate,
-    window_text_input_paint,
-    nullptr
-};
+static rct_window_event_list window_text_input_events([](auto& events)
+{
+    events.close = &window_text_input_close;
+    events.mouse_up = &window_text_input_mouseup;
+    events.periodic_update = &window_text_input_periodic_update;
+    events.invalidate = &window_text_input_invalidate;
+    events.paint = &window_text_input_paint;
+});
 // clang-format on
 
 static rct_string_id input_text_description;
