@@ -283,7 +283,7 @@ namespace OpenRCT2::Scripting
         uint8_t mode_get() const
         {
             auto ride = GetRide();
-            return ride != nullptr ? ride->mode : 0;
+            return ride != nullptr ? static_cast<uint8_t>(ride->mode) : 0;
         }
 
         void mode_set(uint8_t value)
@@ -292,7 +292,7 @@ namespace OpenRCT2::Scripting
             auto ride = GetRide();
             if (ride != nullptr)
             {
-                ride->mode = value;
+                ride->mode = static_cast<RideMode>(value);
             }
         }
 

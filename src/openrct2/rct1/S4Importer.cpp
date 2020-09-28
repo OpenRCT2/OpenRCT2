@@ -865,11 +865,11 @@ private:
         if (src->operating_mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
         {
             // Launched rides never passed through the station in RCT1.
-            dst->mode = RIDE_MODE_POWERED_LAUNCH;
+            dst->mode = RideMode::PoweredLaunch;
         }
         else
         {
-            dst->mode = src->operating_mode;
+            dst->mode = static_cast<RideMode>(src->operating_mode);
         }
 
         SetRideColourScheme(dst, src);
@@ -1233,7 +1233,7 @@ private:
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->current_station = src->current_station;
-        if (src->boat_location.isNull() || ride->mode != RIDE_MODE_BOAT_HIRE || statusSrc != Vehicle::Status::TravellingBoat)
+        if (src->boat_location.isNull() || ride->mode != RideMode::BoatHire || statusSrc != Vehicle::Status::TravellingBoat)
         {
             dst->BoatLocation.setNull();
             dst->track_type = src->track_type;
