@@ -210,6 +210,7 @@ private:
         {
             auto data = DecryptSea(fs::u8path(path));
             auto ms = std::make_unique<MemoryStream>();
+            // Need to copy the data into MemoryStream as the overload will borrow instead of copy.
             ms->Write(data.data(), data.size());
             ms->SetPosition(0);
             return ms;
