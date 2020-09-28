@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui
         void WriteLine(const std::string& s, uint32_t colourFormat) override;
 
         void Input(CONSOLE_INPUT input);
-        void RefreshCaret(size_t position = 0); // Update _selectionStart to draw cursor in correct place
+        void RefreshCaret(size_t position = 0);
         void Scroll(int32_t linesToScroll);
 
         void Update();
