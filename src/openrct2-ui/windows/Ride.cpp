@@ -1685,6 +1685,18 @@ static void window_ride_set_page(rct_window* w, int32_t page)
         if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
             tool_cancel();
 
+    if (page == WINDOW_RIDE_PAGE_VEHICLE)
+    {
+        auto constructionWindow = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        if (constructionWindow && constructionWindow->number == w->number)
+        {
+            window_close_by_class(WC_RIDE_CONSTRUCTION);
+            // Closing the construction window sets the tab to the first page, which we don't want here,
+            // as user just clicked the Vehicle page
+            window_ride_set_page(w, WINDOW_RIDE_PAGE_VEHICLE);
+        }
+    }
+
     // Set listen only to viewport
     listen = 0;
     if (page == WINDOW_RIDE_PAGE_MAIN && w->page == WINDOW_RIDE_PAGE_MAIN && w->viewport != nullptr
