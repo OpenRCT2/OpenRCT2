@@ -1,6 +1,7 @@
 0.3.1+ (in development)
 ------------------------------------------------------------------------
 - Feature: [#13000] objective_options command for console
+- Fix: [#13024] Console cursor now correctly renders at current cursor position.
 - Fix: [#3200] Close Construction window upon selecting vehicle page
 - Improved: [#13023] Made add_news_item console command last argument, assoc, optional.
 
