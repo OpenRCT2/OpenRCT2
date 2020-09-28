@@ -276,11 +276,10 @@ private:
             {
                 bool loadSuccess = false;
                 uint8_t saveIndex = command.SaveIndex;
-                TitleSequenceParkHandle* parkHandle = TitleSequenceGetParkHandle(*_sequence, saveIndex);
+                auto parkHandle = TitleSequenceGetParkHandle(*_sequence, saveIndex);
                 if (parkHandle != nullptr)
                 {
                     loadSuccess = LoadParkFromStream(static_cast<OpenRCT2::IStream*>(parkHandle->Stream), parkHandle->HintPath);
-                    TitleSequenceCloseParkHandle(parkHandle);
                 }
                 if (!loadSuccess)
                 {

@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -100,9 +100,9 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
     return seq;
 }
 
-TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence& seq, size_t index)
+std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(TitleSequence& seq, size_t index)
 {
-    TitleSequenceParkHandle* handle = nullptr;
+    std::unique_ptr<TitleSequenceParkHandle> handle;
     if (index <= seq.Saves.size())
     {
         const auto& filename = seq.Saves[index];
@@ -117,7 +117,7 @@ TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence& seq, size_t i
                 auto ms = new OpenRCT2::MemoryStream(
                     dataForMs, data.size(), OpenRCT2::MEMORY_ACCESS::READ | OpenRCT2::MEMORY_ACCESS::OWNER);
 
-                handle = Memory::Allocate<TitleSequenceParkHandle>();
+                handle = std::make_unique<TitleSequenceParkHandle>();
                 handle->Stream = ms;
                 handle->HintPath = String::Duplicate(filename);
             }
@@ -141,7 +141,7 @@ TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence& seq, size_t i
 
             if (fileStream != nullptr)
             {
-                handle = Memory::Allocate<TitleSequenceParkHandle>();
+                handle = std::make_unique<TitleSequenceParkHandle>();
                 handle->Stream = fileStream;
                 handle->HintPath = String::Duplicate(filename);
             }
@@ -150,14 +150,10 @@ TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence& seq, size_t i
     return handle;
 }
 
-void TitleSequenceCloseParkHandle(TitleSequenceParkHandle* handle)
+void TitleSequenceCloseParkHandle(TitleSequenceParkHandle& handle)
 {
-    if (handle != nullptr)
-    {
-        Memory::Free(handle->HintPath);
-        delete (static_cast<OpenRCT2::IStream*>(handle->Stream));
-        Memory::Free(handle);
-    }
+    Memory::Free(handle.HintPath);
+    delete (static_cast<OpenRCT2::IStream*>(handle.Stream));
 }
 
 bool TitleSequenceSave(TitleSequence& seq)

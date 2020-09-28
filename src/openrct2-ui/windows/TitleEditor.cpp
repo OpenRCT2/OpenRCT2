@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -360,7 +360,6 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                     else
                         game_load_init();
 
-                    TitleSequenceCloseParkHandle(handle);
                     window_title_editor_open(WINDOW_TITLE_EDITOR_TAB_SAVES);
                 }
                 catch (const std::exception&)
