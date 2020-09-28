@@ -119,7 +119,7 @@ std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(TitleSequenc
 
                 handle = std::make_unique<TitleSequenceParkHandle>();
                 handle->Stream = ms;
-                handle->HintPath = String::Duplicate(filename);
+                handle->HintPath = filename;
             }
             else
             {
@@ -143,17 +143,11 @@ std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(TitleSequenc
             {
                 handle = std::make_unique<TitleSequenceParkHandle>();
                 handle->Stream = fileStream;
-                handle->HintPath = String::Duplicate(filename);
+                handle->HintPath = filename;
             }
         }
     }
     return handle;
-}
-
-void TitleSequenceCloseParkHandle(TitleSequenceParkHandle& handle)
-{
-    Memory::Free(handle.HintPath);
-    delete (static_cast<OpenRCT2::IStream*>(handle.Stream));
 }
 
 bool TitleSequenceSave(TitleSequence& seq)

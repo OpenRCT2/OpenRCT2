@@ -53,7 +53,7 @@ struct TitleSequence
 
 struct TitleSequenceParkHandle
 {
-    const utf8* HintPath;
+    std::string HintPath;
     void* Stream;
 };
 
