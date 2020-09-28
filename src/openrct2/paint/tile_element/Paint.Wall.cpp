@@ -434,16 +434,16 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     auto banner = tile_element->AsWall()->GetBanner();
     if (banner != nullptr && !banner->IsNull())
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         banner->FormatTextTo(ft);
         utf8 signString[256];
         if (gConfigGeneral.upper_case_banners)
         {
-            format_string_to_upper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, gCommonFormatArgs);
+            format_string_to_upper(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
         }
         else
         {
-            format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, gCommonFormatArgs);
+            format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
         }
 
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

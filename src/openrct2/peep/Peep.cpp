@@ -862,7 +862,7 @@ void Peep::UpdateFalling()
 
         if (gConfigNotifications.guest_died)
         {
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             FormatNameTo(ft);
             News::AddItemToQueue(News::ItemType::Blank, STR_NEWS_ITEM_GUEST_DROWNED, x | (y << 16), ft);
         }
@@ -2380,7 +2380,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         peep->TimeInQueue = 0;
         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             peep->FormatNameTo(ft);
             ride->FormatNameTo(ft);
             if (gConfigNotifications.guest_queuing_for_ride)
@@ -2443,7 +2443,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             peep->Var37 = 0;
             if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
             {
-                auto ft = Formatter::Common();
+                auto ft = Formatter();
                 peep->FormatNameTo(ft);
                 if (gConfigNotifications.guest_left_park)
                 {
@@ -2809,7 +2809,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                     peep->TimeInQueue = 0;
                     if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
                     {
-                        auto ft = Formatter::Common();
+                        auto ft = Formatter();
                         peep->FormatNameTo(ft);
                         ride->FormatNameTo(ft);
                         if (gConfigNotifications.guest_queuing_for_ride)
@@ -2918,7 +2918,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
         ride->cur_num_customers++;
         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             peep->FormatNameTo(ft);
             ride->FormatNameTo(ft);
             rct_string_id string_id = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_PEEP_TRACKING_PEEP_IS_IN_X

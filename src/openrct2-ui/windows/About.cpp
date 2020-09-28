@@ -220,15 +220,17 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
     ScreenCoordsXY aboutOpenRCT2Coords(w->windowPos.x + aboutOpenRCT2.left + 45, y);
     ScreenCoordsXY aboutRCT2Coords(w->windowPos.x + aboutRCT2.left + 45, y);
 
-    auto ft = Formatter::Common();
-    ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
-    gfx_draw_string_centred_wrapped(
-        dpi, gCommonFormatArgs, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
-
-    ft = Formatter::Common();
-    ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RCT2);
-    gfx_draw_string_centred_wrapped(
-        dpi, gCommonFormatArgs, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+    {
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
+        gfx_draw_string_centred_wrapped(
+            dpi, ft.Data(), aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+    }
+    {
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RCT2);
+        gfx_draw_string_centred_wrapped(dpi, ft.Data(), aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+    }
 }
 
 static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)

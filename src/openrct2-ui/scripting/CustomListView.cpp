@@ -648,13 +648,13 @@ void CustomListView::PaintHeading(
 
     if (sortOrder == ColumnSortOrder::Ascending)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_UP);
         DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::RIGHT);
     }
     else if (sortOrder == ColumnSortOrder::Descending)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_DOWN);
         DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::RIGHT);
     }
@@ -665,7 +665,7 @@ void CustomListView::PaintCell(
 {
     rct_string_id stringId = isHighlighted ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING;
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(text);
     DrawTextEllipsised(dpi, pos, size.width, stringId, ft, COLOUR_BLACK);

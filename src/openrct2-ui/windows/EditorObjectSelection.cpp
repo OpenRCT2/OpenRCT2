@@ -1013,17 +1013,17 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             totalSelectable = 4;
 
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<uint16_t>(numSelected);
         ft.Add<uint16_t>(totalSelectable);
-        gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, COLOUR_BLACK, screenPos);
+        gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, ft.Data(), COLOUR_BLACK, screenPos);
     }
 
     // Draw sort button text
     widget = &w->widgets[WIDX_LIST_SORT_TYPE];
     if (widget->type != WWT_EMPTY)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                         : STR_NONE;
         ft.Add<rct_string_id>(stringId);
@@ -1033,7 +1033,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     widget = &w->widgets[WIDX_LIST_SORT_RIDE];
     if (widget->type != WWT_EMPTY)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                         : STR_NONE;
         ft.Add<rct_string_id>(stringId);
@@ -1063,7 +1063,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX() + 1, widget->bottom + 3 };
         width = w->width - w->widgets[WIDX_LIST].right - 6;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
         DrawTextEllipsised(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::CENTRE);
@@ -1073,7 +1073,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     auto description = object_get_description(_loadedObject);
     if (!description.empty())
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(description.c_str());
 
@@ -1081,7 +1081,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         width = w->windowPos.x + w->width - screenPos.x - 4;
 
         gfx_draw_string_left_wrapped(
-            dpi, gCommonFormatArgs, screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
+            dpi, ft.Data(), screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
     }
 
     auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
@@ -1103,7 +1103,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     // Draw object dat name
     {
         const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(path);
         DrawTextBasic(
@@ -1114,7 +1114,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
     // Draw object author (will be blank space if no author in file or a non JSON object)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         std::string authorsString;
         for (size_t i = 0; i < listItem->repositoryItem->Authors.size(); i++)
         {
@@ -1199,7 +1199,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 // Draw ride type
                 rct_string_id rideTypeStringId = get_ride_type_string_id(listItem.repositoryItem);
                 safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
-                auto ft = Formatter::Common();
+                auto ft = Formatter();
                 ft.Add<const char*>(gCommonStringFormatBuffer);
                 DrawTextEllipsised(dpi, screenCoords, width_limit - 15, STR_STRING, ft, colour);
                 screenCoords.x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
@@ -1214,7 +1214,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
 
                 *buffer = 0;
             }
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<const char*>(gCommonStringFormatBuffer);
             DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, ft, colour);
         }

@@ -1213,15 +1213,14 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->page == WINDOW_CHEATS_PAGE_MONEY)
     {
         uint8_t colour = w->colours[1];
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<money32>(_moneySpinnerValue);
         if (widget_is_disabled(w, WIDX_MONEY_SPINNER))
         {
             colour |= COLOUR_FLAG_INSET;
         }
         int32_t actual_month = _monthSpinnerValue - 1;
-        gfx_draw_string_left(
-            dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->windowPos + ScreenCoordsXY{ X_LCOL, 93 });
+        gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH, ft.Data(), colour, w->windowPos + ScreenCoordsXY{ X_LCOL, 93 });
         gfx_draw_string_left(dpi, STR_YEAR, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 198 });
         gfx_draw_string_left(dpi, STR_MONTH, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 219 });
         gfx_draw_string_left(dpi, STR_DAY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 240 });

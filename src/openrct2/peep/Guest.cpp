@@ -1696,7 +1696,7 @@ loc_69B221:
     UpdateSpriteType();
     if (PeepFlags & PEEP_FLAGS_TRACKING)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         FormatNameTo(ft);
         ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
@@ -3730,7 +3730,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
                 ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
                 ride->last_issue_time = gCurrentTicks;
 
-                auto ft = Formatter::Common();
+                auto ft = Formatter();
                 ride->FormatNameTo(ft);
                 if (gConfigNotifications.ride_warnings)
                 {
@@ -3892,7 +3892,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         FormatNameTo(ft);
         ride->FormatNameTo(ft);
 
@@ -5009,7 +5009,7 @@ void Guest::UpdateRideLeaveExit()
 
     if (ride != nullptr && (PeepFlags & PEEP_FLAGS_TRACKING))
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         FormatNameTo(ft);
         ride->FormatNameTo(ft);
 
