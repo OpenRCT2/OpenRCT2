@@ -1661,11 +1661,11 @@ static int32_t cc_assert([[maybe_unused]] InteractiveConsole& console, [[maybe_u
 static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
     printf("argv.size() = %zu\n", argv.size());
-    if (argv.size() < 3)
+    if (argv.size() < 2)
     {
         console.WriteLineWarning("Too few arguments");
         static_assert(News::ItemTypeCount == 10, "News::ItemType::Count changed, update console command!");
-        console.WriteLine("add_news_item <type> <message> <assoc>");
+        console.WriteLine("add_news_item <type> <message> [assoc]");
         console.WriteLine("type is one of:");
         console.WriteLine("    0 (News::ItemType::Null)");
         console.WriteLine("    1 (News::ItemType::Ride)");
@@ -1678,13 +1678,32 @@ static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[
         console.WriteLine("    8 (News::ItemType::Award)");
         console.WriteLine("    9 (News::ItemType::Graph)");
         console.WriteLine("message is the message to display, wrapped in quotes for multiple words");
-        console.WriteLine("assoc is the associated id of ride/peep/tile/etc.");
+        console.WriteLine("assoc is the associated id of ride/peep/tile/etc. If the selected ItemType doesn't need an assoc "
+                          "(Null, Money, Award, Graph), you can leave this field blank");
         return 1;
     }
+
     auto type = atoi(argv[0].c_str());
     auto msg = argv[1].c_str();
-    auto assoc = atoi(argv[2].c_str());
-    News::AddItemToQueue(static_cast<News::ItemType>(type), msg, assoc);
+    auto assoc = 0;
+
+    News::ItemType itemType = static_cast<News::ItemType>(type);
+
+    if (argv.size() == 3) // 3 arguments passed, set assoc
+    {
+        assoc = atoi(argv[2].c_str());
+    }
+    else
+    {
+        if (News::CheckIfItemRequiresAssoc(itemType))
+        {
+            console.WriteLine("Selected ItemType requires an assoc");
+            return 0;
+        }
+    }
+
+    News::AddItemToQueue(itemType, msg, assoc);
+    console.WriteLine("Successfully added News Item");
     return 0;
 }
 
