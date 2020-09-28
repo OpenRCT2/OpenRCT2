@@ -194,7 +194,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
                 auto quad = EntityTileList<Peep>(CoordsXY{ loc } - CoordsDirectionDelta[direction]);
                 for (auto peep : quad)
                 {
-                    if (peep->State != PEEP_STATE_WALKING)
+                    if (peep->State != PeepState::Walking)
                         continue;
                     if (peep->z != loc.z)
                         continue;

@@ -711,7 +711,7 @@ void window_guest_viewport_init(rct_window* w)
     w->viewport_focus_coordinates.z = focus.coordinate.z;
     w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
 
-    if (peep->State != PEEP_STATE_PICKED && w->viewport == nullptr)
+    if (peep->State != PeepState::Picked && w->viewport == nullptr)
     {
         auto view_widget = &w->widgets[WIDX_VIEWPORT];
         auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };

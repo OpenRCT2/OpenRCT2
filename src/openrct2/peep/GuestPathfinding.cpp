@@ -135,7 +135,7 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
     peep->DestinationX = newTile.x;
     peep->DestinationY = newTile.y;
     peep->DestinationTolerance = 2;
-    if (peep->State != PEEP_STATE_QUEUING)
+    if (peep->State != PeepState::Queuing)
     {
         peep->DestinationTolerance = (scenario_rand() & 7) + 2;
     }
@@ -2045,9 +2045,9 @@ int32_t guest_path_finding(Guest* peep)
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         switch (peep->State)
         {
-            case PEEP_STATE_ENTERING_PARK:
+            case PeepState::EnteringPark:
                 return guest_path_find_entering_park(peep, edges);
-            case PEEP_STATE_LEAVING_PARK:
+            case PeepState::LeavingPark:
                 return guest_path_find_leaving_park(peep, edges);
             default:
                 return guest_path_find_aimless(peep, edges);

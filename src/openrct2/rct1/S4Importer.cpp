@@ -1561,7 +1561,7 @@ private:
 
         if (dst->AssignedPeepType == PeepType::Guest)
         {
-            if (dst->OutsideOfPark && dst->State != PEEP_STATE_LEAVING_PARK)
+            if (dst->OutsideOfPark && dst->State != PeepState::LeavingPark)
             {
                 increment_guests_heading_for_park();
             }
@@ -3040,10 +3040,10 @@ private:
             // First, make the queuing peep exit
             for (auto peep : EntityList<Guest>(EntityListId::Peep))
             {
-                if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
+                if (peep->State == PeepState::QueuingFront && peep->CurrentRide == 0)
                 {
                     peep->RemoveFromQueue();
-                    peep->SetState(PEEP_STATE_FALLING);
+                    peep->SetState(PeepState::Falling);
                     break;
                 }
             }
