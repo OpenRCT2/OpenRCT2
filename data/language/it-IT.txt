@@ -1036,7 +1036,7 @@ STR_1650    :{SMALLFONT}“Wow! Presto ci sarà una nuova attrazione!”
 STR_1653    :{SMALLFONT}“...e qui siamo su {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Pensieri più recenti:
 STR_1655    :{SMALLFONT}{BLACK}Costruisci un sentiero sul terreno
-STR_1656    :{SMALLFONT}{BLACK}Costruisci un ponte o una galleria
+STR_1656    :{SMALLFONT}{BLACK}Costruisci un sentiero sopraelevato o una galleria
 STR_1657    :{WINDOW_COLOUR_2}Attrazione preferita
 STR_1658    :{WINDOW_COLOUR_2}intensità: {BLACK}meno di {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}intensità: {BLACK}fra {COMMA16} e {COMMA16}
@@ -1207,7 +1207,7 @@ STR_1830    :Lunghezza fila
 STR_1831    :Tempo di attesa
 STR_1832    :Affidabilità
 STR_1833    :Tempi morti
-STR_1834    :Attraz. favorita
+STR_1834    :Attraz. preferita
 STR_1835    :Popolarità: Sconosciuta
 STR_1836    :Popolarità: {COMMA16}%
 STR_1837    :Soddisfazione: Sconosciuta
@@ -2375,8 +2375,8 @@ STR_3275    :Generazione dei visitatori a un livello di difficoltà più elevato
 STR_3276    :{SMALLFONT}{BLACK}Rendi più difficile attrarre visitatori al parco
 STR_3277    :{WINDOW_COLOUR_2}Costo del terreno:
 STR_3278    :{WINDOW_COLOUR_2}Costo dei diritti di costruzione:
-STR_3279    :Ingresso gratis/paga l'attraz.
-STR_3280    :Paga l'ingresso/attraz. gratis
+STR_3279    :Ingresso gratis / Paga attrazioni
+STR_3280    :Paga ingresso / Attrazioni gratis
 STR_3281    :{WINDOW_COLOUR_2}Prezzo d'ingresso:
 STR_3282    :{SMALLFONT}{BLACK}Seleziona gli obiettivi e il nome del parco
 STR_3283    :{SMALLFONT}{BLACK}Seleziona le attrazioni da proteggere
@@ -3443,7 +3443,7 @@ STR_6149    :Impossibile connettersi al server principale
 STR_6150    :Risposta non valida da parte del server principale (il JSON non è un numero)
 STR_6151    :Il server principale non ha inviato la lista dei server
 STR_6152    :Risposta non valida da parte del server principale (il JSON non è un array)
-STR_6153    :Biglietto di ingresso / Attrazioni a pagamento
+STR_6153    :Paga ingresso / Paga attrazioni
 STR_6154    :Per motivi di sicurezza si sconsiglia l'esecuzione di OpenRCT2 con privilegi di amministratore.
 STR_6155    :Né KDialog né Zenity sono installati. Installarne uno o configurare attraverso la linea di comando.
 STR_6156    :Il nome è riservato
