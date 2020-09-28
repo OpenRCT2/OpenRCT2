@@ -43,7 +43,7 @@ struct TitleCommand
 struct TitleSequence
 {
     std::string Name;
-    const utf8* Path = nullptr;
+    std::string Path;
 
     std::vector<TitleCommand> Commands;
     std::vector<std::string> Saves;

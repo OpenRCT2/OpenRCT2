@@ -102,7 +102,6 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
 
 void FreeTitleSequence(TitleSequence& seq)
 {
-    Memory::Free(seq.Path);
 }
 
 TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence& seq, size_t index)
@@ -128,15 +127,12 @@ TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence& seq, size_t i
             }
             else
             {
-                Console::Error::WriteLine("Failed to open zipped path '%s' from zip '%s'", filename.c_str(), seq.Path);
+                Console::Error::WriteLine("Failed to open zipped path '%s' from zip '%s'", filename.c_str(), seq.Path.c_str());
             }
         }
         else
         {
-            utf8 absolutePath[MAX_PATH];
-            String::Set(absolutePath, sizeof(absolutePath), seq.Path);
-            Path::Append(absolutePath, sizeof(absolutePath), filename.c_str());
-
+            auto absolutePath = Path::Combine(seq.Path, filename);
             OpenRCT2::FileStream* fileStream = nullptr;
             try
             {
@@ -209,7 +205,7 @@ bool TitleSequenceAddPark(TitleSequence& seq, const utf8* path, const utf8* name
             auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
             if (zip == nullptr)
             {
-                Console::Error::WriteLine("Unable to open '%s'", seq.Path);
+                Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
                 return false;
             }
             zip->SetFileData(name, std::move(fdata));
@@ -222,12 +218,10 @@ bool TitleSequenceAddPark(TitleSequence& seq, const utf8* path, const utf8* name
     else
     {
         // Determine destination path
-        utf8 dstPath[MAX_PATH];
-        String::Set(dstPath, sizeof(dstPath), seq.Path);
-        Path::Append(dstPath, sizeof(dstPath), name);
+        auto dstPath = Path::Combine(seq.Path, name);
         if (!File::Copy(path, dstPath, true))
         {
-            Console::Error::WriteLine("Unable to copy '%s' to '%s'", path, dstPath);
+            Console::Error::WriteLine("Unable to copy '%s' to '%s'", path, dstPath.c_str());
             return false;
         }
     }
@@ -244,22 +238,18 @@ bool TitleSequenceRenamePark(TitleSequence& seq, size_t index, const utf8* name)
         auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
         if (zip == nullptr)
         {
-            Console::Error::WriteLine("Unable to open '%s'", seq.Path);
+            Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
             return false;
         }
         zip->RenameFile(oldRelativePath, name);
     }
     else
     {
-        utf8 srcPath[MAX_PATH];
-        utf8 dstPath[MAX_PATH];
-        String::Set(srcPath, sizeof(srcPath), seq.Path);
-        Path::Append(srcPath, sizeof(srcPath), oldRelativePath.c_str());
-        String::Set(dstPath, sizeof(dstPath), seq.Path);
-        Path::Append(dstPath, sizeof(dstPath), name);
+        auto srcPath = Path::Combine(seq.Path, oldRelativePath);
+        auto dstPath = Path::Combine(seq.Path, name);
         if (!File::Move(srcPath, dstPath))
         {
-            Console::Error::WriteLine("Unable to move '%s' to '%s'", srcPath, dstPath);
+            Console::Error::WriteLine("Unable to move '%s' to '%s'", srcPath.c_str(), dstPath.c_str());
             return false;
         }
     }
@@ -278,19 +268,17 @@ bool TitleSequenceRemovePark(TitleSequence& seq, size_t index)
         auto zip = Zip::TryOpen(seq.Path, ZIP_ACCESS::WRITE);
         if (zip == nullptr)
         {
-            Console::Error::WriteLine("Unable to open '%s'", seq.Path);
+            Console::Error::WriteLine("Unable to open '%s'", seq.Path.c_str());
             return false;
         }
         zip->DeleteFile(relativePath);
     }
     else
     {
-        utf8 absolutePath[MAX_PATH];
-        String::Set(absolutePath, sizeof(absolutePath), seq.Path);
-        Path::Append(absolutePath, sizeof(absolutePath), relativePath.c_str());
+        auto absolutePath = Path::Combine(seq.Path, relativePath);
         if (!File::Delete(absolutePath))
         {
-            Console::Error::WriteLine("Unable to delete '%s'", absolutePath);
+            Console::Error::WriteLine("Unable to delete '%s'", absolutePath.c_str());
             return false;
         }
     }
