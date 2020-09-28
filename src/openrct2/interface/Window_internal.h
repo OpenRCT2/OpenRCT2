@@ -94,6 +94,7 @@ struct rct_window
     void SetLocation(const CoordsXYZ& coords);
     void ScrollToViewport();
     void Invalidate();
+    void RemoveViewport();
 };
 
 // rct2: 0x01420078
