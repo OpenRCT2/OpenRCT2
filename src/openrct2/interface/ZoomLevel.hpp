@@ -123,9 +123,9 @@ public:
     template<typename T> friend T operator*(const T& lhs, const ZoomLevel& rhs)
     {
         if (rhs._level < 0)
-            return lhs >> -rhs._level;
+            return lhs / (1 << -rhs._level);
         else
-            return lhs << rhs._level;
+            return lhs * (1 << rhs._level);
     }
 
     template<typename T> friend T operator/(const T& lhs, const ZoomLevel& rhs)
