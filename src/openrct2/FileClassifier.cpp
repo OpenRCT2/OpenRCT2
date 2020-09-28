@@ -175,6 +175,8 @@ uint32_t get_file_extension_type(const utf8* path)
         return FILE_EXTENSION_TD4;
     if (String::Equals(extension, ".sc6", true))
         return FILE_EXTENSION_SC6;
+    if (String::Equals(extension, ".sea", true))
+        return FILE_EXTENSION_SC6;
     if (String::Equals(extension, ".sv6", true))
         return FILE_EXTENSION_SV6;
     if (String::Equals(extension, ".sv7", true))
