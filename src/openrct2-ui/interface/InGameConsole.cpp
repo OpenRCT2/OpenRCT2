@@ -330,7 +330,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         std::memcpy(tempString, &_consoleCurrentLine, _selectionStart);
         auto caret = screenCoords + ScreenCoordsXY{ gfx_get_string_width(tempString), lineHeight };
         uint8_t caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
-        gfx_fill_rect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 5 } }, caretColour);
+        gfx_fill_rect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 1 } }, caretColour);
     }
 
     // What about border colours?
