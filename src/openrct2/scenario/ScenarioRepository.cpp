@@ -204,16 +204,18 @@ protected:
     }
 
 private:
-    static IStream* GetStreamFromRCT2Scenario(const std::string& path)
+    static std::unique_ptr<IStream> GetStreamFromRCT2Scenario(const std::string& path)
     {
         if (String::Equals(Path::GetExtension(path), ".sea", true))
         {
             auto data = DecryptSea(fs::u8path(path));
-            auto ms = new MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
+            auto ms = std::make_unique<MemoryStream>();
+            ms->Write(data.data(), data.size());
+            ms->SetPosition(0);
             return ms;
         }
 
-        auto fs = new FileStream(path, FILE_MODE_OPEN);
+        auto fs = std::make_unique<FileStream>(path, FILE_MODE_OPEN);
         return fs;
     }
 
@@ -250,7 +252,7 @@ private:
             {
                 // RCT2 or RCTC scenario
                 auto stream = GetStreamFromRCT2Scenario(path);
-                auto chunkReader = SawyerChunkReader(stream);
+                auto chunkReader = SawyerChunkReader(stream.get());
 
                 rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
                 if (header.type == S6_TYPE_SCENARIO)
@@ -265,12 +267,10 @@ private:
                     }
 
                     *entry = CreateNewScenarioEntry(path, timestamp, &info);
-                    delete stream;
                     return true;
                 }
                 else
                 {
-                    delete stream;
                     log_verbose("%s is not a scenario", path.c_str());
                 }
             }
