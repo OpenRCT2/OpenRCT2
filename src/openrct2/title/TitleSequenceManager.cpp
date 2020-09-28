@@ -139,7 +139,7 @@ namespace TitleSequenceManager
     {
         std::string path = GetNewTitleSequencePath(std::string(name), true);
         auto seq = CreateTitleSequence();
-        seq->Name = String::Duplicate(name);
+        seq->Name = name;
         seq->Path = String::Duplicate(path.c_str());
         seq->IsZip = true;
 

@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -89,7 +89,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
     auto commands = LegacyScriptRead(reinterpret_cast<utf8*>(script.data()), script.size(), saves);
 
     auto seq = CreateTitleSequence();
-    seq->Name = Path::GetFileNameWithoutExtension(path);
+    seq->Name = Path::GetFileNameWithoutExtension(std::string(path));
     seq->Path = String::Duplicate(path);
     for (auto* save : saves)
     {
@@ -102,7 +102,6 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
 
 void FreeTitleSequence(TitleSequence& seq)
 {
-    Memory::Free(seq.Name);
     Memory::Free(seq.Path);
 }
 
@@ -527,7 +526,7 @@ static std::string LegacyScriptWrite(const TitleSequence& seq)
     auto sb = StringBuilder(128);
 
     sb.Append("# SCRIPT FOR ");
-    sb.Append(seq.Name);
+    sb.Append(seq.Name.c_str());
     sb.Append("\n");
     for (const auto& command : seq.Commands)
     {
