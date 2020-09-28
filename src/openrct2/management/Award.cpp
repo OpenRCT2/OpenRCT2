@@ -28,7 +28,7 @@ constexpr uint8_t POSITIVE = 1;
 static constexpr const uint8_t AwardPositiveMap[] = {
     NEGATIVE, // ParkAward::MostUntidy
     POSITIVE, // ParkAward::MostTidy
-    POSITIVE, // ParkAward::MostBestRollercoasters
+    POSITIVE, // ParkAward::BestRollerCoasters
     POSITIVE, // ParkAward::BestValue
     POSITIVE, // ParkAward::MostBeautiful
     NEGATIVE, // ParkAward::WorstValue

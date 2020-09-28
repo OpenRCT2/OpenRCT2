@@ -21,7 +21,7 @@ enum class ParkAward : uint8_t
 {
     MostUntidy,
     MostTidy,
-    BestRollercoasters, // BestRollercoasters or BestRollerCoasters?
+    BestRollerCoasters,
     BestValue,
     MostBeautiful,
     WorstValue,
