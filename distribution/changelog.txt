@@ -3,6 +3,7 @@
 - Feature: [#12999] .sea (RCT Classic) scenarios are now listed in the “New Scenario” dialog.
 - Feature: [#13000] objective_options command for console.
 - Fix: [#3200] Close Construction window upon selecting vehicle page.
+- Fix: [#13021] Mowed grass and weeds don't show up in extra zoom levels.
 - Improved: [#13023] Made add_news_item console command last argument, assoc, optional.
 
 0.3.1 (2020-09-27)
