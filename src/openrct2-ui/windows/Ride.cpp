@@ -615,190 +615,136 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_set_page(rct_window *w, int32_t page);
 
 // 0x0098DFD4
-static rct_window_event_list window_ride_main_events = {};
-
-static void window_ride_main_events_init()
+static rct_window_event_list window_ride_main_events([](auto& events)
 {
-    auto& events = window_ride_main_events;
-
-    events.mouse_up = window_ride_main_mouseup;
-    events.resize = window_ride_main_resize;
-    events.mouse_down = window_ride_main_mousedown;
-    events.dropdown = window_ride_main_dropdown;
-    events.update = window_ride_main_update;
-    events.text_input = window_ride_main_textinput;
-    events.viewport_rotate = window_ride_main_viewport_rotate;
-    events.invalidate = window_ride_main_invalidate;
-    events.paint = window_ride_main_paint;
-}
+    events.mouse_up = &window_ride_main_mouseup;
+    events.resize = &window_ride_main_resize;
+    events.mouse_down = &window_ride_main_mousedown;
+    events.dropdown = &window_ride_main_dropdown;
+    events.update = &window_ride_main_update;
+    events.text_input = &window_ride_main_textinput;
+    events.viewport_rotate = &window_ride_main_viewport_rotate;
+    events.invalidate = &window_ride_main_invalidate;
+    events.paint = &window_ride_main_paint;
+});
 
 // 0x0098E204
-static rct_window_event_list window_ride_vehicle_events = {};
-
-static void window_ride_vehicle_events_init()
+static rct_window_event_list window_ride_vehicle_events([](auto& events)
 {
-    auto& events = window_ride_vehicle_events;
-
-    events.mouse_up = window_ride_vehicle_mouseup;
-    events.resize = window_ride_vehicle_resize;
-    events.mouse_down = window_ride_vehicle_mousedown;
-    events.dropdown = window_ride_vehicle_dropdown;
-    events.update = window_ride_vehicle_update;
-    events.invalidate = window_ride_vehicle_invalidate;
-    events.paint = window_ride_vehicle_paint;
-    events.scroll_paint = window_ride_vehicle_scrollpaint;
-}
+    events.mouse_up = &window_ride_vehicle_mouseup;
+    events.resize = &window_ride_vehicle_resize;
+    events.mouse_down = &window_ride_vehicle_mousedown;
+    events.dropdown = &window_ride_vehicle_dropdown;
+    events.update = &window_ride_vehicle_update;
+    events.invalidate = &window_ride_vehicle_invalidate;
+    events.paint = &window_ride_vehicle_paint;
+    events.scroll_paint = &window_ride_vehicle_scrollpaint;
+});
 
 // 0x0098E0B4
-static rct_window_event_list window_ride_operating_events = {};
-
-static void window_ride_operating_events_init()
+static rct_window_event_list window_ride_operating_events([](auto& events)
 {
-    auto& events = window_ride_operating_events;
-
-    events.mouse_up = window_ride_operating_mouseup;
-    events.resize = window_ride_operating_resize;
-    events.mouse_down = window_ride_operating_mousedown;
-    events.dropdown = window_ride_operating_dropdown;
-    events.update = window_ride_operating_update;
-    events.invalidate = window_ride_operating_invalidate;
-    events.paint = window_ride_operating_paint;
-}
+    events.mouse_up = &window_ride_operating_mouseup;
+    events.resize = &window_ride_operating_resize;
+    events.mouse_down = &window_ride_operating_mousedown;
+    events.dropdown = &window_ride_operating_dropdown;
+    events.update = &window_ride_operating_update;
+    events.invalidate = &window_ride_operating_invalidate;
+    events.paint = &window_ride_operating_paint;
+});
 
 // 0x0098E124
-static rct_window_event_list window_ride_maintenance_events = {};
-
-static void window_ride_maintenance_events_init()
+static rct_window_event_list window_ride_maintenance_events([](auto& events)
 {
-    auto& events = window_ride_maintenance_events;
-
-    events.mouse_up = window_ride_maintenance_mouseup;
-    events.resize = window_ride_maintenance_resize;
-    events.mouse_down = window_ride_maintenance_mousedown;
-    events.dropdown = window_ride_maintenance_dropdown;
-    events.update = window_ride_maintenance_update;
-    events.invalidate = window_ride_maintenance_invalidate;
-    events.paint = window_ride_maintenance_paint;
-}
+    events.mouse_up = &window_ride_maintenance_mouseup;
+    events.resize = &window_ride_maintenance_resize;
+    events.mouse_down = &window_ride_maintenance_mousedown;
+    events.dropdown = &window_ride_maintenance_dropdown;
+    events.update = &window_ride_maintenance_update;
+    events.invalidate = &window_ride_maintenance_invalidate;
+    events.paint = &window_ride_maintenance_paint;
+});
 
 // 0x0098E044
-static rct_window_event_list window_ride_colour_events = {};
-
-static void window_ride_colour_events_init()
+static rct_window_event_list window_ride_colour_events([](auto& events)
 {
-    auto& events = window_ride_colour_events;
-
-    events.close = window_ride_colour_close;
-    events.mouse_up = window_ride_colour_mouseup;
-    events.resize = window_ride_colour_resize;
-    events.mouse_down = window_ride_colour_mousedown;
-    events.dropdown = window_ride_colour_dropdown;
-    events.update = window_ride_colour_update;
-    events.tool_down = window_ride_colour_tooldown;
-    events.tool_drag = window_ride_colour_tooldrag;
-    events.invalidate = window_ride_colour_invalidate;
-    events.paint = window_ride_colour_paint;
-    events.scroll_paint = window_ride_colour_scrollpaint;
-}
+    events.close = &window_ride_colour_close;
+    events.mouse_up = &window_ride_colour_mouseup;
+    events.resize = &window_ride_colour_resize;
+    events.mouse_down = &window_ride_colour_mousedown;
+    events.dropdown = &window_ride_colour_dropdown;
+    events.update = &window_ride_colour_update;
+    events.tool_down = &window_ride_colour_tooldown;
+    events.tool_drag = &window_ride_colour_tooldrag;
+    events.invalidate = &window_ride_colour_invalidate;
+    events.paint = &window_ride_colour_paint;
+    events.scroll_paint = &window_ride_colour_scrollpaint;
+});
 
 // 0x0098E194
-static rct_window_event_list window_ride_music_events = {};
-
-static void window_ride_music_events_init()
+static rct_window_event_list window_ride_music_events([](auto& events)
 {
-    auto& events = window_ride_music_events;
-
-    events.mouse_up = window_ride_music_mouseup;
-    events.resize = window_ride_music_resize;
-    events.mouse_down = window_ride_music_mousedown;
-    events.dropdown = window_ride_music_dropdown;
-    events.update = window_ride_music_update;
-    events.invalidate = window_ride_music_invalidate;
-    events.paint = window_ride_music_paint;
-}
+    events.mouse_up = &window_ride_music_mouseup;
+    events.resize = &window_ride_music_resize;
+    events.mouse_down = &window_ride_music_mousedown;
+    events.dropdown = &window_ride_music_dropdown;
+    events.update = &window_ride_music_update;
+    events.invalidate = &window_ride_music_invalidate;
+    events.paint = &window_ride_music_paint;
+});
 
 // 0x0098DE14
-static rct_window_event_list window_ride_measurements_events = {};
-
-static void window_ride_measurements_events_init()
+static rct_window_event_list window_ride_measurements_events([](auto& events)
 {
-    auto& events = window_ride_measurements_events;
-
-    events.close = window_ride_measurements_close;
-    events.mouse_up = window_ride_measurements_mouseup;
-    events.resize = window_ride_measurements_resize;
-    events.mouse_down = window_ride_measurements_mousedown;
-    events.dropdown = window_ride_measurements_dropdown;
-    events.update = window_ride_measurements_update;
-    events.tool_down = window_ride_measurements_tooldown;
-    events.tool_drag = window_ride_measurements_tooldrag;
-    events.tool_abort = window_ride_measurements_toolabort;
-    events.invalidate = window_ride_measurements_invalidate;
-    events.paint = window_ride_measurements_paint;
-}
+    events.close = &window_ride_measurements_close;
+    events.mouse_up = &window_ride_measurements_mouseup;
+    events.resize = &window_ride_measurements_resize;
+    events.mouse_down = &window_ride_measurements_mousedown;
+    events.dropdown = &window_ride_measurements_dropdown;
+    events.update = &window_ride_measurements_update;
+    events.tool_down = &window_ride_measurements_tooldown;
+    events.tool_drag = &window_ride_measurements_tooldrag;
+    events.tool_abort = &window_ride_measurements_toolabort;
+    events.invalidate = &window_ride_measurements_invalidate;
+    events.paint = &window_ride_measurements_paint;
+});
 
 // 0x0098DF64
-static rct_window_event_list window_ride_graphs_events = {};
-
-static void window_ride_graphs_events_init()
+static rct_window_event_list window_ride_graphs_events([](auto& events)
 {
-    auto& events = window_ride_graphs_events;
-
-    events.mouse_up = window_ride_graphs_mouseup;
-    events.resize = window_ride_graphs_resize;
-    events.mouse_down = window_ride_graphs_mousedown;
-    events.update = window_ride_graphs_update;
-    events.get_scroll_size = window_ride_graphs_scrollgetheight;
-    events.unknown_15 = window_ride_graphs_15;
-    events.tooltip = window_ride_graphs_tooltip;
-    events.invalidate = window_ride_graphs_invalidate;
-    events.paint = window_ride_graphs_paint;
-    events.scroll_paint = window_ride_graphs_scrollpaint;
-}
+    events.mouse_up = &window_ride_graphs_mouseup;
+    events.resize = &window_ride_graphs_resize;
+    events.mouse_down = &window_ride_graphs_mousedown;
+    events.update = &window_ride_graphs_update;
+    events.get_scroll_size = &window_ride_graphs_scrollgetheight;
+    events.unknown_15 = &window_ride_graphs_15;
+    events.tooltip = &window_ride_graphs_tooltip;
+    events.invalidate = &window_ride_graphs_invalidate;
+    events.paint = &window_ride_graphs_paint;
+    events.scroll_paint = &window_ride_graphs_scrollpaint;
+});
 
 // 0x0098DEF4
-static rct_window_event_list window_ride_income_events = {};
-
-static void window_ride_income_events_init()
+static rct_window_event_list window_ride_income_events([](auto& events)
 {
-    auto& events = window_ride_income_events;
-
-    events.mouse_up = window_ride_income_mouseup;
-    events.resize = window_ride_income_resize;
-    events.mouse_down = window_ride_income_mousedown;
-    events.update = window_ride_income_update;
-    events.text_input = window_ride_income_textinput;
-    events.invalidate = window_ride_income_invalidate;
-    events.paint = window_ride_income_paint;
-}
+    events.mouse_up = &window_ride_income_mouseup;
+    events.resize = &window_ride_income_resize;
+    events.mouse_down = &window_ride_income_mousedown;
+    events.update = &window_ride_income_update;
+    events.text_input = &window_ride_income_textinput;
+    events.invalidate = &window_ride_income_invalidate;
+    events.paint = &window_ride_income_paint;
+});
 
 // 0x0098DE84
-static rct_window_event_list window_ride_customer_events = {};
-
-static void window_ride_customer_events_init()
+static rct_window_event_list window_ride_customer_events([](auto& events)
 {
-    auto& events = window_ride_customer_events;
-
-    events.mouse_up = window_ride_customer_mouseup;
-    events.resize = window_ride_customer_resize;
-    events.update = window_ride_customer_update;
-    events.invalidate = window_ride_customer_invalidate;
-    events.paint = window_ride_customer_paint;
-}
-
-static void window_ride_events_init_all()
-{
-    window_ride_main_events_init();
-    window_ride_vehicle_events_init();
-    window_ride_operating_events_init();
-    window_ride_maintenance_events_init();
-    window_ride_colour_events_init();
-    window_ride_music_events_init();
-    window_ride_measurements_events_init();
-    window_ride_graphs_events_init();
-    window_ride_income_events_init();
-    window_ride_customer_events_init();
-}
+    events.mouse_up = &window_ride_customer_mouseup;
+    events.resize = &window_ride_customer_resize;
+    events.update = &window_ride_customer_update;
+    events.invalidate = &window_ride_customer_invalidate;
+    events.paint = &window_ride_customer_paint;
+});
 
 static rct_window_event_list *window_ride_page_events[] = {
     &window_ride_main_events,
@@ -1309,7 +1255,6 @@ static rct_window* window_ride_open(Ride* ride)
 {
     rct_window* w;
 
-    window_ride_events_init_all();
     w = window_create_auto_pos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
     w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->enabled_widgets = window_ride_page_enabled_widgets[WINDOW_RIDE_PAGE_MAIN];

@@ -62,26 +62,22 @@ static bool window_title_editor_check_can_edit();
 static void window_title_editor_add_park_callback(int32_t result, const utf8 * path);
 static void window_title_editor_rename_park(size_t index, const utf8 * name);
 
-static rct_window_event_list window_title_editor_events = {};
-
-static void window_title_editor_events_init()
+static rct_window_event_list window_title_editor_events([](auto& events)
 {
-    auto& events = window_title_editor_events;
-
-    events.close = window_title_editor_close;
-    events.mouse_up = window_title_editor_mouseup;
-    events.resize = window_title_editor_resize;
-    events.mouse_down = window_title_editor_mousedown;
-    events.dropdown = window_title_editor_dropdown;
-    events.update = window_title_editor_update;
-    events.get_scroll_size = window_title_editor_scrollgetsize;
-    events.scroll_mousedown = window_title_editor_scrollmousedown;
-    events.scroll_mouseover = window_title_editor_scrollmouseover;
-    events.text_input = window_title_editor_textinput;
-    events.invalidate = window_title_editor_invalidate;
-    events.paint = window_title_editor_paint;
-    events.scroll_paint = window_title_editor_scrollpaint;
-}
+    events.close = &window_title_editor_close;
+    events.mouse_up = &window_title_editor_mouseup;
+    events.resize = &window_title_editor_resize;
+    events.mouse_down = &window_title_editor_mousedown;
+    events.dropdown = &window_title_editor_dropdown;
+    events.update = &window_title_editor_update;
+    events.get_scroll_size = &window_title_editor_scrollgetsize;
+    events.scroll_mousedown = &window_title_editor_scrollmousedown;
+    events.scroll_mouseover = &window_title_editor_scrollmouseover;
+    events.text_input = &window_title_editor_textinput;
+    events.invalidate = &window_title_editor_invalidate;
+    events.paint = &window_title_editor_paint;
+    events.scroll_paint = &window_title_editor_scrollpaint;
+});
 
 enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
     WIDX_TITLE_EDITOR_BACKGROUND,
@@ -213,7 +209,6 @@ void window_title_editor_open(int32_t tab)
     if (_selectedTitleSequence == SIZE_MAX)
         _selectedTitleSequence = title_get_config_sequence();
 
-    window_title_editor_events_init();
     window = window_create_auto_pos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
     window->widgets = window_title_editor_widgets;
     window->enabled_widgets = (1 << WIDX_TITLE_EDITOR_CLOSE) | (1 << WIDX_TITLE_EDITOR_PRESETS_TAB)

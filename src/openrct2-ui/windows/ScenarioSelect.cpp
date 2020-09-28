@@ -110,22 +110,18 @@ static void window_scenarioselect_invalidate(rct_window *w);
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_scenarioselect_events = {};
-
-static void window_scenarioselect_events_init()
+static rct_window_event_list window_scenarioselect_events([](auto& events)
 {
-    auto& events = window_scenarioselect_events;
-
-    events.close = window_scenarioselect_close;
-    events.mouse_up = window_scenarioselect_mouseup;
-    events.mouse_down = window_scenarioselect_mousedown;
-    events.get_scroll_size = window_scenarioselect_scrollgetsize;
-    events.scroll_mousedown = window_scenarioselect_scrollmousedown;
-    events.scroll_mouseover = window_scenarioselect_scrollmouseover;
-    events.invalidate = window_scenarioselect_invalidate;
-    events.paint = window_scenarioselect_paint;
-    events.scroll_paint = window_scenarioselect_scrollpaint;
-}
+    events.close = &window_scenarioselect_close;
+    events.mouse_up = &window_scenarioselect_mouseup;
+    events.mouse_down = &window_scenarioselect_mousedown;
+    events.get_scroll_size = &window_scenarioselect_scrollgetsize;
+    events.scroll_mousedown = &window_scenarioselect_scrollmousedown;
+    events.scroll_mouseover = &window_scenarioselect_scrollmouseover;
+    events.invalidate = &window_scenarioselect_invalidate;
+    events.paint = &window_scenarioselect_paint;
+    events.scroll_paint = &window_scenarioselect_scrollpaint;
+});
 // clang-format on
 
 static void draw_category_heading(
@@ -169,7 +165,6 @@ rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool ti
     else
         windowWidth = 733;
 
-    window_scenarioselect_events_init();
     window = window_create_centred(
         windowWidth, windowHeight, &window_scenarioselect_events, WC_SCENARIO_SELECT,
         WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0));

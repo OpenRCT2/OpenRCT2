@@ -36,15 +36,11 @@ static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widget
 static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x9A3F7C
-static rct_window_event_list window_shortcut_change_events = {};
-
-static void window_shortcut_change_events_init()
+static rct_window_event_list window_shortcut_change_events([](auto& events)
 {
-    auto& events = window_shortcut_change_events;
-
-    events.mouse_up = window_shortcut_change_mouseup;
-    events.paint = window_shortcut_change_paint;
-}
+    events.mouse_up = &window_shortcut_change_mouseup;
+    events.paint = &window_shortcut_change_paint;
+});
 // clang-format on
 
 static rct_string_id CurrentShortcutKeyStringId{};
@@ -58,7 +54,6 @@ rct_window* window_shortcut_change_open(OpenRCT2::Input::Shortcut shortcut, rct_
     gKeyboardShortcutChangeId = shortcut;
     CurrentShortcutKeyStringId = key_string_id;
 
-    window_shortcut_change_events_init();
     rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
 
     w->widgets = window_shortcut_change_widgets;

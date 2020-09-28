@@ -270,23 +270,19 @@ static void window_top_toolbar_tool_abort(rct_window *w, rct_widgetindex widgetI
 static void window_top_toolbar_invalidate(rct_window *w);
 static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_top_toolbar_events = {};
-
-static void window_top_toolbar_events_init()
+static rct_window_event_list window_top_toolbar_events([](auto& events)
 {
-    auto& events = window_top_toolbar_events;
-
-    events.mouse_up = window_top_toolbar_mouseup;
-    events.mouse_down = window_top_toolbar_mousedown;
-    events.dropdown = window_top_toolbar_dropdown;
-    events.tool_update = window_top_toolbar_tool_update;
-    events.tool_down = window_top_toolbar_tool_down;
-    events.tool_drag = window_top_toolbar_tool_drag;
-    events.tool_up = window_top_toolbar_tool_up;
-    events.tool_abort = window_top_toolbar_tool_abort;
-    events.invalidate = window_top_toolbar_invalidate;
-    events.paint = window_top_toolbar_paint;
-}
+    events.mouse_up = &window_top_toolbar_mouseup;
+    events.mouse_down = &window_top_toolbar_mousedown;
+    events.dropdown = &window_top_toolbar_dropdown;
+    events.tool_update = &window_top_toolbar_tool_update;
+    events.tool_down = &window_top_toolbar_tool_down;
+    events.tool_drag = &window_top_toolbar_tool_drag;
+    events.tool_up = &window_top_toolbar_tool_up;
+    events.tool_abort = &window_top_toolbar_tool_abort;
+    events.invalidate = &window_top_toolbar_invalidate;
+    events.paint = &window_top_toolbar_paint;
+});
 // clang-format on
 
 static void top_toolbar_init_view_menu(rct_window* window, rct_widget* widget);
@@ -328,7 +324,6 @@ static colour_t _tertiaryColour;
  */
 rct_window* window_top_toolbar_open()
 {
-    window_top_toolbar_events_init();
     rct_window* window = window_create(
         ScreenCoordsXY(0, 0), context_get_width(), TOP_TOOLBAR_HEIGHT + 1, &window_top_toolbar_events, WC_TOP_TOOLBAR,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);

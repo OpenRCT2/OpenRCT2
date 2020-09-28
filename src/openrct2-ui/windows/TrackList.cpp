@@ -67,23 +67,19 @@ static void window_track_list_invalidate(rct_window *w);
 static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_track_list_events = {};
-
-static void window_track_list_events_init()
+static rct_window_event_list window_track_list_events([](auto& events)
 {
-    auto& events = window_track_list_events;
-
-    events.close = window_track_list_close;
-    events.mouse_up = window_track_list_mouseup;
-    events.update = window_track_list_update;
-    events.get_scroll_size = window_track_list_scrollgetsize;
-    events.scroll_mousedown = window_track_list_scrollmousedown;
-    events.scroll_mouseover = window_track_list_scrollmouseover;
-    events.text_input = window_track_list_textinput;
-    events.invalidate = window_track_list_invalidate;
-    events.paint = window_track_list_paint;
-    events.scroll_paint = window_track_list_scrollpaint;
-}
+    events.close = &window_track_list_close;
+    events.mouse_up = &window_track_list_mouseup;
+    events.update = &window_track_list_update;
+    events.get_scroll_size = &window_track_list_scrollgetsize;
+    events.scroll_mousedown = &window_track_list_scrollmousedown;
+    events.scroll_mouseover = &window_track_list_scrollmouseover;
+    events.text_input = &window_track_list_textinput;
+    events.invalidate = &window_track_list_invalidate;
+    events.paint = &window_track_list_paint;
+    events.scroll_paint = &window_track_list_scrollpaint;
+});
 // clang-format on
 
 constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
@@ -124,7 +120,6 @@ rct_window* window_track_list_open(RideSelection item)
         screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
     }
 
-    window_track_list_events_init();
     rct_window* w = window_create(screenPos, 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
 
     window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;

@@ -122,22 +122,18 @@ static TITLE_COMMAND_ORDER get_command_info(int32_t index);
 static TileCoordsXY get_location();
 static uint8_t get_zoom();
 
-static rct_window_event_list window_title_command_editor_events = {};
-
-static void window_title_command_editor_events_init()
+static rct_window_event_list window_title_command_editor_events([](auto& events)
 {
-    auto& events = window_title_command_editor_events;
-
-    events.close = window_title_command_editor_close;
-    events.mouse_up = window_title_command_editor_mouseup;
-    events.mouse_down = window_title_command_editor_mousedown;
-    events.dropdown = window_title_command_editor_dropdown;
-    events.update = window_title_command_editor_update;
-    events.tool_down = window_title_command_editor_tool_down;
-    events.text_input = window_title_command_editor_textinput;
-    events.invalidate = window_title_command_editor_invalidate;
-    events.paint = window_title_command_editor_paint;
-}
+    events.close = &window_title_command_editor_close;
+    events.mouse_up = &window_title_command_editor_mouseup;
+    events.mouse_down = &window_title_command_editor_mousedown;
+    events.dropdown = &window_title_command_editor_dropdown;
+    events.update = &window_title_command_editor_update;
+    events.tool_down = &window_title_command_editor_tool_down;
+    events.text_input = &window_title_command_editor_textinput;
+    events.invalidate = &window_title_command_editor_invalidate;
+    events.paint = &window_title_command_editor_paint;
+});
 // clang-format on
 
 static void scenario_select_callback(const utf8* path)
@@ -216,7 +212,6 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr)
         return;
 
-    window_title_command_editor_events_init();
     rct_window* window = window_create_centred(
         WW, WH, &window_title_command_editor_events, WC_TITLE_COMMAND_EDITOR, WF_STICK_TO_FRONT);
     window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].string = textbox1Buffer;

@@ -61,24 +61,20 @@ static void window_land_rights_toolabort(rct_window *w, rct_widgetindex widgetIn
 static bool land_rights_tool_is_active();
 
 
-static rct_window_event_list window_land_rights_events = {};
-
-static void window_land_rights_events_init()
+static rct_window_event_list window_land_rights_events([](auto& events)
 {
-    auto& events = window_land_rights_events;
-
-    events.close = window_land_rights_close;
-    events.mouse_up = window_land_rights_mouseup;
-    events.mouse_down = window_land_rights_mousedown;
-    events.update = window_land_rights_update;
-    events.tool_update = window_land_rights_toolupdate;
-    events.tool_down = window_land_rights_tooldown;
-    events.tool_drag = window_land_rights_tooldrag;
-    events.tool_abort = window_land_rights_toolabort;
-    events.text_input = window_land_rights_textinput;
-    events.invalidate = window_land_rights_invalidate;
-    events.paint = window_land_rights_paint;
-}
+    events.close = &window_land_rights_close;
+    events.mouse_up = &window_land_rights_mouseup;
+    events.mouse_down = &window_land_rights_mousedown;
+    events.update = &window_land_rights_update;
+    events.tool_update = &window_land_rights_toolupdate;
+    events.tool_down = &window_land_rights_tooldown;
+    events.tool_drag = &window_land_rights_tooldrag;
+    events.tool_abort = &window_land_rights_toolabort;
+    events.text_input = &window_land_rights_textinput;
+    events.invalidate = &window_land_rights_invalidate;
+    events.paint = &window_land_rights_paint;
+});
 // clang-format on
 
 constexpr uint8_t LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS = 0;
@@ -96,7 +92,6 @@ rct_window* window_land_rights_open()
     if (window != nullptr)
         return window;
 
-    window_land_rights_events_init();
     window = window_create(ScreenCoordsXY(context_get_width() - 98, 29), 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
     window->widgets = window_land_rights_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW)

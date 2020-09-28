@@ -72,16 +72,12 @@ static void window_save_prompt_mouseup(rct_window *w, rct_widgetindex widgetInde
 static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_save_prompt_callback(int32_t result, const utf8 * path);
 
-static rct_window_event_list window_save_prompt_events = {};
-
-static void window_save_prompt_events_init()
+static rct_window_event_list window_save_prompt_events([](auto& events)
 {
-    auto& events = window_save_prompt_events;
-
-    events.close = window_save_prompt_close;
-    events.mouse_up = window_save_prompt_mouseup;
-    events.paint = window_save_prompt_paint;
-}
+    events.close = &window_save_prompt_close;
+    events.mouse_up = &window_save_prompt_mouseup;
+    events.paint = &window_save_prompt_paint;
+});
 // clang-format on
 
 /**
@@ -150,7 +146,6 @@ rct_window* window_save_prompt_open()
         log_warning("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
     }
-    window_save_prompt_events_init();
     window = window_create_centred(
         width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 

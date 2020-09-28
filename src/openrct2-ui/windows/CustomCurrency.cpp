@@ -50,18 +50,14 @@ static void custom_currency_window_text_input(struct rct_window *w, rct_widgetin
 static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 
-static rct_window_event_list _windowCustomCurrencyEvents = {};
-
-static void _windowCustomCurrencyEvents_init()
+static rct_window_event_list _windowCustomCurrencyEvents([](auto& events)
 {
-    auto& events = _windowCustomCurrencyEvents;
-
-    events.mouse_up = custom_currency_window_mouseup;
-    events.mouse_down = custom_currency_window_mousedown;
-    events.dropdown = custom_currency_window_dropdown;
-    events.text_input = custom_currency_window_text_input;
-    events.paint = custom_currency_window_paint;
-}
+    events.mouse_up = &custom_currency_window_mouseup;
+    events.mouse_down = &custom_currency_window_mousedown;
+    events.dropdown = &custom_currency_window_dropdown;
+    events.text_input = &custom_currency_window_text_input;
+    events.paint = &custom_currency_window_paint;
+});
 // clang-format on
 
 rct_window* custom_currency_window_open()
@@ -73,7 +69,6 @@ rct_window* custom_currency_window_open()
     if (window != nullptr)
         return window;
 
-    _windowCustomCurrencyEvents_init();
     window = window_create_centred(400, 100, &_windowCustomCurrencyEvents, WC_CUSTOM_CURRENCY_CONFIG, 0);
     window->widgets = window_custom_currency_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RATE) | (1 << WIDX_RATE_UP) | (1 << WIDX_RATE_DOWN)

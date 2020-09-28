@@ -47,18 +47,14 @@ static void window_viewport_update(rct_window *w);
 static void window_viewport_invalidate(rct_window *w);
 static void window_viewport_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_viewport_events = {};
-
-static void window_viewport_events_init()
+static rct_window_event_list window_viewport_events([](auto& events)
 {
-    auto& events = window_viewport_events;
-
-    events.mouse_up = window_viewport_mouseup;
-    events.resize = window_viewport_resize;
-    events.update = window_viewport_update;
-    events.invalidate = window_viewport_invalidate;
-    events.paint = window_viewport_paint;
-}
+    events.mouse_up = &window_viewport_mouseup;
+    events.resize = &window_viewport_resize;
+    events.update = &window_viewport_update;
+    events.invalidate = &window_viewport_invalidate;
+    events.paint = &window_viewport_paint;
+});
 // clang-format on
 
 static int32_t _viewportNumber = 1;
@@ -68,7 +64,6 @@ static int32_t _viewportNumber = 1;
  */
 rct_window* window_viewport_open()
 {
-    window_viewport_events_init();
     rct_window* w = window_create_auto_pos(WW, WH, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
     w->widgets = window_viewport_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT) | (1 << WIDX_LOCATE);

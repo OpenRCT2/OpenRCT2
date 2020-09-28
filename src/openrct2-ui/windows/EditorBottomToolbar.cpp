@@ -58,16 +58,12 @@ static void window_editor_bottom_toolbar_jump_forward_to_options_selection();
 static void window_editor_bottom_toolbar_jump_forward_to_objective_selection();
 static void window_editor_bottom_toolbar_jump_forward_to_save_scenario();
 
-static rct_window_event_list window_editor_bottom_toolbar_events = {};
-
-static void window_editor_bottom_toolbar_events_init()
+static rct_window_event_list window_editor_bottom_toolbar_events([](auto& events)
 {
-    auto& events = window_editor_bottom_toolbar_events;
-
-    events.mouse_up = window_editor_bottom_toolbar_mouseup;
-    events.invalidate = window_editor_bottom_toolbar_invalidate;
-    events.paint = window_editor_bottom_toolbar_paint;
-}
+    events.mouse_up = &window_editor_bottom_toolbar_mouseup;
+    events.invalidate = &window_editor_bottom_toolbar_invalidate;
+    events.paint = &window_editor_bottom_toolbar_paint;
+});
 
 static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
     nullptr,
@@ -109,7 +105,6 @@ static constexpr const rct_string_id EditorStepNames[] = {
  */
 rct_window* window_editor_bottom_toolbar_open()
 {
-    window_editor_bottom_toolbar_events_init();
     rct_window* window = window_create(
         ScreenCoordsXY(0, context_get_height() - 32), context_get_width(), 32, &window_editor_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);

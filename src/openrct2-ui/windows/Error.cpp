@@ -30,15 +30,11 @@ static rct_widget window_error_widgets[] = {
 static void window_error_unknown5(rct_window *w);
 static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_error_events = {};
-
-static void window_error_events_init()
+static rct_window_event_list window_error_events([](auto& events)
 {
-    auto& events = window_error_events;
-
-    events.unknown_05 = window_error_unknown5;
-    events.paint = window_error_paint;
-}
+    events.unknown_05 = &window_error_unknown5;
+    events.paint = &window_error_paint;
+});
 // clang-format on
 
 static std::string _window_error_text;
@@ -122,7 +118,6 @@ rct_window* window_error_open(const std::string_view& title, const std::string_v
         windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
     }
 
-    window_error_events_init();
     w = window_create(
         windowPosition, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     w->widgets = window_error_widgets;

@@ -333,65 +333,41 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_cheats_set_page(rct_window *w, int32_t page);
 static void window_cheats_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_cheats_money_events = {};
-
-static void window_cheats_money_events_init()
+static rct_window_event_list window_cheats_money_events([](auto& events)
 {
-    auto& events = window_cheats_money_events;
+    events.mouse_up = &window_cheats_money_mouseup;
+    events.mouse_down = &window_cheats_money_mousedown;
+    events.update = &window_cheats_update;
+    events.text_input = &window_cheats_text_input;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-    events.mouse_up = window_cheats_money_mouseup;
-    events.mouse_down = window_cheats_money_mousedown;
-    events.update = window_cheats_update;
-    events.text_input = window_cheats_text_input;
-    events.invalidate = window_cheats_invalidate;
-    events.paint = window_cheats_paint;
-}
-
-static rct_window_event_list window_cheats_guests_events = {};
-
-static void window_cheats_guests_events_init()
+static rct_window_event_list window_cheats_guests_events([](auto& events)
 {
-    auto& events = window_cheats_guests_events;
+    events.mouse_up = &window_cheats_guests_mouseup;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-    events.mouse_up = window_cheats_guests_mouseup;
-    events.update = window_cheats_update;
-    events.invalidate = window_cheats_invalidate;
-    events.paint = window_cheats_paint;
-}
-
-static rct_window_event_list window_cheats_misc_events = {};
-
-static void window_cheats_misc_events_init()
+static rct_window_event_list window_cheats_misc_events([](auto& events)
 {
-    auto& events = window_cheats_misc_events;
+    events.mouse_up = &window_cheats_misc_mouseup;
+    events.mouse_down = &window_cheats_misc_mousedown;
+    events.dropdown = &window_cheats_misc_dropdown;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-    events.mouse_up = window_cheats_misc_mouseup;
-    events.mouse_down = window_cheats_misc_mousedown;
-    events.dropdown = window_cheats_misc_dropdown;
-    events.update = window_cheats_update;
-    events.invalidate = window_cheats_invalidate;
-    events.paint = window_cheats_paint;
-}
-
-static rct_window_event_list window_cheats_rides_events = {};
-
-static void window_cheats_rides_events_init()
+static rct_window_event_list window_cheats_rides_events([](auto& events)
 {
-    auto& events = window_cheats_rides_events;
-
-    events.mouse_up = window_cheats_rides_mouseup;
-    events.update = window_cheats_update;
-    events.invalidate = window_cheats_invalidate;
-    events.paint = window_cheats_paint;
-}
-
-static void window_cheats_events_init_all()
-{
-    window_cheats_money_events_init();
-    window_cheats_guests_events_init();
-    window_cheats_misc_events_init();
-    window_cheats_rides_events_init();
-}
+    events.mouse_up = &window_cheats_rides_mouseup;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
 
 static rct_window_event_list *window_cheats_page_events[] =
@@ -541,7 +517,6 @@ rct_window* window_cheats_open()
     if (window != nullptr)
         return window;
 
-    window_cheats_events_init_all();
     window = window_create(ScreenCoordsXY(32, 32), WW, WH, &window_cheats_money_events, WC_CHEATS, 0);
     window->widgets = window_cheats_money_widgets;
     window->enabled_widgets = window_cheats_page_enabled_widgets[0];

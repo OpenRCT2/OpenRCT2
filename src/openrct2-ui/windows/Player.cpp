@@ -88,21 +88,17 @@ static void window_player_overview_update(rct_window* w);
 static void window_player_overview_invalidate(rct_window *w);
 static void window_player_overview_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_player_overview_events = {};
-
-static void window_player_overview_events_init()
+static rct_window_event_list window_player_overview_events([](auto& events)
 {
-    auto& events = window_player_overview_events;
-
-    events.close = window_player_overview_close;
-    events.mouse_up = window_player_overview_mouse_up;
-    events.resize = window_player_overview_resize;
-    events.mouse_down = window_player_overview_mouse_down;
-    events.dropdown = window_player_overview_dropdown;
-    events.update = window_player_overview_update;
-    events.invalidate = window_player_overview_invalidate;
-    events.paint = window_player_overview_paint;
-}
+    events.close = &window_player_overview_close;
+    events.mouse_up = &window_player_overview_mouse_up;
+    events.resize = &window_player_overview_resize;
+    events.mouse_down = &window_player_overview_mouse_down;
+    events.dropdown = &window_player_overview_dropdown;
+    events.update = &window_player_overview_update;
+    events.invalidate = &window_player_overview_invalidate;
+    events.paint = &window_player_overview_paint;
+});
 
 static void window_player_statistics_close(rct_window *w);
 static void window_player_statistics_mouse_up(rct_window *w, rct_widgetindex widgetIndex);
@@ -111,25 +107,15 @@ static void window_player_statistics_update(rct_window* w);
 static void window_player_statistics_invalidate(rct_window *w);
 static void window_player_statistics_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_player_statistics_events = {};
-
-static void window_player_statistics_events_init()
+static rct_window_event_list window_player_statistics_events([](auto& events)
 {
-    auto& events = window_player_statistics_events;
-
-    events.close = window_player_statistics_close;
-    events.mouse_up = window_player_statistics_mouse_up;
-    events.resize = window_player_statistics_resize;
-    events.update = window_player_statistics_update;
-    events.invalidate = window_player_statistics_invalidate;
-    events.paint = window_player_statistics_paint;
-}
-
-static void window_player_events_init_all()
-{
-    window_player_overview_events_init();
-    window_player_statistics_events_init();
-}
+    events.close = &window_player_statistics_close;
+    events.mouse_up = &window_player_statistics_mouse_up;
+    events.resize = &window_player_statistics_resize;
+    events.update = &window_player_statistics_update;
+    events.invalidate = &window_player_statistics_invalidate;
+    events.paint = &window_player_statistics_paint;
+});
 
 static rct_window_event_list *window_player_page_events[] = {
     &window_player_overview_events,
@@ -165,7 +151,6 @@ rct_window* window_player_open(uint8_t id)
     window = window_bring_to_front_by_number(WC_PLAYER, id);
     if (window == nullptr)
     {
-        window_player_events_init_all();
         window = window_create_auto_pos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
         window->number = id;
         window->page = 0;

@@ -211,72 +211,48 @@ static void window_mapgen_heightmap_mousedown(rct_window *w, rct_widgetindex wid
 static void window_mapgen_heightmap_invalidate(rct_window *w);
 static void window_mapgen_heightmap_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list BaseEvents = {};
-
-static void BaseEvents_init()
+static rct_window_event_list BaseEvents([](auto& events)
 {
-    auto& events = BaseEvents;
+    events.close = &window_mapgen_shared_close;
+    events.mouse_up = &window_mapgen_base_mouseup;
+    events.mouse_down = &window_mapgen_base_mousedown;
+    events.dropdown = &window_mapgen_base_dropdown;
+    events.update = &window_mapgen_base_update;
+    events.text_input = &window_mapgen_textinput;
+    events.invalidate = &window_mapgen_base_invalidate;
+    events.paint = &window_mapgen_base_paint;
+});
 
-    events.close = window_mapgen_shared_close;
-    events.mouse_up = window_mapgen_base_mouseup;
-    events.mouse_down = window_mapgen_base_mousedown;
-    events.dropdown = window_mapgen_base_dropdown;
-    events.update = window_mapgen_base_update;
-    events.text_input = window_mapgen_textinput;
-    events.invalidate = window_mapgen_base_invalidate;
-    events.paint = window_mapgen_base_paint;
-}
-
-static rct_window_event_list RandomEvents = {};
-
-static void RandomEvents_init()
+static rct_window_event_list RandomEvents([](auto& events)
 {
-    auto& events = RandomEvents;
+    events.close = &window_mapgen_shared_close;
+    events.mouse_up = &window_mapgen_random_mouseup;
+    events.mouse_down = &window_mapgen_random_mousedown;
+    events.update = &window_mapgen_random_update;
+    events.invalidate = &window_mapgen_random_invalidate;
+    events.paint = &window_mapgen_random_paint;
+});
 
-    events.close = window_mapgen_shared_close;
-    events.mouse_up = window_mapgen_random_mouseup;
-    events.mouse_down = window_mapgen_random_mousedown;
-    events.update = window_mapgen_random_update;
-    events.invalidate = window_mapgen_random_invalidate;
-    events.paint = window_mapgen_random_paint;
-}
-
-static rct_window_event_list SimplexEvents = {};
-
-static void SimplexEvents_init()
+static rct_window_event_list SimplexEvents([](auto& events)
 {
-    auto& events = SimplexEvents;
+    events.close = &window_mapgen_shared_close;
+    events.mouse_up = &window_mapgen_simplex_mouseup;
+    events.mouse_down = &window_mapgen_simplex_mousedown;
+    events.dropdown = &window_mapgen_simplex_dropdown;
+    events.update = &window_mapgen_simplex_update;
+    events.text_input = &window_mapgen_textinput;
+    events.invalidate = &window_mapgen_simplex_invalidate;
+    events.paint = &window_mapgen_simplex_paint;
+});
 
-    events.close = window_mapgen_shared_close;
-    events.mouse_up = window_mapgen_simplex_mouseup;
-    events.mouse_down = window_mapgen_simplex_mousedown;
-    events.dropdown = window_mapgen_simplex_dropdown;
-    events.update = window_mapgen_simplex_update;
-    events.text_input = window_mapgen_textinput;
-    events.invalidate = window_mapgen_simplex_invalidate;
-    events.paint = window_mapgen_simplex_paint;
-}
-
-static rct_window_event_list HeightmapEvents = {};
-
-static void HeightmapEvents_init()
+static rct_window_event_list HeightmapEvents([](auto& events)
 {
-    auto& events = HeightmapEvents;
-
-    events.close = window_mapgen_shared_close;
-    events.mouse_up = window_mapgen_heightmap_mouseup;
-    events.mouse_down = window_mapgen_heightmap_mousedown;
-    events.invalidate = window_mapgen_heightmap_invalidate;
-    events.paint = window_mapgen_heightmap_paint;
-}
-
-static void window_mapgen_events_init_all()
-{
-    BaseEvents_init();
-    RandomEvents_init();
-    SimplexEvents_init();
-    HeightmapEvents_init();
-}
+    events.close = &window_mapgen_shared_close;
+    events.mouse_up = &window_mapgen_heightmap_mouseup;
+    events.mouse_down = &window_mapgen_heightmap_mousedown;
+    events.invalidate = &window_mapgen_heightmap_invalidate;
+    events.paint = &window_mapgen_heightmap_paint;
+});
 
 static rct_window_event_list *PageEvents[] = {
     &BaseEvents,
@@ -471,7 +447,6 @@ rct_window* window_mapgen_open()
         return w;
     }
 
-    window_mapgen_events_init_all();
     w = window_create_centred(WW, WH, PageEvents[WINDOW_MAPGEN_PAGE_BASE], WC_MAPGEN, WF_10);
     w->number = 0;
     w->frame_no = 0;

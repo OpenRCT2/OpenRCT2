@@ -89,24 +89,20 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_view_clipping_scrollgetsize(rct_window* w, int scrollIndex, int* width, int* height);
 static void window_view_clipping_close();
 
-static rct_window_event_list window_view_clipping_events = {};
-
-static void window_view_clipping_events_init()
+static rct_window_event_list window_view_clipping_events([](auto& events)
 {
-    auto& events = window_view_clipping_events;
-
-    events.close = window_view_clipping_close_button;
-    events.mouse_up = window_view_clipping_mouseup;
-    events.mouse_down = window_view_clipping_mousedown;
-    events.update = window_view_clipping_update;
-    events.tool_update = window_view_clipping_tool_update;
-    events.tool_down = window_view_clipping_tool_down;
-    events.tool_drag = window_view_clipping_tool_drag;
-    events.tool_up = window_view_clipping_tool_up;
-    events.get_scroll_size = window_view_clipping_scrollgetsize;
-    events.invalidate = window_view_clipping_invalidate;
-    events.paint = window_view_clipping_paint;
-}
+    events.close = &window_view_clipping_close_button;
+    events.mouse_up = &window_view_clipping_mouseup;
+    events.mouse_down = &window_view_clipping_mousedown;
+    events.update = &window_view_clipping_update;
+    events.tool_update = &window_view_clipping_tool_update;
+    events.tool_down = &window_view_clipping_tool_down;
+    events.tool_drag = &window_view_clipping_tool_drag;
+    events.tool_up = &window_view_clipping_tool_up;
+    events.get_scroll_size = &window_view_clipping_scrollgetsize;
+    events.invalidate = &window_view_clipping_invalidate;
+    events.paint = &window_view_clipping_paint;
+});
 // clang-format on
 
 #pragma endregion
@@ -134,7 +130,6 @@ rct_window* window_view_clipping_open()
     }
 
     // Window is not open - create it.
-    window_view_clipping_events_init();
     window = window_create(ScreenCoordsXY(32, 32), WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
     window->widgets = window_view_clipping_widgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)

@@ -140,45 +140,31 @@ static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawp
 static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 // 0x009A9DF4
-static rct_window_event_list window_objective_options_main_events = {};
-
-static void window_objective_options_main_events_init()
+static rct_window_event_list window_objective_options_main_events([](auto& events)
 {
-    auto& events = window_objective_options_main_events;
-
-    events.mouse_up = window_editor_objective_options_main_mouseup;
-    events.resize = window_editor_objective_options_main_resize;
-    events.mouse_down = window_editor_objective_options_main_mousedown;
-    events.dropdown = window_editor_objective_options_main_dropdown;
-    events.update = window_editor_objective_options_main_update;
-    events.text_input = window_editor_objective_options_main_textinput;
-    events.invalidate = window_editor_objective_options_main_invalidate;
-    events.paint = window_editor_objective_options_main_paint;
-}
+    events.mouse_up = &window_editor_objective_options_main_mouseup;
+    events.resize = &window_editor_objective_options_main_resize;
+    events.mouse_down = &window_editor_objective_options_main_mousedown;
+    events.dropdown = &window_editor_objective_options_main_dropdown;
+    events.update = &window_editor_objective_options_main_update;
+    events.text_input = &window_editor_objective_options_main_textinput;
+    events.invalidate = &window_editor_objective_options_main_invalidate;
+    events.paint = &window_editor_objective_options_main_paint;
+});
 
 // 0x009A9F58
-static rct_window_event_list window_objective_options_rides_events = {};
-
-static void window_objective_options_rides_events_init()
+static rct_window_event_list window_objective_options_rides_events([](auto& events)
 {
-    auto& events = window_objective_options_rides_events;
-
-    events.mouse_up = window_editor_objective_options_rides_mouseup;
-    events.resize = window_editor_objective_options_rides_resize;
-    events.update = window_editor_objective_options_rides_update;
-    events.get_scroll_size = window_editor_objective_options_rides_scrollgetheight;
-    events.scroll_mousedown = window_editor_objective_options_rides_scrollmousedown;
-    events.scroll_mouseover = window_editor_objective_options_rides_scrollmouseover;
-    events.invalidate = window_editor_objective_options_rides_invalidate;
-    events.paint = window_editor_objective_options_rides_paint;
-    events.scroll_paint = window_editor_objective_options_rides_scrollpaint;
-}
-
-static void window_editor_objective_options_events_init_all()
-{
-    window_objective_options_main_events_init();
-    window_objective_options_rides_events_init();
-}
+    events.mouse_up = &window_editor_objective_options_rides_mouseup;
+    events.resize = &window_editor_objective_options_rides_resize;
+    events.update = &window_editor_objective_options_rides_update;
+    events.get_scroll_size = &window_editor_objective_options_rides_scrollgetheight;
+    events.scroll_mousedown = &window_editor_objective_options_rides_scrollmousedown;
+    events.scroll_mouseover = &window_editor_objective_options_rides_scrollmouseover;
+    events.invalidate = &window_editor_objective_options_rides_invalidate;
+    events.paint = &window_editor_objective_options_rides_paint;
+    events.scroll_paint = &window_editor_objective_options_rides_scrollpaint;
+});
 
 static rct_window_event_list *window_editor_objective_options_page_events[] = {
     &window_objective_options_main_events,
@@ -236,7 +222,6 @@ rct_window* window_editor_objective_options_open()
     if (w != nullptr)
         return w;
 
-    window_editor_objective_options_events_init_all();
     w = window_create_centred(450, 228, &window_objective_options_main_events, WC_EDTIOR_OBJECTIVE_OPTIONS, WF_10);
     w->widgets = window_editor_objective_options_main_widgets;
     w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];

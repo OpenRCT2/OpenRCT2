@@ -91,23 +91,19 @@ static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_loadsave_events = {};
-
-static void window_loadsave_events_init()
+static rct_window_event_list window_loadsave_events([](auto& events)
 {
-    auto& events = window_loadsave_events;
-
-    events.close = window_loadsave_close;
-    events.mouse_up = window_loadsave_mouseup;
-    events.resize = window_loadsave_resize;
-    events.get_scroll_size = window_loadsave_scrollgetsize;
-    events.scroll_mousedown = window_loadsave_scrollmousedown;
-    events.scroll_mouseover = window_loadsave_scrollmouseover;
-    events.text_input = window_loadsave_textinput;
-    events.invalidate = window_loadsave_invalidate;
-    events.paint = window_loadsave_paint;
-    events.scroll_paint = window_loadsave_scrollpaint;
-}
+    events.close = &window_loadsave_close;
+    events.mouse_up = &window_loadsave_mouseup;
+    events.resize = &window_loadsave_resize;
+    events.get_scroll_size = &window_loadsave_scrollgetsize;
+    events.scroll_mousedown = &window_loadsave_scrollmousedown;
+    events.scroll_mouseover = &window_loadsave_scrollmouseover;
+    events.text_input = &window_loadsave_textinput;
+    events.invalidate = &window_loadsave_invalidate;
+    events.paint = &window_loadsave_paint;
+    events.scroll_paint = &window_loadsave_scrollpaint;
+});
 // clang-format on
 
 #pragma endregion
@@ -268,7 +264,6 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
     rct_window* w = window_bring_to_front_by_class(WC_LOADSAVE);
     if (w == nullptr)
     {
-        window_loadsave_events_init();
         w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
         w->widgets = window_loadsave_widgets;
         w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_NEW_FILE)
@@ -1146,15 +1141,10 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_overwrite_prompt_events = {};
-
-static void window_overwrite_prompt_events_init()
-{
-    auto& events = window_overwrite_prompt_events;
-
-    events.mouse_up = window_overwrite_prompt_mouseup;
-    events.paint = window_overwrite_prompt_paint;
-}
+static rct_window_event_list window_overwrite_prompt_events([](auto& events) {
+    events.mouse_up = &window_overwrite_prompt_mouseup;
+    events.paint = &window_overwrite_prompt_paint;
+});
 
 static char _window_overwrite_prompt_name[256];
 static char _window_overwrite_prompt_path[MAX_PATH];
@@ -1165,7 +1155,6 @@ static rct_window* window_overwrite_prompt_open(const char* name, const char* pa
 
     window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 
-    window_overwrite_prompt_events_init();
     w = window_create_centred(
         OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_overwrite_prompt_widgets;

@@ -112,38 +112,24 @@ static void window_research_funding_invalidate(rct_window *w);
 static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //
-static rct_window_event_list window_research_development_events = {};
-
-static void window_research_development_events_init()
+static rct_window_event_list window_research_development_events([](auto& events)
 {
-    auto& events = window_research_development_events;
-
-    events.mouse_up = window_research_development_mouseup;
-    events.update = window_research_development_update;
-    events.invalidate = window_research_development_invalidate;
-    events.paint = window_research_development_paint;
-}
+    events.mouse_up = &window_research_development_mouseup;
+    events.update = &window_research_development_update;
+    events.invalidate = &window_research_development_invalidate;
+    events.paint = &window_research_development_paint;
+});
 
 // 0x009890E8
-static rct_window_event_list window_research_funding_events = {};
-
-static void window_research_funding_events_init()
+static rct_window_event_list window_research_funding_events([](auto& events)
 {
-    auto& events = window_research_funding_events;
-
-    events.mouse_up = window_research_funding_mouseup;
-    events.mouse_down = window_research_funding_mousedown;
-    events.dropdown = window_research_funding_dropdown;
-    events.update = window_research_funding_update;
-    events.invalidate = window_research_funding_invalidate;
-    events.paint = window_research_funding_paint;
-}
-
-static void window_research_events_init_all()
-{
-    window_research_development_events_init();
-    window_research_funding_events_init();
-}
+    events.mouse_up = &window_research_funding_mouseup;
+    events.mouse_down = &window_research_funding_mousedown;
+    events.dropdown = &window_research_funding_dropdown;
+    events.update = &window_research_funding_update;
+    events.invalidate = &window_research_funding_invalidate;
+    events.paint = &window_research_funding_paint;
+});
 
 static rct_window_event_list *window_research_page_events[] = {
     &window_research_development_events,
@@ -207,7 +193,6 @@ rct_window* window_research_open()
     w = window_bring_to_front_by_class(WC_RESEARCH);
     if (w == nullptr)
     {
-        window_research_events_init_all();
         w = window_create_auto_pos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WC_RESEARCH, WF_10);
         w->widgets = window_research_page_widgets[0];
         w->enabled_widgets = window_research_page_enabled_widgets[0];

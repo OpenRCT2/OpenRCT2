@@ -88,17 +88,13 @@ static void window_news_options_update(rct_window *w);
 static void window_news_options_invalidate(rct_window *w);
 static void window_news_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_news_options_events = {};
-
-static void window_news_options_events_init()
+static rct_window_event_list window_news_options_events([](auto& events)
 {
-    auto& events = window_news_options_events;
-
-    events.mouse_up = window_news_options_mouseup;
-    events.update = window_news_options_update;
-    events.invalidate = window_news_options_invalidate;
-    events.paint = window_news_options_paint;
-}
+    events.mouse_up = &window_news_options_mouseup;
+    events.update = &window_news_options_update;
+    events.invalidate = &window_news_options_invalidate;
+    events.paint = &window_news_options_paint;
+});
 // clang-format on
 
 static void window_news_options_set_page(rct_window* w, int32_t page);
@@ -113,7 +109,6 @@ rct_window* window_news_options_open()
     window = window_bring_to_front_by_class(WC_NOTIFICATION_OPTIONS);
     if (window == nullptr)
     {
-        window_news_options_events_init();
         window = window_create_centred(400, 300, &window_news_options_events, WC_NOTIFICATION_OPTIONS, 0);
         window->widgets = window_news_options_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB_PARK) | (1 << WIDX_TAB_RIDE) | (1 << WIDX_TAB_GUEST);

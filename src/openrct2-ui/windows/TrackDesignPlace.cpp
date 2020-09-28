@@ -79,22 +79,18 @@ static void window_track_place_unknown14(rct_window *w);
 static void window_track_place_invalidate(rct_window *w);
 static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_track_place_events = {};
-
-static void window_track_place_events_init()
+static rct_window_event_list window_track_place_events([](auto& events)
 {
-    auto& events = window_track_place_events;
-
-    events.close = window_track_place_close;
-    events.mouse_up = window_track_place_mouseup;
-    events.update = window_track_place_update;
-    events.tool_update = window_track_place_toolupdate;
-    events.tool_down = window_track_place_tooldown;
-    events.tool_abort = window_track_place_toolabort;
-    events.viewport_rotate = window_track_place_unknown14;
-    events.invalidate = window_track_place_invalidate;
-    events.paint = window_track_place_paint;
-}
+    events.close = &window_track_place_close;
+    events.mouse_up = &window_track_place_mouseup;
+    events.update = &window_track_place_update;
+    events.tool_update = &window_track_place_toolupdate;
+    events.tool_down = &window_track_place_tooldown;
+    events.tool_abort = &window_track_place_toolabort;
+    events.viewport_rotate = &window_track_place_unknown14;
+    events.invalidate = &window_track_place_invalidate;
+    events.paint = &window_track_place_paint;
+});
 // clang-format on
 
 static std::vector<uint8_t> _window_track_place_mini_preview;
@@ -146,7 +142,6 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
 
     _window_track_place_mini_preview.resize(TRACK_MINI_PREVIEW_SIZE);
 
-    window_track_place_events_init();
     rct_window* w = window_create(ScreenCoordsXY(0, 29), 200, 124, &window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
     w->widgets = window_track_place_widgets;
     w->enabled_widgets = 1 << WIDX_CLOSE | 1 << WIDX_ROTATE | 1 << WIDX_MIRROR | 1 << WIDX_SELECT_DIFFERENT_DESIGN;

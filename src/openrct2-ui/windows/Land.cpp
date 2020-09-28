@@ -63,21 +63,17 @@ static void window_land_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_land_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_land_inputsize(rct_window *w);
 
-static rct_window_event_list window_land_events = {};
-
-static void window_land_events_init()
+static rct_window_event_list window_land_events([](auto& events)
 {
-    auto& events = window_land_events;
-
-    events.close = window_land_close;
-    events.mouse_up = window_land_mouseup;
-    events.mouse_down = window_land_mousedown;
-    events.dropdown = window_land_dropdown;
-    events.update = window_land_update;
-    events.text_input = window_land_textinput;
-    events.invalidate = window_land_invalidate;
-    events.paint = window_land_paint;
-}
+    events.close = &window_land_close;
+    events.mouse_up = &window_land_mouseup;
+    events.mouse_down = &window_land_mousedown;
+    events.dropdown = &window_land_dropdown;
+    events.update = &window_land_update;
+    events.text_input = &window_land_textinput;
+    events.invalidate = &window_land_invalidate;
+    events.paint = &window_land_paint;
+});
 // clang-format on
 
 static int32_t _selectedFloorTexture;
@@ -96,7 +92,6 @@ rct_window* window_land_open()
     if (window != nullptr)
         return window;
 
-    window_land_events_init();
     window = window_create(ScreenCoordsXY(context_get_width() - 98, 29), 98, 160, &window_land_events, WC_LAND, 0);
     window->widgets = window_land_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_FLOOR)

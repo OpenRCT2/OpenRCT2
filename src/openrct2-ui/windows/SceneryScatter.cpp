@@ -60,19 +60,15 @@ static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widg
 static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widgetindex);
 
 // clang-format off
-static rct_window_event_list window_clear_scenery_events = {};
-
-static void window_clear_scenery_events_init()
+static rct_window_event_list window_clear_scenery_events([](auto& events)
 {
-    auto& events = window_clear_scenery_events;
-
-    events.close = window_scenery_scatter_close;
-    events.mouse_up = window_scenery_scatter_mouseup;
-    events.mouse_down = window_scenery_scatter_mousedown;
-    events.text_input = window_scenery_scatter_textinput;
-    events.invalidate = window_scenery_scatter_invalidate;
-    events.paint = window_scenery_scatter_paint;
-}
+    events.close = &window_scenery_scatter_close;
+    events.mouse_up = &window_scenery_scatter_mouseup;
+    events.mouse_down = &window_scenery_scatter_mousedown;
+    events.text_input = &window_scenery_scatter_textinput;
+    events.invalidate = &window_scenery_scatter_invalidate;
+    events.paint = &window_scenery_scatter_paint;
+});
 // clang-format on
 
 rct_window* window_scenery_scatter_open()
@@ -84,7 +80,6 @@ rct_window* window_scenery_scatter_open()
     if (window != nullptr)
         return window;
 
-    window_clear_scenery_events_init();
     window = window_create_auto_pos(86, 100, &window_clear_scenery_events, WC_SCENERY_SCATTER, 0);
 
     window->widgets = window_scenery_scatter_widgets;

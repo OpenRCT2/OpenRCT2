@@ -82,27 +82,23 @@ static void window_scenery_invalidate(rct_window *w);
 static void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_scenery_events = {};
-
-static void window_scenery_events_init()
+static rct_window_event_list window_scenery_events([](auto& events)
 {
-    auto& events = window_scenery_events;
-
-    events.close = window_scenery_close;
-    events.mouse_up = window_scenery_mouseup;
-    events.resize = window_scenery_resize;
-    events.mouse_down = window_scenery_mousedown;
-    events.dropdown = window_scenery_dropdown;
-    events.update = window_scenery_update;
-    events.periodic_update = window_scenery_periodic_update;
-    events.get_scroll_size = window_scenery_scrollgetsize;
-    events.scroll_mousedown = window_scenery_scrollmousedown;
-    events.scroll_mouseover = window_scenery_scrollmouseover;
-    events.tooltip = window_scenery_tooltip;
-    events.invalidate = window_scenery_invalidate;
-    events.paint = window_scenery_paint;
-    events.scroll_paint = window_scenery_scrollpaint;
-}
+    events.close = &window_scenery_close;
+    events.mouse_up = &window_scenery_mouseup;
+    events.resize = &window_scenery_resize;
+    events.mouse_down = &window_scenery_mousedown;
+    events.dropdown = &window_scenery_dropdown;
+    events.update = &window_scenery_update;
+    events.periodic_update = &window_scenery_periodic_update;
+    events.get_scroll_size = &window_scenery_scrollgetsize;
+    events.scroll_mousedown = &window_scenery_scrollmousedown;
+    events.scroll_mouseover = &window_scenery_scrollmouseover;
+    events.tooltip = &window_scenery_tooltip;
+    events.invalidate = &window_scenery_invalidate;
+    events.paint = &window_scenery_paint;
+    events.scroll_paint = &window_scenery_scrollpaint;
+});
 
 
 enum WINDOW_SCENERY_LIST_WIDGET_IDX {
@@ -440,7 +436,6 @@ rct_window* window_scenery_open()
 
     window_scenery_init();
 
-    window_scenery_events_init();
     window = window_create(
         ScreenCoordsXY(context_get_width() - WINDOW_SCENERY_WIDTH, 0x1D), WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT,
         &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);

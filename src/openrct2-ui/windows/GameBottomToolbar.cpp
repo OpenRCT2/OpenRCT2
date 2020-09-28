@@ -85,20 +85,16 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi,
  *
  *  rct2: 0x0097BFDC
  */
-static rct_window_event_list window_game_bottom_toolbar_events = {};
-
-static void window_game_bottom_toolbar_events_init()
+static rct_window_event_list window_game_bottom_toolbar_events([](auto& events)
 {
-    auto& events = window_game_bottom_toolbar_events;
-
-    events.mouse_up = window_game_bottom_toolbar_mouseup;
-    events.unknown_05 = window_game_bottom_toolbar_unknown05;
-    events.update = window_game_bottom_toolbar_update;
-    events.tooltip = window_game_bottom_toolbar_tooltip;
-    events.cursor = window_game_bottom_toolbar_cursor;
-    events.invalidate = window_game_bottom_toolbar_invalidate;
-    events.paint = window_game_bottom_toolbar_paint;
-}
+    events.mouse_up = &window_game_bottom_toolbar_mouseup;
+    events.unknown_05 = &window_game_bottom_toolbar_unknown05;
+    events.update = &window_game_bottom_toolbar_update;
+    events.tooltip = &window_game_bottom_toolbar_tooltip;
+    events.cursor = &window_game_bottom_toolbar_cursor;
+    events.invalidate = &window_game_bottom_toolbar_invalidate;
+    events.paint = &window_game_bottom_toolbar_paint;
+});
 // clang-format on
 
 static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window* w);
@@ -116,7 +112,6 @@ rct_window* window_game_bottom_toolbar_open()
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
     uint32_t toolbar_height = line_height * 2 + 12;
 
-    window_game_bottom_toolbar_events_init();
     rct_window* window = window_create(
         ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);

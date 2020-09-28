@@ -153,67 +153,48 @@ static void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 void window_staff_set_colours();
 
 // 0x992AEC
-static rct_window_event_list window_staff_overview_events = {};
-
-static void window_staff_overview_events_init()
+static rct_window_event_list window_staff_overview_events([](auto& events)
 {
-    auto& events = window_staff_overview_events;
-
-    events.close = window_staff_overview_close;
-    events.mouse_up = window_staff_overview_mouseup;
-    events.resize = window_staff_overview_resize;
-    events.mouse_down = window_staff_overview_mousedown;
-    events.dropdown = window_staff_overview_dropdown;
-    events.update = window_staff_overview_update;
-    events.tool_update = window_staff_overview_tool_update;
-    events.tool_down = window_staff_overview_tool_down;
-    events.tool_drag = window_staff_overview_tool_drag;
-    events.tool_up = window_staff_overview_tool_up;
-    events.tool_abort = window_staff_overview_tool_abort;
-    events.text_input = window_staff_overview_text_input;
-    events.viewport_rotate = window_staff_overview_viewport_rotate;
-    events.invalidate = window_staff_overview_invalidate;
-    events.paint = window_staff_overview_paint;
-}
+    events.close = &window_staff_overview_close;
+    events.mouse_up = &window_staff_overview_mouseup;
+    events.resize = &window_staff_overview_resize;
+    events.mouse_down = &window_staff_overview_mousedown;
+    events.dropdown = &window_staff_overview_dropdown;
+    events.update = &window_staff_overview_update;
+    events.tool_update = &window_staff_overview_tool_update;
+    events.tool_down = &window_staff_overview_tool_down;
+    events.tool_drag = &window_staff_overview_tool_drag;
+    events.tool_up = &window_staff_overview_tool_up;
+    events.tool_abort = &window_staff_overview_tool_abort;
+    events.text_input = &window_staff_overview_text_input;
+    events.viewport_rotate = &window_staff_overview_viewport_rotate;
+    events.invalidate = &window_staff_overview_invalidate;
+    events.paint = &window_staff_overview_paint;
+});
 
 // 0x992B5C
-static rct_window_event_list window_staff_options_events = {};
-
-static void window_staff_options_events_init()
+static rct_window_event_list window_staff_options_events([](auto& events)
 {
-    auto& events = window_staff_options_events;
-
-    events.mouse_up = window_staff_options_mouseup;
-    events.resize = window_staff_stats_resize;
-    events.mouse_down = window_staff_options_mousedown;
-    events.dropdown = window_staff_options_dropdown;
-    events.unknown_05 = window_staff_unknown_05;
-    events.update = window_staff_options_update;
-    events.invalidate = window_staff_options_invalidate;
-    events.paint = window_staff_options_paint;
-}
+    events.mouse_up = &window_staff_options_mouseup;
+    events.resize = &window_staff_stats_resize;
+    events.mouse_down = &window_staff_options_mousedown;
+    events.dropdown = &window_staff_options_dropdown;
+    events.unknown_05 = &window_staff_unknown_05;
+    events.update = &window_staff_options_update;
+    events.invalidate = &window_staff_options_invalidate;
+    events.paint = &window_staff_options_paint;
+});
 
 // 0x992BCC
-static rct_window_event_list window_staff_stats_events = {};
-
-static void window_staff_stats_events_init()
+static rct_window_event_list window_staff_stats_events([](auto& events)
 {
-    auto& events = window_staff_stats_events;
-
-    events.mouse_up = window_staff_stats_mouseup;
-    events.resize = window_staff_stats_resize;
-    events.unknown_05 = window_staff_unknown_05;
-    events.update = window_staff_stats_update;
-    events.invalidate = window_staff_stats_invalidate;
-    events.paint = window_staff_stats_paint;
-}
-
-static void window_staff_events_init_all()
-{
-    window_staff_overview_events_init();
-    window_staff_options_events_init();
-    window_staff_stats_events_init();
-}
+    events.mouse_up = &window_staff_stats_mouseup;
+    events.resize = &window_staff_stats_resize;
+    events.unknown_05 = &window_staff_unknown_05;
+    events.update = &window_staff_stats_update;
+    events.invalidate = &window_staff_stats_invalidate;
+    events.paint = &window_staff_stats_paint;
+});
 
 static rct_window_event_list *window_staff_page_events[] = {
     &window_staff_overview_events,
@@ -280,7 +261,6 @@ rct_window* window_staff_open(Peep* peep)
     rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
     if (w == nullptr)
     {
-        window_staff_events_init_all();
         w = window_create_auto_pos(WW, WH, &window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
 
         w->number = peep->sprite_index;

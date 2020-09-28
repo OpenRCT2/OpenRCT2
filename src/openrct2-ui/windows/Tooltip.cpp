@@ -28,15 +28,11 @@ static rct_widget window_tooltip_widgets[] = {
 static void window_tooltip_update(rct_window *w);
 static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_tooltip_events = {};
-
-static void window_tooltip_events_init()
+static rct_window_event_list window_tooltip_events([](auto& events)
 {
-    auto& events = window_tooltip_events;
-
-    events.update = window_tooltip_update;
-    events.paint = window_tooltip_paint;
-}
+    events.update = &window_tooltip_update;
+    events.paint = &window_tooltip_paint;
+});
 // clang-format on
 
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
@@ -99,7 +95,6 @@ void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords)
         screenCoords.y -= height + 40;
     screenCoords.y = std::clamp(screenCoords.y, 22, max_y);
 
-    window_tooltip_events_init();
     w = window_create(screenCoords, width, height, &window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
     w->widgets = window_tooltip_widgets;
 

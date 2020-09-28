@@ -41,15 +41,11 @@ static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex
 static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
-static rct_window_event_list window_staff_fire_events = {};
-
-static void window_staff_fire_events_init()
+static rct_window_event_list window_staff_fire_events([](auto& events)
 {
-    auto& events = window_staff_fire_events;
-
-    events.mouse_up = window_staff_fire_mouseup;
-    events.paint = window_staff_fire_paint;
-}
+    events.mouse_up = &window_staff_fire_mouseup;
+    events.paint = &window_staff_fire_paint;
+});
 // clang-format on
 
 /** Based off of rct2: 0x6C0A77 */
@@ -64,7 +60,6 @@ rct_window* window_staff_fire_prompt_open(Peep* peep)
         return w;
     }
 
-    window_staff_fire_events_init();
     w = window_create_centred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
     w->widgets = window_staff_fire_widgets;
     w->enabled_widgets |= (1 << WIDX_CLOSE) | (1 << WIDX_YES) | (1 << WIDX_CANCEL);

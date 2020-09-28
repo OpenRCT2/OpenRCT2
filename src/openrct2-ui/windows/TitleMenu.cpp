@@ -51,19 +51,15 @@ static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex,
 static void window_title_menu_invalidate(rct_window *w);
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_title_menu_events = {};
-
-static void window_title_menu_events_init()
+static rct_window_event_list window_title_menu_events([](auto& events)
 {
-    auto& events = window_title_menu_events;
-
-    events.mouse_up = window_title_menu_mouseup;
-    events.mouse_down = window_title_menu_mousedown;
-    events.dropdown = window_title_menu_dropdown;
-    events.cursor = window_title_menu_cursor;
-    events.invalidate = window_title_menu_invalidate;
-    events.paint = window_title_menu_paint;
-}
+    events.mouse_up = &window_title_menu_mouseup;
+    events.mouse_down = &window_title_menu_mousedown;
+    events.dropdown = &window_title_menu_dropdown;
+    events.cursor = &window_title_menu_cursor;
+    events.invalidate = &window_title_menu_invalidate;
+    events.paint = &window_title_menu_paint;
+});
 // clang-format on
 
 /**
@@ -75,7 +71,6 @@ rct_window* window_title_menu_open()
     rct_window* window;
 
     const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
-    window_title_menu_events_init();
     window = window_create(
         ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &window_title_menu_events, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);

@@ -77,20 +77,16 @@ static void window_banner_viewport_rotate(rct_window *w);
 static void window_banner_invalidate(rct_window *w);
 static void window_banner_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_banner_events = {};
-
-static void window_banner_events_init()
+static rct_window_event_list window_banner_events([](auto& events)
 {
-    auto& events = window_banner_events;
-
-    events.mouse_up = window_banner_mouseup;
-    events.mouse_down = window_banner_mousedown;
-    events.dropdown = window_banner_dropdown;
-    events.text_input = window_banner_textinput;
-    events.viewport_rotate = window_banner_viewport_rotate;
-    events.invalidate = window_banner_invalidate;
-    events.paint = window_banner_paint;
-}
+    events.mouse_up = &window_banner_mouseup;
+    events.mouse_down = &window_banner_mousedown;
+    events.dropdown = &window_banner_dropdown;
+    events.text_input = &window_banner_textinput;
+    events.viewport_rotate = &window_banner_viewport_rotate;
+    events.invalidate = &window_banner_invalidate;
+    events.paint = &window_banner_paint;
+});
 // clang-format on
 
 /**
@@ -107,7 +103,6 @@ rct_window* window_banner_open(rct_windownumber number)
     if (w != nullptr)
         return w;
 
-    window_banner_events_init();
     w = window_create_auto_pos(WW, WH, &window_banner_events, WC_BANNER, WF_NO_SCROLLING);
     w->widgets = window_banner_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_BANNER_TEXT) | (1 << WIDX_BANNER_NO_ENTRY) | (1 << WIDX_BANNER_DEMOLISH)

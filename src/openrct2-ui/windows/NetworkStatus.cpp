@@ -40,19 +40,15 @@ static void window_network_status_textinput(rct_window *w, rct_widgetindex widge
 static void window_network_status_invalidate(rct_window *w);
 static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_network_status_events = {};
-
-static void window_network_status_events_init()
+static rct_window_event_list window_network_status_events([](auto& events)
 {
-    auto& events = window_network_status_events;
-
-    events.close = window_network_status_onclose;
-    events.mouse_up = window_network_status_mouseup;
-    events.update = window_network_status_update;
-    events.text_input = window_network_status_textinput;
-    events.invalidate = window_network_status_invalidate;
-    events.paint = window_network_status_paint;
-}
+    events.close = &window_network_status_onclose;
+    events.mouse_up = &window_network_status_mouseup;
+    events.update = &window_network_status_update;
+    events.text_input = &window_network_status_textinput;
+    events.invalidate = &window_network_status_invalidate;
+    events.paint = &window_network_status_paint;
+});
 // clang-format on
 
 static close_callback _onClose = nullptr;
@@ -67,7 +63,6 @@ rct_window* window_network_status_open(const char* text, close_callback onClose)
     if (window != nullptr)
         return window;
 
-    window_network_status_events_init();
     window = window_create_centred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
 
     window->widgets = window_network_status_widgets;

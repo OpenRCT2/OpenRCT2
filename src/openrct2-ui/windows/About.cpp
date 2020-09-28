@@ -89,32 +89,18 @@ static void window_about_rct2_mouseup(rct_window *w, rct_widgetindex widgetIndex
 static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_about_openrct2_common_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_about_openrct2_events = {};
-
-static void window_about_openrct2_events_init()
+static rct_window_event_list window_about_openrct2_events([](auto& events)
 {
-    auto& events = window_about_openrct2_events;
+    events.mouse_up = &window_about_openrct2_mouseup;
+    events.invalidate = &window_about_openrct2_invalidate;
+    events.paint = &window_about_openrct2_paint;
+});
 
-    events.mouse_up = window_about_openrct2_mouseup;
-    events.invalidate = window_about_openrct2_invalidate;
-    events.paint = window_about_openrct2_paint;
-}
-
-static rct_window_event_list window_about_rct2_events = {};
-
-static void window_about_rct2_events_init()
+static rct_window_event_list window_about_rct2_events([](auto& events)
 {
-    auto& events = window_about_rct2_events;
-
-    events.mouse_up = window_about_rct2_mouseup;
-    events.paint = window_about_rct2_paint;
-}
-
-static void window_about_events_init_all()
-{
-    window_about_openrct2_events_init();
-    window_about_rct2_events_init();
-}
+    events.mouse_up = &window_about_rct2_mouseup;
+    events.paint = &window_about_rct2_paint;
+});
 
 static rct_window_event_list *window_about_page_events[] = {
     &window_about_openrct2_events,
@@ -137,7 +123,6 @@ rct_window* window_about_open()
     if (window != nullptr)
         return window;
 
-    window_about_events_init_all();
     window = window_create_centred(WW, WH, window_about_page_events[WINDOW_ABOUT_PAGE_OPENRCT2], WC_ABOUT, 0);
 
     window_about_set_page(window, WINDOW_ABOUT_PAGE_OPENRCT2);

@@ -161,76 +161,52 @@ static void window_multiplayer_options_update(rct_window *w);
 static void window_multiplayer_options_invalidate(rct_window *w);
 static void window_multiplayer_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_multiplayer_information_events = {};
-
-static void window_multiplayer_information_events_init()
+static rct_window_event_list window_multiplayer_information_events([](auto& events)
 {
-    auto& events = window_multiplayer_information_events;
+    events.mouse_up = &window_multiplayer_information_mouseup;
+    events.resize = &window_multiplayer_information_resize;
+    events.update = &window_multiplayer_information_update;
+    events.invalidate = &window_multiplayer_information_invalidate;
+    events.paint = &window_multiplayer_information_paint;
+});
 
-    events.mouse_up = window_multiplayer_information_mouseup;
-    events.resize = window_multiplayer_information_resize;
-    events.update = window_multiplayer_information_update;
-    events.invalidate = window_multiplayer_information_invalidate;
-    events.paint = window_multiplayer_information_paint;
-}
-
-static rct_window_event_list window_multiplayer_players_events = {};
-
-static void window_multiplayer_players_events_init()
+static rct_window_event_list window_multiplayer_players_events([](auto& events)
 {
-    auto& events = window_multiplayer_players_events;
+    events.mouse_up = &window_multiplayer_players_mouseup;
+    events.resize = &window_multiplayer_players_resize;
+    events.update = &window_multiplayer_players_update;
+    events.get_scroll_size = &window_multiplayer_players_scrollgetsize;
+    events.scroll_mousedown = &window_multiplayer_players_scrollmousedown;
+    events.scroll_mouseover = &window_multiplayer_players_scrollmouseover;
+    events.invalidate = &window_multiplayer_players_invalidate;
+    events.paint = &window_multiplayer_players_paint;
+    events.scroll_paint = &window_multiplayer_players_scrollpaint;
+});
 
-    events.mouse_up = window_multiplayer_players_mouseup;
-    events.resize = window_multiplayer_players_resize;
-    events.update = window_multiplayer_players_update;
-    events.get_scroll_size = window_multiplayer_players_scrollgetsize;
-    events.scroll_mousedown = window_multiplayer_players_scrollmousedown;
-    events.scroll_mouseover = window_multiplayer_players_scrollmouseover;
-    events.invalidate = window_multiplayer_players_invalidate;
-    events.paint = window_multiplayer_players_paint;
-    events.scroll_paint = window_multiplayer_players_scrollpaint;
-}
-
-static rct_window_event_list window_multiplayer_groups_events = {};
-
-static void window_multiplayer_groups_events_init()
+static rct_window_event_list window_multiplayer_groups_events([](auto& events)
 {
-    auto& events = window_multiplayer_groups_events;
+    events.mouse_up = &window_multiplayer_groups_mouseup;
+    events.resize = &window_multiplayer_groups_resize;
+    events.mouse_down = &window_multiplayer_groups_mousedown;
+    events.dropdown = &window_multiplayer_groups_dropdown;
+    events.update = &window_multiplayer_groups_update;
+    events.get_scroll_size = &window_multiplayer_groups_scrollgetsize;
+    events.scroll_mousedown = &window_multiplayer_groups_scrollmousedown;
+    events.scroll_mouseover = &window_multiplayer_groups_scrollmouseover;
+    events.text_input = &window_multiplayer_groups_text_input;
+    events.invalidate = &window_multiplayer_groups_invalidate;
+    events.paint = &window_multiplayer_groups_paint;
+    events.scroll_paint = &window_multiplayer_groups_scrollpaint;
+});
 
-    events.mouse_up = window_multiplayer_groups_mouseup;
-    events.resize = window_multiplayer_groups_resize;
-    events.mouse_down = window_multiplayer_groups_mousedown;
-    events.dropdown = window_multiplayer_groups_dropdown;
-    events.update = window_multiplayer_groups_update;
-    events.get_scroll_size = window_multiplayer_groups_scrollgetsize;
-    events.scroll_mousedown = window_multiplayer_groups_scrollmousedown;
-    events.scroll_mouseover = window_multiplayer_groups_scrollmouseover;
-    events.text_input = window_multiplayer_groups_text_input;
-    events.invalidate = window_multiplayer_groups_invalidate;
-    events.paint = window_multiplayer_groups_paint;
-    events.scroll_paint = window_multiplayer_groups_scrollpaint;
-}
-
-static rct_window_event_list window_multiplayer_options_events = {};
-
-static void window_multiplayer_options_events_init()
+static rct_window_event_list window_multiplayer_options_events([](auto& events)
 {
-    auto& events = window_multiplayer_options_events;
-
-    events.mouse_up = window_multiplayer_options_mouseup;
-    events.resize = window_multiplayer_options_resize;
-    events.update = window_multiplayer_options_update;
-    events.invalidate = window_multiplayer_options_invalidate;
-    events.paint = window_multiplayer_options_paint;
-}
-
-static void window_multiplayer_events_init_all()
-{
-    window_multiplayer_information_events_init();
-    window_multiplayer_players_events_init();
-    window_multiplayer_groups_events_init();
-    window_multiplayer_options_events_init();
-}
+    events.mouse_up = &window_multiplayer_options_mouseup;
+    events.resize = &window_multiplayer_options_resize;
+    events.update = &window_multiplayer_options_update;
+    events.invalidate = &window_multiplayer_options_invalidate;
+    events.paint = &window_multiplayer_options_paint;
+});
 
 static rct_window_event_list *window_multiplayer_page_events[] = {
     &window_multiplayer_information_events,
@@ -255,7 +231,6 @@ rct_window* window_multiplayer_open()
     rct_window* window = window_bring_to_front_by_class(WC_MULTIPLAYER);
     if (window == nullptr)
     {
-        window_multiplayer_events_init_all();
         window = window_create_auto_pos(320, 144, &window_multiplayer_players_events, WC_MULTIPLAYER, WF_10 | WF_RESIZABLE);
         window_multiplayer_set_page(window, WINDOW_MULTIPLAYER_PAGE_INFORMATION);
     }

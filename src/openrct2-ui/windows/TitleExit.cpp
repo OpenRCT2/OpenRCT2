@@ -28,15 +28,11 @@ static rct_widget window_title_exit_widgets[] = {
 static void window_title_exit_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_title_exit_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 
-static rct_window_event_list window_title_exit_events = {};
-
-static void window_title_exit_events_init()
+static rct_window_event_list window_title_exit_events([](auto& events)
 {
-    auto& events = window_title_exit_events;
-
-    events.mouse_up = window_title_exit_mouseup;
-    events.paint = window_title_exit_paint;
-}
+    events.mouse_up = &window_title_exit_mouseup;
+    events.paint = &window_title_exit_paint;
+});
 // clang-format on
 
 /**
@@ -47,7 +43,6 @@ rct_window* window_title_exit_open()
 {
     rct_window* window;
 
-    window_title_exit_events_init();
     window = window_create(
         ScreenCoordsXY(context_get_width() - 40, context_get_height() - 64), 40, 64, &window_title_exit_events, WC_TITLE_EXIT,
         WF_STICK_TO_BACK | WF_TRANSPARENT);

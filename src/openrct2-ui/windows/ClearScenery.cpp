@@ -53,20 +53,16 @@ static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_clear_scenery_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_clear_scenery_inputsize(rct_window *w);
 
-static rct_window_event_list window_clear_scenery_events = {};
-
-static void window_clear_scenery_events_init()
+static rct_window_event_list window_clear_scenery_events([](auto& events)
 {
-    auto& events = window_clear_scenery_events;
-
-    events.close = window_clear_scenery_close;
-    events.mouse_up = window_clear_scenery_mouseup;
-    events.mouse_down = window_clear_scenery_mousedown;
-    events.update = window_clear_scenery_update;
-    events.text_input = window_clear_scenery_textinput;
-    events.invalidate = window_clear_scenery_invalidate;
-    events.paint = window_clear_scenery_paint;
-}
+    events.close = &window_clear_scenery_close;
+    events.mouse_up = &window_clear_scenery_mouseup;
+    events.mouse_down = &window_clear_scenery_mousedown;
+    events.update = &window_clear_scenery_update;
+    events.text_input = &window_clear_scenery_textinput;
+    events.invalidate = &window_clear_scenery_invalidate;
+    events.paint = &window_clear_scenery_paint;
+});
 // clang-format on
 
 /**
@@ -82,7 +78,6 @@ rct_window* window_clear_scenery_open()
     if (window != nullptr)
         return window;
 
-    window_clear_scenery_events_init();
     window = window_create(
         ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
     window->widgets = window_clear_scenery_widgets;

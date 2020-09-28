@@ -50,21 +50,17 @@ static void window_shortcut_scrollmousedown(rct_window *w, int32_t scrollIndex, 
 static void window_shortcut_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_shortcut_events = {};
-
-static void window_shortcut_events_init()
+static rct_window_event_list window_shortcut_events([](auto& events)
 {
-    auto& events = window_shortcut_events;
-
-    events.mouse_up = window_shortcut_mouseup;
-    events.resize = window_shortcut_resize;
-    events.get_scroll_size = window_shortcut_scrollgetsize;
-    events.scroll_mousedown = window_shortcut_scrollmousedown;
-    events.scroll_mouseover = window_shortcut_scrollmouseover;
-    events.invalidate = window_shortcut_invalidate;
-    events.paint = window_shortcut_paint;
-    events.scroll_paint = window_shortcut_scrollpaint;
-}
+    events.mouse_up = &window_shortcut_mouseup;
+    events.resize = &window_shortcut_resize;
+    events.get_scroll_size = &window_shortcut_scrollgetsize;
+    events.scroll_mousedown = &window_shortcut_scrollmousedown;
+    events.scroll_mouseover = &window_shortcut_scrollmouseover;
+    events.invalidate = &window_shortcut_invalidate;
+    events.paint = &window_shortcut_paint;
+    events.scroll_paint = &window_shortcut_scrollpaint;
+});
 
 struct ShortcutStringPair
 {
@@ -207,7 +203,6 @@ rct_window* window_shortcut_keys_open()
     rct_window* w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
     if (w == nullptr)
     {
-        window_shortcut_events_init();
         w = window_create_auto_pos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, WF_RESIZABLE);
 
         w->widgets = window_shortcut_widgets;

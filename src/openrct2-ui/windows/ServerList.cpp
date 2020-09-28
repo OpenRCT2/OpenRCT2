@@ -82,25 +82,21 @@ static void window_server_list_invalidate(rct_window *w);
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_server_list_events = {};
-
-static void window_server_list_events_init()
+static rct_window_event_list window_server_list_events([](auto& events)
 {
-    auto& events = window_server_list_events;
-
-    events.close = window_server_list_close;
-    events.mouse_up = window_server_list_mouseup;
-    events.resize = window_server_list_resize;
-    events.dropdown = window_server_list_dropdown;
-    events.update = window_server_list_update;
-    events.get_scroll_size = window_server_list_scroll_getsize;
-    events.scroll_mousedown = window_server_list_scroll_mousedown;
-    events.scroll_mouseover = window_server_list_scroll_mouseover;
-    events.text_input = window_server_list_textinput;
-    events.invalidate = window_server_list_invalidate;
-    events.paint = window_server_list_paint;
-    events.scroll_paint = window_server_list_scrollpaint;
-}
+    events.close = &window_server_list_close;
+    events.mouse_up = &window_server_list_mouseup;
+    events.resize = &window_server_list_resize;
+    events.dropdown = &window_server_list_dropdown;
+    events.update = &window_server_list_update;
+    events.get_scroll_size = &window_server_list_scroll_getsize;
+    events.scroll_mousedown = &window_server_list_scroll_mousedown;
+    events.scroll_mouseover = &window_server_list_scroll_mouseover;
+    events.text_input = &window_server_list_textinput;
+    events.invalidate = &window_server_list_invalidate;
+    events.paint = &window_server_list_paint;
+    events.scroll_paint = &window_server_list_scrollpaint;
+});
 // clang-format on
 
 enum
@@ -126,7 +122,6 @@ rct_window* window_server_list_open()
     if (window != nullptr)
         return window;
 
-    window_server_list_events_init();
     window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
 
     window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;

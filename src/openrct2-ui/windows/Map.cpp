@@ -138,29 +138,25 @@ static void window_map_invalidate(rct_window *w);
 static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_map_events = {};
-
-static void window_map_events_init()
+static rct_window_event_list window_map_events([](auto& events)
 {
-    auto& events = window_map_events;
-
-    events.close = window_map_close;
-    events.mouse_up = window_map_mouseup;
-    events.resize = window_map_resize;
-    events.mouse_down = window_map_mousedown;
-    events.update = window_map_update;
-    events.tool_update = window_map_toolupdate;
-    events.tool_down = window_map_tooldown;
-    events.tool_drag = window_map_tooldrag;
-    events.tool_abort = window_map_toolabort;
-    events.get_scroll_size = window_map_scrollgetsize;
-    events.scroll_mousedown = window_map_scrollmousedown;
-    events.scroll_mousedrag = window_map_scrollmousedown;
-    events.text_input = window_map_textinput;
-    events.invalidate = window_map_invalidate;
-    events.paint = window_map_paint;
-    events.scroll_paint = window_map_scrollpaint;
-}
+    events.close = &window_map_close;
+    events.mouse_up = &window_map_mouseup;
+    events.resize = &window_map_resize;
+    events.mouse_down = &window_map_mousedown;
+    events.update = &window_map_update;
+    events.tool_update = &window_map_toolupdate;
+    events.tool_down = &window_map_tooldown;
+    events.tool_drag = &window_map_tooldrag;
+    events.tool_abort = &window_map_toolabort;
+    events.get_scroll_size = &window_map_scrollgetsize;
+    events.scroll_mousedown = &window_map_scrollmousedown;
+    events.scroll_mousedrag = &window_map_scrollmousedown;
+    events.text_input = &window_map_textinput;
+    events.invalidate = &window_map_invalidate;
+    events.paint = &window_map_paint;
+    events.scroll_paint = &window_map_scrollpaint;
+});
 // clang-format on
 
 /** rct2: 0x00F1AD61 */
@@ -221,7 +217,6 @@ rct_window* window_map_open()
         return nullptr;
     }
 
-    window_map_events_init();
     w = window_create_auto_pos(245, 259, &window_map_events, WC_MAP, WF_10);
     w->widgets = window_map_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_PEOPLE_TAB) | (1 << WIDX_RIDES_TAB) | (1 << WIDX_MAP_SIZE_SPINNER)
