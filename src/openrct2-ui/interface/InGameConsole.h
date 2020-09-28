@@ -35,7 +35,7 @@ namespace OpenRCT2::Ui
         utf8 _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
         int32_t _consoleHistoryIndex = 0;
         int32_t _consoleHistoryCount = 0;
-        int32_t _selectionStart = 0;
+        size_t _selectionStart = 0;
 
     public:
         InGameConsole();
@@ -54,7 +54,7 @@ namespace OpenRCT2::Ui
         void WriteLine(const std::string& s, uint32_t colourFormat) override;
 
         void Input(CONSOLE_INPUT input);
-        void RefreshCaret(int32_t position); // Update _selectionStart to draw cursor in correct place
+        void RefreshCaret(size_t position); // Update _selectionStart to draw cursor in correct place
         void RefreshCaret();
         void Scroll(int32_t linesToScroll);
 

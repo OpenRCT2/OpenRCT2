@@ -134,7 +134,7 @@ void InGameConsole::ScrollToEnd()
         _consoleScrollPos = std::max<int32_t>(0, static_cast<int32_t>(_consoleLines.size()) - maxLines);
 }
 
-void InGameConsole::RefreshCaret(int32_t position)
+void InGameConsole::RefreshCaret(size_t position)
 {
     _consoleCaretTicks = 0;
     _selectionStart = position;
