@@ -137,10 +137,9 @@ namespace TitleSequenceManager
 
     size_t CreateItem(const utf8* name)
     {
-        std::string path = GetNewTitleSequencePath(std::string(name), true);
         auto seq = CreateTitleSequence();
         seq->Name = name;
-        seq->Path = String::Duplicate(path.c_str());
+        seq->Path = GetNewTitleSequencePath(std::string(name), true);
         seq->IsZip = true;
 
         bool success = TitleSequenceSave(*seq);
@@ -148,9 +147,9 @@ namespace TitleSequenceManager
         size_t index = SIZE_MAX;
         if (success)
         {
-            AddSequence(path.c_str());
+            AddSequence(seq->Path.c_str());
             SortSequences();
-            index = FindItemIndexByPath(path.c_str());
+            index = FindItemIndexByPath(seq->Path.c_str());
         }
         return index;
     }

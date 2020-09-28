@@ -90,7 +90,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
 
     auto seq = CreateTitleSequence();
     seq->Name = Path::GetFileNameWithoutExtension(std::string(path));
-    seq->Path = String::Duplicate(path);
+    seq->Path = path;
     for (auto* save : saves)
     {
         seq->Saves.push_back(save);
