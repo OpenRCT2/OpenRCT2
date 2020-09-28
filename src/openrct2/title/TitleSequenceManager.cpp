@@ -144,7 +144,6 @@ namespace TitleSequenceManager
         seq->IsZip = true;
 
         bool success = TitleSequenceSave(*seq);
-        FreeTitleSequence(*seq);
 
         size_t index = SIZE_MAX;
         if (success)

@@ -255,7 +255,6 @@ static void window_title_editor_close(rct_window* w)
     // Close the related windows
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 
-    FreeTitleSequence(*_editingTitleSequence);
     _editingTitleSequence = nullptr;
     _sequenceName = nullptr;
 
@@ -1062,10 +1061,6 @@ static void window_title_editor_load_sequence(size_t index)
     size_t predefinedIndex = title_sequence_manager_get_predefined_index(index);
     _isSequenceReadOnly = (predefinedIndex != SIZE_MAX);
     _sequenceName = title_sequence_manager_get_name(index);
-    if (_editingTitleSequence != nullptr)
-    {
-        FreeTitleSequence(*_editingTitleSequence);
-    }
     _editingTitleSequence = std::move(titleSequence);
 
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);

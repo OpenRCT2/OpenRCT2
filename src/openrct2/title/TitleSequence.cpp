@@ -100,10 +100,6 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
     return seq;
 }
 
-void FreeTitleSequence(TitleSequence& seq)
-{
-}
-
 TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence& seq, size_t index)
 {
     TitleSequenceParkHandle* handle = nullptr;

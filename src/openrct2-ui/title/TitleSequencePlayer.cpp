@@ -73,10 +73,6 @@ public:
 
     void Eject() override
     {
-        if (_sequence == nullptr)
-            return;
-
-        FreeTitleSequence(*_sequence);
         _sequence = nullptr;
     }
 

@@ -79,7 +79,6 @@ constexpr uint8_t SAVE_INDEX_INVALID = UINT8_MAX;
 
 std::unique_ptr<TitleSequence> CreateTitleSequence();
 std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path);
-void FreeTitleSequence(TitleSequence& seq);
 
 TitleSequenceParkHandle* TitleSequenceGetParkHandle(TitleSequence& seq, size_t index);
 
