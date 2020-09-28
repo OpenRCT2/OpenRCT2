@@ -134,6 +134,12 @@ void InGameConsole::ScrollToEnd()
         _consoleScrollPos = std::max<int32_t>(0, static_cast<int32_t>(_consoleLines.size()) - maxLines);
 }
 
+void InGameConsole::RefreshCaret(int32_t position)
+{
+    _consoleCaretTicks = 0;
+    _selectionStart = position;
+}
+
 void InGameConsole::RefreshCaret()
 {
     _consoleCaretTicks = 0;
@@ -325,10 +331,11 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)
     {
-        auto caret = screenCoords + ScreenCoordsXY{ gfx_get_string_width(_consoleCurrentLine), lineHeight };
-
+        char tempString[TEXT_INPUT_SIZE] = { 0 };
+        std::memcpy(tempString, &_consoleCurrentLine, _selectionStart);
+        auto caret = screenCoords + ScreenCoordsXY{ gfx_get_string_width(tempString), lineHeight };
         uint8_t caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
-        gfx_fill_rect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 0 } }, caretColour);
+        gfx_fill_rect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 5 } }, caretColour);
     }
 
     // What about border colours?
