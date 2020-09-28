@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -30,11 +30,11 @@
 #include <memory>
 #include <vector>
 
-static std::vector<utf8*> GetSaves(const utf8* path);
-static std::vector<utf8*> GetSaves(IZipArchive* zip);
-static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, std::vector<utf8*> saves);
+static std::vector<std::string> GetSaves(const std::string& path);
+static std::vector<std::string> GetSaves(IZipArchive* zip);
+static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& script, std::vector<std::string> saves);
 static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts);
-static std::vector<uint8_t> ReadScriptFile(const utf8* path);
+static std::vector<uint8_t> ReadScriptFile(const std::string& path);
 static std::string LegacyScriptWrite(const TitleSequence& seq);
 
 std::unique_ptr<TitleSequence> CreateTitleSequence()
@@ -42,28 +42,28 @@ std::unique_ptr<TitleSequence> CreateTitleSequence()
     return std::make_unique<TitleSequence>();
 }
 
-std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
+std::unique_ptr<TitleSequence> LoadTitleSequence(const std::string& path)
 {
     std::vector<uint8_t> script;
-    std::vector<utf8*> saves;
+    std::vector<std::string> saves;
     bool isZip;
 
-    log_verbose("Loading title sequence: %s", path);
+    log_verbose("Loading title sequence: %s", path.c_str());
 
-    const utf8* ext = Path::GetExtension(path);
+    auto ext = Path::GetExtension(path);
     if (String::Equals(ext, TITLE_SEQUENCE_EXTENSION))
     {
         auto zip = std::unique_ptr<IZipArchive>(Zip::TryOpen(path, ZIP_ACCESS::READ));
         if (zip == nullptr)
         {
-            Console::Error::WriteLine("Unable to open '%s'", path);
+            Console::Error::WriteLine("Unable to open '%s'", path.c_str());
             return nullptr;
         }
 
         script = zip->GetFileData("script.txt");
         if (script.empty())
         {
-            Console::Error::WriteLine("Unable to open script.txt in '%s'", path);
+            Console::Error::WriteLine("Unable to open script.txt in '%s'", path.c_str());
             return nullptr;
         }
 
@@ -72,13 +72,11 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
     }
     else
     {
-        utf8 scriptPath[MAX_PATH];
-        String::Set(scriptPath, sizeof(scriptPath), path);
-        Path::Append(scriptPath, sizeof(scriptPath), "script.txt");
+        auto scriptPath = Path::Combine(path, "script.txt");
         script = ReadScriptFile(scriptPath);
         if (script.empty())
         {
-            Console::Error::WriteLine("Unable to open '%s'", scriptPath);
+            Console::Error::WriteLine("Unable to open '%s'", scriptPath.c_str());
             return nullptr;
         }
 
@@ -86,21 +84,18 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const utf8* path)
         isZip = false;
     }
 
-    auto commands = LegacyScriptRead(reinterpret_cast<utf8*>(script.data()), script.size(), saves);
+    auto commands = LegacyScriptRead(script, saves);
 
     auto seq = CreateTitleSequence();
     seq->Name = Path::GetFileNameWithoutExtension(std::string(path));
     seq->Path = path;
-    for (auto* save : saves)
-    {
-        seq->Saves.push_back(save);
-    }
+    seq->Saves = saves;
     seq->Commands = commands;
     seq->IsZip = isZip;
     return seq;
 }
 
-std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(TitleSequence& seq, size_t index)
+std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(const TitleSequence& seq, size_t index)
 {
     std::unique_ptr<TitleSequenceParkHandle> handle;
     if (index <= seq.Saves.size())
@@ -112,10 +107,9 @@ std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(TitleSequenc
             if (zip != nullptr)
             {
                 auto data = zip->GetFileData(filename);
-                auto dataForMs = Memory::Allocate<uint8_t>(data.size());
-                std::copy_n(data.data(), data.size(), dataForMs);
-                auto ms = std::make_unique<OpenRCT2::MemoryStream>(
-                    dataForMs, data.size(), OpenRCT2::MEMORY_ACCESS::READ | OpenRCT2::MEMORY_ACCESS::OWNER);
+                auto ms = std::make_unique<OpenRCT2::MemoryStream>();
+                ms->Write(data.data(), data.size());
+                ms->SetPosition(0);
 
                 handle = std::make_unique<TitleSequenceParkHandle>();
                 handle->Stream = std::move(ms);
@@ -150,7 +144,7 @@ std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(TitleSequenc
     return handle;
 }
 
-bool TitleSequenceSave(TitleSequence& seq)
+bool TitleSequenceSave(const TitleSequence& seq)
 {
     try
     {
@@ -293,26 +287,23 @@ bool TitleSequenceRemovePark(TitleSequence& seq, size_t index)
     return true;
 }
 
-static std::vector<utf8*> GetSaves(const utf8* directory)
+static std::vector<std::string> GetSaves(const std::string& directory)
 {
-    std::vector<utf8*> saves;
+    std::vector<std::string> saves;
 
-    utf8 pattern[MAX_PATH];
-    String::Set(pattern, sizeof(pattern), directory);
-    Path::Append(pattern, sizeof(pattern), "*.sc6;*.sv6");
-
+    auto pattern = Path::Combine(directory, "*.sc6;*.sv6");
     IFileScanner* scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())
     {
         const utf8* path = scanner->GetPathRelative();
-        saves.push_back(String::Duplicate(path));
+        saves.push_back(path);
     }
     return saves;
 }
 
-static std::vector<utf8*> GetSaves(IZipArchive* zip)
+static std::vector<std::string> GetSaves(IZipArchive* zip)
 {
-    std::vector<utf8*> saves;
+    std::vector<std::string> saves;
     size_t numFiles = zip->GetNumFiles();
     for (size_t i = 0; i < numFiles; i++)
     {
@@ -320,16 +311,16 @@ static std::vector<utf8*> GetSaves(IZipArchive* zip)
         auto ext = Path::GetExtension(name);
         if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true))
         {
-            saves.push_back(String::Duplicate(name));
+            saves.push_back(name);
         }
     }
     return saves;
 }
 
-static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLength, std::vector<utf8*> saves)
+static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& script, std::vector<std::string> saves)
 {
     std::vector<TitleCommand> commands;
-    auto fs = OpenRCT2::MemoryStream(script, scriptLength);
+    auto fs = OpenRCT2::MemoryStream(script.data(), script.size());
     do
     {
         char parts[3 * 128], *token, *part1, *part2;
@@ -406,7 +397,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8* script, size_t scriptLen
         {
             commands.push_back(command);
         }
-    } while (fs.GetPosition() < scriptLength);
+    } while (fs.GetPosition() < fs.GetLength());
     return commands;
 }
 
@@ -476,7 +467,7 @@ static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts)
     }
 }
 
-static std::vector<uint8_t> ReadScriptFile(const utf8* path)
+static std::vector<uint8_t> ReadScriptFile(const std::string& path)
 {
     std::vector<uint8_t> result;
     try
