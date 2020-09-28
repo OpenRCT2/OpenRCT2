@@ -344,13 +344,12 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (w->selected_list_item >= 0 && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->Saves.size()))
             {
                 auto handle = TitleSequenceGetParkHandle(*_editingTitleSequence, w->selected_list_item);
-                auto stream = static_cast<OpenRCT2::IStream*>(handle->Stream);
                 bool isScenario = ParkImporter::ExtensionIsScenario(handle->HintPath);
                 try
                 {
                     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
                     auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(handle->HintPath));
-                    auto result = parkImporter->LoadFromStream(stream, isScenario);
+                    auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
                     objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                     parkImporter->Import();
 

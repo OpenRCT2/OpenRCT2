@@ -114,11 +114,11 @@ std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(TitleSequenc
                 auto data = zip->GetFileData(filename);
                 auto dataForMs = Memory::Allocate<uint8_t>(data.size());
                 std::copy_n(data.data(), data.size(), dataForMs);
-                auto ms = new OpenRCT2::MemoryStream(
+                auto ms = std::make_unique<OpenRCT2::MemoryStream>(
                     dataForMs, data.size(), OpenRCT2::MEMORY_ACCESS::READ | OpenRCT2::MEMORY_ACCESS::OWNER);
 
                 handle = std::make_unique<TitleSequenceParkHandle>();
-                handle->Stream = ms;
+                handle->Stream = std::move(ms);
                 handle->HintPath = filename;
             }
             else
@@ -129,10 +129,10 @@ std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(TitleSequenc
         else
         {
             auto absolutePath = Path::Combine(seq.Path, filename);
-            OpenRCT2::FileStream* fileStream = nullptr;
+            std::unique_ptr<OpenRCT2::IStream> fileStream = nullptr;
             try
             {
-                fileStream = new OpenRCT2::FileStream(absolutePath, OpenRCT2::FILE_MODE_OPEN);
+                fileStream = std::make_unique<OpenRCT2::FileStream>(absolutePath, OpenRCT2::FILE_MODE_OPEN);
             }
             catch (const IOException& exception)
             {
@@ -142,7 +142,7 @@ std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(TitleSequenc
             if (fileStream != nullptr)
             {
                 handle = std::make_unique<TitleSequenceParkHandle>();
-                handle->Stream = fileStream;
+                handle->Stream = std::move(fileStream);
                 handle->HintPath = filename;
             }
         }

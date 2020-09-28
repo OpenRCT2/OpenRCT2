@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../localisation/Localisation.h"
+#include "../openrct2/core/IStream.hpp"
 
 #include <memory>
 
@@ -54,7 +55,7 @@ struct TitleSequence
 struct TitleSequenceParkHandle
 {
     std::string HintPath;
-    void* Stream;
+    std::unique_ptr<OpenRCT2::IStream> Stream;
 };
 
 enum TITLE_SCRIPT
