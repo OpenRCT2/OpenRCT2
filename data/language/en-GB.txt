@@ -3642,7 +3642,15 @@ STR_6383    :Open download page
 STR_6384    :Snow
 STR_6385    :Heavy Snow
 STR_6386    :Blizzard
-
+STR_6387    :Excitement rating: {COMMA2DP32}
+STR_6388    :Excitement rating: Not yet available
+STR_6389    :Intensity rating: {COMMA2DP32}
+STR_6390    :Intensity rating: Not yet available
+STR_6391    :Nausea rating: {COMMA2DP32}
+STR_6392    :Nausea rating: Not yet available
+STR_6393    :Excitement
+STR_6394    :Intensity
+STR_6395    :Nausea
 #############
 # Scenarios #
 ################

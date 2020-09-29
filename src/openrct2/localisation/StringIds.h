@@ -3887,6 +3887,17 @@ enum
     STR_HEAVY_SNOW = 6385,
     STR_BLIZZARD = 6386,
 
+    STR_RIDE_LIST_EXCITEMENT = 6387,
+    STR_RIDE_LIST_EXCITEMENT_NOT_CALCULATED = 6388,
+    STR_RIDE_LIST_INTENSITY = 6389,
+    STR_RIDE_LIST_INTENSITY_NOT_CALCULATED = 6390,
+    STR_RIDE_LIST_NAUSEA = 6391,
+    STR_RIDE_LIST_NAUSEA_NOT_CALCULATED = 6392,
+
+    STR_RIDE_LIST_EXCITEMENT_LABEL = 6393,
+    STR_RIDE_LIST_INTENSITY_LABEL = 6394,
+    STR_RIDE_LIST_NAUSEA_LABEL = 6395,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
