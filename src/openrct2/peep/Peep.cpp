@@ -89,180 +89,180 @@ static struct
     PeepActionType action;
     PeepThoughtToActionFlag flags;
 } PeepThoughtToActionMap[] = {
-    { PEEP_ACTION_SHAKE_HEAD, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_EMPTY_POCKETS, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_WOW, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE },
-    { PEEP_ACTION_SHAKE_HEAD, PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_WAVE, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_JOY, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_CHECK_TIME, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_WAVE, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_WAVE, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_DISGUST, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_BEING_WATCHED, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_SHAKE_HEAD, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_JOY, PEEP_THOUGHT_ACTION_NO_FLAGS },
-    { PEEP_ACTION_NONE_2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::ShakeHead, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::EmptyPockets, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Wow, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE },
+    { PeepActionType::ShakeHead, PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Wave, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Joy, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::CheckTime, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Wave, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Wave, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::Disgust, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::BeingWatched, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::ShakeHead, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::Joy, PEEP_THOUGHT_ACTION_NO_FLAGS },
+    { PeepActionType::None2, PEEP_THOUGHT_ACTION_FLAG_RIDE },
 };
 
 static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
@@ -474,18 +474,19 @@ bool Peep::CheckForPath()
 
 PeepActionSpriteType Peep::GetActionSpriteType()
 {
-    if (Action >= PEEP_ACTION_NONE_1)
-    { // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
+    if (Action >= PeepActionType::None1)
+    { // PeepActionType::None1 or PeepActionType::None2
         return PeepSpecialSpriteToSpriteTypeMap[SpecialSprite];
     }
-    else if (Action < std::size(PeepActionToSpriteTypeMap))
+    else if (EnumValue(Action) < std::size(PeepActionToSpriteTypeMap))
     {
-        return PeepActionToSpriteTypeMap[Action];
+        return PeepActionToSpriteTypeMap[EnumValue(Action)];
     }
     else
     {
         openrct2_assert(
-            Action >= std::size(PeepActionToSpriteTypeMap) && Action < PEEP_ACTION_NONE_1, "Invalid peep action %u", Action);
+            EnumValue(Action) >= std::size(PeepActionToSpriteTypeMap) && Action < PeepActionType::None1,
+            "Invalid peep action %u", EnumValue(Action));
         return PeepActionSpriteType::None;
     }
 }
@@ -525,7 +526,7 @@ void Peep::SwitchToSpecialSprite(uint8_t special_sprite_id)
     SpecialSprite = special_sprite_id;
 
     // If NONE_1 or NONE_2
-    if (Action >= PEEP_ACTION_NONE_1)
+    if (Action >= PeepActionType::None1)
     {
         ActionSpriteImageOffset = 0;
     }
@@ -558,9 +559,9 @@ std::optional<CoordsXY> Peep::UpdateAction()
 std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 {
     _unk_F1AEF0 = ActionSpriteImageOffset;
-    if (Action == PEEP_ACTION_NONE_1)
+    if (Action == PeepActionType::None1)
     {
-        Action = PEEP_ACTION_NONE_2;
+        Action = PeepActionType::None2;
     }
 
     CoordsXY diffrenceLoc = { x - DestinationX, y - DestinationY };
@@ -570,7 +571,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 
     xy_distance = x_delta + y_delta;
 
-    if (Action == PEEP_ACTION_NONE_1 || Action == PEEP_ACTION_NONE_2)
+    if (Action == PeepActionType::None1 || Action == PeepActionType::None2)
     {
         if (xy_distance <= DestinationTolerance)
         {
@@ -614,14 +615,14 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     if (ActionFrame >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
     {
         ActionSpriteImageOffset = 0;
-        Action = PEEP_ACTION_NONE_2;
+        Action = PeepActionType::None2;
         UpdateCurrentActionSpriteType();
         return { { x, y } };
     }
     ActionSpriteImageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets[ActionFrame];
 
     // If not throwing up and not at the frame where sick appears.
-    if (Action != PEEP_ACTION_THROW_UP || ActionFrame != 15)
+    if (Action != PeepActionType::ThrowUp || ActionFrame != 15)
     {
         return { { x, y } };
     }
@@ -719,7 +720,7 @@ void Peep::PickupAbort(int32_t old_x)
     if (x != LOCATION_NULL)
     {
         SetState(PeepState::Falling);
-        Action = PEEP_ACTION_NONE_2;
+        Action = PeepActionType::None2;
         SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
         ActionSpriteType = PeepActionSpriteType::None;
@@ -769,7 +770,7 @@ std::unique_ptr<GameActionResult> Peep::Place(const TileCoordsXYZ& location, boo
     {
         MoveTo(destination);
         SetState(PeepState::Falling);
-        Action = PEEP_ACTION_NONE_2;
+        Action = PeepActionType::None2;
         SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
         ActionSpriteType = PeepActionSpriteType::None;
@@ -852,12 +853,12 @@ void Peep::Remove()
  */
 void Peep::UpdateFalling()
 {
-    if (Action == PEEP_ACTION_DROWNING)
+    if (Action == PeepActionType::Drowning)
     {
         // Check to see if we are ready to drown.
         UpdateAction();
         Invalidate();
-        if (Action == PEEP_ACTION_DROWNING)
+        if (Action == PeepActionType::Drowning)
             return;
 
         if (gConfigNotifications.guest_died)
@@ -916,7 +917,7 @@ void Peep::UpdateFalling()
 
                         InsertNewThought(PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
 
-                        Action = PEEP_ACTION_DROWNING;
+                        Action = PeepActionType::Drowning;
                         ActionFrame = 0;
                         ActionSpriteImageOffset = 0;
 
@@ -1092,7 +1093,7 @@ void Peep::Update()
         stepsToTake = 95;
     if ((PeepFlags & PEEP_FLAGS_SLOW_WALK) && State != PeepState::Queuing)
         stepsToTake /= 2;
-    if (Action == PEEP_ACTION_NONE_2 && (GetNextIsSloped()))
+    if (Action == PeepActionType::None2 && (GetNextIsSloped()))
     {
         stepsToTake /= 2;
         if (State == PeepState::Queuing)
@@ -1412,9 +1413,9 @@ void peep_applause()
         peep_release_balloon(peep, peep->z + 9);
 
         // Clap
-        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->Action >= 254)
+        if ((peep->State == PeepState::Walking || peep->State == PeepState::Queuing) && peep->Action >= PeepActionType::None1)
         {
-            peep->Action = PEEP_ACTION_CLAP;
+            peep->Action = PeepActionType::Clap;
             peep->ActionFrame = 0;
             peep->ActionSpriteImageOffset = 0;
             peep->UpdateCurrentActionSpriteType();
@@ -1529,7 +1530,7 @@ static constexpr const uint8_t tshirt_colours[] = {
 void Peep::InsertNewThought(PeepThoughtType thoughtType, uint8_t thoughtArguments)
 {
     PeepActionType newAction = PeepThoughtToActionMap[thoughtType].action;
-    if (newAction != PEEP_ACTION_NONE_2 && this->Action >= PEEP_ACTION_NONE_1)
+    if (newAction != PeepActionType::None2 && this->Action >= PeepActionType::None1)
     {
         Action = newAction;
         ActionFrame = 0;
@@ -1581,7 +1582,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->SpriteType = PEEP_SPRITE_TYPE_NORMAL;
     peep->OutsideOfPark = true;
     peep->State = PeepState::Falling;
-    peep->Action = PEEP_ACTION_NONE_2;
+    peep->Action = PeepActionType::None2;
     peep->SpecialSprite = 0;
     peep->ActionSpriteImageOffset = 0;
     peep->WalkingFrameNum = 0;
@@ -1748,7 +1749,7 @@ void Peep::FormatActionTo(Formatter& ft) const
     switch (State)
     {
         case PeepState::Falling:
-            ft.Add<rct_string_id>(Action == PEEP_ACTION_DROWNING ? STR_DROWNING : STR_WALKING);
+            ft.Add<rct_string_id>(Action == PeepActionType::Drowning ? STR_DROWNING : STR_WALKING);
             break;
         case PeepState::One:
             ft.Add<rct_string_id>(STR_WALKING);
@@ -2203,7 +2204,7 @@ void Peep::SwitchNextActionSpriteType()
  *
  *  rct2: 0x00693CBB
  */
-static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
+static bool peep_update_queue_position(Peep* peep, PeepActionType previous_action)
 {
     peep->TimeInQueue++;
 
@@ -2260,15 +2261,15 @@ static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
         }
     }
 
-    if (peep->Action < PEEP_ACTION_NONE_1)
+    if (peep->Action < PeepActionType::None1)
         peep->UpdateAction();
 
-    if (peep->Action != PEEP_ACTION_NONE_2)
+    if (peep->Action != PeepActionType::None2)
         return true;
 
-    peep->Action = PEEP_ACTION_NONE_1;
+    peep->Action = PeepActionType::None1;
     peep->NextActionSpriteType = PeepActionSpriteType::WatchRide;
-    if (previous_action != PEEP_ACTION_NONE_1)
+    if (previous_action != PeepActionType::None1)
         peep->Invalidate();
     return true;
 }
@@ -2961,8 +2962,8 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
     pathing_result = 0;
     PeepActionType previousAction = Action;
 
-    if (Action == PEEP_ACTION_NONE_1)
-        Action = PEEP_ACTION_NONE_2;
+    if (Action == PeepActionType::None1)
+        Action = PeepActionType::None2;
 
     if (State == PeepState::Queuing)
     {

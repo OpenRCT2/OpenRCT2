@@ -457,9 +457,9 @@ void Guest::GivePassingPeepsPizza(Guest* passingPeep)
     int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
     if (peepDirection == otherPeepOppositeDirection)
     {
-        if (passingPeep->Action == PEEP_ACTION_NONE_1 || passingPeep->Action == PEEP_ACTION_NONE_2)
+        if (passingPeep->Action == PeepActionType::None1 || passingPeep->Action == PeepActionType::None2)
         {
-            passingPeep->Action = PEEP_ACTION_WAVE_2;
+            passingPeep->Action = PeepActionType::Wave2;
             passingPeep->ActionFrame = 0;
             passingPeep->ActionSpriteImageOffset = 0;
             passingPeep->UpdateCurrentActionSpriteType();
@@ -474,9 +474,9 @@ void Guest::MakePassingPeepsSick(Guest* passingPeep)
     if (passingPeep->State != PeepState::Walking)
         return;
 
-    if (passingPeep->Action == PEEP_ACTION_NONE_1 || passingPeep->Action == PEEP_ACTION_NONE_2)
+    if (passingPeep->Action == PeepActionType::None1 || passingPeep->Action == PeepActionType::None2)
     {
-        passingPeep->Action = PEEP_ACTION_THROW_UP;
+        passingPeep->Action = PeepActionType::ThrowUp;
         passingPeep->ActionFrame = 0;
         passingPeep->ActionSpriteImageOffset = 0;
         passingPeep->UpdateCurrentActionSpriteType();
@@ -519,9 +519,9 @@ void Guest::UpdateEasterEggInteractions()
     {
         if (scenario_rand() <= 1456)
         {
-            if (Action == PEEP_ACTION_NONE_1 || Action == PEEP_ACTION_NONE_2)
+            if (Action == PeepActionType::None1 || Action == PeepActionType::None2)
             {
-                Action = PEEP_ACTION_JOY;
+                Action = PeepActionType::Joy;
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
                 UpdateCurrentActionSpriteType();
@@ -727,9 +727,9 @@ void Guest::loc_68F9F3()
     {
         if ((scenario_rand() & 0xFF) <= static_cast<uint8_t>((Nausea - 128) / 2))
         {
-            if (Action >= PEEP_ACTION_NONE_1)
+            if (Action >= PeepActionType::None1)
             {
-                Action = PEEP_ACTION_THROW_UP;
+                Action = PeepActionType::ThrowUp;
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
                 UpdateCurrentActionSpriteType();
@@ -1243,7 +1243,7 @@ void Guest::UpdateSitting()
         MoveTo(loc);
 
         sprite_direction = ((Var37 + 2) & 3) * 8;
-        Action = PEEP_ACTION_NONE_1;
+        Action = PeepActionType::None1;
         NextActionSpriteType = PeepActionSpriteType::SittingIdle;
         SwitchNextActionSpriteType();
 
@@ -1254,13 +1254,13 @@ void Guest::UpdateSitting()
     }
     else if (SittingSubState == PeepSittingSubState::SatDown)
     {
-        if (Action < PEEP_ACTION_NONE_1)
+        if (Action < PeepActionType::None1)
         {
             UpdateAction();
-            if (Action != PEEP_ACTION_NONE_2)
+            if (Action != PeepActionType::None2)
                 return;
 
-            Action = PEEP_ACTION_NONE_1;
+            Action = PeepActionType::None1;
             TryGetUpFromSitting();
             return;
         }
@@ -1290,7 +1290,7 @@ void Guest::UpdateSitting()
                 TryGetUpFromSitting();
                 return;
             }
-            Action = PEEP_ACTION_SITTING_EAT_FOOD;
+            Action = PeepActionType::SittingEatFood;
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
             UpdateCurrentActionSpriteType();
@@ -1309,15 +1309,15 @@ void Guest::UpdateSitting()
             return;
         }
 
-        Action = PEEP_ACTION_SITTING_LOOK_AROUND_LEFT;
+        Action = PeepActionType::SittingLookAroundLeft;
         if (rand & 0x80000000)
         {
-            Action = PEEP_ACTION_SITTING_LOOK_AROUND_RIGHT;
+            Action = PeepActionType::SittingLookAroundRight;
         }
 
         if (rand & 0x40000000)
         {
-            Action = PEEP_ACTION_SITTING_CHECK_WATCH;
+            Action = PeepActionType::SittingCheckWatch;
         }
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
@@ -2413,9 +2413,9 @@ void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 
 void Guest::ReadMap()
 {
-    if (Action == PEEP_ACTION_NONE_1 || Action == PEEP_ACTION_NONE_2)
+    if (Action == PeepActionType::None1 || Action == PeepActionType::None2)
     {
-        Action = PEEP_ACTION_READ_MAP;
+        Action = PeepActionType::ReadMap;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
         UpdateCurrentActionSpriteType();
@@ -3372,7 +3372,7 @@ void Guest::UpdateBuying()
 
     if (SubState == 1)
     {
-        if (Action != PEEP_ACTION_NONE_2)
+        if (Action != PeepActionType::None2)
         {
             UpdateAction();
             Invalidate();
@@ -3410,7 +3410,7 @@ void Guest::UpdateBuying()
             }
             else
             {
-                Action = PEEP_ACTION_WITHDRAW_MONEY;
+                Action = PeepActionType::WithdrawMoney;
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
 
@@ -4867,11 +4867,11 @@ void Guest::UpdateRideMazePathfinding()
         return;
     }
 
-    if (Action >= PEEP_ACTION_NONE_1)
+    if (Action >= PeepActionType::None1)
     {
         if (Energy > 64 && (scenario_rand() & 0xFFFF) <= 2427)
         {
-            Action = PEEP_ACTION_JUMP;
+            Action = PeepActionType::Jump;
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
             UpdateCurrentActionSpriteType();
@@ -5279,11 +5279,11 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_WAVING)
     {
-        if (Action >= PEEP_ACTION_NONE_1)
+        if (Action >= PeepActionType::None1)
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
-                Action = PEEP_ACTION_WAVE_2;
+                Action = PeepActionType::Wave2;
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
 
@@ -5294,11 +5294,11 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_PHOTO)
     {
-        if (Action >= PEEP_ACTION_NONE_1)
+        if (Action >= PeepActionType::None1)
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
-                Action = PEEP_ACTION_TAKE_PHOTO;
+                Action = PeepActionType::TakePhoto;
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
 
@@ -5309,11 +5309,11 @@ void Guest::UpdateWalking()
 
     if (PeepFlags & PEEP_FLAGS_PAINTING)
     {
-        if (Action >= PEEP_ACTION_NONE_1)
+        if (Action >= PeepActionType::None1)
         {
             if ((0xFFFF & scenario_rand()) < 936)
             {
-                Action = PEEP_ACTION_DRAW_PICTURE;
+                Action = PeepActionType::DrawPicture;
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
 
@@ -5598,14 +5598,14 @@ void Guest::UpdateQueuing()
 
     uint8_t pathingResult;
     PerformNextAction(pathingResult);
-    if (Action < PEEP_ACTION_NONE_1)
+    if (Action < PeepActionType::None1)
         return;
     if (SpriteType == PEEP_SPRITE_TYPE_NORMAL)
     {
         if (TimeInQueue >= 2000 && (0xFFFF & scenario_rand()) <= 119)
         {
             // Eat Food/Look at watch
-            Action = PEEP_ACTION_EAT_FOOD;
+            Action = PeepActionType::EatFood;
             ActionFrame = 0;
             ActionSpriteImageOffset = 0;
             UpdateCurrentActionSpriteType();
@@ -5618,7 +5618,7 @@ void Guest::UpdateQueuing()
     }
     else
     {
-        if (!(TimeInQueue & 0x3F) && Action == PEEP_ACTION_NONE_1 && NextActionSpriteType == PeepActionSpriteType::WatchRide)
+        if (!(TimeInQueue & 0x3F) && Action == PeepActionType::None1 && NextActionSpriteType == PeepActionSpriteType::WatchRide)
         {
             switch (SpriteType)
             {
@@ -5645,7 +5645,7 @@ void Guest::UpdateQueuing()
                 case PEEP_SPRITE_TYPE_SOUP:
                 case PEEP_SPRITE_TYPE_SANDWICH:
                     // Eat food
-                    Action = PEEP_ACTION_EAT_FOOD;
+                    Action = PeepActionType::EatFood;
                     ActionFrame = 0;
                     ActionSpriteImageOffset = 0;
                     UpdateCurrentActionSpriteType();
@@ -5756,7 +5756,7 @@ void Guest::UpdateWatching()
 
         sprite_direction = (Var37 & 3) * 8;
 
-        Action = PEEP_ACTION_NONE_1;
+        Action = PeepActionType::None1;
         NextActionSpriteType = PeepActionSpriteType::WatchRide;
 
         SwitchNextActionSpriteType();
@@ -5768,14 +5768,14 @@ void Guest::UpdateWatching()
     }
     else if (SubState == 1)
     {
-        if (Action < PEEP_ACTION_NONE_1)
+        if (Action < PeepActionType::None1)
         {
             // 6917F6
             UpdateAction();
             Invalidate();
-            if (Action != PEEP_ACTION_NONE_2)
+            if (Action != PeepActionType::None2)
                 return;
-            Action = PEEP_ACTION_NONE_1;
+            Action = PeepActionType::None1;
         }
         else
         {
@@ -5783,7 +5783,7 @@ void Guest::UpdateWatching()
             {
                 if ((scenario_rand() & 0xFFFF) <= 1310)
                 {
-                    Action = PEEP_ACTION_EAT_FOOD;
+                    Action = PeepActionType::EatFood;
                     ActionFrame = 0;
                     ActionSpriteImageOffset = 0;
                     UpdateCurrentActionSpriteType();
@@ -5793,7 +5793,7 @@ void Guest::UpdateWatching()
 
             if ((scenario_rand() & 0xFFFF) <= 655)
             {
-                Action = PEEP_ACTION_TAKE_PHOTO;
+                Action = PeepActionType::TakePhoto;
                 ActionFrame = 0;
                 ActionSpriteImageOffset = 0;
                 UpdateCurrentActionSpriteType();
@@ -5804,7 +5804,7 @@ void Guest::UpdateWatching()
             {
                 if ((scenario_rand() & 0xFFFF) <= 655)
                 {
-                    Action = PEEP_ACTION_WAVE;
+                    Action = PeepActionType::Wave;
                     ActionFrame = 0;
                     ActionSpriteImageOffset = 0;
                     UpdateCurrentActionSpriteType();
@@ -5854,7 +5854,7 @@ void Guest::UpdateUsingBin()
         }
         case PEEP_USING_BIN_GOING_BACK:
         {
-            if (Action != PEEP_ACTION_NONE_2)
+            if (Action != PeepActionType::None2)
             {
                 UpdateAction();
                 Invalidate();
@@ -6767,8 +6767,8 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
     ActionSpriteImageOffset = 0;
     WalkingFrameNum = 0;
 
-    if (Action >= PEEP_ACTION_NONE_1)
-        Action = PEEP_ACTION_NONE_2;
+    if (Action >= PeepActionType::None1)
+        Action = PeepActionType::None2;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     Guard::Assert(new_sprite_type < std::size(gSpriteTypeToSlowWalkMap));
@@ -6782,13 +6782,13 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
 
     if (State == PeepState::Sitting)
     {
-        Action = PEEP_ACTION_NONE_1;
+        Action = PeepActionType::None1;
         NextActionSpriteType = PeepActionSpriteType::SittingIdle;
         SwitchNextActionSpriteType();
     }
     if (State == PeepState::Watching)
     {
-        Action = PEEP_ACTION_NONE_1;
+        Action = PeepActionType::None1;
         NextActionSpriteType = PeepActionSpriteType::WatchRide;
         SwitchNextActionSpriteType();
     }
