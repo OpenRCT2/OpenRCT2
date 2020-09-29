@@ -3585,11 +3585,9 @@ static void window_ride_operating_invalidate(rct_window* w)
     {
         if (ride->type == RIDE_TYPE_TWIST)
         {
-            uint16_t arg;
-            std::memcpy(&arg, gCommonFormatArgs + 18, sizeof(uint16_t));
             ft = Formatter::Common();
             ft.Increment(18);
-            ft.Add<uint16_t>(arg * 3);
+            ft.Add<uint16_t>(ride->operation_option * 3);
         }
 
         window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].type = WWT_LABEL;
