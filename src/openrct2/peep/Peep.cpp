@@ -2161,7 +2161,7 @@ int32_t get_peep_face_sprite_large(Peep* peep)
 
 void peep_set_map_tooltip(Peep* peep)
 {
-    auto ft = Formatter::MapTooltip();
+    auto ft = Formatter();
     if (peep->AssignedPeepType == PeepType::Guest)
     {
         ft.Add<rct_string_id>((peep->PeepFlags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
@@ -2175,6 +2175,10 @@ void peep_set_map_tooltip(Peep* peep)
         peep->FormatNameTo(ft);
         peep->FormatActionTo(ft);
     }
+
+    auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
+    intent.putExtra(INTENT_EXTRA_FORMATTER, &ft);
+    context_broadcast_intent(&intent);
 }
 
 /**
