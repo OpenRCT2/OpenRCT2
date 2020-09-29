@@ -238,7 +238,7 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     switch (command.Type)
     {
         case TITLE_SCRIPT_LOAD:
-            if (command.SaveIndex >= _sequence->NumSaves)
+            if (command.SaveIndex >= _sequence->Saves.size())
                 command.SaveIndex = SAVE_INDEX_INVALID;
             break;
         case TITLE_SCRIPT_LOCATION:
@@ -329,20 +329,13 @@ static void window_title_command_editor_mouseup(rct_window* w, rct_widgetindex w
             if (_window_title_command_editor_insert)
             {
                 size_t insertIndex = _window_title_command_editor_index;
-                _sequence->NumCommands++;
-                _sequence->Commands = Memory::ReallocateArray(_sequence->Commands, _sequence->NumCommands);
-                for (size_t i = _sequence->NumCommands - 1; i > insertIndex; i--)
-                {
-                    _sequence->Commands[i] = _sequence->Commands[i - 1];
-                }
-                _sequence->Commands[insertIndex] = command;
+                _sequence->Commands.insert(_sequence->Commands.begin() + insertIndex, command);
             }
             else
             {
                 _sequence->Commands[_window_title_command_editor_index] = command;
-                TitleSequenceSave(_sequence);
             }
-            TitleSequenceSave(_sequence);
+            TitleSequenceSave(*_sequence);
 
             rct_window* title_editor_w = window_find_by_class(WC_TITLE_EDITOR);
             if (title_editor_w != nullptr)
@@ -393,11 +386,11 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
             }
             else if (command.Type == TITLE_SCRIPT_LOAD)
             {
-                int32_t numItems = static_cast<int32_t>(_sequence->NumSaves);
+                int32_t numItems = static_cast<int32_t>(_sequence->Saves.size());
                 for (int32_t i = 0; i < numItems; i++)
                 {
                     gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(_sequence->Saves[i]);
+                    gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(_sequence->Saves[i].c_str());
                 }
 
                 window_dropdown_show_text_custom_width(
@@ -467,7 +460,7 @@ static void window_title_command_editor_dropdown(rct_window* w, rct_widgetindex 
                     break;
                 case TITLE_SCRIPT_LOAD:
                     command.SaveIndex = 0;
-                    if (command.SaveIndex >= _sequence->NumSaves)
+                    if (command.SaveIndex >= _sequence->Saves.size())
                     {
                         command.SaveIndex = 0xFF;
                     }
@@ -769,7 +762,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         else
         {
             auto ft = Formatter::Common();
-            ft.Add<utf8*>(_sequence->Saves[command.SaveIndex]);
+            ft.Add<utf8*>(_sequence->Saves[command.SaveIndex].c_str());
             DrawTextEllipsised(
                 dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, STR_STRING, ft, w->colours[1]);
