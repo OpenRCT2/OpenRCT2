@@ -4002,7 +4002,7 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
     while (track_circuit_iterator_next(&it))
     {
         int32_t trackType = it.current.element->AsTrack()->GetTrackType();
-        if (TrackFlags[trackType] & TRACK_ELEM_FLAG_INVERSION_TO_NORMAL)
+        if (FlagHas(TrackFlags[trackType], TrackElemFlag::InversionToNormal))
         {
             *output = it.current;
             return true;
@@ -4060,7 +4060,7 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
     while (track_circuit_iterator_next(&it))
     {
         int32_t trackType = output->element->AsTrack()->GetTrackType();
-        if (TrackFlags[trackType] & TRACK_ELEM_FLAG_BANKED)
+        if (FlagHas(TrackFlags[trackType], TrackElemFlag::Banked))
         {
             *output = it.current;
             return true;
