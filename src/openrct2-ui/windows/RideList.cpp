@@ -403,8 +403,8 @@ static void window_ride_list_update(rct_window* w)
 {
     w->frame_no = (w->frame_no + 1) % 64;
     widget_invalidate(w, WIDX_TAB_1 + w->page);
-    //if (_window_ride_list_information_type != INFORMATION_TYPE_STATUS)
-        //w->Invalidate();
+    if (_window_ride_list_information_type != INFORMATION_TYPE_STATUS)
+        w->Invalidate();
 }
 
 /**
@@ -738,10 +738,13 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 formatSecondary = 0;
                 if (ride->IsRide())
                 {
-                    if (ride->excitement != -1) {
+                    if (ride->excitement != -1)
+                    {
                         ft.Add<uint32_t>(ride->excitement);
                         formatSecondary = STR_RIDE_LIST_EXCITEMENT;
-                    } else {
+                    }
+                    else
+                    {
                         formatSecondary = STR_RIDE_LIST_EXCITEMENT_NOT_CALCULATED;
                     }
                 }
@@ -750,10 +753,13 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 formatSecondary = 0;
                 if (ride->IsRide())
                 {
-                    if (ride->excitement != -1) {
+                    if (ride->excitement != -1)
+                    {
                         ft.Add<uint32_t>(ride->intensity);
                         formatSecondary = STR_RIDE_LIST_INTENSITY;
-                    } else {
+                    }
+                    else
+                    {
                         formatSecondary = STR_RIDE_LIST_INTENSITY_NOT_CALCULATED;
                     }
                 }
@@ -762,10 +768,13 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 formatSecondary = 0;
                 if (ride->IsRide())
                 {
-                    if (ride->excitement != -1) {
+                    if (ride->excitement != -1)
+                    {
                         ft.Add<uint32_t>(ride->nausea);
                         formatSecondary = STR_RIDE_LIST_NAUSEA;
-                    } else {
+                    }
+                    else
+                    {
                         formatSecondary = STR_RIDE_LIST_NAUSEA_NOT_CALCULATED;
                     }
                 }
