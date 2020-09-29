@@ -509,9 +509,9 @@ void Peep::UpdateCurrentActionSpriteType()
     ActionSpriteType = newActionSpriteType;
 
     const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[SpriteType].sprite_bounds;
-    sprite_width = spriteBounds[static_cast<uint8_t>(ActionSpriteType)].sprite_width;
-    sprite_height_negative = spriteBounds[static_cast<uint8_t>(ActionSpriteType)].sprite_height_negative;
-    sprite_height_positive = spriteBounds[static_cast<uint8_t>(ActionSpriteType)].sprite_height_positive;
+    sprite_width = spriteBounds[EnumValue(ActionSpriteType)].sprite_width;
+    sprite_height_negative = spriteBounds[EnumValue(ActionSpriteType)].sprite_height_negative;
+    sprite_height_positive = spriteBounds[EnumValue(ActionSpriteType)].sprite_height_positive;
 
     Invalidate();
 }
@@ -598,8 +598,8 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
         const rct_peep_animation* peepAnimation = g_peep_animation_entries[SpriteType].sprite_animation;
-        const uint8_t* imageOffset = peepAnimation[static_cast<uint8_t>(ActionSpriteType)].frame_offsets;
-        if (WalkingFrameNum >= peepAnimation[static_cast<uint8_t>(ActionSpriteType)].num_frames)
+        const uint8_t* imageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets;
+        if (WalkingFrameNum >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
         {
             WalkingFrameNum = 0;
         }
@@ -611,14 +611,14 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     ActionFrame++;
 
     // If last frame of action
-    if (ActionFrame >= peepAnimation[static_cast<uint8_t>(ActionSpriteType)].num_frames)
+    if (ActionFrame >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
     {
         ActionSpriteImageOffset = 0;
         Action = PEEP_ACTION_NONE_2;
         UpdateCurrentActionSpriteType();
         return { { x, y } };
     }
-    ActionSpriteImageOffset = peepAnimation[static_cast<uint8_t>(ActionSpriteType)].frame_offsets[ActionFrame];
+    ActionSpriteImageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets[ActionFrame];
 
     // If not throwing up and not at the frame where sick appears.
     if (Action != PEEP_ACTION_THROW_UP || ActionFrame != 15)
@@ -1591,9 +1591,9 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->FavouriteRideRating = 0;
 
     const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->SpriteType].sprite_bounds;
-    peep->sprite_width = spriteBounds[static_cast<uint8_t>(peep->ActionSpriteType)].sprite_width;
-    peep->sprite_height_negative = spriteBounds[static_cast<uint8_t>(peep->ActionSpriteType)].sprite_height_negative;
-    peep->sprite_height_positive = spriteBounds[static_cast<uint8_t>(peep->ActionSpriteType)].sprite_height_positive;
+    peep->sprite_width = spriteBounds[EnumValue(peep->ActionSpriteType)].sprite_width;
+    peep->sprite_height_negative = spriteBounds[EnumValue(peep->ActionSpriteType)].sprite_height_negative;
+    peep->sprite_height_positive = spriteBounds[EnumValue(peep->ActionSpriteType)].sprite_height_positive;
 
     peep->MoveTo(coords);
     peep->sprite_direction = 0;
@@ -2192,9 +2192,9 @@ void Peep::SwitchNextActionSpriteType()
         Invalidate();
         ActionSpriteType = NextActionSpriteType;
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[SpriteType].sprite_bounds;
-        sprite_width = spriteBounds[static_cast<uint8_t>(NextActionSpriteType)].sprite_width;
-        sprite_height_negative = spriteBounds[static_cast<uint8_t>(NextActionSpriteType)].sprite_height_negative;
-        sprite_height_positive = spriteBounds[static_cast<uint8_t>(NextActionSpriteType)].sprite_height_positive;
+        sprite_width = spriteBounds[EnumValue(NextActionSpriteType)].sprite_width;
+        sprite_height_negative = spriteBounds[EnumValue(NextActionSpriteType)].sprite_height_negative;
+        sprite_height_positive = spriteBounds[EnumValue(NextActionSpriteType)].sprite_height_positive;
         Invalidate();
     }
 }

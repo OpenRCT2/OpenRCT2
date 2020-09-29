@@ -26,6 +26,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -1183,7 +1184,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     }
 
     uint32_t imageId = g_peep_animation_entries[peep->SpriteType]
-                           .sprite_animation[static_cast<uint8_t>(PeepActionSpriteType::Ui)]
+                           .sprite_animation[EnumValue(PeepActionSpriteType::Ui)]
                            .base_image;
     imageId += w->picked_peep_frame >> 2;
 
