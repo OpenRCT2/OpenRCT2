@@ -3651,6 +3651,7 @@ STR_6392    :Nausea rating: Not yet available
 STR_6393    :Excitement
 STR_6394    :Intensity
 STR_6395    :Nausea
+
 #############
 # Scenarios #
 ################
