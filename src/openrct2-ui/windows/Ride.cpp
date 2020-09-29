@@ -2635,7 +2635,7 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ride == nullptr)
         return;
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     if (w->ride.view != 0)
     {
         if (w->ride.view > ride->num_vehicles)
@@ -2657,11 +2657,10 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     widget = &window_ride_main_widgets[WIDX_VIEW];
     gfx_draw_string_centred(
         dpi, STR_WINDOW_COLOUR_2_STRINGID,
-        { w->windowPos.x + (widget->left + widget->right - 11) / 2, w->windowPos.y + widget->top }, COLOUR_BLACK,
-        gCommonFormatArgs);
+        { w->windowPos.x + (widget->left + widget->right - 11) / 2, w->windowPos.y + widget->top }, COLOUR_BLACK, ft.Data());
 
     // Status
-    ft = Formatter::Common();
+    ft = Formatter();
     widget = &window_ride_main_widgets[WIDX_STATUS];
     rct_string_id rideStatus = window_ride_get_status(w, ft);
     DrawTextEllipsised(
@@ -4122,10 +4121,10 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 auto staff = GetEntity<Staff>(ride->mechanic);
                 if (staff != nullptr && staff->IsMechanic())
                 {
-                    auto ft = Formatter::Common();
+                    auto ft = Formatter();
                     staff->FormatNameTo(ft);
                     gfx_draw_string_left_wrapped(
-                        dpi, gCommonFormatArgs, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, COLOUR_BLACK);
+                        dpi, ft.Data(), screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, COLOUR_BLACK);
                 }
             }
         }
@@ -4853,8 +4852,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
 
-        DrawTextEllipsised(
-            dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, Formatter::Common(), COLOUR_BLACK);
+        DrawTextEllipsised(dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, {}, COLOUR_BLACK);
     }
 }
 
@@ -5499,17 +5497,17 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
         {
             // Excitement
             rct_string_id ratingName = get_rating_name(ride->excitement);
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<uint32_t>(ride->excitement);
             ft.Add<rct_string_id>(ratingName);
             rct_string_id stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE
                                                                                : STR_EXCITEMENT_RATING;
-            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             // Intensity
             ratingName = get_rating_name(ride->intensity);
-            ft = Formatter::Common();
+            ft = Formatter();
             ft.Add<uint32_t>(ride->intensity);
             ft.Add<rct_string_id>(ratingName);
 
@@ -5519,16 +5517,16 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
             else if (ride->intensity >= RIDE_RATING(10, 00))
                 stringId = STR_INTENSITY_RATING_RED;
 
-            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             // Nausea
             ratingName = get_rating_name(ride->nausea);
-            ft = Formatter::Common();
+            ft = Formatter();
             ft.Add<uint32_t>(ride->nausea);
             ft.Add<rct_string_id>(ratingName);
             stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
-            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, screenCoords);
             screenCoords.y += 2 * LIST_ROW_HEIGHT;
 
             // Horizontal rule
@@ -5558,7 +5556,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Ride time
-                    ft = Formatter::Common();
+                    ft = Formatter();
                     int32_t numTimes = 0;
                     for (int32_t i = 0; i < ride->num_stations; i++)
                     {
@@ -5595,7 +5593,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 }
 
                 // Ride length
-                ft = Formatter::Common();
+                ft = Formatter();
                 int32_t numLengths = 0;
                 for (int32_t i = 0; i < ride->num_stations; i++)
                 {
@@ -6828,10 +6826,10 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     shopItem = ride->GetRideEntry()->shop_item[0];
     if (shopItem != SHOP_ITEM_NONE)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Plural);
         ft.Add<uint32_t>(ride->no_primary_items_sold);
-        gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+        gfx_draw_string_left(dpi, STR_ITEMS_SOLD, ft.Data(), COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
@@ -6840,10 +6838,10 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
                                                                       : ride->GetRideEntry()->shop_item[1];
     if (shopItem != SHOP_ITEM_NONE)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Plural);
         ft.Add<uint32_t>(ride->no_secondary_items_sold);
-        gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+        gfx_draw_string_left(dpi, STR_ITEMS_SOLD, ft.Data(), COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 

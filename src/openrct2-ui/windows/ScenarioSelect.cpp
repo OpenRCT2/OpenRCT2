@@ -434,7 +434,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (widget->type == WWT_EMPTY)
             continue;
 
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
         {
             ft.Add<rct_string_id>(ScenarioOriginStringIds[i]);
@@ -445,7 +445,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
 
         ScreenCoordsXY stringCoords(widget->midX() + w->windowPos.x, widget->midY() + w->windowPos.y - 3);
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, 87, format, COLOUR_AQUAMARINE);
+        gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, 87, format, COLOUR_AQUAMARINE);
     }
 
     // Return if no scenario highlighted
@@ -459,8 +459,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
                                   window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
             DrawTextEllipsised(
-                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, Formatter::Common(), COLOUR_BLACK,
-                TextAlignment::CENTRE);
+                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, COLOUR_BLACK, TextAlignment::CENTRE);
             gfx_draw_string_left_wrapped(
                 dpi, nullptr, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK);
         }

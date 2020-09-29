@@ -2059,7 +2059,7 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 w->windowPos
                     + ScreenCoordsXY{ w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
 
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<utf8*>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
 
             rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];

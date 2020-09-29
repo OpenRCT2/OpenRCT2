@@ -302,18 +302,25 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
 
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
-        stringId = STR_RESEARCH_UNKNOWN;
-        gfx_draw_string_left_wrapped(dpi, &stringId, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
-        screenCoords.y += 25;
-
+        {
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(STR_RESEARCH_UNKNOWN);
+            gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
+            screenCoords.y += 25;
+        }
         // Progress
-        stringId = STR_RESEARCH_COMPLETED_AL;
-        gfx_draw_string_left_wrapped(dpi, &stringId, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
-        screenCoords.y += 15;
+        {
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(STR_RESEARCH_COMPLETED_AL);
+            gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
+            screenCoords.y += 15;
+        }
 
-        auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+        {
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
+            gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
+        }
     }
     else
     {
@@ -353,7 +360,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         screenCoords.y += 15;
 
         // Expected
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH && gResearchExpectedDay != 255)
         {
             // TODO: Should probably use game date format setting
@@ -365,7 +372,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         {
             ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
         }
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
     }
 
     // Last development

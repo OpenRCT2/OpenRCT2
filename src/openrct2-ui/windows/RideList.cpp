@@ -591,12 +591,12 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             continue;
 
         // Ride name
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ride->FormatNameTo(ft);
         DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft, COLOUR_BLACK);
 
         // Ride information
-        ft.Rewind();
+        ft = Formatter();
         ft.Increment(2);
         auto formatSecondaryEnabled = true;
         rct_string_id formatSecondary = 0;

@@ -787,7 +787,7 @@ static std::pair<rct_string_id, Formatter> window_editor_inventions_list_prepare
 {
     rct_string_id drawString;
     rct_string_id stringId = researchItem->GetName();
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
 
     if (researchItem->type == Research::EntryType::Ride
         && !RideTypeDescriptors[researchItem->baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))

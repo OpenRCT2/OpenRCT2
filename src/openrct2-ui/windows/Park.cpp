@@ -723,7 +723,7 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw park closed / open label
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
     labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
@@ -1289,33 +1289,37 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
         parkSize = squaredmetres_to_squaredfeet(parkSize);
     }
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<uint32_t>(parkSize);
-    gfx_draw_string_left(dpi, stringIndex, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+    gfx_draw_string_left(dpi, stringIndex, ft.Data(), COLOUR_BLACK, screenCoords);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Draw number of rides / attractions
     if (w->list_information_type != 0xFFFF)
     {
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<uint32_t>(w->list_information_type);
-        gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+        gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Draw number of staff
     if (w->numberOfStaff != -1)
     {
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<uint32_t>(w->numberOfStaff);
-        gfx_draw_string_left(dpi, STR_STAFF_LABEL, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+        gfx_draw_string_left(dpi, STR_STAFF_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Draw number of guests in park
-    gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, screenCoords);
+    ft = Formatter();
+    ft.Add<uint32_t>(gNumGuestsInPark);
+    gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, &gTotalAdmissions, COLOUR_BLACK, screenCoords);
+    ft = Formatter();
+    ft.Add<uint32_t>(gTotalAdmissions);
+    gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, ft.Data(), COLOUR_BLACK, screenCoords);
 }
 
 #pragma endregion
@@ -1458,10 +1462,10 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = w->windowPos
         + ScreenCoordsXY{ window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                           window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7 };
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gScenarioDetails.c_str());
-    screenCoords.y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenCoords, 222, STR_BLACK_STRING, COLOUR_BLACK);
+    screenCoords.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, 222, STR_BLACK_STRING, COLOUR_BLACK);
     screenCoords.y += 5;
 
     // Your objective:
@@ -1469,7 +1473,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Objective
-    ft = Formatter::Common();
+    ft = Formatter();
     if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
     {
         rct_string_id rideTypeString = STR_NONE;
@@ -1488,7 +1492,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     screenCoords.y += gfx_draw_string_left_wrapped(
-        dpi, gCommonFormatArgs, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], COLOUR_BLACK);
+        dpi, ft.Data(), screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], COLOUR_BLACK);
     screenCoords.y += 5;
 
     // Objective outcome
@@ -1502,9 +1506,9 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         else
         {
             // Objective completed
-            ft = Formatter::Common();
+            ft = Formatter();
             ft.Add<money32>(gScenarioCompletedCompanyValue);
-            gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
+            gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
         }
     }
 }
