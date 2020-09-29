@@ -1588,18 +1588,18 @@ STR_2232    :Wyciągarka linowa
 STR_2233    :{SMALLFONT}{BLACK}Informacje o parku
 STR_2234    :Najnowsze wiadomości
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
-STR_2236    :Stycznia
-STR_2237    :Lutego
-STR_2238    :Marca
-STR_2239    :Kwietnia
-STR_2240    :Maja
-STR_2241    :Czerwca
-STR_2242    :Lipca
-STR_2243    :Sierpnia
-STR_2244    :Września
-STR_2245    :Października
-STR_2246    :Listopada
-STR_2247    :Grudnia
+STR_2236    :Styczeń
+STR_2237    :Luty
+STR_2238    :Marzec
+STR_2239    :Kwiecień
+STR_2240    :Maj
+STR_2241    :Czerwiec
+STR_2242    :Lipiec
+STR_2243    :Sierpień
+STR_2244    :Wrzesień
+STR_2245    :Październik
+STR_2246    :Listopad
+STR_2247    :Grudzień
 STR_2248    :Nie można zburzyć atrakcji...
 STR_2249    :{BABYBLUE}Nowa atrakcja dostępna:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}Nowa sceneria dostępna:{NEWLINE}{STRINGID}
@@ -3639,6 +3639,9 @@ STR_6380    :Dostępna aktualizacja!
 STR_6381    :Dołącz do Discorda OpenRCT2!
 STR_6382    :Dostępne jest nowsze wydanie OpenRCT2: {STRING}!
 STR_6383    :Otwórz stronę pobierania
+STR_6384    :Śnieg
+STR_6385    :Mocny śnieg
+STR_6386    :Śnieżyca
 
 #############
 # Scenarios #
