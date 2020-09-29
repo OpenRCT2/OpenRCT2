@@ -134,12 +134,15 @@ public:
                     zCorner += 2;
                 }
             }
-            if (!map_can_construct_with_clear_at(
-                    { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &map_set_land_height_clear_func,
-                    { 0b1111, 0 }, 0, nullptr, CREATE_CROSSING_MODE_NONE))
+
+            auto clearResult = MapCanConstructWithClearAt(
+                { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &map_set_land_height_clear_func, { 0b1111, 0 },
+                0, CREATE_CROSSING_MODE_NONE);
+            if (clearResult->Error != GA_ERROR::OK)
             {
                 return std::make_unique<GameActionResult>(
-                    GA_ERROR::DISALLOWED, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);
+                    GA_ERROR::DISALLOWED, STR_NONE, clearResult->ErrorMessage.GetStringId(),
+                    clearResult->ErrorMessageArgs.data());
             }
 
             tileElement = CheckUnremovableObstructions(reinterpret_cast<TileElement*>(surfaceElement), zCorner);
