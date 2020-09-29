@@ -484,7 +484,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenPos = w->windowPos
         + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
                           window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->name);
     DrawTextEllipsised(
@@ -492,13 +492,13 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenPos.y += 15;
 
     // Scenario details
-    ft = Formatter::Common();
+    ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->details);
-    screenPos.y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenPos, 170, STR_BLACK_STRING, COLOUR_BLACK) + 5;
+    screenPos.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenPos, 170, STR_BLACK_STRING, COLOUR_BLACK) + 5;
 
     // Scenario objective
-    ft = Formatter::Common();
+    ft = Formatter();
     ft.Add<rct_string_id>(ObjectiveNames[scenario->objective_type]);
     if (scenario->objective_type == OBJECTIVE_BUILD_THE_BEST)
     {
@@ -516,7 +516,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
         ft.Add<int32_t>(scenario->objective_arg_2);
     }
-    screenPos.y += gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenPos, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
+    screenPos.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenPos, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
 
     // Scenario score
     if (scenario->highscore != nullptr)
@@ -527,12 +527,12 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             completedByName = scenario->highscore->name;
         }
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(completedByName);
         ft.Add<money32>(scenario->highscore->company_value);
         screenPos.y += gfx_draw_string_left_wrapped(
-            dpi, gCommonFormatArgs, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
+            dpi, ft.Data(), screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
     }
 }
 
@@ -596,7 +596,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 safe_strcpy(buffer, scenario->name, sizeof(buffer));
                 rct_string_id format = isDisabled ? static_cast<rct_string_id>(STR_STRINGID)
                                                   : (isHighlighted ? highlighted_format : unhighlighted_format);
-                auto ft = Formatter::Common();
+                auto ft = Formatter();
                 ft.Add<rct_string_id>(STR_STRING);
                 ft.Add<char*>(buffer);
                 colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
@@ -604,7 +604,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 {
                     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
                 }
-                gfx_draw_string_centred(dpi, format, { wide ? 270 : 210, y + 1 }, colour, gCommonFormatArgs);
+                gfx_draw_string_centred(dpi, format, { wide ? 270 : 210, y + 1 }, colour, ft.Data());
 
                 // Check if scenario is completed
                 if (isCompleted)
@@ -619,12 +619,12 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                         completedByName = scenario->highscore->name;
                     }
                     safe_strcpy(buffer, completedByName, 64);
-                    ft = Formatter::Common();
+                    ft = Formatter();
                     ft.Add<rct_string_id>(STR_COMPLETED_BY);
                     ft.Add<rct_string_id>(STR_STRING);
                     ft.Add<char*>(buffer);
                     gfx_draw_string_centred(
-                        dpi, format, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, COLOUR_BLACK, gCommonFormatArgs);
+                        dpi, format, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, COLOUR_BLACK, ft.Data());
                 }
 
                 y += scenarioItemHeight;

@@ -1202,8 +1202,7 @@ static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<char*>(_window_overwrite_prompt_name);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);
-    gfx_draw_string_centred_wrapped(
-        dpi, ft.Data(), stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
+    gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
 }
 
 #pragma endregion

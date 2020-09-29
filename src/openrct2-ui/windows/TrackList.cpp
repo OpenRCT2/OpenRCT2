@@ -541,8 +541,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         // Vehicle design not available
-        DrawTextEllipsised(
-            dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, Formatter::Common(), COLOUR_BLACK, TextAlignment::CENTRE);
+        DrawTextEllipsised(dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
         screenPos.y -= SCROLLABLE_ROW_HEIGHT;
     }
 
@@ -552,14 +551,13 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Scenery not available
             DrawTextEllipsised(
-                dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, Formatter::Common(), COLOUR_BLACK,
-                TextAlignment::CENTRE);
+                dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
             screenPos.y -= SCROLLABLE_ROW_HEIGHT;
         }
     }
 
     // Track design name
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<utf8*>(_trackDesigns[trackIndex].name);
     DrawTextEllipsised(dpi, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, COLOUR_BLACK, TextAlignment::CENTRE);
 
@@ -605,7 +603,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
 
             // Ride length
-            ft = Formatter::Common();
+            ft = Formatter();
             ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
             ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
             DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft, COLOUR_BLACK);
@@ -667,17 +665,18 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (_loadedTrackDesign->space_required_x != 0xFF)
     {
         // Space required
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<uint16_t>(_loadedTrackDesign->space_required_x);
         ft.Add<uint16_t>(_loadedTrackDesign->space_required_y);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, screenPos);
+        gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, ft.Data(), COLOUR_BLACK, screenPos);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
     if (_loadedTrackDesign->cost != 0)
     {
-        Formatter::Common().Add<uint32_t>(_loadedTrackDesign->cost);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, gCommonFormatArgs, COLOUR_BLACK, screenPos);
+        ft = Formatter();
+        ft.Add<uint32_t>(_loadedTrackDesign->cost);
+        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, ft.Data(), COLOUR_BLACK, screenPos);
     }
 }
 
@@ -743,10 +742,10 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
             }
 
             // Draw track name
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<rct_string_id>(STR_TRACK_LIST_NAME_FORMAT);
             ft.Add<utf8*>(_trackDesigns[i].name);
-            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, screenCoords - ScreenCoordsXY{ 0, 1 });
+            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, screenCoords - ScreenCoordsXY{ 0, 1 });
         }
 
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;

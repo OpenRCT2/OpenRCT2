@@ -86,7 +86,7 @@ static void window_shortcut_change_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     ScreenCoordsXY stringCoords(w->windowPos.x + 125, w->windowPos.y + 30);
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(CurrentShortcutKeyStringId);
-    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
+    gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
 }

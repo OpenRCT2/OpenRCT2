@@ -808,7 +808,7 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1],
                 w->windowPos + ScreenCoordsXY{ 10, window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 });
 
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<const char*>(_sequenceName);
 
             ScreenCoordsXY screenPos = { w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
@@ -872,20 +872,20 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
         }
 
         char buffer[256];
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<const char*>(_editingTitleSequence->Saves[i].c_str());
         if (selected || hover)
         {
-            format_string(buffer, 256, STR_STRING, gCommonFormatArgs);
+            format_string(buffer, 256, STR_STRING, ft.Data());
         }
         else
         {
-            format_string(buffer + 1, 255, STR_STRING, gCommonFormatArgs);
+            format_string(buffer + 1, 255, STR_STRING, ft.Data());
             buffer[0] = static_cast<utf8>(static_cast<uint8_t>(FORMAT_BLACK));
         }
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<const char*>(&buffer);
-        gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
+        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
     }
 }
 
@@ -924,7 +924,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         rct_string_id commandName = STR_NONE;
         switch (command.Type)
         {
@@ -1005,16 +1005,16 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
         char buffer[256];
         if ((selected || hover) && !error)
         {
-            format_string(buffer, 256, commandName, gCommonFormatArgs);
+            format_string(buffer, 256, commandName, ft.Data());
         }
         else
         {
-            format_string(buffer + 1, 255, commandName, gCommonFormatArgs);
+            format_string(buffer + 1, 255, commandName, ft.Data());
             buffer[0] = static_cast<utf8>(error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
         }
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<const char*>(&buffer);
-        gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
+        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
     }
 }
 
