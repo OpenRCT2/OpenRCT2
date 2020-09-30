@@ -2408,7 +2408,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     // Brakes failure can not happen if block brakes are used (so long as there is more than one vehicle)
     // However if this is the case, brake failure should be taken out the equation, otherwise block brake
     // rides have a lower probability to break down due to a random implementation reason.
-    if (ride->mode == RideMode::ContinuousCircuitBlockSectioned || ride->mode == RideMode::PoweredLaunchBlockSectioned)
+    if (ride->IsBlockSectioned())
         if (ride->num_vehicles != 1)
             return -1;
 
@@ -5164,7 +5164,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         }
     }
 
-    if (ride->mode == RideMode::ContinuousCircuitBlockSectioned || ride->mode == RideMode::PoweredLaunchBlockSectioned)
+    if (ride->IsBlockSectioned())
     {
         if (!ride_check_block_brakes(&trackElement, &problematicTrackElement))
         {
@@ -5288,7 +5288,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
     }
 
     if (ride->mode == RideMode::Race || ride->mode == RideMode::ContinuousCircuit
-        || ride->mode == RideMode::ContinuousCircuitBlockSectioned || ride->mode == RideMode::PoweredLaunchBlockSectioned)
+        || ride->IsBlockSectioned())
     {
         if (ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
@@ -5298,7 +5298,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         }
     }
 
-    if (ride->mode == RideMode::ContinuousCircuitBlockSectioned || ride->mode == RideMode::PoweredLaunchBlockSectioned)
+    if (ride->IsBlockSectioned())
     {
         if (!ride_check_block_brakes(&trackElement, &problematicTrackElement))
         {

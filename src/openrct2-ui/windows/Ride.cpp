@@ -3632,7 +3632,7 @@ static void window_ride_operating_paint(rct_window* w, rct_drawpixelinfo* dpi)
         w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     // Number of block sections
-    if (ride->mode == RideMode::ContinuousCircuitBlockSectioned || ride->mode == RideMode::PoweredLaunchBlockSectioned)
+    if (ride->IsBlockSectioned())
     {
         auto blockSections = ride->num_block_brakes + ride->num_stations;
         gfx_draw_string_left(
