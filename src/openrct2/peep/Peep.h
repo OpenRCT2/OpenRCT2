@@ -248,29 +248,29 @@ enum class PeepSittingSubState : uint8_t
     SatDown      // was unassigned
 };
 
-enum PeepRideSubState
+enum class PeepRideSubState : uint8_t
 {
-    PEEP_RIDE_AT_ENTRANCE = 0,
-    PEEP_RIDE_IN_ENTRANCE = 1,
-    PEEP_RIDE_FREE_VEHICLE_CHECK = 2, // Spend money on ride
-    PEEP_RIDE_LEAVE_ENTRANCE = 3,     // Calculate what direction and where to go after commiting to entering vehicle
-    PEEP_RIDE_APPROACH_VEHICLE = 4,
-    PEEP_RIDE_ENTER_VEHICLE = 5,
-    PEEP_RIDE_ON_RIDE = 6,
-    PEEP_RIDE_LEAVE_VEHICLE = 7,
-    PEEP_RIDE_APPROACH_EXIT = 8,
-    PEEP_RIDE_IN_EXIT = 9,
+    AtEntrance = 0,
+    InEntrance = 1,
+    FreeVehicleCheck = 2, // Spend money on ride
+    LeaveEntrance = 3,    // Calculate what direction and where to go after commiting to entering vehicle
+    ApproachVehicle = 4,
+    EnterVehicle = 5,
+    OnRide = 6,
+    LeaveVehicle = 7,
+    ApproachExit = 8,
+    InExit = 9,
     // 10, 11 not used
-    PEEP_RIDE_APPROACH_VEHICLE_WAYPOINTS = 12,
-    PEEP_RIDE_APPROACH_EXIT_WAYPOINTS = 13,
-    PEEP_RIDE_APPROACH_SPIRAL_SLIDE = 14,
-    PEEP_RIDE_ON_SPIRAL_SLIDE = 15,
-    PEEP_RIDE_LEAVE_SPIRAL_SLIDE = 16,
-    PEEP_RIDE_MAZE_PATHFINDING = 17,
-    PEEP_RIDE_LEAVE_EXIT = 18,
-    PEEP_SHOP_APPROACH = 19,
-    PEEP_SHOP_INTERACT = 20,
-    PEEP_SHOP_LEAVE = 21
+    ApproachVehicleWaypoints = 12,
+    ApproachExitWaypoints = 13,
+    ApproachSpiralSlide = 14,
+    OnSpiralSlide = 15,
+    LeaveSpiralSlide = 16,
+    MazePathfinding = 17,
+    LeaveExit = 18,
+    ApproachShop = 19,
+    InteractShop = 20,
+    LeaveShop = 21
 };
 
 enum PeepUsingBinSubState
@@ -618,6 +618,7 @@ struct Peep : SpriteBase
     {
         uint8_t SubState;
         PeepSittingSubState SittingSubState;
+        PeepRideSubState RideSubState;
     };
     PeepSpriteType SpriteType;
     PeepType AssignedPeepType;
