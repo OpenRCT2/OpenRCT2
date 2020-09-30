@@ -950,6 +950,10 @@ private:
         dst->profit = src->profit;
         dst->total_profit = src->total_profit;
         dst->value = src->value;
+        for (size_t i = 0; i < std::size(src->num_customers); i++)
+        {
+            dst->num_customers[i] = src->num_customers[i];
+        }
 
         dst->satisfaction = src->satisfaction;
         dst->satisfaction_time_out = src->satisfaction_time_out;
