@@ -644,9 +644,10 @@ namespace Config
             }
         }
 
-        if (RCT1DataPresentAtLocation(gExePath))
+        auto exePath = Path::GetDirectory(Platform::GetCurrentExecutablePath());
+        if (RCT1DataPresentAtLocation(exePath.c_str()))
         {
-            return gExePath;
+            return exePath;
         }
         return std::string();
     }
@@ -698,9 +699,10 @@ namespace Config
             return discordPath;
         }
 
-        if (platform_original_game_data_exists(gExePath))
+        auto exePath = Path::GetDirectory(Platform::GetCurrentExecutablePath());
+        if (platform_original_game_data_exists(exePath.c_str()))
         {
-            return gExePath;
+            return exePath;
         }
         return std::string();
     }
