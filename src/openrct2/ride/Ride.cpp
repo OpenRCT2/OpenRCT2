@@ -5287,8 +5287,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
             return 0;
     }
 
-    if (ride->mode == RideMode::Race || ride->mode == RideMode::ContinuousCircuit
-        || ride->IsBlockSectioned())
+    if (ride->mode == RideMode::Race || ride->mode == RideMode::ContinuousCircuit || ride->IsBlockSectioned())
     {
         if (ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
