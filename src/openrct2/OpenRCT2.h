@@ -36,7 +36,6 @@ enum
 
 extern StartupAction gOpenRCT2StartupAction;
 extern utf8 gOpenRCT2StartupActionPath[512];
-extern utf8 gExePath[MAX_PATH];
 extern utf8 gCustomUserDataPath[MAX_PATH];
 extern utf8 gCustomOpenRCT2DataPath[MAX_PATH];
 extern utf8 gCustomRCT1DataPath[MAX_PATH];
