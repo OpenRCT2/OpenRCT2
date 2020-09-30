@@ -2558,7 +2558,7 @@ void Guest::GoToRideEntrance(Ride* ride)
     DestinationTolerance = 2;
 
     SetState(PeepState::EnteringRide);
-    SubState = PEEP_RIDE_IN_ENTRANCE;
+    RideSubState = PeepRideSubState::InEntrance;
 
     RejoinQueueTimeout = 0;
     GuestTimeOnRide = 0;
@@ -3573,7 +3573,7 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
 
     ride->cur_num_customers++;
     peep->OnEnterRide(peep->CurrentRide);
-    peep->SubState = PEEP_RIDE_MAZE_PATHFINDING;
+    peep->RideSubState = PeepRideSubState::MazePathfinding;
 }
 
 static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
@@ -3594,7 +3594,7 @@ static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride
 
     ride->cur_num_customers++;
     peep->OnEnterRide(peep->CurrentRide);
-    peep->SubState = PEEP_RIDE_APPROACH_SPIRAL_SLIDE;
+    peep->RideSubState = PeepRideSubState::ApproachSpiralSlide;
 }
 
 static uint8_t peep_get_waypointed_seat_location(
@@ -3658,7 +3658,7 @@ static void peep_update_ride_leave_entrance_waypoints(Peep* peep, Ride* ride)
 
     peep->DestinationX = waypoint.x;
     peep->DestinationY = waypoint.y;
-    peep->SubState = PEEP_RIDE_APPROACH_VEHICLE_WAYPOINTS;
+    peep->RideSubState = PeepRideSubState::ApproachVehicleWaypoints;
 }
 
 /**
@@ -3688,9 +3688,9 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             }
         }
 
-        if (SubState == PEEP_RIDE_IN_ENTRANCE && xy_distance < distanceThreshold)
+        if (RideSubState == PeepRideSubState::InEntrance && xy_distance < distanceThreshold)
         {
-            SubState = PEEP_RIDE_FREE_VEHICLE_CHECK;
+            RideSubState = PeepRideSubState::FreeVehicleCheck;
         }
 
         actionZ = ride->stations[CurrentRideStation].GetBaseZ();
@@ -3705,7 +3705,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         return;
     }
 
-    Guard::Assert(SubState == PEEP_RIDE_LEAVE_ENTRANCE, "Peep substate should be LEAVE_ENTRANCE");
+    Guard::Assert(RideSubState == PeepRideSubState::LeaveEntrance, "Peep ridesubstate should be LeaveEntrance");
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
     {
         auto entranceLocation = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXYZD();
@@ -3769,7 +3769,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         DestinationX = vehicle->x;
         DestinationY = vehicle->y;
         DestinationTolerance = 15;
-        SubState = PEEP_RIDE_APPROACH_VEHICLE;
+        RideSubState = PeepRideSubState::ApproachVehicle;
         return;
     }
 
@@ -3802,7 +3802,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             break;
     }
 
-    SubState = PEEP_RIDE_APPROACH_VEHICLE;
+    RideSubState = PeepRideSubState::ApproachVehicle;
 }
 
 /**
@@ -3852,7 +3852,7 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
     peep->DestinationTolerance = 2;
 
     peep->sprite_direction = exit_direction * 8;
-    peep->SubState = PEEP_RIDE_APPROACH_EXIT;
+    peep->RideSubState = PeepRideSubState::ApproachExit;
 }
 
 /**
@@ -3878,7 +3878,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         }
     }
 
-    SubState = PEEP_RIDE_LEAVE_ENTRANCE;
+    RideSubState = PeepRideSubState::LeaveEntrance;
     uint8_t queueTime = DaysInQueue;
     if (queueTime < 253)
         queueTime += 3;
@@ -3934,7 +3934,7 @@ static void peep_update_ride_no_free_vehicle_rejoin_queue(Peep* peep, Ride* ride
     peep->DestinationTolerance = 2;
 
     peep->SetState(PeepState::QueuingFront);
-    peep->SubState = PEEP_RIDE_AT_ENTRANCE;
+    peep->RideSubState = PeepRideSubState::AtEntrance;
 
     ride->QueueInsertGuestAtFront(peep->CurrentRideStation, peep);
 }
@@ -4058,7 +4058,7 @@ void Guest::UpdateRideApproachVehicle()
         MoveTo({ *loc, z });
         return;
     }
-    SubState = PEEP_RIDE_ENTER_VEHICLE;
+    RideSubState = PeepRideSubState::EnterVehicle;
 }
 
 void Guest::UpdateRideEnterVehicle()
@@ -4082,7 +4082,7 @@ void Guest::UpdateRideEnterVehicle()
                 auto* seatedGuest = GetEntity<Guest>(vehicle->peep[CurrentSeat ^ 1]);
                 if (seatedGuest != nullptr)
                 {
-                    if (seatedGuest->SubState != PEEP_RIDE_ENTER_VEHICLE)
+                    if (seatedGuest->RideSubState != PeepRideSubState::EnterVehicle)
                         return;
 
                     vehicle->num_peeps++;
@@ -4092,7 +4092,7 @@ void Guest::UpdateRideEnterVehicle()
                     seatedGuest->MoveTo({ LOCATION_NULL, 0, 0 });
                     seatedGuest->SetState(PeepState::OnRide);
                     seatedGuest->GuestTimeOnRide = 0;
-                    seatedGuest->SubState = PEEP_RIDE_ON_RIDE;
+                    seatedGuest->RideSubState = PeepRideSubState::OnRide;
                     seatedGuest->OnEnterRide(CurrentRide);
                 }
             }
@@ -4108,7 +4108,7 @@ void Guest::UpdateRideEnterVehicle()
             SetState(PeepState::OnRide);
 
             GuestTimeOnRide = 0;
-            SubState = PEEP_RIDE_ON_RIDE;
+            RideSubState = PeepRideSubState::OnRide;
             OnEnterRide(CurrentRide);
         }
     }
@@ -4326,7 +4326,7 @@ void Guest::UpdateRideLeaveVehicle()
     DestinationX = waypointLoc.x;
     DestinationY = waypointLoc.y;
     DestinationTolerance = 2;
-    SubState = PEEP_RIDE_APPROACH_EXIT_WAYPOINTS;
+    RideSubState = PeepRideSubState::ApproachExitWaypoints;
 }
 
 /**
@@ -4373,7 +4373,7 @@ static void peep_update_ride_prepare_for_exit(Peep* peep)
     peep->DestinationX = x;
     peep->DestinationY = y;
     peep->DestinationTolerance = 2;
-    peep->SubState = PEEP_RIDE_IN_EXIT;
+    peep->RideSubState = PeepRideSubState::InExit;
 }
 
 /**
@@ -4426,7 +4426,7 @@ void Guest::UpdateRideInExit()
             ride->no_secondary_items_sold++;
         }
     }
-    SubState = PEEP_RIDE_LEAVE_EXIT;
+    RideSubState = PeepRideSubState::LeaveExit;
 }
 #pragma warning(default : 6011)
 /**
@@ -4472,7 +4472,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
 
     if (waypoint == 2)
     {
-        SubState = PEEP_RIDE_ENTER_VEHICLE;
+        RideSubState = PeepRideSubState::EnterVehicle;
         return;
     }
 
@@ -4660,7 +4660,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 
             DestinationX = targetLoc.x;
             DestinationY = targetLoc.y;
-            SubState = PEEP_RIDE_LEAVE_SPIRAL_SLIDE;
+            RideSubState = PeepRideSubState::LeaveSpiralSlide;
             return;
         }
     }
@@ -4765,7 +4765,7 @@ void Guest::UpdateRideOnSpiralSlide()
 
     DestinationX = targetLoc.x;
     DestinationY = targetLoc.y;
-    SubState = PEEP_RIDE_APPROACH_SPIRAL_SLIDE;
+    RideSubState = PeepRideSubState::ApproachSpiralSlide;
 }
 
 /**
@@ -5058,7 +5058,7 @@ void Guest::UpdateRideShopApproach()
         return;
     }
 
-    SubState = PEEP_SHOP_INTERACT;
+    RideSubState = PeepRideSubState::InteractShop;
 }
 
 /**
@@ -5077,7 +5077,7 @@ void Guest::UpdateRideShopInteract()
     {
         if (Nausea <= 35)
         {
-            SubState = PEEP_SHOP_LEAVE;
+            RideSubState = PeepRideSubState::LeaveShop;
 
             DestinationX = tileCenterX;
             DestinationY = tileCenterY;
@@ -5105,7 +5105,7 @@ void Guest::UpdateRideShopInteract()
         audio_play_sound_at_location(SoundId::ToiletFlush, { x, y, z });
     }
 
-    SubState = PEEP_SHOP_LEAVE;
+    RideSubState = PeepRideSubState::LeaveShop;
 
     DestinationX = tileCenterX;
     DestinationY = tileCenterY;
@@ -5196,66 +5196,66 @@ void Guest::UpdateRide()
 {
     NextFlags &= ~PEEP_NEXT_FLAG_IS_SLOPED;
 
-    switch (SubState)
+    switch (RideSubState)
     {
-        case PEEP_RIDE_AT_ENTRANCE:
+        case PeepRideSubState::AtEntrance:
             UpdateRideAtEntrance();
             break;
-        case PEEP_RIDE_IN_ENTRANCE:
+        case PeepRideSubState::InEntrance:
             UpdateRideAdvanceThroughEntrance();
             break;
-        case PEEP_RIDE_FREE_VEHICLE_CHECK:
+        case PeepRideSubState::FreeVehicleCheck:
             UpdateRideFreeVehicleCheck();
             break;
-        case PEEP_RIDE_LEAVE_ENTRANCE:
+        case PeepRideSubState::LeaveEntrance:
             UpdateRideAdvanceThroughEntrance();
             break;
-        case PEEP_RIDE_APPROACH_VEHICLE:
+        case PeepRideSubState::ApproachVehicle:
             UpdateRideApproachVehicle();
             break;
-        case PEEP_RIDE_ENTER_VEHICLE:
+        case PeepRideSubState::EnterVehicle:
             UpdateRideEnterVehicle();
             break;
-        case PEEP_RIDE_ON_RIDE:
+        case PeepRideSubState::OnRide:
             // No action, on ride.
             break;
-        case PEEP_RIDE_LEAVE_VEHICLE:
+        case PeepRideSubState::LeaveVehicle:
             UpdateRideLeaveVehicle();
             break;
-        case PEEP_RIDE_APPROACH_EXIT:
+        case PeepRideSubState::ApproachExit:
             UpdateRideApproachExit();
             break;
-        case PEEP_RIDE_IN_EXIT:
+        case PeepRideSubState::InExit:
             UpdateRideInExit();
             break;
-        case PEEP_RIDE_APPROACH_VEHICLE_WAYPOINTS:
+        case PeepRideSubState::ApproachVehicleWaypoints:
             UpdateRideApproachVehicleWaypoints();
             break;
-        case PEEP_RIDE_APPROACH_EXIT_WAYPOINTS:
+        case PeepRideSubState::ApproachExitWaypoints:
             UpdateRideApproachExitWaypoints();
             break;
-        case PEEP_RIDE_APPROACH_SPIRAL_SLIDE:
+        case PeepRideSubState::ApproachSpiralSlide:
             UpdateRideApproachSpiralSlide();
             break;
-        case PEEP_RIDE_ON_SPIRAL_SLIDE:
+        case PeepRideSubState::OnSpiralSlide:
             UpdateRideOnSpiralSlide();
             break;
-        case PEEP_RIDE_LEAVE_SPIRAL_SLIDE:
+        case PeepRideSubState::LeaveSpiralSlide:
             UpdateRideLeaveSpiralSlide();
             break;
-        case PEEP_RIDE_MAZE_PATHFINDING:
+        case PeepRideSubState::MazePathfinding:
             UpdateRideMazePathfinding();
             break;
-        case PEEP_RIDE_LEAVE_EXIT:
+        case PeepRideSubState::LeaveExit:
             UpdateRideLeaveExit();
             break;
-        case PEEP_SHOP_APPROACH:
+        case PeepRideSubState::ApproachShop:
             UpdateRideShopApproach();
             break;
-        case PEEP_SHOP_INTERACT:
+        case PeepRideSubState::InteractShop:
             UpdateRideShopInteract();
             break;
-        case PEEP_SHOP_LEAVE:
+        case PeepRideSubState::LeaveShop:
             UpdateRideShopLeave();
             break;
         default:
@@ -5584,7 +5584,7 @@ void Guest::UpdateQueuing()
             // Happens every time peep goes onto ride.
             DestinationTolerance = 0;
             SetState(PeepState::QueuingFront);
-            SubState = PEEP_RIDE_AT_ENTRANCE;
+            RideSubState = PeepRideSubState::AtEntrance;
             return;
         }
 
