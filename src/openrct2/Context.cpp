@@ -857,6 +857,11 @@ namespace OpenRCT2
                     break;
             }
 
+            {
+                auto windowManager = _uiContext->GetWindowManager();
+                windowManager->ShowError(FOOBAR, STR_NONE);
+            }
+
 #ifndef DISABLE_NETWORK
             if (gNetworkStart == NETWORK_MODE_CLIENT)
             {
