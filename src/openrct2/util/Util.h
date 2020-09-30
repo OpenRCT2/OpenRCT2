@@ -81,4 +81,9 @@ template<typename... T>[[nodiscard]] constexpr uint64_t EnumsToFlags(T... types)
     return (EnumToFlag(types) | ...);
 }
 
+template<typename TEnum> constexpr auto EnumValue(TEnum enumerator) noexcept
+{
+    return static_cast<std::underlying_type_t<TEnum>>(enumerator);
+}
+
 #endif

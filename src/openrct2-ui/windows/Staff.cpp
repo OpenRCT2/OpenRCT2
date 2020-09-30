@@ -26,6 +26,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -1182,7 +1183,9 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
         return;
     }
 
-    uint32_t imageId = g_peep_animation_entries[peep->SpriteType].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
+    uint32_t imageId = g_peep_animation_entries[peep->SpriteType]
+                           .sprite_animation[EnumValue(PeepActionSpriteType::Ui)]
+                           .base_image;
     imageId += w->picked_peep_frame >> 2;
 
     imageId |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;

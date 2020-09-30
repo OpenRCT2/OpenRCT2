@@ -266,43 +266,43 @@ static struct
 };
 
 static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
-    PEEP_ACTION_SPRITE_TYPE_NONE,
-    PEEP_ACTION_SPRITE_TYPE_HOLD_MAT,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_MOWER
+    PeepActionSpriteType::None,
+    PeepActionSpriteType::HoldMat,
+    PeepActionSpriteType::StaffMower
 };
 
 static PeepActionSpriteType PeepActionToSpriteTypeMap[] = {
-    PEEP_ACTION_SPRITE_TYPE_CHECK_TIME,
-    PEEP_ACTION_SPRITE_TYPE_EAT_FOOD,
-    PEEP_ACTION_SPRITE_TYPE_SHAKE_HEAD,
-    PEEP_ACTION_SPRITE_TYPE_EMPTY_POCKETS,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_EAT_FOOD,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_LOOK_AROUND_LEFT,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_LOOK_AROUND_RIGHT,
-    PEEP_ACTION_SPRITE_TYPE_WOW,
-    PEEP_ACTION_SPRITE_TYPE_THROW_UP,
-    PEEP_ACTION_SPRITE_TYPE_JUMP,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_SWEEP,
-    PEEP_ACTION_SPRITE_TYPE_DROWNING,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_ANSWER_CALL,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_ANSWER_CALL_2,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_CHECKBOARD,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_2,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_GROUND,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_3,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_WATERING,
-    PEEP_ACTION_SPRITE_TYPE_JOY,
-    PEEP_ACTION_SPRITE_TYPE_READ_MAP,
-    PEEP_ACTION_SPRITE_TYPE_WAVE,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_EMPTY_BIN,
-    PEEP_ACTION_SPRITE_TYPE_WAVE_2,
-    PEEP_ACTION_SPRITE_TYPE_TAKE_PHOTO,
-    PEEP_ACTION_SPRITE_TYPE_CLAP,
-    PEEP_ACTION_SPRITE_TYPE_DISGUST,
-    PEEP_ACTION_SPRITE_TYPE_DRAW_PICTURE,
-    PEEP_ACTION_SPRITE_TYPE_BEING_WATCHED,
-    PEEP_ACTION_SPRITE_TYPE_WITHDRAW_MONEY
+    PeepActionSpriteType::CheckTime,
+    PeepActionSpriteType::EatFood,
+    PeepActionSpriteType::ShakeHead,
+    PeepActionSpriteType::EmptyPockets,
+    PeepActionSpriteType::SittingEatFood,
+    PeepActionSpriteType::SittingLookAroundLeft,
+    PeepActionSpriteType::SittingLookAroundRight,
+    PeepActionSpriteType::Wow,
+    PeepActionSpriteType::ThrowUp,
+    PeepActionSpriteType::Jump,
+    PeepActionSpriteType::StaffSweep,
+    PeepActionSpriteType::Drowning,
+    PeepActionSpriteType::StaffAnswerCall,
+    PeepActionSpriteType::StaffAnswerCall2,
+    PeepActionSpriteType::StaffCheckboard,
+    PeepActionSpriteType::StaffFix,
+    PeepActionSpriteType::StaffFix2,
+    PeepActionSpriteType::StaffFixGround,
+    PeepActionSpriteType::StaffFix3,
+    PeepActionSpriteType::StaffWatering,
+    PeepActionSpriteType::Joy,
+    PeepActionSpriteType::ReadMap,
+    PeepActionSpriteType::Wave,
+    PeepActionSpriteType::StaffEmptyBin,
+    PeepActionSpriteType::Wave2,
+    PeepActionSpriteType::TakePhoto,
+    PeepActionSpriteType::Clap,
+    PeepActionSpriteType::Disgust,
+    PeepActionSpriteType::DrawPicture,
+    PeepActionSpriteType::BeingWatched,
+    PeepActionSpriteType::WithdrawMoney
 };
 
 const bool gSpriteTypeToSlowWalkMap[] = {
@@ -486,7 +486,7 @@ PeepActionSpriteType Peep::GetActionSpriteType()
     {
         openrct2_assert(
             Action >= std::size(PeepActionToSpriteTypeMap) && Action < PEEP_ACTION_NONE_1, "Invalid peep action %u", Action);
-        return PEEP_ACTION_SPRITE_TYPE_NONE;
+        return PeepActionSpriteType::None;
     }
 }
 
@@ -509,9 +509,9 @@ void Peep::UpdateCurrentActionSpriteType()
     ActionSpriteType = newActionSpriteType;
 
     const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[SpriteType].sprite_bounds;
-    sprite_width = spriteBounds[ActionSpriteType].sprite_width;
-    sprite_height_negative = spriteBounds[ActionSpriteType].sprite_height_negative;
-    sprite_height_positive = spriteBounds[ActionSpriteType].sprite_height_positive;
+    sprite_width = spriteBounds[EnumValue(ActionSpriteType)].sprite_width;
+    sprite_height_negative = spriteBounds[EnumValue(ActionSpriteType)].sprite_height_negative;
+    sprite_height_positive = spriteBounds[EnumValue(ActionSpriteType)].sprite_height_positive;
 
     Invalidate();
 }
@@ -598,8 +598,8 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
         const rct_peep_animation* peepAnimation = g_peep_animation_entries[SpriteType].sprite_animation;
-        const uint8_t* imageOffset = peepAnimation[ActionSpriteType].frame_offsets;
-        if (WalkingFrameNum >= peepAnimation[ActionSpriteType].num_frames)
+        const uint8_t* imageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets;
+        if (WalkingFrameNum >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
         {
             WalkingFrameNum = 0;
         }
@@ -611,14 +611,14 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     ActionFrame++;
 
     // If last frame of action
-    if (ActionFrame >= peepAnimation[ActionSpriteType].num_frames)
+    if (ActionFrame >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
     {
         ActionSpriteImageOffset = 0;
         Action = PEEP_ACTION_NONE_2;
         UpdateCurrentActionSpriteType();
         return { { x, y } };
     }
-    ActionSpriteImageOffset = peepAnimation[ActionSpriteType].frame_offsets[ActionFrame];
+    ActionSpriteImageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets[ActionFrame];
 
     // If not throwing up and not at the frame where sick appears.
     if (Action != PEEP_ACTION_THROW_UP || ActionFrame != 15)
@@ -722,7 +722,7 @@ void Peep::PickupAbort(int32_t old_x)
         Action = PEEP_ACTION_NONE_2;
         SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
-        ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
+        ActionSpriteType = PeepActionSpriteType::None;
         PathCheckOptimisation = 0;
     }
 
@@ -772,13 +772,13 @@ std::unique_ptr<GameActionResult> Peep::Place(const TileCoordsXYZ& location, boo
         Action = PEEP_ACTION_NONE_2;
         SpecialSprite = 0;
         ActionSpriteImageOffset = 0;
-        ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
+        ActionSpriteType = PeepActionSpriteType::None;
         PathCheckOptimisation = 0;
         sprite_position_tween_reset();
 
         if (AssignedPeepType == PeepType::Guest)
         {
-            ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_INVALID;
+            ActionSpriteType = PeepActionSpriteType::Invalid;
             HappinessTarget = std::max(HappinessTarget - 10, 0);
             UpdateCurrentActionSpriteType();
         }
@@ -1585,15 +1585,15 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->SpecialSprite = 0;
     peep->ActionSpriteImageOffset = 0;
     peep->WalkingFrameNum = 0;
-    peep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
+    peep->ActionSpriteType = PeepActionSpriteType::None;
     peep->PeepFlags = 0;
     peep->FavouriteRide = RIDE_ID_NULL;
     peep->FavouriteRideRating = 0;
 
     const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->SpriteType].sprite_bounds;
-    peep->sprite_width = spriteBounds[peep->ActionSpriteType].sprite_width;
-    peep->sprite_height_negative = spriteBounds[peep->ActionSpriteType].sprite_height_negative;
-    peep->sprite_height_positive = spriteBounds[peep->ActionSpriteType].sprite_height_positive;
+    peep->sprite_width = spriteBounds[EnumValue(peep->ActionSpriteType)].sprite_width;
+    peep->sprite_height_negative = spriteBounds[EnumValue(peep->ActionSpriteType)].sprite_height_negative;
+    peep->sprite_height_positive = spriteBounds[EnumValue(peep->ActionSpriteType)].sprite_height_positive;
 
     peep->MoveTo(coords);
     peep->sprite_direction = 0;
@@ -2192,9 +2192,9 @@ void Peep::SwitchNextActionSpriteType()
         Invalidate();
         ActionSpriteType = NextActionSpriteType;
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[SpriteType].sprite_bounds;
-        sprite_width = spriteBounds[NextActionSpriteType].sprite_width;
-        sprite_height_negative = spriteBounds[NextActionSpriteType].sprite_height_negative;
-        sprite_height_positive = spriteBounds[NextActionSpriteType].sprite_height_positive;
+        sprite_width = spriteBounds[EnumValue(NextActionSpriteType)].sprite_width;
+        sprite_height_negative = spriteBounds[EnumValue(NextActionSpriteType)].sprite_height_negative;
+        sprite_height_positive = spriteBounds[EnumValue(NextActionSpriteType)].sprite_height_positive;
         Invalidate();
     }
 }
@@ -2267,7 +2267,7 @@ static bool peep_update_queue_position(Peep* peep, uint8_t previous_action)
         return true;
 
     peep->Action = PEEP_ACTION_NONE_1;
-    peep->NextActionSpriteType = PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE;
+    peep->NextActionSpriteType = PeepActionSpriteType::WatchRide;
     if (previous_action != PEEP_ACTION_NONE_1)
         peep->Invalidate();
     return true;
