@@ -1711,31 +1711,31 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_ELEMENT_TYPE, Formatter::Common(), w->colours[1]);
+            STR_TILE_INSPECTOR_ELEMENT_TYPE, {}, w->colours[1]);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_BASEHEIGHT])->type != WWT_EMPTY)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, Formatter::Common(), w->colours[1]);
+            STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, {}, w->colours[1]);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_CLEARANCEHEIGHT])->type != WWT_EMPTY)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, Formatter::Common(), w->colours[1]);
+            STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, {}, w->colours[1]);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_GHOSTFLAG])->type != WWT_EMPTY)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, Formatter::Common(), w->colours[1]);
+            STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, {}, w->colours[1]);
     }
     if ((widget = &w->widgets[WIDX_COLUMN_LASTFLAG])->type != WWT_EMPTY)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_FLAG_LAST_SHORT, Formatter::Common(), w->colours[1]);
+            STR_TILE_INSPECTOR_FLAG_LAST_SHORT, {}, w->colours[1]);
     }
 
     ScreenCoordsXY screenCoords(w->windowPos.x, w->windowPos.y);
@@ -1892,10 +1892,10 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 11 });
                 if (ride != nullptr)
                 {
-                    auto ft = Formatter::Common();
+                    auto ft = Formatter();
                     ride->FormatNameTo(ft);
                     gfx_draw_string_left(
-                        dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, gCommonFormatArgs, COLOUR_WHITE,
+                        dpi, STR_TILE_INSPECTOR_TRACK_RIDE_NAME, ft.Data(), COLOUR_WHITE,
                         screenCoords + ScreenCoordsXY{ 0, 22 });
                 }
                 // Track
@@ -1909,22 +1909,20 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (trackElement->IsStation())
                 {
                     int16_t stationIndex = trackElement->GetStationIndex();
-                    auto ft = Formatter::Common();
+                    auto ft = Formatter();
                     ft.Add<rct_string_id>(STR_COMMA16);
                     ft.Add<int16_t>(stationIndex);
                     gfx_draw_string_left(
-                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE,
-                        screenCoords + ScreenCoordsXY{ 0, 55 });
+                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, ft.Data(), COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 55 });
                 }
                 else
                 {
                     const char* stationNone = "-";
-                    auto ft = Formatter::Common();
+                    auto ft = Formatter();
                     ft.Add<rct_string_id>(STR_STRING);
                     ft.Add<char*>(stationNone);
                     gfx_draw_string_left(
-                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE,
-                        screenCoords + ScreenCoordsXY{ 0, 55 });
+                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, ft.Data(), COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 55 });
                 }
 
                 rct_string_id colourScheme = ColourSchemeNames[trackElement->GetColourScheme()];
@@ -2043,12 +2041,11 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                         screenCoords + ScreenCoordsXY{ 0, 22 });
                     // Station index
                     int16_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
-                    auto ft = Formatter::Common();
+                    auto ft = Formatter();
                     ft.Add<rct_string_id>(STR_COMMA16);
                     ft.Add<int16_t>(stationIndex);
                     gfx_draw_string_left(
-                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, gCommonFormatArgs, COLOUR_WHITE,
-                        screenCoords + ScreenCoordsXY{ 0, 33 });
+                        dpi, STR_TILE_INSPECTOR_STATION_INDEX, ft.Data(), COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 33 });
                 }
 
                 // Properties
@@ -2058,8 +2055,9 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
                 // Current base height
                 screenCoords.x = w->windowPos.x + w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].left + 3;
-                int32_t baseHeight = tileElement->base_height;
-                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &baseHeight, COLOUR_WHITE, screenCoords);
+                auto ft = Formatter();
+                ft.Add<int32_t>(tileElement->base_height);
+                gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, ft.Data(), COLOUR_WHITE, screenCoords);
                 break;
             }
 
@@ -2309,37 +2307,35 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 
         // Undo relative scroll offset, but keep the 3 pixel padding
         screenCoords.x = -w->widgets[WIDX_LIST].left;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(typeName);
         DrawTextEllipsised(
             dpi, screenCoords + ScreenCoordsXY{ COL_X_TYPE + 3, 0 }, COL_X_BH, stringFormat, ft, COLOUR_BLACK); // 3px padding
 
         // Base height
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
         ft.Add<int32_t>(baseHeight);
-        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_BH, 0 });
+        gfx_draw_string_left(dpi, stringFormat, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_BH, 0 });
 
         // Clearance height
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
         ft.Add<int32_t>(clearanceHeight);
-        gfx_draw_string_left(dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_CH, 0 });
+        gfx_draw_string_left(dpi, stringFormat, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_CH, 0 });
 
         // Checkmarks for ghost and last for tile
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(CheckBoxMarkString);
         if (ghost)
         {
-            gfx_draw_string_left(
-                dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_GF, 0 });
+            gfx_draw_string_left(dpi, stringFormat, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_GF, 0 });
         }
         if (last)
         {
-            gfx_draw_string_left(
-                dpi, stringFormat, gCommonFormatArgs, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_LF, 0 });
+            gfx_draw_string_left(dpi, stringFormat, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ COL_X_LF, 0 });
         }
 
         screenCoords.y -= SCROLLABLE_ROW_HEIGHT;

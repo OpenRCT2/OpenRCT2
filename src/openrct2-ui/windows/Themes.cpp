@@ -824,7 +824,7 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
         const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<const utf8*>(activeThemeName);
 
         auto screenPos = w->windowPos

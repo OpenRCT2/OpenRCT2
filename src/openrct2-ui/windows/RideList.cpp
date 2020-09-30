@@ -591,12 +591,12 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             continue;
 
         // Ride name
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ride->FormatNameTo(ft);
         DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft, COLOUR_BLACK);
 
         // Ride information
-        ft.Rewind();
+        ft = Formatter();
         ft.Increment(2);
         auto formatSecondaryEnabled = true;
         rct_string_id formatSecondary = 0;
@@ -688,29 +688,39 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 }
                 break;
             case INFORMATION_TYPE_QUEUE_LENGTH:
-                ft.Add<uint16_t>(ride->GetTotalQueueLength());
-                formatSecondary = STR_QUEUE_EMPTY;
-                {
-                    uint16_t arg;
-                    std::memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
+            {
+                auto queueLength = ride->GetTotalQueueLength();
+                ft.Add<uint16_t>(queueLength);
 
-                    if (arg == 1)
-                        formatSecondary = STR_QUEUE_ONE_PERSON;
-                    else if (arg > 1)
-                        formatSecondary = STR_QUEUE_PEOPLE;
+                if (queueLength == 1)
+                {
+                    formatSecondary = STR_QUEUE_ONE_PERSON;
+                }
+                else if (queueLength > 1)
+                {
+                    formatSecondary = STR_QUEUE_PEOPLE;
+                }
+                else
+                {
+                    formatSecondary = STR_QUEUE_EMPTY;
                 }
                 break;
+            }
             case INFORMATION_TYPE_QUEUE_TIME:
-                ft.Add<uint16_t>(ride->GetMaxQueueTime());
-                formatSecondary = STR_QUEUE_TIME_LABEL;
-                {
-                    uint16_t arg;
-                    std::memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
+            {
+                auto maxQueueTime = ride->GetMaxQueueTime();
+                ft.Add<uint16_t>(maxQueueTime);
 
-                    if (arg > 1)
-                        formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
+                if (maxQueueTime > 1)
+                {
+                    formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
+                }
+                else
+                {
+                    formatSecondary = STR_QUEUE_TIME_LABEL;
                 }
                 break;
+            }
             case INFORMATION_TYPE_RELIABILITY:
                 ft.Add<uint16_t>(ride->reliability_percentage);
                 formatSecondary = STR_RELIABILITY_LABEL;

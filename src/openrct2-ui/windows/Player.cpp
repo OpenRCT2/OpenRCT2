@@ -334,7 +334,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         lineCh = buffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
         safe_strcpy(lineCh, network_get_group_name(groupindex), sizeof(buffer) - (lineCh - buffer));
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<const char*>(buffer);
 
         DrawTextEllipsised(
@@ -345,9 +345,9 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw ping
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 90, 24 };
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(STR_PING);
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, 0, screenCoords);
+    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, ft.Data(), 0, screenCoords);
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
     gfx_draw_string(dpi, ping, w->colours[2], screenCoords + ScreenCoordsXY(30, 0));
@@ -356,7 +356,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords = w->windowPos + ScreenCoordsXY{ w->width / 2, w->height - 13 };
     int32_t width = w->width - 8;
     int32_t lastaction = network_get_player_last_action(player, 0);
-    ft = Formatter::Common();
+    ft = Formatter();
     if (lastaction != -999)
     {
         ft.Add<rct_string_id>(network_get_action_name_string_id(lastaction));
@@ -512,15 +512,15 @@ void window_player_statistics_paint(rct_window* w, rct_drawpixelinfo* dpi)
         + ScreenCoordsXY{ window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                           window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<uint32_t>(network_get_player_commands_ran(player));
-    gfx_draw_string_left(dpi, STR_COMMANDS_RAN, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+    gfx_draw_string_left(dpi, STR_COMMANDS_RAN, ft.Data(), COLOUR_BLACK, screenCoords);
 
     screenCoords.y += LIST_ROW_HEIGHT;
 
-    ft = Formatter::Common();
+    ft = Formatter();
     ft.Add<uint32_t>(network_get_player_money_spent(player));
-    gfx_draw_string_left(dpi, STR_MONEY_SPENT, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+    gfx_draw_string_left(dpi, STR_MONEY_SPENT, ft.Data(), COLOUR_BLACK, screenCoords);
 }
 
 static void window_player_set_page(rct_window* w, int32_t page)

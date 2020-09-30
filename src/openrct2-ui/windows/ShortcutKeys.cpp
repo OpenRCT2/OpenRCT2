@@ -351,7 +351,7 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         }
 
         const int32_t bindingOffset = scrollWidth - 150;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_SHORTCUT_ENTRY_FORMAT);
         ft.Add<rct_string_id>(ShortcutList[i].StringId);
         DrawTextEllipsised(dpi, { 0, y - 1 }, bindingOffset, format, ft, COLOUR_BLACK);
@@ -362,7 +362,7 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (strlen(keybinding) > 0)
         {
             const int32_t maxWidth = 150;
-            ft = Formatter::Common();
+            ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(keybinding);
             DrawTextEllipsised(dpi, { bindingOffset, y - 1 }, maxWidth, format, ft, COLOUR_BLACK);

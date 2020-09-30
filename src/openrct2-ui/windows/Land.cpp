@@ -373,9 +373,9 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         if (price != 0)
         {
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<money32>(price);
-            gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, gCommonFormatArgs);
+            gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, ft.Data());
         }
     }
 }

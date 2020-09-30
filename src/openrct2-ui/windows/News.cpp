@@ -238,15 +238,19 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             dpi, { -1, y, 383, y + itemHeight - 1 }, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
         // Date text
-        auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
-        ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
-        gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, { 2, y });
-
+        {
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
+            ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
+            gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, ft.Data(), COLOUR_WHITE, { 2, y });
+        }
         // Item text
-        auto text = newsItem.Text;
-        gfx_draw_string_left_wrapped(dpi, &text, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
-
+        {
+            auto ft = Formatter();
+            ft.Add<utf8*>(newsItem.Text);
+            gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
+        }
         // Subject button
         if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))
         {

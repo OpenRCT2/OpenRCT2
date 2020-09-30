@@ -617,7 +617,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
 
             // Draw last action
             int32_t action = network_get_player_last_action(i, 2000);
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             if (action != -999)
             {
                 ft.Add<rct_string_id>(network_get_action_name_string_id(action));
@@ -835,7 +835,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         lineCh = buffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
         safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<const char*>(buffer);
         DrawTextEllipsised(
             dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
@@ -862,7 +862,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         lineCh = buffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
         safe_strcpy(lineCh, network_get_group_name(group), sizeof(buffer) - (lineCh - buffer));
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<const char*>(buffer);
         DrawTextEllipsised(
             dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
@@ -906,9 +906,9 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
             }
 
             // Draw action name
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<uint16_t>(network_get_action_name_string_id(i));
-            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { 10, screenCoords.y });
+            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, ft.Data(), COLOUR_BLACK, { 10, screenCoords.y });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }

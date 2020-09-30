@@ -714,8 +714,8 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
     // Command dropdown name
     DrawTextEllipsised(
         dpi, { w->windowPos.x + w->widgets[WIDX_COMMAND].left + 1, w->windowPos.y + w->widgets[WIDX_COMMAND].top },
-        w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4, command_info.nameStringId,
-        Formatter::Common(), w->colours[1]);
+        w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4, command_info.nameStringId, {},
+        w->colours[1]);
 
     // Label (e.g. "Location:")
     gfx_draw_string_left(dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY2 - 14 });
@@ -724,14 +724,14 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
-            w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, SpeedNames[command.Speed - 1],
-            Formatter::Common(), w->colours[1]);
+            w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, SpeedNames[command.Speed - 1], {},
+            w->colours[1]);
     }
     if (command.Type == TITLE_SCRIPT_FOLLOW)
     {
         uint8_t colour = COLOUR_BLACK;
         rct_string_id spriteString = STR_TITLE_COMMAND_EDITOR_FORMAT_SPRITE_NAME;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         if (command.SpriteIndex != SPRITE_INDEX_NULL)
         {
             window_draw_viewport(dpi, w);
@@ -757,11 +757,11 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             DrawTextEllipsised(
                 dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4,
-                STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, Formatter::Common(), w->colours[1]);
+                STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, {}, w->colours[1]);
         }
         else
         {
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<utf8*>(_sequence->Saves[command.SaveIndex].c_str());
             DrawTextEllipsised(
                 dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
@@ -775,7 +775,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             DrawTextEllipsised(
                 dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4,
-                STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED, Formatter::Common(), w->colours[1]);
+                STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED, {}, w->colours[1]);
         }
         else
         {
@@ -790,7 +790,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             {
                 nameString = STR_TITLE_COMMAND_EDITOR_MISSING_SCENARIO;
             }
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<const char*>(name);
             DrawTextEllipsised(
                 dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },

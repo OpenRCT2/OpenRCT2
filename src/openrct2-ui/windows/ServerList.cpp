@@ -466,7 +466,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         }
 
         // Finally, draw the server information.
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<const char*>(serverInfoToShow);
         DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, colour);
 
