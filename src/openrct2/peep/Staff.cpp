@@ -1011,9 +1011,9 @@ void Staff::EntertainerUpdateNearbyPeeps() const
  */
 bool Staff::DoEntertainerPathFinding()
 {
-    if (((scenario_rand() & 0xFFFF) <= 0x4000) && (Action == PEEP_ACTION_NONE_1 || Action == PEEP_ACTION_NONE_2))
+    if (((scenario_rand() & 0xFFFF) <= 0x4000) && (Action == PeepActionType::None1 || Action == PeepActionType::None2))
     {
-        Action = (scenario_rand() & 1) ? PEEP_ACTION_WAVE_2 : PEEP_ACTION_JOY;
+        Action = (scenario_rand() & 1) ? PeepActionType::Wave2 : PeepActionType::Joy;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
 
@@ -1209,7 +1209,7 @@ void Staff::UpdateWatering()
             return;
 
         sprite_direction = (Var37 & 3) << 3;
-        Action = PEEP_ACTION_STAFF_WATERING;
+        Action = PeepActionType::StaffWatering;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
         UpdateCurrentActionSpriteType();
@@ -1218,7 +1218,7 @@ void Staff::UpdateWatering()
     }
     else if (SubState == 1)
     {
-        if (Action != PEEP_ACTION_NONE_2)
+        if (Action != PeepActionType::None2)
         {
             UpdateAction();
             Invalidate();
@@ -1273,7 +1273,7 @@ void Staff::UpdateEmptyingBin()
             return;
 
         sprite_direction = (Var37 & 3) << 3;
-        Action = PEEP_ACTION_STAFF_EMPTY_BIN;
+        Action = PeepActionType::StaffEmptyBin;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
         UpdateCurrentActionSpriteType();
@@ -1282,7 +1282,7 @@ void Staff::UpdateEmptyingBin()
     }
     else if (SubState == 1)
     {
-        if (Action == PEEP_ACTION_NONE_2)
+        if (Action == PeepActionType::None2)
         {
             StateReset();
             return;
@@ -1345,7 +1345,7 @@ void Staff::UpdateSweeping()
     if (!CheckForPath())
         return;
 
-    if (Action == PEEP_ACTION_STAFF_SWEEP && ActionFrame == 8)
+    if (Action == PeepActionType::StaffSweep && ActionFrame == 8)
     {
         // Remove sick at this location
         litter_remove_at({ x, y, z });
@@ -1362,7 +1362,7 @@ void Staff::UpdateSweeping()
     Var37++;
     if (Var37 != 2)
     {
-        Action = PEEP_ACTION_STAFF_SWEEP;
+        Action = PeepActionType::StaffSweep;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
         UpdateCurrentActionSpriteType();
@@ -1493,7 +1493,7 @@ void Staff::UpdateAnswering()
 
     if (SubState == 0)
     {
-        Action = PEEP_ACTION_STAFF_ANSWER_CALL;
+        Action = PeepActionType::StaffAnswerCall;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
 
@@ -1505,7 +1505,7 @@ void Staff::UpdateAnswering()
     }
     else if (SubState == 1)
     {
-        if (Action == PEEP_ACTION_NONE_2)
+        if (Action == PeepActionType::None2)
         {
             SubState = 2;
             peep_window_state_update(this);
@@ -1806,8 +1806,8 @@ void Staff::Tick128UpdateStaff()
     SpriteType = newSpriteType;
     ActionSpriteImageOffset = 0;
     WalkingFrameNum = 0;
-    if (Action < PEEP_ACTION_NONE_1)
-        Action = PEEP_ACTION_NONE_2;
+    if (Action < PeepActionType::None1)
+        Action = PeepActionType::None2;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
     if (gSpriteTypeToSlowWalkMap[newSpriteType])
@@ -2196,13 +2196,13 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride* ride)
     {
         sprite_direction = PeepDirection << 3;
 
-        Action = (scenario_rand() & 1) ? PEEP_ACTION_STAFF_FIX_2 : PEEP_ACTION_STAFF_FIX;
+        Action = (scenario_rand() & 1) ? PeepActionType::StaffFix2 : PeepActionType::StaffFix;
         ActionSpriteImageOffset = 0;
         ActionFrame = 0;
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PEEP_ACTION_NONE_2)
+    if (Action == PeepActionType::None2)
     {
         return true;
     }
@@ -2210,7 +2210,7 @@ bool Staff::UpdateFixingFixVehicle(bool firstRun, const Ride* ride)
     UpdateAction();
     Invalidate();
 
-    uint8_t actionFrame = (Action == PEEP_ACTION_STAFF_FIX) ? 0x25 : 0x50;
+    uint8_t actionFrame = (Action == PeepActionType::StaffFix) ? 0x25 : 0x50;
     if (ActionFrame != actionFrame)
     {
         return false;
@@ -2237,14 +2237,14 @@ bool Staff::UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride* ride)
     if (!firstRun)
     {
         sprite_direction = PeepDirection << 3;
-        Action = PEEP_ACTION_STAFF_FIX_3;
+        Action = PeepActionType::StaffFix3;
         ActionSpriteImageOffset = 0;
         ActionFrame = 0;
 
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PEEP_ACTION_NONE_2)
+    if (Action == PeepActionType::None2)
     {
         return true;
     }
@@ -2344,14 +2344,14 @@ bool Staff::UpdateFixingFixStationEnd(bool firstRun)
     if (!firstRun)
     {
         sprite_direction = PeepDirection << 3;
-        Action = PEEP_ACTION_STAFF_CHECKBOARD;
+        Action = PeepActionType::StaffCheckboard;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
 
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PEEP_ACTION_NONE_2)
+    if (Action == PeepActionType::None2)
     {
         return true;
     }
@@ -2461,14 +2461,14 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride* ride)
 
         sprite_direction = PeepDirection << 3;
 
-        Action = PEEP_ACTION_STAFF_FIX;
+        Action = PeepActionType::StaffFix;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
 
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PEEP_ACTION_NONE_2)
+    if (Action == PeepActionType::None2)
     {
         return true;
     }
@@ -2489,14 +2489,14 @@ bool Staff::UpdateFixingFixStationBrakes(bool firstRun, Ride* ride)
     {
         sprite_direction = PeepDirection << 3;
 
-        Action = PEEP_ACTION_STAFF_FIX_GROUND;
+        Action = PeepActionType::StaffFixGround;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
 
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action == PEEP_ACTION_NONE_2)
+    if (Action == PeepActionType::None2)
     {
         return true;
     }
@@ -2585,14 +2585,14 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
         WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
 
         sprite_direction = PeepDirection << 3;
-        Action = PEEP_ACTION_STAFF_ANSWER_CALL_2;
+        Action = PeepActionType::StaffAnswerCall2;
         ActionFrame = 0;
         ActionSpriteImageOffset = 0;
 
         UpdateCurrentActionSpriteType();
     }
 
-    if (Action != PEEP_ACTION_NONE_2)
+    if (Action != PeepActionType::None2)
     {
         UpdateAction();
         Invalidate();

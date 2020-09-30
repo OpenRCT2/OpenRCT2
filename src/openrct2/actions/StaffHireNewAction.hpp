@@ -160,7 +160,7 @@ private:
         {
             newPeep->sprite_identifier = 1;
             newPeep->WindowInvalidateFlags = 0;
-            newPeep->Action = PEEP_ACTION_NONE_2;
+            newPeep->Action = PeepActionType::None2;
             newPeep->SpecialSprite = 0;
             newPeep->ActionSpriteImageOffset = 0;
             newPeep->WalkingFrameNum = 0;
