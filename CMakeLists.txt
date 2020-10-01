@@ -19,6 +19,9 @@ if (CCache_FOUND)
     endif (OPENRCT2_USE_CCACHE)
 endif (CCache_FOUND)
 
+# nlohmann_json is required for JSON processing. Stop if not found.
+find_package(nlohmann_json REQUIRED)
+
 project(openrct2 CXX)
 
 include(cmake/platform.cmake)
