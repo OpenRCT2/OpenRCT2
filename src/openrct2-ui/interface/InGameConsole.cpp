@@ -39,15 +39,15 @@ void InGameConsole::WritePrompt()
     InteractiveConsole::WriteLine("> ");
 }
 
-void InGameConsole::Input(CONSOLE_INPUT input)
+void InGameConsole::Input(ConsoleInput input)
 {
     switch (input)
     {
-        case CONSOLE_INPUT_LINE_CLEAR:
+        case ConsoleInput::LineClear:
             ClearInput();
             RefreshCaret();
             break;
-        case CONSOLE_INPUT_LINE_EXECUTE:
+        case ConsoleInput::LineExecute:
             if (_consoleCurrentLine[0] != '\0')
             {
                 HistoryAdd(_consoleCurrentLine);
@@ -62,7 +62,7 @@ void InGameConsole::Input(CONSOLE_INPUT input)
             }
             ScrollToEnd();
             break;
-        case CONSOLE_INPUT_HISTORY_PREVIOUS:
+        case ConsoleInput::HistoryPrevious:
             if (_consoleHistoryIndex > 0)
             {
                 _consoleHistoryIndex--;
@@ -72,7 +72,7 @@ void InGameConsole::Input(CONSOLE_INPUT input)
             _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
             _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
             break;
-        case CONSOLE_INPUT_HISTORY_NEXT:
+        case ConsoleInput::HistoryNext:
             if (_consoleHistoryIndex < _consoleHistoryCount - 1)
             {
                 _consoleHistoryIndex++;
@@ -87,13 +87,13 @@ void InGameConsole::Input(CONSOLE_INPUT input)
                 ClearInput();
             }
             break;
-        case CONSOLE_INPUT_SCROLL_PREVIOUS:
+        case ConsoleInput::ScrollPrevious:
         {
             int32_t scrollAmt = GetNumVisibleLines() - 1;
             Scroll(scrollAmt);
             break;
         }
-        case CONSOLE_INPUT_SCROLL_NEXT:
+        case ConsoleInput::ScrollNext:
         {
             int32_t scrollAmt = GetNumVisibleLines() - 1;
             Scroll(-scrollAmt);
