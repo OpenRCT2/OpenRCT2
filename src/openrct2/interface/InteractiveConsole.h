@@ -19,15 +19,15 @@
 struct rct_drawpixelinfo;
 struct TextInputSession;
 
-enum CONSOLE_INPUT
+enum class ConsoleInput : uint8_t
 {
-    CONSOLE_INPUT_NONE,
-    CONSOLE_INPUT_LINE_CLEAR,
-    CONSOLE_INPUT_LINE_EXECUTE,
-    CONSOLE_INPUT_HISTORY_PREVIOUS,
-    CONSOLE_INPUT_HISTORY_NEXT,
-    CONSOLE_INPUT_SCROLL_PREVIOUS,
-    CONSOLE_INPUT_SCROLL_NEXT,
+    None,
+    LineClear,
+    LineExecute,
+    HistoryPrevious,
+    HistoryNext,
+    ScrollPrevious,
+    ScrollNext,
 };
 
 class InteractiveConsole

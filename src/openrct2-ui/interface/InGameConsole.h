@@ -52,7 +52,7 @@ namespace OpenRCT2::Ui
         void Toggle();
         void WriteLine(const std::string& s, uint32_t colourFormat) override;
 
-        void Input(CONSOLE_INPUT input);
+        void Input(ConsoleInput input);
         void RefreshCaret();
         void Scroll(int32_t linesToScroll);
 
