@@ -5154,7 +5154,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
     if (ride->mode == RideMode::ContinuousCircuit || ride->IsBlockSectioned())
     {
         if (ride_find_track_gap(ride, &trackElement, &problematicTrackElement)
-            && (status != RIDE_STATUS_SIMULATING || ride->mode == ride->IsBlockSectioned()))
+            && (status != RIDE_STATUS_SIMULATING || ride->IsBlockSectioned()))
         {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);

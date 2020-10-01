@@ -4264,7 +4264,7 @@ void Vehicle::UpdateTravellingCableLift()
 
     sub_state = 2;
 
-    if (curRide->mode == curRide->IsBlockSectioned())
+    if (curRide->IsBlockSectioned())
         return;
 
     // This is slightly different to the vanilla function
