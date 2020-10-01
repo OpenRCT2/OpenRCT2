@@ -1549,7 +1549,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
     {
-        //goto loc_69B119;  replaced by "else if" below
+        // goto loc_69B119;  replaced by "else if" below
         std::cout << "It's raining and I'm considering an umbrella\n";
     }
     else if ((shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
@@ -1560,7 +1560,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             return false;
     }
 
-//loc_69B119: replaced by "else" above
+    // loc_69B119: replaced by "else" above
     if (!hasVoucher)
     {
         if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -1589,8 +1589,8 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             itemValue -= price;
             if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
             {
-                //goto loc_69B221; now using below variable to skip all the code
-                //until the place where loc_69B221 was;
+                // goto loc_69B221; now using below variable to skip all the code
+                // until the place where loc_69B221 was
                 isRainingAndUmbrella = true;
             }
 
@@ -1637,7 +1637,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         }
     }
 
-//loc_69B221: replaced by "isRainingAndUmbrella" variable
+    // loc_69B221: replaced by "isRainingAndUmbrella" variable
     if (!hasVoucher)
     {
         if (gClimateCurrent.Temperature >= 21)
