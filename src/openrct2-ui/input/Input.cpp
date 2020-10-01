@@ -29,30 +29,30 @@ using namespace OpenRCT2::Ui;
 
 static void input_handle_console(int32_t key)
 {
-    CONSOLE_INPUT input = CONSOLE_INPUT_NONE;
+    CONSOLE_INPUT input = CONSOLE_INPUT::NONE;
     switch (key)
     {
         case SDL_SCANCODE_ESCAPE:
-            input = CONSOLE_INPUT_LINE_CLEAR;
+            input = CONSOLE_INPUT::LINE_CLEAR;
             break;
         case SDL_SCANCODE_RETURN:
         case SDL_SCANCODE_KP_ENTER:
-            input = CONSOLE_INPUT_LINE_EXECUTE;
+            input = CONSOLE_INPUT::LINE_EXECUTE;
             break;
         case SDL_SCANCODE_UP:
-            input = CONSOLE_INPUT_HISTORY_PREVIOUS;
+            input = CONSOLE_INPUT::HISTORY_PREVIOUS;
             break;
         case SDL_SCANCODE_DOWN:
-            input = CONSOLE_INPUT_HISTORY_NEXT;
+            input = CONSOLE_INPUT::HISTORY_NEXT;
             break;
         case SDL_SCANCODE_PAGEUP:
-            input = CONSOLE_INPUT_SCROLL_PREVIOUS;
+            input = CONSOLE_INPUT::SCROLL_PREVIOUS;
             break;
         case SDL_SCANCODE_PAGEDOWN:
-            input = CONSOLE_INPUT_SCROLL_NEXT;
+            input = CONSOLE_INPUT::SCROLL_NEXT;
             break;
     }
-    if (input != CONSOLE_INPUT_NONE)
+    if (input != CONSOLE_INPUT::NONE)
     {
         auto& console = GetInGameConsole();
         console.Input(input);
