@@ -917,8 +917,8 @@ static void window_new_ride_paint_ride_information(
     {
         _lastTrackDesignCountRideType = item;
         _lastTrackDesignCount = get_num_track_designs(item);
-        ft.Add<int32_t>(_lastTrackDesignCount);
     }
+    ft.Add<int32_t>(_lastTrackDesignCount);
 
     rct_string_id designCountStringId;
     switch (_lastTrackDesignCount)
