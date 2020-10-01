@@ -1491,6 +1491,8 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     bool hasVoucher = false;
 
+    bool isRainingAndUmbrella = false;
+
     if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
         && (VoucherShopItem == shopItem))
     {
@@ -1585,30 +1587,34 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         if (itemValue < price)
         {
             itemValue -= price;
-            if (shopItem == SHOP_ITEM_UMBRELLA)
+            if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
             {
-                if (climate_is_raining())
-                    goto loc_69B221;
+                //goto loc_69B221; now using below variable to skip all the code
+                //until the place where loc_69B221 was;
+                isRainingAndUmbrella = true;
             }
 
-            itemValue = -itemValue;
-            if (Happiness >= 128)
-                itemValue /= 2;
-
-            if (Happiness >= 180)
-                itemValue /= 2;
-
-            if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
+            if (isRainingAndUmbrella == false)
             {
-                // "I'm not paying that much for x"
-                PeepThoughtType thought_type = static_cast<PeepThoughtType>(
-                    (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32))
-                                    : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem)));
-                InsertNewThought(thought_type, ride->id);
-                return false;
+                itemValue = -itemValue;
+                if (Happiness >= 128)
+                    itemValue /= 2;
+
+                if (Happiness >= 180)
+                    itemValue /= 2;
+
+                if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
+                {
+                    // "I'm not paying that much for x"
+                    PeepThoughtType thought_type = static_cast<PeepThoughtType>(
+                        (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32))
+                                        : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem)));
+                    InsertNewThought(thought_type, ride->id);
+                    return false;
+                }
             }
         }
-        else
+        else if (isRainingAndUmbrella == false)
         {
             itemValue -= price;
             itemValue = std::max(8, itemValue);
@@ -1631,7 +1637,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         }
     }
 
-loc_69B221:
+//loc_69B221: replaced by "isRainingAndUmbrella" variable
     if (!hasVoucher)
     {
         if (gClimateCurrent.Temperature >= 21)
