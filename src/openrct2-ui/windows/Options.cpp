@@ -1748,6 +1748,218 @@ static void window_options_controls_paint(rct_window* w, rct_drawpixelinfo* dpi)
         w->windowPos + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1 });
 }
 
+#pragma region Miscellaneous Tab
+
+static void window_options_misc_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            return;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+        case WIDX_TAB_4:
+        case WIDX_TAB_5:
+        case WIDX_TAB_6:
+        case WIDX_TAB_7:
+            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+        case WIDX_REAL_NAME_CHECKBOX:
+            gConfigGeneral.show_real_names_of_guests ^= 1;
+            config_save_default();
+            w->Invalidate();
+            peep_update_names(gConfigGeneral.show_real_names_of_guests);
+            break;
+        case WIDX_AUTO_STAFF_PLACEMENT:
+            gConfigGeneral.auto_staff_placement ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_TITLE_SEQUENCE_BUTTON:
+            window_title_editor_open(0);
+            break;
+        case WIDX_SCENARIO_UNLOCKING:
+            gConfigGeneral.scenario_unlocking_enabled ^= 1;
+            config_save_default();
+            window_close_by_class(WC_SCENARIO_SELECT);
+            break;
+        case WIDX_TITLE_SEQUENCE_RANDOM:
+            gConfigInterface.random_title_sequence ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_AUTO_OPEN_SHOPS:
+            gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_ALLOW_EARLY_COMPLETION:
+            gConfigGeneral.allow_early_completion ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    uint32_t num_items;
+
+    widget = &w->widgets[widgetIndex - 1];
+
+    switch (widgetIndex)
+    {
+        case WIDX_TITLE_SEQUENCE_DROPDOWN:
+            num_items = static_cast<int32_t>(title_sequence_manager_get_count());
+            for (size_t i = 0; i < num_items; i++)
+            {
+                gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
+            }
+
+            window_dropdown_show_text(
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
+                DROPDOWN_FLAG_STAY_OPEN, num_items);
+
+            dropdown_set_checked(static_cast<int32_t>(title_get_current_sequence()), true);
+            break;
+        case WIDX_SCENARIO_GROUPING_DROPDOWN:
+            num_items = 2;
+
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_OPTIONS_SCENARIO_DIFFICULTY;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
+
+            window_dropdown_show_text_custom_width(
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+                DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+
+            dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
+            break;
+        case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
+            for (size_t i = 0; i < 7; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
+            }
+
+            window_options_show_dropdown(w, widget, 7);
+            dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
+            break;
+    }
+}
+
+static void window_options_misc_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_TITLE_SEQUENCE_DROPDOWN:
+            if (dropdownIndex != static_cast<int32_t>(title_get_current_sequence()))
+            {
+                title_sequence_change_preset(static_cast<size_t>(dropdownIndex));
+                config_save_default();
+                w->Invalidate();
+            }
+            break;
+        case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.default_inspection_interval)
+            {
+                gConfigGeneral.default_inspection_interval = static_cast<uint8_t>(dropdownIndex);
+                config_save_default();
+                w->Invalidate();
+            }
+            break;
+        case WIDX_SCENARIO_GROUPING_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.scenario_select_mode)
+            {
+                gConfigGeneral.scenario_select_mode = dropdownIndex;
+                gConfigInterface.scenarioselect_last_tab = 0;
+                config_save_default();
+                w->Invalidate();
+                window_close_by_class(WC_SCENARIO_SELECT);
+            }
+            break;
+    }
+}
+
+static void window_options_misc_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    const utf8* name = title_sequence_manager_get_name(title_get_config_sequence());
+    auto ft = Formatter::Common();
+    ft.Add<utf8*>(name);
+
+    // The real name setting of clients is fixed to that of the server
+    // and the server cannot change the setting during gameplay to prevent desyncs
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
+        window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+    }
+
+    widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
+    widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
+    widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
+    widget_set_checkbox_value(w, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
+    widget_set_checkbox_value(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
+
+    // Disable title sequence dropdown if set to random
+    if (gConfigInterface.random_title_sequence)
+    {
+        w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
+        w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
+        w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE);
+    }
+
+    if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY)
+        window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
+    else
+        window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
+
+    widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
+
+    if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN)
+    {
+        w->disabled_widgets &= ~(1ULL << WIDX_SCENARIO_UNLOCKING);
+    }
+    else
+    {
+        w->disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
+    }
+
+    window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames
+        [gConfigGeneral.default_inspection_interval];
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_misc_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+
+    gfx_draw_string_left(
+        dpi, STR_TITLE_SEQUENCE, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_OPTIONS_SCENARIO_GROUPING, nullptr, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_DEFAULT_INSPECTION_INTERVAL, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1 });
+}
+
 #pragma region Old event functions
 
 /**
@@ -1790,43 +2002,6 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WINDOW_OPTIONS_PAGE_MISC:
-            switch (widgetIndex)
-            {
-                case WIDX_REAL_NAME_CHECKBOX:
-                    gConfigGeneral.show_real_names_of_guests ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    peep_update_names(gConfigGeneral.show_real_names_of_guests);
-                    break;
-                case WIDX_AUTO_STAFF_PLACEMENT:
-                    gConfigGeneral.auto_staff_placement ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_TITLE_SEQUENCE_BUTTON:
-                    window_title_editor_open(0);
-                    break;
-                case WIDX_SCENARIO_UNLOCKING:
-                    gConfigGeneral.scenario_unlocking_enabled ^= 1;
-                    config_save_default();
-                    window_close_by_class(WC_SCENARIO_SELECT);
-                    break;
-                case WIDX_TITLE_SEQUENCE_RANDOM:
-                    gConfigInterface.random_title_sequence ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_AUTO_OPEN_SHOPS:
-                    gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_ALLOW_EARLY_COMPLETION:
-                    gConfigGeneral.allow_early_completion ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_ADVANCED:
@@ -1938,47 +2113,6 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
             break;
 
         case WINDOW_OPTIONS_PAGE_MISC:
-            switch (widgetIndex)
-            {
-                case WIDX_TITLE_SEQUENCE_DROPDOWN:
-                    num_items = static_cast<int32_t>(title_sequence_manager_get_count());
-                    for (size_t i = 0; i < num_items; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
-                    }
-
-                    window_dropdown_show_text(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
-                        DROPDOWN_FLAG_STAY_OPEN, num_items);
-
-                    dropdown_set_checked(static_cast<int32_t>(title_get_current_sequence()), true);
-                    break;
-                case WIDX_SCENARIO_GROUPING_DROPDOWN:
-                    num_items = 2;
-
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_OPTIONS_SCENARIO_DIFFICULTY;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
-
-                    window_dropdown_show_text_custom_width(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
-
-                    dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
-                    break;
-                case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
-                    for (size_t i = 0; i < 7; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
-                    }
-
-                    window_options_show_dropdown(w, widget, 7);
-                    dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_ADVANCED:
@@ -2042,35 +2176,6 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
             break;
 
         case WINDOW_OPTIONS_PAGE_MISC:
-            switch (widgetIndex)
-            {
-                case WIDX_TITLE_SEQUENCE_DROPDOWN:
-                    if (dropdownIndex != static_cast<int32_t>(title_get_current_sequence()))
-                    {
-                        title_sequence_change_preset(static_cast<size_t>(dropdownIndex));
-                        config_save_default();
-                        w->Invalidate();
-                    }
-                    break;
-                case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.default_inspection_interval)
-                    {
-                        gConfigGeneral.default_inspection_interval = static_cast<uint8_t>(dropdownIndex);
-                        config_save_default();
-                        w->Invalidate();
-                    }
-                    break;
-                case WIDX_SCENARIO_GROUPING_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.scenario_select_mode)
-                    {
-                        gConfigGeneral.scenario_select_mode = dropdownIndex;
-                        gConfigInterface.scenarioselect_last_tab = 0;
-                        config_save_default();
-                        w->Invalidate();
-                        window_close_by_class(WC_SCENARIO_SELECT);
-                    }
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_ADVANCED:
@@ -2125,55 +2230,6 @@ static void window_options_invalidate(rct_window* w)
 
         case WINDOW_OPTIONS_PAGE_MISC:
         {
-            const utf8* name = title_sequence_manager_get_name(title_get_config_sequence());
-            auto ft = Formatter::Common();
-            ft.Add<utf8*>(name);
-
-            // The real name setting of clients is fixed to that of the server
-            // and the server cannot change the setting during gameplay to prevent desyncs
-            if (network_get_mode() != NETWORK_MODE_NONE)
-            {
-                w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
-                window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
-            }
-
-            widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
-            widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
-            widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
-            widget_set_checkbox_value(w, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
-            widget_set_checkbox_value(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
-
-            // Disable title sequence dropdown if set to random
-            if (gConfigInterface.random_title_sequence)
-            {
-                w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
-                w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE);
-            }
-            else
-            {
-                w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
-                w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE);
-            }
-
-            if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY)
-                window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
-            else
-                window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
-
-            widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
-
-            if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN)
-            {
-                w->disabled_widgets &= ~(1ULL << WIDX_SCENARIO_UNLOCKING);
-            }
-            else
-            {
-                w->disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
-            }
-
-            window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames
-                [gConfigGeneral.default_inspection_interval];
-
             break;
         }
 
@@ -2216,15 +2272,6 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         case WINDOW_OPTIONS_PAGE_MISC:
         {
-            gfx_draw_string_left(
-                dpi, STR_TITLE_SEQUENCE, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_OPTIONS_SCENARIO_GROUPING, nullptr, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_DEFAULT_INSPECTION_INTERVAL, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1 });
             break;
         }
 
@@ -2344,12 +2391,12 @@ static rct_window_event_list window_options_events_controls([](auto& events) {
 });
 
 static rct_window_event_list window_options_events_misc([](auto& events) {
-    events.mouse_up = &window_options_mouseup;
-    events.mouse_down = &window_options_mousedown;
-    events.dropdown = &window_options_dropdown;
+    events.mouse_up = &window_options_misc_mouseup;
+    events.mouse_down = &window_options_misc_mousedown;
+    events.dropdown = &window_options_misc_dropdown;
     events.update = &window_options_common_update;
-    events.invalidate = &window_options_invalidate;
-    events.paint = &window_options_paint;
+    events.invalidate = &window_options_misc_invalidate;
+    events.paint = &window_options_misc_paint;
 });
 
 static rct_window_event_list window_options_events_advanced([](auto& events) {
