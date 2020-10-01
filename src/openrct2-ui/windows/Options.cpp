@@ -1073,6 +1073,265 @@ static void window_options_rendering_paint(rct_window* w, rct_drawpixelinfo* dpi
     window_options_draw_tab_images(dpi, w);
 }
 
+#pragma region Culture Tab
+
+static void window_options_culture_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            return;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+        case WIDX_TAB_4:
+        case WIDX_TAB_5:
+        case WIDX_TAB_6:
+        case WIDX_TAB_7:
+            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+    }
+}
+
+static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    widget = &w->widgets[widgetIndex - 1];
+
+    switch (widgetIndex)
+    {
+        case WIDX_HEIGHT_LABELS_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_HEIGHT_IN_UNITS;
+            gDropdownItemsArgs[1] = STR_REAL_VALUES;
+
+            window_options_show_dropdown(w, widget, 2);
+
+            dropdown_set_checked(gConfigGeneral.show_height_as_units ? 0 : 1, true);
+            break;
+        case WIDX_CURRENCY_DROPDOWN:
+        {
+            uint32_t num_items = CURRENCY_END + 1;             // All the currencies plus the separator
+            size_t num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
+
+            for (size_t i = 0; i < num_ordinary_currencies; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
+            }
+
+            gDropdownItemsFormat[num_ordinary_currencies] = DROPDOWN_SEPARATOR;
+
+            gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[CURRENCY_CUSTOM].stringId;
+
+            window_options_show_dropdown(w, widget, num_items);
+
+            if (gConfigGeneral.currency_format == CURRENCY_CUSTOM)
+            {
+                dropdown_set_checked(gConfigGeneral.currency_format + 1, true);
+            }
+            else
+            {
+                dropdown_set_checked(gConfigGeneral.currency_format, true);
+            }
+            break;
+        }
+        case WIDX_DISTANCE_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_IMPERIAL;
+            gDropdownItemsArgs[1] = STR_METRIC;
+            gDropdownItemsArgs[2] = STR_SI;
+
+            window_options_show_dropdown(w, widget, 3);
+
+            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
+            break;
+        case WIDX_TEMPERATURE_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_CELSIUS;
+            gDropdownItemsArgs[1] = STR_FAHRENHEIT;
+
+            window_options_show_dropdown(w, widget, 2);
+
+            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.temperature_format), true);
+            break;
+        case WIDX_LANGUAGE_DROPDOWN:
+            for (size_t i = 1; i < LANGUAGE_COUNT; i++)
+            {
+                gDropdownItemsFormat[i - 1] = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItemsArgs[i - 1] = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
+            }
+            window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
+            dropdown_set_checked(LocalisationService_GetCurrentLanguage() - 1, true);
+            break;
+        case WIDX_DATE_FORMAT_DROPDOWN:
+            for (size_t i = 0; i < 4; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = DateFormatStringIds[i];
+            }
+            window_options_show_dropdown(w, widget, 4);
+            dropdown_set_checked(gConfigGeneral.date_format, true);
+            break;
+    }
+}
+
+static void window_options_culture_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_HEIGHT_LABELS_DROPDOWN:
+            // reset flag and set it to 1 if height as units is selected
+            gConfigGeneral.show_height_as_units = 0;
+
+            if (dropdownIndex == 0)
+            {
+                gConfigGeneral.show_height_as_units = 1;
+            }
+            config_save_default();
+            window_options_update_height_markers();
+            break;
+        case WIDX_CURRENCY_DROPDOWN:
+            if (dropdownIndex == CURRENCY_CUSTOM + 1)
+            { // Add 1 because the separator occupies a position
+                gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex) - 1;
+                context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
+            }
+            else
+            {
+                gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex);
+            }
+            config_save_default();
+            gfx_invalidate_screen();
+            break;
+        case WIDX_DISTANCE_DROPDOWN:
+            gConfigGeneral.measurement_format = static_cast<MeasurementFormat>(dropdownIndex);
+            config_save_default();
+            window_options_update_height_markers();
+            break;
+        case WIDX_TEMPERATURE_DROPDOWN:
+            if (dropdownIndex != static_cast<int32_t>(gConfigGeneral.temperature_format))
+            {
+                gConfigGeneral.temperature_format = static_cast<TemperatureUnit>(dropdownIndex);
+                config_save_default();
+                gfx_invalidate_screen();
+            }
+            break;
+        case WIDX_LANGUAGE_DROPDOWN:
+        {
+            auto fallbackLanguage = LocalisationService_GetCurrentLanguage();
+            if (dropdownIndex != LocalisationService_GetCurrentLanguage() - 1)
+            {
+                if (!language_open(dropdownIndex + 1))
+                {
+                    // Failed to open language file, try to recover by falling
+                    // back to previously used language
+                    if (language_open(fallbackLanguage))
+                    {
+                        // It worked, so we can say it with error message in-game
+                        context_show_error(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
+                    }
+                    // report error to console regardless
+                    log_error("Failed to open language file.");
+                    dropdownIndex = fallbackLanguage - 1;
+                }
+                else
+                {
+                    gConfigGeneral.language = dropdownIndex + 1;
+                    config_save_default();
+                    gfx_invalidate_screen();
+                }
+            }
+        }
+        break;
+        case WIDX_DATE_FORMAT_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.date_format)
+            {
+                gConfigGeneral.date_format = static_cast<uint8_t>(dropdownIndex);
+                config_save_default();
+                gfx_invalidate_screen();
+            }
+            break;
+    }
+}
+
+static void window_options_culture_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    // Language
+    auto ft = Formatter::Common();
+    ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
+
+    // Currency: pounds, dollars, etc. (10 total)
+    window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
+
+    // Distance: metric / imperial / si
+    {
+        rct_string_id stringId = STR_NONE;
+        switch (gConfigGeneral.measurement_format)
+        {
+            case MeasurementFormat::Imperial:
+                stringId = STR_IMPERIAL;
+                break;
+            case MeasurementFormat::Metric:
+                stringId = STR_METRIC;
+                break;
+            case MeasurementFormat::SI:
+                stringId = STR_SI;
+                break;
+        }
+        window_options_culture_widgets[WIDX_DISTANCE].text = stringId;
+    }
+
+    // Date format
+    window_options_culture_widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
+
+    // Temperature: celsius/fahrenheit
+    window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit
+        ? STR_FAHRENHEIT
+        : STR_CELSIUS;
+
+    // Height: units/real values
+    window_options_culture_widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_HEIGHT_IN_UNITS
+                                                                                                  : STR_REAL_VALUES;
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_culture_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+
+    gfx_draw_string_left(
+        dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_LANGUAGE].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_CURRENCY, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_CURRENCY].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_DISTANCE_AND_SPEED, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DISTANCE].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_TEMPERATURE, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_TEMPERATURE].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_HEIGHT_LABELS, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_DATE_FORMAT, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1 });
+}
+
 #pragma region Old event functions
 
 /**
@@ -1356,87 +1615,6 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
             break;
 
         case WINDOW_OPTIONS_PAGE_CULTURE:
-            switch (widgetIndex)
-            {
-                case WIDX_HEIGHT_LABELS_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_HEIGHT_IN_UNITS;
-                    gDropdownItemsArgs[1] = STR_REAL_VALUES;
-
-                    window_options_show_dropdown(w, widget, 2);
-
-                    dropdown_set_checked(gConfigGeneral.show_height_as_units ? 0 : 1, true);
-                    break;
-                case WIDX_CURRENCY_DROPDOWN:
-                {
-                    num_items = CURRENCY_END + 1;                      // All the currencies plus the separator
-                    size_t num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
-
-                    for (size_t i = 0; i < num_ordinary_currencies; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
-                    }
-
-                    gDropdownItemsFormat[num_ordinary_currencies] = DROPDOWN_SEPARATOR;
-
-                    gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[CURRENCY_CUSTOM].stringId;
-
-                    window_options_show_dropdown(w, widget, num_items);
-
-                    if (gConfigGeneral.currency_format == CURRENCY_CUSTOM)
-                    {
-                        dropdown_set_checked(gConfigGeneral.currency_format + 1, true);
-                    }
-                    else
-                    {
-                        dropdown_set_checked(gConfigGeneral.currency_format, true);
-                    }
-                    break;
-                }
-                case WIDX_DISTANCE_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_IMPERIAL;
-                    gDropdownItemsArgs[1] = STR_METRIC;
-                    gDropdownItemsArgs[2] = STR_SI;
-
-                    window_options_show_dropdown(w, widget, 3);
-
-                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
-                    break;
-                case WIDX_TEMPERATURE_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_CELSIUS;
-                    gDropdownItemsArgs[1] = STR_FAHRENHEIT;
-
-                    window_options_show_dropdown(w, widget, 2);
-
-                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.temperature_format), true);
-                    break;
-                case WIDX_LANGUAGE_DROPDOWN:
-                    for (size_t i = 1; i < LANGUAGE_COUNT; i++)
-                    {
-                        gDropdownItemsFormat[i - 1] = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItemsArgs[i - 1] = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
-                    }
-                    window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
-                    dropdown_set_checked(LocalisationService_GetCurrentLanguage() - 1, true);
-                    break;
-                case WIDX_DATE_FORMAT_DROPDOWN:
-                    for (size_t i = 0; i < 4; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = DateFormatStringIds[i];
-                    }
-                    window_options_show_dropdown(w, widget, 4);
-                    dropdown_set_checked(gConfigGeneral.date_format, true);
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_AUDIO:
@@ -1590,81 +1768,6 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
             break;
 
         case WINDOW_OPTIONS_PAGE_CULTURE:
-            switch (widgetIndex)
-            {
-                case WIDX_HEIGHT_LABELS_DROPDOWN:
-                    // reset flag and set it to 1 if height as units is selected
-                    gConfigGeneral.show_height_as_units = 0;
-
-                    if (dropdownIndex == 0)
-                    {
-                        gConfigGeneral.show_height_as_units = 1;
-                    }
-                    config_save_default();
-                    window_options_update_height_markers();
-                    break;
-                case WIDX_CURRENCY_DROPDOWN:
-                    if (dropdownIndex == CURRENCY_CUSTOM + 1)
-                    { // Add 1 because the separator occupies a position
-                        gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex) - 1;
-                        context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
-                    }
-                    else
-                    {
-                        gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex);
-                    }
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    break;
-                case WIDX_DISTANCE_DROPDOWN:
-                    gConfigGeneral.measurement_format = static_cast<MeasurementFormat>(dropdownIndex);
-                    config_save_default();
-                    window_options_update_height_markers();
-                    break;
-                case WIDX_TEMPERATURE_DROPDOWN:
-                    if (dropdownIndex != static_cast<int32_t>(gConfigGeneral.temperature_format))
-                    {
-                        gConfigGeneral.temperature_format = static_cast<TemperatureUnit>(dropdownIndex);
-                        config_save_default();
-                        gfx_invalidate_screen();
-                    }
-                    break;
-                case WIDX_LANGUAGE_DROPDOWN:
-                {
-                    auto fallbackLanguage = LocalisationService_GetCurrentLanguage();
-                    if (dropdownIndex != LocalisationService_GetCurrentLanguage() - 1)
-                    {
-                        if (!language_open(dropdownIndex + 1))
-                        {
-                            // Failed to open language file, try to recover by falling
-                            // back to previously used language
-                            if (language_open(fallbackLanguage))
-                            {
-                                // It worked, so we can say it with error message in-game
-                                context_show_error(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
-                            }
-                            // report error to console regardless
-                            log_error("Failed to open language file.");
-                            dropdownIndex = fallbackLanguage - 1;
-                        }
-                        else
-                        {
-                            gConfigGeneral.language = dropdownIndex + 1;
-                            config_save_default();
-                            gfx_invalidate_screen();
-                        }
-                    }
-                }
-                break;
-                case WIDX_DATE_FORMAT_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.date_format)
-                    {
-                        gConfigGeneral.date_format = static_cast<uint8_t>(dropdownIndex);
-                        config_save_default();
-                        gfx_invalidate_screen();
-                    }
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_AUDIO:
@@ -1806,44 +1909,6 @@ static void window_options_invalidate(rct_window* w)
 
         case WINDOW_OPTIONS_PAGE_CULTURE:
         {
-            // Language
-            auto ft = Formatter::Common();
-            ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
-
-            // Currency: pounds, dollars, etc. (10 total)
-            window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
-
-            // Distance: metric / imperial / si
-            {
-                rct_string_id stringId = STR_NONE;
-                switch (gConfigGeneral.measurement_format)
-                {
-                    case MeasurementFormat::Imperial:
-                        stringId = STR_IMPERIAL;
-                        break;
-                    case MeasurementFormat::Metric:
-                        stringId = STR_METRIC;
-                        break;
-                    case MeasurementFormat::SI:
-                        stringId = STR_SI;
-                        break;
-                }
-                window_options_culture_widgets[WIDX_DISTANCE].text = stringId;
-            }
-
-            // Date format
-            window_options_culture_widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
-
-            // Temperature: celsius/fahrenheit
-            window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format
-                    == TemperatureUnit::Fahrenheit
-                ? STR_FAHRENHEIT
-                : STR_CELSIUS;
-
-            // Height: units/real values
-            window_options_culture_widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_HEIGHT_IN_UNITS
-                                                                                                          : STR_REAL_VALUES;
-
             break;
         }
         case WINDOW_OPTIONS_PAGE_AUDIO:
@@ -2042,24 +2107,6 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
 
         case WINDOW_OPTIONS_PAGE_CULTURE:
-            gfx_draw_string_left(
-                dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_LANGUAGE].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_CURRENCY, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_CURRENCY].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_DISTANCE_AND_SPEED, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DISTANCE].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_TEMPERATURE, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_TEMPERATURE].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_HEIGHT_LABELS, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_DATE_FORMAT, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1 });
             break;
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
@@ -2184,12 +2231,12 @@ static rct_window_event_list window_options_events_rendering([](auto& events) {
 });
 
 static rct_window_event_list window_options_events_culture([](auto& events) {
-    events.mouse_up = &window_options_mouseup;
-    events.mouse_down = &window_options_mousedown;
-    events.dropdown = &window_options_dropdown;
+    events.mouse_up = &window_options_culture_mouseup;
+    events.mouse_down = &window_options_culture_mousedown;
+    events.dropdown = &window_options_culture_dropdown;
     events.update = &window_options_common_update;
-    events.invalidate = &window_options_invalidate;
-    events.paint = &window_options_paint;
+    events.invalidate = &window_options_culture_invalidate;
+    events.paint = &window_options_culture_paint;
 });
 
 static rct_window_event_list window_options_events_audio([](auto& events) {
