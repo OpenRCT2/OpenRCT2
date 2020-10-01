@@ -543,6 +543,25 @@ static uint64_t window_options_page_enabled_widgets[] = {
 
 #pragma region Common tab events
 
+static void window_options_common_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            return;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+        case WIDX_TAB_4:
+        case WIDX_TAB_5:
+        case WIDX_TAB_6:
+        case WIDX_TAB_7:
+            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+    }
+}
+
 static void window_options_common_invalidate_before(rct_window* w)
 {
     if (window_options_page_widgets[w->page] != w->widgets)
@@ -579,20 +598,11 @@ static void window_options_common_update(rct_window* w)
 
 static void window_options_display_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
     switch (widgetIndex)
     {
-        case WIDX_CLOSE:
-            window_close(w);
-            return;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-        case WIDX_TAB_3:
-        case WIDX_TAB_4:
-        case WIDX_TAB_5:
-        case WIDX_TAB_6:
-        case WIDX_TAB_7:
-            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
-            break;
         case WIDX_UNCAP_FPS_CHECKBOX:
             gConfigGeneral.uncap_fps ^= 1;
             drawing_engine_set_vsync(gConfigGeneral.use_vsync);
@@ -901,20 +911,11 @@ static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
     switch (widgetIndex)
     {
-        case WIDX_CLOSE:
-            window_close(w);
-            return;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-        case WIDX_TAB_3:
-        case WIDX_TAB_4:
-        case WIDX_TAB_5:
-        case WIDX_TAB_6:
-        case WIDX_TAB_7:
-            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
-            break;
         case WIDX_TILE_SMOOTHING_CHECKBOX:
             gConfigGeneral.landscape_smoothing ^= 1;
             config_save_default();
@@ -1077,21 +1078,8 @@ static void window_options_rendering_paint(rct_window* w, rct_drawpixelinfo* dpi
 
 static void window_options_culture_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-            window_close(w);
-            return;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-        case WIDX_TAB_3:
-        case WIDX_TAB_4:
-        case WIDX_TAB_5:
-        case WIDX_TAB_6:
-        case WIDX_TAB_7:
-            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
-            break;
-    }
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
 }
 
 static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
@@ -1336,21 +1324,11 @@ static void window_options_culture_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_options_audio_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
     switch (widgetIndex)
     {
-        case WIDX_CLOSE:
-            window_close(w);
-            return;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-        case WIDX_TAB_3:
-        case WIDX_TAB_4:
-        case WIDX_TAB_5:
-        case WIDX_TAB_6:
-        case WIDX_TAB_7:
-            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
-            break;
-
         case WIDX_SOUND_CHECKBOX:
             gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
             config_save_default();
@@ -1588,20 +1566,11 @@ static void window_options_audio_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_options_controls_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
     switch (widgetIndex)
     {
-        case WIDX_CLOSE:
-            window_close(w);
-            return;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-        case WIDX_TAB_3:
-        case WIDX_TAB_4:
-        case WIDX_TAB_5:
-        case WIDX_TAB_6:
-        case WIDX_TAB_7:
-            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
-            break;
         case WIDX_HOTKEY_DROPDOWN:
             context_open_window(WC_KEYBOARD_SHORTCUT_LIST);
             break;
@@ -1752,20 +1721,11 @@ static void window_options_controls_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_options_misc_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
     switch (widgetIndex)
     {
-        case WIDX_CLOSE:
-            window_close(w);
-            return;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-        case WIDX_TAB_3:
-        case WIDX_TAB_4:
-        case WIDX_TAB_5:
-        case WIDX_TAB_6:
-        case WIDX_TAB_7:
-            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
-            break;
         case WIDX_REAL_NAME_CHECKBOX:
             gConfigGeneral.show_real_names_of_guests ^= 1;
             config_save_default();
@@ -1964,20 +1924,11 @@ static void window_options_misc_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_options_advanced_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
     switch (widgetIndex)
     {
-        case WIDX_CLOSE:
-            window_close(w);
-            return;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-        case WIDX_TAB_3:
-        case WIDX_TAB_4:
-        case WIDX_TAB_5:
-        case WIDX_TAB_6:
-        case WIDX_TAB_7:
-            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
-            break;
         case WIDX_DEBUGGING_TOOLS:
             gConfigGeneral.debugging_tools ^= 1;
             config_save_default();
