@@ -541,11 +541,360 @@ static uint64_t window_options_page_enabled_widgets[] = {
 };
 // clang-format on
 
-#pragma endregion
+#pragma region Common tab events
 
+static void window_options_common_invalidate_before(rct_window* w)
+{
+    if (window_options_page_widgets[w->page] != w->widgets)
+    {
+        w->widgets = window_options_page_widgets[w->page];
+        window_init_scroll_widgets(w);
+    }
+    window_options_set_pressed_tab(w);
 
+    w->disabled_widgets = 0;
+}
 
+static void window_options_common_invalidate_after(rct_window* w)
+{
+    // Automatically adjust window height to fit widgets
+    int32_t y = 0;
+    for (auto widget = &w->widgets[WIDX_PAGE_START]; widget->type != WWT_LAST; widget++)
+    {
+        y = std::max<int32_t>(y, widget->bottom);
+    }
+    w->height = y + 6;
+    w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
+}
 
+static void window_options_common_update(rct_window* w)
+{
+    // Tab animation
+    w->frame_no++;
+    widget_invalidate(w, WIDX_TAB_1 + w->page);
+}
+
+#pragma region Display Tab
+
+static void window_options_display_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            return;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+        case WIDX_TAB_4:
+        case WIDX_TAB_5:
+        case WIDX_TAB_6:
+        case WIDX_TAB_7:
+            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+        case WIDX_UNCAP_FPS_CHECKBOX:
+            gConfigGeneral.uncap_fps ^= 1;
+            drawing_engine_set_vsync(gConfigGeneral.use_vsync);
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_USE_VSYNC_CHECKBOX:
+            gConfigGeneral.use_vsync ^= 1;
+            drawing_engine_set_vsync(gConfigGeneral.use_vsync);
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_SHOW_FPS_CHECKBOX:
+            gConfigGeneral.show_fps ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_MULTITHREADING_CHECKBOX:
+            gConfigGeneral.multithreading ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_MINIMIZE_FOCUS_LOSS:
+            gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
+            platform_refresh_video(false);
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_STEAM_OVERLAY_PAUSE:
+            gConfigGeneral.steam_overlay_pause ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_display_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_RESOLUTION_DROPDOWN:
+        {
+            const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+
+            int32_t selectedResolution = -1;
+            for (size_t i = 0; i < resolutions.size(); i++)
+            {
+                const Resolution& resolution = resolutions[i];
+
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+
+                uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
+                args[0] = STR_RESOLUTION_X_BY_Y;
+                args[1] = resolution.Width;
+                args[2] = resolution.Height;
+
+                if (resolution.Width == gConfigGeneral.fullscreen_width
+                    && resolution.Height == gConfigGeneral.fullscreen_height)
+                {
+                    selectedResolution = static_cast<int32_t>(i);
+                }
+            }
+
+            window_options_show_dropdown(w, widget, static_cast<int32_t>(resolutions.size()));
+
+            if (selectedResolution != -1 && selectedResolution < 32)
+            {
+                dropdown_set_checked(selectedResolution, true);
+            }
+        }
+
+        break;
+        case WIDX_FULLSCREEN_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_OPTIONS_DISPLAY_WINDOWED;
+            gDropdownItemsArgs[1] = STR_OPTIONS_DISPLAY_FULLSCREEN;
+            gDropdownItemsArgs[2] = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
+
+            window_options_show_dropdown(w, widget, 3);
+
+            dropdown_set_checked(gConfigGeneral.fullscreen_mode, true);
+            break;
+        case WIDX_DRAWING_ENGINE_DROPDOWN:
+        {
+            int32_t numItems = 3;
+#ifdef DISABLE_OPENGL
+            numItems = 2;
+#endif
+
+            for (int32_t i = 0; i < numItems; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
+            }
+            window_options_show_dropdown(w, widget, numItems);
+            dropdown_set_checked(EnumValue(gConfigGeneral.drawing_engine), true);
+            break;
+        }
+        case WIDX_SCALE_UP:
+            gConfigGeneral.window_scale += 0.25f;
+            config_save_default();
+            gfx_invalidate_screen();
+            context_trigger_resize();
+            context_update_cursor_scale();
+            break;
+        case WIDX_SCALE_DOWN:
+            gConfigGeneral.window_scale -= 0.25f;
+            gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
+            config_save_default();
+            gfx_invalidate_screen();
+            context_trigger_resize();
+            context_update_cursor_scale();
+            break;
+        case WIDX_SCALE_QUALITY_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_SCALING_QUALITY_LINEAR;
+            gDropdownItemsArgs[1] = STR_SCALING_QUALITY_SMOOTH_NN;
+
+            window_options_show_dropdown(w, widget, 2);
+
+            // Note: offset by one to compensate for lack of NN option.
+            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
+            break;
+    }
+}
+
+static void window_options_display_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_RESOLUTION_DROPDOWN:
+        {
+            const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+
+            const Resolution& resolution = resolutions[dropdownIndex];
+            if (resolution.Width != gConfigGeneral.fullscreen_width || resolution.Height != gConfigGeneral.fullscreen_height)
+            {
+                gConfigGeneral.fullscreen_width = resolution.Width;
+                gConfigGeneral.fullscreen_height = resolution.Height;
+
+                if (gConfigGeneral.fullscreen_mode == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+                    context_set_fullscreen_mode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
+
+                config_save_default();
+                gfx_invalidate_screen();
+            }
+        }
+        break;
+        case WIDX_FULLSCREEN_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.fullscreen_mode)
+            {
+                context_set_fullscreen_mode(dropdownIndex);
+
+                gConfigGeneral.fullscreen_mode = static_cast<uint8_t>(dropdownIndex);
+                config_save_default();
+                gfx_invalidate_screen();
+            }
+            break;
+        case WIDX_DRAWING_ENGINE_DROPDOWN:
+            if (dropdownIndex != EnumValue(gConfigGeneral.drawing_engine))
+            {
+                DrawingEngine srcEngine = drawing_engine_get_type();
+                DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
+
+                gConfigGeneral.drawing_engine = dstEngine;
+                bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
+                platform_refresh_video(recreate_window);
+                config_save_default();
+                w->Invalidate();
+            }
+            break;
+        case WIDX_SCALE_QUALITY_DROPDOWN:
+            // Note: offset by one to compensate for lack of NN option.
+            if (static_cast<ScaleQuality>(dropdownIndex + 1) != gConfigGeneral.scale_quality)
+            {
+                gConfigGeneral.scale_quality = static_cast<ScaleQuality>(dropdownIndex + 1);
+                config_save_default();
+                gfx_invalidate_screen();
+                context_trigger_resize();
+            }
+            break;
+    }
+}
+
+static void window_options_display_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    // Resolution dropdown caption.
+    auto ft = Formatter::Common();
+    ft.Increment(16);
+    ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_width));
+    ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_height));
+
+    // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
+    if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+    {
+        w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
+        w->disabled_widgets |= (1 << WIDX_RESOLUTION);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
+        w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
+    }
+
+    // Disable Steam Overlay checkbox when using software rendering.
+    if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
+    {
+        w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
+    }
+
+    // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
+    // In the latter case, nearest neighbour rendering will be used to scale.
+    if (gConfigGeneral.drawing_engine == DrawingEngine::Software
+        || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+    {
+        w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY);
+        w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY_DROPDOWN);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY);
+        w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY_DROPDOWN);
+    }
+
+    // Disable changing VSync for Software engine, as we can't control its use of VSync
+    if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
+    {
+        w->disabled_widgets |= (1 << WIDX_USE_VSYNC_CHECKBOX);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_USE_VSYNC_CHECKBOX);
+    }
+
+    widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
+    widget_set_checkbox_value(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
+    widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
+    widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
+    widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
+    widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
+
+    // Dropdown captions for straightforward strings.
+    window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
+    window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.drawing_engine)];
+    window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
+        [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+
+    gfx_draw_string_left(
+        dpi, STR_FULLSCREEN_MODE, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_FULLSCREEN].top + 1 });
+
+    // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
+    int32_t colour = w->colours[1];
+    if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+    {
+        colour |= COLOUR_FLAG_INSET;
+    }
+    gfx_draw_string_left(
+        dpi, STR_DISPLAY_RESOLUTION, w, colour,
+        w->windowPos + ScreenCoordsXY{ 10 + 15, window_options_display_widgets[WIDX_RESOLUTION].top + 1 });
+
+    gfx_draw_string_left(
+        dpi, STR_UI_SCALING_DESC, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_SCALE].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_DRAWING_ENGINE, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1 });
+
+    int32_t scale = static_cast<int32_t>(gConfigGeneral.window_scale * 100);
+    gfx_draw_string_left(
+        dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SCALE].left + 1, w->widgets[WIDX_SCALE].top + 1 });
+
+    colour = w->colours[1];
+    if (gConfigGeneral.drawing_engine == DrawingEngine::Software
+        || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+    {
+        colour |= COLOUR_FLAG_INSET;
+    }
+    gfx_draw_string_left(
+        dpi, STR_SCALING_QUALITY, w, colour,
+        w->windowPos + ScreenCoordsXY{ 25, window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1 });
+}
+
+#pragma region Old event functions
 
 /**
  *
@@ -572,42 +921,6 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (w->page)
     {
         case WINDOW_OPTIONS_PAGE_DISPLAY:
-            switch (widgetIndex)
-            {
-                case WIDX_UNCAP_FPS_CHECKBOX:
-                    gConfigGeneral.uncap_fps ^= 1;
-                    drawing_engine_set_vsync(gConfigGeneral.use_vsync);
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_USE_VSYNC_CHECKBOX:
-                    gConfigGeneral.use_vsync ^= 1;
-                    drawing_engine_set_vsync(gConfigGeneral.use_vsync);
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_SHOW_FPS_CHECKBOX:
-                    gConfigGeneral.show_fps ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_MULTITHREADING_CHECKBOX:
-                    gConfigGeneral.multithreading ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_MINIMIZE_FOCUS_LOSS:
-                    gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
-                    platform_refresh_video(false);
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_STEAM_OVERLAY_PAUSE:
-                    gConfigGeneral.steam_overlay_pause ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_RENDERING:
@@ -920,95 +1233,6 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     switch (w->page)
     {
         case WINDOW_OPTIONS_PAGE_DISPLAY:
-            switch (widgetIndex)
-            {
-                case WIDX_RESOLUTION_DROPDOWN:
-                {
-                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
-
-                    int32_t selectedResolution = -1;
-                    for (size_t i = 0; i < resolutions.size(); i++)
-                    {
-                        const Resolution& resolution = resolutions[i];
-
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-
-                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
-                        args[0] = STR_RESOLUTION_X_BY_Y;
-                        args[1] = resolution.Width;
-                        args[2] = resolution.Height;
-
-                        if (resolution.Width == gConfigGeneral.fullscreen_width
-                            && resolution.Height == gConfigGeneral.fullscreen_height)
-                        {
-                            selectedResolution = static_cast<int32_t>(i);
-                        }
-                    }
-
-                    window_options_show_dropdown(w, widget, static_cast<int32_t>(resolutions.size()));
-
-                    if (selectedResolution != -1 && selectedResolution < 32)
-                    {
-                        dropdown_set_checked(selectedResolution, true);
-                    }
-                }
-
-                break;
-                case WIDX_FULLSCREEN_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_OPTIONS_DISPLAY_WINDOWED;
-                    gDropdownItemsArgs[1] = STR_OPTIONS_DISPLAY_FULLSCREEN;
-                    gDropdownItemsArgs[2] = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
-
-                    window_options_show_dropdown(w, widget, 3);
-
-                    dropdown_set_checked(gConfigGeneral.fullscreen_mode, true);
-                    break;
-                case WIDX_DRAWING_ENGINE_DROPDOWN:
-                {
-                    int32_t numItems = 3;
-#ifdef DISABLE_OPENGL
-                    numItems = 2;
-#endif
-
-                    for (int32_t i = 0; i < numItems; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
-                    }
-                    window_options_show_dropdown(w, widget, numItems);
-                    dropdown_set_checked(EnumValue(gConfigGeneral.drawing_engine), true);
-                    break;
-                }
-                case WIDX_SCALE_UP:
-                    gConfigGeneral.window_scale += 0.25f;
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    context_trigger_resize();
-                    context_update_cursor_scale();
-                    break;
-                case WIDX_SCALE_DOWN:
-                    gConfigGeneral.window_scale -= 0.25f;
-                    gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    context_trigger_resize();
-                    context_update_cursor_scale();
-                    break;
-                case WIDX_SCALE_QUALITY_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_SCALING_QUALITY_LINEAR;
-                    gDropdownItemsArgs[1] = STR_SCALING_QUALITY_SMOOTH_NN;
-
-                    window_options_show_dropdown(w, widget, 2);
-
-                    // Note: offset by one to compensate for lack of NN option.
-                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_RENDERING:
@@ -1258,61 +1482,6 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
     switch (w->page)
     {
         case WINDOW_OPTIONS_PAGE_DISPLAY:
-            switch (widgetIndex)
-            {
-                case WIDX_RESOLUTION_DROPDOWN:
-                {
-                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
-
-                    const Resolution& resolution = resolutions[dropdownIndex];
-                    if (resolution.Width != gConfigGeneral.fullscreen_width
-                        || resolution.Height != gConfigGeneral.fullscreen_height)
-                    {
-                        gConfigGeneral.fullscreen_width = resolution.Width;
-                        gConfigGeneral.fullscreen_height = resolution.Height;
-
-                        if (gConfigGeneral.fullscreen_mode == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-                            context_set_fullscreen_mode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
-
-                        config_save_default();
-                        gfx_invalidate_screen();
-                    }
-                }
-                break;
-                case WIDX_FULLSCREEN_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.fullscreen_mode)
-                    {
-                        context_set_fullscreen_mode(dropdownIndex);
-
-                        gConfigGeneral.fullscreen_mode = static_cast<uint8_t>(dropdownIndex);
-                        config_save_default();
-                        gfx_invalidate_screen();
-                    }
-                    break;
-                case WIDX_DRAWING_ENGINE_DROPDOWN:
-                    if (dropdownIndex != EnumValue(gConfigGeneral.drawing_engine))
-                    {
-                        DrawingEngine srcEngine = drawing_engine_get_type();
-                        DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
-
-                        gConfigGeneral.drawing_engine = dstEngine;
-                        bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
-                        platform_refresh_video(recreate_window);
-                        config_save_default();
-                        w->Invalidate();
-                    }
-                    break;
-                case WIDX_SCALE_QUALITY_DROPDOWN:
-                    // Note: offset by one to compensate for lack of NN option.
-                    if (static_cast<ScaleQuality>(dropdownIndex + 1) != gConfigGeneral.scale_quality)
-                    {
-                        gConfigGeneral.scale_quality = static_cast<ScaleQuality>(dropdownIndex + 1);
-                        config_save_default();
-                        gfx_invalidate_screen();
-                        context_trigger_resize();
-                    }
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_RENDERING:
@@ -1526,88 +1695,12 @@ static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_ind
  */
 static void window_options_invalidate(rct_window* w)
 {
-    rct_widget* widget;
-
-    if (window_options_page_widgets[w->page] != w->widgets)
-    {
-        w->widgets = window_options_page_widgets[w->page];
-        window_init_scroll_widgets(w);
-    }
-    window_options_set_pressed_tab(w);
-
-    w->disabled_widgets = 0;
+    window_options_common_invalidate_before(w);
 
     switch (w->page)
     {
         case WINDOW_OPTIONS_PAGE_DISPLAY:
         {
-            // Resolution dropdown caption.
-            auto ft = Formatter::Common();
-            ft.Increment(16);
-            ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_width));
-            ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_height));
-
-            // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-            {
-                w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
-                w->disabled_widgets |= (1 << WIDX_RESOLUTION);
-            }
-            else
-            {
-                w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
-                w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
-            }
-
-            // Disable Steam Overlay checkbox when using software rendering.
-            if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
-            {
-                w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
-            }
-            else
-            {
-                w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
-            }
-
-            // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
-            // In the latter case, nearest neighbour rendering will be used to scale.
-            if (gConfigGeneral.drawing_engine == DrawingEngine::Software
-                || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
-            {
-                w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY);
-                w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY_DROPDOWN);
-            }
-            else
-            {
-                w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY);
-                w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY_DROPDOWN);
-            }
-
-            // Disable changing VSync for Software engine, as we can't control its use of VSync
-            if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
-            {
-                w->disabled_widgets |= (1 << WIDX_USE_VSYNC_CHECKBOX);
-            }
-            else
-            {
-                w->disabled_widgets &= ~(1 << WIDX_USE_VSYNC_CHECKBOX);
-            }
-
-            widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
-            widget_set_checkbox_value(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
-            widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
-            widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
-            widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
-            widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
-
-            // Dropdown captions for straightforward strings.
-            window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral
-                                                                                                            .fullscreen_mode];
-            window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(
-                gConfigGeneral.drawing_engine)];
-            window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
-                [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
-
             break;
         }
 
@@ -1842,15 +1935,7 @@ static void window_options_invalidate(rct_window* w)
             break;
     }
 
-    // Automatically adjust window height to fit widgets
-    int32_t y = 0;
-    for (widget = &w->widgets[WIDX_PAGE_START]; widget->type != WWT_LAST; widget++)
-    {
-        y = std::max<int32_t>(y, widget->bottom);
-    }
-    w->height = y + 6;
-    w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
+    window_options_common_invalidate_after(w);
 }
 
 static uint8_t get_scroll_percentage(rct_widget* widget, rct_scroll* scroll)
@@ -1859,11 +1944,9 @@ static uint8_t get_scroll_percentage(rct_widget* widget, rct_scroll* scroll)
     return static_cast<float>(scroll->h_left) / (scroll->h_right - width) * 100;
 }
 
-static void window_options_update(rct_window* w)
+static void window_options_audio_update(rct_window* w)
 {
-    // Tab animation
-    w->frame_no++;
-    widget_invalidate(w, WIDX_TAB_1 + w->page);
+    window_options_common_update(w);
 
     if (w->page == WINDOW_OPTIONS_PAGE_AUDIO)
     {
@@ -1911,41 +1994,6 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         case WINDOW_OPTIONS_PAGE_DISPLAY:
         {
-            gfx_draw_string_left(
-                dpi, STR_FULLSCREEN_MODE, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_FULLSCREEN].top + 1 });
-
-            // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            int32_t colour = w->colours[1];
-            if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-            {
-                colour |= COLOUR_FLAG_INSET;
-            }
-            gfx_draw_string_left(
-                dpi, STR_DISPLAY_RESOLUTION, w, colour,
-                w->windowPos + ScreenCoordsXY{ 10 + 15, window_options_display_widgets[WIDX_RESOLUTION].top + 1 });
-
-            gfx_draw_string_left(
-                dpi, STR_UI_SCALING_DESC, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_SCALE].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_DRAWING_ENGINE, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1 });
-
-            int32_t scale = static_cast<int32_t>(gConfigGeneral.window_scale * 100);
-            gfx_draw_string_left(
-                dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SCALE].left + 1, w->widgets[WIDX_SCALE].top + 1 });
-
-            colour = w->colours[1];
-            if (gConfigGeneral.drawing_engine == DrawingEngine::Software
-                || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
-            {
-                colour |= COLOUR_FLAG_INSET;
-            }
-            gfx_draw_string_left(
-                dpi, STR_SCALING_QUALITY, w, colour,
-                w->windowPos + ScreenCoordsXY{ 25, window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1 });
             break;
         }
 
@@ -2073,17 +2121,82 @@ static void window_options_tooltip(rct_window* w, rct_widgetindex widgetIndex, r
 
 #pragma region Event lists
 
-static rct_window_event_list window_options_events_display([](auto& events)
-{
+static rct_window_event_list window_options_events_display([](auto& events) {
+    events.mouse_up = &window_options_display_mouseup;
+    events.mouse_down = &window_options_display_mousedown;
+    events.dropdown = &window_options_display_dropdown;
+    events.update = &window_options_common_update;
+    events.invalidate = &window_options_display_invalidate;
+    events.paint = &window_options_display_paint;
+});
+
+static rct_window_event_list window_options_events_rendering([](auto& events) {
     events.mouse_up = &window_options_mouseup;
     events.mouse_down = &window_options_mousedown;
     events.dropdown = &window_options_dropdown;
-    events.update = &window_options_update;
+    events.update = &window_options_common_update;
+    events.invalidate = &window_options_invalidate;
+    events.paint = &window_options_paint; // temp
+});
+
+static rct_window_event_list window_options_events_culture([](auto& events) {
+    events.mouse_up = &window_options_mouseup;
+    events.mouse_down = &window_options_mousedown;
+    events.dropdown = &window_options_dropdown;
+    events.update = &window_options_common_update;
+    events.invalidate = &window_options_invalidate;
+    events.paint = &window_options_paint;
+});
+
+static rct_window_event_list window_options_events_audio([](auto& events) {
+    events.mouse_up = &window_options_mouseup;
+    events.mouse_down = &window_options_mousedown;
+    events.dropdown = &window_options_dropdown;
+    events.update = &window_options_audio_update;
     events.get_scroll_size = &window_options_scrollgetsize;
+    events.invalidate = &window_options_invalidate;
+    events.paint = &window_options_paint; // temp
+});
+
+static rct_window_event_list window_options_events_controls([](auto& events) {
+    events.mouse_up = &window_options_mouseup;
+    events.mouse_down = &window_options_mousedown;
+    events.dropdown = &window_options_dropdown;
+    events.update = &window_options_common_update;
+    events.invalidate = &window_options_invalidate;
+    events.paint = &window_options_paint;
+});
+
+static rct_window_event_list window_options_events_misc([](auto& events) {
+    events.mouse_up = &window_options_mouseup;
+    events.mouse_down = &window_options_mousedown;
+    events.dropdown = &window_options_dropdown;
+    events.update = &window_options_common_update;
+    events.invalidate = &window_options_invalidate;
+    events.paint = &window_options_paint;
+});
+
+static rct_window_event_list window_options_events_advanced([](auto& events) {
+    events.mouse_up = &window_options_mouseup;
+    events.mouse_down = &window_options_mousedown;
+    events.dropdown = &window_options_dropdown;
+    events.update = &window_options_common_update;
     events.tooltip = &window_options_tooltip;
     events.invalidate = &window_options_invalidate;
     events.paint = &window_options_paint;
 });
+
+// clang-format off
+static rct_window_event_list* window_options_event_lists[] = {
+    &window_options_events_display,
+    &window_options_events_rendering,
+    &window_options_events_culture,
+    &window_options_events_audio,
+    &window_options_events_controls,
+    &window_options_events_misc,
+    &window_options_events_advanced,
+};
+// clang-format on
 
 #pragma region Common
 
@@ -2114,6 +2227,7 @@ static void window_options_set_page(rct_window* w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
+    w->event_handlers = window_options_event_lists[page];
     w->enabled_widgets = window_options_page_enabled_widgets[page];
     w->pressed_widgets = 0;
     w->widgets = window_options_page_widgets[page];
