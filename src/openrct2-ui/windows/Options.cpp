@@ -1332,6 +1332,258 @@ static void window_options_culture_paint(rct_window* w, rct_drawpixelinfo* dpi)
         w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1 });
 }
 
+#pragma region Audio Tab
+
+static void window_options_audio_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            return;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+        case WIDX_TAB_4:
+        case WIDX_TAB_5:
+        case WIDX_TAB_6:
+        case WIDX_TAB_7:
+            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+
+        case WIDX_SOUND_CHECKBOX:
+            gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
+            config_save_default();
+            w->Invalidate();
+            break;
+
+        case WIDX_MASTER_SOUND_CHECKBOX:
+            gConfigSound.master_sound_enabled = !gConfigSound.master_sound_enabled;
+            if (!gConfigSound.master_sound_enabled)
+                audio_pause_sounds();
+            else
+                audio_unpause_sounds();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            config_save_default();
+            w->Invalidate();
+            break;
+
+        case WIDX_MUSIC_CHECKBOX:
+            gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
+            if (!gConfigSound.ride_music_enabled)
+            {
+                audio_stop_ride_music();
+            }
+            config_save_default();
+            w->Invalidate();
+            break;
+
+        case WIDX_AUDIO_FOCUS_CHECKBOX:
+            gConfigSound.audio_focus = !gConfigSound.audio_focus;
+            config_save_default();
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_audio_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    widget = &w->widgets[widgetIndex - 1];
+
+    switch (widgetIndex)
+    {
+        case WIDX_SOUND_DROPDOWN:
+            audio_populate_devices();
+
+            // populate the list with the sound devices
+            for (size_t i = 0; static_cast<int32_t>(i) < gAudioDeviceCount; i++)
+            {
+                gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(gAudioDevices[i].name);
+            }
+
+            window_options_show_dropdown(w, widget, gAudioDeviceCount);
+
+            dropdown_set_checked(gAudioCurrentDevice, true);
+            break;
+        case WIDX_TITLE_MUSIC_DROPDOWN:
+            uint32_t num_items = 4;
+
+            for (size_t i = 0; i < num_items; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = window_options_title_music_names[i];
+            }
+
+            window_options_show_dropdown(w, widget, num_items);
+
+            dropdown_set_checked(gConfigSound.title_music, true);
+            break;
+    }
+}
+
+static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_SOUND_DROPDOWN:
+            audio_init_ride_sounds(dropdownIndex);
+            if (dropdownIndex < gAudioDeviceCount)
+            {
+                if (dropdownIndex == 0)
+                {
+                    Mixer_Init(nullptr);
+                    gConfigSound.device = nullptr;
+                }
+                else
+                {
+                    char* devicename = gAudioDevices[dropdownIndex].name;
+                    Mixer_Init(devicename);
+                    SafeFree(gConfigSound.device);
+                    gConfigSound.device = strndup(devicename, AUDIO_DEVICE_NAME_SIZE);
+                }
+                config_save_default();
+                audio_start_title_music();
+            }
+            w->Invalidate();
+            break;
+        case WIDX_TITLE_MUSIC_DROPDOWN:
+            if ((dropdownIndex == 1 || dropdownIndex == 3) && !Platform::FileExists(context_get_path_legacy(PATH_ID_CSS50)))
+            {
+                context_show_error(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT, {});
+            }
+            else
+            {
+                gConfigSound.title_music = static_cast<int8_t>(dropdownIndex);
+                config_save_default();
+                w->Invalidate();
+            }
+
+            audio_stop_title_music();
+            if (dropdownIndex != 0)
+                audio_start_title_music();
+            break;
+    }
+}
+
+static uint8_t get_scroll_percentage(rct_widget* widget, rct_scroll* scroll)
+{
+    uint8_t width = widget->width() - 1;
+    return static_cast<float>(scroll->h_left) / (scroll->h_right - width) * 100;
+}
+
+static void window_options_audio_update(rct_window* w)
+{
+    window_options_common_update(w);
+
+    if (w->page == WINDOW_OPTIONS_PAGE_AUDIO)
+    {
+        rct_widget* widget;
+
+        widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
+        uint8_t master_volume = get_scroll_percentage(widget, &w->scrolls[0]);
+        if (master_volume != gConfigSound.master_volume)
+        {
+            gConfigSound.master_volume = master_volume;
+            config_save_default();
+            widget_invalidate(w, WIDX_MASTER_VOLUME);
+        }
+
+        widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
+        uint8_t sound_volume = get_scroll_percentage(widget, &w->scrolls[1]);
+        if (sound_volume != gConfigSound.sound_volume)
+        {
+            gConfigSound.sound_volume = sound_volume;
+            config_save_default();
+            widget_invalidate(w, WIDX_SOUND_VOLUME);
+        }
+
+        widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
+        uint8_t ride_music_volume = get_scroll_percentage(widget, &w->scrolls[2]);
+        if (ride_music_volume != gConfigSound.ride_music_volume)
+        {
+            gConfigSound.ride_music_volume = ride_music_volume;
+            config_save_default();
+            widget_invalidate(w, WIDX_MUSIC_VOLUME);
+        }
+    }
+}
+
+static void window_options_audio_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+{
+    *width = 500;
+}
+
+static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_index, int32_t scroll_id, uint8_t volume)
+{
+    rct_widget* widget = &window_options_audio_widgets[widget_index];
+    rct_scroll* scroll = &w->scrolls[scroll_id];
+
+    int widget_size = scroll->h_right - (widget->width() - 1);
+    scroll->h_left = ceil(volume / 100.0f * widget_size);
+
+    widget_scroll_update_thumbs(w, widget_index);
+}
+
+static void window_options_audio_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    // Sound device
+    rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
+    const char* audioDeviceName = nullptr;
+    if (gAudioCurrentDevice == -1)
+    {
+        audioDeviceStringId = STR_SOUND_NONE;
+    }
+    else
+    {
+        audioDeviceStringId = STR_STRING;
+#ifndef __linux__
+        if (gAudioCurrentDevice == 0)
+        {
+            audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
+        }
+#endif // __linux__
+        if (audioDeviceStringId == STR_STRING)
+        {
+            audioDeviceName = gAudioDevices[gAudioCurrentDevice].name;
+        }
+    }
+
+    window_options_audio_widgets[WIDX_SOUND].text = audioDeviceStringId;
+    auto ft = Formatter::Common();
+    ft.Add<char*>(audioDeviceName);
+
+    window_options_audio_widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
+
+    widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
+    widget_set_checkbox_value(w, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+    widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
+    widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
+    widget_set_enabled(w, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+    widget_set_enabled(w, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
+
+    // Initialize only on first frame, otherwise the scrollbars wont be able to be modified
+    if (w->frame_no == 0)
+    {
+        initialize_scroll_position(w, WIDX_MASTER_VOLUME, 0, gConfigSound.master_volume);
+        initialize_scroll_position(w, WIDX_SOUND_VOLUME, 1, gConfigSound.sound_volume);
+        initialize_scroll_position(w, WIDX_MUSIC_VOLUME, 2, gConfigSound.ride_music_volume);
+    }
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_audio_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+}
+
 #pragma region Old event functions
 
 /**
@@ -1368,41 +1620,6 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WINDOW_OPTIONS_PAGE_AUDIO:
-            switch (widgetIndex)
-            {
-                case WIDX_SOUND_CHECKBOX:
-                    gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-
-                case WIDX_MASTER_SOUND_CHECKBOX:
-                    gConfigSound.master_sound_enabled = !gConfigSound.master_sound_enabled;
-                    if (!gConfigSound.master_sound_enabled)
-                        audio_pause_sounds();
-                    else
-                        audio_unpause_sounds();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-
-                case WIDX_MUSIC_CHECKBOX:
-                    gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
-                    if (!gConfigSound.ride_music_enabled)
-                    {
-                        audio_stop_ride_music();
-                    }
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-
-                case WIDX_AUDIO_FOCUS_CHECKBOX:
-                    gConfigSound.audio_focus = !gConfigSound.audio_focus;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
@@ -1618,36 +1835,6 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
             break;
 
         case WINDOW_OPTIONS_PAGE_AUDIO:
-            switch (widgetIndex)
-            {
-                case WIDX_SOUND_DROPDOWN:
-                    audio_populate_devices();
-
-                    // populate the list with the sound devices
-                    for (size_t i = 0; static_cast<int32_t>(i) < gAudioDeviceCount; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(gAudioDevices[i].name);
-                    }
-
-                    window_options_show_dropdown(w, widget, gAudioDeviceCount);
-
-                    dropdown_set_checked(gAudioCurrentDevice, true);
-                    break;
-                case WIDX_TITLE_MUSIC_DROPDOWN:
-                    num_items = 4;
-
-                    for (size_t i = 0; i < num_items; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = window_options_title_music_names[i];
-                    }
-
-                    window_options_show_dropdown(w, widget, num_items);
-
-                    dropdown_set_checked(gConfigSound.title_music, true);
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
@@ -1771,48 +1958,6 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
             break;
 
         case WINDOW_OPTIONS_PAGE_AUDIO:
-            switch (widgetIndex)
-            {
-                case WIDX_SOUND_DROPDOWN:
-                    audio_init_ride_sounds(dropdownIndex);
-                    if (dropdownIndex < gAudioDeviceCount)
-                    {
-                        if (dropdownIndex == 0)
-                        {
-                            Mixer_Init(nullptr);
-                            gConfigSound.device = nullptr;
-                        }
-                        else
-                        {
-                            char* devicename = gAudioDevices[dropdownIndex].name;
-                            Mixer_Init(devicename);
-                            SafeFree(gConfigSound.device);
-                            gConfigSound.device = strndup(devicename, AUDIO_DEVICE_NAME_SIZE);
-                        }
-                        config_save_default();
-                        audio_start_title_music();
-                    }
-                    w->Invalidate();
-                    break;
-                case WIDX_TITLE_MUSIC_DROPDOWN:
-                    if ((dropdownIndex == 1 || dropdownIndex == 3)
-                        && !Platform::FileExists(context_get_path_legacy(PATH_ID_CSS50)))
-                    {
-                        context_show_error(
-                            STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT, {});
-                    }
-                    else
-                    {
-                        gConfigSound.title_music = static_cast<int8_t>(dropdownIndex);
-                        config_save_default();
-                        w->Invalidate();
-                    }
-
-                    audio_stop_title_music();
-                    if (dropdownIndex != 0)
-                        audio_start_title_music();
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
@@ -1876,17 +2021,6 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
     }
 }
 
-static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_index, int32_t scroll_id, uint8_t volume)
-{
-    rct_widget* widget = &window_options_audio_widgets[widget_index];
-    rct_scroll* scroll = &w->scrolls[scroll_id];
-
-    int widget_size = scroll->h_right - (widget->width() - 1);
-    scroll->h_left = ceil(volume / 100.0f * widget_size);
-
-    widget_scroll_update_thumbs(w, widget_index);
-}
-
 /**
  *
  *  rct2: 0x006BAD48
@@ -1913,49 +2047,6 @@ static void window_options_invalidate(rct_window* w)
         }
         case WINDOW_OPTIONS_PAGE_AUDIO:
         {
-            // Sound device
-            rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
-            const char* audioDeviceName = nullptr;
-            if (gAudioCurrentDevice == -1)
-            {
-                audioDeviceStringId = STR_SOUND_NONE;
-            }
-            else
-            {
-                audioDeviceStringId = STR_STRING;
-#ifndef __linux__
-                if (gAudioCurrentDevice == 0)
-                {
-                    audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
-                }
-#endif // __linux__
-                if (audioDeviceStringId == STR_STRING)
-                {
-                    audioDeviceName = gAudioDevices[gAudioCurrentDevice].name;
-                }
-            }
-
-            window_options_audio_widgets[WIDX_SOUND].text = audioDeviceStringId;
-            auto ft = Formatter::Common();
-            ft.Add<char*>(audioDeviceName);
-
-            window_options_audio_widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
-
-            widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
-            widget_set_checkbox_value(w, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-            widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
-            widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
-            widget_set_enabled(w, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-            widget_set_enabled(w, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
-
-            // Initialize only on first frame, otherwise the scrollbars wont be able to be modified
-            if (w->frame_no == 0)
-            {
-                initialize_scroll_position(w, WIDX_MASTER_VOLUME, 0, gConfigSound.master_volume);
-                initialize_scroll_position(w, WIDX_SOUND_VOLUME, 1, gConfigSound.sound_volume);
-                initialize_scroll_position(w, WIDX_MUSIC_VOLUME, 2, gConfigSound.ride_music_volume);
-            }
-
             break;
         }
 
@@ -2045,49 +2136,6 @@ static void window_options_invalidate(rct_window* w)
     }
 
     window_options_common_invalidate_after(w);
-}
-
-static uint8_t get_scroll_percentage(rct_widget* widget, rct_scroll* scroll)
-{
-    uint8_t width = widget->width() - 1;
-    return static_cast<float>(scroll->h_left) / (scroll->h_right - width) * 100;
-}
-
-static void window_options_audio_update(rct_window* w)
-{
-    window_options_common_update(w);
-
-    if (w->page == WINDOW_OPTIONS_PAGE_AUDIO)
-    {
-        rct_widget* widget;
-
-        widget = &window_options_audio_widgets[WIDX_MASTER_VOLUME];
-        uint8_t master_volume = get_scroll_percentage(widget, &w->scrolls[0]);
-        if (master_volume != gConfigSound.master_volume)
-        {
-            gConfigSound.master_volume = master_volume;
-            config_save_default();
-            widget_invalidate(w, WIDX_MASTER_VOLUME);
-        }
-
-        widget = &window_options_audio_widgets[WIDX_SOUND_VOLUME];
-        uint8_t sound_volume = get_scroll_percentage(widget, &w->scrolls[1]);
-        if (sound_volume != gConfigSound.sound_volume)
-        {
-            gConfigSound.sound_volume = sound_volume;
-            config_save_default();
-            widget_invalidate(w, WIDX_SOUND_VOLUME);
-        }
-
-        widget = &window_options_audio_widgets[WIDX_MUSIC_VOLUME];
-        uint8_t ride_music_volume = get_scroll_percentage(widget, &w->scrolls[2]);
-        if (ride_music_volume != gConfigSound.ride_music_volume)
-        {
-            gConfigSound.ride_music_volume = ride_music_volume;
-            config_save_default();
-            widget_invalidate(w, WIDX_MUSIC_VOLUME);
-        }
-    }
 }
 
 /**
@@ -2185,14 +2233,6 @@ static void window_options_update_height_markers()
     gfx_invalidate_screen();
 }
 
-static void window_options_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
-{
-    if (w->page == WINDOW_OPTIONS_PAGE_AUDIO)
-    {
-        *width = 500;
-    }
-}
-
 static void window_options_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringid)
 {
     if (w->page == WINDOW_OPTIONS_PAGE_ADVANCED && widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
@@ -2240,13 +2280,13 @@ static rct_window_event_list window_options_events_culture([](auto& events) {
 });
 
 static rct_window_event_list window_options_events_audio([](auto& events) {
-    events.mouse_up = &window_options_mouseup;
-    events.mouse_down = &window_options_mousedown;
-    events.dropdown = &window_options_dropdown;
+    events.mouse_up = &window_options_audio_mouseup;
+    events.mouse_down = &window_options_audio_mousedown;
+    events.dropdown = &window_options_audio_dropdown;
     events.update = &window_options_audio_update;
-    events.get_scroll_size = &window_options_scrollgetsize;
-    events.invalidate = &window_options_invalidate;
-    events.paint = &window_options_paint; // temp
+    events.get_scroll_size = &window_options_audio_scrollgetsize;
+    events.invalidate = &window_options_audio_invalidate;
+    events.paint = &window_options_audio_paint;
 });
 
 static rct_window_event_list window_options_events_controls([](auto& events) {
