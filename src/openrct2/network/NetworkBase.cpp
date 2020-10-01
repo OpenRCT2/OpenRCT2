@@ -1333,7 +1333,7 @@ NetworkStats_t NetworkBase::GetStats() const
     {
         for (auto& connection : client_connection_list)
         {
-            for (size_t n = 0; n < NETWORK_STATISTICS_GROUP_MAX; n++)
+            for (size_t n = 0; n < EnumValue(NetworkStatisticsGroup::Max); n++)
             {
                 stats.bytesReceived[n] += connection->Stats.bytesReceived[n];
                 stats.bytesSent[n] += connection->Stats.bytesSent[n];
