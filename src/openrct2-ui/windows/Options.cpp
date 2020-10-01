@@ -1584,6 +1584,170 @@ static void window_options_audio_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_options_draw_tab_images(dpi, w);
 }
 
+#pragma region Controls and Interface Tab
+
+static void window_options_controls_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            return;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+        case WIDX_TAB_4:
+        case WIDX_TAB_5:
+        case WIDX_TAB_6:
+        case WIDX_TAB_7:
+            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+        case WIDX_HOTKEY_DROPDOWN:
+            context_open_window(WC_KEYBOARD_SHORTCUT_LIST);
+            break;
+        case WIDX_SCREEN_EDGE_SCROLLING:
+            gConfigGeneral.edge_scrolling ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_TRAP_CURSOR:
+            gConfigGeneral.trap_cursor ^= 1;
+            config_save_default();
+            context_set_cursor_trap(gConfigGeneral.trap_cursor);
+            w->Invalidate();
+            break;
+        case WIDX_ZOOM_TO_CURSOR:
+            gConfigGeneral.zoom_to_cursor ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_TOOLBAR_SHOW_FINANCES:
+            gConfigInterface.toolbar_show_finances ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_TOOLBAR_SHOW_RESEARCH:
+            gConfigInterface.toolbar_show_research ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_TOOLBAR_SHOW_CHEATS:
+            gConfigInterface.toolbar_show_cheats ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_TOOLBAR_SHOW_NEWS:
+            gConfigInterface.toolbar_show_news ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_TOOLBAR_SHOW_MUTE:
+            gConfigInterface.toolbar_show_mute ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_TOOLBAR_SHOW_CHAT:
+            gConfigInterface.toolbar_show_chat ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_INVERT_DRAG:
+            gConfigGeneral.invert_viewport_drag ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_THEMES_BUTTON:
+            context_open_window(WC_THEMES);
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_controls_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    widget = &w->widgets[widgetIndex - 1];
+
+    switch (widgetIndex)
+    {
+        case WIDX_THEMES_DROPDOWN:
+            uint32_t num_items = static_cast<uint32_t>(theme_manager_get_num_available_themes());
+
+            for (size_t i = 0; i < num_items; i++)
+            {
+                gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(theme_manager_get_available_theme_name(i));
+            }
+
+            window_dropdown_show_text_custom_width(
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+                DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+
+            dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
+            widget_invalidate(w, WIDX_THEMES_DROPDOWN);
+            break;
+    }
+}
+
+static void window_options_controls_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_THEMES_DROPDOWN:
+            if (dropdownIndex != -1)
+            {
+                theme_manager_set_active_available_theme(dropdownIndex);
+            }
+            config_save_default();
+            break;
+    }
+}
+
+static void window_options_controls_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
+    widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
+    widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
+    widget_set_checkbox_value(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
+
+    size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
+    const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
+    auto ft = Formatter::Common();
+    ft.Add<utf8*>(activeThemeName);
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_controls_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+
+    gfx_draw_string_left(
+        dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1],
+        w->windowPos
+            + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 });
+    gfx_draw_string_left(
+        dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1 });
+}
+
 #pragma region Old event functions
 
 /**
@@ -1623,73 +1787,6 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-            switch (widgetIndex)
-            {
-                case WIDX_HOTKEY_DROPDOWN:
-                    context_open_window(WC_KEYBOARD_SHORTCUT_LIST);
-                    break;
-                case WIDX_SCREEN_EDGE_SCROLLING:
-                    gConfigGeneral.edge_scrolling ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_TRAP_CURSOR:
-                    gConfigGeneral.trap_cursor ^= 1;
-                    config_save_default();
-                    context_set_cursor_trap(gConfigGeneral.trap_cursor);
-                    w->Invalidate();
-                    break;
-                case WIDX_ZOOM_TO_CURSOR:
-                    gConfigGeneral.zoom_to_cursor ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_TOOLBAR_SHOW_FINANCES:
-                    gConfigInterface.toolbar_show_finances ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_TOOLBAR_SHOW_RESEARCH:
-                    gConfigInterface.toolbar_show_research ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_TOOLBAR_SHOW_CHEATS:
-                    gConfigInterface.toolbar_show_cheats ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_TOOLBAR_SHOW_NEWS:
-                    gConfigInterface.toolbar_show_news ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_TOOLBAR_SHOW_MUTE:
-                    gConfigInterface.toolbar_show_mute ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_TOOLBAR_SHOW_CHAT:
-                    gConfigInterface.toolbar_show_chat ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_INVERT_DRAG:
-                    gConfigGeneral.invert_viewport_drag ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_THEMES_BUTTON:
-                    context_open_window(WC_THEMES);
-                    w->Invalidate();
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_MISC:
@@ -1838,25 +1935,6 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
             break;
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-            switch (widgetIndex)
-            {
-                case WIDX_THEMES_DROPDOWN:
-                    num_items = static_cast<uint32_t>(theme_manager_get_num_available_themes());
-
-                    for (size_t i = 0; i < num_items; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(theme_manager_get_available_theme_name(i));
-                    }
-
-                    window_dropdown_show_text_custom_width(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
-
-                    dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
-                    widget_invalidate(w, WIDX_THEMES_DROPDOWN);
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_MISC:
@@ -1961,16 +2039,6 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
             break;
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-            switch (widgetIndex)
-            {
-                case WIDX_THEMES_DROPDOWN:
-                    if (dropdownIndex != -1)
-                    {
-                        theme_manager_set_active_available_theme(dropdownIndex);
-                    }
-                    config_save_default();
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_MISC:
@@ -2052,22 +2120,6 @@ static void window_options_invalidate(rct_window* w)
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
         {
-            widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
-            widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
-            widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
-            widget_set_checkbox_value(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
-
-            size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
-            const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-            auto ft = Formatter::Common();
-            ft.Add<utf8*>(activeThemeName);
-
             break;
         }
 
@@ -2159,13 +2211,6 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
         {
-            gfx_draw_string_left(
-                dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1],
-                w->windowPos
-                    + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 });
-            gfx_draw_string_left(
-                dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1 });
             break;
         }
 
@@ -2290,12 +2335,12 @@ static rct_window_event_list window_options_events_audio([](auto& events) {
 });
 
 static rct_window_event_list window_options_events_controls([](auto& events) {
-    events.mouse_up = &window_options_mouseup;
-    events.mouse_down = &window_options_mousedown;
-    events.dropdown = &window_options_dropdown;
+    events.mouse_up = &window_options_controls_mouseup;
+    events.mouse_down = &window_options_controls_mousedown;
+    events.dropdown = &window_options_controls_dropdown;
     events.update = &window_options_common_update;
-    events.invalidate = &window_options_invalidate;
-    events.paint = &window_options_paint;
+    events.invalidate = &window_options_controls_invalidate;
+    events.paint = &window_options_controls_paint;
 });
 
 static rct_window_event_list window_options_events_misc([](auto& events) {
