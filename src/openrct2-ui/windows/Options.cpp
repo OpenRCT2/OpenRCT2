@@ -423,31 +423,6 @@ static void window_options_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w
 static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int32_t num_items);
 static void window_options_update_height_markers();
 
-#pragma region Events
-
-static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_options_update(rct_window *w);
-static void window_options_invalidate(rct_window *w);
-static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_options_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid);
-
-static rct_window_event_list window_options_events([](auto& events)
-{
-    events.mouse_up = &window_options_mouseup;
-    events.mouse_down = &window_options_mousedown;
-    events.dropdown = &window_options_dropdown;
-    events.update = &window_options_update;
-    events.get_scroll_size = &window_options_scrollgetsize;
-    events.tooltip = &window_options_tooltip;
-    events.invalidate = &window_options_invalidate;
-    events.paint = &window_options_paint;
-});
-
-#pragma endregion
-
 #pragma region Enabled Widgets
 
 #define MAIN_OPTIONS_ENABLED_WIDGETS \
@@ -568,28 +543,9 @@ static uint64_t window_options_page_enabled_widgets[] = {
 
 #pragma endregion
 
-/**
- *
- *  rct2: 0x006BAC5B
- */
-rct_window* window_options_open()
-{
-    rct_window* w;
 
-    // Check if window is already open
-    w = window_bring_to_front_by_class(WC_OPTIONS);
-    if (w != nullptr)
-        return w;
 
-    w = window_create_centred(WW, WH, &window_options_events, WC_OPTIONS, 0);
-    w->widgets = window_options_display_widgets;
-    w->enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
-    w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
-    w->frame_no = 0;
-    window_init_scroll_widgets(w);
 
-    return w;
-}
 
 /**
  *
@@ -2115,7 +2071,44 @@ static void window_options_tooltip(rct_window* w, rct_widgetindex widgetIndex, r
     }
 }
 
+#pragma region Event lists
+
+static rct_window_event_list window_options_events_display([](auto& events)
+{
+    events.mouse_up = &window_options_mouseup;
+    events.mouse_down = &window_options_mousedown;
+    events.dropdown = &window_options_dropdown;
+    events.update = &window_options_update;
+    events.get_scroll_size = &window_options_scrollgetsize;
+    events.tooltip = &window_options_tooltip;
+    events.invalidate = &window_options_invalidate;
+    events.paint = &window_options_paint;
+});
+
 #pragma region Common
+
+/**
+ *
+ *  rct2: 0x006BAC5B
+ */
+rct_window* window_options_open()
+{
+    rct_window* w;
+
+    // Check if window is already open
+    w = window_bring_to_front_by_class(WC_OPTIONS);
+    if (w != nullptr)
+        return w;
+
+    w = window_create_centred(WW, WH, &window_options_events_display, WC_OPTIONS, 0);
+    w->widgets = window_options_display_widgets;
+    w->enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
+    w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
+    w->frame_no = 0;
+    window_init_scroll_widgets(w);
+
+    return w;
+}
 
 static void window_options_set_page(rct_window* w, int32_t page)
 {
