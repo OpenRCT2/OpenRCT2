@@ -4936,7 +4936,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
     if (ride == nullptr)
         return false;
 
-    if (ride->mode != RideMode::ContinuousCircuitBlockSectioned && ride->mode != RideMode::ContinuousCircuit)
+    if (!(ride->IsBlockSectioned()))
     {
         gGameCommandErrorText = STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE;
         return false;
@@ -5151,12 +5151,10 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
             return 0;
     }
 
-    if (ride->mode == RideMode::ContinuousCircuit || ride->mode == RideMode::ContinuousCircuitBlockSectioned
-        || ride->mode == RideMode::PoweredLaunchBlockSectioned)
+    if (ride->mode == RideMode::ContinuousCircuit || ride->IsBlockSectioned())
     {
         if (ride_find_track_gap(ride, &trackElement, &problematicTrackElement)
-            && (status != RIDE_STATUS_SIMULATING || ride->mode == RideMode::ContinuousCircuitBlockSectioned
-                || ride->mode == RideMode::PoweredLaunchBlockSectioned))
+            && (status != RIDE_STATUS_SIMULATING || ride->mode == ride->IsBlockSectioned()))
         {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);

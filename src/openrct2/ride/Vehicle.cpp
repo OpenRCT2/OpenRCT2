@@ -3431,8 +3431,7 @@ void Vehicle::FinishDeparting()
         audio_play_sound_at_location(SoundId::RideLaunch1, { x, y, z });
     }
 
-    if (curRide->mode != RideMode::Race && curRide->mode != RideMode::ContinuousCircuitBlockSectioned
-        && curRide->mode != RideMode::PoweredLaunchBlockSectioned)
+    if (curRide->mode != RideMode::Race && !(curRide->IsBlockSectioned()))
     {
         curRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
         uint8_t waitingTime = 3;
@@ -3463,7 +3462,7 @@ void Vehicle::CheckIfMissing()
     if (curRide->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         return;
 
-    if (curRide->mode == RideMode::ContinuousCircuitBlockSectioned || curRide->mode == RideMode::PoweredLaunchBlockSectioned)
+    if (curRide->IsBlockSectioned())
         return;
 
     if (!ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_CHECK_FOR_STALLING))
@@ -4265,7 +4264,7 @@ void Vehicle::UpdateTravellingCableLift()
 
     sub_state = 2;
 
-    if (curRide->mode == RideMode::ContinuousCircuitBlockSectioned || curRide->mode == RideMode::PoweredLaunchBlockSectioned)
+    if (curRide->mode == curRide->IsBlockSectioned())
         return;
 
     // This is slightly different to the vanilla function

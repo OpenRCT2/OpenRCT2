@@ -3434,8 +3434,7 @@ static void window_ride_operating_invalidate(rct_window* w)
 
     // Leave if another vehicle arrives at station
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION)
-        && ride->num_vehicles > 1 && ride->mode != RideMode::ContinuousCircuitBlockSectioned
-        && ride->mode != RideMode::PoweredLaunchBlockSectioned)
+        && ride->num_vehicles > 1 && !(ride->IsBlockSectioned()))
     {
         window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WWT_CHECKBOX;
         window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].tooltip
@@ -3783,9 +3782,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
                 assert(j < static_cast<int32_t>(std::size(rideEntry->ride_type)));
                 if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                 {
-                    if (i == BREAKDOWN_BRAKES_FAILURE
-                        && (ride->mode == RideMode::ContinuousCircuitBlockSectioned
-                            || ride->mode == RideMode::PoweredLaunchBlockSectioned))
+                    if (i == BREAKDOWN_BRAKES_FAILURE && ride->IsBlockSectioned())
                     {
                         if (ride->num_vehicles != 1)
                             continue;
@@ -3813,9 +3810,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
                     {
                         if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                         {
-                            if (i == BREAKDOWN_BRAKES_FAILURE
-                                && (ride->mode == RideMode::ContinuousCircuitBlockSectioned
-                                    || ride->mode == RideMode::PoweredLaunchBlockSectioned))
+                            if (i == BREAKDOWN_BRAKES_FAILURE && ride->IsBlockSectioned())
                             {
                                 if (ride->num_vehicles != 1)
                                     continue;
@@ -3930,9 +3925,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                     assert(j < static_cast<int32_t>(std::size(rideEntry->ride_type)));
                     if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                     {
-                        if (i == BREAKDOWN_BRAKES_FAILURE
-                            && (ride->mode == RideMode::ContinuousCircuitBlockSectioned
-                                || ride->mode == RideMode::PoweredLaunchBlockSectioned))
+                        if (i == BREAKDOWN_BRAKES_FAILURE && ride->IsBlockSectioned())
                         {
                             if (ride->num_vehicles != 1)
                                 continue;
