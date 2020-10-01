@@ -1960,13 +1960,9 @@ static void window_options_misc_paint(rct_window* w, rct_drawpixelinfo* dpi)
         w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1 });
 }
 
-#pragma region Old event functions
+#pragma region Advanced Tab
 
-/**
- *
- *  rct2: 0x006BAFCA
- */
-static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void window_options_advanced_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -1982,352 +1978,186 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_TAB_7:
             window_options_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
-    }
-
-    switch (w->page)
-    {
-        case WINDOW_OPTIONS_PAGE_DISPLAY:
+        case WIDX_DEBUGGING_TOOLS:
+            gConfigGeneral.debugging_tools ^= 1;
+            config_save_default();
+            gfx_invalidate_screen();
             break;
-
-        case WINDOW_OPTIONS_PAGE_RENDERING:
+        case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
+            gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral.allow_loading_with_incorrect_checksum;
+            config_save_default();
+            w->Invalidate();
             break;
-
-        case WINDOW_OPTIONS_PAGE_CULTURE:
+        case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
+            gConfigGeneral.save_plugin_data ^= 1;
+            config_save_default();
+            w->Invalidate();
             break;
-
-        case WINDOW_OPTIONS_PAGE_AUDIO:
+        case WIDX_STAY_CONNECTED_AFTER_DESYNC:
+            gConfigNetwork.stay_connected = !gConfigNetwork.stay_connected;
+            config_save_default();
+            w->Invalidate();
             break;
-
-        case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
+        case WIDX_ALWAYS_NATIVE_LOADSAVE:
+            gConfigGeneral.use_native_browse_dialog = !gConfigGeneral.use_native_browse_dialog;
+            config_save_default();
+            w->Invalidate();
             break;
-
-        case WINDOW_OPTIONS_PAGE_MISC:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_ADVANCED:
-            switch (widgetIndex)
+        case WIDX_PATH_TO_RCT1_BUTTON:
+        {
+            utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
+            if (rct1path)
             {
-                case WIDX_DEBUGGING_TOOLS:
-                    gConfigGeneral.debugging_tools ^= 1;
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    break;
-                case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
-                    gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral
-                                                                                .allow_loading_with_incorrect_checksum;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
-                    gConfigGeneral.save_plugin_data ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_STAY_CONNECTED_AFTER_DESYNC:
-                    gConfigNetwork.stay_connected = !gConfigNetwork.stay_connected;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_ALWAYS_NATIVE_LOADSAVE:
-                    gConfigGeneral.use_native_browse_dialog = !gConfigGeneral.use_native_browse_dialog;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_PATH_TO_RCT1_BUTTON:
+                // Check if this directory actually contains RCT1
+                if (Csg1datPresentAtLocation(rct1path))
                 {
-                    utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
-                    if (rct1path)
+                    if (Csg1idatPresentAtLocation(rct1path))
                     {
-                        // Check if this directory actually contains RCT1
-                        if (Csg1datPresentAtLocation(rct1path))
+                        if (CsgAtLocationIsUsable(rct1path))
                         {
-                            if (Csg1idatPresentAtLocation(rct1path))
-                            {
-                                if (CsgAtLocationIsUsable(rct1path))
-                                {
-                                    SafeFree(gConfigGeneral.rct1_path);
-                                    gConfigGeneral.rct1_path = rct1path;
-                                    gConfigInterface.scenarioselect_last_tab = 0;
-                                    config_save_default();
-                                    context_show_error(STR_RESTART_REQUIRED, STR_NONE, {});
-                                }
-                                else
-                                {
-                                    SafeFree(rct1path);
-                                    context_show_error(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE, {});
-                                }
-                            }
-                            else
-                            {
-                                SafeFree(rct1path);
-                                context_show_error(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE, {});
-                            }
+                            SafeFree(gConfigGeneral.rct1_path);
+                            gConfigGeneral.rct1_path = rct1path;
+                            gConfigInterface.scenarioselect_last_tab = 0;
+                            config_save_default();
+                            context_show_error(STR_RESTART_REQUIRED, STR_NONE, {});
                         }
                         else
                         {
                             SafeFree(rct1path);
-                            context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE, {});
+                            context_show_error(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE, {});
                         }
                     }
-                    w->Invalidate();
-                    break;
-                }
-                case WIDX_PATH_TO_RCT1_CLEAR:
-                    if (!str_is_null_or_empty(gConfigGeneral.rct1_path))
+                    else
                     {
-                        SafeFree(gConfigGeneral.rct1_path);
-                        config_save_default();
+                        SafeFree(rct1path);
+                        context_show_error(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE, {});
                     }
-                    w->Invalidate();
-                    break;
+                }
+                else
+                {
+                    SafeFree(rct1path);
+                    context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE, {});
+                }
             }
+            w->Invalidate();
+            break;
+        }
+        case WIDX_PATH_TO_RCT1_CLEAR:
+            if (!str_is_null_or_empty(gConfigGeneral.rct1_path))
+            {
+                SafeFree(gConfigGeneral.rct1_path);
+                config_save_default();
+            }
+            w->Invalidate();
             break;
     }
 }
 
-/**
- *
- *  rct2: 0x006BB01B
- */
-static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_options_advanced_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    uint32_t num_items;
-
     widget = &w->widgets[widgetIndex - 1];
 
-    switch (w->page)
+    switch (widgetIndex)
     {
-        case WINDOW_OPTIONS_PAGE_DISPLAY:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_RENDERING:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_CULTURE:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_AUDIO:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_MISC:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_ADVANCED:
-            switch (widgetIndex)
+        case WIDX_AUTOSAVE_DROPDOWN:
+            for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++)
             {
-                case WIDX_AUTOSAVE_DROPDOWN:
-                    for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = window_options_autosave_names[i];
-                    }
-
-                    window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
-                    dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
-                    break;
-                case WIDX_AUTOSAVE_AMOUNT_UP:
-                    gConfigGeneral.autosave_amount += 1;
-                    config_save_default();
-                    widget_invalidate(w, WIDX_AUTOSAVE);
-                    widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
-                    widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
-                    break;
-                case WIDX_AUTOSAVE_AMOUNT_DOWN:
-                    if (gConfigGeneral.autosave_amount > 1)
-                    {
-                        gConfigGeneral.autosave_amount -= 1;
-                        config_save_default();
-                        widget_invalidate(w, WIDX_AUTOSAVE);
-                        widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
-                        widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
-                    }
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = window_options_autosave_names[i];
             }
+
+            window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
+            dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
             break;
+        case WIDX_AUTOSAVE_AMOUNT_UP:
+            gConfigGeneral.autosave_amount += 1;
+            config_save_default();
+            widget_invalidate(w, WIDX_AUTOSAVE);
+            widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
+            widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
+            break;
+        case WIDX_AUTOSAVE_AMOUNT_DOWN:
+            if (gConfigGeneral.autosave_amount > 1)
+            {
+                gConfigGeneral.autosave_amount -= 1;
+                config_save_default();
+                widget_invalidate(w, WIDX_AUTOSAVE);
+                widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
+                widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
+            }
     }
 }
 
-/**
- *
- *  rct2: 0x006BB076
- */
-static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void window_options_advanced_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
 
-    switch (w->page)
+    switch (widgetIndex)
     {
-        case WINDOW_OPTIONS_PAGE_DISPLAY:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_RENDERING:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_CULTURE:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_AUDIO:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_MISC:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_ADVANCED:
-            switch (widgetIndex)
+        case WIDX_AUTOSAVE_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.autosave_frequency)
             {
-                case WIDX_AUTOSAVE_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.autosave_frequency)
-                    {
-                        gConfigGeneral.autosave_frequency = static_cast<uint8_t>(dropdownIndex);
-                        config_save_default();
-                        w->Invalidate();
-                    }
-                    break;
+                gConfigGeneral.autosave_frequency = static_cast<uint8_t>(dropdownIndex);
+                config_save_default();
+                w->Invalidate();
             }
             break;
     }
 }
 
-/**
- *
- *  rct2: 0x006BAD48
- */
-static void window_options_invalidate(rct_window* w)
+static void window_options_advanced_invalidate(rct_window* w)
 {
     window_options_common_invalidate_before(w);
 
-    switch (w->page)
-    {
-        case WINDOW_OPTIONS_PAGE_DISPLAY:
-        {
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_RENDERING:
-        {
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_CULTURE:
-        {
-            break;
-        }
-        case WINDOW_OPTIONS_PAGE_AUDIO:
-        {
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-        {
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_MISC:
-        {
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_ADVANCED:
-            widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
-            widget_set_checkbox_value(
-                w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
-            widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
-            widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
-            widget_set_checkbox_value(w, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
-            break;
-    }
+    widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
+    widget_set_checkbox_value(
+        w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
+    widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
+    widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
+    widget_set_checkbox_value(w, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
 
     window_options_common_invalidate_after(w);
 }
 
-/**
- *
- *  rct2: 0x006BAEB4
- */
-static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void window_options_advanced_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
-    switch (w->page)
-    {
-        case WINDOW_OPTIONS_PAGE_DISPLAY:
-        {
-            break;
-        }
+    gfx_draw_string_left(
+        dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1 });
+    gfx_draw_string_left(
+        dpi, window_options_autosave_names[gConfigGeneral.autosave_frequency], nullptr, w->colours[1],
+        w->windowPos
+            + ScreenCoordsXY{ window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
+                              window_options_advanced_widgets[WIDX_AUTOSAVE].top });
+    gfx_draw_string_left(
+        dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
+    int32_t autosavesToKeep = static_cast<int32_t>(gConfigGeneral.autosave_amount);
+    gfx_draw_string_left(
+        dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
 
-        case WINDOW_OPTIONS_PAGE_CULTURE:
-            break;
+    auto ft = Formatter();
+    ft.Add<utf8*>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
 
-        case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-        {
-            break;
-        }
+    rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];
 
-        case WINDOW_OPTIONS_PAGE_MISC:
-        {
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_ADVANCED:
-        {
-            gfx_draw_string_left(
-                dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1 });
-            gfx_draw_string_left(
-                dpi, window_options_autosave_names[gConfigGeneral.autosave_frequency], nullptr, w->colours[1],
-                w->windowPos
-                    + ScreenCoordsXY{ window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
-                                      window_options_advanced_widgets[WIDX_AUTOSAVE].top });
-            gfx_draw_string_left(
-                dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
-            int32_t autosavesToKeep = static_cast<int32_t>(gConfigGeneral.autosave_amount);
-            gfx_draw_string_left(
-                dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
-                w->windowPos
-                    + ScreenCoordsXY{ w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
-
-            auto ft = Formatter();
-            ft.Add<utf8*>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
-
-            rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];
-
-            // Apply vertical alignment if appropriate.
-            int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
-            int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
-            uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
-            ScreenCoordsXY screenCoords = { w->windowPos.x + pathWidget.left + 1,
-                                            w->windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
-            DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, w->colours[1]);
-            break;
-        }
-    }
+    // Apply vertical alignment if appropriate.
+    int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
+    ScreenCoordsXY screenCoords = { w->windowPos.x + pathWidget.left + 1,
+                                    w->windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
+    DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, w->colours[1]);
 }
 
-// helper function, all dropdown boxes have similar properties
-static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
+static void window_options_advanced_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringid)
 {
-    window_dropdown_show_text_custom_width(
-        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
-}
-
-static void window_options_update_height_markers()
-{
-    config_save_default();
-    gfx_invalidate_screen();
-}
-
-static void window_options_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringid)
-{
-    if (w->page == WINDOW_OPTIONS_PAGE_ADVANCED && widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
+    if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
     {
         if (str_is_null_or_empty(gConfigGeneral.rct1_path))
         {
@@ -2400,13 +2230,13 @@ static rct_window_event_list window_options_events_misc([](auto& events) {
 });
 
 static rct_window_event_list window_options_events_advanced([](auto& events) {
-    events.mouse_up = &window_options_mouseup;
-    events.mouse_down = &window_options_mousedown;
-    events.dropdown = &window_options_dropdown;
+    events.mouse_up = &window_options_advanced_mouseup;
+    events.mouse_down = &window_options_advanced_mousedown;
+    events.dropdown = &window_options_advanced_dropdown;
     events.update = &window_options_common_update;
-    events.tooltip = &window_options_tooltip;
-    events.invalidate = &window_options_invalidate;
-    events.paint = &window_options_paint;
+    events.tooltip = &window_options_advanced_tooltip;
+    events.invalidate = &window_options_advanced_invalidate;
+    events.paint = &window_options_advanced_paint;
 });
 
 // clang-format off
@@ -2510,6 +2340,20 @@ static void window_options_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE, SPR_TAB_GEARS_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_RIDE_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
+}
+
+// helper function, all dropdown boxes have similar properties
+static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
+{
+    window_dropdown_show_text_custom_width(
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+}
+
+static void window_options_update_height_markers()
+{
+    config_save_default();
+    gfx_invalidate_screen();
 }
 
 #pragma endregion
