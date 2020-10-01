@@ -1546,9 +1546,11 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
     }
 
     if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
-        goto loc_69B119;
-
-    if ((shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
+    {
+        //goto loc_69B119;  replaced by "else if" below
+        std::cout << "It's raining and I'm considering an umbrella\n";
+    }
+    else if ((shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
     {
         if (((scenario_rand() & 0x7F) + 0x73) > Happiness)
             return false;
@@ -1556,7 +1558,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             return false;
     }
 
-loc_69B119:
+//loc_69B119: replaced by "else" above
     if (!hasVoucher)
     {
         if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
