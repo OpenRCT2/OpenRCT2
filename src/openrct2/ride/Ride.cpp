@@ -4936,7 +4936,7 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
     if (ride == nullptr)
         return false;
 
-    if (!(ride->IsBlockSectioned()))
+    if (ride->mode != RideMode::ContinuousCircuitBlockSectioned && ride->mode != RideMode::ContinuousCircuit)
     {
         gGameCommandErrorText = STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE;
         return false;
