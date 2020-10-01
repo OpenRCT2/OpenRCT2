@@ -724,6 +724,9 @@ static void window_options_display_mousedown(rct_window* w, rct_widgetindex widg
 
 static void window_options_display_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
+    if (dropdownIndex == -1)
+        return;
+
     switch (widgetIndex)
     {
         case WIDX_RESOLUTION_DROPDOWN:
@@ -894,6 +897,182 @@ static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
         w->windowPos + ScreenCoordsXY{ 25, window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1 });
 }
 
+#pragma region Rendering Tab
+
+static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_CLOSE:
+            window_close(w);
+            return;
+        case WIDX_TAB_1:
+        case WIDX_TAB_2:
+        case WIDX_TAB_3:
+        case WIDX_TAB_4:
+        case WIDX_TAB_5:
+        case WIDX_TAB_6:
+        case WIDX_TAB_7:
+            window_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            break;
+        case WIDX_TILE_SMOOTHING_CHECKBOX:
+            gConfigGeneral.landscape_smoothing ^= 1;
+            config_save_default();
+            gfx_invalidate_screen();
+            break;
+        case WIDX_GRIDLINES_CHECKBOX:
+            gConfigGeneral.always_show_gridlines ^= 1;
+            config_save_default();
+            gfx_invalidate_screen();
+            if ((w = window_get_main()) != nullptr)
+            {
+                if (gConfigGeneral.always_show_gridlines)
+                    w->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
+                else
+                    w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
+            }
+            break;
+        case WIDX_DAY_NIGHT_CHECKBOX:
+            gConfigGeneral.day_night_cycle ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_ENABLE_LIGHT_FX_CHECKBOX:
+            gConfigGeneral.enable_light_fx ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX:
+            gConfigGeneral.enable_light_fx_for_vehicles ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_UPPER_CASE_BANNERS_CHECKBOX:
+            gConfigGeneral.upper_case_banners ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
+            gConfigGeneral.disable_lightning_effect ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
+            gConfigGeneral.render_weather_effects ^= 1;
+            gConfigGeneral.render_weather_gloom = gConfigGeneral.render_weather_effects;
+            config_save_default();
+            w->Invalidate();
+            gfx_invalidate_screen();
+            break;
+        case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
+            gConfigGeneral.show_guest_purchases ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX:
+            gConfigGeneral.transparent_screenshot ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_VIRTUAL_FLOOR_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
+            gDropdownItemsArgs[1] = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
+            gDropdownItemsArgs[2] = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
+
+            widget = &w->widgets[widgetIndex - 1];
+            window_options_show_dropdown(w, widget, 3);
+
+            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
+            break;
+    }
+}
+
+static void window_options_rendering_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_VIRTUAL_FLOOR_DROPDOWN:
+            gConfigGeneral.virtual_floor_style = static_cast<VirtualFloorStyles>(dropdownIndex);
+            config_save_default();
+            break;
+    }
+}
+
+static void window_options_rendering_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
+    widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
+    widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
+    widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
+    widget_set_checkbox_value(w, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
+    widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
+
+    rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
+                                                 STR_VIRTUAL_FLOOR_STYLE_GLASSY };
+
+    window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
+        gConfigGeneral.virtual_floor_style)];
+
+    widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
+    if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)
+    {
+        w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+    }
+    else
+    {
+        w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+    }
+
+    widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
+    if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay
+        && gConfigGeneral.enable_light_fx)
+    {
+        w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+    }
+    else
+    {
+        w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+    }
+
+    widget_set_checkbox_value(
+        w, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX, gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
+    widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
+    if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
+    {
+        widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
+        w->enabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+        w->disabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+    }
+    else
+    {
+        w->enabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+        w->disabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+    }
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_rendering_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+}
+
 #pragma region Old event functions
 
 /**
@@ -924,68 +1103,6 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WINDOW_OPTIONS_PAGE_RENDERING:
-            switch (widgetIndex)
-            {
-                case WIDX_TILE_SMOOTHING_CHECKBOX:
-                    gConfigGeneral.landscape_smoothing ^= 1;
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    break;
-                case WIDX_GRIDLINES_CHECKBOX:
-                    gConfigGeneral.always_show_gridlines ^= 1;
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    if ((w = window_get_main()) != nullptr)
-                    {
-                        if (gConfigGeneral.always_show_gridlines)
-                            w->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-                        else
-                            w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
-                    }
-                    break;
-                case WIDX_DAY_NIGHT_CHECKBOX:
-                    gConfigGeneral.day_night_cycle ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_ENABLE_LIGHT_FX_CHECKBOX:
-                    gConfigGeneral.enable_light_fx ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX:
-                    gConfigGeneral.enable_light_fx_for_vehicles ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_UPPER_CASE_BANNERS_CHECKBOX:
-                    gConfigGeneral.upper_case_banners ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
-                    gConfigGeneral.disable_lightning_effect ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
-                    gConfigGeneral.render_weather_effects ^= 1;
-                    gConfigGeneral.render_weather_gloom = gConfigGeneral.render_weather_effects;
-                    config_save_default();
-                    w->Invalidate();
-                    gfx_invalidate_screen();
-                    break;
-                case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
-                    gConfigGeneral.show_guest_purchases ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX:
-                    gConfigGeneral.transparent_screenshot ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_CULTURE:
@@ -1236,21 +1353,6 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
             break;
 
         case WINDOW_OPTIONS_PAGE_RENDERING:
-            switch (widgetIndex)
-            {
-                case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
-                    gDropdownItemsArgs[1] = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
-                    gDropdownItemsArgs[2] = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
-
-                    window_options_show_dropdown(w, widget, 3);
-
-                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_CULTURE:
@@ -1485,13 +1587,6 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
             break;
 
         case WINDOW_OPTIONS_PAGE_RENDERING:
-            switch (widgetIndex)
-            {
-                case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-                    gConfigGeneral.virtual_floor_style = static_cast<VirtualFloorStyles>(dropdownIndex);
-                    config_save_default();
-                    break;
-            }
             break;
 
         case WINDOW_OPTIONS_PAGE_CULTURE:
@@ -1706,57 +1801,6 @@ static void window_options_invalidate(rct_window* w)
 
         case WINDOW_OPTIONS_PAGE_RENDERING:
         {
-            widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
-            widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
-            widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
-            widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
-            widget_set_checkbox_value(w, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
-            widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
-
-            rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
-                                                         STR_VIRTUAL_FLOOR_STYLE_GLASSY };
-
-            window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
-                gConfigGeneral.virtual_floor_style)];
-
-            widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
-            if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)
-            {
-                w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
-            }
-            else
-            {
-                w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
-            }
-
-            widget_set_checkbox_value(
-                w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
-            if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay
-                && gConfigGeneral.enable_light_fx)
-            {
-                w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
-            }
-            else
-            {
-                w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
-            }
-
-            widget_set_checkbox_value(
-                w, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
-                gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
-            widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
-            if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
-            {
-                widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
-                w->enabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-                w->disabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-            }
-            else
-            {
-                w->enabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-                w->disabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-            }
-
             break;
         }
 
@@ -2131,12 +2175,12 @@ static rct_window_event_list window_options_events_display([](auto& events) {
 });
 
 static rct_window_event_list window_options_events_rendering([](auto& events) {
-    events.mouse_up = &window_options_mouseup;
-    events.mouse_down = &window_options_mousedown;
-    events.dropdown = &window_options_dropdown;
+    events.mouse_up = &window_options_rendering_mouseup;
+    events.mouse_down = &window_options_rendering_mousedown;
+    events.dropdown = &window_options_rendering_dropdown;
     events.update = &window_options_common_update;
-    events.invalidate = &window_options_invalidate;
-    events.paint = &window_options_paint; // temp
+    events.invalidate = &window_options_rendering_invalidate;
+    events.paint = &window_options_rendering_paint;
 });
 
 static rct_window_event_list window_options_events_culture([](auto& events) {
