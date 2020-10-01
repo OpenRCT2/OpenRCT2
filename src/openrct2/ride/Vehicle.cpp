@@ -3431,7 +3431,7 @@ void Vehicle::FinishDeparting()
         audio_play_sound_at_location(SoundId::RideLaunch1, { x, y, z });
     }
 
-    if (curRide->mode != RideMode::Race && !(curRide->IsBlockSectioned()))
+    if (curRide->mode != RideMode::Race && !curRide->IsBlockSectioned())
     {
         curRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
         uint8_t waitingTime = 3;
