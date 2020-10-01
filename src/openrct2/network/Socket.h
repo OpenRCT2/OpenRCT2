@@ -15,14 +15,14 @@
 #include <string>
 #include <vector>
 
-enum SOCKET_STATUS
+enum class SocketStatus
 {
-    SOCKET_STATUS_CLOSED,
-    SOCKET_STATUS_WAITING,
-    SOCKET_STATUS_RESOLVING,
-    SOCKET_STATUS_CONNECTING,
-    SOCKET_STATUS_CONNECTED,
-    SOCKET_STATUS_LISTENING,
+    Closed,
+    Waiting,
+    Resolving,
+    Connecting,
+    Connected,
+    Listening,
 };
 
 enum class NetworkReadPacket : int32_t
@@ -53,7 +53,7 @@ struct ITcpSocket
 public:
     virtual ~ITcpSocket() = default;
 
-    virtual SOCKET_STATUS GetStatus() const abstract;
+    virtual SocketStatus GetStatus() const abstract;
     virtual const char* GetError() const abstract;
     virtual const char* GetHostName() const abstract;
     virtual std::string GetIpAddress() const abstract;
@@ -83,7 +83,7 @@ struct IUdpSocket
 public:
     virtual ~IUdpSocket() = default;
 
-    virtual SOCKET_STATUS GetStatus() const abstract;
+    virtual SocketStatus GetStatus() const abstract;
     virtual const char* GetError() const abstract;
     virtual const char* GetHostName() const abstract;
 
