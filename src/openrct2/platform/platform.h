@@ -67,7 +67,7 @@ struct rct2_time
 enum class FileDialogType : uint8_t
 {
     Open,
-    Save,
+    Save
 };
 
 struct file_dialog_desc
