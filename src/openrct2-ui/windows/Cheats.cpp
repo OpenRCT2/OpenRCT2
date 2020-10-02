@@ -400,7 +400,6 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_DAY_BOX) |
     (1ULL << WIDX_DAY_UP) |
     (1ULL << WIDX_DAY_DOWN) |
-    (1ULL << WIDX_MONTH_BOX) |
     (1ULL << WIDX_DATE_GROUP) |
     (1ULL << WIDX_DATE_RESET),
 
