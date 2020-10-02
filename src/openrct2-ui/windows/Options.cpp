@@ -1023,7 +1023,7 @@ static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex,
                         gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
                     }
                     window_options_show_dropdown(w, widget, numItems);
-                    dropdown_set_checked(gConfigGeneral.drawing_engine, true);
+                    dropdown_set_checked(EnumValue(gConfigGeneral.drawing_engine), true);
                     break;
                 }
                 case WIDX_SCALE_UP:
@@ -1334,12 +1334,12 @@ static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
                     }
                     break;
                 case WIDX_DRAWING_ENGINE_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.drawing_engine)
+                    if (dropdownIndex != EnumValue(gConfigGeneral.drawing_engine))
                     {
-                        int32_t srcEngine = drawing_engine_get_type();
-                        int32_t dstEngine = dropdownIndex;
+                        DrawingEngine srcEngine = drawing_engine_get_type();
+                        DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
 
-                        gConfigGeneral.drawing_engine = static_cast<uint8_t>(dstEngine);
+                        gConfigGeneral.drawing_engine = dstEngine;
                         bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
                         platform_refresh_video(recreate_window);
                         config_save_default();
@@ -1604,7 +1604,7 @@ static void window_options_invalidate(rct_window* w)
             }
 
             // Disable Steam Overlay checkbox when using software rendering.
-            if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE)
+            if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
             {
                 w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
             }
@@ -1615,7 +1615,7 @@ static void window_options_invalidate(rct_window* w)
 
             // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
             // In the latter case, nearest neighbour rendering will be used to scale.
-            if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE
+            if (gConfigGeneral.drawing_engine == DrawingEngine::Software
                 || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
             {
                 w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY);
@@ -1628,7 +1628,7 @@ static void window_options_invalidate(rct_window* w)
             }
 
             // Disable changing VSync for Software engine, as we can't control its use of VSync
-            if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE)
+            if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
             {
                 w->disabled_widgets |= (1 << WIDX_USE_VSYNC_CHECKBOX);
             }
@@ -1647,7 +1647,8 @@ static void window_options_invalidate(rct_window* w)
             // Dropdown captions for straightforward strings.
             window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral
                                                                                                             .fullscreen_mode];
-            window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[gConfigGeneral.drawing_engine];
+            window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(
+                gConfigGeneral.drawing_engine)];
             window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
                 [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
 
@@ -1670,8 +1671,7 @@ static void window_options_invalidate(rct_window* w)
                 gConfigGeneral.virtual_floor_style)];
 
             widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
-            if (gConfigGeneral.day_night_cycle
-                && gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY)
+            if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)
             {
                 w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
             }
@@ -1682,7 +1682,7 @@ static void window_options_invalidate(rct_window* w)
 
             widget_set_checkbox_value(
                 w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
-            if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY
+            if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay
                 && gConfigGeneral.enable_light_fx)
             {
                 w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
@@ -1982,7 +1982,7 @@ static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SCALE].left + 1, w->widgets[WIDX_SCALE].top + 1 });
 
             colour = w->colours[1];
-            if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE
+            if (gConfigGeneral.drawing_engine == DrawingEngine::Software
                 || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
             {
                 colour |= COLOUR_FLAG_INSET;

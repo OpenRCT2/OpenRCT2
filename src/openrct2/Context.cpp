@@ -111,7 +111,7 @@ namespace OpenRCT2
         std::unique_ptr<TitleScreen> _titleScreen;
         std::unique_ptr<GameState> _gameState;
 
-        int32_t _drawingEngineType = DRAWING_ENGINE_SOFTWARE;
+        DrawingEngine _drawingEngineType = DrawingEngine::Software;
         std::unique_ptr<IDrawingEngine> _drawingEngine;
         std::unique_ptr<Painter> _painter;
 
@@ -241,7 +241,7 @@ namespace OpenRCT2
             return _gameStateSnapshots.get();
         }
 
-        int32_t GetDrawingEngineType() override
+        DrawingEngine GetDrawingEngineType() override
         {
             return _drawingEngineType;
         }
@@ -486,13 +486,13 @@ namespace OpenRCT2
             _drawingEngineType = gConfigGeneral.drawing_engine;
 
             auto drawingEngineFactory = _uiContext->GetDrawingEngineFactory();
-            auto drawingEngine = drawingEngineFactory->Create(static_cast<DRAWING_ENGINE_TYPE>(_drawingEngineType), _uiContext);
+            auto drawingEngine = drawingEngineFactory->Create(_drawingEngineType, _uiContext);
 
             if (drawingEngine == nullptr)
             {
-                if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
+                if (_drawingEngineType == DrawingEngine::Software)
                 {
-                    _drawingEngineType = DRAWING_ENGINE_NONE;
+                    _drawingEngineType = DrawingEngine::None;
                     log_fatal("Unable to create a drawing engine.");
                     exit(-1);
                 }
@@ -501,7 +501,7 @@ namespace OpenRCT2
                     log_error("Unable to create drawing engine. Falling back to software.");
 
                     // Fallback to software
-                    gConfigGeneral.drawing_engine = DRAWING_ENGINE_SOFTWARE;
+                    gConfigGeneral.drawing_engine = DrawingEngine::Software;
                     config_save_default();
                     drawing_engine_init();
                 }
@@ -516,9 +516,9 @@ namespace OpenRCT2
                 }
                 catch (const std::exception& ex)
                 {
-                    if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
+                    if (_drawingEngineType == DrawingEngine::Software)
                     {
-                        _drawingEngineType = DRAWING_ENGINE_NONE;
+                        _drawingEngineType = DrawingEngine::None;
                         log_error(ex.what());
                         log_fatal("Unable to initialise a drawing engine.");
                         exit(-1);
@@ -529,7 +529,7 @@ namespace OpenRCT2
                         log_error("Unable to initialise drawing engine. Falling back to software.");
 
                         // Fallback to software
-                        gConfigGeneral.drawing_engine = DRAWING_ENGINE_SOFTWARE;
+                        gConfigGeneral.drawing_engine = DrawingEngine::Software;
                         config_save_default();
                         drawing_engine_init();
                     }

@@ -1930,7 +1930,7 @@ void viewport_set_saved_view()
 
 ZoomLevel ZoomLevel::min()
 {
-    if (drawing_engine_get_type() == DRAWING_ENGINE_OPENGL)
+    if (drawing_engine_get_type() == DrawingEngine::OpenGL)
     {
         return -2;
     }
