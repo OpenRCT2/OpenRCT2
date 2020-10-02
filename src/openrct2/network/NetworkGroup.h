@@ -10,10 +10,10 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/Json.hpp"
 #include "NetworkPacket.h"
 
 #include <array>
+#include <nlohmann/json_fwd.hpp>
 #include <string>
 
 enum class NetworkPermission : uint32_t;

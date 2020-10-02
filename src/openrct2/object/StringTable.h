@@ -10,11 +10,13 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/Json.hpp"
 #include "../localisation/Language.h"
 
+#include <nlohmann/json_fwd.hpp>
 #include <string>
 #include <vector>
+
+using json_t = nlohmann::json;
 
 struct IReadObjectContext;
 namespace OpenRCT2

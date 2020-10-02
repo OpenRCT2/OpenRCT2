@@ -15,13 +15,15 @@
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 #include "../common.h"
-#include "../core/Json.hpp"
 #include "../localisation/StringIds.h"
 #include "NetworkTypes.h"
 
 #include <memory>
+#include <nlohmann/json_fwd.hpp>
 #include <string>
 #include <vector>
+
+using json_t = nlohmann::json;
 
 struct GameAction;
 struct Peep;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../actions/GameAction.h"
-#include "../core/Json.hpp"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkPlayer.h"
@@ -10,6 +9,7 @@
 #include "NetworkUser.h"
 
 #include <fstream>
+#include <nlohmann/json_fwd.hpp>
 
 #ifndef DISABLE_NETWORK
 

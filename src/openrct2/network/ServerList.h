@@ -10,13 +10,15 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/Json.hpp"
 
 #include <future>
+#include <nlohmann/json_fwd.hpp>
 #include <optional>
 #include <stdexcept>
 #include <string>
 #include <vector>
+
+using json_t = nlohmann::json;
 
 struct INetworkEndpoint;
 

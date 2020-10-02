@@ -13,6 +13,7 @@
 
 #    include "../core/Console.hpp"
 #    include "../core/Guard.hpp"
+#    include "../core/Json.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../platform/Platform2.h"

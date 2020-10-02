@@ -11,6 +11,7 @@
 
 #    include "NetworkGroup.h"
 
+#    include "../openrct2/core/Json.hpp"
 #    include "NetworkAction.h"
 #    include "NetworkTypes.h"
 
