@@ -64,15 +64,15 @@ struct rct2_time
     uint8_t second;
 };
 
-enum FILEDIALOG_TYPE
+enum class FileDialogType
 {
-    FD_OPEN,
-    FD_SAVE
+    Open,
+    Save,
 };
 
 struct file_dialog_desc
 {
-    uint8_t type;
+    FileDialogType type;
     const utf8* title;
     const utf8* initial_directory;
     const utf8* default_filename;

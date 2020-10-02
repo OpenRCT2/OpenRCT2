@@ -403,7 +403,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
     }
 
     desc.initial_directory = _directory;
-    desc.type = isSave ? FD_SAVE : FD_OPEN;
+    desc.type = isSave ? FileDialogType::Save : FileDialogType::Open;
     desc.default_filename = isSave ? path : nullptr;
 
     // Add 'all files' filter. If the number of filters is increased, this code will need to be adjusted.
