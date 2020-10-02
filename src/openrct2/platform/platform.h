@@ -64,7 +64,7 @@ struct rct2_time
     uint8_t second;
 };
 
-enum class FileDialogType
+enum class FileDialogType : uint8_t
 {
     Open,
     Save,
