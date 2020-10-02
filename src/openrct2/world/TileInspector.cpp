@@ -474,6 +474,29 @@ GameActionResult::Ptr tile_inspector_sort_elements_at(const CoordsXY& loc, bool 
     return std::make_unique<GameActionResult>();
 }
 
+static GameActionResult::Ptr ValidateTileHeight(TileElement* const tileElement, int8_t heightOffset)
+{
+    int16_t newBaseHeight = static_cast<int16_t>(tileElement->base_height + heightOffset);
+    int16_t newClearanceHeight = static_cast<int16_t>(tileElement->clearance_height + heightOffset);
+    if (newBaseHeight < 0)
+    {
+        return std::make_unique<GameActionResult>(GA_ERROR::TOO_LOW, STR_CANT_LOWER_ELEMENT_HERE, STR_TOO_LOW);
+    }
+    else if (newBaseHeight > MAX_ELEMENT_HEIGHT)
+    {
+        return std::make_unique<GameActionResult>(GA_ERROR::TOO_HIGH, STR_CANT_RAISE_ELEMENT_HERE, STR_TOO_HIGH);
+    }
+    else if (newClearanceHeight < 0)
+    {
+        return std::make_unique<GameActionResult>(GA_ERROR::NO_CLEARANCE, STR_CANT_LOWER_ELEMENT_HERE, STR_NO_CLEARANCE);
+    }
+    else if (newClearanceHeight > MAX_ELEMENT_HEIGHT)
+    {
+        return std::make_unique<GameActionResult>(GA_ERROR::NO_CLEARANCE, STR_CANT_RAISE_ELEMENT_HERE, STR_NO_CLEARANCE);
+    }
+    return std::make_unique<GameActionResult>();
+}
+
 GameActionResult::Ptr tile_inspector_any_base_height_offset(
     const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting)
 {
@@ -481,13 +504,9 @@ GameActionResult::Ptr tile_inspector_any_base_height_offset(
     if (tileElement == nullptr)
         return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
 
-    int16_t newBaseHeight = static_cast<int16_t>(tileElement->base_height + heightOffset);
-    int16_t newClearanceHeight = static_cast<int16_t>(tileElement->clearance_height + heightOffset);
-    if (newBaseHeight < 0 || newBaseHeight > MAX_ELEMENT_HEIGHT || newClearanceHeight < 0
-        || newClearanceHeight > MAX_ELEMENT_HEIGHT)
-    {
-        return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
-    }
+    auto heightValidationResult = ValidateTileHeight(tileElement, heightOffset);
+    if (heightValidationResult->Error != GA_ERROR::OK)
+        return heightValidationResult;
 
     if (isExecuting)
     {

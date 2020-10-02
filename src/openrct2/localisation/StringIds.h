@@ -3887,6 +3887,10 @@ enum
     STR_HEAVY_SNOW = 6385,
     STR_BLIZZARD = 6386,
 
+    STR_CANT_LOWER_ELEMENT_HERE = 6387,
+    STR_CANT_RAISE_ELEMENT_HERE = 6388,
+    STR_NO_CLEARANCE = 6389,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
