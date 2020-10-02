@@ -67,14 +67,7 @@ public:
         res->Expenditure = ExpenditureType::RideConstruction;
 
         // Stations require some massaging of the track type for comparing
-        auto comparableTrackType = _trackType;
-        switch (_trackType)
-        {
-            case TrackElemType::BeginStation:
-            case TrackElemType::MiddleStation:
-                comparableTrackType = TrackElemType::EndStation;
-                break;
-        }
+        auto comparableTrackType = GameAction::NormaliseTrackType(_trackType);
 
         bool found = false;
         bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
@@ -101,13 +94,7 @@ public:
                 continue;
 
             auto tileTrackType = tileElement->AsTrack()->GetTrackType();
-            switch (tileTrackType)
-            {
-                case TrackElemType::BeginStation:
-                case TrackElemType::MiddleStation:
-                    tileTrackType = TrackElemType::EndStation;
-                    break;
-            }
+            tileTrackType = GameAction::NormaliseTrackType(tileTrackType);
 
             if (tileTrackType != comparableTrackType)
                 continue;
@@ -267,14 +254,7 @@ public:
         res->Expenditure = ExpenditureType::RideConstruction;
 
         // Stations require some massaging of the track type for comparing
-        auto comparableTrackType = _trackType;
-        switch (_trackType)
-        {
-            case TrackElemType::BeginStation:
-            case TrackElemType::MiddleStation:
-                comparableTrackType = TrackElemType::EndStation;
-                break;
-        }
+        auto comparableTrackType = GameAction::NormaliseTrackType(_trackType);
 
         bool found = false;
         bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
@@ -301,13 +281,7 @@ public:
                 continue;
 
             auto tileTrackType = tileElement->AsTrack()->GetTrackType();
-            switch (tileTrackType)
-            {
-                case TrackElemType::BeginStation:
-                case TrackElemType::MiddleStation:
-                    tileTrackType = TrackElemType::EndStation;
-                    break;
-            }
+            tileTrackType = GameAction::NormaliseTrackType(tileTrackType);
 
             if (tileTrackType != comparableTrackType)
                 continue;

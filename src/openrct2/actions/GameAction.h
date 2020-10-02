@@ -14,6 +14,7 @@
 #include "../core/DataSerialiser.h"
 #include "../core/IStream.hpp"
 #include "../localisation/StringIds.h"
+#include "../ride/Track.h"
 #include "../world/Map.h"
 
 #include <array>
@@ -316,6 +317,18 @@ public:
     virtual uint32_t GetCooldownTime() const
     {
         return 0;
+    }
+
+    int32_t NormaliseTrackType(int32_t _trackType) const
+    {
+        switch (_trackType)
+        {
+            case TrackElemType::BeginStation:
+            case TrackElemType::MiddleStation:
+                return TrackElemType::EndStation;
+        }
+
+        return _trackType;
     }
 
     /**
