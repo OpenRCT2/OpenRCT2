@@ -229,7 +229,7 @@ static void ride_ratings_update_state_2()
         if (trackType == 255
             || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
         {
-            if (trackType == TRACK_ELEM_END_STATION)
+            if (trackType == TrackElemType::EndStation)
             {
                 int32_t entranceIndex = tileElement->AsTrack()->GetStationIndex();
                 gRideRatingsCalcData.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
@@ -501,8 +501,8 @@ static void ride_ratings_score_close_proximity_loops_helper(const CoordsXYE& coo
                     if (zDiff >= 0 && zDiff <= 16)
                     {
                         proximity_score_increment(PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
-                        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_LEFT_VERTICAL_LOOP
-                            || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
+                        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::LeftVerticalLoop
+                            || tileElement->AsTrack()->GetTrackType() == TrackElemType::RightVerticalLoop)
                         {
                             proximity_score_increment(PROXIMITY_INTERSECTING_VERTICAL_LOOP);
                         }
@@ -521,7 +521,7 @@ static void ride_ratings_score_close_proximity_loops_helper(const CoordsXYE& coo
 static void ride_ratings_score_close_proximity_loops(TileElement* inputTileElement)
 {
     int32_t trackType = inputTileElement->AsTrack()->GetTrackType();
-    if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
+    if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
     {
         ride_ratings_score_close_proximity_loops_helper({ gRideRatingsCalcData.Proximity, inputTileElement });
 
@@ -617,7 +617,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
             case TILE_ELEMENT_TYPE_TRACK:
             {
                 int32_t trackType = tileElement->AsTrack()->GetTrackType();
-                if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
+                if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
                 {
                     int32_t sequence = tileElement->AsTrack()->GetSequenceIndex();
                     if (sequence == 3 || sequence == 6)
@@ -709,11 +709,11 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
 
     switch (gRideRatingsCalcData.ProximityTrackType)
     {
-        case TRACK_ELEM_BRAKES:
+        case TrackElemType::Brakes:
             gRideRatingsCalcData.AmountOfBrakes++;
             break;
-        case TRACK_ELEM_LEFT_REVERSER:
-        case TRACK_ELEM_RIGHT_REVERSER:
+        case TrackElemType::LeftReverser:
+        case TrackElemType::RightReverser:
             gRideRatingsCalcData.AmountOfReversers++;
             break;
     }

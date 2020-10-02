@@ -357,7 +357,7 @@ static void paint_go_karts_station(
     uint32_t imageId;
     const uint32_t(*sprites)[2] = go_karts_track_pieces_starting_grid;
 
-    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
+    if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
     {
         sprites = go_karts_track_pieces_starting_grid_end;
     }
@@ -408,7 +408,7 @@ static void paint_go_karts_station(
         track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
     }
 
-    if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
+    if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
     {
         const bool hasGreenLight = tileElement->AsTrack()->HasGreenLight();
 
@@ -540,31 +540,31 @@ TRACK_PAINT_FUNCTION get_track_paint_function_go_karts(int32_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return paint_go_karts_track_flat;
 
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
+        case TrackElemType::EndStation:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
             return paint_go_karts_station;
 
-        case TRACK_ELEM_25_DEG_UP:
+        case TrackElemType::Up25:
             return paint_go_karts_track_25_deg_up;
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+        case TrackElemType::FlatToUp25:
             return paint_go_karts_track_flat_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
             return paint_go_karts_track_25_deg_up_to_flat;
 
-        case TRACK_ELEM_25_DEG_DOWN:
+        case TrackElemType::Down25:
             return paint_go_karts_track_25_deg_down;
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::FlatToDown25:
             return paint_go_karts_track_flat_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::Down25ToFlat:
             return paint_go_karts_track_25_deg_down_to_flat;
 
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
+        case TrackElemType::LeftQuarterTurn1Tile:
             return paint_go_karts_track_left_quarter_turn_1_tile;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
+        case TrackElemType::RightQuarterTurn1Tile:
             return paint_go_karts_track_right_quarter_turn_1_tile;
     }
 

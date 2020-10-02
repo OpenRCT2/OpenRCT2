@@ -132,7 +132,7 @@ public:
             }
         }
 
-        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
+        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
         if (tileElement == nullptr)
         {
             if (_mode != GC_SET_MAZE_TRACK_BUILD)
@@ -171,7 +171,8 @@ public:
                 return res;
             }
 
-            money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+            money32 price = ((
+                (RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
             res->Cost = price / 2 * 10;
 
             return res;
@@ -210,10 +211,11 @@ public:
             wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 
-        auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
+        auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
         if (tileElement == nullptr)
         {
-            money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+            money32 price = ((
+                (RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
             res->Cost = price / 2 * 10;
 
             auto startLoc = _loc.ToTileStart();
@@ -224,7 +226,7 @@ public:
             tileElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
-            tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
+            tileElement->AsTrack()->SetTrackType(TrackElemType::Maze);
             tileElement->AsTrack()->SetRideIndex(_rideIndex);
             tileElement->AsTrack()->SetMazeEntry(0xFFFF);
 
@@ -264,7 +266,7 @@ public:
                         auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
 
                         TileElement* previousTileElement = map_get_track_element_at_of_type_from_ride(
-                            { previousElementLoc, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
+                            { previousElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
 
                         if (previousTileElement != nullptr)
                         {
@@ -290,7 +292,7 @@ public:
                                                      _loc.y - CoordsDirectionDelta[_loc.direction].y / 2 };
 
                     tileElement = map_get_track_element_at_of_type_from_ride(
-                        { previousSegment, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
+                        { previousSegment, _loc.z }, TrackElemType::Maze, _rideIndex);
 
                     map_invalidate_tile_full(previousSegment.ToTileStart());
                     if (tileElement == nullptr)
@@ -318,7 +320,7 @@ public:
                         auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
                         TileElement* tmp_tileElement = map_get_track_element_at_of_type_from_ride(
-                            { nextElementLoc, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
+                            { nextElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
 
                         if (tmp_tileElement != nullptr)
                         {

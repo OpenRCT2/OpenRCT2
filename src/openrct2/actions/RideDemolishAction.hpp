@@ -312,7 +312,7 @@ private:
                 TileCoordsXY(it.x, it.y).ToCoordsXY(), it.element->GetBaseZ(), it.element->GetDirection());
             auto type = it.element->AsTrack()->GetTrackType();
 
-            if (type != TRACK_ELEM_MAZE)
+            if (type != TrackElemType::Maze)
             {
                 auto trackRemoveAction = TrackRemoveAction(type, it.element->AsTrack()->GetSequenceIndex(), location);
                 trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);

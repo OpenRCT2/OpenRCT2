@@ -764,55 +764,55 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_impulse_rc(int32_t trackT
 {
     switch (trackType)
     {
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return inverted_impulse_rc_track_flat;
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
+        case TrackElemType::EndStation:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
             return inverted_impulse_rc_track_station;
-        case TRACK_ELEM_25_DEG_UP:
+        case TrackElemType::Up25:
             return inverted_impulse_rc_track_25_deg_up;
-        case TRACK_ELEM_60_DEG_UP:
+        case TrackElemType::Up60:
             return inverted_impulse_rc_track_60_deg_up;
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+        case TrackElemType::FlatToUp25:
             return inverted_impulse_rc_track_flat_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
+        case TrackElemType::Up25ToUp60:
             return inverted_impulse_rc_track_25_deg_up_to_60_deg_up;
-        case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::Up60ToUp25:
             return inverted_impulse_rc_track_60_deg_up_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
             return inverted_impulse_rc_track_25_deg_up_to_flat;
-        case TRACK_ELEM_25_DEG_DOWN:
+        case TrackElemType::Down25:
             return inverted_impulse_rc_track_25_deg_down;
-        case TRACK_ELEM_60_DEG_DOWN:
+        case TrackElemType::Down60:
             return inverted_impulse_rc_track_60_deg_down;
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::FlatToDown25:
             return inverted_impulse_rc_track_flat_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::Down25ToDown60:
             return inverted_impulse_rc_track_25_deg_down_to_60_deg_down;
-        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::Down60ToDown25:
             return inverted_impulse_rc_track_60_deg_down_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::Down25ToFlat:
             return inverted_impulse_rc_track_25_deg_down_to_flat;
-        case TRACK_ELEM_90_DEG_UP:
+        case TrackElemType::Up90:
             return inverted_impulse_rc_track_90_deg_up;
-        case TRACK_ELEM_90_DEG_DOWN:
+        case TrackElemType::Down90:
             return inverted_impulse_rc_track_90_deg_down;
-        case TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP:
+        case TrackElemType::Up60ToUp90:
             return inverted_impulse_rc_track_60_deg_up_to_90_deg_up;
-        case TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::Down90ToDown60:
             return inverted_impulse_rc_track_90_deg_down_to_60_deg_down;
-        case TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP:
+        case TrackElemType::Up90ToUp60:
             return inverted_impulse_rc_track_90_deg_up_to_60_deg_up;
-        case TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN:
+        case TrackElemType::Down60ToDown90:
             return inverted_impulse_rc_track_60_deg_down_to_90_deg_down;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP:
+        case TrackElemType::LeftQuarterTurn1TileUp90:
             return inverted_impulse_rc_track_left_quarter_turn_1_90_deg_up;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP:
+        case TrackElemType::RightQuarterTurn1TileUp90:
             return inverted_impulse_rc_track_right_quarter_turn_1_90_deg_up;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn1TileDown90:
             return inverted_impulse_rc_track_left_quarter_turn_1_90_deg_down;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn1TileDown90:
             return inverted_impulse_rc_track_right_quarter_turn_1_90_deg_down;
     }
     return nullptr;

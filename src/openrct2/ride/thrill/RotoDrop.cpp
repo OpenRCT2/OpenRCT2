@@ -208,10 +208,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_roto_drop(int32_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_TOWER_BASE:
+        case TrackElemType::TowerBase:
             return paint_roto_drop_base;
 
-        case TRACK_ELEM_TOWER_SECTION:
+        case TrackElemType::TowerSection:
             return paint_roto_drop_tower_section;
     }
 

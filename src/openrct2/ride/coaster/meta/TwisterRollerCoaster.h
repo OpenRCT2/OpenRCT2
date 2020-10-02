@@ -30,7 +30,7 @@ constexpr const RideTypeDescriptor TwisterRollerCoasterRTD =
                                   | (1ULL << TRACK_BOOSTER)),
     SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_BRAKE_FOR_DROP)),
     SET_FIELD(CoveredTrackPieces, 0),
-    SET_FIELD(StartTrackPiece, TRACK_ELEM_END_STATION),
+    SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_twister_rc),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
