@@ -1268,7 +1268,7 @@ static void UpdateSound(const SoundId id, int32_t volume, rct_vehicle_sound_para
  */
 void vehicle_sounds_update()
 {
-    if (gAudioCurrentDevice == -1 || gGameSoundsOff || !gConfigSound.sound_enabled || gOpenRCT2Headless)
+    if (!audio_is_available())
         return;
 
     std::vector<rct_vehicle_sound_params> vehicleSoundParamsList;

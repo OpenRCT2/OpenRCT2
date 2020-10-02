@@ -1374,15 +1374,15 @@ static void window_options_audio_mousedown(rct_window* w, rct_widgetindex widget
             audio_populate_devices();
 
             // populate the list with the sound devices
-            for (size_t i = 0; static_cast<int32_t>(i) < gAudioDeviceCount; i++)
+            for (size_t i = 0; static_cast<int32_t>(i) < audio_get_device_count(); i++)
             {
                 gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(gAudioDevices[i].name);
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(audio_get_device_name(i).c_str());
             }
 
-            window_options_show_dropdown(w, widget, gAudioDeviceCount);
+            window_options_show_dropdown(w, widget, audio_get_device_count());
 
-            dropdown_set_checked(gAudioCurrentDevice, true);
+            dropdown_set_checked(audio_get_device_index(), true);
             break;
         case WIDX_TITLE_MUSIC_DROPDOWN:
             uint32_t num_items = 4;
@@ -1409,7 +1409,7 @@ static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetI
     {
         case WIDX_SOUND_DROPDOWN:
             audio_init_ride_sounds(dropdownIndex);
-            if (dropdownIndex < gAudioDeviceCount)
+            if (dropdownIndex < audio_get_device_count())
             {
                 if (dropdownIndex == 0)
                 {
@@ -1418,7 +1418,7 @@ static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetI
                 }
                 else
                 {
-                    char* devicename = gAudioDevices[dropdownIndex].name;
+                    const char* devicename = audio_get_device_name(dropdownIndex).c_str();
                     Mixer_Init(devicename);
                     SafeFree(gConfigSound.device);
                     gConfigSound.device = strndup(devicename, AUDIO_DEVICE_NAME_SIZE);
@@ -1513,7 +1513,8 @@ static void window_options_audio_invalidate(rct_window* w)
     // Sound device
     rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
     const char* audioDeviceName = nullptr;
-    if (gAudioCurrentDevice == -1)
+    const int32_t currentDeviceIndex = audio_get_device_index();
+    if (currentDeviceIndex == -1)
     {
         audioDeviceStringId = STR_SOUND_NONE;
     }
@@ -1521,14 +1522,14 @@ static void window_options_audio_invalidate(rct_window* w)
     {
         audioDeviceStringId = STR_STRING;
 #ifndef __linux__
-        if (gAudioCurrentDevice == 0)
+        if (currentDeviceIndex == 0)
         {
             audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
         }
 #endif // __linux__
         if (audioDeviceStringId == STR_STRING)
         {
-            audioDeviceName = gAudioDevices[gAudioCurrentDevice].name;
+            audioDeviceName = audio_get_device_name(currentDeviceIndex).c_str();
         }
     }
 

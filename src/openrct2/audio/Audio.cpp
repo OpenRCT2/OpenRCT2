@@ -28,6 +28,7 @@
 #include "AudioMixer.h"
 
 #include <algorithm>
+#include <vector>
 
 using namespace OpenRCT2::Audio;
 
@@ -38,9 +39,8 @@ struct AudioParams
     int32_t pan;
 };
 
-audio_device* gAudioDevices = nullptr;
-int32_t gAudioDeviceCount;
-int32_t gAudioCurrentDevice = -1;
+static std::vector<std::string> _audioDevices;
+static int32_t _currentAudioDevice = -1;
 
 bool gGameSoundsOff = false;
 int32_t gVolumeAdjustZoom = 0;
@@ -125,23 +125,36 @@ static int32_t SoundVolumeAdjust[RCT2SoundCount] =
 
 static AudioParams audio_get_params_from_location(SoundId soundId, const CoordsXYZ& location);
 
+bool audio_is_available()
+{
+    if (_currentAudioDevice == -1)
+        return false;
+    if (gGameSoundsOff)
+        return false;
+    if (!gConfigSound.sound_enabled)
+        return false;
+    if (gOpenRCT2Headless)
+        return false;
+    return true;
+}
+
 void audio_init()
 {
     if (str_is_null_or_empty(gConfigSound.device))
     {
         Mixer_Init(nullptr);
-        gAudioCurrentDevice = 0;
+        _currentAudioDevice = 0;
     }
     else
     {
         Mixer_Init(gConfigSound.device);
 
         audio_populate_devices();
-        for (int32_t i = 0; i < gAudioDeviceCount; i++)
+        for (int32_t i = 0; i < audio_get_device_count(); i++)
         {
-            if (String::Equals(gAudioDevices[i].name, gConfigSound.device))
+            if (_audioDevices[i] == gConfigSound.device)
             {
-                gAudioCurrentDevice = i;
+                _currentAudioDevice = i;
             }
         }
     }
@@ -149,8 +162,6 @@ void audio_init()
 
 void audio_populate_devices()
 {
-    SafeFree(gAudioDevices);
-
     auto audioContext = OpenRCT2::GetContext()->GetAudioContext();
     std::vector<std::string> devices = audioContext->GetOutputDevices();
 
@@ -169,18 +180,12 @@ void audio_populate_devices()
     devices.insert(devices.begin(), defaultDevice);
 #endif
 
-    gAudioDeviceCount = static_cast<int32_t>(devices.size());
-    gAudioDevices = Memory::AllocateArray<audio_device>(gAudioDeviceCount);
-    for (int32_t i = 0; i < gAudioDeviceCount; i++)
-    {
-        auto device = &gAudioDevices[i];
-        String::Set(device->name, sizeof(device->name), devices[i].c_str());
-    }
+    _audioDevices = devices;
 }
 
 void audio_play_sound_at_location(SoundId soundId, const CoordsXYZ& loc)
 {
-    if (gGameSoundsOff)
+    if (!audio_is_available())
         return;
 
     AudioParams params = audio_get_params_from_location(soundId, loc);
@@ -311,6 +316,22 @@ void audio_stop_all_music_and_sounds()
     audio_stop_weather_sound();
 }
 
+int32_t audio_get_device_count()
+{
+    return static_cast<int32_t>(_audioDevices.size());
+}
+
+const std::string& audio_get_device_name(int32_t index)
+{
+    Guard::Assert(index >= 0 && index < audio_get_device_count());
+    return _audioDevices[index];
+}
+
+int32_t audio_get_device_index()
+{
+    return _currentAudioDevice;
+}
+
 void audio_stop_title_music()
 {
     if (gTitleMusicChannel != nullptr)
@@ -368,7 +389,7 @@ void audio_init_ride_sounds(int32_t device)
         vehicleSound.id = SOUND_ID_NULL;
     }
 
-    gAudioCurrentDevice = device;
+    _currentAudioDevice = device;
     config_save_default();
     for (auto& rideMusic : gRideMusicList)
     {
@@ -382,7 +403,7 @@ void audio_close()
     audio_stop_title_music();
     audio_stop_ride_music();
     audio_stop_weather_sound();
-    gAudioCurrentDevice = -1;
+    _currentAudioDevice = -1;
 }
 
 void audio_toggle_all_sounds()
@@ -417,10 +438,8 @@ void audio_unpause_sounds()
 
 void audio_stop_vehicle_sounds()
 {
-    if (gAudioCurrentDevice == -1)
-    {
+    if (!audio_is_available())
         return;
-    }
 
     for (auto& vehicleSound : gVehicleSoundList)
     {

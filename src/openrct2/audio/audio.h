@@ -23,11 +23,6 @@
 enum class SoundId : uint8_t;
 struct CoordsXYZ;
 
-struct audio_device
-{
-    char name[AUDIO_DEVICE_NAME_SIZE];
-};
-
 struct rct_ride_music
 {
     ride_id_t ride_id;
@@ -153,10 +148,6 @@ enum class SoundId : uint8_t
 
 constexpr uint8_t RCT2SoundCount = static_cast<uint32_t>(SoundId::Portcullis) + 1;
 
-extern audio_device* gAudioDevices;
-extern int32_t gAudioDeviceCount;
-extern int32_t gAudioCurrentDevice;
-
 extern bool gGameSoundsOff;
 extern int32_t gVolumeAdjustZoom;
 
@@ -170,6 +161,22 @@ extern rct_ride_music_params* gRideMusicParamsListEnd;
 
 extern rct_vehicle_sound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 
+/**
+ * Returns false when no audio device is available or when audio is turned off, otherwise true.
+ */
+bool audio_is_available();
+/*
+ * Returns the amount of available audio devices.
+ */
+int32_t audio_get_device_count();
+/**
+ * Returns the device name by index.
+ */
+const std::string& audio_get_device_name(int32_t index);
+/**
+ * Returns the currently used device index, -1 if not available.
+ */
+int32_t audio_get_device_index();
 /**
  * Deregisters the audio device.
  * rct2: 0x006BAB21

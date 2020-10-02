@@ -205,12 +205,9 @@ void climate_force_weather(uint8_t weather)
 
 void climate_update_sound()
 {
-    if (gAudioCurrentDevice == -1)
+    if (!audio_is_available())
         return;
-    if (gGameSoundsOff)
-        return;
-    if (!gConfigSound.sound_enabled)
-        return;
+
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
