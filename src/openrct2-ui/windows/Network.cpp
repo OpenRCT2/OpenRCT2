@@ -64,8 +64,8 @@ static void window_network_information_paint(rct_window *w, rct_drawpixelinfo *d
 
 struct NetworkHistory_t
 {
-    std::array<uint16_t, NETWORK_STATISTICS_GROUP_MAX> deltaBytesReceived;
-    std::array<uint16_t, NETWORK_STATISTICS_GROUP_MAX> deltaBytesSent;
+    std::array<uint16_t, EnumValue(NetworkStatisticsGroup::Max)> deltaBytesReceived;
+    std::array<uint16_t, EnumValue(NetworkStatisticsGroup::Max)> deltaBytesSent;
 };
 
 static NetworkStats_t _networkStats;
@@ -85,14 +85,14 @@ static uint32_t _lastStatsUpdateTime;
 
 static CircularBuffer<NetworkHistory_t, 128> _networkHistory;
 
-static constexpr int32_t NetworkTrafficGroupColors[NETWORK_STATISTICS_GROUP_MAX] = {
+static constexpr int32_t NetworkTrafficGroupColors[EnumValue(NetworkStatisticsGroup::Max)] = {
     PALETTE_INDEX_21,
     PALETTE_INDEX_102,
     PALETTE_INDEX_138,
     PALETTE_INDEX_171,
 };
 
-static constexpr int32_t NetworkTrafficGroupNames[NETWORK_STATISTICS_GROUP_MAX] = {
+static constexpr int32_t NetworkTrafficGroupNames[EnumValue(NetworkStatisticsGroup::Max)] = {
     STR_NETWORK,
     STR_NETWORK_LEGEND_BASE,
     STR_NETWORK_LEGEND_COMMANDS,
@@ -219,7 +219,7 @@ static void window_network_information_update(rct_window* w)
     float graphTimeElapsed = (currentTicks - _lastGraphUpdateTime) / 1000.0f;
     _lastGraphUpdateTime = currentTicks;
 
-    for (int i = 0; i < NETWORK_STATISTICS_GROUP_MAX; i++)
+    for (size_t i = 0; i < EnumValue(NetworkStatisticsGroup::Max); i++)
     {
         uint32_t deltaBytesReceived = curStats.bytesReceived[i] - _networkStats.bytesReceived[i];
         uint32_t deltaBytesSent = curStats.bytesSent[i] - _networkStats.bytesSent[i];
@@ -237,7 +237,7 @@ static void window_network_information_update(rct_window* w)
     for (size_t i = 0; i < _networkHistory.size(); i++)
     {
         const NetworkHistory_t& history = _networkHistory[i];
-        for (int n = 1; n < NETWORK_STATISTICS_GROUP_MAX; n++)
+        for (size_t n = 1; n < EnumValue(NetworkStatisticsGroup::Max); n++)
         {
             graphMaxIn = static_cast<float>(std::max<uint32_t>(history.deltaBytesReceived[n], graphMaxIn));
             graphMaxOut = static_cast<float>(std::max<uint32_t>(history.deltaBytesSent[n], graphMaxOut));
@@ -253,8 +253,8 @@ static void window_network_information_update(rct_window* w)
         float statsTimeElapsed = (currentTicks - _lastStatsUpdateTime) / 1000.0f;
         _lastStatsUpdateTime = currentTicks;
 
-        _bytesIn = _networkAccumulatedStats.deltaBytesReceived[NETWORK_STATISTICS_GROUP_TOTAL];
-        _bytesOut = _networkAccumulatedStats.deltaBytesSent[NETWORK_STATISTICS_GROUP_TOTAL];
+        _bytesIn = _networkAccumulatedStats.deltaBytesReceived[EnumValue(NetworkStatisticsGroup::Total)];
+        _bytesOut = _networkAccumulatedStats.deltaBytesSent[EnumValue(NetworkStatisticsGroup::Total)];
         _bytesInSec = static_cast<double>(_bytesIn) / statsTimeElapsed;
         _bytesOutSec = static_cast<double>(_bytesOut) / statsTimeElapsed;
 
@@ -321,7 +321,7 @@ static void window_network_draw_graph(
         uint32_t curX = std::round((static_cast<float>(i) / static_cast<float>(_networkHistory.capacity())) * barWidth * width);
 
         float totalSum = 0.0f;
-        for (int n = 1; n < NETWORK_STATISTICS_GROUP_MAX; n++)
+        for (size_t n = 1; n < EnumValue(NetworkStatisticsGroup::Max); n++)
         {
             if (received)
                 totalSum += static_cast<float>(history.deltaBytesReceived[n]);
@@ -330,7 +330,7 @@ static void window_network_draw_graph(
         }
 
         int32_t yOffset = height;
-        for (int n = 1; n < NETWORK_STATISTICS_GROUP_MAX; n++)
+        for (size_t n = 1; n < EnumValue(NetworkStatisticsGroup::Max); n++)
         {
             float totalHeight;
             float singleHeight;
@@ -391,7 +391,8 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
             gfx_draw_string_left(
                 dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY{ 200, 0 });
 
-            format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesReceived[NETWORK_STATISTICS_GROUP_TOTAL]);
+            format_readable_size(
+                textBuffer, sizeof(textBuffer), _networkStats.bytesReceived[EnumValue(NetworkStatisticsGroup::Total)]);
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(300, 0));
             screenCoords.y += textHeight + padding;
 
@@ -410,7 +411,8 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
             gfx_draw_string_left(
                 dpi, STR_NETWORK_TOTAL_SENT, nullptr, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY{ 200, 0 });
 
-            format_readable_size(textBuffer, sizeof(textBuffer), _networkStats.bytesSent[NETWORK_STATISTICS_GROUP_TOTAL]);
+            format_readable_size(
+                textBuffer, sizeof(textBuffer), _networkStats.bytesSent[EnumValue(NetworkStatisticsGroup::Total)]);
             gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(300, 0));
             screenCoords.y += textHeight + padding;
 
@@ -421,7 +423,7 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
 
         // Draw legend
         {
-            for (int i = 1; i < NETWORK_STATISTICS_GROUP_MAX; i++)
+            for (size_t i = 1; i < EnumValue(NetworkStatisticsGroup::Max); i++)
             {
                 format_string(textBuffer, sizeof(textBuffer), NetworkTrafficGroupNames[i], nullptr);
 
