@@ -29,9 +29,7 @@ private:
     std::string _name;
 
 public:
-    RideSetNameAction()
-    {
-    }
+    RideSetNameAction() = default;
     RideSetNameAction(ride_id_t rideIndex, const std::string& name)
         : _rideIndex(rideIndex)
         , _name(name)

@@ -16,7 +16,7 @@
 DEFINE_GAME_ACTION(PauseToggleAction, GAME_COMMAND_TOGGLE_PAUSE, GameActionResult)
 {
 public:
-    PauseToggleAction(){}
+    PauseToggleAction() = default;
 
     uint16_t GetActionFlags() const override
     {

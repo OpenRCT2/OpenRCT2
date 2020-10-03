@@ -18,7 +18,7 @@ DEFINE_GAME_ACTION(MazePlaceTrackAction, GAME_COMMAND_PLACE_MAZE_DESIGN, GameAct
 private:
     CoordsXYZ _loc;
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
-    uint16_t _mazeEntry{ 0 };
+    uint16_t _mazeEntry{};
 
 public:
     MazePlaceTrackAction() = default;

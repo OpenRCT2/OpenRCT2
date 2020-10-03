@@ -22,10 +22,10 @@ DEFINE_GAME_ACTION(RideEntranceExitPlaceAction, GAME_COMMAND_PLACE_RIDE_ENTRANCE
 {
 private:
     CoordsXY _loc;
-    Direction _direction;
-    NetworkRideId_t _rideIndex;
-    StationIndex _stationNum;
-    bool _isExit;
+    Direction _direction{ INVALID_DIRECTION };
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    StationIndex _stationNum{ STATION_INDEX_NULL };
+    bool _isExit{};
 
 public:
     RideEntranceExitPlaceAction() = default;

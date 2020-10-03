@@ -28,13 +28,11 @@ DEFINE_GAME_ACTION(LandSetHeightAction, GAME_COMMAND_SET_LAND_HEIGHT, GameAction
 {
 private:
     CoordsXY _coords;
-    uint8_t _height;
-    uint8_t _style;
+    uint8_t _height{};
+    uint8_t _style{};
 
 public:
-    LandSetHeightAction()
-    {
-    }
+    LandSetHeightAction() = default;
     LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style)
         : _coords(coords)
         , _height(height)

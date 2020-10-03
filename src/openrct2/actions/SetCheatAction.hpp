@@ -41,9 +41,9 @@ DEFINE_GAME_ACTION(SetCheatAction, GAME_COMMAND_CHEAT, GameActionResult)
     using ParametersRange = std::pair<std::pair<int32_t, int32_t>, std::pair<int32_t, int32_t>>;
 
 private:
-    NetworkCheatType_t _cheatType;
-    int32_t _param1 = 0;
-    int32_t _param2 = 0;
+    NetworkCheatType_t _cheatType{ EnumValue(CheatType::Count) };
+    int32_t _param1{};
+    int32_t _param2{};
 
 public:
     SetCheatAction() = default;

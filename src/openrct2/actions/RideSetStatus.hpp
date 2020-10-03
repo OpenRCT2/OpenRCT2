@@ -34,12 +34,10 @@ DEFINE_GAME_ACTION(RideSetStatusAction, GAME_COMMAND_SET_RIDE_STATUS, GameAction
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _status = RIDE_STATUS_CLOSED;
+    uint8_t _status{ RIDE_STATUS_CLOSED };
 
 public:
-    RideSetStatusAction()
-    {
-    }
+    RideSetStatusAction() = default;
     RideSetStatusAction(ride_id_t rideIndex, uint8_t status)
         : _rideIndex(rideIndex)
         , _status(status)

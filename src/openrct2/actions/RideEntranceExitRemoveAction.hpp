@@ -18,9 +18,9 @@ DEFINE_GAME_ACTION(RideEntranceExitRemoveAction, GAME_COMMAND_REMOVE_RIDE_ENTRAN
 {
 private:
     CoordsXY _loc;
-    NetworkRideId_t _rideIndex;
-    StationIndex _stationNum;
-    bool _isExit;
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    StationIndex _stationNum{ STATION_INDEX_NULL };
+    bool _isExit{};
 
 public:
     RideEntranceExitRemoveAction() = default;

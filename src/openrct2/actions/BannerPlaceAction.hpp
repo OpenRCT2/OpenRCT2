@@ -21,7 +21,7 @@ private:
     CoordsXYZD _loc;
     ObjectEntryIndex _bannerType{ BANNER_NULL };
     BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
-    uint8_t _primaryColour;
+    uint8_t _primaryColour{};
 
 public:
     BannerPlaceAction() = default;

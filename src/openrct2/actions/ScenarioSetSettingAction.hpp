@@ -13,6 +13,7 @@
 #include "../interface/Window.h"
 #include "../management/Finance.h"
 #include "../peep/Peep.h"
+#include "../util/Util.h"
 #include "../world/Park.h"
 #include "GameAction.h"
 
@@ -47,15 +48,13 @@ enum class ScenarioSetSetting : uint8_t
 DEFINE_GAME_ACTION(ScenarioSetSettingAction, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, GameActionResult)
 {
 private:
-    uint8_t _setting{ static_cast<uint8_t>(ScenarioSetSetting::Count) };
-    uint32_t _value{ 0 };
+    ScenarioSetSetting _setting{ ScenarioSetSetting::Count };
+    uint32_t _value{};
 
 public:
-    ScenarioSetSettingAction()
-    {
-    }
+    ScenarioSetSettingAction() = default;
     ScenarioSetSettingAction(ScenarioSetSetting setting, uint32_t value)
-        : _setting(static_cast<uint8_t>(setting))
+        : _setting(setting)
         , _value(value)
     {
     }
@@ -74,7 +73,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_setting >= static_cast<uint8_t>(ScenarioSetSetting::Count))
+        if (_setting >= ScenarioSetSetting::Count)
         {
             log_error("Invalid setting: %u", _setting);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -85,7 +84,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        switch (static_cast<ScenarioSetSetting>(_setting))
+        switch (_setting)
         {
             case ScenarioSetSetting::NoMoney:
                 if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)

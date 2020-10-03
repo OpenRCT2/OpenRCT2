@@ -49,8 +49,8 @@ DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GAME_COMMAND_PLACE_LARGE_SCENERY, La
 private:
     CoordsXYZD _loc;
     ObjectEntryIndex _sceneryType{ OBJECT_ENTRY_INDEX_NULL };
-    uint8_t _primaryColour;
-    uint8_t _secondaryColour;
+    uint8_t _primaryColour{};
+    uint8_t _secondaryColour{};
     BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
 public:
