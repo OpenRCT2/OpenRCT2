@@ -10,16 +10,15 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/JsonFwd.hpp"
 #include "ImageTable.h"
 #include "StringTable.h"
 
 #include <algorithm>
-#include <nlohmann/json_fwd.hpp>
 #include <optional>
 #include <string_view>
 #include <vector>
 
-using json_t = nlohmann::json;
 using ObjectEntryIndex = uint16_t;
 constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 

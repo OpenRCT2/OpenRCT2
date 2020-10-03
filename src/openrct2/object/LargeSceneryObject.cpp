@@ -22,7 +22,6 @@
 
 #include <algorithm>
 #include <iterator>
-#include <nlohmann/json_fwd.hpp>
 
 void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {

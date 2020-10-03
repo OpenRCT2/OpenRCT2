@@ -9,7 +9,6 @@
 #include "NetworkUser.h"
 
 #include <fstream>
-#include <nlohmann/json_fwd.hpp>
 
 #ifndef DISABLE_NETWORK
 

@@ -13,7 +13,6 @@
 #include "../ride/Ride.h"
 #include "Object.h"
 
-#include <nlohmann/json_fwd.hpp>
 #include <vector>
 
 class RideObject final : public Object

@@ -10,13 +10,11 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/JsonFwd.hpp"
 #include "../core/Nullable.hpp"
 
 #include <map>
-#include <nlohmann/json_fwd.hpp>
 #include <string>
-
-using json_t = nlohmann::json;
 
 class NetworkUser final
 {
