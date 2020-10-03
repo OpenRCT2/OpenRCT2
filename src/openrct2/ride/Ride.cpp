@@ -1372,13 +1372,16 @@ void ride_construction_invalidate_current_track()
         case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
         case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
         case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
+        case RIDE_CONSTRUCTION_STATE_FRONT:
+        case RIDE_CONSTRUCTION_STATE_BACK:
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
             {
                 map_invalidate_tile_full(_currentTrackBegin.ToTileStart());
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             }
             ride_construction_remove_ghosts();
             break;
+        case RIDE_CONSTRUCTION_STATE_PLACE:
+        case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
         default:
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
             {
