@@ -965,22 +965,22 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
     switch (widgetIndex)
     {
         case WIDX_SPINNER_X_INCREASE:
-            windowTileInspectorTileX = std::min<uint32_t>(windowTileInspectorTileX + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+            windowTileInspectorTile.x = std::min<int32_t>(windowTileInspectorTile.x + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
             windowTileInspectorToolMap.x = std::min<int32_t>(windowTileInspectorToolMap.x + 32, MAXIMUM_TILE_START_XY);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_X_DECREASE:
-            windowTileInspectorTileX = std::max<uint32_t>(windowTileInspectorTileX - 1, 0);
+            windowTileInspectorTile.x = std::max<int32_t>(windowTileInspectorTile.x - 1, 0);
             windowTileInspectorToolMap.x = std::max<int32_t>(windowTileInspectorToolMap.x - 32, 0);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_Y_INCREASE:
-            windowTileInspectorTileY = std::min<uint32_t>(windowTileInspectorTileY + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
+            windowTileInspectorTile.y = std::min<int32_t>(windowTileInspectorTile.y + 1, MAXIMUM_MAP_SIZE_TECHNICAL - 1);
             windowTileInspectorToolMap.y = std::min<int32_t>(windowTileInspectorToolMap.y + 32, MAXIMUM_TILE_START_XY);
             window_tile_inspector_load_tile(w, nullptr);
             break;
         case WIDX_SPINNER_Y_DECREASE:
-            windowTileInspectorTileY = std::max<uint32_t>(windowTileInspectorTileY - 1, 0);
+            windowTileInspectorTile.y = std::max<int32_t>(windowTileInspectorTile.y - 1, 0);
             windowTileInspectorToolMap.y = std::max<int32_t>(windowTileInspectorToolMap.y - 32, 0);
             window_tile_inspector_load_tile(w, nullptr);
             break;
@@ -1274,8 +1274,7 @@ static void window_tile_inspector_update_selected_tile(rct_window* w, const Scre
 
     windowTileInspectorTileSelected = true;
     windowTileInspectorToolMap = mapCoords;
-    windowTileInspectorTileX = mapCoords.x >> 5;
-    windowTileInspectorTileY = mapCoords.y >> 5;
+    windowTileInspectorTile = TileCoordsXY(mapCoords);
 
     window_tile_inspector_load_tile(w, clickedElement);
 }

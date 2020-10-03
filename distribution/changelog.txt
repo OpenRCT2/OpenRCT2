@@ -3,6 +3,7 @@
 - Feature: [#12999] .sea (RCT Classic) scenarios are now listed in the “New Scenario” dialog.
 - Feature: [#13000] objective_options command for console.
 - Fix: [#3200] Close Construction window upon selecting vehicle page.
+- Fix: [#5904] Empty errors on tile inspector base height change.
 - Fix: [#8015] RCT2 files are not found when put into the OpenRCT2 folder.
 - Fix: [#8957] Error title missing when building with insufficient funds
 - Fix: [#13021] Mowed grass and weeds don't show up in extra zoom levels.
