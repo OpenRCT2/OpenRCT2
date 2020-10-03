@@ -41,8 +41,8 @@ constexpr const bool peep_slow_walking_types[] = {
 DEFINE_GAME_ACTION(StaffSetCostumeAction, GAME_COMMAND_SET_STAFF_COSTUME, GameActionResult)
 {
 private:
-    uint16_t _spriteIndex;
-    EntertainerCostume _costume;
+    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
+    EntertainerCostume _costume = EntertainerCostume::Count;
 
 public:
     StaffSetCostumeAction() = default;

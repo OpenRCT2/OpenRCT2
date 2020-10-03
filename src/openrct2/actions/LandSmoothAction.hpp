@@ -32,8 +32,8 @@ DEFINE_GAME_ACTION(LandSmoothAction, GAME_COMMAND_EDIT_LAND_SMOOTH, GameActionRe
 private:
     CoordsXY _coords;
     MapRange _range;
-    uint8_t _selectionType{ 0 };
-    bool _isLowering{ false };
+    uint8_t _selectionType{};
+    bool _isLowering{};
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_LOWER_LAND_HERE, STR_CANT_RAISE_LAND_HERE };
 

@@ -19,7 +19,7 @@
 DEFINE_GAME_ACTION(SetParkEntranceFeeAction, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActionResult)
 {
 private:
-    money16 _fee;
+    money16 _fee{ MONEY16_UNDEFINED };
 
 public:
     SetParkEntranceFeeAction() = default;

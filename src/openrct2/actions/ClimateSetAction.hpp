@@ -15,7 +15,7 @@
 DEFINE_GAME_ACTION(ClimateSetAction, GAME_COMMAND_SET_CLIMATE, GameActionResult)
 {
 private:
-    uint8_t _climate;
+    uint8_t _climate{};
 
 public:
     ClimateSetAction() = default;

@@ -39,9 +39,9 @@ DEFINE_GAME_ACTION(RideSetAppearanceAction, GAME_COMMAND_SET_RIDE_APPEARANCE, Ga
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _type;
-    uint8_t _value;
-    uint32_t _index;
+    uint8_t _type{};
+    uint8_t _value{};
+    uint32_t _index{};
 
 public:
     RideSetAppearanceAction() = default;

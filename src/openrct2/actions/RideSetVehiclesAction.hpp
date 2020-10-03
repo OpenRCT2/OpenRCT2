@@ -36,9 +36,9 @@ DEFINE_GAME_ACTION(RideSetVehicleAction, GAME_COMMAND_SET_RIDE_VEHICLES, GameAct
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _type;
-    uint8_t _value;
-    uint8_t _colour;
+    uint8_t _type{};
+    uint8_t _value{};
+    uint8_t _colour{};
 
     constexpr static rct_string_id SetVehicleTypeErrorTitle[] = { STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
                                                                   STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,

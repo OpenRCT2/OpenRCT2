@@ -21,8 +21,8 @@
 DEFINE_GAME_ACTION(StaffSetOrdersAction, GAME_COMMAND_SET_STAFF_ORDERS, GameActionResult)
 {
 private:
-    uint16_t _spriteIndex;
-    uint8_t _ordersId;
+    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
+    uint8_t _ordersId{};
 
 public:
     StaffSetOrdersAction() = default;

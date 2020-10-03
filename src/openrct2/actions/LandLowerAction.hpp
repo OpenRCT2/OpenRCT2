@@ -30,7 +30,7 @@ DEFINE_GAME_ACTION(LandLowerAction, GAME_COMMAND_LOWER_LAND, GameActionResult)
 private:
     CoordsXY _coords;
     MapRange _range;
-    uint8_t _selectionType;
+    uint8_t _selectionType{};
 
 public:
     LandLowerAction() = default;

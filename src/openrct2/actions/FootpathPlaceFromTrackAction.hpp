@@ -26,9 +26,9 @@ DEFINE_GAME_ACTION(FootpathPlaceFromTrackAction, GAME_COMMAND_PLACE_PATH_FROM_TR
 {
 private:
     CoordsXYZ _loc;
-    uint8_t _slope;
-    ObjectEntryIndex _type;
-    uint8_t _edges;
+    uint8_t _slope{};
+    ObjectEntryIndex _type{};
+    uint8_t _edges{};
 
 public:
     FootpathPlaceFromTrackAction() = default;

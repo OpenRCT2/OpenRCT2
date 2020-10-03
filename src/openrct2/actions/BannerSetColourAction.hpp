@@ -19,7 +19,7 @@ DEFINE_GAME_ACTION(BannerSetColourAction, GAME_COMMAND_SET_BANNER_COLOUR, GameAc
 {
 private:
     CoordsXYZD _loc;
-    uint8_t _primaryColour;
+    uint8_t _primaryColour{};
 
 public:
     BannerSetColourAction() = default;

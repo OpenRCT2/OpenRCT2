@@ -32,8 +32,8 @@ DEFINE_GAME_ACTION(RideSetSettingAction, GAME_COMMAND_SET_RIDE_SETTING, GameActi
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    RideSetSetting _setting{ 0 };
-    uint8_t _value{ 0 };
+    RideSetSetting _setting{};
+    uint8_t _value{};
 
 public:
     RideSetSettingAction() = default;

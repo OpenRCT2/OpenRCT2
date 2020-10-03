@@ -18,6 +18,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -36,7 +37,7 @@ DEFINE_GAME_ACTION(LandBuyRightsAction, GAME_COMMAND_BUY_LAND_RIGHTS, GameAction
 {
 private:
     MapRange _range;
-    uint8_t _setting = static_cast<uint8_t>(LandBuyRightSetting::Count);
+    uint8_t _setting{ EnumValue(LandBuyRightSetting::Count) };
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_BUY_LAND, STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE };
 

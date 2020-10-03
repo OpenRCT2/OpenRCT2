@@ -45,14 +45,14 @@ public:
 DEFINE_GAME_ACTION(TrackPlaceAction, GAME_COMMAND_PLACE_TRACK, TrackPlaceActionResult)
 {
 private:
-    NetworkRideId_t _rideIndex;
-    int32_t _trackType;
+    NetworkRideId_t _rideIndex{ RideIdNewNull };
+    int32_t _trackType{};
     CoordsXYZD _origin;
-    int32_t _brakeSpeed;
-    int32_t _colour;
-    int32_t _seatRotation;
-    int32_t _trackPlaceFlags;
-    bool _fromTrackDesign;
+    int32_t _brakeSpeed{};
+    int32_t _colour{};
+    int32_t _seatRotation{};
+    int32_t _trackPlaceFlags{};
+    bool _fromTrackDesign{};
 
 public:
     TrackPlaceAction() = default;

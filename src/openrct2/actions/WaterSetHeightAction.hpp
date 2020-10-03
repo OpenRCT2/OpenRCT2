@@ -19,7 +19,7 @@ DEFINE_GAME_ACTION(WaterSetHeightAction, GAME_COMMAND_SET_WATER_HEIGHT, GameActi
 {
 private:
     CoordsXY _coords;
-    uint8_t _height;
+    uint8_t _height{};
 
 public:
     WaterSetHeightAction() = default;

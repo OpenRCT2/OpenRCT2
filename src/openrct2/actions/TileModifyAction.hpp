@@ -46,9 +46,9 @@ DEFINE_GAME_ACTION(TileModifyAction, GAME_COMMAND_MODIFY_TILE, GameActionResult)
 {
 private:
     CoordsXY _loc;
-    uint8_t _setting{ 0 };
-    uint32_t _value1{ 0 };
-    uint32_t _value2{ 0 };
+    uint8_t _setting{};
+    uint32_t _value1{};
+    uint32_t _value2{};
     TileElement _pasteElement{};
 
 public:

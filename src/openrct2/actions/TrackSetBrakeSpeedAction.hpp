@@ -16,8 +16,8 @@ DEFINE_GAME_ACTION(TrackSetBrakeSpeedAction, GAME_COMMAND_SET_BRAKES_SPEED, Game
 {
 private:
     CoordsXYZ _loc;
-    track_type_t _trackType;
-    uint8_t _brakeSpeed;
+    track_type_t _trackType{};
+    uint8_t _brakeSpeed{};
 
 public:
     TrackSetBrakeSpeedAction() = default;

@@ -18,6 +18,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -39,8 +40,8 @@ DEFINE_GAME_ACTION(LandSetRightsAction, GAME_COMMAND_SET_LAND_OWNERSHIP, GameAct
 {
 private:
     MapRange _range;
-    uint8_t _setting = static_cast<uint8_t>(LandSetRightSetting::Count);
-    uint8_t _ownership = 0;
+    uint8_t _setting{ EnumValue(LandSetRightSetting::Count) };
+    uint8_t _ownership{};
 
 public:
     LandSetRightsAction() = default;

@@ -24,8 +24,8 @@ DEFINE_GAME_ACTION(SurfaceSetStyleAction, GAME_COMMAND_CHANGE_SURFACE_STYLE, Gam
 {
 private:
     MapRange _range;
-    ObjectEntryIndex _surfaceStyle;
-    ObjectEntryIndex _edgeStyle;
+    ObjectEntryIndex _surfaceStyle{};
+    ObjectEntryIndex _edgeStyle{};
 
 public:
     SurfaceSetStyleAction() = default;

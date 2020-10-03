@@ -51,9 +51,9 @@ DEFINE_GAME_ACTION(MazeSetTrackAction, GAME_COMMAND_SET_MAZE_TRACK, GameActionRe
 {
 private:
     CoordsXYZD _loc;
-    bool _initialPlacement;
-    NetworkRideId_t _rideIndex;
-    uint8_t _mode;
+    bool _initialPlacement{};
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    uint8_t _mode{};
 
 public:
     MazeSetTrackAction() = default;

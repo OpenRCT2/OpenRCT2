@@ -33,7 +33,7 @@ DEFINE_GAME_ACTION(RideDemolishAction, GAME_COMMAND_DEMOLISH_RIDE, GameActionRes
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _modifyType = RIDE_MODIFY_DEMOLISH;
+    uint8_t _modifyType{ RIDE_MODIFY_DEMOLISH };
 
 public:
     RideDemolishAction() = default;

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../network/network.h"
+#include "../util/Util.h"
 #include "GameAction.h"
 
 enum class ModifyGroupType : uint8_t
@@ -33,11 +34,11 @@ enum class PermissionState : uint8_t
 DEFINE_GAME_ACTION(NetworkModifyGroupAction, GAME_COMMAND_MODIFY_GROUPS, GameActionResult)
 {
 private:
-    uint8_t _type{ static_cast<uint8_t>(ModifyGroupType::Count) };
+    uint8_t _type{ EnumValue(ModifyGroupType::Count) };
     uint8_t _groupId{ std::numeric_limits<uint8_t>::max() };
     std::string _name;
     uint32_t _permissionIndex{ std::numeric_limits<uint32_t>::max() };
-    uint8_t _permissionState{ static_cast<uint8_t>(PermissionState::Count) };
+    uint8_t _permissionState{ EnumValue(PermissionState::Count) };
 
 public:
     NetworkModifyGroupAction() = default;

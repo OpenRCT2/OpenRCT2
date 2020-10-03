@@ -22,8 +22,8 @@
 DEFINE_GAME_ACTION(TrackRemoveAction, GAME_COMMAND_REMOVE_TRACK, GameActionResult)
 {
 private:
-    int32_t _trackType{ 0 };
-    int32_t _sequence{ 0 };
+    int32_t _trackType{};
+    int32_t _sequence{};
     CoordsXYZD _origin;
 
 public:

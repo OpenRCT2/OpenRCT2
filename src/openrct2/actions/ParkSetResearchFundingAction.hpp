@@ -22,8 +22,8 @@ DEFINE_GAME_ACTION(ParkSetResearchFundingAction, GAME_COMMAND_SET_RESEARCH_FUNDI
 {
 private:
     // TODO change to std::optional when C++17
-    uint32_t _priorities;
-    uint8_t _fundingAmount;
+    uint32_t _priorities{};
+    uint8_t _fundingAmount{};
 
 public:
     ParkSetResearchFundingAction() = default;
