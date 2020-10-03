@@ -19,9 +19,7 @@ private:
     MapRange _range;
 
 public:
-    WaterRaiseAction()
-    {
-    }
+    WaterRaiseAction() = default;
     WaterRaiseAction(MapRange range)
         : _range(range)
     {

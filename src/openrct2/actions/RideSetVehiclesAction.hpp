@@ -45,10 +45,7 @@ private:
                                                                   STR_RIDE_SET_VEHICLE_TYPE_FAIL };
 
 public:
-    RideSetVehicleAction()
-    {
-    }
-
+    RideSetVehicleAction() = default;
     RideSetVehicleAction(ride_id_t rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour = 0)
         : _rideIndex(rideIndex)
         , _type(static_cast<uint8_t>(type))

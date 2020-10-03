@@ -22,9 +22,7 @@ private:
     uint8_t _height;
 
 public:
-    WaterSetHeightAction()
-    {
-    }
+    WaterSetHeightAction() = default;
     WaterSetHeightAction(const CoordsXY& coords, uint8_t height)
         : _coords(coords)
         , _height(height)

@@ -30,9 +30,7 @@ private:
     int32_t _tertiaryColour;
 
 public:
-    WallSetColourAction()
-    {
-    }
+    WallSetColourAction() = default;
 
     WallSetColourAction(const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
         : _loc(loc)

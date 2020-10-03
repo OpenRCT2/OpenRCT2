@@ -19,9 +19,7 @@ private:
     uint8_t _groupId{ std::numeric_limits<uint8_t>::max() };
 
 public:
-    PlayerSetGroupAction()
-    {
-    }
+    PlayerSetGroupAction() = default;
 
     PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId)
         : _playerId(playerId)

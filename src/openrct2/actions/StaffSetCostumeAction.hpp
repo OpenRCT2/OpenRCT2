@@ -45,9 +45,7 @@ private:
     EntertainerCostume _costume;
 
 public:
-    StaffSetCostumeAction()
-    {
-    }
+    StaffSetCostumeAction() = default;
     StaffSetCostumeAction(uint16_t spriteIndex, EntertainerCostume costume)
         : _spriteIndex(spriteIndex)
         , _costume(costume)

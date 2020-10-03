@@ -31,9 +31,7 @@ private:
     bool _primaryPrice = true;
 
 public:
-    RideSetPriceAction()
-    {
-    }
+    RideSetPriceAction() = default;
     RideSetPriceAction(ride_id_t rideIndex, money16 price, bool primaryPrice)
         : _rideIndex(rideIndex)
         , _price(price)

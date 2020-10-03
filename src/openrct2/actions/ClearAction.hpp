@@ -43,9 +43,7 @@ private:
     ClearableItems _itemsToClear;
 
 public:
-    ClearAction()
-    {
-    }
+    ClearAction() = default;
     ClearAction(MapRange range, ClearableItems itemsToClear)
         : _range(range)
         , _itemsToClear(itemsToClear)

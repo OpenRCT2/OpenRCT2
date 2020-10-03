@@ -33,9 +33,7 @@ private:
     uint8_t _selectionType;
 
 public:
-    LandLowerAction()
-    {
-    }
+    LandLowerAction() = default;
     LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
         : _coords(coords)
         , _range(range)

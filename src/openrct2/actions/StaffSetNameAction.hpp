@@ -29,9 +29,7 @@ private:
     std::string _name;
 
 public:
-    StaffSetNameAction()
-    {
-    }
+    StaffSetNameAction() = default;
     StaffSetNameAction(uint16_t spriteIndex, const std::string& name)
         : _spriteIndex(spriteIndex)
         , _name(name)

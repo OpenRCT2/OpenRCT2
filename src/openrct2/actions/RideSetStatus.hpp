@@ -37,9 +37,7 @@ private:
     uint8_t _status = RIDE_STATUS_CLOSED;
 
 public:
-    RideSetStatusAction()
-    {
-    }
+    RideSetStatusAction() = default;
     RideSetStatusAction(ride_id_t rideIndex, uint8_t status)
         : _rideIndex(rideIndex)
         , _status(status)

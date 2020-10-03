@@ -38,9 +38,7 @@ private:
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_LOWER_LAND_HERE, STR_CANT_RAISE_LAND_HERE };
 
 public:
-    LandSmoothAction()
-    {
-    }
+    LandSmoothAction() = default;
     LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering)
         : _coords(coords)
         , _range(range)

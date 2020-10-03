@@ -28,9 +28,7 @@ private:
     std::string _name;
 
 public:
-    GuestSetNameAction()
-    {
-    }
+    GuestSetNameAction() = default;
     GuestSetNameAction(uint16_t spriteIndex, const std::string& name)
         : _spriteIndex(spriteIndex)
         , _name(name)

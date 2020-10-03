@@ -26,9 +26,7 @@ private:
     int32_t _day = 0;
 
 public:
-    ParkSetDateAction()
-    {
-    }
+    ParkSetDateAction() = default;
     ParkSetDateAction(int32_t year, int32_t month, int32_t day)
         : _year(year)
         , _month(month)

@@ -27,9 +27,7 @@ private:
     std::string _name;
 
 public:
-    BannerSetNameAction()
-    {
-    }
+    BannerSetNameAction() = default;
     BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
         : _bannerIndex(bannerIndex)
         , _name(name)

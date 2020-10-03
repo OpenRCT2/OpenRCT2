@@ -24,9 +24,7 @@ private:
     money32 _value;
 
 public:
-    ParkSetLoanAction()
-    {
-    }
+    ParkSetLoanAction() = default;
     ParkSetLoanAction(money32 value)
         : _value(value)
     {

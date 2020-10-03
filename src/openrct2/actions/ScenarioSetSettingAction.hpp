@@ -51,9 +51,7 @@ private:
     uint32_t _value{ 0 };
 
 public:
-    ScenarioSetSettingAction()
-    {
-    }
+    ScenarioSetSettingAction() = default;
     ScenarioSetSettingAction(ScenarioSetSetting setting, uint32_t value)
         : _setting(static_cast<uint8_t>(setting))
         , _value(value)

@@ -21,10 +21,7 @@ private:
     uint32_t _newFlags = 0;
 
 public:
-    GuestSetFlagsAction()
-    {
-    }
-
+    GuestSetFlagsAction() = default;
     GuestSetFlagsAction(uint16_t peepId, uint32_t flags)
         : _peepId(peepId)
         , _newFlags(flags)

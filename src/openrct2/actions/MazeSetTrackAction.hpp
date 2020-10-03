@@ -56,9 +56,7 @@ private:
     uint8_t _mode;
 
 public:
-    MazeSetTrackAction()
-    {
-    }
+    MazeSetTrackAction() = default;
     MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
         : _loc(location)
         , _initialPlacement(initialPlacement)

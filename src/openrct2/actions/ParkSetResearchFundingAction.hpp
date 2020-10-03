@@ -26,9 +26,7 @@ private:
     uint8_t _fundingAmount;
 
 public:
-    ParkSetResearchFundingAction()
-    {
-    }
+    ParkSetResearchFundingAction() = default;
     ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount)
         : _priorities(priorities)
         , _fundingAmount(fundingAmount)

@@ -52,9 +52,7 @@ private:
     TileElement _pasteElement{};
 
 public:
-    TileModifyAction()
-    {
-    }
+    TileModifyAction() = default;
     TileModifyAction(
         CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {})
         : _loc(loc)

@@ -26,10 +26,7 @@ private:
     PromptMode _savePromptMode{ PromptMode::SaveBeforeLoad };
 
 public:
-    LoadOrQuitAction()
-    {
-    }
-
+    LoadOrQuitAction() = default;
     LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::SaveBeforeLoad)
         : _mode(static_cast<uint8_t>(mode))
         , _savePromptMode(savePromptMode)

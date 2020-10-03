@@ -34,9 +34,7 @@ private:
     uint8_t _selectionType;
 
 public:
-    LandRaiseAction()
-    {
-    }
+    LandRaiseAction() = default;
     LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
         : _coords(coords)
         , _range(range)

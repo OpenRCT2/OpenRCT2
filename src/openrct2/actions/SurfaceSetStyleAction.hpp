@@ -28,9 +28,7 @@ private:
     ObjectEntryIndex _edgeStyle;
 
 public:
-    SurfaceSetStyleAction()
-    {
-    }
+    SurfaceSetStyleAction() = default;
 
     SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle)
         : _range(range)

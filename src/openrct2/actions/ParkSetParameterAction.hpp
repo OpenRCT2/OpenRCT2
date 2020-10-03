@@ -31,9 +31,7 @@ private:
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_CLOSE_PARK, STR_CANT_OPEN_PARK, STR_NONE, STR_NONE };
 
 public:
-    ParkSetParameterAction()
-    {
-    }
+    ParkSetParameterAction() = default;
     ParkSetParameterAction(ParkParameter parameter, uint64_t value = 0)
         : _parameter(static_cast<uint8_t>(parameter))
         , _value(value)

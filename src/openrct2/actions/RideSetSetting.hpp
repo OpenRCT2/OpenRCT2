@@ -36,9 +36,7 @@ private:
     uint8_t _value{ 0 };
 
 public:
-    RideSetSettingAction()
-    {
-    }
+    RideSetSettingAction() = default;
     RideSetSettingAction(ride_id_t rideIndex, RideSetSetting setting, uint8_t value)
         : _rideIndex(rideIndex)
         , _setting(setting)

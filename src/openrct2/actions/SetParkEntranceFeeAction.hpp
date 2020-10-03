@@ -22,9 +22,7 @@ private:
     money16 _fee;
 
 public:
-    SetParkEntranceFeeAction()
-    {
-    }
+    SetParkEntranceFeeAction() = default;
     SetParkEntranceFeeAction(money16 fee)
         : _fee(fee)
     {

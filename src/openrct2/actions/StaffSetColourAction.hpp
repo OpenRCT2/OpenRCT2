@@ -27,9 +27,7 @@ private:
     uint8_t _colour;
 
 public:
-    StaffSetColourAction()
-    {
-    }
+    StaffSetColourAction() = default;
     StaffSetColourAction(StaffType staffType, uint8_t colour)
         : _staffType(static_cast<uint8_t>(staffType))
         , _colour(colour)

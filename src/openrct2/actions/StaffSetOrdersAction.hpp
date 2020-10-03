@@ -25,9 +25,7 @@ private:
     uint8_t _ordersId;
 
 public:
-    StaffSetOrdersAction()
-    {
-    }
+    StaffSetOrdersAction() = default;
     StaffSetOrdersAction(uint16_t spriteIndex, uint8_t ordersId)
         : _spriteIndex(spriteIndex)
         , _ordersId(ordersId)

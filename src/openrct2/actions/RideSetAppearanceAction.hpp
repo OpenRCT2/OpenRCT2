@@ -44,9 +44,7 @@ private:
     uint32_t _index;
 
 public:
-    RideSetAppearanceAction()
-    {
-    }
+    RideSetAppearanceAction() = default;
     RideSetAppearanceAction(ride_id_t rideIndex, RideSetAppearanceType type, uint8_t value, uint32_t index)
         : _rideIndex(rideIndex)
         , _type(static_cast<uint8_t>(type))
