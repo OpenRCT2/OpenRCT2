@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -22,13 +22,13 @@ enum class LoadOrQuitModes : uint8_t
 DEFINE_GAME_ACTION(LoadOrQuitAction, GAME_COMMAND_LOAD_OR_QUIT, GameActionResult)
 {
 private:
-    uint8_t _mode{};
+    LoadOrQuitModes _mode{};
     PromptMode _savePromptMode{ PromptMode::SaveBeforeLoad };
 
 public:
     LoadOrQuitAction() = default;
     LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::SaveBeforeLoad)
-        : _mode(static_cast<uint8_t>(mode))
+        : _mode(mode)
         , _savePromptMode(savePromptMode)
     {
     }

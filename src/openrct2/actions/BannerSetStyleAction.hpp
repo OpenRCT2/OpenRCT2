@@ -29,7 +29,7 @@ enum class BannerSetStyleType : uint8_t
 DEFINE_GAME_ACTION(BannerSetStyleAction, GAME_COMMAND_SET_BANNER_STYLE, GameActionResult)
 {
 private:
-    uint8_t _type = EnumValue(BannerSetStyleType::Count);
+    BannerSetStyleType _type{ BannerSetStyleType::Count };
     BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
     uint8_t _parameter{};
 
@@ -37,7 +37,7 @@ public:
     BannerSetStyleAction() = default;
 
     BannerSetStyleAction(BannerSetStyleType type, uint8_t bannerIndex, uint8_t parameter)
-        : _type(static_cast<uint8_t>(type))
+        : _type(type)
         , _bannerIndex(bannerIndex)
         , _parameter(parameter)
     {
@@ -78,7 +78,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        switch (static_cast<BannerSetStyleType>(_type))
+        switch (_type)
         {
             case BannerSetStyleType::PrimaryColour:
                 if (_parameter > 31)
@@ -127,7 +127,7 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        switch (static_cast<BannerSetStyleType>(_type))
+        switch (_type)
         {
             case BannerSetStyleType::PrimaryColour:
                 banner->colour = _parameter;
