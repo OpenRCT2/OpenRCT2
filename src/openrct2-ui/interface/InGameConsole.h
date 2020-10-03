@@ -36,6 +36,7 @@ namespace OpenRCT2::Ui
         int32_t _consoleHistoryIndex = 0;
         int32_t _consoleHistoryCount = 0;
         size_t _selectionStart = 0;
+        int32_t _caretScreenPosX = 0;
 
     public:
         InGameConsole();
