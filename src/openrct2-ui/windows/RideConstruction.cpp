@@ -25,6 +25,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
@@ -38,6 +39,7 @@
 static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
 static constexpr const int32_t WH = 394;
 static constexpr const int32_t WW = 166;
+static constexpr const uint16_t ARROW_PULSE_DURATION = 200;
 
 #pragma region Widgets
 
@@ -441,6 +443,7 @@ static uint8_t _currentlyShowingBrakeOrBoosterSpeed;
 static bool _boosterTrackSelected;
 
 static uint32_t _currentDisabledSpecialTrackPieces;
+static uint32_t _rideConstructionNextArrowPulse = 0;
 
 static void window_ride_construction_construct(rct_window* w);
 static void window_ride_construction_mouseup_demolish(rct_window* w);
@@ -562,7 +565,6 @@ rct_window* window_ride_construction_open()
     _currentTrackPieceDirection = 0;
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_PLACE;
     _currentTrackSelectionFlags = 0;
-    _rideConstructionArrowPulseTime = 0;
     _autoOpeningShop = false;
     _autoRotatingShop = true;
     _trackPlaceCtrlState = false;
@@ -1708,7 +1710,6 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
             _currentTrackPieceDirection = next_track.element->GetDirection();
             _currentTrackPieceType = next_track.element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            _rideConstructionArrowPulseTime = 0;
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
             ride_select_next_section();
         }
@@ -1752,7 +1753,6 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            _rideConstructionArrowPulseTime = 0;
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
             ride_select_previous_section();
         }
@@ -2550,6 +2550,7 @@ void sub_6C94D8()
     {
         case RIDE_CONSTRUCTION_STATE_FRONT:
         case RIDE_CONSTRUCTION_STATE_BACK:
+        {
             if (!(_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK))
             {
                 if (window_ride_construction_update_state(
@@ -2564,11 +2565,12 @@ void sub_6C94D8()
                     window_ride_construction_update_active_elements();
                 }
             }
-            _rideConstructionArrowPulseTime--;
-            if (_rideConstructionArrowPulseTime >= 0)
-                break;
 
-            _rideConstructionArrowPulseTime = 5;
+            auto curTime = platform_get_ticks();
+            if (_rideConstructionNextArrowPulse >= curTime)
+                break;
+            _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+
             _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
             trackPos = _currentTrackBegin;
             direction = _currentTrackPieceDirection;
@@ -2584,13 +2586,14 @@ void sub_6C94D8()
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
             map_invalidate_tile_full(trackPos);
             break;
+        }
         case RIDE_CONSTRUCTION_STATE_SELECTED:
         {
-            _rideConstructionArrowPulseTime--;
-            if (_rideConstructionArrowPulseTime >= 0)
+            auto curTime = platform_get_ticks();
+            if (_rideConstructionNextArrowPulse >= curTime)
                 break;
+            _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
 
-            _rideConstructionArrowPulseTime = 5;
             _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
             direction = _currentTrackPieceDirection & 3;
             type = _currentTrackPieceType;
@@ -2604,14 +2607,15 @@ void sub_6C94D8()
             }
             break;
         }
-        case 6:
-        case 7:
-        case 8:
-            _rideConstructionArrowPulseTime--;
-            if (_rideConstructionArrowPulseTime >= 0)
+        case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
+        case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
+        case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
+        {
+            auto curTime = platform_get_ticks();
+            if (_rideConstructionNextArrowPulse >= curTime)
                 break;
+            _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
 
-            _rideConstructionArrowPulseTime = 5;
             _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
             trackPos = CoordsXYZ{ _currentTrackBegin.x & 0xFFE0, _currentTrackBegin.y & 0xFFE0, _currentTrackBegin.z + 15 };
             gMapSelectArrowPosition = trackPos;
@@ -2631,6 +2635,7 @@ void sub_6C94D8()
                 gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
             map_invalidate_tile_full(trackPos);
             break;
+        }
     }
 }
 
@@ -3755,7 +3760,6 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             _currentTrackBegin.y = mapCoords.y;
             _currentTrackBegin.z = z;
             _currentTrackSelectionFlags = 0;
-            _rideConstructionArrowPulseTime = 0;
             auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
             context_broadcast_intent(&intent);
             w = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -3812,7 +3816,6 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
         _currentTrackBegin.y = mapCoords.y;
         _currentTrackBegin.z = z;
         _currentTrackSelectionFlags = 0;
-        _rideConstructionArrowPulseTime = 0;
         window_ride_construction_update_active_elements();
         w = window_find_by_class(WC_RIDE_CONSTRUCTION);
         if (w == nullptr)

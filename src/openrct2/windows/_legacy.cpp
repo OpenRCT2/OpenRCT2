@@ -434,7 +434,6 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
         _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackSelectionFlags = 0;
-        _rideConstructionArrowPulseTime = 0;
         _currentTrackPieceDirection = piecePos.direction & 3;
         int32_t savedCurrentTrackCurve = _currentTrackCurve;
         int32_t savedPreviousTrackSlopeEnd = _previousTrackSlopeEnd;
@@ -489,7 +488,6 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
         _currentTrackPieceDirection = piecePos.direction;
         _currentTrackPieceType = type;
         _currentTrackSelectionFlags = 0;
-        _rideConstructionArrowPulseTime = 0;
         if (_rideConstructionState2 == RIDE_CONSTRUCTION_STATE_FRONT)
         {
             ride_select_next_section();
