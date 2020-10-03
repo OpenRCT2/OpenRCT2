@@ -53,36 +53,16 @@ static void window_clear_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_clear_scenery_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_clear_scenery_inputsize(rct_window *w);
 
-static rct_window_event_list window_clear_scenery_events = {
-    window_clear_scenery_close,
-    window_clear_scenery_mouseup,
-    nullptr,
-    window_clear_scenery_mousedown,
-    nullptr,
-    nullptr,
-    window_clear_scenery_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_clear_scenery_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_clear_scenery_invalidate,
-    window_clear_scenery_paint,
-    nullptr
-};
+static rct_window_event_list window_clear_scenery_events([](auto& events)
+{
+    events.close = &window_clear_scenery_close;
+    events.mouse_up = &window_clear_scenery_mouseup;
+    events.mouse_down = &window_clear_scenery_mousedown;
+    events.update = &window_clear_scenery_update;
+    events.text_input = &window_clear_scenery_textinput;
+    events.invalidate = &window_clear_scenery_invalidate;
+    events.paint = &window_clear_scenery_paint;
+});
 // clang-format on
 
 /**

@@ -134,7 +134,7 @@ static const TileElement* chairlift_paint_util_map_get_track_element_at_from_rid
 static bool chairlift_paint_util_is_first_track(
     ride_id_t rideIndex, const TileElement* tileElement, const CoordsXY& pos, uint8_t trackType)
 {
-    if (tileElement->AsTrack()->GetTrackType() != TRACK_ELEM_BEGIN_STATION)
+    if (tileElement->AsTrack()->GetTrackType() != TrackElemType::BeginStation)
     {
         return false;
     }
@@ -154,7 +154,7 @@ static bool chairlift_paint_util_is_first_track(
 static bool chairlift_paint_util_is_last_track(
     ride_id_t rideIndex, const TileElement* tileElement, const CoordsXY& pos, uint8_t trackType)
 {
-    if (tileElement->AsTrack()->GetTrackType() != TRACK_ELEM_END_STATION)
+    if (tileElement->AsTrack()->GetTrackType() != TrackElemType::EndStation)
     {
         return false;
     }
@@ -647,31 +647,31 @@ TRACK_PAINT_FUNCTION get_track_paint_function_chairlift(int32_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
-        case TRACK_ELEM_END_STATION:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
+        case TrackElemType::EndStation:
             return chairlift_paint_station;
 
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return chairlift_paint_flat;
 
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+        case TrackElemType::FlatToUp25:
             return chairlift_paint_flat_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP:
+        case TrackElemType::Up25:
             return chairlift_paint_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
             return chairlift_paint_25_deg_up_to_flat;
 
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::FlatToDown25:
             return chairlift_paint_flat_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN:
+        case TrackElemType::Down25:
             return chairlift_paint_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::Down25ToFlat:
             return chairlift_paint_25_deg_down_to_flat;
 
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
+        case TrackElemType::LeftQuarterTurn1Tile:
             return chairlift_paint_left_quarter_turn_1_tile;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
+        case TrackElemType::RightQuarterTurn1Tile:
             return chairlift_paint_right_quarter_turn_1_tile;
     }
 

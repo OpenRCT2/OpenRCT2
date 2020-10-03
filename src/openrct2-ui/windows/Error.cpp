@@ -30,36 +30,11 @@ static rct_widget window_error_widgets[] = {
 static void window_error_unknown5(rct_window *w);
 static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_error_events = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_error_unknown5,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_error_paint,
-    nullptr
-};
+static rct_window_event_list window_error_events([](auto& events)
+{
+    events.unknown_05 = &window_error_unknown5;
+    events.paint = &window_error_paint;
+});
 // clang-format on
 
 static std::string _window_error_text;

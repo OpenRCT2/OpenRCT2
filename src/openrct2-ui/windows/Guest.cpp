@@ -182,222 +182,78 @@ static void window_guest_inventory_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_guest_debug_update(rct_window *w);
 static void window_guest_debug_paint(rct_window *w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_guest_overview_events = {
-    window_guest_overview_close,
-    window_guest_overview_mouse_up,
-    window_guest_overview_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_overview_update,
-    nullptr,
-    nullptr,
-    window_guest_overview_tool_update,
-    window_guest_overview_tool_down,
-    nullptr,
-    nullptr,
-    window_guest_overview_tool_abort,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_overview_text_input,
-    window_guest_overview_viewport_rotate,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_overview_invalidate,
-    window_guest_overview_paint,
-    nullptr
-};
+static rct_window_event_list window_guest_overview_events([](auto& events)
+{
+    events.close = &window_guest_overview_close;
+    events.mouse_up = &window_guest_overview_mouse_up;
+    events.resize = &window_guest_overview_resize;
+    events.update = &window_guest_overview_update;
+    events.tool_update = &window_guest_overview_tool_update;
+    events.tool_down = &window_guest_overview_tool_down;
+    events.tool_abort = &window_guest_overview_tool_abort;
+    events.text_input = &window_guest_overview_text_input;
+    events.viewport_rotate = &window_guest_overview_viewport_rotate;
+    events.invalidate = &window_guest_overview_invalidate;
+    events.paint = &window_guest_overview_paint;
+});
 
-static rct_window_event_list window_guest_stats_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_stats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_common_invalidate,
-    window_guest_stats_paint,
-    nullptr
-};
+static rct_window_event_list window_guest_stats_events([](auto& events)
+{
+    events.mouse_up = &window_guest_mouse_up;
+    events.resize = &window_guest_common_resize;
+    events.update = &window_guest_stats_update;
+    events.invalidate = &window_guest_common_invalidate;
+    events.paint = &window_guest_stats_paint;
+});
 
-static rct_window_event_list window_guest_rides_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_rides_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_rides_scroll_get_size,
-    window_guest_rides_scroll_mouse_down,
-    nullptr,
-    window_guest_rides_scroll_mouse_over,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_rides_invalidate,
-    window_guest_rides_paint,
-    window_guest_rides_scroll_paint
-};
+static rct_window_event_list window_guest_rides_events([](auto& events)
+{
+    events.mouse_up = &window_guest_mouse_up;
+    events.resize = &window_guest_common_resize;
+    events.update = &window_guest_rides_update;
+    events.get_scroll_size = &window_guest_rides_scroll_get_size;
+    events.scroll_mousedown = &window_guest_rides_scroll_mouse_down;
+    events.scroll_mouseover = &window_guest_rides_scroll_mouse_over;
+    events.invalidate = &window_guest_rides_invalidate;
+    events.paint = &window_guest_rides_paint;
+    events.scroll_paint = &window_guest_rides_scroll_paint;
+});
 
-static rct_window_event_list window_guest_finance_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_finance_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_common_invalidate,
-    window_guest_finance_paint,
-    nullptr
-};
+static rct_window_event_list window_guest_finance_events([](auto& events)
+{
+    events.mouse_up = &window_guest_mouse_up;
+    events.resize = &window_guest_common_resize;
+    events.update = &window_guest_finance_update;
+    events.invalidate = &window_guest_common_invalidate;
+    events.paint = &window_guest_finance_paint;
+});
 
-static rct_window_event_list window_guest_thoughts_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_thoughts_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_common_invalidate,
-    window_guest_thoughts_paint,
-    nullptr
-};
+static rct_window_event_list window_guest_thoughts_events([](auto& events)
+{
+    events.mouse_up = &window_guest_mouse_up;
+    events.resize = &window_guest_common_resize;
+    events.update = &window_guest_thoughts_update;
+    events.invalidate = &window_guest_common_invalidate;
+    events.paint = &window_guest_thoughts_paint;
+});
 
-static rct_window_event_list window_guest_inventory_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_inventory_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_common_invalidate,
-    window_guest_inventory_paint,
-    nullptr
-};
+static rct_window_event_list window_guest_inventory_events([](auto& events)
+{
+    events.mouse_up = &window_guest_mouse_up;
+    events.resize = &window_guest_common_resize;
+    events.update = &window_guest_inventory_update;
+    events.invalidate = &window_guest_common_invalidate;
+    events.paint = &window_guest_inventory_paint;
+});
 
-static rct_window_event_list window_guest_debug_events = {
-    nullptr,
-    window_guest_mouse_up,
-    window_guest_common_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_debug_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_guest_common_invalidate,
-    window_guest_debug_paint,
-    nullptr
-};
+static rct_window_event_list window_guest_debug_events([](auto& events)
+{
+    events.mouse_up = &window_guest_mouse_up;
+    events.resize = &window_guest_common_resize;
+    events.update = &window_guest_debug_update;
+    events.invalidate = &window_guest_common_invalidate;
+    events.paint = &window_guest_debug_paint;
+});
 
 // 0x981D24
 static rct_window_event_list *window_guest_page_events[] = {
@@ -855,7 +711,7 @@ void window_guest_viewport_init(rct_window* w)
     w->viewport_focus_coordinates.z = focus.coordinate.z;
     w->viewport_focus_coordinates.rotation = focus.coordinate.rotation;
 
-    if (peep->State != PEEP_STATE_PICKED && w->viewport == nullptr)
+    if (peep->State != PeepState::Picked && w->viewport == nullptr)
     {
         auto view_widget = &w->widgets[WIDX_VIEWPORT];
         auto screenPos = ScreenCoordsXY{ view_widget->left + 1 + w->windowPos.x, view_widget->top + 1 + w->windowPos.y };
@@ -1313,7 +1169,9 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
         return;
     }
 
-    uint32_t imageId = g_peep_animation_entries[peep->SpriteType].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
+    uint32_t imageId = g_peep_animation_entries[peep->SpriteType]
+                           .sprite_animation[EnumValue(PeepActionSpriteType::Ui)]
+                           .base_image;
     imageId += w->picked_peep_frame >> 2;
 
     imageId |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;

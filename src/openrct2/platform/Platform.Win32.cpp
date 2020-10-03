@@ -363,6 +363,7 @@ namespace Platform
         SetUpFileAssociation(".sv4", "RCT1 Saved Game (.sc4)", "Play", "\"%1\"", 0);
         SetUpFileAssociation(".sv6", "RCT2 Saved Game (.sv6)", "Play", "\"%1\"", 0);
         SetUpFileAssociation(".sv7", "RCT Modified Saved Game (.sv7)", "Play", "\"%1\"", 0);
+        SetUpFileAssociation(".sea", "RCTC Saved Game (.sea)", "Play", "\"%1\"", 0);
         SetUpFileAssociation(".td4", "RCT1 Track Design (.td4)", "Install", "\"%1\"", 0);
         SetUpFileAssociation(".td6", "RCT2 Track Design (.td6)", "Install", "\"%1\"", 0);
 
@@ -507,6 +508,7 @@ namespace Platform
         RemoveFileAssociation(".sv4");
         RemoveFileAssociation(".sv6");
         RemoveFileAssociation(".sv7");
+        RemoveFileAssociation(".sea");
         RemoveFileAssociation(".td4");
         RemoveFileAssociation(".td6");
 

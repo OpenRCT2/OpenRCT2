@@ -29,9 +29,7 @@ private:
     std::string _name;
 
 public:
-    ParkSetNameAction()
-    {
-    }
+    ParkSetNameAction() = default;
     ParkSetNameAction(const std::string& name)
         : _name(name)
     {

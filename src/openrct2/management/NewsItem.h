@@ -292,6 +292,8 @@ namespace News
     News::Item* AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc, const Formatter& formatter);
     News::Item* AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc);
 
+    bool CheckIfItemRequiresAssoc(News::ItemType type);
+
     void OpenSubject(News::ItemType type, int32_t subject);
 
     void DisableNewsItems(News::ItemType type, uint32_t assoc);

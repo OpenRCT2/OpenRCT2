@@ -214,32 +214,32 @@ enum PeepThoughtType : uint8_t
     PEEP_THOUGHT_TYPE_NONE = 255
 };
 
-enum PeepState : uint8_t
+enum class PeepState : uint8_t
 {
-    PEEP_STATE_FALLING = 0, // Drowning is part of falling
-    PEEP_STATE_1 = 1,
-    PEEP_STATE_QUEUING_FRONT = 2,
-    PEEP_STATE_ON_RIDE = 3,
-    PEEP_STATE_LEAVING_RIDE = 4,
-    PEEP_STATE_WALKING = 5,
-    PEEP_STATE_QUEUING = 6,
-    PEEP_STATE_ENTERING_RIDE = 7,
-    PEEP_STATE_SITTING = 8,
-    PEEP_STATE_PICKED = 9,
-    PEEP_STATE_PATROLLING = 10, // Not sure
-    PEEP_STATE_MOWING = 11,
-    PEEP_STATE_SWEEPING = 12,
-    PEEP_STATE_ENTERING_PARK = 13,
-    PEEP_STATE_LEAVING_PARK = 14,
-    PEEP_STATE_ANSWERING = 15,
-    PEEP_STATE_FIXING = 16,
-    PEEP_STATE_BUYING = 17,
-    PEEP_STATE_WATCHING = 18,
-    PEEP_STATE_EMPTYING_BIN = 19,
-    PEEP_STATE_USING_BIN = 20,
-    PEEP_STATE_WATERING = 21,
-    PEEP_STATE_HEADING_TO_INSPECTION = 22,
-    PEEP_STATE_INSPECTING = 23
+    Falling = 0, // Drowning is part of falling
+    One = 1,     // was PEEP_STATE_1
+    QueuingFront = 2,
+    OnRide = 3,
+    LeavingRide = 4,
+    Walking = 5,
+    Queuing = 6,
+    EnteringRide = 7,
+    Sitting = 8,
+    Picked = 9,
+    Patrolling = 10, // Not sure
+    Mowing = 11,
+    Sweeping = 12,
+    EnteringPark = 13,
+    LeavingPark = 14,
+    Answering = 15,
+    Fixing = 16,
+    Buying = 17,
+    Watching = 18,
+    EmptyingBin = 19,
+    UsingBin = 20,
+    Watering = 21,
+    HeadingToInspection = 22,
+    Inspecting = 23
 };
 
 enum class PeepSittingSubState : uint8_t
@@ -248,29 +248,29 @@ enum class PeepSittingSubState : uint8_t
     SatDown      // was unassigned
 };
 
-enum PeepRideSubState
+enum class PeepRideSubState : uint8_t
 {
-    PEEP_RIDE_AT_ENTRANCE = 0,
-    PEEP_RIDE_IN_ENTRANCE = 1,
-    PEEP_RIDE_FREE_VEHICLE_CHECK = 2, // Spend money on ride
-    PEEP_RIDE_LEAVE_ENTRANCE = 3,     // Calculate what direction and where to go after commiting to entering vehicle
-    PEEP_RIDE_APPROACH_VEHICLE = 4,
-    PEEP_RIDE_ENTER_VEHICLE = 5,
-    PEEP_RIDE_ON_RIDE = 6,
-    PEEP_RIDE_LEAVE_VEHICLE = 7,
-    PEEP_RIDE_APPROACH_EXIT = 8,
-    PEEP_RIDE_IN_EXIT = 9,
+    AtEntrance = 0,
+    InEntrance = 1,
+    FreeVehicleCheck = 2, // Spend money on ride
+    LeaveEntrance = 3,    // Calculate what direction and where to go after commiting to entering vehicle
+    ApproachVehicle = 4,
+    EnterVehicle = 5,
+    OnRide = 6,
+    LeaveVehicle = 7,
+    ApproachExit = 8,
+    InExit = 9,
     // 10, 11 not used
-    PEEP_RIDE_APPROACH_VEHICLE_WAYPOINTS = 12,
-    PEEP_RIDE_APPROACH_EXIT_WAYPOINTS = 13,
-    PEEP_RIDE_APPROACH_SPIRAL_SLIDE = 14,
-    PEEP_RIDE_ON_SPIRAL_SLIDE = 15,
-    PEEP_RIDE_LEAVE_SPIRAL_SLIDE = 16,
-    PEEP_RIDE_MAZE_PATHFINDING = 17,
-    PEEP_RIDE_LEAVE_EXIT = 18,
-    PEEP_SHOP_APPROACH = 19,
-    PEEP_SHOP_INTERACT = 20,
-    PEEP_SHOP_LEAVE = 21
+    ApproachVehicleWaypoints = 12,
+    ApproachExitWaypoints = 13,
+    ApproachSpiralSlide = 14,
+    OnSpiralSlide = 15,
+    LeaveSpiralSlide = 16,
+    MazePathfinding = 17,
+    LeaveExit = 18,
+    ApproachShop = 19,
+    InteractShop = 20,
+    LeaveShop = 21
 };
 
 enum PeepUsingBinSubState
@@ -279,87 +279,87 @@ enum PeepUsingBinSubState
     PEEP_USING_BIN_GOING_BACK,
 };
 
-enum PeepActionType : uint8_t
+enum class PeepActionType : uint8_t
 {
-    PEEP_ACTION_CHECK_TIME = 0,
+    CheckTime = 0,
     // If no food then check watch
-    PEEP_ACTION_EAT_FOOD = 1,
-    PEEP_ACTION_SHAKE_HEAD = 2,
-    PEEP_ACTION_EMPTY_POCKETS = 3,
-    PEEP_ACTION_SITTING_EAT_FOOD = 4,
-    PEEP_ACTION_SITTING_CHECK_WATCH = 4,
-    PEEP_ACTION_SITTING_LOOK_AROUND_LEFT = 5,
-    PEEP_ACTION_SITTING_LOOK_AROUND_RIGHT = 6,
-    PEEP_ACTION_WOW = 7,
-    PEEP_ACTION_THROW_UP = 8,
-    PEEP_ACTION_JUMP = 9,
-    PEEP_ACTION_STAFF_SWEEP = 10,
-    PEEP_ACTION_DROWNING = 11,
-    PEEP_ACTION_STAFF_ANSWER_CALL = 12,
-    PEEP_ACTION_STAFF_ANSWER_CALL_2 = 13,
-    PEEP_ACTION_STAFF_CHECKBOARD = 14,
-    PEEP_ACTION_STAFF_FIX = 15,
-    PEEP_ACTION_STAFF_FIX_2 = 16,
-    PEEP_ACTION_STAFF_FIX_GROUND = 17,
-    PEEP_ACTION_STAFF_FIX_3 = 18,
-    PEEP_ACTION_STAFF_WATERING = 19,
-    PEEP_ACTION_JOY = 20,
-    PEEP_ACTION_READ_MAP = 21,
-    PEEP_ACTION_WAVE = 22,
-    PEEP_ACTION_STAFF_EMPTY_BIN = 23,
-    PEEP_ACTION_WAVE_2 = 24,
-    PEEP_ACTION_TAKE_PHOTO = 25,
-    PEEP_ACTION_CLAP = 26,
-    PEEP_ACTION_DISGUST = 27,
-    PEEP_ACTION_DRAW_PICTURE = 28,
-    PEEP_ACTION_BEING_WATCHED = 29,
-    PEEP_ACTION_WITHDRAW_MONEY = 30,
+    EatFood = 1,
+    ShakeHead = 2,
+    EmptyPockets = 3,
+    SittingEatFood = 4,
+    SittingCheckWatch = 4,
+    SittingLookAroundLeft = 5,
+    SittingLookAroundRight = 6,
+    Wow = 7,
+    ThrowUp = 8,
+    Jump = 9,
+    StaffSweep = 10,
+    Drowning = 11,
+    StaffAnswerCall = 12,
+    StaffAnswerCall2 = 13,
+    StaffCheckboard = 14,
+    StaffFix = 15,
+    StaffFix2 = 16,
+    StaffFixGround = 17,
+    StaffFix3 = 18,
+    StaffWatering = 19,
+    Joy = 20,
+    ReadMap = 21,
+    Wave = 22,
+    StaffEmptyBin = 23,
+    Wave2 = 24,
+    TakePhoto = 25,
+    Clap = 26,
+    Disgust = 27,
+    DrawPicture = 28,
+    BeingWatched = 29,
+    WithdrawMoney = 30,
 
-    PEEP_ACTION_NONE_1 = 254,
-    PEEP_ACTION_NONE_2 = 255,
+    None1 = 254,
+    None2 = 255,
 };
 
-enum PeepActionSpriteType : uint8_t
+enum class PeepActionSpriteType : uint8_t
 {
-    PEEP_ACTION_SPRITE_TYPE_NONE = 0,
-    PEEP_ACTION_SPRITE_TYPE_CHECK_TIME = 1,
-    PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE = 2,
-    PEEP_ACTION_SPRITE_TYPE_EAT_FOOD = 3,
-    PEEP_ACTION_SPRITE_TYPE_SHAKE_HEAD = 4,
-    PEEP_ACTION_SPRITE_TYPE_EMPTY_POCKETS = 5,
-    PEEP_ACTION_SPRITE_TYPE_HOLD_MAT = 6,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE = 7,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_EAT_FOOD = 8,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_LOOK_AROUND_LEFT = 9,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_LOOK_AROUND_RIGHT = 10,
-    PEEP_ACTION_SPRITE_TYPE_UI = 11,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_MOWER = 12,
-    PEEP_ACTION_SPRITE_TYPE_WOW = 13,
-    PEEP_ACTION_SPRITE_TYPE_THROW_UP = 14,
-    PEEP_ACTION_SPRITE_TYPE_JUMP = 15,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_SWEEP = 16,
-    PEEP_ACTION_SPRITE_TYPE_DROWNING = 17,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_ANSWER_CALL = 18,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_ANSWER_CALL_2 = 19,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_CHECKBOARD = 20,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX = 21,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_2 = 22,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_GROUND = 23,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_3 = 24,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_WATERING = 25,
-    PEEP_ACTION_SPRITE_TYPE_JOY = 26,
-    PEEP_ACTION_SPRITE_TYPE_READ_MAP = 27,
-    PEEP_ACTION_SPRITE_TYPE_WAVE = 28,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_EMPTY_BIN = 29,
-    PEEP_ACTION_SPRITE_TYPE_WAVE_2 = 30,
-    PEEP_ACTION_SPRITE_TYPE_TAKE_PHOTO = 31,
-    PEEP_ACTION_SPRITE_TYPE_CLAP = 32,
-    PEEP_ACTION_SPRITE_TYPE_DISGUST = 33,
-    PEEP_ACTION_SPRITE_TYPE_DRAW_PICTURE = 34,
-    PEEP_ACTION_SPRITE_TYPE_BEING_WATCHED = 35,
-    PEEP_ACTION_SPRITE_TYPE_WITHDRAW_MONEY = 36,
+    None = 0,
+    CheckTime = 1,
+    WatchRide = 2,
+    EatFood = 3,
+    ShakeHead = 4,
+    EmptyPockets = 5,
+    HoldMat = 6,
+    SittingIdle = 7,
+    SittingEatFood = 8,
+    SittingLookAroundLeft = 9,
+    SittingLookAroundRight = 10,
+    Ui = 11,
+    StaffMower = 12,
+    Wow = 13,
+    ThrowUp = 14,
+    Jump = 15,
+    StaffSweep = 16,
+    Drowning = 17,
+    StaffAnswerCall = 18,
+    StaffAnswerCall2 = 19,
+    StaffCheckboard = 20,
+    StaffFix = 21,
+    StaffFix2 = 22,
+    StaffFixGround = 23,
+    StaffFix3 = 24,
+    StaffWatering = 25,
+    Joy = 26,
+    ReadMap = 27,
+    Wave = 28,
+    StaffEmptyBin = 29,
+    Wave2 = 30,
+    TakePhoto = 31,
+    Clap = 32,
+    Disgust = 33,
+    DrawPicture = 34,
+    BeingWatched = 35,
+    WithdrawMoney = 36,
 
-    PEEP_ACTION_SPRITE_TYPE_INVALID = 255
+    Invalid = 255
 };
 
 enum PeepFlags : uint32_t
@@ -618,6 +618,7 @@ struct Peep : SpriteBase
     {
         uint8_t SubState;
         PeepSittingSubState SittingSubState;
+        PeepRideSubState RideSubState;
     };
     PeepSpriteType SpriteType;
     PeepType AssignedPeepType;

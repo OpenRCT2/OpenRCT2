@@ -302,14 +302,14 @@ namespace OpenRCT2::Scripting
                 auto status = _socket->GetStatus();
                 if (_connecting)
                 {
-                    if (status == SOCKET_STATUS_CONNECTED)
+                    if (status == SocketStatus::Connected)
                     {
                         _connecting = false;
                         _wasConnected = true;
                         _eventList.Raise(EVENT_CONNECT_ONCE, GetPlugin(), {}, false);
                         _eventList.RemoveAllListeners(EVENT_CONNECT_ONCE);
                     }
-                    else if (status == SOCKET_STATUS_CLOSED)
+                    else if (status == SocketStatus::Closed)
                     {
                         _connecting = false;
 
@@ -324,7 +324,7 @@ namespace OpenRCT2::Scripting
                         _eventList.Raise(EVENT_ERROR, GetPlugin(), { dukErr }, true);
                     }
                 }
-                else if (status == SOCKET_STATUS_CONNECTED)
+                else if (status == SocketStatus::Connected)
                 {
                     char buffer[2048];
                     size_t bytesRead{};
@@ -388,7 +388,7 @@ namespace OpenRCT2::Scripting
         {
             if (_socket != nullptr)
             {
-                return _socket->GetStatus() == SOCKET_STATUS_LISTENING;
+                return _socket->GetStatus() == SocketStatus::Listening;
             }
             return false;
         }
@@ -413,7 +413,7 @@ namespace OpenRCT2::Scripting
                     _socket = CreateTcpSocket();
                 }
 
-                if (_socket->GetStatus() == SOCKET_STATUS_LISTENING)
+                if (_socket->GetStatus() == SocketStatus::Listening)
                 {
                     duk_error(ctx, DUK_ERR_ERROR, "Server is already listening.");
                 }
@@ -488,7 +488,7 @@ namespace OpenRCT2::Scripting
             if (_socket == nullptr)
                 return;
 
-            if (_socket->GetStatus() == SOCKET_STATUS_LISTENING)
+            if (_socket->GetStatus() == SocketStatus::Listening)
             {
                 auto client = _socket->Accept();
                 if (client != nullptr)

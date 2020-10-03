@@ -140,10 +140,10 @@ private:
         td->type = RCT1::GetRideType(td4Base.type, td4Base.vehicle_type);
 
         // All TD4s that use powered launch use the type that doesn't pass the station.
-        td->ride_mode = td4Base.mode;
+        td->ride_mode = static_cast<RideMode>(td4Base.mode);
         if (td4Base.mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
         {
-            td->ride_mode = RIDE_MODE_POWERED_LAUNCH;
+            td->ride_mode = RideMode::PoweredLaunch;
         }
 
         // Convert RCT1 vehicle type to RCT2 vehicle type. Intialise with an string consisting of 8 spaces.

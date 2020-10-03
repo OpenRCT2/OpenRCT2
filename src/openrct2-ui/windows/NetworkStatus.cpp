@@ -40,36 +40,15 @@ static void window_network_status_textinput(rct_window *w, rct_widgetindex widge
 static void window_network_status_invalidate(rct_window *w);
 static void window_network_status_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_network_status_events = {
-    window_network_status_onclose,
-    window_network_status_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_network_status_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_network_status_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_network_status_invalidate,
-    window_network_status_paint,
-    nullptr
-};
+static rct_window_event_list window_network_status_events([](auto& events)
+{
+    events.close = &window_network_status_onclose;
+    events.mouse_up = &window_network_status_mouseup;
+    events.update = &window_network_status_update;
+    events.text_input = &window_network_status_textinput;
+    events.invalidate = &window_network_status_invalidate;
+    events.paint = &window_network_status_paint;
+});
 // clang-format on
 
 static close_callback _onClose = nullptr;

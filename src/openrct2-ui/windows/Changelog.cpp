@@ -57,36 +57,16 @@ static void window_changelog_invalidate(rct_window *w);
 static void window_changelog_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_changelog_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_changelog_events = {
-    window_changelog_close,
-    window_changelog_mouseup,
-    window_changelog_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_changelog_scrollgetsize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_changelog_invalidate,
-    window_changelog_paint,
-    window_changelog_scrollpaint
-};
+static rct_window_event_list window_changelog_events([](auto& events)
+{
+    events.close = &window_changelog_close;
+    events.mouse_up = &window_changelog_mouseup;
+    events.resize = &window_changelog_resize;
+    events.get_scroll_size = &window_changelog_scrollgetsize;
+    events.invalidate = &window_changelog_invalidate;
+    events.paint = &window_changelog_paint;
+    events.scroll_paint = &window_changelog_scrollpaint;
+});
 // clang-format on
 
 static void window_new_version_process_info();

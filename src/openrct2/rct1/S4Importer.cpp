@@ -865,11 +865,11 @@ private:
         if (src->operating_mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
         {
             // Launched rides never passed through the station in RCT1.
-            dst->mode = RIDE_MODE_POWERED_LAUNCH;
+            dst->mode = RideMode::PoweredLaunch;
         }
         else
         {
-            dst->mode = src->operating_mode;
+            dst->mode = static_cast<RideMode>(src->operating_mode);
         }
 
         SetRideColourScheme(dst, src);
@@ -950,6 +950,10 @@ private:
         dst->profit = src->profit;
         dst->total_profit = src->total_profit;
         dst->value = src->value;
+        for (size_t i = 0; i < std::size(src->num_customers); i++)
+        {
+            dst->num_customers[i] = src->num_customers[i];
+        }
 
         dst->satisfaction = src->satisfaction;
         dst->satisfaction_time_out = src->satisfaction_time_out;
@@ -1233,7 +1237,7 @@ private:
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->current_station = src->current_station;
-        if (src->boat_location.isNull() || ride->mode != RIDE_MODE_BOAT_HIRE || statusSrc != Vehicle::Status::TravellingBoat)
+        if (src->boat_location.isNull() || ride->mode != RideMode::BoatHire || statusSrc != Vehicle::Status::TravellingBoat)
         {
             dst->BoatLocation.setNull();
             dst->track_type = src->track_type;
@@ -1406,9 +1410,9 @@ private:
         dst->ActionFrame = src->action_frame;
 
         const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->SpriteType].sprite_bounds;
-        dst->sprite_width = spriteBounds[dst->ActionSpriteType].sprite_width;
-        dst->sprite_height_negative = spriteBounds[dst->ActionSpriteType].sprite_height_negative;
-        dst->sprite_height_positive = spriteBounds[dst->ActionSpriteType].sprite_height_positive;
+        dst->sprite_width = spriteBounds[EnumValue(dst->ActionSpriteType)].sprite_width;
+        dst->sprite_height_negative = spriteBounds[EnumValue(dst->ActionSpriteType)].sprite_height_negative;
+        dst->sprite_height_positive = spriteBounds[EnumValue(dst->ActionSpriteType)].sprite_height_positive;
 
         dst->MoveTo({ src->x, src->y, src->z });
         dst->Invalidate2();
@@ -1561,7 +1565,7 @@ private:
 
         if (dst->AssignedPeepType == PeepType::Guest)
         {
-            if (dst->OutsideOfPark && dst->State != PEEP_STATE_LEAVING_PARK)
+            if (dst->OutsideOfPark && dst->State != PeepState::LeavingPark)
             {
                 increment_guests_heading_for_park();
             }
@@ -2141,7 +2145,7 @@ private:
                 {
                     dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 }
-                else if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
+                else if (trackType == TrackElemType::OnRidePhoto)
                 {
                     dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 }
@@ -3040,10 +3044,10 @@ private:
             // First, make the queuing peep exit
             for (auto peep : EntityList<Guest>(EntityListId::Peep))
             {
-                if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
+                if (peep->State == PeepState::QueuingFront && peep->CurrentRide == 0)
                 {
                     peep->RemoveFromQueue();
-                    peep->SetState(PEEP_STATE_FALLING);
+                    peep->SetState(PeepState::Falling);
                     break;
                 }
             }
@@ -3096,10 +3100,10 @@ private:
                         auto trackType = tileElement->AsTrack()->GetTrackType();
                         switch (trackType)
                         {
-                            case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-                            case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-                            case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-                            case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+                            case TrackElemType::Up25ToFlat:
+                            case TrackElemType::Up60ToFlat:
+                            case TrackElemType::DiagUp25ToFlat:
+                            case TrackElemType::DiagUp60ToFlat:
                                 break;
                             default:
                                 continue;

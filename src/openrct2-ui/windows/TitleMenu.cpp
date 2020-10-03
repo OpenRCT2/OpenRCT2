@@ -51,36 +51,15 @@ static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex,
 static void window_title_menu_invalidate(rct_window *w);
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_title_menu_events = {
-    nullptr,
-    window_title_menu_mouseup,
-    nullptr,
-    window_title_menu_mousedown,
-    window_title_menu_dropdown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_title_menu_cursor,
-    nullptr,
-    window_title_menu_invalidate,
-    window_title_menu_paint,
-    nullptr
-};
+static rct_window_event_list window_title_menu_events([](auto& events)
+{
+    events.mouse_up = &window_title_menu_mouseup;
+    events.mouse_down = &window_title_menu_mousedown;
+    events.dropdown = &window_title_menu_dropdown;
+    events.cursor = &window_title_menu_cursor;
+    events.invalidate = &window_title_menu_invalidate;
+    events.paint = &window_title_menu_paint;
+});
 // clang-format on
 
 /**

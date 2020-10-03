@@ -17,36 +17,11 @@
 
 static void window_editor_main_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_editor_main_events = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_main_paint, // 0x0066FC97, // window_editor_main_paint,
-    nullptr,
-};
+// clang-format off
+static rct_window_event_list window_editor_main_events([](auto& events) {
+    events.paint = &window_editor_main_paint;
+});
+// clang-format on
 
 static rct_widget window_editor_main_widgets[] = {
     MakeWidget({ 0, 0 }, { 0, 0 }, WWT_VIEWPORT, WindowColour::Primary, STR_VIEWPORT),

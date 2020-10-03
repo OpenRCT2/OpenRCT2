@@ -270,36 +270,19 @@ static void window_top_toolbar_tool_abort(rct_window *w, rct_widgetindex widgetI
 static void window_top_toolbar_invalidate(rct_window *w);
 static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_top_toolbar_events = {
-    nullptr,
-    window_top_toolbar_mouseup,
-    nullptr,
-    window_top_toolbar_mousedown,
-    window_top_toolbar_dropdown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,                                           // check if editor versions are significantly different...
-    window_top_toolbar_tool_update,                 // editor: 0x0066fB0E
-    window_top_toolbar_tool_down,                   // editor: 0x0066fB5C
-    window_top_toolbar_tool_drag,                   // editor: 0x0066fB37
-    window_top_toolbar_tool_up,                     // editor: 0x0066fC44 (Exactly the same)
-    window_top_toolbar_tool_abort,                  // editor: 0x0066fA74 (Exactly the same)
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_top_toolbar_invalidate,
-    window_top_toolbar_paint,
-    nullptr
-};
+static rct_window_event_list window_top_toolbar_events([](auto& events)
+{
+    events.mouse_up = &window_top_toolbar_mouseup;
+    events.mouse_down = &window_top_toolbar_mousedown;
+    events.dropdown = &window_top_toolbar_dropdown;
+    events.tool_update = &window_top_toolbar_tool_update;
+    events.tool_down = &window_top_toolbar_tool_down;
+    events.tool_drag = &window_top_toolbar_tool_drag;
+    events.tool_up = &window_top_toolbar_tool_up;
+    events.tool_abort = &window_top_toolbar_tool_abort;
+    events.invalidate = &window_top_toolbar_invalidate;
+    events.paint = &window_top_toolbar_paint;
+});
 // clang-format on
 
 static void top_toolbar_init_view_menu(rct_window* window, rct_widget* widget);
@@ -604,7 +587,7 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
                     window_close_by_class(WC_TRACK_DELETE_PROMPT);
-                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
+                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
                     GameActions::Execute(&loadOrQuitAction);
                     break;
                 }

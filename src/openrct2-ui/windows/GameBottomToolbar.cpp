@@ -85,37 +85,16 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi,
  *
  *  rct2: 0x0097BFDC
  */
-static rct_window_event_list window_game_bottom_toolbar_events =
+static rct_window_event_list window_game_bottom_toolbar_events([](auto& events)
 {
-    nullptr,
-    window_game_bottom_toolbar_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_game_bottom_toolbar_unknown05,
-    window_game_bottom_toolbar_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_game_bottom_toolbar_tooltip,
-    window_game_bottom_toolbar_cursor,
-    nullptr,
-    window_game_bottom_toolbar_invalidate,
-    window_game_bottom_toolbar_paint,
-    nullptr
-};
+    events.mouse_up = &window_game_bottom_toolbar_mouseup;
+    events.unknown_05 = &window_game_bottom_toolbar_unknown05;
+    events.update = &window_game_bottom_toolbar_update;
+    events.tooltip = &window_game_bottom_toolbar_tooltip;
+    events.cursor = &window_game_bottom_toolbar_cursor;
+    events.invalidate = &window_game_bottom_toolbar_invalidate;
+    events.paint = &window_game_bottom_toolbar_paint;
+});
 // clang-format on
 
 static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window* w);
@@ -690,16 +669,16 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
 
     // Check if there is a map tooltip to draw
     rct_string_id stringId;
-    std::memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+    auto ft = GetMapTooltip();
+    std::memcpy(&stringId, ft.Data(), sizeof(rct_string_id));
     if (stringId == STR_NONE)
     {
-        gfx_draw_string_centred_wrapped(
-            dpi, gMapTooltipFormatArgs, middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, w->colours[0]);
+        gfx_draw_string_centred_wrapped(dpi, ft.Data(), middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, w->colours[0]);
     }
     else
     {
         // Show tooltip in bottom toolbar
-        gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, middleWidgetCoords, width, STR_STRINGID, w->colours[0]);
+        gfx_draw_string_centred_wrapped(dpi, ft.Data(), middleWidgetCoords, width, STR_STRINGID, w->colours[0]);
     }
 }
 

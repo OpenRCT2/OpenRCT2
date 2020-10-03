@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../core/Endianness.h"
 #include "../ride/RideTypes.h"
+#include "../util/Util.h"
 
 enum
 {
@@ -131,17 +132,17 @@ using NetworkPlayerId_t = NetworkObjectId_t<int32_t, 0>;
 using NetworkRideId_t = NetworkObjectId_t<ride_id_t, 1>;
 using NetworkCheatType_t = NetworkObjectId_t<int32_t, 2>;
 
-enum NetworkStatisticsGroup
+enum class NetworkStatisticsGroup : uint32_t
 {
-    NETWORK_STATISTICS_GROUP_TOTAL = 0, // Entire network traffic.
-    NETWORK_STATISTICS_GROUP_BASE,      // Messages such as Tick, Ping
-    NETWORK_STATISTICS_GROUP_COMMANDS,  // Command / Game actions
-    NETWORK_STATISTICS_GROUP_MAPDATA,
-    NETWORK_STATISTICS_GROUP_MAX,
+    Total = 0, // Entire network traffic.
+    Base,      // Messages such as Tick, Ping
+    Commands,  // Command / Game actions
+    MapData,
+    Max,
 };
 
 struct NetworkStats_t
 {
-    uint64_t bytesReceived[NETWORK_STATISTICS_GROUP_MAX];
-    uint64_t bytesSent[NETWORK_STATISTICS_GROUP_MAX];
+    uint64_t bytesReceived[EnumValue(NetworkStatisticsGroup::Max)];
+    uint64_t bytesSent[EnumValue(NetworkStatisticsGroup::Max)];
 };

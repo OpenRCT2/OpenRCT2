@@ -103,7 +103,7 @@ private:
         auto ticks = Platform::GetTicks();
         if (ticks > _lastListenTime + 500)
         {
-            if (_lanListener->GetStatus() != SOCKET_STATUS_LISTENING)
+            if (_lanListener->GetStatus() != SocketStatus::Listening)
             {
                 _lanListener->Listen(NETWORK_LAN_BROADCAST_PORT);
             }

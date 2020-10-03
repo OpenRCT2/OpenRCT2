@@ -18,7 +18,7 @@ DEFINE_GAME_ACTION(MazePlaceTrackAction, GAME_COMMAND_PLACE_MAZE_DESIGN, GameAct
 private:
     CoordsXYZ _loc;
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
-    uint16_t _mazeEntry{ 0 };
+    uint16_t _mazeEntry{};
 
 public:
     MazePlaceTrackAction() = default;
@@ -125,7 +125,7 @@ public:
             return res;
         }
 
-        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
         res->Cost = clearCost + price / 2 * 10;
 
         return res;
@@ -172,7 +172,7 @@ public:
             return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
         }
 
-        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
         res->Cost = clearCost + price / 2 * 10;
 
         auto startLoc = _loc.ToTileStart();
@@ -183,7 +183,7 @@ public:
         tileElement->SetClearanceZ(clearanceHeight);
         tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
-        tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
+        tileElement->AsTrack()->SetTrackType(TrackElemType::Maze);
         tileElement->AsTrack()->SetRideIndex(_rideIndex);
         tileElement->AsTrack()->SetMazeEntry(_mazeEntry);
 

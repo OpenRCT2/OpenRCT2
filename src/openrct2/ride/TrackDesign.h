@@ -78,6 +78,7 @@ struct TrackDesignMazeElement
 };
 
 class DataSerialiser;
+enum class RideMode : uint8_t;
 
 struct TrackDesign
 {
@@ -85,7 +86,7 @@ struct TrackDesign
     uint8_t vehicle_type;
     money32 cost;
     uint32_t flags;
-    uint8_t ride_mode;
+    RideMode ride_mode;
     uint8_t track_flags;
     uint8_t colour_scheme;
     std::array<rct_vehicle_colour, RCT2_MAX_CARS_PER_TRAIN> vehicle_colours;

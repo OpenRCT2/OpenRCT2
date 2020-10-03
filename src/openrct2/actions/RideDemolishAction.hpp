@@ -33,12 +33,10 @@ DEFINE_GAME_ACTION(RideDemolishAction, GAME_COMMAND_DEMOLISH_RIDE, GameActionRes
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _modifyType = RIDE_MODIFY_DEMOLISH;
+    uint8_t _modifyType{ RIDE_MODIFY_DEMOLISH };
 
 public:
-    RideDemolishAction()
-    {
-    }
+    RideDemolishAction() = default;
     RideDemolishAction(ride_id_t rideIndex, uint8_t modifyType)
         : _rideIndex(rideIndex)
         , _modifyType(modifyType)
@@ -160,7 +158,7 @@ private:
 
             // clear ride from potentially being in RidesBeenOn
             peep->RidesBeenOn[ride_id_offset] &= ~(1 << ride_id_bit);
-            if (peep->State == PEEP_STATE_WATCHING)
+            if (peep->State == PeepState::Watching)
             {
                 if (peep->CurrentRide == _rideIndex)
                 {
@@ -312,7 +310,7 @@ private:
                 TileCoordsXY(it.x, it.y).ToCoordsXY(), it.element->GetBaseZ(), it.element->GetDirection());
             auto type = it.element->AsTrack()->GetTrackType();
 
-            if (type != TRACK_ELEM_MAZE)
+            if (type != TrackElemType::Maze)
             {
                 auto trackRemoveAction = TrackRemoveAction(type, it.element->AsTrack()->GetSequenceIndex(), location);
                 trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);

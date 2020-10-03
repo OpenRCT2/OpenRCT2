@@ -22,16 +22,13 @@ enum class LoadOrQuitModes : uint8_t
 DEFINE_GAME_ACTION(LoadOrQuitAction, GAME_COMMAND_LOAD_OR_QUIT, GameActionResult)
 {
 private:
-    uint8_t _mode{ 0 };
-    uint8_t _savePromptMode{ PM_SAVE_BEFORE_LOAD };
+    LoadOrQuitModes _mode{};
+    PromptMode _savePromptMode{ PromptMode::SaveBeforeLoad };
 
 public:
-    LoadOrQuitAction()
-    {
-    }
-
-    LoadOrQuitAction(LoadOrQuitModes mode, uint8_t savePromptMode = PM_SAVE_BEFORE_LOAD)
-        : _mode(static_cast<uint8_t>(mode))
+    LoadOrQuitAction() = default;
+    LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::SaveBeforeLoad)
+        : _mode(mode)
         , _savePromptMode(savePromptMode)
     {
     }

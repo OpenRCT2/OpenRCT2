@@ -24,7 +24,7 @@
 DEFINE_GAME_ACTION(SignSetNameAction, GAME_COMMAND_SET_SIGN_NAME, GameActionResult)
 {
 private:
-    BannerIndex _bannerIndex;
+    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
     std::string _name;
 
 public:

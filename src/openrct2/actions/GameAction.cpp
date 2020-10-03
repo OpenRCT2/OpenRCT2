@@ -306,6 +306,7 @@ namespace GameActions
             if (!finance_check_affordability(result->Cost, action->GetFlags()))
             {
                 result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
+                result->ErrorTitle = STR_CANT_DO_THIS;
                 result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
                 Formatter(result->ErrorMessageArgs.data()).Add<uint32_t>(result->Cost);
             }

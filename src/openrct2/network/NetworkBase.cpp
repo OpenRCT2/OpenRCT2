@@ -234,7 +234,7 @@ void NetworkBase::CloseConnection()
 
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
-    _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    _lastConnectStatus = SocketStatus::Closed;
 }
 
 bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
@@ -260,7 +260,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
     _serverState.gamestateSnapshotsEnabled = false;
 
     status = NETWORK_STATUS_CONNECTING;
-    _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    _lastConnectStatus = SocketStatus::Closed;
     _clientMapLoaded = false;
     _serverTickData.clear();
 
@@ -543,11 +543,11 @@ void NetworkBase::UpdateClient()
         {
             switch (_serverConnection->Socket->GetStatus())
             {
-                case SOCKET_STATUS_RESOLVING:
+                case SocketStatus::Resolving:
                 {
-                    if (_lastConnectStatus != SOCKET_STATUS_RESOLVING)
+                    if (_lastConnectStatus != SocketStatus::Resolving)
                     {
-                        _lastConnectStatus = SOCKET_STATUS_RESOLVING;
+                        _lastConnectStatus = SocketStatus::Resolving;
                         char str_resolving[256];
                         format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
 
@@ -558,11 +558,11 @@ void NetworkBase::UpdateClient()
                     }
                     break;
                 }
-                case SOCKET_STATUS_CONNECTING:
+                case SocketStatus::Connecting:
                 {
-                    if (_lastConnectStatus != SOCKET_STATUS_CONNECTING)
+                    if (_lastConnectStatus != SocketStatus::Connecting)
                     {
-                        _lastConnectStatus = SOCKET_STATUS_CONNECTING;
+                        _lastConnectStatus = SocketStatus::Connecting;
                         char str_connecting[256];
                         format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
 
@@ -575,7 +575,7 @@ void NetworkBase::UpdateClient()
                     }
                     break;
                 }
-                case SOCKET_STATUS_CONNECTED:
+                case SocketStatus::Connected:
                 {
                     status = NETWORK_STATUS_CONNECTED;
                     _serverConnection->ResetLastPacketTime();
@@ -1333,7 +1333,7 @@ NetworkStats_t NetworkBase::GetStats() const
     {
         for (auto& connection : client_connection_list)
         {
-            for (size_t n = 0; n < NETWORK_STATISTICS_GROUP_MAX; n++)
+            for (size_t n = 0; n < EnumValue(NetworkStatisticsGroup::Max); n++)
             {
                 stats.bytesReceived[n] += connection->Stats.bytesReceived[n];
                 stats.bytesSent[n] += connection->Stats.bytesSent[n];
@@ -2703,7 +2703,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         else
         {
             // Something went wrong, game is not loaded. Return to main screen.
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
             GameActions::Execute(&loadOrQuitAction);
         }
         if (has_to_free)

@@ -138,36 +138,25 @@ static void window_map_invalidate(rct_window *w);
 static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_map_events = {
-    window_map_close,
-    window_map_mouseup,
-    window_map_resize,
-    window_map_mousedown,
-    nullptr,
-    nullptr,
-    window_map_update,
-    nullptr,
-    nullptr,
-    window_map_toolupdate,
-    window_map_tooldown,
-    window_map_tooldrag,
-    nullptr,
-    window_map_toolabort,
-    nullptr,
-    window_map_scrollgetsize,
-    window_map_scrollmousedown,
-    window_map_scrollmousedown,
-    nullptr,
-    window_map_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_map_invalidate,
-    window_map_paint,
-    window_map_scrollpaint
-};
+static rct_window_event_list window_map_events([](auto& events)
+{
+    events.close = &window_map_close;
+    events.mouse_up = &window_map_mouseup;
+    events.resize = &window_map_resize;
+    events.mouse_down = &window_map_mousedown;
+    events.update = &window_map_update;
+    events.tool_update = &window_map_toolupdate;
+    events.tool_down = &window_map_tooldown;
+    events.tool_drag = &window_map_tooldrag;
+    events.tool_abort = &window_map_toolabort;
+    events.get_scroll_size = &window_map_scrollgetsize;
+    events.scroll_mousedown = &window_map_scrollmousedown;
+    events.scroll_mousedrag = &window_map_scrollmousedown;
+    events.text_input = &window_map_textinput;
+    events.invalidate = &window_map_invalidate;
+    events.paint = &window_map_paint;
+    events.scroll_paint = &window_map_scrollpaint;
+});
 // clang-format on
 
 /** rct2: 0x00F1AD61 */

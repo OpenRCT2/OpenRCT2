@@ -72,36 +72,12 @@ static void window_save_prompt_mouseup(rct_window *w, rct_widgetindex widgetInde
 static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_save_prompt_callback(int32_t result, const utf8 * path);
 
-static rct_window_event_list window_save_prompt_events = {
-    window_save_prompt_close,
-    window_save_prompt_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_save_prompt_paint,
-    nullptr
-};
+static rct_window_event_list window_save_prompt_events([](auto& events)
+{
+    events.close = &window_save_prompt_close;
+    events.mouse_up = &window_save_prompt_mouseup;
+    events.paint = &window_save_prompt_paint;
+});
 // clang-format on
 
 /**
@@ -113,13 +89,13 @@ rct_window* window_save_prompt_open()
     int32_t width, height;
     rct_string_id stringId;
     rct_window* window;
-    uint8_t prompt_mode;
+    PromptMode prompt_mode;
     rct_widget* widgets;
     uint64_t enabled_widgets;
 
     prompt_mode = gSavePromptMode;
-    if (prompt_mode == PM_QUIT)
-        prompt_mode = PM_SAVE_BEFORE_QUIT;
+    if (prompt_mode == PromptMode::Quit)
+        prompt_mode = PromptMode::SaveBeforeQuit;
 
     // do not show save prompt if we're in the title demo and click on load game
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
@@ -165,7 +141,7 @@ rct_window* window_save_prompt_open()
         height = WH_SAVE;
     }
 
-    if (prompt_mode >= std::size(window_save_prompt_labels))
+    if (EnumValue(prompt_mode) >= std::size(window_save_prompt_labels))
     {
         log_warning("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
@@ -186,13 +162,13 @@ rct_window* window_save_prompt_open()
 
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 
-    stringId = window_save_prompt_labels[prompt_mode][0];
+    stringId = window_save_prompt_labels[EnumValue(prompt_mode)][0];
     if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
     if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         stringId = STR_QUIT_SCENARIO_EDITOR;
     window_save_prompt_widgets[WIDX_TITLE].text = stringId;
-    window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[prompt_mode][1];
+    window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[EnumValue(prompt_mode)][1];
 
     return window;
 }

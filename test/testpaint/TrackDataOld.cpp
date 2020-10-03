@@ -14,56 +14,56 @@
 /** rct2: 0x008A42F4 */
 // clang-format off
 static constexpr const uint32_t _OldSpiralRollerCoasterTrackPaintFunctions[256] = {
-    0x008A4ABC, // TRACK_ELEM_FLAT
-    0x008A4D0C, // TRACK_ELEM_END_STATION
-    0x008A4D1C, // TRACK_ELEM_BEGIN_STATION
-    0x008A4D2C, // TRACK_ELEM_MIDDLE_STATION
-    0x008A4ACC, // TRACK_ELEM_25_DEG_UP
-    0x008A4ADC, // TRACK_ELEM_60_DEG_UP
-    0x008A4AEC, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008A4AFC, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008A4B0C, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008A4B1C, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008A4B2C, // TRACK_ELEM_25_DEG_DOWN
-    0x008A4B3C, // TRACK_ELEM_60_DEG_DOWN
-    0x008A4B4C, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008A4B5C, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A4B6C, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A4B7C, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008A4B8C, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008A4B9C, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008A4BAC, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008A4BBC, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008A4BCC, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008A4BDC, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008A4BEC, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008A4BFC, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008A4C0C, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008A4C1C, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008A4C2C, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008A4C3C, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008A4C4C, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A4C5C, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A4C6C, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A4C7C, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A4C8C, // TRACK_ELEM_LEFT_BANK
-    0x008A4C9C, // TRACK_ELEM_RIGHT_BANK
-    0x008A4CAC, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A4CBC, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A4CCC, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A4CDC, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A4CEC, // TRACK_ELEM_S_BEND_LEFT
-    0x008A4CFC, // TRACK_ELEM_S_BEND_RIGHT
+    0x008A4ABC, // TrackElemType::Flat
+    0x008A4D0C, // TrackElemType::EndStation
+    0x008A4D1C, // TrackElemType::BeginStation
+    0x008A4D2C, // TrackElemType::MiddleStation
+    0x008A4ACC, // TrackElemType::Up25
+    0x008A4ADC, // TrackElemType::Up60
+    0x008A4AEC, // TrackElemType::FlatToUp25
+    0x008A4AFC, // TrackElemType::Up25ToUp60
+    0x008A4B0C, // TrackElemType::Up60ToUp25
+    0x008A4B1C, // TrackElemType::Up25ToFlat
+    0x008A4B2C, // TrackElemType::Down25
+    0x008A4B3C, // TrackElemType::Down60
+    0x008A4B4C, // TrackElemType::FlatToDown25
+    0x008A4B5C, // TrackElemType::Down25ToDown60
+    0x008A4B6C, // TrackElemType::Down60ToDown25
+    0x008A4B7C, // TrackElemType::Down25ToFlat
+    0x008A4B8C, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008A4B9C, // TrackElemType::RightQuarterTurn5Tiles
+    0x008A4BAC, // TrackElemType::FlatToLeftBank
+    0x008A4BBC, // TrackElemType::FlatToRightBank
+    0x008A4BCC, // TrackElemType::LeftBankToFlat
+    0x008A4BDC, // TrackElemType::RightBankToFlat
+    0x008A4BEC, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008A4BFC, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008A4C0C, // TrackElemType::LeftBankToUp25
+    0x008A4C1C, // TrackElemType::RightBankToUp25
+    0x008A4C2C, // TrackElemType::Up25ToLeftBank
+    0x008A4C3C, // TrackElemType::Up25ToRightBank
+    0x008A4C4C, // TrackElemType::LeftBankToDown25
+    0x008A4C5C, // TrackElemType::RightBankToDown25
+    0x008A4C6C, // TrackElemType::Down25ToLeftBank
+    0x008A4C7C, // TrackElemType::Down25ToRightBank
+    0x008A4C8C, // TrackElemType::LeftBank
+    0x008A4C9C, // TrackElemType::RightBank
+    0x008A4CAC, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008A4CBC, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008A4CCC, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008A4CDC, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008A4CEC, // TrackElemType::SBendLeft
+    0x008A4CFC, // TrackElemType::SBendRight
     0,
     0,
-    0x008A4D3C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008A4D4C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008A4D5C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008A4D6C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008A4D7C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A4D8C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A4D9C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008A4DAC, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008A4D3C, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008A4D4C, // TrackElemType::RightQuarterTurn3Tiles
+    0x008A4D5C, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008A4D6C, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008A4D7C, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008A4D8C, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008A4D9C, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008A4DAC, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -101,19 +101,19 @@ static constexpr const uint32_t _OldSpiralRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008A4DBC, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A4DCC, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A4DDC, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A4DEC, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A4DFC, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A4E0C, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A4E1C, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A4E2C, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A4E5C, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A4E3C, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A4E4C, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A4E6C, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A4E7C, // TRACK_ELEM_BRAKES
+    0x008A4DBC, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008A4DCC, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008A4DDC, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008A4DEC, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008A4DFC, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008A4E0C, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008A4E1C, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008A4E2C, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x008A4E5C, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008A4E3C, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008A4E4C, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008A4E6C, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008A4E7C, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -124,13 +124,13 @@ static constexpr const uint32_t _OldSpiralRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008A50CC, // TRACK_ELEM_25_DEG_UP_LEFT_BANKED
-    0x008A50DC, // TRACK_ELEM_25_DEG_UP_RIGHT_BANKED
+    0x008A50CC, // TrackElemType::Up25LeftBanked
+    0x008A50DC, // TrackElemType::Up25RightBanked
     0,
     0,
-    0x008A4E8C, // TRACK_ELEM_ON_RIDE_PHOTO
-    0x008A50EC, // TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED
-    0x008A50FC, // TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED
+    0x008A4E8C, // TrackElemType::OnRidePhoto
+    0x008A50EC, // TrackElemType::Down25LeftBanked
+    0x008A50FC, // TrackElemType::Down25RightBanked
     0,
     0,
     0,
@@ -147,45 +147,45 @@ static constexpr const uint32_t _OldSpiralRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008A4EAC, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008A4EBC, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008A4ECC, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008A4EDC, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008A4EEC, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008A4EFC, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008A4F0C, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A4F1C, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A4E9C, // TRACK_ELEM_DIAG_FLAT
-    0x008A4F4C, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008A4FAC, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008A4F2C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008A4F8C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008A4F9C, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008A4F3C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008A4F7C, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008A4FDC, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008A4F5C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008A4FBC, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A4FCC, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A4F6C, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008A4EAC, // TrackElemType::LeftEighthToDiag
+    0x008A4EBC, // TrackElemType::RightEighthToDiag
+    0x008A4ECC, // TrackElemType::LeftEighthToOrthogonal
+    0x008A4EDC, // TrackElemType::RightEighthToOrthogonal
+    0x008A4EEC, // TrackElemType::LeftEighthBankToDiag
+    0x008A4EFC, // TrackElemType::RightEighthBankToDiag
+    0x008A4F0C, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008A4F1C, // TrackElemType::RightEighthBankToOrthogonal
+    0x008A4E9C, // TrackElemType::DiagFlat
+    0x008A4F4C, // TrackElemType::DiagUp25
+    0x008A4FAC, // TrackElemType::DiagUp60
+    0x008A4F2C, // TrackElemType::DiagFlatToUp25
+    0x008A4F8C, // TrackElemType::DiagUp25ToUp60
+    0x008A4F9C, // TrackElemType::DiagUp60ToUp25
+    0x008A4F3C, // TrackElemType::DiagUp25ToFlat
+    0x008A4F7C, // TrackElemType::DiagDown25
+    0x008A4FDC, // TrackElemType::DiagDown60
+    0x008A4F5C, // TrackElemType::DiagFlatToDown25
+    0x008A4FBC, // TrackElemType::DiagDown25ToDown60
+    0x008A4FCC, // TrackElemType::DiagDown60ToDown25
+    0x008A4F6C, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008A500C, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008A501C, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008A502C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008A503C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008A506C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008A507C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008A504C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008A505C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008A508C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A509C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A50AC, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A50BC, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A4FEC, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008A4FFC, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008A500C, // TrackElemType::DiagFlatToLeftBank
+    0x008A501C, // TrackElemType::DiagFlatToRightBank
+    0x008A502C, // TrackElemType::DiagLeftBankToFlat
+    0x008A503C, // TrackElemType::DiagRightBankToFlat
+    0x008A506C, // TrackElemType::DiagLeftBankToUp25
+    0x008A507C, // TrackElemType::DiagRightBankToUp25
+    0x008A504C, // TrackElemType::DiagUp25ToLeftBank
+    0x008A505C, // TrackElemType::DiagUp25ToRightBank
+    0x008A508C, // TrackElemType::DiagLeftBankToDown25
+    0x008A509C, // TrackElemType::DiagRightBankToDown25
+    0x008A50AC, // TrackElemType::DiagDown25ToLeftBank
+    0x008A50BC, // TrackElemType::DiagDown25ToRightBank
+    0x008A4FEC, // TrackElemType::DiagLeftBank
+    0x008A4FFC, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -223,46 +223,46 @@ static constexpr const uint32_t _OldSpiralRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008A531C, // TRACK_ELEM_LEFT_CURVED_LIFT_HILL
-    0x008A532C, // TRACK_ELEM_RIGHT_CURVED_LIFT_HILL
+    0x008A531C, // TrackElemType::LeftCurvedLiftHill
+    0x008A532C, // TrackElemType::RightCurvedLiftHill
     0,
     0,
     0,
     0,
     0,
-    0x008A530C, // TRACK_ELEM_BLOCK_BRAKES
-    0x008A510C, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008A511C, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008A512C, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008A513C, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008A514C, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008A515C, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008A516C, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008A517C, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008A518C, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    0x008A519C, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A51AC, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008A51BC, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008A51CC, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A51DC, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A51EC, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A51FC, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A520C, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008A521C, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A524C, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    0x008A525C, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    0x008A526C, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A527C, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A522C, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    0x008A523C, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    0x008A528C, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008A529C, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A52AC, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    0x008A52BC, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    0x008A52CC, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A52DC, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A52EC, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008A52FC, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
+    0x008A530C, // TrackElemType::BlockBrakes
+    0x008A510C, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    0x008A511C, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    0x008A512C, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    0x008A513C, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    0x008A514C, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    0x008A515C, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    0x008A516C, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    0x008A517C, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    0x008A518C, // TrackElemType::Up25ToLeftBankedUp25
+    0x008A519C, // TrackElemType::Up25ToRightBankedUp25
+    0x008A51AC, // TrackElemType::LeftBankedUp25ToUp25
+    0x008A51BC, // TrackElemType::RightBankedUp25ToUp25
+    0x008A51CC, // TrackElemType::Down25ToLeftBankedDown25
+    0x008A51DC, // TrackElemType::Down25ToRightBankedDown25
+    0x008A51EC, // TrackElemType::LeftBankedDown25ToDown25
+    0x008A51FC, // TrackElemType::RightBankedDown25ToDown25
+    0x008A520C, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    0x008A521C, // TrackElemType::RightBankedFlatToRightBankedUp25
+    0x008A524C, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    0x008A525C, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    0x008A526C, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    0x008A527C, // TrackElemType::RightBankedFlatToRightBankedDown25
+    0x008A522C, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    0x008A523C, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    0x008A528C, // TrackElemType::FlatToLeftBankedUp25
+    0x008A529C, // TrackElemType::FlatToRightBankedUp25
+    0x008A52AC, // TrackElemType::LeftBankedUp25ToFlat
+    0x008A52BC, // TrackElemType::RightBankedUp25ToFlat
+    0x008A52CC, // TrackElemType::FlatToLeftBankedDown25
+    0x008A52DC, // TrackElemType::FlatToRightBankedDown25
+    0x008A52EC, // TrackElemType::LeftBankedDown25ToFlat
+    0x008A52FC, // TrackElemType::RightBankedDown25ToFlat
     0,
     0,
     0,
@@ -274,68 +274,68 @@ static constexpr const uint32_t _OldSpiralRollerCoasterTrackPaintFunctions[256] 
 
 /** rct2: 0x008A6DB0 */
 static constexpr const uint32_t _OldStandUpRollerCoasterTrackPaintFunctions[256] = {
-    0x008A7114, // TRACK_ELEM_FLAT
-    0x008A7384, // TRACK_ELEM_END_STATION
-    0x008A7394, // TRACK_ELEM_BEGIN_STATION
-    0x008A73A4, // TRACK_ELEM_MIDDLE_STATION
-    0x008A7124, // TRACK_ELEM_25_DEG_UP
-    0x008A7134, // TRACK_ELEM_60_DEG_UP
-    0x008A7144, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008A7154, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008A7164, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008A7174, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008A7184, // TRACK_ELEM_25_DEG_DOWN
-    0x008A7194, // TRACK_ELEM_60_DEG_DOWN
-    0x008A71A4, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008A71B4, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A71C4, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A71D4, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008A71E4, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008A71F4, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008A7204, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008A7214, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008A7224, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008A7234, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008A7244, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008A7254, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008A7264, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008A7274, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008A7284, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008A7294, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008A72A4, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A72B4, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A72C4, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A72D4, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A72E4, // TRACK_ELEM_LEFT_BANK
-    0x008A72F4, // TRACK_ELEM_RIGHT_BANK
-    0x008A7304, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A7314, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A7324, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A7334, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A7344, // TRACK_ELEM_S_BEND_LEFT
-    0x008A7354, // TRACK_ELEM_S_BEND_RIGHT
-    0x008A7364, // TRACK_ELEM_LEFT_VERTICAL_LOOP
-    0x008A7374, // TRACK_ELEM_RIGHT_VERTICAL_LOOP
-    0x008A73B4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008A73C4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008A73D4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008A73E4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008A73F4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A7404, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A7414, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008A7424, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008A7114, // TrackElemType::Flat
+    0x008A7384, // TrackElemType::EndStation
+    0x008A7394, // TrackElemType::BeginStation
+    0x008A73A4, // TrackElemType::MiddleStation
+    0x008A7124, // TrackElemType::Up25
+    0x008A7134, // TrackElemType::Up60
+    0x008A7144, // TrackElemType::FlatToUp25
+    0x008A7154, // TrackElemType::Up25ToUp60
+    0x008A7164, // TrackElemType::Up60ToUp25
+    0x008A7174, // TrackElemType::Up25ToFlat
+    0x008A7184, // TrackElemType::Down25
+    0x008A7194, // TrackElemType::Down60
+    0x008A71A4, // TrackElemType::FlatToDown25
+    0x008A71B4, // TrackElemType::Down25ToDown60
+    0x008A71C4, // TrackElemType::Down60ToDown25
+    0x008A71D4, // TrackElemType::Down25ToFlat
+    0x008A71E4, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008A71F4, // TrackElemType::RightQuarterTurn5Tiles
+    0x008A7204, // TrackElemType::FlatToLeftBank
+    0x008A7214, // TrackElemType::FlatToRightBank
+    0x008A7224, // TrackElemType::LeftBankToFlat
+    0x008A7234, // TrackElemType::RightBankToFlat
+    0x008A7244, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008A7254, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008A7264, // TrackElemType::LeftBankToUp25
+    0x008A7274, // TrackElemType::RightBankToUp25
+    0x008A7284, // TrackElemType::Up25ToLeftBank
+    0x008A7294, // TrackElemType::Up25ToRightBank
+    0x008A72A4, // TrackElemType::LeftBankToDown25
+    0x008A72B4, // TrackElemType::RightBankToDown25
+    0x008A72C4, // TrackElemType::Down25ToLeftBank
+    0x008A72D4, // TrackElemType::Down25ToRightBank
+    0x008A72E4, // TrackElemType::LeftBank
+    0x008A72F4, // TrackElemType::RightBank
+    0x008A7304, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008A7314, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008A7324, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008A7334, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008A7344, // TrackElemType::SBendLeft
+    0x008A7354, // TrackElemType::SBendRight
+    0x008A7364, // TrackElemType::LeftVerticalLoop
+    0x008A7374, // TrackElemType::RightVerticalLoop
+    0x008A73B4, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008A73C4, // TrackElemType::RightQuarterTurn3Tiles
+    0x008A73D4, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008A73E4, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008A73F4, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008A7404, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008A7414, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008A7424, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
     0,
     0,
     0,
-    0x008A7434, // TRACK_ELEM_HALF_LOOP_UP
-    0x008A7444, // TRACK_ELEM_HALF_LOOP_DOWN
-    0x008A7454, // TRACK_ELEM_LEFT_CORKSCREW_UP
-    0x008A7464, // TRACK_ELEM_RIGHT_CORKSCREW_UP
-    0x008A7474, // TRACK_ELEM_LEFT_CORKSCREW_DOWN
-    0x008A7484, // TRACK_ELEM_RIGHT_CORKSCREW_DOWN
+    0x008A7434, // TrackElemType::HalfLoopUp
+    0x008A7444, // TrackElemType::HalfLoopDown
+    0x008A7454, // TrackElemType::LeftCorkscrewUp
+    0x008A7464, // TrackElemType::RightCorkscrewUp
+    0x008A7474, // TrackElemType::LeftCorkscrewDown
+    0x008A7484, // TrackElemType::RightCorkscrewDown
     0,
     0,
     0,
@@ -361,19 +361,19 @@ static constexpr const uint32_t _OldStandUpRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008A7734, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A7744, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A7754, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A7764, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A76F4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A7704, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A7714, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A7724, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
+    0x008A7734, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008A7744, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008A7754, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008A7764, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008A76F4, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008A7704, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008A7714, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008A7724, // TrackElemType::RightHalfBankedHelixDownLarge
     0,
     0,
     0,
     0,
-    0x008A7494, // TRACK_ELEM_BRAKES
+    0x008A7494, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -388,7 +388,7 @@ static constexpr const uint32_t _OldStandUpRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008A74A4, // TRACK_ELEM_ON_RIDE_PHOTO
+    0x008A74A4, // TrackElemType::OnRidePhoto
     0,
     0,
     0,
@@ -407,45 +407,45 @@ static constexpr const uint32_t _OldStandUpRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008A74B4, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008A74C4, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008A74D4, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008A74E4, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008A76A4, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008A76B4, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008A76C4, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A76D4, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A74F4, // TRACK_ELEM_DIAG_FLAT
-    0x008A7524, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008A7584, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008A7504, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008A7564, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008A7574, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008A7514, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008A7554, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008A75B4, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008A7534, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008A7594, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A75A4, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A7544, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008A74B4, // TrackElemType::LeftEighthToDiag
+    0x008A74C4, // TrackElemType::RightEighthToDiag
+    0x008A74D4, // TrackElemType::LeftEighthToOrthogonal
+    0x008A74E4, // TrackElemType::RightEighthToOrthogonal
+    0x008A76A4, // TrackElemType::LeftEighthBankToDiag
+    0x008A76B4, // TrackElemType::RightEighthBankToDiag
+    0x008A76C4, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008A76D4, // TrackElemType::RightEighthBankToOrthogonal
+    0x008A74F4, // TrackElemType::DiagFlat
+    0x008A7524, // TrackElemType::DiagUp25
+    0x008A7584, // TrackElemType::DiagUp60
+    0x008A7504, // TrackElemType::DiagFlatToUp25
+    0x008A7564, // TrackElemType::DiagUp25ToUp60
+    0x008A7574, // TrackElemType::DiagUp60ToUp25
+    0x008A7514, // TrackElemType::DiagUp25ToFlat
+    0x008A7554, // TrackElemType::DiagDown25
+    0x008A75B4, // TrackElemType::DiagDown60
+    0x008A7534, // TrackElemType::DiagFlatToDown25
+    0x008A7594, // TrackElemType::DiagDown25ToDown60
+    0x008A75A4, // TrackElemType::DiagDown60ToDown25
+    0x008A7544, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008A75E4, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008A75F4, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008A7604, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008A7614, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008A7644, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008A7654, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008A7624, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008A7634, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008A7664, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A7674, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A7684, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A7694, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A75C4, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008A75D4, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008A75E4, // TrackElemType::DiagFlatToLeftBank
+    0x008A75F4, // TrackElemType::DiagFlatToRightBank
+    0x008A7604, // TrackElemType::DiagLeftBankToFlat
+    0x008A7614, // TrackElemType::DiagRightBankToFlat
+    0x008A7644, // TrackElemType::DiagLeftBankToUp25
+    0x008A7654, // TrackElemType::DiagRightBankToUp25
+    0x008A7624, // TrackElemType::DiagUp25ToLeftBank
+    0x008A7634, // TrackElemType::DiagUp25ToRightBank
+    0x008A7664, // TrackElemType::DiagLeftBankToDown25
+    0x008A7674, // TrackElemType::DiagRightBankToDown25
+    0x008A7684, // TrackElemType::DiagDown25ToLeftBank
+    0x008A7694, // TrackElemType::DiagDown25ToRightBank
+    0x008A75C4, // TrackElemType::DiagLeftBank
+    0x008A75D4, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -490,7 +490,7 @@ static constexpr const uint32_t _OldStandUpRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008A76E4, // TRACK_ELEM_BLOCK_BRAKES
+    0x008A76E4, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -534,24 +534,24 @@ static constexpr const uint32_t _OldStandUpRollerCoasterTrackPaintFunctions[256]
 
 /** rct2: 0x008A85E4 */
 static constexpr const uint32_t _OldSuspendedSwingingCoasterTrackPaintFunctions[256] = {
-    0x008A8958, // TRACK_ELEM_FLAT
-    0x008A8AA8, // TRACK_ELEM_END_STATION
-    0x008A8AB8, // TRACK_ELEM_BEGIN_STATION
-    0x008A8AC8, // TRACK_ELEM_MIDDLE_STATION
-    0x008A8968, // TRACK_ELEM_25_DEG_UP
-    0x008A8978, // TRACK_ELEM_60_DEG_UP
-    0x008A8988, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008A8998, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008A89A8, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008A89B8, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008A89C8, // TRACK_ELEM_25_DEG_DOWN
-    0x008A89D8, // TRACK_ELEM_60_DEG_DOWN
-    0x008A89E8, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008A89F8, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A8A08, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A8A18, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008A8A28, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008A8A38, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x008A8958, // TrackElemType::Flat
+    0x008A8AA8, // TrackElemType::EndStation
+    0x008A8AB8, // TrackElemType::BeginStation
+    0x008A8AC8, // TrackElemType::MiddleStation
+    0x008A8968, // TrackElemType::Up25
+    0x008A8978, // TrackElemType::Up60
+    0x008A8988, // TrackElemType::FlatToUp25
+    0x008A8998, // TrackElemType::Up25ToUp60
+    0x008A89A8, // TrackElemType::Up60ToUp25
+    0x008A89B8, // TrackElemType::Up25ToFlat
+    0x008A89C8, // TrackElemType::Down25
+    0x008A89D8, // TrackElemType::Down60
+    0x008A89E8, // TrackElemType::FlatToDown25
+    0x008A89F8, // TrackElemType::Down25ToDown60
+    0x008A8A08, // TrackElemType::Down60ToDown25
+    0x008A8A18, // TrackElemType::Down25ToFlat
+    0x008A8A28, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008A8A38, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -568,22 +568,22 @@ static constexpr const uint32_t _OldSuspendedSwingingCoasterTrackPaintFunctions[
     0,
     0,
     0,
-    0x008A8A48, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A8A58, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A8A68, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A8A78, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A8A88, // TRACK_ELEM_S_BEND_LEFT
-    0x008A8A98, // TRACK_ELEM_S_BEND_RIGHT
+    0x008A8A48, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008A8A58, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008A8A68, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008A8A78, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008A8A88, // TrackElemType::SBendLeft
+    0x008A8A98, // TrackElemType::SBendRight
     0,
     0,
-    0x008A8AD8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008A8AE8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x008A8AD8, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008A8AE8, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
-    0x008A8AF8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A8B08, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A8B18, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008A8B28, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008A8AF8, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008A8B08, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008A8B18, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008A8B28, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -633,17 +633,17 @@ static constexpr const uint32_t _OldSuspendedSwingingCoasterTrackPaintFunctions[
     0,
     0,
     0,
-    0x008A8B38, // TRACK_ELEM_BRAKES
+    0x008A8B38, // TrackElemType::Brakes
     0,
     0,
     0,
     0,
     0,
     0,
-    0x008A8B48, // TRACK_ELEM_LEFT_QUARTER_HELIX_LARGE_UP
-    0x008A8B58, // TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_UP
-    0x008A8B68, // TRACK_ELEM_LEFT_QUARTER_HELIX_LARGE_DOWN
-    0x008A8B78, // TRACK_ELEM_RIGHT_QUARTER_HELIX_LARGE_DOWN
+    0x008A8B48, // TrackElemType::LeftQuarterHelixLargeUp
+    0x008A8B58, // TrackElemType::RightQuarterHelixLargeUp
+    0x008A8B68, // TrackElemType::LeftQuarterHelixLargeDown
+    0x008A8B78, // TrackElemType::RightQuarterHelixLargeDown
     0,
     0,
     0,
@@ -667,27 +667,27 @@ static constexpr const uint32_t _OldSuspendedSwingingCoasterTrackPaintFunctions[
     0,
     0,
     0,
-    0x008A8B88, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008A8B98, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008A8BA8, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008A8BB8, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
+    0x008A8B88, // TrackElemType::LeftEighthToDiag
+    0x008A8B98, // TrackElemType::RightEighthToDiag
+    0x008A8BA8, // TrackElemType::LeftEighthToOrthogonal
+    0x008A8BB8, // TrackElemType::RightEighthToOrthogonal
     0,
     0,
     0,
     0,
-    0x008A8BC8, // TRACK_ELEM_DIAG_FLAT
-    0x008A8BF8, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008A8C58, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008A8BD8, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008A8C38, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008A8C48, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008A8BE8, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008A8C28, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008A8C88, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008A8C08, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008A8C68, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A8C78, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A8C18, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008A8BC8, // TrackElemType::DiagFlat
+    0x008A8BF8, // TrackElemType::DiagUp25
+    0x008A8C58, // TrackElemType::DiagUp60
+    0x008A8BD8, // TrackElemType::DiagFlatToUp25
+    0x008A8C38, // TrackElemType::DiagUp25ToUp60
+    0x008A8C48, // TrackElemType::DiagUp60ToUp25
+    0x008A8BE8, // TrackElemType::DiagUp25ToFlat
+    0x008A8C28, // TrackElemType::DiagDown25
+    0x008A8C88, // TrackElemType::DiagDown60
+    0x008A8C08, // TrackElemType::DiagFlatToDown25
+    0x008A8C68, // TrackElemType::DiagDown25ToDown60
+    0x008A8C78, // TrackElemType::DiagDown60ToDown25
+    0x008A8C18, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
@@ -750,7 +750,7 @@ static constexpr const uint32_t _OldSuspendedSwingingCoasterTrackPaintFunctions[
     0,
     0,
     0,
-    0x008A8B38, // TRACK_ELEM_BLOCK_BRAKES
+    0x008A8B38, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -794,68 +794,68 @@ static constexpr const uint32_t _OldSuspendedSwingingCoasterTrackPaintFunctions[
 
 /** rct2: 0x008A8EE4 */
 static constexpr const uint32_t _OldInvertedRollerCoasterTrackPaintFunctions[256] = {
-    0x008A92E8, // TRACK_ELEM_FLAT
-    0x008A9558, // TRACK_ELEM_END_STATION
-    0x008A9568, // TRACK_ELEM_BEGIN_STATION
-    0x008A9578, // TRACK_ELEM_MIDDLE_STATION
-    0x008A92F8, // TRACK_ELEM_25_DEG_UP
-    0x008A9308, // TRACK_ELEM_60_DEG_UP
-    0x008A9318, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008A9328, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008A9338, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008A9348, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008A9358, // TRACK_ELEM_25_DEG_DOWN
-    0x008A9368, // TRACK_ELEM_60_DEG_DOWN
-    0x008A9378, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008A9388, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A9398, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A93A8, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008A93B8, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008A93C8, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008A93D8, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008A93E8, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008A93F8, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008A9408, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008A9418, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008A9428, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008A9438, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008A9448, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008A9458, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008A9468, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008A9478, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A9488, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A9498, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A94A8, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A94B8, // TRACK_ELEM_LEFT_BANK
-    0x008A94C8, // TRACK_ELEM_RIGHT_BANK
-    0x008A94D8, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A94E8, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A94F8, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A9508, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A9518, // TRACK_ELEM_S_BEND_LEFT
-    0x008A9528, // TRACK_ELEM_S_BEND_RIGHT
-    0x008A9538, // TRACK_ELEM_LEFT_VERTICAL_LOOP
-    0x008A9548, // TRACK_ELEM_RIGHT_VERTICAL_LOOP
-    0x008A9588, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008A9598, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008A95A8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008A95B8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008A95C8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A95D8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A95E8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008A95F8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008A92E8, // TrackElemType::Flat
+    0x008A9558, // TrackElemType::EndStation
+    0x008A9568, // TrackElemType::BeginStation
+    0x008A9578, // TrackElemType::MiddleStation
+    0x008A92F8, // TrackElemType::Up25
+    0x008A9308, // TrackElemType::Up60
+    0x008A9318, // TrackElemType::FlatToUp25
+    0x008A9328, // TrackElemType::Up25ToUp60
+    0x008A9338, // TrackElemType::Up60ToUp25
+    0x008A9348, // TrackElemType::Up25ToFlat
+    0x008A9358, // TrackElemType::Down25
+    0x008A9368, // TrackElemType::Down60
+    0x008A9378, // TrackElemType::FlatToDown25
+    0x008A9388, // TrackElemType::Down25ToDown60
+    0x008A9398, // TrackElemType::Down60ToDown25
+    0x008A93A8, // TrackElemType::Down25ToFlat
+    0x008A93B8, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008A93C8, // TrackElemType::RightQuarterTurn5Tiles
+    0x008A93D8, // TrackElemType::FlatToLeftBank
+    0x008A93E8, // TrackElemType::FlatToRightBank
+    0x008A93F8, // TrackElemType::LeftBankToFlat
+    0x008A9408, // TrackElemType::RightBankToFlat
+    0x008A9418, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008A9428, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008A9438, // TrackElemType::LeftBankToUp25
+    0x008A9448, // TrackElemType::RightBankToUp25
+    0x008A9458, // TrackElemType::Up25ToLeftBank
+    0x008A9468, // TrackElemType::Up25ToRightBank
+    0x008A9478, // TrackElemType::LeftBankToDown25
+    0x008A9488, // TrackElemType::RightBankToDown25
+    0x008A9498, // TrackElemType::Down25ToLeftBank
+    0x008A94A8, // TrackElemType::Down25ToRightBank
+    0x008A94B8, // TrackElemType::LeftBank
+    0x008A94C8, // TrackElemType::RightBank
+    0x008A94D8, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008A94E8, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008A94F8, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008A9508, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008A9518, // TrackElemType::SBendLeft
+    0x008A9528, // TrackElemType::SBendRight
+    0x008A9538, // TrackElemType::LeftVerticalLoop
+    0x008A9548, // TrackElemType::RightVerticalLoop
+    0x008A9588, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008A9598, // TrackElemType::RightQuarterTurn3Tiles
+    0x008A95A8, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008A95B8, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008A95C8, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008A95D8, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008A95E8, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008A95F8, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
-    0x008A9608, // TRACK_ELEM_LEFT_TWIST_DOWN_TO_UP
-    0x008A9618, // TRACK_ELEM_RIGHT_TWIST_DOWN_TO_UP
-    0x008A9628, // TRACK_ELEM_LEFT_TWIST_UP_TO_DOWN
-    0x008A9638, // TRACK_ELEM_RIGHT_TWIST_UP_TO_DOWN
-    0x008A9648, // TRACK_ELEM_HALF_LOOP_UP
-    0x008A9658, // TRACK_ELEM_HALF_LOOP_DOWN
-    0x008A9668, // TRACK_ELEM_LEFT_CORKSCREW_UP
-    0x008A9678, // TRACK_ELEM_RIGHT_CORKSCREW_UP
-    0x008A9688, // TRACK_ELEM_LEFT_CORKSCREW_DOWN
-    0x008A9698, // TRACK_ELEM_RIGHT_CORKSCREW_DOWN
+    0x008A9608, // TrackElemType::LeftTwistDownToUp
+    0x008A9618, // TrackElemType::RightTwistDownToUp
+    0x008A9628, // TrackElemType::LeftTwistUpToDown
+    0x008A9638, // TrackElemType::RightTwistUpToDown
+    0x008A9648, // TrackElemType::HalfLoopUp
+    0x008A9658, // TrackElemType::HalfLoopDown
+    0x008A9668, // TrackElemType::LeftCorkscrewUp
+    0x008A9678, // TrackElemType::RightCorkscrewUp
+    0x008A9688, // TrackElemType::LeftCorkscrewDown
+    0x008A9698, // TrackElemType::RightCorkscrewDown
     0,
     0,
     0,
@@ -889,28 +889,28 @@ static constexpr const uint32_t _OldInvertedRollerCoasterTrackPaintFunctions[256
     0,
     0,
     0,
-    0x008A96D8, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A96B8, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A96C8, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A96E8, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A96A8, // TRACK_ELEM_BRAKES
+    0x008A96D8, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008A96B8, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008A96C8, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008A96E8, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008A96A8, // TrackElemType::Brakes
     0,
     0,
-    0x008A96F8, // TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP
-    0x008A9708, // TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP
-    0x008A9718, // TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN
-    0x008A9728, // TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN
+    0x008A96F8, // TrackElemType::LeftQuarterBankedHelixLargeUp
+    0x008A9708, // TrackElemType::RightQuarterBankedHelixLargeUp
+    0x008A9718, // TrackElemType::LeftQuarterBankedHelixLargeDown
+    0x008A9728, // TrackElemType::RightQuarterBankedHelixLargeDown
     0,
     0,
     0,
     0,
-    0x008A9A38, // TRACK_ELEM_25_DEG_UP_LEFT_BANKED
-    0x008A9A48, // TRACK_ELEM_25_DEG_UP_RIGHT_BANKED
+    0x008A9A38, // TrackElemType::Up25LeftBanked
+    0x008A9A48, // TrackElemType::Up25RightBanked
     0,
     0,
-    0x008A9738, // TRACK_ELEM_ON_RIDE_PHOTO
-    0x008A9A58, // TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED
-    0x008A9A68, // TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED
+    0x008A9738, // TrackElemType::OnRidePhoto
+    0x008A9A58, // TrackElemType::Down25LeftBanked
+    0x008A9A68, // TrackElemType::Down25RightBanked
     0,
     0,
     0,
@@ -927,45 +927,45 @@ static constexpr const uint32_t _OldInvertedRollerCoasterTrackPaintFunctions[256
     0,
     0,
     0,
-    0x008A9748, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008A9758, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008A9768, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008A9778, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008A9938, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008A9948, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008A9958, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A9968, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A9788, // TRACK_ELEM_DIAG_FLAT
-    0x008A97B8, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008A9818, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008A9798, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008A97F8, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008A9808, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008A97A8, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008A97E8, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008A9848, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008A97C8, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008A9828, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A9838, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A97D8, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008A9748, // TrackElemType::LeftEighthToDiag
+    0x008A9758, // TrackElemType::RightEighthToDiag
+    0x008A9768, // TrackElemType::LeftEighthToOrthogonal
+    0x008A9778, // TrackElemType::RightEighthToOrthogonal
+    0x008A9938, // TrackElemType::LeftEighthBankToDiag
+    0x008A9948, // TrackElemType::RightEighthBankToDiag
+    0x008A9958, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008A9968, // TrackElemType::RightEighthBankToOrthogonal
+    0x008A9788, // TrackElemType::DiagFlat
+    0x008A97B8, // TrackElemType::DiagUp25
+    0x008A9818, // TrackElemType::DiagUp60
+    0x008A9798, // TrackElemType::DiagFlatToUp25
+    0x008A97F8, // TrackElemType::DiagUp25ToUp60
+    0x008A9808, // TrackElemType::DiagUp60ToUp25
+    0x008A97A8, // TrackElemType::DiagUp25ToFlat
+    0x008A97E8, // TrackElemType::DiagDown25
+    0x008A9848, // TrackElemType::DiagDown60
+    0x008A97C8, // TrackElemType::DiagFlatToDown25
+    0x008A9828, // TrackElemType::DiagDown25ToDown60
+    0x008A9838, // TrackElemType::DiagDown60ToDown25
+    0x008A97D8, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008A9878, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008A9888, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008A9898, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008A98A8, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008A98D8, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008A98E8, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008A98B8, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008A98C8, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008A98F8, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A9908, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A9918, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A9928, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A9858, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008A9868, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008A9878, // TrackElemType::DiagFlatToLeftBank
+    0x008A9888, // TrackElemType::DiagFlatToRightBank
+    0x008A9898, // TrackElemType::DiagLeftBankToFlat
+    0x008A98A8, // TrackElemType::DiagRightBankToFlat
+    0x008A98D8, // TrackElemType::DiagLeftBankToUp25
+    0x008A98E8, // TrackElemType::DiagRightBankToUp25
+    0x008A98B8, // TrackElemType::DiagUp25ToLeftBank
+    0x008A98C8, // TrackElemType::DiagUp25ToRightBank
+    0x008A98F8, // TrackElemType::DiagLeftBankToDown25
+    0x008A9908, // TrackElemType::DiagRightBankToDown25
+    0x008A9918, // TrackElemType::DiagDown25ToLeftBank
+    0x008A9928, // TrackElemType::DiagDown25ToRightBank
+    0x008A9858, // TrackElemType::DiagLeftBank
+    0x008A9868, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -977,10 +977,10 @@ static constexpr const uint32_t _OldInvertedRollerCoasterTrackPaintFunctions[256
     0,
     0,
     0,
-    0x008A9978, // TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP
-    0x008A9988, // TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP
-    0x008A9998, // TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN
-    0x008A99A8, // TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN
+    0x008A9978, // TrackElemType::LeftLargeHalfLoopUp
+    0x008A9988, // TrackElemType::RightLargeHalfLoopUp
+    0x008A9998, // TrackElemType::RightLargeHalfLoopDown
+    0x008A99A8, // TrackElemType::LeftLargeHalfLoopDown
     0,
     0,
     0,
@@ -1010,39 +1010,39 @@ static constexpr const uint32_t _OldInvertedRollerCoasterTrackPaintFunctions[256
     0,
     0,
     0,
-    0x008A96A8, // TRACK_ELEM_BLOCK_BRAKES
-    0x008A9A78, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008A9A88, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008A9A98, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008A9AA8, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008A9BB8, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008A9BC8, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008A9BD8, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008A9BE8, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008A9AB8, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    0x008A9AC8, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A9AD8, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008A9AE8, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008A9AF8, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A9B08, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A9B18, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A9B28, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A9B38, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008A9B48, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A9B58, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    0x008A9B68, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    0x008A9B78, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A9B88, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A9B98, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    0x008A9BA8, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    0x008A99B8, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008A99C8, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A99D8, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    0x008A99E8, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    0x008A99F8, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A9A08, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A9A18, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008A9A28, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
+    0x008A96A8, // TrackElemType::BlockBrakes
+    0x008A9A78, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    0x008A9A88, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    0x008A9A98, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    0x008A9AA8, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    0x008A9BB8, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    0x008A9BC8, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    0x008A9BD8, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    0x008A9BE8, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    0x008A9AB8, // TrackElemType::Up25ToLeftBankedUp25
+    0x008A9AC8, // TrackElemType::Up25ToRightBankedUp25
+    0x008A9AD8, // TrackElemType::LeftBankedUp25ToUp25
+    0x008A9AE8, // TrackElemType::RightBankedUp25ToUp25
+    0x008A9AF8, // TrackElemType::Down25ToLeftBankedDown25
+    0x008A9B08, // TrackElemType::Down25ToRightBankedDown25
+    0x008A9B18, // TrackElemType::LeftBankedDown25ToDown25
+    0x008A9B28, // TrackElemType::RightBankedDown25ToDown25
+    0x008A9B38, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    0x008A9B48, // TrackElemType::RightBankedFlatToRightBankedUp25
+    0x008A9B58, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    0x008A9B68, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    0x008A9B78, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    0x008A9B88, // TrackElemType::RightBankedFlatToRightBankedDown25
+    0x008A9B98, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    0x008A9BA8, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    0x008A99B8, // TrackElemType::FlatToLeftBankedUp25
+    0x008A99C8, // TrackElemType::FlatToRightBankedUp25
+    0x008A99D8, // TrackElemType::LeftBankedUp25ToFlat
+    0x008A99E8, // TrackElemType::RightBankedUp25ToFlat
+    0x008A99F8, // TrackElemType::FlatToLeftBankedDown25
+    0x008A9A08, // TrackElemType::FlatToRightBankedDown25
+    0x008A9A18, // TrackElemType::LeftBankedDown25ToFlat
+    0x008A9A28, // TrackElemType::RightBankedDown25ToFlat
     0,
     0,
     0,
@@ -1054,56 +1054,56 @@ static constexpr const uint32_t _OldInvertedRollerCoasterTrackPaintFunctions[256
 
 /** rct2: 0x008AAA0C */
 static constexpr const uint32_t _OldJuniorRollerCoasterTrackPaintFunctions[256] = {
-    0x008AAD80, // TRACK_ELEM_FLAT
-    0x008AAE70, // TRACK_ELEM_END_STATION
-    0x008AAE80, // TRACK_ELEM_BEGIN_STATION
-    0x008AAE90, // TRACK_ELEM_MIDDLE_STATION
-    0x008AAD90, // TRACK_ELEM_25_DEG_UP
+    0x008AAD80, // TrackElemType::Flat
+    0x008AAE70, // TrackElemType::EndStation
+    0x008AAE80, // TrackElemType::BeginStation
+    0x008AAE90, // TrackElemType::MiddleStation
+    0x008AAD90, // TrackElemType::Up25
     0,
-    0x008AADA0, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x008AADA0, // TrackElemType::FlatToUp25
     0,
     0,
-    0x008AADB0, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008AADC0, // TRACK_ELEM_25_DEG_DOWN
+    0x008AADB0, // TrackElemType::Up25ToFlat
+    0x008AADC0, // TrackElemType::Down25
     0,
-    0x008AADD0, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x008AADD0, // TrackElemType::FlatToDown25
     0,
     0,
-    0x008AADE0, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008AADF0, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AAE00, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008AAFC0, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008AAFD0, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008AAFE0, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008AAFF0, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008AB000, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008AB010, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008AB020, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008AB030, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008AB040, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008AB050, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008AB060, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AB070, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AB080, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AB090, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AB0A0, // TRACK_ELEM_LEFT_BANK
-    0x008AB0B0, // TRACK_ELEM_RIGHT_BANK
-    0x008AAE10, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AAE20, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AAE30, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AAE40, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AAE50, // TRACK_ELEM_S_BEND_LEFT
-    0x008AAE60, // TRACK_ELEM_S_BEND_RIGHT
+    0x008AADE0, // TrackElemType::Down25ToFlat
+    0x008AADF0, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AAE00, // TrackElemType::RightQuarterTurn5Tiles
+    0x008AAFC0, // TrackElemType::FlatToLeftBank
+    0x008AAFD0, // TrackElemType::FlatToRightBank
+    0x008AAFE0, // TrackElemType::LeftBankToFlat
+    0x008AAFF0, // TrackElemType::RightBankToFlat
+    0x008AB000, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008AB010, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008AB020, // TrackElemType::LeftBankToUp25
+    0x008AB030, // TrackElemType::RightBankToUp25
+    0x008AB040, // TrackElemType::Up25ToLeftBank
+    0x008AB050, // TrackElemType::Up25ToRightBank
+    0x008AB060, // TrackElemType::LeftBankToDown25
+    0x008AB070, // TrackElemType::RightBankToDown25
+    0x008AB080, // TrackElemType::Down25ToLeftBank
+    0x008AB090, // TrackElemType::Down25ToRightBank
+    0x008AB0A0, // TrackElemType::LeftBank
+    0x008AB0B0, // TrackElemType::RightBank
+    0x008AAE10, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008AAE20, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008AAE30, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008AAE40, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008AAE50, // TrackElemType::SBendLeft
+    0x008AAE60, // TrackElemType::SBendRight
     0,
     0,
-    0x008AAEA0, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008AAEB0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008AB0C0, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008AB0D0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008AAEC0, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AAED0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AAEE0, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008AAEF0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008AAEA0, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008AAEB0, // TrackElemType::RightQuarterTurn3Tiles
+    0x008AB0C0, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008AB0D0, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008AAEC0, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008AAED0, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008AAEE0, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008AAEF0, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -1141,19 +1141,19 @@ static constexpr const uint32_t _OldJuniorRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008AB0E0, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008AB0F0, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008AB100, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008AB110, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008AB120, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008AB130, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008AB140, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008AB150, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
+    0x008AB0E0, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008AB0F0, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008AB100, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008AB110, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008AB120, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008AB130, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008AB140, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008AB150, // TrackElemType::RightHalfBankedHelixDownLarge
     0,
     0,
     0,
     0,
-    0x008AAF00, // TRACK_ELEM_BRAKES
+    0x008AAF00, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -1187,45 +1187,45 @@ static constexpr const uint32_t _OldJuniorRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008AAF80, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008AAF90, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008AAFA0, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008AAFB0, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008AB160, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008AB170, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008AB180, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008AB190, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008AAF10, // TRACK_ELEM_DIAG_FLAT
-    0x008AAF40, // TRACK_ELEM_DIAG_25_DEG_UP
+    0x008AAF80, // TrackElemType::LeftEighthToDiag
+    0x008AAF90, // TrackElemType::RightEighthToDiag
+    0x008AAFA0, // TrackElemType::LeftEighthToOrthogonal
+    0x008AAFB0, // TrackElemType::RightEighthToOrthogonal
+    0x008AB160, // TrackElemType::LeftEighthBankToDiag
+    0x008AB170, // TrackElemType::RightEighthBankToDiag
+    0x008AB180, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008AB190, // TrackElemType::RightEighthBankToOrthogonal
+    0x008AAF10, // TrackElemType::DiagFlat
+    0x008AAF40, // TrackElemType::DiagUp25
     0,
-    0x008AAF20, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
+    0x008AAF20, // TrackElemType::DiagFlatToUp25
     0,
     0,
-    0x008AAF30, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008AAF70, // TRACK_ELEM_DIAG_25_DEG_DOWN
+    0x008AAF30, // TrackElemType::DiagUp25ToFlat
+    0x008AAF70, // TrackElemType::DiagDown25
     0,
-    0x008AAF50, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
+    0x008AAF50, // TrackElemType::DiagFlatToDown25
     0,
     0,
-    0x008AAF60, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008AAF60, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008AB1C0, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008AB1D0, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008AB1E0, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008AB1F0, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008AB220, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008AB230, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008AB200, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008AB210, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008AB240, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AB250, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AB260, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AB270, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AB1A0, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008AB1B0, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008AB1C0, // TrackElemType::DiagFlatToLeftBank
+    0x008AB1D0, // TrackElemType::DiagFlatToRightBank
+    0x008AB1E0, // TrackElemType::DiagLeftBankToFlat
+    0x008AB1F0, // TrackElemType::DiagRightBankToFlat
+    0x008AB220, // TrackElemType::DiagLeftBankToUp25
+    0x008AB230, // TrackElemType::DiagRightBankToUp25
+    0x008AB200, // TrackElemType::DiagUp25ToLeftBank
+    0x008AB210, // TrackElemType::DiagUp25ToRightBank
+    0x008AB240, // TrackElemType::DiagLeftBankToDown25
+    0x008AB250, // TrackElemType::DiagRightBankToDown25
+    0x008AB260, // TrackElemType::DiagDown25ToLeftBank
+    0x008AB270, // TrackElemType::DiagDown25ToRightBank
+    0x008AB1A0, // TrackElemType::DiagLeftBank
+    0x008AB1B0, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -1270,7 +1270,7 @@ static constexpr const uint32_t _OldJuniorRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008AB280, // TRACK_ELEM_BLOCK_BRAKES
+    0x008AB280, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -1314,24 +1314,24 @@ static constexpr const uint32_t _OldJuniorRollerCoasterTrackPaintFunctions[256] 
 
 /** rct2: 0x008ACE48 */
 static constexpr const uint32_t _OldMiniatureRailwayTrackPaintFunctions[256] = {
-    0x008AD0C0, // TRACK_ELEM_FLAT
-    0x008AD170, // TRACK_ELEM_END_STATION
-    0x008AD180, // TRACK_ELEM_BEGIN_STATION
-    0x008AD190, // TRACK_ELEM_MIDDLE_STATION
-    0x008AD0D0, // TRACK_ELEM_25_DEG_UP
+    0x008AD0C0, // TrackElemType::Flat
+    0x008AD170, // TrackElemType::EndStation
+    0x008AD180, // TrackElemType::BeginStation
+    0x008AD190, // TrackElemType::MiddleStation
+    0x008AD0D0, // TrackElemType::Up25
     0,
-    0x008AD0E0, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x008AD0E0, // TrackElemType::FlatToUp25
     0,
     0,
-    0x008AD0F0, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008AD100, // TRACK_ELEM_25_DEG_DOWN
+    0x008AD0F0, // TrackElemType::Up25ToFlat
+    0x008AD100, // TrackElemType::Down25
     0,
-    0x008AD110, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x008AD110, // TrackElemType::FlatToDown25
     0,
     0,
-    0x008AD120, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008AD130, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AD140, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x008AD120, // TrackElemType::Down25ToFlat
+    0x008AD130, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AD140, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -1352,12 +1352,12 @@ static constexpr const uint32_t _OldMiniatureRailwayTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008AD150, // TRACK_ELEM_S_BEND_LEFT
-    0x008AD160, // TRACK_ELEM_S_BEND_RIGHT
+    0x008AD150, // TrackElemType::SBendLeft
+    0x008AD160, // TrackElemType::SBendRight
     0,
     0,
-    0x008AD1A0, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008AD1B0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x008AD1A0, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008AD1B0, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
@@ -1447,27 +1447,27 @@ static constexpr const uint32_t _OldMiniatureRailwayTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008AD1C0, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008AD1D0, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008AD1E0, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008AD1F0, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
+    0x008AD1C0, // TrackElemType::LeftEighthToDiag
+    0x008AD1D0, // TrackElemType::RightEighthToDiag
+    0x008AD1E0, // TrackElemType::LeftEighthToOrthogonal
+    0x008AD1F0, // TrackElemType::RightEighthToOrthogonal
     0,
     0,
     0,
     0,
-    0x008AD200, // TRACK_ELEM_DIAG_FLAT
-    0x008AD230, // TRACK_ELEM_DIAG_25_DEG_UP
+    0x008AD200, // TrackElemType::DiagFlat
+    0x008AD230, // TrackElemType::DiagUp25
     0,
-    0x008AD210, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
+    0x008AD210, // TrackElemType::DiagFlatToUp25
     0,
     0,
-    0x008AD220, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008AD260, // TRACK_ELEM_DIAG_25_DEG_DOWN
+    0x008AD220, // TrackElemType::DiagUp25ToFlat
+    0x008AD260, // TrackElemType::DiagDown25
     0,
-    0x008AD240, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
+    0x008AD240, // TrackElemType::DiagFlatToDown25
     0,
     0,
-    0x008AD250, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008AD250, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
@@ -1574,24 +1574,24 @@ static constexpr const uint32_t _OldMiniatureRailwayTrackPaintFunctions[256] = {
 
 /** rct2: 0x008ADF34 */
 static constexpr const uint32_t _OldMonorailTrackPaintFunctions[256] = {
-    0x008AE1AC, // TRACK_ELEM_FLAT
-    0x008AE25C, // TRACK_ELEM_END_STATION
-    0x008AE26C, // TRACK_ELEM_BEGIN_STATION
-    0x008AE27C, // TRACK_ELEM_MIDDLE_STATION
-    0x008AE1BC, // TRACK_ELEM_25_DEG_UP
+    0x008AE1AC, // TrackElemType::Flat
+    0x008AE25C, // TrackElemType::EndStation
+    0x008AE26C, // TrackElemType::BeginStation
+    0x008AE27C, // TrackElemType::MiddleStation
+    0x008AE1BC, // TrackElemType::Up25
     0,
-    0x008AE1CC, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x008AE1CC, // TrackElemType::FlatToUp25
     0,
     0,
-    0x008AE1DC, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008AE1EC, // TRACK_ELEM_25_DEG_DOWN
+    0x008AE1DC, // TrackElemType::Up25ToFlat
+    0x008AE1EC, // TrackElemType::Down25
     0,
-    0x008AE1FC, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x008AE1FC, // TrackElemType::FlatToDown25
     0,
     0,
-    0x008AE20C, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008AE21C, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AE22C, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x008AE20C, // TrackElemType::Down25ToFlat
+    0x008AE21C, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AE22C, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -1612,12 +1612,12 @@ static constexpr const uint32_t _OldMonorailTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008AE23C, // TRACK_ELEM_S_BEND_LEFT
-    0x008AE24C, // TRACK_ELEM_S_BEND_RIGHT
+    0x008AE23C, // TrackElemType::SBendLeft
+    0x008AE24C, // TrackElemType::SBendRight
     0,
     0,
-    0x008AE28C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008AE29C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x008AE28C, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008AE29C, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
@@ -1707,27 +1707,27 @@ static constexpr const uint32_t _OldMonorailTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008AE31C, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008AE32C, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008AE33C, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008AE34C, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
+    0x008AE31C, // TrackElemType::LeftEighthToDiag
+    0x008AE32C, // TrackElemType::RightEighthToDiag
+    0x008AE33C, // TrackElemType::LeftEighthToOrthogonal
+    0x008AE34C, // TrackElemType::RightEighthToOrthogonal
     0,
     0,
     0,
     0,
-    0x008AE2AC, // TRACK_ELEM_DIAG_FLAT
-    0x008AE2DC, // TRACK_ELEM_DIAG_25_DEG_UP
+    0x008AE2AC, // TrackElemType::DiagFlat
+    0x008AE2DC, // TrackElemType::DiagUp25
     0,
-    0x008AE2BC, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
+    0x008AE2BC, // TrackElemType::DiagFlatToUp25
     0,
     0,
-    0x008AE2CC, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008AE30C, // TRACK_ELEM_DIAG_25_DEG_DOWN
+    0x008AE2CC, // TrackElemType::DiagUp25ToFlat
+    0x008AE30C, // TrackElemType::DiagDown25
     0,
-    0x008AE2EC, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
+    0x008AE2EC, // TrackElemType::DiagFlatToDown25
     0,
     0,
-    0x008AE2FC, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008AE2FC, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
@@ -1834,24 +1834,24 @@ static constexpr const uint32_t _OldMonorailTrackPaintFunctions[256] = {
 
 /** rct2: 0x008AFC24 */
 static constexpr const uint32_t _OldMiniSuspendedCoasterTrackPaintFunctions[256] = {
-    0x008AFE9C, // TRACK_ELEM_FLAT
-    0x008AFF4C, // TRACK_ELEM_END_STATION
-    0x008AFF5C, // TRACK_ELEM_BEGIN_STATION
-    0x008AFF6C, // TRACK_ELEM_MIDDLE_STATION
-    0x008AFEAC, // TRACK_ELEM_25_DEG_UP
+    0x008AFE9C, // TrackElemType::Flat
+    0x008AFF4C, // TrackElemType::EndStation
+    0x008AFF5C, // TrackElemType::BeginStation
+    0x008AFF6C, // TrackElemType::MiddleStation
+    0x008AFEAC, // TrackElemType::Up25
     0,
-    0x008AFEBC, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x008AFEBC, // TrackElemType::FlatToUp25
     0,
     0,
-    0x008AFECC, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008AFEDC, // TRACK_ELEM_25_DEG_DOWN
+    0x008AFECC, // TrackElemType::Up25ToFlat
+    0x008AFEDC, // TrackElemType::Down25
     0,
-    0x008AFEEC, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x008AFEEC, // TrackElemType::FlatToDown25
     0,
     0,
-    0x008AFEFC, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008AFF0C, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AFF1C, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x008AFEFC, // TrackElemType::Down25ToFlat
+    0x008AFF0C, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AFF1C, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -1872,12 +1872,12 @@ static constexpr const uint32_t _OldMiniSuspendedCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008AFF2C, // TRACK_ELEM_S_BEND_LEFT
-    0x008AFF3C, // TRACK_ELEM_S_BEND_RIGHT
+    0x008AFF2C, // TrackElemType::SBendLeft
+    0x008AFF3C, // TrackElemType::SBendRight
     0,
     0,
-    0x008AFF7C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008AFF8C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x008AFF7C, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008AFF8C, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
@@ -1967,27 +1967,27 @@ static constexpr const uint32_t _OldMiniSuspendedCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008AFFAC, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008AFFBC, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008AFFCC, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008AFFDC, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
+    0x008AFFAC, // TrackElemType::LeftEighthToDiag
+    0x008AFFBC, // TrackElemType::RightEighthToDiag
+    0x008AFFCC, // TrackElemType::LeftEighthToOrthogonal
+    0x008AFFDC, // TrackElemType::RightEighthToOrthogonal
     0,
     0,
     0,
     0,
-    0x008AFF9C, // TRACK_ELEM_DIAG_FLAT
-    0x008B000C, // TRACK_ELEM_DIAG_25_DEG_UP
+    0x008AFF9C, // TrackElemType::DiagFlat
+    0x008B000C, // TrackElemType::DiagUp25
     0,
-    0x008AFFEC, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
+    0x008AFFEC, // TrackElemType::DiagFlatToUp25
     0,
     0,
-    0x008AFFFC, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008B003C, // TRACK_ELEM_DIAG_25_DEG_DOWN
+    0x008AFFFC, // TrackElemType::DiagUp25ToFlat
+    0x008B003C, // TrackElemType::DiagDown25
     0,
-    0x008B001C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
+    0x008B001C, // TrackElemType::DiagFlatToDown25
     0,
     0,
-    0x008B002C, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008B002C, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
@@ -2094,10 +2094,10 @@ static constexpr const uint32_t _OldMiniSuspendedCoasterTrackPaintFunctions[256]
 
 /** rct2: 0x008B0D60 */
 static constexpr const uint32_t _OldBoatHireTrackPaintFunctions[256] = {
-    0x008B0E40, // TRACK_ELEM_FLAT
-    0x008B0E50, // TRACK_ELEM_END_STATION
-    0x008B0E60, // TRACK_ELEM_BEGIN_STATION
-    0x008B0E70, // TRACK_ELEM_MIDDLE_STATION
+    0x008B0E40, // TrackElemType::Flat
+    0x008B0E50, // TrackElemType::EndStation
+    0x008B0E60, // TrackElemType::BeginStation
+    0x008B0E70, // TrackElemType::MiddleStation
     0,
     0,
     0,
@@ -2144,8 +2144,8 @@ static constexpr const uint32_t _OldBoatHireTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008B0E80, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x008B0E90, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0x008B0E80, // TrackElemType::LeftQuarterTurn1Tile
+    0x008B0E90, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -2354,22 +2354,22 @@ static constexpr const uint32_t _OldBoatHireTrackPaintFunctions[256] = {
 
 /** rct2: 0x008A534C */
 static constexpr const uint32_t _OldWoodenWildMouseTrackPaintFunctions[256] = {
-    0x008A5464, // TRACK_ELEM_FLAT
-    0x008A5534, // TRACK_ELEM_END_STATION
-    0x008A5544, // TRACK_ELEM_BEGIN_STATION
-    0x008A5554, // TRACK_ELEM_MIDDLE_STATION
-    0x008A5474, // TRACK_ELEM_25_DEG_UP
-    0x008A5484, // TRACK_ELEM_60_DEG_UP
-    0x008A5494, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008A54A4, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008A54B4, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008A54C4, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008A54D4, // TRACK_ELEM_25_DEG_DOWN
-    0x008A54E4, // TRACK_ELEM_60_DEG_DOWN
-    0x008A54F4, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008A5504, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A5514, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A5524, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x008A5464, // TrackElemType::Flat
+    0x008A5534, // TrackElemType::EndStation
+    0x008A5544, // TrackElemType::BeginStation
+    0x008A5554, // TrackElemType::MiddleStation
+    0x008A5474, // TrackElemType::Up25
+    0x008A5484, // TrackElemType::Up60
+    0x008A5494, // TrackElemType::FlatToUp25
+    0x008A54A4, // TrackElemType::Up25ToUp60
+    0x008A54B4, // TrackElemType::Up60ToUp25
+    0x008A54C4, // TrackElemType::Up25ToFlat
+    0x008A54D4, // TrackElemType::Down25
+    0x008A54E4, // TrackElemType::Down60
+    0x008A54F4, // TrackElemType::FlatToDown25
+    0x008A5504, // TrackElemType::Down25ToDown60
+    0x008A5514, // TrackElemType::Down60ToDown25
+    0x008A5524, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -2396,19 +2396,16 @@ static constexpr const uint32_t _OldWoodenWildMouseTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008A5564, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008A5574, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x008A5564, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008A5574, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
-    0x008A5584, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A5594, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A55A4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008A55B4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008A55C4, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x008A55D4, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
-    0,
-    0,
-    0,
+    0x008A5584, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008A5594, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008A55A4, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008A55B4, // TrackElemType::RightQuarterTurn3TilesDown25
+    0x008A55C4, // TrackElemType::LeftQuarterTurn1Tile
+    0x008A55D4, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -2416,10 +2413,13 @@ static constexpr const uint32_t _OldWoodenWildMouseTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008A55E4, // TRACK_ELEM_FLAT_TO_60_DEG_UP
-    0x008A55F4, // TRACK_ELEM_60_DEG_UP_TO_FLAT
-    0x008A5604, // TRACK_ELEM_FLAT_TO_60_DEG_DOWN
-    0x008A5614, // TRACK_ELEM_60_DEG_DOWN_TO_FLAT
+    0,
+    0,
+    0,
+    0x008A55E4, // TrackElemType::FlatToUp60
+    0x008A55F4, // TrackElemType::Up60ToFlat
+    0x008A5604, // TrackElemType::FlatToDown60
+    0x008A5614, // TrackElemType::Down60ToFlat
     0,
     0,
     0,
@@ -2614,24 +2614,24 @@ static constexpr const uint32_t _OldWoodenWildMouseTrackPaintFunctions[256] = {
 
 /** rct2: 0x008A5634 */
 static constexpr const uint32_t _OldSteeplechaseTrackPaintFunctions[256] = {
-    0x008A59A8, // TRACK_ELEM_FLAT
-    0x008A5A58, // TRACK_ELEM_END_STATION
-    0x008A5A68, // TRACK_ELEM_BEGIN_STATION
-    0x008A5A78, // TRACK_ELEM_MIDDLE_STATION
-    0x008A59B8, // TRACK_ELEM_25_DEG_UP
+    0x008A59A8, // TrackElemType::Flat
+    0x008A5A58, // TrackElemType::EndStation
+    0x008A5A68, // TrackElemType::BeginStation
+    0x008A5A78, // TrackElemType::MiddleStation
+    0x008A59B8, // TrackElemType::Up25
     0,
-    0x008A59C8, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x008A59C8, // TrackElemType::FlatToUp25
     0,
     0,
-    0x008A59D8, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008A59E8, // TRACK_ELEM_25_DEG_DOWN
+    0x008A59D8, // TrackElemType::Up25ToFlat
+    0x008A59E8, // TrackElemType::Down25
     0,
-    0x008A59F8, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x008A59F8, // TrackElemType::FlatToDown25
     0,
     0,
-    0x008A5A08, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008A5A18, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008A5A28, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x008A5A08, // TrackElemType::Down25ToFlat
+    0x008A5A18, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008A5A28, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -2652,12 +2652,12 @@ static constexpr const uint32_t _OldSteeplechaseTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008A5A38, // TRACK_ELEM_S_BEND_LEFT
-    0x008A5A48, // TRACK_ELEM_S_BEND_RIGHT
+    0x008A5A38, // TrackElemType::SBendLeft
+    0x008A5A48, // TrackElemType::SBendRight
     0,
     0,
-    0x008A5A88, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008A5A98, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x008A5A88, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008A5A98, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
@@ -2713,7 +2713,7 @@ static constexpr const uint32_t _OldSteeplechaseTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008A5AA8, // TRACK_ELEM_BRAKES
+    0x008A5AA8, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -2747,27 +2747,27 @@ static constexpr const uint32_t _OldSteeplechaseTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008A5AD8, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008A5AE8, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008A5AF8, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008A5B08, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
+    0x008A5AD8, // TrackElemType::LeftEighthToDiag
+    0x008A5AE8, // TrackElemType::RightEighthToDiag
+    0x008A5AF8, // TrackElemType::LeftEighthToOrthogonal
+    0x008A5B08, // TrackElemType::RightEighthToOrthogonal
     0,
     0,
     0,
     0,
-    0x008A5AC8, // TRACK_ELEM_DIAG_FLAT
-    0x008A5B38, // TRACK_ELEM_DIAG_25_DEG_UP
+    0x008A5AC8, // TrackElemType::DiagFlat
+    0x008A5B38, // TrackElemType::DiagUp25
     0,
-    0x008A5B18, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
+    0x008A5B18, // TrackElemType::DiagFlatToUp25
     0,
     0,
-    0x008A5B28, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008A5B68, // TRACK_ELEM_DIAG_25_DEG_DOWN
+    0x008A5B28, // TrackElemType::DiagUp25ToFlat
+    0x008A5B68, // TrackElemType::DiagDown25
     0,
-    0x008A5B48, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
+    0x008A5B48, // TrackElemType::DiagFlatToDown25
     0,
     0,
-    0x008A5B58, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008A5B58, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
@@ -2830,7 +2830,7 @@ static constexpr const uint32_t _OldSteeplechaseTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008A5AB8, // TRACK_ELEM_BLOCK_BRAKES
+    0x008A5AB8, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -2874,22 +2874,22 @@ static constexpr const uint32_t _OldSteeplechaseTrackPaintFunctions[256] = {
 
 /** rct2: 0x006F7000 */
 static constexpr const uint32_t _OldCarRideTrackPaintFunctions[256] = {
-    0x006F72C8, // TRACK_ELEM_FLAT
-    0x006F7338, // TRACK_ELEM_END_STATION
-    0x006F7348, // TRACK_ELEM_BEGIN_STATION
-    0x006F7358, // TRACK_ELEM_MIDDLE_STATION
-    0x006F72D8, // TRACK_ELEM_25_DEG_UP
-    0x006F73B8, // TRACK_ELEM_60_DEG_UP
-    0x006F72E8, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x006F73C8, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x006F73D8, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x006F72F8, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x006F7308, // TRACK_ELEM_25_DEG_DOWN
-    0x006F73E8, // TRACK_ELEM_60_DEG_DOWN
-    0x006F7318, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x006F73F8, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x006F7408, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x006F7328, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x006F72C8, // TrackElemType::Flat
+    0x006F7338, // TrackElemType::EndStation
+    0x006F7348, // TrackElemType::BeginStation
+    0x006F7358, // TrackElemType::MiddleStation
+    0x006F72D8, // TrackElemType::Up25
+    0x006F73B8, // TrackElemType::Up60
+    0x006F72E8, // TrackElemType::FlatToUp25
+    0x006F73C8, // TrackElemType::Up25ToUp60
+    0x006F73D8, // TrackElemType::Up60ToUp25
+    0x006F72F8, // TrackElemType::Up25ToFlat
+    0x006F7308, // TrackElemType::Down25
+    0x006F73E8, // TrackElemType::Down60
+    0x006F7318, // TrackElemType::FlatToDown25
+    0x006F73F8, // TrackElemType::Down25ToDown60
+    0x006F7408, // TrackElemType::Down60ToDown25
+    0x006F7328, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -2916,16 +2916,16 @@ static constexpr const uint32_t _OldCarRideTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x006F7368, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x006F7378, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x006F7368, // TrackElemType::LeftQuarterTurn3Tiles
+    0x006F7378, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
     0,
     0,
     0,
-    0x006F7388, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x006F7398, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0x006F7388, // TrackElemType::LeftQuarterTurn1Tile
+    0x006F7398, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -2987,7 +2987,7 @@ static constexpr const uint32_t _OldCarRideTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x006F7418, // TRACK_ELEM_RAPIDS
+    0x006F7418, // TrackElemType::Rapids
     0,
     0,
     0,
@@ -3047,7 +3047,7 @@ static constexpr const uint32_t _OldCarRideTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x006F73A8, // TRACK_ELEM_SPINNING_TUNNEL
+    0x006F73A8, // TrackElemType::SpinningTunnel
     0,
     0,
     0,
@@ -3200,8 +3200,8 @@ static constexpr const uint32_t _OldLaunchedFreefallTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x006FD1F8, // TRACK_ELEM_TOWER_BASE
-    0x006FD208, // TRACK_ELEM_TOWER_SECTION
+    0x006FD1F8, // TrackElemType::TowerBase
+    0x006FD208, // TrackElemType::TowerSection
     0,
     0,
     0,
@@ -3394,52 +3394,52 @@ static constexpr const uint32_t _OldLaunchedFreefallTrackPaintFunctions[256] = {
 
 /** rct2: 0x006FE240 */
 static constexpr const uint32_t _OldBobsleighCoasterTrackPaintFunctions[256] = {
-    0x006FE5B4, // TRACK_ELEM_FLAT
-    0x006FE764, // TRACK_ELEM_END_STATION
-    0x006FE774, // TRACK_ELEM_BEGIN_STATION
-    0x006FE784, // TRACK_ELEM_MIDDLE_STATION
-    0x006FE5C4, // TRACK_ELEM_25_DEG_UP
+    0x006FE5B4, // TrackElemType::Flat
+    0x006FE764, // TrackElemType::EndStation
+    0x006FE774, // TrackElemType::BeginStation
+    0x006FE784, // TrackElemType::MiddleStation
+    0x006FE5C4, // TrackElemType::Up25
     0,
-    0x006FE5D4, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x006FE5D4, // TrackElemType::FlatToUp25
     0,
     0,
-    0x006FE5E4, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x006FE5F4, // TRACK_ELEM_25_DEG_DOWN
+    0x006FE5E4, // TrackElemType::Up25ToFlat
+    0x006FE5F4, // TrackElemType::Down25
     0,
-    0x006FE604, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x006FE604, // TrackElemType::FlatToDown25
     0,
     0,
-    0x006FE614, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x006FE624, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x006FE634, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x006FE644, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x006FE654, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x006FE664, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x006FE674, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x006FE684, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x006FE694, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x006FE6A4, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x006FE6B4, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x006FE6C4, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x006FE6D4, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x006FE6E4, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x006FE6F4, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x006FE704, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x006FE714, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x006FE724, // TRACK_ELEM_LEFT_BANK
-    0x006FE734, // TRACK_ELEM_RIGHT_BANK
+    0x006FE614, // TrackElemType::Down25ToFlat
+    0x006FE624, // TrackElemType::LeftQuarterTurn5Tiles
+    0x006FE634, // TrackElemType::RightQuarterTurn5Tiles
+    0x006FE644, // TrackElemType::FlatToLeftBank
+    0x006FE654, // TrackElemType::FlatToRightBank
+    0x006FE664, // TrackElemType::LeftBankToFlat
+    0x006FE674, // TrackElemType::RightBankToFlat
+    0x006FE684, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x006FE694, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x006FE6A4, // TrackElemType::LeftBankToUp25
+    0x006FE6B4, // TrackElemType::RightBankToUp25
+    0x006FE6C4, // TrackElemType::Up25ToLeftBank
+    0x006FE6D4, // TrackElemType::Up25ToRightBank
+    0x006FE6E4, // TrackElemType::LeftBankToDown25
+    0x006FE6F4, // TrackElemType::RightBankToDown25
+    0x006FE704, // TrackElemType::Down25ToLeftBank
+    0x006FE714, // TrackElemType::Down25ToRightBank
+    0x006FE724, // TrackElemType::LeftBank
+    0x006FE734, // TrackElemType::RightBank
     0,
     0,
     0,
     0,
-    0x006FE744, // TRACK_ELEM_S_BEND_LEFT
-    0x006FE754, // TRACK_ELEM_S_BEND_RIGHT
+    0x006FE744, // TrackElemType::SBendLeft
+    0x006FE754, // TrackElemType::SBendRight
     0,
     0,
-    0x006FE794, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x006FE7A4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x006FE7B4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x006FE7C4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
+    0x006FE794, // TrackElemType::LeftQuarterTurn3Tiles
+    0x006FE7A4, // TrackElemType::RightQuarterTurn3Tiles
+    0x006FE7B4, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x006FE7C4, // TrackElemType::RightBankedQuarterTurn3Tiles
     0,
     0,
     0,
@@ -3481,19 +3481,19 @@ static constexpr const uint32_t _OldBobsleighCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x006FE7D4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x006FE7E4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x006FE7F4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x006FE804, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x006FE814, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x006FE824, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x006FE834, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x006FE844, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
+    0x006FE7D4, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x006FE7E4, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x006FE7F4, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x006FE804, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x006FE814, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x006FE824, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x006FE834, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x006FE844, // TrackElemType::RightHalfBankedHelixDownLarge
     0,
     0,
     0,
     0,
-    0x006FE854, // TRACK_ELEM_BRAKES
+    0x006FE854, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -3610,7 +3610,7 @@ static constexpr const uint32_t _OldBobsleighCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x006FE864, // TRACK_ELEM_BLOCK_BRAKES
+    0x006FE864, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -3720,8 +3720,8 @@ static constexpr const uint32_t _OldObservationTowerTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0070DD6C, // TRACK_ELEM_TOWER_BASE
-    0x0070DD7C, // TRACK_ELEM_TOWER_SECTION
+    0x0070DD6C, // TrackElemType::TowerBase
+    0x0070DD7C, // TrackElemType::TowerSection
     0,
     0,
     0,
@@ -3914,56 +3914,56 @@ static constexpr const uint32_t _OldObservationTowerTrackPaintFunctions[256] = {
 
 /** rct2: 0x008A5B88 */
 static constexpr const uint32_t _OldLoopingRollerCoasterTrackPaintFunctions[256] = {
-    0x008A6370, // TRACK_ELEM_FLAT
-    0x008A6600, // TRACK_ELEM_END_STATION
-    0x008A6610, // TRACK_ELEM_BEGIN_STATION
-    0x008A6620, // TRACK_ELEM_MIDDLE_STATION
-    0x008A6380, // TRACK_ELEM_25_DEG_UP
-    0x008A6390, // TRACK_ELEM_60_DEG_UP
-    0x008A63A0, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008A63B0, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008A63C0, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008A63D0, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008A63E0, // TRACK_ELEM_25_DEG_DOWN
-    0x008A63F0, // TRACK_ELEM_60_DEG_DOWN
-    0x008A6400, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008A6410, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A6420, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A6430, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008A6440, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008A6450, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008A6460, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008A6470, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008A6480, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008A6490, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008A64A0, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008A64B0, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008A64C0, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008A64D0, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008A64E0, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008A64F0, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008A6500, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A6510, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A6520, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A6530, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A6540, // TRACK_ELEM_LEFT_BANK
-    0x008A6550, // TRACK_ELEM_RIGHT_BANK
-    0x008A6560, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A6570, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A6580, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A6590, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A65A0, // TRACK_ELEM_S_BEND_LEFT
-    0x008A65B0, // TRACK_ELEM_S_BEND_RIGHT
-    0x008A65C0, // TRACK_ELEM_LEFT_VERTICAL_LOOP
-    0x008A65D0, // TRACK_ELEM_RIGHT_VERTICAL_LOOP
-    0x008A6630, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008A6640, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008A6650, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008A6660, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008A6670, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A6680, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A6690, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008A66A0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008A6370, // TrackElemType::Flat
+    0x008A6600, // TrackElemType::EndStation
+    0x008A6610, // TrackElemType::BeginStation
+    0x008A6620, // TrackElemType::MiddleStation
+    0x008A6380, // TrackElemType::Up25
+    0x008A6390, // TrackElemType::Up60
+    0x008A63A0, // TrackElemType::FlatToUp25
+    0x008A63B0, // TrackElemType::Up25ToUp60
+    0x008A63C0, // TrackElemType::Up60ToUp25
+    0x008A63D0, // TrackElemType::Up25ToFlat
+    0x008A63E0, // TrackElemType::Down25
+    0x008A63F0, // TrackElemType::Down60
+    0x008A6400, // TrackElemType::FlatToDown25
+    0x008A6410, // TrackElemType::Down25ToDown60
+    0x008A6420, // TrackElemType::Down60ToDown25
+    0x008A6430, // TrackElemType::Down25ToFlat
+    0x008A6440, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008A6450, // TrackElemType::RightQuarterTurn5Tiles
+    0x008A6460, // TrackElemType::FlatToLeftBank
+    0x008A6470, // TrackElemType::FlatToRightBank
+    0x008A6480, // TrackElemType::LeftBankToFlat
+    0x008A6490, // TrackElemType::RightBankToFlat
+    0x008A64A0, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008A64B0, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008A64C0, // TrackElemType::LeftBankToUp25
+    0x008A64D0, // TrackElemType::RightBankToUp25
+    0x008A64E0, // TrackElemType::Up25ToLeftBank
+    0x008A64F0, // TrackElemType::Up25ToRightBank
+    0x008A6500, // TrackElemType::LeftBankToDown25
+    0x008A6510, // TrackElemType::RightBankToDown25
+    0x008A6520, // TrackElemType::Down25ToLeftBank
+    0x008A6530, // TrackElemType::Down25ToRightBank
+    0x008A6540, // TrackElemType::LeftBank
+    0x008A6550, // TrackElemType::RightBank
+    0x008A6560, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008A6570, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008A6580, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008A6590, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008A65A0, // TrackElemType::SBendLeft
+    0x008A65B0, // TrackElemType::SBendRight
+    0x008A65C0, // TrackElemType::LeftVerticalLoop
+    0x008A65D0, // TrackElemType::RightVerticalLoop
+    0x008A6630, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008A6640, // TrackElemType::RightQuarterTurn3Tiles
+    0x008A6650, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008A6660, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008A6670, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008A6680, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008A6690, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008A66A0, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -4001,19 +4001,19 @@ static constexpr const uint32_t _OldLoopingRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008A66B0, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A66C0, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A66D0, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A66E0, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A66F0, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A6700, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A6710, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A6720, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A6750, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A6730, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A6740, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A6760, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A6770, // TRACK_ELEM_BRAKES
+    0x008A66B0, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008A66C0, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008A66D0, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008A66E0, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008A66F0, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008A6700, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008A6710, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008A6720, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x008A6750, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008A6730, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008A6740, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008A6760, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008A6770, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -4024,13 +4024,13 @@ static constexpr const uint32_t _OldLoopingRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008A6A40, // TRACK_ELEM_25_DEG_UP_LEFT_BANKED
-    0x008A6A50, // TRACK_ELEM_25_DEG_UP_RIGHT_BANKED
+    0x008A6A40, // TrackElemType::Up25LeftBanked
+    0x008A6A50, // TrackElemType::Up25RightBanked
     0,
     0,
-    0x008A6780, // TRACK_ELEM_ON_RIDE_PHOTO
-    0x008A6A60, // TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED
-    0x008A6A70, // TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED
+    0x008A6780, // TrackElemType::OnRidePhoto
+    0x008A6A60, // TrackElemType::Down25LeftBanked
+    0x008A6A70, // TrackElemType::Down25RightBanked
     0,
     0,
     0,
@@ -4047,45 +4047,45 @@ static constexpr const uint32_t _OldLoopingRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008A6860, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008A6870, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008A6880, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008A6890, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008A68A0, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008A68B0, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008A68C0, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A68D0, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A6790, // TRACK_ELEM_DIAG_FLAT
-    0x008A67C0, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008A67F0, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008A67A0, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008A67D0, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008A67E0, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008A67B0, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008A6820, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008A6850, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008A6800, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008A6830, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A6840, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A6810, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008A6860, // TrackElemType::LeftEighthToDiag
+    0x008A6870, // TrackElemType::RightEighthToDiag
+    0x008A6880, // TrackElemType::LeftEighthToOrthogonal
+    0x008A6890, // TrackElemType::RightEighthToOrthogonal
+    0x008A68A0, // TrackElemType::LeftEighthBankToDiag
+    0x008A68B0, // TrackElemType::RightEighthBankToDiag
+    0x008A68C0, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008A68D0, // TrackElemType::RightEighthBankToOrthogonal
+    0x008A6790, // TrackElemType::DiagFlat
+    0x008A67C0, // TrackElemType::DiagUp25
+    0x008A67F0, // TrackElemType::DiagUp60
+    0x008A67A0, // TrackElemType::DiagFlatToUp25
+    0x008A67D0, // TrackElemType::DiagUp25ToUp60
+    0x008A67E0, // TrackElemType::DiagUp60ToUp25
+    0x008A67B0, // TrackElemType::DiagUp25ToFlat
+    0x008A6820, // TrackElemType::DiagDown25
+    0x008A6850, // TrackElemType::DiagDown60
+    0x008A6800, // TrackElemType::DiagFlatToDown25
+    0x008A6830, // TrackElemType::DiagDown25ToDown60
+    0x008A6840, // TrackElemType::DiagDown60ToDown25
+    0x008A6810, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008A6900, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008A6910, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008A6920, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008A6930, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008A6960, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008A6970, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008A6940, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008A6950, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008A6980, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A6990, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A69A0, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A69B0, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A68E0, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008A68F0, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008A6900, // TrackElemType::DiagFlatToLeftBank
+    0x008A6910, // TrackElemType::DiagFlatToRightBank
+    0x008A6920, // TrackElemType::DiagLeftBankToFlat
+    0x008A6930, // TrackElemType::DiagRightBankToFlat
+    0x008A6960, // TrackElemType::DiagLeftBankToUp25
+    0x008A6970, // TrackElemType::DiagRightBankToUp25
+    0x008A6940, // TrackElemType::DiagUp25ToLeftBank
+    0x008A6950, // TrackElemType::DiagUp25ToRightBank
+    0x008A6980, // TrackElemType::DiagLeftBankToDown25
+    0x008A6990, // TrackElemType::DiagRightBankToDown25
+    0x008A69A0, // TrackElemType::DiagDown25ToLeftBank
+    0x008A69B0, // TrackElemType::DiagDown25ToRightBank
+    0x008A68E0, // TrackElemType::DiagLeftBank
+    0x008A68F0, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -4130,39 +4130,39 @@ static constexpr const uint32_t _OldLoopingRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008A6C00, // TRACK_ELEM_BLOCK_BRAKES
-    0x008A6BC0, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008A6BD0, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008A6BE0, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008A6BF0, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008A6B80, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008A6B90, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008A6BA0, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008A6BB0, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008A6A80, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    0x008A6A90, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A6AA0, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008A6AB0, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008A6AC0, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A6AD0, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A6AE0, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A6AF0, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A6B00, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008A6B10, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A6B40, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    0x008A6B50, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    0x008A6B60, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A6B70, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A6B20, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    0x008A6B30, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    0x008A69C0, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008A69D0, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A69E0, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    0x008A69F0, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    0x008A6A00, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A6A10, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A6A20, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008A6A30, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
+    0x008A6C00, // TrackElemType::BlockBrakes
+    0x008A6BC0, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    0x008A6BD0, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    0x008A6BE0, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    0x008A6BF0, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    0x008A6B80, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    0x008A6B90, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    0x008A6BA0, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    0x008A6BB0, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    0x008A6A80, // TrackElemType::Up25ToLeftBankedUp25
+    0x008A6A90, // TrackElemType::Up25ToRightBankedUp25
+    0x008A6AA0, // TrackElemType::LeftBankedUp25ToUp25
+    0x008A6AB0, // TrackElemType::RightBankedUp25ToUp25
+    0x008A6AC0, // TrackElemType::Down25ToLeftBankedDown25
+    0x008A6AD0, // TrackElemType::Down25ToRightBankedDown25
+    0x008A6AE0, // TrackElemType::LeftBankedDown25ToDown25
+    0x008A6AF0, // TrackElemType::RightBankedDown25ToDown25
+    0x008A6B00, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    0x008A6B10, // TrackElemType::RightBankedFlatToRightBankedUp25
+    0x008A6B40, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    0x008A6B50, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    0x008A6B60, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    0x008A6B70, // TrackElemType::RightBankedFlatToRightBankedDown25
+    0x008A6B20, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    0x008A6B30, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    0x008A69C0, // TrackElemType::FlatToLeftBankedUp25
+    0x008A69D0, // TrackElemType::FlatToRightBankedUp25
+    0x008A69E0, // TrackElemType::LeftBankedUp25ToFlat
+    0x008A69F0, // TrackElemType::RightBankedUp25ToFlat
+    0x008A6A00, // TrackElemType::FlatToLeftBankedDown25
+    0x008A6A10, // TrackElemType::FlatToRightBankedDown25
+    0x008A6A20, // TrackElemType::LeftBankedDown25ToFlat
+    0x008A6A30, // TrackElemType::RightBankedDown25ToFlat
     0,
     0,
     0,
@@ -4174,24 +4174,24 @@ static constexpr const uint32_t _OldLoopingRollerCoasterTrackPaintFunctions[256]
 
 /** rct2: 0x0070EDB4 */
 static constexpr const uint32_t _OldDinghySlideTrackPaintFunctions[256] = {
-    0x0070EF20, // TRACK_ELEM_FLAT
-    0x0070F030, // TRACK_ELEM_END_STATION
-    0x0070F040, // TRACK_ELEM_BEGIN_STATION
-    0x0070F050, // TRACK_ELEM_MIDDLE_STATION
-    0x0070EF30, // TRACK_ELEM_25_DEG_UP
-    0x0070EFD0, // TRACK_ELEM_60_DEG_UP
-    0x0070EF40, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x0070EF90, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x0070EFA0, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x0070EF50, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0070EF60, // TRACK_ELEM_25_DEG_DOWN
-    0x0070EFE0, // TRACK_ELEM_60_DEG_DOWN
-    0x0070EF70, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x0070EFB0, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x0070EFC0, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x0070EF80, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x0070EFF0, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x0070F000, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x0070EF20, // TrackElemType::Flat
+    0x0070F030, // TrackElemType::EndStation
+    0x0070F040, // TrackElemType::BeginStation
+    0x0070F050, // TrackElemType::MiddleStation
+    0x0070EF30, // TrackElemType::Up25
+    0x0070EFD0, // TrackElemType::Up60
+    0x0070EF40, // TrackElemType::FlatToUp25
+    0x0070EF90, // TrackElemType::Up25ToUp60
+    0x0070EFA0, // TrackElemType::Up60ToUp25
+    0x0070EF50, // TrackElemType::Up25ToFlat
+    0x0070EF60, // TrackElemType::Down25
+    0x0070EFE0, // TrackElemType::Down60
+    0x0070EF70, // TrackElemType::FlatToDown25
+    0x0070EFB0, // TrackElemType::Down25ToDown60
+    0x0070EFC0, // TrackElemType::Down60ToDown25
+    0x0070EF80, // TrackElemType::Down25ToFlat
+    0x0070EFF0, // TrackElemType::LeftQuarterTurn5Tiles
+    0x0070F000, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -4212,15 +4212,12 @@ static constexpr const uint32_t _OldDinghySlideTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0070F010, // TRACK_ELEM_S_BEND_LEFT
-    0x0070F020, // TRACK_ELEM_S_BEND_RIGHT
+    0x0070F010, // TrackElemType::SBendLeft
+    0x0070F020, // TrackElemType::SBendRight
     0,
     0,
-    0x0070F060, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x0070F070, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0,
-    0,
-    0,
+    0x0070F060, // TrackElemType::LeftQuarterTurn3Tiles
+    0x0070F070, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
@@ -4242,25 +4239,28 @@ static constexpr const uint32_t _OldDinghySlideTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0070F080, // TRACK_ELEM_FLAT_COVERED
-    0x0070F090, // TRACK_ELEM_25_DEG_UP_COVERED
-    0x0070F130, // TRACK_ELEM_60_DEG_UP_COVERED
-    0x0070F0A0, // TRACK_ELEM_FLAT_TO_25_DEG_UP_COVERED
-    0x0070F0F0, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP_COVERED
-    0x0070F100, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP_COVERED
-    0x0070F0B0, // TRACK_ELEM_25_DEG_UP_TO_FLAT_COVERED
-    0x0070F0C0, // TRACK_ELEM_25_DEG_DOWN_COVERED
-    0x0070F140, // TRACK_ELEM_60_DEG_DOWN_COVERED
-    0x0070F0D0, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN_COVERED
-    0x0070F110, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED
-    0x0070F120, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED
-    0x0070F0E0, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT_COVERED
-    0x0070F150, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED
-    0x0070F160, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED
-    0x0070F190, // TRACK_ELEM_S_BEND_LEFT_COVERED
-    0x0070F1A0, // TRACK_ELEM_S_BEND_RIGHT_COVERED
-    0x0070F170, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_COVERED
-    0x0070F180, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_COVERED
+    0,
+    0,
+    0,
+    0x0070F080, // TrackElemType::FlatCovered
+    0x0070F090, // TrackElemType::Up25Covered
+    0x0070F130, // TrackElemType::Up60Covered
+    0x0070F0A0, // TrackElemType::FlatToUp25Covered
+    0x0070F0F0, // TrackElemType::Up25ToUp60Covered
+    0x0070F100, // TrackElemType::Up60ToUp25Covered
+    0x0070F0B0, // TrackElemType::Up25ToFlatCovered
+    0x0070F0C0, // TrackElemType::Down25Covered
+    0x0070F140, // TrackElemType::Down60Covered
+    0x0070F0D0, // TrackElemType::FlatToDown25Covered
+    0x0070F110, // TrackElemType::Down25ToDown60Covered
+    0x0070F120, // TrackElemType::Down60ToDown25Covered
+    0x0070F0E0, // TrackElemType::Down25ToFlatCovered
+    0x0070F150, // TrackElemType::LeftQuarterTurn5TilesCovered
+    0x0070F160, // TrackElemType::RightQuarterTurn5TilesCovered
+    0x0070F190, // TrackElemType::SBendLeftCovered
+    0x0070F1A0, // TrackElemType::SBendRightCovered
+    0x0070F170, // TrackElemType::LeftQuarterTurn3TilesCovered
+    0x0070F180, // TrackElemType::RightQuarterTurn3TilesCovered
     0,
     0,
     0,
@@ -4434,56 +4434,56 @@ static constexpr const uint32_t _OldDinghySlideTrackPaintFunctions[256] = {
 
 /** rct2: 0x0071BC40 */
 static constexpr const uint32_t _OldMineTrainCoasterTrackPaintFunctions[256] = {
-    0x0071BFA4, // TRACK_ELEM_FLAT
-    0x0071C154, // TRACK_ELEM_END_STATION
-    0x0071C164, // TRACK_ELEM_BEGIN_STATION
-    0x0071C174, // TRACK_ELEM_MIDDLE_STATION
-    0x0071BFB4, // TRACK_ELEM_25_DEG_UP
-    0x0071BFC4, // TRACK_ELEM_60_DEG_UP
-    0x0071BFD4, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x0071BFE4, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x0071BFF4, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x0071C004, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0071C014, // TRACK_ELEM_25_DEG_DOWN
-    0x0071C024, // TRACK_ELEM_60_DEG_DOWN
-    0x0071C034, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x0071C044, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x0071C054, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x0071C064, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x0071C0B4, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x0071C0C4, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x0071C074, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x0071C084, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x0071C094, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x0071C0A4, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x0071C0D4, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x0071C0E4, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x0071C204, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x0071C214, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x0071C224, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x0071C234, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x0071C244, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x0071C254, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x0071C264, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x0071C274, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x0071C304, // TRACK_ELEM_LEFT_BANK
-    0x0071C314, // TRACK_ELEM_RIGHT_BANK
-    0x0071C0F4, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x0071C104, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x0071C114, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x0071C124, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x0071C134, // TRACK_ELEM_S_BEND_LEFT
-    0x0071C144, // TRACK_ELEM_S_BEND_RIGHT
+    0x0071BFA4, // TrackElemType::Flat
+    0x0071C154, // TrackElemType::EndStation
+    0x0071C164, // TrackElemType::BeginStation
+    0x0071C174, // TrackElemType::MiddleStation
+    0x0071BFB4, // TrackElemType::Up25
+    0x0071BFC4, // TrackElemType::Up60
+    0x0071BFD4, // TrackElemType::FlatToUp25
+    0x0071BFE4, // TrackElemType::Up25ToUp60
+    0x0071BFF4, // TrackElemType::Up60ToUp25
+    0x0071C004, // TrackElemType::Up25ToFlat
+    0x0071C014, // TrackElemType::Down25
+    0x0071C024, // TrackElemType::Down60
+    0x0071C034, // TrackElemType::FlatToDown25
+    0x0071C044, // TrackElemType::Down25ToDown60
+    0x0071C054, // TrackElemType::Down60ToDown25
+    0x0071C064, // TrackElemType::Down25ToFlat
+    0x0071C0B4, // TrackElemType::LeftQuarterTurn5Tiles
+    0x0071C0C4, // TrackElemType::RightQuarterTurn5Tiles
+    0x0071C074, // TrackElemType::FlatToLeftBank
+    0x0071C084, // TrackElemType::FlatToRightBank
+    0x0071C094, // TrackElemType::LeftBankToFlat
+    0x0071C0A4, // TrackElemType::RightBankToFlat
+    0x0071C0D4, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x0071C0E4, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x0071C204, // TrackElemType::LeftBankToUp25
+    0x0071C214, // TrackElemType::RightBankToUp25
+    0x0071C224, // TrackElemType::Up25ToLeftBank
+    0x0071C234, // TrackElemType::Up25ToRightBank
+    0x0071C244, // TrackElemType::LeftBankToDown25
+    0x0071C254, // TrackElemType::RightBankToDown25
+    0x0071C264, // TrackElemType::Down25ToLeftBank
+    0x0071C274, // TrackElemType::Down25ToRightBank
+    0x0071C304, // TrackElemType::LeftBank
+    0x0071C314, // TrackElemType::RightBank
+    0x0071C0F4, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x0071C104, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x0071C114, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x0071C124, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x0071C134, // TrackElemType::SBendLeft
+    0x0071C144, // TrackElemType::SBendRight
     0,
     0,
-    0x0071C184, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x0071C194, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x0071C1A4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x0071C1B4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x0071C1C4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x0071C1D4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x0071C1E4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x0071C1F4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x0071C184, // TrackElemType::LeftQuarterTurn3Tiles
+    0x0071C194, // TrackElemType::RightQuarterTurn3Tiles
+    0x0071C1A4, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x0071C1B4, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x0071C1C4, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x0071C1D4, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x0071C1E4, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x0071C1F4, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -4521,19 +4521,19 @@ static constexpr const uint32_t _OldMineTrainCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0071C284, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x0071C294, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x0071C2A4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x0071C2B4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x0071C2C4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x0071C2D4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x0071C2E4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x0071C2F4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
+    0x0071C284, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x0071C294, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x0071C2A4, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x0071C2B4, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x0071C2C4, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x0071C2D4, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x0071C2E4, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x0071C2F4, // TrackElemType::RightHalfBankedHelixDownLarge
     0,
     0,
     0,
     0,
-    0x0071C324, // TRACK_ELEM_BRAKES
+    0x0071C324, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -4548,7 +4548,7 @@ static constexpr const uint32_t _OldMineTrainCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0071C334, // TRACK_ELEM_ON_RIDE_PHOTO
+    0x0071C334, // TrackElemType::OnRidePhoto
     0,
     0,
     0,
@@ -4567,45 +4567,45 @@ static constexpr const uint32_t _OldMineTrainCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0071C354, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x0071C364, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x0071C374, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x0071C384, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x0071C394, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x0071C3A4, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x0071C3B4, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x0071C3C4, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x0071C344, // TRACK_ELEM_DIAG_FLAT
-    0x0071C414, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x0071C474, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x0071C3F4, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x0071C454, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x0071C464, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x0071C404, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x0071C444, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x0071C4A4, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x0071C424, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x0071C484, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x0071C494, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x0071C434, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x0071C354, // TrackElemType::LeftEighthToDiag
+    0x0071C364, // TrackElemType::RightEighthToDiag
+    0x0071C374, // TrackElemType::LeftEighthToOrthogonal
+    0x0071C384, // TrackElemType::RightEighthToOrthogonal
+    0x0071C394, // TrackElemType::LeftEighthBankToDiag
+    0x0071C3A4, // TrackElemType::RightEighthBankToDiag
+    0x0071C3B4, // TrackElemType::LeftEighthBankToOrthogonal
+    0x0071C3C4, // TrackElemType::RightEighthBankToOrthogonal
+    0x0071C344, // TrackElemType::DiagFlat
+    0x0071C414, // TrackElemType::DiagUp25
+    0x0071C474, // TrackElemType::DiagUp60
+    0x0071C3F4, // TrackElemType::DiagFlatToUp25
+    0x0071C454, // TrackElemType::DiagUp25ToUp60
+    0x0071C464, // TrackElemType::DiagUp60ToUp25
+    0x0071C404, // TrackElemType::DiagUp25ToFlat
+    0x0071C444, // TrackElemType::DiagDown25
+    0x0071C4A4, // TrackElemType::DiagDown60
+    0x0071C424, // TrackElemType::DiagFlatToDown25
+    0x0071C484, // TrackElemType::DiagDown25ToDown60
+    0x0071C494, // TrackElemType::DiagDown60ToDown25
+    0x0071C434, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x0071C4D4, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x0071C4B4, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x0071C4C4, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x0071C4E4, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x0071C514, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x0071C524, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x0071C4F4, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x0071C504, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x0071C534, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x0071C544, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x0071C554, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x0071C564, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x0071C3D4, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x0071C3E4, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x0071C4D4, // TrackElemType::DiagFlatToLeftBank
+    0x0071C4B4, // TrackElemType::DiagFlatToRightBank
+    0x0071C4C4, // TrackElemType::DiagLeftBankToFlat
+    0x0071C4E4, // TrackElemType::DiagRightBankToFlat
+    0x0071C514, // TrackElemType::DiagLeftBankToUp25
+    0x0071C524, // TrackElemType::DiagRightBankToUp25
+    0x0071C4F4, // TrackElemType::DiagUp25ToLeftBank
+    0x0071C504, // TrackElemType::DiagUp25ToRightBank
+    0x0071C534, // TrackElemType::DiagLeftBankToDown25
+    0x0071C544, // TrackElemType::DiagRightBankToDown25
+    0x0071C554, // TrackElemType::DiagDown25ToLeftBank
+    0x0071C564, // TrackElemType::DiagDown25ToRightBank
+    0x0071C3D4, // TrackElemType::DiagLeftBank
+    0x0071C3E4, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -4650,7 +4650,7 @@ static constexpr const uint32_t _OldMineTrainCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0071C574, // TRACK_ELEM_BLOCK_BRAKES
+    0x0071C574, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -4694,24 +4694,22 @@ static constexpr const uint32_t _OldMineTrainCoasterTrackPaintFunctions[256] = {
 
 /** rct2: 0x00743EC8 */
 static constexpr const uint32_t _OldChairliftTrackPaintFunctions[256] = {
-    0x00743FC8, // TRACK_ELEM_FLAT
-    0x00743F98, // TRACK_ELEM_END_STATION
-    0x00743FA8, // TRACK_ELEM_BEGIN_STATION
-    0x00743FB8, // TRACK_ELEM_MIDDLE_STATION
-    0x00743FD8, // TRACK_ELEM_25_DEG_UP
+    0x00743FC8, // TrackElemType::Flat
+    0x00743F98, // TrackElemType::EndStation
+    0x00743FA8, // TrackElemType::BeginStation
+    0x00743FB8, // TrackElemType::MiddleStation
+    0x00743FD8, // TrackElemType::Up25
     0,
-    0x00743FE8, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0,
-    0,
-    0x00743FF8, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x00744008, // TRACK_ELEM_25_DEG_DOWN
-    0,
-    0x00744018, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x00743FE8, // TrackElemType::FlatToUp25
     0,
     0,
-    0x00744028, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x00743FF8, // TrackElemType::Up25ToFlat
+    0x00744008, // TrackElemType::Down25
+    0,
+    0x00744018, // TrackElemType::FlatToDown25
     0,
     0,
+    0x00744028, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -4744,8 +4742,10 @@ static constexpr const uint32_t _OldChairliftTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x00744038, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x00744048, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0,
+    0,
+    0x00744038, // TrackElemType::LeftQuarterTurn1Tile
+    0x00744048, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -4954,68 +4954,68 @@ static constexpr const uint32_t _OldChairliftTrackPaintFunctions[256] = {
 
 /** rct2: 0x008A7784 */
 static constexpr const uint32_t _OldCorkscrewRollerCoasterTrackPaintFunctions[256] = {
-    0x008A7AF8, // TRACK_ELEM_FLAT
-    0x008A7D68, // TRACK_ELEM_END_STATION
-    0x008A7D78, // TRACK_ELEM_BEGIN_STATION
-    0x008A7D88, // TRACK_ELEM_MIDDLE_STATION
-    0x008A7B08, // TRACK_ELEM_25_DEG_UP
-    0x008A7B18, // TRACK_ELEM_60_DEG_UP
-    0x008A7B28, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008A7B38, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008A7B48, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008A7B58, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008A7B68, // TRACK_ELEM_25_DEG_DOWN
-    0x008A7B78, // TRACK_ELEM_60_DEG_DOWN
-    0x008A7B88, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008A7B98, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A7BA8, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A7BB8, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008A7BC8, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008A7BD8, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008A7BE8, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008A7BF8, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008A7C08, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008A7C18, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008A7C28, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008A7C38, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008A7C48, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008A7C58, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008A7C68, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008A7C78, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008A7C88, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A7C98, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A7CA8, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A7CB8, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A7CC8, // TRACK_ELEM_LEFT_BANK
-    0x008A7CD8, // TRACK_ELEM_RIGHT_BANK
-    0x008A7CE8, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A7CF8, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A7D08, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A7D18, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A7D28, // TRACK_ELEM_S_BEND_LEFT
-    0x008A7D38, // TRACK_ELEM_S_BEND_RIGHT
-    0x008A7D48, // TRACK_ELEM_LEFT_VERTICAL_LOOP
-    0x008A7D58, // TRACK_ELEM_RIGHT_VERTICAL_LOOP
-    0x008A7D98, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008A7DA8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008A7DB8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008A7DC8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008A7DD8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A7DE8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A7DF8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008A7E08, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008A7AF8, // TrackElemType::Flat
+    0x008A7D68, // TrackElemType::EndStation
+    0x008A7D78, // TrackElemType::BeginStation
+    0x008A7D88, // TrackElemType::MiddleStation
+    0x008A7B08, // TrackElemType::Up25
+    0x008A7B18, // TrackElemType::Up60
+    0x008A7B28, // TrackElemType::FlatToUp25
+    0x008A7B38, // TrackElemType::Up25ToUp60
+    0x008A7B48, // TrackElemType::Up60ToUp25
+    0x008A7B58, // TrackElemType::Up25ToFlat
+    0x008A7B68, // TrackElemType::Down25
+    0x008A7B78, // TrackElemType::Down60
+    0x008A7B88, // TrackElemType::FlatToDown25
+    0x008A7B98, // TrackElemType::Down25ToDown60
+    0x008A7BA8, // TrackElemType::Down60ToDown25
+    0x008A7BB8, // TrackElemType::Down25ToFlat
+    0x008A7BC8, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008A7BD8, // TrackElemType::RightQuarterTurn5Tiles
+    0x008A7BE8, // TrackElemType::FlatToLeftBank
+    0x008A7BF8, // TrackElemType::FlatToRightBank
+    0x008A7C08, // TrackElemType::LeftBankToFlat
+    0x008A7C18, // TrackElemType::RightBankToFlat
+    0x008A7C28, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008A7C38, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008A7C48, // TrackElemType::LeftBankToUp25
+    0x008A7C58, // TrackElemType::RightBankToUp25
+    0x008A7C68, // TrackElemType::Up25ToLeftBank
+    0x008A7C78, // TrackElemType::Up25ToRightBank
+    0x008A7C88, // TrackElemType::LeftBankToDown25
+    0x008A7C98, // TrackElemType::RightBankToDown25
+    0x008A7CA8, // TrackElemType::Down25ToLeftBank
+    0x008A7CB8, // TrackElemType::Down25ToRightBank
+    0x008A7CC8, // TrackElemType::LeftBank
+    0x008A7CD8, // TrackElemType::RightBank
+    0x008A7CE8, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008A7CF8, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008A7D08, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008A7D18, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008A7D28, // TrackElemType::SBendLeft
+    0x008A7D38, // TrackElemType::SBendRight
+    0x008A7D48, // TrackElemType::LeftVerticalLoop
+    0x008A7D58, // TrackElemType::RightVerticalLoop
+    0x008A7D98, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008A7DA8, // TrackElemType::RightQuarterTurn3Tiles
+    0x008A7DB8, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008A7DC8, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008A7DD8, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008A7DE8, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008A7DF8, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008A7E08, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
     0,
     0,
     0,
-    0x008A7E18, // TRACK_ELEM_HALF_LOOP_UP
-    0x008A7E28, // TRACK_ELEM_HALF_LOOP_DOWN
-    0x008A7E38, // TRACK_ELEM_LEFT_CORKSCREW_UP
-    0x008A7E48, // TRACK_ELEM_RIGHT_CORKSCREW_UP
-    0x008A7E58, // TRACK_ELEM_LEFT_CORKSCREW_DOWN
-    0x008A7E68, // TRACK_ELEM_RIGHT_CORKSCREW_DOWN
+    0x008A7E18, // TrackElemType::HalfLoopUp
+    0x008A7E28, // TrackElemType::HalfLoopDown
+    0x008A7E38, // TrackElemType::LeftCorkscrewUp
+    0x008A7E48, // TrackElemType::RightCorkscrewUp
+    0x008A7E58, // TrackElemType::LeftCorkscrewDown
+    0x008A7E68, // TrackElemType::RightCorkscrewDown
     0,
     0,
     0,
@@ -5041,19 +5041,19 @@ static constexpr const uint32_t _OldCorkscrewRollerCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x008A7E78, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A7E88, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A7E98, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A7EA8, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A7EB8, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A7EC8, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A7ED8, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A7EE8, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A7F18, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A7EF8, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A7F08, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A7F28, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A7F38, // TRACK_ELEM_BRAKES
+    0x008A7E78, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008A7E88, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008A7E98, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008A7EA8, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008A7EB8, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008A7EC8, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008A7ED8, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008A7EE8, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x008A7F18, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008A7EF8, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008A7F08, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008A7F28, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008A7F38, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -5068,15 +5068,15 @@ static constexpr const uint32_t _OldCorkscrewRollerCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x008A7F48, // TRACK_ELEM_ON_RIDE_PHOTO
+    0x008A7F48, // TrackElemType::OnRidePhoto
     0,
     0,
     0,
-    0x008A8198, // TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE
-    0x008A81A8, // TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE
+    0x008A8198, // TrackElemType::FlatToUp60LongBase
+    0x008A81A8, // TrackElemType::Up60ToFlatLongBase
     0,
-    0x008A81B8, // TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE
-    0x008A81C8, // TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122
+    0x008A81B8, // TrackElemType::Down60ToFlatLongBase
+    0x008A81C8, // TrackElemType::FlatToDown60LongBase
     0,
     0,
     0,
@@ -5087,45 +5087,45 @@ static constexpr const uint32_t _OldCorkscrewRollerCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x008A7F68, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008A7F78, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008A7F88, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008A7F98, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008A7FA8, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008A7FB8, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008A7FC8, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A7FD8, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A7F58, // TRACK_ELEM_DIAG_FLAT
-    0x008A8008, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008A8068, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008A7FE8, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008A8048, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008A8058, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008A7FF8, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008A8038, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008A8098, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008A8018, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008A8078, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A8088, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A8028, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008A7F68, // TrackElemType::LeftEighthToDiag
+    0x008A7F78, // TrackElemType::RightEighthToDiag
+    0x008A7F88, // TrackElemType::LeftEighthToOrthogonal
+    0x008A7F98, // TrackElemType::RightEighthToOrthogonal
+    0x008A7FA8, // TrackElemType::LeftEighthBankToDiag
+    0x008A7FB8, // TrackElemType::RightEighthBankToDiag
+    0x008A7FC8, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008A7FD8, // TrackElemType::RightEighthBankToOrthogonal
+    0x008A7F58, // TrackElemType::DiagFlat
+    0x008A8008, // TrackElemType::DiagUp25
+    0x008A8068, // TrackElemType::DiagUp60
+    0x008A7FE8, // TrackElemType::DiagFlatToUp25
+    0x008A8048, // TrackElemType::DiagUp25ToUp60
+    0x008A8058, // TrackElemType::DiagUp60ToUp25
+    0x008A7FF8, // TrackElemType::DiagUp25ToFlat
+    0x008A8038, // TrackElemType::DiagDown25
+    0x008A8098, // TrackElemType::DiagDown60
+    0x008A8018, // TrackElemType::DiagFlatToDown25
+    0x008A8078, // TrackElemType::DiagDown25ToDown60
+    0x008A8088, // TrackElemType::DiagDown60ToDown25
+    0x008A8028, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008A80C8, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008A80D8, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008A80E8, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008A80F8, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008A8128, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008A8138, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008A8108, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008A8118, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008A8148, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A8158, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A8168, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A8178, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A80A8, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008A80B8, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008A80C8, // TrackElemType::DiagFlatToLeftBank
+    0x008A80D8, // TrackElemType::DiagFlatToRightBank
+    0x008A80E8, // TrackElemType::DiagLeftBankToFlat
+    0x008A80F8, // TrackElemType::DiagRightBankToFlat
+    0x008A8128, // TrackElemType::DiagLeftBankToUp25
+    0x008A8138, // TrackElemType::DiagRightBankToUp25
+    0x008A8108, // TrackElemType::DiagUp25ToLeftBank
+    0x008A8118, // TrackElemType::DiagUp25ToRightBank
+    0x008A8148, // TrackElemType::DiagLeftBankToDown25
+    0x008A8158, // TrackElemType::DiagRightBankToDown25
+    0x008A8168, // TrackElemType::DiagDown25ToLeftBank
+    0x008A8178, // TrackElemType::DiagDown25ToRightBank
+    0x008A80A8, // TrackElemType::DiagLeftBank
+    0x008A80B8, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -5170,7 +5170,7 @@ static constexpr const uint32_t _OldCorkscrewRollerCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x008A8188, // TRACK_ELEM_BLOCK_BRAKES
+    0x008A8188, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -5315,7 +5315,7 @@ static constexpr const uint32_t _OldMazeTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008A8380, // TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP
+    0x008A8380, // TrackElemType::InvertedUp90ToFlatQuarterLoopAlias
     0,
     0,
     0,
@@ -5734,24 +5734,22 @@ static constexpr const uint32_t _OldSpiralSlideTrackPaintFunctions[256] = {
 
 /** rct2: 0x0074A668 */
 static constexpr const uint32_t _OldGoKartsTrackPaintFunctions[256] = {
-    0x0074A748, // TRACK_ELEM_FLAT
-    0x0074A7B8, // TRACK_ELEM_END_STATION
-    0x0074A7C8, // TRACK_ELEM_BEGIN_STATION
-    0x0074A7D8, // TRACK_ELEM_MIDDLE_STATION
-    0x0074A758, // TRACK_ELEM_25_DEG_UP
+    0x0074A748, // TrackElemType::Flat
+    0x0074A7B8, // TrackElemType::EndStation
+    0x0074A7C8, // TrackElemType::BeginStation
+    0x0074A7D8, // TrackElemType::MiddleStation
+    0x0074A758, // TrackElemType::Up25
     0,
-    0x0074A768, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0,
-    0,
-    0x0074A778, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0074A788, // TRACK_ELEM_25_DEG_DOWN
-    0,
-    0x0074A798, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x0074A768, // TrackElemType::FlatToUp25
     0,
     0,
-    0x0074A7A8, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x0074A778, // TrackElemType::Up25ToFlat
+    0x0074A788, // TrackElemType::Down25
+    0,
+    0x0074A798, // TrackElemType::FlatToDown25
     0,
     0,
+    0x0074A7A8, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -5784,8 +5782,10 @@ static constexpr const uint32_t _OldGoKartsTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0074A7E8, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x0074A7F8, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0,
+    0,
+    0x0074A7E8, // TrackElemType::LeftQuarterTurn1Tile
+    0x0074A7F8, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -5994,22 +5994,22 @@ static constexpr const uint32_t _OldGoKartsTrackPaintFunctions[256] = {
 
 /** rct2: 0x0074DDEC */
 static constexpr const uint32_t _OldLogFlumeTrackPaintFunctions[256] = {
-    0x0074E0B0, // TRACK_ELEM_FLAT
-    0x0074E140, // TRACK_ELEM_END_STATION
-    0x0074E150, // TRACK_ELEM_BEGIN_STATION
-    0x0074E160, // TRACK_ELEM_MIDDLE_STATION
-    0x0074E0C0, // TRACK_ELEM_25_DEG_UP
+    0x0074E0B0, // TrackElemType::Flat
+    0x0074E140, // TrackElemType::EndStation
+    0x0074E150, // TrackElemType::BeginStation
+    0x0074E160, // TrackElemType::MiddleStation
+    0x0074E0C0, // TrackElemType::Up25
     0,
-    0x0074E0D0, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x0074E0D0, // TrackElemType::FlatToUp25
     0,
     0,
-    0x0074E0E0, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0074E0F0, // TRACK_ELEM_25_DEG_DOWN
+    0x0074E0E0, // TrackElemType::Up25ToFlat
+    0x0074E0F0, // TrackElemType::Down25
     0,
-    0x0074E100, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x0074E100, // TrackElemType::FlatToDown25
     0,
     0,
-    0x0074E110, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x0074E110, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -6032,12 +6032,12 @@ static constexpr const uint32_t _OldLogFlumeTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0074E120, // TRACK_ELEM_S_BEND_LEFT
-    0x0074E130, // TRACK_ELEM_S_BEND_RIGHT
+    0x0074E120, // TrackElemType::SBendLeft
+    0x0074E130, // TrackElemType::SBendRight
     0,
     0,
-    0x0074E170, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x0074E180, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x0074E170, // TrackElemType::LeftQuarterTurn3Tiles
+    0x0074E180, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
@@ -6108,7 +6108,7 @@ static constexpr const uint32_t _OldLogFlumeTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0074E1A0, // TRACK_ELEM_ON_RIDE_PHOTO
+    0x0074E1A0, // TrackElemType::OnRidePhoto
     0,
     0,
     0,
@@ -6166,7 +6166,7 @@ static constexpr const uint32_t _OldLogFlumeTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0074E190, // TRACK_ELEM_LOG_FLUME_REVERSER
+    0x0074E190, // TrackElemType::LogFlumeReverser
     0,
     0,
     0,
@@ -6254,22 +6254,22 @@ static constexpr const uint32_t _OldLogFlumeTrackPaintFunctions[256] = {
 
 /** rct2: 0x0075745C */
 static constexpr const uint32_t _OldRiverRapidsTrackPaintFunctions[256] = {
-    0x00757650, // TRACK_ELEM_FLAT
-    0x007576C0, // TRACK_ELEM_END_STATION
-    0x007576D0, // TRACK_ELEM_BEGIN_STATION
-    0x007576E0, // TRACK_ELEM_MIDDLE_STATION
-    0x00757660, // TRACK_ELEM_25_DEG_UP
+    0x00757650, // TrackElemType::Flat
+    0x007576C0, // TrackElemType::EndStation
+    0x007576D0, // TrackElemType::BeginStation
+    0x007576E0, // TrackElemType::MiddleStation
+    0x00757660, // TrackElemType::Up25
     0,
-    0x00757670, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x00757670, // TrackElemType::FlatToUp25
     0,
     0,
-    0x00757680, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x00757690, // TRACK_ELEM_25_DEG_DOWN
+    0x00757680, // TrackElemType::Up25ToFlat
+    0x00757690, // TrackElemType::Down25
     0,
-    0x007576A0, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x007576A0, // TrackElemType::FlatToDown25
     0,
     0,
-    0x007576B0, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x007576B0, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -6304,8 +6304,8 @@ static constexpr const uint32_t _OldRiverRapidsTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x007576F0, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x00757700, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0x007576F0, // TrackElemType::LeftQuarterTurn1Tile
+    0x00757700, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -6366,15 +6366,15 @@ static constexpr const uint32_t _OldRiverRapidsTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x00757710, // TRACK_ELEM_WATERFALL
-    0x00757720, // TRACK_ELEM_RAPIDS
-    0x00757740, // TRACK_ELEM_ON_RIDE_PHOTO
+    0x00757710, // TrackElemType::Waterfall
+    0x00757720, // TrackElemType::Rapids
+    0x00757740, // TrackElemType::OnRidePhoto
     0,
     0,
     0,
     0,
     0,
-    0x00757730, // TRACK_ELEM_WHIRLPOOL
+    0x00757730, // TrackElemType::Whirlpool
     0,
     0,
     0,
@@ -9382,10 +9382,10 @@ static constexpr const uint32_t _OldSpaceRingsTrackPaintFunctions[256] = {
 
 /** rct2: 0x00768BAC */
 static constexpr const uint32_t _OldReverseFreefallCoasterTrackPaintFunctions[256] = {
-    0x00768DB4, // TRACK_ELEM_FLAT
-    0x00768DC4, // TRACK_ELEM_END_STATION
-    0x00768DD4, // TRACK_ELEM_BEGIN_STATION
-    0x00768DE4, // TRACK_ELEM_MIDDLE_STATION
+    0x00768DB4, // TrackElemType::Flat
+    0x00768DC4, // TrackElemType::EndStation
+    0x00768DD4, // TrackElemType::BeginStation
+    0x00768DE4, // TrackElemType::MiddleStation
     0,
     0,
     0,
@@ -9506,8 +9506,8 @@ static constexpr const uint32_t _OldReverseFreefallCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x00768DF4, // TRACK_ELEM_REVERSE_FREEFALL_SLOPE
-    0x00768E04, // TRACK_ELEM_REVERSE_FREEFALL_VERTICAL
+    0x00768DF4, // TrackElemType::ReverseFreefallSlope
+    0x00768E04, // TrackElemType::ReverseFreefallVertical
     0,
     0,
     0,
@@ -9708,8 +9708,8 @@ static constexpr const uint32_t _OldLiftTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0076C6CC, // TRACK_ELEM_TOWER_BASE
-    0x0076C6DC, // TRACK_ELEM_TOWER_SECTION
+    0x0076C6CC, // TrackElemType::TowerBase
+    0x0076C6DC, // TrackElemType::TowerSection
     0,
     0,
     0,
@@ -9902,56 +9902,56 @@ static constexpr const uint32_t _OldLiftTrackPaintFunctions[256] = {
 
 /** rct2: 0x008A9C08 */
 static constexpr const uint32_t _OldVerticalDropRollerCoasterTrackPaintFunctions[256] = {
-    0x008AA00C, // TRACK_ELEM_FLAT
-    0x008AA25C, // TRACK_ELEM_END_STATION
-    0x008AA26C, // TRACK_ELEM_BEGIN_STATION
-    0x008AA27C, // TRACK_ELEM_MIDDLE_STATION
-    0x008AA01C, // TRACK_ELEM_25_DEG_UP
-    0x008AA02C, // TRACK_ELEM_60_DEG_UP
-    0x008AA03C, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008AA04C, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008AA05C, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008AA06C, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008AA07C, // TRACK_ELEM_25_DEG_DOWN
-    0x008AA08C, // TRACK_ELEM_60_DEG_DOWN
-    0x008AA09C, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008AA0AC, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AA0BC, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AA0CC, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008AA0DC, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AA0EC, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008AA0FC, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008AA10C, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008AA11C, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008AA12C, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008AA13C, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008AA14C, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008AA15C, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008AA16C, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008AA17C, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008AA18C, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008AA19C, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AA1AC, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AA1BC, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AA1CC, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AA1DC, // TRACK_ELEM_LEFT_BANK
-    0x008AA1EC, // TRACK_ELEM_RIGHT_BANK
-    0x008AA1FC, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AA20C, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AA21C, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AA22C, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AA23C, // TRACK_ELEM_S_BEND_LEFT
-    0x008AA24C, // TRACK_ELEM_S_BEND_RIGHT
-    0x008AA49C, // TRACK_ELEM_LEFT_VERTICAL_LOOP
-    0x008AA4AC, // TRACK_ELEM_RIGHT_VERTICAL_LOOP
-    0x008AA28C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008AA29C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008AA2AC, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008AA2BC, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008AA2CC, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AA2DC, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AA2EC, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008AA2FC, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008AA00C, // TrackElemType::Flat
+    0x008AA25C, // TrackElemType::EndStation
+    0x008AA26C, // TrackElemType::BeginStation
+    0x008AA27C, // TrackElemType::MiddleStation
+    0x008AA01C, // TrackElemType::Up25
+    0x008AA02C, // TrackElemType::Up60
+    0x008AA03C, // TrackElemType::FlatToUp25
+    0x008AA04C, // TrackElemType::Up25ToUp60
+    0x008AA05C, // TrackElemType::Up60ToUp25
+    0x008AA06C, // TrackElemType::Up25ToFlat
+    0x008AA07C, // TrackElemType::Down25
+    0x008AA08C, // TrackElemType::Down60
+    0x008AA09C, // TrackElemType::FlatToDown25
+    0x008AA0AC, // TrackElemType::Down25ToDown60
+    0x008AA0BC, // TrackElemType::Down60ToDown25
+    0x008AA0CC, // TrackElemType::Down25ToFlat
+    0x008AA0DC, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AA0EC, // TrackElemType::RightQuarterTurn5Tiles
+    0x008AA0FC, // TrackElemType::FlatToLeftBank
+    0x008AA10C, // TrackElemType::FlatToRightBank
+    0x008AA11C, // TrackElemType::LeftBankToFlat
+    0x008AA12C, // TrackElemType::RightBankToFlat
+    0x008AA13C, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008AA14C, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008AA15C, // TrackElemType::LeftBankToUp25
+    0x008AA16C, // TrackElemType::RightBankToUp25
+    0x008AA17C, // TrackElemType::Up25ToLeftBank
+    0x008AA18C, // TrackElemType::Up25ToRightBank
+    0x008AA19C, // TrackElemType::LeftBankToDown25
+    0x008AA1AC, // TrackElemType::RightBankToDown25
+    0x008AA1BC, // TrackElemType::Down25ToLeftBank
+    0x008AA1CC, // TrackElemType::Down25ToRightBank
+    0x008AA1DC, // TrackElemType::LeftBank
+    0x008AA1EC, // TrackElemType::RightBank
+    0x008AA1FC, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008AA20C, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008AA21C, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008AA22C, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008AA23C, // TrackElemType::SBendLeft
+    0x008AA24C, // TrackElemType::SBendRight
+    0x008AA49C, // TrackElemType::LeftVerticalLoop
+    0x008AA4AC, // TrackElemType::RightVerticalLoop
+    0x008AA28C, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008AA29C, // TrackElemType::RightQuarterTurn3Tiles
+    0x008AA2AC, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008AA2BC, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008AA2CC, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008AA2DC, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008AA2EC, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008AA2FC, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -9964,10 +9964,10 @@ static constexpr const uint32_t _OldVerticalDropRollerCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x008AA3CC, // TRACK_ELEM_FLAT_TO_60_DEG_UP
-    0x008AA3DC, // TRACK_ELEM_60_DEG_UP_TO_FLAT
-    0x008AA3EC, // TRACK_ELEM_FLAT_TO_60_DEG_DOWN
-    0x008AA3FC, // TRACK_ELEM_60_DEG_DOWN_TO_FLAT
+    0x008AA3CC, // TrackElemType::FlatToUp60
+    0x008AA3DC, // TrackElemType::Up60ToFlat
+    0x008AA3EC, // TrackElemType::FlatToDown60
+    0x008AA3FC, // TrackElemType::Down60ToFlat
     0,
     0,
     0,
@@ -9989,19 +9989,19 @@ static constexpr const uint32_t _OldVerticalDropRollerCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x008AA30C, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008AA31C, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008AA32C, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008AA33C, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008AA34C, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008AA35C, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008AA36C, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008AA37C, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008AA3AC, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008AA38C, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008AA39C, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008AA3BC, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008AA40C, // TRACK_ELEM_BRAKES
+    0x008AA30C, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008AA31C, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008AA32C, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008AA33C, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008AA34C, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008AA35C, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008AA36C, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008AA37C, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x008AA3AC, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008AA38C, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008AA39C, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008AA3BC, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008AA40C, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -10012,13 +10012,13 @@ static constexpr const uint32_t _OldVerticalDropRollerCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x008AA7EC, // TRACK_ELEM_25_DEG_UP_LEFT_BANKED
-    0x008AA7FC, // TRACK_ELEM_25_DEG_UP_RIGHT_BANKED
+    0x008AA7EC, // TrackElemType::Up25LeftBanked
+    0x008AA7FC, // TrackElemType::Up25RightBanked
     0,
     0,
-    0x008AA41C, // TRACK_ELEM_ON_RIDE_PHOTO
-    0x008AA80C, // TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED
-    0x008AA81C, // TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED
+    0x008AA41C, // TrackElemType::OnRidePhoto
+    0x008AA80C, // TrackElemType::Down25LeftBanked
+    0x008AA81C, // TrackElemType::Down25RightBanked
     0,
     0,
     0,
@@ -10028,62 +10028,62 @@ static constexpr const uint32_t _OldVerticalDropRollerCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x008AA42C, // TRACK_ELEM_90_DEG_UP
-    0x008AA43C, // TRACK_ELEM_90_DEG_DOWN
-    0x008AA44C, // TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP
-    0x008AA45C, // TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AA46C, // TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP
-    0x008AA47C, // TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN
-    0x008AA48C, // TRACK_ELEM_BRAKE_FOR_DROP
-    0x008AA4CC, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008AA4DC, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008AA4EC, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008AA4FC, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008AA50C, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008AA51C, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008AA52C, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008AA53C, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008AA4BC, // TRACK_ELEM_DIAG_FLAT
-    0x008AA56C, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008AA5CC, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008AA54C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008AA5AC, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008AA5BC, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008AA55C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008AA59C, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008AA5FC, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008AA57C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008AA5DC, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AA5EC, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AA58C, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
-    0x008AA6EC, // TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP
-    0x008AA6FC, // TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT
-    0x008AA70C, // TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN
-    0x008AA71C, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT
-    0x008AA62C, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008AA63C, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008AA64C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008AA65C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008AA68C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008AA69C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008AA66C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008AA67C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008AA6AC, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AA6BC, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AA6CC, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AA6DC, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AA60C, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008AA61C, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008AA42C, // TrackElemType::Up90
+    0x008AA43C, // TrackElemType::Down90
+    0x008AA44C, // TrackElemType::Up60ToUp90
+    0x008AA45C, // TrackElemType::Down90ToDown60
+    0x008AA46C, // TrackElemType::Up90ToUp60
+    0x008AA47C, // TrackElemType::Down60ToDown90
+    0x008AA48C, // TrackElemType::BrakeForDrop
+    0x008AA4CC, // TrackElemType::LeftEighthToDiag
+    0x008AA4DC, // TrackElemType::RightEighthToDiag
+    0x008AA4EC, // TrackElemType::LeftEighthToOrthogonal
+    0x008AA4FC, // TrackElemType::RightEighthToOrthogonal
+    0x008AA50C, // TrackElemType::LeftEighthBankToDiag
+    0x008AA51C, // TrackElemType::RightEighthBankToDiag
+    0x008AA52C, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008AA53C, // TrackElemType::RightEighthBankToOrthogonal
+    0x008AA4BC, // TrackElemType::DiagFlat
+    0x008AA56C, // TrackElemType::DiagUp25
+    0x008AA5CC, // TrackElemType::DiagUp60
+    0x008AA54C, // TrackElemType::DiagFlatToUp25
+    0x008AA5AC, // TrackElemType::DiagUp25ToUp60
+    0x008AA5BC, // TrackElemType::DiagUp60ToUp25
+    0x008AA55C, // TrackElemType::DiagUp25ToFlat
+    0x008AA59C, // TrackElemType::DiagDown25
+    0x008AA5FC, // TrackElemType::DiagDown60
+    0x008AA57C, // TrackElemType::DiagFlatToDown25
+    0x008AA5DC, // TrackElemType::DiagDown25ToDown60
+    0x008AA5EC, // TrackElemType::DiagDown60ToDown25
+    0x008AA58C, // TrackElemType::DiagDown25ToFlat
+    0x008AA6EC, // TrackElemType::DiagFlatToUp60
+    0x008AA6FC, // TrackElemType::DiagUp60ToFlat
+    0x008AA70C, // TrackElemType::DiagFlatToDown60
+    0x008AA71C, // TrackElemType::DiagDown60ToFlat
+    0x008AA62C, // TrackElemType::DiagFlatToLeftBank
+    0x008AA63C, // TrackElemType::DiagFlatToRightBank
+    0x008AA64C, // TrackElemType::DiagLeftBankToFlat
+    0x008AA65C, // TrackElemType::DiagRightBankToFlat
+    0x008AA68C, // TrackElemType::DiagLeftBankToUp25
+    0x008AA69C, // TrackElemType::DiagRightBankToUp25
+    0x008AA66C, // TrackElemType::DiagUp25ToLeftBank
+    0x008AA67C, // TrackElemType::DiagUp25ToRightBank
+    0x008AA6AC, // TrackElemType::DiagLeftBankToDown25
+    0x008AA6BC, // TrackElemType::DiagRightBankToDown25
+    0x008AA6CC, // TrackElemType::DiagDown25ToLeftBank
+    0x008AA6DC, // TrackElemType::DiagDown25ToRightBank
+    0x008AA60C, // TrackElemType::DiagLeftBank
+    0x008AA61C, // TrackElemType::DiagRightBank
     0,
     0,
     0,
     0,
     0,
     0,
-    0x008AA72C, // TRACK_ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AA73C, // TRACK_ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AA74C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AA75C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK
+    0x008AA72C, // TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25
+    0x008AA73C, // TrackElemType::RightBankToRightQuarterTurn3TilesUp25
+    0x008AA74C, // TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank
+    0x008AA75C, // TrackElemType::RightQuarterTurn3TilesDown25ToRightBank
     0,
     0,
     0,
@@ -10118,43 +10118,43 @@ static constexpr const uint32_t _OldVerticalDropRollerCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x008AA9EC, // TRACK_ELEM_BLOCK_BRAKES
-    0x008AA96C, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008AA97C, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008AA98C, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008AA99C, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008AA8AC, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008AA8BC, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008AA8CC, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008AA8DC, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008AA82C, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    0x008AA83C, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    0x008AA84C, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008AA85C, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008AA86C, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008AA87C, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008AA88C, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AA89C, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AA8EC, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008AA8FC, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008AA92C, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    0x008AA93C, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    0x008AA94C, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008AA95C, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008AA90C, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    0x008AA91C, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    0x008AA76C, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008AA77C, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008AA78C, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    0x008AA79C, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    0x008AA7AC, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008AA7BC, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008AA7CC, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008AA7DC, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008AA9AC, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP
-    0x008AA9BC, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP
-    0x008AA9CC, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN
-    0x008AA9DC, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN
+    0x008AA9EC, // TrackElemType::BlockBrakes
+    0x008AA96C, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    0x008AA97C, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    0x008AA98C, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    0x008AA99C, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    0x008AA8AC, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    0x008AA8BC, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    0x008AA8CC, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    0x008AA8DC, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    0x008AA82C, // TrackElemType::Up25ToLeftBankedUp25
+    0x008AA83C, // TrackElemType::Up25ToRightBankedUp25
+    0x008AA84C, // TrackElemType::LeftBankedUp25ToUp25
+    0x008AA85C, // TrackElemType::RightBankedUp25ToUp25
+    0x008AA86C, // TrackElemType::Down25ToLeftBankedDown25
+    0x008AA87C, // TrackElemType::Down25ToRightBankedDown25
+    0x008AA88C, // TrackElemType::LeftBankedDown25ToDown25
+    0x008AA89C, // TrackElemType::RightBankedDown25ToDown25
+    0x008AA8EC, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    0x008AA8FC, // TrackElemType::RightBankedFlatToRightBankedUp25
+    0x008AA92C, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    0x008AA93C, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    0x008AA94C, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    0x008AA95C, // TrackElemType::RightBankedFlatToRightBankedDown25
+    0x008AA90C, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    0x008AA91C, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    0x008AA76C, // TrackElemType::FlatToLeftBankedUp25
+    0x008AA77C, // TrackElemType::FlatToRightBankedUp25
+    0x008AA78C, // TrackElemType::LeftBankedUp25ToFlat
+    0x008AA79C, // TrackElemType::RightBankedUp25ToFlat
+    0x008AA7AC, // TrackElemType::FlatToLeftBankedDown25
+    0x008AA7BC, // TrackElemType::FlatToRightBankedDown25
+    0x008AA7CC, // TrackElemType::LeftBankedDown25ToFlat
+    0x008AA7DC, // TrackElemType::RightBankedDown25ToFlat
+    0x008AA9AC, // TrackElemType::LeftQuarterTurn1TileUp90
+    0x008AA9BC, // TrackElemType::RightQuarterTurn1TileUp90
+    0x008AA9CC, // TrackElemType::LeftQuarterTurn1TileDown90
+    0x008AA9DC, // TrackElemType::RightQuarterTurn1TileDown90
     0,
     0,
     0,
@@ -10942,22 +10942,22 @@ static constexpr const uint32_t _OldCircusTrackPaintFunctions[256] = {
 
 /** rct2: 0x00770924 */
 static constexpr const uint32_t _OldGhostTrainTrackPaintFunctions[256] = {
-    0x00770BEC, // TRACK_ELEM_FLAT
-    0x00770C5C, // TRACK_ELEM_END_STATION
-    0x00770C6C, // TRACK_ELEM_BEGIN_STATION
-    0x00770C7C, // TRACK_ELEM_MIDDLE_STATION
-    0x00770BFC, // TRACK_ELEM_25_DEG_UP
+    0x00770BEC, // TrackElemType::Flat
+    0x00770C5C, // TrackElemType::EndStation
+    0x00770C6C, // TrackElemType::BeginStation
+    0x00770C7C, // TrackElemType::MiddleStation
+    0x00770BFC, // TrackElemType::Up25
     0,
-    0x00770C0C, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x00770C0C, // TrackElemType::FlatToUp25
     0,
     0,
-    0x00770C1C, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x00770C2C, // TRACK_ELEM_25_DEG_DOWN
+    0x00770C1C, // TrackElemType::Up25ToFlat
+    0x00770C2C, // TrackElemType::Down25
     0,
-    0x00770C3C, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x00770C3C, // TrackElemType::FlatToDown25
     0,
     0,
-    0x00770C4C, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x00770C4C, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -10984,16 +10984,16 @@ static constexpr const uint32_t _OldGhostTrainTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x00770C8C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x00770C9C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x00770C8C, // TrackElemType::LeftQuarterTurn3Tiles
+    0x00770C9C, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
     0,
     0,
     0,
-    0x00770CAC, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x00770CBC, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0x00770CAC, // TrackElemType::LeftQuarterTurn1Tile
+    0x00770CBC, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -11041,7 +11041,7 @@ static constexpr const uint32_t _OldGhostTrainTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x00770CDC, // TRACK_ELEM_BRAKES
+    0x00770CDC, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -11115,7 +11115,7 @@ static constexpr const uint32_t _OldGhostTrainTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x00770CCC, // TRACK_ELEM_SPINNING_TUNNEL
+    0x00770CCC, // TrackElemType::SpinningTunnel
     0,
     0,
     0,
@@ -11202,68 +11202,68 @@ static constexpr const uint32_t _OldGhostTrainTrackPaintFunctions[256] = {
 
 /** rct2: 0x008AB2A0 */
 static constexpr const uint32_t _OldTwisterRollerCoasterTrackPaintFunctions[256] = {
-    0x008AB6A4, // TRACK_ELEM_FLAT
-    0x008AB8F4, // TRACK_ELEM_END_STATION
-    0x008AB904, // TRACK_ELEM_BEGIN_STATION
-    0x008AB914, // TRACK_ELEM_MIDDLE_STATION
-    0x008AB6B4, // TRACK_ELEM_25_DEG_UP
-    0x008AB6C4, // TRACK_ELEM_60_DEG_UP
-    0x008AB6D4, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008AB6E4, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008AB6F4, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008AB704, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008AB714, // TRACK_ELEM_25_DEG_DOWN
-    0x008AB724, // TRACK_ELEM_60_DEG_DOWN
-    0x008AB734, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008AB744, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AB754, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AB764, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008AB774, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AB784, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008AB794, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008AB7A4, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008AB7B4, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008AB7C4, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008AB7D4, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008AB7E4, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008AB7F4, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008AB804, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008AB814, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008AB824, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008AB834, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AB844, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AB854, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AB864, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AB874, // TRACK_ELEM_LEFT_BANK
-    0x008AB884, // TRACK_ELEM_RIGHT_BANK
-    0x008AB894, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AB8A4, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AB8B4, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AB8C4, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AB8D4, // TRACK_ELEM_S_BEND_LEFT
-    0x008AB8E4, // TRACK_ELEM_S_BEND_RIGHT
-    0x008ABA84, // TRACK_ELEM_LEFT_VERTICAL_LOOP
-    0x008ABA94, // TRACK_ELEM_RIGHT_VERTICAL_LOOP
-    0x008AB924, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008AB934, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008AB944, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008AB954, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008AB964, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AB974, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AB984, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008AB994, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008AB6A4, // TrackElemType::Flat
+    0x008AB8F4, // TrackElemType::EndStation
+    0x008AB904, // TrackElemType::BeginStation
+    0x008AB914, // TrackElemType::MiddleStation
+    0x008AB6B4, // TrackElemType::Up25
+    0x008AB6C4, // TrackElemType::Up60
+    0x008AB6D4, // TrackElemType::FlatToUp25
+    0x008AB6E4, // TrackElemType::Up25ToUp60
+    0x008AB6F4, // TrackElemType::Up60ToUp25
+    0x008AB704, // TrackElemType::Up25ToFlat
+    0x008AB714, // TrackElemType::Down25
+    0x008AB724, // TrackElemType::Down60
+    0x008AB734, // TrackElemType::FlatToDown25
+    0x008AB744, // TrackElemType::Down25ToDown60
+    0x008AB754, // TrackElemType::Down60ToDown25
+    0x008AB764, // TrackElemType::Down25ToFlat
+    0x008AB774, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AB784, // TrackElemType::RightQuarterTurn5Tiles
+    0x008AB794, // TrackElemType::FlatToLeftBank
+    0x008AB7A4, // TrackElemType::FlatToRightBank
+    0x008AB7B4, // TrackElemType::LeftBankToFlat
+    0x008AB7C4, // TrackElemType::RightBankToFlat
+    0x008AB7D4, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008AB7E4, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008AB7F4, // TrackElemType::LeftBankToUp25
+    0x008AB804, // TrackElemType::RightBankToUp25
+    0x008AB814, // TrackElemType::Up25ToLeftBank
+    0x008AB824, // TrackElemType::Up25ToRightBank
+    0x008AB834, // TrackElemType::LeftBankToDown25
+    0x008AB844, // TrackElemType::RightBankToDown25
+    0x008AB854, // TrackElemType::Down25ToLeftBank
+    0x008AB864, // TrackElemType::Down25ToRightBank
+    0x008AB874, // TrackElemType::LeftBank
+    0x008AB884, // TrackElemType::RightBank
+    0x008AB894, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008AB8A4, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008AB8B4, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008AB8C4, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008AB8D4, // TrackElemType::SBendLeft
+    0x008AB8E4, // TrackElemType::SBendRight
+    0x008ABA84, // TrackElemType::LeftVerticalLoop
+    0x008ABA94, // TrackElemType::RightVerticalLoop
+    0x008AB924, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008AB934, // TrackElemType::RightQuarterTurn3Tiles
+    0x008AB944, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008AB954, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008AB964, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008AB974, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008AB984, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008AB994, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
     0,
     0,
     0,
-    0x008ABCD4, // TRACK_ELEM_HALF_LOOP_UP
-    0x008ABCE4, // TRACK_ELEM_HALF_LOOP_DOWN
-    0x008ABD34, // TRACK_ELEM_LEFT_CORKSCREW_UP
-    0x008ABD44, // TRACK_ELEM_RIGHT_CORKSCREW_UP
-    0x008ABD54, // TRACK_ELEM_LEFT_CORKSCREW_DOWN
-    0x008ABD64, // TRACK_ELEM_RIGHT_CORKSCREW_DOWN
+    0x008ABCD4, // TrackElemType::HalfLoopUp
+    0x008ABCE4, // TrackElemType::HalfLoopDown
+    0x008ABD34, // TrackElemType::LeftCorkscrewUp
+    0x008ABD44, // TrackElemType::RightCorkscrewUp
+    0x008ABD54, // TrackElemType::LeftCorkscrewDown
+    0x008ABD64, // TrackElemType::RightCorkscrewDown
     0,
     0,
     0,
@@ -11289,19 +11289,19 @@ static constexpr const uint32_t _OldTwisterRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008AB9A4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008AB9B4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008AB9C4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008AB9D4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008AB9E4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008AB9F4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008ABA04, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008ABA14, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008ABA44, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008ABA24, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008ABA34, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008ABA54, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008ABA64, // TRACK_ELEM_BRAKES
+    0x008AB9A4, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008AB9B4, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008AB9C4, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008AB9D4, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008AB9E4, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008AB9F4, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008ABA04, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008ABA14, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x008ABA44, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008ABA24, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008ABA34, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008ABA54, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008ABA64, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -11312,83 +11312,83 @@ static constexpr const uint32_t _OldTwisterRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008ABE04, // TRACK_ELEM_25_DEG_UP_LEFT_BANKED
-    0x008ABE14, // TRACK_ELEM_25_DEG_UP_RIGHT_BANKED
+    0x008ABE04, // TrackElemType::Up25LeftBanked
+    0x008ABE14, // TrackElemType::Up25RightBanked
     0,
     0,
-    0x008ABA74, // TRACK_ELEM_ON_RIDE_PHOTO
-    0x008ABE24, // TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED
-    0x008ABE34, // TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED
+    0x008ABA74, // TrackElemType::OnRidePhoto
+    0x008ABE24, // TrackElemType::Down25LeftBanked
+    0x008ABE34, // TrackElemType::Down25RightBanked
     0,
-    0x008AC0F4, // TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE
-    0x008AC104, // TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE
+    0x008AC0F4, // TrackElemType::FlatToUp60LongBase
+    0x008AC104, // TrackElemType::Up60ToFlatLongBase
     0,
-    0x008AC114, // TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE
-    0x008AC124, // TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122
+    0x008AC114, // TrackElemType::Down60ToFlatLongBase
+    0x008AC124, // TrackElemType::FlatToDown60LongBase
     0,
     0,
     0,
-    0x008ABE44, // TRACK_ELEM_90_DEG_UP
-    0x008ABE54, // TRACK_ELEM_90_DEG_DOWN
-    0x008ABE64, // TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP
-    0x008ABE74, // TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-    0x008ABE84, // TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP
-    0x008ABE94, // TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN
+    0x008ABE44, // TrackElemType::Up90
+    0x008ABE54, // TrackElemType::Down90
+    0x008ABE64, // TrackElemType::Up60ToUp90
+    0x008ABE74, // TrackElemType::Down90ToDown60
+    0x008ABE84, // TrackElemType::Up90ToUp60
+    0x008ABE94, // TrackElemType::Down60ToDown90
     0,
-    0x008ABAB4, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008ABAC4, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008ABAD4, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008ABAE4, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008ABAF4, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008ABB04, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008ABB14, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008ABB24, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008ABAA4, // TRACK_ELEM_DIAG_FLAT
-    0x008ABB54, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008ABBB4, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008ABB34, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008ABB94, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008ABBA4, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008ABB44, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008ABB84, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008ABBE4, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008ABB64, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008ABBC4, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008ABBD4, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008ABB74, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008ABAB4, // TrackElemType::LeftEighthToDiag
+    0x008ABAC4, // TrackElemType::RightEighthToDiag
+    0x008ABAD4, // TrackElemType::LeftEighthToOrthogonal
+    0x008ABAE4, // TrackElemType::RightEighthToOrthogonal
+    0x008ABAF4, // TrackElemType::LeftEighthBankToDiag
+    0x008ABB04, // TrackElemType::RightEighthBankToDiag
+    0x008ABB14, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008ABB24, // TrackElemType::RightEighthBankToOrthogonal
+    0x008ABAA4, // TrackElemType::DiagFlat
+    0x008ABB54, // TrackElemType::DiagUp25
+    0x008ABBB4, // TrackElemType::DiagUp60
+    0x008ABB34, // TrackElemType::DiagFlatToUp25
+    0x008ABB94, // TrackElemType::DiagUp25ToUp60
+    0x008ABBA4, // TrackElemType::DiagUp60ToUp25
+    0x008ABB44, // TrackElemType::DiagUp25ToFlat
+    0x008ABB84, // TrackElemType::DiagDown25
+    0x008ABBE4, // TrackElemType::DiagDown60
+    0x008ABB64, // TrackElemType::DiagFlatToDown25
+    0x008ABBC4, // TrackElemType::DiagDown25ToDown60
+    0x008ABBD4, // TrackElemType::DiagDown60ToDown25
+    0x008ABB74, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008ABC14, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008ABC24, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008ABC34, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008ABC44, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008ABC74, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008ABC84, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008ABC54, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008ABC64, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008ABC94, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008ABCA4, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008ABCB4, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008ABCC4, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008ABBF4, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008ABC04, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008ABC14, // TrackElemType::DiagFlatToLeftBank
+    0x008ABC24, // TrackElemType::DiagFlatToRightBank
+    0x008ABC34, // TrackElemType::DiagLeftBankToFlat
+    0x008ABC44, // TrackElemType::DiagRightBankToFlat
+    0x008ABC74, // TrackElemType::DiagLeftBankToUp25
+    0x008ABC84, // TrackElemType::DiagRightBankToUp25
+    0x008ABC54, // TrackElemType::DiagUp25ToLeftBank
+    0x008ABC64, // TrackElemType::DiagUp25ToRightBank
+    0x008ABC94, // TrackElemType::DiagLeftBankToDown25
+    0x008ABCA4, // TrackElemType::DiagRightBankToDown25
+    0x008ABCB4, // TrackElemType::DiagDown25ToLeftBank
+    0x008ABCC4, // TrackElemType::DiagDown25ToRightBank
+    0x008ABBF4, // TrackElemType::DiagLeftBank
+    0x008ABC04, // TrackElemType::DiagRightBank
     0,
     0,
-    0x008ABCF4, // TRACK_ELEM_LEFT_BARREL_ROLL_UP_TO_DOWN
-    0x008ABD04, // TRACK_ELEM_RIGHT_BARREL_ROLL_UP_TO_DOWN
-    0x008ABD14, // TRACK_ELEM_LEFT_BARREL_ROLL_DOWN_TO_UP
-    0x008ABD24, // TRACK_ELEM_RIGHT_BARREL_ROLL_DOWN_TO_UP
-    0x008ABD74, // TRACK_ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008ABD84, // TRACK_ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008ABD94, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK
-    0x008ABDA4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008ABDB4, // TRACK_ELEM_POWERED_LIFT
-    0x008ABDC4, // TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP
-    0x008ABDD4, // TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP
-    0x008ABDE4, // TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN
-    0x008ABDF4, // TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN
+    0x008ABCF4, // TrackElemType::LeftBarrelRollUpToDown
+    0x008ABD04, // TrackElemType::RightBarrelRollUpToDown
+    0x008ABD14, // TrackElemType::LeftBarrelRollDownToUp
+    0x008ABD24, // TrackElemType::RightBarrelRollDownToUp
+    0x008ABD74, // TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25
+    0x008ABD84, // TrackElemType::RightBankToRightQuarterTurn3TilesUp25
+    0x008ABD94, // TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank
+    0x008ABDA4, // TrackElemType::RightQuarterTurn3TilesDown25ToRightBank
+    0x008ABDB4, // TrackElemType::PoweredLift
+    0x008ABDC4, // TrackElemType::LeftLargeHalfLoopUp
+    0x008ABDD4, // TrackElemType::RightLargeHalfLoopUp
+    0x008ABDE4, // TrackElemType::RightLargeHalfLoopDown
+    0x008ABDF4, // TrackElemType::LeftLargeHalfLoopDown
     0,
     0,
     0,
@@ -11409,8 +11409,8 @@ static constexpr const uint32_t _OldTwisterRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008AC134, // TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP
-    0x008AC144, // TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN
+    0x008AC134, // TrackElemType::Up90ToInvertedFlatQuarterLoop
+    0x008AC144, // TrackElemType::InvertedFlatToDown90QuarterLoop
     0,
     0,
     0,
@@ -11418,43 +11418,43 @@ static constexpr const uint32_t _OldTwisterRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x008AC0E4, // TRACK_ELEM_BLOCK_BRAKES
-    0x008ABEA4, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008ABEB4, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008ABEC4, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008ABED4, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008ABEE4, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008ABEF4, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008ABF04, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008ABF14, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008ABF24, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    0x008ABF34, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    0x008ABF44, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008ABF54, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008ABF64, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008ABF74, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008ABF84, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008ABF94, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008ABFA4, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008ABFB4, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008ABFE4, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    0x008ABFF4, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    0x008AC004, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008AC014, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008ABFC4, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    0x008ABFD4, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    0x008AC024, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008AC034, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008AC044, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    0x008AC054, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    0x008AC064, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008AC074, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008AC084, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008AC094, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008AC0A4, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP
-    0x008AC0B4, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP
-    0x008AC0C4, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN
-    0x008AC0D4, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN
+    0x008AC0E4, // TrackElemType::BlockBrakes
+    0x008ABEA4, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    0x008ABEB4, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    0x008ABEC4, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    0x008ABED4, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    0x008ABEE4, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    0x008ABEF4, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    0x008ABF04, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    0x008ABF14, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    0x008ABF24, // TrackElemType::Up25ToLeftBankedUp25
+    0x008ABF34, // TrackElemType::Up25ToRightBankedUp25
+    0x008ABF44, // TrackElemType::LeftBankedUp25ToUp25
+    0x008ABF54, // TrackElemType::RightBankedUp25ToUp25
+    0x008ABF64, // TrackElemType::Down25ToLeftBankedDown25
+    0x008ABF74, // TrackElemType::Down25ToRightBankedDown25
+    0x008ABF84, // TrackElemType::LeftBankedDown25ToDown25
+    0x008ABF94, // TrackElemType::RightBankedDown25ToDown25
+    0x008ABFA4, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    0x008ABFB4, // TrackElemType::RightBankedFlatToRightBankedUp25
+    0x008ABFE4, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    0x008ABFF4, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    0x008AC004, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    0x008AC014, // TrackElemType::RightBankedFlatToRightBankedDown25
+    0x008ABFC4, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    0x008ABFD4, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    0x008AC024, // TrackElemType::FlatToLeftBankedUp25
+    0x008AC034, // TrackElemType::FlatToRightBankedUp25
+    0x008AC044, // TrackElemType::LeftBankedUp25ToFlat
+    0x008AC054, // TrackElemType::RightBankedUp25ToFlat
+    0x008AC064, // TrackElemType::FlatToLeftBankedDown25
+    0x008AC074, // TrackElemType::FlatToRightBankedDown25
+    0x008AC084, // TrackElemType::LeftBankedDown25ToFlat
+    0x008AC094, // TrackElemType::RightBankedDown25ToFlat
+    0x008AC0A4, // TrackElemType::LeftQuarterTurn1TileUp90
+    0x008AC0B4, // TrackElemType::RightQuarterTurn1TileUp90
+    0x008AC0C4, // TrackElemType::LeftQuarterTurn1TileDown90
+    0x008AC0D4, // TrackElemType::RightQuarterTurn1TileDown90
     0,
     0,
     0,
@@ -11462,56 +11462,56 @@ static constexpr const uint32_t _OldTwisterRollerCoasterTrackPaintFunctions[256]
 
 /** rct2: 0x008AC164 */
 static constexpr const uint32_t _OldWoodenRollerCoasterTrackPaintFunctions[256] = {
-    0x008AC568, // TRACK_ELEM_FLAT
-    0x008AC7B8, // TRACK_ELEM_END_STATION
-    0x008AC7C8, // TRACK_ELEM_BEGIN_STATION
-    0x008AC7D8, // TRACK_ELEM_MIDDLE_STATION
-    0x008AC578, // TRACK_ELEM_25_DEG_UP
-    0x008AC588, // TRACK_ELEM_60_DEG_UP
-    0x008AC598, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008AC5A8, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008AC5B8, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008AC5C8, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008AC5D8, // TRACK_ELEM_25_DEG_DOWN
-    0x008AC5E8, // TRACK_ELEM_60_DEG_DOWN
-    0x008AC5F8, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008AC608, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AC618, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AC628, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008AC638, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AC648, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008AC658, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008AC668, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008AC678, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008AC688, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008AC698, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008AC6A8, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008AC6B8, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008AC6C8, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008AC6D8, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008AC6E8, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008AC6F8, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AC708, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AC718, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AC728, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AC738, // TRACK_ELEM_LEFT_BANK
-    0x008AC748, // TRACK_ELEM_RIGHT_BANK
-    0x008AC758, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AC768, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AC778, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AC788, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AC798, // TRACK_ELEM_S_BEND_LEFT
-    0x008AC7A8, // TRACK_ELEM_S_BEND_RIGHT
-    0x008ACE18, // TRACK_ELEM_LEFT_VERTICAL_LOOP
-    0x008ACE28, // TRACK_ELEM_RIGHT_VERTICAL_LOOP
-    0x008AC7E8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008AC7F8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008AC808, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008AC818, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008AC828, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AC838, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AC848, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008AC858, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008AC568, // TrackElemType::Flat
+    0x008AC7B8, // TrackElemType::EndStation
+    0x008AC7C8, // TrackElemType::BeginStation
+    0x008AC7D8, // TrackElemType::MiddleStation
+    0x008AC578, // TrackElemType::Up25
+    0x008AC588, // TrackElemType::Up60
+    0x008AC598, // TrackElemType::FlatToUp25
+    0x008AC5A8, // TrackElemType::Up25ToUp60
+    0x008AC5B8, // TrackElemType::Up60ToUp25
+    0x008AC5C8, // TrackElemType::Up25ToFlat
+    0x008AC5D8, // TrackElemType::Down25
+    0x008AC5E8, // TrackElemType::Down60
+    0x008AC5F8, // TrackElemType::FlatToDown25
+    0x008AC608, // TrackElemType::Down25ToDown60
+    0x008AC618, // TrackElemType::Down60ToDown25
+    0x008AC628, // TrackElemType::Down25ToFlat
+    0x008AC638, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AC648, // TrackElemType::RightQuarterTurn5Tiles
+    0x008AC658, // TrackElemType::FlatToLeftBank
+    0x008AC668, // TrackElemType::FlatToRightBank
+    0x008AC678, // TrackElemType::LeftBankToFlat
+    0x008AC688, // TrackElemType::RightBankToFlat
+    0x008AC698, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008AC6A8, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008AC6B8, // TrackElemType::LeftBankToUp25
+    0x008AC6C8, // TrackElemType::RightBankToUp25
+    0x008AC6D8, // TrackElemType::Up25ToLeftBank
+    0x008AC6E8, // TrackElemType::Up25ToRightBank
+    0x008AC6F8, // TrackElemType::LeftBankToDown25
+    0x008AC708, // TrackElemType::RightBankToDown25
+    0x008AC718, // TrackElemType::Down25ToLeftBank
+    0x008AC728, // TrackElemType::Down25ToRightBank
+    0x008AC738, // TrackElemType::LeftBank
+    0x008AC748, // TrackElemType::RightBank
+    0x008AC758, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008AC768, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008AC778, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008AC788, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008AC798, // TrackElemType::SBendLeft
+    0x008AC7A8, // TrackElemType::SBendRight
+    0x008ACE18, // TrackElemType::LeftVerticalLoop
+    0x008ACE28, // TrackElemType::RightVerticalLoop
+    0x008AC7E8, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008AC7F8, // TrackElemType::RightQuarterTurn3Tiles
+    0x008AC808, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008AC818, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008AC828, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008AC838, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008AC848, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008AC858, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -11549,19 +11549,19 @@ static constexpr const uint32_t _OldWoodenRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008ACAB8, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008ACAC8, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008ACAD8, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008ACAE8, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008ACAF8, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008ACB08, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008ACB18, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008ACB28, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008ACB98, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008ACB78, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008ACB88, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008ACBA8, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008AC868, // TRACK_ELEM_BRAKES
+    0x008ACAB8, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008ACAC8, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008ACAD8, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008ACAE8, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008ACAF8, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008ACB08, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008ACB18, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008ACB28, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x008ACB98, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008ACB78, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008ACB88, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008ACBA8, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008AC868, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -11572,14 +11572,14 @@ static constexpr const uint32_t _OldWoodenRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008ACC78, // TRACK_ELEM_25_DEG_UP_LEFT_BANKED
-    0x008ACC88, // TRACK_ELEM_25_DEG_UP_RIGHT_BANKED
+    0x008ACC78, // TrackElemType::Up25LeftBanked
+    0x008ACC88, // TrackElemType::Up25RightBanked
     0,
     0,
-    0x008AC878, // TRACK_ELEM_ON_RIDE_PHOTO
-    0x008ACC98, // TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED
-    0x008ACCA8, // TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED
-    0x008ACE08, // TRACK_ELEM_WATER_SPLASH
+    0x008AC878, // TrackElemType::OnRidePhoto
+    0x008ACC98, // TrackElemType::Down25LeftBanked
+    0x008ACCA8, // TrackElemType::Down25RightBanked
+    0x008ACE08, // TrackElemType::Watersplash
     0,
     0,
     0,
@@ -11595,55 +11595,55 @@ static constexpr const uint32_t _OldWoodenRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008AC958, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008AC968, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008AC978, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008AC988, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008AC998, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008AC9A8, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008AC9B8, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008AC9C8, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008AC888, // TRACK_ELEM_DIAG_FLAT
-    0x008AC8B8, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008AC8E8, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008AC898, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008AC8C8, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008AC8D8, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008AC8A8, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008AC918, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008AC948, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008AC8F8, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008AC928, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AC938, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AC908, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008AC958, // TrackElemType::LeftEighthToDiag
+    0x008AC968, // TrackElemType::RightEighthToDiag
+    0x008AC978, // TrackElemType::LeftEighthToOrthogonal
+    0x008AC988, // TrackElemType::RightEighthToOrthogonal
+    0x008AC998, // TrackElemType::LeftEighthBankToDiag
+    0x008AC9A8, // TrackElemType::RightEighthBankToDiag
+    0x008AC9B8, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008AC9C8, // TrackElemType::RightEighthBankToOrthogonal
+    0x008AC888, // TrackElemType::DiagFlat
+    0x008AC8B8, // TrackElemType::DiagUp25
+    0x008AC8E8, // TrackElemType::DiagUp60
+    0x008AC898, // TrackElemType::DiagFlatToUp25
+    0x008AC8C8, // TrackElemType::DiagUp25ToUp60
+    0x008AC8D8, // TrackElemType::DiagUp60ToUp25
+    0x008AC8A8, // TrackElemType::DiagUp25ToFlat
+    0x008AC918, // TrackElemType::DiagDown25
+    0x008AC948, // TrackElemType::DiagDown60
+    0x008AC8F8, // TrackElemType::DiagFlatToDown25
+    0x008AC928, // TrackElemType::DiagDown25ToDown60
+    0x008AC938, // TrackElemType::DiagDown60ToDown25
+    0x008AC908, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008ACA18, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008AC9F8, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008ACA08, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008ACA28, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008ACA58, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008ACA68, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008ACA38, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008ACA48, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008ACA78, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008ACA88, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008ACA98, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008ACAA8, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AC9D8, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008AC9E8, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008ACA18, // TrackElemType::DiagFlatToLeftBank
+    0x008AC9F8, // TrackElemType::DiagFlatToRightBank
+    0x008ACA08, // TrackElemType::DiagLeftBankToFlat
+    0x008ACA28, // TrackElemType::DiagRightBankToFlat
+    0x008ACA58, // TrackElemType::DiagLeftBankToUp25
+    0x008ACA68, // TrackElemType::DiagRightBankToUp25
+    0x008ACA38, // TrackElemType::DiagUp25ToLeftBank
+    0x008ACA48, // TrackElemType::DiagUp25ToRightBank
+    0x008ACA78, // TrackElemType::DiagLeftBankToDown25
+    0x008ACA88, // TrackElemType::DiagRightBankToDown25
+    0x008ACA98, // TrackElemType::DiagDown25ToLeftBank
+    0x008ACAA8, // TrackElemType::DiagDown25ToRightBank
+    0x008AC9D8, // TrackElemType::DiagLeftBank
+    0x008AC9E8, // TrackElemType::DiagRightBank
     0,
     0,
     0,
     0,
     0,
     0,
-    0x008ACB38, // TRACK_ELEM_LEFT_BANK_TO_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008ACB48, // TRACK_ELEM_RIGHT_BANK_TO_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008ACB58, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_LEFT_BANK
-    0x008ACB68, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN_TO_RIGHT_BANK
+    0x008ACB38, // TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25
+    0x008ACB48, // TrackElemType::RightBankToRightQuarterTurn3TilesUp25
+    0x008ACB58, // TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank
+    0x008ACB68, // TrackElemType::RightQuarterTurn3TilesDown25ToRightBank
     0,
     0,
     0,
@@ -11678,39 +11678,39 @@ static constexpr const uint32_t _OldWoodenRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x008ACDF8, // TRACK_ELEM_BLOCK_BRAKES
-    0x008ACCB8, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008ACCC8, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008ACCD8, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008ACCE8, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008ACC38, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008ACC48, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008ACC58, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008ACC68, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008ACCF8, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    0x008ACD08, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    0x008ACD18, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008ACD28, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008ACD38, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008ACD48, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008ACD58, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008ACD68, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008ACD78, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008ACD88, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008ACD98, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    0x008ACDA8, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    0x008ACDB8, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008ACDC8, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008ACDD8, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    0x008ACDE8, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    0x008ACBB8, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008ACBC8, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008ACBD8, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    0x008ACBE8, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    0x008ACBF8, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008ACC08, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008ACC18, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008ACC28, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
+    0x008ACDF8, // TrackElemType::BlockBrakes
+    0x008ACCB8, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    0x008ACCC8, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    0x008ACCD8, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    0x008ACCE8, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    0x008ACC38, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    0x008ACC48, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    0x008ACC58, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    0x008ACC68, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    0x008ACCF8, // TrackElemType::Up25ToLeftBankedUp25
+    0x008ACD08, // TrackElemType::Up25ToRightBankedUp25
+    0x008ACD18, // TrackElemType::LeftBankedUp25ToUp25
+    0x008ACD28, // TrackElemType::RightBankedUp25ToUp25
+    0x008ACD38, // TrackElemType::Down25ToLeftBankedDown25
+    0x008ACD48, // TrackElemType::Down25ToRightBankedDown25
+    0x008ACD58, // TrackElemType::LeftBankedDown25ToDown25
+    0x008ACD68, // TrackElemType::RightBankedDown25ToDown25
+    0x008ACD78, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    0x008ACD88, // TrackElemType::RightBankedFlatToRightBankedUp25
+    0x008ACD98, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    0x008ACDA8, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    0x008ACDB8, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    0x008ACDC8, // TrackElemType::RightBankedFlatToRightBankedDown25
+    0x008ACDD8, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    0x008ACDE8, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    0x008ACBB8, // TrackElemType::FlatToLeftBankedUp25
+    0x008ACBC8, // TrackElemType::FlatToRightBankedUp25
+    0x008ACBD8, // TrackElemType::LeftBankedUp25ToFlat
+    0x008ACBE8, // TrackElemType::RightBankedUp25ToFlat
+    0x008ACBF8, // TrackElemType::FlatToLeftBankedDown25
+    0x008ACC08, // TrackElemType::FlatToRightBankedDown25
+    0x008ACC18, // TrackElemType::LeftBankedDown25ToFlat
+    0x008ACC28, // TrackElemType::RightBankedDown25ToFlat
     0,
     0,
     0,
@@ -11722,24 +11722,24 @@ static constexpr const uint32_t _OldWoodenRollerCoasterTrackPaintFunctions[256] 
 
 /** rct2: 0x00778124 */
 static constexpr const uint32_t _OldSideFrictionRollerCoasterTrackPaintFunctions[256] = {
-    0x0077839C, // TRACK_ELEM_FLAT
-    0x007784AC, // TRACK_ELEM_END_STATION
-    0x007784BC, // TRACK_ELEM_BEGIN_STATION
-    0x007784CC, // TRACK_ELEM_MIDDLE_STATION
-    0x007783AC, // TRACK_ELEM_25_DEG_UP
+    0x0077839C, // TrackElemType::Flat
+    0x007784AC, // TrackElemType::EndStation
+    0x007784BC, // TrackElemType::BeginStation
+    0x007784CC, // TrackElemType::MiddleStation
+    0x007783AC, // TrackElemType::Up25
     0,
-    0x007783CC, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x007783CC, // TrackElemType::FlatToUp25
     0,
     0,
-    0x007783FC, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0077840C, // TRACK_ELEM_25_DEG_DOWN
+    0x007783FC, // TrackElemType::Up25ToFlat
+    0x0077840C, // TrackElemType::Down25
     0,
-    0x0077842C, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x0077842C, // TrackElemType::FlatToDown25
     0,
     0,
-    0x0077845C, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x0077846C, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x0077847C, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x0077845C, // TrackElemType::Down25ToFlat
+    0x0077846C, // TrackElemType::LeftQuarterTurn5Tiles
+    0x0077847C, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -11760,12 +11760,12 @@ static constexpr const uint32_t _OldSideFrictionRollerCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x0077848C, // TRACK_ELEM_S_BEND_LEFT
-    0x0077849C, // TRACK_ELEM_S_BEND_RIGHT
+    0x0077848C, // TrackElemType::SBendLeft
+    0x0077849C, // TrackElemType::SBendRight
     0,
     0,
-    0x007784DC, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x007784EC, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x007784DC, // TrackElemType::LeftQuarterTurn3Tiles
+    0x007784EC, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
@@ -11821,7 +11821,7 @@ static constexpr const uint32_t _OldSideFrictionRollerCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x007784FC, // TRACK_ELEM_BRAKES
+    0x007784FC, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -11855,27 +11855,27 @@ static constexpr const uint32_t _OldSideFrictionRollerCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x007785DC, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x007785EC, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x007785FC, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x0077860C, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
+    0x007785DC, // TrackElemType::LeftEighthToDiag
+    0x007785EC, // TrackElemType::RightEighthToDiag
+    0x007785FC, // TrackElemType::LeftEighthToOrthogonal
+    0x0077860C, // TrackElemType::RightEighthToOrthogonal
     0,
     0,
     0,
     0,
-    0x0077850C, // TRACK_ELEM_DIAG_FLAT
-    0x0077853C, // TRACK_ELEM_DIAG_25_DEG_UP
+    0x0077850C, // TrackElemType::DiagFlat
+    0x0077853C, // TrackElemType::DiagUp25
     0,
-    0x0077851C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
+    0x0077851C, // TrackElemType::DiagFlatToUp25
     0,
     0,
-    0x0077852C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x0077859C, // TRACK_ELEM_DIAG_25_DEG_DOWN
+    0x0077852C, // TrackElemType::DiagUp25ToFlat
+    0x0077859C, // TrackElemType::DiagDown25
     0,
-    0x0077857C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
+    0x0077857C, // TrackElemType::DiagFlatToDown25
     0,
     0,
-    0x0077858C, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x0077858C, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
@@ -11982,22 +11982,22 @@ static constexpr const uint32_t _OldSideFrictionRollerCoasterTrackPaintFunctions
 
 /** rct2: 0x0078AE80 */
 static constexpr const uint32_t _OldWildMouseTrackPaintFunctions[256] = {
-    0x0078B1E4, // TRACK_ELEM_FLAT
-    0x0078B2B4, // TRACK_ELEM_END_STATION
-    0x0078B2C4, // TRACK_ELEM_BEGIN_STATION
-    0x0078B2D4, // TRACK_ELEM_MIDDLE_STATION
-    0x0078B1F4, // TRACK_ELEM_25_DEG_UP
-    0x0078B204, // TRACK_ELEM_60_DEG_UP
-    0x0078B214, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x0078B224, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x0078B234, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x0078B244, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0078B254, // TRACK_ELEM_25_DEG_DOWN
-    0x0078B264, // TRACK_ELEM_60_DEG_DOWN
-    0x0078B274, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x0078B284, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x0078B294, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x0078B2A4, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x0078B1E4, // TrackElemType::Flat
+    0x0078B2B4, // TrackElemType::EndStation
+    0x0078B2C4, // TrackElemType::BeginStation
+    0x0078B2D4, // TrackElemType::MiddleStation
+    0x0078B1F4, // TrackElemType::Up25
+    0x0078B204, // TrackElemType::Up60
+    0x0078B214, // TrackElemType::FlatToUp25
+    0x0078B224, // TrackElemType::Up25ToUp60
+    0x0078B234, // TrackElemType::Up60ToUp25
+    0x0078B244, // TrackElemType::Up25ToFlat
+    0x0078B254, // TrackElemType::Down25
+    0x0078B264, // TrackElemType::Down60
+    0x0078B274, // TrackElemType::FlatToDown25
+    0x0078B284, // TrackElemType::Down25ToDown60
+    0x0078B294, // TrackElemType::Down60ToDown25
+    0x0078B2A4, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -12024,16 +12024,16 @@ static constexpr const uint32_t _OldWildMouseTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0078B2E4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x0078B2F4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x0078B2E4, // TrackElemType::LeftQuarterTurn3Tiles
+    0x0078B2F4, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
-    0x0078B304, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x0078B314, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x0078B324, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x0078B334, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x0078B394, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x0078B3A4, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0x0078B304, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x0078B314, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x0078B324, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x0078B334, // TrackElemType::RightQuarterTurn3TilesDown25
+    0x0078B394, // TrackElemType::LeftQuarterTurn1Tile
+    0x0078B3A4, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -12044,10 +12044,10 @@ static constexpr const uint32_t _OldWildMouseTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0078B354, // TRACK_ELEM_FLAT_TO_60_DEG_UP
-    0x0078B364, // TRACK_ELEM_60_DEG_UP_TO_FLAT
-    0x0078B374, // TRACK_ELEM_FLAT_TO_60_DEG_DOWN
-    0x0078B384, // TRACK_ELEM_60_DEG_DOWN_TO_FLAT
+    0x0078B354, // TrackElemType::FlatToUp60
+    0x0078B364, // TrackElemType::Up60ToFlat
+    0x0078B374, // TrackElemType::FlatToDown60
+    0x0078B384, // TrackElemType::Down60ToFlat
     0,
     0,
     0,
@@ -12081,8 +12081,8 @@ static constexpr const uint32_t _OldWildMouseTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0078B344, // TRACK_ELEM_BRAKES
-    0x0078B3C4, // TRACK_ELEM_ROTATION_CONTROL_TOGGLE
+    0x0078B344, // TrackElemType::Brakes
+    0x0078B3C4, // TrackElemType::RotationControlToggle
     0,
     0,
     0,
@@ -12198,7 +12198,7 @@ static constexpr const uint32_t _OldWildMouseTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0078B3B4, // TRACK_ELEM_BLOCK_BRAKES
+    0x0078B3B4, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -12242,52 +12242,52 @@ static constexpr const uint32_t _OldWildMouseTrackPaintFunctions[256] = {
 
 /** rct2: 0x00792978 */
 static constexpr const uint32_t _OldMultiDimensionRollerCoasterTrackPaintFunctions[256] = {
-    0x00792D88, // TRACK_ELEM_FLAT
-    0x00792F98, // TRACK_ELEM_END_STATION
-    0x00792FA8, // TRACK_ELEM_BEGIN_STATION
-    0x00792FB8, // TRACK_ELEM_MIDDLE_STATION
-    0x00792D98, // TRACK_ELEM_25_DEG_UP
-    0x00792DA8, // TRACK_ELEM_60_DEG_UP
-    0x00792DB8, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x00792DC8, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x00792DD8, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x00792DE8, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x00792DF8, // TRACK_ELEM_25_DEG_DOWN
-    0x00792E08, // TRACK_ELEM_60_DEG_DOWN
-    0x00792E18, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x00792E28, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x00792E38, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x00792E48, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x00792E58, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x00792E68, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x00792E78, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x00792E88, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x00792E98, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x00792EA8, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x00792EB8, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x00792EC8, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x00792ED8, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x00792EE8, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x00792EF8, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x00792F08, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x00792F18, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x00792F28, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x00792F38, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x00792F48, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x00792F58, // TRACK_ELEM_LEFT_BANK
-    0x00792F68, // TRACK_ELEM_RIGHT_BANK
+    0x00792D88, // TrackElemType::Flat
+    0x00792F98, // TrackElemType::EndStation
+    0x00792FA8, // TrackElemType::BeginStation
+    0x00792FB8, // TrackElemType::MiddleStation
+    0x00792D98, // TrackElemType::Up25
+    0x00792DA8, // TrackElemType::Up60
+    0x00792DB8, // TrackElemType::FlatToUp25
+    0x00792DC8, // TrackElemType::Up25ToUp60
+    0x00792DD8, // TrackElemType::Up60ToUp25
+    0x00792DE8, // TrackElemType::Up25ToFlat
+    0x00792DF8, // TrackElemType::Down25
+    0x00792E08, // TrackElemType::Down60
+    0x00792E18, // TrackElemType::FlatToDown25
+    0x00792E28, // TrackElemType::Down25ToDown60
+    0x00792E38, // TrackElemType::Down60ToDown25
+    0x00792E48, // TrackElemType::Down25ToFlat
+    0x00792E58, // TrackElemType::LeftQuarterTurn5Tiles
+    0x00792E68, // TrackElemType::RightQuarterTurn5Tiles
+    0x00792E78, // TrackElemType::FlatToLeftBank
+    0x00792E88, // TrackElemType::FlatToRightBank
+    0x00792E98, // TrackElemType::LeftBankToFlat
+    0x00792EA8, // TrackElemType::RightBankToFlat
+    0x00792EB8, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x00792EC8, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x00792ED8, // TrackElemType::LeftBankToUp25
+    0x00792EE8, // TrackElemType::RightBankToUp25
+    0x00792EF8, // TrackElemType::Up25ToLeftBank
+    0x00792F08, // TrackElemType::Up25ToRightBank
+    0x00792F18, // TrackElemType::LeftBankToDown25
+    0x00792F28, // TrackElemType::RightBankToDown25
+    0x00792F38, // TrackElemType::Down25ToLeftBank
+    0x00792F48, // TrackElemType::Down25ToRightBank
+    0x00792F58, // TrackElemType::LeftBank
+    0x00792F68, // TrackElemType::RightBank
     0,
     0,
     0,
     0,
-    0x00792F78, // TRACK_ELEM_S_BEND_LEFT
-    0x00792F88, // TRACK_ELEM_S_BEND_RIGHT
+    0x00792F78, // TrackElemType::SBendLeft
+    0x00792F88, // TrackElemType::SBendRight
     0,
     0,
-    0x00792FC8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x00792FD8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x00792FE8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x00792FF8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
+    0x00792FC8, // TrackElemType::LeftQuarterTurn3Tiles
+    0x00792FD8, // TrackElemType::RightQuarterTurn3Tiles
+    0x00792FE8, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x00792FF8, // TrackElemType::RightBankedQuarterTurn3Tiles
     0,
     0,
     0,
@@ -12329,19 +12329,19 @@ static constexpr const uint32_t _OldMultiDimensionRollerCoasterTrackPaintFunctio
     0,
     0,
     0,
-    0x00793008, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x00793018, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x00793028, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x00793038, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x00793048, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x00793058, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x00793068, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x00793078, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
+    0x00793008, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x00793018, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x00793028, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x00793038, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x00793048, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x00793058, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x00793068, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x00793078, // TrackElemType::RightHalfBankedHelixDownLarge
     0,
     0,
     0,
     0,
-    0x00793088, // TRACK_ELEM_BRAKES
+    0x00793088, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -12356,7 +12356,7 @@ static constexpr const uint32_t _OldMultiDimensionRollerCoasterTrackPaintFunctio
     0,
     0,
     0,
-    0x00793098, // TRACK_ELEM_ON_RIDE_PHOTO
+    0x00793098, // TrackElemType::OnRidePhoto
     0,
     0,
     0,
@@ -12368,52 +12368,52 @@ static constexpr const uint32_t _OldMultiDimensionRollerCoasterTrackPaintFunctio
     0,
     0,
     0,
-    0x00793328, // TRACK_ELEM_90_DEG_UP
-    0x00793338, // TRACK_ELEM_90_DEG_DOWN
-    0x00793348, // TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP
-    0x00793358, // TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-    0x00793368, // TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP
-    0x00793378, // TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN
+    0x00793328, // TrackElemType::Up90
+    0x00793338, // TrackElemType::Down90
+    0x00793348, // TrackElemType::Up60ToUp90
+    0x00793358, // TrackElemType::Down90ToDown60
+    0x00793368, // TrackElemType::Up90ToUp60
+    0x00793378, // TrackElemType::Down60ToDown90
     0,
-    0x007930B8, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x007930C8, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x007930D8, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x007930E8, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x007930F8, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x00793108, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x00793118, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x00793128, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x007930A8, // TRACK_ELEM_DIAG_FLAT
-    0x00793158, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x007931B8, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x00793138, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x00793198, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x007931A8, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x00793148, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x00793188, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x007931E8, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x00793168, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x007931C8, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x007931D8, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x00793178, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x007930B8, // TrackElemType::LeftEighthToDiag
+    0x007930C8, // TrackElemType::RightEighthToDiag
+    0x007930D8, // TrackElemType::LeftEighthToOrthogonal
+    0x007930E8, // TrackElemType::RightEighthToOrthogonal
+    0x007930F8, // TrackElemType::LeftEighthBankToDiag
+    0x00793108, // TrackElemType::RightEighthBankToDiag
+    0x00793118, // TrackElemType::LeftEighthBankToOrthogonal
+    0x00793128, // TrackElemType::RightEighthBankToOrthogonal
+    0x007930A8, // TrackElemType::DiagFlat
+    0x00793158, // TrackElemType::DiagUp25
+    0x007931B8, // TrackElemType::DiagUp60
+    0x00793138, // TrackElemType::DiagFlatToUp25
+    0x00793198, // TrackElemType::DiagUp25ToUp60
+    0x007931A8, // TrackElemType::DiagUp60ToUp25
+    0x00793148, // TrackElemType::DiagUp25ToFlat
+    0x00793188, // TrackElemType::DiagDown25
+    0x007931E8, // TrackElemType::DiagDown60
+    0x00793168, // TrackElemType::DiagFlatToDown25
+    0x007931C8, // TrackElemType::DiagDown25ToDown60
+    0x007931D8, // TrackElemType::DiagDown60ToDown25
+    0x00793178, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x00793218, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x00793228, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x00793238, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x00793248, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x00793278, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x00793288, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x00793258, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x00793268, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x00793298, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x007932A8, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x007932B8, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x007932C8, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x007931F8, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x00793208, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x00793218, // TrackElemType::DiagFlatToLeftBank
+    0x00793228, // TrackElemType::DiagFlatToRightBank
+    0x00793238, // TrackElemType::DiagLeftBankToFlat
+    0x00793248, // TrackElemType::DiagRightBankToFlat
+    0x00793278, // TrackElemType::DiagLeftBankToUp25
+    0x00793288, // TrackElemType::DiagRightBankToUp25
+    0x00793258, // TrackElemType::DiagUp25ToLeftBank
+    0x00793268, // TrackElemType::DiagUp25ToRightBank
+    0x00793298, // TrackElemType::DiagLeftBankToDown25
+    0x007932A8, // TrackElemType::DiagRightBankToDown25
+    0x007932B8, // TrackElemType::DiagDown25ToLeftBank
+    0x007932C8, // TrackElemType::DiagDown25ToRightBank
+    0x007931F8, // TrackElemType::DiagLeftBank
+    0x00793208, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -12429,10 +12429,10 @@ static constexpr const uint32_t _OldMultiDimensionRollerCoasterTrackPaintFunctio
     0,
     0,
     0,
-    0x007932D8, // TRACK_ELEM_LEFT_FLYER_TWIST_UP
-    0x007932E8, // TRACK_ELEM_RIGHT_FLYER_TWIST_UP
-    0x007932F8, // TRACK_ELEM_LEFT_FLYER_TWIST_DOWN
-    0x00793308, // TRACK_ELEM_RIGHT_FLYER_TWIST_DOWN
+    0x007932D8, // TrackElemType::LeftFlyerTwistUp
+    0x007932E8, // TrackElemType::RightFlyerTwistUp
+    0x007932F8, // TrackElemType::LeftFlyerTwistDown
+    0x00793308, // TrackElemType::RightFlyerTwistDown
     0,
     0,
     0,
@@ -12448,7 +12448,7 @@ static constexpr const uint32_t _OldMultiDimensionRollerCoasterTrackPaintFunctio
     0,
     0,
     0,
-    0x00793398, // TRACK_ELEM_MULTIDIM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN
+    0x00793398, // TrackElemType::MultiDimInvertedFlatToDown90QuarterLoop
     0,
     0,
     0,
@@ -12458,7 +12458,7 @@ static constexpr const uint32_t _OldMultiDimensionRollerCoasterTrackPaintFunctio
     0,
     0,
     0,
-    0x00793318, // TRACK_ELEM_BLOCK_BRAKES
+    0x00793318, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -12495,63 +12495,63 @@ static constexpr const uint32_t _OldMultiDimensionRollerCoasterTrackPaintFunctio
     0,
     0,
     0,
-    0x00793388, // TRACK_ELEM_MULTIDIM_90_DEG_UP_TO_INVERTED_FLAT_QUARTER_LOOP
-    0x00793398, // TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP
+    0x00793388, // TrackElemType::MultiDimUp90ToInvertedFlatQuarterLoop
+    0x00793398, // TrackElemType::MultiDimFlatToDown90QuarterLoop
     0x00793388, // (null)
 };
 
 /** rct2: 0x007C6C00 */
 static constexpr const uint32_t _OldFlyingRollerCoasterTrackPaintFunctions[256] = {
-    0x007C6FF4, // TRACK_ELEM_FLAT
-    0x007C7244, // TRACK_ELEM_END_STATION
-    0x007C7254, // TRACK_ELEM_BEGIN_STATION
-    0x007C7264, // TRACK_ELEM_MIDDLE_STATION
-    0x007C7004, // TRACK_ELEM_25_DEG_UP
-    0x007C7014, // TRACK_ELEM_60_DEG_UP
-    0x007C7024, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x007C7034, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x007C7044, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x007C7054, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x007C7064, // TRACK_ELEM_25_DEG_DOWN
-    0x007C7074, // TRACK_ELEM_60_DEG_DOWN
-    0x007C7084, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x007C7094, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x007C70A4, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x007C70B4, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x007C70C4, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x007C70D4, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x007C70E4, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x007C70F4, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x007C7104, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x007C7114, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x007C7124, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x007C7134, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x007C7144, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x007C7154, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x007C7164, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x007C7174, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x007C7184, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x007C7194, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x007C71A4, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x007C71B4, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x007C71C4, // TRACK_ELEM_LEFT_BANK
-    0x007C71D4, // TRACK_ELEM_RIGHT_BANK
-    0x007C71E4, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x007C71F4, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x007C7204, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x007C7214, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x007C7224, // TRACK_ELEM_S_BEND_LEFT
-    0x007C7234, // TRACK_ELEM_S_BEND_RIGHT
+    0x007C6FF4, // TrackElemType::Flat
+    0x007C7244, // TrackElemType::EndStation
+    0x007C7254, // TrackElemType::BeginStation
+    0x007C7264, // TrackElemType::MiddleStation
+    0x007C7004, // TrackElemType::Up25
+    0x007C7014, // TrackElemType::Up60
+    0x007C7024, // TrackElemType::FlatToUp25
+    0x007C7034, // TrackElemType::Up25ToUp60
+    0x007C7044, // TrackElemType::Up60ToUp25
+    0x007C7054, // TrackElemType::Up25ToFlat
+    0x007C7064, // TrackElemType::Down25
+    0x007C7074, // TrackElemType::Down60
+    0x007C7084, // TrackElemType::FlatToDown25
+    0x007C7094, // TrackElemType::Down25ToDown60
+    0x007C70A4, // TrackElemType::Down60ToDown25
+    0x007C70B4, // TrackElemType::Down25ToFlat
+    0x007C70C4, // TrackElemType::LeftQuarterTurn5Tiles
+    0x007C70D4, // TrackElemType::RightQuarterTurn5Tiles
+    0x007C70E4, // TrackElemType::FlatToLeftBank
+    0x007C70F4, // TrackElemType::FlatToRightBank
+    0x007C7104, // TrackElemType::LeftBankToFlat
+    0x007C7114, // TrackElemType::RightBankToFlat
+    0x007C7124, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x007C7134, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x007C7144, // TrackElemType::LeftBankToUp25
+    0x007C7154, // TrackElemType::RightBankToUp25
+    0x007C7164, // TrackElemType::Up25ToLeftBank
+    0x007C7174, // TrackElemType::Up25ToRightBank
+    0x007C7184, // TrackElemType::LeftBankToDown25
+    0x007C7194, // TrackElemType::RightBankToDown25
+    0x007C71A4, // TrackElemType::Down25ToLeftBank
+    0x007C71B4, // TrackElemType::Down25ToRightBank
+    0x007C71C4, // TrackElemType::LeftBank
+    0x007C71D4, // TrackElemType::RightBank
+    0x007C71E4, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x007C71F4, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x007C7204, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x007C7214, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x007C7224, // TrackElemType::SBendLeft
+    0x007C7234, // TrackElemType::SBendRight
     0,
     0,
-    0x007C7274, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x007C7284, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x007C7294, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x007C72A4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x007C72B4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x007C72C4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x007C72D4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x007C72E4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x007C7274, // TrackElemType::LeftQuarterTurn3Tiles
+    0x007C7284, // TrackElemType::RightQuarterTurn3Tiles
+    0x007C7294, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x007C72A4, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x007C72B4, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x007C72C4, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x007C72D4, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x007C72E4, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -12589,36 +12589,36 @@ static constexpr const uint32_t _OldFlyingRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x007C7314, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x007C7324, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x007C7334, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x007C7344, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x007C7354, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x007C7364, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x007C7374, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x007C7384, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x007C73B4, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x007C7394, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x007C73A4, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x007C73C4, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x007C73D4, // TRACK_ELEM_BRAKES
+    0x007C7314, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x007C7324, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x007C7334, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x007C7344, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x007C7354, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x007C7364, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x007C7374, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x007C7384, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x007C73B4, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x007C7394, // TrackElemType::RightQuarterTurn1TileUp60
+    0x007C73A4, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x007C73C4, // TrackElemType::RightQuarterTurn1TileDown60
+    0x007C73D4, // TrackElemType::Brakes
     0,
     0,
-    0x007C7674, // TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP
-    0x007C7684, // TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP
-    0x007C7694, // TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN
-    0x007C76A4, // TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN
+    0x007C7674, // TrackElemType::LeftQuarterBankedHelixLargeUp
+    0x007C7684, // TrackElemType::RightQuarterBankedHelixLargeUp
+    0x007C7694, // TrackElemType::LeftQuarterBankedHelixLargeDown
+    0x007C76A4, // TrackElemType::RightQuarterBankedHelixLargeDown
     0,
     0,
     0,
     0,
-    0x007C78B4, // TRACK_ELEM_25_DEG_UP_LEFT_BANKED
-    0x007C78C4, // TRACK_ELEM_25_DEG_UP_RIGHT_BANKED
+    0x007C78B4, // TrackElemType::Up25LeftBanked
+    0x007C78C4, // TrackElemType::Up25RightBanked
     0,
     0,
-    0x007C73E4, // TRACK_ELEM_ON_RIDE_PHOTO
-    0x007C78D4, // TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED
-    0x007C78E4, // TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED
+    0x007C73E4, // TrackElemType::OnRidePhoto
+    0x007C78D4, // TrackElemType::Down25LeftBanked
+    0x007C78E4, // TrackElemType::Down25RightBanked
     0,
     0,
     0,
@@ -12635,45 +12635,45 @@ static constexpr const uint32_t _OldFlyingRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x007C7404, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x007C7414, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x007C7424, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x007C7434, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x007C7444, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x007C7454, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x007C7464, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x007C7474, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x007C73F4, // TRACK_ELEM_DIAG_FLAT
-    0x007C74A4, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x007C7504, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x007C7484, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x007C74E4, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x007C74F4, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x007C7494, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x007C74D4, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x007C7534, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x007C74B4, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x007C7514, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x007C7524, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x007C74C4, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x007C7404, // TrackElemType::LeftEighthToDiag
+    0x007C7414, // TrackElemType::RightEighthToDiag
+    0x007C7424, // TrackElemType::LeftEighthToOrthogonal
+    0x007C7434, // TrackElemType::RightEighthToOrthogonal
+    0x007C7444, // TrackElemType::LeftEighthBankToDiag
+    0x007C7454, // TrackElemType::RightEighthBankToDiag
+    0x007C7464, // TrackElemType::LeftEighthBankToOrthogonal
+    0x007C7474, // TrackElemType::RightEighthBankToOrthogonal
+    0x007C73F4, // TrackElemType::DiagFlat
+    0x007C74A4, // TrackElemType::DiagUp25
+    0x007C7504, // TrackElemType::DiagUp60
+    0x007C7484, // TrackElemType::DiagFlatToUp25
+    0x007C74E4, // TrackElemType::DiagUp25ToUp60
+    0x007C74F4, // TrackElemType::DiagUp60ToUp25
+    0x007C7494, // TrackElemType::DiagUp25ToFlat
+    0x007C74D4, // TrackElemType::DiagDown25
+    0x007C7534, // TrackElemType::DiagDown60
+    0x007C74B4, // TrackElemType::DiagFlatToDown25
+    0x007C7514, // TrackElemType::DiagDown25ToDown60
+    0x007C7524, // TrackElemType::DiagDown60ToDown25
+    0x007C74C4, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x007C7564, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x007C7574, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x007C7584, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x007C7594, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x007C75C4, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x007C75D4, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x007C75A4, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x007C75B4, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x007C75E4, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x007C75F4, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x007C7604, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x007C7614, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x007C7544, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x007C7554, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x007C7564, // TrackElemType::DiagFlatToLeftBank
+    0x007C7574, // TrackElemType::DiagFlatToRightBank
+    0x007C7584, // TrackElemType::DiagLeftBankToFlat
+    0x007C7594, // TrackElemType::DiagRightBankToFlat
+    0x007C75C4, // TrackElemType::DiagLeftBankToUp25
+    0x007C75D4, // TrackElemType::DiagRightBankToUp25
+    0x007C75A4, // TrackElemType::DiagUp25ToLeftBank
+    0x007C75B4, // TrackElemType::DiagUp25ToRightBank
+    0x007C75E4, // TrackElemType::DiagLeftBankToDown25
+    0x007C75F4, // TrackElemType::DiagRightBankToDown25
+    0x007C7604, // TrackElemType::DiagDown25ToLeftBank
+    0x007C7614, // TrackElemType::DiagDown25ToRightBank
+    0x007C7544, // TrackElemType::DiagLeftBank
+    0x007C7554, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -12689,12 +12689,12 @@ static constexpr const uint32_t _OldFlyingRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x007C7624, // TRACK_ELEM_LEFT_FLYER_TWIST_UP
-    0x007C7634, // TRACK_ELEM_RIGHT_FLYER_TWIST_UP
-    0x007C7644, // TRACK_ELEM_LEFT_FLYER_TWIST_DOWN
-    0x007C7654, // TRACK_ELEM_RIGHT_FLYER_TWIST_DOWN
-    0x007C72F4, // TRACK_ELEM_FLYER_HALF_LOOP_UP
-    0x007C7304, // TRACK_ELEM_FLYER_HALF_LOOP_DOWN
+    0x007C7624, // TrackElemType::LeftFlyerTwistUp
+    0x007C7634, // TrackElemType::RightFlyerTwistUp
+    0x007C7644, // TrackElemType::LeftFlyerTwistDown
+    0x007C7654, // TrackElemType::RightFlyerTwistDown
+    0x007C72F4, // TrackElemType::FlyerHalfLoopUp
+    0x007C7304, // TrackElemType::FlyerHalfLoopDown
     0,
     0,
     0,
@@ -12718,39 +12718,39 @@ static constexpr const uint32_t _OldFlyingRollerCoasterTrackPaintFunctions[256] 
     0,
     0,
     0,
-    0x007C7664, // TRACK_ELEM_BLOCK_BRAKES
-    0x007C76B4, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x007C76C4, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x007C76D4, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x007C76E4, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x007C76F4, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x007C7704, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x007C7714, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x007C7724, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x007C7734, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    0x007C7744, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    0x007C7754, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x007C7764, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x007C7774, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    0x007C7784, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x007C7794, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x007C77A4, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x007C77B4, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x007C77C4, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x007C77F4, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    0x007C7804, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    0x007C7814, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x007C7824, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x007C77D4, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    0x007C77E4, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    0x007C7834, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x007C7844, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x007C7854, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    0x007C7864, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    0x007C7874, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x007C7884, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x007C7894, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x007C78A4, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
+    0x007C7664, // TrackElemType::BlockBrakes
+    0x007C76B4, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    0x007C76C4, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    0x007C76D4, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    0x007C76E4, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    0x007C76F4, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    0x007C7704, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    0x007C7714, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    0x007C7724, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    0x007C7734, // TrackElemType::Up25ToLeftBankedUp25
+    0x007C7744, // TrackElemType::Up25ToRightBankedUp25
+    0x007C7754, // TrackElemType::LeftBankedUp25ToUp25
+    0x007C7764, // TrackElemType::RightBankedUp25ToUp25
+    0x007C7774, // TrackElemType::Down25ToLeftBankedDown25
+    0x007C7784, // TrackElemType::Down25ToRightBankedDown25
+    0x007C7794, // TrackElemType::LeftBankedDown25ToDown25
+    0x007C77A4, // TrackElemType::RightBankedDown25ToDown25
+    0x007C77B4, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    0x007C77C4, // TrackElemType::RightBankedFlatToRightBankedUp25
+    0x007C77F4, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    0x007C7804, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    0x007C7814, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    0x007C7824, // TrackElemType::RightBankedFlatToRightBankedDown25
+    0x007C77D4, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    0x007C77E4, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    0x007C7834, // TrackElemType::FlatToLeftBankedUp25
+    0x007C7844, // TrackElemType::FlatToRightBankedUp25
+    0x007C7854, // TrackElemType::LeftBankedUp25ToFlat
+    0x007C7864, // TrackElemType::RightBankedUp25ToFlat
+    0x007C7874, // TrackElemType::FlatToLeftBankedDown25
+    0x007C7884, // TrackElemType::FlatToRightBankedDown25
+    0x007C7894, // TrackElemType::LeftBankedDown25ToFlat
+    0x007C78A4, // TrackElemType::RightBankedDown25ToFlat
     0,
     0,
     0,
@@ -12762,24 +12762,22 @@ static constexpr const uint32_t _OldFlyingRollerCoasterTrackPaintFunctions[256] 
 
 /** rct2: 0x00811184 */
 static constexpr const uint32_t _OldVirginiaReelTrackPaintFunctions[256] = {
-    0x00811264, // TRACK_ELEM_FLAT
-    0x008112D4, // TRACK_ELEM_END_STATION
-    0x008112E4, // TRACK_ELEM_BEGIN_STATION
-    0x008112F4, // TRACK_ELEM_MIDDLE_STATION
-    0x00811274, // TRACK_ELEM_25_DEG_UP
+    0x00811264, // TrackElemType::Flat
+    0x008112D4, // TrackElemType::EndStation
+    0x008112E4, // TrackElemType::BeginStation
+    0x008112F4, // TrackElemType::MiddleStation
+    0x00811274, // TrackElemType::Up25
     0,
-    0x00811284, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0,
-    0,
-    0x00811294, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008112A4, // TRACK_ELEM_25_DEG_DOWN
-    0,
-    0x008112B4, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x00811284, // TrackElemType::FlatToUp25
     0,
     0,
-    0x008112C4, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x00811294, // TrackElemType::Up25ToFlat
+    0x008112A4, // TrackElemType::Down25
+    0,
+    0x008112B4, // TrackElemType::FlatToDown25
     0,
     0,
+    0x008112C4, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -12804,16 +12802,18 @@ static constexpr const uint32_t _OldVirginiaReelTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x00811304, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x00811314, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0,
+    0,
+    0x00811304, // TrackElemType::LeftQuarterTurn3Tiles
+    0x00811314, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
     0,
     0,
     0,
-    0x00811324, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x00811334, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0x00811324, // TrackElemType::LeftQuarterTurn1Tile
+    0x00811334, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -13022,24 +13022,24 @@ static constexpr const uint32_t _OldVirginiaReelTrackPaintFunctions[256] = {
 
 /** rct2: 0x008164AC */
 static constexpr const uint32_t _OldSplashBoatsTrackPaintFunctions[256] = {
-    0x00816584, // TRACK_ELEM_FLAT
-    0x00816614, // TRACK_ELEM_END_STATION
-    0x00816624, // TRACK_ELEM_BEGIN_STATION
-    0x00816634, // TRACK_ELEM_MIDDLE_STATION
-    0x00816594, // TRACK_ELEM_25_DEG_UP
-    0x008166A4, // TRACK_ELEM_60_DEG_UP
-    0x008165A4, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x00816664, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x00816674, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008165B4, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008165C4, // TRACK_ELEM_25_DEG_DOWN
-    0x008166B4, // TRACK_ELEM_60_DEG_DOWN
-    0x008165D4, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x00816684, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x00816694, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008165E4, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x00816644, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x00816654, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x00816584, // TrackElemType::Flat
+    0x00816614, // TrackElemType::EndStation
+    0x00816624, // TrackElemType::BeginStation
+    0x00816634, // TrackElemType::MiddleStation
+    0x00816594, // TrackElemType::Up25
+    0x008166A4, // TrackElemType::Up60
+    0x008165A4, // TrackElemType::FlatToUp25
+    0x00816664, // TrackElemType::Up25ToUp60
+    0x00816674, // TrackElemType::Up60ToUp25
+    0x008165B4, // TrackElemType::Up25ToFlat
+    0x008165C4, // TrackElemType::Down25
+    0x008166B4, // TrackElemType::Down60
+    0x008165D4, // TrackElemType::FlatToDown25
+    0x00816684, // TrackElemType::Down25ToDown60
+    0x00816694, // TrackElemType::Down60ToDown25
+    0x008165E4, // TrackElemType::Down25ToFlat
+    0x00816644, // TrackElemType::LeftQuarterTurn5Tiles
+    0x00816654, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -13060,8 +13060,8 @@ static constexpr const uint32_t _OldSplashBoatsTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008165F4, // TRACK_ELEM_S_BEND_LEFT
-    0x00816604, // TRACK_ELEM_S_BEND_RIGHT
+    0x008165F4, // TrackElemType::SBendLeft
+    0x00816604, // TrackElemType::SBendRight
     0,
     0,
     0,
@@ -13282,24 +13282,22 @@ static constexpr const uint32_t _OldSplashBoatsTrackPaintFunctions[256] = {
 
 /** rct2: 0x0081F268 */
 static constexpr const uint32_t _OldMiniHelicoptersTrackPaintFunctions[256] = {
-    0x0081F348, // TRACK_ELEM_FLAT
-    0x0081F3B8, // TRACK_ELEM_END_STATION
-    0x0081F3C8, // TRACK_ELEM_BEGIN_STATION
-    0x0081F3D8, // TRACK_ELEM_MIDDLE_STATION
-    0x0081F358, // TRACK_ELEM_25_DEG_UP
+    0x0081F348, // TrackElemType::Flat
+    0x0081F3B8, // TrackElemType::EndStation
+    0x0081F3C8, // TrackElemType::BeginStation
+    0x0081F3D8, // TrackElemType::MiddleStation
+    0x0081F358, // TrackElemType::Up25
     0,
-    0x0081F368, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0,
-    0,
-    0x0081F378, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0081F388, // TRACK_ELEM_25_DEG_DOWN
-    0,
-    0x0081F398, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x0081F368, // TrackElemType::FlatToUp25
     0,
     0,
-    0x0081F3A8, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x0081F378, // TrackElemType::Up25ToFlat
+    0x0081F388, // TrackElemType::Down25
+    0,
+    0x0081F398, // TrackElemType::FlatToDown25
     0,
     0,
+    0x0081F3A8, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -13324,16 +13322,18 @@ static constexpr const uint32_t _OldMiniHelicoptersTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0081F3E8, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x0081F3F8, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0,
+    0,
+    0x0081F3E8, // TrackElemType::LeftQuarterTurn3Tiles
+    0x0081F3F8, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
     0,
     0,
     0,
-    0x0081F408, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x0081F418, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0x0081F408, // TrackElemType::LeftQuarterTurn1Tile
+    0x0081F418, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -13542,56 +13542,56 @@ static constexpr const uint32_t _OldMiniHelicoptersTrackPaintFunctions[256] = {
 
 /** rct2: 0x008245A8 */
 static constexpr const uint32_t _OldLayDownRollerCoasterTrackPaintFunctions[256] = {
-    0x0082491C, // TRACK_ELEM_FLAT
-    0x00824B8C, // TRACK_ELEM_END_STATION
-    0x00824B9C, // TRACK_ELEM_BEGIN_STATION
-    0x00824BAC, // TRACK_ELEM_MIDDLE_STATION
-    0x0082492C, // TRACK_ELEM_25_DEG_UP
-    0x0082493C, // TRACK_ELEM_60_DEG_UP
-    0x0082494C, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x0082495C, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x0082496C, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x0082497C, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0082498C, // TRACK_ELEM_25_DEG_DOWN
-    0x0082499C, // TRACK_ELEM_60_DEG_DOWN
-    0x008249AC, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008249BC, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008249CC, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008249DC, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008249EC, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008249FC, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x00824A0C, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x00824A1C, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x00824A2C, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x00824A3C, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x00824A4C, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x00824A5C, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x00824A6C, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x00824A7C, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x00824A8C, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x00824A9C, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x00824AAC, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x00824ABC, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x00824ACC, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x00824ADC, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x00824AEC, // TRACK_ELEM_LEFT_BANK
-    0x00824AFC, // TRACK_ELEM_RIGHT_BANK
-    0x00824B0C, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x00824B1C, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x00824B2C, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x00824B3C, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x00824B4C, // TRACK_ELEM_S_BEND_LEFT
-    0x00824B5C, // TRACK_ELEM_S_BEND_RIGHT
-    0x00824B6C, // TRACK_ELEM_LEFT_VERTICAL_LOOP
-    0x00824B7C, // TRACK_ELEM_RIGHT_VERTICAL_LOOP
-    0x00824BBC, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x00824BCC, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x00824BDC, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x00824BEC, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x00824BFC, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x00824C0C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x00824C1C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x00824C2C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x0082491C, // TrackElemType::Flat
+    0x00824B8C, // TrackElemType::EndStation
+    0x00824B9C, // TrackElemType::BeginStation
+    0x00824BAC, // TrackElemType::MiddleStation
+    0x0082492C, // TrackElemType::Up25
+    0x0082493C, // TrackElemType::Up60
+    0x0082494C, // TrackElemType::FlatToUp25
+    0x0082495C, // TrackElemType::Up25ToUp60
+    0x0082496C, // TrackElemType::Up60ToUp25
+    0x0082497C, // TrackElemType::Up25ToFlat
+    0x0082498C, // TrackElemType::Down25
+    0x0082499C, // TrackElemType::Down60
+    0x008249AC, // TrackElemType::FlatToDown25
+    0x008249BC, // TrackElemType::Down25ToDown60
+    0x008249CC, // TrackElemType::Down60ToDown25
+    0x008249DC, // TrackElemType::Down25ToFlat
+    0x008249EC, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008249FC, // TrackElemType::RightQuarterTurn5Tiles
+    0x00824A0C, // TrackElemType::FlatToLeftBank
+    0x00824A1C, // TrackElemType::FlatToRightBank
+    0x00824A2C, // TrackElemType::LeftBankToFlat
+    0x00824A3C, // TrackElemType::RightBankToFlat
+    0x00824A4C, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x00824A5C, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x00824A6C, // TrackElemType::LeftBankToUp25
+    0x00824A7C, // TrackElemType::RightBankToUp25
+    0x00824A8C, // TrackElemType::Up25ToLeftBank
+    0x00824A9C, // TrackElemType::Up25ToRightBank
+    0x00824AAC, // TrackElemType::LeftBankToDown25
+    0x00824ABC, // TrackElemType::RightBankToDown25
+    0x00824ACC, // TrackElemType::Down25ToLeftBank
+    0x00824ADC, // TrackElemType::Down25ToRightBank
+    0x00824AEC, // TrackElemType::LeftBank
+    0x00824AFC, // TrackElemType::RightBank
+    0x00824B0C, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x00824B1C, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x00824B2C, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x00824B3C, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x00824B4C, // TrackElemType::SBendLeft
+    0x00824B5C, // TrackElemType::SBendRight
+    0x00824B6C, // TrackElemType::LeftVerticalLoop
+    0x00824B7C, // TrackElemType::RightVerticalLoop
+    0x00824BBC, // TrackElemType::LeftQuarterTurn3Tiles
+    0x00824BCC, // TrackElemType::RightQuarterTurn3Tiles
+    0x00824BDC, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x00824BEC, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x00824BFC, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x00824C0C, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x00824C1C, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x00824C2C, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -13629,19 +13629,19 @@ static constexpr const uint32_t _OldLayDownRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x00824C9C, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x00824CAC, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x00824CBC, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x00824CCC, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x00824CDC, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x00824CEC, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x00824CFC, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x00824D0C, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x00824D3C, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x00824D1C, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x00824D2C, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x00824D4C, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x00824D5C, // TRACK_ELEM_BRAKES
+    0x00824C9C, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x00824CAC, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x00824CBC, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x00824CCC, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x00824CDC, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x00824CEC, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x00824CFC, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x00824D0C, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x00824D3C, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x00824D1C, // TrackElemType::RightQuarterTurn1TileUp60
+    0x00824D2C, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x00824D4C, // TrackElemType::RightQuarterTurn1TileDown60
+    0x00824D5C, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -13656,7 +13656,7 @@ static constexpr const uint32_t _OldLayDownRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x00824D6C, // TRACK_ELEM_ON_RIDE_PHOTO
+    0x00824D6C, // TrackElemType::OnRidePhoto
     0,
     0,
     0,
@@ -13675,45 +13675,45 @@ static constexpr const uint32_t _OldLayDownRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x00824D8C, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x00824D9C, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x00824DAC, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x00824DBC, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x00824DCC, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x00824DDC, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x00824DEC, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x00824DFC, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x00824D7C, // TRACK_ELEM_DIAG_FLAT
-    0x00824E2C, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x00824E8C, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x00824E0C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x00824E6C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x00824E7C, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x00824E1C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x00824E5C, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x00824EBC, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x00824E3C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x00824E9C, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x00824EAC, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x00824E4C, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x00824D8C, // TrackElemType::LeftEighthToDiag
+    0x00824D9C, // TrackElemType::RightEighthToDiag
+    0x00824DAC, // TrackElemType::LeftEighthToOrthogonal
+    0x00824DBC, // TrackElemType::RightEighthToOrthogonal
+    0x00824DCC, // TrackElemType::LeftEighthBankToDiag
+    0x00824DDC, // TrackElemType::RightEighthBankToDiag
+    0x00824DEC, // TrackElemType::LeftEighthBankToOrthogonal
+    0x00824DFC, // TrackElemType::RightEighthBankToOrthogonal
+    0x00824D7C, // TrackElemType::DiagFlat
+    0x00824E2C, // TrackElemType::DiagUp25
+    0x00824E8C, // TrackElemType::DiagUp60
+    0x00824E0C, // TrackElemType::DiagFlatToUp25
+    0x00824E6C, // TrackElemType::DiagUp25ToUp60
+    0x00824E7C, // TrackElemType::DiagUp60ToUp25
+    0x00824E1C, // TrackElemType::DiagUp25ToFlat
+    0x00824E5C, // TrackElemType::DiagDown25
+    0x00824EBC, // TrackElemType::DiagDown60
+    0x00824E3C, // TrackElemType::DiagFlatToDown25
+    0x00824E9C, // TrackElemType::DiagDown25ToDown60
+    0x00824EAC, // TrackElemType::DiagDown60ToDown25
+    0x00824E4C, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x00824EEC, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x00824EFC, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x00824F0C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x00824F1C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x00824F4C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x00824F5C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x00824F2C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x00824F3C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x00824F6C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x00824F7C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x00824F8C, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x00824F9C, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x00824ECC, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x00824EDC, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x00824EEC, // TrackElemType::DiagFlatToLeftBank
+    0x00824EFC, // TrackElemType::DiagFlatToRightBank
+    0x00824F0C, // TrackElemType::DiagLeftBankToFlat
+    0x00824F1C, // TrackElemType::DiagRightBankToFlat
+    0x00824F4C, // TrackElemType::DiagLeftBankToUp25
+    0x00824F5C, // TrackElemType::DiagRightBankToUp25
+    0x00824F2C, // TrackElemType::DiagUp25ToLeftBank
+    0x00824F3C, // TrackElemType::DiagUp25ToRightBank
+    0x00824F6C, // TrackElemType::DiagLeftBankToDown25
+    0x00824F7C, // TrackElemType::DiagRightBankToDown25
+    0x00824F8C, // TrackElemType::DiagDown25ToLeftBank
+    0x00824F9C, // TrackElemType::DiagDown25ToRightBank
+    0x00824ECC, // TrackElemType::DiagLeftBank
+    0x00824EDC, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -13729,16 +13729,16 @@ static constexpr const uint32_t _OldLayDownRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x00824FAC, // TRACK_ELEM_LEFT_FLYER_TWIST_UP
-    0x00824FBC, // TRACK_ELEM_RIGHT_FLYER_TWIST_UP
-    0x00824FCC, // TRACK_ELEM_LEFT_FLYER_TWIST_DOWN
-    0x00824FDC, // TRACK_ELEM_RIGHT_FLYER_TWIST_DOWN
-    0x00824C3C, // TRACK_ELEM_FLYER_HALF_LOOP_UP
-    0x00824C4C, // TRACK_ELEM_FLYER_HALF_LOOP_DOWN
-    0x00824C5C, // TRACK_ELEM_LEFT_FLYER_CORKSCREW_UP
-    0x00824C6C, // TRACK_ELEM_RIGHT_FLYER_CORKSCREW_UP
-    0x00824C7C, // TRACK_ELEM_LEFT_FLYER_CORKSCREW_DOWN
-    0x00824C8C, // TRACK_ELEM_RIGHT_FLYER_CORKSCREW_DOWN
+    0x00824FAC, // TrackElemType::LeftFlyerTwistUp
+    0x00824FBC, // TrackElemType::RightFlyerTwistUp
+    0x00824FCC, // TrackElemType::LeftFlyerTwistDown
+    0x00824FDC, // TrackElemType::RightFlyerTwistDown
+    0x00824C3C, // TrackElemType::FlyerHalfLoopUp
+    0x00824C4C, // TrackElemType::FlyerHalfLoopDown
+    0x00824C5C, // TrackElemType::LeftFlyerCorkscrewUp
+    0x00824C6C, // TrackElemType::RightFlyerCorkscrewUp
+    0x00824C7C, // TrackElemType::LeftFlyerCorkscrewDown
+    0x00824C8C, // TrackElemType::RightFlyerCorkscrewDown
     0,
     0,
     0,
@@ -13758,7 +13758,7 @@ static constexpr const uint32_t _OldLayDownRollerCoasterTrackPaintFunctions[256]
     0,
     0,
     0,
-    0x00824FEC, // TRACK_ELEM_BLOCK_BRAKES
+    0x00824FEC, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -13802,24 +13802,24 @@ static constexpr const uint32_t _OldLayDownRollerCoasterTrackPaintFunctions[256]
 
 /** rct2: 0x0086347C */
 static constexpr const uint32_t _OldSuspendedMonorailTrackPaintFunctions[256] = {
-    0x008636F4, // TRACK_ELEM_FLAT
-    0x008637A4, // TRACK_ELEM_END_STATION
-    0x008637B4, // TRACK_ELEM_BEGIN_STATION
-    0x008637C4, // TRACK_ELEM_MIDDLE_STATION
-    0x00863704, // TRACK_ELEM_25_DEG_UP
+    0x008636F4, // TrackElemType::Flat
+    0x008637A4, // TrackElemType::EndStation
+    0x008637B4, // TrackElemType::BeginStation
+    0x008637C4, // TrackElemType::MiddleStation
+    0x00863704, // TrackElemType::Up25
     0,
-    0x00863714, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x00863714, // TrackElemType::FlatToUp25
     0,
     0,
-    0x00863724, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x00863734, // TRACK_ELEM_25_DEG_DOWN
+    0x00863724, // TrackElemType::Up25ToFlat
+    0x00863734, // TrackElemType::Down25
     0,
-    0x00863744, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x00863744, // TrackElemType::FlatToDown25
     0,
     0,
-    0x00863754, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x00863764, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x00863774, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x00863754, // TrackElemType::Down25ToFlat
+    0x00863764, // TrackElemType::LeftQuarterTurn5Tiles
+    0x00863774, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -13840,12 +13840,12 @@ static constexpr const uint32_t _OldSuspendedMonorailTrackPaintFunctions[256] = 
     0,
     0,
     0,
-    0x00863784, // TRACK_ELEM_S_BEND_LEFT
-    0x00863794, // TRACK_ELEM_S_BEND_RIGHT
+    0x00863784, // TrackElemType::SBendLeft
+    0x00863794, // TrackElemType::SBendRight
     0,
     0,
-    0x008637D4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008637E4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x008637D4, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008637E4, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
@@ -13935,27 +13935,27 @@ static constexpr const uint32_t _OldSuspendedMonorailTrackPaintFunctions[256] = 
     0,
     0,
     0,
-    0x00863864, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x00863874, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x00863884, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x00863894, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
+    0x00863864, // TrackElemType::LeftEighthToDiag
+    0x00863874, // TrackElemType::RightEighthToDiag
+    0x00863884, // TrackElemType::LeftEighthToOrthogonal
+    0x00863894, // TrackElemType::RightEighthToOrthogonal
     0,
     0,
     0,
     0,
-    0x008637F4, // TRACK_ELEM_DIAG_FLAT
-    0x00863824, // TRACK_ELEM_DIAG_25_DEG_UP
+    0x008637F4, // TrackElemType::DiagFlat
+    0x00863824, // TrackElemType::DiagUp25
     0,
-    0x00863804, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
+    0x00863804, // TrackElemType::DiagFlatToUp25
     0,
     0,
-    0x00863814, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x00863854, // TRACK_ELEM_DIAG_25_DEG_DOWN
+    0x00863814, // TrackElemType::DiagUp25ToFlat
+    0x00863854, // TrackElemType::DiagDown25
     0,
-    0x00863834, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
+    0x00863834, // TrackElemType::DiagFlatToDown25
     0,
     0,
-    0x00863844, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x00863844, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
@@ -14062,24 +14062,24 @@ static constexpr const uint32_t _OldSuspendedMonorailTrackPaintFunctions[256] = 
 
 /** rct2: 0x0086E2F8 */
 static constexpr const uint32_t _OldReverserRollerCoasterTrackPaintFunctions[256] = {
-    0x0086E65C, // TRACK_ELEM_FLAT
-    0x0086E70C, // TRACK_ELEM_END_STATION
-    0x0086E71C, // TRACK_ELEM_BEGIN_STATION
-    0x0086E72C, // TRACK_ELEM_MIDDLE_STATION
-    0x0086E66C, // TRACK_ELEM_25_DEG_UP
+    0x0086E65C, // TrackElemType::Flat
+    0x0086E70C, // TrackElemType::EndStation
+    0x0086E71C, // TrackElemType::BeginStation
+    0x0086E72C, // TrackElemType::MiddleStation
+    0x0086E66C, // TrackElemType::Up25
     0,
-    0x0086E67C, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x0086E67C, // TrackElemType::FlatToUp25
     0,
     0,
-    0x0086E68C, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0086E69C, // TRACK_ELEM_25_DEG_DOWN
+    0x0086E68C, // TrackElemType::Up25ToFlat
+    0x0086E69C, // TrackElemType::Down25
     0,
-    0x0086E6AC, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x0086E6AC, // TrackElemType::FlatToDown25
     0,
     0,
-    0x0086E6BC, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x0086E6CC, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x0086E6DC, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x0086E6BC, // TrackElemType::Down25ToFlat
+    0x0086E6CC, // TrackElemType::LeftQuarterTurn5Tiles
+    0x0086E6DC, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -14100,12 +14100,12 @@ static constexpr const uint32_t _OldReverserRollerCoasterTrackPaintFunctions[256
     0,
     0,
     0,
-    0x0086E6EC, // TRACK_ELEM_S_BEND_LEFT
-    0x0086E6FC, // TRACK_ELEM_S_BEND_RIGHT
+    0x0086E6EC, // TrackElemType::SBendLeft
+    0x0086E6FC, // TrackElemType::SBendRight
     0,
     0,
-    0x0086E73C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x0086E74C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x0086E73C, // TrackElemType::LeftQuarterTurn3Tiles
+    0x0086E74C, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
@@ -14161,7 +14161,7 @@ static constexpr const uint32_t _OldReverserRollerCoasterTrackPaintFunctions[256
     0,
     0,
     0,
-    0x0086E75C, // TRACK_ELEM_BRAKES
+    0x0086E75C, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -14273,8 +14273,8 @@ static constexpr const uint32_t _OldReverserRollerCoasterTrackPaintFunctions[256
     0,
     0,
     0,
-    0x0086E76C, // TRACK_ELEM_LEFT_REVERSER
-    0x0086E77C, // TRACK_ELEM_RIGHT_REVERSER
+    0x0086E76C, // TrackElemType::LeftReverser
+    0x0086E77C, // TrackElemType::RightReverser
     0,
     0,
     0,
@@ -14322,22 +14322,22 @@ static constexpr const uint32_t _OldReverserRollerCoasterTrackPaintFunctions[256
 
 /** rct2: 0x00876618 */
 static constexpr const uint32_t _OldHeartlineTwisterCoasterTrackPaintFunctions[256] = {
-    0x0087694C, // TRACK_ELEM_FLAT
-    0x00876A1C, // TRACK_ELEM_END_STATION
-    0x00876A2C, // TRACK_ELEM_BEGIN_STATION
-    0x00876A3C, // TRACK_ELEM_MIDDLE_STATION
-    0x0087695C, // TRACK_ELEM_25_DEG_UP
-    0x008769FC, // TRACK_ELEM_60_DEG_UP
-    0x0087696C, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008769BC, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008769CC, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x0087697C, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0087698C, // TRACK_ELEM_25_DEG_DOWN
-    0x00876A0C, // TRACK_ELEM_60_DEG_DOWN
-    0x0087699C, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008769DC, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008769EC, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008769AC, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x0087694C, // TrackElemType::Flat
+    0x00876A1C, // TrackElemType::EndStation
+    0x00876A2C, // TrackElemType::BeginStation
+    0x00876A3C, // TrackElemType::MiddleStation
+    0x0087695C, // TrackElemType::Up25
+    0x008769FC, // TrackElemType::Up60
+    0x0087696C, // TrackElemType::FlatToUp25
+    0x008769BC, // TrackElemType::Up25ToUp60
+    0x008769CC, // TrackElemType::Up60ToUp25
+    0x0087697C, // TrackElemType::Up25ToFlat
+    0x0087698C, // TrackElemType::Down25
+    0x00876A0C, // TrackElemType::Down60
+    0x0087699C, // TrackElemType::FlatToDown25
+    0x008769DC, // TrackElemType::Down25ToDown60
+    0x008769EC, // TrackElemType::Down60ToDown25
+    0x008769AC, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -14519,10 +14519,10 @@ static constexpr const uint32_t _OldHeartlineTwisterCoasterTrackPaintFunctions[2
     0,
     0,
     0,
-    0x00876A6C, // TRACK_ELEM_HEARTLINE_TRANSFER_UP
-    0x00876A7C, // TRACK_ELEM_HEARTLINE_TRANSFER_DOWN
-    0x00876A4C, // TRACK_ELEM_LEFT_HEARTLINE_ROLL
-    0x00876A5C, // TRACK_ELEM_RIGHT_HEARTLINE_ROLL
+    0x00876A6C, // TrackElemType::HeartLineTransferUp
+    0x00876A7C, // TrackElemType::HeartLineTransferDown
+    0x00876A4C, // TrackElemType::LeftHeartLineRoll
+    0x00876A5C, // TrackElemType::RightHeartLineRoll
     0,
     0,
     0,
@@ -14582,22 +14582,22 @@ static constexpr const uint32_t _OldHeartlineTwisterCoasterTrackPaintFunctions[2
 
 /** rct2: 0x0087EDC4 */
 static constexpr const uint32_t _OldMiniGolfTrackPaintFunctions[256] = {
-    0x0087F10C, // TRACK_ELEM_FLAT
-    0x0087F17C, // TRACK_ELEM_END_STATION
-    0x0087F18C, // TRACK_ELEM_BEGIN_STATION
-    0x0087F19C, // TRACK_ELEM_MIDDLE_STATION
-    0x0087F11C, // TRACK_ELEM_25_DEG_UP
+    0x0087F10C, // TrackElemType::Flat
+    0x0087F17C, // TrackElemType::EndStation
+    0x0087F18C, // TrackElemType::BeginStation
+    0x0087F19C, // TrackElemType::MiddleStation
+    0x0087F11C, // TrackElemType::Up25
     0,
-    0x0087F12C, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x0087F12C, // TrackElemType::FlatToUp25
     0,
     0,
-    0x0087F13C, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x0087F14C, // TRACK_ELEM_25_DEG_DOWN
+    0x0087F13C, // TrackElemType::Up25ToFlat
+    0x0087F14C, // TrackElemType::Down25
     0,
-    0x0087F15C, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x0087F15C, // TrackElemType::FlatToDown25
     0,
     0,
-    0x0087F16C, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x0087F16C, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -14632,8 +14632,8 @@ static constexpr const uint32_t _OldMiniGolfTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0087F1AC, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x0087F1BC, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0x0087F1AC, // TrackElemType::LeftQuarterTurn1Tile
+    0x0087F1BC, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -14783,11 +14783,11 @@ static constexpr const uint32_t _OldMiniGolfTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0087F1CC, // TRACK_ELEM_MINI_GOLF_HOLE_A
-    0x0087F1DC, // TRACK_ELEM_MINI_GOLF_HOLE_B
-    0x0087F1EC, // TRACK_ELEM_MINI_GOLF_HOLE_C
-    0x0087F1FC, // TRACK_ELEM_MINI_GOLF_HOLE_D
-    0x0087F20C, // TRACK_ELEM_MINI_GOLF_HOLE_E
+    0x0087F1CC, // TrackElemType::MinigolfHoleA
+    0x0087F1DC, // TrackElemType::MinigolfHoleB
+    0x0087F1EC, // TrackElemType::MinigolfHoleC
+    0x0087F1FC, // TrackElemType::MinigolfHoleD
+    0x0087F20C, // TrackElemType::MinigolfHoleE
     0,
     0,
     0,
@@ -14842,56 +14842,56 @@ static constexpr const uint32_t _OldMiniGolfTrackPaintFunctions[256] = {
 
 /** rct2: 0x008AD280 */
 static constexpr const uint32_t _OldGigaCoasterTrackPaintFunctions[256] = {
-    0x008AD674, // TRACK_ELEM_FLAT
-    0x008AD8C4, // TRACK_ELEM_END_STATION
-    0x008AD8D4, // TRACK_ELEM_BEGIN_STATION
-    0x008AD8E4, // TRACK_ELEM_MIDDLE_STATION
-    0x008AD684, // TRACK_ELEM_25_DEG_UP
-    0x008AD694, // TRACK_ELEM_60_DEG_UP
-    0x008AD6A4, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008AD6B4, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008AD6C4, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008AD6D4, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008AD6E4, // TRACK_ELEM_25_DEG_DOWN
-    0x008AD6F4, // TRACK_ELEM_60_DEG_DOWN
-    0x008AD704, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008AD714, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AD724, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AD734, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008AD744, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AD754, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008AD764, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008AD774, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008AD784, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008AD794, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008AD7A4, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008AD7B4, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008AD7C4, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008AD7D4, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008AD7E4, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008AD7F4, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008AD804, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AD814, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AD824, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AD834, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AD844, // TRACK_ELEM_LEFT_BANK
-    0x008AD854, // TRACK_ELEM_RIGHT_BANK
-    0x008AD864, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AD874, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AD884, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AD894, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AD8A4, // TRACK_ELEM_S_BEND_LEFT
-    0x008AD8B4, // TRACK_ELEM_S_BEND_RIGHT
+    0x008AD674, // TrackElemType::Flat
+    0x008AD8C4, // TrackElemType::EndStation
+    0x008AD8D4, // TrackElemType::BeginStation
+    0x008AD8E4, // TrackElemType::MiddleStation
+    0x008AD684, // TrackElemType::Up25
+    0x008AD694, // TrackElemType::Up60
+    0x008AD6A4, // TrackElemType::FlatToUp25
+    0x008AD6B4, // TrackElemType::Up25ToUp60
+    0x008AD6C4, // TrackElemType::Up60ToUp25
+    0x008AD6D4, // TrackElemType::Up25ToFlat
+    0x008AD6E4, // TrackElemType::Down25
+    0x008AD6F4, // TrackElemType::Down60
+    0x008AD704, // TrackElemType::FlatToDown25
+    0x008AD714, // TrackElemType::Down25ToDown60
+    0x008AD724, // TrackElemType::Down60ToDown25
+    0x008AD734, // TrackElemType::Down25ToFlat
+    0x008AD744, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AD754, // TrackElemType::RightQuarterTurn5Tiles
+    0x008AD764, // TrackElemType::FlatToLeftBank
+    0x008AD774, // TrackElemType::FlatToRightBank
+    0x008AD784, // TrackElemType::LeftBankToFlat
+    0x008AD794, // TrackElemType::RightBankToFlat
+    0x008AD7A4, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008AD7B4, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008AD7C4, // TrackElemType::LeftBankToUp25
+    0x008AD7D4, // TrackElemType::RightBankToUp25
+    0x008AD7E4, // TrackElemType::Up25ToLeftBank
+    0x008AD7F4, // TrackElemType::Up25ToRightBank
+    0x008AD804, // TrackElemType::LeftBankToDown25
+    0x008AD814, // TrackElemType::RightBankToDown25
+    0x008AD824, // TrackElemType::Down25ToLeftBank
+    0x008AD834, // TrackElemType::Down25ToRightBank
+    0x008AD844, // TrackElemType::LeftBank
+    0x008AD854, // TrackElemType::RightBank
+    0x008AD864, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008AD874, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008AD884, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008AD894, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008AD8A4, // TrackElemType::SBendLeft
+    0x008AD8B4, // TrackElemType::SBendRight
     0,
     0,
-    0x008AD8F4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008AD904, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008AD914, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008AD924, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008AD934, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AD944, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AD954, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008AD964, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008AD8F4, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008AD904, // TrackElemType::RightQuarterTurn3Tiles
+    0x008AD914, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008AD924, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008AD934, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008AD944, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008AD954, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008AD964, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -14929,19 +14929,19 @@ static constexpr const uint32_t _OldGigaCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008AD974, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008AD984, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008AD994, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008AD9A4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008AD9B4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008AD9C4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008AD9D4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008AD9E4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008ADA14, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008AD9F4, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008ADA04, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008ADA24, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008ADA34, // TRACK_ELEM_BRAKES
+    0x008AD974, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008AD984, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008AD994, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008AD9A4, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008AD9B4, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008AD9C4, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008AD9D4, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008AD9E4, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x008ADA14, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008AD9F4, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008ADA04, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008ADA24, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008ADA34, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -14952,20 +14952,20 @@ static constexpr const uint32_t _OldGigaCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008ADC84, // TRACK_ELEM_25_DEG_UP_LEFT_BANKED
-    0x008ADC94, // TRACK_ELEM_25_DEG_UP_RIGHT_BANKED
+    0x008ADC84, // TrackElemType::Up25LeftBanked
+    0x008ADC94, // TrackElemType::Up25RightBanked
     0,
     0,
-    0x008ADA44, // TRACK_ELEM_ON_RIDE_PHOTO
-    0x008ADCA4, // TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED
-    0x008ADCB4, // TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED
+    0x008ADA44, // TrackElemType::OnRidePhoto
+    0x008ADCA4, // TrackElemType::Down25LeftBanked
+    0x008ADCB4, // TrackElemType::Down25RightBanked
     0,
-    0x008ADED4, // TRACK_ELEM_FLAT_TO_60_DEG_UP_LONG_BASE
-    0x008ADEE4, // TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE
+    0x008ADED4, // TrackElemType::FlatToUp60LongBase
+    0x008ADEE4, // TrackElemType::Up60ToFlatLongBase
     0,
-    0x008ADEF4, // TRACK_ELEM_FLAT_TO_60_DEG_DOWN_LONG_BASE
-    0x008ADF04, // TRACK_ELEM_60_DEG_UP_TO_FLAT_LONG_BASE_122
-    0x008ADF14, // TRACK_ELEM_CABLE_LIFT_HILL
+    0x008ADEF4, // TrackElemType::Down60ToFlatLongBase
+    0x008ADF04, // TrackElemType::FlatToDown60LongBase
+    0x008ADF14, // TrackElemType::CableLiftHill
     0,
     0,
     0,
@@ -14975,45 +14975,45 @@ static constexpr const uint32_t _OldGigaCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008ADA64, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008ADA74, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008ADA84, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008ADA94, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008ADAA4, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008ADAB4, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008ADAC4, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008ADAD4, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008ADA54, // TRACK_ELEM_DIAG_FLAT
-    0x008ADB04, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008ADB64, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008ADAE4, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008ADB44, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008ADB54, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008ADAF4, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008ADB34, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008ADB94, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008ADB14, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008ADB74, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008ADB84, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008ADB24, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008ADA64, // TrackElemType::LeftEighthToDiag
+    0x008ADA74, // TrackElemType::RightEighthToDiag
+    0x008ADA84, // TrackElemType::LeftEighthToOrthogonal
+    0x008ADA94, // TrackElemType::RightEighthToOrthogonal
+    0x008ADAA4, // TrackElemType::LeftEighthBankToDiag
+    0x008ADAB4, // TrackElemType::RightEighthBankToDiag
+    0x008ADAC4, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008ADAD4, // TrackElemType::RightEighthBankToOrthogonal
+    0x008ADA54, // TrackElemType::DiagFlat
+    0x008ADB04, // TrackElemType::DiagUp25
+    0x008ADB64, // TrackElemType::DiagUp60
+    0x008ADAE4, // TrackElemType::DiagFlatToUp25
+    0x008ADB44, // TrackElemType::DiagUp25ToUp60
+    0x008ADB54, // TrackElemType::DiagUp60ToUp25
+    0x008ADAF4, // TrackElemType::DiagUp25ToFlat
+    0x008ADB34, // TrackElemType::DiagDown25
+    0x008ADB94, // TrackElemType::DiagDown60
+    0x008ADB14, // TrackElemType::DiagFlatToDown25
+    0x008ADB74, // TrackElemType::DiagDown25ToDown60
+    0x008ADB84, // TrackElemType::DiagDown60ToDown25
+    0x008ADB24, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008ADBC4, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008ADBD4, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008ADBE4, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008ADBF4, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008ADC24, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008ADC34, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008ADC04, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008ADC14, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008ADC44, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008ADC54, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008ADC64, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008ADC74, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008ADBA4, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008ADBB4, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008ADBC4, // TrackElemType::DiagFlatToLeftBank
+    0x008ADBD4, // TrackElemType::DiagFlatToRightBank
+    0x008ADBE4, // TrackElemType::DiagLeftBankToFlat
+    0x008ADBF4, // TrackElemType::DiagRightBankToFlat
+    0x008ADC24, // TrackElemType::DiagLeftBankToUp25
+    0x008ADC34, // TrackElemType::DiagRightBankToUp25
+    0x008ADC04, // TrackElemType::DiagUp25ToLeftBank
+    0x008ADC14, // TrackElemType::DiagUp25ToRightBank
+    0x008ADC44, // TrackElemType::DiagLeftBankToDown25
+    0x008ADC54, // TrackElemType::DiagRightBankToDown25
+    0x008ADC64, // TrackElemType::DiagDown25ToLeftBank
+    0x008ADC74, // TrackElemType::DiagDown25ToRightBank
+    0x008ADBA4, // TrackElemType::DiagLeftBank
+    0x008ADBB4, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -15058,39 +15058,39 @@ static constexpr const uint32_t _OldGigaCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008ADEC4, // TRACK_ELEM_BLOCK_BRAKES
-    0x008ADCC4, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008ADCD4, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008ADCE4, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008ADCF4, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008ADD04, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008ADD14, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008ADD24, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008ADD34, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008ADD44, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    0x008ADD54, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    0x008ADD64, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008ADD74, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008ADD84, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008ADD94, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008ADDA4, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008ADDB4, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008ADDC4, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008ADDD4, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008ADE04, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    0x008ADE14, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    0x008ADE24, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008ADE34, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008ADDE4, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    0x008ADDF4, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    0x008ADE44, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008ADE54, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008ADE64, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    0x008ADE74, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    0x008ADE84, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008ADE94, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008ADEA4, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008ADEB4, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
+    0x008ADEC4, // TrackElemType::BlockBrakes
+    0x008ADCC4, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    0x008ADCD4, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    0x008ADCE4, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    0x008ADCF4, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    0x008ADD04, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    0x008ADD14, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    0x008ADD24, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    0x008ADD34, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    0x008ADD44, // TrackElemType::Up25ToLeftBankedUp25
+    0x008ADD54, // TrackElemType::Up25ToRightBankedUp25
+    0x008ADD64, // TrackElemType::LeftBankedUp25ToUp25
+    0x008ADD74, // TrackElemType::RightBankedUp25ToUp25
+    0x008ADD84, // TrackElemType::Down25ToLeftBankedDown25
+    0x008ADD94, // TrackElemType::Down25ToRightBankedDown25
+    0x008ADDA4, // TrackElemType::LeftBankedDown25ToDown25
+    0x008ADDB4, // TrackElemType::RightBankedDown25ToDown25
+    0x008ADDC4, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    0x008ADDD4, // TrackElemType::RightBankedFlatToRightBankedUp25
+    0x008ADE04, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    0x008ADE14, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    0x008ADE24, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    0x008ADE34, // TrackElemType::RightBankedFlatToRightBankedDown25
+    0x008ADDE4, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    0x008ADDF4, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    0x008ADE44, // TrackElemType::FlatToLeftBankedUp25
+    0x008ADE54, // TrackElemType::FlatToRightBankedUp25
+    0x008ADE64, // TrackElemType::LeftBankedUp25ToFlat
+    0x008ADE74, // TrackElemType::RightBankedUp25ToFlat
+    0x008ADE84, // TrackElemType::FlatToLeftBankedDown25
+    0x008ADE94, // TrackElemType::FlatToRightBankedDown25
+    0x008ADEA4, // TrackElemType::LeftBankedDown25ToFlat
+    0x008ADEB4, // TrackElemType::RightBankedDown25ToFlat
     0,
     0,
     0,
@@ -15168,8 +15168,8 @@ static constexpr const uint32_t _OldRoToDropTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x00886194, // TRACK_ELEM_TOWER_BASE
-    0x008861A4, // TRACK_ELEM_TOWER_SECTION
+    0x00886194, // TrackElemType::TowerBase
+    0x008861A4, // TrackElemType::TowerSection
     0,
     0,
     0,
@@ -15882,10 +15882,10 @@ static constexpr const uint32_t _OldCrookedHouseTrackPaintFunctions[256] = {
 
 /** rct2: 0x0088AC88 */
 static constexpr const uint32_t _OldMonorailCyclesTrackPaintFunctions[256] = {
-    0x0088AD48, // TRACK_ELEM_FLAT
-    0x0088AD58, // TRACK_ELEM_END_STATION
-    0x0088AD68, // TRACK_ELEM_BEGIN_STATION
-    0x0088AD78, // TRACK_ELEM_MIDDLE_STATION
+    0x0088AD48, // TrackElemType::Flat
+    0x0088AD58, // TrackElemType::EndStation
+    0x0088AD68, // TrackElemType::BeginStation
+    0x0088AD78, // TrackElemType::MiddleStation
     0,
     0,
     0,
@@ -15898,8 +15898,8 @@ static constexpr const uint32_t _OldMonorailCyclesTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0088ADA8, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x0088ADB8, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x0088ADA8, // TrackElemType::LeftQuarterTurn5Tiles
+    0x0088ADB8, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -15920,12 +15920,12 @@ static constexpr const uint32_t _OldMonorailCyclesTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0088ADC8, // TRACK_ELEM_S_BEND_LEFT
-    0x0088ADD8, // TRACK_ELEM_S_BEND_RIGHT
+    0x0088ADC8, // TrackElemType::SBendLeft
+    0x0088ADD8, // TrackElemType::SBendRight
     0,
     0,
-    0x0088AD88, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x0088AD98, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x0088AD88, // TrackElemType::LeftQuarterTurn3Tiles
+    0x0088AD98, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
@@ -16142,68 +16142,68 @@ static constexpr const uint32_t _OldMonorailCyclesTrackPaintFunctions[256] = {
 
 /** rct2: 0x008AE36C */
 static constexpr const uint32_t _OldCompactInvertedCoasterTrackPaintFunctions[256] = {
-    0x008AE6E0, // TRACK_ELEM_FLAT
-    0x008AE950, // TRACK_ELEM_END_STATION
-    0x008AE960, // TRACK_ELEM_BEGIN_STATION
-    0x008AE970, // TRACK_ELEM_MIDDLE_STATION
-    0x008AE6F0, // TRACK_ELEM_25_DEG_UP
-    0x008AE700, // TRACK_ELEM_60_DEG_UP
-    0x008AE710, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008AE720, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008AE730, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008AE740, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008AE750, // TRACK_ELEM_25_DEG_DOWN
-    0x008AE760, // TRACK_ELEM_60_DEG_DOWN
-    0x008AE770, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008AE780, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AE790, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AE7A0, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008AE7B0, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AE7C0, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008AE7D0, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008AE7E0, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008AE7F0, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008AE800, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008AE810, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008AE820, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008AE830, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008AE840, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008AE850, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008AE860, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008AE870, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AE880, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AE890, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AE8A0, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AE8B0, // TRACK_ELEM_LEFT_BANK
-    0x008AE8C0, // TRACK_ELEM_RIGHT_BANK
-    0x008AE8D0, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AE8E0, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AE8F0, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AE900, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AE910, // TRACK_ELEM_S_BEND_LEFT
-    0x008AE920, // TRACK_ELEM_S_BEND_RIGHT
-    0x008AE930, // TRACK_ELEM_LEFT_VERTICAL_LOOP
-    0x008AE940, // TRACK_ELEM_RIGHT_VERTICAL_LOOP
-    0x008AE980, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008AE990, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008AE9A0, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008AE9B0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008AE9C0, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AE9D0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AE9E0, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008AE9F0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008AE6E0, // TrackElemType::Flat
+    0x008AE950, // TrackElemType::EndStation
+    0x008AE960, // TrackElemType::BeginStation
+    0x008AE970, // TrackElemType::MiddleStation
+    0x008AE6F0, // TrackElemType::Up25
+    0x008AE700, // TrackElemType::Up60
+    0x008AE710, // TrackElemType::FlatToUp25
+    0x008AE720, // TrackElemType::Up25ToUp60
+    0x008AE730, // TrackElemType::Up60ToUp25
+    0x008AE740, // TrackElemType::Up25ToFlat
+    0x008AE750, // TrackElemType::Down25
+    0x008AE760, // TrackElemType::Down60
+    0x008AE770, // TrackElemType::FlatToDown25
+    0x008AE780, // TrackElemType::Down25ToDown60
+    0x008AE790, // TrackElemType::Down60ToDown25
+    0x008AE7A0, // TrackElemType::Down25ToFlat
+    0x008AE7B0, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AE7C0, // TrackElemType::RightQuarterTurn5Tiles
+    0x008AE7D0, // TrackElemType::FlatToLeftBank
+    0x008AE7E0, // TrackElemType::FlatToRightBank
+    0x008AE7F0, // TrackElemType::LeftBankToFlat
+    0x008AE800, // TrackElemType::RightBankToFlat
+    0x008AE810, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008AE820, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008AE830, // TrackElemType::LeftBankToUp25
+    0x008AE840, // TrackElemType::RightBankToUp25
+    0x008AE850, // TrackElemType::Up25ToLeftBank
+    0x008AE860, // TrackElemType::Up25ToRightBank
+    0x008AE870, // TrackElemType::LeftBankToDown25
+    0x008AE880, // TrackElemType::RightBankToDown25
+    0x008AE890, // TrackElemType::Down25ToLeftBank
+    0x008AE8A0, // TrackElemType::Down25ToRightBank
+    0x008AE8B0, // TrackElemType::LeftBank
+    0x008AE8C0, // TrackElemType::RightBank
+    0x008AE8D0, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008AE8E0, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008AE8F0, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008AE900, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008AE910, // TrackElemType::SBendLeft
+    0x008AE920, // TrackElemType::SBendRight
+    0x008AE930, // TrackElemType::LeftVerticalLoop
+    0x008AE940, // TrackElemType::RightVerticalLoop
+    0x008AE980, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008AE990, // TrackElemType::RightQuarterTurn3Tiles
+    0x008AE9A0, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008AE9B0, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008AE9C0, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008AE9D0, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008AE9E0, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008AE9F0, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
-    0x008AEA00, // TRACK_ELEM_LEFT_TWIST_DOWN_TO_UP
-    0x008AEA10, // TRACK_ELEM_RIGHT_TWIST_DOWN_TO_UP
-    0x008AEA20, // TRACK_ELEM_LEFT_TWIST_UP_TO_DOWN
-    0x008AEA30, // TRACK_ELEM_RIGHT_TWIST_UP_TO_DOWN
-    0x008AEA40, // TRACK_ELEM_HALF_LOOP_UP
-    0x008AEA50, // TRACK_ELEM_HALF_LOOP_DOWN
-    0x008AEA60, // TRACK_ELEM_LEFT_CORKSCREW_UP
-    0x008AEA70, // TRACK_ELEM_RIGHT_CORKSCREW_UP
-    0x008AEA80, // TRACK_ELEM_LEFT_CORKSCREW_DOWN
-    0x008AEA90, // TRACK_ELEM_RIGHT_CORKSCREW_DOWN
+    0x008AEA00, // TrackElemType::LeftTwistDownToUp
+    0x008AEA10, // TrackElemType::RightTwistDownToUp
+    0x008AEA20, // TrackElemType::LeftTwistUpToDown
+    0x008AEA30, // TrackElemType::RightTwistUpToDown
+    0x008AEA40, // TrackElemType::HalfLoopUp
+    0x008AEA50, // TrackElemType::HalfLoopDown
+    0x008AEA60, // TrackElemType::LeftCorkscrewUp
+    0x008AEA70, // TrackElemType::RightCorkscrewUp
+    0x008AEA80, // TrackElemType::LeftCorkscrewDown
+    0x008AEA90, // TrackElemType::RightCorkscrewDown
     0,
     0,
     0,
@@ -16237,17 +16237,17 @@ static constexpr const uint32_t _OldCompactInvertedCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x008AEAD0, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008AEAB0, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008AEAC0, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008AEAE0, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008AEAA0, // TRACK_ELEM_BRAKES
+    0x008AEAD0, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008AEAB0, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008AEAC0, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008AEAE0, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008AEAA0, // TrackElemType::Brakes
     0,
     0,
-    0x008AEAF0, // TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP
-    0x008AEB00, // TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP
-    0x008AEB10, // TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN
-    0x008AEB20, // TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN
+    0x008AEAF0, // TrackElemType::LeftQuarterBankedHelixLargeUp
+    0x008AEB00, // TrackElemType::RightQuarterBankedHelixLargeUp
+    0x008AEB10, // TrackElemType::LeftQuarterBankedHelixLargeDown
+    0x008AEB20, // TrackElemType::RightQuarterBankedHelixLargeDown
     0,
     0,
     0,
@@ -16256,7 +16256,7 @@ static constexpr const uint32_t _OldCompactInvertedCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x008AEB30, // TRACK_ELEM_ON_RIDE_PHOTO
+    0x008AEB30, // TrackElemType::OnRidePhoto
     0,
     0,
     0,
@@ -16268,52 +16268,52 @@ static constexpr const uint32_t _OldCompactInvertedCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x008AEDB0, // TRACK_ELEM_90_DEG_UP
-    0x008AEDC0, // TRACK_ELEM_90_DEG_DOWN
-    0x008AED70, // TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP
-    0x008AED80, // TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AED90, // TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP
-    0x008AEDA0, // TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN
+    0x008AEDB0, // TrackElemType::Up90
+    0x008AEDC0, // TrackElemType::Down90
+    0x008AED70, // TrackElemType::Up60ToUp90
+    0x008AED80, // TrackElemType::Down90ToDown60
+    0x008AED90, // TrackElemType::Up90ToUp60
+    0x008AEDA0, // TrackElemType::Down60ToDown90
     0,
-    0x008AEB40, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008AEB50, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008AEB60, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008AEB70, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008AED30, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008AED40, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008AED50, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008AED60, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008AEB80, // TRACK_ELEM_DIAG_FLAT
-    0x008AEBB0, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008AEC10, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008AEB90, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008AEBF0, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008AEC00, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008AEBA0, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008AEBE0, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008AEC40, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008AEBC0, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008AEC20, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AEC30, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AEBD0, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008AEB40, // TrackElemType::LeftEighthToDiag
+    0x008AEB50, // TrackElemType::RightEighthToDiag
+    0x008AEB60, // TrackElemType::LeftEighthToOrthogonal
+    0x008AEB70, // TrackElemType::RightEighthToOrthogonal
+    0x008AED30, // TrackElemType::LeftEighthBankToDiag
+    0x008AED40, // TrackElemType::RightEighthBankToDiag
+    0x008AED50, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008AED60, // TrackElemType::RightEighthBankToOrthogonal
+    0x008AEB80, // TrackElemType::DiagFlat
+    0x008AEBB0, // TrackElemType::DiagUp25
+    0x008AEC10, // TrackElemType::DiagUp60
+    0x008AEB90, // TrackElemType::DiagFlatToUp25
+    0x008AEBF0, // TrackElemType::DiagUp25ToUp60
+    0x008AEC00, // TrackElemType::DiagUp60ToUp25
+    0x008AEBA0, // TrackElemType::DiagUp25ToFlat
+    0x008AEBE0, // TrackElemType::DiagDown25
+    0x008AEC40, // TrackElemType::DiagDown60
+    0x008AEBC0, // TrackElemType::DiagFlatToDown25
+    0x008AEC20, // TrackElemType::DiagDown25ToDown60
+    0x008AEC30, // TrackElemType::DiagDown60ToDown25
+    0x008AEBD0, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008AEC70, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008AEC80, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008AEC90, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008AECA0, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008AECD0, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008AECE0, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008AECB0, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008AECC0, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008AECF0, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AED00, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AED10, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AED20, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AEC50, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008AEC60, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008AEC70, // TrackElemType::DiagFlatToLeftBank
+    0x008AEC80, // TrackElemType::DiagFlatToRightBank
+    0x008AEC90, // TrackElemType::DiagLeftBankToFlat
+    0x008AECA0, // TrackElemType::DiagRightBankToFlat
+    0x008AECD0, // TrackElemType::DiagLeftBankToUp25
+    0x008AECE0, // TrackElemType::DiagRightBankToUp25
+    0x008AECB0, // TrackElemType::DiagUp25ToLeftBank
+    0x008AECC0, // TrackElemType::DiagUp25ToRightBank
+    0x008AECF0, // TrackElemType::DiagLeftBankToDown25
+    0x008AED00, // TrackElemType::DiagRightBankToDown25
+    0x008AED10, // TrackElemType::DiagDown25ToLeftBank
+    0x008AED20, // TrackElemType::DiagDown25ToRightBank
+    0x008AEC50, // TrackElemType::DiagLeftBank
+    0x008AEC60, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -16358,7 +16358,7 @@ static constexpr const uint32_t _OldCompactInvertedCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x008AEAA0, // TRACK_ELEM_BLOCK_BRAKES
+    0x008AEAA0, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -16402,56 +16402,56 @@ static constexpr const uint32_t _OldCompactInvertedCoasterTrackPaintFunctions[25
 
 /** rct2: 0x008AEDE0 */
 static constexpr const uint32_t _OldWaterCoasterTrackPaintFunctions[256] = {
-    0x008AF154, // TRACK_ELEM_FLAT
-    0x008AF2A4, // TRACK_ELEM_END_STATION
-    0x008AF2B4, // TRACK_ELEM_BEGIN_STATION
-    0x008AF2C4, // TRACK_ELEM_MIDDLE_STATION
-    0x008AF164, // TRACK_ELEM_25_DEG_UP
-    0x008AF174, // TRACK_ELEM_60_DEG_UP
-    0x008AF184, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008AF194, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008AF1A4, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008AF1B4, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008AF1C4, // TRACK_ELEM_25_DEG_DOWN
-    0x008AF1D4, // TRACK_ELEM_60_DEG_DOWN
-    0x008AF1E4, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008AF1F4, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AF204, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AF214, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008AF224, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AF234, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008AF454, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008AF464, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008AF474, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008AF484, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008AF494, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008AF4A4, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008AF4B4, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008AF4C4, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008AF4D4, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008AF4E4, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008AF4F4, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AF504, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AF514, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AF524, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AF534, // TRACK_ELEM_LEFT_BANK
-    0x008AF544, // TRACK_ELEM_RIGHT_BANK
-    0x008AF244, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AF254, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008AF264, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AF274, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008AF284, // TRACK_ELEM_S_BEND_LEFT
-    0x008AF294, // TRACK_ELEM_S_BEND_RIGHT
+    0x008AF154, // TrackElemType::Flat
+    0x008AF2A4, // TrackElemType::EndStation
+    0x008AF2B4, // TrackElemType::BeginStation
+    0x008AF2C4, // TrackElemType::MiddleStation
+    0x008AF164, // TrackElemType::Up25
+    0x008AF174, // TrackElemType::Up60
+    0x008AF184, // TrackElemType::FlatToUp25
+    0x008AF194, // TrackElemType::Up25ToUp60
+    0x008AF1A4, // TrackElemType::Up60ToUp25
+    0x008AF1B4, // TrackElemType::Up25ToFlat
+    0x008AF1C4, // TrackElemType::Down25
+    0x008AF1D4, // TrackElemType::Down60
+    0x008AF1E4, // TrackElemType::FlatToDown25
+    0x008AF1F4, // TrackElemType::Down25ToDown60
+    0x008AF204, // TrackElemType::Down60ToDown25
+    0x008AF214, // TrackElemType::Down25ToFlat
+    0x008AF224, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AF234, // TrackElemType::RightQuarterTurn5Tiles
+    0x008AF454, // TrackElemType::FlatToLeftBank
+    0x008AF464, // TrackElemType::FlatToRightBank
+    0x008AF474, // TrackElemType::LeftBankToFlat
+    0x008AF484, // TrackElemType::RightBankToFlat
+    0x008AF494, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008AF4A4, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008AF4B4, // TrackElemType::LeftBankToUp25
+    0x008AF4C4, // TrackElemType::RightBankToUp25
+    0x008AF4D4, // TrackElemType::Up25ToLeftBank
+    0x008AF4E4, // TrackElemType::Up25ToRightBank
+    0x008AF4F4, // TrackElemType::LeftBankToDown25
+    0x008AF504, // TrackElemType::RightBankToDown25
+    0x008AF514, // TrackElemType::Down25ToLeftBank
+    0x008AF524, // TrackElemType::Down25ToRightBank
+    0x008AF534, // TrackElemType::LeftBank
+    0x008AF544, // TrackElemType::RightBank
+    0x008AF244, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008AF254, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008AF264, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008AF274, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008AF284, // TrackElemType::SBendLeft
+    0x008AF294, // TrackElemType::SBendRight
     0,
     0,
-    0x008AF2D4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008AF2E4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008AF554, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008AF564, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008AF2F4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AF304, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008AF314, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008AF324, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008AF2D4, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008AF2E4, // TrackElemType::RightQuarterTurn3Tiles
+    0x008AF554, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008AF564, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008AF2F4, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008AF304, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008AF314, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008AF324, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -16470,7 +16470,7 @@ static constexpr const uint32_t _OldWaterCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008AF714, // TRACK_ELEM_FLAT_COVERED
+    0x008AF714, // TrackElemType::FlatCovered
     0,
     0,
     0,
@@ -16483,25 +16483,25 @@ static constexpr const uint32_t _OldWaterCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008AF724, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED
-    0x008AF734, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED
+    0x008AF724, // TrackElemType::LeftQuarterTurn5TilesCovered
+    0x008AF734, // TrackElemType::RightQuarterTurn5TilesCovered
     0,
     0,
     0,
     0,
-    0x008AF574, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008AF584, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008AF594, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008AF5A4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008AF5B4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008AF5C4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008AF5D4, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008AF5E4, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
+    0x008AF574, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008AF584, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008AF594, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008AF5A4, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008AF5B4, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008AF5C4, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008AF5D4, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008AF5E4, // TrackElemType::RightHalfBankedHelixDownLarge
     0,
     0,
     0,
     0,
-    0x008AF334, // TRACK_ELEM_BRAKES
+    0x008AF334, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -16535,45 +16535,45 @@ static constexpr const uint32_t _OldWaterCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008AF414, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008AF424, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008AF434, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008AF444, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008AF5F4, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008AF604, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008AF614, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008AF624, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008AF344, // TRACK_ELEM_DIAG_FLAT
-    0x008AF374, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008AF3A4, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008AF354, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008AF384, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008AF394, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008AF364, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008AF3D4, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008AF404, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008AF3B4, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008AF3E4, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008AF3F4, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008AF3C4, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008AF414, // TrackElemType::LeftEighthToDiag
+    0x008AF424, // TrackElemType::RightEighthToDiag
+    0x008AF434, // TrackElemType::LeftEighthToOrthogonal
+    0x008AF444, // TrackElemType::RightEighthToOrthogonal
+    0x008AF5F4, // TrackElemType::LeftEighthBankToDiag
+    0x008AF604, // TrackElemType::RightEighthBankToDiag
+    0x008AF614, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008AF624, // TrackElemType::RightEighthBankToOrthogonal
+    0x008AF344, // TrackElemType::DiagFlat
+    0x008AF374, // TrackElemType::DiagUp25
+    0x008AF3A4, // TrackElemType::DiagUp60
+    0x008AF354, // TrackElemType::DiagFlatToUp25
+    0x008AF384, // TrackElemType::DiagUp25ToUp60
+    0x008AF394, // TrackElemType::DiagUp60ToUp25
+    0x008AF364, // TrackElemType::DiagUp25ToFlat
+    0x008AF3D4, // TrackElemType::DiagDown25
+    0x008AF404, // TrackElemType::DiagDown60
+    0x008AF3B4, // TrackElemType::DiagFlatToDown25
+    0x008AF3E4, // TrackElemType::DiagDown25ToDown60
+    0x008AF3F4, // TrackElemType::DiagDown60ToDown25
+    0x008AF3C4, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008AF654, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008AF664, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008AF674, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008AF684, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008AF6B4, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008AF6C4, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008AF694, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008AF6A4, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008AF6D4, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008AF6E4, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008AF6F4, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008AF704, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008AF634, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008AF644, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008AF654, // TrackElemType::DiagFlatToLeftBank
+    0x008AF664, // TrackElemType::DiagFlatToRightBank
+    0x008AF674, // TrackElemType::DiagLeftBankToFlat
+    0x008AF684, // TrackElemType::DiagRightBankToFlat
+    0x008AF6B4, // TrackElemType::DiagLeftBankToUp25
+    0x008AF6C4, // TrackElemType::DiagRightBankToUp25
+    0x008AF694, // TrackElemType::DiagUp25ToLeftBank
+    0x008AF6A4, // TrackElemType::DiagUp25ToRightBank
+    0x008AF6D4, // TrackElemType::DiagLeftBankToDown25
+    0x008AF6E4, // TrackElemType::DiagRightBankToDown25
+    0x008AF6F4, // TrackElemType::DiagDown25ToLeftBank
+    0x008AF704, // TrackElemType::DiagDown25ToRightBank
+    0x008AF634, // TrackElemType::DiagLeftBank
+    0x008AF644, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -16618,7 +16618,7 @@ static constexpr const uint32_t _OldWaterCoasterTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008AF744, // TRACK_ELEM_BLOCK_BRAKES
+    0x008AF744, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -16662,10 +16662,10 @@ static constexpr const uint32_t _OldWaterCoasterTrackPaintFunctions[256] = {
 
 /** rct2: 0x008AF764 */
 static constexpr const uint32_t _OldAirPoweredVerticalCoasterTrackPaintFunctions[256] = {
-    0x008AFAD4, // TRACK_ELEM_FLAT
-    0x008AFAE4, // TRACK_ELEM_END_STATION
-    0x008AFAF4, // TRACK_ELEM_BEGIN_STATION
-    0x008AFB04, // TRACK_ELEM_MIDDLE_STATION
+    0x008AFAD4, // TrackElemType::Flat
+    0x008AFAE4, // TrackElemType::EndStation
+    0x008AFAF4, // TrackElemType::BeginStation
+    0x008AFB04, // TrackElemType::MiddleStation
     0,
     0,
     0,
@@ -16678,14 +16678,14 @@ static constexpr const uint32_t _OldAirPoweredVerticalCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x008AFB54, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008AFB64, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008AFB74, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008AFB84, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008AFB94, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008AFBA4, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008AFBB4, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008AFBC4, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
+    0x008AFB54, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008AFB64, // TrackElemType::RightQuarterTurn5Tiles
+    0x008AFB74, // TrackElemType::FlatToLeftBank
+    0x008AFB84, // TrackElemType::FlatToRightBank
+    0x008AFB94, // TrackElemType::LeftBankToFlat
+    0x008AFBA4, // TrackElemType::RightBankToFlat
+    0x008AFBB4, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008AFBC4, // TrackElemType::BankedRightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -16694,8 +16694,8 @@ static constexpr const uint32_t _OldAirPoweredVerticalCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x008AFBD4, // TRACK_ELEM_LEFT_BANK
-    0x008AFBE4, // TRACK_ELEM_RIGHT_BANK
+    0x008AFBD4, // TrackElemType::LeftBank
+    0x008AFBE4, // TrackElemType::RightBank
     0,
     0,
     0,
@@ -16761,7 +16761,7 @@ static constexpr const uint32_t _OldAirPoweredVerticalCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x008AFC04, // TRACK_ELEM_BRAKES
+    0x008AFC04, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -16786,8 +16786,8 @@ static constexpr const uint32_t _OldAirPoweredVerticalCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x008AFB14, // TRACK_ELEM_REVERSE_FREEFALL_SLOPE
-    0x008AFB34, // TRACK_ELEM_REVERSE_FREEFALL_VERTICAL
+    0x008AFB14, // TrackElemType::ReverseFreefallSlope
+    0x008AFB34, // TrackElemType::ReverseFreefallVertical
     0,
     0,
     0,
@@ -16875,9 +16875,9 @@ static constexpr const uint32_t _OldAirPoweredVerticalCoasterTrackPaintFunctions
     0,
     0,
     0,
-    0x008AFBF4, // TRACK_ELEM_AIR_THRUST_TOP_CAP
-    0x008AFB44, // TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN
-    0x008AFB24, // TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL
+    0x008AFBF4, // TrackElemType::AirThrustTopCap
+    0x008AFB44, // TrackElemType::AirThrustVerticalDown
+    0x008AFB24, // TrackElemType::AirThrustVerticalDownToLevel
     0,
     0,
     0,
@@ -16922,22 +16922,22 @@ static constexpr const uint32_t _OldAirPoweredVerticalCoasterTrackPaintFunctions
 
 /** rct2: 0x00890940 */
 static constexpr const uint32_t _OldInvertedHairpinCoasterTrackPaintFunctions[256] = {
-    0x00890CB4, // TRACK_ELEM_FLAT
-    0x00890D84, // TRACK_ELEM_END_STATION
-    0x00890D94, // TRACK_ELEM_BEGIN_STATION
-    0x00890DA4, // TRACK_ELEM_MIDDLE_STATION
-    0x00890CC4, // TRACK_ELEM_25_DEG_UP
-    0x00890CD4, // TRACK_ELEM_60_DEG_UP
-    0x00890CE4, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x00890CF4, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x00890D04, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x00890D14, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x00890D24, // TRACK_ELEM_25_DEG_DOWN
-    0x00890D34, // TRACK_ELEM_60_DEG_DOWN
-    0x00890D44, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x00890D54, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x00890D64, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x00890D74, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x00890CB4, // TrackElemType::Flat
+    0x00890D84, // TrackElemType::EndStation
+    0x00890D94, // TrackElemType::BeginStation
+    0x00890DA4, // TrackElemType::MiddleStation
+    0x00890CC4, // TrackElemType::Up25
+    0x00890CD4, // TrackElemType::Up60
+    0x00890CE4, // TrackElemType::FlatToUp25
+    0x00890CF4, // TrackElemType::Up25ToUp60
+    0x00890D04, // TrackElemType::Up60ToUp25
+    0x00890D14, // TrackElemType::Up25ToFlat
+    0x00890D24, // TrackElemType::Down25
+    0x00890D34, // TrackElemType::Down60
+    0x00890D44, // TrackElemType::FlatToDown25
+    0x00890D54, // TrackElemType::Down25ToDown60
+    0x00890D64, // TrackElemType::Down60ToDown25
+    0x00890D74, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -16964,16 +16964,16 @@ static constexpr const uint32_t _OldInvertedHairpinCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x00890DB4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x00890DC4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x00890DB4, // TrackElemType::LeftQuarterTurn3Tiles
+    0x00890DC4, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
-    0x00890DD4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x00890DE4, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x00890DF4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x00890E04, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x00890E64, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x00890E74, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0x00890DD4, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x00890DE4, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x00890DF4, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x00890E04, // TrackElemType::RightQuarterTurn3TilesDown25
+    0x00890E64, // TrackElemType::LeftQuarterTurn1Tile
+    0x00890E74, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -16984,10 +16984,10 @@ static constexpr const uint32_t _OldInvertedHairpinCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x00890E24, // TRACK_ELEM_FLAT_TO_60_DEG_UP
-    0x00890E34, // TRACK_ELEM_60_DEG_UP_TO_FLAT
-    0x00890E44, // TRACK_ELEM_FLAT_TO_60_DEG_DOWN
-    0x00890E54, // TRACK_ELEM_60_DEG_DOWN_TO_FLAT
+    0x00890E24, // TrackElemType::FlatToUp60
+    0x00890E34, // TrackElemType::Up60ToFlat
+    0x00890E44, // TrackElemType::FlatToDown60
+    0x00890E54, // TrackElemType::Down60ToFlat
     0,
     0,
     0,
@@ -17021,7 +17021,7 @@ static constexpr const uint32_t _OldInvertedHairpinCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x00890E14, // TRACK_ELEM_BRAKES
+    0x00890E14, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -17138,7 +17138,7 @@ static constexpr const uint32_t _OldInvertedHairpinCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x00890E84, // TRACK_ELEM_BLOCK_BRAKES
+    0x00890E84, // TrackElemType::BlockBrakes
     0,
     0,
     0,
@@ -17442,10 +17442,10 @@ static constexpr const uint32_t _OldMagicCarpetTrackPaintFunctions[256] = {
 
 /** rct2: 0x008995D4 */
 static constexpr const uint32_t _OldSubmarineRideTrackPaintFunctions[256] = {
-    0x008996B4, // TRACK_ELEM_FLAT
-    0x008996C4, // TRACK_ELEM_END_STATION
-    0x008996D4, // TRACK_ELEM_BEGIN_STATION
-    0x008996E4, // TRACK_ELEM_MIDDLE_STATION
+    0x008996B4, // TrackElemType::Flat
+    0x008996C4, // TrackElemType::EndStation
+    0x008996D4, // TrackElemType::BeginStation
+    0x008996E4, // TrackElemType::MiddleStation
     0,
     0,
     0,
@@ -17484,16 +17484,16 @@ static constexpr const uint32_t _OldSubmarineRideTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008996F4, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x00899704, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
+    0x008996F4, // TrackElemType::LeftQuarterTurn3Tiles
+    0x00899704, // TrackElemType::RightQuarterTurn3Tiles
     0,
     0,
     0,
     0,
     0,
     0,
-    0x00899714, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE
-    0x00899724, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE
+    0x00899714, // TrackElemType::LeftQuarterTurn1Tile
+    0x00899724, // TrackElemType::RightQuarterTurn1Tile
     0,
     0,
     0,
@@ -17702,10 +17702,10 @@ static constexpr const uint32_t _OldSubmarineRideTrackPaintFunctions[256] = {
 
 /** rct2: 0x0089B0C0 */
 static constexpr const uint32_t _OldRiverRaftsTrackPaintFunctions[256] = {
-    0x0089B170, // TRACK_ELEM_FLAT
-    0x0089B1A0, // TRACK_ELEM_END_STATION
-    0x0089B1B0, // TRACK_ELEM_BEGIN_STATION
-    0x0089B1C0, // TRACK_ELEM_MIDDLE_STATION
+    0x0089B170, // TrackElemType::Flat
+    0x0089B1A0, // TrackElemType::EndStation
+    0x0089B1B0, // TrackElemType::BeginStation
+    0x0089B1C0, // TrackElemType::MiddleStation
     0,
     0,
     0,
@@ -17718,8 +17718,8 @@ static constexpr const uint32_t _OldRiverRaftsTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0089B1D0, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x0089B1E0, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
+    0x0089B1D0, // TrackElemType::LeftQuarterTurn5Tiles
+    0x0089B1E0, // TrackElemType::RightQuarterTurn5Tiles
     0,
     0,
     0,
@@ -17740,8 +17740,8 @@ static constexpr const uint32_t _OldRiverRaftsTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x0089B180, // TRACK_ELEM_S_BEND_LEFT
-    0x0089B190, // TRACK_ELEM_S_BEND_RIGHT
+    0x0089B180, // TrackElemType::SBendLeft
+    0x0089B190, // TrackElemType::SBendRight
     0,
     0,
     0,
@@ -18222,22 +18222,22 @@ static constexpr const uint32_t _OldEnterpriseTrackPaintFunctions[256] = {
 
 /** rct2: 0x008B005C */
 static constexpr const uint32_t _OldInvertedImpulseCoasterTrackPaintFunctions[256] = {
-    0x008B0460, // TRACK_ELEM_FLAT
-    0x008B0470, // TRACK_ELEM_END_STATION
-    0x008B0480, // TRACK_ELEM_BEGIN_STATION
-    0x008B0490, // TRACK_ELEM_MIDDLE_STATION
-    0x008B04A0, // TRACK_ELEM_25_DEG_UP
-    0x008B04B0, // TRACK_ELEM_60_DEG_UP
-    0x008B04C0, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008B04D0, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008B04E0, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008B04F0, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008B0500, // TRACK_ELEM_25_DEG_DOWN
-    0x008B0510, // TRACK_ELEM_60_DEG_DOWN
-    0x008B0520, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008B0530, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008B0540, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008B0550, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
+    0x008B0460, // TrackElemType::Flat
+    0x008B0470, // TrackElemType::EndStation
+    0x008B0480, // TrackElemType::BeginStation
+    0x008B0490, // TrackElemType::MiddleStation
+    0x008B04A0, // TrackElemType::Up25
+    0x008B04B0, // TrackElemType::Up60
+    0x008B04C0, // TrackElemType::FlatToUp25
+    0x008B04D0, // TrackElemType::Up25ToUp60
+    0x008B04E0, // TrackElemType::Up60ToUp25
+    0x008B04F0, // TrackElemType::Up25ToFlat
+    0x008B0500, // TrackElemType::Down25
+    0x008B0510, // TrackElemType::Down60
+    0x008B0520, // TrackElemType::FlatToDown25
+    0x008B0530, // TrackElemType::Down25ToDown60
+    0x008B0540, // TrackElemType::Down60ToDown25
+    0x008B0550, // TrackElemType::Down25ToFlat
     0,
     0,
     0,
@@ -18348,12 +18348,12 @@ static constexpr const uint32_t _OldInvertedImpulseCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x008B05A0, // TRACK_ELEM_90_DEG_UP
-    0x008B05B0, // TRACK_ELEM_90_DEG_DOWN
-    0x008B0560, // TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP
-    0x008B0570, // TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-    0x008B0580, // TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP
-    0x008B0590, // TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN
+    0x008B05A0, // TrackElemType::Up90
+    0x008B05B0, // TrackElemType::Down90
+    0x008B0560, // TrackElemType::Up60ToUp90
+    0x008B0570, // TrackElemType::Down90ToDown60
+    0x008B0580, // TrackElemType::Up90ToUp60
+    0x008B0590, // TrackElemType::Down60ToDown90
     0,
     0,
     0,
@@ -18471,10 +18471,10 @@ static constexpr const uint32_t _OldInvertedImpulseCoasterTrackPaintFunctions[25
     0,
     0,
     0,
-    0x008B05C0, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP
-    0x008B05D0, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP
-    0x008B05E0, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN
-    0x008B05F0, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN
+    0x008B05C0, // TrackElemType::LeftQuarterTurn1TileUp90
+    0x008B05D0, // TrackElemType::RightQuarterTurn1TileUp90
+    0x008B05E0, // TrackElemType::LeftQuarterTurn1TileDown90
+    0x008B05F0, // TrackElemType::RightQuarterTurn1TileDown90
     0,
     0,
     0,
@@ -18482,56 +18482,56 @@ static constexpr const uint32_t _OldInvertedImpulseCoasterTrackPaintFunctions[25
 
 /** rct2: 0x008A46D8 */
 static constexpr const uint32_t _OldMiniRollerCoasterTrackPaintFunctions[256] = {
-    0x008A4ABC, // TRACK_ELEM_FLAT
-    0x008A4D0C, // TRACK_ELEM_END_STATION
-    0x008A4D1C, // TRACK_ELEM_BEGIN_STATION
-    0x008A4D2C, // TRACK_ELEM_MIDDLE_STATION
-    0x008A4ACC, // TRACK_ELEM_25_DEG_UP
-    0x008A4ADC, // TRACK_ELEM_60_DEG_UP
-    0x008A4AEC, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008A4AFC, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008A4B0C, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008A4B1C, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008A4B2C, // TRACK_ELEM_25_DEG_DOWN
-    0x008A4B3C, // TRACK_ELEM_60_DEG_DOWN
-    0x008A4B4C, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008A4B5C, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A4B6C, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A4B7C, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008A4B8C, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008A4B9C, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008A4BAC, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008A4BBC, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008A4BCC, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008A4BDC, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008A4BEC, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008A4BFC, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008A4C0C, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008A4C1C, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008A4C2C, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008A4C3C, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008A4C4C, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A4C5C, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A4C6C, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A4C7C, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A4C8C, // TRACK_ELEM_LEFT_BANK
-    0x008A4C9C, // TRACK_ELEM_RIGHT_BANK
-    0x008A4CAC, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A4CBC, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A4CCC, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A4CDC, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A4CEC, // TRACK_ELEM_S_BEND_LEFT
-    0x008A4CFC, // TRACK_ELEM_S_BEND_RIGHT
+    0x008A4ABC, // TrackElemType::Flat
+    0x008A4D0C, // TrackElemType::EndStation
+    0x008A4D1C, // TrackElemType::BeginStation
+    0x008A4D2C, // TrackElemType::MiddleStation
+    0x008A4ACC, // TrackElemType::Up25
+    0x008A4ADC, // TrackElemType::Up60
+    0x008A4AEC, // TrackElemType::FlatToUp25
+    0x008A4AFC, // TrackElemType::Up25ToUp60
+    0x008A4B0C, // TrackElemType::Up60ToUp25
+    0x008A4B1C, // TrackElemType::Up25ToFlat
+    0x008A4B2C, // TrackElemType::Down25
+    0x008A4B3C, // TrackElemType::Down60
+    0x008A4B4C, // TrackElemType::FlatToDown25
+    0x008A4B5C, // TrackElemType::Down25ToDown60
+    0x008A4B6C, // TrackElemType::Down60ToDown25
+    0x008A4B7C, // TrackElemType::Down25ToFlat
+    0x008A4B8C, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008A4B9C, // TrackElemType::RightQuarterTurn5Tiles
+    0x008A4BAC, // TrackElemType::FlatToLeftBank
+    0x008A4BBC, // TrackElemType::FlatToRightBank
+    0x008A4BCC, // TrackElemType::LeftBankToFlat
+    0x008A4BDC, // TrackElemType::RightBankToFlat
+    0x008A4BEC, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008A4BFC, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008A4C0C, // TrackElemType::LeftBankToUp25
+    0x008A4C1C, // TrackElemType::RightBankToUp25
+    0x008A4C2C, // TrackElemType::Up25ToLeftBank
+    0x008A4C3C, // TrackElemType::Up25ToRightBank
+    0x008A4C4C, // TrackElemType::LeftBankToDown25
+    0x008A4C5C, // TrackElemType::RightBankToDown25
+    0x008A4C6C, // TrackElemType::Down25ToLeftBank
+    0x008A4C7C, // TrackElemType::Down25ToRightBank
+    0x008A4C8C, // TrackElemType::LeftBank
+    0x008A4C9C, // TrackElemType::RightBank
+    0x008A4CAC, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008A4CBC, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008A4CCC, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008A4CDC, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008A4CEC, // TrackElemType::SBendLeft
+    0x008A4CFC, // TrackElemType::SBendRight
     0,
     0,
-    0x008A4D3C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008A4D4C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008A4D5C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008A4D6C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008A4D7C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A4D8C, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A4D9C, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008A4DAC, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008A4D3C, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008A4D4C, // TrackElemType::RightQuarterTurn3Tiles
+    0x008A4D5C, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008A4D6C, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008A4D7C, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008A4D8C, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008A4D9C, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008A4DAC, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
     0,
@@ -18569,19 +18569,19 @@ static constexpr const uint32_t _OldMiniRollerCoasterTrackPaintFunctions[256] = 
     0,
     0,
     0,
-    0x008A4DBC, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A4DCC, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A4DDC, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A4DEC, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A4DFC, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A4E0C, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A4E1C, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A4E2C, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A4E5C, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A4E3C, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A4E4C, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A4E6C, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A4E7C, // TRACK_ELEM_BRAKES
+    0x008A4DBC, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008A4DCC, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008A4DDC, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008A4DEC, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008A4DFC, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008A4E0C, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008A4E1C, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008A4E2C, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x008A4E5C, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008A4E3C, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008A4E4C, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008A4E6C, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008A4E7C, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -18592,13 +18592,13 @@ static constexpr const uint32_t _OldMiniRollerCoasterTrackPaintFunctions[256] = 
     0,
     0,
     0,
-    0x008A50CC, // TRACK_ELEM_25_DEG_UP_LEFT_BANKED
-    0x008A50DC, // TRACK_ELEM_25_DEG_UP_RIGHT_BANKED
+    0x008A50CC, // TrackElemType::Up25LeftBanked
+    0x008A50DC, // TrackElemType::Up25RightBanked
     0,
     0,
-    0x008A4E8C, // TRACK_ELEM_ON_RIDE_PHOTO
-    0x008A50EC, // TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED
-    0x008A50FC, // TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED
+    0x008A4E8C, // TrackElemType::OnRidePhoto
+    0x008A50EC, // TrackElemType::Down25LeftBanked
+    0x008A50FC, // TrackElemType::Down25RightBanked
     0,
     0,
     0,
@@ -18615,45 +18615,45 @@ static constexpr const uint32_t _OldMiniRollerCoasterTrackPaintFunctions[256] = 
     0,
     0,
     0,
-    0x008A4EAC, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008A4EBC, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008A4ECC, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008A4EDC, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008A4EEC, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008A4EFC, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008A4F0C, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A4F1C, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A4E9C, // TRACK_ELEM_DIAG_FLAT
-    0x008A4F4C, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008A4FAC, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008A4F2C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008A4F8C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008A4F9C, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008A4F3C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008A4F7C, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008A4FDC, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008A4F5C, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008A4FBC, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A4FCC, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A4F6C, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008A4EAC, // TrackElemType::LeftEighthToDiag
+    0x008A4EBC, // TrackElemType::RightEighthToDiag
+    0x008A4ECC, // TrackElemType::LeftEighthToOrthogonal
+    0x008A4EDC, // TrackElemType::RightEighthToOrthogonal
+    0x008A4EEC, // TrackElemType::LeftEighthBankToDiag
+    0x008A4EFC, // TrackElemType::RightEighthBankToDiag
+    0x008A4F0C, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008A4F1C, // TrackElemType::RightEighthBankToOrthogonal
+    0x008A4E9C, // TrackElemType::DiagFlat
+    0x008A4F4C, // TrackElemType::DiagUp25
+    0x008A4FAC, // TrackElemType::DiagUp60
+    0x008A4F2C, // TrackElemType::DiagFlatToUp25
+    0x008A4F8C, // TrackElemType::DiagUp25ToUp60
+    0x008A4F9C, // TrackElemType::DiagUp60ToUp25
+    0x008A4F3C, // TrackElemType::DiagUp25ToFlat
+    0x008A4F7C, // TrackElemType::DiagDown25
+    0x008A4FDC, // TrackElemType::DiagDown60
+    0x008A4F5C, // TrackElemType::DiagFlatToDown25
+    0x008A4FBC, // TrackElemType::DiagDown25ToDown60
+    0x008A4FCC, // TrackElemType::DiagDown60ToDown25
+    0x008A4F6C, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008A500C, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008A501C, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008A502C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008A503C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008A506C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008A507C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008A504C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008A505C, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008A508C, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A509C, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A50AC, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A50BC, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A4FEC, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008A4FFC, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008A500C, // TrackElemType::DiagFlatToLeftBank
+    0x008A501C, // TrackElemType::DiagFlatToRightBank
+    0x008A502C, // TrackElemType::DiagLeftBankToFlat
+    0x008A503C, // TrackElemType::DiagRightBankToFlat
+    0x008A506C, // TrackElemType::DiagLeftBankToUp25
+    0x008A507C, // TrackElemType::DiagRightBankToUp25
+    0x008A504C, // TrackElemType::DiagUp25ToLeftBank
+    0x008A505C, // TrackElemType::DiagUp25ToRightBank
+    0x008A508C, // TrackElemType::DiagLeftBankToDown25
+    0x008A509C, // TrackElemType::DiagRightBankToDown25
+    0x008A50AC, // TrackElemType::DiagDown25ToLeftBank
+    0x008A50BC, // TrackElemType::DiagDown25ToRightBank
+    0x008A4FEC, // TrackElemType::DiagLeftBank
+    0x008A4FFC, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -18698,39 +18698,39 @@ static constexpr const uint32_t _OldMiniRollerCoasterTrackPaintFunctions[256] = 
     0,
     0,
     0,
-    0x008A530C, // TRACK_ELEM_BLOCK_BRAKES
-    0x008A510C, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008A511C, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008A512C, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008A513C, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008A514C, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008A515C, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008A516C, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008A517C, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008A518C, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    0x008A519C, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A51AC, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008A51BC, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008A51CC, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A51DC, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A51EC, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A51FC, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A520C, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008A521C, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A524C, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    0x008A525C, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    0x008A526C, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A527C, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A522C, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    0x008A523C, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    0x008A528C, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008A529C, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A52AC, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    0x008A52BC, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    0x008A52CC, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A52DC, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A52EC, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008A52FC, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
+    0x008A530C, // TrackElemType::BlockBrakes
+    0x008A510C, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    0x008A511C, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    0x008A512C, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    0x008A513C, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    0x008A514C, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    0x008A515C, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    0x008A516C, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    0x008A517C, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    0x008A518C, // TrackElemType::Up25ToLeftBankedUp25
+    0x008A519C, // TrackElemType::Up25ToRightBankedUp25
+    0x008A51AC, // TrackElemType::LeftBankedUp25ToUp25
+    0x008A51BC, // TrackElemType::RightBankedUp25ToUp25
+    0x008A51CC, // TrackElemType::Down25ToLeftBankedDown25
+    0x008A51DC, // TrackElemType::Down25ToRightBankedDown25
+    0x008A51EC, // TrackElemType::LeftBankedDown25ToDown25
+    0x008A51FC, // TrackElemType::RightBankedDown25ToDown25
+    0x008A520C, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    0x008A521C, // TrackElemType::RightBankedFlatToRightBankedUp25
+    0x008A524C, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    0x008A525C, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    0x008A526C, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    0x008A527C, // TrackElemType::RightBankedFlatToRightBankedDown25
+    0x008A522C, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    0x008A523C, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    0x008A528C, // TrackElemType::FlatToLeftBankedUp25
+    0x008A529C, // TrackElemType::FlatToRightBankedUp25
+    0x008A52AC, // TrackElemType::LeftBankedUp25ToFlat
+    0x008A52BC, // TrackElemType::RightBankedUp25ToFlat
+    0x008A52CC, // TrackElemType::FlatToLeftBankedDown25
+    0x008A52DC, // TrackElemType::FlatToRightBankedDown25
+    0x008A52EC, // TrackElemType::LeftBankedDown25ToFlat
+    0x008A52FC, // TrackElemType::RightBankedDown25ToFlat
     0,
     0,
     0,
@@ -18742,52 +18742,52 @@ static constexpr const uint32_t _OldMiniRollerCoasterTrackPaintFunctions[256] = 
 
 /** rct2: 0x008B0610 */
 static constexpr const uint32_t _OldMineRideTrackPaintFunctions[256] = {
-    0x008B08D0, // TRACK_ELEM_FLAT
-    0x008B0A80, // TRACK_ELEM_END_STATION
-    0x008B0A90, // TRACK_ELEM_BEGIN_STATION
-    0x008B0AA0, // TRACK_ELEM_MIDDLE_STATION
-    0x008B08E0, // TRACK_ELEM_25_DEG_UP
+    0x008B08D0, // TrackElemType::Flat
+    0x008B0A80, // TrackElemType::EndStation
+    0x008B0A90, // TrackElemType::BeginStation
+    0x008B0AA0, // TrackElemType::MiddleStation
+    0x008B08E0, // TrackElemType::Up25
     0,
-    0x008B08F0, // TRACK_ELEM_FLAT_TO_25_DEG_UP
+    0x008B08F0, // TrackElemType::FlatToUp25
     0,
     0,
-    0x008B0900, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008B0910, // TRACK_ELEM_25_DEG_DOWN
+    0x008B0900, // TrackElemType::Up25ToFlat
+    0x008B0910, // TrackElemType::Down25
     0,
-    0x008B0920, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
+    0x008B0920, // TrackElemType::FlatToDown25
     0,
     0,
-    0x008B0930, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008B0940, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008B0950, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008B0960, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008B0970, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008B0980, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008B0990, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008B09A0, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008B09B0, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008B09C0, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008B09D0, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008B09E0, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008B09F0, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008B0A00, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008B0A10, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008B0A20, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008B0A30, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008B0A40, // TRACK_ELEM_LEFT_BANK
-    0x008B0A50, // TRACK_ELEM_RIGHT_BANK
+    0x008B0930, // TrackElemType::Down25ToFlat
+    0x008B0940, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008B0950, // TrackElemType::RightQuarterTurn5Tiles
+    0x008B0960, // TrackElemType::FlatToLeftBank
+    0x008B0970, // TrackElemType::FlatToRightBank
+    0x008B0980, // TrackElemType::LeftBankToFlat
+    0x008B0990, // TrackElemType::RightBankToFlat
+    0x008B09A0, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008B09B0, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008B09C0, // TrackElemType::LeftBankToUp25
+    0x008B09D0, // TrackElemType::RightBankToUp25
+    0x008B09E0, // TrackElemType::Up25ToLeftBank
+    0x008B09F0, // TrackElemType::Up25ToRightBank
+    0x008B0A00, // TrackElemType::LeftBankToDown25
+    0x008B0A10, // TrackElemType::RightBankToDown25
+    0x008B0A20, // TrackElemType::Down25ToLeftBank
+    0x008B0A30, // TrackElemType::Down25ToRightBank
+    0x008B0A40, // TrackElemType::LeftBank
+    0x008B0A50, // TrackElemType::RightBank
     0,
     0,
     0,
     0,
-    0x008B0A60, // TRACK_ELEM_S_BEND_LEFT
-    0x008B0A70, // TRACK_ELEM_S_BEND_RIGHT
+    0x008B0A60, // TrackElemType::SBendLeft
+    0x008B0A70, // TrackElemType::SBendRight
     0,
     0,
-    0x008B0AB0, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008B0AC0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008B0AD0, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008B0AE0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
+    0x008B0AB0, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008B0AC0, // TrackElemType::RightQuarterTurn3Tiles
+    0x008B0AD0, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008B0AE0, // TrackElemType::RightBankedQuarterTurn3Tiles
     0,
     0,
     0,
@@ -18829,14 +18829,14 @@ static constexpr const uint32_t _OldMineRideTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008B0AF0, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008B0B00, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008B0B10, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008B0B20, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008B0B30, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008B0B40, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008B0B50, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008B0B60, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
+    0x008B0AF0, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008B0B00, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008B0B10, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008B0B20, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008B0B30, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008B0B40, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008B0B50, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008B0B60, // TrackElemType::RightHalfBankedHelixDownLarge
     0,
     0,
     0,
@@ -18856,7 +18856,7 @@ static constexpr const uint32_t _OldMineRideTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008B0B70, // TRACK_ELEM_ON_RIDE_PHOTO
+    0x008B0B70, // TrackElemType::OnRidePhoto
     0,
     0,
     0,
@@ -18875,45 +18875,45 @@ static constexpr const uint32_t _OldMineRideTrackPaintFunctions[256] = {
     0,
     0,
     0,
-    0x008B0B90, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008B0BA0, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008B0BB0, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008B0BC0, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008B0BD0, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008B0BE0, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008B0BF0, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008B0C00, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008B0B80, // TRACK_ELEM_DIAG_FLAT
-    0x008B0C30, // TRACK_ELEM_DIAG_25_DEG_UP
+    0x008B0B90, // TrackElemType::LeftEighthToDiag
+    0x008B0BA0, // TrackElemType::RightEighthToDiag
+    0x008B0BB0, // TrackElemType::LeftEighthToOrthogonal
+    0x008B0BC0, // TrackElemType::RightEighthToOrthogonal
+    0x008B0BD0, // TrackElemType::LeftEighthBankToDiag
+    0x008B0BE0, // TrackElemType::RightEighthBankToDiag
+    0x008B0BF0, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008B0C00, // TrackElemType::RightEighthBankToOrthogonal
+    0x008B0B80, // TrackElemType::DiagFlat
+    0x008B0C30, // TrackElemType::DiagUp25
     0,
-    0x008B0C10, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
+    0x008B0C10, // TrackElemType::DiagFlatToUp25
     0,
     0,
-    0x008B0C20, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008B0C60, // TRACK_ELEM_DIAG_25_DEG_DOWN
+    0x008B0C20, // TrackElemType::DiagUp25ToFlat
+    0x008B0C60, // TrackElemType::DiagDown25
     0,
-    0x008B0C40, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
+    0x008B0C40, // TrackElemType::DiagFlatToDown25
     0,
     0,
-    0x008B0C50, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008B0C50, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008B0C90, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008B0CA0, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008B0CB0, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008B0CC0, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008B0CF0, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008B0D00, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008B0CD0, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008B0CE0, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008B0D10, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008B0D20, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008B0D30, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008B0D40, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008B0C70, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008B0C80, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008B0C90, // TrackElemType::DiagFlatToLeftBank
+    0x008B0CA0, // TrackElemType::DiagFlatToRightBank
+    0x008B0CB0, // TrackElemType::DiagLeftBankToFlat
+    0x008B0CC0, // TrackElemType::DiagRightBankToFlat
+    0x008B0CF0, // TrackElemType::DiagLeftBankToUp25
+    0x008B0D00, // TrackElemType::DiagRightBankToUp25
+    0x008B0CD0, // TrackElemType::DiagUp25ToLeftBank
+    0x008B0CE0, // TrackElemType::DiagUp25ToRightBank
+    0x008B0D10, // TrackElemType::DiagLeftBankToDown25
+    0x008B0D20, // TrackElemType::DiagRightBankToDown25
+    0x008B0D30, // TrackElemType::DiagDown25ToLeftBank
+    0x008B0D40, // TrackElemType::DiagDown25ToRightBank
+    0x008B0C70, // TrackElemType::DiagLeftBank
+    0x008B0C80, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -19002,68 +19002,68 @@ static constexpr const uint32_t _OldMineRideTrackPaintFunctions[256] = {
 
 /** rct2: 0x008A5F6C */
 static constexpr const uint32_t _OldLimLaunchedRollerCoasterTrackPaintFunctions[256] = {
-    0x008A6370, // TRACK_ELEM_FLAT
-    0x008A6D50, // TRACK_ELEM_END_STATION
-    0x008A6D60, // TRACK_ELEM_BEGIN_STATION
-    0x008A6D70, // TRACK_ELEM_MIDDLE_STATION
-    0x008A6380, // TRACK_ELEM_25_DEG_UP
-    0x008A6390, // TRACK_ELEM_60_DEG_UP
-    0x008A63A0, // TRACK_ELEM_FLAT_TO_25_DEG_UP
-    0x008A63B0, // TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP
-    0x008A63C0, // TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP
-    0x008A63D0, // TRACK_ELEM_25_DEG_UP_TO_FLAT
-    0x008A63E0, // TRACK_ELEM_25_DEG_DOWN
-    0x008A63F0, // TRACK_ELEM_60_DEG_DOWN
-    0x008A6400, // TRACK_ELEM_FLAT_TO_25_DEG_DOWN
-    0x008A6410, // TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A6420, // TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A6430, // TRACK_ELEM_25_DEG_DOWN_TO_FLAT
-    0x008A6440, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES
-    0x008A6450, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES
-    0x008A6460, // TRACK_ELEM_FLAT_TO_LEFT_BANK
-    0x008A6470, // TRACK_ELEM_FLAT_TO_RIGHT_BANK
-    0x008A6480, // TRACK_ELEM_LEFT_BANK_TO_FLAT
-    0x008A6490, // TRACK_ELEM_RIGHT_BANK_TO_FLAT
-    0x008A64A0, // TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES
-    0x008A64B0, // TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES
-    0x008A64C0, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP
-    0x008A64D0, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP
-    0x008A64E0, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK
-    0x008A64F0, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK
-    0x008A6500, // TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A6510, // TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A6520, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A6530, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A6540, // TRACK_ELEM_LEFT_BANK
-    0x008A6550, // TRACK_ELEM_RIGHT_BANK
-    0x008A6560, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A6570, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP
-    0x008A6580, // TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A6590, // TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN
-    0x008A65A0, // TRACK_ELEM_S_BEND_LEFT
-    0x008A65B0, // TRACK_ELEM_S_BEND_RIGHT
-    0x008A65E0, // TRACK_ELEM_LEFT_VERTICAL_LOOP
-    0x008A65F0, // TRACK_ELEM_RIGHT_VERTICAL_LOOP
-    0x008A6630, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES
-    0x008A6640, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES
-    0x008A6650, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK
-    0x008A6660, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK
-    0x008A6670, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A6680, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP
-    0x008A6690, // TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN
-    0x008A66A0, // TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN
+    0x008A6370, // TrackElemType::Flat
+    0x008A6D50, // TrackElemType::EndStation
+    0x008A6D60, // TrackElemType::BeginStation
+    0x008A6D70, // TrackElemType::MiddleStation
+    0x008A6380, // TrackElemType::Up25
+    0x008A6390, // TrackElemType::Up60
+    0x008A63A0, // TrackElemType::FlatToUp25
+    0x008A63B0, // TrackElemType::Up25ToUp60
+    0x008A63C0, // TrackElemType::Up60ToUp25
+    0x008A63D0, // TrackElemType::Up25ToFlat
+    0x008A63E0, // TrackElemType::Down25
+    0x008A63F0, // TrackElemType::Down60
+    0x008A6400, // TrackElemType::FlatToDown25
+    0x008A6410, // TrackElemType::Down25ToDown60
+    0x008A6420, // TrackElemType::Down60ToDown25
+    0x008A6430, // TrackElemType::Down25ToFlat
+    0x008A6440, // TrackElemType::LeftQuarterTurn5Tiles
+    0x008A6450, // TrackElemType::RightQuarterTurn5Tiles
+    0x008A6460, // TrackElemType::FlatToLeftBank
+    0x008A6470, // TrackElemType::FlatToRightBank
+    0x008A6480, // TrackElemType::LeftBankToFlat
+    0x008A6490, // TrackElemType::RightBankToFlat
+    0x008A64A0, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    0x008A64B0, // TrackElemType::BankedRightQuarterTurn5Tiles
+    0x008A64C0, // TrackElemType::LeftBankToUp25
+    0x008A64D0, // TrackElemType::RightBankToUp25
+    0x008A64E0, // TrackElemType::Up25ToLeftBank
+    0x008A64F0, // TrackElemType::Up25ToRightBank
+    0x008A6500, // TrackElemType::LeftBankToDown25
+    0x008A6510, // TrackElemType::RightBankToDown25
+    0x008A6520, // TrackElemType::Down25ToLeftBank
+    0x008A6530, // TrackElemType::Down25ToRightBank
+    0x008A6540, // TrackElemType::LeftBank
+    0x008A6550, // TrackElemType::RightBank
+    0x008A6560, // TrackElemType::LeftQuarterTurn5TilesUp25
+    0x008A6570, // TrackElemType::RightQuarterTurn5TilesUp25
+    0x008A6580, // TrackElemType::LeftQuarterTurn5TilesDown25
+    0x008A6590, // TrackElemType::RightQuarterTurn5TilesDown25
+    0x008A65A0, // TrackElemType::SBendLeft
+    0x008A65B0, // TrackElemType::SBendRight
+    0x008A65E0, // TrackElemType::LeftVerticalLoop
+    0x008A65F0, // TrackElemType::RightVerticalLoop
+    0x008A6630, // TrackElemType::LeftQuarterTurn3Tiles
+    0x008A6640, // TrackElemType::RightQuarterTurn3Tiles
+    0x008A6650, // TrackElemType::LeftBankedQuarterTurn3Tiles
+    0x008A6660, // TrackElemType::RightBankedQuarterTurn3Tiles
+    0x008A6670, // TrackElemType::LeftQuarterTurn3TilesUp25
+    0x008A6680, // TrackElemType::RightQuarterTurn3TilesUp25
+    0x008A6690, // TrackElemType::LeftQuarterTurn3TilesDown25
+    0x008A66A0, // TrackElemType::RightQuarterTurn3TilesDown25
     0,
     0,
-    0x008A6D10, // TRACK_ELEM_LEFT_TWIST_DOWN_TO_UP
-    0x008A6D20, // TRACK_ELEM_RIGHT_TWIST_DOWN_TO_UP
-    0x008A6D30, // TRACK_ELEM_LEFT_TWIST_UP_TO_DOWN
-    0x008A6D40, // TRACK_ELEM_RIGHT_TWIST_UP_TO_DOWN
+    0x008A6D10, // TrackElemType::LeftTwistDownToUp
+    0x008A6D20, // TrackElemType::RightTwistDownToUp
+    0x008A6D30, // TrackElemType::LeftTwistUpToDown
+    0x008A6D40, // TrackElemType::RightTwistUpToDown
     0,
     0,
-    0x008A6CD0, // TRACK_ELEM_LEFT_CORKSCREW_UP
-    0x008A6CE0, // TRACK_ELEM_RIGHT_CORKSCREW_UP
-    0x008A6CF0, // TRACK_ELEM_LEFT_CORKSCREW_DOWN
-    0x008A6D00, // TRACK_ELEM_RIGHT_CORKSCREW_DOWN
+    0x008A6CD0, // TrackElemType::LeftCorkscrewUp
+    0x008A6CE0, // TrackElemType::RightCorkscrewUp
+    0x008A6CF0, // TrackElemType::LeftCorkscrewDown
+    0x008A6D00, // TrackElemType::RightCorkscrewDown
     0,
     0,
     0,
@@ -19089,19 +19089,19 @@ static constexpr const uint32_t _OldLimLaunchedRollerCoasterTrackPaintFunctions[
     0,
     0,
     0,
-    0x008A66B0, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A66C0, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL
-    0x008A66D0, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A66E0, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL
-    0x008A66F0, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A6700, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE
-    0x008A6710, // TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A6720, // TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE
-    0x008A6750, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A6730, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP
-    0x008A6740, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A6760, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN
-    0x008A6D80, // TRACK_ELEM_BRAKES
+    0x008A66B0, // TrackElemType::LeftHalfBankedHelixUpSmall
+    0x008A66C0, // TrackElemType::RightHalfBankedHelixUpSmall
+    0x008A66D0, // TrackElemType::LeftHalfBankedHelixDownSmall
+    0x008A66E0, // TrackElemType::RightHalfBankedHelixDownSmall
+    0x008A66F0, // TrackElemType::LeftHalfBankedHelixUpLarge
+    0x008A6700, // TrackElemType::RightHalfBankedHelixUpLarge
+    0x008A6710, // TrackElemType::LeftHalfBankedHelixDownLarge
+    0x008A6720, // TrackElemType::RightHalfBankedHelixDownLarge
+    0x008A6750, // TrackElemType::LeftQuarterTurn1TileUp60
+    0x008A6730, // TrackElemType::RightQuarterTurn1TileUp60
+    0x008A6740, // TrackElemType::LeftQuarterTurn1TileDown60
+    0x008A6760, // TrackElemType::RightQuarterTurn1TileDown60
+    0x008A6D80, // TrackElemType::Brakes
     0,
     0,
     0,
@@ -19112,13 +19112,13 @@ static constexpr const uint32_t _OldLimLaunchedRollerCoasterTrackPaintFunctions[
     0,
     0,
     0,
-    0x008A6A40, // TRACK_ELEM_25_DEG_UP_LEFT_BANKED
-    0x008A6A50, // TRACK_ELEM_25_DEG_UP_RIGHT_BANKED
+    0x008A6A40, // TrackElemType::Up25LeftBanked
+    0x008A6A50, // TrackElemType::Up25RightBanked
     0,
     0,
-    0x008A6780, // TRACK_ELEM_ON_RIDE_PHOTO
-    0x008A6A60, // TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED
-    0x008A6A70, // TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED
+    0x008A6780, // TrackElemType::OnRidePhoto
+    0x008A6A60, // TrackElemType::Down25LeftBanked
+    0x008A6A70, // TrackElemType::Down25RightBanked
     0,
     0,
     0,
@@ -19128,52 +19128,52 @@ static constexpr const uint32_t _OldLimLaunchedRollerCoasterTrackPaintFunctions[
     0,
     0,
     0,
-    0x008A6C10, // TRACK_ELEM_90_DEG_UP
-    0x008A6C20, // TRACK_ELEM_90_DEG_DOWN
-    0x008A6C30, // TRACK_ELEM_60_DEG_UP_TO_90_DEG_UP
-    0x008A6C40, // TRACK_ELEM_90_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A6C50, // TRACK_ELEM_90_DEG_UP_TO_60_DEG_UP
-    0x008A6C60, // TRACK_ELEM_60_DEG_DOWN_TO_90_DEG_DOWN
+    0x008A6C10, // TrackElemType::Up90
+    0x008A6C20, // TrackElemType::Down90
+    0x008A6C30, // TrackElemType::Up60ToUp90
+    0x008A6C40, // TrackElemType::Down90ToDown60
+    0x008A6C50, // TrackElemType::Up90ToUp60
+    0x008A6C60, // TrackElemType::Down60ToDown90
     0,
-    0x008A6860, // TRACK_ELEM_LEFT_EIGHTH_TO_DIAG
-    0x008A6870, // TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG
-    0x008A6880, // TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL
-    0x008A6890, // TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL
-    0x008A68A0, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG
-    0x008A68B0, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG
-    0x008A68C0, // TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A68D0, // TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL
-    0x008A6790, // TRACK_ELEM_DIAG_FLAT
-    0x008A67C0, // TRACK_ELEM_DIAG_25_DEG_UP
-    0x008A67F0, // TRACK_ELEM_DIAG_60_DEG_UP
-    0x008A67A0, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP
-    0x008A67D0, // TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP
-    0x008A67E0, // TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP
-    0x008A67B0, // TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT
-    0x008A6820, // TRACK_ELEM_DIAG_25_DEG_DOWN
-    0x008A6850, // TRACK_ELEM_DIAG_60_DEG_DOWN
-    0x008A6800, // TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN
-    0x008A6830, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN
-    0x008A6840, // TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A6810, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT
+    0x008A6860, // TrackElemType::LeftEighthToDiag
+    0x008A6870, // TrackElemType::RightEighthToDiag
+    0x008A6880, // TrackElemType::LeftEighthToOrthogonal
+    0x008A6890, // TrackElemType::RightEighthToOrthogonal
+    0x008A68A0, // TrackElemType::LeftEighthBankToDiag
+    0x008A68B0, // TrackElemType::RightEighthBankToDiag
+    0x008A68C0, // TrackElemType::LeftEighthBankToOrthogonal
+    0x008A68D0, // TrackElemType::RightEighthBankToOrthogonal
+    0x008A6790, // TrackElemType::DiagFlat
+    0x008A67C0, // TrackElemType::DiagUp25
+    0x008A67F0, // TrackElemType::DiagUp60
+    0x008A67A0, // TrackElemType::DiagFlatToUp25
+    0x008A67D0, // TrackElemType::DiagUp25ToUp60
+    0x008A67E0, // TrackElemType::DiagUp60ToUp25
+    0x008A67B0, // TrackElemType::DiagUp25ToFlat
+    0x008A6820, // TrackElemType::DiagDown25
+    0x008A6850, // TrackElemType::DiagDown60
+    0x008A6800, // TrackElemType::DiagFlatToDown25
+    0x008A6830, // TrackElemType::DiagDown25ToDown60
+    0x008A6840, // TrackElemType::DiagDown60ToDown25
+    0x008A6810, // TrackElemType::DiagDown25ToFlat
     0,
     0,
     0,
     0,
-    0x008A6900, // TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK
-    0x008A6910, // TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK
-    0x008A6920, // TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT
-    0x008A6930, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT
-    0x008A6960, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP
-    0x008A6970, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP
-    0x008A6940, // TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK
-    0x008A6950, // TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK
-    0x008A6980, // TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN
-    0x008A6990, // TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN
-    0x008A69A0, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK
-    0x008A69B0, // TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK
-    0x008A68E0, // TRACK_ELEM_DIAG_LEFT_BANK
-    0x008A68F0, // TRACK_ELEM_DIAG_RIGHT_BANK
+    0x008A6900, // TrackElemType::DiagFlatToLeftBank
+    0x008A6910, // TrackElemType::DiagFlatToRightBank
+    0x008A6920, // TrackElemType::DiagLeftBankToFlat
+    0x008A6930, // TrackElemType::DiagRightBankToFlat
+    0x008A6960, // TrackElemType::DiagLeftBankToUp25
+    0x008A6970, // TrackElemType::DiagRightBankToUp25
+    0x008A6940, // TrackElemType::DiagUp25ToLeftBank
+    0x008A6950, // TrackElemType::DiagUp25ToRightBank
+    0x008A6980, // TrackElemType::DiagLeftBankToDown25
+    0x008A6990, // TrackElemType::DiagRightBankToDown25
+    0x008A69A0, // TrackElemType::DiagDown25ToLeftBank
+    0x008A69B0, // TrackElemType::DiagDown25ToRightBank
+    0x008A68E0, // TrackElemType::DiagLeftBank
+    0x008A68F0, // TrackElemType::DiagRightBank
     0,
     0,
     0,
@@ -19209,8 +19209,8 @@ static constexpr const uint32_t _OldLimLaunchedRollerCoasterTrackPaintFunctions[
     0,
     0,
     0,
-    0x008A6C70, // TRACK_ELEM_90_DEG_TO_INVERTED_FLAT_QUARTER_LOOP_UP
-    0x008A6C80, // TRACK_ELEM_INVERTED_FLAT_TO_90_DEG_QUARTER_LOOP_DOWN
+    0x008A6C70, // TrackElemType::Up90ToInvertedFlatQuarterLoop
+    0x008A6C80, // TrackElemType::InvertedFlatToDown90QuarterLoop
     0,
     0,
     0,
@@ -19218,43 +19218,43 @@ static constexpr const uint32_t _OldLimLaunchedRollerCoasterTrackPaintFunctions[
     0,
     0,
     0,
-    0x008A6D90, // TRACK_ELEM_BLOCK_BRAKES
-    0x008A6BC0, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008A6BD0, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP
-    0x008A6BE0, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008A6BF0, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN
-    0x008A6B80, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008A6B90, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP
-    0x008A6BA0, // TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008A6BB0, // TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN
-    0x008A6A80, // TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP
-    0x008A6A90, // TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A6AA0, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008A6AB0, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP
-    0x008A6AC0, // TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A6AD0, // TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A6AE0, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A6AF0, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN
-    0x008A6B00, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008A6B10, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A6B40, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT
-    0x008A6B50, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT
-    0x008A6B60, // TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A6B70, // TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A6B20, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT
-    0x008A6B30, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT
-    0x008A69C0, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP
-    0x008A69D0, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP
-    0x008A69E0, // TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT
-    0x008A69F0, // TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT
-    0x008A6A00, // TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN
-    0x008A6A10, // TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN
-    0x008A6A20, // TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008A6A30, // TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT
-    0x008A6C90, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_UP
-    0x008A6CA0, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP
-    0x008A6CB0, // TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_90_DEG_DOWN
-    0x008A6CC0, // TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN
+    0x008A6D90, // TrackElemType::BlockBrakes
+    0x008A6BC0, // TrackElemType::LeftBankedQuarterTurn3TileUp25
+    0x008A6BD0, // TrackElemType::RightBankedQuarterTurn3TileUp25
+    0x008A6BE0, // TrackElemType::LeftBankedQuarterTurn3TileDown25
+    0x008A6BF0, // TrackElemType::RightBankedQuarterTurn3TileDown25
+    0x008A6B80, // TrackElemType::LeftBankedQuarterTurn5TileUp25
+    0x008A6B90, // TrackElemType::RightBankedQuarterTurn5TileUp25
+    0x008A6BA0, // TrackElemType::LeftBankedQuarterTurn5TileDown25
+    0x008A6BB0, // TrackElemType::RightBankedQuarterTurn5TileDown25
+    0x008A6A80, // TrackElemType::Up25ToLeftBankedUp25
+    0x008A6A90, // TrackElemType::Up25ToRightBankedUp25
+    0x008A6AA0, // TrackElemType::LeftBankedUp25ToUp25
+    0x008A6AB0, // TrackElemType::RightBankedUp25ToUp25
+    0x008A6AC0, // TrackElemType::Down25ToLeftBankedDown25
+    0x008A6AD0, // TrackElemType::Down25ToRightBankedDown25
+    0x008A6AE0, // TrackElemType::LeftBankedDown25ToDown25
+    0x008A6AF0, // TrackElemType::RightBankedDown25ToDown25
+    0x008A6B00, // TrackElemType::LeftBankedFlatToLeftBankedUp25
+    0x008A6B10, // TrackElemType::RightBankedFlatToRightBankedUp25
+    0x008A6B40, // TrackElemType::LeftBankedUp25ToLeftBankedFlat
+    0x008A6B50, // TrackElemType::RightBankedUp25ToRightBankedFlat
+    0x008A6B60, // TrackElemType::LeftBankedFlatToLeftBankedDown25
+    0x008A6B70, // TrackElemType::RightBankedFlatToRightBankedDown25
+    0x008A6B20, // TrackElemType::LeftBankedDown25ToLeftBankedFlat
+    0x008A6B30, // TrackElemType::RightBankedDown25ToRightBankedFlat
+    0x008A69C0, // TrackElemType::FlatToLeftBankedUp25
+    0x008A69D0, // TrackElemType::FlatToRightBankedUp25
+    0x008A69E0, // TrackElemType::LeftBankedUp25ToFlat
+    0x008A69F0, // TrackElemType::RightBankedUp25ToFlat
+    0x008A6A00, // TrackElemType::FlatToLeftBankedDown25
+    0x008A6A10, // TrackElemType::FlatToRightBankedDown25
+    0x008A6A20, // TrackElemType::LeftBankedDown25ToFlat
+    0x008A6A30, // TrackElemType::RightBankedDown25ToFlat
+    0x008A6C90, // TrackElemType::LeftQuarterTurn1TileUp90
+    0x008A6CA0, // TrackElemType::RightQuarterTurn1TileUp90
+    0x008A6CB0, // TrackElemType::LeftQuarterTurn1TileDown90
+    0x008A6CC0, // TrackElemType::RightQuarterTurn1TileDown90
     0,
     0,
     0,

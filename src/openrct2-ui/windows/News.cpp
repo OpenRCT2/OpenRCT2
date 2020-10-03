@@ -46,36 +46,15 @@ static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, cons
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_news_events = {
-    nullptr,
-    window_news_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_scrollgetsize,
-    window_news_scrollmousedown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_paint,
-    window_news_scrollpaint
-};
+static rct_window_event_list window_news_events([](auto& events)
+{
+    events.mouse_up = &window_news_mouseup;
+    events.update = &window_news_update;
+    events.get_scroll_size = &window_news_scrollgetsize;
+    events.scroll_mousedown = &window_news_scrollmousedown;
+    events.paint = &window_news_paint;
+    events.scroll_paint = &window_news_scrollpaint;
+});
 // clang-format on
 
 /**
@@ -259,15 +238,19 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             dpi, { -1, y, 383, y + itemHeight - 1 }, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
         // Date text
-        auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
-        ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
-        gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, { 2, y });
-
+        {
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
+            ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
+            gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, ft.Data(), COLOUR_WHITE, { 2, y });
+        }
         // Item text
-        auto text = newsItem.Text;
-        gfx_draw_string_left_wrapped(dpi, &text, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
-
+        {
+            auto ft = Formatter();
+            ft.Add<utf8*>(newsItem.Text);
+            gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
+        }
         // Subject button
         if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))
         {

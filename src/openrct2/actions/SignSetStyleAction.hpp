@@ -23,10 +23,10 @@
 DEFINE_GAME_ACTION(SignSetStyleAction, GAME_COMMAND_SET_SIGN_STYLE, GameActionResult)
 {
 private:
-    BannerIndex _bannerIndex;
-    uint8_t _mainColour;
-    uint8_t _textColour;
-    bool _isLarge;
+    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
+    uint8_t _mainColour{};
+    uint8_t _textColour{};
+    bool _isLarge{};
 
 public:
     SignSetStyleAction() = default;

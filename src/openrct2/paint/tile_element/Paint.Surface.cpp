@@ -1044,7 +1044,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         const bool showGridlines = (session->ViewFlags & VIEWPORT_FLAG_GRIDLINES);
 
         auto grassLength = -1;
-        if (zoomLevel == 0)
+        if (zoomLevel <= 0)
         {
             if ((session->ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
             {

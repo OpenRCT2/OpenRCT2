@@ -181,7 +181,7 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         GameActions::ExecuteNested(&rideSetVehicleAction);
     }
 
-    set_operating_setting_nested(ride->id, RideSetSetting::Mode, _td.ride_mode, GAME_COMMAND_FLAG_APPLY);
+    set_operating_setting_nested(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.ride_mode), GAME_COMMAND_FLAG_APPLY);
     auto rideSetVehicleAction2 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, _td.number_of_trains);
     GameActions::ExecuteNested(&rideSetVehicleAction2);
 

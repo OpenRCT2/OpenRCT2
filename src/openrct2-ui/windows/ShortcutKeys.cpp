@@ -50,36 +50,17 @@ static void window_shortcut_scrollmousedown(rct_window *w, int32_t scrollIndex, 
 static void window_shortcut_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_shortcut_events = {
-    nullptr,
-    window_shortcut_mouseup,
-    window_shortcut_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_shortcut_scrollgetsize,
-    window_shortcut_scrollmousedown,
-    nullptr,
-    window_shortcut_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_shortcut_invalidate,
-    window_shortcut_paint,
-    window_shortcut_scrollpaint
-};
+static rct_window_event_list window_shortcut_events([](auto& events)
+{
+    events.mouse_up = &window_shortcut_mouseup;
+    events.resize = &window_shortcut_resize;
+    events.get_scroll_size = &window_shortcut_scrollgetsize;
+    events.scroll_mousedown = &window_shortcut_scrollmousedown;
+    events.scroll_mouseover = &window_shortcut_scrollmouseover;
+    events.invalidate = &window_shortcut_invalidate;
+    events.paint = &window_shortcut_paint;
+    events.scroll_paint = &window_shortcut_scrollpaint;
+});
 
 struct ShortcutStringPair
 {
@@ -370,7 +351,7 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         }
 
         const int32_t bindingOffset = scrollWidth - 150;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_SHORTCUT_ENTRY_FORMAT);
         ft.Add<rct_string_id>(ShortcutList[i].StringId);
         DrawTextEllipsised(dpi, { 0, y - 1 }, bindingOffset, format, ft, COLOUR_BLACK);
@@ -381,7 +362,7 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (strlen(keybinding) > 0)
         {
             const int32_t maxWidth = 150;
-            ft = Formatter::Common();
+            ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(keybinding);
             DrawTextEllipsised(dpi, { bindingOffset, y - 1 }, maxWidth, format, ft, COLOUR_BLACK);

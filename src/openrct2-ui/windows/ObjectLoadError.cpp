@@ -295,36 +295,17 @@ static void window_object_load_error_download_all(rct_window* w);
 static void window_object_load_error_update_list(rct_window* w);
 #endif
 
-static rct_window_event_list window_object_load_error_events = {
-    window_object_load_error_close,
-    window_object_load_error_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_object_load_error_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_object_load_error_scrollgetsize,
-    window_object_load_error_scrollmousedown,
-    nullptr,
-    window_object_load_error_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_object_load_error_paint,
-    window_object_load_error_scrollpaint
-};
+static rct_window_event_list window_object_load_error_events([](auto& events)
+{
+    events.close = &window_object_load_error_close;
+    events.mouse_up = &window_object_load_error_mouseup;
+    events.update = &window_object_load_error_update;
+    events.get_scroll_size = &window_object_load_error_scrollgetsize;
+    events.scroll_mousedown = &window_object_load_error_scrollmousedown;
+    events.scroll_mouseover = &window_object_load_error_scrollmouseover;
+    events.paint = &window_object_load_error_paint;
+    events.scroll_paint = &window_object_load_error_scrollpaint;
+});
 // clang-format on
 
 static std::vector<rct_object_entry> _invalid_entries;
@@ -556,13 +537,13 @@ static void window_object_load_error_paint(rct_window* w, rct_drawpixelinfo* dpi
     window_draw_widgets(w, dpi);
 
     // Draw explanatory message
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
     gfx_draw_string_left_wrapped(
-        dpi, gCommonFormatArgs, w->windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, COLOUR_BLACK);
+        dpi, ft.Data(), w->windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Draw file name
-    ft = Formatter::Common();
+    ft = Formatter();
     ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_FILE);
     ft.Add<utf8*>(file_path.c_str());
     DrawTextEllipsised(dpi, { w->windowPos.x + 5, w->windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft, COLOUR_BLACK);

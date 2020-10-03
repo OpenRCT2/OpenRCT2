@@ -18,6 +18,8 @@
 struct IObjectManager;
 struct IObjectRepository;
 struct IScenarioRepository;
+enum class DrawingEngine : int32_t;
+
 namespace OpenRCT2
 {
     struct IStream;
@@ -125,7 +127,7 @@ namespace OpenRCT2
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;
         virtual IGameStateSnapshots* GetGameStateSnapshots() abstract;
-        virtual int32_t GetDrawingEngineType() abstract;
+        virtual DrawingEngine GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
         virtual Paint::Painter* GetPainter() abstract;
 

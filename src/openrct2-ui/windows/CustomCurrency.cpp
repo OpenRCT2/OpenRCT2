@@ -50,36 +50,14 @@ static void custom_currency_window_text_input(struct rct_window *w, rct_widgetin
 static void custom_currency_window_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 
-static rct_window_event_list _windowCustomCurrencyEvents = {
-    nullptr,
-    custom_currency_window_mouseup,
-    nullptr,
-    custom_currency_window_mousedown,
-    custom_currency_window_dropdown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    custom_currency_window_text_input,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    custom_currency_window_paint,
-    nullptr
-};
+static rct_window_event_list _windowCustomCurrencyEvents([](auto& events)
+{
+    events.mouse_up = &custom_currency_window_mouseup;
+    events.mouse_down = &custom_currency_window_mousedown;
+    events.dropdown = &custom_currency_window_dropdown;
+    events.text_input = &custom_currency_window_text_input;
+    events.paint = &custom_currency_window_paint;
+});
 // clang-format on
 
 rct_window* custom_currency_window_open()

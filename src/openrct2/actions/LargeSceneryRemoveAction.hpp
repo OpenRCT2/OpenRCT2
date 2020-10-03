@@ -27,7 +27,7 @@ DEFINE_GAME_ACTION(LargeSceneryRemoveAction, GAME_COMMAND_REMOVE_LARGE_SCENERY, 
 {
 private:
     CoordsXYZD _loc;
-    uint16_t _tileIndex;
+    uint16_t _tileIndex{};
 
 public:
     LargeSceneryRemoveAction() = default;

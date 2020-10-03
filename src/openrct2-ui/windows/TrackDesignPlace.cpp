@@ -79,36 +79,18 @@ static void window_track_place_unknown14(rct_window *w);
 static void window_track_place_invalidate(rct_window *w);
 static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_track_place_events = {
-    window_track_place_close,
-    window_track_place_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_place_update,
-    nullptr,
-    nullptr,
-    window_track_place_toolupdate,
-    window_track_place_tooldown,
-    nullptr,
-    nullptr,
-    window_track_place_toolabort,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_place_unknown14,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_place_invalidate,
-    window_track_place_paint,
-    nullptr
-};
+static rct_window_event_list window_track_place_events([](auto& events)
+{
+    events.close = &window_track_place_close;
+    events.mouse_up = &window_track_place_mouseup;
+    events.update = &window_track_place_update;
+    events.tool_update = &window_track_place_toolupdate;
+    events.tool_down = &window_track_place_tooldown;
+    events.tool_abort = &window_track_place_toolabort;
+    events.viewport_rotate = &window_track_place_unknown14;
+    events.invalidate = &window_track_place_invalidate;
+    events.paint = &window_track_place_paint;
+});
 // clang-format on
 
 static std::vector<uint8_t> _window_track_place_mini_preview;
@@ -562,9 +544,9 @@ static void window_track_place_draw_mini_preview_track(
     for (const auto& trackElement : td6->track_elements)
     {
         int32_t trackType = trackElement.type;
-        if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS)
+        if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
         {
-            trackType = TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP;
+            trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
         }
 
         // Follow a single track piece shape

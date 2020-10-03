@@ -17,14 +17,11 @@
 DEFINE_GAME_ACTION(GuestSetFlagsAction, GAME_COMMAND_GUEST_SET_FLAGS, GameActionResult)
 {
 private:
-    uint16_t _peepId = SPRITE_INDEX_NULL;
-    uint32_t _newFlags = 0;
+    uint16_t _peepId{ SPRITE_INDEX_NULL };
+    uint32_t _newFlags{};
 
 public:
-    GuestSetFlagsAction()
-    {
-    }
-
+    GuestSetFlagsAction() = default;
     GuestSetFlagsAction(uint16_t peepId, uint32_t flags)
         : _peepId(peepId)
         , _newFlags(flags)

@@ -11,6 +11,7 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../peep/Peep.h"
+#include "../../util/Util.h"
 #include "../../world/Sprite.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"
@@ -72,7 +73,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
     PeepActionSpriteType spriteType = peep->ActionSpriteType;
     uint8_t imageOffset = peep->ActionSpriteImageOffset;
 
-    if (peep->Action == PEEP_ACTION_NONE_1)
+    if (peep->Action == PeepActionType::None1)
     {
         spriteType = peep->NextActionSpriteType;
         imageOffset = 0;
@@ -80,7 +81,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
 
     // In the following 4 calls to sub_98197C/sub_98199C, we add 5 (instead of 3) to the
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
-    uint32_t baseImageId = (imageDirection >> 3) + sprite.sprite_animation[spriteType].base_image + imageOffset * 4;
+    uint32_t baseImageId = (imageDirection >> 3) + sprite.sprite_animation[EnumValue(spriteType)].base_image + imageOffset * 4;
     uint32_t imageId = baseImageId | peep->TshirtColour << 19 | peep->TrousersColour << 24 | IMAGE_TYPE_REMAP
         | IMAGE_TYPE_REMAP_2_PLUS;
     sub_98197C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);

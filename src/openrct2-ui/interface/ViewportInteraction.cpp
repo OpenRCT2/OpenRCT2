@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../windows/Window.h"
 #include "Viewport.h"
 #include "Window.h"
 
@@ -118,9 +119,10 @@ InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenC
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
             auto parkName = park.Name.c_str();
 
-            auto ft = Formatter::MapTooltip();
+            auto ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<const char*>(parkName);
+            SetMapTooltip(ft);
             break;
         }
         default:
@@ -267,9 +269,10 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
             ride = get_ride(vehicle->ride);
             if (ride != nullptr && ride->status == RIDE_STATUS_CLOSED)
             {
-                auto ft = Formatter::MapTooltip();
+                auto ft = Formatter();
                 ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                 ride->FormatNameTo(ft);
+                SetMapTooltip(ft);
             }
             return info;
         }
@@ -296,7 +299,7 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
             if (ride->status != RIDE_STATUS_CLOSED)
                 return info;
 
-            auto ft = Formatter::MapTooltip();
+            auto ft = Formatter();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
 
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
@@ -365,6 +368,7 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
                     stationIndex--;
             stationIndex++;
             ft.Add<uint16_t>(stationIndex);
+            SetMapTooltip(ft);
             return info;
         }
         case VIEWPORT_INTERACTION_ITEM_WALL:
@@ -374,11 +378,12 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
                 auto banner = tileElement->AsWall()->GetBanner();
                 if (banner != nullptr)
                 {
-                    auto ft = Formatter::MapTooltip();
+                    auto ft = Formatter();
                     ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
                     banner->FormatTextTo(ft);
                     ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                     ft.Add<rct_string_id>(sceneryEntry->name);
+                    SetMapTooltip(ft);
                     return info;
                 }
             }
@@ -391,11 +396,12 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
                 auto banner = tileElement->AsLargeScenery()->GetBanner();
                 if (banner != nullptr)
                 {
-                    auto ft = Formatter::MapTooltip();
+                    auto ft = Formatter();
                     ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
                     banner->FormatTextTo(ft);
                     ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
                     ft.Add<rct_string_id>(sceneryEntry->name);
+                    SetMapTooltip(ft);
                     return info;
                 }
             }
@@ -406,11 +412,12 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
             auto banner = tileElement->AsBanner()->GetBanner();
             sceneryEntry = get_banner_entry(banner->type);
 
-            auto ft = Formatter::MapTooltip();
+            auto ft = Formatter();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_BANNER_STRINGID_STRINGID);
             banner->FormatTextTo(ft, /*addColour*/ true);
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
             ft.Add<rct_string_id>(sceneryEntry->name);
+            SetMapTooltip(ft);
             return info;
         }
         default:
@@ -426,13 +433,14 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
         }
     }
 
-    auto ft = Formatter::MapTooltip();
+    auto ft = Formatter();
     switch (info.SpriteType)
     {
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
             sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             ft.Add<rct_string_id>(sceneryEntry->name);
+            SetMapTooltip(ft);
             return info;
 
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
@@ -441,6 +449,7 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
                 ft.Add<rct_string_id>(STR_QUEUE_LINE_MAP_TIP);
             else
                 ft.Add<rct_string_id>(STR_FOOTPATH_MAP_TIP);
+            SetMapTooltip(ft);
             return info;
 
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
@@ -451,6 +460,7 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
                 ft.Add<rct_string_id>(STR_BROKEN);
             }
             ft.Add<rct_string_id>(sceneryEntry->name);
+            SetMapTooltip(ft);
             return info;
 
         case VIEWPORT_INTERACTION_ITEM_PARK:
@@ -462,18 +472,21 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
 
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             ft.Add<rct_string_id>(STR_OBJECT_SELECTION_PARK_ENTRANCE);
+            SetMapTooltip(ft);
             return info;
 
         case VIEWPORT_INTERACTION_ITEM_WALL:
             sceneryEntry = tileElement->AsWall()->GetEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             ft.Add<rct_string_id>(sceneryEntry->name);
+            SetMapTooltip(ft);
             return info;
 
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
             ft.Add<rct_string_id>(sceneryEntry->name);
+            SetMapTooltip(ft);
             return info;
         default:
             break;

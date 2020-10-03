@@ -82,36 +82,23 @@ static void window_scenery_invalidate(rct_window *w);
 static void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_scenery_events = {
-    window_scenery_close,
-    window_scenery_mouseup,
-    window_scenery_resize,
-    window_scenery_mousedown,
-    window_scenery_dropdown,
-    nullptr,
-    window_scenery_update,
-    window_scenery_periodic_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_scenery_scrollgetsize,
-    window_scenery_scrollmousedown,
-    nullptr,
-    window_scenery_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_scenery_tooltip,
-    nullptr,
-    nullptr,
-    window_scenery_invalidate,
-    window_scenery_paint,
-    window_scenery_scrollpaint,
-};
+static rct_window_event_list window_scenery_events([](auto& events)
+{
+    events.close = &window_scenery_close;
+    events.mouse_up = &window_scenery_mouseup;
+    events.resize = &window_scenery_resize;
+    events.mouse_down = &window_scenery_mousedown;
+    events.dropdown = &window_scenery_dropdown;
+    events.update = &window_scenery_update;
+    events.periodic_update = &window_scenery_periodic_update;
+    events.get_scroll_size = &window_scenery_scrollgetsize;
+    events.scroll_mousedown = &window_scenery_scrollmousedown;
+    events.scroll_mouseover = &window_scenery_scrollmouseover;
+    events.tooltip = &window_scenery_tooltip;
+    events.invalidate = &window_scenery_invalidate;
+    events.paint = &window_scenery_paint;
+    events.scroll_paint = &window_scenery_scrollpaint;
+});
 
 
 enum WINDOW_SCENERY_LIST_WIDGET_IDX {
@@ -1189,7 +1176,7 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
             TextAlignment::RIGHT);
     }
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE));
     DrawTextEllipsised(
         dpi, { w->windowPos.x + 3, w->windowPos.y + w->height - 13 }, w->width - 19, STR_BLACK_STRING, ft, COLOUR_BLACK);

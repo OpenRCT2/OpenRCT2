@@ -509,7 +509,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->type = OpenRCT2RideTypeToRCT2RideType(src->type);
     dst->subtype = OpenRCT2EntryIndexToRCTEntryIndex(src->subtype);
     // pad_002;
-    dst->mode = src->mode;
+    dst->mode = static_cast<uint8_t>(src->mode);
     dst->colour_scheme_type = src->colour_scheme_type;
 
     for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
@@ -1023,7 +1023,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     dst->vehicle_type = src->vehicle_type;
     dst->colours = src->colours;
     dst->track_progress = src->track_progress;
-    if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE && src->status == Vehicle::Status::TravellingBoat)
+    if (ride != nullptr && ride->mode == RideMode::BoatHire && src->status == Vehicle::Status::TravellingBoat)
     {
         if (src->BoatLocation.isNull())
         {

@@ -27,9 +27,9 @@ DEFINE_GAME_ACTION(FootpathPlaceAction, GAME_COMMAND_PLACE_PATH, GameActionResul
 {
 private:
     CoordsXYZ _loc;
-    uint8_t _slope;
-    ObjectEntryIndex _type;
-    Direction _direction = INVALID_DIRECTION;
+    uint8_t _slope{};
+    ObjectEntryIndex _type{};
+    Direction _direction{ INVALID_DIRECTION };
 
 public:
     FootpathPlaceAction() = default;

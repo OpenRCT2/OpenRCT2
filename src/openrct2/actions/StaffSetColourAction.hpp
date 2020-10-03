@@ -23,13 +23,11 @@
 DEFINE_GAME_ACTION(StaffSetColourAction, GAME_COMMAND_SET_STAFF_COLOUR, GameActionResult)
 {
 private:
-    uint8_t _staffType;
-    uint8_t _colour;
+    uint8_t _staffType{};
+    uint8_t _colour{};
 
 public:
-    StaffSetColourAction()
-    {
-    }
+    StaffSetColourAction() = default;
     StaffSetColourAction(StaffType staffType, uint8_t colour)
         : _staffType(static_cast<uint8_t>(staffType))
         , _colour(colour)

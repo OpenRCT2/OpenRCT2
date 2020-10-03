@@ -210,30 +210,30 @@ void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, v
 void NetworkConnection::RecordPacketStats(const NetworkPacket& packet, bool sending)
 {
     uint32_t packetSize = static_cast<uint32_t>(packet.BytesTransferred);
-    uint32_t trafficGroup;
+    NetworkStatisticsGroup trafficGroup;
 
     switch (packet.GetCommand())
     {
         case NetworkCommand::GameAction:
-            trafficGroup = NETWORK_STATISTICS_GROUP_COMMANDS;
+            trafficGroup = NetworkStatisticsGroup::Commands;
             break;
         case NetworkCommand::Map:
-            trafficGroup = NETWORK_STATISTICS_GROUP_MAPDATA;
+            trafficGroup = NetworkStatisticsGroup::MapData;
             break;
         default:
-            trafficGroup = NETWORK_STATISTICS_GROUP_BASE;
+            trafficGroup = NetworkStatisticsGroup::Base;
             break;
     }
 
     if (sending)
     {
-        Stats.bytesSent[trafficGroup] += packetSize;
-        Stats.bytesSent[NETWORK_STATISTICS_GROUP_TOTAL] += packetSize;
+        Stats.bytesSent[EnumValue(trafficGroup)] += packetSize;
+        Stats.bytesSent[EnumValue(NetworkStatisticsGroup::Total)] += packetSize;
     }
     else
     {
-        Stats.bytesReceived[trafficGroup] += packetSize;
-        Stats.bytesReceived[NETWORK_STATISTICS_GROUP_TOTAL] += packetSize;
+        Stats.bytesReceived[EnumValue(trafficGroup)] += packetSize;
+        Stats.bytesReceived[EnumValue(NetworkStatisticsGroup::Total)] += packetSize;
     }
 }
 

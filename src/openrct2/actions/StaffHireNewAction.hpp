@@ -22,6 +22,7 @@
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../util/Util.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
 #include "../world/Sprite.h"
@@ -53,10 +54,10 @@ public:
 DEFINE_GAME_ACTION(StaffHireNewAction, GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, StaffHireNewActionResult)
 {
 private:
-    bool _autoPosition = false;
-    uint8_t _staffType = static_cast<uint8_t>(StaffType::Count);
-    EntertainerCostume _entertainerType = EntertainerCostume::Count;
-    uint32_t _staffOrders = 0;
+    bool _autoPosition{};
+    uint8_t _staffType{ EnumValue(StaffType::Count) };
+    EntertainerCostume _entertainerType{ EntertainerCostume::Count };
+    uint32_t _staffOrders{};
 
 public:
     StaffHireNewAction() = default;
@@ -160,11 +161,11 @@ private:
         {
             newPeep->sprite_identifier = 1;
             newPeep->WindowInvalidateFlags = 0;
-            newPeep->Action = PEEP_ACTION_NONE_2;
+            newPeep->Action = PeepActionType::None2;
             newPeep->SpecialSprite = 0;
             newPeep->ActionSpriteImageOffset = 0;
             newPeep->WalkingFrameNum = 0;
-            newPeep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
+            newPeep->ActionSpriteType = PeepActionSpriteType::None;
             newPeep->PathCheckOptimisation = 0;
             newPeep->AssignedPeepType = PeepType::Staff;
             newPeep->OutsideOfPark = false;
@@ -221,7 +222,7 @@ private:
             else
             {
                 // NOTE: This state is required for the window to act.
-                newPeep->State = PEEP_STATE_PICKED;
+                newPeep->State = PeepState::Picked;
 
                 newPeep->MoveTo({ newPeep->x, newPeep->y, newPeep->z });
             }
@@ -260,7 +261,7 @@ private:
     void AutoPositionNewStaff(Peep * newPeep) const
     {
         // Find a location to place new staff member
-        newPeep->State = PEEP_STATE_FALLING;
+        newPeep->State = PeepState::Falling;
 
         uint32_t count = 0;
         PathElement* guest_tile = nullptr;
@@ -269,7 +270,7 @@ private:
         {
             for (auto guest : EntityList<Guest>(EntityListId::Peep))
             {
-                if (guest->State == PEEP_STATE_WALKING)
+                if (guest->State == PeepState::Walking)
                 {
                     // Check the walking guest's tile. Only count them if they're on a path tile.
                     guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
@@ -288,7 +289,7 @@ private:
 
             for (auto guest : EntityList<Guest>(EntityListId::Peep))
             {
-                if (guest->State == PEEP_STATE_WALKING)
+                if (guest->State == PeepState::Walking)
                 {
                     guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
                     if (guest_tile != nullptr)
@@ -312,7 +313,7 @@ private:
             else
             {
                 // User must pick a location
-                newPeep->State = PEEP_STATE_PICKED;
+                newPeep->State = PeepState::Picked;
                 newLocation.x = newPeep->x;
                 newLocation.y = newPeep->y;
                 newLocation.z = newPeep->z;
@@ -334,7 +335,7 @@ private:
             else
             {
                 // User must pick a location
-                newPeep->State = PEEP_STATE_PICKED;
+                newPeep->State = PeepState::Picked;
                 newLocation.x = newPeep->x;
                 newLocation.y = newPeep->y;
                 newLocation.z = newPeep->z;

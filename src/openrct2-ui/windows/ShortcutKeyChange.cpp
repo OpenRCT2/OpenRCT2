@@ -36,36 +36,11 @@ static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widget
 static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x9A3F7C
-static rct_window_event_list window_shortcut_change_events = {
-    nullptr,
-    window_shortcut_change_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_shortcut_change_paint,
-    nullptr
-};
+static rct_window_event_list window_shortcut_change_events([](auto& events)
+{
+    events.mouse_up = &window_shortcut_change_mouseup;
+    events.paint = &window_shortcut_change_paint;
+});
 // clang-format on
 
 static rct_string_id CurrentShortcutKeyStringId{};
@@ -111,7 +86,7 @@ static void window_shortcut_change_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     ScreenCoordsXY stringCoords(w->windowPos.x + 125, w->windowPos.y + 30);
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(CurrentShortcutKeyStringId);
-    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
+    gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
 }

@@ -26,6 +26,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -153,100 +154,48 @@ static void window_staff_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi);
 void window_staff_set_colours();
 
 // 0x992AEC
-static rct_window_event_list window_staff_overview_events = {
-    window_staff_overview_close,
-    window_staff_overview_mouseup,
-    window_staff_overview_resize,
-    window_staff_overview_mousedown,
-    window_staff_overview_dropdown,
-    nullptr,
-    window_staff_overview_update,
-    nullptr,
-    nullptr,
-    window_staff_overview_tool_update,
-    window_staff_overview_tool_down,
-    window_staff_overview_tool_drag,
-    window_staff_overview_tool_up,
-    window_staff_overview_tool_abort,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_overview_text_input,
-    window_staff_overview_viewport_rotate,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_overview_invalidate, //Invalidate
-    window_staff_overview_paint, //Paint
-    nullptr
-};
+static rct_window_event_list window_staff_overview_events([](auto& events)
+{
+    events.close = &window_staff_overview_close;
+    events.mouse_up = &window_staff_overview_mouseup;
+    events.resize = &window_staff_overview_resize;
+    events.mouse_down = &window_staff_overview_mousedown;
+    events.dropdown = &window_staff_overview_dropdown;
+    events.update = &window_staff_overview_update;
+    events.tool_update = &window_staff_overview_tool_update;
+    events.tool_down = &window_staff_overview_tool_down;
+    events.tool_drag = &window_staff_overview_tool_drag;
+    events.tool_up = &window_staff_overview_tool_up;
+    events.tool_abort = &window_staff_overview_tool_abort;
+    events.text_input = &window_staff_overview_text_input;
+    events.viewport_rotate = &window_staff_overview_viewport_rotate;
+    events.invalidate = &window_staff_overview_invalidate;
+    events.paint = &window_staff_overview_paint;
+});
 
 // 0x992B5C
-static rct_window_event_list window_staff_options_events = {
-    nullptr,
-    window_staff_options_mouseup,
-    window_staff_stats_resize,
-    window_staff_options_mousedown,
-    window_staff_options_dropdown,
-    window_staff_unknown_05,
-    window_staff_options_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_options_invalidate, //Invalidate
-    window_staff_options_paint, //Paint
-    nullptr
-};
+static rct_window_event_list window_staff_options_events([](auto& events)
+{
+    events.mouse_up = &window_staff_options_mouseup;
+    events.resize = &window_staff_stats_resize;
+    events.mouse_down = &window_staff_options_mousedown;
+    events.dropdown = &window_staff_options_dropdown;
+    events.unknown_05 = &window_staff_unknown_05;
+    events.update = &window_staff_options_update;
+    events.invalidate = &window_staff_options_invalidate;
+    events.paint = &window_staff_options_paint;
+});
 
 // 0x992BCC
-static rct_window_event_list window_staff_stats_events = {
-    nullptr,
-    window_staff_stats_mouseup,
-    window_staff_stats_resize,
-    nullptr,
-    nullptr,
-    window_staff_unknown_05,
-    window_staff_stats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_stats_invalidate, //Invalidate
-    window_staff_stats_paint, //Paint
-    nullptr
-};
+static rct_window_event_list window_staff_stats_events([](auto& events)
+{
+    events.mouse_up = &window_staff_stats_mouseup;
+    events.resize = &window_staff_stats_resize;
+    events.unknown_05 = &window_staff_unknown_05;
+    events.update = &window_staff_stats_update;
+    events.invalidate = &window_staff_stats_invalidate;
+    events.paint = &window_staff_stats_paint;
+});
 
 static rct_window_event_list *window_staff_page_events[] = {
     &window_staff_overview_events,
@@ -340,7 +289,7 @@ rct_window* window_staff_open(Peep* peep)
     window_init_scroll_widgets(w);
     window_staff_viewport_init(w);
 
-    if (peep->State == PEEP_STATE_PICKED)
+    if (peep->State == PeepState::Picked)
         window_event_mouse_up_call(w, WIDX_CHECKBOX_3);
 
     return w;
@@ -995,7 +944,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         return;
     }
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     peep->FormatActionTo(ft);
     rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->top };
@@ -1152,37 +1101,48 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        Formatter::Common().Add<money32>(gStaffWageTable[static_cast<uint8_t>(peep->AssignedStaffType)]);
-        gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+        auto ft = Formatter();
+        ft.Add<money32>(gStaffWageTable[static_cast<uint8_t>(peep->AssignedStaffType)]);
+        gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, ft.Data(), COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
-    gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, static_cast<void*>(&peep->TimeInPark), COLOUR_BLACK, screenCoords);
+    auto ft = Formatter();
+    ft.Add<int32_t>(peep->TimeInPark);
+    gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, ft.Data(), COLOUR_BLACK, screenCoords);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     switch (peep->AssignedStaffType)
     {
         case StaffType::Handyman:
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_LAWNS_MOWN, static_cast<void*>(&peep->StaffLawnsMown), COLOUR_BLACK, screenCoords);
+            ft = Formatter();
+            ft.Add<uint16_t>(peep->StaffLawnsMown);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_LAWNS_MOWN, ft.Data(), COLOUR_BLACK, screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_GARDENS_WATERED, static_cast<void*>(&peep->StaffGardensWatered), COLOUR_BLACK,
-                screenCoords);
+
+            ft = Formatter();
+            ft.Add<uint16_t>(peep->StaffGardensWatered);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_GARDENS_WATERED, ft.Data(), COLOUR_BLACK, screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_LITTER_SWEPT, static_cast<void*>(&peep->StaffLitterSwept), COLOUR_BLACK, screenCoords);
+
+            ft = Formatter();
+            ft.Add<uint16_t>(peep->StaffLitterSwept);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_LITTER_SWEPT, ft.Data(), COLOUR_BLACK, screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_BINS_EMPTIED, static_cast<void*>(&peep->StaffBinsEmptied), COLOUR_BLACK, screenCoords);
+
+            ft = Formatter();
+            ft.Add<uint16_t>(peep->StaffBinsEmptied);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_BINS_EMPTIED, ft.Data(), COLOUR_BLACK, screenCoords);
             break;
         case StaffType::Mechanic:
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_RIDES_INSPECTED, static_cast<void*>(&peep->StaffRidesInspected), COLOUR_BLACK,
-                screenCoords);
+            ft = Formatter();
+            ft.Add<uint16_t>(peep->StaffRidesInspected);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_INSPECTED, ft.Data(), COLOUR_BLACK, screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
-            gfx_draw_string_left(
-                dpi, STR_STAFF_STAT_RIDES_FIXED, static_cast<void*>(&peep->StaffRidesFixed), COLOUR_BLACK, screenCoords);
+
+            ft = Formatter();
+            ft.Add<uint16_t>(peep->StaffRidesFixed);
+            gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_FIXED, ft.Data(), COLOUR_BLACK, screenCoords);
             break;
         case StaffType::Security:
         case StaffType::Entertainer:
@@ -1234,7 +1194,9 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
         return;
     }
 
-    uint32_t imageId = g_peep_animation_entries[peep->SpriteType].sprite_animation[PEEP_ACTION_SPRITE_TYPE_UI].base_image;
+    uint32_t imageId = g_peep_animation_entries[peep->SpriteType]
+                           .sprite_animation[EnumValue(PeepActionSpriteType::Ui)]
+                           .base_image;
     imageId += w->picked_peep_frame >> 2;
 
     imageId |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
@@ -1391,7 +1353,7 @@ void window_staff_viewport_init(rct_window* w)
         return;
     }
 
-    if (peep->State == PEEP_STATE_PICKED)
+    if (peep->State == PeepState::Picked)
     {
         focus.sprite_id = SPRITE_INDEX_NULL;
     }
@@ -1427,7 +1389,7 @@ void window_staff_viewport_init(rct_window* w)
     w->viewport_focus_sprite.type = focus.type;
     w->viewport_focus_sprite.rotation = focus.rotation;
 
-    if (peep->State != PEEP_STATE_PICKED)
+    if (peep->State != PeepState::Picked)
     {
         if (!(w->viewport))
         {

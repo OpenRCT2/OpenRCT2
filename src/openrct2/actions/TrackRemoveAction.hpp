@@ -22,15 +22,12 @@
 DEFINE_GAME_ACTION(TrackRemoveAction, GAME_COMMAND_REMOVE_TRACK, GameActionResult)
 {
 private:
-    int32_t _trackType{ 0 };
-    int32_t _sequence{ 0 };
+    int32_t _trackType{};
+    int32_t _sequence{};
     CoordsXYZD _origin;
 
 public:
-    TrackRemoveAction()
-    {
-    }
-
+    TrackRemoveAction() = default;
     TrackRemoveAction(int32_t trackType, int32_t sequence, const CoordsXYZD& origin)
         : _trackType(trackType)
         , _sequence(sequence)
@@ -70,9 +67,9 @@ public:
         auto comparableTrackType = _trackType;
         switch (_trackType)
         {
-            case TRACK_ELEM_BEGIN_STATION:
-            case TRACK_ELEM_MIDDLE_STATION:
-                comparableTrackType = TRACK_ELEM_END_STATION;
+            case TrackElemType::BeginStation:
+            case TrackElemType::MiddleStation:
+                comparableTrackType = TrackElemType::EndStation;
                 break;
         }
 
@@ -103,9 +100,9 @@ public:
             auto tileTrackType = tileElement->AsTrack()->GetTrackType();
             switch (tileTrackType)
             {
-                case TRACK_ELEM_BEGIN_STATION:
-                case TRACK_ELEM_MIDDLE_STATION:
-                    tileTrackType = TRACK_ELEM_END_STATION;
+                case TrackElemType::BeginStation:
+                case TrackElemType::MiddleStation:
+                    tileTrackType = TrackElemType::EndStation;
                     break;
             }
 
@@ -270,9 +267,9 @@ public:
         auto comparableTrackType = _trackType;
         switch (_trackType)
         {
-            case TRACK_ELEM_BEGIN_STATION:
-            case TRACK_ELEM_MIDDLE_STATION:
-                comparableTrackType = TRACK_ELEM_END_STATION;
+            case TrackElemType::BeginStation:
+            case TrackElemType::MiddleStation:
+                comparableTrackType = TrackElemType::EndStation;
                 break;
         }
 
@@ -303,9 +300,9 @@ public:
             auto tileTrackType = tileElement->AsTrack()->GetTrackType();
             switch (tileTrackType)
             {
-                case TRACK_ELEM_BEGIN_STATION:
-                case TRACK_ELEM_MIDDLE_STATION:
-                    tileTrackType = TRACK_ELEM_END_STATION;
+                case TrackElemType::BeginStation:
+                case TrackElemType::MiddleStation:
+                    tileTrackType = TrackElemType::EndStation;
                     break;
             }
 
@@ -456,21 +453,21 @@ public:
 
         switch (trackType)
         {
-            case TRACK_ELEM_ON_RIDE_PHOTO:
+            case TrackElemType::OnRidePhoto:
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                 break;
-            case TRACK_ELEM_CABLE_LIFT_HILL:
+            case TrackElemType::CableLiftHill:
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
                 break;
-            case TRACK_ELEM_BLOCK_BRAKES:
+            case TrackElemType::BlockBrakes:
                 ride->num_block_brakes--;
                 if (ride->num_block_brakes == 0)
                 {
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                    ride->mode = RIDE_MODE_CONTINUOUS_CIRCUIT;
+                    ride->mode = RideMode::ContinuousCircuit;
                     if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
                     {
-                        ride->mode = RIDE_MODE_POWERED_LAUNCH;
+                        ride->mode = RideMode::PoweredLaunch;
                     }
                 }
                 break;
@@ -478,14 +475,14 @@ public:
 
         switch (trackType)
         {
-            case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+            case TrackElemType::Up25ToFlat:
+            case TrackElemType::Up60ToFlat:
+            case TrackElemType::DiagUp25ToFlat:
+            case TrackElemType::DiagUp60ToFlat:
                 if (!isLiftHill)
                     break;
                 [[fallthrough]];
-            case TRACK_ELEM_CABLE_LIFT_HILL:
+            case TrackElemType::CableLiftHill:
                 ride->num_block_brakes--;
                 break;
         }

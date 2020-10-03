@@ -25,13 +25,11 @@
 DEFINE_GAME_ACTION(StaffSetNameAction, GAME_COMMAND_SET_STAFF_NAME, GameActionResult)
 {
 private:
-    uint16_t _spriteIndex;
+    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
     std::string _name;
 
 public:
-    StaffSetNameAction()
-    {
-    }
+    StaffSetNameAction() = default;
     StaffSetNameAction(uint16_t spriteIndex, const std::string& name)
         : _spriteIndex(spriteIndex)
         , _name(name)

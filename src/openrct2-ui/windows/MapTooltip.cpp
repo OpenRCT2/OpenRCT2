@@ -25,36 +25,11 @@ static rct_widget window_map_tooltip_widgets[] = {
 static void window_map_tooltip_update(rct_window *w);
 static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_map_tooltip_events = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_map_tooltip_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_map_tooltip_paint,
-    nullptr
-};
+static rct_window_event_list window_map_tooltip_events([](auto& events)
+{
+    events.update = &window_map_tooltip_update;
+    events.paint = &window_map_tooltip_paint;
+});
 // clang-format on
 
 #define MAP_TOOLTIP_ARGS
@@ -63,6 +38,18 @@ static ScreenCoordsXY _lastCursor;
 static int32_t _cursorHoldDuration;
 
 static void window_map_tooltip_open();
+
+static Formatter _mapTooltipArgs;
+
+void SetMapTooltip(Formatter& ft)
+{
+    _mapTooltipArgs = ft;
+}
+
+const Formatter& GetMapTooltip()
+{
+    return _mapTooltipArgs;
+}
 
 /**
  *
@@ -90,7 +77,7 @@ void window_map_tooltip_update_visibility()
 
     // Show or hide tooltip
     rct_string_id stringId;
-    std::memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+    std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(rct_string_id));
 
     if (_cursorHoldDuration < 25 || stringId == STR_NONE
         || input_test_place_object_modifier(
@@ -151,12 +138,13 @@ static void window_map_tooltip_update(rct_window* w)
 static void window_map_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id stringId;
-    std::memcpy(&stringId, gMapTooltipFormatArgs, sizeof(rct_string_id));
+    std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(rct_string_id));
     if (stringId == STR_NONE)
     {
         return;
     }
 
     ScreenCoordsXY stringCoords(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
-    gfx_draw_string_centred_wrapped(dpi, gMapTooltipFormatArgs, stringCoords, w->width, STR_MAP_TOOLTIP_STRINGID, COLOUR_BLACK);
+    gfx_draw_string_centred_wrapped(
+        dpi, _mapTooltipArgs.Data(), stringCoords, w->width, STR_MAP_TOOLTIP_STRINGID, COLOUR_BLACK);
 }

@@ -18,6 +18,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/RideData.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
@@ -36,7 +37,7 @@ DEFINE_GAME_ACTION(LandBuyRightsAction, GAME_COMMAND_BUY_LAND_RIGHTS, GameAction
 {
 private:
     MapRange _range;
-    uint8_t _setting = static_cast<uint8_t>(LandBuyRightSetting::Count);
+    LandBuyRightSetting _setting{ LandBuyRightSetting::Count };
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_BUY_LAND, STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE };
 
@@ -45,13 +46,13 @@ public:
 
     LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting)
         : _range(range)
-        , _setting(static_cast<uint8_t>(setting))
+        , _setting(setting)
     {
     }
 
     LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSetting setting)
         : _range(coord.x, coord.y, coord.x, coord.y)
-        , _setting(static_cast<uint8_t>(setting))
+        , _setting(setting)
     {
     }
 
@@ -121,7 +122,7 @@ private:
 
     GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
     {
-        if (_setting >= static_cast<uint8_t>(LandBuyRightSetting::Count))
+        if (_setting >= LandBuyRightSetting::Count)
         {
             log_warning("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, _ErrorTitles[0], STR_NONE);
@@ -131,11 +132,11 @@ private:
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, _ErrorTitles[_setting], STR_NONE);
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, _ErrorTitles[EnumValue(_setting)], STR_NONE);
         }
 
         auto res = MakeResult();
-        switch (static_cast<LandBuyRightSetting>(_setting))
+        switch (_setting)
         {
             case LandBuyRightSetting::BuyLand: // 0
                 if ((surfaceElement->GetOwnership() & OWNERSHIP_OWNED) != 0)
@@ -146,7 +147,7 @@ private:
                 if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
                     || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
                 {
-                    return MakeResult(GA_ERROR::NOT_OWNED, _ErrorTitles[_setting], STR_LAND_NOT_FOR_SALE);
+                    return MakeResult(GA_ERROR::NOT_OWNED, _ErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
                 }
                 if (isExecuting)
                 {
@@ -165,7 +166,8 @@ private:
                 if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
                     || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
                 {
-                    return MakeResult(GA_ERROR::NOT_OWNED, _ErrorTitles[_setting], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
+                    return MakeResult(
+                        GA_ERROR::NOT_OWNED, _ErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
                 }
 
                 if (isExecuting)

@@ -417,11 +417,11 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
     auto quad = EntityTileList<Peep>(footpathPos);
     for (auto peep : quad)
     {
-        if (peep->State == PEEP_STATE_SITTING || peep->State == PEEP_STATE_WATCHING)
+        if (peep->State == PeepState::Sitting || peep->State == PeepState::Watching)
         {
             if (peep->z == footpathPos.z)
             {
-                peep->SetState(PEEP_STATE_WALKING);
+                peep->SetState(PeepState::Walking);
                 peep->DestinationX = (peep->x & 0xFFE0) + 16;
                 peep->DestinationY = (peep->y & 0xFFE0) + 16;
                 peep->DestinationTolerance = 5;
@@ -2260,7 +2260,7 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    if (trackElement->GetTrackType() != TRACK_ELEM_FLAT)
+    if (trackElement->GetTrackType() != TrackElemType::Flat)
     {
         return false;
     }

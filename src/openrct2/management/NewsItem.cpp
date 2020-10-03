@@ -228,7 +228,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
             if (subjectLoc->x != LOCATION_NULL)
                 break;
 
-            if (peep->State != PEEP_STATE_ON_RIDE && peep->State != PEEP_STATE_ENTERING_RIDE)
+            if (peep->State != PeepState::OnRide && peep->State != PeepState::EnteringRide)
             {
                 subjectLoc = std::nullopt;
                 break;
@@ -315,13 +315,32 @@ News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t
     News::Item* newsItem = gNewsItems.FirstOpenOrNewSlot();
     newsItem->Type = type;
     newsItem->Flags = 0;
-    newsItem->Assoc = assoc;
+    newsItem->Assoc = assoc; // Make optional for Award, Money, Graph and Null
     newsItem->Ticks = 0;
     newsItem->MonthYear = static_cast<uint16_t>(gDateMonthsElapsed);
     newsItem->Day = ((days_in_month[date_get_month(newsItem->MonthYear)] * gDateMonthTicks) >> 16) + 1;
     safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
 
     return newsItem;
+}
+
+/**
+ * Checks if News::ItemType requires an assoc
+ * @return A boolean if assoc is required.
+ */
+
+bool News::CheckIfItemRequiresAssoc(News::ItemType type)
+{
+    switch (type)
+    {
+        case News::ItemType::Null:
+        case News::ItemType::Award:
+        case News::ItemType::Money:
+        case News::ItemType::Graph:
+            return false;
+        default:
+            return true; // Everything else requires assoc
+    }
 }
 
 /**

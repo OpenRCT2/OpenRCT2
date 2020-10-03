@@ -89,36 +89,20 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi);
 static void window_view_clipping_scrollgetsize(rct_window* w, int scrollIndex, int* width, int* height);
 static void window_view_clipping_close();
 
-static rct_window_event_list window_view_clipping_events = {
-    window_view_clipping_close_button,
-    window_view_clipping_mouseup,
-    nullptr,
-    window_view_clipping_mousedown,
-    nullptr,
-    nullptr,
-    window_view_clipping_update,
-    nullptr,
-    nullptr,
-    window_view_clipping_tool_update,
-    window_view_clipping_tool_down,
-    window_view_clipping_tool_drag,
-    window_view_clipping_tool_up,
-    nullptr,
-    nullptr,
-    window_view_clipping_scrollgetsize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_view_clipping_invalidate,
-    window_view_clipping_paint,
-    nullptr
-};
+static rct_window_event_list window_view_clipping_events([](auto& events)
+{
+    events.close = &window_view_clipping_close_button;
+    events.mouse_up = &window_view_clipping_mouseup;
+    events.mouse_down = &window_view_clipping_mousedown;
+    events.update = &window_view_clipping_update;
+    events.tool_update = &window_view_clipping_tool_update;
+    events.tool_down = &window_view_clipping_tool_down;
+    events.tool_drag = &window_view_clipping_tool_drag;
+    events.tool_up = &window_view_clipping_tool_up;
+    events.get_scroll_size = &window_view_clipping_scrollgetsize;
+    events.invalidate = &window_view_clipping_invalidate;
+    events.paint = &window_view_clipping_paint;
+});
 // clang-format on
 
 #pragma endregion
