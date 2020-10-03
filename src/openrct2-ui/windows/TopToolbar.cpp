@@ -587,7 +587,7 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
                     window_close_by_class(WC_TRACK_DELETE_PROMPT);
-                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
+                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
                     GameActions::Execute(&loadOrQuitAction);
                     break;
                 }

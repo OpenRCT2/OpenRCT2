@@ -595,12 +595,12 @@ enum
 #define WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE 26
 #define WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE 27
 
-enum PROMPT_MODE
+enum class PromptMode : uint8_t
 {
-    PM_SAVE_BEFORE_LOAD = 0,
-    PM_SAVE_BEFORE_QUIT,
-    PM_SAVE_BEFORE_QUIT2,
-    PM_QUIT
+    SaveBeforeLoad = 0,
+    SaveBeforeQuit,
+    SaveBeforeQuit2,
+    Quit
 };
 
 enum BTM_TOOLBAR_DIRTY_FLAGS

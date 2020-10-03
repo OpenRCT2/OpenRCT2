@@ -13,6 +13,8 @@
 
 #include <string>
 
+enum class PromptMode : uint8_t;
+
 enum class StartupAction
 {
     None,
@@ -57,7 +59,7 @@ extern std::string gNetworkStartAddress;
 extern uint32_t gCurrentDrawCount;
 extern uint8_t gScreenFlags;
 extern uint32_t gScreenAge;
-extern uint8_t gSavePromptMode;
+extern PromptMode gSavePromptMode;
 
 void openrct2_write_full_version_info(utf8* buffer, size_t bufferSize);
 void openrct2_finish();
