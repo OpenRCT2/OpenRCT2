@@ -1,11 +1,16 @@
 #!/usr/bin/env php
+
 <?php
 
 exec('grep -E "(RCT2_ADDRESS|RCT2_GLOBAL)[\(\s]+(0x[0-9a-zA-Z]+|[A-Z0-9_]+)" -r -o .', $lines);
 
+
 $addressFiles = [];
+
 $lastFile = null;
+
 $count = [];
+
 $totalCount = 0;
 
 foreach ($lines as $line) {
