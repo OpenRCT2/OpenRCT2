@@ -473,7 +473,7 @@ uint8_t RCT12BannerElement::GetPosition() const
 
 uint8_t RCT12BannerElement::GetAllowedEdges() const
 {
-    return flags & 0b00001111;
+    return AllowedEdges & 0b00001111;
 }
 
 bool is_user_string_id(rct_string_id stringId)
@@ -990,8 +990,8 @@ void RCT12BannerElement::SetPosition(uint8_t newPosition)
 
 void RCT12BannerElement::SetAllowedEdges(uint8_t newEdges)
 {
-    flags &= ~0b00001111;
-    flags |= (newEdges & 0b00001111);
+    AllowedEdges &= ~0b00001111;
+    AllowedEdges |= (newEdges & 0b00001111);
 }
 
 bool RCT12ResearchItem::IsInventedEndMarker() const

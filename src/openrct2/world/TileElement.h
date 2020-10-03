@@ -532,8 +532,8 @@ private:
     uint8_t position;  // 5
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t flags;  // 6
-    uint8_t unused; // 7
+    uint8_t AllowedEdges; // 6
+    uint8_t unused;       // 7
     uint8_t pad_09[7];
 #pragma clang diagnostic pop
 public:
