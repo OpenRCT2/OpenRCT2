@@ -33,7 +33,7 @@ rct_string_id DrawingEngineStringIds[] = {
     STR_DRAWING_ENGINE_OPENGL,
 };
 
-int32_t drawing_engine_get_type()
+DrawingEngine drawing_engine_get_type()
 {
     auto context = GetContext();
     return context->GetDrawingEngineType();
@@ -50,10 +50,10 @@ static IDrawingEngine* GetDrawingEngine()
     return result;
 }
 
-bool drawing_engine_requires_new_window(int32_t srcEngine, int32_t dstEngine)
+bool drawing_engine_requires_new_window(DrawingEngine srcEngine, DrawingEngine dstEngine)
 {
 #ifdef _WIN32
-    if (srcEngine != DRAWING_ENGINE_OPENGL && dstEngine != DRAWING_ENGINE_OPENGL)
+    if (srcEngine != DrawingEngine::OpenGL && dstEngine != DrawingEngine::OpenGL)
     {
         // Windows is apparently able to switch to hardware rendering on the fly although
         // using the same window in an unaccelerated and accelerated context is unsupported by SDL2

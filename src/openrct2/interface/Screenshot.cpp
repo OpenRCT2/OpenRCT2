@@ -495,7 +495,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
         }
 
         const double average = totalTime / static_cast<double>(totalRenderCount);
-        const auto engineStringId = DrawingEngineStringIds[DRAWING_ENGINE_SOFTWARE];
+        const auto engineStringId = DrawingEngineStringIds[EnumValue(DrawingEngine::Software)];
         const auto engineName = format_string(engineStringId, nullptr);
         std::printf("Engine: %s\n", engineName.c_str());
         std::printf("Render Count: %u\n", totalRenderCount);
