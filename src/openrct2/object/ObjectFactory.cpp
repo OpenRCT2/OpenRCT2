@@ -408,6 +408,38 @@ namespace ObjectFactory
         return result;
     }
 
+    static void ExtractSourceGames(const std::string& id, json_t& jRoot, Object* result)
+    {
+        auto sourceGames = jRoot["sourceGame"];
+        if (sourceGames.is_array() || sourceGames.is_string())
+        {
+            std::vector<uint8_t> sourceGameVector;
+            for (const auto& jSourceGame : sourceGames)
+            {
+                sourceGameVector.push_back(ParseSourceGame(Json::GetString(jSourceGame)));
+            }
+            if (!sourceGameVector.empty())
+            {
+                result->SetSourceGames(sourceGameVector);
+            }
+            else
+            {
+                log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
+                result->SetSourceGames({ OBJECT_SOURCE_CUSTOM });
+            }
+        }
+        // >90% of objects are custom, so allow omitting the parameter without displaying an error.
+        else if (sourceGames.is_null())
+        {
+            result->SetSourceGames({ OBJECT_SOURCE_CUSTOM });
+        }
+        else
+        {
+            log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
+            result->SetSourceGames({ OBJECT_SOURCE_CUSTOM });
+        }
+    }
+
     Object* CreateObjectFromJson(IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever)
     {
         Guard::Assert(jRoot.is_object(), "ObjectFactory::CreateObjectFromJson expects parameter jRoot to be object");
@@ -454,21 +486,7 @@ namespace ObjectFactory
             }
             result->SetAuthors(std::move(authorVector));
 
-            auto sourceGames = jRoot["sourceGame"];
-            if (sourceGames.is_array() || sourceGames.is_string())
-            {
-                std::vector<uint8_t> sourceGameVector;
-                for (const auto& jSourceGame : sourceGames)
-                {
-                    sourceGameVector.push_back(ParseSourceGame(Json::GetString(jSourceGame)));
-                }
-                result->SetSourceGames(sourceGameVector);
-            }
-            else
-            {
-                log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
-                result->SetSourceGames({ OBJECT_SOURCE_CUSTOM });
-            }
+            ExtractSourceGames(id, jRoot, result);
         }
         return result;
     }
