@@ -8,7 +8,7 @@
 - Fix: [#13021] Mowed grass and weeds don't show up in extra zoom levels.
 - Fix: [#13029] Not all Junior Roller Coaster pieces are shown when "Show all track pieces" cheat is enabled.
 - Fix: [#13044] Rides in RCT1 saves all have "0 customers per hour".
-- Fix: Entrance and exit ghosts for mazes not being removed.
+- Fix: [#13074] Entrance and exit ghosts for mazes not being removed.
 - Improved: [#13023] Made add_news_item console command last argument, assoc, optional.
 
 0.3.1 (2020-09-27)
