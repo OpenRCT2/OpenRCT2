@@ -527,7 +527,6 @@ void CustomListView::MouseUp(const ScreenCoordsXY& pos)
     if (!ColumnHeaderPressedCurrentState)
     {
         ColumnHeaderPressed = std::nullopt;
-        ColumnHeaderPressedCurrentState = false;
         Invalidate();
     }
 }
