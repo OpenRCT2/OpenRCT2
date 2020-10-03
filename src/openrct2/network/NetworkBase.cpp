@@ -1852,9 +1852,8 @@ void NetworkBase::ProcessPlayerList()
                         {
                             _serverConnection->Player = player;
                         }
+                        newPlayers.push_back(player->Id);
                     }
-
-                    newPlayers.push_back(player->Id);
                 }
                 else
                 {
