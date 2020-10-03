@@ -813,7 +813,7 @@ void game_load_or_quit_no_save_prompt()
 {
     switch (gSavePromptMode)
     {
-        case PM_SAVE_BEFORE_LOAD:
+        case PromptMode::SaveBeforeLoad:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
@@ -831,7 +831,7 @@ void game_load_or_quit_no_save_prompt()
             }
             break;
         }
-        case PM_SAVE_BEFORE_QUIT:
+        case PromptMode::SaveBeforeQuit:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
