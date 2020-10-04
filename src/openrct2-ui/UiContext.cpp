@@ -678,8 +678,8 @@ private:
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
-        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
 
+        // Fix #4022: Mac cursor offset on launch issue
 #ifndef __MACOSX__
         SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
 #endif
