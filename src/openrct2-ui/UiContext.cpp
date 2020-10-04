@@ -678,7 +678,11 @@ private:
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
+        
+        // Avoid issue #4022 where cursor is often vertically offset on launch on Mac OSX
+#ifndef __MACOSX__
         SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
+#endif
 
         TriggerResize();
     }
