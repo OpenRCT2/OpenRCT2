@@ -3671,6 +3671,9 @@ STR_6383    :Otevřít stránku Ke Stažení
 STR_6384    :Jemné sněžení
 STR_6385    :Silné sněžení
 STR_6386    :Vánice
+STR_6387    :Element nelze posunout níže...
+STR_6388    :Element nelze posunout výše...
+STR_6389    :Málo místa
 
 ###############################################################################
 ## RCT2 Scenarios
