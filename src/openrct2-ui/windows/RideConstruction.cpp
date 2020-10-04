@@ -2659,6 +2659,9 @@ static void window_ride_construction_update_map_selection()
             trackType = _currentTrackPieceType;
             trackPos = _currentTrackBegin;
             break;
+        case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
+            gMapSelectionTiles.clear();
+            return;
         default:
             if (window_ride_construction_update_state(&trackType, &trackDirection, nullptr, nullptr, &trackPos, nullptr))
             {
