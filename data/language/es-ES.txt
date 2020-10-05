@@ -3649,6 +3649,9 @@ STR_6379    :Se recibieron datos no válidos
 STR_6384    :Nieve
 STR_6385    :Fuertes nevadas
 STR_6386    :Tormenta de nieve
+STR_6387    :No se puede bajar el elemento aquí…
+STR_6388    :No se puede subir el elemento aquí…
+STR_6389    :Espacio inválido
 
 ##############
 # Escenarios #
