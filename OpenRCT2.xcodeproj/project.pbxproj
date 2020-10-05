@@ -74,6 +74,8 @@
 		932A211E22D73CFA00C57EDB /* GameActionCompat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A20CF22D73CEE00C57EDB /* GameActionCompat.cpp */; };
 		932A211F22D73CFA00C57EDB /* GameActionRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A20D322D73CEF00C57EDB /* GameActionRegistration.cpp */; };
 		932A212022D73CFA00C57EDB /* GameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A211C22D73CFA00C57EDB /* GameAction.cpp */; };
+		93378D01252B4F550077D2D8 /* JsonFwd.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93378D00252B4F550077D2D8 /* JsonFwd.hpp */; };
+		93378D03252B54140077D2D8 /* json_fwd.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93378D02252B54140077D2D8 /* json_fwd.hpp */; };
 		933C55B524B858490057E64B /* SeaDecrypt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933C55B424B858490057E64B /* SeaDecrypt.cpp */; };
 		933CBDB520CB1ACD00134678 /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB120CB1ACC00134678 /* Widget.cpp */; };
 		933CBDB620CB1ACD00134678 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB220CB1ACD00134678 /* Theme.cpp */; };
@@ -1064,6 +1066,8 @@
 		932A211B22D73CFA00C57EDB /* TrackSetBrakeSpeedAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackSetBrakeSpeedAction.hpp; sourceTree = "<group>"; };
 		932A211C22D73CFA00C57EDB /* GameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameAction.cpp; sourceTree = "<group>"; };
 		932A211D22D73CFA00C57EDB /* LargeSceneryRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LargeSceneryRemoveAction.hpp; sourceTree = "<group>"; };
+		93378D00252B4F550077D2D8 /* JsonFwd.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JsonFwd.hpp; sourceTree = "<group>"; };
+		93378D02252B54140077D2D8 /* json_fwd.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = json_fwd.hpp; path = "build/json-3.9.1/include/nlohmann/json_fwd.hpp"; sourceTree = SOURCE_ROOT; };
 		933C55B424B858490057E64B /* SeaDecrypt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SeaDecrypt.cpp; sourceTree = "<group>"; };
 		933CBDB120CB1ACC00134678 /* Widget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Widget.cpp; sourceTree = "<group>"; };
 		933CBDB220CB1ACD00134678 /* Theme.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Theme.cpp; sourceTree = "<group>"; };
@@ -2263,6 +2267,7 @@
 			isa = PBXGroup;
 			children = (
 				93FB271E24ED32B7008241C9 /* json.hpp */,
+				93378D02252B54140077D2D8 /* json_fwd.hpp */,
 			);
 			name = nlohmann;
 			path = libxc/include/nlohmann;
@@ -2831,6 +2836,7 @@
 				2ADE2F25224418B2002598AF /* JobPool.hpp */,
 				F76C83881EC4E7CC00FA49E2 /* Json.cpp */,
 				F76C83891EC4E7CC00FA49E2 /* Json.hpp */,
+				93378D00252B4F550077D2D8 /* JsonFwd.hpp */,
 				F76C838B1EC4E7CC00FA49E2 /* Memory.hpp */,
 				F76C838C1EC4E7CC00FA49E2 /* MemoryStream.cpp */,
 				F76C838D1EC4E7CC00FA49E2 /* MemoryStream.h */,
@@ -3670,6 +3676,7 @@
 				93DFD05524521C1A001FCBAF /* ScMap.hpp in Headers */,
 				9308DA04209908090079EE96 /* TileElement.h in Headers */,
 				C67B28152002D67A00109C93 /* Widget.h in Headers */,
+				93378D01252B4F550077D2D8 /* JsonFwd.hpp in Headers */,
 				C6352B851F477022006CCEE3 /* DataSerialiserTraits.h in Headers */,
 				93DFD05124521C1A001FCBAF /* ScContext.hpp in Headers */,
 				939A359F20C12FDE00630B3F /* Paint.Surface.h in Headers */,
@@ -3686,6 +3693,7 @@
 				93DFD04A24521C1A001FCBAF /* ScConfiguration.hpp in Headers */,
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
 				2ADE2F29224418B2002598AF /* Numerics.hpp in Headers */,
+				93378D03252B54140077D2D8 /* json_fwd.hpp in Headers */,
 				93DFD04924521C1A001FCBAF /* ScTile.hpp in Headers */,
 				936F412B24CE030F00E07BCF /* NetworkBase.h in Headers */,
 				93DFD04524521C1A001FCBAF /* ScObject.hpp in Headers */,
@@ -3889,7 +3897,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"25\"\nzipname=\"openrct2-libs-v25-x64-macos-dylibs.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi\n";
+			shellScript = "version=\"26\"\nzipname=\"openrct2-libs-v26-x64-macos-dylibs.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi\n";
 		};
 		D42C09D21C254F4E00309751 /* Build g2.dat */ = {
 			isa = PBXShellScriptBuildPhase;
