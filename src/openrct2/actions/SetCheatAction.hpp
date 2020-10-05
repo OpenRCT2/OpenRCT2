@@ -341,7 +341,7 @@ private:
                                  { 0, PEEP_MAX_NAUSEA } };
                     case GUEST_PARAMETER_NAUSEA_TOLERANCE:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
-                                 { PEEP_NAUSEA_TOLERANCE_NONE, PEEP_NAUSEA_TOLERANCE_HIGH } };
+                                 { EnumValue(PeepNauseaTolerance::None), EnumValue(PeepNauseaTolerance::High) } };
                     case GUEST_PARAMETER_TOILET:
                         return { { GUEST_PARAMETER_HAPPINESS, GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY },
                                  { 0, PEEP_MAX_TOILET } };
@@ -599,7 +599,7 @@ private:
                     peep->NauseaTarget = value;
                     break;
                 case GUEST_PARAMETER_NAUSEA_TOLERANCE:
-                    peep->NauseaTolerance = value;
+                    peep->NauseaTolerance = static_cast<PeepNauseaTolerance>(value);
                     break;
                 case GUEST_PARAMETER_TOILET:
                     peep->Toilet = value;

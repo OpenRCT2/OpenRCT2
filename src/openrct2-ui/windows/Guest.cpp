@@ -1480,7 +1480,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             STR_PEEP_STAT_NAUSEA_TOLERANCE_HIGH,
         };
         screenCoords.y += LIST_ROW_HEIGHT;
-        int32_t nausea_tolerance = peep->NauseaTolerance & 0x3;
+        auto nausea_tolerance = EnumValue(peep->NauseaTolerance) & 0x3;
         auto ft = Formatter();
         ft.Add<rct_string_id>(nauseaTolerances[nausea_tolerance]);
         gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, ft.Data(), COLOUR_BLACK, screenCoords);
