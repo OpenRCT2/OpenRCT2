@@ -5,6 +5,7 @@
 - Feature: [#13096] Add Esperanto translation.
 - Fix: [#3200] Close Construction window upon selecting vehicle page.
 - Fix: [#5904] Empty errors on tile inspector base height change.
+- Fix: [#7210] Land tile smoothing occurs with edge tiles (original bug).
 - Fix: [#8015] RCT2 files are not found when put into the OpenRCT2 folder.
 - Fix: [#8957] Error title missing when building with insufficient funds
 - Fix: [#13021] Mowed grass and weeds don't show up in extra zoom levels.

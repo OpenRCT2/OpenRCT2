@@ -429,6 +429,10 @@ static void viewport_surface_smoothen_edge(
     if (neighbour.tile_element == nullptr)
         return;
 
+    // The edge row consists of invisible grass tiles. Do not attempt to smooth with them.
+    if (map_is_edge(self.tile_coords.ToCoordsXY()) || map_is_edge(neighbour.tile_coords.ToCoordsXY()))
+        return;
+
     uint32_t maskImageBase = 0;
     uint8_t neighbourCorners[2] = { 0 };
     uint8_t ownCorners[2] = { 0 };
