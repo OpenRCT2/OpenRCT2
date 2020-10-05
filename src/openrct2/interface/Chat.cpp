@@ -248,11 +248,11 @@ void chat_history_add(const char* src)
     Mixer_Play_Effect(SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
 
-void chat_input(CHAT_INPUT input)
+void chat_input(ChatInput input)
 {
     switch (input)
     {
-        case CHAT_INPUT_SEND:
+        case ChatInput::Send:
             if (strlen(_chatCurrentLine) > 0)
             {
                 network_send_chat(_chatCurrentLine);
@@ -260,7 +260,7 @@ void chat_input(CHAT_INPUT input)
             chat_clear_input();
             chat_close();
             break;
-        case CHAT_INPUT_CLOSE:
+        case ChatInput::Close:
             chat_close();
             break;
         default:

@@ -61,18 +61,18 @@ static void input_handle_console(int32_t key)
 
 static void input_handle_chat(int32_t key)
 {
-    CHAT_INPUT input = CHAT_INPUT_NONE;
+    ChatInput input = ChatInput::None;
     switch (key)
     {
         case SDL_SCANCODE_ESCAPE:
-            input = CHAT_INPUT_CLOSE;
+            input = ChatInput::Close;
             break;
         case SDL_SCANCODE_RETURN:
         case SDL_SCANCODE_KP_ENTER:
-            input = CHAT_INPUT_SEND;
+            input = ChatInput::Send;
             break;
     }
-    if (input != CHAT_INPUT_NONE)
+    if (input != ChatInput::None)
     {
         chat_input(input);
     }
