@@ -15,6 +15,7 @@
 #include "../core/File.h"
 #include "../core/FileScanner.h"
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/ImageImporter.h"
