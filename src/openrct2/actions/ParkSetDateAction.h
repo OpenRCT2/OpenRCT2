@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetDateAction, GAME_COMMAND_SET_DATE, GameActions::Result)
+DEFINE_GAME_ACTION(ParkSetDateAction, GameCommand::SetDate, GameActions::Result)
 {
 private:
     int32_t _year{};

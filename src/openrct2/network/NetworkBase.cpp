@@ -2560,7 +2560,7 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
         if (connection.AuthStatus == NetworkAuth::Verified)
         {
             const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
-            passwordless = group->CanPerformCommand(MISC_COMMAND_PASSWORDLESS_LOGIN);
+            passwordless = group->CanPerformCommand(GameCommand::PasswordlessLogin);
         }
         if (!gameversion || network_get_version() != gameversion)
         {
@@ -2863,7 +2863,7 @@ void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacke
     if (connection.Player)
     {
         NetworkGroup* group = GetGroupByID(connection.Player->Group);
-        if (!group || !group->CanPerformCommand(MISC_COMMAND_CHAT))
+        if (!group || !group->CanPerformCommand(GameCommand::Chat))
         {
             return;
         }
@@ -2887,7 +2887,7 @@ void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacke
 void NetworkBase::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t tick;
-    uint32_t actionType;
+    GameCommand actionType;
     packet >> tick >> actionType;
 
     MemoryStream stream;
@@ -2923,7 +2923,7 @@ void NetworkBase::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& 
 void NetworkBase::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t tick;
-    uint32_t actionType;
+    GameCommand actionType;
 
     NetworkPlayer* player = connection.Player;
     if (player == nullptr)
@@ -2934,12 +2934,12 @@ void NetworkBase::Server_Handle_GAME_ACTION(NetworkConnection& connection, Netwo
     packet >> tick >> actionType;
 
     // Don't let clients send pause or quit
-    if (actionType == GAME_COMMAND_TOGGLE_PAUSE || actionType == GAME_COMMAND_LOAD_OR_QUIT)
+    if (actionType == GameCommand::TogglePause || actionType == GameCommand::LoadOrQuit)
     {
         return;
     }
 
-    if (actionType != GAME_COMMAND_CUSTOM)
+    if (actionType != GameCommand::Custom)
     {
         // Check if player's group permission allows command to run
         NetworkGroup* group = GetGroupByID(connection.Player->Group);
@@ -3359,7 +3359,7 @@ int32_t network_get_player_last_action(uint32_t index, int32_t time)
     return gNetwork.player_list[index]->LastAction;
 }
 
-void network_set_player_last_action(uint32_t index, int32_t command)
+void network_set_player_last_action(uint32_t index, GameCommand command)
 {
     Guard::IndexInRange(index, gNetwork.player_list);
 
@@ -3724,7 +3724,7 @@ int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
 {
     Guard::IndexInRange(groupindex, gNetwork.group_list);
 
-    return gNetwork.group_list[groupindex]->CanPerformCommand(index);
+    return gNetwork.group_list[groupindex]->CanPerformCommand(static_cast<GameCommand>(index)); // TODO
 }
 
 void network_set_pickup_peep(uint8_t playerid, Peep* peep)
@@ -4059,7 +4059,7 @@ int32_t network_get_player_last_action(uint32_t index, int32_t time)
 {
     return -999;
 }
-void network_set_player_last_action(uint32_t index, int32_t command)
+void network_set_player_last_action(uint32_t index, GameCommand command)
 {
 }
 CoordsXYZ network_get_player_last_action_coord(uint32_t index)

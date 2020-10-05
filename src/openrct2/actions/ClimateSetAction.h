@@ -12,7 +12,7 @@
 #include "../world/Climate.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ClimateSetAction, GAME_COMMAND_SET_CLIMATE, GameActions::Result)
+DEFINE_GAME_ACTION(ClimateSetAction, GameCommand::SetClimate, GameActions::Result)
 {
 private:
     ClimateType _climate{};

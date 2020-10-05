@@ -20,7 +20,7 @@ public:
     ride_id_t rideIndex = RIDE_ID_NULL;
 };
 
-DEFINE_GAME_ACTION(RideCreateAction, GAME_COMMAND_CREATE_RIDE, RideCreateGameActionResult)
+DEFINE_GAME_ACTION(RideCreateAction, GameCommand::CreateRide, RideCreateGameActionResult)
 {
 private:
     int32_t _rideType{ RIDE_ID_NULL };

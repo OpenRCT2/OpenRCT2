@@ -9,18 +9,12 @@
 
 #pragma once
 
+#include "../Game.h"
 #include "../common.h"
 
 #include <array>
 #include <string>
 #include <vector>
-
-enum MISC_COMMAND
-{
-    MISC_COMMAND_CHAT = -1,
-    MISC_COMMAND_TOGGLE_SCENERY_CLUSTER = -2,
-    MISC_COMMAND_PASSWORDLESS_LOGIN = -3,
-};
 
 enum class NetworkPermission : uint32_t
 {
@@ -56,7 +50,7 @@ class NetworkAction final
 public:
     rct_string_id Name;
     std::string PermissionName;
-    std::vector<int32_t> Commands;
+    std::vector<GameCommand> Commands;
 };
 
 class NetworkActions final
@@ -64,6 +58,6 @@ class NetworkActions final
 public:
     static const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> Actions;
 
-    static NetworkPermission FindCommand(int32_t command);
+    static NetworkPermission FindCommand(GameCommand command);
     static NetworkPermission FindCommandByPermissionName(const std::string& permission_name);
 };

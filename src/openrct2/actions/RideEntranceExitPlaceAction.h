@@ -12,7 +12,7 @@
 #include "../world/Entrance.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideEntranceExitPlaceAction, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, GameActions::Result)
+DEFINE_GAME_ACTION(RideEntranceExitPlaceAction, GameCommand::PlaceRideEntranceOrExit, GameActions::Result)
 {
 private:
     CoordsXY _loc;

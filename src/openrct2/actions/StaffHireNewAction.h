@@ -30,7 +30,7 @@ public:
     uint32_t peepSriteIndex = SPRITE_INDEX_NULL;
 };
 
-DEFINE_GAME_ACTION(StaffHireNewAction, GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, StaffHireNewActionResult)
+DEFINE_GAME_ACTION(StaffHireNewAction, GameCommand::HireNewStaffMember, StaffHireNewActionResult)
 {
 private:
     bool _autoPosition{};

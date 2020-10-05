@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(TrackSetBrakeSpeedAction, GAME_COMMAND_SET_BRAKES_SPEED, GameActions::Result)
+DEFINE_GAME_ACTION(TrackSetBrakeSpeedAction, GameCommand::SetBrakesSpeed, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;

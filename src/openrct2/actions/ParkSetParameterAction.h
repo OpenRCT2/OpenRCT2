@@ -19,7 +19,7 @@ enum class ParkParameter : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(ParkSetParameterAction, GAME_COMMAND_SET_PARK_OPEN, GameActions::Result)
+DEFINE_GAME_ACTION(ParkSetParameterAction, GameCommand::SetParkOpen, GameActions::Result)
 {
 private:
     ParkParameter _parameter{ ParkParameter::Count };

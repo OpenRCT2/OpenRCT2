@@ -695,13 +695,13 @@ namespace OpenRCT2
                 {
                     return false;
                 }
-                actionType = command.action->GetType();
+                actionType = EnumValue(command.action->GetType());
             }
             serialiser << actionType;
 
             if (serialiser.IsLoading())
             {
-                command.action = GameActions::Create(actionType);
+                command.action = GameActions::Create(static_cast<GameCommand>(actionType));
                 Guard::Assert(command.action != nullptr);
             }
 

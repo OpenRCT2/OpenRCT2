@@ -13,7 +13,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetCostumeAction, GAME_COMMAND_SET_STAFF_COSTUME, GameActions::Result)
+DEFINE_GAME_ACTION(StaffSetCostumeAction, GameCommand::SetStaffCostume, GameActions::Result)
 {
 private:
     uint16_t _spriteIndex{ SPRITE_INDEX_NULL };

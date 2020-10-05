@@ -12,7 +12,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(GuestSetFlagsAction, GAME_COMMAND_GUEST_SET_FLAGS, GameActions::Result)
+DEFINE_GAME_ACTION(GuestSetFlagsAction, GameCommand::GuestSetFlags, GameActions::Result)
 {
 private:
     uint16_t _peepId{ SPRITE_INDEX_NULL };

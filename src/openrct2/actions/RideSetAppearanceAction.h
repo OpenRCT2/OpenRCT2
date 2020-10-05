@@ -24,7 +24,7 @@ enum class RideSetAppearanceType : uint8_t
     EntranceStyle
 };
 
-DEFINE_GAME_ACTION(RideSetAppearanceAction, GAME_COMMAND_SET_RIDE_APPEARANCE, GameActions::Result)
+DEFINE_GAME_ACTION(RideSetAppearanceAction, GameCommand::SetRideAppearance, GameActions::Result)
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };

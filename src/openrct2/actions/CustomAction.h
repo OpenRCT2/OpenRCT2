@@ -13,7 +13,7 @@
 
 #    include "GameAction.h"
 
-DEFINE_GAME_ACTION(CustomAction, GAME_COMMAND_CUSTOM, GameActions::Result)
+DEFINE_GAME_ACTION(CustomAction, GameCommand::Custom, GameActions::Result)
 {
 private:
     std::string _id;

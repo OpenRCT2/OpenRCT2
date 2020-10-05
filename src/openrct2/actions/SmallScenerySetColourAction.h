@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallScenerySetColourAction, GAME_COMMAND_SET_SCENERY_COLOUR, GameActions::Result)
+DEFINE_GAME_ACTION(SmallScenerySetColourAction, GameCommand::SetSceneryColour, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;

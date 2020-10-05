@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkEntranceRemoveAction, GAME_COMMAND_REMOVE_PARK_ENTRANCE, GameActions::Result)
+DEFINE_GAME_ACTION(ParkEntranceRemoveAction, GameCommand::RemoveParkEntrance, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;

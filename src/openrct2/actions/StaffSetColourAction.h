@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetColourAction, GAME_COMMAND_SET_STAFF_COLOUR, GameActions::Result)
+DEFINE_GAME_ACTION(StaffSetColourAction, GameCommand::SetStaffColour, GameActions::Result)
 {
 private:
     uint8_t _staffType{};

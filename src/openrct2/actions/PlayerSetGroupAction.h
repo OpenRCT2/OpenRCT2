@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(PlayerSetGroupAction, GAME_COMMAND_SET_PLAYER_GROUP, GameActions::Result)
+DEFINE_GAME_ACTION(PlayerSetGroupAction, GameCommand::SetPlayerGroup, GameActions::Result)
 {
 private:
     NetworkPlayerId_t _playerId{ -1 };

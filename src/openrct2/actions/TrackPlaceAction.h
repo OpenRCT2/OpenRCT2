@@ -22,7 +22,7 @@ public:
     uint8_t GroundFlags{ 0 };
 };
 
-DEFINE_GAME_ACTION(TrackPlaceAction, GAME_COMMAND_PLACE_TRACK, TrackPlaceActionResult)
+DEFINE_GAME_ACTION(TrackPlaceAction, GameCommand::PlaceTrack, TrackPlaceActionResult)
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };

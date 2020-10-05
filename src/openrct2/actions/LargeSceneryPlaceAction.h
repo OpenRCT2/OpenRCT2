@@ -25,7 +25,7 @@ public:
     TileElement* tileElement = nullptr;
 };
 
-DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GAME_COMMAND_PLACE_LARGE_SCENERY, LargeSceneryPlaceActionResult)
+DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GameCommand::PlaceLargeScenery, LargeSceneryPlaceActionResult)
 {
 private:
     CoordsXYZD _loc;
