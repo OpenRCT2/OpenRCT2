@@ -1523,11 +1523,7 @@ static void window_ride_set_page(rct_window* w, int32_t page)
     // I've removed it if (page == WINDOW_RIDE_PAGE_VEHICLE) { ride_update_max_vehicles(ride);
     //}
 
-    if (w->viewport != nullptr)
-    {
-        w->viewport->width = 0;
-        w->viewport = nullptr;
-    }
+    w->RemoveViewport();
 
     w->enabled_widgets = window_ride_page_enabled_widgets[page];
     w->hold_down_widgets = window_ride_page_hold_down_widgets[page];
@@ -1671,8 +1667,7 @@ static void window_ride_init_viewport(rct_window* w)
             return;
         }
         viewport_flags = w->viewport->flags;
-        w->viewport->width = 0;
-        w->viewport = nullptr;
+        w->RemoveViewport();
     }
     else if (gConfigGeneral.always_show_gridlines)
     {

@@ -642,12 +642,7 @@ void window_guest_set_page(rct_window* w, int32_t page)
     w->no_list_items = 0;
     w->selected_list_item = -1;
 
-    rct_viewport* viewport = w->viewport;
-    w->viewport = nullptr;
-    if (viewport)
-    {
-        viewport->width = 0;
-    }
+    w->RemoveViewport();
 
     w->enabled_widgets = window_guest_page_enabled_widgets[page];
     w->hold_down_widgets = 0;
@@ -700,8 +695,7 @@ void window_guest_viewport_init(rct_window* w)
         origViewportFlags = w->viewport->flags;
 
         reCreateViewport = true;
-        w->viewport->width = 0;
-        w->viewport = nullptr;
+        w->RemoveViewport();
     }
 
     window_event_invalidate_call(w);
