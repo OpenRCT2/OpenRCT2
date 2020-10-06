@@ -1473,7 +1473,7 @@ private:
         dst->DisgustingCount = src->disgusting_count;
 
         dst->Intensity = static_cast<IntensityRange>(src->intensity);
-        dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
+        dst->NauseaTolerance = src->nausea_tolerance;
         dst->WindowInvalidateFlags = 0;
 
         dst->CurrentRide = src->current_ride;

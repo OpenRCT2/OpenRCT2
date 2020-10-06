@@ -10,7 +10,6 @@
 #include "BannerObject.h"
 
 #include "../core/IStream.hpp"
-#include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../object/Object.h"

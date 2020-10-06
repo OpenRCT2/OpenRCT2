@@ -1446,11 +1446,11 @@ void peep_update_days_in_queue()
 
 // clang-format off
 /** rct2: 0x009823A0 */
-static constexpr const PeepNauseaTolerance nausea_tolerance_distribution[] = {
-    PeepNauseaTolerance::None,
-    PeepNauseaTolerance::Low, PeepNauseaTolerance::Low,
-    PeepNauseaTolerance::Average, PeepNauseaTolerance::Average, PeepNauseaTolerance::Average,
-    PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High, PeepNauseaTolerance::High,
+static constexpr const enum PeepNauseaTolerance nausea_tolerance_distribution[] = {
+    PEEP_NAUSEA_TOLERANCE_NONE,
+    PEEP_NAUSEA_TOLERANCE_LOW, PEEP_NAUSEA_TOLERANCE_LOW,
+    PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE,
+    PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH, PEEP_NAUSEA_TOLERANCE_HIGH,
 };
 
 /** rct2: 0x009823BC */

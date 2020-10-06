@@ -406,12 +406,12 @@ enum PeepNextFlags
     PEEP_NEXT_FLAG_UNUSED = (1 << 4),
 };
 
-enum class PeepNauseaTolerance : uint8_t
+enum PeepNauseaTolerance
 {
-    None,
-    Low,
-    Average,
-    High
+    PEEP_NAUSEA_TOLERANCE_NONE,
+    PEEP_NAUSEA_TOLERANCE_LOW,
+    PEEP_NAUSEA_TOLERANCE_AVERAGE,
+    PEEP_NAUSEA_TOLERANCE_HIGH,
 };
 
 enum PeepItem
@@ -645,7 +645,7 @@ struct Peep : SpriteBase
     uint8_t Mass;
     uint8_t TimeToConsume;
     IntensityRange Intensity;
-    PeepNauseaTolerance NauseaTolerance;
+    uint8_t NauseaTolerance;
     uint8_t WindowInvalidateFlags;
     money16 PaidOnDrink;
     uint8_t RideTypesBeenOn[16];

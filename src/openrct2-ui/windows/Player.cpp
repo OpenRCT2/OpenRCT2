@@ -561,7 +561,11 @@ static void window_player_set_page(rct_window* w, int32_t page)
     }
     else
     {
-        w->RemoveViewport();
+        if (w->viewport != nullptr)
+        {
+            w->viewport->width = 0;
+            w->viewport = nullptr;
+        }
     }
 }
 

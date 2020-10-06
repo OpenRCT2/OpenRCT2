@@ -1454,7 +1454,7 @@ public:
         dst->Mass = src->mass;
         dst->TimeToConsume = src->time_to_consume;
         dst->Intensity = static_cast<IntensityRange>(src->intensity);
-        dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
+        dst->NauseaTolerance = src->nausea_tolerance;
         dst->WindowInvalidateFlags = src->window_invalidate_flags;
         dst->PaidOnDrink = src->paid_on_drink;
         for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)

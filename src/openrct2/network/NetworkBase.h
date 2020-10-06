@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../actions/GameAction.h"
+#include "../core/Json.hpp"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkPlayer.h"

@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/JsonFwd.hpp"
+#include "../core/Json.hpp"
 #include "ImageTable.h"
 #include "StringTable.h"
 

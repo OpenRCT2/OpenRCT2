@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../ride/Ride.h"
 #include "Object.h"
 

@@ -450,7 +450,7 @@ static void window_install_track_design(rct_window* w)
     }
     else
     {
-        if (track_repository_install(_trackPath.c_str(), _trackName.c_str()))
+        if (track_repository_install(_trackPath.c_str()))
         {
             window_close(w);
         }

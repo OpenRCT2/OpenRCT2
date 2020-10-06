@@ -220,7 +220,11 @@ void window_close(rct_window* w)
     window_event_close_call(window.get());
 
     // Remove viewport
-    window->RemoveViewport();
+    if (window->viewport != nullptr)
+    {
+        window->viewport->width = 0;
+        window->viewport = nullptr;
+    }
 
     // Invalidate the window (area)
     window->Invalidate();

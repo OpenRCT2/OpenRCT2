@@ -10,7 +10,6 @@
 #include "FootpathItemObject.h"
 
 #include "../core/IStream.hpp"
-#include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Localisation.h"

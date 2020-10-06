@@ -15,7 +15,7 @@
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 #include "../common.h"
-#include "../core/JsonFwd.hpp"
+#include "../core/Json.hpp"
 #include "../localisation/StringIds.h"
 #include "NetworkTypes.h"
 

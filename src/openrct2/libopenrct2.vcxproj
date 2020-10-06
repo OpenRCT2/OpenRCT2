@@ -169,7 +169,6 @@
     <ClInclude Include="core\IStream.hpp" />
     <ClInclude Include="core\JobPool.hpp" />
     <ClInclude Include="core\Json.hpp" />
-    <ClInclude Include="core\JsonFwd.hpp" />
     <ClInclude Include="core\Memory.hpp" />
     <ClInclude Include="core\MemoryStream.h" />
     <ClInclude Include="core\Meta.hpp" />

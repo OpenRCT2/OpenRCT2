@@ -366,7 +366,12 @@ void window_staff_set_page(rct_window* w, int32_t page)
     w->page = page;
     w->frame_no = 0;
 
-    w->RemoveViewport();
+    rct_viewport* viewport = w->viewport;
+    w->viewport = nullptr;
+    if (viewport)
+    {
+        viewport->width = 0;
+    }
 
     w->enabled_widgets = window_staff_page_enabled_widgets[page];
     w->hold_down_widgets = 0;
@@ -1368,7 +1373,8 @@ void window_staff_viewport_init(rct_window* w)
             return;
 
         viewport_flags = w->viewport->flags;
-        w->RemoveViewport();
+        w->viewport->width = 0;
+        w->viewport = nullptr;
     }
     else
     {

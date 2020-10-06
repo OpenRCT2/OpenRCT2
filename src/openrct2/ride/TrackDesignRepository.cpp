@@ -270,16 +270,17 @@ public:
         return result;
     }
 
-    std::string Install(const std::string& path, const std::string& name) override
+    std::string Install(const std::string& path) override
     {
         std::string result;
+        std::string fileName = Path::GetFileName(path);
         std::string installDir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK);
 
-        std::string newPath = Path::Combine(installDir, name + Path::GetExtension(path));
+        std::string newPath = Path::Combine(installDir, fileName);
         if (File::Copy(path, newPath, false))
         {
             auto language = LocalisationService_GetCurrentLanguage();
-            auto td = _fileIndex.Create(language, newPath);
+            auto td = _fileIndex.Create(language, path);
             if (std::get<0>(td))
             {
                 _items.push_back(std::get<1>(td));
@@ -350,9 +351,9 @@ bool track_repository_rename(const utf8* path, const utf8* newName)
     return !newPath.empty();
 }
 
-bool track_repository_install(const utf8* srcPath, const utf8* name)
+bool track_repository_install(const utf8* srcPath)
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
-    std::string newPath = repo->Install(srcPath, name);
+    std::string newPath = repo->Install(srcPath);
     return !newPath.empty();
 }
