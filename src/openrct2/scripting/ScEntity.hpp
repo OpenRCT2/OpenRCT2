@@ -15,6 +15,7 @@
 #    include "../common.h"
 #    include "../peep/Peep.h"
 #    include "../peep/Staff.h"
+#    include "../util/Util.h"
 #    include "../world/Sprite.h"
 #    include "Duktape.hpp"
 #    include "ScRide.hpp"
@@ -1024,7 +1025,7 @@ namespace OpenRCT2::Scripting
         uint8_t nauseaTolerance_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->NauseaTolerance : 0;
+            return peep != nullptr ? EnumValue(peep->NauseaTolerance) : 0;
         }
         void nauseaTolerance_set(uint8_t value)
         {
@@ -1032,7 +1033,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->NauseaTolerance = std::min<uint8_t>(value, 3);
+                peep->NauseaTolerance = static_cast<PeepNauseaTolerance>(std::min<uint8_t>(value, 3));
             }
         }
 

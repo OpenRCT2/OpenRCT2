@@ -3653,7 +3653,7 @@ STR_6385    :Neve Forte
 STR_6386    :Nevasca
 STR_6387    :Impossível baixar o elemento aqui...
 STR_6388    :Impossível erguer o elemento aqui...
-STR_6389    :Sem espaço livre
+STR_6389    :Espaço livre inválido
 
 #############
 # Scenarios #

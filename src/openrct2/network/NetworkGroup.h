@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/Json.hpp"
 #include "NetworkPacket.h"
 
 #include <array>

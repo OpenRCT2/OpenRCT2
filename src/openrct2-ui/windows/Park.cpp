@@ -740,7 +740,6 @@ static void window_park_init_viewport(rct_window* w)
 {
     int32_t x, y, z, r, xy, zr, viewportFlags;
     x = y = z = r = xy = zr = 0;
-    rct_viewport* viewport;
 
     if (w->page != WINDOW_PARK_PAGE_ENTRANCE)
         return;
@@ -763,10 +762,8 @@ static void window_park_init_viewport(rct_window* w)
     }
     else
     {
-        viewport = w->viewport;
-        w->viewport = nullptr;
-        viewportFlags = viewport->flags;
-        viewport->width = 0;
+        viewportFlags = w->viewport->flags;
+        w->RemoveViewport();
     }
 
     // Call invalidate event
@@ -1659,11 +1656,7 @@ static void window_park_set_page(rct_window* w, int32_t page)
     w->page = page;
     w->frame_no = 0;
     w->var_492 = 0;
-    if (w->viewport != nullptr)
-    {
-        w->viewport->width = 0;
-        w->viewport = nullptr;
-    }
+    w->RemoveViewport();
 
     w->enabled_widgets = window_park_page_enabled_widgets[page];
     w->hold_down_widgets = window_park_page_hold_down_widgets[page];

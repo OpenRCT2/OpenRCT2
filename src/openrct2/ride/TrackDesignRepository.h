@@ -39,7 +39,7 @@ struct ITrackDesignRepository
     virtual void Scan(int32_t language) abstract;
     virtual bool Delete(const std::string& path) abstract;
     virtual std::string Rename(const std::string& path, const std::string& newName) abstract;
-    virtual std::string Install(const std::string& path) abstract;
+    virtual std::string Install(const std::string& path, const std::string& name) abstract;
 };
 
 std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
@@ -48,4 +48,4 @@ std::string GetNameFromTrackPath(const std::string& path);
 void track_repository_scan();
 bool track_repository_delete(const utf8* path);
 bool track_repository_rename(const utf8* path, const utf8* newName);
-bool track_repository_install(const utf8* srcPath);
+bool track_repository_install(const utf8* srcPath, const utf8* name);

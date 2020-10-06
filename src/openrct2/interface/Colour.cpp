@@ -14,6 +14,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <unordered_map>
 
 rct_colour_map ColourMapA[COLOUR_COUNT] = {};
 

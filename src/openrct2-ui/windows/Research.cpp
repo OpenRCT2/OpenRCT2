@@ -588,11 +588,7 @@ static void window_research_set_page(rct_window* w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
-    if (w->viewport != nullptr)
-    {
-        w->viewport->width = 0;
-        w->viewport = nullptr;
-    }
+    w->RemoveViewport();
 
     w->enabled_widgets = window_research_page_enabled_widgets[page];
     w->hold_down_widgets = 0;
