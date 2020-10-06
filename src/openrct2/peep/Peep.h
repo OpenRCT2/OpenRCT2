@@ -16,6 +16,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
+#include "../util/Util.h"
 #include "../world/Location.hpp"
 #include "../world/SpriteBase.h"
 
@@ -471,59 +472,59 @@ enum PeepItem
     PEEP_ITEM_EMPTY_BOWL_BLUE = (1 << 21),
 };
 
-enum PeepSpriteType : uint8_t
+enum class PeepSpriteType : uint8_t
 {
-    PEEP_SPRITE_TYPE_NORMAL = 0,
-    PEEP_SPRITE_TYPE_HANDYMAN = 1,
-    PEEP_SPRITE_TYPE_MECHANIC = 2,
-    PEEP_SPRITE_TYPE_SECURITY = 3,
-    PEEP_SPRITE_TYPE_ENTERTAINER_PANDA = 4,
-    PEEP_SPRITE_TYPE_ENTERTAINER_TIGER = 5,
-    PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT = 6,
-    PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN = 7,
-    PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA = 8,
-    PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN = 9,
-    PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT = 10,
-    PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT = 11,
-    PEEP_SPRITE_TYPE_ENTERTAINER_BANDIT = 12,
-    PEEP_SPRITE_TYPE_ENTERTAINER_SHERIFF = 13,
-    PEEP_SPRITE_TYPE_ENTERTAINER_PIRATE = 14,
-    PEEP_SPRITE_TYPE_ICE_CREAM = 15,
-    PEEP_SPRITE_TYPE_CHIPS = 16,
-    PEEP_SPRITE_TYPE_BURGER = 17,
-    PEEP_SPRITE_TYPE_DRINK = 18,
-    PEEP_SPRITE_TYPE_BALLOON = 19,
-    PEEP_SPRITE_TYPE_CANDYFLOSS = 20,
-    PEEP_SPRITE_TYPE_UMBRELLA = 21,
-    PEEP_SPRITE_TYPE_PIZZA = 22,
-    PEEP_SPRITE_TYPE_SECURITY_ALT = 23,
-    PEEP_SPRITE_TYPE_POPCORN = 24,
-    PEEP_SPRITE_TYPE_ARMS_CROSSED = 25,
-    PEEP_SPRITE_TYPE_HEAD_DOWN = 26,
-    PEEP_SPRITE_TYPE_NAUSEOUS = 27,
-    PEEP_SPRITE_TYPE_VERY_NAUSEOUS = 28,
-    PEEP_SPRITE_TYPE_REQUIRE_TOILET = 29,
-    PEEP_SPRITE_TYPE_HAT = 30,
-    PEEP_SPRITE_TYPE_HOT_DOG = 31,
-    PEEP_SPRITE_TYPE_TENTACLE = 32,
-    PEEP_SPRITE_TYPE_TOFFEE_APPLE = 33,
-    PEEP_SPRITE_TYPE_DOUGHNUT = 34,
-    PEEP_SPRITE_TYPE_COFFEE = 35,
-    PEEP_SPRITE_TYPE_CHICKEN = 36,
-    PEEP_SPRITE_TYPE_LEMONADE = 37,
-    PEEP_SPRITE_TYPE_WATCHING = 38,
-    PEEP_SPRITE_TYPE_PRETZEL = 39,
-    PEEP_SPRITE_TYPE_SUNGLASSES = 40,
-    PEEP_SPRITE_TYPE_SU_JONGKWA = 41,
-    PEEP_SPRITE_TYPE_JUICE = 42,
-    PEEP_SPRITE_TYPE_FUNNEL_CAKE = 43,
-    PEEP_SPRITE_TYPE_NOODLES = 44,
-    PEEP_SPRITE_TYPE_SAUSAGE = 45,
-    PEEP_SPRITE_TYPE_SOUP = 46,
-    PEEP_SPRITE_TYPE_SANDWICH = 47,
-    PEEP_SPRITE_TYPE_COUNT,
+    Normal = 0,
+    Handyman = 1,
+    Mechanic = 2,
+    Security = 3,
+    EntertainerPanda = 4,
+    EntertainerTiger = 5,
+    EntertainerElephant = 6,
+    EntertainerRoman = 7,
+    EntertainerGorilla = 8,
+    EntertainerSnowman = 9,
+    EntertainerKnight = 10,
+    EntertainerAstronaut = 11,
+    EntertainerBandit = 12,
+    EntertainerSheriff = 13,
+    EntertainerPirate = 14,
+    IceCream = 15,
+    Chips = 16,
+    Burger = 17,
+    Drink = 18,
+    Balloon = 19,
+    Candyfloss = 20,
+    Umbrella = 21,
+    Pizza = 22,
+    SecurityAlt = 23,
+    Popcorn = 24,
+    ArmsCrossed = 25,
+    HeadDown = 26,
+    Nauseous = 27,
+    VeryNauseous = 28,
+    RequireToilet = 29,
+    Hat = 30,
+    HotDog = 31,
+    Tentacle = 32,
+    ToffeeApple = 33,
+    Doughnut = 34,
+    Coffee = 35,
+    Chicken = 36,
+    Lemonade = 37,
+    Watching = 38,
+    Pretzel = 39,
+    Sunglasses = 40,
+    SuJongkwa = 41,
+    Juice = 42,
+    FunnelCake = 43,
+    Noodles = 44,
+    Sausage = 45,
+    Soup = 46,
+    Sandwich = 47,
+    Count = 48,
 
-    PEEP_SPRITE_TYPE_INVALID = 255
+    Invalid = 255
 };
 
 // Flags used by peep->WindowInvalidateFlags
@@ -1036,7 +1037,7 @@ enum
 };
 
 // rct2: 0x00982708
-extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
+extern rct_peep_animation_entry g_peep_animation_entries[EnumValue(PeepSpriteType::Count)];
 extern const bool gSpriteTypeToSlowWalkMap[48];
 
 extern uint8_t gGuestChangeModifier;

@@ -1098,7 +1098,7 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo* dpi, rct_window* w)
         if (w->page == WINDOW_RIDE_PAGE_CUSTOMER)
             spriteIndex = w->picked_peep_frame & ~3;
 
-        spriteIndex += g_peep_animation_entries[PEEP_SPRITE_TYPE_NORMAL].sprite_animation->base_image;
+        spriteIndex += g_peep_animation_entries[EnumValue(PeepSpriteType::Normal)].sprite_animation->base_image;
         spriteIndex += 1;
         spriteIndex |= 0xA9E00000;
 

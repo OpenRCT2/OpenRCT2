@@ -70,46 +70,46 @@ namespace RCT1
     {
         static constexpr const PeepSpriteType map[] =
         {
-            PEEP_SPRITE_TYPE_NORMAL, // 0x00
-            PEEP_SPRITE_TYPE_HANDYMAN, // 0x01
-            PEEP_SPRITE_TYPE_MECHANIC, // 0x02
-            PEEP_SPRITE_TYPE_SECURITY, // 0x03
-            PEEP_SPRITE_TYPE_ENTERTAINER_PANDA, // 0x04
-            PEEP_SPRITE_TYPE_ENTERTAINER_TIGER, // 0x05
-            PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT, // 0x06
-            PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN, // 0x07
-            PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA, // 0x08
-            PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN, // 0x09
-            PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT, // 0x0A
-            PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT, // 0x0B
-            PEEP_SPRITE_TYPE_ICE_CREAM, // 0x0C
-            PEEP_SPRITE_TYPE_CHIPS, // 0x0D
-            PEEP_SPRITE_TYPE_BURGER, // 0x0E
-            PEEP_SPRITE_TYPE_DRINK, // 0x0F
-            PEEP_SPRITE_TYPE_BALLOON, // 0x10
-            PEEP_SPRITE_TYPE_CANDYFLOSS, // 0x11
-            PEEP_SPRITE_TYPE_UMBRELLA, // 0x12
-            PEEP_SPRITE_TYPE_PIZZA, // 0x13
-            PEEP_SPRITE_TYPE_SECURITY_ALT, // 0x14
-            PEEP_SPRITE_TYPE_POPCORN, // 0x15
-            PEEP_SPRITE_TYPE_ARMS_CROSSED, // 0x16
-            PEEP_SPRITE_TYPE_HEAD_DOWN, // 0x17
-            PEEP_SPRITE_TYPE_NAUSEOUS, // 0x18
-            PEEP_SPRITE_TYPE_VERY_NAUSEOUS, // 0x19
-            PEEP_SPRITE_TYPE_REQUIRE_TOILET, // 0x1A
-            PEEP_SPRITE_TYPE_HAT, // 0x1B
-            PEEP_SPRITE_TYPE_HOT_DOG, // 0x1C
-            PEEP_SPRITE_TYPE_TENTACLE, // 0x1D
-            PEEP_SPRITE_TYPE_TOFFEE_APPLE, // 0x1E
-            PEEP_SPRITE_TYPE_DOUGHNUT, // 0x1F
-            PEEP_SPRITE_TYPE_COFFEE, // 0x20
-            PEEP_SPRITE_TYPE_CHICKEN, // 0x21
-            PEEP_SPRITE_TYPE_LEMONADE, // 0x22
+            PeepSpriteType::Normal, // 0x00
+            PeepSpriteType::Handyman, // 0x01
+            PeepSpriteType::Mechanic, // 0x02
+            PeepSpriteType::Security, // 0x03
+            PeepSpriteType::EntertainerPanda, // 0x04
+            PeepSpriteType::EntertainerTiger, // 0x05
+            PeepSpriteType::EntertainerElephant, // 0x06
+            PeepSpriteType::EntertainerRoman, // 0x07
+            PeepSpriteType::EntertainerGorilla, // 0x08
+            PeepSpriteType::EntertainerSnowman, // 0x09
+            PeepSpriteType::EntertainerKnight, // 0x0A
+            PeepSpriteType::EntertainerAstronaut, // 0x0B
+            PeepSpriteType::IceCream, // 0x0C
+            PeepSpriteType::Chips, // 0x0D
+            PeepSpriteType::Burger, // 0x0E
+            PeepSpriteType::Drink, // 0x0F
+            PeepSpriteType::Balloon, // 0x10
+            PeepSpriteType::Candyfloss, // 0x11
+            PeepSpriteType::Umbrella, // 0x12
+            PeepSpriteType::Pizza, // 0x13
+            PeepSpriteType::SecurityAlt, // 0x14
+            PeepSpriteType::Popcorn, // 0x15
+            PeepSpriteType::ArmsCrossed, // 0x16
+            PeepSpriteType::HeadDown, // 0x17
+            PeepSpriteType::Nauseous, // 0x18
+            PeepSpriteType::VeryNauseous, // 0x19
+            PeepSpriteType::RequireToilet, // 0x1A
+            PeepSpriteType::Hat, // 0x1B
+            PeepSpriteType::HotDog, // 0x1C
+            PeepSpriteType::Tentacle, // 0x1D
+            PeepSpriteType::ToffeeApple, // 0x1E
+            PeepSpriteType::Doughnut, // 0x1F
+            PeepSpriteType::Coffee, // 0x20
+            PeepSpriteType::Chicken, // 0x21
+            PeepSpriteType::Lemonade, // 0x22
         };
         if (rct1SpriteType >= std::size(map))
         {
             log_warning("Unsupported RCT1 peep sprite type: %d.", rct1SpriteType);
-            return PEEP_SPRITE_TYPE_NORMAL;
+            return PeepSpriteType::Normal;
         }
         return map[rct1SpriteType];
     }

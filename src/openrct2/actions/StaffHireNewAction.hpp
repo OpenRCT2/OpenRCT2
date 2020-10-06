@@ -30,10 +30,10 @@
 
 /* rct2: 0x009929FC */
 static constexpr const PeepSpriteType spriteTypes[] = {
-    PEEP_SPRITE_TYPE_HANDYMAN,
-    PEEP_SPRITE_TYPE_MECHANIC,
-    PEEP_SPRITE_TYPE_SECURITY,
-    PEEP_SPRITE_TYPE_ENTERTAINER_PANDA,
+    PeepSpriteType::Handyman,
+    PeepSpriteType::Mechanic,
+    PeepSpriteType::Security,
+    PeepSpriteType::EntertainerPanda,
 };
 
 class StaffHireNewActionResult final : public GameActionResult
@@ -210,7 +210,7 @@ private:
             newPeep->Name = nullptr;
             newPeep->SpriteType = spriteType;
 
-            const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[spriteType].sprite_bounds;
+            const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[EnumValue(spriteType)].sprite_bounds;
             newPeep->sprite_width = spriteBounds->sprite_width;
             newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
             newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;

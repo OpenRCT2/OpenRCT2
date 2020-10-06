@@ -1049,7 +1049,7 @@ bool Staff::DoPathFinding()
 
 uint8_t Staff::GetCostume() const
 {
-    return SpriteType - PEEP_SPRITE_TYPE_ENTERTAINER_PANDA;
+    return EnumValue(SpriteType) - EnumValue(PeepSpriteType::EntertainerPanda);
 }
 
 void Staff::SetCostume(uint8_t value)
@@ -1061,7 +1061,7 @@ void Staff::SetCostume(uint8_t value)
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
 {
     uint8_t value = static_cast<uint8_t>(entertainerType);
-    PeepSpriteType newSpriteType = static_cast<PeepSpriteType>(value + PEEP_SPRITE_TYPE_ENTERTAINER_PANDA);
+    PeepSpriteType newSpriteType = static_cast<PeepSpriteType>(value + EnumValue(PeepSpriteType::EntertainerPanda));
     return newSpriteType;
 }
 
@@ -1796,9 +1796,9 @@ void Staff::Tick128UpdateStaff()
     if (AssignedStaffType != StaffType::Security)
         return;
 
-    PeepSpriteType newSpriteType = PEEP_SPRITE_TYPE_SECURITY_ALT;
+    PeepSpriteType newSpriteType = PeepSpriteType::SecurityAlt;
     if (State != PeepState::Patrolling)
-        newSpriteType = PEEP_SPRITE_TYPE_SECURITY;
+        newSpriteType = PeepSpriteType::Security;
 
     if (SpriteType == newSpriteType)
         return;
@@ -1810,7 +1810,7 @@ void Staff::Tick128UpdateStaff()
         Action = PeepActionType::None2;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    if (gSpriteTypeToSlowWalkMap[newSpriteType])
+    if (gSpriteTypeToSlowWalkMap[EnumValue(newSpriteType)])
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }

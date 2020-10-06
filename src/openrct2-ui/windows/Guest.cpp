@@ -761,7 +761,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
-    int32_t animationFrame = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
+    int32_t animationFrame = g_peep_animation_entries[EnumValue(peep->SpriteType)].sprite_animation->base_image + 1;
 
     int32_t animationFrameOffset = 0;
 
@@ -1163,7 +1163,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
         return;
     }
 
-    uint32_t imageId = g_peep_animation_entries[peep->SpriteType]
+    uint32_t imageId = g_peep_animation_entries[EnumValue(peep->SpriteType)]
                            .sprite_animation[EnumValue(PeepActionSpriteType::Ui)]
                            .base_image;
     imageId += w->picked_peep_frame >> 2;
