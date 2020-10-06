@@ -132,6 +132,8 @@ struct rct_widget
     }
 };
 
+using ViewportCoordsXY = ScreenCoordsXY;
+
 /**
  * Viewport structure
  */
@@ -140,13 +142,26 @@ struct rct_viewport
     int16_t width;
     int16_t height;
     ScreenCoordsXY pos;
-    ScreenCoordsXY viewPos;
+    ViewportCoordsXY viewPos;
     int16_t view_width;
     int16_t view_height;
     uint32_t flags;
     ZoomLevel zoom;
     uint8_t var_11;
     VisibilityCache visibility;
+
+    [[nodiscard]] constexpr bool Contains(const ViewportCoordsXY& vpos) const
+    {
+        return (
+            vpos.y >= viewPos.y && vpos.y < viewPos.y + view_height && vpos.x >= viewPos.x && vpos.x < viewPos.x + view_width);
+    }
+
+    [[nodiscard]] constexpr bool ContainsScreen(const ScreenCoordsXY& sPos) const
+    {
+        return (sPos.x >= pos.x && sPos.x < pos.x + width && sPos.y >= pos.y && sPos.y < pos.y + height);
+    }
+
+    [[nodiscard]] ViewportCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
 };
 
 /**

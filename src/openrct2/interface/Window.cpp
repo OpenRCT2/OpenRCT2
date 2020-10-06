@@ -914,7 +914,7 @@ void window_rotate_camera(rct_window* w, int32_t direction)
     // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
     if (!mapXYCoords || other != viewport)
     {
-        auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
+        auto viewPos = ViewportCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
 
         coords = viewport_adjust_for_map_height(viewPos);
     }
@@ -948,7 +948,7 @@ void window_viewport_get_map_coords_by_cursor(
     auto mouseCoords = context_get_cursor_position_scaled();
 
     // Compute map coordinate by mouse position.
-    auto viewportPos = screen_coord_to_viewport_coord(w->viewport, mouseCoords);
+    auto viewportPos = w->viewport->ScreenToViewportCoord(mouseCoords);
     auto coordsXYZ = viewport_adjust_for_map_height(viewportPos);
     auto mapCoords = viewport_coord_to_map_coord(viewportPos, coordsXYZ.z);
     *map_x = mapCoords.x;

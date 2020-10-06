@@ -693,8 +693,7 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
     if (viewport == nullptr || viewport->zoom >= 2)
         return nullptr;
 
-    screenCoords.x = ((screenCoords.x - viewport->pos.x) * viewport->zoom) + viewport->viewPos.x;
-    screenCoords.y = ((screenCoords.y - viewport->pos.y) * viewport->zoom) + viewport->viewPos.y;
+    auto viewportCoords = viewport->ScreenToViewportCoord(screenCoords);
 
     Peep* closestPeep = nullptr;
     auto closestDistance = std::numeric_limits<int32_t>::max();
@@ -703,8 +702,8 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
         if (peep->sprite_left == LOCATION_NULL)
             continue;
 
-        auto distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - screenCoords.x)
-            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - screenCoords.y);
+        auto distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - viewportCoords.x)
+            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - viewportCoords.y);
         if (distance > maxDistance)
             continue;
 
@@ -748,7 +747,7 @@ CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords)
         waterHeight = info.Element->AsSurface()->GetWaterHeight();
     }
 
-    auto initialVPPos = screen_coord_to_viewport_coord(viewport, screenCoords);
+    auto initialVPPos = viewport->ScreenToViewportCoord(screenCoords);
     CoordsXY mapPos = initialPos + CoordsXY{ 16, 16 };
 
     for (int32_t i = 0; i < 5; i++)
