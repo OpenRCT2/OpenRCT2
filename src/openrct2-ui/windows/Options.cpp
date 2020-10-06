@@ -1421,7 +1421,7 @@ static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetI
                     const char* devicename = OpenRCT2::Audio::GetDeviceName(dropdownIndex).c_str();
                     Mixer_Init(devicename);
                     SafeFree(gConfigSound.device);
-                    gConfigSound.device = strndup(devicename, AUDIO_DEVICE_NAME_SIZE);
+                    gConfigSound.device = strndup(devicename, OpenRCT2::Audio::MaxDeviceNameSize);
                 }
                 config_save_default();
                 OpenRCT2::Audio::PlayTitleMusic();

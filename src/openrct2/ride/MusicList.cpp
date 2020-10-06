@@ -63,7 +63,7 @@ namespace OpenRCT2::Audio
     }
 
     // 0x009AF1C8
-    RideMusicInfo gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS] = {
+    RideMusicInfo gRideMusicInfoList[MaxDefaultMusic] = {
         INIT_MUSIC_INFO(PATH_ID_CSS4, 1378),
         INIT_MUSIC_INFO(PATH_ID_CSS5, 1378),
         INIT_MUSIC_INFO(PATH_ID_CSS6, 1378),

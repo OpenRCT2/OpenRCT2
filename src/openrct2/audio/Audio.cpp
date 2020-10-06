@@ -48,11 +48,10 @@ namespace OpenRCT2::Audio
     void* gTitleMusicChannel = nullptr;
     void* gWeatherSoundChannel = nullptr;
 
-    RideMusic gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-    RideMusicParams gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
+    RideMusic gRideMusicList[MaxRideMusic];
+    RideMusicParams gRideMusicParamsList[MaxRideMusic];
     RideMusicParams* gRideMusicParamsListEnd;
-
-    VehicleSound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
+    VehicleSound gVehicleSoundList[MaxVehicleSounds];
 
     // clang-format off
     static int32_t SoundVolumeAdjust[RCT2SoundCount] =
@@ -123,7 +122,7 @@ namespace OpenRCT2::Audio
     };
     // clang-format on
 
-    static AudioParams audio_get_params_from_location(SoundId soundId, const CoordsXYZ& location);
+    static AudioParams GetParametersFromLocation(SoundId soundId, const CoordsXYZ& location);
 
     bool IsAvailable()
     {
@@ -188,7 +187,7 @@ namespace OpenRCT2::Audio
         if (!IsAvailable())
             return;
 
-        AudioParams params = audio_get_params_from_location(soundId, loc);
+        AudioParams params = GetParametersFromLocation(soundId, loc);
         if (params.in_range)
         {
             Play(soundId, params.volume, params.pan);
@@ -201,7 +200,7 @@ namespace OpenRCT2::Audio
      * @param location The location at which the sound effect is to be played.
      * @return The audio parameters to be used when playing this sound effect.
      */
-    static AudioParams audio_get_params_from_location(SoundId soundId, const CoordsXYZ& location)
+    static AudioParams GetParametersFromLocation(SoundId soundId, const CoordsXYZ& location)
     {
         int32_t volumeDown = 0;
         AudioParams params;
@@ -324,6 +323,11 @@ namespace OpenRCT2::Audio
     const std::string& GetDeviceName(int32_t index)
     {
         Guard::Assert(index >= 0 && index < GetDeviceCount());
+        if (index < 0 || index >= GetDeviceCount())
+        {
+            static std::string InvalidDevice = "Invalid Device";
+            return InvalidDevice;
+        }
         return _audioDevices[index];
     }
 
@@ -386,7 +390,7 @@ namespace OpenRCT2::Audio
         Close();
         for (auto& vehicleSound : gVehicleSoundList)
         {
-            vehicleSound.id = SOUND_ID_NULL;
+            vehicleSound.id = SoundIdNull;
         }
 
         _currentAudioDevice = device;
@@ -443,9 +447,9 @@ namespace OpenRCT2::Audio
 
         for (auto& vehicleSound : gVehicleSoundList)
         {
-            if (vehicleSound.id != SOUND_ID_NULL)
+            if (vehicleSound.id != SoundIdNull)
             {
-                vehicleSound.id = SOUND_ID_NULL;
+                vehicleSound.id = SoundIdNull;
                 if (vehicleSound.TrackSound.Id != SoundId::Null)
                 {
                     Mixer_Stop_Channel(vehicleSound.TrackSound.Channel);

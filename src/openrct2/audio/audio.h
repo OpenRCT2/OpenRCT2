@@ -16,13 +16,13 @@ struct CoordsXYZ;
 
 namespace OpenRCT2::Audio
 {
-#define AUDIO_DEVICE_NAME_SIZE 256
-#define AUDIO_MAX_RIDE_MUSIC 32
-#define AUDIO_MAX_VEHICLE_SOUNDS 14
-#define NUM_DEFAULT_MUSIC_TRACKS 46
+    constexpr size_t MaxDeviceNameSize = 256;
+    constexpr size_t MaxRideMusic = 32;
+    constexpr size_t MaxVehicleSounds = 14;
+    constexpr size_t MaxDefaultMusic = 46;
+    constexpr uint16_t SoundIdNull = 0xFFFF;
+
 #define AUDIO_PLAY_AT_CENTRE 0x8000
-#define AUDIO_PLAY_AT_LOCATION 0x8001
-#define SOUND_ID_NULL 0xFFFF
 
     enum class SoundId : uint8_t;
 
@@ -157,12 +157,12 @@ namespace OpenRCT2::Audio
     extern void* gTitleMusicChannel;
     extern void* gWeatherSoundChannel;
 
-    extern RideMusic gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
-    extern RideMusicInfo gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
-    extern RideMusicParams gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
+    extern RideMusic gRideMusicList[MaxRideMusic];
+    extern RideMusicInfo gRideMusicInfoList[MaxDefaultMusic];
+    extern RideMusicParams gRideMusicParamsList[MaxRideMusic];
     extern RideMusicParams* gRideMusicParamsListEnd;
 
-    extern VehicleSound gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
+    extern VehicleSound gVehicleSoundList[MaxVehicleSounds];
 
     /**
      * Returns false when no audio device is available or when audio is turned off, otherwise true.
