@@ -47,47 +47,15 @@ static void hybrid_rc_track_flat(
 {
     if (tileElement->AsTrack()->HasChain())
     {
-        switch (direction)
-        {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_FLAT + 0), 0, 0, 32, 20,
-                    3, height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_FLAT + 1), 0, 0, 32, 20,
-                    3, height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_FLAT + 2), 0, 0, 32, 20,
-                    3, height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_FLAT + 3), 0, 0, 32, 20,
-                    3, height, 0, 6, height);
-                break;
-        }
+        sub_98197C_rotated(
+            session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_FLAT + direction), 0, 0, 32, 20,
+            3, height, 0, 6, height);
     }
     else
     {
-        switch (direction)
-        {
-            case 0:
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_FLAT + 0), 0, 0, 32, 20, 3,
-                    height, 0, 6, height);
-                break;
-            case 1:
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_FLAT + 1), 0, 0, 32, 20, 3,
-                    height, 0, 6, height);
-                break;
-        }
+        sub_98197C_rotated(
+            session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_FLAT + (direction & 1)), 0, 0, 32,
+            20, 3, height, 0, 6, height);
     }
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -136,55 +104,15 @@ static void hybrid_rc_track_25_deg_up(
 {
     if (tileElement->AsTrack()->HasChain())
     {
-        switch (direction)
-        {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 8), 0, 0, 32,
-                    20, 2, height, 0, 6, height + 3);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 9), 0, 0, 32,
-                    20, 2, height, 0, 6, height + 3);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 10), 0, 0, 32,
-                    20, 2, height, 0, 6, height + 3);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 11), 0, 0, 32,
-                    20, 2, height, 0, 6, height + 3);
-                break;
-        }
+        sub_98197C_rotated(
+            session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + direction + 8), 0, 0,
+            32, 20, 2, height, 0, 6, height + 3);
     }
     else
     {
-        switch (direction)
-        {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 8), 0, 0, 32, 20, 2,
-                    height, 0, 6, height + 3);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 9), 0, 0, 32, 20, 2,
-                    height, 0, 6, height + 3);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 10), 0, 0, 32, 20,
-                    2, height, 0, 6, height + 3);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 11), 0, 0, 32, 20,
-                    2, height, 0, 6, height + 3);
-                break;
-        }
+        sub_98197C_rotated(
+            session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + direction + 8), 0, 0, 32,
+            20, 2, height, 0, 6, height + 3);
     }
     wooden_a_supports_paint_setup(
         session, direction & 1, 9 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -206,55 +134,15 @@ static void hybrid_rc_track_60_deg_up(
 {
     if (tileElement->AsTrack()->HasChain())
     {
-        switch (direction)
-        {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 12), 0, 0, 32,
-                    20, 3, height, 0, 6, height);
-                break;
-            case 1:
-                session->WoodenSupportsPrependTo = sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 13), 0, 0, 2,
-                    24, 93, height, 28, 4, height - 16);
-                break;
-            case 2:
-                session->WoodenSupportsPrependTo = sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 14), 0, 0, 2,
-                    24, 93, height, 28, 4, height - 16);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 15), 0, 0, 32,
-                    20, 3, height, 0, 6, height);
-                break;
-        }
+        sub_98197C_rotated(
+            session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + direction + 12), 0, 0,
+            32, 20, 3, height, 0, 6, height);
     }
     else
     {
-        switch (direction)
-        {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 12), 0, 0, 32, 20, 3,
-                    height, 0, 6, height);
-                break;
-            case 1:
-                session->WoodenSupportsPrependTo = sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 13), 0, 0, 2, 24, 93,
-                    height, 28, 4, height - 16);
-                break;
-            case 2:
-                session->WoodenSupportsPrependTo = sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 14), 0, 0, 2, 24, 93,
-                    height, 28, 4, height - 16);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 15), 0, 0, 32, 20, 3,
-                    height, 0, 6, height);
-                break;
-        }
+        sub_98197C_rotated(
+            session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_STEEP + direction + 12), 0, 0, 32,
+            20, 3, height, 0, 6, height);
     }
     wooden_a_supports_paint_setup(
         session, direction & 1, 21 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -276,55 +164,15 @@ static void hybrid_rc_track_flat_to_25_deg_up(
 {
     if (tileElement->AsTrack()->HasChain())
     {
-        switch (direction)
-        {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 0), 0, 0, 32,
-                    20, 3, height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 1), 0, 0, 32,
-                    20, 3, height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 2), 0, 0, 32,
-                    20, 3, height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 3), 0, 0, 32,
-                    20, 3, height, 0, 6, height);
-                break;
-        }
+        sub_98197C_rotated(
+            session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + direction), 0, 0, 32,
+            20, 3, height, 0, 6, height);
     }
     else
     {
-        switch (direction)
-        {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 0), 0, 0, 32, 20, 3,
-                    height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 1), 0, 0, 32, 20, 3,
-                    height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 2), 0, 0, 32, 20, 3,
-                    height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 3), 0, 0, 32, 20, 3,
-                    height, 0, 6, height);
-                break;
-        }
+        sub_98197C_rotated(
+            session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + direction), 0, 0, 32, 20, 3,
+            height, 0, 6, height);
     }
     wooden_a_supports_paint_setup(
         session, direction & 1, 1 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -511,55 +359,15 @@ static void hybrid_rc_track_25_deg_up_to_flat(
 {
     if (tileElement->AsTrack()->HasChain())
     {
-        switch (direction)
-        {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 4), 0, 0, 32,
-                    20, 3, height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 5), 0, 0, 32,
-                    20, 3, height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 6), 0, 0, 32,
-                    20, 3, height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + 7), 0, 0, 32,
-                    20, 3, height, 0, 6, height);
-                break;
-        }
+        sub_98197C_rotated(
+            session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_LIFT_TRACK_GENTLE + direction + 4), 0, 0,
+            32, 20, 3, height, 0, 6, height);
     }
     else
     {
-        switch (direction)
-        {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 4), 0, 0, 32, 20, 2,
-                    height, 0, 6, height + 3);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 5), 0, 0, 32, 20, 2,
-                    height, 0, 6, height + 3);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 6), 0, 0, 32, 20, 2,
-                    height, 0, 6, height + 3);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + 7), 0, 0, 32, 20, 2,
-                    height, 0, 6, height + 3);
-                break;
-        }
+        sub_98197C_rotated(
+            session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_GENTLE + direction + 4), 0, 0, 32,
+            20, 2, height, 0, 6, height + 3);
     }
     wooden_a_supports_paint_setup(
         session, direction & 1, 5 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -624,29 +432,9 @@ static void hybrid_rc_track_90_deg_up(
     switch (trackSequence)
     {
         case 0:
-            switch (direction)
-            {
-                case 0:
-                    sub_98197C_rotated(
-                        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 8), 0, 0, 2,
-                        20, 31, height, 4, 6, height + 8);
-                    break;
-                case 1:
-                    sub_98197C_rotated(
-                        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 9), 0, 0, 2,
-                        20, 31, height, 24, 6, height + 8);
-                    break;
-                case 2:
-                    sub_98197C_rotated(
-                        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 10), 0, 0, 2,
-                        20, 31, height, 24, 6, height + 8);
-                    break;
-                case 3:
-                    sub_98197C_rotated(
-                        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 11), 0, 0, 2,
-                        20, 31, height, 4, 6, height + 8);
-                    break;
-            }
+            sub_98197C_rotated(
+                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + direction + 8), 0, 0,
+                2, 20, 31, height, 4, 6, height + 8);
             paint_util_set_vertical_tunnel(session, height + 32);
             paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -670,29 +458,9 @@ static void hybrid_rc_track_60_deg_up_to_90_deg_up(
     switch (trackSequence)
     {
         case 0:
-            switch (direction)
-            {
-                case 0:
-                    sub_98197C_rotated(
-                        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 0), 0, 0, 32,
-                        20, 3, height, 0, 6, height);
-                    break;
-                case 1:
-                    sub_98197C_rotated(
-                        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 1), 0, 0, 2,
-                        20, 55, height, 24, 6, height);
-                    break;
-                case 2:
-                    sub_98197C_rotated(
-                        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 2), 0, 0, 2,
-                        20, 55, height, 24, 6, height);
-                    break;
-                case 3:
-                    sub_98197C_rotated(
-                        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 3), 0, 0, 32,
-                        20, 3, height, 0, 6, height);
-                    break;
-            }
+            sub_98197C_rotated(
+                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + direction), 0, 0, 32,
+                20, 3, height, 0, 6, height);
             wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             if (direction == 0 || direction == 3)
             {
@@ -718,29 +486,9 @@ static void hybrid_rc_track_90_deg_up_to_60_deg_up(
     paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    switch (direction)
-    {
-        case 0:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 4), 0, 0, 32, 20, 3,
-                height, 0, 6, height + 8);
-            break;
-        case 1:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 5), 0, 0, 2, 20, 31,
-                height, 24, 6, height + 8);
-            break;
-        case 2:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 6), 0, 0, 2, 20, 31,
-                height, 24, 6, height + 8);
-            break;
-        case 3:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 7), 0, 0, 32, 20, 3,
-                height, 0, 6, height + 8);
-            break;
-    }
+    sub_98197C_rotated(
+        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + direction + 4), 0, 0, 32, 20,
+        3, height, 0, 6, height + 8);
     switch (direction)
     {
         case 1:
@@ -10380,21 +10128,9 @@ static void hybrid_rc_track_brakes(
     paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BRAKE + 0), 0, 0, 32, 20, 3,
-                height, 0, 6, height);
-            break;
-        case 1:
-        case 3:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BRAKE + 1), 0, 0, 32, 20, 3,
-                height, 0, 6, height);
-            break;
-    }
+    sub_98197C_rotated(
+        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BRAKE + (direction & 1)), 0, 0, 32, 20,
+        3, height, 0, 6, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
@@ -10406,33 +10142,10 @@ static void hybrid_rc_track_on_ride_photo(
     paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    switch (direction)
-    {
-        case 0:
-            sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_FLAT + 0), 0, 0, 32, 20, 0,
-                height, 0, 6, height + 3);
-            break;
-        case 1:
-            sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_FLAT + 1), 0, 0, 32, 20, 0,
-                height, 0, 6, height + 3);
-            break;
-        case 2:
-            sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_FLAT + 0), 0, 0, 32, 20, 0,
-                height, 0, 6, height + 3);
-            break;
-        case 3:
-            sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_FLAT + 1), 0, 0, 32, 20, 0,
-                height, 0, 6, height + 3);
-            break;
-    }
+    sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+    sub_98197C_rotated(
+        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_FLAT + direction), 0, 0, 32, 20, 0,
+        height, 0, 6, height + 3);
     track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -10740,21 +10453,9 @@ static void hybrid_rc_track_block_brakes(
     paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BLOCK_BRAKE + 0), 0, 0, 32, 20,
-                3, height, 0, 6, height);
-            break;
-        case 1:
-        case 3:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BLOCK_BRAKE + 1), 0, 0, 32, 20,
-                3, height, 0, 6, height);
-            break;
-    }
+    sub_98197C_rotated(
+        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BLOCK_BRAKE + (direction & 1)), 0, 0, 32,
+        20, 3, height, 0, 6, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
@@ -10765,21 +10466,9 @@ static void hybrid_rc_track_booster(
     paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BOOSTER + 0), 0, 0, 32, 20, 3,
-                height, 0, 6, height);
-            break;
-        case 1:
-        case 3:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BOOSTER + 1), 0, 0, 32, 20, 3,
-                height, 0, 6, height);
-            break;
-    }
+    sub_98197C_rotated(
+        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_BOOSTER + (direction & 1)), 0, 0, 32, 20,
+        3, height, 0, 6, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
@@ -10790,29 +10479,9 @@ static void hybrid_rc_track_powered_lift(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    switch (direction)
-    {
-        case 0:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_POWERED_LIFT + 0), 0, 0, 32, 20,
-                3, height, 0, 6, height);
-            break;
-        case 1:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_POWERED_LIFT + 1), 0, 0, 32, 20,
-                3, height, 0, 6, height);
-            break;
-        case 2:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_POWERED_LIFT + 2), 0, 0, 32, 20,
-                3, height, 0, 6, height);
-            break;
-        case 3:
-            sub_98197C_rotated(
-                session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_POWERED_LIFT + 3), 0, 0, 32, 20,
-                3, height, 0, 6, height);
-            break;
-    }
+    sub_98197C_rotated(
+        session, direction, hybrid_rc_get_track_colour(session) | (SPR_G2_HYBRID_TRACK_POWERED_LIFT + direction), 0, 0, 32, 20,
+        3, height, 0, 6, height);
     wooden_a_supports_paint_setup(
         session, direction & 1, 9 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     if (direction == 0 || direction == 3)
