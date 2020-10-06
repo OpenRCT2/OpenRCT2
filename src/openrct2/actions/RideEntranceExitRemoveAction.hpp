@@ -94,9 +94,6 @@ public:
             if (tileElement->AsEntrance()->GetStationIndex() != _stationNum)
                 continue;
 
-            if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(tileElement->IsGhost()))
-                continue;
-
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
@@ -110,7 +107,12 @@ public:
             break;
         } while (!(tileElement++)->IsLastForTile());
 
-        if (!found)
+        // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
+        if (found && (GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(tileElement->IsGhost()))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+        else if (!found)
         {
             log_warning(
                 "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y,
@@ -154,9 +156,6 @@ public:
             if (tileElement->AsEntrance()->GetStationIndex() != _stationNum)
                 continue;
 
-            if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !tileElement->IsGhost())
-                continue;
-
             if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
@@ -170,7 +169,12 @@ public:
             break;
         } while (!(tileElement++)->IsLastForTile());
 
-        if (!found)
+        // If we are trying to remove a ghost and the element we found is real, return an error, but don't log a warning
+        if (found && (GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(tileElement->IsGhost()))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+        }
+        else if (!found)
         {
             log_warning(
                 "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y,
