@@ -157,7 +157,7 @@ rct_window* window_save_prompt_open()
     if (network_get_mode() == NETWORK_MODE_NONE)
     {
         gGamePaused |= GAME_PAUSED_MODAL;
-        audio_stop_all_music_and_sounds();
+        OpenRCT2::Audio::StopAll();
     }
 
     window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -183,7 +183,7 @@ static void window_save_prompt_close(rct_window* w)
     if (network_get_mode() == NETWORK_MODE_NONE)
     {
         gGamePaused &= ~GAME_PAUSED_MODAL;
-        audio_unpause_sounds();
+        OpenRCT2::Audio::Resume();
     }
 
     window_invalidate_by_class(WC_TOP_TOOLBAR);

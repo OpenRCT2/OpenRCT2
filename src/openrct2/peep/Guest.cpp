@@ -890,7 +890,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         {
             if (State == PeepState::Walking || State == PeepState::Sitting)
             {
-                audio_play_sound_at_location(SoundId::Crash, { x, y, z });
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Crash, { x, y, z });
 
                 sprite_misc_explosion_cloud_create({ x, y, z + 16 });
                 sprite_misc_explosion_flare_create({ x, y, z + 16 });
@@ -1828,11 +1828,13 @@ void Guest::OnExitRide(ride_id_t rideIndex)
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_WAS_GREAT, rideIndex);
 
-        SoundId laughs[3] = { SoundId::Laugh1, SoundId::Laugh2, SoundId::Laugh3 };
+        static constexpr OpenRCT2::Audio::SoundId laughs[3] = { OpenRCT2::Audio::SoundId::Laugh1,
+                                                                OpenRCT2::Audio::SoundId::Laugh2,
+                                                                OpenRCT2::Audio::SoundId::Laugh3 };
         int32_t laughType = scenario_rand() & 7;
         if (laughType < 3)
         {
-            audio_play_sound_at_location(laughs[laughType], { x, y, z });
+            OpenRCT2::Audio::Play3D(laughs[laughType], { x, y, z });
         }
     }
 
@@ -2369,7 +2371,7 @@ void Guest::SpendMoney(money16& peep_expend_type, money32 amount, ExpenditureTyp
         }
     }
 
-    audio_play_sound_at_location(SoundId::Purchase, { x, y, z });
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Purchase, { x, y, z });
 }
 
 void Guest::SetHasRidden(const Ride* ride)
@@ -5102,7 +5104,7 @@ void Guest::UpdateRideShopInteract()
     // Do not play toilet flush sound on title screen as it's considered loud and annoying
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
     {
-        audio_play_sound_at_location(SoundId::ToiletFlush, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::ToiletFlush, { x, y, z });
     }
 
     RideSubState = PeepRideSubState::LeaveShop;
@@ -6852,7 +6854,7 @@ void Guest::UpdateSpriteType()
             if ((scenario_rand() & 0xFFFF) <= 13107)
             {
                 isBalloonPopped = true;
-                audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BalloonPop, { x, y, z });
             }
             create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }

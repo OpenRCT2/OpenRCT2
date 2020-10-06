@@ -885,7 +885,7 @@ void window_scenery_scrollmousedown(rct_window* w, int32_t scrollIndex, const Sc
 
     gWindowSceneryPaintEnabled &= 0xFE;
     gWindowSceneryEyedropperEnabled = false;
-    audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     w->scenery.hover_counter = -16;
     gSceneryPlaceCost = MONEY32_UNDEFINED;
     w->Invalidate();
@@ -1377,7 +1377,7 @@ bool window_scenery_set_selected_item(const ScenerySelection& scenery)
             gWindowSceneryActiveTabIndex = tabIndex;
             gWindowSceneryTabSelections[tabIndex] = scenery;
 
-            audio_play_sound(SoundId::Click1, 0, context_get_width() / 2);
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, context_get_width() / 2);
             w->scenery.hover_counter = -16;
             gSceneryPlaceCost = MONEY32_UNDEFINED;
             w->Invalidate();

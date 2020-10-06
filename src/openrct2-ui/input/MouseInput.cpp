@@ -1052,7 +1052,7 @@ static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w,
         default:
             if (widget_is_enabled(w, widgetIndex) && !widget_is_disabled(w, widgetIndex))
             {
-                audio_play_sound(SoundId::Click1, 0, w->windowPos.x + widget->midX());
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget->midX());
 
                 // Set new cursor down widget
                 gPressedWidget.window_classification = windowClass;
@@ -1337,7 +1337,7 @@ void input_state_widget_pressed(
 
             {
                 int32_t mid_point_x = widget->midX() + w->windowPos.x;
-                audio_play_sound(SoundId::Click2, 0, mid_point_x);
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click2, 0, mid_point_x);
             }
             if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                 break;

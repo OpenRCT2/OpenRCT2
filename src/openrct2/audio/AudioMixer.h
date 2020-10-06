@@ -15,10 +15,10 @@
 #define MIXER_LOOP_NONE 0
 #define MIXER_LOOP_INFINITE (-1)
 
-enum class SoundId : uint8_t;
-
 namespace OpenRCT2::Audio
 {
+    enum class SoundId : uint8_t;
+
     enum class MixerGroup : int32_t
     {
         Sound,
@@ -58,7 +58,8 @@ namespace OpenRCT2::Audio
 #endif
 
 void Mixer_Init(const char* device);
-void* Mixer_Play_Effect(SoundId id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone);
+void* Mixer_Play_Effect(
+    OpenRCT2::Audio::SoundId id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone);
 void Mixer_Stop_Channel(void* channel);
 void Mixer_Channel_Volume(void* channel, int32_t volume);
 void Mixer_Channel_Pan(void* channel, float pan);

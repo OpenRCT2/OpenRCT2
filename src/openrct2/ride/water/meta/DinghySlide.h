@@ -48,7 +48,7 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 15, 24, 5, 7, }),
     SET_FIELD(MaxMass, 5),
-    SET_FIELD(LiftData, { SoundId::LiftFrictionWheels, 4, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftFrictionWheels, 4, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_dinghy_slide),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 4, 3, 10 }),

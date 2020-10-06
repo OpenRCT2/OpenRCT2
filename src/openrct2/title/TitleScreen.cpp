@@ -125,13 +125,13 @@ void TitleScreen::Load()
     gCurrentLoadedPath = "";
 
     network_close();
-    audio_stop_all_music_and_sounds();
+    OpenRCT2::Audio::StopAll();
     GetContext()->GetGameState()->InitAll(150);
     viewport_init_all();
     context_open_window(WC_MAIN_WINDOW);
     CreateWindows();
     TitleInitialise();
-    audio_start_title_music();
+    OpenRCT2::Audio::PlayTitleMusic();
 
     if (gOpenRCT2ShowChangelog)
     {

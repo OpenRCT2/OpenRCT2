@@ -1819,7 +1819,7 @@ static void window_ride_construction_construct(rct_window* w)
     {
         return;
     }
-    audio_play_sound_at_location(SoundId::PlaceItem, trackPos);
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackPos);
 
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
@@ -3777,7 +3777,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                     || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND || errorText == STR_TOO_HIGH_FOR_SUPPORTS
                     || zAttempts == (numAttempts - 1) || z < 0)
                 {
-                    audio_play_sound(SoundId::Error, 0, state->position.x);
+                    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
                     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
                     if (w != nullptr)
                     {
@@ -3795,7 +3795,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             else
             {
                 window_close_by_class(WC_ERROR);
-                audio_play_sound_at_location(SoundId::PlaceItem, _currentTrackBegin);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, _currentTrackBegin);
                 break;
             }
         }
@@ -3849,7 +3849,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                 _currentTrackAlternative = saveCurrentTrackAlternative;
                 _currentTrackLiftHill = saveCurrentTrackLiftHill;
 
-                audio_play_sound(SoundId::Error, 0, state->position.x);
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, state->position.x);
                 break;
             }
 
@@ -3885,7 +3885,7 @@ static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& scree
         if (result->Error != GA_ERROR::OK)
             return;
 
-        audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
         auto ride = get_ride(gRideEntranceExitPlaceRideIndex);
         if (ride != nullptr && ride_are_all_possible_entrances_and_exits_built(ride))

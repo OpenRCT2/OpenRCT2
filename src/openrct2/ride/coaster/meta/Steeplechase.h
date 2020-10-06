@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor SteeplechaseRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 14, 24, 7, 7, }),
     SET_FIELD(MaxMass, 4),
-    SET_FIELD(LiftData, { SoundId::LiftClassic, 4, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 4, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_steeplechase),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),

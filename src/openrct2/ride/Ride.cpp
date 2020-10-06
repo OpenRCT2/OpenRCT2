@@ -2833,7 +2833,7 @@ static void ride_music_update(Ride* ride)
     // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
     if (ride->music_tune_id == 255)
     {
-        const auto& musicStyleTunes = gRideMusicStyleTuneIds[ride->music];
+        const auto& musicStyleTunes = OpenRCT2::Audio::gRideMusicStyleTuneIds[ride->music];
         auto numTunes = musicStyleTunes.size();
         ride->music_tune_id = musicStyleTunes[util_rand() % numTunes];
         ride->music_position = 0;
@@ -3451,10 +3451,10 @@ void ride_set_map_tooltip(TileElement* tileElement)
 static int32_t ride_music_params_update_label_51(
     uint32_t a1, uint8_t* tuneId, Ride* ride, int32_t v32, int32_t pan_x, uint16_t sampleRate)
 {
-    if (a1 < gRideMusicInfoList[*tuneId].length)
+    if (a1 < OpenRCT2::Audio::gRideMusicInfoList[*tuneId].length)
     {
-        rct_ride_music_params* ride_music_params = gRideMusicParamsListEnd;
-        if (ride_music_params < &gRideMusicParamsList[std::size(gRideMusicParamsList)])
+        OpenRCT2::Audio::RideMusicParams* ride_music_params = OpenRCT2::Audio::gRideMusicParamsListEnd;
+        if (ride_music_params < &OpenRCT2::Audio::gRideMusicParamsList[std::size(OpenRCT2::Audio::gRideMusicParamsList)])
         {
             ride_music_params->ride_id = ride->id;
             ride_music_params->tune_id = *tuneId;
@@ -3462,7 +3462,7 @@ static int32_t ride_music_params_update_label_51(
             ride_music_params->volume = v32;
             ride_music_params->pan = pan_x;
             ride_music_params->frequency = sampleRate;
-            gRideMusicParamsListEnd++;
+            OpenRCT2::Audio::gRideMusicParamsListEnd++;
         }
 
         return a1;
@@ -3476,7 +3476,7 @@ static int32_t ride_music_params_update_label_51(
 
 static int32_t ride_music_params_update_label_58(uint32_t position, uint8_t* tuneId)
 {
-    rct_ride_music_info* ride_music_info = &gRideMusicInfoList[*tuneId];
+    OpenRCT2::Audio::RideMusicInfo* ride_music_info = &OpenRCT2::Audio::gRideMusicInfoList[*tuneId];
     position += ride_music_info->offset;
     if (position < ride_music_info->length)
     {
@@ -3505,7 +3505,8 @@ static int32_t ride_music_params_update_label_58(uint32_t position, uint8_t* tun
 int32_t ride_music_params_update(
     const CoordsXYZ& rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId)
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != nullptr)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !OpenRCT2::Audio::gGameSoundsOff
+        && g_music_tracking_viewport != nullptr)
     {
         const ScreenCoordsXY rotatedCoords = translate_3d_to_2d_with_z(get_current_rotation(), rideCoords);
         rct_viewport* viewport = g_music_tracking_viewport;
@@ -3584,13 +3585,13 @@ int32_t ride_music_params_update(
         {
             vol1 = vol2;
         }
-        if (vol1 < gVolumeAdjustZoom * 3)
+        if (vol1 < OpenRCT2::Audio::gVolumeAdjustZoom * 3)
         {
             vol1 = 0;
         }
         else
         {
-            vol1 = vol1 - (gVolumeAdjustZoom * 3);
+            vol1 = vol1 - (OpenRCT2::Audio::gVolumeAdjustZoom * 3);
         }
         int32_t v32 = -((static_cast<uint8_t>(-vol1 - 1) * static_cast<uint8_t>(-vol1 - 1)) / 16) - 700;
         if (vol1 && v32 >= -4000)
@@ -3603,7 +3604,7 @@ int32_t ride_music_params_update(
             {
                 pan_x = -10000;
             }
-            rct_ride_music* ride_music = &gRideMusicList[0];
+            OpenRCT2::Audio::RideMusic* ride_music = &OpenRCT2::Audio::gRideMusicList[0];
             int32_t channel = 0;
             uint32_t a1;
             while (ride_music->ride_id != ride->id || ride_music->tune_id != *tuneId)
@@ -3612,19 +3613,19 @@ int32_t ride_music_params_update(
                 channel++;
                 if (channel >= AUDIO_MAX_RIDE_MUSIC)
                 {
-                    rct_ride_music_info* ride_music_info = &gRideMusicInfoList[*tuneId];
+                    OpenRCT2::Audio::RideMusicInfo* ride_music_info = &OpenRCT2::Audio::gRideMusicInfoList[*tuneId];
                     a1 = position + ride_music_info->offset;
 
                     return ride_music_params_update_label_51(a1, tuneId, ride, v32, pan_x, sampleRate);
                 }
             }
-            int32_t playing = Mixer_Channel_IsPlaying(gRideMusicList[channel].sound_channel);
+            int32_t playing = Mixer_Channel_IsPlaying(OpenRCT2::Audio::gRideMusicList[channel].sound_channel);
             if (!playing)
             {
                 *tuneId = 0xFF;
                 return 0;
             }
-            a1 = static_cast<uint32_t>(Mixer_Channel_GetOffset(gRideMusicList[channel].sound_channel));
+            a1 = static_cast<uint32_t>(Mixer_Channel_GetOffset(OpenRCT2::Audio::gRideMusicList[channel].sound_channel));
 
             return ride_music_params_update_label_51(a1, tuneId, ride, v32, pan_x, sampleRate);
         }
@@ -3646,17 +3647,17 @@ void ride_music_update_final()
         return;
 
     // TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
-    if (gGameSoundsOff || !gConfigSound.ride_music_enabled)
+    if (OpenRCT2::Audio::gGameSoundsOff || !gConfigSound.ride_music_enabled)
         return;
 
     // Stop currently playing music that is not in music params list or not playing?
-    for (auto& rideMusic : gRideMusicList)
+    for (auto& rideMusic : OpenRCT2::Audio::gRideMusicList)
     {
         if (rideMusic.ride_id != RIDE_ID_NULL)
         {
-            rct_ride_music_params* rideMusicParams = &gRideMusicParamsList[0];
+            OpenRCT2::Audio::RideMusicParams* rideMusicParams = &OpenRCT2::Audio::gRideMusicParamsList[0];
             int32_t isPlaying = 0;
-            while (rideMusicParams < gRideMusicParamsListEnd && !isPlaying)
+            while (rideMusicParams < OpenRCT2::Audio::gRideMusicParamsListEnd && !isPlaying)
             {
                 if (rideMusicParams->ride_id == rideMusic.ride_id && rideMusicParams->tune_id == rideMusic.tune_id)
                 {
@@ -3674,12 +3675,12 @@ void ride_music_update_final()
     }
 
     int32_t freeChannelIndex = 0;
-    for (rct_ride_music_params* rideMusicParams = &gRideMusicParamsList[0]; rideMusicParams < gRideMusicParamsListEnd;
-         rideMusicParams++)
+    for (auto* rideMusicParams = &OpenRCT2::Audio::gRideMusicParamsList[0];
+         rideMusicParams < OpenRCT2::Audio::gRideMusicParamsListEnd; rideMusicParams++)
     {
         if (rideMusicParams->ride_id != RIDE_ID_NULL)
         {
-            rct_ride_music* rideMusic = &gRideMusicList[0];
+            auto* rideMusic = &OpenRCT2::Audio::gRideMusicList[0];
             int32_t channelIndex = 0;
             // Look for existing entry, if not found start playing the sound, otherwise update parameters.
             while (rideMusicParams->ride_id != rideMusic->ride_id || rideMusicParams->tune_id != rideMusic->tune_id)
@@ -3692,8 +3693,8 @@ void ride_music_update_final()
                 channelIndex++;
                 if (channelIndex >= AUDIO_MAX_RIDE_MUSIC)
                 {
-                    rct_ride_music_info* ride_music_info = &gRideMusicInfoList[rideMusicParams->tune_id];
-                    rct_ride_music* ride_music_3 = &gRideMusicList[freeChannelIndex];
+                    auto* ride_music_info = &OpenRCT2::Audio::gRideMusicInfoList[rideMusicParams->tune_id];
+                    auto* ride_music_3 = &OpenRCT2::Audio::gRideMusicList[freeChannelIndex];
                     ride_music_3->sound_channel = Mixer_Play_Music(ride_music_info->path_id, MIXER_LOOP_NONE, true);
                     if (ride_music_3->sound_channel)
                     {
@@ -4398,13 +4399,13 @@ static Vehicle* vehicle_create_car(
     vehicle->spin_sprite = 0;
     vehicle->spin_speed = 0;
     vehicle->sound2_flags = 0;
-    vehicle->sound1_id = SoundId::Null;
-    vehicle->sound2_id = SoundId::Null;
+    vehicle->sound1_id = OpenRCT2::Audio::SoundId::Null;
+    vehicle->sound2_id = OpenRCT2::Audio::SoundId::Null;
     vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
     vehicle->var_C4 = 0;
     vehicle->animation_frame = 0;
     vehicle->var_C8 = 0;
-    vehicle->scream_sound_id = SoundId::Null;
+    vehicle->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
     vehicle->vehicle_sprite_type = 0;
     vehicle->bank_rotation = 0;
     vehicle->target_seat_rotation = 4;

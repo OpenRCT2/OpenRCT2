@@ -445,9 +445,9 @@ namespace OpenRCT2
 
             if (!gOpenRCT2Headless)
             {
-                audio_init();
-                audio_populate_devices();
-                audio_init_ride_sounds_and_info();
+                Init();
+                PopulateDevices();
+                InitRideSoundsAndInfo();
                 gGameSoundsOff = !gConfigSound.master_sound_enabled;
             }
 

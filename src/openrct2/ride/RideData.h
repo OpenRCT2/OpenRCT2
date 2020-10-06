@@ -96,7 +96,7 @@ struct RideHeights
 
 struct rct_ride_lift_data
 {
-    SoundId sound_id;
+    OpenRCT2::Audio::SoundId sound_id;
     uint8_t minimum_speed;
     uint8_t maximum_speed;
 };
@@ -327,7 +327,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 12, 64, 0, 0, }),
     SET_FIELD(MaxMass, 255),
-    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, nullptr),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),

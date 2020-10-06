@@ -325,7 +325,7 @@ static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollI
                 mutableScreenCoords.y -= scenarioItemHeight;
                 if (mutableScreenCoords.y < 0 && !listItem.scenario.is_locked)
                 {
-                    audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
+                    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
                     gFirstTimeSaving = true;
                     _callback(listItem.scenario.scenario->path);
                     if (_titleEditor)

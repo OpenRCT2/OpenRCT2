@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor CorkscrewRollerCoasterRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 28, 24, 8, 11, }),
     SET_FIELD(MaxMass, 18),
-    SET_FIELD(LiftData, { SoundId::LiftArrow, 4, 6 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftArrow, 4, 6 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_corkscrew_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 11, 3, 10 }),

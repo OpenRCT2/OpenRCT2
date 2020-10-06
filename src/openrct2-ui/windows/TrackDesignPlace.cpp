@@ -341,7 +341,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
                 if (ride != nullptr)
                 {
                     window_close_by_class(WC_ERROR);
-                    audio_play_sound_at_location(SoundId::PlaceItem, trackLoc);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackLoc);
 
                     _currentRideIndex = result->rideIndex;
                     if (track_design_are_entrance_and_exit_placed())
@@ -362,7 +362,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
             }
             else
             {
-                audio_play_sound_at_location(SoundId::Error, result->Position);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, result->Position);
             }
         });
         GameActions::Execute(&tdAction);
@@ -370,7 +370,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     }
 
     // Unable to build track
-    audio_play_sound_at_location(SoundId::Error, trackLoc);
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, trackLoc);
 
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->ShowError(res->GetErrorTitle(), res->GetErrorMessage());

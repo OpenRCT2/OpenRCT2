@@ -1338,9 +1338,9 @@ static void window_options_audio_mouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_MASTER_SOUND_CHECKBOX:
             gConfigSound.master_sound_enabled = !gConfigSound.master_sound_enabled;
             if (!gConfigSound.master_sound_enabled)
-                audio_pause_sounds();
+                OpenRCT2::Audio::Pause();
             else
-                audio_unpause_sounds();
+                OpenRCT2::Audio::Resume();
             window_invalidate_by_class(WC_TOP_TOOLBAR);
             config_save_default();
             w->Invalidate();
@@ -1350,7 +1350,7 @@ static void window_options_audio_mouseup(rct_window* w, rct_widgetindex widgetIn
             gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
             if (!gConfigSound.ride_music_enabled)
             {
-                audio_stop_ride_music();
+                OpenRCT2::Audio::StopRideMusic();
             }
             config_save_default();
             w->Invalidate();
@@ -1371,18 +1371,18 @@ static void window_options_audio_mousedown(rct_window* w, rct_widgetindex widget
     switch (widgetIndex)
     {
         case WIDX_SOUND_DROPDOWN:
-            audio_populate_devices();
+            OpenRCT2::Audio::PopulateDevices();
 
             // populate the list with the sound devices
-            for (size_t i = 0; static_cast<int32_t>(i) < audio_get_device_count(); i++)
+            for (int32_t i = 0; i < OpenRCT2::Audio::GetDeviceCount(); i++)
             {
                 gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(audio_get_device_name(i).c_str());
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(OpenRCT2::Audio::GetDeviceName(i).c_str());
             }
 
-            window_options_show_dropdown(w, widget, audio_get_device_count());
+            window_options_show_dropdown(w, widget, OpenRCT2::Audio::GetDeviceCount());
 
-            dropdown_set_checked(audio_get_device_index(), true);
+            dropdown_set_checked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
             break;
         case WIDX_TITLE_MUSIC_DROPDOWN:
             uint32_t num_items = 4;
@@ -1408,8 +1408,8 @@ static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetI
     switch (widgetIndex)
     {
         case WIDX_SOUND_DROPDOWN:
-            audio_init_ride_sounds(dropdownIndex);
-            if (dropdownIndex < audio_get_device_count())
+            OpenRCT2::Audio::InitRideSounds(dropdownIndex);
+            if (dropdownIndex < OpenRCT2::Audio::GetDeviceCount())
             {
                 if (dropdownIndex == 0)
                 {
@@ -1418,13 +1418,13 @@ static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetI
                 }
                 else
                 {
-                    const char* devicename = audio_get_device_name(dropdownIndex).c_str();
+                    const char* devicename = OpenRCT2::Audio::GetDeviceName(dropdownIndex).c_str();
                     Mixer_Init(devicename);
                     SafeFree(gConfigSound.device);
                     gConfigSound.device = strndup(devicename, AUDIO_DEVICE_NAME_SIZE);
                 }
                 config_save_default();
-                audio_start_title_music();
+                OpenRCT2::Audio::PlayTitleMusic();
             }
             w->Invalidate();
             break;
@@ -1440,9 +1440,9 @@ static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetI
                 w->Invalidate();
             }
 
-            audio_stop_title_music();
+            OpenRCT2::Audio::StopTitleMusic();
             if (dropdownIndex != 0)
-                audio_start_title_music();
+                OpenRCT2::Audio::PlayTitleMusic();
             break;
     }
 }
@@ -1513,7 +1513,7 @@ static void window_options_audio_invalidate(rct_window* w)
     // Sound device
     rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
     const char* audioDeviceName = nullptr;
-    const int32_t currentDeviceIndex = audio_get_device_index();
+    const int32_t currentDeviceIndex = OpenRCT2::Audio::GetCurrentDeviceIndex();
     if (currentDeviceIndex == -1)
     {
         audioDeviceStringId = STR_SOUND_NONE;
@@ -1529,7 +1529,7 @@ static void window_options_audio_invalidate(rct_window* w)
 #endif // __linux__
         if (audioDeviceStringId == STR_STRING)
         {
-            audioDeviceName = audio_get_device_name(currentDeviceIndex).c_str();
+            audioDeviceName = OpenRCT2::Audio::GetDeviceName(currentDeviceIndex).c_str();
         }
     }
 

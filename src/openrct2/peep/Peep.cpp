@@ -641,9 +641,11 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     // Create sick at location
     litter_create({ x, y, z, sprite_direction }, (sprite_index & 1) ? LITTER_TYPE_SICK_ALT : LITTER_TYPE_SICK);
 
-    SoundId coughs[4] = { SoundId::Cough1, SoundId::Cough2, SoundId::Cough3, SoundId::Cough4 };
+    static constexpr OpenRCT2::Audio::SoundId coughs[4] = { OpenRCT2::Audio::SoundId::Cough1, OpenRCT2::Audio::SoundId::Cough2,
+                                                            OpenRCT2::Audio::SoundId::Cough3,
+                                                            OpenRCT2::Audio::SoundId::Cough4 };
     auto soundId = coughs[scenario_rand() & 3];
-    audio_play_sound_at_location(soundId, { x, y, z });
+    OpenRCT2::Audio::Play3D(soundId, { x, y, z });
 
     return { { x, y } };
 }
@@ -1325,7 +1327,7 @@ void peep_stop_crowd_noise()
  */
 void peep_update_crowd_noise()
 {
-    if (gGameSoundsOff)
+    if (OpenRCT2::Audio::gGameSoundsOff)
         return;
 
     if (!gConfigSound.sound_enabled)
@@ -1423,7 +1425,7 @@ void peep_applause()
     }
 
     // Play applause noise
-    audio_play_sound(SoundId::Applause, 0, context_get_width() / 2);
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Applause, 0, context_get_width() / 2);
 }
 
 /**

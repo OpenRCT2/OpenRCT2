@@ -361,7 +361,7 @@ void Duck::Update()
 
 void duck_press(Duck* duck)
 {
-    audio_play_sound_at_location(SoundId::Quack, { duck->x, duck->y, duck->z });
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Quack, { duck->x, duck->y, duck->z });
 }
 
 void duck_remove_all()

@@ -4976,9 +4976,9 @@ static void window_ride_music_mousedown(rct_window* w, rct_widgetindex widgetInd
         for (size_t n = 0; n < std::size(MusicStyleOrder); n++)
             window_ride_current_music_style_order[numItems++] = MusicStyleOrder[n];
 
-        if (gRideMusicInfoList[36].length != 0)
+        if (OpenRCT2::Audio::gRideMusicInfoList[36].length != 0)
             window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_1;
-        if (gRideMusicInfoList[37].length != 0)
+        if (OpenRCT2::Audio::gRideMusicInfoList[37].length != 0)
             window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_2;
     }
 
@@ -5099,7 +5099,7 @@ static void cancel_scenery_selection()
 {
     gGamePaused &= ~GAME_PAUSED_SAVING_TRACK;
     gTrackDesignSaveMode = false;
-    audio_unpause_sounds();
+    OpenRCT2::Audio::Resume();
 
     rct_window* main_w = window_get_main();
 
@@ -5132,7 +5132,7 @@ static void setup_scenery_selection(rct_window* w)
     gGamePaused |= GAME_PAUSED_SAVING_TRACK;
     gTrackDesignSaveMode = true;
 
-    audio_stop_all_music_and_sounds();
+    OpenRCT2::Audio::StopAll();
 
     rct_window* w_main = window_get_main();
 

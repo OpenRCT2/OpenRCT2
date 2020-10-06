@@ -128,7 +128,7 @@ private:
 
         if (isExecuting && hasChanged)
         {
-            audio_play_sound_at_location(SoundId::LayingOutWater, res->Position);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::LayingOutWater, res->Position);
         }
         // Force ride construction to recheck area
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;

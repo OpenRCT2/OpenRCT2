@@ -711,7 +711,7 @@ static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
     w->new_ride.SelectedRide = item;
 
-    audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     w->new_ride.selected_ride_countdown = 8;
     w->Invalidate();
 }
