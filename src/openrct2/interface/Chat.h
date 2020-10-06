@@ -20,7 +20,8 @@
 struct rct_drawpixelinfo;
 struct ScreenCoordsXY;
 
-enum class ChatInput : uint8_t {
+enum class ChatInput : uint8_t
+{
     None,
     Send,
     Close
