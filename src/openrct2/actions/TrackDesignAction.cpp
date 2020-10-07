@@ -221,9 +221,13 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         ride->vehicle_colours[i].Ternary = _td.vehicle_additional_colour[i];
     }
 
-    auto gameAction = RideSetNameAction(ride->id, _td.name);
-    gameAction.SetFlags(GetFlags());
-    GameActions::ExecuteNested(&gameAction);
+    for (int32_t count = 1; count == 1 || r->Error != GA_ERROR::OK; ++count)
+    {
+        auto name = count == 1 ? _td.name : (_td.name + " " + std::to_string(count));
+        auto gameAction = RideSetNameAction(ride->id, name);
+        gameAction.SetFlags(GetFlags());
+        r = GameActions::ExecuteNested(&gameAction);
+    }
     res->Cost = cost;
     res->rideIndex = ride->id;
     return res;

@@ -9,6 +9,7 @@
 - Fix: [#6086] Cannot install existing track design with another name.
 - Fix: [#8015] RCT2 files are not found when put into the OpenRCT2 folder.
 - Fix: [#8957] Error title missing when building with insufficient funds
+- Fix: [#10186] Placing multiple saved rides ignores design name (original bug).
 - Fix: [#13021] Mowed grass and weeds don't show up in extra zoom levels.
 - Fix: [#13029] Not all Junior Roller Coaster pieces are shown when "Show all track pieces" cheat is enabled.
 - Fix: [#13044] Rides in RCT1 saves all have "0 customers per hour".
