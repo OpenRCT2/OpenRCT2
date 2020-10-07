@@ -3611,7 +3611,7 @@ int32_t ride_music_params_update(
             {
                 ride_music++;
                 channel++;
-                if (channel >= OpenRCT2::Audio::MaxRideMusic)
+                if (static_cast<size_t>(channel) >= OpenRCT2::Audio::MaxRideMusic)
                 {
                     OpenRCT2::Audio::RideMusicInfo* ride_music_info = &OpenRCT2::Audio::gRideMusicInfoList[*tuneId];
                     a1 = position + ride_music_info->offset;
@@ -3691,7 +3691,7 @@ void ride_music_update_final()
                 }
                 rideMusic++;
                 channelIndex++;
-                if (channelIndex >= OpenRCT2::Audio::MaxRideMusic)
+                if (static_cast<size_t>(channelIndex) >= OpenRCT2::Audio::MaxRideMusic)
                 {
                     auto* ride_music_info = &OpenRCT2::Audio::gRideMusicInfoList[rideMusicParams->tune_id];
                     auto* ride_music_3 = &OpenRCT2::Audio::gRideMusicList[freeChannelIndex];
