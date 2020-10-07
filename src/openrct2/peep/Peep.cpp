@@ -509,10 +509,10 @@ void Peep::UpdateCurrentActionSpriteType()
     Invalidate();
     ActionSpriteType = newActionSpriteType;
 
-    const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[EnumValue(SpriteType)].sprite_bounds;
-    sprite_width = spriteBounds[EnumValue(ActionSpriteType)].sprite_width;
-    sprite_height_negative = spriteBounds[EnumValue(ActionSpriteType)].sprite_height_negative;
-    sprite_height_positive = spriteBounds[EnumValue(ActionSpriteType)].sprite_height_positive;
+    const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(SpriteType, ActionSpriteType);
+    sprite_width = spriteBounds->sprite_width;
+    sprite_height_negative = spriteBounds->sprite_height_negative;
+    sprite_height_positive = spriteBounds->sprite_height_positive;
 
     Invalidate();
 }
@@ -1591,10 +1591,10 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->FavouriteRide = RIDE_ID_NULL;
     peep->FavouriteRideRating = 0;
 
-    const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[EnumValue(peep->SpriteType)].sprite_bounds;
-    peep->sprite_width = spriteBounds[EnumValue(peep->ActionSpriteType)].sprite_width;
-    peep->sprite_height_negative = spriteBounds[EnumValue(peep->ActionSpriteType)].sprite_height_negative;
-    peep->sprite_height_positive = spriteBounds[EnumValue(peep->ActionSpriteType)].sprite_height_positive;
+    const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
+    peep->sprite_width = spriteBounds->sprite_width;
+    peep->sprite_height_negative = spriteBounds->sprite_height_negative;
+    peep->sprite_height_positive = spriteBounds->sprite_height_positive;
 
     peep->MoveTo(coords);
     peep->sprite_direction = 0;
@@ -2192,10 +2192,10 @@ void Peep::SwitchNextActionSpriteType()
     {
         Invalidate();
         ActionSpriteType = NextActionSpriteType;
-        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[EnumValue(SpriteType)].sprite_bounds;
-        sprite_width = spriteBounds[EnumValue(NextActionSpriteType)].sprite_width;
-        sprite_height_negative = spriteBounds[EnumValue(NextActionSpriteType)].sprite_height_negative;
-        sprite_height_positive = spriteBounds[EnumValue(NextActionSpriteType)].sprite_height_positive;
+        const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(SpriteType, NextActionSpriteType);
+        sprite_width = spriteBounds->sprite_width;
+        sprite_height_negative = spriteBounds->sprite_height_negative;
+        sprite_height_positive = spriteBounds->sprite_height_positive;
         Invalidate();
     }
 }

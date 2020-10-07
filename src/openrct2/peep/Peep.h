@@ -1091,4 +1091,10 @@ inline const rct_peep_animation& GetPeepAnimation(
     return g_peep_animation_entries[EnumValue(spriteType)].sprite_animation[EnumValue(actionSpriteType)];
 };
 
+inline const rct_sprite_bounds& GetSpriteBounds(
+    PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None)
+{
+    return g_peep_animation_entries[EnumValue(spriteType)].sprite_bounds[EnumValue(actionSpriteType)];
+};
+
 #endif
