@@ -1293,7 +1293,7 @@ static void window_map_place_park_entrance_tool_down(const ScreenCoordsXY& scree
         auto result = GameActions::Execute(&gameAction);
         if (result->Error == GA_ERROR::OK)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
         }
     }
 }
@@ -1318,7 +1318,7 @@ static void window_map_set_peep_spawn_tool_down(const ScreenCoordsXY& screenCoor
     auto result = GameActions::Execute(&gameAction);
     if (result->Error == GA_ERROR::OK)
     {
-        audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
     }
 }
 

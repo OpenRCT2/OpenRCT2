@@ -364,7 +364,7 @@ static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& scr
         if (result->Error != GA_ERROR::OK)
             return;
 
-        audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
         auto ride = get_ride(rideIndex);
         if (ride != nullptr && ride_are_all_possible_entrances_and_exits_built(ride))
@@ -504,6 +504,6 @@ static void window_maze_construction_construct(int32_t direction)
     _currentTrackBegin.y = y;
     if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_MAZE_MOVE)
     {
-        audio_play_sound_at_location(SoundId::PlaceItem, { x, y, z });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { x, y, z });
     }
 }

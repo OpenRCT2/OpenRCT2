@@ -301,7 +301,7 @@ void pause_toggle()
     window_invalidate_by_class(WC_TOP_TOOLBAR);
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
-        audio_stop_all_music_and_sounds();
+        OpenRCT2::Audio::StopAll();
     }
 }
 
@@ -550,7 +550,7 @@ void game_load_init()
     snapshots->Reset();
 
     gScreenFlags = SCREEN_FLAGS_PLAYING;
-    audio_stop_all_music_and_sounds();
+    OpenRCT2::Audio::StopAll();
     if (!gLoadKeepWindowsOpen)
     {
         viewport_init_all();
@@ -587,7 +587,7 @@ void game_load_init()
         window_update_all();
     }
 
-    audio_stop_title_music();
+    OpenRCT2::Audio::StopTitleMusic();
     gGameSpeed = 1;
 }
 

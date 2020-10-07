@@ -36,7 +36,7 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 45, 40, 29, 8, }),
     SET_FIELD(MaxMass, 23),
-    SET_FIELD(LiftData, { SoundId::LiftClassic, 4, 7 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::LiftClassic, 4, 7 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_inverted_impulse_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 180, 20, 80, 11, 3, 10 }),

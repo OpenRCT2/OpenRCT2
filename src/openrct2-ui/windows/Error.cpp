@@ -124,7 +124,7 @@ rct_window* window_error_open(const std::string_view& title, const std::string_v
     w->error.var_480 = 0;
     if (!gDisableErrorWindowSound)
     {
-        audio_play_sound(SoundId::Error, 0, w->windowPos.x + (w->width / 2));
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, w->windowPos.x + (w->width / 2));
     }
 
     return w;

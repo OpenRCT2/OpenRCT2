@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor ObservationTowerRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 255, 32, 3, 2, }),
     SET_FIELD(MaxMass, 15),
-    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_observation_tower),
     SET_FIELD(RatingsMultipliers, { 80, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),

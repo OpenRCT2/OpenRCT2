@@ -619,7 +619,7 @@ static void shortcut_show_options()
 
 static void shortcut_mute_sound()
 {
-    audio_toggle_all_sounds();
+    OpenRCT2::Audio::ToggleAllSounds();
 }
 
 static void shortcut_windowed_mode_toggle()

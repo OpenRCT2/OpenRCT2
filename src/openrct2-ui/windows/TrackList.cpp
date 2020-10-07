@@ -222,7 +222,7 @@ static void window_track_list_close(rct_window* w)
  */
 static void window_track_list_select(rct_window* w, int32_t listIndex)
 {
-    audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         if (listIndex == 0)

@@ -870,7 +870,7 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
             // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
             if (result->Cost != 0)
             {
-                audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
             }
         }
         else
@@ -957,7 +957,7 @@ static void window_footpath_construct()
     footpathPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
         if (result->Error == GA_ERROR::OK)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
             if (gFootpathConstructSlope == 0)
             {

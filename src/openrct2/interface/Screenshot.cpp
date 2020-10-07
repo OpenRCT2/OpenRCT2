@@ -80,7 +80,7 @@ void screenshot_check()
 
             if (!screenshotPath.empty())
             {
-                audio_play_sound(SoundId::WindowOpen, 100, context_get_width() / 2);
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 100, context_get_width() / 2);
             }
             else
             {

@@ -1716,7 +1716,7 @@ void window_close_construction_windows()
  */
 void window_update_viewport_ride_music()
 {
-    gRideMusicParamsListEnd = &gRideMusicParamsList[0];
+    OpenRCT2::Audio::gRideMusicParamsListEnd = &OpenRCT2::Audio::gRideMusicParamsList[0];
     g_music_tracking_viewport = nullptr;
 
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -1730,11 +1730,11 @@ void window_update_viewport_ride_music()
         gWindowAudioExclusive = w;
 
         if (viewport->zoom <= 0)
-            gVolumeAdjustZoom = 0;
+            OpenRCT2::Audio::gVolumeAdjustZoom = 0;
         else if (viewport->zoom == 1)
-            gVolumeAdjustZoom = 30;
+            OpenRCT2::Audio::gVolumeAdjustZoom = 30;
         else
-            gVolumeAdjustZoom = 60;
+            OpenRCT2::Audio::gVolumeAdjustZoom = 60;
         break;
     }
 }

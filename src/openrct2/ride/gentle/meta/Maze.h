@@ -35,7 +35,7 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 6, 24, 0, 1, }),
     SET_FIELD(MaxMass, 18),
-    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_maze),
     SET_FIELD(RatingsMultipliers, { 50, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),

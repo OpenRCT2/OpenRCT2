@@ -439,7 +439,7 @@ void RideObject::ReadLegacyVehicle(
     vehicle->no_seating_rows = stream->ReadValue<uint8_t>();
     vehicle->spinning_inertia = stream->ReadValue<uint8_t>();
     vehicle->spinning_friction = stream->ReadValue<uint8_t>();
-    vehicle->friction_sound_id = stream->ReadValue<SoundId>();
+    vehicle->friction_sound_id = stream->ReadValue<OpenRCT2::Audio::SoundId>();
     vehicle->log_flume_reverser_vehicle_type = stream->ReadValue<uint8_t>();
     vehicle->sound_range = stream->ReadValue<uint8_t>();
     vehicle->double_sound_frequency = stream->ReadValue<uint8_t>();
@@ -574,7 +574,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
             car.sprite_height_positive = 1;
             car.flags = VEHICLE_ENTRY_FLAG_SPINNING;
             car.car_visual = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
-            car.friction_sound_id = SoundId::Null;
+            car.friction_sound_id = OpenRCT2::Audio::SoundId::Null;
             car.sound_range = 0xFF;
             car.draw_order = 6;
 
@@ -733,7 +733,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
     car.no_seating_rows = Json::GetNumber<uint8_t>(jCar["numSeatRows"]);
     car.spinning_inertia = Json::GetNumber<uint8_t>(jCar["spinningInertia"]);
     car.spinning_friction = Json::GetNumber<uint8_t>(jCar["spinningFriction"]);
-    car.friction_sound_id = Json::GetEnum<SoundId>(jCar["frictionSoundId"], SoundId::Null);
+    car.friction_sound_id = Json::GetEnum<OpenRCT2::Audio::SoundId>(jCar["frictionSoundId"], OpenRCT2::Audio::SoundId::Null);
     car.log_flume_reverser_vehicle_type = Json::GetNumber<uint8_t>(jCar["logFlumeReverserVehicleType"]);
     car.sound_range = Json::GetNumber<uint8_t>(jCar["soundRange"], 255);
     car.double_sound_frequency = Json::GetNumber<uint8_t>(jCar["doubleSoundFrequency"]);

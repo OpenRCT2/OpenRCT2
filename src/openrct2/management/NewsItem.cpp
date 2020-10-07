@@ -128,7 +128,7 @@ static void TickCurrent()
     if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
     {
         // Play sound
-        audio_play_sound(SoundId::NewsItem, 0, context_get_width() / 2);
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::NewsItem, 0, context_get_width() / 2);
     }
 }
 

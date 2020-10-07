@@ -126,7 +126,7 @@ private:
         if (isExecuting)
         {
             map_count_remaining_land_rights();
-            audio_play_sound_at_location(SoundId::PlaceItem, centre);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, centre);
         }
         return res;
     }

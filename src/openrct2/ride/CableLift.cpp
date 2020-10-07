@@ -51,13 +51,13 @@ Vehicle* cable_lift_segment_create(
     current->spin_sprite = 0;
     current->spin_speed = 0;
     current->sound2_flags = 0;
-    current->sound1_id = SoundId::Null;
-    current->sound2_id = SoundId::Null;
+    current->sound1_id = OpenRCT2::Audio::SoundId::Null;
+    current->sound2_id = OpenRCT2::Audio::SoundId::Null;
     current->var_C4 = 0;
     current->animation_frame = 0;
     current->var_C8 = 0;
     current->var_CA = 0;
-    current->scream_sound_id = SoundId::Null;
+    current->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
     current->vehicle_sprite_type = 0;
     current->bank_rotation = 0;
     for (auto& peep : current->peep)

@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor MonorailCyclesRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 5, 24, 8, 7, }),
     SET_FIELD(MaxMass, 2),
-    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_monorail_cycles),
     SET_FIELD(RatingsMultipliers, { 50, 10, 10 }),
     SET_FIELD(UpkeepCosts, { 47, 20, 0, 8, 3, 5 }),

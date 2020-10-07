@@ -123,7 +123,7 @@ static void window_news_update(rct_window* w)
     }
 
     w->Invalidate();
-    audio_play_sound(SoundId::Click2, 0, w->windowPos.x + (w->width / 2));
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click2, 0, w->windowPos.x + (w->width / 2));
 
     size_t j = w->news.var_480;
     w->news.var_480 = -1;
@@ -198,7 +198,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
         w->news.var_482 = buttonIndex;
         w->news.var_484 = 4;
         w->Invalidate();
-        audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     }
 }
 

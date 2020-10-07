@@ -93,7 +93,7 @@ void VehicleCrashParticle::Update()
     if (waterZ != 0 && z >= waterZ && newLoc.z <= waterZ)
     {
         // Splash
-        audio_play_sound_at_location(SoundId::Water2, { x, y, waterZ });
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water2, { x, y, waterZ });
         crash_splash_create({ x, y, waterZ });
         sprite_remove(this);
         return;

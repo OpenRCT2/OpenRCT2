@@ -77,7 +77,7 @@ namespace Editor
      */
     void Load()
     {
-        audio_stop_all_music_and_sounds();
+        OpenRCT2::Audio::StopAll();
         object_manager_unload_all_objects();
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
@@ -152,7 +152,7 @@ namespace Editor
      */
     void LoadTrackDesigner()
     {
-        audio_stop_all_music_and_sounds();
+        OpenRCT2::Audio::StopAll();
         gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
         gScreenAge = 0;
 
@@ -173,7 +173,7 @@ namespace Editor
      */
     void LoadTrackManager()
     {
-        audio_stop_all_music_and_sounds();
+        OpenRCT2::Audio::StopAll();
         gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
         gScreenAge = 0;
 

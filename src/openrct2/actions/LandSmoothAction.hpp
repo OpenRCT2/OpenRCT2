@@ -664,7 +664,7 @@ private:
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, { _coords.x, _coords.y, centreZ });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, centreZ });
         }
         res->Cost += result->Cost;
         return res;

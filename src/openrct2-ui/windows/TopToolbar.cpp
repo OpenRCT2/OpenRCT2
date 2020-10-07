@@ -403,7 +403,7 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
             context_open_window(WC_RECENT_NEWS);
             break;
         case WIDX_MUTE:
-            audio_toggle_all_sounds();
+            OpenRCT2::Audio::ToggleAllSounds();
             break;
         case WIDX_CHAT:
             if (chat_available())
@@ -795,7 +795,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
     else
         w->pressed_widgets &= ~(1 << WIDX_PAUSE);
 
-    if (!gGameSoundsOff)
+    if (!OpenRCT2::Audio::gGameSoundsOff)
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MUTE;
     else
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_UNMUTE;
@@ -1840,7 +1840,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                     smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                         if (result->Error == GA_ERROR::OK)
                         {
-                            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                         }
                     });
                     auto res = GameActions::Execute(&smallSceneryPlaceAction);
@@ -1872,7 +1872,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                 {
                     return;
                 }
-                audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
             });
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
             break;
@@ -1922,7 +1922,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             wallPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
-                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                 }
             });
             auto res = GameActions::Execute(&wallPlaceAction);
@@ -1975,11 +1975,11 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
-                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                 }
                 else
                 {
-                    audio_play_sound_at_location(SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
                 }
             });
             auto res = GameActions::Execute(&sceneryPlaceAction);
@@ -2005,7 +2005,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
                 if (result->Error == GA_ERROR::OK)
                 {
-                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                     context_open_detail_window(WD_BANNER, bannerIndex);
                 }
             });
