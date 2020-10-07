@@ -589,9 +589,9 @@ assert_struct_size(RCT12EntranceElement, 8);
 struct RCT12BannerElement : RCT12TileElementBase
 {
 private:
-    uint8_t index;    // 4
-    uint8_t position; // 5
-    uint8_t flags;    // 6
+    uint8_t index;        // 4
+    uint8_t position;     // 5
+    uint8_t AllowedEdges; // 6
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t unused; // 7

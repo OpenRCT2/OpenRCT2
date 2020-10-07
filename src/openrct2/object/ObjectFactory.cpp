@@ -472,6 +472,7 @@ namespace ObjectFactory
             result->ReadJson(&readContext, jRoot);
             if (readContext.WasError())
             {
+                delete result;
                 throw std::runtime_error("Object has errors");
             }
 
