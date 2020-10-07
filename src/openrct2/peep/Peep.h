@@ -1037,7 +1037,7 @@ enum
 };
 
 // rct2: 0x00982708
-extern rct_peep_animation_entry g_peep_animation_entries[EnumValue(PeepSpriteType::Count)];
+extern const rct_peep_animation_entry g_peep_animation_entries[EnumValue(PeepSpriteType::Count)];
 extern const bool gSpriteTypeToSlowWalkMap[48];
 
 extern uint8_t gGuestChangeModifier;
@@ -1084,5 +1084,11 @@ void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
 
 rct_string_id get_real_name_string_id_from_id(uint32_t id);
+
+inline const rct_peep_animation& GetPeepAnimation(
+    PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None)
+{
+    return g_peep_animation_entries[EnumValue(spriteType)].sprite_animation[EnumValue(actionSpriteType)];
+};
 
 #endif

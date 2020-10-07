@@ -1726,7 +1726,7 @@ static void window_park_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
         gfx_draw_sprite(
             dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_3].left, w->widgets[WIDX_TAB_3].top }, 0);
 
-        sprite_idx = g_peep_animation_entries[EnumValue(PeepSpriteType::Normal)].sprite_animation->base_image + 1;
+        sprite_idx = GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
         if (w->page == WINDOW_PARK_PAGE_GUESTS)
             sprite_idx += w->var_492 & 0xFFFFFFFC;
 

@@ -670,7 +670,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
     // Tab 1 image
     i = (_window_guest_list_selected_tab == 0 ? w->list_information_type & 0x0FFFFFFFC : 0);
-    i += g_peep_animation_entries[EnumValue(PeepSpriteType::Normal)].sprite_animation->base_image + 1;
+    i += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
     i |= 0xA1600000;
     gfx_draw_sprite(
         dpi, i,

@@ -598,7 +598,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         CoordsXY loc = { x, y };
         loc += word_981D7C[nextDirection / 8];
         WalkingFrameNum++;
-        const rct_peep_animation* peepAnimation = g_peep_animation_entries[EnumValue(SpriteType)].sprite_animation;
+        const rct_peep_animation* peepAnimation = &GetPeepAnimation(SpriteType);
         const uint8_t* imageOffset = peepAnimation[EnumValue(ActionSpriteType)].frame_offsets;
         if (WalkingFrameNum >= peepAnimation[EnumValue(ActionSpriteType)].num_frames)
         {
@@ -608,7 +608,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         return loc;
     }
 
-    const rct_peep_animation* peepAnimation = g_peep_animation_entries[EnumValue(SpriteType)].sprite_animation;
+    const rct_peep_animation* peepAnimation = &GetPeepAnimation(SpriteType);
     ActionFrame++;
 
     // If last frame of action

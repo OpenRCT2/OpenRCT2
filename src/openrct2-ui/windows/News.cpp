@@ -15,6 +15,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
+#include <openrct2/peep/Peep.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Sprite.h>
@@ -287,17 +288,17 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
 
                     // If normal peep set sprite to normal (no food)
                     // If staff set sprite to staff sprite
-                    int32_t sprite_type = 0;
+                    auto spriteType = PeepSpriteType::Normal;
                     if (peep->AssignedPeepType == PeepType::Staff)
                     {
-                        sprite_type = EnumValue(peep->SpriteType);
+                        spriteType = peep->SpriteType;
                         if (peep->AssignedStaffType == StaffType::Entertainer)
                         {
                             clipCoords.y += 3;
                         }
                     }
 
-                    uint32_t image_id = g_peep_animation_entries[sprite_type].sprite_animation->base_image;
+                    uint32_t image_id = GetPeepAnimation(spriteType).base_image;
                     image_id += 0xA0000001;
                     image_id |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24);
 

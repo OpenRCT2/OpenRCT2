@@ -597,7 +597,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
                 clipCoords.y += 3;
             }
 
-            uint32_t image_id_base = g_peep_animation_entries[EnumValue(peep->SpriteType)].sprite_animation->base_image;
+            uint32_t image_id_base = GetPeepAnimation(peep->SpriteType).base_image;
             image_id_base += w->frame_no & 0xFFFFFFFC;
             image_id_base++;
 
