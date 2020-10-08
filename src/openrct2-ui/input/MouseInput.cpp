@@ -931,10 +931,6 @@ static void input_widget_over(const ScreenCoordsXY& screenCoords, rct_window* w,
     {
         input_update_tooltip(w, widgetIndex, screenCoords);
     }
-
-    gTooltipTimeout = 0;
-    gTooltipCursorX = screenCoords.x;
-    gTooltipCursorY = screenCoords.y;
 }
 
 /**
@@ -1439,6 +1435,10 @@ static void input_update_tooltip(rct_window* w, rct_widgetindex widgetIndex, con
                 window_tooltip_open(w, widgetIndex, screenCoords);
             }
         }
+
+        gTooltipTimeout = 0;
+        gTooltipCursorX = screenCoords.x;
+        gTooltipCursorY = screenCoords.y;
     }
     else
     {
