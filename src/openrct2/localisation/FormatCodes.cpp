@@ -10,6 +10,7 @@
 #include "FormatCodes.h"
 
 #include "../common.h"
+#include "../core/String.hpp"
 #include "Localisation.h"
 
 #include <iterator>
@@ -76,14 +77,12 @@ static constexpr const format_code_token format_code_tokens[] = {
 };
 // clang-format on
 
-uint32_t format_get_code(const char* token)
+uint32_t format_get_code(std::string_view token)
 {
-    for (uint32_t i = 0; i < std::size(format_code_tokens); i++)
-    {
-        if (_strcmpi(token, format_code_tokens[i].token) == 0)
-            return format_code_tokens[i].code;
-    }
-    return 0;
+    auto result = std::find_if(std::begin(format_code_tokens), std::end(format_code_tokens), [token](auto& fct) {
+        return String::Equals(token, fct.token, true);
+    });
+    return result != std::end(format_code_tokens) ? result->code : 0;
 }
 
 const char* format_get_token(uint32_t code)

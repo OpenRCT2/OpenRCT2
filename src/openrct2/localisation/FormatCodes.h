@@ -11,7 +11,9 @@
 
 #include "../common.h"
 
-uint32_t format_get_code(const char* token);
+#include <string_view>
+
+uint32_t format_get_code(std::string_view token);
 const char* format_get_token(uint32_t code);
 
 enum

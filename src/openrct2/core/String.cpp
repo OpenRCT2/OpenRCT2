@@ -154,6 +154,32 @@ namespace String
         }
     }
 
+    bool Equals(const std::string_view& a, const std::string_view& b, bool ignoreCase)
+    {
+        if (ignoreCase)
+        {
+            if (a.size() == b.size())
+            {
+                for (size_t i = 0; i < a.size(); i++)
+                {
+                    if (tolower(a[i]) != tolower(b[i]))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return a == b;
+        }
+    }
+
     bool Equals(const std::string& a, const std::string& b, bool ignoreCase)
     {
         return Equals(a.c_str(), b.c_str(), ignoreCase);
