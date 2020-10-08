@@ -262,8 +262,8 @@ STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP
 STR_0876    :{BLACK}▼
 STR_0877    :!منخفض للغاية
 STR_0878    :!مرتفع للغاية
-STR_0879    :...لا يمكن تخفيض الأرض هنا
-STR_0880    :...لا يمكن رفع الأرض هنا
+STR_0879    :…لا يمكن تخفيض الأرض هنا
+STR_0880    :…لا يمكن رفع الأرض هنا
 STR_0881    :عنصر في الطريق
 STR_0882    :تحميل اللعبة
 STR_0883    :حفظ اللعبة
@@ -307,8 +307,8 @@ STR_0922    :{SMALLFONT}{BLACK}إنحدار حاد للأعلي
 STR_0923    :{SMALLFONT}{BLACK}إرتفاع رأسي
 STR_0924    :{SMALLFONT}{BLACK}Helix down
 STR_0925    :{SMALLFONT}{BLACK}Helix up
-STR_0926    :...لا يمكن مسح هذا
-STR_0927    :...لا يمكن بناء هذا هنا
+STR_0926    :…لا يمكن مسح هذا
+STR_0927    :…لا يمكن بناء هذا هنا
 STR_0928    :{SMALLFONT}{BLACK}Chain lift, to pull cars up slopes
 STR_0929    :'S' Bend (left)
 STR_0930    :'S' Bend (right)
@@ -369,7 +369,7 @@ STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Too many rides/attractions
-STR_0988    :Can't create new ride/attraction...
+STR_0988    :Can't create new ride/attraction…
 STR_0989    :{STRINGID}
 STR_0990    :{SMALLFONT}{BLACK}البناء
 STR_0991    :منصة المحطة
@@ -383,10 +383,10 @@ STR_0998    :No more stations allowed on this ride
 STR_0999    :يتطلب منصة محطة
 STR_1000    :المسار ليس دائرة متصلة
 STR_1001    :المسار غير مناسب لهذا القطار
-STR_1002    :{POP16}{POP16}{POP16}{STRINGID}...لا يمكن فتح
-STR_1003    :{POP16}{POP16}{POP16}{STRINGID}...لا يمكن إختبار
-STR_1004    :{POP16}{POP16}{POP16}{STRINGID}...لا يمكن إغلاق
-STR_1005    :{POP16}{POP16}{POP16}{STRINGID}...لا يمكن بدء البناء في
+STR_1002    :{POP16}{POP16}{POP16}{STRINGID}…لا يمكن فتح
+STR_1003    :{POP16}{POP16}{POP16}{STRINGID}…لا يمكن إختبار
+STR_1004    :{POP16}{POP16}{POP16}{STRINGID}…لا يمكن إغلاق
+STR_1005    :{POP16}{POP16}{POP16}{STRINGID}…لا يمكن بدء البناء في
 STR_1006    :يجب أن يُغلق أولاً
 STR_1007    :غير قادر علي إنشاء أي مركبات أخري
 STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
@@ -398,10 +398,10 @@ STR_1013    :أغلق الحديقة
 STR_1014    :إفتح الحديقة
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
-STR_1017    :لايمكن تغير وضع التشغيل...
-STR_1018    :لا يمكن إجراء التغيير...
-STR_1019    :ا يمكن إجراء التغيير...
-STR_1020    :ا يمكن إجراء التغيير...
+STR_1017    :لايمكن تغير وضع التشغيل…
+STR_1018    :لا يمكن إجراء التغيير…
+STR_1019    :ا يمكن إجراء التغيير…
+STR_1020    :ا يمكن إجراء التغيير…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :{POP16}{POP16}{POP16}{COMMA16} سيارة لكل قطر
 STR_1023    :{POP16}{POP16}{POP16}{COMMA16} سيارات لكل قطر
@@ -431,7 +431,7 @@ STR_1046    :OpenRCT2 Track Design File
 STR_1047    :!حفظ اللعبة فشل
 STR_1048    :!حفظ السيناريو فشل
 STR_1049    :!حفظ المشهد فشل
-STR_1050    :فشل في التحميل...{NEWLINE}الملف يحتوي علي بيانات خاطئة!
+STR_1050    :فشل في التحميل…{NEWLINE}الملف يحتوي علي بيانات خاطئة!
 STR_1051    :دعم غير مرئي
 STR_1052    :أناس غير مرئيين
 STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
@@ -440,7 +440,7 @@ STR_1055    :{SMALLFONT}{BLACK}تسمية شخص
 STR_1056    :{SMALLFONT}{BLACK}تسمية عضو العمل
 STR_1057    :Ride/attraction name
 STR_1058    :Enter new name for this ride/attraction:
-STR_1059    :Can't rename ride/attraction...
+STR_1059    :Can't rename ride/attraction…
 STR_1060    :Invalid ride/attraction name
 STR_1061    :الوضع العادي
 STR_1062    :وضع الدائرة المغلقة
@@ -525,8 +525,8 @@ STR_1140    :{SMALLFONT}{BLACK}Select vehicle colour scheme option
 STR_1141    :{SMALLFONT}{BLACK}Select which vehicle/train to modify
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1144    :Can't build/move entrance for this ride/attraction...
-STR_1145    :Can't build/move exit for this ride/attraction...
+STR_1144    :Can't build/move entrance for this ride/attraction…
+STR_1145    :Can't build/move exit for this ride/attraction…
 STR_1146    :المدخل لم يُبني بعد
 STR_1147    :المخرج لم يُبني بعد
 STR_1148    :ربع الحمل
@@ -539,16 +539,16 @@ STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :...لا يمكن مسح هذا
+STR_1158    :…لا يمكن مسح هذا
 STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
 STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
-STR_1161    :...لا يمكن وضع هذا هنا
+STR_1161    :…لا يمكن وضع هذا هنا
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
 STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :...لا يمكن تقليل مستوي الماء هنا
-STR_1167    :...لا يمكن زيادة مستوي الماء هنا
+STR_1166    :…لا يمكن تقليل مستوي الماء هنا
+STR_1167    :…لا يمكن زيادة مستوي الماء هنا
 STR_1168    :الإعدادات
 STR_1169    :(لا شئ)
 STR_1170    :{STRING}
@@ -557,8 +557,8 @@ STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK} ابني ممشي وخطوط إنتظار
 STR_1174    :Banner sign in the way
 STR_1175    :Can't build this on sloped footpath
-STR_1176    :...لا يمكن بناء ممشي هنا
-STR_1177    :...لا يمكن مسح الممشي من هنا
+STR_1176    :…لا يمكن بناء ممشي هنا
+STR_1177    :…لا يمكن مسح الممشي من هنا
 STR_1178    :Land slope unsuitable
 STR_1179    :ممشي في الطريق
 STR_1180    :!لا يمكن بناء هذا تحت الماء
@@ -720,7 +720,7 @@ STR_1335    :{STRINGID} - Entrance{POP16}{POP16}
 STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Entrance
 STR_1337    :{STRINGID} - Exit{POP16}{POP16}
 STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Exit
-STR_1339    :{BLACK}No test results yet...
+STR_1339    :{BLACK}No test results yet…
 STR_1340    :{WINDOW_COLOUR_2}Max. speed: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Ride time: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
@@ -742,8 +742,8 @@ STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Total 'air' time: {BLACK}{COMMA2DP32}secs
 STR_1359    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minute
 STR_1360    :{WINDOW_COLOUR_2}Queue time: {BLACK}{COMMA16} minutes
-STR_1361    :لا يمكن تغيير السرعة...
-STR_1362    :لا يمكن تغيير سرعة الإطلاق...
+STR_1361    :لا يمكن تغيير السرعة…
+STR_1362    :لا يمكن تغيير سرعة الإطلاق…
 STR_1363    :Too high for supports!
 STR_1364    :Supports for track above can't be extended any further!
 STR_1365    :In-line Twist (left)
@@ -767,8 +767,8 @@ STR_1382    :Curved Lift Hill (right)
 STR_1383    :Quarter Loop
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}Other track configurations
-STR_1386    :خاص...
-STR_1387    :لا يمكن تغيير نوع الأرض...
+STR_1386    :خاص…
+STR_1387    :لا يمكن تغيير نوع الأرض…
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
@@ -788,7 +788,7 @@ STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
 STR_1404    :{SMALLFONT}{BLACK}Rotate 90°
 STR_1405    :{SMALLFONT}{BLACK}Mirror image
 STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this design)
-STR_1407    :{WINDOW_COLOUR_2}Build this...
+STR_1407    :{WINDOW_COLOUR_2}Build this…
 STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
 STR_1409    :Entry/Exit Platform
 STR_1410    :برج أفقي
@@ -835,7 +835,7 @@ STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRING
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :إسم الزائر
 STR_1453    :أدخل أسم لهذا الزائر:
-STR_1454    :لا يمكن تسمية الزائر...
+STR_1454    :لا يمكن تسمية الزائر…
 STR_1455    :إسم خاطئ للزائر
 STR_1456    :{WINDOW_COLOUR_2}النقود المنفقة: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}المال في المحفظة: {BLACK}{CURRENCY2DP}
@@ -1032,7 +1032,7 @@ STR_1647    :
 STR_1648    :{SMALLFONT}“Help! Put me down!”
 STR_1649    :{SMALLFONT}“I'm running out of cash!”
 STR_1650    :{SMALLFONT}“Wow! A new ride being built!”
-STR_1653    :{SMALLFONT}“...and here we are on {STRINGID}!”
+STR_1653    :{SMALLFONT}“…and here we are on {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
 STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
 STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
@@ -1083,7 +1083,7 @@ STR_1700    :أجر رجل مساعد جديد
 STR_1701    :أجر ميانيكي جديد
 STR_1702    :أجر حارس أمن جديد
 STR_1703    :أجر مُرفه جديد
-STR_1704    :لا يمكن تأجير عاملين جدد...
+STR_1704    :لا يمكن تأجير عاملين جدد…
 STR_1705    :{SMALLFONT}{BLACK}طرد هذا العامل
 STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
 STR_1707    :Too many staff in game
@@ -1096,18 +1096,18 @@ STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
 STR_1716    :إسم خاطئ للحديقة
-STR_1717    :لا يمكن إعادة تسمية الحديقة...
+STR_1717    :لا يمكن إعادة تسمية الحديقة…
 STR_1718    :أسم الحديقة
 STR_1719    :أدخل الأسم الجديد للحديقة:
 STR_1720    :{SMALLFONT}{BLACK}سمي الحديقة
 STR_1721    :الحديقة مغلقة
 STR_1722    :الحديقة مفتوحة
-STR_1723    :لا يمكن فتح الحديقة...
-STR_1724    :لا يمكن إغلاق الحديقة...
-STR_1725    :لا يمكن شراء الأرض...
+STR_1723    :لا يمكن فتح الحديقة…
+STR_1724    :لا يمكن إغلاق الحديقة…
+STR_1725    :لا يمكن شراء الأرض…
 STR_1726    :الأرض ليست للبيع!
 STR_1727    :حقوق الإنشاء ليست للبيع!
-STR_1728    :Can't buy construction rights here...
+STR_1728    :Can't buy construction rights here…
 STR_1729    :الأرض ليست مملوكة للحديقة!
 STR_1730    :{RED}مغلقة 
 STR_1731    :{WHITE}{STRINGID} - - 
@@ -1116,18 +1116,18 @@ STR_1733    :الوضع
 STR_1734    :{WINDOW_COLOUR_2}عدد اللفات:
 STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1738    :Can't change number of laps...
+STR_1738    :Can't change number of laps…
 STR_1739    :السباق فاز به الزائر {INT32}
 STR_1740    :Race won by {STRINGID}
 STR_1741    :لم يبني بعد !
 STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
 STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1746    :لا يمكن تغيير هذا...
+STR_1746    :لا يمكن تغيير هذا…
 STR_1747    :{WINDOW_COLOUR_2}حد الوقت:
 STR_1748    :{SMALLFONT}{BLACK}Time limit for ride
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1751    :Can't change time limit for ride...
+STR_1751    :Can't change time limit for ride…
 STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
 STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
 STR_1754    :{BLACK}{COMMA32} guests
@@ -1144,7 +1144,7 @@ STR_1764    :Log Bumps
 STR_1765    :On-ride photo section
 STR_1766    :Reverser turntable
 STR_1767    :Spinning tunnel
-STR_1768    :Can't change number of swings...
+STR_1768    :Can't change number of swings…
 STR_1769    :{WINDOW_COLOUR_2}Number of swings:
 STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1183,7 +1183,7 @@ STR_1807    :Control failure
 STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Carrying:
-STR_1811    :Can't build this here...
+STR_1811    :Can't build this here…
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Miscellaneous Objects
 STR_1814    :Actions
@@ -1240,7 +1240,7 @@ STR_1864    :ميكانيكي
 STR_1865    :رجل الأمن
 STR_1866    :مُرفه
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :Can't change number of rotations...
+STR_1868    :Can't change number of rotations…
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
 STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1295,7 +1295,7 @@ STR_1920    :Can't pay back loan!
 STR_1921    :{SMALLFONT}{BLACK}Start a new game
 STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
 STR_1924    :{SMALLFONT}{BLACK}Exit
-STR_1925    :Can't place person here...
+STR_1925    :Can't place person here…
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} has broken down
 STR_1928    :{RED}{STRINGID} has crashed!
@@ -1329,7 +1329,7 @@ STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
 STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :Can't change number of circuits...
+STR_1959    :Can't change number of circuits…
 STR_1960    :{WINDOW_COLOUR_2}Balloon price:
 STR_1961    :{WINDOW_COLOUR_2}Cuddly Toy price:
 STR_1962    :{WINDOW_COLOUR_2}Park Map price:
@@ -1603,7 +1603,7 @@ STR_2244    :September
 STR_2245    :October
 STR_2246    :November
 STR_2247    :December
-STR_2248    :Can't demolish ride/attraction...
+STR_2248    :Can't demolish ride/attraction…
 STR_2249    :{BABYBLUE}New ride/attraction now available:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}New scenery/theming now available:{NEWLINE}{STRINGID}
 STR_2251    :Can only be built on paths!
@@ -1825,7 +1825,7 @@ STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
 STR_2487    :Show 'real' names of guests
 STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
-STR_2489    :Shortcut keys...
+STR_2489    :Shortcut keys…
 STR_2490    :Keyboard shortcuts
 STR_2491    :Reset keys
 STR_2492    :{SMALLFONT}{BLACK}Set all keyboard shortcuts back to default settings
@@ -2055,9 +2055,9 @@ STR_2852    :Track design already installed
 STR_2853    :Forbidden by the local authority!
 STR_2854    :{RED}Guests can't get to the entrance of {STRINGID} !{NEWLINE}Construct a path to the entrance
 STR_2855    :{RED}{STRINGID} has no path leading from its exit !{NEWLINE}Construct a path from the ride exit
-STR_2858    :Can't start marketing campaign...
+STR_2858    :Can't start marketing campaign…
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
-STR_2862    :معلومات عن الموسيقي...
+STR_2862    :معلومات عن الموسيقي…
 STR_2863    :معلومات عن الموسيقي
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) لا حقوق نشر
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
@@ -2110,12 +2110,12 @@ STR_2975    :{SMALLFONT}{BLACK}Select which colour scheme to change, or paint ri
 STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected colour scheme
 STR_2977    :Staff member name
 STR_2978    :Enter new name for this member of staff:
-STR_2979    :Can't name staff member...
+STR_2979    :Can't name staff member…
 STR_2980    :Too many banners in game
 STR_2981    :{RED}لا دخول
 STR_2982    :Banner text
 STR_2983    :Enter new text for this banner:
-STR_2984    :Can't set new text for banner...
+STR_2984    :Can't set new text for banner…
 STR_2985    :يافطة
 STR_2986    :{SMALLFONT}{BLACK}غير الكلام علي اليافطة
 STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
@@ -2141,7 +2141,7 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :...غير قادر علي تحميل الملف
+STR_3010    :…غير قادر علي تحميل الملف
 STR_3011    :الملف يحتوي علي بيانات خاطئة
 STR_3012    :Dodgems beat style
 STR_3013    :Fairground organ style
@@ -2184,7 +2184,7 @@ STR_3050    :Golf hole B
 STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
-STR_3054    :تحميل...
+STR_3054    :تحميل…
 STR_3058    :Brick walls
 STR_3059    :Hedges
 STR_3060    :Ice blocks
@@ -2217,7 +2217,7 @@ STR_3099    :{SMALLFONT}{BLACK}حدد اللون
 STR_3100    :{SMALLFONT}{BLACK}حدد اللون الثاني
 STR_3101    :{SMALLFONT}{BLACK}حدد اللون الثالث
 STR_3102    :{SMALLFONT}{BLACK}Re-paint coloured scenery on landscape
-STR_3103    :Can't re-paint this...
+STR_3103    :Can't re-paint this…
 STR_3104    :{SMALLFONT}{BLACK}List rides
 STR_3105    :{SMALLFONT}{BLACK}List shops and stalls
 STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
@@ -2231,7 +2231,7 @@ STR_3113    :Select a different design
 STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
 STR_3115    :{SMALLFONT}{BLACK}Save track design
 STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
-STR_3117    :{BLACK}Calling mechanic...
+STR_3117    :{BLACK}Calling mechanic…
 STR_3118    :{BLACK}{STRINGID} is heading for the ride
 STR_3119    :{BLACK}{STRINGID} is fixing the ride
 STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing ride
@@ -2246,7 +2246,7 @@ STR_3128    :Save Track Design
 STR_3129    :Save Track Design with Scenery
 STR_3130    :حفظ
 STR_3131    :إلغاء
-STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
+STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design…
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
 STR_3135    :{RED}(Vehicle design unavailable - Ride performance may be affected)
@@ -2390,7 +2390,7 @@ STR_3290    :بارد ومبتل
 STR_3291    :دافئ
 STR_3292    :حار وجاف
 STR_3293    :بارد
-STR_3294    :...تغيير
+STR_3294    :…تغيير
 STR_3295    :{SMALLFONT}{BLACK}Change name of park
 STR_3296    :{SMALLFONT}{BLACK}Change name of scenario
 STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
@@ -2416,12 +2416,12 @@ STR_3316    :Enter description of this scenario:
 STR_3317    :No details yet
 STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
-STR_3320    :Unable to save scenario file...
+STR_3320    :Unable to save scenario file…
 STR_3321    :New objects installed successfully
 STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
 STR_3326    :{WINDOW_COLOUR_2}(no image)
 STR_3327    :Starting positions for people not set
-STR_3328    :Can't advance to next editor stage...
+STR_3328    :Can't advance to next editor stage…
 STR_3329    :Park entrance not yet built
 STR_3330    :Park must own some land
 STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
@@ -2438,19 +2438,19 @@ STR_3342    :Scenario Editor
 STR_3343    :Convert Saved Game to Scenario
 STR_3344    :Track Designer
 STR_3345    :Track Designs Manager
-STR_3346    :Can't save track design...
+STR_3346    :Can't save track design…
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
 STR_3348    :إعادة تسمية
 STR_3349    :مسح
 STR_3350    :Track design name
 STR_3351    :Enter new name for this track design:
-STR_3352    :Can't rename track design...
+STR_3352    :Can't rename track design…
 STR_3353    :New name contains invalid characters
 STR_3354    :Another file exists with this name, or file is write-protected
 STR_3355    :File is write-protected or locked
 STR_3356    :Delete File
 STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRING} ?
-STR_3358    :Can't delete track design...
+STR_3358    :Can't delete track design…
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
 STR_3361    :Too many track designs of this type - Some will not be listed.
@@ -2470,17 +2470,17 @@ STR_3376    :Install new
 STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
 STR_3378    :Install
 STR_3379    :Cancel
-STR_3380    :Unable to install this track design...
+STR_3380    :Unable to install this track design…
 STR_3381    :File is not compatible or contains invalid data
 STR_3382    :File copy failed
 STR_3383    :Select new name for track design
 STR_3384    :An existing track design already has this name - Please select a new name for this design:
-STR_3389    :Unable to select additional item of scenery...
+STR_3389    :Unable to select additional item of scenery…
 STR_3390    :Too many items selected
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
 # End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
-STR_3438    :Unable to remove all scenery from here...
+STR_3438    :Unable to remove all scenery from here…
 STR_3439    :Clear Scenery
 STR_3440    :Page 1
 STR_3441    :Page 2
@@ -2523,7 +2523,7 @@ STR_5149    :{SMALLFONT}{BLACK}أظهر إعددادت الشات
 STR_5150    :تفعيل أدوات التصحيح
 STR_5151    :،
 STR_5152    :.
-STR_5153    :تعديل الثيمات...
+STR_5153    :تعديل الثيمات…
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
@@ -2702,7 +2702,7 @@ STR_5365    :{BLACK}سرعة العامليين:
 STR_5366    :طبيعي
 STR_5367    :سريع
 STR_5368    :Reset crash status
-STR_5369    :Park parameters...
+STR_5369    :Park parameters…
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
 STR_5371    :Object Selection
 STR_5372    :Invert right mouse dragging
@@ -2768,7 +2768,7 @@ STR_5432    :Command:
 STR_5433    :Title Sequences
 STR_5434    :Command Editor
 STR_5435    :Rename save
-STR_5436    :Edit Title Sequences...
+STR_5436    :Edit Title Sequences…
 STR_5437    :No save selected
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
@@ -2962,12 +2962,12 @@ STR_5628    :اللعبة المصدر
 STR_5629    :مستوي الصعوبة
 STR_5630    :تفعيل الإفراج التدريجي
 STR_5631    :Original DLC Parks
-STR_5632    :Build your own...
+STR_5632    :Build your own…
 STR_5633    :CMD +
 STR_5634    :إعدادات +
 STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
-STR_5637    :لا يُمكن فعل هذا...
+STR_5637    :لا يُمكن فعل هذا…
 STR_5638    :Permission denied
 STR_5639    :{SMALLFONT}{BLACK}أظهر قائمة اللاعبين
 STR_5640    :{SMALLFONT}{BLACK}إدارة المجموعات
@@ -3037,9 +3037,9 @@ STR_5738    :Closed, {COMMA16} people still on ride
 STR_5739    :{WINDOW_COLOUR_2}Customers on ride: {BLACK}{COMMA16}
 STR_5740    :Never-ending marketing campaigns
 STR_5741    :{SMALLFONT}{BLACK}Marketing campaigns never end
-STR_5742    :يصادق ...
-STR_5743    :يتصل ...
-STR_5744    :يفك الإرتباط ...
+STR_5742    :يصادق …
+STR_5743    :يتصل …
+STR_5744    :يفك الإرتباط …
 STR_5745    :Network desync detected
 STR_5746    :Disconnected
 STR_5747    :Disconnected: {STRING}
@@ -3054,7 +3054,7 @@ STR_5755    :نسخة برنامج خاطئة (السرفر يستخدم الن�
 STR_5756    :كلمة سر خاطئة
 STR_5757    :السرفر ممتلئ
 STR_5758    :{OUTLINE}{GREEN}{STRING} قد إنظم للعبة
-STR_5759    :يُحمل الخريطة ... ({INT32} / {INT32}) كيلو يايت
+STR_5759    :يُحمل الخريطة … ({INT32} / {INT32}) كيلو يايت
 STR_5760    :دولار هونج كونج (HK$)
 STR_5761    :دولار تيوان الجديدة (NT$)
 STR_5762    :الين الصيني (CN¥)
@@ -3080,7 +3080,7 @@ STR_5781    :تكاليف التشغيل: غير معروف
 STR_5782    :أنت الأن متصل. إضغط '{STRING}' لكي تتحدث.
 STR_5783    :{WINDOW_COLOUR_2}Scenario Locked
 STR_5784    :{BLACK}Complete earlier scenarios to unlock this scenario.
-STR_5785    :لا يمكن تسمية المجموعة...
+STR_5785    :لا يمكن تسمية المجموعة…
 STR_5786    :أسم مجموعة خاطئ
 STR_5787    :{COMMA32} اللاعبين المتصلين
 STR_5788    :Default inspection interval:
@@ -3284,7 +3284,7 @@ STR_5987    :غير قادر علي إنشاء المجلد
 STR_5988    :{SMALLFONT}{BLACK} لا حقوق أرض إضافية للبيع
 STR_5989    :{SMALLFONT}{BLACK} لا حقوق بناء إضافية متبقية للبيع
 STR_5990    :{SMALLFONT}{BLACK} لا حقوق أرض أو أبنية إضافية متبقية للبيع
-STR_5991    :...لا يمكن لصق العنصر
+STR_5991    :…لا يمكن لصق العنصر
 STR_5992    :تم الوصول إلي حد العناصر في الخريطة
 STR_5993    :{SMALLFONT}{BLACK} نسخ العنصر المحدد
 STR_5994    :{SMALLFONT}{BLACK} لصق العنصر المنسوخ
@@ -3433,7 +3433,7 @@ STR_6136    :السرفر أرسل طلب خاطئ
 STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
 STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in “contributors.md”. For more information, visit http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
-STR_6140    :سجل التغيير...
+STR_6140    :سجل التغيير…
 STR_6141    :RCT1 Bottom Toolbar
 STR_6142    :{WINDOW_COLOUR_2}أسم المسار: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}نوع الرحلة: {BLACK}{STRINGID}
@@ -3441,7 +3441,7 @@ STR_6144    :أظهر تأثيرات التراب
 STR_6145    :{SMALLFONT}{BLACK}حدد 
 STR_6146    :Enable all drawable track pieces
 STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
-STR_6148    :يتصل إلي السرفر الأساسي...
+STR_6148    :يتصل إلي السرفر الأساسي…
 STR_6149    :غير قادر علي الإتصال بالسرفر الأساسي
 STR_6150    :رد خاطئ من السرفر الأساسي (لا رقم جسون)
 STR_6151    :السرفر الأساسي فشل في إرجاع السرفرات
@@ -3451,7 +3451,7 @@ STR_6154    :لا يٌفضل تشغيل اللعبة مع هذه الأذون ا
 STR_6155    :ليس هناك KDialog أو Zenity مثبت. الرجاء تثبيت إحداهما، أو إعداده من سطر الأوامر.
 STR_6156    :الأسم محجوز
 STR_6157    :وحدة التحكم
-STR_6158    :فشل في تحميل هذا الملف...{NEWLINE}نسخة الملف غير متوافقة: {COMMA16}
+STR_6158    :فشل في تحميل هذا الملف…{NEWLINE}نسخة الملف غير متوافقة: {COMMA16}
 STR_6159    :تنعيم الجار الأقرب
 STR_6160    :{WINDOW_COLOUR_2}المركبات المتوفرة: {BLACK}{STRING}
 STR_6161    :إظهار/إخفاء شبكة الإرشاد
@@ -3504,7 +3504,7 @@ STR_6218    :محاكاة الأفعوانيات المفتوحة 2 الرسمي
 STR_6219    :تعليم مشاكل المسار
 STR_6220    :أجعله مُستخدم
 STR_6221    :{SMALLFONT}{BLACK هذا سوف يحدد المدخل والمخرج المعروف للرحلة للمنطقة هذه. فقط مدخل ومخرج واحد يمكن إسخدامة لكل  محطة.
-STR_6222    :لا يمكن وضع نقطة دخول الزوار هنا...
+STR_6222    :لا يمكن وضع نقطة دخول الزوار هنا…
 STR_6223    :يجب أن يكون خارج حدود الحديقة!
 STR_6224    :{STRING} تم وضع نقطة دخول الزوار.
 STR_6225    :غير مدعومة من تصيير أوبن جي إل
@@ -3526,7 +3526,7 @@ STR_6240    :لقطة أفقية
 STR_6241    :حدد منطقة
 STR_6242    :إخلاء المُحدد
 STR_6243    :{SMALLFONT}{BLACK}تجديد الرحلة،{NEWLINE}إجعلها كالجديدة
-STR_6244    :لايمكن تجديد الرحلة...
+STR_6244    :لايمكن تجديد الرحلة…
 STR_6245    :{SMALLFONT}{BLACK}الرحلة لا تحتاج إلي التجديد
 STR_6246    :تجديد
 STR_6247    :تجديد الرحلة/الجذب
@@ -3549,7 +3549,7 @@ STR_6270    :أسطح التضاريس
 STR_6271    :حواف التضاريس
 STR_6272    :المحطات
 STR_6273    :الموسيقي
-STR_6274    :...لا يمكن تحديد مخطط اللون
+STR_6274    :…لا يمكن تحديد مخطط اللون
 STR_6275    :{WINDOW_COLOUR_2}نمط المحطة
 STR_6276    :{RED}{STRINGID} .هل علق الزوار؟ ربما يكون هذا بسبب أفعوانية غير صالحة أو وضع تشغيل غير صالح
 STR_6277    :{WINDOW_COLOUR_2} {BLACK}{STRINGID} :فهرسة المحطة
@@ -3600,7 +3600,7 @@ STR_6322    :{WINDOW_COLOUR_2} {BLACK}{INT32} :رقم النقش المتحرك
 STR_6323    :يُحاكي
 STR_6324    :حاكي
 STR_6325    :{SMALLFONT}{BLACK}حاكي الرحلة/المزار
-STR_6326    :...{POP16}{POP16}{POP16}{STRINGID} لا يمكن محاكاة
+STR_6326    :…{POP16}{POP16}{POP16}{STRINGID} لا يمكن محاكاة
 STR_6327    :خلفية شفافة للقطات الشاشة العملاقة
 STR_6328    :{SMALLFONT}{BLACK}.مع هذا الإعداد، صور لقطة الشاشة العملاقة ستحصل علي خلفية شفافة بدلاً من الخلفية السوداء الإفتراضية
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}

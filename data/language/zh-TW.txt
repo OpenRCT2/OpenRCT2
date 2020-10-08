@@ -262,8 +262,8 @@ STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP
 STR_0876    :{BLACK}▼
 STR_0877    :太低!
 STR_0878    :太高!
-STR_0879    :不能降低此地...
-STR_0880    :不能升高此地...
+STR_0879    :不能降低此地…
+STR_0880    :不能升高此地…
 STR_0881    :物件擋於此地
 STR_0882    :載入遊戲
 STR_0883    :儲存遊戲
@@ -307,8 +307,8 @@ STR_0922    :{SMALLFONT}{BLACK}陡上坡
 STR_0923    :{SMALLFONT}{BLACK}垂直上坡
 STR_0924    :{SMALLFONT}{BLACK}向下盤旋
 STR_0925    :{SMALLFONT}{BLACK}向上盤旋
-STR_0926    :不能移除...
-STR_0927    :不能在此建造...
+STR_0926    :不能移除…
+STR_0927    :不能在此建造…
 STR_0928    :{SMALLFONT}{BLACK}帶有鏈條的坡道, 此坡道會將車卡拉上坡
 STR_0929    :'S'型彎道 (向左)
 STR_0930    :'S'型彎道 (向右)
@@ -368,8 +368,8 @@ STR_0983    :研究及開發
 STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
-STR_0987    :太多遊樂設施/店鋪...
-STR_0988    :不能興建遊樂設施/店鋪...
+STR_0987    :太多遊樂設施/店鋪…
+STR_0988    :不能興建遊樂設施/店鋪…
 STR_0989    :{STRINGID}
 STR_0990    :{SMALLFONT}{BLACK}建造
 STR_0991    :車站月台
@@ -383,10 +383,10 @@ STR_0998    :此遊樂設施的車站數量已達到上限
 STR_0999    :需要一個車站月台
 STR_1000    :軌道並未完整地連接好
 STR_1001    :軌道不適合此類型的列車
-STR_1002    :不能開啟{POP16}{POP16}{POP16}{STRINGID}...
-STR_1003    :不能測試{POP16}{POP16}{POP16}{STRINGID}...
-STR_1004    :不能關閉{POP16}{POP16}{POP16}{STRINGID}...
-STR_1005    :不能於{POP16}{POP16}{POP16}{STRINGID}中建設...
+STR_1002    :不能開啟{POP16}{POP16}{POP16}{STRINGID}…
+STR_1003    :不能測試{POP16}{POP16}{POP16}{STRINGID}…
+STR_1004    :不能關閉{POP16}{POP16}{POP16}{STRINGID}…
+STR_1005    :不能於{POP16}{POP16}{POP16}{STRINGID}中建設…
 STR_1006    :必需先行關閉遊樂設施/店鋪
 STR_1007    :無法創建足夠的車輛
 STR_1008    :{SMALLFONT}{BLACK}關閉, 開啟或測試遊樂設施/店鋪
@@ -398,10 +398,10 @@ STR_1013    :關閉樂園
 STR_1014    :開放樂園
 STR_1015    :在這個模式下, 多過一個車站的遊樂設施將無法運作
 STR_1016    :在這個模式下, 少於兩個車站的遊樂設施將無法運作
-STR_1017    :不能改變運作模式...
-STR_1018    :不能作出更變...
-STR_1019    :不能作出更變...
-STR_1020    :不能作出更變...
+STR_1017    :不能改變運作模式…
+STR_1018    :不能作出更變…
+STR_1019    :不能作出更變…
+STR_1020    :不能作出更變…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :每列車{POP16}{POP16}{POP16}{COMMA16}車卡
 STR_1023    :每列車{POP16}{POP16}{POP16}{COMMA16}車卡
@@ -431,7 +431,7 @@ STR_1046    :OpenRCT2 軌道設計檔案
 STR_1047    :儲存遊戲失敗!
 STR_1048    :儲存劇情失敗!
 STR_1049    :儲存地形失敗!
-STR_1050    :載入失敗...{NEWLINE}檔案中含有非法資料!
+STR_1050    :載入失敗…{NEWLINE}檔案中含有非法資料!
 STR_1051    :透明化支撐
 STR_1052    :透明化遊客
 STR_1053    :{SMALLFONT}{BLACK}樂園內的遊樂設施/店鋪
@@ -440,7 +440,7 @@ STR_1055    :{SMALLFONT}{BLACK}命名遊客
 STR_1056    :{SMALLFONT}{BLACK}命名員工
 STR_1057    :遊樂設施/店鋪名稱
 STR_1058    :請輸入這個遊樂設施/店鋪的新名稱:
-STR_1059    :不能重命名遊樂設施/店鋪...
+STR_1059    :不能重命名遊樂設施/店鋪…
 STR_1060    :不適合的遊樂設施/店鋪名稱
 STR_1061    :正常模式
 STR_1062    :連續循環模式
@@ -525,8 +525,8 @@ STR_1140    :{SMALLFONT}{BLACK}選擇有關車卡顏色調配的選項
 STR_1141    :{SMALLFONT}{BLACK}選擇要修改的車卡/列車
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1144    :不能建造/移動這個遊樂設施的入口...
-STR_1145    :不能建造/移動這個遊樂設施的出口...
+STR_1144    :不能建造/移動這個遊樂設施的入口…
+STR_1145    :不能建造/移動這個遊樂設施的出口…
 STR_1146    :尚未建造入口
 STR_1147    :尚未建造出口
 STR_1148    :四分之一載客量
@@ -539,16 +539,16 @@ STR_1154    :在土地上標記高度
 STR_1155    :在道路上標記高度
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :不能移除...
+STR_1158    :不能移除…
 STR_1159    :{SMALLFONT}{BLACK}放置景物, 花圃及其他裝飾物
 STR_1160    :{SMALLFONT}{BLACK}創造或調整湖泊及水塘
-STR_1161    :不能放置於此...
+STR_1161    :不能放置於此…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(按右鍵修改)
 STR_1164    :{STRINGID}{NEWLINE}(按右鍵移除)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :不能在此降低水位...
-STR_1167    :不能在此升高水位...
+STR_1166    :不能在此降低水位…
+STR_1167    :不能在此升高水位…
 STR_1168    :選項
 STR_1169    :(無)
 STR_1170    :{STRING}
@@ -557,8 +557,8 @@ STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}建造道路及'輪候區'道路
 STR_1174    :橫額擋在路上
 STR_1175    :不能在斜路上建造此物件
-STR_1176    :不能在此建造道路...
-STR_1177    :不能移除此處道路...
+STR_1176    :不能在此建造道路…
+STR_1177    :不能移除此處道路…
 STR_1178    :不適合的土地斜度
 STR_1179    :道路擋在路上
 STR_1180    :不能在水底建造此物件!
@@ -720,7 +720,7 @@ STR_1335    :{STRINGID} - 入口{POP16}{POP16}
 STR_1336    :{STRINGID} - 車站{POP16}{COMMA16}入口
 STR_1337    :{STRINGID} - 出口{POP16}{POP16}
 STR_1338    :{STRINGID} - 車站{POP16}{COMMA16}出口
-STR_1339    :{BLACK}暫無測試結果...
+STR_1339    :{BLACK}暫無測試結果…
 STR_1340    :{WINDOW_COLOUR_2}最高速度: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}遊玩時間: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
@@ -742,8 +742,8 @@ STR_1357    :{WINDOW_COLOUR_2}桿洞數量: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}總'空中'時間: {BLACK}{COMMA2DP32}秒
 STR_1359    :{WINDOW_COLOUR_2}輪候時間: {BLACK}{COMMA16}分鐘
 STR_1360    :{WINDOW_COLOUR_2}輪候時間: {BLACK}{COMMA16}分鐘
-STR_1361    :不能改變速度...
-STR_1362    :不能改變發車速度...
+STR_1361    :不能改變速度…
+STR_1362    :不能改變發車速度…
 STR_1363    :高度過高無法支撐!
 STR_1364    :無法再擴展空中軌道的支撐!
 STR_1365    :直線滾翻 (向左)
@@ -767,8 +767,8 @@ STR_1382    :彎型的鏈條坡道 (向右)
 STR_1383    :四分之一迴環
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}其他軌道選項
-STR_1386    :特殊軌道...
-STR_1387    :不能改變土地類型...
+STR_1386    :特殊軌道…
+STR_1387    :不能改變土地類型…
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
@@ -788,7 +788,7 @@ STR_1403    :{SMALLFONT}{BLACK}建造或移動遊樂設施的出口
 STR_1404    :{SMALLFONT}{BLACK}90°旋轉
 STR_1405    :{SMALLFONT}{BLACK}反轉鬼影
 STR_1406    :{SMALLFONT}{BLACK}使用/棄用景物 (如果這個軌道設計附帶景物)
-STR_1407    :{WINDOW_COLOUR_2}建造此軌道...
+STR_1407    :{WINDOW_COLOUR_2}建造此軌道…
 STR_1408    :{WINDOW_COLOUR_2}費用: {BLACK}{CURRENCY}
 STR_1409    :入口/出口平台
 STR_1410    :垂直高塔
@@ -835,7 +835,7 @@ STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRING
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :遊客命名
 STR_1453    :請輸入這位遊客的新姓名:
-STR_1454    :不能命名這位遊客...
+STR_1454    :不能命名這位遊客…
 STR_1455    :不適合的遊客姓名
 STR_1456    :{WINDOW_COLOUR_2}已花費的現金: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}在銀包中的現金: {BLACK}{CURRENCY2DP}
@@ -1033,7 +1033,7 @@ STR_1648    :{SMALLFONT}“救命! 放我下去!”
 STR_1649    :{SMALLFONT}“我花光了我身上的錢了!”
 STR_1650    :{SMALLFONT}“嘩! 嶄新的遊樂設施在建造中呢!”
 # Two removed inside jokes about Intamin and Phoenix
-STR_1653    :{SMALLFONT}“...然而, 現在我們已經在{STRINGID}之上!”
+STR_1653    :{SMALLFONT}“…然而, 現在我們已經在{STRINGID}之上!”
 STR_1654    :{WINDOW_COLOUR_2}最近的想法:
 STR_1655    :{SMALLFONT}{BLACK}在地上建造道路
 STR_1656    :{SMALLFONT}{BLACK}建造橋樑或隧道
@@ -1084,7 +1084,7 @@ STR_1700    :僱用新的清潔工人
 STR_1701    :僱用新的維修人員
 STR_1702    :僱用新的安全警衛
 STR_1703    :僱用新的表演人員
-STR_1704    :不能僱用新員工...
+STR_1704    :不能僱用新員工…
 STR_1705    :{SMALLFONT}{BLACK}解僱這位員工
 STR_1706    :{SMALLFONT}{BLACK}移動這位人物到新的位置
 STR_1707    :遊戲中已有太多員工
@@ -1097,18 +1097,18 @@ STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}灌溉花圃
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}清空垃圾筒
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}修剪草皮
 STR_1716    :不適合的樂園名稱
-STR_1717    :不能重命名樂園...
+STR_1717    :不能重命名樂園…
 STR_1718    :樂園名稱
 STR_1719    :請輸入樂園名稱:
 STR_1720    :{SMALLFONT}{BLACK}命名樂園
 STR_1721    :樂園已關閉
 STR_1722    :樂園開放中
-STR_1723    :不能開放樂園...
-STR_1724    :不能關閉樂園...
-STR_1725    :不能購買土地...
+STR_1723    :不能開放樂園…
+STR_1724    :不能關閉樂園…
+STR_1725    :不能購買土地…
 STR_1726    :土地不供購買!
 STR_1727    :建造權不供購買!
-STR_1728    :不能在此購買建造權...
+STR_1728    :不能在此購買建造權…
 STR_1729    :土地並非由樂園所擁有!
 STR_1730    :{RED}已關閉
 STR_1731    :{WHITE}{STRINGID} - - 
@@ -1117,18 +1117,18 @@ STR_1733    :模式
 STR_1734    :{WINDOW_COLOUR_2}圈數:
 STR_1735    :{SMALLFONT}{BLACK}每次循環的圈數
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1738    :不能改變圈數...
+STR_1738    :不能改變圈數…
 STR_1739    :此賽事由遊客{INT32}勝出
 STR_1740    :此賽事由{STRINGID}勝出
 STR_1741    :尚未建造!
 STR_1742    :{WINDOW_COLOUR_2}設施的最大載客量:
 STR_1743    :{SMALLFONT}{BLACK}同時間遊樂設施上最多可接受的乘客數量
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1746    :不能改變...
+STR_1746    :不能改變…
 STR_1747    :{WINDOW_COLOUR_2}遊玩時間限制:
 STR_1748    :{SMALLFONT}{BLACK}此遊樂設施的遊玩時間限制
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1751    :不能改變此遊樂設施的遊玩時間限制...
+STR_1751    :不能改變此遊樂設施的遊玩時間限制…
 STR_1752    :{SMALLFONT}{BLACK}列出樂園內每個遊客
 STR_1753    :{SMALLFONT}{BLACK}列出樂園內遊客的總匯
 STR_1754    :{BLACK}{COMMA32}名遊客
@@ -1145,7 +1145,7 @@ STR_1764    :漩渦
 STR_1765    :即時拍照區域
 STR_1766    :倒轉轉木裝置
 STR_1767    :不斷旋轉的隧道
-STR_1768    :不能改變搖擺次數...
+STR_1768    :不能改變搖擺次數…
 STR_1769    :{WINDOW_COLOUR_2}搖擺次數:
 STR_1770    :{SMALLFONT}{BLACK}完全搖擺的次數
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1184,7 +1184,7 @@ STR_1807    :控制裝置故障
 STR_1808    :{WINDOW_COLOUR_2}上次故障原因: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}今次故障原因: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}攜帶中:
-STR_1811    :不能建造於此...
+STR_1811    :不能建造於此…
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :其他物件
 STR_1814    :動作
@@ -1241,7 +1241,7 @@ STR_1864    :位維修人員
 STR_1865    :位安全警衛
 STR_1866    :位表演人員
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :不能改變旋轉次數...
+STR_1868    :不能改變旋轉次數…
 STR_1869    :{WINDOW_COLOUR_2}旋轉次數:
 STR_1870    :{SMALLFONT}{BLACK}完整旋轉次數
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1296,7 +1296,7 @@ STR_1920    :不能償還貸款!
 STR_1921    :{SMALLFONT}{BLACK}開始新遊戲
 STR_1922    :{SMALLFONT}{BLACK}繼續遊玩存檔
 STR_1924    :{SMALLFONT}{BLACK}退出遊戲
-STR_1925    :不能放置人物於此...
+STR_1925    :不能放置人物於此…
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID}發生故障了
 STR_1928    :{RED}{STRINGID}毀壞了!
@@ -1330,7 +1330,7 @@ STR_1955    :{WINDOW_COLOUR_2}圈數:
 STR_1956    :{SMALLFONT}{BLACK}每次運轉遊樂設施的圈數
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :不能改變圈數...
+STR_1959    :不能改變圈數…
 STR_1960    :{WINDOW_COLOUR_2}氣球價格:
 STR_1961    :{WINDOW_COLOUR_2}毛公仔價格:
 STR_1962    :{WINDOW_COLOUR_2}樂園地圖價格:
@@ -1604,7 +1604,7 @@ STR_2244    :9月
 STR_2245    :10月
 STR_2246    :11月
 STR_2247    :12月
-STR_2248    :不能移除遊樂設施/店鋪...
+STR_2248    :不能移除遊樂設施/店鋪…
 STR_2249    :{BABYBLUE}全新遊樂設施/店鋪可供使用:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}全新景物/主題景物可供使用:{NEWLINE}{STRINGID}
 STR_2251    :只可以在道路上建造!
@@ -1826,7 +1826,7 @@ STR_2483    :{WINDOW_COLOUR_2}每週營利: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}每週營利: {RED}{CURRENCY2DP}
 STR_2487    :顯示遊客的'真實'姓名
 STR_2488    :{SMALLFONT}{BLACK}設定顯示遊客的'真實'名字或顯示遊客名字為數字
-STR_2489    :快捷鍵...
+STR_2489    :快捷鍵…
 STR_2490    :鍵盤快捷鍵
 STR_2491    :重設快捷鍵
 STR_2492    :{SMALLFONT}{BLACK}初始化所有快捷鍵設定
@@ -2056,9 +2056,9 @@ STR_2852    :軌道設計已曾安裝
 STR_2853    :被當地政府禁止!
 STR_2854    :{RED}遊客都不能走到去{STRINGID}的入口!{NEWLINE}請建造道路連接入口
 STR_2855    :{RED}{STRINGID}的出口並沒有道路連接!{NEWLINE}請建造道路連接出口
-STR_2858    :不能開始實行營銷計劃...
+STR_2858    :不能開始實行營銷計劃…
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
-STR_2862    :音樂鳴謝列表...
+STR_2862    :音樂鳴謝列表…
 STR_2863    :音樂鳴謝列表
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) 無版權
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
@@ -2111,12 +2111,12 @@ STR_2975    :{SMALLFONT}{BLACK}選取遊樂設施的色彩選配來修改
 STR_2976    :{SMALLFONT}{BLACK}將目前指定的色彩選配塗上遊樂設施的指定區域
 STR_2977    :員工命名
 STR_2978    :請輸入這位員工的新姓名:
-STR_2979    :不能命名這位員工...
+STR_2979    :不能命名這位員工…
 STR_2980    :遊戲中太多橫額
 STR_2981    :{RED}閒人止步
 STR_2982    :橫額文字
 STR_2983    :請輸入橫額中的文字:
-STR_2984    :不能設定橫額中的文字...
+STR_2984    :不能設定橫額中的文字…
 STR_2985    :橫額
 STR_2986    :{SMALLFONT}{BLACK}修改橫額中的文字
 STR_2987    :{SMALLFONT}{BLACK}將此橫額顯示為'遊客止步'
@@ -2142,7 +2142,7 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :無法載入檔案...
+STR_3010    :無法載入檔案…
 STR_3011    :檔案中含有非法資料
 STR_3012    :碰碰車節奏風格
 STR_3013    :遊樂場風琴風格
@@ -2185,7 +2185,7 @@ STR_3050    :高爾夫球洞B
 STR_3051    :高爾夫球洞C
 STR_3052    :高爾夫球洞D
 STR_3053    :高爾夫球洞E
-STR_3054    :載入中...
+STR_3054    :載入中…
 STR_3058    :磚牆
 STR_3059    :樹籬
 STR_3060    :冰磚牆
@@ -2230,7 +2230,7 @@ STR_3099    :{SMALLFONT}{BLACK}選擇顏色
 STR_3100    :{SMALLFONT}{BLACK}選擇第二顏色
 STR_3101    :{SMALLFONT}{BLACK}選擇第三顏色
 STR_3102    :{SMALLFONT}{BLACK}將地形的景物重新上色
-STR_3103    :不能重新上色這個物件...
+STR_3103    :不能重新上色這個物件…
 STR_3104    :{SMALLFONT}{BLACK}列出遊樂設施
 STR_3105    :{SMALLFONT}{BLACK}列出商店及攤販
 STR_3106    :{SMALLFONT}{BLACK}列出訪客資訊中心或其他遊客設施
@@ -2244,7 +2244,7 @@ STR_3113    :選擇另一個設計
 STR_3114    :{SMALLFONT}{BLACK}返回選擇設計視窗
 STR_3115    :{SMALLFONT}{BLACK}儲存軌道設計
 STR_3116    :{SMALLFONT}{BLACK}儲存軌道設計 (在測試完結及測試資料生成完畢前不可用)
-STR_3117    :{BLACK}呼叫維修人員中...
+STR_3117    :{BLACK}呼叫維修人員中…
 STR_3118    :{BLACK}{STRINGID}正在前往到這個遊樂設施
 STR_3119    :{BLACK}{STRINGID}正在修復這個遊樂設施
 STR_3120    :{SMALLFONT}{BLACK}將最鄰近, 或在維修此遊樂設施的維修人員定位
@@ -2259,7 +2259,7 @@ STR_3128    :儲存軌道設計
 STR_3129    :儲存軌道設計及周邊景物
 STR_3130    :儲存
 STR_3131    :取消
-STR_3132    :{BLACK}點擊選擇景物, 以便儲存於軌道設計內...
+STR_3132    :{BLACK}點擊選擇景物, 以便儲存於軌道設計內…
 STR_3133    :無法於斜坡上建造此物件
 STR_3134    :{RED}(設計中含有不可用的景物)
 STR_3135    :{RED}(車輛款式不可用 - 遊樂設施的性能可能會有影響)
@@ -2403,7 +2403,7 @@ STR_3290    :又冷又潮濕
 STR_3291    :溫暖
 STR_3292    :又熱又乾燥
 STR_3293    :寒冷
-STR_3294    :更改...
+STR_3294    :更改…
 STR_3295    :{SMALLFONT}{BLACK}更改樂園名稱
 STR_3296    :{SMALLFONT}{BLACK}更改劇情名稱
 STR_3297    :{SMALLFONT}{BLACK}更改樂園/劇情的簡介
@@ -2429,12 +2429,12 @@ STR_3316    :請輸入這個樂園/劇情的簡介:
 STR_3317    :暫無簡介
 STR_3318    :{SMALLFONT}{BLACK}選擇這個劇情要在哪個組別中顯示
 STR_3319    :{WINDOW_COLOUR_2}劇情組別:
-STR_3320    :無法儲存劇情檔案...
+STR_3320    :無法儲存劇情檔案…
 STR_3321    :成功安裝新物件
 STR_3322    :{WINDOW_COLOUR_2}目標: {BLACK}{STRINGID}
 STR_3326    :{WINDOW_COLOUR_2}(暫無圖片)
 STR_3327    :尚未設定遊客的開始步行位置
-STR_3328    :不能進行下一步編輯...
+STR_3328    :不能進行下一步編輯…
 STR_3329    :尚未建造樂園入口
 STR_3330    :樂園必需有一些己擁有的土地
 STR_3331    :由地圖邊緣到樂園入口的道路尚未連接好, 或者太複雜 - 這些道路必需是一格寬度, 並以越少交界及彎位越好
@@ -2451,19 +2451,19 @@ STR_3342    :劇情修改工具
 STR_3343    :將存檔轉換成劇情
 STR_3344    :軌道設計工具
 STR_3345    :軌道設計管理工具
-STR_3346    :無法儲存軌道設計...
+STR_3346    :無法儲存軌道設計…
 STR_3347    :遊樂設施太巨型, 含有太多物件, 或景物分佈太散亂
 STR_3348    :重命名
 STR_3349    :刪除
 STR_3350    :軌道設計名稱
 STR_3351    :請輸入這個軌道設計的新名稱:
-STR_3352    :不能重命名這個軌道設計...
+STR_3352    :不能重命名這個軌道設計…
 STR_3353    :新名稱含有不合適的字符
 STR_3354    :已有另外一個相同名稱的檔案, 或檔案被寫入保護
 STR_3355    :檔案被寫入保護或被鎖定
 STR_3356    :刪除檔案
 STR_3357    :{WINDOW_COLOUR_2}你確定要永久刪除{STRING} ?
-STR_3358    :不能刪除軌道設計...
+STR_3358    :不能刪除軌道設計…
 STR_3359    :{BLACK}這類遊樂設施沒有已設計好的軌道設計
 STR_3360    :警告!
 STR_3361    :這種遊樂設施擁有太多軌道設計 - 將不會列出某些軌道設計.
@@ -2479,7 +2479,7 @@ STR_3372    :{BLACK}= 提款機
 STR_3373    :{BLACK}= 廁所
 STR_3374    :警告: 選取了太多物件!
 STR_3375    :不是在此景觀組別中的所有物件都能夠選取
-STR_3376    :安裝新的...
+STR_3376    :安裝新的…
 STR_3377    :{SMALLFONT}{BLACK}安裝新的軌道設計檔案
 STR_3378    :安裝
 STR_3379    :取消
@@ -2488,12 +2488,12 @@ STR_3381    :不兼容的檔案或含有非法資料
 STR_3382    :複製檔案失敗
 STR_3383    :輸入這個軌道設計的新名稱
 STR_3384    :已有相同名稱的軌道設計 - 請輸入這個軌道設計的新名稱:
-STR_3389    :無法選擇額外的景觀物件...
+STR_3389    :無法選擇額外的景觀物件…
 STR_3390    :選取了太多物件
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
 # End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}在地形中清理某些大範圍內的景物
-STR_3438    :無法移除這裡所有的景物...
+STR_3438    :無法移除這裡所有的景物…
 STR_3439    :移除景物
 STR_3445    :設置巡邏區域
 STR_3446    :取得巡邏區域
@@ -2531,7 +2531,7 @@ STR_5149    :{SMALLFONT}{BLACK}顯示密技選項
 STR_5150    :啟用除錯工具
 STR_5151    :,
 STR_5152    :.
-STR_5153    :編輯配色主題...
+STR_5153    :編輯配色主題…
 STR_5154    :使用硬體渲染
 STR_5155    :容許測試未建造好的軌道設計
 STR_5156    :{SMALLFONT}{BLACK}容許測試大部份軌道設計, 即使未建造好的也可以. 但不能適用於區域煞車模式
@@ -2710,7 +2710,7 @@ STR_5365    :{BLACK}員工行走速度:
 STR_5366    :正常
 STR_5367    :快速
 STR_5368    :重設毀壞狀態
-STR_5369    :樂園參數...
+STR_5369    :樂園參數…
 STR_5370    :{SMALLFONT}{BLACK}按此來修改樂園參數{NEWLINE}例如關於限制, 生成遊客{NEWLINE}及金錢的選項
 STR_5371    :選取物件
 STR_5372    :滑鼠左鍵拖拉
@@ -2776,7 +2776,7 @@ STR_5432    :命令:
 STR_5433    :主選單動畫
 STR_5434    :命令編輯工具
 STR_5435    :重命名存檔
-STR_5436    :修改主選單動畫...
+STR_5436    :修改主選單動畫…
 STR_5437    :暫無存檔被選中
 STR_5438    :當命令編輯工具開啟不能作出改變
 STR_5439    :4秒以上的等待(Wait)命令需要加上重新開始(Restart)命令
@@ -2975,7 +2975,7 @@ STR_5633    :CMD +
 STR_5634    :OPTION + 
 STR_5635    :{WINDOW_COLOUR_2}已花費金錢: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}已運行命名: {BLACK}{COMMA16}個
-STR_5637    :無法進行此動作...
+STR_5637    :無法進行此動作…
 STR_5638    :並沒有足夠的權限
 STR_5639    :{SMALLFONT}{BLACK}顯示玩家列表
 STR_5640    :{SMALLFONT}{BLACK}管理組別
@@ -3045,9 +3045,9 @@ STR_5738    :已關閉, {COMMA16}個遊客依然在這個遊樂設施上
 STR_5739    :{WINDOW_COLOUR_2}在這個遊樂設施上的遊客: {BLACK}{COMMA16}
 STR_5740    :永不完結的推廣計劃
 STR_5741    :{SMALLFONT}{BLACK}推廣計劃將會不斷推行下去
-STR_5742    :認證中...
-STR_5743    :連線中...
-STR_5744    :索取伺服器地址中...
+STR_5742    :認證中…
+STR_5743    :連線中…
+STR_5744    :索取伺服器地址中…
 STR_5745    :網絡不同步已被偵察
 STR_5746    :已斷線
 STR_5747    :已斷線: {STRING}
@@ -3062,7 +3062,7 @@ STR_5755    :不合適的遊戲版本 (伺服器版本為{STRING})
 STR_5756    :密碼錯誤
 STR_5757    :伺服器人數已滿
 STR_5758    :{OUTLINE}{GREEN}{STRING}已加入遊戲
-STR_5759    :下載劇情中... ({INT32} / {INT32}) KiB
+STR_5759    :下載劇情中… ({INT32} / {INT32}) KiB
 STR_5760    :港幣 (HK$)
 STR_5761    :新台幣 (NT$)
 STR_5762    :人民幣 (CN¥)
@@ -3088,7 +3088,7 @@ STR_5781    :運作成本: {BLACK}未知
 STR_5782    :你已經連接到伺服器. 按 '{STRING}' 來聊天.
 STR_5783    :{WINDOW_COLOUR_2}劇情未解開
 STR_5784    :{BLACK}完成已解開的劇情來解開此劇情.
-STR_5785    :不能重命名組別...
+STR_5785    :不能重命名組別…
 STR_5786    :不正確的組別名稱
 STR_5787    :{COMMA32} 玩家在線
 STR_5788    :預設檢查遊樂設施的時隔:
@@ -3291,7 +3291,7 @@ STR_5987    :無法建立新文件夾
 STR_5988    :{SMALLFONT}{BLACK}已經沒有可供購買的土地使用權
 STR_5989    :{SMALLFONT}{BLACK}已經沒有可供購買的建造權
 STR_5990    :{SMALLFONT}{BLACK}已經沒有可供購買的土地使用或建造權
-STR_5991    :無法貼上元素...
+STR_5991    :無法貼上元素…
 STR_5992    :此地圖元素的數量已達上限
 STR_5993    :{SMALLFONT}{BLACK}複製所選元素
 STR_5994    :{SMALLFONT}{BLACK}貼上所選元素
@@ -3440,7 +3440,7 @@ STR_6136    :伺服器發送了不正確的要求
 STR_6137    :OpenRCT2, 一個免費及開放原始碼的模擬樂園2複製品.
 STR_6138    :OpenRCT2由眾多志願者一起開發, 完整的列表可於 “contributors.md” 找到. 請訪問 http://github.com/OpenRCT2/OpenRCT2 以便獲取更多資訊
 STR_6139    :所有的產品及公司名稱皆屬其擁有者所有. 使用那些名稱並不暗示或代表本項目與他們有任何聯繫.
-STR_6140    :更新日誌...
+STR_6140    :更新日誌…
 STR_6141    :夢幻遊樂園(RCT1)式的底部工具列
 STR_6142    :{WINDOW_COLOUR_2}軌道設計名稱: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}遊樂設施種類: {BLACK}{STRINGID}
@@ -3448,7 +3448,7 @@ STR_6144    :顥示沒有更新的畫面區域
 STR_6145    :{SMALLFONT}{BLACK}為加速裝置設置速度限制
 STR_6146    :啟用所有可以渲染的軌道選項
 STR_6147    :{SMALLFONT}{BLACK}在建造視窗中啟用所有該遊樂設施可以建設的軌道選項, 並忽略車輛能否於那些軌道上行走.
-STR_6148    :正在連接到主列表伺服器...
+STR_6148    :正在連接到主列表伺服器…
 STR_6149    :無法連接到主列表伺服器
 STR_6150    :主列表伺服器傳回不正確的回應 (無JSON 號碼)
 STR_6151    :主列表伺服器傳回列表失敗
@@ -3458,7 +3458,7 @@ STR_6154    :為安全起見, 不建議以管理員權限運行OpenRCT2.
 STR_6155    :本系統中並未安裝KDialog或Zenity. 請安裝其中一款, 或於命令提示字元中配置.
 STR_6156    :名字已被預留
 STR_6157    :命令提示字元
-STR_6158    :無法載入此檔案...{NEWLINE}不兼容的RCTC版本: {COMMA16}
+STR_6158    :無法載入此檔案…{NEWLINE}不兼容的RCTC版本: {COMMA16}
 STR_6159    :平滑式最近鄰居法
 STR_6160    :{WINDOW_COLOUR_2}可供使用的車輛種類: {BLACK}{STRING} 
 STR_6161    :啟用/禁用網格顯示
@@ -3514,7 +3514,7 @@ STR_6218    :OpenRCT2官方
 STR_6219    :高亮道路問題
 STR_6220    :設為可用
 STR_6221    :{SMALLFONT}{BLACK}此選項會將當前選中的網格設定為這個遊樂設施的已知入口或出口位置. 一個車站只能有一個可用入口及出口.
-STR_6222    :不能在這裡放置遊客進出點...
+STR_6222    :不能在這裡放置遊客進出點…
 STR_6223    :必須放置於樂園邊界外!
 STR_6224    :{STRING}已放置一個遊客進出點.
 STR_6225    :使用OpenGL渲染器時不支援
@@ -3563,7 +3563,7 @@ STR_6270    :地型表面
 STR_6271    :地型邊緣
 STR_6272    :車站
 STR_6273    :音樂
-STR_6274    :無法設置色彩選配...
+STR_6274    :無法設置色彩選配…
 STR_6275    :{WINDOW_COLOUR_2}車站風格:
 STR_6276    :{RED}有遊客於{STRINGID}中卡住, 可能因為使用了非法的遊樂設施種類或運作模式.
 STR_6277    :{WINDOW_COLOUR_2}車站索引: {BLACK}{COMMA16}
@@ -3615,7 +3615,7 @@ STR_6322    :{WINDOW_COLOUR_2}元素ID: {BLACK}{INT32}
 STR_6323    :模擬運作中
 STR_6324    :模擬
 STR_6325    :{SMALLFONT}{BLACK}模擬遊樂設施的運作
-STR_6326    :無法模擬{POP16}{POP16}{POP16}{STRINGID}的運作...
+STR_6326    :無法模擬{POP16}{POP16}{POP16}{STRINGID}的運作…
 STR_6327    :巨型截圖時使用透明背景
 STR_6328    :{SMALLFONT}{BLACK}當啟用此選項時, 黑色背景將不會套用於巨型截圖上.
 STR_6329    :{STRING}{STRINGID}

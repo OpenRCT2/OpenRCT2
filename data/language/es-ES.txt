@@ -262,8 +262,8 @@ STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP
 STR_0876    :{BLACK}▼
 STR_0877    :¡Demasiado bajo!
 STR_0878    :¡Demasiado alto!
-STR_0879    :No se puede bajar el terreno...
-STR_0880    :No se puede elevar el terreno...
+STR_0879    :No se puede bajar el terreno…
+STR_0880    :No se puede elevar el terreno…
 STR_0881    :Un objeto interfiere
 STR_0882    :Cargar Partida
 STR_0883    :Guardar Partida
@@ -307,8 +307,8 @@ STR_0922    :{SMALLFONT}{BLACK}Cuesta arriba pronunciada
 STR_0923    :{SMALLFONT}{BLACK}Subida Vertical
 STR_0924    :{SMALLFONT}{BLACK}Hélice abajo
 STR_0925    :{SMALLFONT}{BLACK}Hélice arriba
-STR_0926    :No se puede quitar esto...
-STR_0927    :No puede construir esto aquí...
+STR_0926    :No se puede quitar esto…
+STR_0927    :No puede construir esto aquí…
 STR_0928    :{SMALLFONT}{BLACK}Cadena elevadora para propulsar coches por una pendiente.
 STR_0929    :Curva 'S' (izquierda)
 STR_0930    :Curva 'S' (derecha)
@@ -383,10 +383,10 @@ STR_0998    :No se permiten más estaciones en esta atracción
 STR_0999    :Requiere un andén de estación
 STR_1000    :El trayecto no completa un circuito
 STR_1001    :Trayecto no adecuado para este tipo de tren
-STR_1002    :No se puede abrir {POP16}{POP16}{POP16}{STRINGID}...
-STR_1003    :No se puede probar {POP16}{POP16}{POP16}{STRINGID}...
-STR_1004    :No se puede cerrar {POP16}{POP16}{POP16}{STRINGID}...
-STR_1005    :No se puede iniciar construcción en {POP16}{POP16}{POP16}{STRINGID}...
+STR_1002    :No se puede abrir {POP16}{POP16}{POP16}{STRINGID}…
+STR_1003    :No se puede probar {POP16}{POP16}{POP16}{STRINGID}…
+STR_1004    :No se puede cerrar {POP16}{POP16}{POP16}{STRINGID}…
+STR_1005    :No se puede iniciar construcción en {POP16}{POP16}{POP16}{STRINGID}…
 STR_1006    :Debe ser cerrado antes
 STR_1007    :No se puede crear suficientes vehículos
 STR_1008    :{SMALLFONT}{BLACK}Abrir, cerrar o probar esta atracción
@@ -398,10 +398,10 @@ STR_1013    :Cerrar parque
 STR_1014    :Abrir parque
 STR_1015    :No se puede operar con más de una estación en este modo
 STR_1016    :No se puede operar con menos de dos estaciones en este modo
-STR_1017    :No se puede cambiar el modo de funcionamiento...
-STR_1018    :No se pueden hacer cambios...
-STR_1019    :No se pueden hacer cambios...
-STR_1020    :No se pueden hacer cambios...
+STR_1017    :No se puede cambiar el modo de funcionamiento…
+STR_1018    :No se pueden hacer cambios…
+STR_1019    :No se pueden hacer cambios…
+STR_1020    :No se pueden hacer cambios…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :{POP16}{POP16}{POP16}{COMMA16} vagón por tren
 STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vagones por tren
@@ -431,7 +431,7 @@ STR_1046    :OpenRCT2 Archivo de diseño de vía
 STR_1047    :¡Guardar partida falló!
 STR_1048    :¡Guardar escenario falló!
 STR_1049    :¡Guardar paisaje falló!
-STR_1050    :Falló al cargar...{NEWLINE}¡El archivo contiene datos inválidos!
+STR_1050    :Falló al cargar…{NEWLINE}¡El archivo contiene datos inválidos!
 STR_1051    :Soportes invisibles
 STR_1052    :Visitantes invisibles
 STR_1053    :{SMALLFONT}{BLACK}Atracciones en el parque
@@ -440,7 +440,7 @@ STR_1055    :{SMALLFONT}{BLACK}Nombrar persona
 STR_1056    :{SMALLFONT}{BLACK}Nombrar empleado
 STR_1057    :Nombre de atracción
 STR_1058    :Escribe el nombre de esta atracción:
-STR_1059    :No se pudo renombrar la atracción...
+STR_1059    :No se pudo renombrar la atracción…
 STR_1060    :Nombre de atracción no válido
 STR_1061    :Modo normal
 STR_1062    :Modo circuito continuo
@@ -525,8 +525,8 @@ STR_1140    :{SMALLFONT}{BLACK}Selecciona el esquema de color de los vagones
 STR_1141    :{SMALLFONT}{BLACK}Selecciona que vehículo/tren modificar
 STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1144    :No se puede construir/mover la entrada de esta atracción...
-STR_1145    :No se puede construir/mover la salida de esta atracción...
+STR_1144    :No se puede construir/mover la entrada de esta atracción…
+STR_1145    :No se puede construir/mover la salida de esta atracción…
 STR_1146    :Aún no se ha construido una entrada
 STR_1147    :Aún no se ha construido una salida
 STR_1148    :Un cuarto de carga
@@ -539,16 +539,16 @@ STR_1154    :Marcas de altura en el suelo
 STR_1155    :Marcas de altura en senderos
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :No se puede quitar esto...
+STR_1158    :No se puede quitar esto…
 STR_1159    :{SMALLFONT}{BLACK}Crear decorado, jardines y otros accesorios
 STR_1160    :{SMALLFONT}{BLACK}Crear lagos y ajustar agua
-STR_1161    :No se puede posicionar esto aquí...
+STR_1161    :No se puede posicionar esto aquí…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Clic derecho para modificar)
 STR_1164    :{STRINGID}{NEWLINE}(Clic derecho para quitar)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :No se puede bajar el nivel de agua...
-STR_1167    :No se puede subir el nivel del agua...
+STR_1166    :No se puede bajar el nivel de agua…
+STR_1167    :No se puede subir el nivel del agua…
 STR_1168    :Opciones
 STR_1169    :(Ninguno)
 STR_1170    :{STRING}
@@ -557,8 +557,8 @@ STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Construir senderos
 STR_1174    :Cartel de señal interfiere
 STR_1175    :No se puede construir esto sobre una pendiente
-STR_1176    :No se puede construir este camino aquí...
-STR_1177    :No se puede quitar este camino de aquí...
+STR_1176    :No se puede construir este camino aquí…
+STR_1177    :No se puede quitar este camino de aquí…
 STR_1178    :Pendiente del terreno no apto
 STR_1179    :Camino interfiere
 STR_1180    :¡No se puede construir bajo el agua!
@@ -720,7 +720,7 @@ STR_1335    :{STRINGID} - Entrada{POP16}{POP16}
 STR_1336    :{STRINGID} - Estación {POP16}{COMMA16} Entrada
 STR_1337    :{STRINGID} - Salida{POP16}{POP16}
 STR_1338    :{STRINGID} - Estación {POP16}{COMMA16} Salida
-STR_1339    :{BLACK}No hay resultados de prueba aún...
+STR_1339    :{BLACK}No hay resultados de prueba aún…
 STR_1340    :{WINDOW_COLOUR_2}Velocidad máxima: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Tiempo de viaje: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
@@ -742,8 +742,8 @@ STR_1357    :{WINDOW_COLOUR_2}Hoyos: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Tiempo total de 'vuelo': {BLACK}{COMMA2DP32}secs
 STR_1359    :{WINDOW_COLOUR_2}Tiempo de espera: {BLACK}{COMMA16} minuto
 STR_1360    :{WINDOW_COLOUR_2}Tiempo de espera: {BLACK}{COMMA16} minutos
-STR_1361    :No puedes cambiar la velocidad...
-STR_1362    :No puedes cambiar la velocidad de lanzamiento...
+STR_1361    :No puedes cambiar la velocidad…
+STR_1362    :No puedes cambiar la velocidad de lanzamiento…
 STR_1363    :¡Muy alto para los soportes!
 STR_1364    :¡Los soportes del tramo anterior no se pueden extender más!
 STR_1365    :Giro en-línea (izquierda)
@@ -767,8 +767,8 @@ STR_1382    :Subida en curva (der)
 STR_1383    :Cuarto de vuelta
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}Otros tipos de tramos
-STR_1386    :Tramo especial...
-STR_1387    :No se puede cambiar el tipo de tierra...
+STR_1386    :Tramo especial…
+STR_1387    :No se puede cambiar el tipo de tierra…
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
@@ -788,7 +788,7 @@ STR_1403    :{SMALLFONT}{BLACK}Construir o mover salida de atracción/juego
 STR_1404    :{SMALLFONT}{BLACK}Rotar 90°
 STR_1405    :{SMALLFONT}{BLACK}Rotar en Espejo
 STR_1406    :{SMALLFONT}{BLACK}Muestra u oculta el decorado (si se encuentra disponible)
-STR_1407    :{WINDOW_COLOUR_2}Construye esto...
+STR_1407    :{WINDOW_COLOUR_2}Construye esto…
 STR_1408    :{WINDOW_COLOUR_2}Precio: {BLACK}{CURRENCY}
 STR_1409    :Estación
 STR_1410    :Sección vertical
@@ -835,7 +835,7 @@ STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRING
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :Nombrar Visitante
 STR_1453    :Escribe el nombre para este visitante:
-STR_1454    :No se puede renombrar visitante...
+STR_1454    :No se puede renombrar visitante…
 STR_1455    :Nombre no válido para visitante
 STR_1456    :{WINDOW_COLOUR_2}Dinero gastado: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Dinero en el bolsillo: {BLACK}{CURRENCY2DP}
@@ -1032,7 +1032,7 @@ STR_1647    :
 STR_1648    :{SMALLFONT}“¡Ayuda! ¡Bájame!”
 STR_1649    :{SMALLFONT}“¡Me estoy quedando sin dinero!”
 STR_1650    :{SMALLFONT}“¡Wow! ¡Están construyendo una nueva atracción!”
-STR_1653    :{SMALLFONT}“... ¡Y aquí estamos en {STRINGID}!”
+STR_1653    :{SMALLFONT}“… ¡Y aquí estamos en {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Pensamientos recientes:
 STR_1655    :{SMALLFONT}{BLACK}Construir camino a nivel del suelo.
 STR_1656    :{SMALLFONT}{BLACK}Construir puente o túnel.
@@ -1083,7 +1083,7 @@ STR_1700    :Contratar nuevo manitas
 STR_1701    :Contratar nuevo mecánico
 STR_1702    :Contratar nuevo guardia
 STR_1703    :Contratar nuevo animador
-STR_1704    :No se pueden contratar nuevos empleados...
+STR_1704    :No se pueden contratar nuevos empleados…
 STR_1705    :{SMALLFONT}{BLACK}Despedir empleado
 STR_1706    :{SMALLFONT}{BLACK}Mover esta persona a otra posición
 STR_1707    :Muchos empleados en el parque.
@@ -1096,18 +1096,18 @@ STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Regar plantas
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Vaciar papeleras
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Cortar césped
 STR_1716    :Nombre de parque inválido
-STR_1717    :No se puede renombrar el parque...
+STR_1717    :No se puede renombrar el parque…
 STR_1718    :Nombrar parque
 STR_1719    :Introduce el nuevo nombre del parque:
 STR_1720    :{SMALLFONT}{BLACK}Nombrar parque
 STR_1721    :Parque cerrado
 STR_1722    :Parque abierto
-STR_1723    :No puedes abrir el parque...
-STR_1724    :No puedes cerrar el parque...
-STR_1725    :No puedes comprar terreno...
+STR_1723    :No puedes abrir el parque…
+STR_1724    :No puedes cerrar el parque…
+STR_1725    :No puedes comprar terreno…
 STR_1726    :¡Terreno no a la venta!
 STR_1727    :¡Derechos de construcción no a la venta!
-STR_1728    :No puedes comprar derechos de construcción aquí...
+STR_1728    :No puedes comprar derechos de construcción aquí…
 STR_1729    :¡El terreno no es propiedad del parque!
 STR_1730    :{RED}Cerrado
 STR_1731    :{WHITE}{STRINGID} - - 
@@ -1116,18 +1116,18 @@ STR_1733    :Modo
 STR_1734    :{WINDOW_COLOUR_2}Numero de vueltas:
 STR_1735    :{SMALLFONT}{BLACK}Numero de vueltas de circuito
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1738    :No se puede cambiar el numero de vueltas...
+STR_1738    :No se puede cambiar el numero de vueltas…
 STR_1739    :Carrera ganada por visitante {INT32}
 STR_1740    :Carrera ganada por {STRINGID}
 STR_1741    :¡Aún sin construir!
 STR_1742    :{WINDOW_COLOUR_2}Max. visitantes en juego:
 STR_1743    :{SMALLFONT}{BLACK}Numero de visitantes máximo permitido en este juego al mismo tiempo
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1746    :No puedes cambiar esto...
+STR_1746    :No puedes cambiar esto…
 STR_1747    :{WINDOW_COLOUR_2}Límite de tiempo:
 STR_1748    :{SMALLFONT}{BLACK}Tiempo límite para el viaje
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1751    :No se puede cambiar el límite de tiempo para esta atracción...
+STR_1751    :No se puede cambiar el límite de tiempo para esta atracción…
 STR_1752    :{SMALLFONT}{BLACK}Mostrar lista de visitantes en el parque
 STR_1753    :{SMALLFONT}{BLACK}Mostrar lista agrupada de visitantes en el parque
 STR_1754    :{BLACK}{COMMA32} visitantes
@@ -1144,7 +1144,7 @@ STR_1764    :Golpes de troncos
 STR_1765    :Cámara fotográfica
 STR_1766    :Reverser turntable
 STR_1767    :Túnel Giratorio
-STR_1768    :No puedes cambiar el número de balanceo...
+STR_1768    :No puedes cambiar el número de balanceo…
 STR_1769    :{WINDOW_COLOUR_2}Número de balanceos:
 STR_1770    :{SMALLFONT}{BLACK}Número de balanceos completos
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1183,7 +1183,7 @@ STR_1807    :Fallo de control
 STR_1808    :{WINDOW_COLOUR_2}Última avería: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Avería actual: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Lleva:
-STR_1811    :No puedes construir esto aquí...
+STR_1811    :No puedes construir esto aquí…
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Objetos misceláneos
 STR_1814    :Acciones
@@ -1240,7 +1240,7 @@ STR_1864    :mecánico
 STR_1865    :guardia de seguridad
 STR_1866    :animador
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :No puedes cambiar el número de vueltas...
+STR_1868    :No puedes cambiar el número de vueltas…
 STR_1869    :{WINDOW_COLOUR_2}Número de vueltas:
 STR_1870    :{SMALLFONT}{BLACK}Número de vueltas completas
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1293,7 +1293,7 @@ STR_1920    :¡No puedes devolver el préstamo!
 STR_1921    :{SMALLFONT}{BLACK}Iniciar nueva partida
 STR_1922    :{SMALLFONT}{BLACK}Continuar partida guardada
 STR_1924    :{SMALLFONT}{BLACK}Salir del juego
-STR_1925    :No puedes colocar esta persona aquí...
+STR_1925    :No puedes colocar esta persona aquí…
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} se ha averiado
 STR_1928    :{RED}¡{STRINGID} ha chocado!
@@ -1327,7 +1327,7 @@ STR_1955    :{WINDOW_COLOUR_2}Número de circuitos:
 STR_1956    :{SMALLFONT}{BLACK}Número de circuitos por juego
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :No se puede cambiar el número de circuitos...
+STR_1959    :No se puede cambiar el número de circuitos…
 STR_1960    :{WINDOW_COLOUR_2}Precio del Globo:
 STR_1961    :{WINDOW_COLOUR_2}Precio del Juguetito:
 STR_1962    :{WINDOW_COLOUR_2}Precio del Mapa:
@@ -1823,7 +1823,7 @@ STR_2483    :{WINDOW_COLOUR_2}Beneficio semanal: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Beneficio semanal: {RED}{CURRENCY2DP}
 STR_2487    :Mostrar nombres 'reales' de los visitantes
 STR_2488    :{SMALLFONT}{BLACK}Muestra los nombres 'reales' de los visitantes, o sólo su número de visitante
-STR_2489    :Atajos de teclado...
+STR_2489    :Atajos de teclado…
 STR_2490    :Atajos de teclado
 STR_2491    :Reiniciar teclas
 STR_2492    :{SMALLFONT}{BLACK}Cambiar todos los atajos de teclado a los valores por defecto
@@ -2053,9 +2053,9 @@ STR_2852    :Vía ya instalada
 STR_2853    :¡Prohibido por las autoridades locales!
 STR_2854    :{RED}¡Los visitantes no encuentran la entrada de {STRINGID}!{NEWLINE}Construye un sendero hacia la entrada
 STR_2855    :{RED}¡{STRINGID} no tiene un camino de salida!{NEWLINE}Construye un camino desde la salida de la atracción.
-STR_2858    :No puedes iniciar una campaña publicitaria...
+STR_2858    :No puedes iniciar una campaña publicitaria…
 STR_2861    :{WINDOW_COLOUR_2}Bajo licencia a Infogrames Interactive Inc.
-STR_2862    :Agradecimientos musicales...
+STR_2862    :Agradecimientos musicales…
 STR_2863    :Agradecimientos musicales
 STR_2864    :{WINDOW_COLOUR_2}Marcha - Children of the Regiment:   (Fucik) sin copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
@@ -2108,12 +2108,12 @@ STR_2975    :{SMALLFONT}{BLACK}Selecciona el esquema de color a cambiar, o pinta
 STR_2976    :{SMALLFONT}{BLACK}Pintar sólo un área de la atracción utilizando el esquema de color seleccionado
 STR_2977    :Nombrar personal
 STR_2978    :Escribe un nombre para este miembro
-STR_2979    :No se puede nombrar este miembro del personal...
+STR_2979    :No se puede nombrar este miembro del personal…
 STR_2980    :Demasiadas banderas en juego
 STR_2981    :{RED}No pasar
 STR_2982    :Texto del letrero
 STR_2983    :Introduce nuevo texto para este letrero:
-STR_2984    :No se puede establecer texto para el letrero...
+STR_2984    :No se puede establecer texto para el letrero…
 STR_2985    :Letrero
 STR_2986    :{SMALLFONT}{BLACK}Cambiar texto del letrero
 STR_2987    :{SMALLFONT}{BLACK}Configura este letrero como 'No pasar'
@@ -2139,7 +2139,7 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :No se pudo cargar el archivo...
+STR_3010    :No se pudo cargar el archivo…
 STR_3011    :El archivo contiene datos no válidos
 STR_3012    :Estilo coches de choque
 STR_3013    :Fairground organ style
@@ -2182,7 +2182,7 @@ STR_3050    :Golf agujero B
 STR_3051    :Golf agujero C
 STR_3052    :Golf agujero D
 STR_3053    :Golf agujero E
-STR_3054    :Cargando...
+STR_3054    :Cargando…
 STR_3058    :Paredes de ladrillo
 STR_3059    :Arbusto
 STR_3060    :Bloque de hielo
@@ -2215,7 +2215,7 @@ STR_3099    :{SMALLFONT}{BLACK}Seleccionar color
 STR_3100    :{SMALLFONT}{BLACK}Seleccionar segundo color
 STR_3101    :{SMALLFONT}{BLACK}Seleccionar tercer color
 STR_3102    :{SMALLFONT}{BLACK}Repintar decorado coloreado en el parque
-STR_3103    :No puedes repintar esto...
+STR_3103    :No puedes repintar esto…
 STR_3104    :{SMALLFONT}{BLACK}Listar atracciones
 STR_3105    :{SMALLFONT}{BLACK}Listar tiendas y puestos
 STR_3106    :{SMALLFONT}{BLACK}Listar quioscos de información y otras instalaciones para visitantes
@@ -2229,7 +2229,7 @@ STR_3113    :Seleccionar otro diseño
 STR_3114    :{SMALLFONT}{BLACK}Volver a la ventana selección de diseños
 STR_3115    :{SMALLFONT}{BLACK}Guardar diseño de vía
 STR_3116    :{SMALLFONT}{BLACK}Guardar diseño de vía (No es posible hasta que la atracción se haya probado y se hayan generado las estadísticas)
-STR_3117    :{BLACK}Llamando al mecánico...
+STR_3117    :{BLACK}Llamando al mecánico…
 STR_3118    :{BLACK}{STRINGID} se está dirigiendo a la atracción
 STR_3119    :{BLACK}{STRINGID} está arreglando la atracción
 STR_3120    :{SMALLFONT}{BLACK}Localiza el mecánico libre más cercano, o el mecánico que está arreglando la atracción
@@ -2244,7 +2244,7 @@ STR_3128    :Guardar diseño de vía
 STR_3129    :Guardar diseño de vía con decorado
 STR_3130    :Guardar
 STR_3131    :Cancelar
-STR_3132    :{BLACK}Clic en elementos de escenario para guardar junto con el diseño de la vía ...
+STR_3132    :{BLACK}Clic en elementos de escenario para guardar junto con el diseño de la vía …
 STR_3133    :No es posible construir esto en una pendiente
 STR_3134    :{RED}(Este diseño incluye un decorado que no está disponible)
 STR_3135    :{RED}(Vehículo no disponible - El rendimiento puede verse afectado)
@@ -2388,7 +2388,7 @@ STR_3290    :Frío y húmedo
 STR_3291    :Cálido
 STR_3292    :Caliente y seco
 STR_3293    :Frío
-STR_3294    :Cambiar...
+STR_3294    :Cambiar…
 STR_3295    :{SMALLFONT}{BLACK}Cambiar nombre del parque
 STR_3296    :{SMALLFONT}{BLACK}Cambiar nombre del escenario
 STR_3297    :{SMALLFONT}{BLACK}Cambiar detalles del parque/escenario
@@ -2414,12 +2414,12 @@ STR_3316    :Escribe la descripción de este escenario:
 STR_3317    :Sin detalles todavía
 STR_3318    :{SMALLFONT}{BLACK}Selecciona el grupo al que pertenece tu escenario
 STR_3319    :{WINDOW_COLOUR_2}Grupo Escenario:
-STR_3320    :No se pudo guardar el archivo de escenario...
+STR_3320    :No se pudo guardar el archivo de escenario…
 STR_3321    :Nuevos objetos instalados con éxito
 STR_3322    :{WINDOW_COLOUR_2}Objetivo: {BLACK}{STRINGID}
 STR_3326    :{WINDOW_COLOUR_2}(sin imagen)
 STR_3327    :No se ha establecido la posición inicial de los visitantes
-STR_3328    :No se puede avanzar a la siguiente etapa del editor...
+STR_3328    :No se puede avanzar a la siguiente etapa del editor…
 STR_3329    :No se ha construido una entrada del parque
 STR_3330    :El parque debe poseer un terreno
 STR_3331    :El sendero de la entrada del parque al borde del mapa no está completo o es demasiado complejo. Ha de tener un sólo carril con el menor número posible de cruces y curvas.
@@ -2436,19 +2436,19 @@ STR_3342    :Editor de escenarios
 STR_3343    :Convertir partida guardada en escenario
 STR_3344    :Diseñador de Vías
 STR_3345    :Administrador de Vías
-STR_3346    :No se puede guardar el diseño de vía...
+STR_3346    :No se puede guardar el diseño de vía…
 STR_3347    :Atracc. demasiada larga, contiene demasiados elementos, o el paisaje está demasiado lejos.
 STR_3348    :Renombrar
 STR_3349    :Borrar
 STR_3350    :Nombrar Diseño Vía
 STR_3351    :Nuevo nombre de diseño de vía:
-STR_3352    :No se puede renombrar el diseño de vía...
+STR_3352    :No se puede renombrar el diseño de vía…
 STR_3353    :El nuevo nombre contiene caracteres inválidos
 STR_3354    :Otro archivo ya tiene este nombre o se encuentra protegido contra escritura
 STR_3355    :El archivo esta bloqueado o protegido contra escritura
 STR_3356    :Borrar Archivo
 STR_3357    :{WINDOW_COLOUR_2}¿Estás seguro de borrar permanentemente {STRING} ?
-STR_3358    :No se puede eliminar el diseño da vía...
+STR_3358    :No se puede eliminar el diseño da vía…
 STR_3359    :{BLACK}Sin diseños de vías para esta atracción
 STR_3360    :¡Advertencia!
 STR_3361    :Demasiados diseños de vía - Algunos no se listarán.
@@ -2464,21 +2464,21 @@ STR_3372    :{BLACK}= Cajero automático
 STR_3373    :{BLACK}= Servicios
 STR_3374    :Advertencia: Demasiados objetos seleccionados
 STR_3375    :No se seleccionaron todos los objetos de este grupo
-STR_3376    :Instalar nuevo...
+STR_3376    :Instalar nuevo…
 STR_3377    :{SMALLFONT}{BLACK}Instalar nuevo archivo de diseño de vía
 STR_3378    :Instalar
 STR_3379    :Cancelar
-STR_3380    :No se pudo instalar este diseño de vía...
+STR_3380    :No se pudo instalar este diseño de vía…
 STR_3381    :Archivo no compatible o contiene datos inválidos
 STR_3382    :Copia de archivo fallada
 STR_3383    :Selecc. nuevo nombre diseño de vía
 STR_3384    :Un diseño de vía ya tiene este nombre - escoge otro nombre:
-STR_3389    :No es posible seleccionar el elemento adicional de escenario...
+STR_3389    :No es posible seleccionar el elemento adicional de escenario…
 STR_3390    :Demasiados elementos seleccionados
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
 # End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}Demoler grandes áreas de decorado
-STR_3438    :No se puede quitar este decorado...
+STR_3438    :No se puede quitar este decorado…
 STR_3439    :Quitar decorado
 STR_3440    :Página 1
 STR_3441    :Página 2
@@ -2521,7 +2521,7 @@ STR_5149    :{SMALLFONT}{BLACK}Opciones de trucos
 STR_5150    :Activar herramientas de depuración
 STR_5151    :.
 STR_5152    :,
-STR_5153    :Editar temas...
+STR_5153    :Editar temas…
 STR_5154    :Renderizado por hardware
 STR_5155    :Permitir tests de atracciones sin finalizar
 STR_5156    :{SMALLFONT}{BLACK}Permite probar la mayoría de atracciones incluso cuando aún no se han terminado de construir. No aplica a los modos de funcionamiento de secciones de bloques
@@ -2700,7 +2700,7 @@ STR_5365    :{BLACK}Velocidad empleados:
 STR_5366    :Normal
 STR_5367    :Rápida
 STR_5368    :Reiniciar Accidentes
-STR_5369    :Parámetros parque...
+STR_5369    :Parámetros parque…
 STR_5370    :{SMALLFONT}{BLACK}Modificar parámetros como restricciones, afluencia de visitantes y dinero.
 STR_5371    :Selección de Objetos
 STR_5372    :Invertir desplazamiento del clic derecho
@@ -2840,7 +2840,7 @@ STR_5508    :Permitir cargar ficheros dañados
 STR_5509    :{SMALLFONT}{BLACK}Permite cargar escenarios y partidas que tengan una suma de comprobación incorrecta, como los escenarios de la demo o partidas dañadas.
 STR_5510    :Dispositivo de sonido predeterminado
 STR_5511    :(DESCONOCIDO)
-STR_5512    :Guardar Partida como...
+STR_5512    :Guardar Partida como…
 STR_5513    :Guardar juego de forma rápida
 STR_5514    :Desactivar vandalismo
 STR_5515    :{SMALLFONT}{BLACK}Impide que los visitantes enfadados cometan actos de vandalismo
@@ -2962,12 +2962,12 @@ STR_5628    :Juego original
 STR_5629    :Nivel de dificultad
 STR_5630    :Activa el desbloqueo progresivo
 STR_5631    :DLC de parques originales
-STR_5632    :Construye tu propio...
+STR_5632    :Construye tu propio…
 STR_5633    :CMD + 
 STR_5634    :OPCIÓN + 
 STR_5635    :{WINDOW_COLOUR_2}Dinero gastado: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Acciones en total: {BLACK}{COMMA16}
-STR_5637    :No puedes hacer esto...
+STR_5637    :No puedes hacer esto…
 STR_5638    :Permiso denegado
 STR_5639    :{SMALLFONT}{BLACK}Mostrar lista de jugadores
 STR_5640    :{SMALLFONT}{BLACK}Administrar grupos
@@ -3037,9 +3037,9 @@ STR_5738    :Cerrado, {COMMA16} personas en la atracción
 STR_5739    :{WINDOW_COLOUR_2}Visitantes en atracción: {BLACK}{COMMA16}
 STR_5740    :Campañas de Marketing sin fin
 STR_5741    :{SMALLFONT}{BLACK}Las Campañas de Marketing nunca terminan.
-STR_5742    :Autenticando ...
-STR_5743    :Conectando ...
-STR_5744    :Resolviendo ...
+STR_5742    :Autenticando …
+STR_5743    :Conectando …
+STR_5744    :Resolviendo …
 STR_5745    :Desincronización detectada
 STR_5746    :Desconectado
 STR_5747    :Desconectado: {STRING}
@@ -3054,7 +3054,7 @@ STR_5755    :Versión de Software Incorrecto (Versión del servidor {STRING})
 STR_5756    :Contraseña Incorrecta
 STR_5757    :Servidor Lleno
 STR_5758    :{OUTLINE}{GREEN}{STRING} se ha unido al juego
-STR_5759    :Descargando mapa ... ({INT32} / {INT32}) KiB
+STR_5759    :Descargando mapa … ({INT32} / {INT32}) KiB
 STR_5760    :Dólar de Hong Kong (HK$)
 STR_5761    :Nuevo dólar de Taiwan (NT$)
 STR_5762    :Yuan Chino (CN¥)
@@ -3080,7 +3080,7 @@ STR_5781    :Coste: Desconocido
 STR_5782    :Ahora estas conectado. Presiona '{STRING}' para chatear.
 STR_5783    :{WINDOW_COLOUR_2}Escenario bloqueado
 STR_5784    :{BLACK}Completa escenarios anteriores para desbloquear este escenario.
-STR_5785    :No puedes renombrar el grupo...
+STR_5785    :No puedes renombrar el grupo…
 STR_5786    :Nombre de grupo no válido
 STR_5787    :{COMMA32} jugadores en línea.
 STR_5788    :Inter. Inspecc. por defecto:
@@ -3284,7 +3284,7 @@ STR_5987    :No se puede crear la carpeta
 STR_5988    :{SMALLFONT}{BLACK}No hay más terrenos en venta.
 STR_5989    :{SMALLFONT}{BLACK}No hay más derechos de construcción en venta.
 STR_5990    :{SMALLFONT}{BLACK}No hay más terrenos o derechos de construcción en venta.
-STR_5991    :No se puede pegar el elemento...
+STR_5991    :No se puede pegar el elemento…
 STR_5992    :El limite de elementos del mapa ha sido alcanzado
 STR_5993    :{SMALLFONT}{BLACK}Copiar elemento seleccionado
 STR_5994    :{SMALLFONT}{BLACK}Pegar elemento copiado
@@ -3433,7 +3433,7 @@ STR_6136    :El servidor envió una solicitud no válida
 STR_6137    :OpenRCT2, juego de código abierto basado en Roller Coaster Tycoon 2.
 STR_6138    :OpenRCT2 es el trabajo de muchos autores, una lista completa se puede encontrar en “contributors.md”. Para más información visita: http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Todos los nombres de productos y empresas pertenecen a sus respectivos titulares. El uso de ellos no implica ninguna afiliación o respaldo por ellos.
-STR_6140    :Changelog...
+STR_6140    :Changelog…
 STR_6141    :Barra de herramientas inferior RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nombre de vía: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipo atracción: {BLACK}{STRINGID}
@@ -3441,7 +3441,7 @@ STR_6144    :Mostrar re-dibujado
 STR_6145    :{SMALLFONT}{BLACK}Fijar límite de velocidad para los impulsores
 STR_6146    :Habilitar todas las piezas de vía Dibujables
 STR_6147    :{SMALLFONT}{BLACK}Habilitar todas las piezas de vías que el tipo de atracción es apto en la ventana de construcción, independientemente de si el vehículo es compatible.
-STR_6148    :Conectando con Servidor Maestro...
+STR_6148    :Conectando con Servidor Maestro…
 STR_6149    :No se pudo conectar al Servidor Maestro
 STR_6150    :Respuesta no valida desde Servidor Maestro (no JSON number)
 STR_6151    :Servidor Maestro no devolvió Lista de Servidores
@@ -3451,7 +3451,7 @@ STR_6154    :Por razones de seguridad, No es recomendable iniciar OpenRCT2 con p
 STR_6155    :Ni KDialog ni Zenity están instalados. Instale uno o configure uno desde la línea de comando.
 STR_6156    :El nombre está reservado
 STR_6157    :Consola
-STR_6158    :No se pudo cargar este archivo...{NEWLINE}Versión RCT incompatible: {COMMA16}
+STR_6158    :No se pudo cargar este archivo…{NEWLINE}Versión RCT incompatible: {COMMA16}
 STR_6159    :Próximo Suave
 STR_6160    :{WINDOW_COLOUR_2}Vehículos Disponibles: {BLACK}{STRING}
 STR_6161    :Alternar Líneas de Cuadrícula
@@ -3504,7 +3504,7 @@ STR_6218    :OpenRCT2 Oficial
 STR_6219    :Resaltar problemas de pathfinding
 STR_6220    :Hacer utilizable
 STR_6221    :{SMALLFONT}{BLACK}Esto establecerá la conocida salida o entrada de la atracción en la casilla seleccionada. Sólo una entrada y salida puede ser usada por estación.
-STR_6222    :No se puede colocar entrada de visitantes aquí...
+STR_6222    :No se puede colocar entrada de visitantes aquí…
 STR_6223    :¡Debe estar fuera de los límites del parque!
 STR_6224    :{STRING} se colocó un punto de entrada de visitantes
 STR_6225    :No está soportado con el renderizador OpenGL
@@ -3553,7 +3553,7 @@ STR_6270    :Superficies de Terreno
 STR_6271    :Bordes de Terreno
 STR_6272    :Estaciones
 STR_6273    :Música
-STR_6274    :No se puede establecer colores...
+STR_6274    :No se puede establecer colores…
 STR_6275    :{WINDOW_COLOUR_2}Estilo de estación:
 STR_6276    :{RED}{STRINGID} tiene visitantes trabados, posiblemente por tipo de atracción o modo de operación inválidos.
 STR_6277    :{WINDOW_COLOUR_2}Índice de estación: {BLACK}{STRINGID}
@@ -3605,7 +3605,7 @@ STR_6322    :{WINDOW_COLOUR_2}Id sprite: {BLACK}{INT32}
 STR_6323    :Simulando
 STR_6324    :Simular
 STR_6325    :{SMALLFONT}{BLACK}Simular Atracción
-STR_6326    :No se puede simular {POP16}{POP16}{POP16}{STRINGID}...
+STR_6326    :No se puede simular {POP16}{POP16}{POP16}{STRINGID}…
 STR_6327    :Fondo transparente para capturas de pantalla gigantes
 STR_6328    :{SMALLFONT}{BLACK}Con esta opción activada, las capturas gigantes tendrán un fondo transparente en vez del fondo negro por defecto.
 STR_6329    :{STRING}{STRINGID}
@@ -4258,7 +4258,7 @@ STR_DTLS    :Las autoridades han decidido mejorar el turismo en torno a la Gran 
 <Asia - Japanese Coastal Reclaim>
 STR_SCNR    :Asia - Recuperación costera japonesa
 STR_PARK    :Costa Okinawa
-STR_DTLS    :Un parque ya existente se ha quedado sin espacio. Tu única opción para seguir construyendo es ganarle terreno al mar, así que has pedido un préstamo. Las restricciones de altura de los edificios son obligatorias debido a los cimientos/rie...
+STR_DTLS    :Un parque ya existente se ha quedado sin espacio. Tu única opción para seguir construyendo es ganarle terreno al mar, así que has pedido un préstamo. Las restricciones de altura de los edificios son obligatorias debido a los cimientos/rie…
 
 <Asia - Maharaja Palace>
 STR_SCNR    :Asia - Palacio del Maharajá
@@ -4273,7 +4273,7 @@ STR_DTLS    :Estás ayudando al pueblo aborigen a construir un parque como parte
 <Australasia - Fun at the Beach>
 STR_SCNR    :Australasia; Diversión en la playa
 STR_PARK    :Bárbara barbacoa playera
-STR_DTLS    :El parque marino de un empresario local se ha arruinado. Tú ya tienes un pequeño parque y tienes que ganar suficiente dinero para comprar el otro parque a la compañía de construcción. Tendrás que desarrollar tu propio parque para crea...
+STR_DTLS    :El parque marino de un empresario local se ha arruinado. Tú ya tienes un pequeño parque y tienes que ganar suficiente dinero para comprar el otro parque a la compañía de construcción. Tendrás que desarrollar tu propio parque para crea…
 
 <Europe - European Cultural Festival>
 STR_SCNR    :Europe - Festival cultural europeo
@@ -4294,7 +4294,7 @@ STR_DTLS    :Las gentes de Hawai se han aburrido de practicar surf y ahora busca
 <North America - Grand Canyon>
 STR_SCNR    :N. América - Gran Cañón
 STR_PARK    :Calamidades en el cañon
-STR_DTLS    :Debes construir un parque en el terreno que hay a ambos lados de este tesoro natural, aunque tienes la oportunidad de comprar las tierras vecinas a los indios nativos americanos. Tendrás que cumplir el objetivo de mantener a la población ...
+STR_DTLS    :Debes construir un parque en el terreno que hay a ambos lados de este tesoro natural, aunque tienes la oportunidad de comprar las tierras vecinas a los indios nativos americanos. Tendrás que cumplir el objetivo de mantener a la población …
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :N. América - Paraíso de montañas rusas

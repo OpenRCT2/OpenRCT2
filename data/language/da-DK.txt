@@ -262,8 +262,8 @@ STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP
 STR_0876    :{BLACK}▼
 STR_0877    :For lavt !
 STR_0878    :For højt !
-STR_0879    :Kan ikke sænke landskabet her...
-STR_0880    :Kan ikke hæve landskabet her...
+STR_0879    :Kan ikke sænke landskabet her…
+STR_0880    :Kan ikke hæve landskabet her…
 STR_0881    :Objekt i vejen
 STR_0882    :Hent spil
 STR_0883    :Gem spil
@@ -307,8 +307,8 @@ STR_0922    :{SMALLFONT}{BLACK}Stejl stigning
 STR_0923    :{SMALLFONT}{BLACK}Vertikal stigning
 STR_0924    :{SMALLFONT}{BLACK}Spiral ned
 STR_0925    :{SMALLFONT}{BLACK}Spiral op
-STR_0926    :Kan ikke fjerne denne...
-STR_0927    :Kan ikke bygge her...
+STR_0926    :Kan ikke fjerne denne…
+STR_0927    :Kan ikke bygge her…
 STR_0928    :{SMALLFONT}{BLACK}Kædetræk, til at trække vogne op ad bakke
 STR_0929    :'S' Sving (venstre)
 STR_0930    :'S' Sving (højre)
@@ -369,7 +369,7 @@ STR_0984    :{WINDOW_COLOUR_2}▲{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}▼{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :For mange Forlystelser/attraktioner
-STR_0988    :Kan ikke oprette ny forlystelse/attraktion...
+STR_0988    :Kan ikke oprette ny forlystelse/attraktion…
 STR_0989    :{STRINGID}
 STR_0990    :{SMALLFONT}{BLACK}Konstruktion
 STR_0991    :Stations platform
@@ -383,10 +383,10 @@ STR_0998    :Ikke flere stationer tilladt for denne forlystelse
 STR_0999    :Kræver en station platform
 STR_1000    :Banen er ikke en komplet bane
 STR_1001    :Banen passer ikke til denne type vogn
-STR_1002    :Kan ikke åbne {POP16}{POP16}{POP16}{STRINGID}...
-STR_1003    :Kan ikke teste {POP16}{POP16}{POP16}{STRINGID}...
-STR_1004    :Kan ikke lukke {POP16}{POP16}{POP16}{STRINGID}...
-STR_1005    :Kan ikke begynde konstruktion af {POP16}{POP16}{POP16}{STRINGID}...
+STR_1002    :Kan ikke åbne {POP16}{POP16}{POP16}{STRINGID}…
+STR_1003    :Kan ikke teste {POP16}{POP16}{POP16}{STRINGID}…
+STR_1004    :Kan ikke lukke {POP16}{POP16}{POP16}{STRINGID}…
+STR_1005    :Kan ikke begynde konstruktion af {POP16}{POP16}{POP16}{STRINGID}…
 STR_1006    :Skal først lukkes
 STR_1007    :Kan ikke lave nok vogne
 STR_1008    :{SMALLFONT}{BLACK}Åben, test eller luk forlystelse/attraktion
@@ -398,10 +398,10 @@ STR_1013    :Luk park
 STR_1014    :Åben park
 STR_1015    :Kan ikke operere med mere end en stations platform, i denne tilstand
 STR_1016    :Kan ikke operere med mindre end to stations platforme, i denne tilstand
-STR_1017    :Kan ikke ændre drift-tilstand...
-STR_1018    :Kan ikke udføre ændringer...
-STR_1019    :Kan ikke udføre ændringer...
-STR_1020    :Kan ikke udføre ændringer...
+STR_1017    :Kan ikke ændre drift-tilstand…
+STR_1018    :Kan ikke udføre ændringer…
+STR_1019    :Kan ikke udføre ændringer…
+STR_1020    :Kan ikke udføre ændringer…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :{POP16}{POP16}{POP16}{COMMA16} vogn per togsæt
 STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vogne per togsæt
@@ -431,7 +431,7 @@ STR_1046    :OpenRCT2 Bane Design Fil
 STR_1047    :Kunne ikke gemme spil!
 STR_1048    :Kunne ikke gemme scenarie!
 STR_1049    :Kunne ikke gemme landskab!
-STR_1050    :Kunne ikke hente...{NEWLINE}Filen indeholder ugyldige data!
+STR_1050    :Kunne ikke hente…{NEWLINE}Filen indeholder ugyldige data!
 STR_1051    :Usynlige stilaser
 STR_1052    :Usynlige folk
 STR_1053    :{SMALLFONT}{BLACK}Forlystelser/attraktioner i parken
@@ -440,7 +440,7 @@ STR_1055    :{SMALLFONT}{BLACK}Navngiv person
 STR_1056    :{SMALLFONT}{BLACK}Navngiv ansat
 STR_1057    :Forlystelses/attraktioner navn
 STR_1058    :Angiv et nyt navn for forlystelsen/attraktionen:
-STR_1059    :Kan ikke omdøbe forlystelsen/attraktionen...
+STR_1059    :Kan ikke omdøbe forlystelsen/attraktionen…
 STR_1060    :Ugyldigt forlystelse/attraktion navn
 STR_1061    :Normal tilstand
 STR_1062    :Kontinuerlig kredsløb tilstand
@@ -525,8 +525,8 @@ STR_1140    :{SMALLFONT}{BLACK}Vælg vogn farve skema
 STR_1141    :{SMALLFONT}{BLACK}Vælg hvilket vogn/tog at modificere
 STR_1142    :{MOVE_X}{10}{STRINGID}
 STR_1143    :»{MOVE_X}{10}{STRINGID}
-STR_1144    :Kan ikke bygge/flytte indgangen for denne forlystelse/attraktion...
-STR_1145    :Kan ikke bygge/flytte udgangen for denne  forlystelse/attraktion...
+STR_1144    :Kan ikke bygge/flytte indgangen for denne forlystelse/attraktion…
+STR_1145    :Kan ikke bygge/flytte udgangen for denne  forlystelse/attraktion…
 STR_1146    :Indgang ikke bygget endnu
 STR_1147    :Udgang ikke bygget endnu
 STR_1148    :En fjerdedel fuld
@@ -539,16 +539,16 @@ STR_1154    :Højdeangivelse på land
 STR_1155    :Højdeangivelse på stier
 STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
-STR_1158    :Kan ikke fjerne dette...
+STR_1158    :Kan ikke fjerne dette…
 STR_1159    :{SMALLFONT}{BLACK}Placer sceneri, haver, og andet pynt
 STR_1160    :{SMALLFONT}{BLACK}lav/juster søer og vand
-STR_1161    :Kan ikke placeres her...
+STR_1161    :Kan ikke placeres her…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Højre-klik for at modificere)
 STR_1164    :{STRINGID}{NEWLINE}(Højre-klik for at fjerne)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Kan ikke sænke vand her...
-STR_1167    :Kan ikke hæve vand her...
+STR_1166    :Kan ikke sænke vand her…
+STR_1167    :Kan ikke hæve vand her…
 STR_1168    :Indstillinger
 STR_1169    :(ingen)
 STR_1170    :{STRING}
@@ -557,8 +557,8 @@ STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Byg stier og kø linjer
 STR_1174    :Banner skilt i vejen
 STR_1175    :Kan ikke bygge dette på en skrå sti
-STR_1176    :Kan ikke bygge sti her...
-STR_1177    :Kan ikke fjerne sti herfra...
+STR_1176    :Kan ikke bygge sti her…
+STR_1177    :Kan ikke fjerne sti herfra…
 STR_1178    :Hældning på land er ikke passende
 STR_1179    :Sti i vejen
 STR_1180    :Kan ikke bygge dette under vand!
@@ -720,7 +720,7 @@ STR_1335    :{STRINGID} - Indgang{POP16}{POP16}
 STR_1336    :{STRINGID} - Station {POP16}{COMMA16} Indgang
 STR_1337    :{STRINGID} - Udgang{POP16}{POP16}
 STR_1338    :{STRINGID} - Station {POP16}{COMMA16} Udgang
-STR_1339    :{BLACK}Endnu ingen testresultater...
+STR_1339    :{BLACK}Endnu ingen testresultater…
 STR_1340    :{WINDOW_COLOUR_2}Max. hastighed: {BLACK}{VELOCITY}
 STR_1341    :{WINDOW_COLOUR_2}Forlystelses tid: {BLACK}{STRINGID}{STRINGID}{STRINGID}{STRINGID}
 STR_1342    :{DURATION}
@@ -742,8 +742,8 @@ STR_1357    :{WINDOW_COLOUR_2}Huller: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Total 'flyv' tid: {BLACK}{COMMA2DP32}secs
 STR_1359    :{WINDOW_COLOUR_2}Kø tid: {BLACK}{COMMA16} minut
 STR_1360    :{WINDOW_COLOUR_2}Kø tid: {BLACK}{COMMA16} minutter
-STR_1361    :Kan ikke ændre hastighed...
-STR_1362    :Kan ikke ændre afsendelses hastighed...
+STR_1361    :Kan ikke ændre hastighed…
+STR_1362    :Kan ikke ændre afsendelses hastighed…
 STR_1363    :For højt til understøttelse!
 STR_1364    :Understøttelse til banen kan ikke forlænges yderligere!
 STR_1365    :In-line Twist (venstre)
@@ -767,8 +767,8 @@ STR_1382    :Drejende løfte bakke (højre)
 STR_1383    :Kvart Loop
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}Anden bane konfiguration
-STR_1386    :Speciel...
-STR_1387    :Kan ikke ændre land type...
+STR_1386    :Speciel…
+STR_1387    :Kan ikke ændre land type…
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
@@ -788,7 +788,7 @@ STR_1403    :{SMALLFONT}{BLACK}Byg eller flyt udgangen fra forlystelse/attraktio
 STR_1404    :{SMALLFONT}{BLACK}Roter 90°
 STR_1405    :{SMALLFONT}{BLACK}Spejlvend billede
 STR_1406    :{SMALLFONT}{BLACK}Slå sceneri til/fra (hvis muligt for dette design)
-STR_1407    :{WINDOW_COLOUR_2}Byg denne...
+STR_1407    :{WINDOW_COLOUR_2}Byg denne…
 STR_1408    :{WINDOW_COLOUR_2}Pris: {BLACK}{CURRENCY}
 STR_1409    :Indgang/udgang Platform
 STR_1410    :Vertikal Tårn
@@ -835,7 +835,7 @@ STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRING
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :Gæstens navn
 STR_1453    :Angiv et navn for denne gæst:
-STR_1454    :Kan ikke navngive gæst...
+STR_1454    :Kan ikke navngive gæst…
 STR_1455    :Ugyldigt navn til gæst
 STR_1456    :{WINDOW_COLOUR_2}Penge brugt: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Penge på lommen: {BLACK}{CURRENCY2DP}
@@ -1033,7 +1033,7 @@ STR_1647    :
 STR_1648    :{SMALLFONT}“Hjælp! Sæt mig ned!”
 STR_1649    :{SMALLFONT}“Jeg er ved at løbe tør for penge!”
 STR_1650    :{SMALLFONT}“Wow! en ny forlystelse er ved at blive bygget!”
-STR_1653    :{SMALLFONT}“...og her er vi på {STRINGID}!”
+STR_1653    :{SMALLFONT}“…og her er vi på {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Seneste tanker:
 STR_1655    :{SMALLFONT}{BLACK}Konstruer gangsti på land
 STR_1656    :{SMALLFONT}{BLACK}Konstruer tunnel eller bro gangsti
@@ -1084,7 +1084,7 @@ STR_1700    :Ansæt ny Handyman
 STR_1701    :Ansæt ny Mekaniker
 STR_1702    :Ansæt ny Sikkerheds vagt
 STR_1703    :Ansæt ny Entertainer
-STR_1704    :Kan ikke ansætte nyt personale...
+STR_1704    :Kan ikke ansætte nyt personale…
 STR_1705    :{SMALLFONT}{BLACK}Afskedig denne ansat
 STR_1706    :{SMALLFONT}{BLACK}Flyt denne person til en ny placering
 STR_1707    :For meget personale i spillet
@@ -1097,18 +1097,18 @@ STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Vand haver
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Tøm skraldespande
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Slå græs
 STR_1716    :Ugyldigt navn til parken
-STR_1717    :Kan ikke omdøbe parken...
+STR_1717    :Kan ikke omdøbe parken…
 STR_1718    :Park Navn
 STR_1719    :Skriv et navn til parken:
 STR_1720    :{SMALLFONT}{BLACK}Navngiv parkenn
 STR_1721    :Park lukket
 STR_1722    :Park åben
-STR_1723    :Kan ikke åbne parken...
-STR_1724    :Kan ikke lukke parken...
-STR_1725    :Kan ikke købe land...
+STR_1723    :Kan ikke åbne parken…
+STR_1724    :Kan ikke lukke parken…
+STR_1725    :Kan ikke købe land…
 STR_1726    :Land er ikke til salg!
 STR_1727    :Byggetilladelse er ikke til salg!
-STR_1728    :Kan ikke købe byggetilladelse her...
+STR_1728    :Kan ikke købe byggetilladelse her…
 STR_1729    :Land ikke ejet af parken!
 STR_1730    :{RED}Lukket
 STR_1731    :{WHITE}{STRINGID} - - 
@@ -1117,18 +1117,18 @@ STR_1733    :Tilstand
 STR_1734    :{WINDOW_COLOUR_2}Antal omgange:
 STR_1735    :{SMALLFONT}{BLACK}Antal omgange på banen
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1738    :Kan ikke ændre antallet af omgange...
+STR_1738    :Kan ikke ændre antallet af omgange…
 STR_1739    :Løb vundet af gæst {INT32}
 STR_1740    :Løb vundet af {STRINGID}
 STR_1741    :Ikke konstrueret endnu !
 STR_1742    :{WINDOW_COLOUR_2}Max. personer på forlystelse:
 STR_1743    :{SMALLFONT}{BLACK}Maksimum antal af personer på forlystelsen på samme tid
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1746    :Kan ikke ændre dette...
+STR_1746    :Kan ikke ændre dette…
 STR_1747    :{WINDOW_COLOUR_2}Tidsbegrænsning:
 STR_1748    :{SMALLFONT}{BLACK}Tidsbegrænsning for forlystelse
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1751    :Kan ikke ændre tidsbegrænsning for denne forlystelse...
+STR_1751    :Kan ikke ændre tidsbegrænsning for denne forlystelse…
 STR_1752    :{SMALLFONT}{BLACK}Vis liste over individuelle gæster i parken
 STR_1753    :{SMALLFONT}{BLACK}Vis en samlet liste over gæster i parken
 STR_1754    :{BLACK}{COMMA32} gæst
@@ -1145,7 +1145,7 @@ STR_1764    :Log Bumps
 STR_1765    :On-ride foto sektion
 STR_1766    :Omvender roterer
 STR_1767    :Spinnende tunnel
-STR_1768    :Kan ikke ændre antallet af gynger...
+STR_1768    :Kan ikke ændre antallet af gynger…
 STR_1769    :{WINDOW_COLOUR_2}Antal gynger:
 STR_1770    :{SMALLFONT}{BLACK}Samlet antal gynger
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1184,7 +1184,7 @@ STR_1807    :Kontrolfejl
 STR_1808    :{WINDOW_COLOUR_2}Sidste nedbrud: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nuværende nedbrud: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Bærer:
-STR_1811    :Kan ikke bygge det her...
+STR_1811    :Kan ikke bygge det her…
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Forskellige objekter
 STR_1814    :Aktiviteter
@@ -1241,7 +1241,7 @@ STR_1864    :Mekaniker
 STR_1865    :Sikkerhedsvagt
 STR_1866    :Entertainer
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :Kan ikke ændre antallet af rotationer...
+STR_1868    :Kan ikke ændre antallet af rotationer…
 STR_1869    :{WINDOW_COLOUR_2}Antal rotationer:
 STR_1870    :{SMALLFONT}{BLACK}Komplet antal af rotationer
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1296,7 +1296,7 @@ STR_1920    :Kan ikke tilbagebetale lån!
 STR_1921    :{SMALLFONT}{BLACK}Start et nyt spil
 STR_1922    :{SMALLFONT}{BLACK}Fortsæt et gemt spil
 STR_1924    :{SMALLFONT}{BLACK}Afslut spillet
-STR_1925    :Kan ikke placere en person her...
+STR_1925    :Kan ikke placere en person her…
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} er brudt sammen
 STR_1928    :{RED}{STRINGID} er styrtet!
@@ -1330,7 +1330,7 @@ STR_1955    :{WINDOW_COLOUR_2}Antal omgange:
 STR_1956    :{SMALLFONT}{BLACK}Antallet af omgange per tur
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :Kan ikke ændre antal omgange...
+STR_1959    :Kan ikke ændre antal omgange…
 STR_1960    :{WINDOW_COLOUR_2}Ballon pris:
 STR_1961    :{WINDOW_COLOUR_2}Krammedyr pris:
 STR_1962    :{WINDOW_COLOUR_2}Park kort pris:
@@ -1604,7 +1604,7 @@ STR_2244    :September
 STR_2245    :Oktober
 STR_2246    :November
 STR_2247    :December
-STR_2248    :Kan ikke nedrive forlystelse/attraktion...
+STR_2248    :Kan ikke nedrive forlystelse/attraktion…
 STR_2249    :{BABYBLUE}Ny forlystelse/attraktion er nu tilgængelig:{NEWLINE}{STRINGID}
 STR_2250    :{BABYBLUE}Nyt sceneri/tema er nu tilgængelig:{NEWLINE}{STRINGID}
 STR_2251    :Kan kun bygges på gangstier!
@@ -1826,7 +1826,7 @@ STR_2483    :{WINDOW_COLOUR_2}Ugentlig profit: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Ugentlig profit: {RED}{CURRENCY2DP}
 STR_2487    :Vis 'rigtige' navne på gæsterne
 STR_2488    :{SMALLFONT}{BLACK}Skift imellem at vise 'rigtige' navne på gæster og gæst nummre
-STR_2489    :Genvejs taster...
+STR_2489    :Genvejs taster…
 STR_2490    :Tastatur genveje
 STR_2491    :Nulstil genveje
 STR_2492    :{SMALLFONT}{BLACK}Sæt alle tastatur genveje tilbage til standard indstillinger
@@ -2056,9 +2056,9 @@ STR_2852    :Bane design allerede installeret
 STR_2853    :Forbudt af de lokale myndigheder!
 STR_2854    :{RED}Gæster kan ikke komme til indgangen af {STRINGID} !{NEWLINE}Konstruer en kø-sti til indgangen af forlystelsen
 STR_2855    :{RED}{STRINGID} Har ikke nogen gangsti fra udgangen!{NEWLINE}Konstruer en sti fra forlystelsens udgang
-STR_2858    :Kan ikke starte markedsføringskampagne...
+STR_2858    :Kan ikke starte markedsføringskampagne…
 STR_2861    :{WINDOW_COLOUR_2}Licenseret til Infogrames Interactive Inc.
-STR_2862    :Musik tilkendegivelser...
+STR_2862    :Musik tilkendegivelser…
 STR_2863    :Musik tilkendegivelser
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
@@ -2111,12 +2111,12 @@ STR_2975    :{SMALLFONT}{BLACK}Vælg, hvilket farveskema der skal ændres, eller
 STR_2976    :{SMALLFONT}{BLACK}Mal et enkelt område af denne forlystelse med det valgte farveskema
 STR_2977    :Navn på ansat
 STR_2978    :Angiv et navn for denne ansat:
-STR_2979    :Kan ikke navngive ansat...
+STR_2979    :Kan ikke navngive ansat…
 STR_2980    :For mange bannere i spillet
 STR_2981    :{RED}Ingen indhold
 STR_2982    :Banner tekst
 STR_2983    :Angiv ny tekst på dette banner:
-STR_2984    :Kan ikke sætte ny tekst på banner...
+STR_2984    :Kan ikke sætte ny tekst på banner…
 STR_2985    :Banner
 STR_2986    :{SMALLFONT}{BLACK}Ændre banner tekst
 STR_2987    :{SMALLFONT}{BLACK}Sæt dette banner som et 'Ingen adgang' skilt for gæster
@@ -2142,7 +2142,7 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :Kan ikke indlæse fil...
+STR_3010    :Kan ikke indlæse fil…
 STR_3011    :Filen indeholder ugyldige data
 STR_3012    :Radiobil musik stil
 STR_3013    :Karnevalsmusik stil
@@ -2185,7 +2185,7 @@ STR_3050    :Golf hul B
 STR_3051    :Golf hul C
 STR_3052    :Golf hul D
 STR_3053    :Golf hul E
-STR_3054    :Henter...
+STR_3054    :Henter…
 STR_3058    :Murstensvæge
 STR_3059    :Hække
 STR_3060    :Isblokke
@@ -2230,7 +2230,7 @@ STR_3099    :{SMALLFONT}{BLACK}Vælg farve
 STR_3100    :{SMALLFONT}{BLACK}Vælg anden farve
 STR_3101    :{SMALLFONT}{BLACK}Vælg tredje farve
 STR_3102    :{SMALLFONT}{BLACK}Om-mal farvet sceneri på landskabet
-STR_3103    :Kan ikke male denne om...
+STR_3103    :Kan ikke male denne om…
 STR_3104    :{SMALLFONT}{BLACK}List forlystelser
 STR_3105    :{SMALLFONT}{BLACK}List butikker og boder
 STR_3106    :{SMALLFONT}{BLACK}List informations kiosker og andre gæste faciliteter
@@ -2244,7 +2244,7 @@ STR_3113    :Vælg et andet design
 STR_3114    :{SMALLFONT}{BLACK}Gå tilbage til designvalgs vinduet
 STR_3115    :{SMALLFONT}{BLACK}Gem banedesign
 STR_3116    :{SMALLFONT}{BLACK}Gem banedesign (Ikke muligt for benen er testet og der er genereret statistik over banen)
-STR_3117    :{BLACK}Tilkalder mekaniker...
+STR_3117    :{BLACK}Tilkalder mekaniker…
 STR_3118    :{BLACK}{STRINGID} er på vej til forlystelsen
 STR_3119    :{BLACK}{STRINGID} er i gang med at reparere forlystelsen
 STR_3120    :{SMALLFONT}{BLACK}Find nærmeste ledige mekaniker, eller mekaniker der er i gang med at reparere en forlystelse
@@ -2259,7 +2259,7 @@ STR_3128    :Gem banedesign
 STR_3129    :Gem banedesign med sceneri
 STR_3130    :Gem
 STR_3131    :Afbryd
-STR_3132    :{BLACK}Klik på sceneri, for at vælge dem der skal gemmes sammen med benedesignet...
+STR_3132    :{BLACK}Klik på sceneri, for at vælge dem der skal gemmes sammen med benedesignet…
 STR_3133    :Kan ikke bygges på en hældning
 STR_3134    :{RED}(Designet indeholder sceneri der ikke er tilgængeligt)
 STR_3135    :{RED}(Vogndesign ikke tilgængelig - Køreegenskaber kan blive påvirket)
@@ -2403,7 +2403,7 @@ STR_3290    :Koldt og vådt
 STR_3291    :Varmt
 STR_3292    :Varmt og tørt
 STR_3293    :Koldt
-STR_3294    :Skift...
+STR_3294    :Skift…
 STR_3295    :{SMALLFONT}{BLACK}Skift navn på parken
 STR_3296    :{SMALLFONT}{BLACK}Skift navn på scenarie
 STR_3297    :{SMALLFONT}{BLACK}}Skift detaljerede noter på parken / scenarie
@@ -2429,12 +2429,12 @@ STR_3316    :Angiv en beskrivelse for dette scenarie:
 STR_3317    :Endnu ingen detaljer
 STR_3318    :{SMALLFONT}{BLACK}Vælg hvilken gruppe dette scenarie skal vises i
 STR_3319    :{WINDOW_COLOUR_2}Scenarie Gruppe:
-STR_3320    :Kan ikke gemme scenarie fil...
+STR_3320    :Kan ikke gemme scenarie fil…
 STR_3321    :Nye objekter succesfuldt installeret
 STR_3322    :{WINDOW_COLOUR_2}Mål: {BLACK}{STRINGID}
 STR_3326    :{WINDOW_COLOUR_2}(intet billede)
 STR_3327    :Startpositioner for folk ikke sat
-STR_3328    :Kan ikke gå videre til næste redigerings stadie...
+STR_3328    :Kan ikke gå videre til næste redigerings stadie…
 STR_3329    :Park indgang endnu ikke bygget
 STR_3330    :Parken skal eje noget land
 STR_3331    :Stien fra park indgang til kanten af kortet er enten ikke komplet eller for kompleks - Stien skal være et felt bred, med så få samlinger og sving som muligt
@@ -2451,19 +2451,19 @@ STR_3342    :Scenarie redigering
 STR_3343    :Konverter gemt spil til scenarie
 STR_3344    :Banedesigner
 STR_3345    :Banedesign Manager
-STR_3346    :Kan ikke gemme banedesign...
+STR_3346    :Kan ikke gemme banedesign…
 STR_3347    :Forlystelse er for stor, indeholder for mange elementer, eller scenarie er for spredt ud
 STR_3348    :Omdøb
 STR_3349    :Slet
 STR_3350    :Banedesign navn
 STR_3351    :Angiv en nyt navn til dette banedesign:
-STR_3352    :Kan ikke omdøbe banedesign...
+STR_3352    :Kan ikke omdøbe banedesign…
 STR_3353    :Nyt navn indholder ugyldige tegn
 STR_3354    :En anden fil med dette navn eksisterer i forvejen, eller filen er skrivebeskyttet
 STR_3355    :Filen er skrivebeskyttet eller låst
 STR_3356    :Slet Fil
 STR_3357    :{WINDOW_COLOUR_2}Er du sikker på at du vil slette {STRING} permanent?
-STR_3358    :Kan ikke slette banedesign...
+STR_3358    :Kan ikke slette banedesign…
 STR_3359    :{BLACK}Ingen banedesign af denne type
 STR_3360    :Advarsel!
 STR_3361    :For mange banedesigns af denne type - nogle designs vil ikke blive vist.
@@ -2483,15 +2483,15 @@ STR_3376    :Installer ny
 STR_3377    :{SMALLFONT}{BLACK}Installer en ny banedesign fil
 STR_3378    :Installer
 STR_3379    :Afbryd
-STR_3380    :Kan ikke installere dette banedesign...
+STR_3380    :Kan ikke installere dette banedesign…
 STR_3381    :Filen er ikke kompatibel, eller indeholder ugyldige data
 STR_3382    :Fil kopi fejlet
 STR_3383    :Vælg et nyt navn for banedesign
 STR_3384    :Der findes allerede et banedesign med dette navn - Angiv venligst et nyt navn for dette design:
-STR_3389    :Kan ikke vælge yderligere enheder af sceneri...
+STR_3389    :Kan ikke vælge yderligere enheder af sceneri…
 STR_3390    :For mange enheder valgt
 STR_3437    :{SMALLFONT}{BLACK}Ryd et stort område for sceneri
-STR_3438    :Kan ikke fjerne al sceneri herfra...
+STR_3438    :Kan ikke fjerne al sceneri herfra…
 STR_3439    :Ryd sceneri
 STR_3440    :Side 1
 STR_3441    :Side 2
@@ -2534,7 +2534,7 @@ STR_5149    :{SMALLFONT}{BLACK}Vis Snydemuligheder
 STR_5150    :Aktiver debug værktøj
 STR_5151    :,
 STR_5152    :.
-STR_5153    :Rediger Temaer...
+STR_5153    :Rediger Temaer…
 STR_5154    :Hardware Skærm
 STR_5155    :Tillad test af ufærdige spor
 STR_5156    :{SMALLFONT}{BLACK}Tillader test af de fleste forlystelsestyper, selv når sporet er ufærdige, gælder ikke for blok sektionerede tilstande
@@ -2713,7 +2713,7 @@ STR_5365    :{BLACK}Personale hastighed:
 STR_5366    :Normal
 STR_5367    :Hurtig
 STR_5368    :Nulstil nedbruds-status
-STR_5369    :Park parametre...
+STR_5369    :Park parametre…
 STR_5370    :{SMALLFONT}{BLACK}Klik på denne knap for at modificere {NEWLINE}parametre som begrænsninger,{NEWLINE}gæstegenerering og penge.
 STR_5371    :Objekt udvælgelse
 STR_5372    :Omvendt højre muse træk
@@ -2779,7 +2779,7 @@ STR_5432    :Kommando:
 STR_5433    :Titelsekvens
 STR_5434    :Kommando redigering
 STR_5435    :Omdøb gemte
-STR_5436    :Rediger Titelsekvens...
+STR_5436    :Rediger Titelsekvens…
 STR_5437    :Ingen gemninger valgt
 STR_5438    :Kan ikke lave ændringer med kommando redigering åben
 STR_5439    :Der kræves en ventekommando med mindst 4 sekunder med en genstart kommando
@@ -2973,12 +2973,12 @@ STR_5628    :Kilde spil
 STR_5629    :Sværhedsgrad
 STR_5630    :Aktiver progressiv frigørelse
 STR_5631    :Originale DLC parker
-STR_5632    :Byg din egen...
+STR_5632    :Byg din egen…
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
 STR_5635    :{WINDOW_COLOUR_2}Penge brugt: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Kommandoer kørt: {BLACK}{COMMA16}
-STR_5637    :Kan ikke gøre dette...
+STR_5637    :Kan ikke gøre dette…
 STR_5638    :Tilladelse nægtet
 STR_5639    :{SMALLFONT}{BLACK}Vis liste over spillere
 STR_5640    :{SMALLFONT}{BLACK}Administrer grupper
@@ -3048,9 +3048,9 @@ STR_5738    :Lukket, {COMMA16} personer stadig i forlystelse
 STR_5739    :{WINDOW_COLOUR_2}Kunder i forlystelsen: {BLACK}{COMMA16}
 STR_5740    :Endeløse marketingkampagner
 STR_5741    :{SMALLFONT}{BLACK}Marketingkampagner slutter aldrig
-STR_5742    :Godkender ...
-STR_5743    :Forbinder ...
-STR_5744    :Tilslutter ...
+STR_5742    :Godkender …
+STR_5743    :Forbinder …
+STR_5744    :Tilslutter …
 STR_5745    :Netværks synkroniserings fejl opstået
 STR_5746    :Afbrudt
 STR_5747    :Afbrudt: {STRING}
@@ -3065,7 +3065,7 @@ STR_5755    :Forkert spil version (Serveren kører med {STRING})
 STR_5756    :Ugyldig kode
 STR_5757    :Serveren er fyldt
 STR_5758    :{OUTLINE}{GREEN}{STRING} har sluttet sig til spillet
-STR_5759    :Henter kortet ... ({INT32} / {INT32}) KB
+STR_5759    :Henter kortet … ({INT32} / {INT32}) KB
 STR_5760    :Hong Kong Dollars (HK$)
 STR_5761    :New Taiwan Dollar (NT$)
 STR_5762    :Chinese Yuan (CN¥)
@@ -3091,7 +3091,7 @@ STR_5781    :Driftsomkostninger: Ukendt
 STR_5782    :Du er nu forbundet. tryk på '{STRING}' for at chatte.
 STR_5783    :{WINDOW_COLOUR_2}Scenarie låst
 STR_5784    :{BLACK}Fuldfør tidligere scenarier for at låse dette scenario op.
-STR_5785    :Kan ikke omdøbe gruppe...
+STR_5785    :Kan ikke omdøbe gruppe…
 STR_5786    :Ugyldigt gruppe navn
 STR_5787    :{COMMA32} Spillere online
 STR_5788    :Standard inspektions interval:
@@ -3295,7 +3295,7 @@ STR_5987    :Kan ikke oprette mappe
 STR_5988    :{SMALLFONT}{BLACK}Ingen resterende jordrettigheder til salg
 STR_5989    :{SMALLFONT}{BLACK}Ingen resterende byggerettigheder til salg
 STR_5990    :{SMALLFONT}{BLACK}Ingen resterende jordrettigheder eller byggerettigheder til salg
-STR_5991    :Kan ikke indsætte element...
+STR_5991    :Kan ikke indsætte element…
 STR_5992    :Grænsen for kortelementer er nået
 STR_5993    :{SMALLFONT}{BLACK}Kopier valgte element
 STR_5994    :{SMALLFONT}{BLACK}Indsæt kopieret element
@@ -3444,7 +3444,7 @@ STR_6136    :Serveren sendte en ugyldig anmodning
 STR_6137    :OpenRCT2, en gratis,  open source klon af Roller Coaster Tycoon 2.
 STR_6138    :OpenRCT2 er et samarbejde imellem mange forfattere, en komplet liste kan findes i “contributors.md”. Du kan finde flere oplysninger på http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Alle produkt- og firmanavne tilhører deres respektive indehavere. Brug af dem indebærer ikke nogen tilknytning til eller godkendelse af dem.
-STR_6140    :Ændringslog...
+STR_6140    :Ændringslog…
 STR_6141    :RCT1 bund værktøjslinje
 STR_6142    :{WINDOW_COLOUR_2}Spor navn: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Forlystelses type: {BLACK}{STRINGID}
@@ -3452,7 +3452,7 @@ STR_6144    :Vis problematiske visualiseringer
 STR_6145    :{SMALLFONT}{BLACK}Sæt hastigheds begrænsninger på boosters
 STR_6146    :Aktiver alle sporstykker, der kan vises
 STR_6147    :{SMALLFONT}{BLACK}Aktiverer alle sporstykker, som forlystelses typen er i stand til i konstruktions vinduet, uanset om køretøjet understøtter dem.
-STR_6148    :Forbinder til master server...
+STR_6148    :Forbinder til master server…
 STR_6149    :Kan ikke forbinde til master server
 STR_6150    :Ugyldigt svar fra master server (ingen JSON nummer)
 STR_6151    :Master server kan ikke hente servere
@@ -3462,7 +3462,7 @@ STR_6154    :Af sikkerhedsmæssige årsager anbefales det ikke at køre OpenRCT2
 STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en, eller konfigurer fra kommando linjen.
 STR_6156    :Navn er reserveret
 STR_6157    :Konsol
-STR_6158    :Kan ikke hente denne fil...{NEWLINE}ikke kompatibel RCTC version: {COMMA16}
+STR_6158    :Kan ikke hente denne fil…{NEWLINE}ikke kompatibel RCTC version: {COMMA16}
 STR_6159    :Blødgør til nærmeste nabo
 STR_6160    :{WINDOW_COLOUR_2}Tilgængelige køretøjer: {BLACK}{STRING}
 STR_6161    :Skift gitterlinjer Visning til/fra
@@ -3515,7 +3515,7 @@ STR_6218    :OpenRCT2 Official
 STR_6219    :Fremhæv sti problemer
 STR_6220    :Gør brugbar
 STR_6221    :{SMALLFONT}{BLACK}Dette angiver forlystelsens indgang eller udgang placering til det aktuelt valgte felt. Kun én indgang og udgang placering kan gøres anvendelige pr. stationer.
-STR_6222    :Kan ikke placere gæste indgangs punkt her...
+STR_6222    :Kan ikke placere gæste indgangs punkt her…
 STR_6223    :Skal være uden for parkens afgrænsning!
 STR_6224    :{STRING} Placerede et gæste indgangs punkt.
 STR_6225    :Ikke understøttet med OpenGL rendering
@@ -3537,7 +3537,7 @@ STR_6240    :Horisontal beskæring
 STR_6241    :Vælg område
 STR_6242    :Ryd valgte
 STR_6243    :{SMALLFONT}{BLACK}Renoverer forlystelsen,{NEWLINE}får den til at fremstå som ny
-STR_6244    :Kan ikke renovere forlystelse...
+STR_6244    :Kan ikke renovere forlystelse…
 STR_6245    :{SMALLFONT}{BLACK}Forlystelse har ikke brug for renovering
 STR_6246    :Renover
 STR_6247    :Renover forlystelse/attraktion
@@ -3564,7 +3564,7 @@ STR_6270    :Terræn overflader
 STR_6271    :Terræn kanter
 STR_6272    :Stationer
 STR_6273    :Musik
-STR_6274    :Kan ikke sætte farveskema...
+STR_6274    :Kan ikke sætte farveskema…
 STR_6275    :{WINDOW_COLOUR_2}Stations stil:
 STR_6276    :{RED}{STRINGID} har fastklemte gæster, muligvis på grund af forkert forlystelsetype eller operations tilstand.
 STR_6277    :{WINDOW_COLOUR_2}Stations index: {BLACK}{STRINGID}
@@ -3616,7 +3616,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulérer
 STR_6324    :Simulér
 STR_6325    :{SMALLFONT}{BLACK}Simulér forlystelse/attraktion
-STR_6326    :Kan ikke simulére {POP16}{POP16}{POP16}{STRINGID}...
+STR_6326    :Kan ikke simulére {POP16}{POP16}{POP16}{STRINGID}…
 STR_6327    :Transparent baggrund for gigantisk Skærmbillede
 STR_6328    :{SMALLFONT}{BLACK}Med denne indstilling aktiveret, vil gigantisk skærmbillede have transparent baggrund i stedet for en standard sort baggrund.
 STR_6329    :{STRING}{STRINGID}
