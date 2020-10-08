@@ -17,6 +17,7 @@
 - Fix: [#13044] Rides in RCT1 saves all have "0 customers per hour".
 - Fix: [#13074] Entrance and exit ghosts for mazes not being removed.
 - Fix: [#13083] Dialog for renaming conflicting track design crops text out.
+- Fix: [#13129] Missing error message when waiting for train to leave station on the ride measurements graph.
 - Improved: [#13023] Made add_news_item console command last argument, assoc, optional.
 
 0.3.1 (2020-09-27)

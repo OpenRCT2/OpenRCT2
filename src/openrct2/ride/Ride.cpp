@@ -3039,7 +3039,7 @@ std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride)
         auto ft = Formatter::Common();
         ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular);
         ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].singular);
-        return { measurement.get(), STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES };
+        return { nullptr, STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES };
     }
 }
 
