@@ -1291,6 +1291,11 @@ rct_window* window_ride_main_open(Ride* ride)
     {
         w = window_ride_open(ride);
         w->ride.var_482 = -1;
+        w->ride.view = 0;
+    }
+    else if (w->ride.view >= (1 + ride->num_vehicles + ride->num_stations))
+    {
+        w->ride.view = 0;
     }
 
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
@@ -1306,7 +1311,6 @@ rct_window* window_ride_main_open(Ride* ride)
         window_ride_set_page(w, WINDOW_RIDE_PAGE_MAIN);
     }
 
-    w->ride.view = 0;
     window_ride_init_viewport(w);
     return w;
 }
