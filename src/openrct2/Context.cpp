@@ -361,9 +361,9 @@ namespace OpenRCT2
                 {
                     _localisationService->OpenLanguage(LANGUAGE_ENGLISH_UK);
                 }
-                catch (const std::exception&)
+                catch (const std::exception& eFallback)
                 {
-                    log_fatal("Failed to open fallback language: %s", e.what());
+                    log_fatal("Failed to open fallback language: %s", eFallback.what());
                     return false;
                 }
             }

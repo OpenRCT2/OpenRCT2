@@ -794,8 +794,6 @@ bool config_find_or_browse_install_directory()
         try
         {
             const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
-            char cantFindG1Dat[1024];
-
             while (true)
             {
                 auto uiContext = GetContext()->GetUiContext();
@@ -815,8 +813,7 @@ bool config_find_or_browse_install_directory()
                     return true;
                 }
 
-                format_string(cantFindG1Dat, 1024, STR_COULD_NOT_FIND_AT_PATH, &g1DatPath);
-                uiContext->ShowMessageBox(cantFindG1Dat);
+                uiContext->ShowMessageBox(format_string(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
             }
         }
         catch (const std::exception& ex)
