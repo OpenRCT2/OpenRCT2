@@ -37,7 +37,6 @@
 #include <limits.h>
 
 thread_local char gCommonStringFormatBuffer[512];
-thread_local uint8_t gCommonFormatArgs[80];
 
 #ifdef DEBUG
 // Set to true before a string format call to see details of the formatting.

@@ -3008,38 +3008,37 @@ static void ride_free_old_measurements()
     } while (numRideMeasurements > MAX_RIDE_MEASUREMENTS);
 }
 
-std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride)
+std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
 {
     // Check if ride type supports data logging
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+    if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
     {
-        return { nullptr, STR_DATA_LOGGING_NOT_AVAILABLE_FOR_THIS_TYPE_OF_RIDE };
+        return { nullptr, { STR_DATA_LOGGING_NOT_AVAILABLE_FOR_THIS_TYPE_OF_RIDE, {} } };
     }
 
     // Check if a measurement already exists for this ride
-    auto& measurement = ride->measurement;
     if (measurement == nullptr)
     {
         measurement = std::make_unique<RideMeasurement>();
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+        if (ride_type_has_flag(type, RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
             measurement->flags |= RIDE_MEASUREMENT_FLAG_G_FORCES;
         }
         ride_free_old_measurements();
-        assert(ride->measurement != nullptr);
+        assert(measurement != nullptr);
     }
 
     measurement->last_use_tick = gScenarioTicks;
     if (measurement->flags & 1)
     {
-        return { measurement.get(), STR_EMPTY };
+        return { measurement.get(), { STR_EMPTY, {} } };
     }
     else
     {
-        auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular);
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].singular);
-        return { nullptr, STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES };
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[type].NameConvention.vehicle].singular);
+        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[type].NameConvention.station].singular);
+        return { nullptr, { STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES, ft } };
     }
 }
 

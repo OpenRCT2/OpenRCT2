@@ -5787,7 +5787,7 @@ static void window_ride_graphs_update(rct_window* w)
         if (ride != nullptr)
         {
             RideMeasurement* measurement{};
-            std::tie(measurement, std::ignore) = ride_get_measurement(ride);
+            std::tie(measurement, std::ignore) = ride->GetMeasurement();
             x = measurement == nullptr ? 0 : measurement->current_item - ((widget->width() / 4) * 3);
         }
     }
@@ -5812,7 +5812,7 @@ static void window_ride_graphs_scrollgetheight(rct_window* w, int32_t scrollInde
     if (ride != nullptr)
     {
         RideMeasurement* measurement{};
-        std::tie(measurement, std::ignore) = ride_get_measurement(ride);
+        std::tie(measurement, std::ignore) = ride->GetMeasurement();
         if (measurement != nullptr)
         {
             *width = std::max<int32_t>(*width, measurement->num_items);
@@ -5840,7 +5840,7 @@ static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetInde
         auto ride = get_ride(w->number);
         if (ride != nullptr)
         {
-            auto [measurement, message] = ride_get_measurement(ride);
+            auto [measurement, message] = ride->GetMeasurement();
             if (measurement != nullptr && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING))
             {
                 auto ft = Formatter::Common();
@@ -5850,7 +5850,7 @@ static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetInde
             }
             else
             {
-                *stringId = message;
+                *stringId = message.str;
             }
         }
     }
@@ -5941,19 +5941,20 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     gfx_clear(dpi, ColourMapA[COLOUR_SATURATED_GREEN].darker);
 
     auto widget = &window_ride_graphs_widgets[WIDX_GRAPH];
-    auto stringId = STR_NONE;
-    RideMeasurement* measurement{};
     auto ride = get_ride(w->number);
-    if (ride != nullptr)
+    if (ride == nullptr)
     {
-        std::tie(measurement, stringId) = ride_get_measurement(ride);
+        return;
     }
+
+    auto [measurement, message] = ride->GetMeasurement();
+
     if (measurement == nullptr)
     {
         // No measurement message
         ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() / 2 - 5);
         int32_t width = widget->width() - 2;
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, width, stringId, COLOUR_BLACK);
+        gfx_draw_string_centred_wrapped(dpi, message.args.Data(), stringCoords, width, message.str, COLOUR_BLACK);
         return;
     }
 
