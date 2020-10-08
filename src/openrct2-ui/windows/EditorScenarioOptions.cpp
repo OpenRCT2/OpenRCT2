@@ -1360,7 +1360,6 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         else
             stringId = STR_PAY_PARK_ENTER;
 
-        gfx_draw_string_left(dpi, stringId, nullptr, COLOUR_BLACK, screenCoords);
         gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
     }
 
