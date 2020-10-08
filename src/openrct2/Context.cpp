@@ -350,6 +350,24 @@ namespace OpenRCT2
                 config_save_default();
             }
 
+            try
+            {
+                _localisationService->OpenLanguage(gConfigGeneral.language);
+            }
+            catch (const std::exception& e)
+            {
+                log_error("Failed to open configured language: %s", e.what());
+                try
+                {
+                    _localisationService->OpenLanguage(LANGUAGE_ENGLISH_UK);
+                }
+                catch (const std::exception&)
+                {
+                    log_fatal("Failed to open fallback language: %s", e.what());
+                    return false;
+                }
+            }
+
             // TODO add configuration option to allow multiple instances
             // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
             //  log_fatal("OpenRCT2 is already running.");
@@ -378,24 +396,6 @@ namespace OpenRCT2
                 _discordService = std::make_unique<DiscordService>();
             }
 #endif
-
-            try
-            {
-                _localisationService->OpenLanguage(gConfigGeneral.language, *_objectManager);
-            }
-            catch (const std::exception& e)
-            {
-                log_error("Failed to open configured language: %s", e.what());
-                try
-                {
-                    _localisationService->OpenLanguage(LANGUAGE_ENGLISH_UK, *_objectManager);
-                }
-                catch (const std::exception&)
-                {
-                    log_fatal("Failed to open fallback language: %s", e.what());
-                    return false;
-                }
-            }
 
             if (platform_process_is_elevated())
             {

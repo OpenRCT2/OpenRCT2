@@ -22,6 +22,8 @@
 #include "../localisation/Currency.h"
 #include "../localisation/Date.h"
 #include "../localisation/Language.h"
+#include "../localisation/Localisation.h"
+#include "../localisation/StringIds.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
 #include "../platform/Platform2.h"
@@ -791,13 +793,15 @@ bool config_find_or_browse_install_directory()
 
         try
         {
+            const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
+            char cantFindG1Dat[1024];
+
             while (true)
             {
                 auto uiContext = GetContext()->GetUiContext();
-                uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work.\n"
-                                          "Please select the directory where you installed RollerCoaster Tycoon 2.");
+                uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES, nullptr));
 
-                std::string installPath = uiContext->ShowDirectoryDialog("Please select your RCT2 directory");
+                std::string installPath = uiContext->ShowDirectoryDialog(format_string(STR_PICK_RCT2_DIR, nullptr));
                 if (installPath.empty())
                 {
                     return false;
@@ -811,9 +815,8 @@ bool config_find_or_browse_install_directory()
                     return true;
                 }
 
-                std::string message = String::StdFormat(
-                    "Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
-                uiContext->ShowMessageBox(message);
+                format_string(cantFindG1Dat, 1024, STR_COULD_NOT_FIND_AT_PATH, &g1DatPath);
+                uiContext->ShowMessageBox(cantFindG1Dat);
             }
         }
         catch (const std::exception& ex)
