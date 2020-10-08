@@ -1351,7 +1351,6 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         // Pay for park or rides label
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].left + 1, w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top };
-        gfx_draw_string_left(dpi, STR_FREE_PARK_ENTER, nullptr, COLOUR_BLACK, screenCoords);
 
         // Pay for park and/or rides value
         if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
