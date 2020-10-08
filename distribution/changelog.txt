@@ -11,6 +11,7 @@
 - Fix: [#8957] Error title missing when building with insufficient funds
 - Fix: [#10186] Placing multiple saved rides ignores design name (original bug).
 - Fix: [#13021] Mowed grass and weeds don't show up in extra zoom levels.
+- Fix: [#13024] Console cursor does not correctly render at current cursor position.
 - Fix: [#13029] Not all Junior Roller Coaster pieces are shown when "Show all track pieces" cheat is enabled.
 - Fix: [#13044] Rides in RCT1 saves all have "0 customers per hour".
 - Fix: [#13074] Entrance and exit ghosts for mazes not being removed.
