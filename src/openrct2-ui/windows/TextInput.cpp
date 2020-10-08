@@ -236,8 +236,8 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t no_lines = 0;
     int32_t font_height = 0;
 
-    gfx_draw_string_centred(
-        dpi, input_text_description, { w->windowPos.x + WW / 2, screenCoords.y }, w->colours[1], &TextInputDescriptionArgs);
+    gfx_draw_string_centred_wrapped(
+        dpi, &TextInputDescriptionArgs, { w->windowPos.x + WW / 2, screenCoords.y }, WW, input_text_description, w->colours[1]);
 
     screenCoords.y += 25;
 
