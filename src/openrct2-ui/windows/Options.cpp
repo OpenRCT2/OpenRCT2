@@ -2107,21 +2107,24 @@ static void window_options_advanced_paint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, w->colours[1]);
 }
 
-static void window_options_advanced_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringid)
+static OpenRCT2String window_options_advanced_tooltip(
+    rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
     if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
     {
         if (str_is_null_or_empty(gConfigGeneral.rct1_path))
         {
             // No tooltip if the path is empty
-            *stringid = STR_NONE;
+            return { STR_NONE, {} };
         }
         else
         {
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<utf8*>(gConfigGeneral.rct1_path);
+            return { fallback, ft };
         }
     }
+    return { fallback, {} };
 }
 
 #pragma region Event lists

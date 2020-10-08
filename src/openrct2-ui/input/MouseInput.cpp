@@ -1398,8 +1398,7 @@ void input_state_widget_pressed(
                 STR_COLOUR_BRIGHT_PINK_TIP,
                 STR_COLOUR_LIGHT_PINK_TIP,
             };
-
-            window_tooltip_show(colourTooltips[dropdown_index], screenCoords);
+            window_tooltip_show(OpenRCT2String{ colourTooltips[dropdown_index], {} }, screenCoords);
         }
 
         if (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index))
