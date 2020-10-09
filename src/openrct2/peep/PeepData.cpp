@@ -5399,7 +5399,7 @@ static constexpr const rct_sprite_bounds PeepSpriteBounds_Sandwich[] = {
 };
 
 
-rct_peep_animation_entry g_peep_animation_entries[] =
+constexpr rct_peep_animation_entry g_peep_animation_entries[] =
 {
     { PeepSpriteImage_Normal, PeepSpriteBounds_Normal },
     { PeepSpriteImage_Handyman, PeepSpriteBounds_Handyman },

@@ -20,22 +20,22 @@
 
 /** rct2: 0x00982134 */
 constexpr const bool peep_slow_walking_types[] = {
-    false, // PEEP_SPRITE_TYPE_NORMAL
-    false, // PEEP_SPRITE_TYPE_HANDYMAN
-    false, // PEEP_SPRITE_TYPE_MECHANIC
-    false, // PEEP_SPRITE_TYPE_SECURITY
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_PANDA
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_TIGER
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT
-    true,  // PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_BANDIT
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_SHERIFF
-    true,  // PEEP_SPRITE_TYPE_ENTERTAINER_PIRATE
-    true,  // PEEP_SPRITE_TYPE_BALLOON
+    false, // PeepSpriteType::Normal
+    false, // PeepSpriteType::Handyman
+    false, // PeepSpriteType::Mechanic
+    false, // PeepSpriteType::Security
+    false, // PeepSpriteType::EntertainerPanda
+    false, // PeepSpriteType::EntertainerTiger
+    false, // PeepSpriteType::EntertainerElephant
+    false, // PeepSpriteType::EntertainerRoman
+    false, // PeepSpriteType::EntertainerGorilla
+    false, // PeepSpriteType::EntertainerSnowman
+    false, // PeepSpriteType::EntertainerKnight
+    true,  // PeepSpriteType::EntertainerAstronaut
+    false, // PeepSpriteType::EntertainerBandit
+    false, // PeepSpriteType::EntertainerSheriff
+    true,  // PeepSpriteType::EntertainerPirate
+    true,  // PeepSpriteType::Balloon
 };
 
 DEFINE_GAME_ACTION(StaffSetCostumeAction, GAME_COMMAND_SET_STAFF_COSTUME, GameActionResult)
@@ -79,7 +79,7 @@ public:
         }
 
         auto spriteType = EntertainerCostumeToSprite(_costume);
-        if (spriteType > std::size(peep_slow_walking_types))
+        if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -99,7 +99,7 @@ public:
         auto spriteType = EntertainerCostumeToSprite(_costume);
         staff->SpriteType = spriteType;
         staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-        if (peep_slow_walking_types[spriteType])
+        if (peep_slow_walking_types[EnumValue(spriteType)])
         {
             staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
         }

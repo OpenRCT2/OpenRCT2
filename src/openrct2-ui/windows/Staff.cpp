@@ -26,7 +26,6 @@
 #include <openrct2/network/network.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -802,7 +801,7 @@ void window_staff_options_invalidate(rct_window* w)
             window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_EMPTY;
             window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_DROPDOWN;
             window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_BUTTON;
-            window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[peep->SpriteType - 4];
+            window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[EnumValue(peep->SpriteType) - 4];
             break;
         case StaffType::Handyman:
             window_staff_options_widgets[WIDX_CHECKBOX_1].type = WWT_CHECKBOX;
@@ -1023,7 +1022,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
-    int32_t ebx = g_peep_animation_entries[peep->SpriteType].sprite_animation->base_image + 1;
+    int32_t ebx = GetPeepAnimation(peep->SpriteType).base_image + 1;
 
     int32_t eax = 0;
 
@@ -1189,9 +1188,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
         return;
     }
 
-    uint32_t imageId = g_peep_animation_entries[peep->SpriteType]
-                           .sprite_animation[EnumValue(PeepActionSpriteType::Ui)]
-                           .base_image;
+    uint32_t imageId = GetPeepAnimation(peep->SpriteType, PeepActionSpriteType::Ui).base_image;
     imageId += w->picked_peep_frame >> 2;
 
     imageId |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;

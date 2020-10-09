@@ -1277,7 +1277,7 @@ void Guest::UpdateSitting()
             return;
         }
 
-        if (SpriteType == PEEP_SPRITE_TYPE_UMBRELLA)
+        if (SpriteType == PeepSpriteType::Umbrella)
         {
             TryGetUpFromSitting();
             return;
@@ -1303,7 +1303,7 @@ void Guest::UpdateSitting()
             TryGetUpFromSitting();
             return;
         }
-        if (SpriteType == PEEP_SPRITE_TYPE_BALLOON || SpriteType == PEEP_SPRITE_TYPE_HAT)
+        if (SpriteType == PeepSpriteType::Balloon || SpriteType == PeepSpriteType::Hat)
         {
             TryGetUpFromSitting();
             return;
@@ -5602,7 +5602,7 @@ void Guest::UpdateQueuing()
     PerformNextAction(pathingResult);
     if (Action < PeepActionType::None1)
         return;
-    if (SpriteType == PEEP_SPRITE_TYPE_NORMAL)
+    if (SpriteType == PeepSpriteType::Normal)
     {
         if (TimeInQueue >= 2000 && (0xFFFF & scenario_rand()) <= 119)
         {
@@ -5624,28 +5624,28 @@ void Guest::UpdateQueuing()
         {
             switch (SpriteType)
             {
-                case PEEP_SPRITE_TYPE_ICE_CREAM:
-                case PEEP_SPRITE_TYPE_CHIPS:
-                case PEEP_SPRITE_TYPE_BURGER:
-                case PEEP_SPRITE_TYPE_DRINK:
-                case PEEP_SPRITE_TYPE_CANDYFLOSS:
-                case PEEP_SPRITE_TYPE_PIZZA:
-                case PEEP_SPRITE_TYPE_POPCORN:
-                case PEEP_SPRITE_TYPE_HOT_DOG:
-                case PEEP_SPRITE_TYPE_TENTACLE:
-                case PEEP_SPRITE_TYPE_TOFFEE_APPLE:
-                case PEEP_SPRITE_TYPE_DOUGHNUT:
-                case PEEP_SPRITE_TYPE_COFFEE:
-                case PEEP_SPRITE_TYPE_CHICKEN:
-                case PEEP_SPRITE_TYPE_LEMONADE:
-                case PEEP_SPRITE_TYPE_PRETZEL:
-                case PEEP_SPRITE_TYPE_SU_JONGKWA:
-                case PEEP_SPRITE_TYPE_JUICE:
-                case PEEP_SPRITE_TYPE_FUNNEL_CAKE:
-                case PEEP_SPRITE_TYPE_NOODLES:
-                case PEEP_SPRITE_TYPE_SAUSAGE:
-                case PEEP_SPRITE_TYPE_SOUP:
-                case PEEP_SPRITE_TYPE_SANDWICH:
+                case PeepSpriteType::IceCream:
+                case PeepSpriteType::Chips:
+                case PeepSpriteType::Burger:
+                case PeepSpriteType::Drink:
+                case PeepSpriteType::Candyfloss:
+                case PeepSpriteType::Pizza:
+                case PeepSpriteType::Popcorn:
+                case PeepSpriteType::HotDog:
+                case PeepSpriteType::Tentacle:
+                case PeepSpriteType::ToffeeApple:
+                case PeepSpriteType::Doughnut:
+                case PeepSpriteType::Coffee:
+                case PeepSpriteType::Chicken:
+                case PeepSpriteType::Lemonade:
+                case PeepSpriteType::Pretzel:
+                case PeepSpriteType::SuJongkwa:
+                case PeepSpriteType::Juice:
+                case PeepSpriteType::FunnelCake:
+                case PeepSpriteType::Noodles:
+                case PeepSpriteType::Sausage:
+                case PeepSpriteType::Soup:
+                case PeepSpriteType::Sandwich:
                     // Eat food
                     Action = PeepActionType::EatFood;
                     ActionFrame = 0;
@@ -6773,8 +6773,8 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
         Action = PeepActionType::None2;
 
     PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-    Guard::Assert(new_sprite_type < std::size(gSpriteTypeToSlowWalkMap));
-    if (gSpriteTypeToSlowWalkMap[new_sprite_type])
+    Guard::Assert(EnumValue(new_sprite_type) < std::size(gSpriteTypeToSlowWalkMap));
+    if (gSpriteTypeToSlowWalkMap[EnumValue(new_sprite_type)])
     {
         PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
@@ -6805,38 +6805,38 @@ struct item_pref_t
 
 // clang-format off
 static item_pref_t item_order_preference[] = {
-        { 0, PEEP_ITEM_ICE_CREAM, PEEP_SPRITE_TYPE_ICE_CREAM },
-        { 0, PEEP_ITEM_CHIPS, PEEP_SPRITE_TYPE_CHIPS },
-        { 0, PEEP_ITEM_PIZZA, PEEP_SPRITE_TYPE_PIZZA },
-        { 0, PEEP_ITEM_BURGER, PEEP_SPRITE_TYPE_BURGER },
-        { 0, PEEP_ITEM_DRINK, PEEP_SPRITE_TYPE_DRINK },
-        { 0, PEEP_ITEM_COFFEE, PEEP_SPRITE_TYPE_COFFEE },
-        { 0, PEEP_ITEM_CHICKEN, PEEP_SPRITE_TYPE_CHICKEN },
-        { 0, PEEP_ITEM_LEMONADE, PEEP_SPRITE_TYPE_LEMONADE },
-        { 0, PEEP_ITEM_CANDYFLOSS, PEEP_SPRITE_TYPE_CANDYFLOSS },
-        { 0, PEEP_ITEM_POPCORN, PEEP_SPRITE_TYPE_POPCORN },
-        { 0, PEEP_ITEM_HOT_DOG, PEEP_SPRITE_TYPE_HOT_DOG  },
-        { 0, PEEP_ITEM_TENTACLE, PEEP_SPRITE_TYPE_TENTACLE },
-        { 0, PEEP_ITEM_TOFFEE_APPLE, PEEP_SPRITE_TYPE_TOFFEE_APPLE },
-        { 0, PEEP_ITEM_DOUGHNUT, PEEP_SPRITE_TYPE_DOUGHNUT },
-        { 1, PEEP_ITEM_PRETZEL, PEEP_SPRITE_TYPE_PRETZEL },
-        { 1, PEEP_ITEM_COOKIE, PEEP_SPRITE_TYPE_PRETZEL },
-        { 1, PEEP_ITEM_CHOCOLATE, PEEP_SPRITE_TYPE_COFFEE },
-        { 1, PEEP_ITEM_ICED_TEA, PEEP_SPRITE_TYPE_COFFEE },
-        { 1, PEEP_ITEM_FUNNEL_CAKE, PEEP_SPRITE_TYPE_FUNNEL_CAKE },
-        { 1, PEEP_ITEM_BEEF_NOODLES, PEEP_SPRITE_TYPE_NOODLES },
-        { 1, PEEP_ITEM_FRIED_RICE_NOODLES, PEEP_SPRITE_TYPE_NOODLES },
-        { 1, PEEP_ITEM_WONTON_SOUP, PEEP_SPRITE_TYPE_SOUP },
-        { 1, PEEP_ITEM_MEATBALL_SOUP, PEEP_SPRITE_TYPE_SOUP },
-        { 1, PEEP_ITEM_FRUIT_JUICE, PEEP_SPRITE_TYPE_JUICE },
-        { 1, PEEP_ITEM_SOYBEAN_MILK, PEEP_SPRITE_TYPE_SU_JONGKWA },
-        { 1, PEEP_ITEM_SU_JONGKWA, PEEP_SPRITE_TYPE_SU_JONGKWA },
-        { 1, PEEP_ITEM_SUB_SANDWICH, PEEP_SPRITE_TYPE_SANDWICH },
-        { 1, PEEP_ITEM_ROAST_SAUSAGE, PEEP_SPRITE_TYPE_SAUSAGE },
-        { 0, PEEP_ITEM_BALLOON, PEEP_SPRITE_TYPE_BALLOON },
-        { 0, PEEP_ITEM_HAT, PEEP_SPRITE_TYPE_HAT },
-        { 1, PEEP_ITEM_SUNGLASSES, PEEP_SPRITE_TYPE_SUNGLASSES },
-        { 0xFF, 0xFFFFFFFF, PEEP_SPRITE_TYPE_INVALID }
+        { 0, PEEP_ITEM_ICE_CREAM, PeepSpriteType::IceCream },
+        { 0, PEEP_ITEM_CHIPS, PeepSpriteType::Chips },
+        { 0, PEEP_ITEM_PIZZA, PeepSpriteType::Pizza },
+        { 0, PEEP_ITEM_BURGER, PeepSpriteType::Burger },
+        { 0, PEEP_ITEM_DRINK, PeepSpriteType::Drink },
+        { 0, PEEP_ITEM_COFFEE, PeepSpriteType::Coffee },
+        { 0, PEEP_ITEM_CHICKEN, PeepSpriteType::Chicken },
+        { 0, PEEP_ITEM_LEMONADE, PeepSpriteType::Lemonade },
+        { 0, PEEP_ITEM_CANDYFLOSS, PeepSpriteType::Candyfloss },
+        { 0, PEEP_ITEM_POPCORN, PeepSpriteType::Popcorn },
+        { 0, PEEP_ITEM_HOT_DOG, PeepSpriteType::HotDog  },
+        { 0, PEEP_ITEM_TENTACLE, PeepSpriteType::Tentacle },
+        { 0, PEEP_ITEM_TOFFEE_APPLE, PeepSpriteType::ToffeeApple },
+        { 0, PEEP_ITEM_DOUGHNUT, PeepSpriteType::Doughnut },
+        { 1, PEEP_ITEM_PRETZEL, PeepSpriteType::Pretzel },
+        { 1, PEEP_ITEM_COOKIE, PeepSpriteType::Pretzel },
+        { 1, PEEP_ITEM_CHOCOLATE, PeepSpriteType::Coffee },
+        { 1, PEEP_ITEM_ICED_TEA, PeepSpriteType::Coffee },
+        { 1, PEEP_ITEM_FUNNEL_CAKE, PeepSpriteType::FunnelCake },
+        { 1, PEEP_ITEM_BEEF_NOODLES, PeepSpriteType::Noodles },
+        { 1, PEEP_ITEM_FRIED_RICE_NOODLES, PeepSpriteType::Noodles },
+        { 1, PEEP_ITEM_WONTON_SOUP, PeepSpriteType::Soup },
+        { 1, PEEP_ITEM_MEATBALL_SOUP, PeepSpriteType::Soup },
+        { 1, PEEP_ITEM_FRUIT_JUICE, PeepSpriteType::Juice },
+        { 1, PEEP_ITEM_SOYBEAN_MILK, PeepSpriteType::SuJongkwa },
+        { 1, PEEP_ITEM_SU_JONGKWA, PeepSpriteType::SuJongkwa },
+        { 1, PEEP_ITEM_SUB_SANDWICH, PeepSpriteType::Sandwich },
+        { 1, PEEP_ITEM_ROAST_SAUSAGE, PeepSpriteType::Sausage },
+        { 0, PEEP_ITEM_BALLOON, PeepSpriteType::Balloon },
+        { 0, PEEP_ITEM_HAT, PeepSpriteType::Hat },
+        { 1, PEEP_ITEM_SUNGLASSES, PeepSpriteType::Sunglasses },
+        { 0xFF, 0xFFFFFFFF, PeepSpriteType::Invalid }
 };
 // clang-format on
 
@@ -6846,7 +6846,7 @@ static item_pref_t item_order_preference[] = {
  */
 void Guest::UpdateSpriteType()
 {
-    if (SpriteType == PEEP_SPRITE_TYPE_BALLOON && (scenario_rand() & 0xFFFF) <= 327)
+    if (SpriteType == PeepSpriteType::Balloon && (scenario_rand() & 0xFFFF) <= 327)
     {
         bool isBalloonPopped = false;
         if (x != LOCATION_NULL)
@@ -6877,7 +6877,7 @@ void Guest::UpdateSpriteType()
 
                 if (tileElement->IsLastForTile())
                 {
-                    SetSpriteType(PEEP_SPRITE_TYPE_UMBRELLA);
+                    SetSpriteType(PeepSpriteType::Umbrella);
                     return;
                 }
                 tileElement++;
@@ -6907,41 +6907,41 @@ void Guest::UpdateSpriteType()
 
     if (State == PeepState::Watching && StandingFlags & (1 << 1))
     {
-        SetSpriteType(PEEP_SPRITE_TYPE_WATCHING);
+        SetSpriteType(PeepSpriteType::Watching);
         return;
     }
 
     if (Nausea > 170)
     {
-        SetSpriteType(PEEP_SPRITE_TYPE_VERY_NAUSEOUS);
+        SetSpriteType(PeepSpriteType::VeryNauseous);
         return;
     }
 
     if (Nausea > 140)
     {
-        SetSpriteType(PEEP_SPRITE_TYPE_NAUSEOUS);
+        SetSpriteType(PeepSpriteType::Nauseous);
         return;
     }
 
     if (Energy <= 64 && Happiness < 128)
     {
-        SetSpriteType(PEEP_SPRITE_TYPE_HEAD_DOWN);
+        SetSpriteType(PeepSpriteType::HeadDown);
         return;
     }
 
     if (Energy <= 80 && Happiness < 128)
     {
-        SetSpriteType(PEEP_SPRITE_TYPE_ARMS_CROSSED);
+        SetSpriteType(PeepSpriteType::ArmsCrossed);
         return;
     }
 
     if (Toilet > 220)
     {
-        SetSpriteType(PEEP_SPRITE_TYPE_REQUIRE_TOILET);
+        SetSpriteType(PeepSpriteType::RequireToilet);
         return;
     }
 
-    SetSpriteType(PEEP_SPRITE_TYPE_NORMAL);
+    SetSpriteType(PeepSpriteType::Normal);
 }
 
 bool Guest::HeadingForRideOrParkExit() const

@@ -1409,10 +1409,10 @@ private:
         dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->ActionFrame = src->action_frame;
 
-        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->SpriteType].sprite_bounds;
-        dst->sprite_width = spriteBounds[EnumValue(dst->ActionSpriteType)].sprite_width;
-        dst->sprite_height_negative = spriteBounds[EnumValue(dst->ActionSpriteType)].sprite_height_negative;
-        dst->sprite_height_positive = spriteBounds[EnumValue(dst->ActionSpriteType)].sprite_height_positive;
+        const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
+        dst->sprite_width = spriteBounds->sprite_width;
+        dst->sprite_height_negative = spriteBounds->sprite_height_negative;
+        dst->sprite_height_positive = spriteBounds->sprite_height_positive;
 
         dst->MoveTo({ src->x, src->y, src->z });
         dst->Invalidate2();
