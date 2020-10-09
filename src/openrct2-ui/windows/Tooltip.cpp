@@ -56,28 +56,23 @@ void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoo
     if (w != nullptr)
         return;
 
-    char* buffer = gCommonStringFormatBuffer;
-
-    format_string(buffer, sizeof(gCommonStringFormatBuffer), message.str, message.args.Data());
+    format_string(_tooltipText, sizeof(_tooltipText), message.str, message.args.Data());
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
     int32_t tooltip_text_width;
-    tooltip_text_width = gfx_get_string_width_new_lined(buffer);
-    buffer = gCommonStringFormatBuffer;
+    tooltip_text_width = gfx_get_string_width_new_lined(_tooltipText);
     tooltip_text_width = std::min(tooltip_text_width, 196);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
     int32_t numLines, fontSpriteBase;
-    tooltip_text_width = gfx_wrap_string(buffer, tooltip_text_width + 1, &numLines, &fontSpriteBase);
+    tooltip_text_width = gfx_wrap_string(_tooltipText, tooltip_text_width + 1, &numLines, &fontSpriteBase);
 
     _tooltipNumLines = numLines;
     width = tooltip_text_width + 3;
     height = ((numLines + 1) * font_get_line_height(gCurrentFontSpriteBase)) + 4;
     window_tooltip_widgets[WIDX_BACKGROUND].right = width;
     window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
-
-    std::memcpy(_tooltipText, buffer, sizeof(_tooltipText));
 
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
