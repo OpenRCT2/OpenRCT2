@@ -116,3 +116,10 @@ TEST_F(FormattingTests, velocity_mps)
     auto actual = FormatString("Train is going at {VELOCITY}.", 1024);
     ASSERT_EQ("Train is going at 457.7 m/s.", actual);
 }
+
+TEST_F(FormattingTests, any_string_int_string)
+{
+    auto actual = FormatStringAny(
+        "{RED}{STRING} {INT32} has broken down due to '{STRING}'.", { "Twist", 2, "Mechanical failure" });
+    ASSERT_EQ("{RED}Twist 2 has broken down due to 'Mechanical failure'.", actual);
+}

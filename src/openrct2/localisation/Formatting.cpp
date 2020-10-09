@@ -204,4 +204,47 @@ namespace OpenRCT2
 
     template void FormatArgument(std::stringstream&, uint32_t, int32_t);
     template void FormatArgument(std::stringstream&, uint32_t, const char*);
+
+    void FormatArgumentAny(std::stringstream& ss, FormatToken token, const std::any& value)
+    {
+        if (value.type() == typeid(int32_t))
+        {
+            FormatArgument(ss, token, std::any_cast<int32_t>(value));
+        }
+        else if (value.type() == typeid(const char*))
+        {
+            FormatArgument(ss, token, std::any_cast<const char*>(value));
+        }
+        else
+        {
+            throw std::runtime_error("No support for format argument type.");
+        }
+    }
+
+    std::string FormatStringAny(std::string_view fmt, const std::vector<std::any>& args)
+    {
+        thread_local std::stringstream ss;
+        // Reset the buffer (reported as most efficient way)
+        std::stringstream().swap(ss);
+
+        size_t argIndex = 0;
+        auto fmtc = fmt;
+        while (!fmtc.empty())
+        {
+            auto [part, token] = FormatNextPart(fmtc);
+            if (CanFormatToken(token))
+            {
+                if (argIndex < args.size())
+                {
+                    FormatArgumentAny(ss, token, args[argIndex]);
+                }
+                argIndex++;
+            }
+            else
+            {
+                ss << part;
+            }
+        }
+        return ss.str();
+    }
 } // namespace OpenRCT2

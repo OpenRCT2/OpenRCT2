@@ -12,10 +12,12 @@
 #include "../common.h"
 #include "Language.h"
 
+#include <any>
 #include <sstream>
 #include <string>
 #include <string_view>
 #include <utility>
+#include <vector>
 
 namespace OpenRCT2
 {
@@ -99,4 +101,6 @@ namespace OpenRCT2
         auto fmtc = language_convert_string_to_tokens(lang);
         return FormatString(fmtc, argN...);
     }
+
+    std::string FormatStringAny(std::string_view fmt, const std::vector<std::any>& args);
 } // namespace OpenRCT2
