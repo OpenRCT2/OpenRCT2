@@ -19,6 +19,134 @@
 
 namespace OpenRCT2
 {
+    FmtString::token::token(FormatToken k, std::string_view s)
+        : kind(k)
+        , text(s)
+    {
+    }
+
+    bool FmtString::token::IsLiteral() const
+    {
+        return kind == 0;
+    }
+
+    FmtString::iterator::iterator(std::string_view s, size_t i)
+        : str(s)
+        , index(i)
+    {
+        update();
+    }
+
+    void FmtString::iterator::update()
+    {
+        auto i = index;
+        if (i >= str.size())
+        {
+            current = token();
+            return;
+        }
+
+        if (str[i] == '{' && i + 1 < str.size() && str[i + 1] != '{')
+        {
+            // Move to end brace
+            do
+            {
+                i++;
+            } while (i < str.size() && str[i] != '}');
+            if (i < str.size() && str[i] == '}')
+                i++;
+        }
+        else
+        {
+            do
+            {
+                i++;
+            } while (i < str.size() && str[i] != '{');
+        }
+        current = CreateToken(i - index);
+    }
+
+    bool FmtString::iterator::operator==(iterator& rhs)
+    {
+        return index == rhs.index;
+    }
+
+    bool FmtString::iterator::operator!=(iterator& rhs)
+    {
+        return index != rhs.index;
+    }
+
+    FmtString::token FmtString::iterator::CreateToken(size_t len)
+    {
+        std::string_view sztoken = str.substr(index, len);
+        if (sztoken.size() >= 2 && sztoken[0] == '{' && sztoken[1] != '{')
+        {
+            auto kind = format_get_code(sztoken.substr(1, len - 2));
+            return token(kind, sztoken);
+        }
+        return token(0, sztoken);
+    }
+
+    const FmtString::token* FmtString::iterator::operator->() const
+    {
+        return &current;
+    }
+
+    const FmtString::token& FmtString::iterator::operator*()
+    {
+        return current;
+    }
+
+    FmtString::iterator& FmtString::iterator::operator++()
+    {
+        if (index < str.size())
+        {
+            index += current.text.size();
+            update();
+        }
+        return *this;
+    }
+
+    FmtString::FmtString(std::string&& s)
+    {
+        _strOwned = std::move(s);
+        _str = _strOwned;
+    }
+
+    FmtString::FmtString(std::string_view s)
+        : _str(s)
+    {
+    }
+
+    FmtString::FmtString(const char* s)
+        : FmtString(std::string_view(s))
+    {
+    }
+
+    FmtString::iterator FmtString::begin() const
+    {
+        return iterator(_str, 0);
+    }
+
+    FmtString::iterator FmtString::end() const
+    {
+        return iterator(_str, _str.size());
+    }
+
+    std::string FmtString::WithoutFormatTokens() const
+    {
+        std::string result;
+        result.reserve(_str.size() * 4);
+        for (const auto& t : *this)
+        {
+            if (t.IsLiteral())
+            {
+                result += t.text;
+            }
+        }
+        return result;
+    }
+
     char GetDigitSeperator()
     {
         return ',';

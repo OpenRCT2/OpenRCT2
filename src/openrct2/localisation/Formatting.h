@@ -23,6 +23,48 @@ namespace OpenRCT2
 {
     using FormatToken = uint32_t;
 
+    class FmtString
+    {
+    private:
+        std::string_view _str;
+        std::string _strOwned;
+
+    public:
+        struct token
+        {
+            FormatToken kind{};
+            std::string_view text;
+
+            token() = default;
+            token(FormatToken k, std::string_view s);
+            bool IsLiteral() const;
+        };
+
+        struct iterator
+        {
+            std::string_view str;
+            size_t index;
+            token current;
+
+            iterator(std::string_view s, size_t i);
+            void update();
+            bool operator==(iterator& rhs);
+            bool operator!=(iterator& rhs);
+            token CreateToken(size_t len);
+            const token* operator->() const;
+            const token& operator*();
+            iterator& operator++();
+        };
+
+        FmtString(std::string&& s);
+        FmtString(std::string_view s);
+        FmtString(const char* s);
+        iterator begin() const;
+        iterator end() const;
+
+        std::string WithoutFormatTokens() const;
+    };
+
     template<typename T> void FormatArgument(std::stringstream& ss, FormatToken token, T arg);
 
     std::pair<std::string_view, uint32_t> FormatNextPart(std::string_view& fmt);

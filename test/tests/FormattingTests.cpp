@@ -10,11 +10,41 @@
 #include "openrct2/localisation/Formatting.h"
 
 #include <gtest/gtest.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 
 using namespace OpenRCT2;
+
+class FmtStringTests : public testing::Test
+{
+};
+
+TEST_F(FmtStringTests, string_owned)
+{
+    auto fmt = FmtString(std::string("{BLACK}Guests: {INT32}"));
+    ASSERT_EQ("Guests: ", fmt.WithoutFormatTokens());
+}
+
+TEST_F(FmtStringTests, iteration)
+{
+    std::string actual;
+
+    auto fmt = FmtString("{BLACK}Guests: {INT32}");
+    for (const auto &t : fmt)
+    {
+        actual += String::StdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
+    }
+
+    ASSERT_EQ("[142:{BLACK}][0:Guests: ][124:{INT32}]", actual);
+}
+
+TEST_F(FmtStringTests, without_format_tokens)
+{
+    auto fmt = FmtString("{BLACK}Guests: {INT32}");
+    ASSERT_EQ("Guests: ", fmt.WithoutFormatTokens());
+}
 
 class FormattingTests : public testing::Test
 {
@@ -48,6 +78,7 @@ protected:
 };
 
 std::shared_ptr<IContext> FormattingTests::_context;
+
 TEST_F(FormattingTests, no_args)
 {
     auto actual = FormatString("test string");
