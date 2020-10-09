@@ -67,7 +67,7 @@ endif (SYSTEM_GTEST)
 
 include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 include_directories("${ROOT_DIR}/src")
-include_directories(${SDL2_INCLUDE_DIRS})
+include_directories(SYSTEM ${SDL2_INCLUDE_DIRS})
 
 # Some most common files required in tests
 set(COMMON_TEST_SOURCES

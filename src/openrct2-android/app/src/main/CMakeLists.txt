@@ -124,9 +124,9 @@ set_target_properties(crypto PROPERTIES IMPORTED_LOCATION
 add_dependencies(crypto libs)
 
 
-include_directories("${CMAKE_BINARY_DIR}/libs/include")
-include_directories("${CMAKE_BINARY_DIR}/libs/include/freetype2")
-include_directories("${CMAKE_BINARY_DIR}/libs/include/SDL2")
+include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include")
+include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/freetype2")
+include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/SDL2")
 
 # now build app's shared lib
 include_directories(./ndk_helper

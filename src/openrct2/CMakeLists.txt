@@ -40,7 +40,7 @@ if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
 
         find_package(OpenSSL 1.0.0 REQUIRED)
 
-        target_include_directories(${PROJECT_NAME} PUBLIC ${OPENSSL_INCLUDE_DIR})
+        target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${OPENSSL_INCLUDE_DIR})
 
         if(STATIC)
             target_link_libraries(${PROJECT_NAME} ${SSL_STATIC_LIBRARIES})
@@ -60,7 +60,7 @@ if (NOT DISABLE_HTTP)
     else ()
         PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
 
-        target_include_directories(${PROJECT_NAME} PRIVATE ${LIBCURL_INCLUDE_DIRS})
+        target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${LIBCURL_INCLUDE_DIRS})
 
         if (STATIC)
             target_link_libraries(${PROJECT_NAME} ${LIBCURL_STATIC_LIBRARIES})
@@ -81,10 +81,10 @@ if (NOT DISABLE_TTF)
         PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
     endif ()
         
-    target_include_directories(${PROJECT_NAME} PRIVATE ${FREETYPE_INCLUDE_DIRS})
+    target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${FREETYPE_INCLUDE_DIRS})
         
     if (UNIX AND NOT APPLE)
-        target_include_directories(${PROJECT_NAME} PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
+        target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
     endif ()
 endif ()
 
@@ -94,7 +94,7 @@ if (NOT DISABLE_GOOGLE_BENCHMARK)
         message("Found Google benchmark, enabling support")
         set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_DEFINITIONS USE_BENCHMARK)
         target_link_libraries(${PROJECT_NAME} benchmark::benchmark)
-        target_include_directories(${PROJECT_NAME} PRIVATE ${benchmark_INCLUDE_DIRS})
+        target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${benchmark_INCLUDE_DIRS})
     else ()
         message("Google benchmark not found, disabling support")
     endif ()
@@ -199,9 +199,9 @@ if (HAVE_DISCORD_RPC)
 endif()
 
 # Includes
-target_include_directories(${PROJECT_NAME} PRIVATE ${LIBZIP_INCLUDE_DIRS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${PNG_INCLUDE_DIRS}
-                                                   ${ZLIB_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${PNG_INCLUDE_DIRS}
+                                                          ${ZLIB_INCLUDE_DIRS})
 include_directories(${PROJECT_NAME} SYSTEM ${CMAKE_CURRENT_LIST_DIR}/../thirdparty)
 
 # To avoid unnecessary rebuilds set the current branch and
