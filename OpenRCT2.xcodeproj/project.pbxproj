@@ -108,6 +108,8 @@
 		939A359F20C12FDE00630B3F /* Paint.Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359D20C12FDD00630B3F /* Paint.Surface.h */; };
 		939A35A020C12FDE00630B3F /* Paint.TileElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359E20C12FDE00630B3F /* Paint.TileElement.h */; };
 		939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A35A120C12FFD00630B3F /* InteractiveConsole.h */; };
+		93AE2389252F948A00CD03C3 /* Formatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 93AE2387252F948A00CD03C3 /* Formatter.h */; };
+		93AE238A252F948A00CD03C3 /* Formatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93AE2388252F948A00CD03C3 /* Formatter.cpp */; };
 		93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */; };
 		93CBA4C320A7502E00867D56 /* Imaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C120A7502D00867D56 /* Imaging.h */; };
 		93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C220A7502E00867D56 /* Imaging.cpp */; };
@@ -1322,6 +1324,8 @@
 		939A359D20C12FDD00630B3F /* Paint.Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.Surface.h; sourceTree = "<group>"; };
 		939A359E20C12FDE00630B3F /* Paint.TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.TileElement.h; sourceTree = "<group>"; };
 		939A35A120C12FFD00630B3F /* InteractiveConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveConsole.h; sourceTree = "<group>"; };
+		93AE2387252F948A00CD03C3 /* Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Formatter.h; sourceTree = "<group>"; };
+		93AE2388252F948A00CD03C3 /* Formatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Formatter.cpp; sourceTree = "<group>"; };
 		93CBA4BE20A74FF200867D56 /* BitmapReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapReader.h; sourceTree = "<group>"; };
 		93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapReader.cpp; sourceTree = "<group>"; };
 		93CBA4C120A7502D00867D56 /* Imaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
@@ -2938,6 +2942,8 @@
 				4C7B53AE1FFF935B00A52E21 /* Date.h */,
 				4C7B53AF1FFF935B00A52E21 /* FormatCodes.cpp */,
 				4C7B53B01FFF935B00A52E21 /* FormatCodes.h */,
+				93AE2388252F948A00CD03C3 /* Formatter.cpp */,
+				93AE2387252F948A00CD03C3 /* Formatter.h */,
 				4C7B53B11FFF935B00A52E21 /* Language.cpp */,
 				4C7B53C91FFF991000A52E21 /* Language.h */,
 				4C7B53B31FFF935B00A52E21 /* LanguagePack.cpp */,
@@ -3708,6 +3714,7 @@
 				2ADE2F2B224418B2002598AF /* JobPool.hpp in Headers */,
 				2ADE2F3622441960002598AF /* RideTypes.h in Headers */,
 				93DFD05324521C1A001FCBAF /* ScRide.hpp in Headers */,
+				93AE2389252F948A00CD03C3 /* Formatter.h in Headers */,
 				93DFD05424521C1A001FCBAF /* ScDate.hpp in Headers */,
 				93FC08FF2418F3ED00CA3054 /* duktape.h in Headers */,
 				93DFD04F24521C1A001FCBAF /* ScConsole.hpp in Headers */,
@@ -4182,6 +4189,7 @@
 				C688786820289A4A0084B384 /* Util.cpp in Sources */,
 				C688792720289B9B0084B384 /* TopSpin.cpp in Sources */,
 				C688787E20289ADE0084B384 /* Drawing.cpp in Sources */,
+				93AE238A252F948A00CD03C3 /* Formatter.cpp in Sources */,
 				C68878A120289B200084B384 /* Localisation.cpp in Sources */,
 				C68878ED20289B9B0084B384 /* BobsleighCoaster.cpp in Sources */,
 				C688785E20289A0A0084B384 /* Fountain.cpp in Sources */,

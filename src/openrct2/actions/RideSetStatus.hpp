@@ -184,7 +184,7 @@ public:
                 ride->race_winner = SPRITE_INDEX_NULL;
                 ride->current_issues = 0;
                 ride->last_issue_time = 0;
-                ride_get_measurement(ride);
+                ride->GetMeasurement();
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 window_invalidate_by_number(WC_RIDE, _rideIndex);
                 break;
@@ -231,7 +231,7 @@ public:
                 ride->status = _status;
                 ride->current_issues = 0;
                 ride->last_issue_time = 0;
-                ride_get_measurement(ride);
+                ride->GetMeasurement();
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 window_invalidate_by_number(WC_RIDE, _rideIndex);
                 break;

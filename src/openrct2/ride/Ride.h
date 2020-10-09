@@ -11,6 +11,7 @@
 #define _RIDE_H_
 
 #include "../common.h"
+#include "../localisation/Formatter.h"
 #include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
 #include "../world/Map.h"
@@ -433,6 +434,8 @@ public:
     uint64_t GetAvailableModes() const;
     const RideTypeDescriptor& GetRideTypeDescriptor() const;
     TrackElement* GetOriginElement(StationIndex stationIndex) const;
+
+    std::pair<RideMeasurement*, OpenRCT2String> GetMeasurement();
 };
 
 #pragma pack(push, 1)
@@ -1108,7 +1111,6 @@ vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
 void ride_measurements_update();
-std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride);
 void ride_breakdown_add_news_item(Ride* ride);
 Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplying);
