@@ -21,6 +21,7 @@
 - Fix: [#13129] Missing error message when waiting for train to leave station on the ride measurements graph.
 - Fix: [#13138] Fix logical sorting of list windows.
 - Improved: [#13023] Made add_news_item console command last argument, assoc, optional.
+- Improved: [#13125] Selecting the RCT2 files now uses localised dialogs.
 
 0.3.1 (2020-09-27)
 ------------------------------------------------------------------------

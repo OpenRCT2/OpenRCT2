@@ -101,7 +101,9 @@ bool language_open(int32_t id)
     auto& objectManager = context->GetObjectManager();
     try
     {
-        localisationService.OpenLanguage(id, objectManager);
+        localisationService.OpenLanguage(id);
+        // Objects and their localised strings need to be refreshed
+        objectManager.ResetObjects();
         return true;
     }
     catch (const std::exception&)
