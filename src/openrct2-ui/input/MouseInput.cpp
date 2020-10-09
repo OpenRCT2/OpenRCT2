@@ -57,8 +57,7 @@ ScreenCoordsXY gInputDragLast;
 
 uint16_t gTooltipTimeout;
 widget_ref gTooltipWidget;
-int32_t gTooltipCursorX;
-int32_t gTooltipCursorY;
+ScreenCoordsXY gTooltipCursor;
 
 static int16_t _clickRepeatTicks;
 
@@ -598,8 +597,7 @@ static void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, const
     gPressedWidget.window_classification = w->classification;
     gPressedWidget.window_number = w->number;
     gPressedWidget.widget_index = widgetIndex;
-    gTooltipCursorX = screenCoords.x;
-    gTooltipCursorY = screenCoords.y;
+    gTooltipCursor = screenCoords;
 
     int32_t scroll_area, scroll_id;
     ScreenCoordsXY scrollCoords;
@@ -681,16 +679,16 @@ static void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, co
 
     if (_currentScrollArea == SCROLL_PART_HSCROLLBAR_THUMB)
     {
-        int32_t originalTooltipCursorX = gTooltipCursorX;
-        gTooltipCursorX = screenCoords.x;
+        int32_t originalTooltipCursorX = gTooltipCursor.x;
+        gTooltipCursor.x = screenCoords.x;
         input_scroll_part_update_hthumb(w, widgetIndex, screenCoords.x - originalTooltipCursorX, scroll_id);
         return;
     }
 
     if (_currentScrollArea == SCROLL_PART_VSCROLLBAR_THUMB)
     {
-        int32_t originalTooltipCursorY = gTooltipCursorY;
-        gTooltipCursorY = screenCoords.y;
+        int32_t originalTooltipCursorY = gTooltipCursor.y;
+        gTooltipCursor.y = screenCoords.y;
         input_scroll_part_update_vthumb(w, widgetIndex, screenCoords.y - originalTooltipCursorY, scroll_id);
         return;
     }
@@ -1422,7 +1420,7 @@ static void input_update_tooltip(rct_window* w, rct_widgetindex widgetIndex, con
 {
     if (gTooltipWidget.window_classification == 255)
     {
-        if (gTooltipCursorX == screenCoords.x && gTooltipCursorY == screenCoords.y)
+        if (gTooltipCursor == screenCoords)
         {
             _tooltipNotShownTicks++;
             if (_tooltipNotShownTicks > 50)
@@ -1433,8 +1431,7 @@ static void input_update_tooltip(rct_window* w, rct_widgetindex widgetIndex, con
         }
 
         gTooltipTimeout = 0;
-        gTooltipCursorX = screenCoords.x;
-        gTooltipCursorY = screenCoords.y;
+        gTooltipCursor = screenCoords;
     }
     else
     {

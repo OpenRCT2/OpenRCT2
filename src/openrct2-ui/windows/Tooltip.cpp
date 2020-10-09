@@ -40,8 +40,7 @@ static int16_t _tooltipNumLines;
 
 void window_tooltip_reset(const ScreenCoordsXY& screenCoords)
 {
-    gTooltipCursorX = screenCoords.x;
-    gTooltipCursorY = screenCoords.y;
+    gTooltipCursor = screenCoords;
     gTooltipTimeout = 0;
     gTooltipWidget.window_classification = 255;
     input_set_state(InputState::Normal);
