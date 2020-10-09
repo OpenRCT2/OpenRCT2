@@ -1,5 +1,6 @@
 0.3.1+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#12110] Add Hybrid Coaster (Rocky Mountain Construction I-Box) track type.
 - Feature: [#12999] .sea (RCT Classic) scenarios are now listed in the “New Scenario” dialog.
 - Feature: [#13000] objective_options command for console.
 - Feature: [#13096] Add Esperanto translation.
