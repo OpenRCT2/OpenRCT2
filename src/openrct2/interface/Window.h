@@ -29,6 +29,8 @@ struct TitleSequence;
 struct TextInputSession;
 struct scenario_index_entry;
 
+enum class VisibilityCache : uint8_t;
+
 #define SCROLLABLE_ROW_HEIGHT 12
 #define LIST_ROW_HEIGHT 12
 #define TABLE_CELL_HEIGHT 12
@@ -142,7 +144,7 @@ struct rct_viewport
     uint32_t flags;
     ZoomLevel zoom;
     uint8_t var_11;
-    uint8_t visibility; // VISIBILITY_CACHE
+    VisibilityCache visibility;
 };
 
 /**
@@ -632,11 +634,11 @@ enum
     MODAL_RESULT_OK
 };
 
-enum VISIBILITY_CACHE
+enum class VisibilityCache : uint8_t
 {
-    VC_UNKNOWN,
-    VC_VISIBLE,
-    VC_COVERED
+    Unknown,
+    Visible,
+    Covered
 };
 
 enum class GuestListFilterType : int32_t

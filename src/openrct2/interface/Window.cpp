@@ -1969,16 +1969,16 @@ bool window_is_visible(rct_window* w)
     if (w == nullptr)
         return false;
 
-    if (w->visibility == VC_VISIBLE)
+    if (w->visibility == VisibilityCache::Visible)
         return true;
-    if (w->visibility == VC_COVERED)
+    if (w->visibility == VisibilityCache::Covered)
         return false;
 
     // only consider viewports, consider the main window always visible
     if (w->viewport == nullptr || w->classification == WC_MAIN_WINDOW)
     {
         // default to previous behaviour
-        w->visibility = VC_VISIBLE;
+        w->visibility = VisibilityCache::Visible;
         return true;
     }
 
@@ -1993,15 +1993,15 @@ bool window_is_visible(rct_window* w)
             && w_other.windowPos.x + w_other.width >= w->windowPos.x + w->width
             && w_other.windowPos.y + w_other.height >= w->windowPos.y + w->height)
         {
-            w->visibility = VC_COVERED;
-            w->viewport->visibility = VC_COVERED;
+            w->visibility = VisibilityCache::Covered;
+            w->viewport->visibility = VisibilityCache::Covered;
             return false;
         }
     }
 
     // default to previous behaviour
-    w->visibility = VC_VISIBLE;
-    w->viewport->visibility = VC_VISIBLE;
+    w->visibility = VisibilityCache::Visible;
+    w->viewport->visibility = VisibilityCache::Visible;
     return true;
 }
 
@@ -2052,10 +2052,10 @@ void window_reset_visibilities()
 {
     // reset window visibility status to unknown
     window_visit_each([](rct_window* w) {
-        w->visibility = VC_UNKNOWN;
+        w->visibility = VisibilityCache::Unknown;
         if (w->viewport != nullptr)
         {
-            w->viewport->visibility = VC_UNKNOWN;
+            w->viewport->visibility = VisibilityCache::Unknown;
         }
     });
 }
