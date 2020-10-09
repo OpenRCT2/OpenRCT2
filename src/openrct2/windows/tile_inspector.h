@@ -12,18 +12,18 @@
 #include "../common.h"
 #include "../interface/Window.h"
 
-enum TILE_INSPECTOR_PAGE
+enum class TileInspectorPage : int16_t
 {
-    TILE_INSPECTOR_PAGE_DEFAULT,
-    TILE_INSPECTOR_PAGE_SURFACE,
-    TILE_INSPECTOR_PAGE_PATH,
-    TILE_INSPECTOR_PAGE_TRACK,
-    TILE_INSPECTOR_PAGE_SCENERY,
-    TILE_INSPECTOR_PAGE_ENTRANCE,
-    TILE_INSPECTOR_PAGE_WALL,
-    TILE_INSPECTOR_PAGE_LARGE_SCENERY,
-    TILE_INSPECTOR_PAGE_BANNER,
-    TILE_INSPECTOR_PAGE_CORRUPT
+    Default = 0,
+    Surface,
+    Path,
+    Track,
+    Scenery,
+    Entrance,
+    Wall,
+    LargeScenery,
+    Banner,
+    Corrupt
 };
 
 extern TileCoordsXY windowTileInspectorTile;

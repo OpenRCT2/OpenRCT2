@@ -33,6 +33,7 @@
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/windows/tile_inspector.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
@@ -946,7 +947,7 @@ static void shortcut_increase_element_height()
     if (w != nullptr)
     {
         int action = -1;
-        switch (w->page)
+        switch (w->tileInspectorPage)
         {
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE:
                 action = WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_INCREASE;
@@ -975,6 +976,8 @@ static void shortcut_increase_element_height()
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_CORRUPT:
                 action = WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE;
                 break;
+            case TileInspectorPage::Default:
+                break;
         }
         if (action != -1 && !widget_is_disabled(w, action) && w->widgets[action].type != WWT_EMPTY)
             window_event_mouse_down_call(w, action);
@@ -988,7 +991,7 @@ static void shortcut_decrease_element_height()
     if (w != nullptr)
     {
         int action = -1;
-        switch (w->page)
+        switch (w->tileInspectorPage)
         {
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE:
                 action = WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_DECREASE;
@@ -1016,6 +1019,8 @@ static void shortcut_decrease_element_height()
                 break;
             case WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_CORRUPT:
                 action = WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE;
+                break;
+            case TileInspectorPage::Default:
                 break;
         }
         if (action != -1 && !widget_is_disabled(w, action) && w->widgets[action].type != WWT_EMPTY)
