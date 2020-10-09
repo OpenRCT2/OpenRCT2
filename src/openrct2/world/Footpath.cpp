@@ -1287,14 +1287,10 @@ static bool get_next_direction(int32_t edges, int32_t* direction)
  *              (1 << 5): Unown
  *              (1 << 7): Ignore no entry signs
  */
-static int32_t footpath_is_connected_to_map_edge_helper(
-    CoordsXYZ footpathPos, int32_t direction, int32_t flags, int32_t level, int32_t distanceFromJunction,
-    int32_t junctionTolerance)
+static int32_t footpath_is_connected_to_map_edge_helper(CoordsXYZ footpathPos, int32_t direction, int32_t flags)
 {
-    // return value of this function
     int32_t returnVal = FOOTPATH_SEARCH_INCOMPLETE;
 
-    // Struct for keeping track of tile state
     struct TileState
     {
         bool processed = false;
@@ -1310,45 +1306,47 @@ static int32_t footpath_is_connected_to_map_edge_helper(
     TileElement* tileElement = nullptr;
     int numPendingTiles = 0;
 
-    // Captures the current state of the variables and stores them for iteration later
-    auto CaptureCurrentTileState = [&tiles, &footpathPos, &direction, &level, &distanceFromJunction, &junctionTolerance,
-                                    &numPendingTiles]() -> void {
-        // Search for an entry of this in our list already
-        for (size_t ii(0); ii < tiles.size(); ++ii)
-            if (tiles[ii].footpathPos == footpathPos && tiles[ii].direction == direction)
-                return;
+    TileState currentTile = { false, footpathPos, direction, 0, 0, 16 };
 
-        // If we get here we did not find it, so insert it
-        tiles.push_back({ false, footpathPos, direction, level, distanceFromJunction, junctionTolerance });
+    // Captures the current state of the variables and stores them in tiles vector for iteration later
+    auto CaptureCurrentTileState = [&tiles, &numPendingTiles](TileState t_currentTile) -> void {
+        // Search for an entry of this tile in our list already
+        for (const TileState& tile : tiles)
+        {
+            if (tile.footpathPos == t_currentTile.footpathPos && tile.direction == t_currentTile.direction)
+                return;
+        }
+
+        // If we get here we did not find it, so insert the tile into our list
+        tiles.push_back(t_currentTile);
         ++numPendingTiles;
     };
 
     // Loads the next tile to visit into our variables
-    auto LoadNextTileElement = [&tiles, &footpathPos, &direction, &level, &distanceFromJunction, &junctionTolerance,
-                                &numPendingTiles]() -> void {
-        for (size_t ii = tiles.size(); ii > 0; --ii)
+    auto LoadNextTileElement = [&tiles, &numPendingTiles](TileState& t_currentTile) -> void {
+        // Do not continue if there are no tiles in the list
+        if (tiles.size() == 0)
+            return;
+
+        // Find the next unprocessed tile
+        for (size_t tileIndex = tiles.size() - 1; tileIndex > 0; --tileIndex)
         {
-            if (tiles[ii - 1].processed)
+            if (tiles[tileIndex].processed)
                 continue;
-            else
-            {
-                tiles[ii - 1].processed = true;
-                --numPendingTiles;
-                footpathPos = tiles[ii - 1].footpathPos;
-                direction = tiles[ii - 1].direction;
-                level = tiles[ii - 1].level;
-                distanceFromJunction = tiles[ii - 1].distanceFromJunction;
-                junctionTolerance = tiles[ii - 1].junctionTolerance;
-                return;
-            }
+            --numPendingTiles;
+            t_currentTile = tiles[tileIndex];
+            tiles[tileIndex].processed = true;
+            return;
         }
+        // Default to tile 0
+        --numPendingTiles;
+        t_currentTile = tiles[0];
+        tiles[0].processed = true;
     };
 
-    // Helper method for footpath_is_connected_to_map_edge_helper
-    // to help make the function more readable
+    // Encapsulate the tile skipping logic to make do-while more readable
     auto SkipTileElement = [](int32_t ste_flags, TileElement* ste_tileElement, int32_t& ste_slopeDirection,
                               int32_t ste_direction, const CoordsXYZ& ste_targetPos) {
-        // We are only interested in paths
         if (ste_tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
             return true;
 
@@ -1369,44 +1367,37 @@ static int32_t footpath_is_connected_to_map_edge_helper(
         return false;
     };
 
-    // Function to test whether or not the vector has been processed
-    auto DoneProcessing = [&numPendingTiles]() -> bool { return numPendingTiles == 0; };
-
     int32_t edges, slopeDirection;
 
     // Capture the current tile state to begin the loop
-    CaptureCurrentTileState();
+    CaptureCurrentTileState(currentTile);
 
     // Loop on this until all tiles are processed or we return
-    while (!DoneProcessing())
+    while (numPendingTiles > 0)
     {
-        LoadNextTileElement();
+        LoadNextTileElement(currentTile);
 
-        CoordsXYZ targetPos = CoordsXYZ{ CoordsXY{ footpathPos } + CoordsDirectionDelta[direction], footpathPos.z };
-        if (++level > 250)
+        CoordsXYZ targetPos = CoordsXYZ{ CoordsXY{ currentTile.footpathPos } + CoordsDirectionDelta[currentTile.direction],
+                                         currentTile.footpathPos.z };
+
+        if (++currentTile.level > 250)
             return FOOTPATH_SEARCH_TOO_COMPLEX;
 
-        // Check if we are at edge of map
-        if (targetPos.x < COORDS_XY_STEP || targetPos.y < COORDS_XY_STEP)
+        // Return immediately if we are at the edge of the map and not unowning
+        // Or if we are unowning and have no tiles left
+        if ((map_is_edge(targetPos) && !(flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN)))
         {
-            if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN) || DoneProcessing())
-                return FOOTPATH_SEARCH_SUCCESS;
-        }
-        if (targetPos.x >= gMapSizeUnits || targetPos.y >= gMapSizeUnits)
-        {
-            if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN) || DoneProcessing())
-                return FOOTPATH_SEARCH_SUCCESS;
+            return FOOTPATH_SEARCH_SUCCESS;
         }
 
         tileElement = map_get_first_element_at(targetPos);
         if (tileElement == nullptr)
-            return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
+            return currentTile.level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : FOOTPATH_SEARCH_INCOMPLETE;
 
         // Loop while there are unvisited TileElements at targetPos
         do
         {
-            // Skip this tile element if it is not a path
-            if (SkipTileElement(flags, tileElement, slopeDirection, direction, targetPos))
+            if (SkipTileElement(flags, tileElement, slopeDirection, currentTile.direction, targetPos))
                 continue;
 
             // Unown the footpath if needed
@@ -1414,83 +1405,92 @@ static int32_t footpath_is_connected_to_map_edge_helper(
                 footpath_fix_ownership(targetPos);
 
             edges = tileElement->AsPath()->GetEdges();
-            direction = direction_reverse(direction);
+            currentTile.direction = direction_reverse(currentTile.direction);
             if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY))
             {
-                // Determine how many elements to check
-                size_t limit = 0;
-                if (tileElement[1].GetType() == TILE_ELEMENT_TYPE_BANNER)
-                    limit = 4;
-                if (tileElement[2].GetType() == TILE_ELEMENT_TYPE_BANNER && tileElement[1].GetType() != TILE_ELEMENT_TYPE_PATH)
-                    limit = 6;
-
-                for (size_t ii(1); ii < limit; ++ii)
+                int elementIndex = 1;
+                // Loop over all elements and cull appropriate edges
+                do
                 {
-                    if ((&tileElement[ii - 1])->IsLastForTile())
+                    if (tileElement[elementIndex].GetType() == TILE_ELEMENT_TYPE_PATH)
                         break;
-                    if (tileElement[ii].GetType() != TILE_ELEMENT_TYPE_BANNER)
-                        break;
-                    edges &= tileElement[ii].AsBanner()->GetAllowedEdges();
-                }
+                    if (tileElement[elementIndex].GetType() != TILE_ELEMENT_TYPE_BANNER)
+                    {
+                        ++elementIndex;
+                        continue;
+                    }
+                    edges &= tileElement[elementIndex].AsBanner()->GetAllowedEdges();
+                    ++elementIndex;
+                } while (!tileElement[elementIndex].IsLastForTile());
             }
 
             // Exclude the direction we came from
             targetPos.z = tileElement->GetBaseZ();
-            edges &= ~(1 << direction);
+            edges &= ~(1 << currentTile.direction);
 
-            // Find next direction to go
-            if (!get_next_direction(edges, &direction))
-                continue;
+            if (!get_next_direction(edges, &currentTile.direction))
+                break;
 
-            edges &= ~(1 << direction);
+            edges &= ~(1 << currentTile.direction);
             if (edges == 0)
             {
                 // Only possible direction to go
-                if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == direction)
+                if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == currentTile.direction)
                     targetPos.z += PATH_HEIGHT_STEP;
 
                 // Prepare the next iteration
-                footpathPos = targetPos;
-                ++distanceFromJunction;
-                CaptureCurrentTileState();
+                currentTile.footpathPos = targetPos;
+                ++currentTile.distanceFromJunction;
+                CaptureCurrentTileState(currentTile);
             }
             else
             {
                 // We have reached a junction
-                --junctionTolerance;
-                if (distanceFromJunction != 0)
-                    --junctionTolerance;
-                if (junctionTolerance < 0)
-                    if (!(flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN))
-                    {
-                        returnVal = FOOTPATH_SEARCH_TOO_COMPLEX;
-                        break;
-                    }
+                --currentTile.junctionTolerance;
+                if (currentTile.distanceFromJunction != 0)
+                {
+                    --currentTile.junctionTolerance;
+                }
+
+                if (currentTile.junctionTolerance < 0 && !(flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN))
+                {
+                    returnVal = FOOTPATH_SEARCH_TOO_COMPLEX;
+                    break;
+                }
 
                 // Loop until there are no more directions we can go
                 do
                 {
-                    edges &= ~(1 << direction);
-                    if (tileElement->AsPath()->IsSloped() && tileElement->AsPath()->GetSlopeDirection() == direction)
+                    edges &= ~(1 << currentTile.direction);
+                    if (tileElement->AsPath()->IsSloped()
+                        && tileElement->AsPath()->GetSlopeDirection() == currentTile.direction)
+                    {
                         targetPos.z += PATH_HEIGHT_STEP;
+                    }
 
-                    // Prepare the next iteration
-                    footpathPos = targetPos;
-                    distanceFromJunction = 0;
-                    CaptureCurrentTileState();
-                } while (get_next_direction(edges, &direction));
+                    // Add each possible path to the list of pending tiles
+                    currentTile.footpathPos = targetPos;
+                    currentTile.distanceFromJunction = 0;
+                    CaptureCurrentTileState(currentTile);
+                } while (get_next_direction(edges, &currentTile.direction));
             }
             break;
         } while (!(tileElement++)->IsLastForTile());
+
+        // Return success if we have unowned all tiles in our pending list
+        if ((flags & FOOTPATH_CONNECTED_MAP_EDGE_UNOWN) && numPendingTiles <= 0)
+        {
+            return FOOTPATH_SEARCH_SUCCESS;
+        }
     }
-    return level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : returnVal;
+    return currentTile.level == 1 ? FOOTPATH_SEARCH_NOT_FOUND : returnVal;
 }
 
 // TODO: Use GAME_COMMAND_FLAGS
 int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags)
 {
     flags |= FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_QUEUES;
-    return footpath_is_connected_to_map_edge_helper(footpathPos, direction, flags, 0, 0, 16);
+    return footpath_is_connected_to_map_edge_helper(footpathPos, direction, flags);
 }
 
 bool PathElement::IsSloped() const
