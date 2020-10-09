@@ -88,7 +88,7 @@ struct rct_window
     ScreenCoordsXY savedViewPos;
     rct_windowclass classification;
     colour_t colours[6];
-    uint8_t visibility;
+    VisibilityCache visibility;
     uint16_t viewport_smart_follow_sprite; // Handles setting viewport target sprite etc
 
     void SetLocation(const CoordsXYZ& coords);

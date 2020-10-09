@@ -1691,7 +1691,7 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // if unknown viewport visibility, use the containing window to discover the status
-    if (viewport->visibility == VC_UNKNOWN)
+    if (viewport->visibility == VisibilityCache::Unknown)
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         auto owner = windowManager->GetOwner(viewport);
@@ -1705,7 +1705,7 @@ void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int3
         }
     }
 
-    if (viewport->visibility == VC_COVERED)
+    if (viewport->visibility == VisibilityCache::Covered)
         return;
 
     int32_t viewportLeft = viewport->viewPos.x;
