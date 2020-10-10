@@ -68,7 +68,7 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
 uint8_t gToolbarDirtyFlags;
 
 static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static OpenRCT2String window_game_bottom_toolbar_tooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
 static void window_game_bottom_toolbar_invalidate(rct_window *w);
 static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_game_bottom_toolbar_update(rct_window* w);
@@ -189,10 +189,11 @@ static void window_game_bottom_toolbar_mouseup(rct_window* w, rct_widgetindex wi
     }
 }
 
-static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
+static OpenRCT2String window_game_bottom_toolbar_tooltip(
+    rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
     int32_t month, day;
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
 
     switch (widgetIndex)
     {
@@ -211,6 +212,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex wi
             ft.Add<rct_string_id>(DateGameMonthNames[month]);
             break;
     }
+    return { fallback, ft };
 }
 
 /**

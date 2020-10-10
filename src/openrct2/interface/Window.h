@@ -11,6 +11,7 @@
 #define _WINDOW_H_
 
 #include "../common.h"
+#include "../localisation/Formatter.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
 #include "../world/ScenerySelection.h"
@@ -237,7 +238,7 @@ struct rct_window_event_list
     void (*text_input)(struct rct_window*, rct_widgetindex, char*);
     void (*viewport_rotate)(struct rct_window*);
     void (*unknown_15)(struct rct_window*, int32_t, int32_t);
-    void (*tooltip)(struct rct_window*, rct_widgetindex, rct_string_id*);
+    OpenRCT2String (*tooltip)(struct rct_window*, const rct_widgetindex, const rct_string_id);
     void (*cursor)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&, int32_t*);
     void (*moved)(struct rct_window*, const ScreenCoordsXY&);
     void (*invalidate)(struct rct_window*);
@@ -796,7 +797,7 @@ void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, cons
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text);
 void window_event_viewport_rotate_call(rct_window* w);
 void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
-rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetIndex);
+OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
 int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_event_moved_call(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_event_invalidate_call(rct_window* w);

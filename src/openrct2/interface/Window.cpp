@@ -1520,12 +1520,16 @@ void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t sc
         w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
 }
 
-rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetIndex)
+OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
-    rct_string_id result = 0;
     if (w->event_handlers->tooltip != nullptr)
-        w->event_handlers->tooltip(w, widgetIndex, &result);
-    return result;
+    {
+        return w->event_handlers->tooltip(w, widgetIndex, fallback);
+    }
+    else
+    {
+        return { fallback, {} };
+    }
 }
 
 int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)

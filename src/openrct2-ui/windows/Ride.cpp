@@ -592,7 +592,7 @@ static void window_ride_graphs_mousedown(rct_window *w, rct_widgetindex widgetIn
 static void window_ride_graphs_update(rct_window *w);
 static void window_ride_graphs_scrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_ride_graphs_15(rct_window *w, int32_t scrollIndex, int32_t scrollAreaType);
-static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static OpenRCT2String window_ride_graphs_tooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
 static void window_ride_graphs_invalidate(rct_window *w);
 static void window_ride_graphs_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_graphs_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -5837,7 +5837,7 @@ static void window_ride_graphs_15(rct_window* w, int32_t scrollIndex, int32_t sc
  *
  *  rct2: 0x006AEA05
  */
-static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
+static OpenRCT2String window_ride_graphs_tooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
     if (widgetIndex == WIDX_GRAPH)
     {
@@ -5847,21 +5847,23 @@ static void window_ride_graphs_tooltip(rct_window* w, rct_widgetindex widgetInde
             auto [measurement, message] = ride->GetMeasurement();
             if (measurement != nullptr && (measurement->flags & RIDE_MEASUREMENT_FLAG_RUNNING))
             {
-                auto ft = Formatter::Common();
+                auto ft = Formatter();
                 ft.Increment(2);
                 ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number);
                 ft.Add<uint16_t>(measurement->vehicle_index + 1);
+                return { fallback, ft };
             }
             else
             {
-                *stringId = message.str;
+                return message;
             }
         }
     }
     else
     {
-        *stringId = STR_NONE;
+        return { STR_NONE, {} };
     }
+    return { fallback, {} };
 }
 
 /**
