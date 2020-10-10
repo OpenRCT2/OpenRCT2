@@ -29,11 +29,11 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
     @autoreleasepool
     {
         CTFontDescriptorRef fontRef = CTFontDescriptorCreateWithNameAndSize(
-            (CFStringRef)[NSString stringWithUTF8String:font->font_name], 0.0);
-        CFURLRef url = (CFURLRef)CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute);
+            static_cast<CFStringRef>([NSString stringWithUTF8String:font->font_name]), 0.0);
+        CFURLRef url = static_cast<CFURLRef>(CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute));
         if (url)
         {
-            NSString* fontPath = [NSString stringWithString:[(NSURL*)CFBridgingRelease(url) path]];
+            NSString* fontPath = [NSString stringWithString:[static_cast<NSURL*>(CFBridgingRelease(url)) path]];
             safe_strcpy(buffer, fontPath.UTF8String, size);
             return true;
         }
