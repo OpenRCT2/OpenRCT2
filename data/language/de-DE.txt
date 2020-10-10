@@ -3626,7 +3626,7 @@ STR_6357    :{SMALLFONT}{BLACK}Entfernt alle Enten aus der Karte
 STR_6358    :Seite {UINT16}
 STR_6359    :{POP16}{POP16}Seite {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
-STR_6361    :Lichteffekte an Fahrgeschäften aktivieren (experimentell)
+STR_6361    :Lichter an Fahrgeschäften akt. (experimentell)
 STR_6362    :{SMALLFONT}{BLACK}Falls aktiviert, werden Fahrzeuge für Streckenfahrgeschäfte in der Nacht leuchten.
 STR_6363    :Text in die Zwischenablage kopiert
 STR_6364    :{RED}{COMMA16} Person starb bei einem Unfall auf {STRINGID}
@@ -3646,12 +3646,18 @@ STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} für {STRINGID}
 STR_6378    :Objektliste empfangen: {INT32}/{INT32}
 STR_6379    :Ungültige Daten empfangen
 STR_6380    :Update verfügbar!
-STR_6381    :Tritt OpenRCT2-Discord bei!
+STR_6381    :OpenRCT2-Discord beitreten!
 STR_6382    :Eine neuere Version von OpenRCT2 ist verfügbar: {STRING}!
 STR_6383    :Downloadseite öffnen
 STR_6384    :Schnee
 STR_6385    :Starker Schneefall
 STR_6386    :Schneesturm
+STR_6387    :Element kann hier nicht gesenkt werden …
+STR_6388    :Element kann hier nicht erhöht werden …
+STR_6389    :Ungültiger Abstand
+STR_6390    :OpenRCT2 benötigt Dateien vom Originalspiel RollerCoaster Tycoon 2, um zu funktionieren. Bitte wählen Sie das Verzeichnis, in dem Sie RollerCoaster Tycoon 2 installiert haben.
+STR_6391    :Bitte RCT2-Verzeichnis wählen
+STR_6392    :Konnte {STRING} an diesem Pfad nicht finden.
 
 #############
 # Scenarios #
