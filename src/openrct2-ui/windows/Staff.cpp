@@ -1102,7 +1102,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     auto ft = Formatter();
-    ft.Add<int32_t>(peep->TimeInPark);
+    ft.Add<int32_t>(peep->GetHireDate());
     gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, ft.Data(), COLOUR_BLACK, screenCoords);
     screenCoords.y += LIST_ROW_HEIGHT;
 

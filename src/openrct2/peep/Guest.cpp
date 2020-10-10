@@ -983,7 +983,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         if (State == PeepState::Walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && GuestNumRides == 0
             && GuestHeadingToRideId == RIDE_ID_NULL)
         {
-            uint32_t time_duration = gScenarioTicks - TimeInPark;
+            uint32_t time_duration = gScenarioTicks - ParkEntryTime;
             time_duration /= 2048;
 
             if (time_duration >= 5)
@@ -2397,6 +2397,16 @@ bool Guest::HasRiddenRideType(int32_t rideType) const
     // This is needed to avoid desyncs. TODO: remove once the new save format is introduced.
     rideType = OpenRCT2RideTypeToRCT2RideType(rideType);
     return RideTypesBeenOn[rideType / 8] & (1 << (rideType % 8));
+}
+
+void Guest::SetParkEntryTime(int32_t entryTime)
+{
+    ParkEntryTime = entryTime;
+}
+
+int32_t Guest::GetParkEntryTime() const
+{
+    return ParkEntryTime;
 }
 
 void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
@@ -5694,7 +5704,7 @@ void Guest::UpdateEnteringPark()
     SetState(PeepState::Falling);
 
     OutsideOfPark = false;
-    TimeInPark = gScenarioTicks;
+    ParkEntryTime = gScenarioTicks;
     increment_guests_in_park();
     decrement_guests_heading_for_park();
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);

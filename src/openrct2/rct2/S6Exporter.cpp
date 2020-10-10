@@ -1198,7 +1198,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->id = src->Id;
     dst->cash_in_pocket = src->CashInPocket;
     dst->cash_spent = src->CashSpent;
-    dst->time_in_park = src->TimeInPark;
+    dst->park_entry_time = src->ParkEntryTime;
     dst->rejoin_queue_timeout = src->RejoinQueueTimeout;
     dst->previous_ride = src->PreviousRide;
     dst->previous_ride_time_out = src->PreviousRideTimeOut;

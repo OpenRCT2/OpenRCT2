@@ -654,7 +654,7 @@ struct RCT2SpritePeep : RCT12SpriteBase
     uint32_t id;                                        // 0x9C
     money32 cash_in_pocket;                             // 0xA0
     money32 cash_spent;                                 // 0xA4
-    int32_t time_in_park;                               // 0xA8
+    int32_t park_entry_time;                            // 0xA8
     int8_t rejoin_queue_timeout;                        // 0xAC
     uint8_t previous_ride;                              // 0xAD
     uint16_t previous_ride_time_out;                    // 0xAE
