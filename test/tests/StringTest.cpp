@@ -170,4 +170,10 @@ TEST_F(StringTest, strlogicalcmp)
     EXPECT_LT(strlogicalcmp("a", "B"), 0);
     EXPECT_GT(strlogicalcmp("B", "a"), 0);
     EXPECT_GT(strlogicalcmp("b", "A"), 0);
+
+    // ^ is used at the start of a ride name to move it to the end of the list
+    EXPECT_LT(strlogicalcmp("A", "^"), 0);
+    EXPECT_LT(strlogicalcmp("a", "^"), 0);
+    EXPECT_LT(strlogicalcmp("!", "A"), 0);
+    EXPECT_LT(strlogicalcmp("!", "a"), 0);
 }
