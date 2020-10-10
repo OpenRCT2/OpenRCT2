@@ -64,7 +64,7 @@ namespace OpenRCT2::Scripting
 
         DukValue cursor_get() const
         {
-            return ToDuk(_ctx, static_cast<CURSOR_ID>(gCurrentToolId));
+            return ToDuk(_ctx, static_cast<CursorID>(gCurrentToolId));
         }
 
         void cancel()

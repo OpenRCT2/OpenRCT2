@@ -28,7 +28,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.small_scenery.flags = stream->ReadValue<uint32_t>();
     _legacyType.small_scenery.height = stream->ReadValue<uint8_t>();
-    _legacyType.small_scenery.tool_id = stream->ReadValue<uint8_t>();
+    _legacyType.small_scenery.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
     _legacyType.small_scenery.price = stream->ReadValue<int16_t>();
     _legacyType.small_scenery.removal_price = stream->ReadValue<int16_t>();
     stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
@@ -243,7 +243,7 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
     if (properties.is_object())
     {
         _legacyType.small_scenery.height = Json::GetNumber<uint8_t>(properties["height"]);
-        _legacyType.small_scenery.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CURSOR_STATUE_DOWN);
+        _legacyType.small_scenery.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
         _legacyType.small_scenery.price = Json::GetNumber<uint16_t>(properties["price"]);
         _legacyType.small_scenery.removal_price = Json::GetNumber<uint16_t>(properties["removalPrice"]);
         _legacyType.small_scenery.animation_delay = Json::GetNumber<uint16_t>(properties["animationDelay"]);

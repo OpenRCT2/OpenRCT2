@@ -31,6 +31,7 @@ struct TextInputSession;
 struct scenario_index_entry;
 
 enum class VisibilityCache : uint8_t;
+enum class CursorID : uint8_t;
 
 #define SCROLLABLE_ROW_HEIGHT 12
 #define LIST_ROW_HEIGHT 12
@@ -239,7 +240,7 @@ struct rct_window_event_list
     void (*viewport_rotate)(struct rct_window*);
     void (*unknown_15)(struct rct_window*, int32_t, int32_t);
     OpenRCT2String (*tooltip)(struct rct_window*, const rct_widgetindex, const rct_string_id);
-    void (*cursor)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&, int32_t*);
+    void (*cursor)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&, CursorID*);
     void (*moved)(struct rct_window*, const ScreenCoordsXY&);
     void (*invalidate)(struct rct_window*);
     void (*paint)(struct rct_window*, rct_drawpixelinfo*);
@@ -798,7 +799,7 @@ void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, cha
 void window_event_viewport_rotate_call(rct_window* w);
 void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
 OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
-int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_event_moved_call(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_event_invalidate_call(rct_window* w);
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo* dpi);

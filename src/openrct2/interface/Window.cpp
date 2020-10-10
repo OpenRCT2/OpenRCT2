@@ -1532,9 +1532,9 @@ OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex wi
     }
 }
 
-int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    int32_t cursorId = CURSOR_ARROW;
+    CursorID cursorId = CursorID::Arrow;
     if (w->event_handlers->cursor != nullptr)
         w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
     return cursorId;

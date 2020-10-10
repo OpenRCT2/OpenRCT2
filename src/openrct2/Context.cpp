@@ -1231,9 +1231,9 @@ void openrct2_finish()
     GetContext()->Finish();
 }
 
-void context_setcurrentcursor(int32_t cursor)
+void context_setcurrentcursor(CursorID cursor)
 {
-    GetContext()->GetUiContext()->SetCursor(static_cast<CURSOR_ID>(cursor));
+    GetContext()->GetUiContext()->SetCursor(cursor);
 }
 
 void context_update_cursor_scale()
