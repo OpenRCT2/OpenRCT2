@@ -57,7 +57,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     // Validate properties
     if (_legacyType.small_scenery.price <= 0)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+        context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
     if (_legacyType.small_scenery.removal_price <= 0)
     {
@@ -65,7 +65,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
         money16 reimbursement = _legacyType.small_scenery.removal_price;
         if (reimbursement > _legacyType.small_scenery.price)
         {
-            context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Sell price can not be more than buy price.");
+            context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
         }
     }
 }

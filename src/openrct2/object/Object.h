@@ -143,6 +143,17 @@ namespace OpenRCT2
 struct ObjectRepositoryItem;
 struct rct_drawpixelinfo;
 
+enum class ObjectError : uint32_t
+{
+    Ok,
+    Unknown,
+    BadEncoding,
+    InvalidProperty,
+    BadStringTable,
+    BadImageTable,
+    UnexpectedEOF,
+};
+
 struct IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
@@ -152,8 +163,8 @@ struct IReadObjectContext
     virtual bool ShouldLoadImages() abstract;
     virtual std::vector<uint8_t> GetData(const std::string_view& path) abstract;
 
-    virtual void LogWarning(uint32_t code, const utf8* text) abstract;
-    virtual void LogError(uint32_t code, const utf8* text) abstract;
+    virtual void LogWarning(ObjectError code, const utf8* text) abstract;
+    virtual void LogError(ObjectError code, const utf8* text) abstract;
 };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
@@ -281,17 +292,6 @@ public:
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
 #    pragma GCC diagnostic pop
 #endif
-
-enum OBJECT_ERROR : uint32_t
-{
-    OBJECT_ERROR_OK,
-    OBJECT_ERROR_UNKNOWN,
-    OBJECT_ERROR_BAD_ENCODING,
-    OBJECT_ERROR_INVALID_PROPERTY,
-    OBJECT_ERROR_BAD_STRING_TABLE,
-    OBJECT_ERROR_BAD_IMAGE_TABLE,
-    OBJECT_ERROR_UNEXPECTED_EOF,
-};
 
 extern int32_t object_entry_group_counts[];
 extern int32_t object_entry_group_encoding[];

@@ -170,15 +170,15 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     // Validate properties
     if (_legacyType.excitement_multiplier > 75)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Excitement multiplier too high.");
+        context->LogError(ObjectError::InvalidProperty, "Excitement multiplier too high.");
     }
     if (_legacyType.intensity_multiplier > 75)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Intensity multiplier too high.");
+        context->LogError(ObjectError::InvalidProperty, "Intensity multiplier too high.");
     }
     if (_legacyType.nausea_multiplier > 75)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
+        context->LogError(ObjectError::InvalidProperty, "Nausea multiplier too high.");
     }
     RideObjectUpdateRideType(&_legacyType);
 }
@@ -545,7 +545,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
                 if (rideType == RIDE_TYPE_NULL)
                 {
-                    context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Unknown ride type");
+                    context->LogError(ObjectError::InvalidProperty, "Unknown ride type");
                 }
             }
 
@@ -586,7 +586,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
                 auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
                 if (shopItem == SHOP_ITEM_NONE)
                 {
-                    context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, "Unknown shop item");
+                    context->LogWarning(ObjectError::InvalidProperty, "Unknown shop item");
                 }
 
                 _legacyType.shop_item[i] = shopItem;

@@ -137,7 +137,7 @@ public:
         return {};
     }
 
-    void LogWarning(uint32_t code, const utf8* text) override
+    void LogWarning(ObjectError code, const utf8* text) override
     {
         _wasWarning = true;
 
@@ -147,7 +147,7 @@ public:
         }
     }
 
-    void LogError(uint32_t code, const utf8* text) override
+    void LogError(ObjectError code, const utf8* text) override
     {
         _wasError = true;
 
@@ -192,11 +192,11 @@ namespace ObjectFactory
         catch (const IOException&)
         {
             // TODO check that ex is really EOF and not some other error
-            context->LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
+            context->LogError(ObjectError::UnexpectedEOF, "Unexpectedly reached end of file.");
         }
         catch (const std::exception&)
         {
-            context->LogError(OBJECT_ERROR_UNKNOWN, nullptr);
+            context->LogError(ObjectError::Unknown, nullptr);
         }
     }
 
