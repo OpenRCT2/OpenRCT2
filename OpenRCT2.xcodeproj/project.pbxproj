@@ -42,6 +42,7 @@
 		2ADE2F3622441960002598AF /* RideTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F352244195F002598AF /* RideTypes.h */; };
 		2ADE2F382244198B002598AF /* SpriteBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F372244198A002598AF /* SpriteBase.h */; };
 		304FE95023A2996600470197 /* SceneryScatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 304FE94F23A2996600470197 /* SceneryScatter.cpp */; };
+		4C1EE63D24AB4A2700D7177F /* HybridCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C1EE63C24AB4A2700D7177F /* HybridCoaster.cpp */; };
 		4C255958244A328B00CE7E45 /* CustomMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25594F244A328A00CE7E45 /* CustomMenu.cpp */; };
 		4C255959244A328B00CE7E45 /* UiExtensions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C255954244A328A00CE7E45 /* UiExtensions.cpp */; };
 		4C25595A244A328B00CE7E45 /* CustomWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C255957244A328B00CE7E45 /* CustomWindow.cpp */; };
@@ -683,6 +684,7 @@
 		2ADE2F372244198A002598AF /* SpriteBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBase.h; sourceTree = "<group>"; };
 		304FE94F23A2996600470197 /* SceneryScatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryScatter.cpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
+		4C1EE63C24AB4A2700D7177F /* HybridCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HybridCoaster.cpp; sourceTree = "<group>"; };
 		4C25594E244A328A00CE7E45 /* CustomWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomWindow.h; path = scripting/CustomWindow.h; sourceTree = "<group>"; };
 		4C25594F244A328A00CE7E45 /* CustomMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomMenu.cpp; path = scripting/CustomMenu.cpp; sourceTree = "<group>"; };
 		4C255950244A328A00CE7E45 /* ScUi.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScUi.hpp; path = scripting/ScUi.hpp; sourceTree = "<group>"; };
@@ -3252,6 +3254,7 @@
 				4C93F11E1F8B744400A9330D /* FlyingRollerCoaster.cpp */,
 				4C93F11F1F8B744400A9330D /* GigaCoaster.cpp */,
 				4C93F1201F8B744400A9330D /* HeartlineTwisterCoaster.cpp */,
+				4C1EE63C24AB4A2700D7177F /* HybridCoaster.cpp */,
 				4C93F1211F8B744400A9330D /* InvertedHairpinCoaster.cpp */,
 				4C93F1221F8B744400A9330D /* InvertedImpulseCoaster.cpp */,
 				4C93F1231F8B744400A9330D /* InvertedRollerCoaster.cpp */,
@@ -4054,6 +4057,7 @@
 				C666EE791F37ACB10061AA04 /* ServerStart.cpp in Sources */,
 				C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */,
 				4C81F7E124672C4D000E61BF /* CustomListView.cpp in Sources */,
+				4C1EE63D24AB4A2700D7177F /* HybridCoaster.cpp in Sources */,
 				6341F4E22400AA0F0052902B /* Drawing.Sprite.BMP.cpp in Sources */,
 				C666EE7E1F37ACB10061AA04 /* TitleOptions.cpp in Sources */,
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
