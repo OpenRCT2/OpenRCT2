@@ -691,6 +691,10 @@ namespace OpenRCT2
             uint32_t actionType = 0;
             if (serialiser.IsSaving())
             {
+                if (!command.action)
+                {
+                    return false;
+                }
                 actionType = command.action->GetType();
             }
             serialiser << actionType;
