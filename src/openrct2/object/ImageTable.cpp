@@ -193,7 +193,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
     auto obj = ObjectFactory::CreateObjectFromLegacyFile(context->GetObjectRepository(), objectPath.c_str());
     if (obj != nullptr)
     {
-        auto& imgTable = static_cast<const Object*>(obj)->GetImageTable();
+        auto& imgTable = static_cast<const Object*>(obj.get())->GetImageTable();
         auto numImages = static_cast<int32_t>(imgTable.GetCount());
         auto images = imgTable.GetImages();
         size_t placeHoldersAdded = 0;
@@ -210,7 +210,6 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
                 placeHoldersAdded++;
             }
         }
-        delete obj;
 
         // Log place holder information
         if (placeHoldersAdded > 0)

@@ -221,7 +221,7 @@ static bool filter_source(const ObjectRepositoryItem* item);
 static bool filter_chunks(const ObjectRepositoryItem* item);
 static void filter_update_counts();
 
-static std::string object_get_description(const void* object);
+static std::string object_get_description(const Object* object);
 static int32_t get_selected_object_type(rct_window* w);
 
 enum
@@ -260,7 +260,7 @@ using sortFunc_t = bool (*)(const list_item&, const list_item&);
 static std::vector<list_item> _listItems;
 static int32_t _listSortType = RIDE_SORT_TYPE;
 static bool _listSortDescending = false;
-static void* _loadedObject = nullptr;
+static std::unique_ptr<Object> _loadedObject;
 
 static void visible_list_dispose()
 {
@@ -414,8 +414,8 @@ static void window_editor_object_selection_close(rct_window* w)
     editor_load_selected_objects();
     editor_object_flags_free();
 
-    object_delete(_loadedObject);
-    _loadedObject = nullptr;
+    if (_loadedObject != nullptr)
+        _loadedObject->Unload();
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
@@ -744,8 +744,8 @@ static void window_editor_object_selection_scroll_mouseover(
     {
         w->selected_list_item = selectedObject;
 
-        object_delete(_loadedObject);
-        _loadedObject = nullptr;
+        if (_loadedObject != nullptr)
+            _loadedObject->Unload();
 
         if (selectedObject == -1)
         {
@@ -1045,7 +1045,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         int32_t height = widget->height() - 1;
         if (clip_drawpixelinfo(&clipDPI, dpi, screenPos, width, height))
         {
-            object_draw_preview(_loadedObject, &clipDPI, width, height);
+            _loadedObject->DrawPreview(&clipDPI, width, height);
         }
     }
 
@@ -1060,7 +1060,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     }
 
     // Draw description of object
-    auto description = object_get_description(_loadedObject);
+    auto description = object_get_description(_loadedObject.get());
     if (!description.empty())
     {
         auto ft = Formatter();
@@ -1524,14 +1524,13 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem* item)
     return result;
 }
 
-static std::string object_get_description(const void* object)
+static std::string object_get_description(const Object* object)
 {
-    const Object* baseObject = static_cast<const Object*>(object);
-    switch (baseObject->GetObjectType())
+    switch (object->GetObjectType())
     {
         case OBJECT_TYPE_RIDE:
         {
-            const RideObject* rideObject = static_cast<const RideObject*>(baseObject);
+            const RideObject* rideObject = static_cast<const RideObject*>(object);
             return rideObject->GetDescription();
         }
         default:

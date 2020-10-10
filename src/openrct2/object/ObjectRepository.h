@@ -74,7 +74,7 @@ struct IObjectRepository
     virtual const ObjectRepositoryItem* FindObject(const std::string_view& legacyIdentifier) const abstract;
     virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
 
-    virtual Object* LoadObject(const ObjectRepositoryItem* ori) abstract;
+    virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) abstract;
     virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
     virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
 
@@ -93,7 +93,4 @@ size_t object_repository_get_items_count();
 const ObjectRepositoryItem* object_repository_get_items();
 const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_object_entry* entry);
 const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name);
-void* object_repository_load_object(const rct_object_entry* objectEntry);
-
-void object_delete(void* object);
-void object_draw_preview(const void* object, rct_drawpixelinfo* dpi, int32_t width, int32_t height);
+std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry);

@@ -1983,13 +1983,12 @@ private:
             }
             else
             {
-                Object* object = objectRepository.LoadObject(ori);
+                auto object = objectRepository.LoadObject(ori);
                 if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_GROUP)
                 {
                     missingObjects.push_back(entry);
                     Console::Error::WriteLine("[%s] Object could not be loaded.", objectName);
                 }
-                delete object;
             }
         }
     }
