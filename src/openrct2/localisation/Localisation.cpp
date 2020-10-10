@@ -1138,6 +1138,13 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
 
             format_length(dest, size, static_cast<uint16_t>(value));
             break;
+        case FORMAT_LENGTH_SIGNED:
+            // Pop argument
+            std::memcpy(&value, *args, sizeof(int16_t));
+            *args += 2;
+
+            format_length(dest, size, static_cast<int16_t>(value));
+            break;
         case FORMAT_SPRITE:
             // Pop argument
             std::memcpy(&value, *args, sizeof(uint32_t));

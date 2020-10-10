@@ -57,6 +57,7 @@ static constexpr const format_code_token format_code_tokens[] = {
     { FORMAT_DURATION,                  "DURATION"              },
     { FORMAT_REALTIME,                  "REALTIME"              },
     { FORMAT_LENGTH,                    "LENGTH"                },
+    { FORMAT_LENGTH_SIGNED,             "LENGTH_SIGNED"         },
     { FORMAT_SPRITE,                    "SPRITE"                },
     { FORMAT_BLACK,                     "BLACK"                 },
     { FORMAT_GREY,                      "GREY"                  },
