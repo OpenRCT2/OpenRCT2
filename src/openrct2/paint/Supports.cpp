@@ -198,35 +198,110 @@ static constexpr const supports_id_desc WoodenSupportImageIds[] = {
     { 3770, 3771, 3772, 3839 },
 };
 
-/* 0x0097B224 */
-static constexpr const uint16_t WoodenCurveSupportImageIds[] = {
+static constexpr const uint16_t WoodenCurveSupportImageIds0[81] = {
     3465,
-    3465,
-    0,
-    0,
-    0,
-    0,
-    3681,
-    3681,
-    0,
-    0,
-    0,
-    0,
+    3466,
+    3467,
+    3468,
+    3469,
+    3470,
+    3471,
+    3472,
+    3473,
+    3474,
+    3475,
+    3476,
+    3477,
+    3478,
+    3479,
+    3480,
+    3481,
+    3482,
+    3483,
+    3484,
+    3485,
+    3486,
+    3487,
+    3488,
+    3489,
+    3490,
+    3491,
+    3492,
+    3493,
+    3494,
+    3495,
+    3496,
+    3497,
+    3498,
+    3499,
+    3500,
+    3501,
+    3502,
+    3503,
+    3504,
+    3505,
+    3506,
+    3507,
+    3508,
+    3509,
+    3510,
+    3511,
+    3512,
+    3513,
+    SPR_G2_SUPPORT_BEGIN,
+    SPR_G2_SUPPORT_BEGIN + 1,
+    SPR_G2_SUPPORT_BEGIN + 2,
+    SPR_G2_SUPPORT_BEGIN + 3,
+    SPR_G2_SUPPORT_BEGIN + 4,
+    SPR_G2_SUPPORT_BEGIN + 5,
+    SPR_G2_SUPPORT_BEGIN + 6,
+    SPR_G2_SUPPORT_BEGIN + 7,
+    SPR_G2_SUPPORT_BEGIN + 8,
+    SPR_G2_SUPPORT_BEGIN + 9,
+    SPR_G2_SUPPORT_BEGIN + 10,
+    SPR_G2_SUPPORT_BEGIN + 11,
+    SPR_G2_SUPPORT_BEGIN + 12,
+    SPR_G2_SUPPORT_BEGIN + 13,
+    SPR_G2_SUPPORT_BEGIN + 14,
+    SPR_G2_SUPPORT_BEGIN + 15,
+    SPR_G2_SUPPORT_BEGIN + 16,
+    SPR_G2_SUPPORT_BEGIN + 17,
+    SPR_G2_SUPPORT_BEGIN + 18,
+    SPR_G2_SUPPORT_BEGIN + 19,
+    SPR_G2_SUPPORT_BEGIN + 20,
+    SPR_G2_SUPPORT_BEGIN + 21,
+    SPR_G2_SUPPORT_BEGIN + 22,
+    SPR_G2_SUPPORT_BEGIN + 23,
+    SPR_G2_SUPPORT_BEGIN + 24,
+    SPR_G2_SUPPORT_BEGIN + 25,
+    SPR_G2_SUPPORT_BEGIN + 26,
+    SPR_G2_SUPPORT_BEGIN + 27,
+    SPR_G2_SUPPORT_BEGIN + 28,
+    SPR_G2_SUPPORT_BEGIN + 29,
+    SPR_G2_SUPPORT_BEGIN + 30,
+    SPR_G2_SUPPORT_BEGIN + 31,
 };
 
-static constexpr const uint16_t WoodenCurveSupportImageIdsG2[] = {
-    SPR_G2_SUPPORT_BEGIN,
-    SPR_G2_SUPPORT_BEGIN,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
+static constexpr const uint16_t WoodenCurveSupportImageIds1[81] = {
+    3681, 3682, 3683, 3684, 3685, 3686, 3687, 3688, 3689, 3690, 3691, 3692, 3693, 3694, 3695, 3696, 3697,
+    3698, 3699, 3700, 3701, 3702, 3703, 3704, 3705, 3706, 3707, 3708, 3709, 3710, 3711, 3712, 3713, 3714,
+    3715, 3716, 3717, 3718, 3719, 3720, 3721, 3722, 3723, 3724, 3725, 3726, 3727, 3728, 3729,
+};
+
+/* 0x0097B224 */
+static constexpr const uint16_t* WoodenCurveSupportImageIds[12] = {
+    WoodenCurveSupportImageIds0,
+    WoodenCurveSupportImageIds0,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
+    WoodenCurveSupportImageIds1,
+    WoodenCurveSupportImageIds1,
+    nullptr,
+    nullptr,
+    nullptr,
+    nullptr,
 };
 
 struct unk_supports_desc_bound_box {
@@ -521,15 +596,10 @@ bool wooden_a_supports_paint_setup(
     {
         special = (special - 1) & 0xFFFF;
 
-        int32_t imageId;
-        if (special < NumVanillaWoodenSupportTypes)
-            imageId = WoodenCurveSupportImageIds[supportType];
-        else
-            imageId = WoodenCurveSupportImageIdsG2[supportType];
-
-        if (imageId != 0 && byte_97B23C[special].var_7 != 0)
+        if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][special] != 0
+            && byte_97B23C[special].var_7 != 0)
         {
-            imageId += special % NumVanillaWoodenSupportTypes;
+            uint32_t imageId = WoodenCurveSupportImageIds[supportType][special];
             imageId |= imageColourFlags;
 
             unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
@@ -706,17 +776,12 @@ bool wooden_b_supports_paint_setup(
     {
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
-        int32_t imageId;
-        if (specialIndex < NumVanillaWoodenSupportTypes)
-            imageId = WoodenCurveSupportImageIds[supportType];
-        else
-            imageId = WoodenCurveSupportImageIdsG2[supportType];
-
         unk_supports_desc supportsDesc = byte_97B23C[specialIndex];
 
-        if (imageId != 0 && supportsDesc.var_7 != 0)
+        if (WoodenCurveSupportImageIds[supportType] != nullptr && WoodenCurveSupportImageIds[supportType][specialIndex] != 0
+            && supportsDesc.var_7 != 0)
         { // byte_97B23C[special].var_7 is never 0
-            imageId += specialIndex % NumVanillaWoodenSupportTypes;
+            uint32_t imageId = WoodenCurveSupportImageIds[supportType][specialIndex];
             imageId |= imageColourFlags;
 
             unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
