@@ -73,7 +73,7 @@ void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, O
     }
     catch (const std::exception&)
     {
-        context->LogError(OBJECT_ERROR_BAD_STRING_TABLE, "Bad string table.");
+        context->LogError(ObjectError::BadStringTable, "Bad string table.");
         throw;
     }
     Sort();
