@@ -5742,7 +5742,7 @@ static void window_ride_graphs_mouseup(rct_window* w, rct_widgetindex widgetInde
  */
 static void window_ride_graphs_resize(rct_window* w)
 {
-    window_set_resize(w, 316, 180, 500, 450);
+    window_set_resize(w, 316, 182, 500, 450);
 }
 
 /**
@@ -5909,7 +5909,7 @@ static void window_ride_graphs_invalidate(rct_window* w)
 
     // Anchor graph widget
     auto x = w->width - 4;
-    auto y = w->height - 18;
+    auto y = w->height - BUTTON_FACE_HEIGHT - 8;
 
     window_ride_graphs_widgets[WIDX_GRAPH].right = x;
     window_ride_graphs_widgets[WIDX_GRAPH].bottom = y;
@@ -5918,7 +5918,7 @@ static void window_ride_graphs_invalidate(rct_window* w)
     window_ride_graphs_widgets[WIDX_GRAPH_ALTITUDE].top = y;
     window_ride_graphs_widgets[WIDX_GRAPH_VERTICAL].top = y;
     window_ride_graphs_widgets[WIDX_GRAPH_LATERAL].top = y;
-    y += 11;
+    y += BUTTON_FACE_HEIGHT + 1;
     window_ride_graphs_widgets[WIDX_GRAPH_VELOCITY].bottom = y;
     window_ride_graphs_widgets[WIDX_GRAPH_ALTITUDE].bottom = y;
     window_ride_graphs_widgets[WIDX_GRAPH_VERTICAL].bottom = y;
