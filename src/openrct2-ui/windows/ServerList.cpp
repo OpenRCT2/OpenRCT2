@@ -78,6 +78,7 @@ static void window_server_list_scroll_getsize(rct_window *w, int32_t scrollIndex
 static void window_server_list_scroll_mousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_server_list_scroll_mouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static OpenRCT2String window_server_list_tooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback);
 static void window_server_list_invalidate(rct_window *w);
 static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -93,6 +94,7 @@ static rct_window_event_list window_server_list_events([](auto& events)
     events.scroll_mousedown = &window_server_list_scroll_mousedown;
     events.scroll_mouseover = &window_server_list_scroll_mouseover;
     events.text_input = &window_server_list_textinput;
+    events.tooltip = &window_server_list_tooltip;
     events.invalidate = &window_server_list_invalidate;
     events.paint = &window_server_list_paint;
     events.scroll_paint = &window_server_list_scrollpaint;
@@ -359,10 +361,15 @@ static void window_server_list_textinput(rct_window* w, rct_widgetindex widgetIn
     }
 }
 
+static OpenRCT2String window_server_list_tooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback)
+{
+    auto ft = Formatter();
+    ft.Add<char*>(_version.c_str());
+    return { fallback, ft };
+}
+
 static void window_server_list_invalidate(rct_window* w)
 {
-    auto ft = Formatter::Common();
-    ft.Add<char*>(_version.c_str());
     window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
     window_server_list_widgets[WIDX_TITLE].right = w->width - 2;
