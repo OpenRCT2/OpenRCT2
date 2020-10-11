@@ -3895,7 +3895,9 @@ enum
 
     STR_NEEDS_RCT2_FILES = 6390,
     STR_PICK_RCT2_DIR = 6391,
-    STR_COULD_NOT_FIND_AT_PATH = 6392
+    STR_COULD_NOT_FIND_AT_PATH = 6392,
+
+    STR_CHEATS_MENU_OBJECTIVE_OPTIONS = 6393,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

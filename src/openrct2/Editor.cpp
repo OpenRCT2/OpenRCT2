@@ -415,12 +415,12 @@ namespace Editor
                 context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
                 break;
             case EDITOR_STEP_OBJECTIVE_SELECTION:
-                if (window_find_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS))
+                if (window_find_by_class(WC_EDITOR_OBJECTIVE_OPTIONS))
                 {
                     return;
                 }
 
-                context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
+                context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
                 break;
         }
     }

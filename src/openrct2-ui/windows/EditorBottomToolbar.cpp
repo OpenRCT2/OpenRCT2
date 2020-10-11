@@ -252,7 +252,7 @@ void window_editor_bottom_toolbar_jump_forward_to_options_selection()
 void window_editor_bottom_toolbar_jump_forward_to_objective_selection()
 {
     window_close_all();
-    context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
+    context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
     gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
     gfx_invalidate_screen();
 }
