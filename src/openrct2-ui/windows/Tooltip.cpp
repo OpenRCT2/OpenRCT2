@@ -48,7 +48,7 @@ void window_tooltip_reset(const ScreenCoordsXY& screenCoords)
 }
 
 // Returns the width of the new tooltip text
-int32_t FormatTextForTooltip(const OpenRCT2String& message)
+static int32_t FormatTextForTooltip(const OpenRCT2String& message)
 {
     format_string(_tooltipText, sizeof(_tooltipText), message.str, message.args.Data());
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
