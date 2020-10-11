@@ -20,11 +20,11 @@
 struct rct_drawpixelinfo;
 struct ScreenCoordsXY;
 
-enum CHAT_INPUT
+enum class ChatInput : uint8_t
 {
-    CHAT_INPUT_NONE,
-    CHAT_INPUT_SEND,
-    CHAT_INPUT_CLOSE,
+    None,
+    Send,
+    Close,
 };
 
 extern bool gChatOpen;
@@ -39,7 +39,7 @@ void chat_update();
 void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColour);
 
 void chat_history_add(const char* src);
-void chat_input(CHAT_INPUT input);
+void chat_input(ChatInput input);
 
 int32_t chat_string_wrapped_get_height(void* args, int32_t width);
 int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& screenCoords, int32_t width);

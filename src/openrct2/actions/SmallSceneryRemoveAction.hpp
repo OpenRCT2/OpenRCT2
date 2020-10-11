@@ -27,8 +27,8 @@ DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameAc
 {
 private:
     CoordsXYZ _loc;
-    uint8_t _quadrant;
-    ObjectEntryIndex _sceneryType;
+    uint8_t _quadrant{};
+    ObjectEntryIndex _sceneryType{};
 
 public:
     SmallSceneryRemoveAction() = default;

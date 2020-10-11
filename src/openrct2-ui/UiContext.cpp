@@ -231,12 +231,12 @@ public:
         return _keysPressed;
     }
 
-    CURSOR_ID GetCursor() override
+    CursorID GetCursor() override
     {
         return _cursorRepository.GetCurrentCursor();
     }
 
-    void SetCursor(CURSOR_ID cursor) override
+    void SetCursor(CursorID cursor) override
     {
         _cursorRepository.SetCurrentCursor(cursor);
     }
@@ -658,7 +658,7 @@ private:
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
         uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
-        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_OPENGL)
+        if (gConfigGeneral.drawing_engine == DrawingEngine::OpenGL)
         {
             flags |= SDL_WINDOW_OPENGL;
         }
@@ -758,7 +758,7 @@ private:
         resolutions.erase(last, resolutions.end());
 
         // Update config fullscreen resolution if not set
-        if (gConfigGeneral.fullscreen_width == -1 || gConfigGeneral.fullscreen_height == -1)
+        if (!resolutions.empty() && (gConfigGeneral.fullscreen_width == -1 || gConfigGeneral.fullscreen_height == -1))
         {
             gConfigGeneral.fullscreen_width = resolutions.back().Width;
             gConfigGeneral.fullscreen_height = resolutions.back().Height;

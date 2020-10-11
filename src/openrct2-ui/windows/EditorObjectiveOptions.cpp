@@ -140,68 +140,31 @@ static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawp
 static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 // 0x009A9DF4
-static rct_window_event_list window_objective_options_main_events = {
-    nullptr,
-    window_editor_objective_options_main_mouseup,
-    window_editor_objective_options_main_resize,
-    window_editor_objective_options_main_mousedown,
-    window_editor_objective_options_main_dropdown,
-    nullptr,
-    window_editor_objective_options_main_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_main_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_main_invalidate,
-    window_editor_objective_options_main_paint,
-    nullptr
-};
+static rct_window_event_list window_objective_options_main_events([](auto& events)
+{
+    events.mouse_up = &window_editor_objective_options_main_mouseup;
+    events.resize = &window_editor_objective_options_main_resize;
+    events.mouse_down = &window_editor_objective_options_main_mousedown;
+    events.dropdown = &window_editor_objective_options_main_dropdown;
+    events.update = &window_editor_objective_options_main_update;
+    events.text_input = &window_editor_objective_options_main_textinput;
+    events.invalidate = &window_editor_objective_options_main_invalidate;
+    events.paint = &window_editor_objective_options_main_paint;
+});
 
 // 0x009A9F58
-static rct_window_event_list window_objective_options_rides_events = {
-    nullptr,
-    window_editor_objective_options_rides_mouseup,
-    window_editor_objective_options_rides_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_rides_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_rides_scrollgetheight,
-    window_editor_objective_options_rides_scrollmousedown,
-    nullptr,
-    window_editor_objective_options_rides_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_objective_options_rides_invalidate,
-    window_editor_objective_options_rides_paint,
-    window_editor_objective_options_rides_scrollpaint
-};
+static rct_window_event_list window_objective_options_rides_events([](auto& events)
+{
+    events.mouse_up = &window_editor_objective_options_rides_mouseup;
+    events.resize = &window_editor_objective_options_rides_resize;
+    events.update = &window_editor_objective_options_rides_update;
+    events.get_scroll_size = &window_editor_objective_options_rides_scrollgetheight;
+    events.scroll_mousedown = &window_editor_objective_options_rides_scrollmousedown;
+    events.scroll_mouseover = &window_editor_objective_options_rides_scrollmouseover;
+    events.invalidate = &window_editor_objective_options_rides_invalidate;
+    events.paint = &window_editor_objective_options_rides_paint;
+    events.scroll_paint = &window_editor_objective_options_rides_scrollpaint;
+});
 
 static rct_window_event_list *window_editor_objective_options_page_events[] = {
     &window_objective_options_main_events,
@@ -497,7 +460,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
             if (gScenarioObjective.Currency >= MONEY(2000000, 00))
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -508,7 +471,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             if (gScenarioObjective.Currency >= MONEY(2000000, 00))
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -519,7 +482,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             if (gScenarioObjective.MinimumLength >= 5000)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -530,7 +493,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             if (gScenarioObjective.MinimumExcitement >= FIXED_2DP(9, 90))
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -541,7 +504,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         default:
             if (gScenarioObjective.NumGuests >= 5000)
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -561,7 +524,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
             if (gScenarioObjective.Currency <= MONEY(1000, 00))
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -572,7 +535,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             if (gScenarioObjective.Currency <= MONEY(1000, 00))
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -583,7 +546,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             if (gScenarioObjective.MinimumLength <= 1000)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -594,7 +557,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             if (gScenarioObjective.MinimumExcitement <= FIXED_2DP(4, 00))
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -605,7 +568,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         default:
             if (gScenarioObjective.NumGuests <= 250)
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
@@ -620,7 +583,7 @@ static void window_editor_objective_options_arg_2_increase(rct_window* w)
 {
     if (gScenarioObjective.Year >= 25)
     {
-        context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+        context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
     }
     else
     {
@@ -633,7 +596,7 @@ static void window_editor_objective_options_arg_2_decrease(rct_window* w)
 {
     if (gScenarioObjective.Year <= 1)
     {
-        context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+        context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
     }
     else
     {
@@ -920,7 +883,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         auto parkName = park.Name.c_str();
 
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(parkName);
         DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft, COLOUR_BLACK);
@@ -930,7 +893,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_SCENARIO_NAME].top };
     width = w->widgets[WIDX_SCENARIO_NAME].left - 16;
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gS6Info.name);
     DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft, COLOUR_BLACK);
@@ -943,10 +906,10 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     screenCoords = w->windowPos + ScreenCoordsXY{ 16, w->widgets[WIDX_DETAILS].top + 10 };
     width = w->widgets[WIDX_DETAILS].left - 4;
 
-    ft = Formatter::Common();
+    ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gS6Info.details);
-    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
+    gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
 
     // Scenario category label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CATEGORY].top };
@@ -1139,11 +1102,10 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
             }
 
             // Ride name
-            uint8_t args[32]{};
 
-            Formatter ft(args);
+            Formatter ft;
             ride->FormatNameTo(ft);
-            gfx_draw_string_left(dpi, stringId, args, COLOUR_BLACK, { 15, y });
+            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, { 15, y });
         }
     }
 }

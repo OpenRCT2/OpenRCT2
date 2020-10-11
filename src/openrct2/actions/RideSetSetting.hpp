@@ -32,13 +32,11 @@ DEFINE_GAME_ACTION(RideSetSettingAction, GAME_COMMAND_SET_RIDE_SETTING, GameActi
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    RideSetSetting _setting{ 0 };
-    uint8_t _value{ 0 };
+    RideSetSetting _setting{};
+    uint8_t _value{};
 
 public:
-    RideSetSettingAction()
-    {
-    }
+    RideSetSettingAction() = default;
     RideSetSettingAction(ride_id_t rideIndex, RideSetSetting setting, uint8_t value)
         : _rideIndex(rideIndex)
         , _setting(setting)
@@ -186,7 +184,7 @@ public:
                 ride_clear_for_construction(ride);
                 ride_remove_peeps(ride);
 
-                ride->mode = _value;
+                ride->mode = static_cast<RideMode>(_value);
                 ride->UpdateMaxVehicles();
                 ride->UpdateNumberOfCircuits();
                 break;
@@ -297,17 +295,17 @@ private:
     {
         switch (ride->mode)
         {
-            case RIDE_MODE_STATION_TO_STATION:
+            case RideMode::StationToStation:
                 return STR_CANT_CHANGE_SPEED;
-            case RIDE_MODE_RACE:
+            case RideMode::Race:
                 return STR_CANT_CHANGE_NUMBER_OF_LAPS;
-            case RIDE_MODE_DODGEMS:
+            case RideMode::Dodgems:
                 return STR_CANT_CHANGE_TIME_LIMIT;
-            case RIDE_MODE_SWING:
+            case RideMode::Swing:
                 return STR_CANT_CHANGE_NUMBER_OF_SWINGS;
-            case RIDE_MODE_ROTATION:
-            case RIDE_MODE_FORWARD_ROTATION:
-            case RIDE_MODE_BACKWARD_ROTATION:
+            case RideMode::Rotation:
+            case RideMode::ForwardRotation:
+            case RideMode::BackwardRotation:
                 return STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
             default:
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))

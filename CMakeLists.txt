@@ -41,11 +41,11 @@ set(CMAKE_MACOSX_RPATH 1)
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "304d13a126c15bf2c86ff13b81a2f2cc1856ac8d")
 
-set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.16/objects.zip")
-set(OBJECTS_SHA1 "ea8be00a7ab5a1e9369277f8f59f487bc588eb6a")
+set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.17/objects.zip")
+set(OBJECTS_SHA1 "44a702b58b144e138029f4d096d16f5beec3ddb1")
 
-set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v0.0.18/replays.zip")
-set(REPLAYS_SHA1 "5B1C9A6E91B135A1EB629332BEA488A10CA6AD60")
+set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v0.0.19/replays.zip")
+set(REPLAYS_SHA1 "8EAAE223FF9FE4D49949C9F343831977E6DB6CDE")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -67,6 +67,9 @@ option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_LIGHTFX "Enable lighting effects." ON)
 option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
+if (MINGW)
+    option(MINGW_TARGET_NT5_1 "Use only NT5.1 APIs and libraries." OFF)
+endif ()
 
 option(DISABLE_GUI "Don't build GUI. (Headless only.)")
 
@@ -74,6 +77,13 @@ if (FORCE32)
     set(TARGET_M "-m32")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M}")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
+endif ()
+
+if (MINGW_TARGET_NT5_1)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x501")
+	if (STATIC)
+	    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCURL_STATICLIB=1 -DZIP_STATIC=1 -static")
+	endif ()
 endif ()
 
 if (PORTABLE OR WIN32)
@@ -222,6 +232,7 @@ else ()
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_LOGICAL_OP -Wlogical-op)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_RANGE_LOOP_ANALYSIS -Wrange-loop-analysis)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_TAUTOLOGICAL_ZERO_COMPARE -Wtautological-unsigned-zero-compare)
+    ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_OLD_STYLE_CAST -Wold-style-cast)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WNO_CLOBBERED -Wno-clobbered)
     # Disabled due to problems compiling OpenSSL on macOS.
     # ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DOCUMENTATION -Wdocumentation)
@@ -277,6 +288,10 @@ endif ()
 if (CXX_WARN_SUGGEST_FINAL_METHODS)
     # Disable -Wsuggest-final-methods via pragmas where due.
    add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
+endif ()
+
+if (MINGW)
+   add_definitions(-fstack-protector-strong)
 endif ()
 
 # Include sub-projects

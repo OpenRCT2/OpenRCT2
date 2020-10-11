@@ -89,67 +89,18 @@ static void window_about_rct2_mouseup(rct_window *w, rct_widgetindex widgetIndex
 static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_about_openrct2_common_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_about_openrct2_events = {
-    nullptr,
-    window_about_openrct2_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_about_openrct2_invalidate,
-    window_about_openrct2_paint,
-    nullptr
-};
+static rct_window_event_list window_about_openrct2_events([](auto& events)
+{
+    events.mouse_up = &window_about_openrct2_mouseup;
+    events.invalidate = &window_about_openrct2_invalidate;
+    events.paint = &window_about_openrct2_paint;
+});
 
-static rct_window_event_list window_about_rct2_events = {
-    nullptr,
-    window_about_rct2_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_about_rct2_paint,
-    nullptr
-};
+static rct_window_event_list window_about_rct2_events([](auto& events)
+{
+    events.mouse_up = &window_about_rct2_mouseup;
+    events.paint = &window_about_rct2_paint;
+});
 
 static rct_window_event_list *window_about_page_events[] = {
     &window_about_openrct2_events,
@@ -220,15 +171,17 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
     ScreenCoordsXY aboutOpenRCT2Coords(w->windowPos.x + aboutOpenRCT2.left + 45, y);
     ScreenCoordsXY aboutRCT2Coords(w->windowPos.x + aboutRCT2.left + 45, y);
 
-    auto ft = Formatter::Common();
-    ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
-    gfx_draw_string_centred_wrapped(
-        dpi, gCommonFormatArgs, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
-
-    ft = Formatter::Common();
-    ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RCT2);
-    gfx_draw_string_centred_wrapped(
-        dpi, gCommonFormatArgs, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+    {
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
+        gfx_draw_string_centred_wrapped(
+            dpi, ft.Data(), aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+    }
+    {
+        auto ft = Formatter();
+        ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RCT2);
+        gfx_draw_string_centred_wrapped(dpi, ft.Data(), aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+    }
 }
 
 static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)

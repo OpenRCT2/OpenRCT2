@@ -4,7 +4,7 @@ env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
-  OPENRCT2_VERSION: 0.3.0
+  OPENRCT2_VERSION: 0.3.1
 jobs:
   lint-commit:
     name: Lint Commit Message
@@ -25,7 +25,7 @@ jobs:
     name: Check code formatting
     runs-on: ubuntu-latest
     container:
-      image: openrct2/openrct2-build:0.2.4-format
+      image: openrct2/openrct2-build:0.3.1-format
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-mingw
+      image: openrct2/openrct2-build:0.3.1-mingw
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -91,6 +91,26 @@ jobs:
           mkdir bin && cd bin
           cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DDISABLE_IPO=on -DFORCE32=on -DBUILD_SHARED_LIBS=ON -DENABLE_SCRIPTING=OFF
           ninja -k0
+  windows-mingw-nt51:
+    name: Windows (win32, WinNT5.1) using mingw
+    runs-on: ubuntu-latest
+    needs: [check-code-formatting]
+    container:
+      image: openrct2/openrct2-build:0.3.1-mingw
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build OpenRCT2
+        run: |
+          sudo su
+          mkdir bin && cd bin
+          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DDISABLE_IPO=on -DDISABLE_HTTP=Off -DFORCE32=on -DENABLE_SCRIPTING=ON -DCMAKE_CXX_FLAGS="-Wno-error=cast-function-type -Wno-error=unused-function" -DSTATIC=on -DMINGW_TARGET_NT5_1=ON
+          ninja -k0
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: "OpenRCT2-NT5.1"
+          path: bin/openrct2.exe
   macos:
     name: macOS
     runs-on: macos-latest
@@ -125,7 +145,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic
+      image: openrct2/openrct2-build:0.3.1-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -160,7 +180,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic32
+      image: openrct2/openrct2-build:0.3.1-bionic32
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -200,7 +220,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic
+      image: openrct2/openrct2-build:0.3.1-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -209,7 +229,7 @@ jobs:
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON
+        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=off
       - name: Build AppImage
         shell: bash
         run: . scripts/setenv -q && build-appimage
@@ -258,19 +278,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic
+      image: openrct2/openrct2-build:0.3.1-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DDISABLE_OPENGL=ON
+        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_OPENGL=ON
   android:
     name: Android
     runs-on: ubuntu-latest
     needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-android
+      image: openrct2/openrct2-build:0.3.1-android
     steps:
       - name: Checkout
         uses: actions/checkout@v1

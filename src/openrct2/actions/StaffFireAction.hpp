@@ -20,9 +20,7 @@ private:
     uint16_t _spriteId{ SPRITE_INDEX_NULL };
 
 public:
-    StaffFireAction()
-    {
-    }
+    StaffFireAction() = default;
     StaffFireAction(uint16_t spriteId)
         : _spriteId(spriteId)
     {

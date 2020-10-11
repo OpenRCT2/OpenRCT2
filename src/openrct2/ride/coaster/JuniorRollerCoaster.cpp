@@ -1655,7 +1655,7 @@ void junior_rc_paint_station(
         sub_98197C(session, imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height);
 
         // height += 2 (height)
-        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
         {
             imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
         }
@@ -1677,7 +1677,7 @@ void junior_rc_paint_station(
         sub_98197C(session, imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height);
 
         // height += 2 (height)
-        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
         {
             imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
         }
@@ -5711,221 +5711,221 @@ TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int32_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return junior_rc_flat_paint_setup;
-        case TRACK_ELEM_END_STATION:
+        case TrackElemType::EndStation:
             return paint_junior_rc_station_track;
-        case TRACK_ELEM_BEGIN_STATION:
+        case TrackElemType::BeginStation:
             return paint_junior_rc_station_track;
-        case TRACK_ELEM_MIDDLE_STATION:
+        case TrackElemType::MiddleStation:
             return paint_junior_rc_station_track;
-        case TRACK_ELEM_25_DEG_UP:
+        case TrackElemType::Up25:
             return junior_rc_25_deg_up_paint_setup;
-        case TRACK_ELEM_60_DEG_UP:
+        case TrackElemType::Up60:
             return junior_rc_60_deg_up_paint_setup;
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+        case TrackElemType::FlatToUp25:
             return junior_rc_flat_to_25_deg_up_paint_setup;
-        case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
+        case TrackElemType::Up25ToUp60:
             return junior_rc_25_deg_up_to_60_deg_up_paint_setup;
-        case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::Up60ToUp25:
             return junior_rc_60_deg_up_to_25_deg_up_paint_setup;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
             return junior_rc_25_deg_up_to_flat_paint_setup;
-        case TRACK_ELEM_25_DEG_DOWN:
+        case TrackElemType::Down25:
             return junior_rc_25_deg_down_paint_setup;
-        case TRACK_ELEM_60_DEG_DOWN:
+        case TrackElemType::Down60:
             return junior_rc_60_deg_down_paint_setup;
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::FlatToDown25:
             return junior_rc_flat_to_25_deg_down_paint_setup;
-        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::Down25ToDown60:
             return junior_rc_25_deg_down_to_60_deg_down_paint_setup;
-        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::Down60ToDown25:
             return junior_rc_60_deg_down_to_25_deg_down_paint_setup;
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::Down25ToFlat:
             return junior_rc_25_deg_down_to_flat_paint_setup;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
+        case TrackElemType::LeftQuarterTurn5Tiles:
             return junior_rc_left_quarter_turn_5_tiles_paint_setup;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
+        case TrackElemType::RightQuarterTurn5Tiles:
             return junior_rc_right_quarter_turn_5_tiles_paint_setup;
-        case TRACK_ELEM_FLAT_TO_LEFT_BANK:
+        case TrackElemType::FlatToLeftBank:
             return junior_rc_flat_to_left_bank_paint_setup;
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANK:
+        case TrackElemType::FlatToRightBank:
             return junior_rc_flat_to_right_bank_paint_setup;
-        case TRACK_ELEM_LEFT_BANK_TO_FLAT:
+        case TrackElemType::LeftBankToFlat:
             return junior_rc_left_bank_to_flat_paint_setup;
-        case TRACK_ELEM_RIGHT_BANK_TO_FLAT:
+        case TrackElemType::RightBankToFlat:
             return junior_rc_right_bank_to_flat_paint_setup;
-        case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
+        case TrackElemType::BankedLeftQuarterTurn5Tiles:
             return junior_rc_banked_left_quarter_turn_5_tiles_paint_setup;
-        case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
+        case TrackElemType::BankedRightQuarterTurn5Tiles:
             return junior_rc_banked_right_quarter_turn_5_tiles_paint_setup;
-        case TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP:
+        case TrackElemType::LeftBankToUp25:
             return junior_rc_left_bank_to_25_deg_up_paint_setup;
-        case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP:
+        case TrackElemType::RightBankToUp25:
             return junior_rc_right_bank_to_25_deg_up_paint_setup;
-        case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK:
+        case TrackElemType::Up25ToLeftBank:
             return junior_rc_25_deg_up_to_left_bank_paint_setup;
-        case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK:
+        case TrackElemType::Up25ToRightBank:
             return junior_rc_25_deg_up_to_right_bank_paint_setup;
-        case TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::LeftBankToDown25:
             return junior_rc_left_bank_to_25_deg_down_paint_setup;
-        case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::RightBankToDown25:
             return junior_rc_right_bank_to_25_deg_down_paint_setup;
-        case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK:
+        case TrackElemType::Down25ToLeftBank:
             return junior_rc_25_deg_down_to_left_bank_paint_setup;
-        case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TrackElemType::Down25ToRightBank:
             return junior_rc_25_deg_down_to_right_bank_paint_setup;
-        case TRACK_ELEM_LEFT_BANK:
+        case TrackElemType::LeftBank:
             return junior_rc_left_bank_paint_setup;
-        case TRACK_ELEM_RIGHT_BANK:
+        case TrackElemType::RightBank:
             return junior_rc_right_bank_paint_setup;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP:
+        case TrackElemType::LeftQuarterTurn5TilesUp25:
             return junior_rc_left_quarter_turn_5_tiles_25_deg_up_paint_setup;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP:
+        case TrackElemType::RightQuarterTurn5TilesUp25:
             return junior_rc_right_quarter_turn_5_tiles_25_deg_up_paint_setup;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn5TilesDown25:
             return junior_rc_left_quarter_turn_5_tiles_25_deg_down_paint_setup;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn5TilesDown25:
             return junior_rc_right_quarter_turn_5_tiles_25_deg_down_paint_setup;
-        case TRACK_ELEM_S_BEND_LEFT:
+        case TrackElemType::SBendLeft:
             return junior_rc_s_bend_left_paint_setup;
-        case TRACK_ELEM_S_BEND_RIGHT:
+        case TrackElemType::SBendRight:
             return junior_rc_s_bend_right_paint_setup;
 
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
+        case TrackElemType::LeftQuarterTurn3Tiles:
             return junior_rc_left_quarter_turn_3_tiles_paint_setup;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+        case TrackElemType::RightQuarterTurn3Tiles:
             return junior_rc_right_quarter_turn_3_tiles_paint_setup;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
+        case TrackElemType::LeftBankedQuarterTurn3Tiles:
             return junior_rc_left_quarter_turn_3_tiles_bank_paint_setup;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
+        case TrackElemType::RightBankedQuarterTurn3Tiles:
             return junior_rc_right_quarter_turn_3_tiles_bank_paint_setup;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
+        case TrackElemType::LeftQuarterTurn3TilesUp25:
             return junior_rc_left_quarter_turn_3_tiles_25_deg_up_paint_setup;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
+        case TrackElemType::RightQuarterTurn3TilesUp25:
             return junior_rc_right_quarter_turn_3_tiles_25_deg_up_paint_setup;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn3TilesDown25:
             return junior_rc_left_quarter_turn_3_tiles_25_deg_down_paint_setup;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn3TilesDown25:
             return junior_rc_right_quarter_turn_3_tiles_25_deg_down_paint_setup;
 
-        case TRACK_ELEM_FLAT_TO_60_DEG_UP:
+        case TrackElemType::FlatToUp60:
             return junior_rc_flat_to_60_deg_up_paint_setup;
-        case TRACK_ELEM_60_DEG_UP_TO_FLAT:
+        case TrackElemType::Up60ToFlat:
             return junior_rc_60_deg_up_to_flat_paint_setup;
-        case TRACK_ELEM_FLAT_TO_60_DEG_DOWN:
+        case TrackElemType::FlatToDown60:
             return junior_rc_flat_to_60_deg_down_paint_setup;
-        case TRACK_ELEM_60_DEG_DOWN_TO_FLAT:
+        case TrackElemType::Down60ToFlat:
             return junior_rc_60_deg_down_to_flat_paint_setup;
 
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_SMALL:
+        case TrackElemType::LeftHalfBankedHelixUpSmall:
             return junior_rc_left_half_banked_helix_up_small_paint_setup;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_SMALL:
+        case TrackElemType::RightHalfBankedHelixUpSmall:
             return junior_rc_right_half_banked_helix_up_small_paint_setup;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_SMALL:
+        case TrackElemType::LeftHalfBankedHelixDownSmall:
             return junior_rc_left_half_banked_helix_down_small_paint_setup;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_SMALL:
+        case TrackElemType::RightHalfBankedHelixDownSmall:
             return junior_rc_right_half_banked_helix_down_small_paint_setup;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_UP_LARGE:
+        case TrackElemType::LeftHalfBankedHelixUpLarge:
             return junior_rc_left_half_banked_helix_up_large_paint_setup;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_UP_LARGE:
+        case TrackElemType::RightHalfBankedHelixUpLarge:
             return junior_rc_right_half_banked_helix_up_large_paint_setup;
-        case TRACK_ELEM_LEFT_HALF_BANKED_HELIX_DOWN_LARGE:
+        case TrackElemType::LeftHalfBankedHelixDownLarge:
             return junior_rc_left_half_banked_helix_down_large_paint_setup;
-        case TRACK_ELEM_RIGHT_HALF_BANKED_HELIX_DOWN_LARGE:
+        case TrackElemType::RightHalfBankedHelixDownLarge:
             return junior_rc_right_half_banked_helix_down_large_paint_setup;
 
-        case TRACK_ELEM_BRAKES:
+        case TrackElemType::Brakes:
             return junior_rc_brake_paint_setup;
 
-        case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
+        case TrackElemType::LeftEighthToDiag:
             return junior_rc_left_eighth_to_diag_paint_setup;
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG:
+        case TrackElemType::RightEighthToDiag:
             return junior_rc_right_eighth_to_diag_paint_setup;
-        case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthToOrthogonal:
             return junior_rc_left_eighth_to_orthogonal_paint_setup;
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthToOrthogonal:
             return junior_rc_right_eighth_to_orthogonal_paint_setup;
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG:
+        case TrackElemType::LeftEighthBankToDiag:
             return junior_rc_left_eighth_to_diag_bank_paint_setup;
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
+        case TrackElemType::RightEighthBankToDiag:
             return junior_rc_right_eighth_to_diag_bank_paint_setup;
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthBankToOrthogonal:
             return junior_rc_left_eighth_to_orthogonal_bank_paint_setup;
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthBankToOrthogonal:
             return junior_rc_right_eighth_to_orthogonal_bank_paint_setup;
-        case TRACK_ELEM_DIAG_FLAT:
+        case TrackElemType::DiagFlat:
             return junior_rc_diag_flat_paint_setup;
-        case TRACK_ELEM_DIAG_25_DEG_UP:
+        case TrackElemType::DiagUp25:
             return junior_rc_diag_25_deg_up_paint_setup;
-        case TRACK_ELEM_DIAG_60_DEG_UP:
+        case TrackElemType::DiagUp60:
             return junior_rc_diag_60_deg_up_paint_setup;
-        case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP:
+        case TrackElemType::DiagFlatToUp25:
             return junior_rc_diag_flat_to_25_deg_up_paint_setup;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
+        case TrackElemType::DiagUp25ToUp60:
             return junior_rc_diag_25_deg_up_to_60_deg_up_paint_setup;
-        case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::DiagUp60ToUp25:
             return junior_rc_diag_60_deg_up_to_25_deg_up_paint_setup;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+        case TrackElemType::DiagUp25ToFlat:
             return junior_rc_diag_25_deg_up_to_flat_paint_setup;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN:
+        case TrackElemType::DiagDown25:
             return junior_rc_diag_25_deg_down_paint_setup;
-        case TRACK_ELEM_DIAG_60_DEG_DOWN:
+        case TrackElemType::DiagDown60:
             return junior_rc_diag_60_deg_down_paint_setup;
-        case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::DiagFlatToDown25:
             return junior_rc_diag_flat_to_25_deg_down_paint_setup;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::DiagDown25ToDown60:
             return junior_rc_diag_25_deg_down_to_60_deg_down_paint_setup;
-        case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::DiagDown60ToDown25:
             return junior_rc_diag_60_deg_down_to_25_deg_down_paint_setup;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::DiagDown25ToFlat:
             return junior_rc_diag_25_deg_down_to_flat_paint_setup;
 
-        case TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK:
+        case TrackElemType::DiagFlatToLeftBank:
             return junior_rc_diag_flat_to_left_bank_paint_setup;
-        case TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK:
+        case TrackElemType::DiagFlatToRightBank:
             return junior_rc_diag_flat_to_right_bank_paint_setup;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT:
+        case TrackElemType::DiagLeftBankToFlat:
             return junior_rc_diag_left_bank_to_flat_paint_setup;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT:
+        case TrackElemType::DiagRightBankToFlat:
             return junior_rc_diag_right_bank_to_flat_paint_setup;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP:
+        case TrackElemType::DiagLeftBankToUp25:
             return junior_rc_diag_left_bank_to_25_deg_up_paint_setup;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP:
+        case TrackElemType::DiagRightBankToUp25:
             return junior_rc_diag_right_bank_to_25_deg_up_paint_setup;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK:
+        case TrackElemType::DiagUp25ToLeftBank:
             return junior_rc_diag_25_deg_up_to_left_bank_paint_setup;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK:
+        case TrackElemType::DiagUp25ToRightBank:
             return junior_rc_diag_25_deg_up_to_right_bank_paint_setup;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::DiagLeftBankToDown25:
             return junior_rc_diag_left_bank_to_25_deg_down_paint_setup;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::DiagRightBankToDown25:
             return junior_rc_diag_right_bank_to_25_deg_down_paint_setup;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK:
+        case TrackElemType::DiagDown25ToLeftBank:
             return junior_rc_diag_25_deg_down_to_left_bank_paint_setup;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TrackElemType::DiagDown25ToRightBank:
             return junior_rc_diag_25_deg_down_to_right_bank_paint_setup;
-        case TRACK_ELEM_DIAG_LEFT_BANK:
+        case TrackElemType::DiagLeftBank:
             return junior_rc_diag_left_bank_paint_setup;
-        case TRACK_ELEM_DIAG_RIGHT_BANK:
+        case TrackElemType::DiagRightBank:
             return junior_rc_diag_right_bank_paint_setup;
 
-        case TRACK_ELEM_BLOCK_BRAKES:
+        case TrackElemType::BlockBrakes:
             return junior_rc_block_brake_paint_setup;
 
-        case TRACK_ELEM_BOOSTER:
+        case TrackElemType::Booster:
             return junior_rc_booster_paint_setup;
 
-        case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_FLAT:
+        case TrackElemType::DiagDown60ToFlat:
             return junior_rc_diag_60_deg_down_to_flat_paint_setup;
-        case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+        case TrackElemType::DiagUp60ToFlat:
             return junior_rc_diag_60_deg_up_to_flat_paint_setup;
-        case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_UP:
+        case TrackElemType::DiagFlatToUp60:
             return junior_rc_diag_flat_to_60_deg_up_paint_setup;
-        case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
+        case TrackElemType::DiagFlatToDown60:
             return junior_rc_diag_flat_to_60_deg_down_paint_setup;
 
-        case TRACK_ELEM_ON_RIDE_PHOTO:
+        case TrackElemType::OnRidePhoto:
             return junior_rc_track_on_ride_photo;
     }
     return nullptr;

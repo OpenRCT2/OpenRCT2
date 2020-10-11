@@ -11,34 +11,33 @@
 
 #    include "NetworkGroup.h"
 
+#    include "../openrct2/core/Json.hpp"
 #    include "NetworkAction.h"
 #    include "NetworkTypes.h"
 
-NetworkGroup NetworkGroup::FromJson(const json_t* json)
+NetworkGroup NetworkGroup::FromJson(json_t& jsonData)
 {
-    NetworkGroup group;
-    json_t* jsonId = json_object_get(json, "id");
-    json_t* jsonName = json_object_get(json, "name");
-    json_t* jsonPermissions = json_object_get(json, "permissions");
+    Guard::Assert(jsonData.is_object(), "NetworkGroup::FromJson expects parameter jsonData to be object");
 
-    if (jsonId == nullptr || jsonName == nullptr || jsonPermissions == nullptr)
+    NetworkGroup group;
+    json_t jsonId = jsonData["id"];
+    json_t jsonName = jsonData["name"];
+    json_t jsonPermissions = jsonData["permissions"];
+
+    if (jsonId.is_null() || jsonName.is_null() || jsonPermissions.is_null())
     {
         throw std::runtime_error("Missing group data");
     }
 
-    group.Id = static_cast<uint8_t>(json_integer_value(jsonId));
-    group._name = std::string(json_string_value(jsonName));
+    group.Id = Json::GetNumber<uint8_t>(jsonId);
+    group._name = Json::GetString(jsonName);
     std::fill(group.ActionsAllowed.begin(), group.ActionsAllowed.end(), 0);
 
-    for (size_t i = 0; i < json_array_size(jsonPermissions); i++)
+    for (const auto& jsonValue : jsonPermissions)
     {
-        json_t* jsonPermissionValue = json_array_get(jsonPermissions, i);
-        const char* perm_name = json_string_value(jsonPermissionValue);
-        if (perm_name == nullptr)
-        {
-            continue;
-        }
-        NetworkPermission action_id = NetworkActions::FindCommandByPermissionName(perm_name);
+        const std::string permission = Json::GetString(jsonValue);
+
+        NetworkPermission action_id = NetworkActions::FindCommandByPermissionName(permission);
         if (action_id != NetworkPermission::Count)
         {
             group.ToggleActionPermission(action_id);
@@ -47,21 +46,21 @@ NetworkGroup NetworkGroup::FromJson(const json_t* json)
     return group;
 }
 
-json_t* NetworkGroup::ToJson() const
+json_t NetworkGroup::ToJson() const
 {
-    json_t* jsonGroup = json_object();
-    json_object_set_new(jsonGroup, "id", json_integer(Id));
-    json_object_set_new(jsonGroup, "name", json_string(GetName().c_str()));
-    json_t* actionsArray = json_array();
+    json_t jsonGroup = {
+        { "id", Id },
+        { "name", GetName() },
+    };
+    json_t actionsArray = json_t::array();
     for (size_t i = 0; i < NetworkActions::Actions.size(); i++)
     {
         if (CanPerformAction(static_cast<NetworkPermission>(i)))
         {
-            const char* perm_name = NetworkActions::Actions[i].PermissionName.c_str();
-            json_array_append_new(actionsArray, json_string(perm_name));
+            actionsArray.push_back(NetworkActions::Actions[i].PermissionName);
         }
     }
-    json_object_set_new(jsonGroup, "permissions", actionsArray);
+    jsonGroup["permissions"] = actionsArray;
     return jsonGroup;
 }
 

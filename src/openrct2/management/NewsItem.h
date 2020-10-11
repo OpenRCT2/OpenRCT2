@@ -17,6 +17,7 @@
 #include <optional>
 
 struct CoordsXYZ;
+class Formatter;
 
 namespace News
 {
@@ -246,8 +247,6 @@ namespace News
         uint16_t IncrementTicks();
         News::Item& Current();
         const News::Item& Current() const;
-        News::Item& Oldest();
-        const News::Item& Oldest() const;
         bool CurrentShouldBeArchived() const;
         void ArchiveCurrent();
         News::Item* FirstOpenOrNewSlot();
@@ -278,7 +277,6 @@ namespace News
 
     private:
         int32_t RemoveTime() const;
-        void AppendToArchive(News::Item& item);
 
         News::ItemQueue<News::ItemHistoryStart> Recent;
         News::ItemQueue<News::MaxItemsArchive> Archived;
@@ -291,8 +289,10 @@ namespace News
 
     std::optional<CoordsXYZ> GetSubjectLocation(News::ItemType type, int32_t subject);
 
-    News::Item* AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc);
+    News::Item* AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc, const Formatter& formatter);
     News::Item* AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc);
+
+    bool CheckIfItemRequiresAssoc(News::ItemType type);
 
     void OpenSubject(News::ItemType type, int32_t subject);
 

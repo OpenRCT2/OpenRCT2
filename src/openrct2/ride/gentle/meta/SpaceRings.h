@@ -28,8 +28,8 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
                      RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION |
                      RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << RIDE_MODE_SPACE_RINGS)),
-    SET_FIELD(DefaultMode, RIDE_MODE_SPACE_RINGS),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::SpaceRings)),
+    SET_FIELD(DefaultMode, RideMode::SpaceRings),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SPACE_RINGS, STR_RIDE_DESCRIPTION_SPACE_RINGS }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_RING, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor SpaceRingsRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 16, 48, 3, 2, }),
     SET_FIELD(MaxMass, 255),
-    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_space_rings),
     SET_FIELD(RatingsMultipliers, { 12, 4, 4 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),

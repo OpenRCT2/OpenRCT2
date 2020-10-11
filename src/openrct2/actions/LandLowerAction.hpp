@@ -30,12 +30,10 @@ DEFINE_GAME_ACTION(LandLowerAction, GAME_COMMAND_LOWER_LAND, GameActionResult)
 private:
     CoordsXY _coords;
     MapRange _range;
-    uint8_t _selectionType;
+    uint8_t _selectionType{};
 
 public:
-    LandLowerAction()
-    {
-    }
+    LandLowerAction() = default;
     LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
         : _coords(coords)
         , _range(range)
@@ -88,7 +86,8 @@ private:
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
+            OpenRCT2::Audio::Play3D(
+                OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
         }
 
         uint8_t maxHeight = map_get_highest_land_height(validRange);

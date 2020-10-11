@@ -14,13 +14,13 @@
 #include <memory>
 #include <string>
 
-enum DRAWING_ENGINE
+enum class DrawingEngine : int32_t
 {
-    DRAWING_ENGINE_NONE = -1,
-    DRAWING_ENGINE_SOFTWARE,
-    DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY,
-    DRAWING_ENGINE_OPENGL,
-    DRAWING_ENGINE_COUNT,
+    None = -1,
+    Software,
+    SoftwareWithHardwareDisplay,
+    OpenGL,
+    Count,
 };
 
 enum DRAWING_ENGINE_FLAGS
@@ -43,7 +43,6 @@ namespace OpenRCT2::Ui
 
 namespace OpenRCT2::Drawing
 {
-    enum class DRAWING_ENGINE_TYPE;
     struct IDrawingContext;
 
     struct IDrawingEngine
@@ -81,7 +80,7 @@ namespace OpenRCT2::Drawing
         {
         }
         virtual std::unique_ptr<IDrawingEngine> Create(
-            DRAWING_ENGINE_TYPE type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
+            DrawingEngine type, const std::shared_ptr<OpenRCT2::Ui::IUiContext>& uiContext) abstract;
     };
 
     struct IWeatherDrawer

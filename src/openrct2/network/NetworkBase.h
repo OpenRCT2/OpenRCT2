@@ -42,7 +42,7 @@ public: // Common
     void AppendChatLog(const std::string& s);
     void CloseChatLog();
     NetworkStats_t GetStats() const;
-    json_t* GetServerInfoAsJson() const;
+    json_t GetServerInfoAsJson() const;
     bool ProcessConnection(NetworkConnection& connection);
     void CloseConnection();
     NetworkPlayer* AddPlayer(const std::string& name, const std::string& keyhash);
@@ -227,7 +227,7 @@ private: // Client Data
     int32_t status = NETWORK_STATUS_NONE;
     uint8_t player_id = 0;
     uint16_t _port = 0;
-    SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    SocketStatus _lastConnectStatus = SocketStatus::Closed;
     bool _requireReconnect = false;
     bool _clientMapLoaded = false;
 };

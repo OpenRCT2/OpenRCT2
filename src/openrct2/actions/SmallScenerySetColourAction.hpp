@@ -31,10 +31,10 @@ DEFINE_GAME_ACTION(SmallScenerySetColourAction, GAME_COMMAND_SET_SCENERY_COLOUR,
 {
 private:
     CoordsXYZ _loc;
-    uint8_t _quadrant;
-    ObjectEntryIndex _sceneryType;
-    uint8_t _primaryColour;
-    uint8_t _secondaryColour;
+    uint8_t _quadrant{};
+    ObjectEntryIndex _sceneryType{};
+    uint8_t _primaryColour{};
+    uint8_t _secondaryColour{};
 
 public:
     SmallScenerySetColourAction() = default;

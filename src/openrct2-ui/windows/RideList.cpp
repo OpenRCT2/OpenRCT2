@@ -86,36 +86,20 @@ static void window_ride_list_invalidate(rct_window *w);
 static void window_ride_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_ride_list_events = {
-    nullptr,
-    window_ride_list_mouseup,
-    window_ride_list_resize,
-    window_ride_list_mousedown,
-    window_ride_list_dropdown,
-    nullptr,
-    window_ride_list_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_ride_list_scrollgetsize,
-    window_ride_list_scrollmousedown,
-    nullptr,
-    window_ride_list_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_ride_list_invalidate,
-    window_ride_list_paint,
-    window_ride_list_scrollpaint
-};
+static rct_window_event_list window_ride_list_events([](auto& events)
+{
+    events.mouse_up = &window_ride_list_mouseup;
+    events.resize = &window_ride_list_resize;
+    events.mouse_down = &window_ride_list_mousedown;
+    events.dropdown = &window_ride_list_dropdown;
+    events.update = &window_ride_list_update;
+    events.get_scroll_size = &window_ride_list_scrollgetsize;
+    events.scroll_mousedown = &window_ride_list_scrollmousedown;
+    events.scroll_mouseover = &window_ride_list_scrollmouseover;
+    events.invalidate = &window_ride_list_invalidate;
+    events.paint = &window_ride_list_paint;
+    events.scroll_paint = &window_ride_list_scrollpaint;
+});
 
 enum {
     INFORMATION_TYPE_STATUS,
@@ -607,12 +591,12 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             continue;
 
         // Ride name
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ride->FormatNameTo(ft);
         DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft, COLOUR_BLACK);
 
         // Ride information
-        ft.Rewind();
+        ft = Formatter();
         ft.Increment(2);
         auto formatSecondaryEnabled = true;
         rct_string_id formatSecondary = 0;
@@ -704,29 +688,39 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 }
                 break;
             case INFORMATION_TYPE_QUEUE_LENGTH:
-                ft.Add<uint16_t>(ride->GetTotalQueueLength());
-                formatSecondary = STR_QUEUE_EMPTY;
-                {
-                    uint16_t arg;
-                    std::memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
+            {
+                auto queueLength = ride->GetTotalQueueLength();
+                ft.Add<uint16_t>(queueLength);
 
-                    if (arg == 1)
-                        formatSecondary = STR_QUEUE_ONE_PERSON;
-                    else if (arg > 1)
-                        formatSecondary = STR_QUEUE_PEOPLE;
+                if (queueLength == 1)
+                {
+                    formatSecondary = STR_QUEUE_ONE_PERSON;
+                }
+                else if (queueLength > 1)
+                {
+                    formatSecondary = STR_QUEUE_PEOPLE;
+                }
+                else
+                {
+                    formatSecondary = STR_QUEUE_EMPTY;
                 }
                 break;
+            }
             case INFORMATION_TYPE_QUEUE_TIME:
-                ft.Add<uint16_t>(ride->GetMaxQueueTime());
-                formatSecondary = STR_QUEUE_TIME_LABEL;
-                {
-                    uint16_t arg;
-                    std::memcpy(&arg, gCommonFormatArgs + 2, sizeof(uint16_t));
+            {
+                auto maxQueueTime = ride->GetMaxQueueTime();
+                ft.Add<uint16_t>(maxQueueTime);
 
-                    if (arg > 1)
-                        formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
+                if (maxQueueTime > 1)
+                {
+                    formatSecondary = STR_QUEUE_TIME_PLURAL_LABEL;
+                }
+                else
+                {
+                    formatSecondary = STR_QUEUE_TIME_LABEL;
                 }
                 break;
+            }
             case INFORMATION_TYPE_RELIABILITY:
                 ft.Add<uint16_t>(ride->reliability_percentage);
                 formatSecondary = STR_RELIABILITY_LABEL;

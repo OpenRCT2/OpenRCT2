@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
@@ -23,7 +24,6 @@
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../ride/Track.h"
-#include "ObjectJsonHelpers.h"
 #include "ObjectRepository.h"
 
 #include <algorithm>
@@ -170,15 +170,15 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     // Validate properties
     if (_legacyType.excitement_multiplier > 75)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Excitement multiplier too high.");
+        context->LogError(ObjectError::InvalidProperty, "Excitement multiplier too high.");
     }
     if (_legacyType.intensity_multiplier > 75)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Intensity multiplier too high.");
+        context->LogError(ObjectError::InvalidProperty, "Intensity multiplier too high.");
     }
     if (_legacyType.nausea_multiplier > 75)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
+        context->LogError(ObjectError::InvalidProperty, "Nausea multiplier too high.");
     }
     RideObjectUpdateRideType(&_legacyType);
 }
@@ -439,7 +439,7 @@ void RideObject::ReadLegacyVehicle(
     vehicle->no_seating_rows = stream->ReadValue<uint8_t>();
     vehicle->spinning_inertia = stream->ReadValue<uint8_t>();
     vehicle->spinning_friction = stream->ReadValue<uint8_t>();
-    vehicle->friction_sound_id = stream->ReadValue<SoundId>();
+    vehicle->friction_sound_id = stream->ReadValue<OpenRCT2::Audio::SoundId>();
     vehicle->log_flume_reverser_vehicle_type = stream->ReadValue<uint8_t>();
     vehicle->sound_range = stream->ReadValue<uint8_t>();
     vehicle->double_sound_frequency = stream->ReadValue<uint8_t>();
@@ -523,175 +523,161 @@ uint8_t RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle* v
     return numHorizontalFrames;
 }
 
-void RideObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
+    Guard::Assert(root.is_object(), "RideObject::ReadJson expects parameter root to be object");
 
-    auto rideTypes = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "type"));
-    for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    json_t properties = root["properties"];
+
+    if (properties.is_object())
     {
-        uint8_t rideType = RIDE_TYPE_NULL;
-        if (i < rideTypes.size())
+        // This will convert a string to an array
+        json_t rideTypes = Json::AsArray(properties["type"]);
+        size_t numRideTypes = rideTypes.size();
+
+        for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
         {
-            rideType = ParseRideType(rideTypes[i]);
-            if (rideType == RIDE_TYPE_NULL)
+            uint8_t rideType = RIDE_TYPE_NULL;
+
+            if (i < numRideTypes)
             {
-                context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Unknown ride type");
+                rideType = ParseRideType(Json::GetString(rideTypes[i]));
+
+                if (rideType == RIDE_TYPE_NULL)
+                {
+                    context->LogError(ObjectError::InvalidProperty, "Unknown ride type");
+                }
+            }
+
+            _legacyType.ride_type[i] = rideType;
+        }
+
+        _legacyType.max_height = Json::GetNumber<uint8_t>(properties["maxHeight"]);
+
+        // This needs to be set for both shops/facilities _and_ regular rides.
+        for (auto& item : _legacyType.shop_item)
+        {
+            item = SHOP_ITEM_NONE;
+        }
+
+        auto carColours = Json::AsArray(properties["carColours"]);
+        _presetColours = ReadJsonCarColours(carColours);
+
+        if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
+        {
+            // Standard car info for a shop
+            auto& car = _legacyType.vehicles[0];
+            car.spacing = 544;
+            car.sprite_flags = VEHICLE_SPRITE_FLAG_FLAT;
+            car.sprite_width = 1;
+            car.sprite_height_negative = 1;
+            car.sprite_height_positive = 1;
+            car.flags = VEHICLE_ENTRY_FLAG_SPINNING;
+            car.car_visual = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
+            car.friction_sound_id = OpenRCT2::Audio::SoundId::Null;
+            car.sound_range = 0xFF;
+            car.draw_order = 6;
+
+            // Shop item
+            auto rideSells = Json::AsArray(properties["sells"]);
+            auto numShopItems = std::min(static_cast<size_t>(NUM_SHOP_ITEMS_PER_RIDE), rideSells.size());
+            for (size_t i = 0; i < numShopItems; i++)
+            {
+                auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
+                if (shopItem == SHOP_ITEM_NONE)
+                {
+                    context->LogWarning(ObjectError::InvalidProperty, "Unknown shop item");
+                }
+
+                _legacyType.shop_item[i] = shopItem;
+            }
+        }
+        else
+        {
+            ReadJsonVehicleInfo(context, properties);
+
+            auto swingMode = Json::GetNumber<int32_t>(properties["swingMode"]);
+            if (swingMode == 1)
+            {
+                _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
+            }
+            else if (swingMode == 2)
+            {
+                _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
+                _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2;
+            }
+
+            auto rotationMode = Json::GetNumber<int32_t>(properties["rotationMode"]);
+            if (rotationMode == 1)
+            {
+                _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1;
+            }
+            else if (rotationMode == 2)
+            {
+                _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2;
+            }
+
+            auto ratingMultiplier = properties["ratingMultipler"];
+            if (ratingMultiplier.is_object())
+            {
+                _legacyType.excitement_multiplier = Json::GetNumber<int8_t>(ratingMultiplier["excitement"]);
+                _legacyType.intensity_multiplier = Json::GetNumber<int8_t>(ratingMultiplier["intensity"]);
+                _legacyType.nausea_multiplier = Json::GetNumber<int8_t>(ratingMultiplier["nausea"]);
             }
         }
 
-        _legacyType.ride_type[i] = rideType;
-    }
-
-    _legacyType.max_height = ObjectJsonHelpers::GetInteger(properties, "maxHeight");
-
-    // This needs to be set for both shops/facilities _and_ regular rides.
-    for (auto& item : _legacyType.shop_item)
-    {
-        item = SHOP_ITEM_NONE;
-    }
-
-    _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
-
-    if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
-    {
-        // Standard car info for a shop
-        auto& car = _legacyType.vehicles[0];
-        car.spacing = 544;
-        car.sprite_flags = VEHICLE_SPRITE_FLAG_FLAT;
-        car.sprite_width = 1;
-        car.sprite_height_negative = 1;
-        car.sprite_height_positive = 1;
-        car.flags = VEHICLE_ENTRY_FLAG_SPINNING;
-        car.car_visual = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
-        car.friction_sound_id = SoundId::Null;
-        car.sound_range = 0xFF;
-        car.draw_order = 6;
-
-        // Shop item
-        auto rideSells = ObjectJsonHelpers::GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "sells"));
-        auto numShopItems = std::min(static_cast<size_t>(NUM_SHOP_ITEMS_PER_RIDE), rideSells.size());
-        for (size_t i = 0; i < numShopItems; i++)
-        {
-            auto shopItem = ParseShopItem(rideSells[i]);
-            if (shopItem == SHOP_ITEM_NONE)
+        _legacyType.BuildMenuPriority = Json::GetNumber<uint8_t>(properties["buildMenuPriority"]);
+        _legacyType.flags |= Json::GetFlags<uint32_t>(
+            properties,
             {
-                context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, "Unknown shop item");
-            }
-
-            _legacyType.shop_item[i] = ParseShopItem(rideSells[i]);
-        }
+                { "noInversions", RIDE_ENTRY_FLAG_NO_INVERSIONS },
+                { "noBanking", RIDE_ENTRY_FLAG_NO_BANKED_TRACK },
+                { "playDepartSound", RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND },
+                // Skipping "disallowWandering", no vehicle sets this flag.
+                { "playSplashSound", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND },
+                { "playSplashSoundSlide", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE },
+                { "hasShelter", RIDE_ENTRY_FLAG_COVERED_RIDE },
+                { "limitAirTimeBonus", RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS },
+                { "disableBreakdown", RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN },
+                // Skipping noDoorsOverTrack, moved to ride groups.
+                { "noCollisionCrashes", RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES },
+                { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB },
+            });
     }
-    else
-    {
-        ReadJsonVehicleInfo(context, properties);
-
-        auto swingMode = ObjectJsonHelpers::GetInteger(properties, "swingMode");
-        if (swingMode == 1)
-        {
-            _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
-        }
-        else if (swingMode == 2)
-        {
-            _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
-            _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2;
-        }
-
-        auto rotationMode = ObjectJsonHelpers::GetInteger(properties, "rotationMode");
-        if (rotationMode == 1)
-        {
-            _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1;
-        }
-        else if (rotationMode == 2)
-        {
-            _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2;
-        }
-
-        auto ratingMultiplier = json_object_get(properties, "ratingMultipler");
-        if (ratingMultiplier != nullptr)
-        {
-            _legacyType.excitement_multiplier = ObjectJsonHelpers::GetInteger(ratingMultiplier, "excitement");
-            _legacyType.intensity_multiplier = ObjectJsonHelpers::GetInteger(ratingMultiplier, "intensity");
-            _legacyType.nausea_multiplier = ObjectJsonHelpers::GetInteger(ratingMultiplier, "nausea");
-        }
-
-        auto availableTrackPieces = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "availableTrackPieces"));
-    }
-
-    _legacyType.BuildMenuPriority = ObjectJsonHelpers::GetInteger(properties, "buildMenuPriority", 0);
-    _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32_t>(
-        properties,
-        {
-            { "noInversions", RIDE_ENTRY_FLAG_NO_INVERSIONS },
-            { "noBanking", RIDE_ENTRY_FLAG_NO_BANKED_TRACK },
-            { "playDepartSound", RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND },
-            // Skipping "disallowWandering", no vehicle sets this flag.
-            { "playSplashSound", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND },
-            { "playSplashSoundSlide", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE },
-            { "hasShelter", RIDE_ENTRY_FLAG_COVERED_RIDE },
-            { "limitAirTimeBonus", RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS },
-            { "disableBreakdown", RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN },
-            // Skipping noDoorsOverTrack, moved to ride groups.
-            { "noCollisionCrashes", RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES },
-            { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB },
-        });
 
     RideObjectUpdateRideType(&_legacyType);
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    PopulateTablesFromJson(context, root);
 }
 
-void RideObject::ReadJsonVehicleInfo([[maybe_unused]] IReadObjectContext* context, const json_t* properties)
+void RideObject::ReadJsonVehicleInfo([[maybe_unused]] IReadObjectContext* context, json_t& properties)
 {
-    _legacyType.min_cars_in_train = ObjectJsonHelpers::GetInteger(properties, "minCarsPerTrain", 1);
-    _legacyType.max_cars_in_train = ObjectJsonHelpers::GetInteger(properties, "maxCarsPerTrain", 1);
-    _legacyType.cars_per_flat_ride = ObjectJsonHelpers::GetInteger(properties, "carsPerFlatRide", 255);
-    _legacyType.zero_cars = json_integer_value(json_object_get(properties, "numEmptyCars"));
+    Guard::Assert(properties.is_object(), "RideObject::ReadJsonVehicleInfo expects parameter properties to be object");
+
+    _legacyType.min_cars_in_train = Json::GetNumber<uint8_t>(properties["minCarsPerTrain"], 1);
+    _legacyType.max_cars_in_train = Json::GetNumber<uint8_t>(properties["maxCarsPerTrain"], 1);
+    _legacyType.cars_per_flat_ride = Json::GetNumber<uint8_t>(properties["carsPerFlatRide"], 255);
+    _legacyType.zero_cars = Json::GetNumber<uint8_t>(properties["numEmptyCars"]);
 
     // Train formation from car indices
-    _legacyType.default_vehicle = json_integer_value(json_object_get(properties, "defaultCar"));
-    _legacyType.tab_vehicle = json_integer_value(json_object_get(properties, "tabCar"));
-    auto tabScale = ObjectJsonHelpers::GetFloat(properties, "tabScale");
-    if (tabScale != 0 && ObjectJsonHelpers::GetFloat(properties, "tabScale") <= 0.5f)
+    _legacyType.default_vehicle = Json::GetNumber<uint8_t>(properties["defaultCar"]);
+    _legacyType.tab_vehicle = Json::GetNumber<uint8_t>(properties["tabCar"]);
+
+    float tabScale = Json::GetNumber<float>(properties["tabScale"]);
+    if (tabScale != 0 && tabScale <= 0.5f)
     {
         _legacyType.flags |= RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF;
     }
 
+    json_t headCars = Json::AsArray(properties["headCars"]);
+    json_t tailCars = Json::AsArray(properties["tailCars"]);
+
     // 0xFF means N/A.
-    _legacyType.front_vehicle = 0xFF;
-    _legacyType.second_vehicle = 0xFF;
-    _legacyType.third_vehicle = 0xFF;
-    _legacyType.rear_vehicle = 0xFF;
+    _legacyType.front_vehicle = Json::GetNumber<uint8_t>(headCars[0], 0xFF);
+    _legacyType.second_vehicle = Json::GetNumber<uint8_t>(headCars[1], 0xFF);
+    _legacyType.third_vehicle = Json::GetNumber<uint8_t>(headCars[2], 0xFF);
+    _legacyType.rear_vehicle = Json::GetNumber<uint8_t>(tailCars[0], 0xFF);
 
-    auto headCars = ObjectJsonHelpers::GetJsonIntegerArray(json_object_get(properties, "headCars"));
-    if (headCars.size() >= 1)
-    {
-        _legacyType.front_vehicle = headCars[0];
-    }
-    if (headCars.size() >= 2)
-    {
-        _legacyType.second_vehicle = headCars[1];
-    }
-    if (headCars.size() >= 3)
-    {
-        _legacyType.third_vehicle = headCars[2];
-    }
-    if (headCars.size() >= 4)
-    {
-        // More than 3 head cars not supported yet!
-    }
-
-    auto tailCars = ObjectJsonHelpers::GetJsonIntegerArray(json_object_get(properties, "tailCars"));
-    if (tailCars.size() >= 1)
-    {
-        _legacyType.rear_vehicle = tailCars[0];
-    }
-    if (tailCars.size() >= 2)
-    {
-        // More than 1 tail car not supported yet!
-    }
-
-    auto cars = ReadJsonCars(json_object_get(properties, "cars"));
+    auto cars = ReadJsonCars(properties["cars"]);
     auto numCars = std::min(std::size(_legacyType.vehicles), cars.size());
     for (size_t i = 0; i < numCars; i++)
     {
@@ -699,129 +685,131 @@ void RideObject::ReadJsonVehicleInfo([[maybe_unused]] IReadObjectContext* contex
     }
 }
 
-std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(const json_t* jCars)
+std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(json_t& jCars)
 {
     std::vector<rct_ride_entry_vehicle> cars;
 
-    if (json_is_array(jCars))
+    if (jCars.is_array())
     {
-        json_t* jCar;
-        size_t index;
-        json_array_foreach(jCars, index, jCar)
+        for (auto& jCar : jCars)
         {
-            auto car = ReadJsonCar(jCar);
-            cars.push_back(car);
+            if (jCar.is_object())
+            {
+                auto car = ReadJsonCar(jCar);
+                cars.push_back(car);
+            }
         }
     }
-    else if (json_is_object(jCars))
+    else if (jCars.is_object())
     {
         auto car = ReadJsonCar(jCars);
         cars.push_back(car);
     }
+
     return cars;
 }
 
-rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t* jCar)
+rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
 {
+    Guard::Assert(jCar.is_object(), "RideObject::ReadJsonCar expects parameter jCar to be object");
+
     rct_ride_entry_vehicle car = {};
-    car.rotation_frame_mask = ObjectJsonHelpers::GetInteger(jCar, "rotationFrameMask");
-    car.spacing = ObjectJsonHelpers::GetInteger(jCar, "spacing");
-    car.car_mass = ObjectJsonHelpers::GetInteger(jCar, "mass");
-    car.tab_height = ObjectJsonHelpers::GetInteger(jCar, "tabOffset");
-    car.num_seats = ObjectJsonHelpers::GetInteger(jCar, "numSeats");
-    if (ObjectJsonHelpers::GetBoolean(jCar, "seatsInPairs", true) && car.num_seats > 1)
+    car.rotation_frame_mask = Json::GetNumber<uint16_t>(jCar["rotationFrameMask"]);
+    car.spacing = Json::GetNumber<uint32_t>(jCar["spacing"]);
+    car.car_mass = Json::GetNumber<uint16_t>(jCar["mass"]);
+    car.tab_height = Json::GetNumber<int8_t>(jCar["tabOffset"]);
+    car.num_seats = Json::GetNumber<uint8_t>(jCar["numSeats"]);
+    if (Json::GetBoolean(jCar["seatsInPairs"], true) && car.num_seats > 1)
     {
         car.num_seats |= VEHICLE_SEAT_PAIR_FLAG;
     }
 
-    car.sprite_width = ObjectJsonHelpers::GetInteger(jCar, "spriteWidth");
-    car.sprite_height_negative = ObjectJsonHelpers::GetInteger(jCar, "spriteHeightNegative");
-    car.sprite_height_positive = ObjectJsonHelpers::GetInteger(jCar, "spriteHeightPositive");
-    car.animation = ObjectJsonHelpers::GetInteger(jCar, "animation");
-    car.base_num_frames = ObjectJsonHelpers::GetInteger(jCar, "baseNumFrames");
-    car.no_vehicle_images = ObjectJsonHelpers::GetInteger(jCar, "numImages");
-    car.no_seating_rows = ObjectJsonHelpers::GetInteger(jCar, "numSeatRows");
-    car.spinning_inertia = ObjectJsonHelpers::GetInteger(jCar, "spinningInertia");
-    car.spinning_friction = ObjectJsonHelpers::GetInteger(jCar, "spinningFriction");
-    car.friction_sound_id = static_cast<SoundId>(ObjectJsonHelpers::GetInteger(jCar, "frictionSoundId", 255));
-    car.log_flume_reverser_vehicle_type = ObjectJsonHelpers::GetInteger(jCar, "logFlumeReverserVehicleType");
-    car.sound_range = ObjectJsonHelpers::GetInteger(jCar, "soundRange", 255);
-    car.double_sound_frequency = ObjectJsonHelpers::GetInteger(jCar, "doubleSoundFrequency");
-    car.powered_acceleration = ObjectJsonHelpers::GetInteger(jCar, "poweredAcceleration");
-    car.powered_max_speed = ObjectJsonHelpers::GetInteger(jCar, "poweredMaxSpeed");
-    car.car_visual = ObjectJsonHelpers::GetInteger(jCar, "carVisual");
-    car.effect_visual = ObjectJsonHelpers::GetInteger(jCar, "effectVisual", 1);
-    car.draw_order = ObjectJsonHelpers::GetInteger(jCar, "drawOrder");
-    car.num_vertical_frames_override = ObjectJsonHelpers::GetInteger(jCar, "numVerticalFramesOverride");
+    car.sprite_width = Json::GetNumber<uint8_t>(jCar["spriteWidth"]);
+    car.sprite_height_negative = Json::GetNumber<uint8_t>(jCar["spriteHeightNegative"]);
+    car.sprite_height_positive = Json::GetNumber<uint8_t>(jCar["spriteHeightPositive"]);
+    car.animation = Json::GetNumber<uint8_t>(jCar["animation"]);
+    car.base_num_frames = Json::GetNumber<uint16_t>(jCar["baseNumFrames"]);
+    car.no_vehicle_images = Json::GetNumber<uint32_t>(jCar["numImages"]);
+    car.no_seating_rows = Json::GetNumber<uint8_t>(jCar["numSeatRows"]);
+    car.spinning_inertia = Json::GetNumber<uint8_t>(jCar["spinningInertia"]);
+    car.spinning_friction = Json::GetNumber<uint8_t>(jCar["spinningFriction"]);
+    car.friction_sound_id = Json::GetEnum<OpenRCT2::Audio::SoundId>(jCar["frictionSoundId"], OpenRCT2::Audio::SoundId::Null);
+    car.log_flume_reverser_vehicle_type = Json::GetNumber<uint8_t>(jCar["logFlumeReverserVehicleType"]);
+    car.sound_range = Json::GetNumber<uint8_t>(jCar["soundRange"], 255);
+    car.double_sound_frequency = Json::GetNumber<uint8_t>(jCar["doubleSoundFrequency"]);
+    car.powered_acceleration = Json::GetNumber<uint8_t>(jCar["poweredAcceleration"]);
+    car.powered_max_speed = Json::GetNumber<uint8_t>(jCar["poweredMaxSpeed"]);
+    car.car_visual = Json::GetNumber<uint8_t>(jCar["carVisual"]);
+    car.effect_visual = Json::GetNumber<uint8_t>(jCar["effectVisual"], 1);
+    car.draw_order = Json::GetNumber<uint8_t>(jCar["drawOrder"]);
+    car.num_vertical_frames_override = Json::GetNumber<uint8_t>(jCar["numVerticalFramesOverride"]);
 
-    auto& peepLoadingPositions = car.peep_loading_positions;
-    auto jLoadingPositions = json_object_get(jCar, "loadingPositions");
-    if (json_is_array(jLoadingPositions))
+    auto jLoadingPositions = jCar["loadingPositions"];
+    if (jLoadingPositions.is_array())
     {
-        auto arr = ObjectJsonHelpers::GetJsonIntegerArray(jLoadingPositions);
-        for (auto x : arr)
+        for (auto& jPos : jLoadingPositions)
         {
-            peepLoadingPositions.push_back(x);
+            car.peep_loading_positions.push_back(Json::GetNumber<int8_t>(jPos));
         }
     }
     else
     {
-        auto& peepLoadingWaypoints = car.peep_loading_waypoints;
-        auto jLoadingWaypoints = json_object_get(jCar, "loadingWaypoints");
-        if (json_is_array(jLoadingWaypoints))
+        auto jLoadingWaypoints = jCar["loadingWaypoints"];
+        if (jLoadingWaypoints.is_array())
         {
             car.flags |= VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS;
+            car.peep_loading_waypoint_segments = Json::GetNumber<uint8_t>(jCar["numSegments"]);
 
-            auto numSegments = ObjectJsonHelpers::GetInteger(jCar, "numSegments");
-            car.peep_loading_waypoint_segments = numSegments;
-
-            size_t i;
-            json_t* route;
-            json_array_foreach(jLoadingWaypoints, i, route)
+            for (auto& jRoute : jLoadingWaypoints)
             {
-                if (json_is_array(route))
+                if (jRoute.is_array())
                 {
-                    size_t j;
-                    json_t* waypoint;
                     std::array<CoordsXY, 3> entry;
-                    json_array_foreach(route, j, waypoint)
+
+                    for (size_t j = 0; j < 3; ++j)
                     {
-                        if (json_is_array(waypoint) && json_array_size(waypoint) >= 2)
+                        auto jWaypoint = jRoute[j];
+                        if (jWaypoint.is_array() && jWaypoint.size() >= 2)
                         {
-                            int32_t x = json_integer_value(json_array_get(waypoint, 0));
-                            int32_t y = json_integer_value(json_array_get(waypoint, 1));
+                            int32_t x = Json::GetNumber<int32_t>(jWaypoint[0]);
+                            int32_t y = Json::GetNumber<int32_t>(jWaypoint[1]);
                             entry[j] = { x, y };
                         }
                     }
-                    peepLoadingWaypoints.push_back(entry);
+
+                    car.peep_loading_waypoints.push_back(entry);
                 }
             }
         }
     }
 
-    auto jFrames = json_object_get(jCar, "frames");
-    car.sprite_flags = ObjectJsonHelpers::GetFlags<uint16_t>(
-        jFrames,
-        {
-            { "flat", VEHICLE_SPRITE_FLAG_FLAT },
-            { "gentleSlopes", VEHICLE_SPRITE_FLAG_GENTLE_SLOPES },
-            { "steepSlopes", VEHICLE_SPRITE_FLAG_STEEP_SLOPES },
-            { "verticalSlopes", VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES },
-            { "diagonalSlopes", VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES },
-            { "flatBanked", VEHICLE_SPRITE_FLAG_FLAT_BANKED },
-            { "inlineTwists", VEHICLE_SPRITE_FLAG_INLINE_TWISTS },
-            { "flatToGentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS },
-            { "diagonalGentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS },
-            { "gentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS },
-            { "gentleSlopeBankedTurns", VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS },
-            { "flatToGentleSlopeWhileBankedTransitions", VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS },
-            { "corkscrews", VEHICLE_SPRITE_FLAG_CORKSCREWS },
-            { "restraintAnimation", VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION },
-            { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
-            { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_15 },
-        });
+    auto jFrames = jCar["frames"];
+    if (jFrames.is_object())
+    {
+        car.sprite_flags = Json::GetFlags<uint16_t>(
+            jFrames,
+            {
+                { "flat", VEHICLE_SPRITE_FLAG_FLAT },
+                { "gentleSlopes", VEHICLE_SPRITE_FLAG_GENTLE_SLOPES },
+                { "steepSlopes", VEHICLE_SPRITE_FLAG_STEEP_SLOPES },
+                { "verticalSlopes", VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES },
+                { "diagonalSlopes", VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES },
+                { "flatBanked", VEHICLE_SPRITE_FLAG_FLAT_BANKED },
+                { "inlineTwists", VEHICLE_SPRITE_FLAG_INLINE_TWISTS },
+                { "flatToGentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS },
+                { "diagonalGentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS },
+                { "gentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS },
+                { "gentleSlopeBankedTurns", VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS },
+                { "flatToGentleSlopeWhileBankedTransitions",
+                  VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS },
+                { "corkscrews", VEHICLE_SPRITE_FLAG_CORKSCREWS },
+                { "restraintAnimation", VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION },
+                { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
+                { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_15 },
+            });
+    }
 
-    car.flags |= ObjectJsonHelpers::GetFlags<uint32_t>(
+    car.flags |= Json::GetFlags<uint32_t>(
         jCar,
         {
             { "VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY", VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY },
@@ -856,18 +844,21 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t* jCar)
             { "VEHICLE_ENTRY_FLAG_GO_KART", VEHICLE_ENTRY_FLAG_GO_KART },
             { "VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT", VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT },
         });
+
     return car;
 }
 
-vehicle_colour_preset_list RideObject::ReadJsonCarColours(const json_t* jCarColours)
+vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
 {
+    Guard::Assert(jCarColours.is_array(), "RideObject::ReadJsonCarColours expects parameter jCarColours to be array");
+
     // The JSON supports multiple configurations of per car colours, but
     // the ride entry structure currently doesn't allow for it. Assume that
     // a single configuration with multiple colour entries is per car scheme.
-    if (json_array_size(jCarColours) == 1)
+    if (jCarColours.size() == 1)
     {
-        auto firstElement = json_array_get(jCarColours, 0);
-        auto numColours = json_array_size(firstElement);
+        auto firstElement = Json::AsArray(jCarColours[0]);
+        auto numColours = firstElement.size();
         if (numColours >= 2)
         {
             // Read all colours from first config
@@ -881,11 +872,9 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(const json_t* jCarColo
 
     // Read first colour for each config
     vehicle_colour_preset_list list = {};
-    size_t index;
-    const json_t* jConfiguration;
-    json_array_foreach(jCarColours, index, jConfiguration)
+    for (size_t index = 0; index < jCarColours.size(); index++)
     {
-        auto config = ReadJsonColourConfiguration(jConfiguration);
+        auto config = ReadJsonColourConfiguration(jCarColours[index]);
         if (config.size() >= 1)
         {
             list.list[index] = config[0];
@@ -901,27 +890,27 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(const json_t* jCarColo
     return list;
 }
 
-std::vector<vehicle_colour> RideObject::ReadJsonColourConfiguration(const json_t* jColourConfig)
+std::vector<vehicle_colour> RideObject::ReadJsonColourConfiguration(json_t& jColourConfig)
 {
     std::vector<vehicle_colour> config;
-    size_t index;
-    const json_t* jColours;
-    json_array_foreach(jColourConfig, index, jColours)
+
+    for (auto& jColours : jColourConfig)
     {
         vehicle_colour carColour = {};
-        auto colours = ObjectJsonHelpers::GetJsonStringArray(jColours);
+
+        auto colours = Json::AsArray(jColours);
         if (colours.size() >= 1)
         {
-            carColour.main = ObjectJsonHelpers::ParseColour(colours[0]);
+            carColour.main = Colour::FromString(Json::GetString(colours[0]));
             carColour.additional_1 = carColour.main;
             carColour.additional_2 = carColour.main;
             if (colours.size() >= 2)
             {
-                carColour.additional_1 = ObjectJsonHelpers::ParseColour(colours[1]);
+                carColour.additional_1 = Colour::FromString(Json::GetString(colours[1]));
             }
             if (colours.size() >= 3)
             {
-                carColour.additional_2 = ObjectJsonHelpers::ParseColour(colours[2]);
+                carColour.additional_2 = Colour::FromString(Json::GetString(colours[2]));
             }
         }
         config.push_back(carColour);

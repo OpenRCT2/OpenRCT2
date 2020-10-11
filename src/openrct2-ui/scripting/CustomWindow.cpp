@@ -64,34 +64,21 @@ namespace OpenRCT2::Ui::Windows
     static void window_custom_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
     static void window_custom_update_viewport(rct_window* w);
 
-    static rct_window_event_list window_custom_events = { window_custom_close,
-                                                          window_custom_mouseup,
-                                                          window_custom_resize,
-                                                          window_custom_mousedown,
-                                                          window_custom_dropdown,
-                                                          nullptr,
-                                                          window_custom_update,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          window_custom_scrollgetsize,
-                                                          window_custom_scrollmousedown,
-                                                          window_custom_scrollmousedrag,
-                                                          window_custom_scrollmouseover,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          nullptr,
-                                                          window_custom_invalidate,
-                                                          window_custom_paint,
-                                                          window_custom_scrollpaint };
+    static rct_window_event_list window_custom_events([](auto& events) {
+        events.close = &window_custom_close;
+        events.mouse_up = &window_custom_mouseup;
+        events.resize = &window_custom_resize;
+        events.mouse_down = &window_custom_mousedown;
+        events.dropdown = &window_custom_dropdown;
+        events.update = &window_custom_update;
+        events.get_scroll_size = &window_custom_scrollgetsize;
+        events.scroll_mousedown = &window_custom_scrollmousedown;
+        events.scroll_mousedrag = &window_custom_scrollmousedrag;
+        events.scroll_mouseover = &window_custom_scrollmouseover;
+        events.invalidate = &window_custom_invalidate;
+        events.paint = &window_custom_paint;
+        events.scroll_paint = &window_custom_scrollpaint;
+    });
 
     struct CustomWidgetDesc
     {

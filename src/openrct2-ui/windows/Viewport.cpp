@@ -47,36 +47,14 @@ static void window_viewport_update(rct_window *w);
 static void window_viewport_invalidate(rct_window *w);
 static void window_viewport_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_viewport_events = {
-    nullptr,
-    window_viewport_mouseup,
-    window_viewport_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_viewport_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_viewport_invalidate,
-    window_viewport_paint,
-    nullptr
-};
+static rct_window_event_list window_viewport_events([](auto& events)
+{
+    events.mouse_up = &window_viewport_mouseup;
+    events.resize = &window_viewport_resize;
+    events.update = &window_viewport_update;
+    events.invalidate = &window_viewport_invalidate;
+    events.paint = &window_viewport_paint;
+});
 // clang-format on
 
 static int32_t _viewportNumber = 1;

@@ -107,7 +107,7 @@ void window_title_editor_open(int32_t tab);
 void window_title_command_editor_open(struct TitleSequence* sequence, int32_t command, bool insert);
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
 
-rct_window* window_error_open(rct_string_id title, rct_string_id message);
+rct_window* window_error_open(rct_string_id title, rct_string_id message, const class Formatter& formatter);
 rct_window* window_error_open(const std::string_view& title, const std::string_view& message);
 struct TrackDesign;
 rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);
@@ -141,6 +141,8 @@ void window_ride_measurements_design_cancel();
 extern RideSelection _window_track_list_item;
 rct_window* window_track_list_open(RideSelection item);
 
+void SetMapTooltip(Formatter& ft);
+const Formatter& GetMapTooltip();
 void window_map_tooltip_update_visibility();
 
 rct_window* window_maze_construction_open();
@@ -191,7 +193,7 @@ void window_tile_inspector_clear_clipboard();
 rct_window* window_editor_object_selection_open();
 
 void window_tooltip_reset(const ScreenCoordsXY& screenCoords);
-void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords);
+void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoords);
 void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_tooltip_close();
 

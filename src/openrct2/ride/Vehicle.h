@@ -21,8 +21,6 @@
 #include <cstddef>
 #include <vector>
 
-enum class SoundId : uint8_t;
-
 struct rct_vehicle_colour
 {
     uint8_t body_colour;
@@ -79,13 +77,13 @@ struct rct_ride_entry_vehicle
         uint32_t curved_lift_hill_image_id; // 0x4C , 0x66
         uint32_t corkscrew_image_id;        // 0x4C , 0x66
     };
-    uint32_t no_vehicle_images;              // 0x50 , 0x6A
-    uint8_t no_seating_rows;                 // 0x54 , 0x6E
-    uint8_t spinning_inertia;                // 0x55 , 0x6F
-    uint8_t spinning_friction;               // 0x56 , 0x70
-    SoundId friction_sound_id;               // 0x57 , 0x71
-    uint8_t log_flume_reverser_vehicle_type; // 0x58 , 0x72
-    uint8_t sound_range;                     // 0x59 , 0x73
+    uint32_t no_vehicle_images;                 // 0x50 , 0x6A
+    uint8_t no_seating_rows;                    // 0x54 , 0x6E
+    uint8_t spinning_inertia;                   // 0x55 , 0x6F
+    uint8_t spinning_friction;                  // 0x56 , 0x70
+    OpenRCT2::Audio::SoundId friction_sound_id; // 0x57 , 0x71
+    uint8_t log_flume_reverser_vehicle_type;    // 0x58 , 0x72
+    uint8_t sound_range;                        // 0x59 , 0x73
     uint8_t
         double_sound_frequency;   // 0x5A , 0x74 (Doubles the velocity when working out the sound frequency {used on go karts})
     uint8_t powered_acceleration; // 0x5B , 0x75
@@ -108,8 +106,6 @@ static_assert(sizeof(rct_ride_entry_vehicle) % 4 == 0, "Invalid struct size");
 #else
 static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
 #endif
-
-struct rct_vehicle_sound_params;
 
 enum class VehicleTrackSubposition : uint8_t
 {
@@ -266,9 +262,9 @@ struct Vehicle : SpriteBase
     };
     uint16_t sound2_flags;
     uint8_t spin_sprite; // lowest 3 bits not used for sprite selection (divide by 8 to use)
-    SoundId sound1_id;
+    OpenRCT2::Audio::SoundId sound1_id;
     uint8_t sound1_volume;
-    SoundId sound2_id;
+    OpenRCT2::Audio::SoundId sound2_id;
     uint8_t sound2_volume;
     int8_t sound_vector_factor;
     union
@@ -289,7 +285,7 @@ struct Vehicle : SpriteBase
     uint8_t pad_C6[0x2];
     uint16_t var_C8;
     uint16_t var_CA;
-    SoundId scream_sound_id;
+    OpenRCT2::Audio::SoundId scream_sound_id;
     VehicleTrackSubposition TrackSubposition;
     union
     {
@@ -323,7 +319,7 @@ struct Vehicle : SpriteBase
     void Invalidate();
     void SetState(Vehicle::Status vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
-    void UpdateSoundParams(std::vector<rct_vehicle_sound_params>& vehicleSoundParamsList) const;
+    void UpdateSoundParams(std::vector<OpenRCT2::Audio::VehicleSoundParams>& vehicleSoundParamsList) const;
     bool DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* spriteId) const;
     int32_t UpdateTrackMotion(int32_t* outStation);
     int32_t CableLiftUpdateTrackMotion();
@@ -359,7 +355,7 @@ private:
     uint16_t GetSoundPriority() const;
     const rct_vehicle_info* GetMoveInfo() const;
     uint16_t GetTrackProgress() const;
-    rct_vehicle_sound_params CreateSoundParam(uint16_t priority) const;
+    OpenRCT2::Audio::VehicleSoundParams CreateSoundParam(uint16_t priority) const;
     void CableLiftUpdate();
     bool CableLiftUpdateTrackMotionForwards();
     bool CableLiftUpdateTrackMotionBackwards();
@@ -400,8 +396,8 @@ private:
     void UpdateDoingCircusShow();
     void UpdateCrossings() const;
     void UpdateSound();
-    SoundId UpdateScreamSound();
-    SoundId ProduceScreamSound(const int32_t totalNumPeeps);
+    OpenRCT2::Audio::SoundId UpdateScreamSound();
+    OpenRCT2::Audio::SoundId ProduceScreamSound(const int32_t totalNumPeeps);
     void UpdateCrashSetup();
     void UpdateCollisionSetup();
     int32_t UpdateMotionDodgems();

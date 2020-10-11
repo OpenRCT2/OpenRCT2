@@ -333,133 +333,41 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_cheats_set_page(rct_window *w, int32_t page);
 static void window_cheats_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_cheats_money_events =
+static rct_window_event_list window_cheats_money_events([](auto& events)
 {
-    nullptr,
-    window_cheats_money_mouseup,
-    nullptr,
-    window_cheats_money_mousedown,
-    nullptr,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_text_input,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_money_mouseup;
+    events.mouse_down = &window_cheats_money_mousedown;
+    events.update = &window_cheats_update;
+    events.text_input = &window_cheats_text_input;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-static rct_window_event_list window_cheats_guests_events =
+static rct_window_event_list window_cheats_guests_events([](auto& events)
 {
-    nullptr,
-    window_cheats_guests_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_guests_mouseup;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-static rct_window_event_list window_cheats_misc_events =
+static rct_window_event_list window_cheats_misc_events([](auto& events)
 {
-    nullptr,
-    window_cheats_misc_mouseup,
-    nullptr,
-    window_cheats_misc_mousedown,
-    window_cheats_misc_dropdown,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_misc_mouseup;
+    events.mouse_down = &window_cheats_misc_mousedown;
+    events.dropdown = &window_cheats_misc_dropdown;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-static rct_window_event_list window_cheats_rides_events =
+static rct_window_event_list window_cheats_rides_events([](auto& events)
 {
-    nullptr,
-    window_cheats_rides_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_rides_mouseup;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
 
 static rct_window_event_list *window_cheats_page_events[] =
@@ -492,7 +400,6 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_DAY_BOX) |
     (1ULL << WIDX_DAY_UP) |
     (1ULL << WIDX_DAY_DOWN) |
-    (1ULL << WIDX_MONTH_BOX) |
     (1ULL << WIDX_DATE_GROUP) |
     (1ULL << WIDX_DATE_RESET),
 
@@ -850,10 +757,10 @@ static void window_cheats_guests_mouseup(rct_window* w, rct_widgetindex widgetIn
             CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA, 0);
             break;
         case WIDX_GUEST_NAUSEA_TOLERANCE_MAX:
-            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, PEEP_NAUSEA_TOLERANCE_HIGH);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, EnumValue(PeepNauseaTolerance::High));
             break;
         case WIDX_GUEST_NAUSEA_TOLERANCE_MIN:
-            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, PEEP_NAUSEA_TOLERANCE_NONE);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, EnumValue(PeepNauseaTolerance::None));
             break;
         case WIDX_GUEST_TOILET_MAX:
             CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, PEEP_MAX_TOILET);
@@ -1016,7 +923,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             if (!gCheatsShowAllOperatingModes)
             {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
             }
             CheatsSet(CheatType::ShowAllOperatingModes, !gCheatsShowAllOperatingModes);
         }
@@ -1025,7 +932,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             if (!gCheatsShowVehiclesFromOtherTrackTypes)
             {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
             }
             CheatsSet(CheatType::ShowVehiclesFromOtherTrackTypes, !gCheatsShowVehiclesFromOtherTrackTypes);
         }
@@ -1034,7 +941,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             if (!gCheatsDisableTrainLengthLimit)
             {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
             }
             CheatsSet(CheatType::DisableTrainLengthLimit, !gCheatsDisableTrainLengthLimit);
         }
@@ -1046,7 +953,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             if (!gCheatsAllowArbitraryRideTypeChanges)
             {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
             }
             CheatsSet(CheatType::AllowArbitraryRideTypeChanges, !gCheatsAllowArbitraryRideTypeChanges);
         }
@@ -1064,7 +971,7 @@ static void window_cheats_rides_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             if (!gCheatsAllowTrackPlaceInvalidHeights)
             {
-                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+                context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE, {});
             }
             CheatsSet(CheatType::AllowTrackPlaceInvalidHeights, !gCheatsAllowTrackPlaceInvalidHeights);
         }
@@ -1213,31 +1120,38 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->page == WINDOW_CHEATS_PAGE_MONEY)
     {
         uint8_t colour = w->colours[1];
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<money32>(_moneySpinnerValue);
         if (widget_is_disabled(w, WIDX_MONEY_SPINNER))
         {
             colour |= COLOUR_FLAG_INSET;
         }
         int32_t actual_month = _monthSpinnerValue - 1;
-        gfx_draw_string_left(
-            dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->windowPos + ScreenCoordsXY{ X_LCOL, 93 });
+        gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH, ft.Data(), colour, w->windowPos + ScreenCoordsXY{ X_LCOL, 93 });
         gfx_draw_string_left(dpi, STR_YEAR, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 198 });
         gfx_draw_string_left(dpi, STR_MONTH, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 219 });
         gfx_draw_string_left(dpi, STR_DAY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 240 });
-        gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_yearSpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 198 });
-        gfx_draw_string_right(
-            dpi, STR_FORMAT_MONTH, &actual_month, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 219 });
-        gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_daySpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 240 });
+        ft = Formatter();
+        ft.Add<int32_t>(_yearSpinnerValue);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ X_RCOL, 198 }, STR_FORMAT_INTEGER, ft, w->colours[1], TextAlignment::RIGHT);
+        ft = Formatter();
+        ft.Add<int32_t>(actual_month);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ X_RCOL, 219 }, STR_FORMAT_MONTH, ft, w->colours[1], TextAlignment::RIGHT);
+        ft = Formatter();
+        ft.Add<int32_t>(_daySpinnerValue);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ X_RCOL, 240 }, STR_FORMAT_INTEGER, ft, w->colours[1], TextAlignment::RIGHT);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
         gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 408 });
         gfx_draw_string_left(dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 261 });
-        gfx_draw_string_right(
-            dpi, STR_FORMAT_INTEGER, &_parkRatingSpinnerValue, w->colours[1], w->windowPos + ScreenCoordsXY{ X_RCOL, 156 });
+        auto ft = Formatter();
+        ft.Add<int32_t>(_parkRatingSpinnerValue);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ X_RCOL, 156 }, STR_FORMAT_INTEGER, ft, w->colours[1], TextAlignment::RIGHT);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
     {

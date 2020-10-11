@@ -49,36 +49,12 @@ static void window_debug_paint_mouseup(rct_window * w, rct_widgetindex widgetInd
 static void window_debug_paint_invalidate(rct_window * w);
 static void window_debug_paint_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
-static rct_window_event_list window_debug_paint_events = {
-    nullptr,
-    window_debug_paint_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_debug_paint_invalidate,
-    window_debug_paint_paint,
-    nullptr
-};
+static rct_window_event_list window_debug_paint_events([](auto& events)
+{
+    events.mouse_up = &window_debug_paint_mouseup;
+    events.invalidate = &window_debug_paint_invalidate;
+    events.paint = &window_debug_paint_paint;
+});
 // clang-format on
 
 rct_window* window_debug_paint_open()

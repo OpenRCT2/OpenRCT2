@@ -80,11 +80,11 @@ void screenshot_check()
 
             if (!screenshotPath.empty())
             {
-                audio_play_sound(SoundId::WindowOpen, 100, context_get_width() / 2);
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 100, context_get_width() / 2);
             }
             else
             {
-                context_show_error(STR_SCREENSHOT_FAILED, STR_NONE);
+                context_show_error(STR_SCREENSHOT_FAILED, STR_NONE, {});
             }
 
             // redraw_weather();
@@ -414,15 +414,15 @@ void screenshot_giant()
         WriteDpiToFile(path->c_str(), &dpi, gPalette);
 
         // Show user that screenshot saved successfully
-        auto ft = Formatter::Common();
+        Formatter ft;
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(path_get_filename(path->c_str()));
-        context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE);
+        context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
     }
     catch (const std::exception& e)
     {
         log_error("%s", e.what());
-        context_show_error(STR_SCREENSHOT_FAILED, STR_NONE);
+        context_show_error(STR_SCREENSHOT_FAILED, STR_NONE, {});
     }
 
     ReleaseDPI(dpi);
@@ -495,7 +495,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
         }
 
         const double average = totalTime / static_cast<double>(totalRenderCount);
-        const auto engineStringId = DrawingEngineStringIds[DRAWING_ENGINE_SOFTWARE];
+        const auto engineStringId = DrawingEngineStringIds[EnumValue(DrawingEngine::Software)];
         const auto engineName = format_string(engineStringId, nullptr);
         std::printf("Engine: %s\n", engineName.c_str());
         std::printf("Render Count: %u\n", totalRenderCount);

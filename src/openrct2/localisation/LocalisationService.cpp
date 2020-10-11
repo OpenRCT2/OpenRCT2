@@ -74,7 +74,7 @@ std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
     return languagePath;
 }
 
-void LocalisationService::OpenLanguage(int32_t id, IObjectManager& objectManager)
+void LocalisationService::OpenLanguage(int32_t id)
 {
     CloseLanguages();
     if (id == LANGUAGE_UNDEFINED)
@@ -96,9 +96,6 @@ void LocalisationService::OpenLanguage(int32_t id, IObjectManager& objectManager
     {
         _currentLanguage = id;
         TryLoadFonts(*this);
-
-        // Objects and their localised strings need to be refreshed
-        objectManager.ResetObjects();
     }
     else
     {

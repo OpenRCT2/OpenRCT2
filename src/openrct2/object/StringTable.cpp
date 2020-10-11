@@ -10,6 +10,7 @@
 #include "StringTable.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/LanguagePack.h"
@@ -72,8 +73,47 @@ void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, O
     }
     catch (const std::exception&)
     {
-        context->LogError(OBJECT_ERROR_BAD_STRING_TABLE, "Bad string table.");
+        context->LogError(ObjectError::BadStringTable, "Bad string table.");
         throw;
+    }
+    Sort();
+}
+
+ObjectStringID StringTable::ParseStringId(const std::string& s)
+{
+    if (s == "name")
+        return ObjectStringID::NAME;
+    if (s == "description")
+        return ObjectStringID::DESCRIPTION;
+    if (s == "capacity")
+        return ObjectStringID::CAPACITY;
+    if (s == "vehicleName")
+        return ObjectStringID::VEHICLE_NAME;
+    return ObjectStringID::UNKNOWN;
+}
+
+void StringTable::ReadJson(json_t& root)
+{
+    Guard::Assert(root.is_object(), "StringTable::ReadJson expects parameter root to be object");
+
+    // We trust the JSON type of root is object
+    auto jsonStrings = root["strings"];
+
+    for (auto& [key, jsonLanguages] : jsonStrings.items())
+    {
+        auto stringId = ParseStringId(key);
+        if (stringId != ObjectStringID::UNKNOWN)
+        {
+            for (auto& [locale, jsonString] : jsonLanguages.items())
+            {
+                auto langId = language_get_id_from_locale(locale.c_str());
+                if (langId != LANGUAGE_UNDEFINED)
+                {
+                    auto string = Json::GetString(jsonString);
+                    SetString(stringId, langId, string);
+                }
+            }
+        }
     }
     Sort();
 }

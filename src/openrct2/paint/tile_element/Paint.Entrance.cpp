@@ -161,10 +161,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     if (!is_exit && !(tile_element->IsGhost()) && tile_element->AsEntrance()->GetRideIndex() != RIDE_ID_NULL
         && stationObj->ScrollingMode != SCROLLING_MODE_NONE)
     {
-        // clear next 8 bytes
-        Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
-
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_RIDE_ENTRANCE_NAME);
 
         if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
@@ -179,11 +176,11 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
         utf8 entrance_string[256];
         if (gConfigGeneral.upper_case_banners)
         {
-            format_string_to_upper(entrance_string, sizeof(entrance_string), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+            format_string_to_upper(entrance_string, sizeof(entrance_string), STR_BANNER_TEXT_FORMAT, ft.Data());
         }
         else
         {
-            format_string(entrance_string, sizeof(entrance_string), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+            format_string(entrance_string, sizeof(entrance_string), STR_BANNER_TEXT_FORMAT, ft.Data());
         }
 
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -269,8 +266,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 break;
 
             {
-                Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
-                auto ft = Formatter::Common();
+                auto ft = Formatter();
 
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
                 {
@@ -288,11 +284,11 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 utf8 park_name[256];
                 if (gConfigGeneral.upper_case_banners)
                 {
-                    format_string_to_upper(park_name, sizeof(park_name), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+                    format_string_to_upper(park_name, sizeof(park_name), STR_BANNER_TEXT_FORMAT, ft.Data());
                 }
                 else
                 {
-                    format_string(park_name, sizeof(park_name), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+                    format_string(park_name, sizeof(park_name), STR_BANNER_TEXT_FORMAT, ft.Data());
                 }
 
                 gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;

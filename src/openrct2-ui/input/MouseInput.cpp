@@ -76,7 +76,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
 static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex);
 void input_state_widget_pressed(
     const ScreenCoordsXY& screenCoords, int32_t state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
-void set_cursor(uint8_t cursor_id);
+void set_cursor(CursorID cursor_id);
 static void input_window_position_continue(
     rct_window* w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords);
 static void input_window_position_end(rct_window* w, const ScreenCoordsXY& screenCoords);
@@ -931,10 +931,6 @@ static void input_widget_over(const ScreenCoordsXY& screenCoords, rct_window* w,
     {
         input_update_tooltip(w, widgetIndex, screenCoords);
     }
-
-    gTooltipTimeout = 0;
-    gTooltipCursorX = screenCoords.x;
-    gTooltipCursorY = screenCoords.y;
 }
 
 /**
@@ -1052,7 +1048,7 @@ static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w,
         default:
             if (widget_is_enabled(w, widgetIndex) && !widget_is_disabled(w, widgetIndex))
             {
-                audio_play_sound(SoundId::Click1, 0, w->windowPos.x + widget->midX());
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget->midX());
 
                 // Set new cursor down widget
                 gPressedWidget.window_classification = windowClass;
@@ -1079,17 +1075,14 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
 {
     rct_window* window;
 
-    int32_t cursorId;
-
-    cursorId = CURSOR_ARROW;
-    auto ft = Formatter::MapTooltip();
+    CursorID cursorId = CursorID::Arrow;
+    auto ft = Formatter();
     ft.Add<rct_string_id>(STR_NONE);
+    SetMapTooltip(ft);
     window = window_find_from_point(screenCoords);
 
     if (window != nullptr)
     {
-        int32_t ebx, edi;
-        rct_window* subWindow;
         rct_widgetindex widgetId = window_find_widget_from_point(window, screenCoords);
         if (widgetId != -1)
         {
@@ -1100,27 +1093,12 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
                     {
                         if (viewport_interaction_left_over(screenCoords))
                         {
-                            set_cursor(CURSOR_HAND_POINT);
+                            set_cursor(CursorID::HandPoint);
                             return;
                         }
                         break;
                     }
-                    cursorId = gCurrentToolId;
-                    subWindow = window_find_by_number(
-                        gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
-                    if (subWindow == nullptr)
-                        break;
-
-                    ebx = 0;
-                    edi = cursorId;
-                    // Window event WE_UNKNOWN_0E was called here, but no windows actually implemented a handler and
-                    // it's not known what it was for
-                    cursorId = edi;
-                    if ((ebx & 0xFF) != 0)
-                    {
-                        set_cursor(cursorId);
-                        return;
-                    }
+                    cursorId = static_cast<CursorID>(gCurrentToolId);
                     break;
 
                 case WWT_FRAME:
@@ -1137,7 +1115,7 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
                     if (screenCoords.y < window->windowPos.y + window->height - 0x13)
                         break;
 
-                    cursorId = CURSOR_DIAGONAL_ARROWS;
+                    cursorId = CursorID::DiagonalArrows;
                     break;
 
                 case WWT_SCROLL:
@@ -1146,22 +1124,21 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
                     ScreenCoordsXY scrollCoords;
                     widget_scroll_get_part(
                         window, &window->widgets[widgetId], screenCoords, scrollCoords, &output_scroll_area, &scroll_id);
-                    cursorId = scroll_id;
                     if (output_scroll_area != SCROLL_PART_VIEW)
                     {
-                        cursorId = CURSOR_ARROW;
+                        cursorId = CursorID::Arrow;
                         break;
                     }
                     // Same as default but with scroll_x/y
                     cursorId = window_event_cursor_call(window, widgetId, scrollCoords);
-                    if (cursorId == -1)
-                        cursorId = CURSOR_ARROW;
+                    if (cursorId == CursorID::Undefined)
+                        cursorId = CursorID::Arrow;
                     break;
                 }
                 default:
                     cursorId = window_event_cursor_call(window, widgetId, screenCoords);
-                    if (cursorId == -1)
-                        cursorId = CURSOR_ARROW;
+                    if (cursorId == CursorID::Undefined)
+                        cursorId = CursorID::Arrow;
                     break;
             }
         }
@@ -1336,7 +1313,7 @@ void input_state_widget_pressed(
 
             {
                 int32_t mid_point_x = widget->midX() + w->windowPos.x;
-                audio_play_sound(SoundId::Click2, 0, mid_point_x);
+                OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click2, 0, mid_point_x);
             }
             if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                 break;
@@ -1418,8 +1395,7 @@ void input_state_widget_pressed(
                 STR_COLOUR_BRIGHT_PINK_TIP,
                 STR_COLOUR_LIGHT_PINK_TIP,
             };
-
-            window_tooltip_show(colourTooltips[dropdown_index], screenCoords);
+            window_tooltip_show(OpenRCT2String{ colourTooltips[dropdown_index], {} }, screenCoords);
         }
 
         if (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index))
@@ -1455,6 +1431,10 @@ static void input_update_tooltip(rct_window* w, rct_widgetindex widgetIndex, con
                 window_tooltip_open(w, widgetIndex, screenCoords);
             }
         }
+
+        gTooltipTimeout = 0;
+        gTooltipCursorX = screenCoords.x;
+        gTooltipCursorY = screenCoords.y;
     }
     else
     {
@@ -1503,11 +1483,12 @@ int32_t get_next_key()
  *
  *  rct2: 0x006ED990
  */
-void set_cursor(uint8_t cursor_id)
+void set_cursor(CursorID cursor_id)
 {
+    assert(cursor_id != CursorID::Undefined);
     if (_inputState == InputState::Resizing)
     {
-        cursor_id = CURSOR_DIAGONAL_ARROWS;
+        cursor_id = CursorID::DiagonalArrows;
     }
     context_setcurrentcursor(cursor_id);
 }

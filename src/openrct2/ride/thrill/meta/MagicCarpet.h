@@ -29,8 +29,8 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS |
                      RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION |
                      RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << RIDE_MODE_SWING)),
-    SET_FIELD(DefaultMode, RIDE_MODE_SWING),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::Swing)),
+    SET_FIELD(DefaultMode, RideMode::Swing),
     SET_FIELD(OperatingSettings, { 7, 15, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 15, 176, 7, 11, }),
     SET_FIELD(MaxMass, 255),
-    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_magic_carpet),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),

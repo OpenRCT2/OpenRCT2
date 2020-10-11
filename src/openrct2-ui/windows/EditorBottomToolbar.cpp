@@ -58,36 +58,12 @@ static void window_editor_bottom_toolbar_jump_forward_to_options_selection();
 static void window_editor_bottom_toolbar_jump_forward_to_objective_selection();
 static void window_editor_bottom_toolbar_jump_forward_to_save_scenario();
 
-static rct_window_event_list window_editor_bottom_toolbar_events = {
-    nullptr,
-    window_editor_bottom_toolbar_mouseup, // 0x0066f5ae,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_bottom_toolbar_invalidate, // 0x0066f1c9,
-    window_editor_bottom_toolbar_paint, // 0x0066f25c,
-    nullptr
-};
+static rct_window_event_list window_editor_bottom_toolbar_events([](auto& events)
+{
+    events.mouse_up = &window_editor_bottom_toolbar_mouseup;
+    events.invalidate = &window_editor_bottom_toolbar_invalidate;
+    events.paint = &window_editor_bottom_toolbar_paint;
+});
 
 static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
     nullptr,
@@ -207,7 +183,7 @@ static bool window_editor_bottom_toolbar_check_object_selection()
         return true;
     }
 
-    context_show_error(STR_INVALID_SELECTION_OF_OBJECTS, gGameCommandErrorText);
+    context_show_error(STR_INVALID_SELECTION_OF_OBJECTS, gGameCommandErrorText, {});
     w = window_find_by_class(WC_EDITOR_OBJECT_SELECTION);
     if (w != nullptr)
     {
@@ -251,7 +227,7 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up()
     }
     else
     {
-        context_show_error(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, gGameCommandErrorText);
+        context_show_error(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, gGameCommandErrorText, {});
     }
 
     gfx_invalidate_screen();
@@ -289,7 +265,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
 {
     if (!scenario_prepare_for_save())
     {
-        context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, gGameCommandErrorText);
+        context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, gGameCommandErrorText, {});
         gfx_invalidate_screen();
         return;
     }

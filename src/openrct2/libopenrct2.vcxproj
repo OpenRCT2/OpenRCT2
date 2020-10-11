@@ -34,6 +34,7 @@
     <ClCompile>
       <PreprocessorDefinitions>__ENABLE_DISCORD__;__ENABLE_LIGHTFX__;USE_BENCHMARK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Breakpad)'=='true'">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">USE_FRIBIDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
@@ -168,6 +169,7 @@
     <ClInclude Include="core\IStream.hpp" />
     <ClInclude Include="core\JobPool.hpp" />
     <ClInclude Include="core\Json.hpp" />
+    <ClInclude Include="core\JsonFwd.hpp" />
     <ClInclude Include="core\Memory.hpp" />
     <ClInclude Include="core\MemoryStream.h" />
     <ClInclude Include="core\Meta.hpp" />
@@ -175,7 +177,7 @@
     <ClInclude Include="core\Numerics.hpp" />
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
-    <ClInclude Include="core\Registration.hpp" />
+    <ClInclude Include="core\RTL.h" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.hpp" />
     <ClInclude Include="core\StringReader.hpp" />
@@ -217,6 +219,7 @@
     <ClInclude Include="localisation\Currency.h" />
     <ClInclude Include="localisation\Date.h" />
     <ClInclude Include="localisation\FormatCodes.h" />
+    <ClInclude Include="localisation\Formatter.h" />
     <ClInclude Include="localisation\Language.h" />
     <ClInclude Include="localisation\LanguagePack.h" />
     <ClInclude Include="localisation\Localisation.h" />
@@ -252,7 +255,6 @@
     <ClInclude Include="object\LargeSceneryObject.h" />
     <ClInclude Include="object\Object.h" />
     <ClInclude Include="object\ObjectFactory.h" />
-    <ClInclude Include="object\ObjectJsonHelpers.h" />
     <ClInclude Include="object\ObjectLimits.h" />
     <ClInclude Include="object\ObjectList.h" />
     <ClInclude Include="object\ObjectManager.h" />
@@ -276,6 +278,7 @@
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
     <ClInclude Include="ParkImporter.h" />
+    <ClInclude Include="peep\GuestPathfinding.h" />
     <ClInclude Include="peep\Peep.h" />
     <ClInclude Include="peep\Staff.h" />
     <ClInclude Include="PlatformEnvironment.h" />
@@ -303,6 +306,7 @@
     <ClInclude Include="ride\coaster\meta\FlyingRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\GigaCoaster.h" />
     <ClInclude Include="ride\coaster\meta\HeartlineTwisterCoaster.h" />
+    <ClInclude Include="ride\coaster\meta\HybridCoaster.h" />
     <ClInclude Include="ride\coaster\meta\InvertedHairpinCoaster.h" />
     <ClInclude Include="ride\coaster\meta\InvertedImpulseCoaster.h" />
     <ClInclude Include="ride\coaster\meta\InvertedRollerCoaster.h" />
@@ -494,6 +498,8 @@
     <ClCompile Include="core\Json.cpp" />
     <ClCompile Include="core\MemoryStream.cpp" />
     <ClCompile Include="core\Path.cpp" />
+    <ClCompile Include="core\RTL.FriBidi.cpp" />
+    <ClCompile Include="core\RTL.ICU.cpp" />
     <ClCompile Include="core\String.cpp" />
     <ClCompile Include="core\Zip.cpp" />
     <ClCompile Include="core\ZipAndroid.cpp" />
@@ -528,6 +534,7 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="interface\Chat.cpp" />
     <ClCompile Include="interface\Colour.cpp" />
+    <ClCompile Include="interface\Cursors.cpp" />
     <ClCompile Include="interface\FontFamilies.cpp" />
     <ClCompile Include="interface\Fonts.cpp" />
     <ClCompile Include="interface\InteractiveConsole.cpp" />
@@ -541,6 +548,7 @@
     <ClCompile Include="localisation\Convert.cpp" />
     <ClCompile Include="localisation\Currency.cpp" />
     <ClCompile Include="localisation\FormatCodes.cpp" />
+    <ClCompile Include="localisation\Formatter.cpp" />
     <ClCompile Include="localisation\Language.cpp" />
     <ClCompile Include="localisation\LanguagePack.cpp" />
     <ClCompile Include="localisation\Localisation.cpp" />
@@ -576,7 +584,6 @@
     <ClCompile Include="object\LargeSceneryObject.cpp" />
     <ClCompile Include="object\Object.cpp" />
     <ClCompile Include="object\ObjectFactory.cpp" />
-    <ClCompile Include="object\ObjectJsonHelpers.cpp" />
     <ClCompile Include="object\ObjectList.cpp" />
     <ClCompile Include="object\ObjectManager.cpp" />
     <ClCompile Include="object\ObjectRepository.cpp" />
@@ -649,6 +656,7 @@
     <ClCompile Include="ride\coaster\FlyingRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\GigaCoaster.cpp" />
     <ClCompile Include="ride\coaster\HeartlineTwisterCoaster.cpp" />
+    <ClCompile Include="ride\coaster\HybridCoaster.cpp" />
     <ClCompile Include="ride\coaster\InvertedHairpinCoaster.cpp" />
     <ClCompile Include="ride\coaster\InvertedImpulseCoaster.cpp" />
     <ClCompile Include="ride\coaster\InvertedRollerCoaster.cpp" />

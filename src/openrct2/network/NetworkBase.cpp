@@ -18,6 +18,7 @@
 #include "../actions/NetworkModifyGroupAction.hpp"
 #include "../actions/PeepPickupAction.hpp"
 #include "../core/Guard.hpp"
+#include "../core/Json.hpp"
 #include "../platform/Platform2.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
@@ -33,7 +34,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "7"
+#define NETWORK_STREAM_VERSION "1"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -52,7 +53,6 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/FileStream.hpp"
-#    include "../core/Json.hpp"
 #    include "../core/MemoryStream.h"
 #    include "../core/Nullable.hpp"
 #    include "../core/Path.hpp"
@@ -234,7 +234,7 @@ void NetworkBase::CloseConnection()
 
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
-    _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    _lastConnectStatus = SocketStatus::Closed;
 }
 
 bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
@@ -260,7 +260,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
     _serverState.gamestateSnapshotsEnabled = false;
 
     status = NETWORK_STATUS_CONNECTING;
-    _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    _lastConnectStatus = SocketStatus::Closed;
     _clientMapLoaded = false;
     _serverTickData.clear();
 
@@ -543,11 +543,11 @@ void NetworkBase::UpdateClient()
         {
             switch (_serverConnection->Socket->GetStatus())
             {
-                case SOCKET_STATUS_RESOLVING:
+                case SocketStatus::Resolving:
                 {
-                    if (_lastConnectStatus != SOCKET_STATUS_RESOLVING)
+                    if (_lastConnectStatus != SocketStatus::Resolving)
                     {
-                        _lastConnectStatus = SOCKET_STATUS_RESOLVING;
+                        _lastConnectStatus = SocketStatus::Resolving;
                         char str_resolving[256];
                         format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
 
@@ -558,11 +558,11 @@ void NetworkBase::UpdateClient()
                     }
                     break;
                 }
-                case SOCKET_STATUS_CONNECTING:
+                case SocketStatus::Connecting:
                 {
-                    if (_lastConnectStatus != SOCKET_STATUS_CONNECTING)
+                    if (_lastConnectStatus != SocketStatus::Connecting)
                     {
-                        _lastConnectStatus = SOCKET_STATUS_CONNECTING;
+                        _lastConnectStatus = SocketStatus::Connecting;
                         char str_connecting[256];
                         format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
 
@@ -575,7 +575,7 @@ void NetworkBase::UpdateClient()
                     }
                     break;
                 }
-                case SOCKET_STATUS_CONNECTED:
+                case SocketStatus::Connected:
                 {
                     status = NETWORK_STATUS_CONNECTED;
                     _serverConnection->ResetLastPacketTime();
@@ -599,7 +599,7 @@ void NetworkBase::UpdateClient()
 
                     Close();
                     context_force_close_window_by_class(WC_NETWORK_STATUS);
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
+                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
                     break;
                 }
             }
@@ -960,24 +960,23 @@ void NetworkBase::SaveGroups()
         platform_get_user_directory(path, nullptr, sizeof(path));
         safe_strcat_path(path, "groups.json", sizeof(path));
 
-        json_t* jsonGroupsCfg = json_object();
-        json_t* jsonGroups = json_array();
+        json_t jsonGroups = json_t::array();
         for (auto& group : group_list)
         {
-            json_array_append_new(jsonGroups, group->ToJson());
+            jsonGroups.push_back(group->ToJson());
         }
-        json_object_set_new(jsonGroupsCfg, "default_group", json_integer(default_group));
-        json_object_set_new(jsonGroupsCfg, "groups", jsonGroups);
+        json_t jsonGroupsCfg = {
+            { "default_group", default_group },
+            { "groups", jsonGroups },
+        };
         try
         {
-            Json::WriteToFile(path, jsonGroupsCfg, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
+            Json::WriteToFile(path, jsonGroupsCfg);
         }
         catch (const std::exception& ex)
         {
             log_error("Unable to save %s: %s", path, ex.what());
         }
-
-        json_decref(jsonGroupsCfg);
     }
 }
 
@@ -1023,12 +1022,12 @@ void NetworkBase::LoadGroups()
     platform_get_user_directory(path, nullptr, sizeof(path));
     safe_strcat_path(path, "groups.json", sizeof(path));
 
-    json_t* json = nullptr;
+    json_t jsonGroupConfig;
     if (Platform::FileExists(path))
     {
         try
         {
-            json = Json::ReadFromFile(path);
+            jsonGroupConfig = Json::ReadFromFile(path);
         }
         catch (const std::exception& e)
         {
@@ -1036,28 +1035,26 @@ void NetworkBase::LoadGroups()
         }
     }
 
-    if (json == nullptr)
+    if (!jsonGroupConfig.is_object())
     {
         SetupDefaultGroups();
     }
     else
     {
-        json_t* json_groups = json_object_get(json, "groups");
-        size_t groupCount = json_array_size(json_groups);
-        for (size_t i = 0; i < groupCount; i++)
+        json_t jsonGroups = jsonGroupConfig["groups"];
+        if (jsonGroups.is_array())
         {
-            json_t* jsonGroup = json_array_get(json_groups, i);
-
-            auto newgroup = std::make_unique<NetworkGroup>(NetworkGroup::FromJson(jsonGroup));
-            group_list.push_back(std::move(newgroup));
+            for (auto& jsonGroup : jsonGroups)
+            {
+                group_list.emplace_back(std::make_unique<NetworkGroup>(NetworkGroup::FromJson(jsonGroup)));
+            }
         }
-        json_t* jsonDefaultGroup = json_object_get(json, "default_group");
-        default_group = static_cast<uint8_t>(json_integer_value(jsonDefaultGroup));
+
+        default_group = Json::GetNumber<uint8_t>(jsonGroupConfig["default_group"]);
         if (GetGroupByID(default_group) == nullptr)
         {
             default_group = 0;
         }
-        json_decref(json);
     }
 
     // Host group should always contain all permissions.
@@ -1336,7 +1333,7 @@ NetworkStats_t NetworkBase::GetStats() const
     {
         for (auto& connection : client_connection_list)
         {
-            for (size_t n = 0; n < NETWORK_STATISTICS_GROUP_MAX; n++)
+            for (size_t n = 0; n < EnumValue(NetworkStatisticsGroup::Max); n++)
             {
                 stats.bytesReceived[n] += connection->Stats.bytesReceived[n];
                 stats.bytesSent[n] += connection->Stats.bytesSent[n];
@@ -1594,37 +1591,35 @@ void NetworkBase::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, co
     connection.QueuePacket(std::move(packet));
 }
 
-json_t* NetworkBase::GetServerInfoAsJson() const
+json_t NetworkBase::GetServerInfoAsJson() const
 {
-    json_t* obj = json_object();
-    json_object_set_new(obj, "name", json_string(gConfigNetwork.server_name.c_str()));
-    json_object_set_new(obj, "requiresPassword", json_boolean(_password.size() > 0));
-    json_object_set_new(obj, "version", json_string(network_get_version().c_str()));
-    json_object_set_new(obj, "players", json_integer(player_list.size()));
-    json_object_set_new(obj, "maxPlayers", json_integer(gConfigNetwork.maxplayers));
-    json_object_set_new(obj, "description", json_string(gConfigNetwork.server_description.c_str()));
-    json_object_set_new(obj, "greeting", json_string(gConfigNetwork.server_greeting.c_str()));
-    json_object_set_new(obj, "dedicated", json_boolean(gOpenRCT2Headless));
-    return obj;
+    json_t jsonObj = {
+        { "name", gConfigNetwork.server_name },         { "requiresPassword", _password.size() > 0 },
+        { "version", network_get_version() },           { "players", player_list.size() },
+        { "maxPlayers", gConfigNetwork.maxplayers },    { "description", gConfigNetwork.server_description },
+        { "greeting", gConfigNetwork.server_greeting }, { "dedicated", gOpenRCT2Headless },
+    };
+    return jsonObj;
 }
 
 void NetworkBase::Server_Send_GAMEINFO(NetworkConnection& connection)
 {
     NetworkPacket packet(NetworkCommand::GameInfo);
 #    ifndef DISABLE_HTTP
-    json_t* obj = GetServerInfoAsJson();
+    json_t jsonObj = GetServerInfoAsJson();
 
     // Provider details
-    json_t* jsonProvider = json_object();
-    json_object_set_new(jsonProvider, "name", json_string(gConfigNetwork.provider_name.c_str()));
-    json_object_set_new(jsonProvider, "email", json_string(gConfigNetwork.provider_email.c_str()));
-    json_object_set_new(jsonProvider, "website", json_string(gConfigNetwork.provider_website.c_str()));
-    json_object_set_new(obj, "provider", jsonProvider);
+    json_t jsonProvider = {
+        { "name", gConfigNetwork.provider_name },
+        { "email", gConfigNetwork.provider_email },
+        { "website", gConfigNetwork.provider_website },
+    };
 
-    packet.WriteString(json_dumps(obj, 0));
+    jsonObj["provider"] = jsonProvider;
+
+    packet.WriteString(jsonObj.dump().c_str());
     packet << _serverState.gamestateSnapshotsEnabled;
 
-    json_decref(obj);
 #    endif
     connection.QueuePacket(std::move(packet));
 }
@@ -1857,9 +1852,8 @@ void NetworkBase::ProcessPlayerList()
                         {
                             _serverConnection->Player = player;
                         }
+                        newPlayers.push_back(player->Id);
                     }
-
-                    newPlayers.push_back(player->Id);
                 }
                 else
                 {
@@ -2448,11 +2442,11 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
             {
                 log_info("Wrote desync report to '%s'", outputFile.c_str());
 
-                uint8_t args[32]{};
-                Formatter(args).Add<char*>(uniqueFileName);
+                auto ft = Formatter();
+                ft.Add<char*>(uniqueFileName);
 
                 char str_desync[1024];
-                format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, args);
+                format_string(str_desync, sizeof(str_desync), STR_DESYNC_REPORT, ft.Data());
 
                 auto intent = Intent(WC_NETWORK_STATUS);
                 intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
@@ -2708,7 +2702,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         else
         {
             // Something went wrong, game is not loaded. Return to main screen.
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
+            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
             GameActions::Execute(&loadOrQuitAction);
         }
         if (has_to_free)
@@ -3121,7 +3115,7 @@ void NetworkBase::Client_Handle_SHOWERROR([[maybe_unused]] NetworkConnection& co
 {
     rct_string_id title, message;
     packet >> title >> message;
-    context_show_error(title, message);
+    context_show_error(title, message, {});
 }
 
 void NetworkBase::Client_Handle_GROUPLIST([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
@@ -3178,32 +3172,27 @@ void NetworkBase::Client_Send_GAMEINFO()
     _serverConnection->QueuePacket(std::move(packet));
 }
 
-static std::string json_stdstring_value(const json_t* string)
-{
-    const char* cstr = json_string_value(string);
-    return cstr == nullptr ? std::string() : std::string(cstr);
-}
-
 void NetworkBase::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     const char* jsonString = packet.ReadString();
     packet >> _serverState.gamestateSnapshotsEnabled;
 
-    json_error_t error;
-    json_t* root = json_loads(jsonString, 0, &error);
+    json_t jsonData = Json::FromString(jsonString);
 
-    ServerName = json_stdstring_value(json_object_get(root, "name"));
-    ServerDescription = json_stdstring_value(json_object_get(root, "description"));
-    ServerGreeting = json_stdstring_value(json_object_get(root, "greeting"));
-
-    json_t* jsonProvider = json_object_get(root, "provider");
-    if (jsonProvider != nullptr)
+    if (jsonData.is_object())
     {
-        ServerProviderName = json_stdstring_value(json_object_get(jsonProvider, "name"));
-        ServerProviderEmail = json_stdstring_value(json_object_get(jsonProvider, "email"));
-        ServerProviderWebsite = json_stdstring_value(json_object_get(jsonProvider, "website"));
+        ServerName = Json::GetString(jsonData["name"]);
+        ServerDescription = Json::GetString(jsonData["description"]);
+        ServerGreeting = Json::GetString(jsonData["greeting"]);
+
+        json_t jsonProvider = jsonData["provider"];
+        if (jsonProvider.is_object())
+        {
+            ServerProviderName = Json::GetString(jsonProvider["name"]);
+            ServerProviderEmail = Json::GetString(jsonProvider["email"]);
+            ServerProviderWebsite = Json::GetString(jsonProvider["website"]);
+        }
     }
-    json_decref(root);
 
     network_chat_show_server_greeting();
 }
@@ -3977,7 +3966,7 @@ bool network_gamestate_snapshots_enabled()
     return network_get_server_state().gamestateSnapshotsEnabled;
 }
 
-json_t* network_get_server_info_as_json()
+json_t network_get_server_info_as_json()
 {
     return gNetwork.GetServerInfoAsJson();
 }
@@ -4242,8 +4231,8 @@ NetworkServerState_t network_get_server_state()
 {
     return NetworkServerState_t{};
 }
-json_t* network_get_server_info_as_json()
+json_t network_get_server_info_as_json()
 {
-    return nullptr;
+    return {};
 }
 #endif /* DISABLE_NETWORK */

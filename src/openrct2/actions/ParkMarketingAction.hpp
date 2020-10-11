@@ -25,14 +25,12 @@
 DEFINE_GAME_ACTION(ParkMarketingAction, GAME_COMMAND_START_MARKETING_CAMPAIGN, GameActionResult)
 {
 private:
-    int32_t _type;
-    int32_t _item;
-    int32_t _numWeeks;
+    int32_t _type{};
+    int32_t _item{};
+    int32_t _numWeeks{};
 
 public:
-    ParkMarketingAction()
-    {
-    }
+    ParkMarketingAction() = default;
     ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
         : _type(type)
         , _item(item)

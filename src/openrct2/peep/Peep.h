@@ -16,6 +16,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
+#include "../util/Util.h"
 #include "../world/Location.hpp"
 #include "../world/SpriteBase.h"
 
@@ -214,32 +215,32 @@ enum PeepThoughtType : uint8_t
     PEEP_THOUGHT_TYPE_NONE = 255
 };
 
-enum PeepState : uint8_t
+enum class PeepState : uint8_t
 {
-    PEEP_STATE_FALLING = 0, // Drowning is part of falling
-    PEEP_STATE_1 = 1,
-    PEEP_STATE_QUEUING_FRONT = 2,
-    PEEP_STATE_ON_RIDE = 3,
-    PEEP_STATE_LEAVING_RIDE = 4,
-    PEEP_STATE_WALKING = 5,
-    PEEP_STATE_QUEUING = 6,
-    PEEP_STATE_ENTERING_RIDE = 7,
-    PEEP_STATE_SITTING = 8,
-    PEEP_STATE_PICKED = 9,
-    PEEP_STATE_PATROLLING = 10, // Not sure
-    PEEP_STATE_MOWING = 11,
-    PEEP_STATE_SWEEPING = 12,
-    PEEP_STATE_ENTERING_PARK = 13,
-    PEEP_STATE_LEAVING_PARK = 14,
-    PEEP_STATE_ANSWERING = 15,
-    PEEP_STATE_FIXING = 16,
-    PEEP_STATE_BUYING = 17,
-    PEEP_STATE_WATCHING = 18,
-    PEEP_STATE_EMPTYING_BIN = 19,
-    PEEP_STATE_USING_BIN = 20,
-    PEEP_STATE_WATERING = 21,
-    PEEP_STATE_HEADING_TO_INSPECTION = 22,
-    PEEP_STATE_INSPECTING = 23
+    Falling = 0, // Drowning is part of falling
+    One = 1,     // was PEEP_STATE_1
+    QueuingFront = 2,
+    OnRide = 3,
+    LeavingRide = 4,
+    Walking = 5,
+    Queuing = 6,
+    EnteringRide = 7,
+    Sitting = 8,
+    Picked = 9,
+    Patrolling = 10, // Not sure
+    Mowing = 11,
+    Sweeping = 12,
+    EnteringPark = 13,
+    LeavingPark = 14,
+    Answering = 15,
+    Fixing = 16,
+    Buying = 17,
+    Watching = 18,
+    EmptyingBin = 19,
+    UsingBin = 20,
+    Watering = 21,
+    HeadingToInspection = 22,
+    Inspecting = 23
 };
 
 enum class PeepSittingSubState : uint8_t
@@ -248,29 +249,29 @@ enum class PeepSittingSubState : uint8_t
     SatDown      // was unassigned
 };
 
-enum PeepRideSubState
+enum class PeepRideSubState : uint8_t
 {
-    PEEP_RIDE_AT_ENTRANCE = 0,
-    PEEP_RIDE_IN_ENTRANCE = 1,
-    PEEP_RIDE_FREE_VEHICLE_CHECK = 2, // Spend money on ride
-    PEEP_RIDE_LEAVE_ENTRANCE = 3,     // Calculate what direction and where to go after commiting to entering vehicle
-    PEEP_RIDE_APPROACH_VEHICLE = 4,
-    PEEP_RIDE_ENTER_VEHICLE = 5,
-    PEEP_RIDE_ON_RIDE = 6,
-    PEEP_RIDE_LEAVE_VEHICLE = 7,
-    PEEP_RIDE_APPROACH_EXIT = 8,
-    PEEP_RIDE_IN_EXIT = 9,
+    AtEntrance = 0,
+    InEntrance = 1,
+    FreeVehicleCheck = 2, // Spend money on ride
+    LeaveEntrance = 3,    // Calculate what direction and where to go after commiting to entering vehicle
+    ApproachVehicle = 4,
+    EnterVehicle = 5,
+    OnRide = 6,
+    LeaveVehicle = 7,
+    ApproachExit = 8,
+    InExit = 9,
     // 10, 11 not used
-    PEEP_RIDE_APPROACH_VEHICLE_WAYPOINTS = 12,
-    PEEP_RIDE_APPROACH_EXIT_WAYPOINTS = 13,
-    PEEP_RIDE_APPROACH_SPIRAL_SLIDE = 14,
-    PEEP_RIDE_ON_SPIRAL_SLIDE = 15,
-    PEEP_RIDE_LEAVE_SPIRAL_SLIDE = 16,
-    PEEP_RIDE_MAZE_PATHFINDING = 17,
-    PEEP_RIDE_LEAVE_EXIT = 18,
-    PEEP_SHOP_APPROACH = 19,
-    PEEP_SHOP_INTERACT = 20,
-    PEEP_SHOP_LEAVE = 21
+    ApproachVehicleWaypoints = 12,
+    ApproachExitWaypoints = 13,
+    ApproachSpiralSlide = 14,
+    OnSpiralSlide = 15,
+    LeaveSpiralSlide = 16,
+    MazePathfinding = 17,
+    LeaveExit = 18,
+    ApproachShop = 19,
+    InteractShop = 20,
+    LeaveShop = 21
 };
 
 enum PeepUsingBinSubState
@@ -279,87 +280,87 @@ enum PeepUsingBinSubState
     PEEP_USING_BIN_GOING_BACK,
 };
 
-enum PeepActionType : uint8_t
+enum class PeepActionType : uint8_t
 {
-    PEEP_ACTION_CHECK_TIME = 0,
+    CheckTime = 0,
     // If no food then check watch
-    PEEP_ACTION_EAT_FOOD = 1,
-    PEEP_ACTION_SHAKE_HEAD = 2,
-    PEEP_ACTION_EMPTY_POCKETS = 3,
-    PEEP_ACTION_SITTING_EAT_FOOD = 4,
-    PEEP_ACTION_SITTING_CHECK_WATCH = 4,
-    PEEP_ACTION_SITTING_LOOK_AROUND_LEFT = 5,
-    PEEP_ACTION_SITTING_LOOK_AROUND_RIGHT = 6,
-    PEEP_ACTION_WOW = 7,
-    PEEP_ACTION_THROW_UP = 8,
-    PEEP_ACTION_JUMP = 9,
-    PEEP_ACTION_STAFF_SWEEP = 10,
-    PEEP_ACTION_DROWNING = 11,
-    PEEP_ACTION_STAFF_ANSWER_CALL = 12,
-    PEEP_ACTION_STAFF_ANSWER_CALL_2 = 13,
-    PEEP_ACTION_STAFF_CHECKBOARD = 14,
-    PEEP_ACTION_STAFF_FIX = 15,
-    PEEP_ACTION_STAFF_FIX_2 = 16,
-    PEEP_ACTION_STAFF_FIX_GROUND = 17,
-    PEEP_ACTION_STAFF_FIX_3 = 18,
-    PEEP_ACTION_STAFF_WATERING = 19,
-    PEEP_ACTION_JOY = 20,
-    PEEP_ACTION_READ_MAP = 21,
-    PEEP_ACTION_WAVE = 22,
-    PEEP_ACTION_STAFF_EMPTY_BIN = 23,
-    PEEP_ACTION_WAVE_2 = 24,
-    PEEP_ACTION_TAKE_PHOTO = 25,
-    PEEP_ACTION_CLAP = 26,
-    PEEP_ACTION_DISGUST = 27,
-    PEEP_ACTION_DRAW_PICTURE = 28,
-    PEEP_ACTION_BEING_WATCHED = 29,
-    PEEP_ACTION_WITHDRAW_MONEY = 30,
+    EatFood = 1,
+    ShakeHead = 2,
+    EmptyPockets = 3,
+    SittingEatFood = 4,
+    SittingCheckWatch = 4,
+    SittingLookAroundLeft = 5,
+    SittingLookAroundRight = 6,
+    Wow = 7,
+    ThrowUp = 8,
+    Jump = 9,
+    StaffSweep = 10,
+    Drowning = 11,
+    StaffAnswerCall = 12,
+    StaffAnswerCall2 = 13,
+    StaffCheckboard = 14,
+    StaffFix = 15,
+    StaffFix2 = 16,
+    StaffFixGround = 17,
+    StaffFix3 = 18,
+    StaffWatering = 19,
+    Joy = 20,
+    ReadMap = 21,
+    Wave = 22,
+    StaffEmptyBin = 23,
+    Wave2 = 24,
+    TakePhoto = 25,
+    Clap = 26,
+    Disgust = 27,
+    DrawPicture = 28,
+    BeingWatched = 29,
+    WithdrawMoney = 30,
 
-    PEEP_ACTION_NONE_1 = 254,
-    PEEP_ACTION_NONE_2 = 255,
+    None1 = 254,
+    None2 = 255,
 };
 
-enum PeepActionSpriteType : uint8_t
+enum class PeepActionSpriteType : uint8_t
 {
-    PEEP_ACTION_SPRITE_TYPE_NONE = 0,
-    PEEP_ACTION_SPRITE_TYPE_CHECK_TIME = 1,
-    PEEP_ACTION_SPRITE_TYPE_WATCH_RIDE = 2,
-    PEEP_ACTION_SPRITE_TYPE_EAT_FOOD = 3,
-    PEEP_ACTION_SPRITE_TYPE_SHAKE_HEAD = 4,
-    PEEP_ACTION_SPRITE_TYPE_EMPTY_POCKETS = 5,
-    PEEP_ACTION_SPRITE_TYPE_HOLD_MAT = 6,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_IDLE = 7,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_EAT_FOOD = 8,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_LOOK_AROUND_LEFT = 9,
-    PEEP_ACTION_SPRITE_TYPE_SITTING_LOOK_AROUND_RIGHT = 10,
-    PEEP_ACTION_SPRITE_TYPE_UI = 11,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_MOWER = 12,
-    PEEP_ACTION_SPRITE_TYPE_WOW = 13,
-    PEEP_ACTION_SPRITE_TYPE_THROW_UP = 14,
-    PEEP_ACTION_SPRITE_TYPE_JUMP = 15,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_SWEEP = 16,
-    PEEP_ACTION_SPRITE_TYPE_DROWNING = 17,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_ANSWER_CALL = 18,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_ANSWER_CALL_2 = 19,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_CHECKBOARD = 20,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX = 21,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_2 = 22,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_GROUND = 23,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_FIX_3 = 24,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_WATERING = 25,
-    PEEP_ACTION_SPRITE_TYPE_JOY = 26,
-    PEEP_ACTION_SPRITE_TYPE_READ_MAP = 27,
-    PEEP_ACTION_SPRITE_TYPE_WAVE = 28,
-    PEEP_ACTION_SPRITE_TYPE_STAFF_EMPTY_BIN = 29,
-    PEEP_ACTION_SPRITE_TYPE_WAVE_2 = 30,
-    PEEP_ACTION_SPRITE_TYPE_TAKE_PHOTO = 31,
-    PEEP_ACTION_SPRITE_TYPE_CLAP = 32,
-    PEEP_ACTION_SPRITE_TYPE_DISGUST = 33,
-    PEEP_ACTION_SPRITE_TYPE_DRAW_PICTURE = 34,
-    PEEP_ACTION_SPRITE_TYPE_BEING_WATCHED = 35,
-    PEEP_ACTION_SPRITE_TYPE_WITHDRAW_MONEY = 36,
+    None = 0,
+    CheckTime = 1,
+    WatchRide = 2,
+    EatFood = 3,
+    ShakeHead = 4,
+    EmptyPockets = 5,
+    HoldMat = 6,
+    SittingIdle = 7,
+    SittingEatFood = 8,
+    SittingLookAroundLeft = 9,
+    SittingLookAroundRight = 10,
+    Ui = 11,
+    StaffMower = 12,
+    Wow = 13,
+    ThrowUp = 14,
+    Jump = 15,
+    StaffSweep = 16,
+    Drowning = 17,
+    StaffAnswerCall = 18,
+    StaffAnswerCall2 = 19,
+    StaffCheckboard = 20,
+    StaffFix = 21,
+    StaffFix2 = 22,
+    StaffFixGround = 23,
+    StaffFix3 = 24,
+    StaffWatering = 25,
+    Joy = 26,
+    ReadMap = 27,
+    Wave = 28,
+    StaffEmptyBin = 29,
+    Wave2 = 30,
+    TakePhoto = 31,
+    Clap = 32,
+    Disgust = 33,
+    DrawPicture = 34,
+    BeingWatched = 35,
+    WithdrawMoney = 36,
 
-    PEEP_ACTION_SPRITE_TYPE_INVALID = 255
+    Invalid = 255
 };
 
 enum PeepFlags : uint32_t
@@ -406,12 +407,12 @@ enum PeepNextFlags
     PEEP_NEXT_FLAG_UNUSED = (1 << 4),
 };
 
-enum PeepNauseaTolerance
+enum class PeepNauseaTolerance : uint8_t
 {
-    PEEP_NAUSEA_TOLERANCE_NONE,
-    PEEP_NAUSEA_TOLERANCE_LOW,
-    PEEP_NAUSEA_TOLERANCE_AVERAGE,
-    PEEP_NAUSEA_TOLERANCE_HIGH,
+    None,
+    Low,
+    Average,
+    High
 };
 
 enum PeepItem
@@ -471,59 +472,59 @@ enum PeepItem
     PEEP_ITEM_EMPTY_BOWL_BLUE = (1 << 21),
 };
 
-enum PeepSpriteType : uint8_t
+enum class PeepSpriteType : uint8_t
 {
-    PEEP_SPRITE_TYPE_NORMAL = 0,
-    PEEP_SPRITE_TYPE_HANDYMAN = 1,
-    PEEP_SPRITE_TYPE_MECHANIC = 2,
-    PEEP_SPRITE_TYPE_SECURITY = 3,
-    PEEP_SPRITE_TYPE_ENTERTAINER_PANDA = 4,
-    PEEP_SPRITE_TYPE_ENTERTAINER_TIGER = 5,
-    PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT = 6,
-    PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN = 7,
-    PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA = 8,
-    PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN = 9,
-    PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT = 10,
-    PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT = 11,
-    PEEP_SPRITE_TYPE_ENTERTAINER_BANDIT = 12,
-    PEEP_SPRITE_TYPE_ENTERTAINER_SHERIFF = 13,
-    PEEP_SPRITE_TYPE_ENTERTAINER_PIRATE = 14,
-    PEEP_SPRITE_TYPE_ICE_CREAM = 15,
-    PEEP_SPRITE_TYPE_CHIPS = 16,
-    PEEP_SPRITE_TYPE_BURGER = 17,
-    PEEP_SPRITE_TYPE_DRINK = 18,
-    PEEP_SPRITE_TYPE_BALLOON = 19,
-    PEEP_SPRITE_TYPE_CANDYFLOSS = 20,
-    PEEP_SPRITE_TYPE_UMBRELLA = 21,
-    PEEP_SPRITE_TYPE_PIZZA = 22,
-    PEEP_SPRITE_TYPE_SECURITY_ALT = 23,
-    PEEP_SPRITE_TYPE_POPCORN = 24,
-    PEEP_SPRITE_TYPE_ARMS_CROSSED = 25,
-    PEEP_SPRITE_TYPE_HEAD_DOWN = 26,
-    PEEP_SPRITE_TYPE_NAUSEOUS = 27,
-    PEEP_SPRITE_TYPE_VERY_NAUSEOUS = 28,
-    PEEP_SPRITE_TYPE_REQUIRE_TOILET = 29,
-    PEEP_SPRITE_TYPE_HAT = 30,
-    PEEP_SPRITE_TYPE_HOT_DOG = 31,
-    PEEP_SPRITE_TYPE_TENTACLE = 32,
-    PEEP_SPRITE_TYPE_TOFFEE_APPLE = 33,
-    PEEP_SPRITE_TYPE_DOUGHNUT = 34,
-    PEEP_SPRITE_TYPE_COFFEE = 35,
-    PEEP_SPRITE_TYPE_CHICKEN = 36,
-    PEEP_SPRITE_TYPE_LEMONADE = 37,
-    PEEP_SPRITE_TYPE_WATCHING = 38,
-    PEEP_SPRITE_TYPE_PRETZEL = 39,
-    PEEP_SPRITE_TYPE_SUNGLASSES = 40,
-    PEEP_SPRITE_TYPE_SU_JONGKWA = 41,
-    PEEP_SPRITE_TYPE_JUICE = 42,
-    PEEP_SPRITE_TYPE_FUNNEL_CAKE = 43,
-    PEEP_SPRITE_TYPE_NOODLES = 44,
-    PEEP_SPRITE_TYPE_SAUSAGE = 45,
-    PEEP_SPRITE_TYPE_SOUP = 46,
-    PEEP_SPRITE_TYPE_SANDWICH = 47,
-    PEEP_SPRITE_TYPE_COUNT,
+    Normal = 0,
+    Handyman = 1,
+    Mechanic = 2,
+    Security = 3,
+    EntertainerPanda = 4,
+    EntertainerTiger = 5,
+    EntertainerElephant = 6,
+    EntertainerRoman = 7,
+    EntertainerGorilla = 8,
+    EntertainerSnowman = 9,
+    EntertainerKnight = 10,
+    EntertainerAstronaut = 11,
+    EntertainerBandit = 12,
+    EntertainerSheriff = 13,
+    EntertainerPirate = 14,
+    IceCream = 15,
+    Chips = 16,
+    Burger = 17,
+    Drink = 18,
+    Balloon = 19,
+    Candyfloss = 20,
+    Umbrella = 21,
+    Pizza = 22,
+    SecurityAlt = 23,
+    Popcorn = 24,
+    ArmsCrossed = 25,
+    HeadDown = 26,
+    Nauseous = 27,
+    VeryNauseous = 28,
+    RequireToilet = 29,
+    Hat = 30,
+    HotDog = 31,
+    Tentacle = 32,
+    ToffeeApple = 33,
+    Doughnut = 34,
+    Coffee = 35,
+    Chicken = 36,
+    Lemonade = 37,
+    Watching = 38,
+    Pretzel = 39,
+    Sunglasses = 40,
+    SuJongkwa = 41,
+    Juice = 42,
+    FunnelCake = 43,
+    Noodles = 44,
+    Sausage = 45,
+    Soup = 46,
+    Sandwich = 47,
+    Count = 48,
 
-    PEEP_SPRITE_TYPE_INVALID = 255
+    Invalid = 255
 };
 
 // Flags used by peep->WindowInvalidateFlags
@@ -618,6 +619,7 @@ struct Peep : SpriteBase
     {
         uint8_t SubState;
         PeepSittingSubState SittingSubState;
+        PeepRideSubState RideSubState;
     };
     PeepSpriteType SpriteType;
     PeepType AssignedPeepType;
@@ -644,7 +646,7 @@ struct Peep : SpriteBase
     uint8_t Mass;
     uint8_t TimeToConsume;
     IntensityRange Intensity;
-    uint8_t NauseaTolerance;
+    PeepNauseaTolerance NauseaTolerance;
     uint8_t WindowInvalidateFlags;
     money16 PaidOnDrink;
     uint8_t RideTypesBeenOn[16];
@@ -804,6 +806,10 @@ public: // Peep
     std::string GetName() const;
     bool SetName(const std::string_view& value);
 
+    // Reset the peep's stored goal, which means they will forget any stored pathfinding history
+    // on the next peep_pathfind_choose_direction call.
+    void ResetPathfindGoal();
+
     // TODO: Make these private again when done refactoring
 public: // Peep
     bool CheckForPath();
@@ -917,9 +923,14 @@ public:
     bool IsMechanic() const;
     bool IsPatrolAreaSet(const CoordsXY& coords) const;
     bool IsLocationInPatrol(const CoordsXY& loc) const;
+    bool IsLocationOnPatrolEdge(const CoordsXY& loc) const;
     bool DoPathFinding();
     uint8_t GetCostume() const;
     void SetCostume(uint8_t value);
+
+    bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
+
+    static void ResetStats();
 
 private:
     void UpdatePatrolling();
@@ -929,18 +940,18 @@ private:
     void UpdateWatering();
     void UpdateAnswering();
     void UpdateFixing(int32_t steps);
-    bool UpdateFixingEnterStation(Ride* ride);
-    bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, Ride* ride);
-    bool UpdateFixingFixVehicle(bool firstRun, Ride* ride);
-    bool UpdateFixingFixVehicleMalfunction(bool firstRun, Ride* ride);
-    bool UpdateFixingMoveToStationEnd(bool firstRun, Ride* ride);
+    bool UpdateFixingEnterStation(Ride* ride) const;
+    bool UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride);
+    bool UpdateFixingFixVehicle(bool firstRun, const Ride* ride);
+    bool UpdateFixingFixVehicleMalfunction(bool firstRun, const Ride* ride);
+    bool UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride);
     bool UpdateFixingFixStationEnd(bool firstRun);
-    bool UpdateFixingMoveToStationStart(bool firstRun, Ride* ride);
-    bool UpdateFixingFixStationStart(bool firstRun, Ride* ride);
+    bool UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride);
+    bool UpdateFixingFixStationStart(bool firstRun, const Ride* ride);
     bool UpdateFixingFixStationBrakes(bool firstRun, Ride* ride);
-    bool UpdateFixingMoveToStationExit(bool firstRun, Ride* ride);
+    bool UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride);
     bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride);
-    bool UpdateFixingLeaveByEntranceExit(bool firstRun, Ride* ride);
+    bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride);
     void UpdateRideInspected(ride_id_t rideIndex);
     void UpdateHeadingToInspect();
 
@@ -949,9 +960,22 @@ private:
     bool DoEntertainerPathFinding();
     bool DoMiscPathFinding();
 
-    int32_t HandymanDirectionRandSurface(uint8_t validDirections);
+    Direction HandymanDirectionRandSurface(uint8_t validDirections) const;
 
     void EntertainerUpdateNearbyPeeps() const;
+
+    uint8_t GetValidPatrolDirections(const CoordsXY& loc) const;
+    Direction HandymanDirectionToNearestLitter() const;
+    uint8_t HandymanDirectionToUncutGrass(uint8_t valid_directions) const;
+    Direction DirectionSurface(Direction initialDirection) const;
+    Direction DirectionPath(uint8_t validDirections, PathElement* pathElement) const;
+    Direction MechanicDirectionSurface() const;
+    Direction MechanicDirectionPathRand(uint8_t pathDirections) const;
+    Direction MechanicDirectionPath(uint8_t validDirections, PathElement* pathElement);
+    bool UpdatePatrollingFindWatering();
+    bool UpdatePatrollingFindBin();
+    bool UpdatePatrollingFindSweeping();
+    bool UpdatePatrollingFindGrass();
 };
 
 static_assert(sizeof(Peep) <= 512);
@@ -1013,7 +1037,7 @@ enum
 };
 
 // rct2: 0x00982708
-extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
+extern const rct_peep_animation_entry g_peep_animation_entries[EnumValue(PeepSpriteType::Count)];
 extern const bool gSpriteTypeToSlowWalkMap[48];
 
 extern uint8_t gGuestChangeModifier;
@@ -1030,10 +1054,6 @@ extern uint32_t gNextGuestNumber;
 
 extern uint8_t gPeepWarningThrottle[16];
 
-extern TileCoordsXYZ gPeepPathFindGoalPosition;
-extern bool gPeepPathFindIgnoreForeignQueues;
-extern ride_id_t gPeepPathFindQueueRideIndex;
-
 Peep* try_get_guest(uint16_t spriteIndex);
 int32_t peep_get_staff_count();
 bool peep_can_be_picked_up(Peep* peep);
@@ -1046,8 +1066,6 @@ void peep_applause();
 void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft);
 int32_t get_peep_face_sprite_small(Peep* peep);
 int32_t get_peep_face_sprite_large(Peep* peep);
-void game_command_pickup_guest(
-    int32_t* eax, int32_t* ebx, int32_t* ecx, int32_t* edx, int32_t* esi, int32_t* edi, int32_t* ebp);
 void peep_sprite_remove(Peep* peep);
 
 void peep_window_state_update(Peep* peep);
@@ -1056,30 +1074,9 @@ void peep_decrement_num_riders(Peep* peep);
 void peep_set_map_tooltip(Peep* peep);
 int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_b);
 
-void SwitchToSpecialSprite(Peep* peep, uint8_t special_sprite_id);
 void peep_update_names(bool realNames);
 
 void guest_set_name(uint16_t spriteIndex, const char* name);
-
-Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep);
-void peep_reset_pathfind_goal(Peep* peep);
-
-bool is_valid_path_z_and_direction(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
-int32_t guest_path_finding(Guest* peep);
-
-#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-#    define PATHFIND_DEBUG                                                                                                     \
-        0 // Set to 0 to disable pathfinding debugging;
-          // Set to 1 to enable pathfinding debugging.
-// Some variables used for the path finding debugging.
-extern bool gPathFindDebug;              // Use to guard calls to log messages
-extern utf8 gPathFindDebugPeepName[256]; // Use to put the peep name in the log message
-
-// The following calls set the above two variables for a peep.
-// ... when PATHFIND_DEBUG is 1 (nonzero)
-void pathfind_logging_enable(Peep* peep);
-void pathfind_logging_disable();
-#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 void increment_guests_in_park();
 void increment_guests_heading_for_park();
@@ -1087,5 +1084,17 @@ void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
 
 rct_string_id get_real_name_string_id_from_id(uint32_t id);
+
+inline const rct_peep_animation& GetPeepAnimation(
+    PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None)
+{
+    return g_peep_animation_entries[EnumValue(spriteType)].sprite_animation[EnumValue(actionSpriteType)];
+};
+
+inline const rct_sprite_bounds& GetSpriteBounds(
+    PeepSpriteType spriteType, PeepActionSpriteType actionSpriteType = PeepActionSpriteType::None)
+{
+    return g_peep_animation_entries[EnumValue(spriteType)].sprite_bounds[EnumValue(actionSpriteType)];
+};
 
 #endif

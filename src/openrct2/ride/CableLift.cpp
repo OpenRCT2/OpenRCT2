@@ -51,13 +51,13 @@ Vehicle* cable_lift_segment_create(
     current->spin_sprite = 0;
     current->spin_speed = 0;
     current->sound2_flags = 0;
-    current->sound1_id = SoundId::Null;
-    current->sound2_id = SoundId::Null;
+    current->sound1_id = OpenRCT2::Audio::SoundId::Null;
+    current->sound2_id = OpenRCT2::Audio::SoundId::Null;
     current->var_C4 = 0;
     current->animation_frame = 0;
     current->var_C8 = 0;
     current->var_CA = 0;
-    current->scream_sound_id = SoundId::Null;
+    current->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
     current->vehicle_sprite_type = 0;
     current->bank_rotation = 0;
     for (auto& peep : current->peep)
@@ -72,7 +72,7 @@ Vehicle* cable_lift_segment_create(
     z += RideTypeDescriptors[ride.type].Heights.VehicleZOffset;
 
     current->MoveTo({ 16, 16, z });
-    current->track_type = (TRACK_ELEM_CABLE_LIFT_HILL << 2) | (current->sprite_direction >> 3);
+    current->track_type = (TrackElemType::CableLiftHill << 2) | (current->sprite_direction >> 3);
     current->track_progress = 164;
     current->update_flags = VEHICLE_UPDATE_FLAG_1;
     current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
@@ -234,7 +234,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
     for (; remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
         uint8_t trackType = GetTrackType();
-        if (trackType == TRACK_ELEM_CABLE_LIFT_HILL && track_progress == 160)
+        if (trackType == TrackElemType::CableLiftHill && track_progress == 160)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
         }
@@ -322,7 +322,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
             track_direction = output.begin_direction;
             track_type |= output.begin_element->AsTrack()->GetTrackType() << 2;
 
-            if (output.begin_element->AsTrack()->GetTrackType() == TRACK_ELEM_END_STATION)
+            if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {
                 _vehicleMotionTrackFlags = VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
             }

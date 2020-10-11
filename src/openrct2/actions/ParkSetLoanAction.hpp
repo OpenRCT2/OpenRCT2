@@ -21,12 +21,10 @@
 DEFINE_GAME_ACTION(ParkSetLoanAction, GAME_COMMAND_SET_CURRENT_LOAN, GameActionResult)
 {
 private:
-    money32 _value;
+    money32 _value{ MONEY32_UNDEFINED };
 
 public:
-    ParkSetLoanAction()
-    {
-    }
+    ParkSetLoanAction() = default;
     ParkSetLoanAction(money32 value)
         : _value(value)
     {

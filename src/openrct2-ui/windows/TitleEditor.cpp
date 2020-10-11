@@ -62,36 +62,22 @@ static bool window_title_editor_check_can_edit();
 static void window_title_editor_add_park_callback(int32_t result, const utf8 * path);
 static void window_title_editor_rename_park(size_t index, const utf8 * name);
 
-static rct_window_event_list window_title_editor_events = {
-    window_title_editor_close,
-    window_title_editor_mouseup,
-    window_title_editor_resize,
-    window_title_editor_mousedown,
-    window_title_editor_dropdown,
-    nullptr,
-    window_title_editor_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_title_editor_scrollgetsize,
-    window_title_editor_scrollmousedown,
-    nullptr,
-    window_title_editor_scrollmouseover,
-    window_title_editor_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_title_editor_invalidate,
-    window_title_editor_paint,
-    window_title_editor_scrollpaint,
-};
+static rct_window_event_list window_title_editor_events([](auto& events)
+{
+    events.close = &window_title_editor_close;
+    events.mouse_up = &window_title_editor_mouseup;
+    events.resize = &window_title_editor_resize;
+    events.mouse_down = &window_title_editor_mousedown;
+    events.dropdown = &window_title_editor_dropdown;
+    events.update = &window_title_editor_update;
+    events.get_scroll_size = &window_title_editor_scrollgetsize;
+    events.scroll_mousedown = &window_title_editor_scrollmousedown;
+    events.scroll_mouseover = &window_title_editor_scrollmouseover;
+    events.text_input = &window_title_editor_textinput;
+    events.invalidate = &window_title_editor_invalidate;
+    events.paint = &window_title_editor_paint;
+    events.scroll_paint = &window_title_editor_scrollpaint;
+});
 
 enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
     WIDX_TITLE_EDITOR_BACKGROUND,
@@ -187,7 +173,7 @@ static rct_widget window_title_editor_widgets[] = {
 
 static size_t _selectedTitleSequence = SIZE_MAX;
 static bool _isSequenceReadOnly;
-static TitleSequence * _editingTitleSequence = nullptr;
+static std::unique_ptr<TitleSequence> _editingTitleSequence;
 static const utf8 * _sequenceName;
 
 static utf8 * _renameSavePath = nullptr;
@@ -269,7 +255,6 @@ static void window_title_editor_close(rct_window* w)
     // Close the related windows
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 
-    FreeTitleSequence(_editingTitleSequence);
     _editingTitleSequence = nullptr;
     _sequenceName = nullptr;
 
@@ -336,8 +321,8 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 if (w->selected_list_item != -1)
                 {
-                    TitleSequenceRemovePark(_editingTitleSequence, w->selected_list_item);
-                    if (w->selected_list_item >= static_cast<int16_t>(_editingTitleSequence->NumSaves))
+                    TitleSequenceRemovePark(*_editingTitleSequence, w->selected_list_item);
+                    if (w->selected_list_item >= static_cast<int16_t>(_editingTitleSequence->Saves.size()))
                     {
                         w->selected_list_item--;
                     }
@@ -351,22 +336,20 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                 {
                     window_text_input_open(
                         w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, STR_STRING,
-                        reinterpret_cast<uintptr_t>(_editingTitleSequence->Saves[w->selected_list_item]), 52 - 1);
+                        reinterpret_cast<uintptr_t>(_editingTitleSequence->Saves[w->selected_list_item].c_str()), 52 - 1);
                 }
             }
             break;
         case WIDX_TITLE_EDITOR_LOAD_SAVE:
-            if (w->selected_list_item >= 0 && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumSaves))
+            if (w->selected_list_item >= 0 && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->Saves.size()))
             {
-                auto handle = TitleSequenceGetParkHandle(_editingTitleSequence, w->selected_list_item);
-                auto stream = static_cast<OpenRCT2::IStream*>(handle->Stream);
-                auto hintPath = String::ToStd(handle->HintPath);
-                bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
+                auto handle = TitleSequenceGetParkHandle(*_editingTitleSequence, w->selected_list_item);
+                bool isScenario = ParkImporter::ExtensionIsScenario(handle->HintPath);
                 try
                 {
                     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-                    auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
-                    auto result = parkImporter->LoadFromStream(stream, isScenario);
+                    auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(handle->HintPath));
+                    auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
                     objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                     parkImporter->Import();
 
@@ -375,12 +358,11 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                     else
                         game_load_init();
 
-                    TitleSequenceCloseParkHandle(handle);
                     window_title_editor_open(WINDOW_TITLE_EDITOR_TAB_SAVES);
                 }
                 catch (const std::exception&)
                 {
-                    context_show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA);
+                    context_show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_INVALID_DATA, {});
                 }
             }
             break;
@@ -392,19 +374,19 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (window_title_editor_check_can_edit())
             {
                 if (w->selected_list_item != -1)
-                    window_title_command_editor_open(_editingTitleSequence, w->selected_list_item + 1, true);
+                    window_title_command_editor_open(_editingTitleSequence.get(), w->selected_list_item + 1, true);
                 else
                     window_title_command_editor_open(
-                        _editingTitleSequence, static_cast<int32_t>(_editingTitleSequence->NumCommands), true);
+                        _editingTitleSequence.get(), static_cast<int32_t>(_editingTitleSequence->Commands.size()), true);
             }
             break;
         case WIDX_TITLE_EDITOR_EDIT:
             if (window_title_editor_check_can_edit())
             {
                 if (w->selected_list_item != -1
-                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands))
+                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->Commands.size()))
                 {
-                    window_title_command_editor_open(_editingTitleSequence, w->selected_list_item, false);
+                    window_title_command_editor_open(_editingTitleSequence.get(), w->selected_list_item, false);
                 }
             }
             break;
@@ -412,19 +394,14 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (window_title_editor_check_can_edit())
             {
                 if (w->selected_list_item != -1
-                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands))
+                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->Commands.size()))
                 {
-                    for (int32_t i = w->selected_list_item; i < static_cast<int16_t>(_editingTitleSequence->NumCommands) - 1;
-                         i++)
-                    {
-                        _editingTitleSequence->Commands[i] = _editingTitleSequence->Commands[i + 1];
-                    }
-                    _editingTitleSequence->NumCommands--;
-                    if (w->selected_list_item >= static_cast<int16_t>(_editingTitleSequence->NumCommands))
+                    _editingTitleSequence->Commands.erase(_editingTitleSequence->Commands.begin() + w->selected_list_item);
+                    if (w->selected_list_item >= static_cast<int16_t>(_editingTitleSequence->Commands.size()))
                     {
                         w->selected_list_item--;
                     }
-                    TitleSequenceSave(_editingTitleSequence);
+                    TitleSequenceSave(*_editingTitleSequence);
                 }
             }
             break;
@@ -432,7 +409,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
         {
             int32_t position = w->selected_list_item;
             if (title_is_previewing_sequence() && position != -1
-                && position < static_cast<int32_t>(_editingTitleSequence->NumCommands))
+                && position < static_cast<int32_t>(_editingTitleSequence->Commands.size()))
             {
                 auto player = window_title_editor_get_player();
                 player->Seek(position);
@@ -444,15 +421,13 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (window_title_editor_check_can_edit())
             {
                 if (w->selected_list_item != -1
-                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands) - 1)
+                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->Commands.size()) - 1)
                 {
-                    TitleCommand* a = &_editingTitleSequence->Commands[w->selected_list_item];
-                    TitleCommand* b = &_editingTitleSequence->Commands[w->selected_list_item + 1];
-                    TitleCommand tmp = *a;
-                    *a = *b;
-                    *b = tmp;
+                    std::swap(
+                        _editingTitleSequence->Commands[w->selected_list_item],
+                        _editingTitleSequence->Commands[w->selected_list_item + 1]);
                     w->selected_list_item++;
-                    TitleSequenceSave(_editingTitleSequence);
+                    TitleSequenceSave(*_editingTitleSequence);
                 }
             }
             break;
@@ -460,15 +435,13 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (window_title_editor_check_can_edit())
             {
                 if (w->selected_list_item > 0
-                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->NumCommands))
+                    && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->Commands.size()))
                 {
-                    TitleCommand* a = &_editingTitleSequence->Commands[w->selected_list_item - 1];
-                    TitleCommand* b = &_editingTitleSequence->Commands[w->selected_list_item];
-                    TitleCommand tmp = *b;
-                    *b = *a;
-                    *a = tmp;
+                    std::swap(
+                        _editingTitleSequence->Commands[w->selected_list_item - 1],
+                        _editingTitleSequence->Commands[w->selected_list_item]);
                     w->selected_list_item--;
-                    TitleSequenceSave(_editingTitleSequence);
+                    TitleSequenceSave(*_editingTitleSequence);
                 }
             }
             break;
@@ -491,7 +464,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 if (!title_preview_sequence(_selectedTitleSequence))
                 {
-                    context_show_error(STR_ERR_FAILED_TO_LOAD_TITLE_SEQUENCE, STR_NONE);
+                    context_show_error(STR_ERR_FAILED_TO_LOAD_TITLE_SEQUENCE, STR_NONE, {});
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
                 {
@@ -504,7 +477,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 auto player = window_title_editor_get_player();
                 int32_t position = player->GetCurrentPosition() + 1;
-                if (position >= static_cast<int32_t>(_editingTitleSequence->NumCommands))
+                if (position >= static_cast<int32_t>(_editingTitleSequence->Commands.size()))
                 {
                     position = 0;
                 }
@@ -547,7 +520,7 @@ static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetI
         case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
             if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr)
             {
-                context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
+                context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE, {});
             }
             else
             {
@@ -601,9 +574,9 @@ static void window_title_editor_scrollgetsize(rct_window* w, int32_t scrollIndex
 {
     size_t lineCount = 1;
     if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SAVES)
-        lineCount = _editingTitleSequence->NumSaves;
+        lineCount = _editingTitleSequence->Saves.size();
     else if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SCRIPT)
-        lineCount = _editingTitleSequence->NumCommands;
+        lineCount = _editingTitleSequence->Commands.size();
 
     *height = static_cast<int32_t>(lineCount * SCROLLABLE_ROW_HEIGHT);
     int32_t i = *height - window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].bottom
@@ -628,14 +601,14 @@ static void window_title_editor_scrollmousedown(rct_window* w, int32_t scrollInd
     switch (w->selected_tab)
     {
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
-            if (index < static_cast<int32_t>(_editingTitleSequence->NumSaves))
+            if (index < static_cast<int32_t>(_editingTitleSequence->Saves.size()))
             {
                 w->selected_list_item = index;
                 widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
             }
             break;
         case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
-            if (index < static_cast<int32_t>(_editingTitleSequence->NumCommands))
+            if (index < static_cast<int32_t>(_editingTitleSequence->Commands.size()))
             {
                 w->selected_list_item = index;
                 widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
@@ -650,11 +623,11 @@ static void window_title_editor_scrollmouseover(rct_window* w, int32_t scrollInd
     switch (w->selected_tab)
     {
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
-            if (index < static_cast<int32_t>(_editingTitleSequence->NumSaves))
+            if (index < static_cast<int32_t>(_editingTitleSequence->Saves.size()))
                 _window_title_editor_highlighted_index = static_cast<int16_t>(index);
             break;
         case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
-            if (index < static_cast<int32_t>(_editingTitleSequence->NumCommands))
+            if (index < static_cast<int32_t>(_editingTitleSequence->Commands.size()))
                 _window_title_editor_highlighted_index = static_cast<int16_t>(index);
             break;
     }
@@ -697,17 +670,17 @@ static void window_title_editor_textinput(rct_window* w, rct_widgetindex widgetI
                     }
                     else
                     {
-                        context_show_error(STR_ERROR_RESERVED_NAME, STR_NONE);
+                        context_show_error(STR_ERROR_RESERVED_NAME, STR_NONE, {});
                     }
                 }
                 else
                 {
-                    context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE);
+                    context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE, {});
                 }
             }
             else
             {
-                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
             }
             break;
         case WIDX_TITLE_EDITOR_RENAME_SAVE:
@@ -835,7 +808,7 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1],
                 w->windowPos + ScreenCoordsXY{ 10, window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 });
 
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<const char*>(_sequenceName);
 
             ScreenCoordsXY screenPos = { w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
@@ -876,7 +849,8 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
     if (_editingTitleSequence == nullptr)
         return;
 
-    for (int32_t i = 0; i < static_cast<int32_t>(_editingTitleSequence->NumSaves); i++, screenCoords.y += SCROLLABLE_ROW_HEIGHT)
+    for (int32_t i = 0; i < static_cast<int32_t>(_editingTitleSequence->Saves.size());
+         i++, screenCoords.y += SCROLLABLE_ROW_HEIGHT)
     {
         bool selected = false;
         bool hover = false;
@@ -898,20 +872,20 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
         }
 
         char buffer[256];
-        auto ft = Formatter::Common();
-        ft.Add<const char*>(_editingTitleSequence->Saves[i]);
+        auto ft = Formatter();
+        ft.Add<const char*>(_editingTitleSequence->Saves[i].c_str());
         if (selected || hover)
         {
-            format_string(buffer, 256, STR_STRING, gCommonFormatArgs);
+            format_string(buffer, 256, STR_STRING, ft.Data());
         }
         else
         {
-            format_string(buffer + 1, 255, STR_STRING, gCommonFormatArgs);
+            format_string(buffer + 1, 255, STR_STRING, ft.Data());
             buffer[0] = static_cast<utf8>(static_cast<uint8_t>(FORMAT_BLACK));
         }
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<const char*>(&buffer);
-        gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
+        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
     }
 }
 
@@ -925,10 +899,10 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
     }
 
     auto screenCoords = ScreenCoordsXY{ 0, 0 };
-    for (int32_t i = 0; i < static_cast<int32_t>(_editingTitleSequence->NumCommands);
+    for (int32_t i = 0; i < static_cast<int32_t>(_editingTitleSequence->Commands.size());
          i++, screenCoords.y += SCROLLABLE_ROW_HEIGHT)
     {
-        TitleCommand* command = &_editingTitleSequence->Commands[i];
+        TitleCommand& command = _editingTitleSequence->Commands[i];
         bool selected = false;
         bool hover = false;
         bool error = false;
@@ -950,53 +924,53 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         rct_string_id commandName = STR_NONE;
-        switch (command->Type)
+        switch (command.Type)
         {
             case TITLE_SCRIPT_LOAD:
                 commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
-                if (command->SaveIndex == SAVE_INDEX_INVALID)
+                if (command.SaveIndex == SAVE_INDEX_INVALID)
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_LOAD_NO_SAVE;
                     error = true;
                 }
                 else
                 {
-                    ft.Add<const char*>(_editingTitleSequence->Saves[command->SaveIndex]);
+                    ft.Add<const char*>(_editingTitleSequence->Saves[command.SaveIndex].c_str());
                 }
                 break;
             case TITLE_SCRIPT_LOCATION:
                 commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
-                ft.Add<uint16_t>(command->X);
-                ft.Add<uint16_t>(command->Y);
+                ft.Add<uint16_t>(command.X);
+                ft.Add<uint16_t>(command.Y);
                 break;
             case TITLE_SCRIPT_ROTATE:
                 commandName = STR_TITLE_EDITOR_COMMAND_ROTATE;
-                ft.Add<uint16_t>(command->Rotations);
+                ft.Add<uint16_t>(command.Rotations);
                 break;
             case TITLE_SCRIPT_ZOOM:
                 commandName = STR_TITLE_EDITOR_COMMAND_ZOOM;
-                ft.Add<uint16_t>(command->Zoom);
+                ft.Add<uint16_t>(command.Zoom);
                 break;
             case TITLE_SCRIPT_SPEED:
                 commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
-                ft.Add<rct_string_id>(SpeedNames[command->Speed - 1]);
+                ft.Add<rct_string_id>(SpeedNames[command.Speed - 1]);
                 break;
             case TITLE_SCRIPT_FOLLOW:
                 commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
-                if (command->SpriteIndex == SPRITE_INDEX_NULL)
+                if (command.SpriteIndex == SPRITE_INDEX_NULL)
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW_NO_SPRITE;
                 }
                 else
                 {
-                    ft.Add<utf8*>(command->SpriteName);
+                    ft.Add<utf8*>(command.SpriteName);
                 }
                 break;
             case TITLE_SCRIPT_WAIT:
                 commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
-                ft.Add<uint16_t>(command->Milliseconds);
+                ft.Add<uint16_t>(command.Milliseconds);
                 break;
             case TITLE_SCRIPT_RESTART:
                 commandName = STR_TITLE_EDITOR_RESTART;
@@ -1008,8 +982,8 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             {
                 commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
                 const char* name = "";
-                auto scenario = GetScenarioRepository()->GetByInternalName(command->Scenario);
-                if (command->Scenario[0] == '\0')
+                auto scenario = GetScenarioRepository()->GetByInternalName(command.Scenario);
+                if (command.Scenario[0] == '\0')
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_LOAD_NO_SCENARIO;
                 }
@@ -1025,22 +999,22 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 break;
             }
             default:
-                log_warning("Unknown command %d", command->Type);
+                log_warning("Unknown command %d", command.Type);
         }
 
         char buffer[256];
         if ((selected || hover) && !error)
         {
-            format_string(buffer, 256, commandName, gCommonFormatArgs);
+            format_string(buffer, 256, commandName, ft.Data());
         }
         else
         {
-            format_string(buffer + 1, 255, commandName, gCommonFormatArgs);
+            format_string(buffer + 1, 255, commandName, ft.Data());
             buffer[0] = static_cast<utf8>(error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
         }
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<const char*>(&buffer);
-        gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
+        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
     }
 }
 
@@ -1073,10 +1047,10 @@ static void window_title_editor_load_sequence(size_t index)
         return;
 
     const char* path = title_sequence_manager_get_path(index);
-    TitleSequence* titleSequence = LoadTitleSequence(path);
+    auto titleSequence = LoadTitleSequence(path);
     if (titleSequence == nullptr)
     {
-        context_show_error(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE);
+        context_show_error(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE, {});
         return;
     }
 
@@ -1084,8 +1058,7 @@ static void window_title_editor_load_sequence(size_t index)
     size_t predefinedIndex = title_sequence_manager_get_predefined_index(index);
     _isSequenceReadOnly = (predefinedIndex != SIZE_MAX);
     _sequenceName = title_sequence_manager_get_name(index);
-    FreeTitleSequence(_editingTitleSequence);
-    _editingTitleSequence = titleSequence;
+    _editingTitleSequence = std::move(titleSequence);
 
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 }
@@ -1100,11 +1073,11 @@ static bool window_title_editor_check_can_edit()
     bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr);
 
     if (_isSequenceReadOnly)
-        context_show_error(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
+        context_show_error(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE, {});
     else if (title_is_previewing_sequence())
-        context_show_error(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING);
+        context_show_error(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING, {});
     else if (commandEditorOpen)
-        context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
+        context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE, {});
     else
         return true;
 
@@ -1113,12 +1086,12 @@ static bool window_title_editor_check_can_edit()
 
 static bool save_filename_exists(const utf8* filename)
 {
-    TitleSequence* seq = _editingTitleSequence;
-    for (size_t i = 0; i < seq->NumSaves; i++)
+    auto& seq = _editingTitleSequence;
+    for (size_t i = 0; i < seq->Saves.size(); i++)
     {
-        const utf8* savePath = seq->Saves[i];
+        const auto& savePath = seq->Saves[i];
 
-        if (_stricmp(savePath, filename) == 0)
+        if (_stricmp(savePath.c_str(), filename) == 0)
             return true;
     }
     return false;
@@ -1142,32 +1115,32 @@ static void window_title_editor_add_park_callback(int32_t result, const utf8* pa
         return;
     }
 
-    TitleSequenceAddPark(_editingTitleSequence, path, filename);
+    TitleSequenceAddPark(*_editingTitleSequence, path, filename);
 }
 
 static void window_title_editor_rename_park(size_t index, const utf8* name)
 {
     if (!filename_valid_characters(name))
     {
-        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
         return;
     }
 
-    for (size_t i = 0; i < _editingTitleSequence->NumSaves; i++)
+    for (size_t i = 0; i < _editingTitleSequence->Saves.size(); i++)
     {
         if (i != index)
         {
-            const utf8* savePath = _editingTitleSequence->Saves[i];
-            if (_strcmpi(savePath, name) == 0)
+            const auto& savePath = _editingTitleSequence->Saves[i];
+            if (_strcmpi(savePath.c_str(), name) == 0)
             {
-                context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE);
+                context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE, {});
                 return;
             }
         }
     }
 
-    if (TitleSequenceRenamePark(_editingTitleSequence, index, name))
+    if (TitleSequenceRenamePark(*_editingTitleSequence, index, name))
     {
-        TitleSequenceSave(_editingTitleSequence);
+        TitleSequenceSave(*_editingTitleSequence);
     }
 }

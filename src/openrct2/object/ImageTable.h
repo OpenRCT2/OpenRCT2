@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/JsonFwd.hpp"
 #include "../drawing/Drawing.h"
 
 #include <memory>
@@ -27,6 +28,20 @@ private:
     std::unique_ptr<uint8_t[]> _data;
     std::vector<rct_g1_element> _entries;
 
+    /**
+     * Container for a G1 image, additional information and RAII. Used by ReadJson
+     */
+    struct RequiredImage;
+    static std::vector<std::unique_ptr<ImageTable::RequiredImage>> ParseImages(IReadObjectContext* context, std::string s);
+    /**
+     * @note root is deliberately left non-const: json_t behaviour changes when const
+     */
+    static std::vector<std::unique_ptr<ImageTable::RequiredImage>> ParseImages(IReadObjectContext* context, json_t& el);
+    static std::vector<std::unique_ptr<ImageTable::RequiredImage>> LoadObjectImages(
+        IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range);
+    static std::vector<int32_t> ParseRange(std::string s);
+    static std::string FindLegacyObject(const std::string& name);
+
 public:
     ImageTable() = default;
     ImageTable(const ImageTable&) = delete;
@@ -34,6 +49,10 @@ public:
     ~ImageTable();
 
     void Read(IReadObjectContext* context, OpenRCT2::IStream* stream);
+    /**
+     * @note root is deliberately left non-const: json_t behaviour changes when const
+     */
+    void ReadJson(IReadObjectContext* context, json_t& root);
     const rct_g1_element* GetImages() const
     {
         return _entries.data();

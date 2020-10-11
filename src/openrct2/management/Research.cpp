@@ -240,7 +240,7 @@ void research_finish_item(ResearchItem* researchItem)
                 }
             }
 
-            auto ft = Formatter::Common();
+            Formatter ft;
 
             // If a vehicle is the first to be invented for its ride type, show the ride type/group name.
             // Independently listed vehicles (like all flat rides and shops) should always be announced as such.
@@ -266,7 +266,7 @@ void research_finish_item(ResearchItem* researchItem)
             {
                 if (gConfigNotifications.ride_researched)
                 {
-                    News::AddItemToQueue(News::ItemType::Research, availabilityString, researchItem->rawValue);
+                    News::AddItemToQueue(News::ItemType::Research, availabilityString, researchItem->rawValue, ft);
                 }
             }
 
@@ -281,7 +281,7 @@ void research_finish_item(ResearchItem* researchItem)
         {
             scenery_group_set_invented(researchItem->entryIndex);
 
-            auto ft = Formatter::Common();
+            Formatter ft;
             ft.Add<rct_string_id>(sceneryGroupEntry->name);
 
             if (!gSilentResearch)
@@ -289,7 +289,7 @@ void research_finish_item(ResearchItem* researchItem)
                 if (gConfigNotifications.ride_researched)
                 {
                     News::AddItemToQueue(
-                        News::ItemType::Research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, researchItem->rawValue);
+                        News::ItemType::Research, STR_NEWS_ITEM_RESEARCH_NEW_SCENERY_SET_AVAILABLE, researchItem->rawValue, ft);
                 }
             }
 

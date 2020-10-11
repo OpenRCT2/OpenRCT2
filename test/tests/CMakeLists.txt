@@ -67,7 +67,7 @@ endif (SYSTEM_GTEST)
 
 include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
 include_directories("${ROOT_DIR}/src")
-include_directories(${SDL2_INCLUDE_DIRS})
+include_directories(SYSTEM ${SDL2_INCLUDE_DIRS})
 
 # Some most common files required in tests
 set(COMMON_TEST_SOURCES
@@ -120,6 +120,8 @@ add_test(NAME sawyercoding COMMAND test_sawyercoding)
 set(LANGUAGEPACK_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/LanguagePackTest.cpp"
         "${ROOT_DIR}/src/openrct2/localisation/LanguagePack.cpp"
+        "${ROOT_DIR}/src/openrct2/core/RTL.FriBidi.cpp"
+        "${ROOT_DIR}/src/openrct2/core/RTL.ICU.cpp"
         )
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")

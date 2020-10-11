@@ -28,8 +28,8 @@ constexpr const RideTypeDescriptor CinemaRTD =
                      RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
                      RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_ALLOW_MUSIC |
                      RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << RIDE_MODE_3D_FILM_MOUSE_TAILS) | (1ULL << RIDE_MODE_3D_FILM_STORM_CHASERS) | (1ULL << RIDE_MODE_3D_FILM_SPACE_RAIDERS)),
-    SET_FIELD(DefaultMode, RIDE_MODE_3D_FILM_MOUSE_TAILS),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::MouseTails3DFilm, RideMode::StormChasers3DFilm, RideMode::SpaceRaiders3DFilm)),
+    SET_FIELD(DefaultMode, RideMode::MouseTails3DFilm),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_3D_CINEMA, STR_RIDE_DESCRIPTION_3D_CINEMA }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor CinemaRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 12, 128, 3, 2, }),
     SET_FIELD(MaxMass, 255),
-    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_3d_cinema),
     SET_FIELD(RatingsMultipliers, { 20, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),

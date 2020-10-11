@@ -11,38 +11,44 @@
 
 #include "../common.h"
 
-enum CURSOR_ID
+enum class CursorID : uint8_t
 {
-    CURSOR_UNDEFINED = -1,
-    CURSOR_ARROW,
-    CURSOR_BLANK,
-    CURSOR_UP_ARROW,
-    CURSOR_UP_DOWN_ARROW,
-    CURSOR_HAND_POINT,
-    CURSOR_ZZZ,
-    CURSOR_DIAGONAL_ARROWS,
-    CURSOR_PICKER,
-    CURSOR_TREE_DOWN,
-    CURSOR_FOUNTAIN_DOWN,
-    CURSOR_STATUE_DOWN,
-    CURSOR_BENCH_DOWN,
-    CURSOR_CROSS_HAIR,
-    CURSOR_BIN_DOWN,
-    CURSOR_LAMPPOST_DOWN,
-    CURSOR_FENCE_DOWN,
-    CURSOR_FLOWER_DOWN,
-    CURSOR_PATH_DOWN,
-    CURSOR_DIG_DOWN,
-    CURSOR_WATER_DOWN,
-    CURSOR_HOUSE_DOWN,
-    CURSOR_VOLCANO_DOWN,
-    CURSOR_WALK_DOWN,
-    CURSOR_PAINT_DOWN,
-    CURSOR_ENTRANCE_DOWN,
-    CURSOR_HAND_OPEN,
-    CURSOR_HAND_CLOSED,
-    CURSOR_COUNT,
+    Arrow,
+    Blank,
+    UpArrow,
+    UpDownArrow,
+    HandPoint,
+    ZZZ,
+    DiagonalArrows,
+    Picker,
+    TreeDown,
+    FountainDown,
+    StatueDown,
+    BenchDown,
+    CrossHair,
+    BinDown,
+    LamppostDown,
+    FenceDown,
+    FlowerDown,
+    PathDown,
+    DigDown,
+    WaterDown,
+    HouseDown,
+    VolcanoDown,
+    WalkDown,
+    PaintDown,
+    EntranceDown,
+    HandOpen,
+    HandClosed,
+    Count,
+
+    Undefined = 0xFF
 };
+
+namespace Cursor
+{
+    CursorID FromString(const std::string& s, CursorID defaultValue);
+}
 
 namespace OpenRCT2::Ui
 {

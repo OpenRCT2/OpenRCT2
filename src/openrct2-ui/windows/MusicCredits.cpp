@@ -84,36 +84,13 @@ static void window_music_credits_scrollgetsize(rct_window *w, int32_t scrollInde
 static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_music_credits_events = {
-    nullptr,
-    window_music_credits_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_music_credits_scrollgetsize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_music_credits_paint,
-    window_music_credits_scrollpaint
-};
+static rct_window_event_list window_music_credits_events([](auto& events)
+{
+    events.mouse_up = &window_music_credits_mouseup;
+    events.get_scroll_size = &window_music_credits_scrollgetsize;
+    events.paint = &window_music_credits_paint;
+    events.scroll_paint = &window_music_credits_scrollpaint;
+});
 // clang-format on
 
 /**

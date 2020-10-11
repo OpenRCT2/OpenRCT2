@@ -201,100 +201,38 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w);
 static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x0097EB60
-static rct_window_event_list window_scenario_options_financial_events = {
-    nullptr,
-    window_editor_scenario_options_financial_mouseup,
-    window_editor_scenario_options_financial_resize,
-    window_editor_scenario_options_financial_mousedown,
-    nullptr,
-    nullptr,
-    window_editor_scenario_options_financial_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_scenario_options_financial_invalidate,
-    window_editor_scenario_options_financial_paint,
-    nullptr
-};
+static rct_window_event_list window_scenario_options_financial_events([](auto& events)
+{
+    events.mouse_up = &window_editor_scenario_options_financial_mouseup;
+    events.resize = &window_editor_scenario_options_financial_resize;
+    events.mouse_down = &window_editor_scenario_options_financial_mousedown;
+    events.update = &window_editor_scenario_options_financial_update;
+    events.invalidate = &window_editor_scenario_options_financial_invalidate;
+    events.paint = &window_editor_scenario_options_financial_paint;
+});
 
 // 0x0097EBD0
-static rct_window_event_list window_scenario_options_guests_events = {
-    nullptr,
-    window_editor_scenario_options_guests_mouseup,
-    window_editor_scenario_options_guests_resize,
-    window_editor_scenario_options_guests_mousedown,
-    nullptr,
-    nullptr,
-    window_editor_scenario_options_guests_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_scenario_options_guests_invalidate,
-    window_editor_scenario_options_guests_paint,
-    nullptr
-};
+static rct_window_event_list window_scenario_options_guests_events([](auto& events)
+{
+    events.mouse_up = &window_editor_scenario_options_guests_mouseup;
+    events.resize = &window_editor_scenario_options_guests_resize;
+    events.mouse_down = &window_editor_scenario_options_guests_mousedown;
+    events.update = &window_editor_scenario_options_guests_update;
+    events.invalidate = &window_editor_scenario_options_guests_invalidate;
+    events.paint = &window_editor_scenario_options_guests_paint;
+});
 
 // 0x0097EC40
-static rct_window_event_list window_scenario_options_park_events = {
-    nullptr,
-    window_editor_scenario_options_park_mouseup,
-    window_editor_scenario_options_park_resize,
-    window_editor_scenario_options_park_mousedown,
-    window_editor_scenario_options_park_dropdown,
-    nullptr,
-    window_editor_scenario_options_park_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_scenario_options_park_invalidate,
-    window_editor_scenario_options_park_paint,
-    nullptr
-};
+static rct_window_event_list window_scenario_options_park_events([](auto& events)
+{
+    events.mouse_up = &window_editor_scenario_options_park_mouseup;
+    events.resize = &window_editor_scenario_options_park_resize;
+    events.mouse_down = &window_editor_scenario_options_park_mousedown;
+    events.dropdown = &window_editor_scenario_options_park_dropdown;
+    events.update = &window_editor_scenario_options_park_update;
+    events.invalidate = &window_editor_scenario_options_park_invalidate;
+    events.paint = &window_editor_scenario_options_park_paint;
+});
 
 static rct_window_event_list *window_editor_scenario_options_page_events[] = {
     &window_scenario_options_financial_events,
@@ -568,7 +506,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_CASH, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_CASH, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -581,7 +519,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_CASH, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_CASH, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -594,7 +532,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -607,7 +545,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -620,7 +558,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -633,7 +571,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -646,7 +584,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -659,7 +597,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -852,7 +790,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -865,7 +803,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -878,7 +816,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -891,7 +829,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -904,7 +842,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -917,7 +855,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -930,7 +868,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -943,7 +881,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1157,7 +1095,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1170,7 +1108,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1183,7 +1121,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1196,7 +1134,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1209,7 +1147,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1222,7 +1160,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1413,7 +1351,6 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         // Pay for park or rides label
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].left + 1, w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top };
-        gfx_draw_string_left(dpi, STR_FREE_PARK_ENTER, nullptr, COLOUR_BLACK, screenCoords);
 
         // Pay for park and/or rides value
         if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)

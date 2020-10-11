@@ -383,10 +383,10 @@ STR_0998    :この乗物にはこれ以上発着所を設置できません
 STR_0999    :乗り場が必要です。
 STR_1000    :コースが完全に一周していません
 STR_1001    :このコースは、この列車には適合しません
-STR_1002    :{POP16}{POP16}{POP16}{STRINGID}をオープンすることができません...
-STR_1003    :{POP16}{POP16}{POP16}{STRINGID}をテストすることができません...
-STR_1004    :{POP16}{POP16}{POP16}{STRINGID}を閉鎖することができません...
-STR_1005    :{POP16}{POP16}{POP16}{STRINGID}の建設を始めることができません...
+STR_1002    :{POP16}{POP16}{POP16}{STRINGID}をオープンすることができません…
+STR_1003    :{POP16}{POP16}{POP16}{STRINGID}をテストすることができません…
+STR_1004    :{POP16}{POP16}{POP16}{STRINGID}を閉鎖することができません…
+STR_1005    :{POP16}{POP16}{POP16}{STRINGID}の建設を始めることができません…
 STR_1006    :最初に閉鎖しなければなりません
 STR_1007    :充分な数の車両が造れません
 STR_1008    :{SMALLFONT}{BLACK}乗物/施設をオープンする、閉鎖する、またはテストする
@@ -398,10 +398,10 @@ STR_1013    :遊園地を閉める
 STR_1014    :遊園地を開ける
 STR_1015    :このモードではふたつ以上の発着所で操作することはできません
 STR_1016    :このモードではふたつ未満の発着所で操作することはできません
-STR_1017    :操作モードを変更することができません...
-STR_1018    :変更を行うことができません...
-STR_1019    :変更を行うことができません...
-STR_1020    :変更を行うことができません...
+STR_1017    :操作モードを変更することができません…
+STR_1018    :変更を行うことができません…
+STR_1019    :変更を行うことができません…
+STR_1020    :変更を行うことができません…
 STR_1021    :{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_1022    :列車ごとの{POP16}{POP16}{POP16}{COMMA16}台
 STR_1023    :列車ごと{POP16}{POP16}{POP16}{COMMA16}台
@@ -431,7 +431,7 @@ STR_1046    :OpenRCT2のトラックディサインファイル
 STR_1047    :ゲームをセーブが失敗しました！
 STR_1048    :シナリオをセーブが失敗しました！
 STR_1049    :地形をセーブが失敗しました！
-STR_1050    :ロードに失敗しました...{NEWLINE}無効なデータがファイルに含まれています!
+STR_1050    :ロードに失敗しました…{NEWLINE}無効なデータがファイルに含まれています!
 STR_1051    :支柱の切り替え
 STR_1052    :ゲストの切替え
 STR_1053    :{SMALLFONT}{BLACK}園内の乗物/施設
@@ -767,8 +767,8 @@ STR_1382    :カバー付・リフト・ヒル (右)
 STR_1383    :4分の1ループ
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}他のコース設定
-STR_1386    :特殊...
-STR_1387    :土地の種類を変更できません...
+STR_1386    :特殊…
+STR_1387    :土地の種類を変更できません…
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
@@ -835,7 +835,7 @@ STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRING
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
 STR_1452    :来園客の名前 
 STR_1453    :この来園客の名前を入力:
-STR_1454    :来園客に名前を付けることができません...
+STR_1454    :来園客に名前を付けることができません…
 STR_1455    :来園客の名前が無効です
 STR_1456    :{WINDOW_COLOUR_2}使ったお金: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}ポケットマネー: {BLACK}{CURRENCY2DP}
@@ -1032,7 +1032,7 @@ STR_1647    :
 STR_1648    :{SMALLFONT}「助けて！地上に降ろして！」
 STR_1649    :{SMALLFONT}「お金がなくなっちゃった！」
 STR_1650    :{SMALLFONT}「ワオ!新しい乗物ができてる！」
-STR_1653    :{SMALLFONT}「...さあ、{STRINGID}に乗ったぞ！」
+STR_1653    :{SMALLFONT}「…さあ、{STRINGID}に乗ったぞ！」
 STR_1654    :{WINDOW_COLOUR_2}最近の思考:
 STR_1655    :{SMALLFONT}{BLACK}土地に歩道を敷設する
 STR_1656    :{SMALLFONT}{BLACK}橋やトンネル型の歩道を敷設する
@@ -1127,7 +1127,7 @@ STR_1746    :これを変更することはできません。
 STR_1747    :{WINDOW_COLOUR_2}達成期限:
 STR_1748    :{SMALLFONT}{BLACK}ライドの達成期限
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
-STR_1751    :乗物のタイムリミットを変更できません...
+STR_1751    :乗物のタイムリミットを変更できません…
 STR_1752    :{SMALLFONT}{BLACK}園内の各入園客のリストを表示
 STR_1753    :{SMALLFONT}{BLACK}園内の入園客の概要リストを表示
 STR_1754    :{BLACK}{COMMA32} 来客
@@ -1240,7 +1240,7 @@ STR_1864    :整備士
 STR_1865    :警備員
 STR_1866    :エンターテイナー
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
-STR_1868    :回転数が変更できない...
+STR_1868    :回転数が変更できない…
 STR_1869    :{WINDOW_COLOUR_2}回転数:
 STR_1870    :{SMALLFONT}{BLACK}ライドの回転の数です。
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -1293,7 +1293,7 @@ STR_1920    :貸金を返済することはできません！
 STR_1921    :{SMALLFONT}{BLACK}新しいゲームを始める
 STR_1922    :{SMALLFONT}{BLACK}ゲームを再開する
 STR_1924    :{SMALLFONT}{BLACK}終了
-STR_1925    :ここに人を置けない...
+STR_1925    :ここに人を置けない…
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID}は壊れています。
 STR_1928    :{RED}{STRINGID}がクラッシュしました！
@@ -2055,9 +2055,9 @@ STR_2854    :{RED}{STRINGID}の入口に来園客が行けません!{NEWLINE}入
 STR_2855    :{RED}{STRINGID}の出口からの歩道がありません!{NEWLINE}乗物の出口から歩道を敷設してください
 STR_2856    :{WINDOW_COLOUR_2}チュートリアル
 STR_2857    :{WINDOW_COLOUR_2}(操作するにはキーまたはマウスボタンを押してください)
-STR_2858    :キャンペーンを始めることができません...
+STR_2858    :キャンペーンを始めることができません…
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
-STR_2862    :Music acknowledgements...
+STR_2862    :Music acknowledgements…
 STR_2863    :Music acknowledgements
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) non copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
@@ -2115,7 +2115,7 @@ STR_2980    :ゲーム中に看板が多すぎます
 STR_2981    :{RED}立入り禁止
 STR_2982    :バナーのテキト
 STR_2983    :テキトを入力してください:
-STR_2984    :看板に新しい文字を設定することができません...
+STR_2984    :看板に新しい文字を設定することができません…
 STR_2985    :バナー
 STR_2986    :{SMALLFONT}{BLACK}看板の文字を変更
 STR_2987    :{SMALLFONT}{BLACK}看板の標示を「立入禁止」にする
@@ -2141,7 +2141,7 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :ファイルをロードすることができません...
+STR_3010    :ファイルをロードすることができません…
 STR_3011    :ファイルには無効なデータが含まれています
 STR_3012    :ダージャムズ・ビート・スタイル
 STR_3013    :フェアグラウンドオルガン・スタイル
@@ -2217,7 +2217,7 @@ STR_3099    :{SMALLFONT}{BLACK}色を選択
 STR_3100    :{SMALLFONT}{BLACK}ふたつ目の色を選択
 STR_3101    :{SMALLFONT}{BLACK}3つ目の色を選択
 STR_3102    :{SMALLFONT}{BLACK}地形上の色のついた景観をペイントし直す
-STR_3103    :これをペイントし直すことはできません...
+STR_3103    :これをペイントし直すことはできません…
 STR_3104    :{SMALLFONT}{BLACK}乗物をリスト表示
 STR_3105    :{SMALLFONT}{BLACK}店と売店をリスト表示
 STR_3106    :{SMALLFONT}{BLACK}案内所その他の園内施設をリスト表示
@@ -2246,7 +2246,7 @@ STR_3128    :トラックデザインをセーブする
 STR_3129    :トラックデザインと景観物をセーブする
 STR_3130    :セーブ
 STR_3131    :キャンセル
-STR_3132    :{BLACK}コースデザインと一緒にセーブする景観アイテムをクリックして選択...
+STR_3132    :{BLACK}コースデザインと一緒にセーブする景観アイテムをクリックして選択…
 STR_3133    :これは傾斜の上には造ることができません
 STR_3134    :{RED}(利用できない景観アイテムがデザインに含まれています)
 STR_3135    :{RED}(車両のデザインは利用できません - 乗物の性能に影響を与える可能性があります)
@@ -2388,7 +2388,7 @@ STR_3290    :質素
 STR_3291    :南国
 STR_3292    :砂漠
 STR_3293    :冬
-STR_3294    :変更する...
+STR_3294    :変更する…
 STR_3295    :{SMALLFONT}{BLACK}パーク名を変更する
 STR_3296    :{SMALLFONT}{BLACK}シナリオ名を変更する
 STR_3297    :{SMALLFONT}{BLACK}シナリオ設定を変更する
@@ -2468,15 +2468,15 @@ STR_3376    :インストール
 STR_3377    :{SMALLFONT}{BLACK}新しいトラックデサインをインストールため
 STR_3378    :インストール
 STR_3379    :キャンセル
-STR_3380    :このコースデザインをインストールすることができません...
+STR_3380    :このコースデザインをインストールすることができません…
 STR_3381    :ファイルに互換性がないか、または無効なデータが含まれています
 STR_3382    :ファイルのコピーに失敗しました
 STR_3383    :コースデザインの新しい名前を選択
 STR_3384    :既存のコースデザインにこの名前が使用されています - このデザインの新しい名前を選択してください:
-STR_3389    :追加の景観アイテムを選択することができません...
+STR_3389    :追加の景観アイテムを選択することができません…
 STR_3390    :選択アイテムが多すぎます
 STR_3437    :{SMALLFONT}{BLACK}木、壁、小さな景観アイテムを地形から除去する
-STR_3438    :ここから全ての景観を除去することができませんでした...
+STR_3438    :ここから全ての景観を除去することができませんでした…
 STR_3439    :景色物をクリアする
 STR_3445    :巡回エリアにセットする
 STR_3446    :巡回エリアをキャンセル
@@ -2693,7 +2693,7 @@ STR_5365    :{BLACK}スタッフのスピード:
 STR_5366    :普通
 STR_5367    :速い
 STR_5368    :Reset crash status
-STR_5369    :Park parameters...
+STR_5369    :Park parameters…
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
 STR_5371    :オブジェクト選定
 STR_5372    :Invert right mouse dragging
@@ -2759,7 +2759,7 @@ STR_5432    :Command:
 STR_5433    :タイトル順序
 STR_5434    :Command Editor
 STR_5435    :セーブの名を変える
-STR_5436    :タイトル順序を変更する...
+STR_5436    :タイトル順序を変更する…
 STR_5437    :No save selected
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
@@ -3025,9 +3025,9 @@ STR_5738    :閉鎖中, まだ{COMMA16}人の乗客
 STR_5739    :{WINDOW_COLOUR_2}人の乗客: {BLACK}{COMMA16}
 STR_5740    :終わりのないの広告宣伝キャンペーン
 STR_5741    :{SMALLFONT}{BLACK}広告宣伝キャンペーンが終わりのないの設定です。
-STR_5742    :認証中 ...
-STR_5743    :接続中 ...
-STR_5744    :解決中...
+STR_5742    :認証中 …
+STR_5743    :接続中 …
+STR_5744    :解決中…
 STR_5745    :ネットワークの同期解除が検出されました。
 STR_5746    :切断されました
 STR_5747    :切断されました: {STRING}
@@ -3042,7 +3042,7 @@ STR_5755    :不適切なソフトウェアバージョン（サーバは{STRING
 STR_5756    :Bad Password
 STR_5757    :サーバがいっぱいです
 STR_5758    :{OUTLINE}{GREEN}{STRING}がゲームに参加しました。
-STR_5759    :地図をダウンロード中... ({INT32} / {INT32}) KiB
+STR_5759    :地図をダウンロード中… ({INT32} / {INT32}) KiB
 STR_5760    :香港ドル (HK$)
 STR_5761    :ニュー台湾ドル (NT$)
 STR_5762    :人民元 (CN¥)
@@ -3272,7 +3272,7 @@ STR_5987    :Unable to create folder
 STR_5988    :{SMALLFONT}{BLACK}No remaining land rights for sale
 STR_5989    :{SMALLFONT}{BLACK}No remaining construction rights for sale
 STR_5990    :{SMALLFONT}{BLACK}No remaining land rights or construction rights for sale
-STR_5991    :Can't paste element...
+STR_5991    :Can't paste element…
 STR_5992    :The map elements limit has been reached
 STR_5993    :{SMALLFONT}{BLACK}Copy selected element
 STR_5994    :{SMALLFONT}{BLACK}Paste copied element
@@ -3421,7 +3421,7 @@ STR_6136    :Server sent invalid request
 STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
 STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in “contributors.md”. For more information, visit http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
-STR_6140    :変更履歴...
+STR_6140    :変更履歴…
 STR_6141    :RCT1の下のツールバー
 STR_6142    :{WINDOW_COLOUR_2}トラックの名: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}ラウドの名: {BLACK}{STRINGID}
@@ -3429,7 +3429,7 @@ STR_6144    :汚いビジュアルを表示する
 STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
 STR_6146    :Enable all drawable track pieces
 STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
-STR_6148    :マスターサーバに接続中...
+STR_6148    :マスターサーバに接続中…
 STR_6149    :マスターサーバに接続が失敗しました。
 STR_6150    :マスターサーバから無効な返事をいただきました。(JSON整数がありません)
 STR_6151    :マスターサーバがサーバリッストを送りませんでした。
@@ -3492,7 +3492,7 @@ STR_6218    :OpenRCT2オフィシャル
 STR_6219    :歩道の問題表示の切り替え
 STR_6220    :使用可能にする
 STR_6221    :{SMALLFONT}{BLACK}これはライドの既知の入口または出口の位置が現在選択されているタイルに設定されます。 1つの駅で使用できる入口と出口の場所は1つだけです。
-STR_6222    :Can't place guest entry point here...
+STR_6222    :Can't place guest entry point here…
 STR_6223    :Must be outside park boundaries!
 STR_6224    :{STRING} placed a guest entry point.
 STR_6225    :OpenGLレンダラーではサポートされていません

@@ -40,12 +40,10 @@ DEFINE_GAME_ACTION(ClearAction, GAME_COMMAND_CLEAR_SCENERY, GameActionResult)
 {
 private:
     MapRange _range;
-    ClearableItems _itemsToClear;
+    ClearableItems _itemsToClear{};
 
 public:
-    ClearAction()
-    {
-    }
+    ClearAction() = default;
     ClearAction(MapRange range, ClearableItems itemsToClear)
         : _range(range)
         , _itemsToClear(itemsToClear)

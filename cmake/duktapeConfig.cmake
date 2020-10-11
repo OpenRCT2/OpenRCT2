@@ -11,8 +11,7 @@
 #  DUKTAPE_DEFINITIONS - Compiler switches required for using Duktape
 #
 
-find_package(PkgConfig QUIET)
-pkg_check_modules(PC_DUK QUIET duktape libduktape)
+PKG_CHECK_MODULES(PC_DUK QUIET duktape libduktape)
 
 find_path(DUKTAPE_INCLUDE_DIR duktape.h
     HINTS ${PC_DUK_INCLUDEDIR} ${PC_DUK_INCLUDE_DIRS}

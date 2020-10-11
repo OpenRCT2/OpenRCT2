@@ -10,12 +10,12 @@
 #include "FootpathItemObject.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Localisation.h"
 #include "../object/Object.h"
 #include "../object/ObjectRepository.h"
-#include "ObjectJsonHelpers.h"
 #include "ObjectList.h"
 
 #include <unordered_map>
@@ -25,7 +25,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.path_bit.flags = stream->ReadValue<uint16_t>();
     _legacyType.path_bit.draw_type = stream->ReadValue<uint8_t>();
-    _legacyType.path_bit.tool_id = stream->ReadValue<uint8_t>();
+    _legacyType.path_bit.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
     _legacyType.path_bit.price = stream->ReadValue<int16_t>();
     _legacyType.path_bit.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
@@ -40,7 +40,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     // Validate properties
     if (_legacyType.large_scenery.price <= 0)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+        context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
 
     // Add path bits to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
@@ -98,40 +98,36 @@ static uint8_t ParseDrawType(const std::string& s)
     return PATH_BIT_DRAW_TYPE_LIGHTS;
 }
 
-void FootpathItemObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void FootpathItemObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
-    _legacyType.path_bit.draw_type = ParseDrawType(ObjectJsonHelpers::GetString(properties, "renderAs"));
-    _legacyType.path_bit.tool_id = ObjectJsonHelpers::ParseCursor(
-        ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_LAMPPOST_DOWN);
-    _legacyType.path_bit.price = json_integer_value(json_object_get(properties, "price"));
+    Guard::Assert(root.is_object(), "FootpathItemObject::ReadJson expects parameter root to be object");
 
-    SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
+    json_t properties = root["properties"];
 
-    // Flags
-    _legacyType.path_bit.flags = ObjectJsonHelpers::GetFlags<uint16_t>(
-        properties,
-        {
-            { "isBin", PATH_BIT_FLAG_IS_BIN },
-            { "isBench", PATH_BIT_FLAG_IS_BENCH },
-            { "isBreakable", PATH_BIT_FLAG_BREAKABLE },
-            { "isLamp", PATH_BIT_FLAG_LAMP },
-            { "isJumpingFountainWater", PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER },
-            { "isJumpingFountainSnow", PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW },
-            { "isTelevision", PATH_BIT_FLAG_IS_QUEUE_SCREEN },
-        });
-
-    // HACK To avoid 'negated' properties in JSON, handle these separately until
-    //      flags are inverted in this code base.
-    if (!ObjectJsonHelpers::GetBoolean(properties, "isAllowedOnQueue", false))
+    if (properties.is_object())
     {
-        _legacyType.path_bit.flags |= PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE;
-    }
-    if (!ObjectJsonHelpers::GetBoolean(properties, "isAllowedOnSlope", false))
-    {
-        _legacyType.path_bit.flags |= PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE;
+        _legacyType.path_bit.draw_type = ParseDrawType(Json::GetString(properties["renderAs"]));
+        _legacyType.path_bit.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::LamppostDown);
+        _legacyType.path_bit.price = Json::GetNumber<int16_t>(properties["price"]);
+
+        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
+
+        // clang-format off
+        _legacyType.path_bit.flags = Json::GetFlags<uint16_t>(
+            properties,
+            {
+                { "isBin",                  PATH_BIT_FLAG_IS_BIN,                   Json::FlagType::Normal },
+                { "isBench",                PATH_BIT_FLAG_IS_BENCH,                 Json::FlagType::Normal },
+                { "isBreakable",            PATH_BIT_FLAG_BREAKABLE,                Json::FlagType::Normal },
+                { "isLamp",                 PATH_BIT_FLAG_LAMP,                     Json::FlagType::Normal },
+                { "isJumpingFountainWater", PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER,   Json::FlagType::Normal },
+                { "isJumpingFountainSnow",  PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW,    Json::FlagType::Normal },
+                { "isAllowedOnQueue",       PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE,      Json::FlagType::Inverted },
+                { "isAllowedOnSlope",       PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE,      Json::FlagType::Inverted },
+                { "isTelevision",           PATH_BIT_FLAG_IS_QUEUE_SCREEN,          Json::FlagType::Normal },
+            });
+        // clang-format on
     }
 
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    PopulateTablesFromJson(context, root);
 }

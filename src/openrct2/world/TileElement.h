@@ -528,9 +528,9 @@ assert_struct_size(EntranceElement, 16);
 struct BannerElement : TileElementBase
 {
 private:
-    BannerIndex index; // 4
-    uint8_t position;  // 6
-    uint8_t flags;     // 7
+    BannerIndex index;    // 4
+    uint8_t position;     // 6
+    uint8_t AllowedEdges; // 7
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_08[8];

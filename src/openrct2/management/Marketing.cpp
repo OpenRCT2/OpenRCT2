@@ -70,7 +70,7 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
 {
     if (gConfigNotifications.park_marketing_campaign_finished)
     {
-        auto ft = Formatter::Common();
+        Formatter ft;
         // This sets the string parameters for the marketing types that have an argument.
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {
@@ -85,7 +85,7 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
             ft.Add<rct_string_id>(ShopItems[campaign.ShopItemType].Naming.Plural);
         }
 
-        News::AddItemToQueue(News::ItemType::Money, MarketingCampaignNames[campaign.Type][2], 0);
+        News::AddItemToQueue(News::ItemType::Money, MarketingCampaignNames[campaign.Type][2], 0, ft);
     }
 }
 

@@ -18,6 +18,9 @@
 struct IObjectManager;
 struct IObjectRepository;
 struct IScenarioRepository;
+enum class DrawingEngine : int32_t;
+enum class CursorID : uint8_t;
+
 namespace OpenRCT2
 {
     struct IStream;
@@ -125,7 +128,7 @@ namespace OpenRCT2
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;
         virtual IGameStateSnapshots* GetGameStateSnapshots() abstract;
-        virtual int32_t GetDrawingEngineType() abstract;
+        virtual DrawingEngine GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
         virtual Paint::Painter* GetPainter() abstract;
 
@@ -229,7 +232,7 @@ enum
 };
 
 void context_init();
-void context_setcurrentcursor(int32_t cursor);
+void context_setcurrentcursor(CursorID cursor);
 void context_update_cursor_scale();
 void context_hide_cursor();
 void context_show_cursor();
@@ -252,14 +255,13 @@ void context_set_cursor_trap(bool value);
 rct_window* context_open_window(rct_windowclass wc);
 rct_window* context_open_detail_window(uint8_t type, int32_t id);
 rct_window* context_open_window_view(uint8_t view);
-rct_window* context_show_error(rct_string_id title, rct_string_id message);
+rct_window* context_show_error(rct_string_id title, rct_string_id message, const class Formatter& args);
 rct_window* context_open_intent(Intent* intent);
 void context_broadcast_intent(Intent* intent);
 void context_force_close_window_by_class(rct_windowclass wc);
 void context_update_map_tooltip();
 void context_handle_input();
 void context_input_handle_keyboard(bool isTitle);
-bool context_read_bmp(void** outPixels, uint32_t* outWidth, uint32_t* outHeight, const utf8* path);
 void context_quit();
 const utf8* context_get_path_legacy(int32_t pathId);
 bool context_load_park_from_file(const utf8* path);

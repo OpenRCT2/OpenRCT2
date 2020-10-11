@@ -112,36 +112,20 @@ static void window_footpath_toolup(rct_window * w, rct_widgetindex widgetIndex, 
 static void window_footpath_invalidate(rct_window * w);
 static void window_footpath_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
-static rct_window_event_list window_footpath_events = {
-    window_footpath_close,
-    window_footpath_mouseup,
-    nullptr,
-    window_footpath_mousedown,
-    window_footpath_dropdown,
-    nullptr,
-    window_footpath_update,
-    nullptr,
-    nullptr,
-    window_footpath_toolupdate,
-    window_footpath_tooldown,
-    window_footpath_tooldrag,
-    window_footpath_toolup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_footpath_invalidate,
-    window_footpath_paint,
-    nullptr
-};
+static rct_window_event_list window_footpath_events([](auto& events)
+{
+    events.close = &window_footpath_close;
+    events.mouse_up = &window_footpath_mouseup;
+    events.mouse_down = &window_footpath_mousedown;
+    events.dropdown = &window_footpath_dropdown;
+    events.update = &window_footpath_update;
+    events.tool_update = &window_footpath_toolupdate;
+    events.tool_down = &window_footpath_tooldown;
+    events.tool_drag = &window_footpath_tooldrag;
+    events.tool_up = &window_footpath_toolup;
+    events.invalidate = &window_footpath_invalidate;
+    events.paint = &window_footpath_paint;
+});
 // clang-format on
 
 static money32 _window_footpath_cost;
@@ -886,7 +870,7 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
             // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
             if (result->Cost != 0)
             {
-                audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
             }
         }
         else
@@ -973,7 +957,7 @@ static void window_footpath_construct()
     footpathPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
         if (result->Error == GA_ERROR::OK)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
             if (gFootpathConstructSlope == 0)
             {

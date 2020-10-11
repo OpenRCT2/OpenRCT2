@@ -28,9 +28,7 @@ private:
     CoordsXYZD _loc;
 
 public:
-    PlaceParkEntranceAction()
-    {
-    }
+    PlaceParkEntranceAction() = default;
     PlaceParkEntranceAction(const CoordsXYZD& location)
         : _loc(location)
     {

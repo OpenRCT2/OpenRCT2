@@ -25,14 +25,12 @@ DEFINE_GAME_ACTION(WallSetColourAction, GAME_COMMAND_SET_WALL_COLOUR, GameAction
 {
 private:
     CoordsXYZD _loc;
-    int32_t _primaryColour;
-    int32_t _secondaryColour;
-    int32_t _tertiaryColour;
+    int32_t _primaryColour{};
+    int32_t _secondaryColour{};
+    int32_t _tertiaryColour{};
 
 public:
-    WallSetColourAction()
-    {
-    }
+    WallSetColourAction() = default;
 
     WallSetColourAction(const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
         : _loc(loc)

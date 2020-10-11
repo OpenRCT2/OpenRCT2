@@ -220,11 +220,7 @@ void window_close(rct_window* w)
     window_event_close_call(window.get());
 
     // Remove viewport
-    if (window->viewport != nullptr)
-    {
-        window->viewport->width = 0;
-        window->viewport = nullptr;
-    }
+    window->RemoveViewport();
 
     // Invalidate the window (area)
     window->Invalidate();
@@ -1524,17 +1520,21 @@ void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t sc
         w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
 }
 
-rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetIndex)
+OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
-    rct_string_id result = 0;
     if (w->event_handlers->tooltip != nullptr)
-        w->event_handlers->tooltip(w, widgetIndex, &result);
-    return result;
+    {
+        return w->event_handlers->tooltip(w, widgetIndex, fallback);
+    }
+    else
+    {
+        return { fallback, {} };
+    }
 }
 
-int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    int32_t cursorId = CURSOR_ARROW;
+    CursorID cursorId = CursorID::Arrow;
     if (w->event_handlers->cursor != nullptr)
         w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
     return cursorId;
@@ -1720,7 +1720,7 @@ void window_close_construction_windows()
  */
 void window_update_viewport_ride_music()
 {
-    gRideMusicParamsListEnd = &gRideMusicParamsList[0];
+    OpenRCT2::Audio::gRideMusicParamsListEnd = &OpenRCT2::Audio::gRideMusicParamsList[0];
     g_music_tracking_viewport = nullptr;
 
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -1734,11 +1734,11 @@ void window_update_viewport_ride_music()
         gWindowAudioExclusive = w;
 
         if (viewport->zoom <= 0)
-            gVolumeAdjustZoom = 0;
+            OpenRCT2::Audio::gVolumeAdjustZoom = 0;
         else if (viewport->zoom == 1)
-            gVolumeAdjustZoom = 30;
+            OpenRCT2::Audio::gVolumeAdjustZoom = 30;
         else
-            gVolumeAdjustZoom = 60;
+            OpenRCT2::Audio::gVolumeAdjustZoom = 60;
         break;
     }
 }
@@ -1973,16 +1973,16 @@ bool window_is_visible(rct_window* w)
     if (w == nullptr)
         return false;
 
-    if (w->visibility == VC_VISIBLE)
+    if (w->visibility == VisibilityCache::Visible)
         return true;
-    if (w->visibility == VC_COVERED)
+    if (w->visibility == VisibilityCache::Covered)
         return false;
 
     // only consider viewports, consider the main window always visible
     if (w->viewport == nullptr || w->classification == WC_MAIN_WINDOW)
     {
         // default to previous behaviour
-        w->visibility = VC_VISIBLE;
+        w->visibility = VisibilityCache::Visible;
         return true;
     }
 
@@ -1997,15 +1997,15 @@ bool window_is_visible(rct_window* w)
             && w_other.windowPos.x + w_other.width >= w->windowPos.x + w->width
             && w_other.windowPos.y + w_other.height >= w->windowPos.y + w->height)
         {
-            w->visibility = VC_COVERED;
-            w->viewport->visibility = VC_COVERED;
+            w->visibility = VisibilityCache::Covered;
+            w->viewport->visibility = VisibilityCache::Covered;
             return false;
         }
     }
 
     // default to previous behaviour
-    w->visibility = VC_VISIBLE;
-    w->viewport->visibility = VC_VISIBLE;
+    w->visibility = VisibilityCache::Visible;
+    w->viewport->visibility = VisibilityCache::Visible;
     return true;
 }
 
@@ -2056,10 +2056,10 @@ void window_reset_visibilities()
 {
     // reset window visibility status to unknown
     window_visit_each([](rct_window* w) {
-        w->visibility = VC_UNKNOWN;
+        w->visibility = VisibilityCache::Unknown;
         if (w->viewport != nullptr)
         {
-            w->viewport->visibility = VC_UNKNOWN;
+            w->viewport->visibility = VisibilityCache::Unknown;
         }
     });
 }

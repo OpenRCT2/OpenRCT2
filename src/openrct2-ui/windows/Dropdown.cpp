@@ -91,36 +91,10 @@ void dropdown_set_disabled(int32_t index, bool value)
 static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
-static rct_window_event_list window_dropdown_events = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_dropdown_paint,
-    nullptr
-};
+static rct_window_event_list window_dropdown_events([](auto& events)
+{
+    events.paint = &window_dropdown_paint;
+});
 // clang-format on
 
 /**

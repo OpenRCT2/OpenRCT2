@@ -15,6 +15,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
+#include <openrct2/peep/Peep.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Sprite.h>
@@ -46,36 +47,15 @@ static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, cons
 static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_news_events = {
-    nullptr,
-    window_news_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_scrollgetsize,
-    window_news_scrollmousedown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_news_paint,
-    window_news_scrollpaint
-};
+static rct_window_event_list window_news_events([](auto& events)
+{
+    events.mouse_up = &window_news_mouseup;
+    events.update = &window_news_update;
+    events.get_scroll_size = &window_news_scrollgetsize;
+    events.scroll_mousedown = &window_news_scrollmousedown;
+    events.paint = &window_news_paint;
+    events.scroll_paint = &window_news_scrollpaint;
+});
 // clang-format on
 
 /**
@@ -144,7 +124,7 @@ static void window_news_update(rct_window* w)
     }
 
     w->Invalidate();
-    audio_play_sound(SoundId::Click2, 0, w->windowPos.x + (w->width / 2));
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click2, 0, w->windowPos.x + (w->width / 2));
 
     size_t j = w->news.var_480;
     w->news.var_480 = -1;
@@ -219,7 +199,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
         w->news.var_482 = buttonIndex;
         w->news.var_484 = 4;
         w->Invalidate();
-        audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     }
 }
 
@@ -259,15 +239,19 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             dpi, { -1, y, 383, y + itemHeight - 1 }, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
         // Date text
-        auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
-        ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
-        gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, { 2, y });
-
+        {
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
+            ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
+            gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, ft.Data(), COLOUR_WHITE, { 2, y });
+        }
         // Item text
-        auto text = newsItem.Text;
-        gfx_draw_string_left_wrapped(dpi, &text, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
-
+        {
+            auto ft = Formatter();
+            ft.Add<utf8*>(newsItem.Text);
+            gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
+        }
         // Subject button
         if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))
         {
@@ -304,17 +288,17 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
 
                     // If normal peep set sprite to normal (no food)
                     // If staff set sprite to staff sprite
-                    int32_t sprite_type = 0;
+                    auto spriteType = PeepSpriteType::Normal;
                     if (peep->AssignedPeepType == PeepType::Staff)
                     {
-                        sprite_type = peep->SpriteType;
+                        spriteType = peep->SpriteType;
                         if (peep->AssignedStaffType == StaffType::Entertainer)
                         {
                             clipCoords.y += 3;
                         }
                     }
 
-                    uint32_t image_id = g_peep_animation_entries[sprite_type].sprite_animation->base_image;
+                    uint32_t image_id = GetPeepAnimation(spriteType).base_image;
                     image_id += 0xA0000001;
                     image_id |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24);
 

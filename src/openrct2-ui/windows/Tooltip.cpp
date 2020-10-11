@@ -28,36 +28,11 @@ static rct_widget window_tooltip_widgets[] = {
 static void window_tooltip_update(rct_window *w);
 static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_tooltip_events = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_tooltip_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_tooltip_paint,
-    nullptr
-};
+static rct_window_event_list window_tooltip_events([](auto& events)
+{
+    events.update = &window_tooltip_update;
+    events.paint = &window_tooltip_paint;
+});
 // clang-format on
 
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
@@ -73,7 +48,7 @@ void window_tooltip_reset(const ScreenCoordsXY& screenCoords)
     input_set_flag(INPUT_FLAG_4, false);
 }
 
-void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords)
+void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
 {
     rct_window* w;
     int32_t width, height;
@@ -84,7 +59,7 @@ void window_tooltip_show(rct_string_id id, ScreenCoordsXY screenCoords)
 
     char* buffer = gCommonStringFormatBuffer;
 
-    format_string(buffer, sizeof(gCommonStringFormatBuffer), id, gCommonFormatArgs);
+    format_string(buffer, sizeof(gCommonStringFormatBuffer), message.str, message.args.Data());
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
     int32_t tooltip_text_width;
@@ -141,12 +116,6 @@ void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, 
     window_event_invalidate_call(widgetWindow);
 
     rct_string_id stringId = widget->tooltip;
-    if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
-    {
-        stringId = STR_STRING_TOOLTIP;
-        auto ft = Formatter::Common();
-        ft.Add<const char*>(widget->sztooltip);
-    }
 
     if (stringId == STR_NONE)
         return;
@@ -154,11 +123,17 @@ void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, 
     gTooltipWidget.window_classification = widgetWindow->classification;
     gTooltipWidget.window_number = widgetWindow->number;
     gTooltipWidget.widget_index = widgetIndex;
-
-    if (window_event_tooltip_call(widgetWindow, widgetIndex) == STR_NONE)
+    auto result = window_event_tooltip_call(widgetWindow, widgetIndex, stringId);
+    if (result.str == STR_NONE)
         return;
 
-    window_tooltip_show(stringId, screenCords);
+    if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
+    {
+        result.str = STR_STRING_TOOLTIP;
+        result.args = Formatter();
+        result.args.Add<const char*>(widget->sztooltip);
+    }
+    window_tooltip_show(result, screenCords);
 }
 
 /**

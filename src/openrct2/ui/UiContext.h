@@ -120,8 +120,8 @@ namespace OpenRCT2
 
             // Input
             virtual const CursorState* GetCursorState() abstract;
-            virtual CURSOR_ID GetCursor() abstract;
-            virtual void SetCursor(CURSOR_ID cursor) abstract;
+            virtual CursorID GetCursor() abstract;
+            virtual void SetCursor(CursorID cursor) abstract;
             virtual void SetCursorScale(uint8_t scale) abstract;
             virtual void SetCursorVisible(bool value) abstract;
             virtual ScreenCoordsXY GetCursorPosition() abstract;

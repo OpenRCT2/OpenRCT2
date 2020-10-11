@@ -14,7 +14,6 @@
 #include "Window.h"
 
 #include <algorithm>
-#include <jansson.h>
 #include <memory>
 #include <openrct2/Context.h>
 #include <openrct2/PlatformEnvironment.h>
@@ -53,8 +52,11 @@ struct UIThemeWindowEntry
     rct_windowclass WindowClass;
     WindowTheme Theme;
 
-    json_t* ToJson() const;
-    static UIThemeWindowEntry FromJson(const WindowThemeDesc* wtDesc, const json_t* json);
+    json_t ToJson() const;
+    /**
+     * @note json is deliberately left non-const: json_t behaviour changes when const
+     */
+    static UIThemeWindowEntry FromJson(const WindowThemeDesc* wtDesc, json_t& json);
 };
 
 /**
@@ -76,10 +78,13 @@ public:
     void SetEntry(const UIThemeWindowEntry* entry);
     void RemoveEntry(rct_windowclass windowClass);
 
-    json_t* ToJson() const;
+    json_t ToJson() const;
     bool WriteToFile(const std::string& path) const;
 
-    static UITheme* FromJson(const json_t* json);
+    /**
+     * @note json is deliberately left non-const: json_t behaviour changes when const
+     */
+    static UITheme* FromJson(json_t& json);
     static UITheme* FromFile(const std::string& path);
     static UITheme CreatePredefined(const std::string& name, const UIThemeWindowEntry* entries, uint8_t flags);
 };
@@ -117,7 +122,7 @@ static constexpr const WindowThemeDesc WindowThemeDescriptors[] =
     // WindowClass, WindowClassSZ                  WindowName                                        NumColours, DefaultTheme
     { THEME_WC(WC_TOP_TOOLBAR),                    STR_THEMES_WINDOW_TOP_TOOLBAR,                    COLOURS_4(COLOUR_LIGHT_BLUE,               COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN,             COLOUR_GREY         ) },
     { THEME_WC(WC_BOTTOM_TOOLBAR),                 STR_THEMES_WINDOW_BOTTOM_TOOLBAR,                 COLOURS_4(TRANSLUCENT(COLOUR_DARK_GREEN),  TRANSLUCENT(COLOUR_DARK_GREEN),  COLOUR_BLACK,                  COLOUR_BRIGHT_GREEN ) },
-    { THEME_WC(WC_RIDE),                           STR_THEMES_WINDOW_RIDE,                           COLOURS_3(COLOUR_GREY,                     COLOUR_BORDEAUX_RED,             COLOUR_GREY                                        ) },
+    { THEME_WC(WC_RIDE),                           STR_THEMES_WINDOW_RIDE,                           COLOURS_3(COLOUR_GREY,                     COLOUR_BORDEAUX_RED,             COLOUR_SATURATED_GREEN                             ) },
     { THEME_WC(WC_RIDE_CONSTRUCTION),              STR_THEMES_WINDOW_RIDE_CONSTRUCTION,              COLOURS_3(COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN,               COLOUR_DARK_BROWN                                  ) },
     { THEME_WC(WC_RIDE_LIST),                      STR_THEMES_WINDOW_RIDE_LIST,                      COLOURS_3(COLOUR_GREY,                     COLOUR_BORDEAUX_RED,             COLOUR_BORDEAUX_RED                                ) },
     { THEME_WC(WC_SAVE_PROMPT),                    STR_THEMES_WINDOW_SAVE_PROMPT,                    COLOURS_1(TRANSLUCENT(COLOUR_BORDEAUX_RED)                                                                                     ) },
@@ -266,7 +271,7 @@ static void ThrowThemeLoadException()
 
 #pragma region UIThemeEntry
 
-json_t* UIThemeWindowEntry::ToJson() const
+json_t UIThemeWindowEntry::ToJson() const
 {
     const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(WindowClass);
     if (wtDesc == nullptr)
@@ -274,37 +279,41 @@ json_t* UIThemeWindowEntry::ToJson() const
         return nullptr;
     }
 
-    json_t* jsonColours = json_array();
+    json_t jsonColours = json_t::array();
     for (uint8_t i = 0; i < wtDesc->NumColours; i++)
     {
         colour_t colour = Theme.Colours[i];
-        json_array_append_new(jsonColours, json_integer(colour));
+        jsonColours.push_back(colour);
     }
 
-    json_t* jsonEntry = json_object();
-    json_object_set_new(jsonEntry, "colours", jsonColours);
+    json_t jsonEntry = {
+        { "colours", jsonColours },
+    };
 
     return jsonEntry;
 }
 
-UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc* wtDesc, const json_t* json)
+UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc* wtDesc, json_t& jsonData)
 {
-    json_t* jsonColours = json_object_get(json, "colours");
-    if (jsonColours == nullptr)
+    Guard::Assert(jsonData.is_object(), "UIThemeWindowEntry::FromJson expects parameter jsonData to be object");
+
+    auto jsonColours = Json::AsArray(jsonData["colours"]);
+
+    if (jsonColours.empty())
     {
         ThrowThemeLoadException();
     }
-
-    uint8_t numColours = static_cast<uint8_t>(json_array_size(jsonColours));
-    numColours = std::min(numColours, wtDesc->NumColours);
 
     UIThemeWindowEntry result{};
     result.WindowClass = wtDesc->WindowClass;
     result.Theme = wtDesc->DefaultTheme;
 
-    for (uint8_t i = 0; i < numColours; i++)
+    // result.Theme.Colours only has 6 values
+    size_t colourCount = std::min(jsonColours.size(), static_cast<size_t>(wtDesc->NumColours));
+
+    for (size_t i = 0; i < colourCount; i++)
     {
-        result.Theme.Colours[i] = static_cast<colour_t>(json_integer_value(json_array_get(jsonColours, i)));
+        result.Theme.Colours[i] = Json::GetNumber<colour_t>(jsonColours[i]);
     }
 
     return result;
@@ -355,10 +364,10 @@ void UITheme::RemoveEntry(rct_windowclass windowClass)
     }
 }
 
-json_t* UITheme::ToJson() const
+json_t UITheme::ToJson() const
 {
     // Create entries
-    json_t* jsonEntries = json_object();
+    json_t jsonEntries;
     for (const UIThemeWindowEntry& entry : Entries)
     {
         const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(entry.WindowClass);
@@ -366,30 +375,29 @@ json_t* UITheme::ToJson() const
         {
             return nullptr;
         }
-        json_object_set_new(jsonEntries, wtDesc->WindowClassSZ, entry.ToJson());
+        jsonEntries[wtDesc->WindowClassSZ] = entry.ToJson();
     }
 
     // Create theme object
-    json_t* jsonTheme = json_object();
-    json_object_set_new(jsonTheme, "name", json_string(Name.c_str()));
-    json_object_set_new(jsonTheme, "entries", jsonEntries);
-
-    json_object_set_new(jsonTheme, "useLightsRide", json_boolean(Flags & UITHEME_FLAG_USE_LIGHTS_RIDE));
-    json_object_set_new(jsonTheme, "useLightsPark", json_boolean(Flags & UITHEME_FLAG_USE_LIGHTS_PARK));
-    json_object_set_new(
-        jsonTheme, "useAltScenarioSelectFont", json_boolean(Flags & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT));
-    json_object_set_new(jsonTheme, "useFullBottomToolbar", json_boolean(Flags & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR));
+    json_t jsonTheme = {
+        { "name", Name },
+        { "entries", jsonEntries },
+        { "useLightsRide", (Flags & UITHEME_FLAG_USE_LIGHTS_RIDE) != 0 },
+        { "useLightsPark", (Flags & UITHEME_FLAG_USE_LIGHTS_PARK) != 0 },
+        { "useAltScenarioSelectFont", (Flags & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) != 0 },
+        { "useFullBottomToolbar", (Flags & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR) != 0 },
+    };
 
     return jsonTheme;
 }
 
 bool UITheme::WriteToFile(const std::string& path) const
 {
-    json_t* jsonTheme = ToJson();
+    auto jsonTheme = ToJson();
     bool result;
     try
     {
-        Json::WriteToFile(path.c_str(), jsonTheme, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
+        Json::WriteToFile(path.c_str(), jsonTheme);
         result = true;
     }
     catch (const std::exception& ex)
@@ -398,52 +406,51 @@ bool UITheme::WriteToFile(const std::string& path) const
         result = false;
     }
 
-    json_decref(jsonTheme);
     return result;
 }
 
-UITheme* UITheme::FromJson(const json_t* json)
+UITheme* UITheme::FromJson(json_t& jsonObj)
 {
-    const char* themeName = json_string_value(json_object_get(json, "name"));
-    if (themeName == nullptr)
+    Guard::Assert(jsonObj.is_object(), "UITheme::FromJson expects parameter jsonObj to be object");
+
+    const std::string themeName = Json::GetString(jsonObj["name"]);
+    if (themeName.empty())
     {
         ThrowThemeLoadException();
     }
 
-    json_t* jsonEntries = json_object_get(json, "entries");
+    json_t jsonEntries = jsonObj["entries"];
 
     UITheme* result = nullptr;
     try
     {
         result = new UITheme(themeName);
 
-        if (json_is_true(json_object_get(json, "useLightsRide")))
-        {
-            result->Flags |= UITHEME_FLAG_USE_LIGHTS_RIDE;
-        }
-        if (json_is_true(json_object_get(json, "useLightsPark")))
-        {
-            result->Flags |= UITHEME_FLAG_USE_LIGHTS_PARK;
-        }
-        if (json_is_true(json_object_get(json, "useAltScenarioSelectFont")))
-        {
-            result->Flags |= UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT;
-        }
-        if (json_is_true(json_object_get(json, "useFullBottomToolbar")))
-        {
-            result->Flags |= UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR;
-        }
+        result->Flags = Json::GetFlags<uint8_t>(
+            jsonObj,
+            {
+                { "useLightsRide", UITHEME_FLAG_USE_LIGHTS_RIDE },
+                { "useLightsPark", UITHEME_FLAG_USE_LIGHTS_PARK },
+                { "useAltScenarioSelectFont", UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT },
+                { "useFullBottomToolbar", UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR },
+            });
 
-        const char* jkey;
-        json_t* jvalue;
-        json_object_foreach(jsonEntries, jkey, jvalue)
+        if (jsonEntries.is_object())
         {
-            const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(jkey);
-            if (wtDesc == nullptr)
-                continue;
+            for (auto& [jsonKey, jsonValue] : jsonEntries.items())
+            {
+                if (jsonValue.is_object())
+                {
+                    const WindowThemeDesc* wtDesc = GetWindowThemeDescriptor(jsonKey.data());
+                    if (wtDesc == nullptr)
+                    {
+                        continue;
+                    }
 
-            UIThemeWindowEntry entry = UIThemeWindowEntry::FromJson(wtDesc, jvalue);
-            result->SetEntry(&entry);
+                    UIThemeWindowEntry entry = UIThemeWindowEntry::FromJson(wtDesc, jsonValue);
+                    result->SetEntry(&entry);
+                }
+            }
         }
 
         return result;
@@ -457,8 +464,8 @@ UITheme* UITheme::FromJson(const json_t* json)
 
 UITheme* UITheme::FromFile(const std::string& path)
 {
-    json_t* json = nullptr;
     UITheme* result = nullptr;
+    json_t json;
     try
     {
         json = Json::ReadFromFile(path.c_str());
@@ -469,8 +476,6 @@ UITheme* UITheme::FromFile(const std::string& path)
         log_error("Unable to read theme: %s", path.c_str());
         result = nullptr;
     }
-
-    json_decref(json);
     return result;
 }
 

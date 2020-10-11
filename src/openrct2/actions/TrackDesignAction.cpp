@@ -181,7 +181,7 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         GameActions::ExecuteNested(&rideSetVehicleAction);
     }
 
-    set_operating_setting_nested(ride->id, RideSetSetting::Mode, _td.ride_mode, GAME_COMMAND_FLAG_APPLY);
+    set_operating_setting_nested(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.ride_mode), GAME_COMMAND_FLAG_APPLY);
     auto rideSetVehicleAction2 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, _td.number_of_trains);
     GameActions::ExecuteNested(&rideSetVehicleAction2);
 
@@ -221,9 +221,13 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         ride->vehicle_colours[i].Ternary = _td.vehicle_additional_colour[i];
     }
 
-    auto gameAction = RideSetNameAction(ride->id, _td.name);
-    gameAction.SetFlags(GetFlags());
-    GameActions::ExecuteNested(&gameAction);
+    for (int32_t count = 1; count == 1 || r->Error != GA_ERROR::OK; ++count)
+    {
+        auto name = count == 1 ? _td.name : (_td.name + " " + std::to_string(count));
+        auto gameAction = RideSetNameAction(ride->id, name);
+        gameAction.SetFlags(GetFlags());
+        r = GameActions::ExecuteNested(&gameAction);
+    }
     res->Cost = cost;
     res->rideIndex = ride->id;
     return res;

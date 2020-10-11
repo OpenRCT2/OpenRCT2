@@ -31,12 +31,10 @@ DEFINE_GAME_ACTION(LandRaiseAction, GAME_COMMAND_RAISE_LAND, GameActionResult)
 private:
     CoordsXY _coords;
     MapRange _range;
-    uint8_t _selectionType;
+    uint8_t _selectionType{};
 
 public:
-    LandRaiseAction()
-    {
-    }
+    LandRaiseAction() = default;
     LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
         : _coords(coords)
         , _range(range)
@@ -89,7 +87,8 @@ private:
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
+            OpenRCT2::Audio::Play3D(
+                OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
         }
 
         uint8_t minHeight = map_get_lowest_land_height(validRange);

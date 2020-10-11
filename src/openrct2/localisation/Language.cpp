@@ -33,6 +33,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "de-DE", "German",                "Deutsch",               FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_GERMAN
     { "en-GB", "English (UK)",          "English (UK)",          FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ENGLISH_UK
     { "en-US", "English (US)",          "English (US)",          FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ENGLISH_US
+    { "eo-OO", "Esperanto",             "Esperanto",             FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ESPERANTO
     { "es-ES", "Spanish",               u8"Español",             FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_SPANISH
     { "fr-FR", "French",                u8"Français",            FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_FRENCH
     { "it-IT", "Italian",               "Italiano",              FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_ITALIAN
@@ -100,7 +101,9 @@ bool language_open(int32_t id)
     auto& objectManager = context->GetObjectManager();
     try
     {
-        localisationService.OpenLanguage(id, objectManager);
+        localisationService.OpenLanguage(id);
+        // Objects and their localised strings need to be refreshed
+        objectManager.ResetObjects();
         return true;
     }
     catch (const std::exception&)

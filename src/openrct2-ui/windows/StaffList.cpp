@@ -56,36 +56,23 @@ static void window_staff_list_invalidate(rct_window *w);
 static void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_staff_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_staff_list_events = {
-    window_staff_list_close,
-    window_staff_list_mouseup,
-    window_staff_list_resize,
-    window_staff_list_mousedown,
-    window_staff_list_dropdown,
-    nullptr,
-    window_staff_list_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_list_tooldown,
-    nullptr,
-    nullptr,
-    window_staff_list_toolabort,
-    nullptr,
-    window_staff_list_scrollgetsize,
-    window_staff_list_scrollmousedown,
-    nullptr,
-    window_staff_list_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_staff_list_invalidate,
-    window_staff_list_paint,
-    window_staff_list_scrollpaint,
-};
+static rct_window_event_list window_staff_list_events([](auto& events)
+{
+    events.close = &window_staff_list_close;
+    events.mouse_up = &window_staff_list_mouseup;
+    events.resize = &window_staff_list_resize;
+    events.mouse_down = &window_staff_list_mousedown;
+    events.dropdown = &window_staff_list_dropdown;
+    events.update = &window_staff_list_update;
+    events.tool_down = &window_staff_list_tooldown;
+    events.tool_abort = &window_staff_list_toolabort;
+    events.get_scroll_size = &window_staff_list_scrollgetsize;
+    events.scroll_mousedown = &window_staff_list_scrollmousedown;
+    events.scroll_mouseover = &window_staff_list_scrollmouseover;
+    events.invalidate = &window_staff_list_invalidate;
+    events.paint = &window_staff_list_paint;
+    events.scroll_paint = &window_staff_list_scrollpaint;
+});
 
 enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_STAFF_LIST_BACKGROUND,
@@ -415,8 +402,9 @@ static void window_staff_list_tooldown(rct_window* w, rct_widgetindex widgetInde
         }
         else
         {
-            Formatter::Common().Add<rct_string_id>(StaffNamingConvention[selectedPeepType].plural);
-            context_show_error(STR_NO_THING_IN_PARK_YET, STR_NONE);
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(StaffNamingConvention[selectedPeepType].plural);
+            context_show_error(STR_NO_THING_IN_PARK_YET, STR_NONE, ft);
         }
     }
 }
@@ -575,7 +563,7 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Handymen tab image
     i = (selectedTab == 0 ? (w->list_information_type & ~3) : 0);
-    i += g_peep_animation_entries[PEEP_SPRITE_TYPE_HANDYMAN].sprite_animation->base_image + 1;
+    i += GetPeepAnimation(PeepSpriteType::Handyman).base_image + 1;
     i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffHandymanColour);
     gfx_draw_sprite(
         dpi, i,
@@ -588,7 +576,7 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Mechanic tab image
     i = (selectedTab == 1 ? (w->list_information_type & ~3) : 0);
-    i += g_peep_animation_entries[PEEP_SPRITE_TYPE_MECHANIC].sprite_animation->base_image + 1;
+    i += GetPeepAnimation(PeepSpriteType::Mechanic).base_image + 1;
     i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffMechanicColour);
     gfx_draw_sprite(
         dpi, i,
@@ -601,7 +589,7 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Security tab image
     i = (selectedTab == 2 ? (w->list_information_type & ~3) : 0);
-    i += g_peep_animation_entries[PEEP_SPRITE_TYPE_SECURITY].sprite_animation->base_image + 1;
+    i += GetPeepAnimation(PeepSpriteType::Security).base_image + 1;
     i |= SPRITE_ID_PALETTE_COLOUR_1(gStaffSecurityColour);
     gfx_draw_sprite(
         dpi, i,
@@ -625,21 +613,22 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         // Entertainers tab image
         i = (selectedTab == 3 ? (w->list_information_type & ~3) : 0);
-        i += g_peep_animation_entries[PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT].sprite_animation->base_image + 1;
+        i += GetPeepAnimation(PeepSpriteType::EntertainerElephant).base_image + 1;
         gfx_draw_sprite(&sprite_dpi, i, { 0x0F, 0x17 }, 0);
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        Formatter::Common().Add<money32>(gStaffWageTable[selectedTab]);
+        auto ft = Formatter();
+        ft.Add<money32>(gStaffWageTable[selectedTab]);
         gfx_draw_string_left(
-            dpi, STR_COST_PER_MONTH, gCommonFormatArgs, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ w->width - 155, 0x20 });
+            dpi, STR_COST_PER_MONTH, ft.Data(), COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ w->width - 155, 0x20 });
     }
 
     if (selectedTab < 3)
     {
         gfx_draw_string_left(
-            dpi, STR_UNIFORM_COLOUR, w, COLOUR_BLACK,
+            dpi, STR_UNIFORM_COLOUR, nullptr, COLOUR_BLACK,
             w->windowPos + ScreenCoordsXY{ 6, window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + 1 });
     }
 
@@ -650,12 +639,12 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         staffTypeStringId = StaffNamingConvention[selectedTab].singular;
     }
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<uint16_t>(StaffList.size());
     ft.Add<rct_string_id>(staffTypeStringId);
 
     gfx_draw_string_left(
-        dpi, STR_STAFF_LIST_COUNTER, gCommonFormatArgs, COLOUR_BLACK,
+        dpi, STR_STAFF_LIST_COUNTER, ft.Data(), COLOUR_BLACK,
         w->windowPos + ScreenCoordsXY{ 4, window_staff_list_widgets[WIDX_STAFF_LIST_LIST].bottom + 2 });
 }
 
@@ -713,11 +702,11 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
                 format = (_quick_fire_mode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
             }
 
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             peep->FormatNameTo(ft);
             DrawTextEllipsised(dpi, { 0, y }, nameColumnSize, format, ft, COLOUR_BLACK);
 
-            ft = Formatter::Common();
+            ft = Formatter();
             peep->FormatActionTo(ft);
             DrawTextEllipsised(dpi, { actionOffset, y }, actionColumnSize, format, ft, COLOUR_BLACK);
 
@@ -747,7 +736,7 @@ void window_staff_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
             }
             else
             {
-                gfx_draw_sprite(dpi, staffCostumeSprites[peep->SpriteType - 4], { staffOrderIcon_x, y }, 0);
+                gfx_draw_sprite(dpi, staffCostumeSprites[EnumValue(peep->SpriteType) - 4], { staffOrderIcon_x, y }, 0);
             }
         }
 

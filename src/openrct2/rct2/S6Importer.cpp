@@ -526,7 +526,7 @@ public:
         dst->type = rideType;
         dst->subtype = subtype;
         // pad_002;
-        dst->mode = src->mode;
+        dst->mode = static_cast<RideMode>(src->mode);
         dst->colour_scheme_type = src->colour_scheme_type;
 
         for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
@@ -1024,7 +1024,8 @@ public:
             if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 if (sprite.peep.current_ride == rideIndex
-                    && (sprite.peep.state == PEEP_STATE_ON_RIDE || sprite.peep.state == PEEP_STATE_ENTERING_RIDE))
+                    && (static_cast<PeepState>(sprite.peep.state) == PeepState::OnRide
+                        || static_cast<PeepState>(sprite.peep.state) == PeepState::EnteringRide))
                 {
                     numRiders++;
                 }
@@ -1138,7 +1139,7 @@ public:
                 {
                     dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 }
-                else if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
+                else if (trackType == TrackElemType::OnRidePhoto)
                 {
                     dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 }
@@ -1349,7 +1350,7 @@ public:
         dst->colours = src->colours;
         dst->track_progress = src->track_progress;
         dst->track_direction = src->track_direction;
-        if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE
+        if (src->boat_location.isNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
             || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
         {
             dst->BoatLocation.setNull();
@@ -1393,9 +1394,9 @@ public:
         dst->crash_x = src->crash_x;
         dst->sound2_flags = src->sound2_flags;
         dst->spin_sprite = src->spin_sprite;
-        dst->sound1_id = static_cast<SoundId>(src->sound1_id);
+        dst->sound1_id = static_cast<OpenRCT2::Audio::SoundId>(src->sound1_id);
         dst->sound1_volume = src->sound1_volume;
-        dst->sound2_id = static_cast<SoundId>(src->sound2_id);
+        dst->sound2_id = static_cast<OpenRCT2::Audio::SoundId>(src->sound2_id);
         dst->sound2_volume = src->sound2_volume;
         dst->sound_vector_factor = src->sound_vector_factor;
         dst->time_waiting = src->time_waiting;
@@ -1405,7 +1406,7 @@ public:
         dst->animation_frame = src->animation_frame;
         dst->var_C8 = src->var_C8;
         dst->var_CA = src->var_CA;
-        dst->scream_sound_id = static_cast<SoundId>(src->scream_sound_id);
+        dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->var_CE = src->var_CE;
         dst->var_CF = src->var_CF;
@@ -1453,7 +1454,7 @@ public:
         dst->Mass = src->mass;
         dst->TimeToConsume = src->time_to_consume;
         dst->Intensity = static_cast<IntensityRange>(src->intensity);
-        dst->NauseaTolerance = src->nausea_tolerance;
+        dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
         dst->WindowInvalidateFlags = src->window_invalidate_flags;
         dst->PaidOnDrink = src->paid_on_drink;
         for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
@@ -1696,9 +1697,9 @@ static void show_error(uint8_t errorType, rct_string_id errorStringId)
 {
     if (errorType == ERROR_TYPE_GENERIC)
     {
-        context_show_error(errorStringId, 0xFFFF);
+        context_show_error(errorStringId, STR_NONE, {});
     }
-    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId);
+    context_show_error(STR_UNABLE_TO_LOAD_FILE, errorStringId, {});
 }
 
 void load_from_sv6(const char* path)

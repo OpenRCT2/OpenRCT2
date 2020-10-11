@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/JsonFwd.hpp"
 
 #include <future>
 #include <optional>
@@ -17,7 +18,6 @@
 #include <string>
 #include <vector>
 
-struct json_t;
 struct INetworkEndpoint;
 
 struct ServerListEntry
@@ -35,7 +35,14 @@ struct ServerListEntry
     int32_t CompareTo(const ServerListEntry& other) const;
     bool IsVersionValid() const;
 
-    static std::optional<ServerListEntry> FromJson(const json_t* root);
+    /**
+     * Creates a ServerListEntry object from a JSON object
+     *
+     * @param json JSON data source - must be object type
+     * @return A NetworkGroup object
+     * @note json is deliberately left non-const: json_t behaviour changes when const
+     */
+    static std::optional<ServerListEntry> FromJson(json_t& server);
 };
 
 class ServerList

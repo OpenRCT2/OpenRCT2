@@ -10,7 +10,7 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 ### Download
 | Latest release | Latest development build |
 |----------------|--------------------------|
-| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.3.0-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.3.0+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.3.1-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.3.1+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
@@ -92,7 +92,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
   - Desktop development with C++
 
 ### macOS:
-- Xcode 8
+- Xcode 10+
 
 The program can also be built as a command line program using CMake. This type of build requires:
 
@@ -109,7 +109,7 @@ The program can also be built as a command line program using CMake. This type o
 - libpng (>= 1.2)
 - speexdsp (only for UI client)
 - curl (only if building with http support)
-- jansson (>= 2.5)
+- nlohmann-json (>= 3.6.0)
 - openssl (>= 1.0; only if building with multiplayer support)
 - icu (>= 59.0)
 - zlib
@@ -148,7 +148,7 @@ The recommended way of building OpenRCT2 for macOS is with Xcode. The Xcode buil
 #### CMake:
 A command line version of OpenRCT2 can be built using CMake. This type of build requires you to provide the dependencies yourself. The supported method of doing this is with [Homebrew](http://brew.sh). Once you have Homebrew installed, you can download all the required libraries with this command:
 ```
-brew install cmake duktape freetype icu4c jansson libpng libzip openssl pkg-config sdl2 speexdsp
+brew install cmake duktape freetype icu4c libpng libzip nlohmann-json openssl pkg-config sdl2 speexdsp
 ```
 
 Once you have the dependencies installed, you can build the project using CMake using the following commands:

@@ -14,7 +14,7 @@
 
 DEFINE_GAME_ACTION(BalloonPressAction, GAME_COMMAND_BALLOON_PRESS, GameActionResult)
 {
-    uint16_t _spriteIndex = SPRITE_INDEX_NULL;
+    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
 
 public:
     BalloonPressAction() = default;

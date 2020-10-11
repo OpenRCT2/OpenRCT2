@@ -19,6 +19,7 @@ enum class MeasurementFormat : int32_t;
 enum class TemperatureUnit : int32_t;
 enum class ScaleQuality : int32_t;
 enum class VirtualFloorStyles : int32_t;
+enum class DrawingEngine : int32_t;
 
 struct GeneralConfiguration
 {
@@ -34,7 +35,7 @@ struct GeneralConfiguration
     int32_t fullscreen_width;
     int32_t fullscreen_height;
     float window_scale;
-    int32_t drawing_engine;
+    DrawingEngine drawing_engine;
     ScaleQuality scale_quality;
     bool uncap_fps;
     bool use_vsync;

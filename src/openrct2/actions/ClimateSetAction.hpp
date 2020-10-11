@@ -15,12 +15,12 @@
 DEFINE_GAME_ACTION(ClimateSetAction, GAME_COMMAND_SET_CLIMATE, GameActionResult)
 {
 private:
-    uint8_t _climate;
+    ClimateType _climate{};
 
 public:
     ClimateSetAction() = default;
     ClimateSetAction(ClimateType climate)
-        : _climate(static_cast<uint8_t>(climate))
+        : _climate(climate)
     {
     }
 
@@ -38,7 +38,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_climate >= static_cast<uint8_t>(ClimateType::Count))
+        if (_climate >= ClimateType::Count)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_CLIMATE_ID, STR_NONE);
         }

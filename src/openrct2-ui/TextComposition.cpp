@@ -93,7 +93,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 Insert(newText);
                 Memory::Free(newText);
 
-                console.RefreshCaret();
+                console.RefreshCaret(_session.SelectionStart);
                 window_update_textbox();
             }
             break;
@@ -126,7 +126,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
             if (key == SDLK_BACKSPACE && (modifier & KEYBOARD_PRIMARY_MODIFIER))
             {
                 Clear();
-                console.RefreshCaret();
+                console.RefreshCaret(_session.SelectionStart);
                 window_update_textbox();
             }
 
@@ -141,17 +141,17 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                         _session.SelectionSize = endOffset - _session.SelectionStart;
                         Delete();
 
-                        console.RefreshCaret();
+                        console.RefreshCaret(_session.SelectionStart);
                         window_update_textbox();
                     }
                     break;
                 case SDLK_HOME:
                     CursorHome();
-                    console.RefreshCaret();
+                    console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_END:
                     CursorEnd();
-                    console.RefreshCaret();
+                    console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_DELETE:
                 {
@@ -160,7 +160,7 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     _session.SelectionSize = _session.SelectionStart - startOffset;
                     _session.SelectionStart = startOffset;
                     Delete();
-                    console.RefreshCaret();
+                    console.RefreshCaret(_session.SelectionStart);
                     window_update_textbox();
                     break;
                 }
@@ -169,17 +169,17 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     break;
                 case SDLK_LEFT:
                     CursorLeft();
-                    console.RefreshCaret();
+                    console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_RIGHT:
                     CursorRight();
-                    console.RefreshCaret();
+                    console.RefreshCaret(_session.SelectionStart);
                     break;
                 case SDLK_c:
                     if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && _session.Length)
                     {
                         SDL_SetClipboardText(_session.Buffer);
-                        context_show_error(STR_COPY_INPUT_TO_CLIPBOARD, STR_NONE);
+                        context_show_error(STR_COPY_INPUT_TO_CLIPBOARD, STR_NONE, {});
                     }
                     break;
                 case SDLK_v:

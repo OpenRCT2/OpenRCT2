@@ -447,11 +447,7 @@ static void sub_6A4101(
             uint16_t scrollingMode = railingEntry->scrolling_mode;
             scrollingMode += direction;
 
-            // This is required due to scrolling_test_setup doing a memcmp of another set
-            // of args and see if it matches these args
-            Formatter::Common().Add<uint32_t>(0).Add<uint32_t>(0);
-
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
 
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
@@ -465,12 +461,11 @@ static void sub_6A4101(
             if (gConfigGeneral.upper_case_banners)
             {
                 format_string_to_upper(
-                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
             else
             {
-                format_string(
-                    gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, gCommonFormatArgs);
+                format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
             }
 
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
@@ -1039,7 +1034,7 @@ void path_paint_box_support(
     //  can clip above gravel part of the track sprite
     if (session->TrackElementOnSameHeight)
     {
-        if (session->TrackElementOnSameHeight->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
+        if (session->TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
         {
             boundingBoxZOffset = 2;
         }
@@ -1189,7 +1184,7 @@ void path_paint_pole_support(
     //  can clip above gravel part of the track sprite
     if (session->TrackElementOnSameHeight)
     {
-        if (session->TrackElementOnSameHeight->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
+        if (session->TrackElementOnSameHeight->AsTrack()->GetTrackType() == TrackElemType::Flat)
         {
             boundingBoxZOffset = 2;
         }

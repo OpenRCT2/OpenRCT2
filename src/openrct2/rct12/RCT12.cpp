@@ -221,7 +221,7 @@ uint8_t RCT12TrackElement::GetColourScheme() const
 
 uint8_t RCT12TrackElement::GetStationIndex() const
 {
-    if (track_type_is_station(trackType) || trackType == TRACK_ELEM_TOWER_BASE)
+    if (track_type_is_station(trackType) || trackType == TrackElemType::TowerBase)
     {
         return (sequence & RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK) >> 4;
     }
@@ -273,7 +273,7 @@ uint16_t RCT12TrackElement::GetMazeEntry() const
 
 uint8_t RCT12TrackElement::GetPhotoTimeout() const
 {
-    if (GetTrackType() == TRACK_ELEM_ON_RIDE_PHOTO)
+    if (GetTrackType() == TrackElemType::OnRidePhoto)
     {
         return sequence >> 4;
     }
@@ -473,7 +473,7 @@ uint8_t RCT12BannerElement::GetPosition() const
 
 uint8_t RCT12BannerElement::GetAllowedEdges() const
 {
-    return flags & 0b00001111;
+    return AllowedEdges & 0b00001111;
 }
 
 bool is_user_string_id(rct_string_id stringId)
@@ -752,7 +752,7 @@ void RCT12TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 
 void RCT12TrackElement::SetStationIndex(uint8_t newStationIndex)
 {
-    if (track_type_is_station(trackType) || trackType == TRACK_ELEM_TOWER_BASE)
+    if (track_type_is_station(trackType) || trackType == TrackElemType::TowerBase)
     {
         sequence &= ~RCT12_TRACK_ELEMENT_SEQUENCE_STATION_INDEX_MASK;
         sequence |= (newStationIndex << 4);
@@ -852,7 +852,7 @@ void RCT12TrackElement::SetMazeEntry(uint16_t newMazeEntry)
 
 void RCT12TrackElement::SetPhotoTimeout(uint8_t value)
 {
-    if (GetTrackType() == TRACK_ELEM_ON_RIDE_PHOTO)
+    if (GetTrackType() == TrackElemType::OnRidePhoto)
     {
         sequence &= RCT12_TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK;
         sequence |= (value << 4);
@@ -990,8 +990,8 @@ void RCT12BannerElement::SetPosition(uint8_t newPosition)
 
 void RCT12BannerElement::SetAllowedEdges(uint8_t newEdges)
 {
-    flags &= ~0b00001111;
-    flags |= (newEdges & 0b00001111);
+    AllowedEdges &= ~0b00001111;
+    AllowedEdges |= (newEdges & 0b00001111);
 }
 
 bool RCT12ResearchItem::IsInventedEndMarker() const

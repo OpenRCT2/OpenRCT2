@@ -91,37 +91,19 @@ static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_loadsave_events =
+static rct_window_event_list window_loadsave_events([](auto& events)
 {
-    window_loadsave_close,
-    window_loadsave_mouseup,
-    window_loadsave_resize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_loadsave_scrollgetsize,
-    window_loadsave_scrollmousedown,
-    nullptr,
-    window_loadsave_scrollmouseover,
-    window_loadsave_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_loadsave_invalidate,
-    window_loadsave_paint,
-    window_loadsave_scrollpaint
-};
+    events.close = &window_loadsave_close;
+    events.mouse_up = &window_loadsave_mouseup;
+    events.resize = &window_loadsave_resize;
+    events.get_scroll_size = &window_loadsave_scrollgetsize;
+    events.scroll_mousedown = &window_loadsave_scrollmousedown;
+    events.scroll_mouseover = &window_loadsave_scrollmouseover;
+    events.text_input = &window_loadsave_textinput;
+    events.invalidate = &window_loadsave_invalidate;
+    events.paint = &window_loadsave_paint;
+    events.scroll_paint = &window_loadsave_scrollpaint;
+});
 // clang-format on
 
 #pragma endregion
@@ -421,7 +403,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
     }
 
     desc.initial_directory = _directory;
-    desc.type = isSave ? FD_SAVE : FD_OPEN;
+    desc.type = isSave ? FileDialogType::Save : FileDialogType::Open;
     desc.default_filename = isSave ? path : nullptr;
 
     // Add 'all files' filter. If the number of filters is increased, this code will need to be adjusted.
@@ -589,7 +571,7 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_NEW_FOLDER:
             if (!filename_valid_characters(text))
             {
-                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
                 return;
             }
 
@@ -598,7 +580,7 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
 
             if (!platform_ensure_directory_exists(path))
             {
-                context_show_error(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE);
+                context_show_error(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE, {});
                 return;
             }
 
@@ -716,7 +698,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
     safe_strcpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
 
     // Draw path text
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<utf8*>(Platform::StrDecompToPrecomp(buffer));
     DrawTextEllipsised(dpi, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8, STR_STRING, ft, COLOUR_BLACK);
 
@@ -773,13 +755,13 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         // display a marker next to the currently loaded game file
         if (_listItems[i].loaded)
         {
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<rct_string_id>(STR_RIGHTGUILLEMET);
-            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, { 0, y });
+            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, { 0, y });
         }
 
         // Print filename
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(_listItems[i].name.c_str());
         int32_t max_file_width = w->widgets[WIDX_SORT_NAME].width() - 10;
@@ -788,13 +770,13 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
         {
-            ft = Formatter::Common();
+            ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].date_formatted.c_str());
             DrawTextEllipsised(
                 dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, COLOUR_BLACK, TextAlignment::RIGHT);
 
-            ft = Formatter::Common();
+            ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].time_formatted.c_str());
             DrawTextEllipsised(dpi, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth, stringId, ft, COLOUR_BLACK);
@@ -998,7 +980,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
 {
     if (!is_valid_path(path))
     {
-        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
         return;
     }
 
@@ -1029,7 +1011,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
+                context_show_error(STR_SAVE_GAME, STR_GAME_SAVE_FAILED, {});
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1045,7 +1027,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             else
             {
                 // Not the best message...
-                context_show_error(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
+                context_show_error(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1062,7 +1044,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
+                context_show_error(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED, {});
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1085,7 +1067,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
+                context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
                 gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
@@ -1121,7 +1103,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             }
             else
             {
-                context_show_error(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
+                context_show_error(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED, {});
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
             }
             break;
@@ -1159,36 +1141,10 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_overwrite_prompt_events = {
-    nullptr,
-    window_overwrite_prompt_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_overwrite_prompt_paint,
-    nullptr,
-};
+static rct_window_event_list window_overwrite_prompt_events([](auto& events) {
+    events.mouse_up = &window_overwrite_prompt_mouseup;
+    events.paint = &window_overwrite_prompt_paint;
+});
 
 static char _window_overwrite_prompt_name[256];
 static char _window_overwrite_prompt_path[MAX_PATH];
@@ -1241,13 +1197,12 @@ static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<char*>(_window_overwrite_prompt_name);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);
-    gfx_draw_string_centred_wrapped(
-        dpi, gCommonFormatArgs, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
+    gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
 }
 
 #pragma endregion

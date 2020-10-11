@@ -23,13 +23,11 @@
 DEFINE_GAME_ACTION(BannerSetNameAction, GAME_COMMAND_SET_BANNER_NAME, GameActionResult)
 {
 private:
-    BannerIndex _bannerIndex;
+    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
     std::string _name;
 
 public:
-    BannerSetNameAction()
-    {
-    }
+    BannerSetNameAction() = default;
     BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
         : _bannerIndex(bannerIndex)
         , _name(name)

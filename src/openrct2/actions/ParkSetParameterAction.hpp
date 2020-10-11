@@ -11,6 +11,7 @@
 
 #include "../interface/Window.h"
 #include "../ride/ShopItem.h"
+#include "../util/Util.h"
 #include "../world/Park.h"
 #include "GameAction.h"
 
@@ -25,17 +26,15 @@ enum class ParkParameter : uint8_t
 DEFINE_GAME_ACTION(ParkSetParameterAction, GAME_COMMAND_SET_PARK_OPEN, GameActionResult)
 {
 private:
-    uint8_t _parameter{ static_cast<uint8_t>(ParkParameter::Count) };
-    uint64_t _value;
+    ParkParameter _parameter{ ParkParameter::Count };
+    uint64_t _value{};
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_CLOSE_PARK, STR_CANT_OPEN_PARK, STR_NONE, STR_NONE };
 
 public:
-    ParkSetParameterAction()
-    {
-    }
+    ParkSetParameterAction() = default;
     ParkSetParameterAction(ParkParameter parameter, uint64_t value = 0)
-        : _parameter(static_cast<uint8_t>(parameter))
+        : _parameter(parameter)
         , _value(value)
     {
     }
@@ -53,19 +52,19 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_parameter >= static_cast<uint8_t>(ParkParameter::Count))
+        if (_parameter >= ParkParameter::Count)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
         auto res = MakeResult();
-        res->ErrorTitle = _ErrorTitles[_parameter];
+        res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
         return res;
     }
 
     GameActionResult::Ptr Execute() const override
     {
-        switch (static_cast<ParkParameter>(_parameter))
+        switch (_parameter)
         {
             case ParkParameter::Close:
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
@@ -91,7 +90,7 @@ public:
         }
 
         auto res = MakeResult();
-        res->ErrorTitle = _ErrorTitles[_parameter];
+        res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
         return res;
     }
 };

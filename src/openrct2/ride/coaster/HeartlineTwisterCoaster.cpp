@@ -1584,43 +1584,43 @@ TRACK_PAINT_FUNCTION get_track_paint_function_heartline_twister_rc(int32_t track
 {
     switch (trackType)
     {
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return heartline_twister_rc_track_flat;
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
+        case TrackElemType::EndStation:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
             return heartline_twister_rc_track_station;
-        case TRACK_ELEM_25_DEG_UP:
+        case TrackElemType::Up25:
             return heartline_twister_rc_track_25_deg_up;
-        case TRACK_ELEM_60_DEG_UP:
+        case TrackElemType::Up60:
             return heartline_twister_rc_track_60_deg_up;
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+        case TrackElemType::FlatToUp25:
             return heartline_twister_rc_track_flat_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
+        case TrackElemType::Up25ToUp60:
             return heartline_twister_rc_track_25_deg_up_to_60_deg_up;
-        case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::Up60ToUp25:
             return heartline_twister_rc_track_60_deg_up_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
             return heartline_twister_rc_track_25_deg_up_to_flat;
-        case TRACK_ELEM_25_DEG_DOWN:
+        case TrackElemType::Down25:
             return heartline_twister_rc_track_25_deg_down;
-        case TRACK_ELEM_60_DEG_DOWN:
+        case TrackElemType::Down60:
             return heartline_twister_rc_track_60_deg_down;
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::FlatToDown25:
             return heartline_twister_rc_track_flat_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::Down25ToDown60:
             return heartline_twister_rc_track_25_deg_down_to_60_deg_down;
-        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::Down60ToDown25:
             return heartline_twister_rc_track_60_deg_down_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::Down25ToFlat:
             return heartline_twister_rc_track_25_deg_down_to_flat;
-        case TRACK_ELEM_HEARTLINE_TRANSFER_UP:
+        case TrackElemType::HeartLineTransferUp:
             return heartline_twister_rc_track_heartline_transfer_up;
-        case TRACK_ELEM_HEARTLINE_TRANSFER_DOWN:
+        case TrackElemType::HeartLineTransferDown:
             return heartline_twister_rc_track_heartline_transfer_down;
-        case TRACK_ELEM_LEFT_HEARTLINE_ROLL:
+        case TrackElemType::LeftHeartLineRoll:
             return heartline_twister_rc_track_left_heartline_roll;
-        case TRACK_ELEM_RIGHT_HEARTLINE_ROLL:
+        case TrackElemType::RightHeartLineRoll:
             return heartline_twister_rc_track_right_heartline_roll;
     }
     return nullptr;

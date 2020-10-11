@@ -180,42 +180,29 @@ static void window_editor_object_selection_update(rct_window *w);
 static void window_editor_object_selection_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_editor_object_selection_scroll_mousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_editor_object_selection_scroll_mouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static OpenRCT2String window_editor_object_selection_tooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
 static void window_editor_object_selection_invalidate(rct_window *w);
 static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_editor_object_selection_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 static void window_editor_object_selection_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_editor_object_selection_events = {
-    window_editor_object_selection_close,
-    window_editor_object_selection_mouseup,
-    window_editor_object_selection_resize,
-    window_editor_object_selection_mousedown,
-    window_editor_object_selection_dropdown,
-    nullptr,
-    window_editor_object_selection_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_object_selection_scrollgetsize,
-    window_editor_object_selection_scroll_mousedown,
-    nullptr,
-    window_editor_object_selection_scroll_mouseover,
-    window_editor_object_selection_textinput,
-    nullptr,
-    nullptr,
-    window_editor_object_selection_tooltip,
-    nullptr,
-    nullptr,
-    window_editor_object_selection_invalidate,
-    window_editor_object_selection_paint,
-    window_editor_object_selection_scrollpaint
-};
+static rct_window_event_list window_editor_object_selection_events([](auto& events)
+{
+    events.close = &window_editor_object_selection_close;
+    events.mouse_up = &window_editor_object_selection_mouseup;
+    events.resize = &window_editor_object_selection_resize;
+    events.mouse_down = &window_editor_object_selection_mousedown;
+    events.dropdown = &window_editor_object_selection_dropdown;
+    events.update = &window_editor_object_selection_update;
+    events.get_scroll_size = &window_editor_object_selection_scrollgetsize;
+    events.scroll_mousedown = &window_editor_object_selection_scroll_mousedown;
+    events.scroll_mouseover = &window_editor_object_selection_scroll_mouseover;
+    events.text_input = &window_editor_object_selection_textinput;
+    events.tooltip = &window_editor_object_selection_tooltip;
+    events.invalidate = &window_editor_object_selection_invalidate;
+    events.paint = &window_editor_object_selection_paint;
+    events.scroll_paint = &window_editor_object_selection_scrollpaint;
+});
 // clang-format on
 
 #pragma endregion
@@ -692,7 +679,7 @@ static void window_editor_object_selection_scroll_mousedown(
     w->Invalidate();
 
     const CursorState* state = context_get_cursor_state();
-    audio_play_sound(SoundId::Click1, 0, state->position.x);
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, state->position.x);
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
@@ -718,7 +705,7 @@ static void window_editor_object_selection_scroll_mousedown(
     {
         rct_string_id error_title = (ebx & 1) ? STR_UNABLE_TO_SELECT_THIS_OBJECT : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
-        context_show_error(error_title, gGameCommandErrorText);
+        context_show_error(error_title, gGameCommandErrorText, {});
         return;
     }
 
@@ -731,7 +718,8 @@ static void window_editor_object_selection_scroll_mousedown(
 
     if (_maxObjectsWasHit)
     {
-        context_show_error(STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED);
+        context_show_error(
+            STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, {});
     }
 }
 
@@ -778,13 +766,16 @@ static void window_editor_object_selection_scroll_mouseover(
  *
  *  rct2: 0x006AB058
  */
-static void window_editor_object_selection_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
+static OpenRCT2String window_editor_object_selection_tooltip(
+    rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
     if (widgetIndex >= WIDX_TAB_1 && static_cast<size_t>(widgetIndex) < WIDX_TAB_1 + std::size(ObjectSelectionPages))
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(ObjectSelectionPages[(widgetIndex - WIDX_TAB_1)].Caption);
+        return { fallback, ft };
     }
+    return { fallback, {} };
 }
 
 /**
@@ -1012,17 +1003,17 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             totalSelectable = 4;
 
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<uint16_t>(numSelected);
         ft.Add<uint16_t>(totalSelectable);
-        gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, gCommonFormatArgs, COLOUR_BLACK, screenPos);
+        gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, ft.Data(), COLOUR_BLACK, screenPos);
     }
 
     // Draw sort button text
     widget = &w->widgets[WIDX_LIST_SORT_TYPE];
     if (widget->type != WWT_EMPTY)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                         : STR_NONE;
         ft.Add<rct_string_id>(stringId);
@@ -1032,7 +1023,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     widget = &w->widgets[WIDX_LIST_SORT_RIDE];
     if (widget->type != WWT_EMPTY)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
                                                         : STR_NONE;
         ft.Add<rct_string_id>(stringId);
@@ -1062,7 +1053,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX() + 1, widget->bottom + 3 };
         width = w->width - w->widgets[WIDX_LIST].right - 6;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
         DrawTextEllipsised(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::CENTRE);
@@ -1072,7 +1063,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     auto description = object_get_description(_loadedObject);
     if (!description.empty())
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(description.c_str());
 
@@ -1080,7 +1071,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         width = w->windowPos.x + w->width - screenPos.x - 4;
 
         gfx_draw_string_left_wrapped(
-            dpi, gCommonFormatArgs, screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
+            dpi, ft.Data(), screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
     }
 
     auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
@@ -1089,30 +1080,31 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     if (get_selected_object_type(w) == OBJECT_TYPE_RIDE)
     {
         auto stringId = get_ride_type_string_id(listItem->repositoryItem);
-        gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, screenPos);
+        DrawTextBasic(dpi, screenPos, stringId, {}, COLOUR_WHITE, TextAlignment::RIGHT);
     }
 
     screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object source
     auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
-    gfx_draw_string_right(dpi, stringId, nullptr, COLOUR_WHITE, screenPos);
+    DrawTextBasic(dpi, screenPos, stringId, {}, COLOUR_WHITE, TextAlignment::RIGHT);
     screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object dat name
     {
         const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(path);
-        gfx_draw_string_right(
-            dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, { w->windowPos.x + w->width - 5, screenPos.y });
+        DrawTextBasic(
+            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK,
+            TextAlignment::RIGHT);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
     // Draw object author (will be blank space if no author in file or a non JSON object)
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         std::string authorsString;
         for (size_t i = 0; i < listItem->repositoryItem->Authors.size(); i++)
         {
@@ -1197,7 +1189,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 // Draw ride type
                 rct_string_id rideTypeStringId = get_ride_type_string_id(listItem.repositoryItem);
                 safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
-                auto ft = Formatter::Common();
+                auto ft = Formatter();
                 ft.Add<const char*>(gCommonStringFormatBuffer);
                 DrawTextEllipsised(dpi, screenCoords, width_limit - 15, STR_STRING, ft, colour);
                 screenCoords.x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
@@ -1212,7 +1204,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
 
                 *buffer = 0;
             }
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<const char*>(gCommonStringFormatBuffer);
             DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, ft, colour);
         }

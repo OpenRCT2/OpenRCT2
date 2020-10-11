@@ -12,6 +12,8 @@
 
 #include "../common.h"
 
+#include <string_view>
+
 /**
  * Colour IDs as used by the colour dropdown, NOT palette indices.
  */
@@ -206,6 +208,11 @@ struct rct_colour_map
 extern rct_colour_map ColourMapA[COLOUR_COUNT];
 
 void colours_init_maps();
+
+namespace Colour
+{
+    colour_t FromString(const std::string_view& s, colour_t defaultValue = COLOUR_BLACK);
+}
 
 #ifndef NO_TTF
 uint8_t blendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2);

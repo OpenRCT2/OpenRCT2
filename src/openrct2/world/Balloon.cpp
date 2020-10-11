@@ -76,7 +76,7 @@ void Balloon::Pop()
 {
     popped = 1;
     frame = 0;
-    audio_play_sound_at_location(SoundId::BalloonPop, { x, y, z });
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::BalloonPop, { x, y, z });
 }
 
 void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)

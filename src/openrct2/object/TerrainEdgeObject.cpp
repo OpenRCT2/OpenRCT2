@@ -10,10 +10,10 @@
 #include "TerrainEdgeObject.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
-#include "ObjectJsonHelpers.h"
 
 void TerrainEdgeObject::Load()
 {
@@ -44,12 +44,17 @@ void TerrainEdgeObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32
     gfx_draw_sprite(dpi, imageId + 5, screenCoords + ScreenCoordsXY{ 8, 8 }, 0);
 }
 
-void TerrainEdgeObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
-    HasDoors = ObjectJsonHelpers::GetBoolean(properties, "hasDoors", false);
+    Guard::Assert(root.is_object(), "TerrainEdgeObject::ReadJson expects parameter root to be object");
 
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    auto properties = root["properties"];
+
+    if (properties.is_object())
+    {
+        HasDoors = Json::GetBoolean(properties["hasDoors"]);
+    }
+
+    PopulateTablesFromJson(context, root);
     NumImagesLoaded = GetImageTable().GetCount();
 }

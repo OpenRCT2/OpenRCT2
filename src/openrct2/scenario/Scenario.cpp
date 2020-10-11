@@ -155,7 +155,7 @@ void scenario_begin()
     duck_remove_all();
     park_calculate_size();
     map_count_remaining_land_rights();
-    staff_reset_stats();
+    Staff::ResetStats();
     gLastEntranceStyle = 0;
     gMarketingCampaigns.clear();
     gParkRatingCasualtyPenalty = 0;
@@ -243,7 +243,7 @@ static void scenario_entrance_fee_too_high_check()
             uint32_t packed_xy = (y << 16) | x;
             if (gConfigNotifications.park_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
+                News::AddItemToQueue(News::ItemType::Blank, STR_ENTRANCE_FEE_TOO_HI, packed_xy, {});
             }
         }
     }
@@ -794,33 +794,33 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
+                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gScenarioParkRatingWarningDays == 8)
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
+                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gScenarioParkRatingWarningDays == 15)
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
+                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
             }
         }
         else if (gScenarioParkRatingWarningDays == 22)
         {
             if (gConfigNotifications.park_rating_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
+                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
             }
         }
         else if (gScenarioParkRatingWarningDays == 29)
         {
-            News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
+            News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
             gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
             gGuestInitialHappiness = 50;
             return ObjectiveStatus::Failure;

@@ -10407,295 +10407,295 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(int32_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return inverted_rc_track_flat;
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
+        case TrackElemType::EndStation:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
             return inverted_rc_track_station;
-        case TRACK_ELEM_25_DEG_UP:
+        case TrackElemType::Up25:
             return inverted_rc_track_25_deg_up;
-        case TRACK_ELEM_60_DEG_UP:
+        case TrackElemType::Up60:
             return inverted_rc_track_60_deg_up;
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+        case TrackElemType::FlatToUp25:
             return inverted_rc_track_flat_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_60_DEG_UP:
+        case TrackElemType::Up25ToUp60:
             return inverted_rc_track_25_deg_up_to_60_deg_up;
-        case TRACK_ELEM_60_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::Up60ToUp25:
             return inverted_rc_track_60_deg_up_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
             return inverted_rc_track_25_deg_up_to_flat;
-        case TRACK_ELEM_25_DEG_DOWN:
+        case TrackElemType::Down25:
             return inverted_rc_track_25_deg_down;
-        case TRACK_ELEM_60_DEG_DOWN:
+        case TrackElemType::Down60:
             return inverted_rc_track_60_deg_down;
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::FlatToDown25:
             return inverted_rc_track_flat_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::Down25ToDown60:
             return inverted_rc_track_25_deg_down_to_60_deg_down;
-        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::Down60ToDown25:
             return inverted_rc_track_60_deg_down_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::Down25ToFlat:
             return inverted_rc_track_25_deg_down_to_flat;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
+        case TrackElemType::LeftQuarterTurn5Tiles:
             return inverted_rc_track_left_quarter_turn_5;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
+        case TrackElemType::RightQuarterTurn5Tiles:
             return inverted_rc_track_right_quarter_turn_5;
-        case TRACK_ELEM_FLAT_TO_LEFT_BANK:
+        case TrackElemType::FlatToLeftBank:
             return inverted_rc_track_flat_to_left_bank;
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANK:
+        case TrackElemType::FlatToRightBank:
             return inverted_rc_track_flat_to_right_bank;
-        case TRACK_ELEM_LEFT_BANK_TO_FLAT:
+        case TrackElemType::LeftBankToFlat:
             return inverted_rc_track_left_bank_to_flat;
-        case TRACK_ELEM_RIGHT_BANK_TO_FLAT:
+        case TrackElemType::RightBankToFlat:
             return inverted_rc_track_right_bank_to_flat;
-        case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
+        case TrackElemType::BankedLeftQuarterTurn5Tiles:
             return inverted_rc_track_banked_left_quarter_turn_5;
-        case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
+        case TrackElemType::BankedRightQuarterTurn5Tiles:
             return inverted_rc_track_banked_right_quarter_turn_5;
-        case TRACK_ELEM_LEFT_BANK_TO_25_DEG_UP:
+        case TrackElemType::LeftBankToUp25:
             return inverted_rc_track_left_bank_to_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_UP:
+        case TrackElemType::RightBankToUp25:
             return inverted_rc_track_right_bank_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANK:
+        case TrackElemType::Up25ToLeftBank:
             return inverted_rc_track_25_deg_up_to_left_bank;
-        case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANK:
+        case TrackElemType::Up25ToRightBank:
             return inverted_rc_track_25_deg_up_to_right_bank;
-        case TRACK_ELEM_LEFT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::LeftBankToDown25:
             return inverted_rc_track_left_bank_to_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::RightBankToDown25:
             return inverted_rc_track_right_bank_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANK:
+        case TrackElemType::Down25ToLeftBank:
             return inverted_rc_track_25_deg_down_to_left_bank;
-        case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TrackElemType::Down25ToRightBank:
             return inverted_rc_track_25_deg_down_to_right_bank;
-        case TRACK_ELEM_LEFT_BANK:
+        case TrackElemType::LeftBank:
             return inverted_rc_track_left_bank;
-        case TRACK_ELEM_RIGHT_BANK:
+        case TrackElemType::RightBank:
             return inverted_rc_track_right_bank;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_UP:
+        case TrackElemType::LeftQuarterTurn5TilesUp25:
             return inverted_rc_track_left_quarter_turn_5_25_deg_up;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_UP:
+        case TrackElemType::RightQuarterTurn5TilesUp25:
             return inverted_rc_track_right_quarter_turn_5_25_deg_up;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn5TilesDown25:
             return inverted_rc_track_left_quarter_turn_5_25_deg_down;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_25_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn5TilesDown25:
             return inverted_rc_track_right_quarter_turn_5_25_deg_down;
-        case TRACK_ELEM_S_BEND_LEFT:
+        case TrackElemType::SBendLeft:
             return inverted_rc_track_s_bend_left;
-        case TRACK_ELEM_S_BEND_RIGHT:
+        case TrackElemType::SBendRight:
             return inverted_rc_track_s_bend_right;
-        case TRACK_ELEM_LEFT_VERTICAL_LOOP:
+        case TrackElemType::LeftVerticalLoop:
             return inverted_rc_track_left_vertical_loop;
-        case TRACK_ELEM_RIGHT_VERTICAL_LOOP:
+        case TrackElemType::RightVerticalLoop:
             return inverted_rc_track_right_vertical_loop;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
+        case TrackElemType::LeftQuarterTurn3Tiles:
             return inverted_rc_track_left_quarter_turn_3;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+        case TrackElemType::RightQuarterTurn3Tiles:
             return inverted_rc_track_right_quarter_turn_3;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_BANK:
+        case TrackElemType::LeftBankedQuarterTurn3Tiles:
             return inverted_rc_track_left_quarter_turn_3_bank;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_BANK:
+        case TrackElemType::RightBankedQuarterTurn3Tiles:
             return inverted_rc_track_right_quarter_turn_3_bank;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_UP:
+        case TrackElemType::LeftQuarterTurn3TilesUp25:
             return inverted_rc_track_left_quarter_turn_3_25_deg_up;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_UP:
+        case TrackElemType::RightQuarterTurn3TilesUp25:
             return inverted_rc_track_right_quarter_turn_3_25_deg_up;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn3TilesDown25:
             return inverted_rc_track_left_quarter_turn_3_25_deg_down;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES_25_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn3TilesDown25:
             return inverted_rc_track_right_quarter_turn_3_25_deg_down;
-        case TRACK_ELEM_LEFT_TWIST_DOWN_TO_UP:
+        case TrackElemType::LeftTwistDownToUp:
             return inverted_rc_track_left_twist_down_to_up;
-        case TRACK_ELEM_RIGHT_TWIST_DOWN_TO_UP:
+        case TrackElemType::RightTwistDownToUp:
             return inverted_rc_track_right_twist_down_to_up;
-        case TRACK_ELEM_LEFT_TWIST_UP_TO_DOWN:
+        case TrackElemType::LeftTwistUpToDown:
             return inverted_rc_track_left_twist_up_to_down;
-        case TRACK_ELEM_RIGHT_TWIST_UP_TO_DOWN:
+        case TrackElemType::RightTwistUpToDown:
             return inverted_rc_track_right_twist_up_to_down;
-        case TRACK_ELEM_HALF_LOOP_UP:
+        case TrackElemType::HalfLoopUp:
             return inverted_rc_track_half_loop_up;
-        case TRACK_ELEM_HALF_LOOP_DOWN:
+        case TrackElemType::HalfLoopDown:
             return inverted_rc_track_half_loop_down;
-        case TRACK_ELEM_LEFT_CORKSCREW_UP:
+        case TrackElemType::LeftCorkscrewUp:
             return inverted_rc_track_left_corkscrew_up;
-        case TRACK_ELEM_RIGHT_CORKSCREW_UP:
+        case TrackElemType::RightCorkscrewUp:
             return inverted_rc_track_right_corkscrew_up;
-        case TRACK_ELEM_LEFT_CORKSCREW_DOWN:
+        case TrackElemType::LeftCorkscrewDown:
             return inverted_rc_track_left_corkscrew_down;
-        case TRACK_ELEM_RIGHT_CORKSCREW_DOWN:
+        case TrackElemType::RightCorkscrewDown:
             return inverted_rc_track_right_corkscrew_down;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_UP:
+        case TrackElemType::LeftQuarterTurn1TileUp60:
             return inverted_rc_track_left_quarter_turn_1_60_deg_up;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_UP:
+        case TrackElemType::RightQuarterTurn1TileUp60:
             return inverted_rc_track_right_quarter_turn_1_60_deg_up;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+        case TrackElemType::LeftQuarterTurn1TileDown60:
             return inverted_rc_track_left_quarter_turn_1_60_deg_down;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_60_DEG_DOWN:
+        case TrackElemType::RightQuarterTurn1TileDown60:
             return inverted_rc_track_right_quarter_turn_1_60_deg_down;
-        case TRACK_ELEM_BRAKES:
+        case TrackElemType::Brakes:
             return inverted_rc_track_brakes;
-        case TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_UP:
+        case TrackElemType::LeftQuarterBankedHelixLargeUp:
             return inverted_rc_track_left_quarter_banked_helix_large_up;
-        case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_UP:
+        case TrackElemType::RightQuarterBankedHelixLargeUp:
             return inverted_rc_track_right_quarter_banked_helix_large_up;
-        case TRACK_ELEM_LEFT_QUARTER_BANKED_HELIX_LARGE_DOWN:
+        case TrackElemType::LeftQuarterBankedHelixLargeDown:
             return inverted_rc_track_left_quarter_banked_helix_large_down;
-        case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN:
+        case TrackElemType::RightQuarterBankedHelixLargeDown:
             return inverted_rc_track_right_quarter_banked_helix_large_down;
-        case TRACK_ELEM_25_DEG_UP_LEFT_BANKED:
+        case TrackElemType::Up25LeftBanked:
             return inverted_rc_track_25_deg_up_left_banked;
-        case TRACK_ELEM_25_DEG_UP_RIGHT_BANKED:
+        case TrackElemType::Up25RightBanked:
             return inverted_rc_track_25_deg_up_right_banked;
-        case TRACK_ELEM_ON_RIDE_PHOTO:
+        case TrackElemType::OnRidePhoto:
             return inverted_rc_track_on_ride_photo;
-        case TRACK_ELEM_25_DEG_DOWN_LEFT_BANKED:
+        case TrackElemType::Down25LeftBanked:
             return inverted_rc_track_25_deg_down_left_banked;
-        case TRACK_ELEM_25_DEG_DOWN_RIGHT_BANKED:
+        case TrackElemType::Down25RightBanked:
             return inverted_rc_track_25_deg_down_right_banked;
-        case TRACK_ELEM_LEFT_EIGHTH_TO_DIAG:
+        case TrackElemType::LeftEighthToDiag:
             return inverted_rc_track_left_eighth_to_diag;
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_DIAG:
+        case TrackElemType::RightEighthToDiag:
             return inverted_rc_track_right_eighth_to_diag;
-        case TRACK_ELEM_LEFT_EIGHTH_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthToOrthogonal:
             return inverted_rc_track_left_eighth_to_orthogonal;
-        case TRACK_ELEM_RIGHT_EIGHTH_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthToOrthogonal:
             return inverted_rc_track_right_eighth_to_orthogonal;
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_DIAG:
+        case TrackElemType::LeftEighthBankToDiag:
             return inverted_rc_track_left_eighth_bank_to_diag;
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_DIAG:
+        case TrackElemType::RightEighthBankToDiag:
             return inverted_rc_track_right_eighth_bank_to_diag;
-        case TRACK_ELEM_LEFT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::LeftEighthBankToOrthogonal:
             return inverted_rc_track_left_eighth_bank_to_orthogonal;
-        case TRACK_ELEM_RIGHT_EIGHTH_BANK_TO_ORTHOGONAL:
+        case TrackElemType::RightEighthBankToOrthogonal:
             return inverted_rc_track_right_eighth_bank_to_orthogonal;
-        case TRACK_ELEM_DIAG_FLAT:
+        case TrackElemType::DiagFlat:
             return inverted_rc_track_diag_flat;
-        case TRACK_ELEM_DIAG_25_DEG_UP:
+        case TrackElemType::DiagUp25:
             return inverted_rc_track_diag_25_deg_up;
-        case TRACK_ELEM_DIAG_60_DEG_UP:
+        case TrackElemType::DiagUp60:
             return inverted_rc_track_diag_60_deg_up;
-        case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_UP:
+        case TrackElemType::DiagFlatToUp25:
             return inverted_rc_track_diag_flat_to_25_deg_up;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_60_DEG_UP:
+        case TrackElemType::DiagUp25ToUp60:
             return inverted_rc_track_diag_25_deg_up_to_60_deg_up;
-        case TRACK_ELEM_DIAG_60_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::DiagUp60ToUp25:
             return inverted_rc_track_diag_60_deg_up_to_25_deg_up;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
+        case TrackElemType::DiagUp25ToFlat:
             return inverted_rc_track_diag_25_deg_up_to_flat;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN:
+        case TrackElemType::DiagDown25:
             return inverted_rc_track_diag_25_deg_down;
-        case TRACK_ELEM_DIAG_60_DEG_DOWN:
+        case TrackElemType::DiagDown60:
             return inverted_rc_track_diag_60_deg_down;
-        case TRACK_ELEM_DIAG_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::DiagFlatToDown25:
             return inverted_rc_track_diag_flat_to_25_deg_down;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_60_DEG_DOWN:
+        case TrackElemType::DiagDown25ToDown60:
             return inverted_rc_track_diag_25_deg_down_to_60_deg_down;
-        case TRACK_ELEM_DIAG_60_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::DiagDown60ToDown25:
             return inverted_rc_track_diag_60_deg_down_to_25_deg_down;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::DiagDown25ToFlat:
             return inverted_rc_track_diag_25_deg_down_to_flat;
-        case TRACK_ELEM_DIAG_FLAT_TO_LEFT_BANK:
+        case TrackElemType::DiagFlatToLeftBank:
             return inverted_rc_track_diag_flat_to_left_bank;
-        case TRACK_ELEM_DIAG_FLAT_TO_RIGHT_BANK:
+        case TrackElemType::DiagFlatToRightBank:
             return inverted_rc_track_diag_flat_to_right_bank;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_FLAT:
+        case TrackElemType::DiagLeftBankToFlat:
             return inverted_rc_track_diag_left_bank_to_flat;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_FLAT:
+        case TrackElemType::DiagRightBankToFlat:
             return inverted_rc_track_diag_right_bank_to_flat;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_UP:
+        case TrackElemType::DiagLeftBankToUp25:
             return inverted_rc_track_diag_left_bank_to_25_deg_up;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_UP:
+        case TrackElemType::DiagRightBankToUp25:
             return inverted_rc_track_diag_right_bank_to_25_deg_up;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_LEFT_BANK:
+        case TrackElemType::DiagUp25ToLeftBank:
             return inverted_rc_track_diag_25_deg_up_to_left_bank;
-        case TRACK_ELEM_DIAG_25_DEG_UP_TO_RIGHT_BANK:
+        case TrackElemType::DiagUp25ToRightBank:
             return inverted_rc_track_diag_25_deg_up_to_right_bank;
-        case TRACK_ELEM_DIAG_LEFT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::DiagLeftBankToDown25:
             return inverted_rc_track_diag_left_bank_to_25_deg_down;
-        case TRACK_ELEM_DIAG_RIGHT_BANK_TO_25_DEG_DOWN:
+        case TrackElemType::DiagRightBankToDown25:
             return inverted_rc_track_diag_right_bank_to_25_deg_down;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_LEFT_BANK:
+        case TrackElemType::DiagDown25ToLeftBank:
             return inverted_rc_track_diag_25_deg_down_to_left_bank;
-        case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_RIGHT_BANK:
+        case TrackElemType::DiagDown25ToRightBank:
             return inverted_rc_track_diag_25_deg_down_to_right_bank;
-        case TRACK_ELEM_DIAG_LEFT_BANK:
+        case TrackElemType::DiagLeftBank:
             return inverted_rc_track_diag_left_bank;
-        case TRACK_ELEM_DIAG_RIGHT_BANK:
+        case TrackElemType::DiagRightBank:
             return inverted_rc_track_diag_right_bank;
-        case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_UP:
+        case TrackElemType::LeftLargeHalfLoopUp:
             return inverted_rc_track_left_large_half_loop_up;
-        case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_UP:
+        case TrackElemType::RightLargeHalfLoopUp:
             return inverted_rc_track_right_large_half_loop_up;
-        case TRACK_ELEM_RIGHT_LARGE_HALF_LOOP_DOWN:
+        case TrackElemType::RightLargeHalfLoopDown:
             return inverted_rc_track_right_large_half_loop_down;
-        case TRACK_ELEM_LEFT_LARGE_HALF_LOOP_DOWN:
+        case TrackElemType::LeftLargeHalfLoopDown:
             return inverted_rc_track_left_large_half_loop_down;
-        case TRACK_ELEM_BLOCK_BRAKES:
+        case TrackElemType::BlockBrakes:
             return inverted_rc_track_block_brakes;
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
+        case TrackElemType::LeftBankedQuarterTurn3TileUp25:
             return inverted_rc_track_left_banked_quarter_turn_3_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_UP:
+        case TrackElemType::RightBankedQuarterTurn3TileUp25:
             return inverted_rc_track_right_banked_quarter_turn_3_25_deg_up;
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+        case TrackElemType::LeftBankedQuarterTurn3TileDown25:
             return inverted_rc_track_left_banked_quarter_turn_3_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_3_TILE_25_DEG_DOWN:
+        case TrackElemType::RightBankedQuarterTurn3TileDown25:
             return inverted_rc_track_right_banked_quarter_turn_3_25_deg_down;
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
+        case TrackElemType::LeftBankedQuarterTurn5TileUp25:
             return inverted_rc_track_left_banked_quarter_turn_5_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_UP:
+        case TrackElemType::RightBankedQuarterTurn5TileUp25:
             return inverted_rc_track_right_banked_quarter_turn_5_25_deg_up;
-        case TRACK_ELEM_LEFT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+        case TrackElemType::LeftBankedQuarterTurn5TileDown25:
             return inverted_rc_track_left_banked_quarter_turn_5_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANKED_QUARTER_TURN_5_TILE_25_DEG_DOWN:
+        case TrackElemType::RightBankedQuarterTurn5TileDown25:
             return inverted_rc_track_right_banked_quarter_turn_5_25_deg_down;
-        case TRACK_ELEM_25_DEG_UP_TO_LEFT_BANKED_25_DEG_UP:
+        case TrackElemType::Up25ToLeftBankedUp25:
             return inverted_rc_track_25_deg_up_to_left_banked_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_RIGHT_BANKED_25_DEG_UP:
+        case TrackElemType::Up25ToRightBankedUp25:
             return inverted_rc_track_25_deg_up_to_right_banked_25_deg_up;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::LeftBankedUp25ToUp25:
             return inverted_rc_track_left_banked_25_deg_up_to_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_25_DEG_UP:
+        case TrackElemType::RightBankedUp25ToUp25:
             return inverted_rc_track_right_banked_25_deg_up_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_DOWN_TO_LEFT_BANKED_25_DEG_DOWN:
+        case TrackElemType::Down25ToLeftBankedDown25:
             return inverted_rc_track_25_deg_down_to_left_banked_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_RIGHT_BANKED_25_DEG_DOWN:
+        case TrackElemType::Down25ToRightBankedDown25:
             return inverted_rc_track_25_deg_down_to_right_banked_25_deg_down;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::LeftBankedDown25ToDown25:
             return inverted_rc_track_left_banked_25_deg_down_to_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_25_DEG_DOWN:
+        case TrackElemType::RightBankedDown25ToDown25:
             return inverted_rc_track_right_banked_25_deg_down_to_25_deg_down;
-        case TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_UP:
+        case TrackElemType::LeftBankedFlatToLeftBankedUp25:
             return inverted_rc_track_left_banked_flat_to_left_banked_25_deg_up;
-        case TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
+        case TrackElemType::RightBankedFlatToRightBankedUp25:
             return inverted_rc_track_right_banked_flat_to_right_banked_25_deg_up;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_LEFT_BANKED_FLAT:
+        case TrackElemType::LeftBankedUp25ToLeftBankedFlat:
             return inverted_rc_track_left_banked_25_deg_up_to_left_banked_flat;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_RIGHT_BANKED_FLAT:
+        case TrackElemType::RightBankedUp25ToRightBankedFlat:
             return inverted_rc_track_right_banked_25_deg_up_to_right_banked_flat;
-        case TRACK_ELEM_LEFT_BANKED_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
+        case TrackElemType::LeftBankedFlatToLeftBankedDown25:
             return inverted_rc_track_left_banked_flat_to_left_banked_25_deg_down;
-        case TRACK_ELEM_RIGHT_BANKED_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
+        case TrackElemType::RightBankedFlatToRightBankedDown25:
             return inverted_rc_track_right_banked_flat_to_right_banked_25_deg_down;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_LEFT_BANKED_FLAT:
+        case TrackElemType::LeftBankedDown25ToLeftBankedFlat:
             return inverted_rc_track_left_banked_25_deg_down_to_left_banked_flat;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_RIGHT_BANKED_FLAT:
+        case TrackElemType::RightBankedDown25ToRightBankedFlat:
             return inverted_rc_track_right_banked_25_deg_down_to_right_banked_flat;
-        case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_UP:
+        case TrackElemType::FlatToLeftBankedUp25:
             return inverted_rc_track_flat_to_left_banked_25_deg_up;
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_UP:
+        case TrackElemType::FlatToRightBankedUp25:
             return inverted_rc_track_flat_to_right_banked_25_deg_up;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_UP_TO_FLAT:
+        case TrackElemType::LeftBankedUp25ToFlat:
             return inverted_rc_track_left_banked_25_deg_up_to_flat;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_UP_TO_FLAT:
+        case TrackElemType::RightBankedUp25ToFlat:
             return inverted_rc_track_right_banked_25_deg_up_to_flat;
-        case TRACK_ELEM_FLAT_TO_LEFT_BANKED_25_DEG_DOWN:
+        case TrackElemType::FlatToLeftBankedDown25:
             return inverted_rc_track_flat_to_left_banked_25_deg_down;
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
+        case TrackElemType::FlatToRightBankedDown25:
             return inverted_rc_track_flat_to_right_banked_25_deg_down;
-        case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::LeftBankedDown25ToFlat:
             return inverted_rc_track_left_banked_25_deg_down_to_flat;
-        case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::RightBankedDown25ToFlat:
             return inverted_rc_track_right_banked_25_deg_down_to_flat;
     }
     return nullptr;

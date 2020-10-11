@@ -206,9 +206,9 @@ public:
         }
     }
 
-    rct_window* ShowError(rct_string_id title, rct_string_id message) override
+    rct_window* ShowError(rct_string_id title, rct_string_id message, const Formatter& args) override
     {
-        return window_error_open(title, message);
+        return window_error_open(title, message, args);
     }
 
     rct_window* ShowError(const std::string_view& title, const std::string_view& message) override
@@ -472,6 +472,16 @@ public:
             case INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL:
                 TrackPlaceRestoreProvisional();
                 break;
+
+            case INTENT_ACTION_SET_MAP_TOOLTIP:
+            {
+                auto ft = static_cast<Formatter*>(intent.GetPointerExtra(INTENT_EXTRA_FORMATTER));
+                if (ft != nullptr)
+                {
+                    SetMapTooltip(*ft);
+                }
+                break;
+            }
         }
     }
 

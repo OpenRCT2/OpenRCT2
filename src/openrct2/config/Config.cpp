@@ -22,6 +22,8 @@
 #include "../localisation/Currency.h"
 #include "../localisation/Date.h"
 #include "../localisation/Language.h"
+#include "../localisation/Localisation.h"
+#include "../localisation/StringIds.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
 #include "../platform/Platform2.h"
@@ -82,10 +84,10 @@ namespace Config
         ConfigEnumEntry<int32_t>("YY/DD/MM", DATE_FORMAT_YEAR_DAY_MONTH),
     });
 
-    static const auto Enum_DrawingEngine = ConfigEnum<int32_t>({
-        ConfigEnumEntry<int32_t>("SOFTWARE", DRAWING_ENGINE_SOFTWARE),
-        ConfigEnumEntry<int32_t>("SOFTWARE_HWD", DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY),
-        ConfigEnumEntry<int32_t>("OPENGL", DRAWING_ENGINE_OPENGL),
+    static const auto Enum_DrawingEngine = ConfigEnum<DrawingEngine>({
+        ConfigEnumEntry<DrawingEngine>("SOFTWARE", DrawingEngine::Software),
+        ConfigEnumEntry<DrawingEngine>("SOFTWARE_HWD", DrawingEngine::SoftwareWithHardwareDisplay),
+        ConfigEnumEntry<DrawingEngine>("OPENGL", DrawingEngine::OpenGL),
     });
 
     static const auto Enum_Temperature = ConfigEnum<TemperatureUnit>({
@@ -168,7 +170,8 @@ namespace Config
             model->window_snap_proximity = reader->GetInt32("window_snap_proximity", 5);
             model->window_width = reader->GetInt32("window_width", -1);
             model->default_display = reader->GetInt32("default_display", 0);
-            model->drawing_engine = reader->GetEnum<int32_t>("drawing_engine", DRAWING_ENGINE_SOFTWARE, Enum_DrawingEngine);
+            model->drawing_engine = reader->GetEnum<DrawingEngine>(
+                "drawing_engine", DrawingEngine::Software, Enum_DrawingEngine);
             model->uncap_fps = reader->GetBoolean("uncap_fps", false);
             model->use_vsync = reader->GetBoolean("use_vsync", true);
             model->virtual_floor_style = reader->GetEnum<VirtualFloorStyles>(
@@ -249,7 +252,7 @@ namespace Config
         writer->WriteInt32("window_snap_proximity", model->window_snap_proximity);
         writer->WriteInt32("window_width", model->window_width);
         writer->WriteInt32("default_display", model->default_display);
-        writer->WriteEnum<int32_t>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
+        writer->WriteEnum<DrawingEngine>("drawing_engine", model->drawing_engine, Enum_DrawingEngine);
         writer->WriteBoolean("uncap_fps", model->uncap_fps);
         writer->WriteBoolean("use_vsync", model->use_vsync);
         writer->WriteEnum<int32_t>("date_format", model->date_format, Enum_DateFormat);
@@ -644,9 +647,10 @@ namespace Config
             }
         }
 
-        if (RCT1DataPresentAtLocation(gExePath))
+        auto exePath = Path::GetDirectory(Platform::GetCurrentExecutablePath());
+        if (RCT1DataPresentAtLocation(exePath.c_str()))
         {
-            return gExePath;
+            return exePath;
         }
         return std::string();
     }
@@ -698,9 +702,10 @@ namespace Config
             return discordPath;
         }
 
-        if (platform_original_game_data_exists(gExePath))
+        auto exePath = Path::GetDirectory(Platform::GetCurrentExecutablePath());
+        if (platform_original_game_data_exists(exePath.c_str()))
         {
-            return gExePath;
+            return exePath;
         }
         return std::string();
     }
@@ -788,13 +793,13 @@ bool config_find_or_browse_install_directory()
 
         try
         {
+            const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
             while (true)
             {
                 auto uiContext = GetContext()->GetUiContext();
-                uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work.\n"
-                                          "Please select the directory where you installed RollerCoaster Tycoon 2.");
+                uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES, nullptr));
 
-                std::string installPath = uiContext->ShowDirectoryDialog("Please select your RCT2 directory");
+                std::string installPath = uiContext->ShowDirectoryDialog(format_string(STR_PICK_RCT2_DIR, nullptr));
                 if (installPath.empty())
                 {
                     return false;
@@ -808,9 +813,7 @@ bool config_find_or_browse_install_directory()
                     return true;
                 }
 
-                std::string message = String::StdFormat(
-                    "Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
-                uiContext->ShowMessageBox(message);
+                uiContext->ShowMessageBox(format_string(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
             }
         }
         catch (const std::exception& ex)

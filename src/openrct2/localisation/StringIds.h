@@ -110,6 +110,7 @@ enum
     STR_RIDE_NAME_MINE_RIDE = 90,
     STR_RIDE_NAME_59 = 91,
     STR_RIDE_NAME_LIM_LAUNCHED_ROLLER_COASTER = 92,
+    STR_RIDE_NAME_HYBRID_COASTER = 93,
 
     STR_RIDE_DESCRIPTION_SPIRAL_ROLLER_COASTER = 512,
     STR_RIDE_DESCRIPTION_STAND_UP_ROLLER_COASTER = 513,
@@ -199,6 +200,7 @@ enum
     STR_RIDE_DESCRIPTION_MINE_RIDE = 600,
 
     STR_RIDE_DESCRIPTION_LIM_LAUNCHED_ROLLER_COASTER = 602,
+    STR_RIDE_DESCRIPTION_HYBRID_COASTER = 603,
 
     STR_GUEST_X = 767,
     STR_HANDYMAN_X = 768,
@@ -3886,6 +3888,14 @@ enum
     STR_SNOW = 6384,
     STR_HEAVY_SNOW = 6385,
     STR_BLIZZARD = 6386,
+
+    STR_CANT_LOWER_ELEMENT_HERE = 6387,
+    STR_CANT_RAISE_ELEMENT_HERE = 6388,
+    STR_NO_CLEARANCE = 6389,
+
+    STR_NEEDS_RCT2_FILES = 6390,
+    STR_PICK_RCT2_DIR = 6391,
+    STR_COULD_NOT_FIND_AT_PATH = 6392
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

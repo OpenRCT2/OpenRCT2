@@ -12,13 +12,13 @@
 #include "LargeSceneryObject.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Banner.h"
 #include "../world/Location.hpp"
-#include "ObjectJsonHelpers.h"
 
 #include <algorithm>
 #include <iterator>
@@ -26,7 +26,7 @@
 void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.large_scenery.tool_id = stream->ReadValue<uint8_t>();
+    _legacyType.large_scenery.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
     _legacyType.large_scenery.flags = stream->ReadValue<uint8_t>();
     _legacyType.large_scenery.price = stream->ReadValue<int16_t>();
     _legacyType.large_scenery.removal_price = stream->ReadValue<int16_t>();
@@ -54,7 +54,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     // Validate properties
     if (_legacyType.large_scenery.price <= 0)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+        context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
     if (_legacyType.large_scenery.removal_price <= 0)
     {
@@ -62,7 +62,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
         money16 reimbursement = _legacyType.large_scenery.removal_price;
         if (reimbursement > _legacyType.large_scenery.price)
         {
-            context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Sell price can not be more than buy price.");
+            context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
         }
     }
 }
@@ -121,84 +121,83 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(OpenRCT2::IStr
     return tiles;
 }
 
-void LargeSceneryObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
+    Guard::Assert(root.is_object(), "LargeSceneryObject::ReadJson expects parameter root to be object");
 
-    _legacyType.large_scenery.tool_id = ObjectJsonHelpers::ParseCursor(
-        ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
-    _legacyType.large_scenery.price = json_integer_value(json_object_get(properties, "price"));
-    _legacyType.large_scenery.removal_price = json_integer_value(json_object_get(properties, "removalPrice"));
+    auto properties = root["properties"];
 
-    auto jScrollingMode = json_object_get(properties, "scrollingMode");
-    _legacyType.large_scenery.scrolling_mode = jScrollingMode != nullptr ? json_integer_value(jScrollingMode)
-                                                                         : SCROLLING_MODE_NONE;
+    if (properties.is_object())
+    {
+        _legacyType.large_scenery.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
 
-    // Flags
-    _legacyType.large_scenery.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
-        properties,
+        _legacyType.large_scenery.price = Json::GetNumber<int16_t>(properties["price"]);
+        _legacyType.large_scenery.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]);
+
+        _legacyType.large_scenery.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
+
+        _legacyType.large_scenery.flags = Json::GetFlags<uint8_t>(
+            properties,
+            {
+                { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
+                { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
+                { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
+                { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC },
+            });
+
+        // Tiles
+        auto jTiles = properties["tiles"];
+        if (jTiles.is_array())
         {
-            { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
-            { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
-            { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
-            { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC },
-        });
+            _tiles = ReadJsonTiles(jTiles);
+        }
 
-    // Tiles
-    auto jTiles = json_object_get(properties, "tiles");
-    if (jTiles != nullptr)
-    {
-        _tiles = ReadJsonTiles(jTiles);
+        // Read text
+        auto j3dFont = properties["3dFont"];
+        if (j3dFont.is_object())
+        {
+            _3dFont = ReadJson3dFont(j3dFont);
+            _legacyType.large_scenery.flags |= LARGE_SCENERY_FLAG_3D_TEXT;
+        }
+
+        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
     }
 
-    // Read text
-    auto j3dFont = json_object_get(properties, "3dFont");
-    if (j3dFont != nullptr)
-    {
-        _3dFont = ReadJson3dFont(j3dFont);
-        _legacyType.large_scenery.flags |= LARGE_SCENERY_FLAG_3D_TEXT;
-    }
-
-    SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
-
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    PopulateTablesFromJson(context, root);
 }
 
-std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(const json_t* jTiles)
+std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(json_t& jTiles)
 {
     std::vector<rct_large_scenery_tile> tiles;
-    size_t index;
-    const json_t* jTile;
-    json_array_foreach(jTiles, index, jTile)
+
+    for (auto& jTile : jTiles)
     {
-        rct_large_scenery_tile tile = {};
-        tile.x_offset = json_integer_value(json_object_get(jTile, "x"));
-        tile.y_offset = json_integer_value(json_object_get(jTile, "y"));
-        tile.z_offset = json_integer_value(json_object_get(jTile, "z"));
-        tile.z_clearance = json_integer_value(json_object_get(jTile, "clearance"));
-        if (!ObjectJsonHelpers::GetBoolean(jTile, "hasSupports"))
+        if (jTile.is_object())
         {
-            tile.flags |= LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS;
-        }
-        if (ObjectJsonHelpers::GetBoolean(jTile, "allowSupportsAbove"))
-        {
-            tile.flags |= LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE;
-        }
+            rct_large_scenery_tile tile = {};
+            tile.x_offset = Json::GetNumber<int16_t>(jTile["x"]);
+            tile.y_offset = Json::GetNumber<int16_t>(jTile["y"]);
+            tile.z_offset = Json::GetNumber<int16_t>(jTile["z"]);
+            tile.z_clearance = Json::GetNumber<int8_t>(jTile["clearance"]);
 
-        // All corners are by default occupied
-        auto jCorners = json_object_get(jTile, "corners");
-        auto corners = 0xF;
-        if (jCorners != nullptr)
-        {
-            corners = json_integer_value(jCorners);
+            // clang-format off
+            tile.flags = Json::GetFlags<uint16_t>(
+                jTile,
+                {
+                    {"hasSupports",         LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS,            Json::FlagType::Inverted},
+                    {"allowSupportsAbove",  LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE,   Json::FlagType::Normal}
+                });
+            // clang-format on
+
+            // All corners are by default occupied
+            uint16_t corners = Json::GetNumber<uint16_t>(jTile["corners"], 0xF);
+            tile.flags |= (corners & 0xFF) << 12;
+
+            auto walls = Json::GetNumber<int16_t>(jTile["walls"]);
+            tile.flags |= (walls & 0xFF) << 8;
+
+            tiles.push_back(tile);
         }
-        tile.flags |= (corners & 0xFF) << 12;
-
-        auto walls = json_integer_value(json_object_get(jTile, "walls"));
-        tile.flags |= (walls & 0xFF) << 8;
-
-        tiles.push_back(tile);
     }
 
     // HACK Add end of tiles marker
@@ -208,29 +207,32 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(const json
     return tiles;
 }
 
-std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const json_t* j3dFont)
+std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(json_t& j3dFont)
 {
+    Guard::Assert(j3dFont.is_object(), "LargeSceneryObject::ReadJson3dFont expects parameter j3dFont to be object");
+
     auto font = std::make_unique<rct_large_scenery_text>();
 
-    auto jOffsets = json_object_get(j3dFont, "offsets");
-    if (jOffsets != nullptr)
+    auto jOffsets = j3dFont["offsets"];
+    if (jOffsets.is_array())
     {
         auto offsets = ReadJsonOffsets(jOffsets);
         auto numOffsets = std::min(std::size(font->offset), offsets.size());
         std::copy_n(offsets.data(), numOffsets, font->offset);
     }
 
-    font->max_width = json_integer_value(json_object_get(j3dFont, "maxWidth"));
-    font->num_images = json_integer_value(json_object_get(j3dFont, "numImages"));
-    font->flags = ObjectJsonHelpers::GetFlags<uint8_t>(
+    font->max_width = Json::GetNumber<uint16_t>(j3dFont["maxWidth"]);
+    font->num_images = Json::GetNumber<uint8_t>(j3dFont["numImages"]);
+
+    font->flags = Json::GetFlags<uint8_t>(
         j3dFont,
         {
             { "isVertical", LARGE_SCENERY_TEXT_FLAG_VERTICAL },
             { "isTwoLine", LARGE_SCENERY_TEXT_FLAG_TWO_LINE },
         });
 
-    auto jGlyphs = json_object_get(j3dFont, "glyphs");
-    if (jGlyphs != nullptr)
+    auto jGlyphs = j3dFont["glyphs"];
+    if (jGlyphs.is_array())
     {
         auto glyphs = ReadJsonGlyphs(jGlyphs);
         auto numGlyphs = std::min(std::size(font->glyphs), glyphs.size());
@@ -240,33 +242,35 @@ std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const
     return font;
 }
 
-std::vector<LocationXY16> LargeSceneryObject::ReadJsonOffsets(const json_t* jOffsets)
+std::vector<LocationXY16> LargeSceneryObject::ReadJsonOffsets(json_t& jOffsets)
 {
     std::vector<LocationXY16> offsets;
-    size_t index;
-    const json_t* jOffset;
-    json_array_foreach(jOffsets, index, jOffset)
+    for (auto& jOffset : jOffsets)
     {
-        LocationXY16 offset = {};
-        offset.x = json_integer_value(json_object_get(jOffset, "x"));
-        offset.y = json_integer_value(json_object_get(jOffset, "y"));
-        offsets.push_back(offset);
+        if (jOffset.is_object())
+        {
+            LocationXY16 offset = {};
+            offset.x = Json::GetNumber<int16_t>(jOffset["x"]);
+            offset.y = Json::GetNumber<int16_t>(jOffset["y"]);
+            offsets.push_back(offset);
+        }
     }
     return offsets;
 }
 
-std::vector<rct_large_scenery_text_glyph> LargeSceneryObject::ReadJsonGlyphs(const json_t* jGlpyhs)
+std::vector<rct_large_scenery_text_glyph> LargeSceneryObject::ReadJsonGlyphs(json_t& jGlyphs)
 {
     std::vector<rct_large_scenery_text_glyph> glyphs;
-    size_t index;
-    const json_t* jGlyph;
-    json_array_foreach(jGlpyhs, index, jGlyph)
+    for (auto& jGlyph : jGlyphs)
     {
-        rct_large_scenery_text_glyph glyph = {};
-        glyph.image_offset = json_integer_value(json_object_get(jGlyph, "image"));
-        glyph.width = json_integer_value(json_object_get(jGlyph, "width"));
-        glyph.height = json_integer_value(json_object_get(jGlyph, "height"));
-        glyphs.push_back(glyph);
+        if (jGlyph.is_object())
+        {
+            rct_large_scenery_text_glyph glyph = {};
+            glyph.image_offset = Json::GetNumber<uint8_t>(jGlyph["image"]);
+            glyph.width = Json::GetNumber<uint8_t>(jGlyph["width"]);
+            glyph.height = Json::GetNumber<uint8_t>(jGlyph["height"]);
+            glyphs.push_back(glyph);
+        }
     }
     return glyphs;
 }

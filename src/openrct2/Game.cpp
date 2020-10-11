@@ -301,7 +301,7 @@ void pause_toggle()
     window_invalidate_by_class(WC_TOP_TOOLBAR);
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
-        audio_stop_all_music_and_sounds();
+        OpenRCT2::Audio::StopAll();
     }
 }
 
@@ -466,8 +466,6 @@ void game_fix_save_vars()
                 peep->CurrentRide = RIDE_ID_NULL;
                 continue;
             }
-            auto ft = Formatter::Common();
-            ft.Add<uint32_t>(peep->Id);
             auto curName = peep->GetName();
             log_warning(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->sprite_index, curName.c_str(), srcStation,
@@ -552,7 +550,7 @@ void game_load_init()
     snapshots->Reset();
 
     gScreenFlags = SCREEN_FLAGS_PLAYING;
-    audio_stop_all_music_and_sounds();
+    OpenRCT2::Audio::StopAll();
     if (!gLoadKeepWindowsOpen)
     {
         viewport_init_all();
@@ -589,7 +587,7 @@ void game_load_init()
         window_update_all();
     }
 
-    audio_stop_title_music();
+    OpenRCT2::Audio::StopTitleMusic();
     gGameSpeed = 1;
 }
 
@@ -815,7 +813,7 @@ void game_load_or_quit_no_save_prompt()
 {
     switch (gSavePromptMode)
     {
-        case PM_SAVE_BEFORE_LOAD:
+        case PromptMode::SaveBeforeLoad:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
@@ -833,7 +831,7 @@ void game_load_or_quit_no_save_prompt()
             }
             break;
         }
-        case PM_SAVE_BEFORE_QUIT:
+        case PromptMode::SaveBeforeQuit:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);

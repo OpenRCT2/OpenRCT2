@@ -13,12 +13,18 @@
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../object/ObjectRepository.h"
+#include "../object/RideObject.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/TrackDesignRepository.h"
+
+#include <mutex>
+
+static std::mutex _objectLookupMutex;
 
 /**
  * Class to import RollerCoaster Tycoon 2 track designs (*.TD6).
@@ -77,7 +83,7 @@ public:
 
         td->cost = 0;
         td->flags = td6.flags;
-        td->ride_mode = td6.ride_mode;
+        td->ride_mode = static_cast<RideMode>(td6.ride_mode);
         td->track_flags = 0;
         td->colour_scheme = td6.version_and_colour_scheme & 0x3;
         for (auto i = 0; i < RCT2_MAX_CARS_PER_TRAIN; ++i)
@@ -200,7 +206,29 @@ public:
         }
 
         td->name = _name;
+
+        UpdateRideType(td);
+
         return td;
+    }
+
+    void UpdateRideType(std::unique_ptr<TrackDesign>& td)
+    {
+        if (RCT2RideTypeNeedsConversion(td->type))
+        {
+            std::scoped_lock<std::mutex> lock(_objectLookupMutex);
+            auto* rawObject = object_repository_load_object(&td->vehicle_object);
+            if (rawObject != nullptr)
+            {
+                const auto* rideEntry = static_cast<const rct_ride_entry*>(
+                    static_cast<RideObject*>(rawObject)->GetLegacyData());
+                if (rideEntry != nullptr)
+                {
+                    td->type = RCT2RideTypeToOpenRCT2RideType(td->type, rideEntry);
+                }
+                object_delete(rawObject);
+            }
+        }
     }
 };
 

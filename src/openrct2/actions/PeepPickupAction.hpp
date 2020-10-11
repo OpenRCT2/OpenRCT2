@@ -11,6 +11,7 @@
 
 #include "../Input.h"
 #include "../network/network.h"
+#include "../util/Util.h"
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
@@ -25,15 +26,15 @@ enum class PeepPickupType : uint8_t
 DEFINE_GAME_ACTION(PeepPickupAction, GAME_COMMAND_PICKUP_GUEST, GameActionResult)
 {
 private:
-    uint8_t _type = static_cast<uint8_t>(PeepPickupType::Count);
-    uint32_t _spriteId = SPRITE_INDEX_NULL;
+    PeepPickupType _type{ PeepPickupType::Count };
+    uint32_t _spriteId{ SPRITE_INDEX_NULL };
     CoordsXYZ _loc;
-    NetworkPlayerId_t _owner = { -1 };
+    NetworkPlayerId_t _owner{ -1 };
 
 public:
     PeepPickupAction() = default;
     PeepPickupAction(PeepPickupType type, uint32_t spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner)
-        : _type(static_cast<uint8_t>(type))
+        : _type(type)
         , _spriteId(spriteId)
         , _loc(loc)
         , _owner(owner)
@@ -74,7 +75,7 @@ public:
 
         auto res = MakeResult();
 
-        switch (static_cast<PeepPickupType>(_type))
+        switch (_type)
         {
             case PeepPickupType::Pickup:
             {
@@ -133,7 +134,7 @@ public:
 
         auto res = MakeResult();
 
-        switch (static_cast<PeepPickupType>(_type))
+        switch (_type)
         {
             case PeepPickupType::Pickup:
             {

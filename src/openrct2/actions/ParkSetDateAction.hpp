@@ -21,14 +21,12 @@
 DEFINE_GAME_ACTION(ParkSetDateAction, GAME_COMMAND_SET_DATE, GameActionResult)
 {
 private:
-    int32_t _year = 0;
-    int32_t _month = 0;
-    int32_t _day = 0;
+    int32_t _year{};
+    int32_t _month{};
+    int32_t _day{};
 
 public:
-    ParkSetDateAction()
-    {
-    }
+    ParkSetDateAction() = default;
     ParkSetDateAction(int32_t year, int32_t month, int32_t day)
         : _year(year)
         , _month(month)

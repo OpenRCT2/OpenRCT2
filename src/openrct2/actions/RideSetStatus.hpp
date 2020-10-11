@@ -34,12 +34,10 @@ DEFINE_GAME_ACTION(RideSetStatusAction, GAME_COMMAND_SET_RIDE_STATUS, GameAction
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _status = RIDE_STATUS_CLOSED;
+    uint8_t _status{ RIDE_STATUS_CLOSED };
 
 public:
-    RideSetStatusAction()
-    {
-    }
+    RideSetStatusAction() = default;
     RideSetStatusAction(ride_id_t rideIndex, uint8_t status)
         : _rideIndex(rideIndex)
         , _status(status)
@@ -186,7 +184,7 @@ public:
                 ride->race_winner = SPRITE_INDEX_NULL;
                 ride->current_issues = 0;
                 ride->last_issue_time = 0;
-                ride_get_measurement(ride);
+                ride->GetMeasurement();
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 window_invalidate_by_number(WC_RIDE, _rideIndex);
                 break;
@@ -233,7 +231,7 @@ public:
                 ride->status = _status;
                 ride->current_issues = 0;
                 ride->last_issue_time = 0;
-                ride_get_measurement(ride);
+                ride->GetMeasurement();
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 window_invalidate_by_number(WC_RIDE, _rideIndex);
                 break;

@@ -77,41 +77,28 @@ static void window_scenery_periodic_update(rct_window *w);
 static void window_scenery_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 static void window_scenery_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void window_scenery_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static OpenRCT2String window_scenery_tooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
 static void window_scenery_invalidate(rct_window *w);
 static void window_scenery_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_scenery_events = {
-    window_scenery_close,
-    window_scenery_mouseup,
-    window_scenery_resize,
-    window_scenery_mousedown,
-    window_scenery_dropdown,
-    nullptr,
-    window_scenery_update,
-    window_scenery_periodic_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_scenery_scrollgetsize,
-    window_scenery_scrollmousedown,
-    nullptr,
-    window_scenery_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_scenery_tooltip,
-    nullptr,
-    nullptr,
-    window_scenery_invalidate,
-    window_scenery_paint,
-    window_scenery_scrollpaint,
-};
+static rct_window_event_list window_scenery_events([](auto& events)
+{
+    events.close = &window_scenery_close;
+    events.mouse_up = &window_scenery_mouseup;
+    events.resize = &window_scenery_resize;
+    events.mouse_down = &window_scenery_mousedown;
+    events.dropdown = &window_scenery_dropdown;
+    events.update = &window_scenery_update;
+    events.periodic_update = &window_scenery_periodic_update;
+    events.get_scroll_size = &window_scenery_scrollgetsize;
+    events.scroll_mousedown = &window_scenery_scrollmousedown;
+    events.scroll_mouseover = &window_scenery_scrollmouseover;
+    events.tooltip = &window_scenery_tooltip;
+    events.invalidate = &window_scenery_invalidate;
+    events.paint = &window_scenery_paint;
+    events.scroll_paint = &window_scenery_scrollpaint;
+});
 
 
 enum WINDOW_SCENERY_LIST_WIDGET_IDX {
@@ -607,7 +594,7 @@ static void window_scenery_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             }
             else
             {
-                context_show_error(STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
+                context_show_error(STR_CANT_DO_THIS, STR_PERMISSION_DENIED, {});
             }
             w->Invalidate();
             break;
@@ -898,7 +885,7 @@ void window_scenery_scrollmousedown(rct_window* w, int32_t scrollIndex, const Sc
 
     gWindowSceneryPaintEnabled &= 0xFE;
     gWindowSceneryEyedropperEnabled = false;
-    audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     w->scenery.hover_counter = -16;
     gSceneryPlaceCost = MONEY32_UNDEFINED;
     w->Invalidate();
@@ -922,9 +909,9 @@ void window_scenery_scrollmouseover(rct_window* w, int32_t scrollIndex, const Sc
  *
  *  rct2: 0x006E1C05
  */
-void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
+OpenRCT2String window_scenery_tooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
 
     switch (widgetIndex)
     {
@@ -953,6 +940,7 @@ void window_scenery_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_stri
             ft.Add<rct_string_id>(STR_MISCELLANEOUS);
             break;
     }
+    return { fallback, ft };
 }
 
 /**
@@ -1180,16 +1168,16 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<uint32_t>(price);
 
         // -14
-        gfx_draw_string_right(
-            dpi, STR_COST_LABEL, gCommonFormatArgs, COLOUR_BLACK,
-            w->windowPos + ScreenCoordsXY{ w->width - 0x1A, w->height - 13 });
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ w->width - 0x1A, w->height - 13 }, STR_COST_LABEL, ft, COLOUR_BLACK,
+            TextAlignment::RIGHT);
     }
 
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE));
     DrawTextEllipsised(
         dpi, { w->windowPos.x + 3, w->windowPos.y + w->height - 13 }, w->width - 19, STR_BLACK_STRING, ft, COLOUR_BLACK);
@@ -1390,7 +1378,7 @@ bool window_scenery_set_selected_item(const ScenerySelection& scenery)
             gWindowSceneryActiveTabIndex = tabIndex;
             gWindowSceneryTabSelections[tabIndex] = scenery;
 
-            audio_play_sound(SoundId::Click1, 0, context_get_width() / 2);
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, context_get_width() / 2);
             w->scenery.hover_counter = -16;
             gSceneryPlaceCost = MONEY32_UNDEFINED;
             w->Invalidate();

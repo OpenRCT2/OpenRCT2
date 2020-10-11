@@ -13,6 +13,8 @@
 #include "../common.h"
 #include "../world/Footpath.h"
 
+constexpr const uint8_t NumVanillaWoodenSupportTypes = 49;
+
 bool wooden_a_supports_paint_setup(
     paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags, bool* underground);
 bool wooden_b_supports_paint_setup(

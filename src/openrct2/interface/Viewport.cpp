@@ -692,7 +692,7 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
     focus.type = VIEWPORT_FOCUS_TYPE_SPRITE;
     focus.sprite.sprite_id = peep->sprite_index;
 
-    if (peep->State == PEEP_STATE_PICKED)
+    if (peep->State == PeepState::Picked)
     {
         focus.sprite.sprite_id = SPRITE_INDEX_NULL;
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
@@ -702,8 +702,8 @@ viewport_focus viewport_update_smart_guest_follow(rct_window* window, Peep* peep
     else
     {
         bool overallFocus = true;
-        if (peep->State == PEEP_STATE_ON_RIDE || peep->State == PEEP_STATE_ENTERING_RIDE
-            || (peep->State == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
+        if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide
+            || (peep->State == PeepState::LeavingRide && peep->x == LOCATION_NULL))
         {
             auto ride = get_ride(peep->CurrentRide);
             if (ride != nullptr && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
@@ -752,7 +752,7 @@ void viewport_update_smart_staff_follow(rct_window* window, Peep* peep)
 
     focus.sprite_id = window->viewport_smart_follow_sprite;
 
-    if (peep->State == PEEP_STATE_PICKED)
+    if (peep->State == PeepState::Picked)
     {
         // focus.sprite.sprite_id = SPRITE_INDEX_NULL;
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
@@ -1691,7 +1691,7 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // if unknown viewport visibility, use the containing window to discover the status
-    if (viewport->visibility == VC_UNKNOWN)
+    if (viewport->visibility == VisibilityCache::Unknown)
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         auto owner = windowManager->GetOwner(viewport);
@@ -1705,7 +1705,7 @@ void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int3
         }
     }
 
-    if (viewport->visibility == VC_COVERED)
+    if (viewport->visibility == VisibilityCache::Covered)
         return;
 
     int32_t viewportLeft = viewport->viewPos.x;
@@ -1930,7 +1930,7 @@ void viewport_set_saved_view()
 
 ZoomLevel ZoomLevel::min()
 {
-    if (drawing_engine_get_type() == DRAWING_ENGINE_OPENGL)
+    if (drawing_engine_get_type() == DrawingEngine::OpenGL)
     {
         return -2;
     }
