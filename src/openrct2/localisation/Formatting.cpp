@@ -478,46 +478,16 @@ namespace OpenRCT2
         }
     }
 
-    std::pair<std::string_view, uint32_t> FormatNextPart(std::string_view& fmt)
-    {
-        if (fmt.size() > 0)
-        {
-            for (size_t i = 0; i < fmt.size() - 1; i++)
-            {
-                if (fmt[i] == '{' && fmt[i + 1] != '}')
-                {
-                    if (i == 0)
-                    {
-                        // Find end brace
-                        for (size_t j = i + 1; j < fmt.size(); j++)
-                        {
-                            if (fmt[j] == '}')
-                            {
-                                auto result = fmt.substr(0, j + 1);
-                                fmt = fmt.substr(j + 1);
-                                return { result, format_get_code(result.substr(1, result.size() - 2)) };
-                            }
-                        }
-                    }
-                    else
-                    {
-                        auto result = fmt.substr(0, i);
-                        fmt = fmt.substr(i);
-                        return { result, 0 };
-                    }
-                }
-            }
-        }
-        {
-            auto result = fmt;
-            fmt = {};
-            return { result, 0 };
-        }
-    }
-
     bool CanFormatToken(FormatToken t)
     {
         return t == FORMAT_COMMA1DP16 || (t >= FORMAT_COMMA32 && t <= FORMAT_LENGTH);
+    }
+
+    FmtString GetFmtStringById(rct_string_id id)
+    {
+        auto lang = language_get_string(id);
+        auto fmtc = language_convert_string_to_tokens(lang);
+        return FmtString(std::move(fmtc));
     }
 
     template void FormatArgument(std::stringstream&, uint32_t, int32_t);
@@ -539,16 +509,28 @@ namespace OpenRCT2
         }
     }
 
-    std::string FormatStringAny(const FmtString& fmt, const std::vector<std::any>& args)
+    static void FormatStringAny(
+        std::stringstream& ss, const FmtString& fmt, const std::vector<std::any>& args, size_t& argIndex)
     {
-        thread_local std::stringstream ss;
-        // Reset the buffer (reported as most efficient way)
-        std::stringstream().swap(ss);
-
-        size_t argIndex = 0;
         for (const auto& token : fmt)
         {
-            if (CanFormatToken(token.kind))
+            if (token.kind == FORMAT_STRINGID || token.kind == FORMAT_STRINGID2)
+            {
+                if (argIndex < args.size())
+                {
+                    auto arg = args[argIndex++];
+                    if (arg.type() == typeid(rct_string_id))
+                    {
+                        auto subfmt = GetFmtStringById(std::any_cast<rct_string_id>(arg));
+                        FormatStringAny(ss, subfmt, args, argIndex);
+                    }
+                }
+                else
+                {
+                    argIndex++;
+                }
+            }
+            else if (CanFormatToken(token.kind))
             {
                 if (argIndex < args.size())
                 {
@@ -561,6 +543,15 @@ namespace OpenRCT2
                 ss << token.text;
             }
         }
+    }
+
+    std::string FormatStringAny(const FmtString& fmt, const std::vector<std::any>& args)
+    {
+        thread_local std::stringstream ss;
+        // Reset the buffer (reported as most efficient way)
+        std::stringstream().swap(ss);
+        size_t argIndex = 0;
+        FormatStringAny(ss, fmt, args, argIndex);
         return ss.str();
     }
 } // namespace OpenRCT2

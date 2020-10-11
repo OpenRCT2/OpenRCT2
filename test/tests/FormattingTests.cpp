@@ -14,6 +14,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/localisation/StringIds.h>
 
 using namespace OpenRCT2;
 
@@ -262,4 +263,12 @@ TEST_F(FormattingTests, any_string_int_string)
     auto actual = FormatStringAny(
         "{RED}{STRING} {INT32} has broken down due to '{STRING}'.", { "Twist", 2, "Mechanical failure" });
     ASSERT_EQ("{RED}Twist 2 has broken down due to 'Mechanical failure'.", actual);
+}
+
+TEST_F(FormattingTests, any_two_level_format)
+{
+    constexpr rct_string_id strDefault = STR_RIDE_NAME_DEFAULT;
+    constexpr rct_string_id strBoatHire = STR_RIDE_NAME_BOAT_HIRE;
+    auto actual = FormatStringAny("Queuing for {STRINGID}", { strDefault, strBoatHire, 2 });
+    ASSERT_EQ("Queuing for Boat Hire 2", actual);
 }

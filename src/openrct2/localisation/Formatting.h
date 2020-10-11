@@ -72,8 +72,8 @@ namespace OpenRCT2
 
     template<typename T> void FormatArgument(std::stringstream& ss, FormatToken token, T arg);
 
-    std::pair<std::string_view, uint32_t> FormatNextPart(std::string_view& fmt);
     bool CanFormatToken(FormatToken t);
+    FmtString GetFmtStringById(rct_string_id id);
 
     inline void FormatString(std::stringstream& ss, FmtString::iterator& it)
     {
@@ -122,18 +122,16 @@ namespace OpenRCT2
         return ss.str();
     }
 
-    template<typename... TArgs> static void FormatStringId(std::stringstream& ss, rct_string_id fmt, TArgs&&... argN)
+    template<typename... TArgs> static void FormatStringId(std::stringstream& ss, rct_string_id id, TArgs&&... argN)
     {
-        auto lang = language_get_string(fmt);
-        auto fmtsz = language_convert_string_to_tokens(lang);
-        FormatString(ss, FmtString(fmtsz), argN...);
+        auto fmt = GetFmtStringById(id);
+        FormatString(ss, fmt, argN...);
     }
 
-    template<typename... TArgs> std::string FormatStringId(rct_string_id fmt, TArgs&&... argN)
+    template<typename... TArgs> std::string FormatStringId(rct_string_id id, TArgs&&... argN)
     {
-        auto lang = language_get_string(fmt);
-        auto fmtc = language_convert_string_to_tokens(lang);
-        return FormatString(fmtc, argN...);
+        auto fmt = GetFmtStringById(id);
+        return FormatString(fmt, argN...);
     }
 
     std::string FormatStringAny(const FmtString& fmt, const std::vector<std::any>& args);
