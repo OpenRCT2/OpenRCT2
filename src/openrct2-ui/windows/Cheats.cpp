@@ -327,6 +327,7 @@ static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetInd
 static void window_cheats_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_rides_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static OpenRCT2String window_cheats_rides_tooltip(rct_window* const w, rct_widgetindex widgetIndex, rct_string_id fallback);
 static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate(rct_window *w);
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -365,6 +366,7 @@ static rct_window_event_list window_cheats_rides_events([](auto& events)
 {
     events.mouse_up = &window_cheats_rides_mouseup;
     events.update = &window_cheats_update;
+    events.tooltip = &window_cheats_rides_tooltip;
     events.invalidate = &window_cheats_invalidate;
     events.paint = &window_cheats_paint;
 });
@@ -1001,6 +1003,17 @@ static void window_cheats_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_1 + w->page);
 }
 
+static OpenRCT2String window_cheats_rides_tooltip(rct_window* const w, rct_widgetindex widgetIndex, rct_string_id fallback)
+{
+    if (widgetIndex == WIDX_FAST_LIFT_HILL)
+    {
+        auto ft = Formatter{};
+        ft.Add<uint16_t>(255);
+        return { fallback, ft };
+    }
+    return { fallback, {} };
+}
+
 static void window_cheats_invalidate(rct_window* w)
 {
     int32_t i;
@@ -1023,8 +1036,6 @@ static void window_cheats_invalidate(rct_window* w)
     // Set title
     w->widgets[WIDX_TITLE].text = window_cheats_page_titles[w->page];
 
-    auto ft = Formatter::Common();
-
     switch (w->page)
     {
         case WINDOW_CHEATS_PAGE_MONEY:
@@ -1045,11 +1056,15 @@ static void window_cheats_invalidate(rct_window* w)
         }
         break;
         case WINDOW_CHEATS_PAGE_GUESTS:
+        {
+            auto ft = Formatter::Common();
             ft.Add<int32_t>(MONEY(1000, 00));
             widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
             widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
             widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
-            break;
+        }
+        break;
+
         case WINDOW_CHEATS_PAGE_MISC:
             w->widgets[WIDX_OPEN_CLOSE_PARK].text = (gParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
                                                                                         : STR_CHEAT_OPEN_PARK;
@@ -1059,7 +1074,6 @@ static void window_cheats_invalidate(rct_window* w)
             widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
             break;
         case WINDOW_CHEATS_PAGE_RIDES:
-            ft.Add<uint16_t>(255);
             widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gCheatsFastLiftHill);
             widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gCheatsDisableBrakesFailure);
             widget_set_checkbox_value(w, WIDX_DISABLE_ALL_BREAKDOWNS, gCheatsDisableAllBreakdowns);
