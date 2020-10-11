@@ -14,15 +14,18 @@
 #    include "../core/String.hpp"
 #endif
 
-
-static constexpr const CommandLineOptionDefinition TrackOptions[]{ OptionTableEnd };
-
 static exitcode_t HandleTrack(CommandLineArgEnumerator* argEnumerator);
 
-const CommandLineCommand CommandLine::TrackCommands[]{ DefineCommand("info", "<trackfile>", TrackOptions, HandleTrack),
-    CommandTableEnd
+// clang-format off
+static constexpr const CommandLineOptionDefinition TrackOptions[]{
+    OptionTableEnd
 };
 
+const CommandLineCommand CommandLine::TrackCommands[]{
+    DefineCommand("info", "<trackfile>", TrackOptions, HandleTrack),
+    CommandTableEnd
+};
+// clang-format on
 
 static exitcode_t HandleTrack(CommandLineArgEnumerator* argEnumerator)
 {
