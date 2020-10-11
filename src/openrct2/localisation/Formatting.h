@@ -10,10 +10,12 @@
 #pragma once
 
 #include "../common.h"
+#include "FormatCodes.h"
 #include "Language.h"
 
 #include <any>
 #include <sstream>
+#include <stack>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -75,42 +77,62 @@ namespace OpenRCT2
     bool CanFormatToken(FormatToken t);
     FmtString GetFmtStringById(rct_string_id id);
 
-    inline void FormatString(std::stringstream& ss, FmtString::iterator& it)
+    inline void FormatString(std::stringstream& ss, std::stack<FmtString::iterator*> stack)
     {
-        while (!it.eol())
+        while (!stack.empty())
         {
-            const auto& token = *it++;
-            if (!CanFormatToken(token.kind))
+            auto& it = *stack.top();
+            while (!it.eol())
             {
-                ss << token.text;
-                FormatString(ss, it);
+                const auto& token = *it++;
+                if (!CanFormatToken(token.kind))
+                {
+                    ss << token.text;
+                }
             }
+            stack.pop();
         }
     }
 
     template<typename TArg0, typename... TArgs>
-    static void FormatString(std::stringstream& ss, FmtString::iterator& it, TArg0 arg0, TArgs&&... argN)
+    static void FormatString(std::stringstream& ss, std::stack<FmtString::iterator*> stack, TArg0 arg0, TArgs&&... argN)
     {
-        while (!it.eol())
+        while (!stack.empty())
         {
-            const auto& token = *it++;
-            if (CanFormatToken(token.kind))
+            auto& it = *stack.top();
+            while (!it.eol())
             {
-                FormatArgument(ss, token.kind, arg0);
-                return FormatString(ss, it, argN...);
+                const auto& token = *it++;
+                if (token.kind == FORMAT_STRINGID || token.kind == FORMAT_STRINGID2)
+                {
+                    if constexpr (std::is_integral<TArg0>())
+                    {
+                        auto subfmt = GetFmtStringById(static_cast<rct_string_id>(arg0));
+                        auto subit = subfmt.begin();
+                        stack.push(&subit);
+                        FormatString(ss, stack, argN...);
+                    }
+                }
+                else if (CanFormatToken(token.kind))
+                {
+                    FormatArgument(ss, token.kind, arg0);
+                    return FormatString(ss, stack, argN...);
+                }
+                else
+                {
+                    ss << token.text;
+                }
             }
-            else
-            {
-                ss << token.text;
-                return FormatString(ss, it, arg0, argN...);
-            }
+            stack.pop();
         }
     }
 
     template<typename... TArgs> static void FormatString(std::stringstream& ss, const FmtString& fmt, TArgs&&... argN)
     {
         auto it = fmt.begin();
-        FormatString(ss, it, argN...);
+        std::stack<FmtString::iterator*> stack;
+        stack.push(&it);
+        FormatString(ss, stack, argN...);
     }
 
     template<typename... TArgs> std::string FormatString(const FmtString& fmt, TArgs&&... argN)

@@ -258,6 +258,14 @@ TEST_F(FormattingTests, monthyear)
     ASSERT_EQ("Date: April, Year 2", FormatString("Date: {MONTHYEAR}", 9));
 }
 
+TEST_F(FormattingTests, two_level_format)
+{
+    constexpr rct_string_id strDefault = STR_RIDE_NAME_DEFAULT;
+    constexpr rct_string_id strBoatHire = STR_RIDE_NAME_BOAT_HIRE;
+    auto actual = FormatString("Queuing for {STRINGID}", strDefault, strBoatHire, 2);
+    ASSERT_EQ("Queuing for Boat Hire 2", actual);
+}
+
 TEST_F(FormattingTests, any_string_int_string)
 {
     auto actual = FormatStringAny(

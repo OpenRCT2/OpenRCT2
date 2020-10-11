@@ -478,6 +478,11 @@ namespace OpenRCT2
         }
     }
 
+    template void FormatArgument(std::stringstream&, uint32_t, uint16_t);
+    template void FormatArgument(std::stringstream&, uint32_t, int16_t);
+    template void FormatArgument(std::stringstream&, uint32_t, int32_t);
+    template void FormatArgument(std::stringstream&, uint32_t, const char*);
+
     bool CanFormatToken(FormatToken t)
     {
         return t == FORMAT_COMMA1DP16 || (t >= FORMAT_COMMA32 && t <= FORMAT_LENGTH);
@@ -489,9 +494,6 @@ namespace OpenRCT2
         auto fmtc = language_convert_string_to_tokens(lang);
         return FmtString(std::move(fmtc));
     }
-
-    template void FormatArgument(std::stringstream&, uint32_t, int32_t);
-    template void FormatArgument(std::stringstream&, uint32_t, const char*);
 
     void FormatArgumentAny(std::stringstream& ss, FormatToken token, const std::any& value)
     {
