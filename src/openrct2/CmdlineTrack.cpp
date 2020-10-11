@@ -27,6 +27,7 @@
 #include "world/Entrance.h"
 #include "world/Scenery.h"
 
+#include <cassert>
 #include <cmath>
 #include <cstring>
 
@@ -158,6 +159,9 @@ int32_t cmdline_for_track(const char** argv, int32_t argc)
             }
 
             break;
+        default:
+            // -Wswitch can't tell that we handled TrackSubcommand::None above
+            assert(false);
     };
 
     return 0;
