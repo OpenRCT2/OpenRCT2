@@ -3662,6 +3662,9 @@ STR_6386    :눈보라
 STR_6387    :이 요소를 낮출 수 없습니다…
 STR_6388    :이 요소를 높일 수 없습니다…
 STR_6389    :올바르지 않은 높이
+STR_6390    :OpenRCT2를 실행하려면 오리지널 RollerCoaster Tycoon 2의 파일이 필요합니다. RollerCoaster Tycoon 2를 설치한 폴더를 선택해주세요.
+STR_6391    :RCT2 폴더를 선택해주세요
+STR_6392    :{STRING} 파일을 이 경로에서 찾을 수 없습니다.
 
 #############
 # Scenarios #

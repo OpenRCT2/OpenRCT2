@@ -3654,6 +3654,9 @@ STR_6386    :Nevasca
 STR_6387    :Impossível baixar o elemento aqui…
 STR_6388    :Impossível erguer o elemento aqui…
 STR_6389    :Espaço livre inválido
+STR_6390    :OpenRCT2 precisa de arquivos do RollerCoaster Tycoon 2 original para funcionar. Por favor selecione o diretório onde instalou o RollerCoaster Tycoon 2.
+STR_6391    :Por favor selecione seu diretório do RCT2.
+STR_6392    :Não foi encontrado {STRING} nesse caminho.
 
 #############
 # Scenarios #
