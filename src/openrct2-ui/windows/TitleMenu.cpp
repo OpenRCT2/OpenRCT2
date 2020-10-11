@@ -47,7 +47,7 @@ static rct_widget window_title_menu_widgets[] = {
 static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_title_menu_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_title_menu_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, int32_t *cursorId);
+static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
 static void window_title_menu_invalidate(rct_window *w);
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
@@ -214,7 +214,7 @@ static void window_title_menu_dropdown(rct_window* w, rct_widgetindex widgetInde
 }
 
 static void window_title_menu_cursor(
-    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, int32_t* cursorId)
+    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
     gTooltipTimeout = 2000;
 }

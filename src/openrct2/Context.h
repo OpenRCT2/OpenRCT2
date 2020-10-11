@@ -19,6 +19,7 @@ struct IObjectManager;
 struct IObjectRepository;
 struct IScenarioRepository;
 enum class DrawingEngine : int32_t;
+enum class CursorID : uint8_t;
 
 namespace OpenRCT2
 {
@@ -231,7 +232,7 @@ enum
 };
 
 void context_init();
-void context_setcurrentcursor(int32_t cursor);
+void context_setcurrentcursor(CursorID cursor);
 void context_update_cursor_scale();
 void context_hide_cursor();
 void context_show_cursor();

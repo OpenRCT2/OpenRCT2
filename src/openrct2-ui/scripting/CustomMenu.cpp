@@ -20,16 +20,17 @@ namespace OpenRCT2::Scripting
     std::optional<CustomTool> ActiveCustomTool;
     std::vector<CustomToolbarMenuItem> CustomMenuItems;
 
-    static constexpr std::array<std::string_view, CURSOR_COUNT> CursorNames = {
+    static constexpr std::array<std::string_view, EnumValue(CursorID::Count)> CursorNames = {
         "arrow",         "blank",      "up_arrow",      "up_down_arrow", "hand_point", "zzz",         "diagonal_arrows",
         "picker",        "tree_down",  "fountain_down", "statue_down",   "bench_down", "cross_hair",  "bin_down",
         "lamppost_down", "fence_down", "flower_down",   "path_down",     "dig_down",   "water_down",  "house_down",
         "volcano_down",  "walk_down",  "paint_down",    "entrance_down", "hand_open",  "hand_closed",
     };
 
-    template<> DukValue ToDuk(duk_context* ctx, const CURSOR_ID& value)
+    template<> DukValue ToDuk(duk_context* ctx, const CursorID& cursorId)
     {
-        if (value >= 0 && static_cast<size_t>(value) < std::size(CursorNames))
+        auto value = EnumValue(cursorId);
+        if (value < std::size(CursorNames))
         {
             auto str = CursorNames[value];
             duk_push_lstring(ctx, str.data(), str.size());
@@ -38,17 +39,17 @@ namespace OpenRCT2::Scripting
         return {};
     }
 
-    template<> CURSOR_ID FromDuk(const DukValue& s)
+    template<> CursorID FromDuk(const DukValue& s)
     {
         if (s.type() == DukValue::Type::STRING)
         {
             auto it = std::find(std::begin(CursorNames), std::end(CursorNames), s.as_c_string());
             if (it != std::end(CursorNames))
             {
-                return static_cast<CURSOR_ID>(std::distance(std::begin(CursorNames), it));
+                return static_cast<CursorID>(std::distance(std::begin(CursorNames), it));
             }
         }
-        return CURSOR_UNDEFINED;
+        return CursorID::Undefined;
     }
 
     static void RemoveMenuItemsAndTool(std::shared_ptr<Plugin> owner)
@@ -167,10 +168,10 @@ namespace OpenRCT2::Scripting
                 CustomTool customTool;
                 customTool.Owner = scriptEngine.GetExecInfo().GetCurrentPlugin();
                 customTool.Id = dukValue["id"].as_string();
-                customTool.Cursor = FromDuk<CURSOR_ID>(dukValue["cursor"]);
-                if (customTool.Cursor == CURSOR_UNDEFINED)
+                customTool.Cursor = FromDuk<CursorID>(dukValue["cursor"]);
+                if (customTool.Cursor == CursorID::Undefined)
                 {
-                    customTool.Cursor = CURSOR_ARROW;
+                    customTool.Cursor = CursorID::Arrow;
                 }
                 customTool.onStart = dukValue["onStart"];
                 customTool.onDown = dukValue["onDown"];

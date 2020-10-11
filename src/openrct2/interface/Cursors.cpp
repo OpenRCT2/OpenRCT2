@@ -14,36 +14,37 @@
 
 namespace Cursor
 {
-    uint8_t FromString(const std::string& s, uint8_t defaultValue)
+    CursorID FromString(const std::string& s, CursorID defaultValue)
     {
-        static const std::unordered_map<std::string, uint8_t> LookupTable{
-            { "CURSOR_BLANK", CURSOR_BLANK },
-            { "CURSOR_UP_ARROW", CURSOR_UP_ARROW },
-            { "CURSOR_UP_DOWN_ARROW", CURSOR_UP_DOWN_ARROW },
-            { "CURSOR_HAND_POINT", CURSOR_HAND_POINT },
-            { "CURSOR_ZZZ", CURSOR_ZZZ },
-            { "CURSOR_DIAGONAL_ARROWS", CURSOR_DIAGONAL_ARROWS },
-            { "CURSOR_PICKER", CURSOR_PICKER },
-            { "CURSOR_TREE_DOWN", CURSOR_TREE_DOWN },
-            { "CURSOR_FOUNTAIN_DOWN", CURSOR_FOUNTAIN_DOWN },
-            { "CURSOR_STATUE_DOWN", CURSOR_STATUE_DOWN },
-            { "CURSOR_BENCH_DOWN", CURSOR_BENCH_DOWN },
-            { "CURSOR_CROSS_HAIR", CURSOR_CROSS_HAIR },
-            { "CURSOR_BIN_DOWN", CURSOR_BIN_DOWN },
-            { "CURSOR_LAMPPOST_DOWN", CURSOR_LAMPPOST_DOWN },
-            { "CURSOR_FENCE_DOWN", CURSOR_FENCE_DOWN },
-            { "CURSOR_FLOWER_DOWN", CURSOR_FLOWER_DOWN },
-            { "CURSOR_PATH_DOWN", CURSOR_PATH_DOWN },
-            { "CURSOR_DIG_DOWN", CURSOR_DIG_DOWN },
-            { "CURSOR_WATER_DOWN", CURSOR_WATER_DOWN },
-            { "CURSOR_HOUSE_DOWN", CURSOR_HOUSE_DOWN },
-            { "CURSOR_VOLCANO_DOWN", CURSOR_VOLCANO_DOWN },
-            { "CURSOR_WALK_DOWN", CURSOR_WALK_DOWN },
-            { "CURSOR_PAINT_DOWN", CURSOR_PAINT_DOWN },
-            { "CURSOR_ENTRANCE_DOWN", CURSOR_ENTRANCE_DOWN },
-            { "CURSOR_HAND_OPEN", CURSOR_HAND_OPEN },
-            { "CURSOR_HAND_CLOSED", CURSOR_HAND_CLOSED },
-            { "CURSOR_ARROW", CURSOR_ARROW },
+        assert(defaultValue != CursorID::Undefined);
+        static const std::unordered_map<std::string, CursorID> LookupTable{
+            { "CURSOR_BLANK", CursorID::Blank },
+            { "CURSOR_UP_ARROW", CursorID::UpArrow },
+            { "CURSOR_UP_DOWN_ARROW", CursorID::UpDownArrow },
+            { "CURSOR_HAND_POINT", CursorID::HandPoint },
+            { "CURSOR_ZZZ", CursorID::ZZZ },
+            { "CURSOR_DIAGONAL_ARROWS", CursorID::DiagonalArrows },
+            { "CURSOR_PICKER", CursorID::Picker },
+            { "CURSOR_TREE_DOWN", CursorID::TreeDown },
+            { "CURSOR_FOUNTAIN_DOWN", CursorID::FountainDown },
+            { "CURSOR_STATUE_DOWN", CursorID::StatueDown },
+            { "CURSOR_BENCH_DOWN", CursorID::BenchDown },
+            { "CURSOR_CROSS_HAIR", CursorID::CrossHair },
+            { "CURSOR_BIN_DOWN", CursorID::BinDown },
+            { "CURSOR_LAMPPOST_DOWN", CursorID::LamppostDown },
+            { "CURSOR_FENCE_DOWN", CursorID::FenceDown },
+            { "CURSOR_FLOWER_DOWN", CursorID::FlowerDown },
+            { "CURSOR_PATH_DOWN", CursorID::PathDown },
+            { "CURSOR_DIG_DOWN", CursorID::DigDown },
+            { "CURSOR_WATER_DOWN", CursorID::WaterDown },
+            { "CURSOR_HOUSE_DOWN", CursorID::HouseDown },
+            { "CURSOR_VOLCANO_DOWN", CursorID::VolcanoDown },
+            { "CURSOR_WALK_DOWN", CursorID::WalkDown },
+            { "CURSOR_PAINT_DOWN", CursorID::PaintDown },
+            { "CURSOR_ENTRANCE_DOWN", CursorID::EntranceDown },
+            { "CURSOR_HAND_OPEN", CursorID::HandOpen },
+            { "CURSOR_HAND_CLOSED", CursorID::HandClosed },
+            { "CURSOR_ARROW", CursorID::Arrow },
         };
 
         auto result = LookupTable.find(s);

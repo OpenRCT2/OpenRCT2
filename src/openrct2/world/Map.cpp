@@ -1075,7 +1075,7 @@ void map_invalidate_selection_rect()
  */
 void map_reorganise_elements()
 {
-    context_setcurrentcursor(CURSOR_ZZZ);
+    context_setcurrentcursor(CursorID::ZZZ);
 
     auto newTileElements = std::make_unique<TileElement[]>(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM);
     TileElement* newElementsPtr = newTileElements.get();

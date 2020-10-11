@@ -76,7 +76,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
 static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex);
 void input_state_widget_pressed(
     const ScreenCoordsXY& screenCoords, int32_t state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
-void set_cursor(uint8_t cursor_id);
+void set_cursor(CursorID cursor_id);
 static void input_window_position_continue(
     rct_window* w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords);
 static void input_window_position_end(rct_window* w, const ScreenCoordsXY& screenCoords);
@@ -1075,9 +1075,7 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
 {
     rct_window* window;
 
-    int32_t cursorId;
-
-    cursorId = CURSOR_ARROW;
+    CursorID cursorId = CursorID::Arrow;
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_NONE);
     SetMapTooltip(ft);
@@ -1095,12 +1093,12 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
                     {
                         if (viewport_interaction_left_over(screenCoords))
                         {
-                            set_cursor(CURSOR_HAND_POINT);
+                            set_cursor(CursorID::HandPoint);
                             return;
                         }
                         break;
                     }
-                    cursorId = gCurrentToolId;
+                    cursorId = static_cast<CursorID>(gCurrentToolId);
                     break;
 
                 case WWT_FRAME:
@@ -1117,7 +1115,7 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
                     if (screenCoords.y < window->windowPos.y + window->height - 0x13)
                         break;
 
-                    cursorId = CURSOR_DIAGONAL_ARROWS;
+                    cursorId = CursorID::DiagonalArrows;
                     break;
 
                 case WWT_SCROLL:
@@ -1126,22 +1124,21 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
                     ScreenCoordsXY scrollCoords;
                     widget_scroll_get_part(
                         window, &window->widgets[widgetId], screenCoords, scrollCoords, &output_scroll_area, &scroll_id);
-                    cursorId = scroll_id;
                     if (output_scroll_area != SCROLL_PART_VIEW)
                     {
-                        cursorId = CURSOR_ARROW;
+                        cursorId = CursorID::Arrow;
                         break;
                     }
                     // Same as default but with scroll_x/y
                     cursorId = window_event_cursor_call(window, widgetId, scrollCoords);
-                    if (cursorId == -1)
-                        cursorId = CURSOR_ARROW;
+                    if (cursorId == CursorID::Undefined)
+                        cursorId = CursorID::Arrow;
                     break;
                 }
                 default:
                     cursorId = window_event_cursor_call(window, widgetId, screenCoords);
-                    if (cursorId == -1)
-                        cursorId = CURSOR_ARROW;
+                    if (cursorId == CursorID::Undefined)
+                        cursorId = CursorID::Arrow;
                     break;
             }
         }
@@ -1486,11 +1483,12 @@ int32_t get_next_key()
  *
  *  rct2: 0x006ED990
  */
-void set_cursor(uint8_t cursor_id)
+void set_cursor(CursorID cursor_id)
 {
+    assert(cursor_id != CursorID::Undefined);
     if (_inputState == InputState::Resizing)
     {
-        cursor_id = CURSOR_DIAGONAL_ARROWS;
+        cursor_id = CursorID::DiagonalArrows;
     }
     context_setcurrentcursor(cursor_id);
 }
