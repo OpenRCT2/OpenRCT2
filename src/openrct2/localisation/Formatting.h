@@ -88,24 +88,6 @@ namespace OpenRCT2
         }
     }
 
-    template<typename TArg0> static void FormatString(std::stringstream& ss, FmtString::iterator& it, TArg0 arg0)
-    {
-        while (!it.eol())
-        {
-            const auto& token = *it++;
-            if (CanFormatToken(token.kind))
-            {
-                FormatArgument(ss, token.kind, arg0);
-                FormatString(ss, it);
-            }
-            else
-            {
-                ss << token.text;
-                FormatString(ss, it, arg0);
-            }
-        }
-    }
-
     template<typename TArg0, typename... TArgs>
     static void FormatString(std::stringstream& ss, FmtString::iterator& it, TArg0 arg0, TArgs&&... argN)
     {

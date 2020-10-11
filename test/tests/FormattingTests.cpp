@@ -57,23 +57,12 @@ protected:
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
         _context = CreateContext();
-        bool initialised = _context->Initialise();
-        ASSERT_TRUE(initialised);
-
-        // load_from_sv6(parkPath.c_str());
-        // game_load_init();
-
-        // Changed in some tests. Store to restore its value
-        // _gScreenFlags = gScreenFlags;
-        SUCCEED();
+        ASSERT_TRUE(_context->Initialise());
     }
 
     static void TearDownTestCase()
     {
-        if (_context)
-            _context.reset();
-
-        // gScreenFlags = _gScreenFlags;
+        _context = {};
     }
 };
 
