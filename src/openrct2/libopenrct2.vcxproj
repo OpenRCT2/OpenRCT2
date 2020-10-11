@@ -141,6 +141,7 @@
     <ClInclude Include="audio\AudioSource.h" />
     <ClInclude Include="Cheats.h" />
     <ClInclude Include="CmdlineSprite.h" />
+    <ClInclude Include="CmdlineTrack.h" />
     <ClInclude Include="cmdline\CommandLine.hpp" />
     <ClInclude Include="common.h" />
     <ClInclude Include="config\Config.h" />
@@ -472,12 +473,14 @@
     <ClCompile Include="CmdlineSprite.cpp" />
     <ClCompile Include="cmdline\BenchGfxCommmands.cpp" />
     <ClCompile Include="cmdline\BenchSpriteSort.cpp" />
+    <ClCompile Include="CmdlineTrack.cpp" />
     <ClCompile Include="cmdline\CommandLine.cpp" />
     <ClCompile Include="cmdline\ConvertCommand.cpp" />
     <ClCompile Include="cmdline\RootCommands.cpp" />
     <ClCompile Include="cmdline\ScreenshotCommands.cpp" />
     <ClCompile Include="cmdline\SimulateCommands.cpp" />
     <ClCompile Include="cmdline\SpriteCommands.cpp" />
+    <ClCompile Include="cmdline\TrackCommands.cpp" />
     <ClCompile Include="cmdline\UriHandler.cpp" />
     <ClCompile Include="config\Config.cpp" />
     <ClCompile Include="config\IniReader.cpp" />
