@@ -63,6 +63,9 @@
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
 		6341F4E12400AA0F0052902B /* Drawing.Sprite.RLE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6341F4DF2400AA0E0052902B /* Drawing.Sprite.RLE.cpp */; };
 		6341F4E22400AA0F0052902B /* Drawing.Sprite.BMP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6341F4E02400AA0F0052902B /* Drawing.Sprite.BMP.cpp */; };
+		72C38FCB2533CC0100D4E3A1 /* TrackCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72C38FCA2533CC0100D4E3A1 /* TrackCommands.cpp */; };
+		72C38FCE2533CE7600D4E3A1 /* CmdlineTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = 72C38FCC2533CE7500D4E3A1 /* CmdlineTrack.h */; };
+		72C38FCF2533CE7600D4E3A1 /* CmdlineTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72C38FCD2533CE7500D4E3A1 /* CmdlineTrack.cpp */; };
 		9308D9FE209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308D9FF209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308DA00209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
@@ -984,6 +987,9 @@
 		6341F4DF2400AA0E0052902B /* Drawing.Sprite.RLE.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawing.Sprite.RLE.cpp; sourceTree = "<group>"; };
 		6341F4E02400AA0F0052902B /* Drawing.Sprite.BMP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawing.Sprite.BMP.cpp; sourceTree = "<group>"; };
 		6341F4E32400AA1C0052902B /* ZoomLevel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ZoomLevel.hpp; sourceTree = "<group>"; };
+		72C38FCA2533CC0100D4E3A1 /* TrackCommands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackCommands.cpp; sourceTree = "<group>"; };
+		72C38FCC2533CE7500D4E3A1 /* CmdlineTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdlineTrack.h; sourceTree = "<group>"; };
+		72C38FCD2533CE7500D4E3A1 /* CmdlineTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdlineTrack.cpp; sourceTree = "<group>"; };
 		9308D9FA209908080079EE96 /* TileElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileElement.cpp; sourceTree = "<group>"; };
 		9308D9FB209908080079EE96 /* Surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Surface.cpp; sourceTree = "<group>"; };
 		9308D9FC209908080079EE96 /* TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileElement.h; sourceTree = "<group>"; };
@@ -2719,6 +2725,8 @@
 				4C6A66911FE14C9500694CB6 /* Cheats.h */,
 				4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */,
 				4CC4B8E31FE00C4200660D62 /* CmdlineSprite.h */,
+				72C38FCD2533CE7500D4E3A1 /* CmdlineTrack.cpp */,
+				72C38FCC2533CE7500D4E3A1 /* CmdlineTrack.h */,
 				F76C836C1EC4E7CC00FA49E2 /* common.h */,
 				F76C83761EC4E7CC00FA49E2 /* Context.cpp */,
 				F76C83771EC4E7CC00FA49E2 /* Context.h */,
@@ -2780,6 +2788,7 @@
 		F76C83621EC4E7CC00FA49E2 /* cmdline */ = {
 			isa = PBXGroup;
 			children = (
+				72C38FCA2533CC0100D4E3A1 /* TrackCommands.cpp */,
 				D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */,
 				4C724B2121F0AD790012ADD0 /* BenchSpriteSort.cpp */,
 				F76C83631EC4E7CC00FA49E2 /* CommandLine.cpp */,
@@ -3699,6 +3708,7 @@
 				933F2CBB20935668001B33FD /* LocalisationService.h in Headers */,
 				C6352B861F477022006CCEE3 /* Endianness.h in Headers */,
 				2ADE2F2C224418B2002598AF /* FileIndex.hpp in Headers */,
+				72C38FCE2533CE7600D4E3A1 /* CmdlineTrack.h in Headers */,
 				93DFD04A24521C1A001FCBAF /* ScConfiguration.hpp in Headers */,
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
 				2ADE2F29224418B2002598AF /* Numerics.hpp in Headers */,
@@ -4141,6 +4151,7 @@
 				C666EE6F1F37ACB10061AA04 /* DebugPaint.cpp in Sources */,
 				F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */,
 				C68878C620289B710084B384 /* OpenGLFramebuffer.cpp in Sources */,
+				72C38FCB2533CC0100D4E3A1 /* TrackCommands.cpp in Sources */,
 				C654DF301F69C0430040F43D /* Finances.cpp in Sources */,
 				9308DA01209908090079EE96 /* Surface.cpp in Sources */,
 				933CBDBF20CB1BCA00134678 /* Window.cpp in Sources */,
@@ -4336,6 +4347,7 @@
 				C688785B20289A0A0084B384 /* Duck.cpp in Sources */,
 				F76C866A1EC4E88300FA49E2 /* LargeSceneryObject.cpp in Sources */,
 				C688788E20289AE70084B384 /* SSE41Drawing.cpp in Sources */,
+				72C38FCF2533CE7600D4E3A1 /* CmdlineTrack.cpp in Sources */,
 				F76C866C1EC4E88400FA49E2 /* Object.cpp in Sources */,
 				F76C866E1EC4E88400FA49E2 /* ObjectFactory.cpp in Sources */,
 				93FB272124ED3601008241C9 /* Cursors.cpp in Sources */,
