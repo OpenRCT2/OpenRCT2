@@ -1,156 +1,234 @@
 # OpenRCT2
-An open source re-implementation of Roller Coaster Tycoon 2. A construction and management simulation video game that simulates amusement park management.
+An open-source re-implementation of RollerCoaster Tycoon 2. A construction and management simulation video game that simulates amusement park management.
 
-### Build Status
-|             | Windows | Linux / OSX | Download |
-|-------------|---------|-------------|----------|
-| **master**  | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=master)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [OpenRCT2.org](https://openrct2.org/downloads/master/latest) |
-| **develop** | [![AppVeyor](https://ci.appveyor.com/api/projects/status/7efnemxhon6i5n34/branch/develop?svg=true)](https://ci.appveyor.com/project/IntelOrca/openrct2-ject9) | [![Travis CI](https://travis-ci.org/OpenRCT2/OpenRCT2.svg?branch=develop)](https://travis-ci.org/OpenRCT2/OpenRCT2) | [OpenRCT2.org](https://openrct2.org/downloads/develop/latest) |
+---
+
+![OpenRCT2.org Group Park 5](https://i.imgur.com/e7CK5Sc.png)
+
+---
+
+### Download
+| Latest release | Latest development build |
+|----------------|--------------------------|
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.3.1-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.3.1+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
+
+---
 
 ### Chat
-| Developers | Players / Off-topic |
-|------------|---------------------|
-|[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2)|[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/OpenRCT2/OpenRCT2/non-dev)|
+Chat takes place on Discord. You will need to create a Discord account if you don't yet have one.
+
+If you want to help *make* the game, join the developer channel.
+
+If you need help, want to talk to the developers, or just want to stay up to date then join the non-developer channel for your language.
+
+If you want to help translate the game to your language, please stop by the Localisation channel.
+
+| Language | Non Developer | Developer | Localisation |
+|----------|---------------|-----------|--------------|
+| English | [![Discord](https://img.shields.io/badge/discord-general-blue.svg)](https://discord.gg/ZXZd8D8) | [![Discord](https://img.shields.io/badge/discord-development-yellowgreen.svg)](https://discord.gg/fsEwSWs) | [![Discord](https://img.shields.io/badge/discord-localisation-green.svg)](https://discord.gg/sxnrvX9) |
+| Nederlands | [![Discord](https://img.shields.io/badge/discord-general-blue.svg)](https://discord.gg/cQYSXzW) | | |
+
+---
 
 # Contents
 - 1 - [Introduction](#1-introduction)
-  - 1.1 - [Background](#11-background)
-  - 1.2 - [Decompiling the game](#12-decompiling-the-game)
-  - 1.3 - [Progress](#13-progress)
-  - 1.4 - [Aim](#14-aim)
-- 2 - [Downloading the game / Building the source code](#2-downloading-the-game--building-the-source-code)
-  - 2.1 - [Building Prerequisites](#21-building-prerequisites)
-  - 2.2 - [Compiling and running](#22-compiling-and-running)
-- 3 - [Contributing](#3-contributing)
-  - 3.1 - [Decompiling](#31-decompiling)
-  - 3.2 - [Naming of procedures and variables](#32-naming-of-procedures-and-variables)
-  - 3.3 - [Cleaning and documenting the source code](#33-cleaning-and-documenting-the-source-code)
-  - 3.4 - [Implementing new features / fixing bugs](#34-implementing-new-features--fixing-bugs)
-  - 3.5 - [Translation](#35-translation)
-- 4 - [Licence](#4-licence)
+- 2 - [Downloading the game (pre-built)](#2-downloading-the-game-pre-built)
+- 3 - [Building the game](#3-building-the-game)
+  - 3.1 - [Building prerequisites](#31-building-prerequisites)
+  - 3.2 - [Compiling and running](#32-compiling-and-running)
+- 4 - [Contributing](#4-contributing)
+  - 4.1 - [Bug fixes](#41-bug-fixes)
+  - 4.2 - [New features](#42-new-features)
+  - 4.3 - [Translation](#43-translation)
+  - 4.4 - [Graphics](#44-graphics)
+  - 4.5 - [Audio](#45-audio)
+  - 4.6 - [Scenarios](#46-scenarios)
+- 5 - [Licence](#5-licence)
+- 6 - [More information](#6-more-information)
+- 7 - [Sponsors](#7-sponsors)
 
-# 1 Introduction
+---
 
-## 1.1 Background
-**OpenRCT2** is an attempt to decompile RollerCoaster Tycoon 2 into C. RollerCoaster Tycoon 2 was originally written in MASM and Visual C++ where functions related to interfacing with the operating system were written in C (supposedly 1%), with the rest of the game being written in pure x86 assembly. For an example of this method, OpenTTD was formed through a similar procedure; the original game, Transport Tycoon Deluxe, was decompiled into C which allowed for the addition of thousands of features to the game. RollerCoaster Tycoon 2 uses the third version of Chris Sawyer's engine, which shares some code with Transport Tycoon. This is reflected in the usage of OpenTTD 0.1 code such as the windowing system and graphics rendering. While the version of the engine used in Chris Sawyer's Locomotion is newer, OpenRCT2 is currently targeting the RollerCoaster Tycoon 2 engine to ease the decompilation process.
+# 1. Introduction
 
-## 1.2 Decompiling the game
-In order to decompile the game gradually without introducing new bugs, each procedure in RollerCoaster Tycoon 2 is to be re-written in C on an individual basis. To test the accuracy of the re-written procedures, the decompiled C procedures are compiled into a DLL (*openrct2.dll*) which exports an entry procedure mimicking the WinMain function in RollerCoaster Tycoon 2. The original executable *rct2.exe* has been patched so that *openrct2.dll* and WinMain are in the DLL import table and the WinMain export procedure in *openrct2.dll* is called at the start of the WinMain procedure in *rct2.exe* before returning. With this system implemented, starting rct2.exe calls the new DLL as part of its initialization; the DLL can then run all the decompiled code whilst still being able to read / write to the *rct2.exe* memory model and run *rct2.exe* procedures.
+**OpenRCT2** is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2). The gameplay revolves around building and maintaining an amusement park containing attractions, shops and facilities. The player must try to make a profit and maintain a good park reputation whilst keeping the guests happy. OpenRCT2 allows for both scenario and sandbox play. Scenarios require the player to complete a certain objective in a set time limit whilst sandbox allows the player to build a more flexible park with optionally no restrictions or finance.
 
-The project therefore acts as a patch to RollerCoaster Tycoon 2, allowing each procedure to be gradually implemented while simultaneously adding new features where possible. Until all procedures of the original game are re-written in C, the project must remain a DLL which is called from the patched *rct2.exe*.
+RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly and is the sequel to RollerCoaster Tycoon. The engine was based on Transport Tycoon, an older game which also has an equivalent open-source project, [OpenTTD](http://openttd.org). OpenRCT2 attempts to provide everything from RCT2 as well as many improvements and additional features, some of these include support for modern platforms, an improved interface, improved guest and staff AI, more editing tools, increased limits, and cooperative multiplayer. It also re-introduces mechanics from RollerCoaster Tycoon that were not present in RollerCoaster Tycoon 2. Some of those include; mountain tool in-game, the *"have fun"* objective, launched coasters (not passing-through the station) and several buttons on the toolbar.
 
-## 1.3 Progress
-Currently, the windowing system, graphics rendering and basic game loop are being decompiled. Decompiling all of the game's procedures is a convenient way of identifying the game's memory structure. SDL2 has been used as a replacement for the operating system calls, allowing for cross-platform support after the dependency on the original game's executable has been removed.
+---
 
-As of 9th September 2015, a vast set of improvements have been added such as improved UI, tools, cheats, localisation and configuration. The entire window system and UI has been implemented, all file format handling such as loading and saving of parks, graphics and tracks, ride logic, game management (e.g. peep generation, awards, cash out) and a lot of the peep logic. What remains is a lot of code to draw the map, the rest of the peep logic, and the entirety of vehicle logic. The rest are small parts around different areas that aren't particularly significant. More information can be found in [changes to original game](https://github.com/OpenRCT2/OpenRCT2/wiki/Changes-to-original-game).
+# 2. Downloading the game (pre-built)
 
-## 1.4 Aim
-The aim is to completely decompile RollerCoaster Tycoon 2 into C so that cross-platform support, new features, and new gameplay can be added in a similar fashion to OpenTTD. With the addition of SDL2, the game can already be run in a resizeable window (which was not possible originally). Once the game has been fully decompiled, additional gameplay features, gameplay tweaks, and improvements can be introduced. The following is only a brief, non-exhaustive list of the possibilities - there are many more:
+OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2). If you have the original RollerCoaster Tycoon and its expansion packs, you can [point OpenRCT2 to these](https://github.com/OpenRCT2/OpenRCT2/wiki/Loading-RCT1-scenarios-and-data) in order to play the original scenarios.
 
-- Improved peep path-finding
-- Increased window / ride / object / map / construction limits
-- More sandbox-friendly gameplay
-- Editing available objects
-- Improved title sequence
-- Translation into more languages
-- Re-introduction of RollerCoaster Tycoon 1 mechanics:
-	- Shuttle Loop compatibility
-	- Have Fun! objective
-	- Finish building five coasters objective
-	- Using the mountain tool during the game
+[OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest master and the develop branch. There is also a cross platform [Launcher](https://github.com/LRFLEW/OpenRCT2Launcher/releases) available that will automatically update your build of the game so that you always have the latest version.
 
-# 2 Downloading the game / Building the source code
+[Flathub](https://flathub.org/) offers flatpaks for Linux distributions that support this application distribution system:
+* [Latest stable release](https://flathub.org/repo/appstream/io.openrct2.OpenRCT2.flatpakref)
+* [Latest development build](https://flathub.org/beta-repo/appstream/io.openrct2.OpenRCT2.flatpakref)
 
-[OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest stable and the develop branch. There is also a Launcher available that will automatically update your build so that you always have the current version as they are released.
+Some Linux distributions offer native packages already. These packages are usually third-party, but we're trying to resolve issues they are facing.
+* ArchLinux AUR: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) and [openrct2](https://aur.archlinux.org/packages/openrct2)
+* Ubuntu PPA: [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (nightly builds)
+* openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
+* Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)
+* NixOS (`nixos-unstable` channel): [openrct2](https://github.com/NixOS/nixpkgs/blob/master/pkgs/games/openrct2/default.nix)
+* Fedora 28 i386/amd64: [openrct2](https://copr.fedorainfracloud.org/coprs/nauticalnexus/openrct2/)
 
-## 2.1 Building prerequisites
+Some \*BSD operating systems offer native packages. These packages are usually third-party, but we're trying to resolve issues they are facing.
+* FreeBSD: [games/openrct2](https://www.freshports.org/games/openrct2)
+* OpenBSD: [games/openrct2](https://openports.se/games/openrct2)
 
-OpenRCT2 requires original files of Rollercoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2).
+---
+
+# 3. Building the game
+
+## 3.1 Building prerequisites
+
+OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](http://store.steampowered.com/app/285330/) or [GOG.com](http://www.gog.com/game/rollercoaster_tycoon_2).
 
 ### Windows:
-- Vista / 7 / 8 / 10
-- Visual Studio 2015 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/products/visual-studio-community-vs))
-- [Powershell 4.0](http://social.technet.microsoft.com/wiki/contents/articles/21016.how-to-install-windows-powershell-4-0.aspx).
+- Visual Studio 2019 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
+  - Desktop development with C++
 
-### Mac OS X:
+### macOS:
+- Xcode 10+
+
+The program can also be built as a command line program using CMake. This type of build requires:
+
+- Xcode Command Line Tools
 - [Homebrew](http://brew.sh)
+- CMake (available through Homebrew)
 
-### Mac OS X / Linux:
-- sdl2
-- sdl2-ttf
-- speexdsp
-- curl (only if building with network support)
-- jansson (only if building with network support)
-- iconv (part of glibc on Linux)
-- cmake
-All libs listed here (bar cmake) required in 32 bit variants.
-
-## 2.2 Compiling and running
-### Windows:
-1. Check out the repository. This can be done using [GitHub Windows](https://windows.github.com/) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
-2. Open a new PowerShell window and navigate to the repository.
-3. Run the setenv.ps1 script in the repository to setup your PowerShell environment for OpenRCT2 development. This will warn you of any missing applications required to build OpenRCT2.
-4. Run ```install``` to download the required dependencies to build OpenRCT2.
-5. Run ```build all``` to build all the required components for OpenRCT2.
-6. Run ```run``` to run OpenRCT2.
-
-These PowerShell scripts are stored in ```.\scripts\ps``` and have parameters. Once you have use the build script once, further development can be done within Visual Studio by opening ```openrct2.sln```. The build scripts have several commands allowing you to rebuild certain components such g2.dat or language files.
-
-### Mac OS X:
-We support native builds OS X (limited to i386 only for now).
-Make sure that you have [Homebrew](http://brew.sh/) installed and than run the following commands to install all the needed libraries and build openrct2.
-```
-# Install libraries
-./install.sh
-
-# Build OpenRCT2
-./build.sh
-
-# Run the game
-./openrct2
-```
 
 ### Linux:
-We support native builds for Linux (limited to i386 only for now).
-As the easiest approach depends on your distribution, please take a look at the [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
+- sdl2 (only for UI client)
+- freetype (can be disabled)
+- fontconfig (can be disabled)
+- libzip (>= 1.0)
+- libpng (>= 1.2)
+- speexdsp (only for UI client)
+- curl (only if building with http support)
+- nlohmann-json (>= 3.6.0)
+- openssl (>= 1.0; only if building with multiplayer support)
+- icu (>= 59.0)
+- zlib
+- gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
+- duktape (unless scripting is disabled)
+- cmake
 
+Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#required-packages-general for more information about installing the packages.
 
-# 3 Contributing
-OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to **develop**. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. **master** only contains tagged releases, you should never branch off this.
+---
+
+## 3.2 Compiling and running
+### Windows:
+1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
+2. Open a new Developer Command Prompt for VS 2019, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
+3. To build the 64-bit version, use `msbuild openrct2.proj /t:build /p:platform=x64`.
+
+   To build the 32-bit version, use `msbuild openrct2.proj /t:build /p:platform=Win32`.
+4. Run the game, `bin\openrct2`
+
+Once you have ran msbuild once, further development can be done within Visual Studio by opening `openrct2.sln`. Make sure to select the correct target platform for which you ran the build in point #3 (`Win32` for the 32-bit version, `x64` for the 64-bit version), otherwise the build will fail in Visual Studio.
+
+Other examples:
+```
+set platform=x64
+msbuild openrct2.proj /t:clean
+msbuild openrct2.proj /t:rebuild /p:configuration=release
+msbuild openrct2.proj /t:g2
+msbuild openrct2.proj /t:PublishPortable
+```
+
+### macOS:
+#### Xcode:
+The recommended way of building OpenRCT2 for macOS is with Xcode. The Xcode build will create a self-contained application bundles which include all the necessary game files and dependencies. Open the project file OpenRCT2.xcodeproj in Xcode and build from there. Building this way will handle the dependencies for you automatically. You can also invoke an Xcode build from the command line using `xcodebuild`.
+
+#### CMake:
+A command line version of OpenRCT2 can be built using CMake. This type of build requires you to provide the dependencies yourself. The supported method of doing this is with [Homebrew](http://brew.sh). Once you have Homebrew installed, you can download all the required libraries with this command:
+```
+brew install cmake duktape freetype icu4c libpng libzip nlohmann-json openssl pkg-config sdl2 speexdsp
+```
+
+Once you have the dependencies installed, you can build the project using CMake using the following commands:
+```
+mkdir build
+cd build
+cmake ..
+make
+ln -s ../data data
+```
+Then you can run the game by running `./openrct2`.
+
+Detailed instructions can be found on [Building OpenRCT2 on macOS using CMake](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-macOS-using-CMake).
+
+### Linux:
+The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#linux), then:
+```
+mkdir build
+cd build
+cmake ../ # set your standard cmake options, e.g. build type here - For example, -DCMAKE_BUILD_TYPE=RelWithDebInfo
+make # you can parallelise your build job with e.g. -j8 or consider using ninja
+DESTDIR=. make install # the install target creates all the necessary files in places we expect them
+```
+
+You can also use Ninja in place of Make, if you prefer, see Wiki for details.
+
+Detailed instructions can be found on [Building OpenRCT2 on Linux](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
+
+---
+
+# 4. Contributing
+OpenRCT2 uses the [gitflow workflow](https://www.atlassian.com/git/tutorials/comparing-workflows#gitflow-workflow). If you are implementing a new feature or logic from the original game, please branch off and perform pull requests to ```develop```. If you are fixing a bug for the next release, please branch off and perform pull requests to the correct release branch. ```master``` only contains tagged releases, you should never branch off this.
 
 Please read our [contributing guidelines](https://github.com/OpenRCT2/OpenRCT2/blob/develop/CONTRIBUTING.md) for information.
 
-## 3.1 Decompiling
-Experience with reverse engineering and x86 assembly is necessary to decompile the original game. [IDA 5.0](https://www.hex-rays.com/products/ida/support/download_freeware.shtml) is currently being used to disassemble and analyze the game. You are welcome to contribute to the process by taking an undecompiled procedure, disassembling it, and rewriting it in C. For more information and the latest IDA database, contact IntelOrca.
+## 4.1 Bug fixes
+A list of bugs can be found on the [issue tracker](https://github.com/OpenRCT2/OpenRCT2/issues). Feel free to work on any bug and submit a pull request to the develop branch with the fix. Mentioning that you intend to fix a bug on the issue will prevent other people from trying as well.
 
-## 3.2 Naming of procedures and variables
-During the development phase, many variables and procedures are referenced by their memory address in OpenRCT2. This is a result of ongoing reverse engineering efforts; the functionality and use of these values has yet to be determined. To help with identification, there are multiple methods you can use.
-For variables:
-- Modify the variable and see how the game is affected
-- Reverse-engineer RCT2 and find where the variable is used or modified
+## 4.2 New features
+Please talk to the OpenRCT2 team first before starting to develop a new feature. We may already have plans for or reasons against something that you'd like to work on. Therefore contacting us will allow us to help you or prevent you from wasting any time. You can talk to us via Discord, see links at the top of this page.
 
-For procedures:
-- Remove the call to the procedure in OpenRCT2 and observe the effects
-- Reverse-engineer RCT2 and find where the procedure is called
+## 4.3 Translation
+You can translate the game into other languages by editing the language files in ```data/language``` directory. Please join discussions in the [#localisation channel on Discord](https://discordapp.com/invite/sxnrvX9) and submit pull requests to [OpenRCT2/Localisation](https://github.com/OpenRCT2/Localisation).
 
-## 3.3 Cleaning and documenting the source code
-As the source code is formed from decompilation, it is unorganized and undocumented. Efforts towards cleaning up and documenting code are appreciated; for example, blocks of code can be moved into their own functions, and macros can be created for operations that occur frequently. However, be aware that the overall structure of the code should remain the same to ensure that OpenRCT2 is kept in sync with the original game to ease the integration of additional decompiled code.
+## 4.4 Graphics
+You can help create new graphics for the game by visiting the [OpenGraphics project](https://github.com/OpenRCT2/OpenGraphics). 3D modellers needed!
 
-In general, small changes that improve code quality and make it easier to reason about the logic are appreciated. More significant changes, such as changing the game's architecture, are to be avoided during the ongoing decompilation of the original game.
+## 4.5 Audio
+You can help create the music and sound effects for the game. Check out the OpenMusic repository and drop by our [#open-sound-and-music channel on Discord](https://discord.gg/9y8WbcX) to find out more.
 
-## 3.4 Implementing new features / fixing bugs
-While decompilation is an ongoing process, this does not prohibit changes being made to the game. New features or bugfixes can be added, with caution, if the underlying code has been decompiled. When implementing these changes, ensure that comments are added to clearly identify where code has been intentionally changed so that it functions differently to the original game; this is essential to ensuring all research from reverse-engineering can still be applied.
+## 4.6 Scenarios
+We would also like to distribute additional scenarios with the game, when the time comes. For that, we need talented scenario makers! Check out the [OpenScenarios repository](https://github.com/PFCKrutonium/OpenRCT2-OpenScenarios).
 
-## 3.5 Translation
-Translations are in progress for German, Dutch, French, Hungarian, Polish, Spanish, Swedish, Italian, and more. You can translate the game into other languages by editing the language files in the data directory. Please join discussions and submit pull requests to https://github.com/OpenRCT2/Localisation.
+---
 
-# 4 Licence
+# 5. Licence
 **OpenRCT2** is licensed under the GNU General Public License version 3.
 
-# 5 More information
+---
+
+# 6. More information
 - [GitHub](https://github.com/OpenRCT2/OpenRCT2)
 - [OpenRCT2.org](https://openrct2.org)
 - [Forums](https://openrct2.org/forums/)
 - [Facebook](https://www.facebook.com/OpenRCT2)
-- [rct subreddit](http://www.reddit.com/r/rct/)
-- [openrct2 subreddit](http://www.reddit.com/r/openrct2/)
+- [RCT subreddit](http://www.reddit.com/r/rct/)
+- [OpenRCT2 subreddit](http://www.reddit.com/r/openrct2/)
+
+## Similar Projects
+
+| [OpenLoco](https://github.com/OpenLoco/OpenLoco) | [OpenTTD](https://github.com/OpenTTD/OpenTTD) | [openage](https://github.com/SFTtech/openage) | [OpenRA](https://github.com/OpenRA/OpenRA) |
+|:------------------------------------------------:|:----------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------:|
+| [![icon_x128](https://user-images.githubusercontent.com/604665/53047651-2c533c00-3493-11e9-911a-1a3540fc1156.png)](https://github.com/OpenLoco/OpenLoco) | [![](https://github.com/OpenTTD/OpenTTD/raw/850d05d24d4768c81d97765204ef2a487dd4972c/media/openttd.128.png)](https://github.com/OpenTTD/OpenTTD) | [![](https://user-images.githubusercontent.com/550290/36507534-4693f354-175a-11e8-93a7-faa0481474fb.png)](https://github.com/SFTtech/openage) | [![](https://raw.githubusercontent.com/OpenRA/OpenRA/bleed/packaging/linux/icons/ra_128x128.png)](https://github.com/OpenRA/OpenRA) |
+| Chris Sawyer's Locomotion | Transport Tycoon Deluxe | Age of Empires 2 | Red Alert |
+
+# 7. Sponsors
+
+Companies that kindly allow us to use their stuff:
+
+| [DigitalOcean](https://www.digitalocean.com/) | [JetBrains](https://www.jetbrains.com/) | [Backtrace](https://backtrace.io/) |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| [![do_logo_vertical_blue svg](https://user-images.githubusercontent.com/550290/36508276-8b572f0e-175c-11e8-8622-9febbce756b2.png)](https://www.digitalocean.com/) | [![jetbrains](https://user-images.githubusercontent.com/550290/36413299-0e0985ea-161e-11e8-8a01-3ef523b5905b.png)](https://www.jetbrains.com/) | [![backtrace](https://user-images.githubusercontent.com/550290/47113259-d0647680-d258-11e8-97c3-1a2c6bde6d11.png)](https://backtrace.io/) |
+| Hosting of various services | CLion and other products | Minidump uploads and inspection |

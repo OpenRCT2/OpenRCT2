@@ -1,0 +1,103 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2020 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#pragma once
+
+#include <openrct2-ui/interface/Window.h>
+#include <openrct2/common.h>
+#include <openrct2/localisation/StringIds.h>
+
+constexpr const rct_string_id DROPDOWN_SEPARATOR = 0;
+constexpr const rct_string_id DROPDOWN_FORMAT_COLOUR_PICKER = 0xFFFE;
+constexpr const rct_string_id DROPDOWN_FORMAT_LAND_PICKER = 0xFFFF;
+constexpr const int32_t DROPDOWN_ITEMS_MAX_SIZE = 512;
+
+enum
+{
+    DROPDOWN_FLAG_CUSTOM_HEIGHT = (1 << 6),
+    DROPDOWN_FLAG_STAY_OPEN = (1 << 7)
+};
+
+extern int32_t gDropdownNumItems;
+extern rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
+extern int64_t gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
+extern bool gDropdownIsColour;
+extern int32_t gDropdownLastColourHover;
+extern int32_t gDropdownHighlightedIndex;
+extern int32_t gDropdownDefaultIndex;
+
+bool dropdown_is_checked(int32_t index);
+bool dropdown_is_disabled(int32_t index);
+void dropdown_set_checked(int32_t index, bool value);
+void dropdown_set_disabled(int32_t index, bool value);
+
+void window_dropdown_show_text(
+    const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items);
+void window_dropdown_show_text_custom_width(
+    const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items,
+    int32_t width);
+void window_dropdown_show_image(
+    int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
+    int32_t itemHeight, int32_t numColumns);
+void window_dropdown_close();
+int32_t dropdown_index_from_point(const ScreenCoordsXY& loc, rct_window* w);
+void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
+void window_dropdown_show_colour_available(
+    rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
+uint32_t dropdown_get_appropriate_image_dropdown_items_per_row(uint32_t numItems);
+
+namespace Dropdown
+{
+    struct Item
+    {
+        constexpr Item(int32_t _expectedItemIndex, uint32_t _itemFormat, rct_string_id _stringId)
+            : expectedItemIndex(_expectedItemIndex)
+            , itemFormat(_itemFormat)
+            , stringId(_stringId)
+        {
+        }
+
+        int32_t expectedItemIndex;
+        uint32_t itemFormat;
+        rct_string_id stringId;
+    };
+
+    constexpr Item ToggleOption(int32_t _expectedItemIndex, rct_string_id _stringId)
+    {
+        return Item(_expectedItemIndex, STR_TOGGLE_OPTION, _stringId);
+    }
+
+    constexpr Item Separator()
+    {
+        return Item(-1, DROPDOWN_SEPARATOR, STR_EMPTY);
+    }
+
+    template<int N> void SetItems(const Dropdown::Item (&items)[N])
+    {
+        for (int i = 0; i < N; ++i)
+        {
+            const Item& item = items[i];
+            gDropdownItemsFormat[i] = item.itemFormat;
+            gDropdownItemsArgs[i] = item.stringId;
+        }
+    }
+
+    template<int N> constexpr bool ItemIDsMatchIndices(const Dropdown::Item (&items)[N])
+    {
+        for (int i = 0; i < N; ++i)
+        {
+            const Dropdown::Item& item = items[i];
+            if (item.expectedItemIndex >= 0 && item.expectedItemIndex != i)
+                return false;
+        }
+
+        return true;
+    }
+
+} // namespace Dropdown
