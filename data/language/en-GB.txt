@@ -3650,6 +3650,7 @@ STR_6389    :Invalid clearance
 STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please select the directory where you installed RollerCoaster Tycoon 2.
 STR_6391    :Please select your RCT2 directory
 STR_6392    :Could not find {STRING} at this path.
+STR_6393    :Objective Selection
 
 #############
 # Scenarios #

@@ -165,10 +165,11 @@ enum {
     DDIDX_OBJECT_SELECTION = 2,
     DDIDX_INVENTIONS_LIST = 3,
     DDIDX_SCENARIO_OPTIONS = 4,
-    // 5 is a separator
-    DDIDX_ENABLE_SANDBOX_MODE = 6,
-    DDIDX_DISABLE_CLEARANCE_CHECKS = 7,
-    DDIDX_DISABLE_SUPPORT_LIMITS = 8,
+    DDIDX_OBJECTIVE_OPTIONS = 5,
+    // 6 is a separator
+    DDIDX_ENABLE_SANDBOX_MODE = 7,
+    DDIDX_DISABLE_CLEARANCE_CHECKS = 8,
+    DDIDX_DISABLE_SUPPORT_LIMITS = 9,
 
     TOP_TOOLBAR_CHEATS_COUNT
 };
@@ -3442,6 +3443,7 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
         ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
         ToggleOption(DDIDX_INVENTIONS_LIST, STR_DEBUG_DROPDOWN_INVENTIONS_LIST),
         ToggleOption(DDIDX_SCENARIO_OPTIONS, STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS),
+        ToggleOption(DDIDX_OBJECTIVE_OPTIONS, STR_CHEATS_MENU_OBJECTIVE_OPTIONS),
         Separator(),
         ToggleOption(DDIDX_ENABLE_SANDBOX_MODE, STR_ENABLE_SANDBOX_MODE),
         ToggleOption(DDIDX_DISABLE_CLEARANCE_CHECKS, STR_DISABLE_CLEARANCE_CHECKS),
@@ -3467,6 +3469,7 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
         dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
         dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
         dropdown_set_disabled(DDIDX_SCENARIO_OPTIONS, true);
+        dropdown_set_disabled(DDIDX_OBJECTIVE_OPTIONS, true);
         dropdown_set_disabled(DDIDX_ENABLE_SANDBOX_MODE, true);
     }
 
@@ -3505,6 +3508,9 @@ static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)
             break;
         case DDIDX_SCENARIO_OPTIONS:
             context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
+            break;
+        case DDIDX_OBJECTIVE_OPTIONS:
+            context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
             CheatsSet(CheatType::SandboxMode, !gCheatsSandboxMode);
