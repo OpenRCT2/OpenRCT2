@@ -208,7 +208,7 @@ void viewport_create(
  * edx is assumed to be (and always is) the current rotation, so it is not
  * needed as parameter.
  */
-CoordsXYZ viewport_adjust_for_map_height(const ViewportCoordsXY& startCoords)
+CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
 {
     int16_t height = 0;
 
@@ -1079,15 +1079,15 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
     return { mapCoords->ToTileStart() };
 }
 
-[[nodiscard]] ViewportCoordsXY rct_viewport::ScreenToViewportCoord(const ScreenCoordsXY& screenCoords) const
+[[nodiscard]] ScreenCoordsXY rct_viewport::ScreenToViewportCoord(const ScreenCoordsXY& screenCoords) const
 {
-    ViewportCoordsXY ret;
+    ScreenCoordsXY ret;
     ret.x = ((screenCoords.x - pos.x) * zoom) + viewPos.x;
     ret.y = ((screenCoords.y - pos.y) * zoom) + viewPos.y;
     return ret;
 }
 
-CoordsXY viewport_coord_to_map_coord(const ViewportCoordsXY& coords, int32_t z)
+CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z)
 {
     constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
 

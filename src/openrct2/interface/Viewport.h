@@ -134,9 +134,9 @@ void viewport_paint(
     const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
     std::vector<paint_session>* sessions = nullptr);
 
-CoordsXYZ viewport_adjust_for_map_height(const ViewportCoordsXY& startCoords);
+CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords);
 
-CoordsXY viewport_coord_to_map_coord(const ViewportCoordsXY& coords, int32_t z);
+CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z);
 std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords, int32_t* direction);
 
 void show_gridlines();

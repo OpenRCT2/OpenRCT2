@@ -914,7 +914,7 @@ void window_rotate_camera(rct_window* w, int32_t direction)
     // naoXYCoords is nullopt if middle of viewport is obstructed by another window?
     if (!mapXYCoords || other != viewport)
     {
-        auto viewPos = ViewportCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
+        auto viewPos = ScreenCoordsXY{ (viewport->view_width >> 1), (viewport->view_height >> 1) } + viewport->viewPos;
 
         coords = viewport_adjust_for_map_height(viewPos);
     }
