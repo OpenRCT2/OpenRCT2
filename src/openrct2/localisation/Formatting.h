@@ -42,18 +42,23 @@ namespace OpenRCT2
 
         struct iterator
         {
+        private:
             std::string_view str;
             size_t index;
             token current;
 
-            iterator(std::string_view s, size_t i);
             void update();
+
+        public:
+            iterator(std::string_view s, size_t i);
             bool operator==(iterator& rhs);
             bool operator!=(iterator& rhs);
             token CreateToken(size_t len);
             const token* operator->() const;
             const token& operator*();
             iterator& operator++();
+            iterator operator++(int);
+            bool eol() const;
         };
 
         FmtString(std::string&& s);
@@ -70,57 +75,63 @@ namespace OpenRCT2
     std::pair<std::string_view, uint32_t> FormatNextPart(std::string_view& fmt);
     bool CanFormatToken(FormatToken t);
 
-    inline void FormatString(std::stringstream& ss, std::string_view& fmtc)
+    inline void FormatString(std::stringstream& ss, FmtString::iterator& it)
     {
-        while (!fmtc.empty())
+        while (!it.eol())
         {
-            auto [part, token] = FormatNextPart(fmtc);
-            if (!CanFormatToken(token))
+            const auto& token = *it++;
+            if (!CanFormatToken(token.kind))
             {
-                ss << part;
-                FormatString(ss, fmtc);
+                ss << token.text;
+                FormatString(ss, it);
             }
         }
     }
 
-    template<typename TArg0> static void FormatString(std::stringstream& ss, std::string_view& fmtc, TArg0 arg0)
+    template<typename TArg0> static void FormatString(std::stringstream& ss, FmtString::iterator& it, TArg0 arg0)
     {
-        if (!fmtc.empty())
+        while (!it.eol())
         {
-            auto [part, token] = FormatNextPart(fmtc);
-            if (CanFormatToken(token))
+            const auto& token = *it++;
+            if (CanFormatToken(token.kind))
             {
-                FormatArgument(ss, token, arg0);
-                FormatString(ss, fmtc);
+                FormatArgument(ss, token.kind, arg0);
+                FormatString(ss, it);
             }
             else
             {
-                ss << part;
-                FormatString(ss, fmtc, arg0);
+                ss << token.text;
+                FormatString(ss, it, arg0);
             }
         }
     }
 
     template<typename TArg0, typename... TArgs>
-    static void FormatString(std::stringstream& ss, std::string_view& fmtc, TArg0 arg0, TArgs&&... argN)
+    static void FormatString(std::stringstream& ss, FmtString::iterator& it, TArg0 arg0, TArgs&&... argN)
     {
-        if (!fmtc.empty())
+        while (!it.eol())
         {
-            auto [part, token] = FormatNextPart(fmtc);
-            if (CanFormatToken(token))
+            const auto& token = *it++;
+            if (CanFormatToken(token.kind))
             {
-                FormatArgument(ss, token, arg0);
-                return FormatString(ss, fmtc, argN...);
+                FormatArgument(ss, token.kind, arg0);
+                return FormatString(ss, it, argN...);
             }
             else
             {
-                ss << part;
-                return FormatString(ss, fmtc, arg0, argN...);
+                ss << token.text;
+                return FormatString(ss, it, arg0, argN...);
             }
         }
     }
 
-    template<typename... TArgs> std::string FormatString(std::string_view fmt, TArgs&&... argN)
+    template<typename... TArgs> static void FormatString(std::stringstream& ss, const FmtString& fmt, TArgs&&... argN)
+    {
+        auto it = fmt.begin();
+        FormatString(ss, it, argN...);
+    }
+
+    template<typename... TArgs> std::string FormatString(const FmtString& fmt, TArgs&&... argN)
     {
         thread_local std::stringstream ss;
         // Reset the buffer (reported as most efficient way)
@@ -133,8 +144,7 @@ namespace OpenRCT2
     {
         auto lang = language_get_string(fmt);
         auto fmtsz = language_convert_string_to_tokens(lang);
-        auto fmtc = std::string_view(fmtsz);
-        FormatString(ss, fmtc, argN...);
+        FormatString(ss, FmtString(fmtsz), argN...);
     }
 
     template<typename... TArgs> std::string FormatStringId(rct_string_id fmt, TArgs&&... argN)
@@ -144,5 +154,5 @@ namespace OpenRCT2
         return FormatString(fmtc, argN...);
     }
 
-    std::string FormatStringAny(std::string_view fmt, const std::vector<std::any>& args);
+    std::string FormatStringAny(const FmtString& fmt, const std::vector<std::any>& args);
 } // namespace OpenRCT2

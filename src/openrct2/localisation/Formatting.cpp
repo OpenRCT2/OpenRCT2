@@ -13,6 +13,7 @@
 #include "../util/Util.h"
 #include "FormatCodes.h"
 #include "Language.h"
+#include "Localisation.h"
 #include "StringIds.h"
 
 #include <cstdint>
@@ -107,6 +108,22 @@ namespace OpenRCT2
         return *this;
     }
 
+    FmtString::iterator FmtString::iterator::operator++(int)
+    {
+        auto result = *this;
+        if (index < str.size())
+        {
+            index += current.text.size();
+            update();
+        }
+        return result;
+    }
+
+    bool FmtString::iterator::eol() const
+    {
+        return index >= str.size();
+    }
+
     FmtString::FmtString(std::string&& s)
     {
         _strOwned = std::move(s);
@@ -147,14 +164,27 @@ namespace OpenRCT2
         return result;
     }
 
-    char GetDigitSeperator()
+    std::string_view GetDigitSeperator()
     {
-        return ',';
+        auto sz = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
+        return sz != nullptr ? sz : std::string_view();
     }
 
-    char GetDecimalSeperator()
+    std::string_view GetDecimalSeperator()
     {
-        return '.';
+        auto sz = language_get_string(STR_LOCALE_DECIMAL_POINT);
+        return sz != nullptr ? sz : std::string_view();
+    }
+
+    template<size_t TSize, typename TIndex> static void AppendSeperator(char (&buffer)[TSize], TIndex& i, std::string_view sep)
+    {
+        if (i < TSize)
+        {
+            auto remainingLen = TSize - i;
+            auto cpyLen = std::min(sep.size(), remainingLen);
+            std::memcpy(&buffer[i], sep.data(), cpyLen);
+            i += static_cast<TIndex>(cpyLen);
+        }
     }
 
     template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatNumber(std::stringstream& ss, T value)
@@ -182,10 +212,13 @@ namespace OpenRCT2
                 buffer[i++] = (char)('0' + (num % 10));
                 num /= 10;
             }
-            buffer[i++] = GetDecimalSeperator();
+
+            auto decSep = GetDecimalSeperator();
+            AppendSeperator(buffer, i, decSep);
         }
 
         // Whole digits
+        auto digitSep = GetDigitSeperator();
         size_t groupLen = 0;
         do
         {
@@ -194,7 +227,7 @@ namespace OpenRCT2
                 if (groupLen >= 3)
                 {
                     groupLen = 0;
-                    buffer[i++] = GetDigitSeperator();
+                    AppendSeperator(buffer, i, digitSep);
                 }
             }
             buffer[i++] = (char)('0' + (num % 10));
@@ -209,6 +242,105 @@ namespace OpenRCT2
         for (int32_t j = i - 1; j >= 0; j--)
         {
             ss << buffer[j];
+        }
+    }
+
+    template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatCurrency(std::stringstream& ss, T rawValue)
+    {
+        auto currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+        auto value = static_cast<int64_t>(rawValue) * currencyDesc->rate;
+
+        // Negative sign
+        if (value < 0)
+        {
+            ss << '-';
+            value = -value;
+        }
+
+        // Round the value away from zero
+        if constexpr (TDecimalPlace < 2)
+        {
+            value = (value + 99) / 100;
+        }
+
+        // Currency symbol
+        auto symbol = currencyDesc->symbol_unicode;
+        auto affix = currencyDesc->affix_unicode;
+        if (!font_supports_string(symbol, FONT_SIZE_MEDIUM))
+        {
+            symbol = currencyDesc->symbol_ascii;
+            affix = currencyDesc->affix_ascii;
+        }
+
+        // Currency symbol prefix
+        if (affix == CurrencyAffix::Prefix)
+        {
+            ss << symbol;
+        }
+
+        // Drop the pennies for "large" currencies
+        auto dropPennies = false;
+        if constexpr (TDecimalPlace >= 2)
+        {
+            dropPennies = currencyDesc->rate >= 100;
+        }
+        if (dropPennies)
+        {
+            FormatNumber<0, TDigitSep>(ss, value / 100);
+        }
+        else
+        {
+            FormatNumber<TDecimalPlace, TDigitSep>(ss, value);
+        }
+
+        // Currency symbol suffix
+        if (affix == CurrencyAffix::Suffix)
+        {
+            ss << symbol;
+        }
+    }
+
+    template<typename T> static void FormatMinutesSeconds(std::stringstream& ss, T value)
+    {
+        static constexpr const rct_string_id Formats[][2] = {
+            { STR_DURATION_SEC, STR_DURATION_SECS },
+            { STR_DURATION_MIN_SEC, STR_DURATION_MIN_SECS },
+            { STR_DURATION_MINS_SEC, STR_DURATION_MINS_SECS },
+        };
+
+        auto minutes = value / 60;
+        auto seconds = value % 60;
+        if (minutes == 0)
+        {
+            auto fmt = Formats[0][seconds == 1 ? 0 : 1];
+            FormatStringId(ss, fmt, seconds);
+        }
+        else
+        {
+            auto fmt = Formats[minutes == 1 ? 1 : 2][seconds == 1 ? 0 : 1];
+            FormatStringId(ss, fmt, minutes, seconds);
+        }
+    }
+
+    template<typename T> static void FormatHoursMinutes(std::stringstream& ss, T value)
+    {
+        static constexpr const rct_string_id Formats[][2] = {
+            { STR_REALTIME_MIN, STR_REALTIME_MINS },
+            { STR_REALTIME_HOUR_MIN, STR_REALTIME_HOUR_MINS },
+            { STR_REALTIME_HOURS_MIN, STR_REALTIME_HOURS_MINS },
+        };
+
+        auto hours = value / 60;
+        auto minutes = value % 60;
+        if (hours == 0)
+        {
+            auto fmt = Formats[0][minutes == 1 ? 0 : 1];
+            FormatStringId(ss, fmt, minutes);
+        }
+        else
+        {
+            auto fmt = Formats[hours == 1 ? 1 : 2][minutes == 1 ? 0 : 1];
+            FormatStringId(ss, fmt, hours, minutes);
         }
     }
 
@@ -250,6 +382,18 @@ namespace OpenRCT2
                     FormatNumber<2, true>(ss, std::round(arg * 100));
                 }
                 break;
+            case FORMAT_CURRENCY2DP:
+                if constexpr (std::is_integral<T>())
+                {
+                    FormatCurrency<2, true>(ss, arg);
+                }
+                break;
+            case FORMAT_CURRENCY:
+                if constexpr (std::is_integral<T>())
+                {
+                    FormatCurrency<0, true>(ss, arg);
+                }
+                break;
             case FORMAT_VELOCITY:
                 if constexpr (std::is_integral<T>())
                 {
@@ -265,6 +409,52 @@ namespace OpenRCT2
                         case MeasurementFormat::SI:
                             FormatStringId(ss, STR_UNIT_SUFFIX_METRES_PER_SECOND, mph_to_dmps(arg));
                             break;
+                    }
+                }
+                break;
+            case FORMAT_DURATION:
+                if constexpr (std::is_integral<T>())
+                {
+                    FormatMinutesSeconds(ss, arg);
+                }
+                break;
+            case FORMAT_REALTIME:
+                if constexpr (std::is_integral<T>())
+                {
+                    FormatHoursMinutes(ss, arg);
+                }
+                break;
+            case FORMAT_LENGTH:
+                if constexpr (std::is_integral<T>())
+                {
+                    switch (gConfigGeneral.measurement_format)
+                    {
+                        default:
+                        case MeasurementFormat::Imperial:
+                            FormatStringId(ss, STR_UNIT_SUFFIX_FEET, metres_to_feet(arg));
+                            break;
+                        case MeasurementFormat::Metric:
+                        case MeasurementFormat::SI:
+                            FormatStringId(ss, STR_UNIT_SUFFIX_METRES, arg);
+                            break;
+                    }
+                }
+                break;
+            case FORMAT_MONTHYEAR:
+                if constexpr (std::is_integral<T>())
+                {
+                    auto month = date_get_month(arg);
+                    auto year = date_get_year(arg) + 1;
+                    FormatStringId(ss, STR_DATE_FORMAT_MY, month, year);
+                }
+                break;
+            case FORMAT_MONTH:
+                if constexpr (std::is_integral<T>())
+                {
+                    auto szMonth = language_get_string(DateGameMonthNames[date_get_month(arg)]);
+                    if (szMonth != nullptr)
+                    {
+                        ss << szMonth;
                     }
                 }
                 break;
@@ -349,28 +539,26 @@ namespace OpenRCT2
         }
     }
 
-    std::string FormatStringAny(std::string_view fmt, const std::vector<std::any>& args)
+    std::string FormatStringAny(const FmtString& fmt, const std::vector<std::any>& args)
     {
         thread_local std::stringstream ss;
         // Reset the buffer (reported as most efficient way)
         std::stringstream().swap(ss);
 
         size_t argIndex = 0;
-        auto fmtc = fmt;
-        while (!fmtc.empty())
+        for (const auto& token : fmt)
         {
-            auto [part, token] = FormatNextPart(fmtc);
-            if (CanFormatToken(token))
+            if (CanFormatToken(token.kind))
             {
                 if (argIndex < args.size())
                 {
-                    FormatArgumentAny(ss, token, args[argIndex]);
+                    FormatArgumentAny(ss, token.kind, args[argIndex]);
                 }
                 argIndex++;
             }
             else
             {
-                ss << part;
+                ss << token.text;
             }
         }
         return ss.str();
