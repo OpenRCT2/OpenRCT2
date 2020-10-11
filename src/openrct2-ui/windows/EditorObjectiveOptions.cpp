@@ -218,11 +218,11 @@ rct_window* window_editor_objective_options_open()
 {
     rct_window* w;
 
-    w = window_bring_to_front_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS);
+    w = window_bring_to_front_by_class(WC_EDITOR_OBJECTIVE_OPTIONS);
     if (w != nullptr)
         return w;
 
-    w = window_create_centred(450, 228, &window_objective_options_main_events, WC_EDTIOR_OBJECTIVE_OPTIONS, WF_10);
+    w = window_create_centred(450, 228, &window_objective_options_main_events, WC_EDITOR_OBJECTIVE_OPTIONS, WF_10);
     w->widgets = window_editor_objective_options_main_widgets;
     w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     w->pressed_widgets = 0;

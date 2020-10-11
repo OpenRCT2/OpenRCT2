@@ -3510,7 +3510,7 @@ static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)
             context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
             break;
         case DDIDX_OBJECTIVE_OPTIONS:
-            context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
+            context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
             CheatsSet(CheatType::SandboxMode, !gCheatsSandboxMode);

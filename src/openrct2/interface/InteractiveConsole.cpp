@@ -1162,7 +1162,7 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "objective_options" && invalidArguments(&invalidTitle, !title))
         {
-            context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
+            context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
         }
         else if (argv[0] == "options")
         {

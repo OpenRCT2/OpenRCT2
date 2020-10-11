@@ -429,7 +429,7 @@ private:
         window_close_by_class(WC_EDITOR_INVENTION_LIST_DRAG);
         window_close_by_class(WC_EDITOR_INVENTION_LIST);
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
-        window_close_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS);
+        window_close_by_class(WC_EDITOR_OBJECTIVE_OPTIONS);
         window_close_by_class(WC_EDITOR_SCENARIO_OPTIONS);
         window_close_by_class(WC_FINANCES);
         window_close_by_class(WC_FIRE_PROMPT);
