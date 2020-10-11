@@ -641,6 +641,8 @@ static void window_options_display_mouseup(rct_window* w, rct_widgetindex widget
 
 static void window_options_display_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
+    widget = &w->widgets[widgetIndex - 1];
+
     switch (widgetIndex)
     {
         case WIDX_RESOLUTION_DROPDOWN:
@@ -980,6 +982,8 @@ static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widg
 
 static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
+    widget = &w->widgets[widgetIndex - 1];
+
     switch (widgetIndex)
     {
         case WIDX_VIRTUAL_FLOOR_DROPDOWN:
