@@ -94,6 +94,7 @@ STR_0089    :Miniatura Onda Fervojo
 STR_0090    :Minrajdo
 STR_0091    :Nekonata Atrakcio (59)
 STR_0092    :Onda Fervojo Lanĉita per Linearaj Induktaj Motoroj
+STR_0093    :Hibrida Onda Fervojo
 STR_0512    :Onda fervojo kompakta kun helikforma lifto kaj glataj kurboplenaj malleviĝoj.
 STR_0513    :Onda fervojo kun lopoj, sur kiun la rajdantoj rajdas starante
 STR_0514    :Trajnoj penditaj sub la trako de la onda fervojo svingiĝas flanken ĉe anguloj
@@ -173,6 +174,7 @@ STR_0598    :Inversigitaj trajnoj de la onda fervojo plirapidiĝas el la stacio 
 STR_0599    :Kompakta onda fervojo kun unuopaj ĉaroj kaj glataj kurboplenaj malleviĝoj
 STR_0600    :Ŝaltitaj mintrajnoj movas rapide laŭ glata kurboplena trakaranĝo
 STR_0602    :Linearaj induktaj motoroj plirapidigas la trajnojn de la onda fervojo, kiuj tiam trapasas kurboplenajn inversigantojn
+STR_0603    :Ligna onda fervojo kun stala trako, kiu permesas krutajn malleviĝojn kaj inversigantojn.
 STR_0767    :Gasto {INT32}
 STR_0768    :Faktoto {INT32}
 STR_0769    :Mekanikisto {INT32}
@@ -549,7 +551,7 @@ STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :Ne eblas malaltigi akvonivelon ĉi tie…
 STR_1167    :Ne eblas altigi akvonivelon ĉi tie…
 STR_1168    :Agordoj
-STR_1169    :(None)
+STR_1169    :(Neniu)
 STR_1170    :{STRING}
 STR_1171    :{RED}Fermita
 STR_1172    :{YELLOW}{STRINGID}
@@ -1978,8 +1980,8 @@ STR_2779    :Vidujo #{COMMA16}
 STR_2780    :Plia vidujo
 # End of new strings
 STR_2781    :{STRINGID}:
-STR_2782    :MAJ + 
-STR_2783    :STIR + 
+STR_2782    :SHIFT + 
+STR_2783    :CTRL + 
 STR_2784    :Ŝanĝi klavararanĝon
 STR_2785    :{WINDOW_COLOUR_2}Premi novan klavarokomandon de:{NEWLINE}“{STRINGID}”
 STR_2786    :{SMALLFONT}{BLACK}Alklaku priskribon de klavarokomando por elekti novan klavon
@@ -2206,7 +2208,7 @@ STR_3090    :{SMALLFONT}{BLACK}Elekti stilon de enirejo, elirejo, kaj stacio
 STR_3091    :Vi ne permesas forigi ĉi tiun parton!
 STR_3092    :Vi ne permesas movi aŭ redakti la stacion por ĉi tiu atrakcio!
 STR_3093    :{WINDOW_COLOUR_2}Plej ŝatas: {BLACK}{STRINGID}
-STR_3094    :N/A
+STR_3094    :Ne disponebla
 STR_3095    :{WINDOW_COLOUR_2}Rapideco de ĉenlifto:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}Elekti rapidecon de ĉenlifto
@@ -2454,7 +2456,7 @@ STR_3365    :{SMALLFONT}{BLACK}Permesi elektadon de individuaj eroj da pejzaĝoj
 STR_3366    :{BLACK}= Atrakcio
 STR_3367    :{BLACK}= Budo de Manĝaĵo
 STR_3368    :{BLACK}= Budo de Trinkaĵo
-STR_3369    :{BLACK}= Budo de Komercaĵo
+STR_3369    :{BLACK}= Budo de Memoraĵo
 STR_3370    :{BLACK}= Informokiosko
 STR_3371    :{BLACK}= Sukurejo
 STR_3372    :{BLACK}= Monaŭtomato
@@ -2924,12 +2926,12 @@ STR_5604    :Gasto aĉetis ion
 STR_5605    :Gasto uzis servon
 STR_5606    :Gasto mortis
 STR_5607    :{SMALLFONT}{BLACK}Devige forigi elektitan mapelementon.
-STR_5608    :BH
-STR_5609    :CH
+STR_5608    :BA
+STR_5609    :KA
 STR_5610    :{SMALLFONT}{BLACK}Forigi la nunan elektitan mapelementon. Ĉi tio forte forigos ĝin, do neniu mono estos uzita/gajnita. Uzu singarde.
-STR_5611    :G
+STR_5611    :F
 STR_5612    :{SMALLFONT}{BLACK}Fantoma flago
-STR_5613    :B
+STR_5613    :R
 STR_5614    :{SMALLFONT}{BLACK}Rompita flago
 STR_5615    :L
 STR_5616    :{SMALLFONT}{BLACK}Lasta elemento por blokflago
@@ -2978,7 +2980,7 @@ STR_5658    :Financado de Parko
 STR_5659    :Forpeli Ludanton
 STR_5660    :Modifi Grupojn
 STR_5661    :Agordi Ludantogrupon
-STR_5662    :N/A
+STR_5662    :Ne disponebla
 STR_5663    :Vakigi Pejzaĝon
 STR_5664    :Trompi
 STR_5665    :Baskuligi Pejzaĝaron
@@ -3030,7 +3032,7 @@ STR_5747    :Nekonektita: {STRING}
 STR_5748    :Forpelita
 STR_5749    :Ekiru de la servilo!
 STR_5750    :Konekto Fermita
-STR_5751    :No Data
+STR_5751    :Neniu Datumon
 STR_5752    :{OUTLINE}{RED}{STRING} nekonektita
 STR_5753    :{OUTLINE}{RED}{STRING} nekonektis je ({STRING})
 STR_5754    :Malbona Nomo de Ludanto
@@ -3129,7 +3131,7 @@ STR_5846    :{SMALLFONT}{BLACK}Agordi kiom ofte OpenRCT2 aŭtomate konservas
 STR_5847    :{SMALLFONT}{BLACK}Elekti parksinsekvon uzatan sur la titola ekrano.{NEWLINE}Titolsinsekvoj de RCT1/2 bezonas importitajn scenarojn funkcii
 STR_5848    :{SMALLFONT}{BLACK}Krei kaj administri proprajn titolsinsekvojn
 STR_5849    :{SMALLFONT}{BLACK}Aŭtomate meti{NEWLINE}nove dungitajn dungitojn
-STR_5850    :<not used anymore>
+STR_5850    :<ne uzita plu>
 STR_5851    :{SMALLFONT}{BLACK}Agordas la defaŭltan inspektan intervalon{NEWLINE}por novkonstruitaj atrakcioj
 STR_5853    :{SMALLFONT}{BLACK}Baskuligi sonefektojn
 STR_5854    :{SMALLFONT}{BLACK}Baskuligi muziko de atrakcio
@@ -3325,7 +3327,7 @@ STR_6044    :Glatigi altmapon
 STR_6045    :Forteco
 STR_6046    :Normigi altmapon
 STR_6047    :Glatigi blokojn
-STR_6048    :Height map error
+STR_6048    :Eraro de altmapo
 STR_6049    :Eraro legante PNG
 STR_6050    :Eraro legante rastrumon
 STR_6051    :La larĝo kaj alto bezonas kongrui
@@ -3645,6 +3647,9 @@ STR_6386    :Blizardo
 STR_6387    :Ne eblas malaltigi elementon ĉi tie…
 STR_6388    :Ne eblas altigi elementon ĉi tie…
 STR_6389    :Nevalida malbaro
+STR_6390    :OpenRCT bezonas dosierojn de la origina RollerCoaster Tycoon 2 por funkcii. Bonvolu elekti la dosierujon, kie vi instalis RollerCoaster Tycoon 2.
+STR_6391    :Bonvolu elekti vian dosierujon de RCT2
+STR_6392    :Ne eblis trovi je {STRING} ĉe tiu ĉi dosierindiko.
 
 #############
 # Scenarios #
@@ -4455,7 +4460,7 @@ STR_DTLS    :La 75-a datreveno de la Schneider-Trofea venko de via avo venas en 
 <Roaring Twenties - Skyscrapers>
 STR_SCNR    :Muĝadaj Dudekaj Jaroj - Ĉielskrapantoj
 STR_PARK    :Metropolo
-STR_DTLS    :Vi posedas malplenan teron proksime de la malaltaĵa parto de la urbo. Por akiri la plej grandan parton de via urba propraĵo, konstruu ĉielskrapanto-teman amuzparkon inspiritan de la altegiĝia artdekora arkitekturo de la jaroj dudekaj.
+STR_DTLS    :Vi posedas malplenan teron proksime de la malaltaĵa parto de la urbo. Por akiri la plej grandan parton de via urba propraĵo, konstruu ĉielskrapanto-teman amuzparkon inspiritan de la altegiĝia artodekora arkitekturo de la jaroj dudekaj.
 
 <Rock 'n' Roll - Flower Power>
 STR_SCNR    :Rokenrolo - La Potenco de Floroj

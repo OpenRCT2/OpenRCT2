@@ -91,6 +91,7 @@ STR_0089    :Mini-achtbaan
 STR_0090    :Aangedreven mijntrein
 STR_0091    :Onbekende attractie (59)
 STR_0092    :LIM-lanceringsachtbaan
+STR_0093    :Hybride achtbaan
 STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
 STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
@@ -170,6 +171,7 @@ STR_0598    :Een omgekeerde achtbaantrein wordt het station uit gelanceerd en ga
 STR_0599    :Een compacte achtbaan met individuele karretjes en steile, kronkelende afdalingen.
 STR_0600    :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.
 STR_0602    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
+STR_0603    :Een achtbaan met houten ondersteuningen en stalen rails, waardoor steile afdalingen en omkeringen mogelijk worden.
 STR_0767    :Bezoeker {INT32}
 STR_0768    :Klusjesman {INT32}
 STR_0769    :Monteur {INT32}
@@ -3670,6 +3672,9 @@ STR_6386    :Sneeuwstorm
 STR_6387    :Kan dit element niet verlagen…
 STR_6388    :Kan dit element niet verhogen…
 STR_6389    :Hoogte bovenkant is ongeldig
+STR_6390    :OpenRCT2 heeft bestanden van een RollerCoaster Tycoon 2-installatie nodig. Selecteer de map waar de bestanden van RollerCoaster Tycoon 2 zich bevinden.
+STR_6391    :Selecteer je RCT2-map
+STR_6392    :Kon het bestand {STRING} niet vinden in dit pad.
 
 #############
 # Scenarios #
