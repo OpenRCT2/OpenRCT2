@@ -515,19 +515,19 @@ namespace OpenRCT2
         return stringLen;
     }
 
-    void FormatArgumentAny(std::stringstream& ss, FormatToken token, const std::any& value)
+    void FormatArgumentAny(std::stringstream& ss, FormatToken token, const FormatArg_t& value)
     {
-        if (value.type() == typeid(uint16_t))
+        if (std::holds_alternative<uint16_t>(value))
         {
-            FormatArgument(ss, token, std::any_cast<uint16_t>(value));
+            FormatArgument(ss, token, std::get<uint16_t>(value));
         }
-        else if (value.type() == typeid(int32_t))
+        else if (std::holds_alternative<int32_t>(value))
         {
-            FormatArgument(ss, token, std::any_cast<int32_t>(value));
+            FormatArgument(ss, token, std::get<int32_t>(value));
         }
-        else if (value.type() == typeid(const char*))
+        else if (std::holds_alternative<const char*>(value))
         {
-            FormatArgument(ss, token, std::any_cast<const char*>(value));
+            FormatArgument(ss, token, std::get<const char*>(value));
         }
         else
         {
@@ -536,7 +536,7 @@ namespace OpenRCT2
     }
 
     static void FormatStringAny(
-        std::stringstream& ss, const FmtString& fmt, const std::vector<std::any>& args, size_t& argIndex)
+        std::stringstream& ss, const FmtString& fmt, const std::vector<FormatArg_t>& args, size_t& argIndex)
     {
         for (const auto& token : fmt)
         {
@@ -544,10 +544,10 @@ namespace OpenRCT2
             {
                 if (argIndex < args.size())
                 {
-                    auto arg = args[argIndex++];
-                    if (arg.type() == typeid(rct_string_id))
+                    const auto& arg = args[argIndex++];
+                    if (auto stringid = std::get_if<uint16_t>(&arg))
                     {
-                        auto subfmt = GetFmtStringById(std::any_cast<rct_string_id>(arg));
+                        auto subfmt = GetFmtStringById(*stringid);
                         FormatStringAny(ss, subfmt, args, argIndex);
                     }
                 }
@@ -571,7 +571,7 @@ namespace OpenRCT2
         }
     }
 
-    std::string FormatStringAny(const FmtString& fmt, const std::vector<std::any>& args)
+    std::string FormatStringAny(const FmtString& fmt, const std::vector<FormatArg_t>& args)
     {
         auto& ss = GetThreadFormatStream();
         size_t argIndex = 0;
@@ -579,7 +579,7 @@ namespace OpenRCT2
         return ss.str();
     }
 
-    size_t FormatStringAny(char* buffer, size_t bufferLen, const FmtString& fmt, const std::vector<std::any>& args)
+    size_t FormatStringAny(char* buffer, size_t bufferLen, const FmtString& fmt, const std::vector<FormatArg_t>& args)
     {
         auto& ss = GetThreadFormatStream();
         size_t argIndex = 0;
@@ -595,7 +595,7 @@ namespace OpenRCT2
         return value;
     }
 
-    static void BuildAnyArgListFromLegacyArgBuffer(const FmtString& fmt, std::vector<std::any>& anyArgs, const void* args)
+    static void BuildAnyArgListFromLegacyArgBuffer(const FmtString& fmt, std::vector<FormatArg_t>& anyArgs, const void* args)
     {
         for (const auto& t : fmt)
         {
@@ -645,7 +645,7 @@ namespace OpenRCT2
 
     size_t FormatStringLegacy(char* buffer, size_t bufferLen, rct_string_id id, const void* args)
     {
-        std::vector<std::any> anyArgs;
+        std::vector<FormatArg_t> anyArgs;
         auto fmt = GetFmtStringById(id);
         BuildAnyArgListFromLegacyArgBuffer(fmt, anyArgs, args);
         return FormatStringAny(buffer, bufferLen, fmt, anyArgs);

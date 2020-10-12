@@ -13,17 +13,18 @@
 #include "FormatCodes.h"
 #include "Language.h"
 
-#include <any>
 #include <sstream>
 #include <stack>
 #include <string>
 #include <string_view>
 #include <utility>
+#include <variant>
 #include <vector>
 
 namespace OpenRCT2
 {
     using FormatToken = uint32_t;
+    using FormatArg_t = std::variant<uint16_t, int32_t, const char*>;
 
     class FmtString
     {
@@ -163,7 +164,7 @@ namespace OpenRCT2
         return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 
-    std::string FormatStringAny(const FmtString& fmt, const std::vector<std::any>& args);
-    size_t FormatStringAny(char* buffer, size_t bufferLen, const FmtString& fmt, const std::vector<std::any>& args);
+    std::string FormatStringAny(const FmtString& fmt, const std::vector<FormatArg_t>& args);
+    size_t FormatStringAny(char* buffer, size_t bufferLen, const FmtString& fmt, const std::vector<FormatArg_t>& args);
     size_t FormatStringLegacy(char* buffer, size_t bufferLen, rct_string_id id, const void* args);
 } // namespace OpenRCT2
