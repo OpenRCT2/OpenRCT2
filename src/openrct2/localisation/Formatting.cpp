@@ -495,9 +495,33 @@ namespace OpenRCT2
         return FmtString(std::move(fmtc));
     }
 
+    std::stringstream& GetThreadFormatStream()
+    {
+        thread_local std::stringstream ss;
+        // Reset the buffer (reported as most efficient way)
+        std::stringstream().swap(ss);
+        return ss;
+    }
+
+    size_t CopyStringStreamToBuffer(char* buffer, size_t bufferLen, std::stringstream& ss)
+    {
+        auto stringLen = ss.tellp();
+        auto copyLen = std::min<size_t>(bufferLen - 1, stringLen);
+
+        ss.seekg(0, std::ios::beg);
+        ss.read(buffer, copyLen);
+        buffer[copyLen] = '\0';
+
+        return stringLen;
+    }
+
     void FormatArgumentAny(std::stringstream& ss, FormatToken token, const std::any& value)
     {
-        if (value.type() == typeid(int32_t))
+        if (value.type() == typeid(uint16_t))
+        {
+            FormatArgument(ss, token, std::any_cast<uint16_t>(value));
+        }
+        else if (value.type() == typeid(int32_t))
         {
             FormatArgument(ss, token, std::any_cast<int32_t>(value));
         }
@@ -549,11 +573,81 @@ namespace OpenRCT2
 
     std::string FormatStringAny(const FmtString& fmt, const std::vector<std::any>& args)
     {
-        thread_local std::stringstream ss;
-        // Reset the buffer (reported as most efficient way)
-        std::stringstream().swap(ss);
+        auto& ss = GetThreadFormatStream();
         size_t argIndex = 0;
         FormatStringAny(ss, fmt, args, argIndex);
         return ss.str();
+    }
+
+    size_t FormatStringAny(char* buffer, size_t bufferLen, const FmtString& fmt, const std::vector<std::any>& args)
+    {
+        auto& ss = GetThreadFormatStream();
+        size_t argIndex = 0;
+        FormatStringAny(ss, fmt, args, argIndex);
+        return CopyStringStreamToBuffer(buffer, bufferLen, ss);
+    }
+
+    template<typename T> static T ReadFromArgs(const void*& args)
+    {
+        T value;
+        std::memcpy(&value, args, sizeof(T));
+        args = reinterpret_cast<const char*>(reinterpret_cast<uintptr_t>(args) + sizeof(T));
+        return value;
+    }
+
+    static void BuildAnyArgListFromLegacyArgBuffer(const FmtString& fmt, std::vector<std::any>& anyArgs, const void* args)
+    {
+        for (const auto& t : fmt)
+        {
+            switch (t.kind)
+            {
+                case FORMAT_COMMA32:
+                case FORMAT_INT32:
+                case FORMAT_COMMA2DP32:
+                case FORMAT_CURRENCY2DP:
+                case FORMAT_CURRENCY:
+                    anyArgs.push_back(ReadFromArgs<int32_t>(args));
+                    break;
+                case FORMAT_COMMA16:
+                case FORMAT_UINT16:
+                case FORMAT_MONTHYEAR:
+                case FORMAT_MONTH:
+                case FORMAT_VELOCITY:
+                case FORMAT_DURATION:
+                case FORMAT_REALTIME:
+                case FORMAT_LENGTH:
+                    anyArgs.push_back(ReadFromArgs<uint16_t>(args));
+                    break;
+                case FORMAT_STRINGID:
+                case FORMAT_STRINGID2:
+                {
+                    auto stringId = ReadFromArgs<rct_string_id>(args);
+                    anyArgs.push_back(stringId);
+                    BuildAnyArgListFromLegacyArgBuffer(GetFmtStringById(stringId), anyArgs, args);
+                    break;
+                }
+                case FORMAT_STRING:
+                {
+                    auto sz = ReadFromArgs<const char*>(args);
+                    anyArgs.push_back(sz);
+                    BuildAnyArgListFromLegacyArgBuffer(sz, anyArgs, args);
+                    break;
+                }
+                case FORMAT_POP16:
+                    args = reinterpret_cast<const char*>(reinterpret_cast<uintptr_t>(args) + 2);
+                    break;
+                case FORMAT_PUSH16:
+                    args = reinterpret_cast<const char*>(reinterpret_cast<uintptr_t>(args) - 2);
+                    break;
+            }
+        }
+    }
+
+    size_t FormatStringLegacy(char* buffer, size_t bufferLen, rct_string_id id, const void* args)
+    {
+        std::vector<std::any> anyArgs;
+        auto fmt = GetFmtStringById(id);
+        BuildAnyArgListFromLegacyArgBuffer(fmt, anyArgs, args);
+        return FormatStringAny(buffer, bufferLen, fmt, anyArgs);
     }
 } // namespace OpenRCT2

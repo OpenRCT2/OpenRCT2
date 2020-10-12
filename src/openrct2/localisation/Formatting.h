@@ -76,6 +76,8 @@ namespace OpenRCT2
 
     bool CanFormatToken(FormatToken t);
     FmtString GetFmtStringById(rct_string_id id);
+    std::stringstream& GetThreadFormatStream();
+    size_t CopyStringStreamToBuffer(char* buffer, size_t bufferLen, std::stringstream& ss);
 
     inline void FormatString(std::stringstream& ss, std::stack<FmtString::iterator*> stack)
     {
@@ -137,9 +139,7 @@ namespace OpenRCT2
 
     template<typename... TArgs> std::string FormatString(const FmtString& fmt, TArgs&&... argN)
     {
-        thread_local std::stringstream ss;
-        // Reset the buffer (reported as most efficient way)
-        std::stringstream().swap(ss);
+        auto& ss = GetThreadFormatStream();
         FormatString(ss, fmt, argN...);
         return ss.str();
     }
@@ -156,5 +156,14 @@ namespace OpenRCT2
         return FormatString(fmt, argN...);
     }
 
+    template<typename... TArgs> size_t FormatStringId(char* buffer, size_t bufferLen, rct_string_id id, TArgs&&... argN)
+    {
+        auto& ss = GetThreadFormatStream();
+        FormatStringId(ss, id, argN...);
+        return CopyStringStreamToBuffer(buffer, bufferLen, ss);
+    }
+
     std::string FormatStringAny(const FmtString& fmt, const std::vector<std::any>& args);
+    size_t FormatStringAny(char* buffer, size_t bufferLen, const FmtString& fmt, const std::vector<std::any>& args);
+    size_t FormatStringLegacy(char* buffer, size_t bufferLen, rct_string_id id, const void* args);
 } // namespace OpenRCT2
