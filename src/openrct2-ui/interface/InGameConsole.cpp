@@ -277,12 +277,11 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // This is something of a hack to ensure the text is actually black
     // as opposed to a desaturated grey
-    std::string colourFormatStr;
+    thread_local std::string colourFormatStr;
+    colourFormatStr.clear();
     if (textColour == COLOUR_BLACK)
     {
-        utf8 extraTextFormatCode[4]{};
-        utf8_write_codepoint(extraTextFormatCode, FORMAT_BLACK);
-        colourFormatStr = extraTextFormatCode;
+        colourFormatStr = "{BLACK}";
     }
 
     // TTF looks far better without the outlines

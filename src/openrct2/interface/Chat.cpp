@@ -83,6 +83,8 @@ void chat_update()
 
 void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 {
+    thread_local std::string lineBuffer;
+
     if (!chat_available())
     {
         gChatOpen = false;
@@ -95,8 +97,6 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
     _chatBottom = context_get_height() - 45;
     _chatTop = _chatBottom - 10;
 
-    char lineBuffer[CHAT_INPUT_SIZE + 10];
-    char* lineCh = lineBuffer;
     char* inputLine = _chatCurrentLine;
     int32_t inputLineHeight = 10;
 
@@ -113,8 +113,8 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
                 continue;
             }
 
-            safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
-
+            lineBuffer.assign(chat_history_get(i));
+            auto lineCh = lineBuffer.c_str();
             int32_t lineHeight = chat_string_wrapped_get_height(static_cast<void*>(&lineCh), _chatWidth - 10);
             _chatTop -= (lineHeight + 5);
         }
@@ -163,8 +163,8 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
             break;
         }
 
-        safe_strcpy(lineBuffer, chat_history_get(i), sizeof(lineBuffer));
-
+        lineBuffer.assign(chat_history_get(i));
+        auto lineCh = lineBuffer.c_str();
         stringHeight = chat_history_draw_string(dpi, static_cast<void*>(&lineCh), screenCoords, _chatWidth - 10) + 5;
         gfx_set_dirty_blocks(
             { { screenCoords - ScreenCoordsXY{ 0, stringHeight } }, { screenCoords + ScreenCoordsXY{ _chatWidth, 20 } } });
@@ -178,13 +178,12 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
     // Draw current chat input
     if (gChatOpen)
     {
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_CELADON);
+        lineBuffer.assign("{OUTLINE}{CELADON}");
+        lineBuffer += _chatCurrentLine;
 
-        safe_strcpy(lineCh, _chatCurrentLine, sizeof(_chatCurrentLine));
         screenCoords.y = _chatBottom - inputLineHeight - 5;
 
-        lineCh = lineBuffer;
+        auto lineCh = lineBuffer.c_str();
         inputLineHeight = gfx_draw_string_left_wrapped(
             dpi, static_cast<void*>(&lineCh), screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING,
             TEXT_COLOUR_255);
@@ -193,8 +192,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         // TODO: Show caret if the input text has multiple lines
         if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer) < (_chatWidth - 10))
         {
-            std::memcpy(lineBuffer, _chatCurrentLine, _chatTextInputSession->SelectionStart);
-            lineBuffer[_chatTextInputSession->SelectionStart] = 0;
+            lineBuffer.assign(_chatCurrentLine, _chatTextInputSession->SelectionStart);
             int32_t caretX = screenCoords.x + gfx_get_string_width(lineBuffer);
             int32_t caretY = screenCoords.y + 14;
 
@@ -205,45 +203,25 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
 void chat_history_add(const char* src)
 {
-    size_t bufferSize = strlen(src) + 64;
-    utf8* buffer = static_cast<utf8*>(calloc(1, bufferSize));
-
-    // Find the start of the text (after format codes)
-    const char* ch = src;
-    const char* nextCh;
-    uint32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, &nextCh)) != 0)
-    {
-        if (!utf8_is_format_code(codepoint))
-        {
-            break;
-        }
-        ch = nextCh;
-    }
-    const char* srcText = ch;
-
-    // Copy format codes to buffer
-    std::memcpy(buffer, src, std::min(bufferSize, static_cast<size_t>(srcText - src)));
-
-    // Prepend a timestamp
-    time_t timer;
+    // Format a timestamp
+    time_t timer{};
     time(&timer);
-    struct tm* tmInfo = localtime(&timer);
+    auto tmInfo = localtime(&timer);
+    char timeBuffer[64]{};
+    strcatftime(timeBuffer, sizeof(timeBuffer), "[%H:%M] ", tmInfo);
 
-    strcatftime(buffer, bufferSize, "[%H:%M] ", tmInfo);
-    safe_strcat(buffer, srcText, bufferSize);
+    std::string buffer = timeBuffer;
+    buffer += src;
 
     // Add to history list
     int32_t index = _chatHistoryIndex % CHAT_HISTORY_SIZE;
     std::fill_n(_chatHistory[index], CHAT_INPUT_SIZE, 0x00);
-    std::memcpy(_chatHistory[index], buffer, std::min<size_t>(strlen(buffer), CHAT_INPUT_SIZE - 1));
+    std::memcpy(_chatHistory[index], buffer.c_str(), std::min<size_t>(buffer.size(), CHAT_INPUT_SIZE - 1));
     _chatHistoryTime[index] = platform_get_ticks();
     _chatHistoryIndex++;
 
     // Log to file (src only as logging does its own timestamp)
     network_append_chat_log(src);
-
-    free(buffer);
 
     Mixer_Play_Effect(OpenRCT2::Audio::SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
