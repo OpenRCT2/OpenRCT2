@@ -2805,7 +2805,6 @@ static OpenRCT2String window_ride_vehicle_tooltip(
             ft.Add<uint16_t>(ride->max_trains);
             return { fallback, ft };
         }
-        break;
         case WIDX_VEHICLE_CARS_PER_TRAIN:
         case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
         case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
@@ -2826,7 +2825,6 @@ static OpenRCT2String window_ride_vehicle_tooltip(
             ft.Add<rct_string_id>(stringId);
             return { fallback, ft };
         }
-        break;
     }
     return { fallback, {} };
 }
