@@ -148,7 +148,8 @@ struct rct_viewport
     uint8_t var_11;
     VisibilityCache visibility;
 
-    // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming from its x, y, z
+    // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming
+    // from its x, y, z
     [[nodiscard]] constexpr bool Contains(const ScreenCoordsXY& vpos) const
     {
         return (
