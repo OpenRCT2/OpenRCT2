@@ -3675,6 +3675,7 @@ STR_6389    :Hoogte bovenkant is ongeldig
 STR_6390    :OpenRCT2 heeft bestanden van een RollerCoaster Tycoon 2-installatie nodig. Selecteer de map waar de bestanden van RollerCoaster Tycoon 2 zich bevinden.
 STR_6391    :Selecteer je RCT2-map
 STR_6392    :Kon het bestand {STRING} niet vinden in dit pad.
+STR_6393    :Doelselectie
 
 #############
 # Scenarios #

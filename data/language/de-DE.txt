@@ -94,6 +94,7 @@ STR_0089    :Miniachterbahn
 STR_0090    :Minenbahn
 STR_0091    :Unbekannte Bahn (59)
 STR_0092    :LIM-Achterbahn
+STR_0093    :Hybridachterbahn
 STR_0512    :Eine kompakte Stahlachterbahn mit einem Spirallifthügel und Wagen mit Sitzen in einer Reihe
 STR_0513    :Eine Looping-Achterbahn, bei der sich die Fahrgäste in einer stehenden Position befinden
 STR_0514    :Die unterhalb der Schiene aufgehängten Züge schwingen in Kurven seitlich aus.
@@ -173,6 +174,7 @@ STR_0598    :Umgekehrte Achterbahnzüge werden aus der Station beschleunigt und 
 STR_0599    :Eine kompakte Achterbahn mit unabhängigen Wagen und gemäßigten, sich windenden Gefällen
 STR_0600    :Angetriebene Minenzüge fahren auf einer gemäßigten und verwundenen Strecke
 STR_0602    :Achterbahnzüge werden aus der Station mit Hilfe von linearen Induktionsmotoren beschleunigt und rasen durch gewundene Überkopfteile
+STR_0603    :Eine Achterbahn im Holzstil mit einer Stahlschiene, die steile Abfahrten und Inversionen ermöglicht.
 STR_0767    :Besucher {INT32}
 STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
@@ -3658,6 +3660,7 @@ STR_6389    :Ungültiger Abstand
 STR_6390    :OpenRCT2 benötigt Dateien vom Originalspiel RollerCoaster Tycoon 2, um zu funktionieren. Bitte wählen Sie das Verzeichnis, in dem Sie RollerCoaster Tycoon 2 installiert haben.
 STR_6391    :Bitte RCT2-Verzeichnis wählen
 STR_6392    :Konnte {STRING} an diesem Pfad nicht finden.
+STR_6393    :Zielauswahl
 
 #############
 # Scenarios #

@@ -94,6 +94,7 @@ STR_0089    :Mini Rutschebane
 STR_0090    :Mine Forlystelse
 STR_0091    :Ukendt Forlystelse (59)
 STR_0092    :LIM Accelereret Rutschebane
+STR_0093    :Hybrid Rutschebane
 STR_0512    :En kompakt rutschebane med en spiral stigning og bløde, snoede fald.
 STR_0513    :En loopende rutschebane hvor passagerne er i en stående position
 STR_0514    :Vogne suspenderet under rutschebane sporet, svinger ud til siden i svingene
@@ -173,6 +174,7 @@ STR_0598    :Omvendt rutschebane vogne accelerer ud af stationen til en lodret o
 STR_0599    :En kompakt rutschebane med individuelle vogne og rolige snoede fald
 STR_0600    :Selvkørende togvogne kører igennem en sen snoet bane af spor
 STR_0602    :Rutsjebanetog accelereres ud af stationen af lineære induktionsmotorer for at suse gennem snoede inversioner
+STR_0603    :En rutsjebane i træ stil, med stål spor, Med stejle fald og hurtige sving.
 STR_0767    :Gæst {INT32}
 STR_0768    :Handymand {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -3674,6 +3676,16 @@ STR_6380    :Opdatering tilgængelig!
 STR_6381    :Deltag i OpenRCT2 Discord gruppe!
 STR_6382    :Nyere version af OpenRCT2 er tilgængelig: {STRING}!
 STR_6383    :Åben hjemmesiden for at hente
+STR_6384    :Sne
+STR_6385    :Kraftig Sne
+STR_6386    :Snestorm
+STR_6387    :Kan ikke sænke element her…
+STR_6388    :Kan ikke hæve element her…
+STR_6389    :Ugyldig frigang
+STR_6390    :OpenRCT2 skal bruge filerne, fra den originale RollerCoaster Tycoon 2, for at kunne fungere. Vælg venligst, mappen hvor du har installeret RollerCoaster Tycoon 2.
+STR_6391    :Vælg venligst din RCT2 mappe
+STR_6392    :Kunne ikke finde {STRING} i denne mappe.
+STR_6393    :Objekt udvælgelse
 
 #############
 # Scenarios #
@@ -4122,82 +4134,82 @@ STR_DTLS    :
 
 ## Start OpenRCT2 Official
 [XXBBBR01]
-STR_NAME    :Base Block
+STR_NAME    :Basis blok
 
 [TTRFTL02]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFTL03]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFTL04]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFTL07]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFTL08]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTPIRF02]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTPIRF03]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTPIRF04]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTPIRF05]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTPIRF07]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTPIRF08]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [MG-PRAR]
-STR_NAME    :Wall with Passageway
+STR_NAME    :Væg med døråbning
 
 [TTRFWD01]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFWD02]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFWD03]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFWD04]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFWD05]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFWD06]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFWD07]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFWD08]
-STR_NAME    :Roof
+STR_NAME    :Tag
 
 [TTRFGL01]
-STR_NAME    :Glass Roof
+STR_NAME    :Glas tag
 
 [TTRFGL02]
-STR_NAME    :Glass Roof
+STR_NAME    :Glas tag
 
 [TTRFGL03]
-STR_NAME    :Glass Roof
+STR_NAME    :Glas tag
 
 [ACWW33]
-STR_NAME    :Wooden Post Wall
+STR_NAME    :Træ stolpe væg
 
 [ACWWF32]
-STR_NAME    :Wooden Post Wall
+STR_NAME    :Træ stolpe væg
 
 ## End OpenRCT2 Official
 

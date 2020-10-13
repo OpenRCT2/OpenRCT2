@@ -3642,6 +3642,13 @@ STR_6383    :Otwórz stronę pobierania
 STR_6384    :Śnieg
 STR_6385    :Mocny śnieg
 STR_6386    :Śnieżyca
+STR_6387    :Nie można tutaj obniżyć elementu…
+STR_6388    :Nie można tutaj podwyższyć elementu…
+STR_6389    :Nieprawidłowy prześwit
+STR_6390    :Do działania OpenRCT2 wymaga plików z orginalnego RollerCoaster Tycoon 2. Wybierz katalog gdzie został zainstalowany RollerCoaster Tycoon 2.
+STR_6391    :Wybierz katalog z RCT2
+STR_6392    :Nie można znaleźć {STRING} w tej ścieżce
+STR_6393    :Wybór celu
 
 #############
 # Scenarios #
