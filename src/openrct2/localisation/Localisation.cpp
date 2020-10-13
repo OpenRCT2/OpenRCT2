@@ -92,7 +92,6 @@ const rct_string_id RideInspectionIntervalNames[] = {
     STR_EVERY_HOUR,
     STR_EVERY_2_HOURS,
     STR_NEVER,
-    RIDE_SETTING_INSPECTION_INTERVAL
 };
 
 const rct_string_id PeepThoughts[] = {
