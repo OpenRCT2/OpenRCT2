@@ -1079,11 +1079,11 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
     return { mapCoords->ToTileStart() };
 }
 
-ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, const ScreenCoordsXY& screenCoords)
+[[nodiscard]] ScreenCoordsXY rct_viewport::ScreenToViewportCoord(const ScreenCoordsXY& screenCoords) const
 {
     ScreenCoordsXY ret;
-    ret.x = ((screenCoords.x - viewport->pos.x) * viewport->zoom) + viewport->viewPos.x;
-    ret.y = ((screenCoords.y - viewport->pos.y) * viewport->zoom) + viewport->viewPos.y;
+    ret.x = ((screenCoords.x - pos.x) * zoom) + viewPos.x;
+    ret.y = ((screenCoords.y - pos.y) * zoom) + viewPos.y;
     return ret;
 }
 
@@ -1746,12 +1746,10 @@ static rct_viewport* viewport_find_from_point(const ScreenCoordsXY& screenCoords
     if (viewport == nullptr)
         return nullptr;
 
-    if (screenCoords.x < viewport->pos.x || screenCoords.y < viewport->pos.y)
-        return nullptr;
-    if (screenCoords.x >= viewport->pos.x + viewport->width || screenCoords.y >= viewport->pos.y + viewport->height)
-        return nullptr;
+    if (viewport->ContainsScreen(screenCoords))
+        return viewport;
 
-    return viewport;
+    return nullptr;
 }
 
 /**
@@ -1781,7 +1779,7 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
         return std::nullopt;
     }
 
-    auto start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenCoords);
+    auto start_vp_pos = myViewport->ScreenToViewportCoord(screenCoords);
     CoordsXY cursorMapPos = info.Loc.ToTileCentre();
 
     // Iterates the cursor location to work out exactly where on the tile it is
@@ -1811,7 +1809,7 @@ std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoo
         return std::nullopt;
     }
 
-    auto vpCoords = screen_coord_to_viewport_coord(viewport, screenCoords);
+    auto vpCoords = viewport->ScreenToViewportCoord(screenCoords);
     auto mapPosition = viewport_coord_to_map_coord(vpCoords, z);
     if (!map_is_location_valid(mapPosition))
     {

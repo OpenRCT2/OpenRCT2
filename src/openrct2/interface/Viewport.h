@@ -136,7 +136,6 @@ void viewport_paint(
 
 CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords);
 
-ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, const ScreenCoordsXY& screenCoords);
 CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z);
 std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords, int32_t* direction);
 

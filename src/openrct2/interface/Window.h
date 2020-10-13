@@ -147,6 +147,22 @@ struct rct_viewport
     ZoomLevel zoom;
     uint8_t var_11;
     VisibilityCache visibility;
+
+    // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming
+    // from its x, y, z
+    [[nodiscard]] constexpr bool Contains(const ScreenCoordsXY& vpos) const
+    {
+        return (
+            vpos.y >= viewPos.y && vpos.y < viewPos.y + view_height && vpos.x >= viewPos.x && vpos.x < viewPos.x + view_width);
+    }
+
+    // Use this function on coordinates that are relative to the screen that is been drawn i.e. the cursor position
+    [[nodiscard]] constexpr bool ContainsScreen(const ScreenCoordsXY& sPos) const
+    {
+        return (sPos.x >= pos.x && sPos.x < pos.x + width && sPos.y >= pos.y && sPos.y < pos.y + height);
+    }
+
+    [[nodiscard]] ScreenCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
 };
 
 /**

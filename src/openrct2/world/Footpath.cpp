@@ -283,7 +283,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
         }
     }
 
-    auto start_vp_pos = screen_coord_to_viewport_coord(viewport, screenCoords);
+    auto start_vp_pos = viewport->ScreenToViewportCoord(screenCoords);
 
     for (int32_t i = 0; i < 5; i++)
     {
