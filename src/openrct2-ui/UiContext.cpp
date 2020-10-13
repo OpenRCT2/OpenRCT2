@@ -368,11 +368,12 @@ public:
 
                     if (gConfigSound.audio_focus)
                     {
-                        if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+                        if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED || e.window.event == SDL_WINDOWEVENT_ENTER)
                         {
                             Mixer_SetVolume(1);
                         }
-                        if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+                        if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST || e.window.event == SDL_WINDOWEVENT_LEAVE
+                            || e.window.event == SDL_WINDOWEVENT_TAKE_FOCUS)
                         {
                             Mixer_SetVolume(0);
                         }
