@@ -19,6 +19,7 @@
 
 #    include "../OpenRCT2.h"
 #    include "../config/Config.h"
+#    include "../core/String.hpp"
 #    include "../localisation/Localisation.h"
 #    include "../localisation/LocalisationService.h"
 #    include "../platform/platform.h"
@@ -63,9 +64,9 @@ static uint32_t ttf_surface_cache_hash(TTF_Font* font, const utf8* text);
 static void ttf_surface_cache_dispose(ttf_cache_entry* entry);
 static void ttf_surface_cache_dispose_all();
 static void ttf_getwidth_cache_dispose_all();
-static bool ttf_get_size(TTF_Font* font, const utf8* text, int32_t* width, int32_t* height);
+static bool ttf_get_size(TTF_Font* font, std::string_view text, int32_t* outWidth, int32_t* outHeight);
 static void ttf_toggle_hinting(bool);
-static TTFSurface* ttf_render(TTF_Font* font, const utf8* text);
+static TTFSurface* ttf_render(TTF_Font* font, std::string_view text);
 
 template<typename T> class FontLockHelper
 {
@@ -181,12 +182,12 @@ static void ttf_close_font(TTF_Font* font)
     TTF_CloseFont(font);
 }
 
-static uint32_t ttf_surface_cache_hash(TTF_Font* font, const utf8* text)
+static uint32_t ttf_surface_cache_hash(TTF_Font* font, std::string_view text)
 {
     uint32_t hash = static_cast<uint32_t>(((reinterpret_cast<uintptr_t>(font) * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
-    for (const utf8* ch = text; *ch != 0; ch++)
+    for (size_t i = 0; i < text.size(); i++)
     {
-        hash = ror32(hash, 3) ^ (*ch * 13);
+        hash = ror32(hash, 3) ^ (text[i] * 13);
     }
     return hash;
 }
@@ -219,7 +220,7 @@ void ttf_toggle_hinting()
     ttf_toggle_hinting(true);
 }
 
-TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, const utf8* text)
+TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, std::string_view text)
 {
     ttf_cache_entry* entry;
 
@@ -235,7 +236,7 @@ TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, const utf8* text)
         // Check if entry is a hit
         if (entry->surface == nullptr)
             break;
-        if (entry->font == font && strcmp(entry->text, text) == 0)
+        if (entry->font == font && String::Equals(entry->text, text))
         {
             _ttfSurfaceCacheHitCount++;
             entry->lastUseTick = gCurrentDrawCount;
@@ -269,7 +270,7 @@ TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, const utf8* text)
     _ttfSurfaceCacheCount++;
     entry->surface = surface;
     entry->font = font;
-    entry->text = _strdup(text);
+    entry->text = strndup(text.data(), text.size());
     entry->lastUseTick = gCurrentDrawCount;
     return entry->surface;
 }
@@ -295,7 +296,7 @@ static void ttf_getwidth_cache_dispose_all()
     }
 }
 
-uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, const utf8* text)
+uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, std::string_view text)
 {
     ttf_getwidth_cache_entry* entry;
 
@@ -311,7 +312,7 @@ uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, const utf8* text)
         // Check if entry is a hit
         if (entry->text == nullptr)
             break;
-        if (entry->font == font && strcmp(entry->text, text) == 0)
+        if (entry->font == font && String::Equals(entry->text, text))
         {
             _ttfGetWidthCacheHitCount++;
             entry->lastUseTick = gCurrentDrawCount;
@@ -341,7 +342,7 @@ uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, const utf8* text)
     _ttfGetWidthCacheCount++;
     entry->width = width;
     entry->font = font;
-    entry->text = _strdup(text);
+    entry->text = strndup(text.data(), text.size());
     entry->lastUseTick = gCurrentDrawCount;
     return entry->width;
 }
@@ -357,20 +358,24 @@ bool ttf_provides_glyph(const TTF_Font* font, codepoint_t codepoint)
     return TTF_GlyphIsProvided(font, codepoint);
 }
 
-static bool ttf_get_size(TTF_Font* font, const utf8* text, int32_t* outWidth, int32_t* outHeight)
+static bool ttf_get_size(TTF_Font* font, std::string_view text, int32_t* outWidth, int32_t* outHeight)
 {
-    return TTF_SizeUTF8(font, text, outWidth, outHeight);
+    thread_local std::string buffer;
+    buffer.assign(text);
+    return TTF_SizeUTF8(font, buffer.c_str(), outWidth, outHeight);
 }
 
-static TTFSurface* ttf_render(TTF_Font* font, const utf8* text)
+static TTFSurface* ttf_render(TTF_Font* font, std::string_view text)
 {
+    thread_local std::string buffer;
+    buffer.assign(text);
     if (TTF_GetFontHinting(font) != 0)
     {
-        return TTF_RenderUTF8_Shaded(font, text, 0x000000FF, 0x000000FF);
+        return TTF_RenderUTF8_Shaded(font, buffer.c_str(), 0x000000FF, 0x000000FF);
     }
     else
     {
-        return TTF_RenderUTF8_Solid(font, text, 0x000000FF);
+        return TTF_RenderUTF8_Solid(font, buffer.c_str(), 0x000000FF);
     }
 }
 

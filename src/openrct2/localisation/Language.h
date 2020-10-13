@@ -85,11 +85,11 @@ struct language_descriptor
 
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
 
-extern const utf8 BlackUpArrowString[];
-extern const utf8 BlackDownArrowString[];
-extern const utf8 BlackLeftArrowString[];
-extern const utf8 BlackRightArrowString[];
-extern const utf8 CheckBoxMarkString[];
+constexpr const char* BlackUpArrowString = u8"{BLACK}▲";
+constexpr const char* BlackDownArrowString = u8"{BLACK}▼";
+constexpr const char* BlackLeftArrowString = u8"{BLACK}◀";
+constexpr const char* BlackRightArrowString = u8"{BLACK}▶";
+constexpr const char* CheckBoxMarkString = u8"✓";
 
 uint8_t language_get_id_from_locale(const char* locale);
 const char* language_get_string(rct_string_id id);

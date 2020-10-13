@@ -136,7 +136,7 @@ namespace OpenRCT2
     }
 
     FmtString::FmtString(const char* s)
-        : FmtString(std::string_view(s))
+        : FmtString(s == nullptr ? std::string_view() : std::string_view(s))
     {
     }
 
@@ -174,6 +174,18 @@ namespace OpenRCT2
     {
         auto sz = language_get_string(STR_LOCALE_DECIMAL_POINT);
         return sz != nullptr ? sz : std::string_view();
+    }
+
+    void FormatRealName(std::stringstream& ss, rct_string_id id)
+    {
+        if (IsRealNameStringId(id))
+        {
+            auto realNameIndex = id - REAL_NAME_START;
+            ss << real_names[realNameIndex % std::size(real_names)];
+            ss << ' ';
+            ss << real_name_initials[(realNameIndex >> 10) % std::size(real_name_initials)];
+            ss << '.';
+        }
     }
 
     template<size_t TSize, typename TIndex> static void AppendSeperator(char (&buffer)[TSize], TIndex& i, std::string_view sep)
@@ -468,13 +480,6 @@ namespace OpenRCT2
                     ss << arg.c_str();
                 }
                 break;
-            case FORMAT_STRINGID:
-            case FORMAT_STRINGID2:
-                if constexpr (std::is_integral<T>())
-                {
-                    ss << language_get_string(arg);
-                }
-                break;
         }
     }
 
@@ -488,11 +493,15 @@ namespace OpenRCT2
         return t == FORMAT_COMMA1DP16 || (t >= FORMAT_COMMA32 && t <= FORMAT_LENGTH);
     }
 
+    bool IsRealNameStringId(rct_string_id id)
+    {
+        return id >= REAL_NAME_START && id <= REAL_NAME_END;
+    }
+
     FmtString GetFmtStringById(rct_string_id id)
     {
-        auto lang = language_get_string(id);
-        auto fmtc = language_convert_string_to_tokens(lang);
-        return FmtString(std::move(fmtc));
+        auto fmtc = language_get_string(id);
+        return FmtString(fmtc);
     }
 
     std::stringstream& GetThreadFormatStream()
@@ -547,8 +556,15 @@ namespace OpenRCT2
                     const auto& arg = args[argIndex++];
                     if (auto stringid = std::get_if<uint16_t>(&arg))
                     {
-                        auto subfmt = GetFmtStringById(*stringid);
-                        FormatStringAny(ss, subfmt, args, argIndex);
+                        if (IsRealNameStringId(*stringid))
+                        {
+                            FormatRealName(ss, *stringid);
+                        }
+                        else
+                        {
+                            auto subfmt = GetFmtStringById(*stringid);
+                            FormatStringAny(ss, subfmt, args, argIndex);
+                        }
                     }
                 }
                 else
@@ -630,7 +646,6 @@ namespace OpenRCT2
                 {
                     auto sz = ReadFromArgs<const char*>(args);
                     anyArgs.push_back(sz);
-                    BuildAnyArgListFromLegacyArgBuffer(sz, anyArgs, args);
                     break;
                 }
                 case FORMAT_POP16:
@@ -651,3 +666,8 @@ namespace OpenRCT2
         return FormatStringAny(buffer, bufferLen, fmt, anyArgs);
     }
 } // namespace OpenRCT2
+
+void format_string(utf8* dest, size_t size, rct_string_id format, const void* args)
+{
+    OpenRCT2::FormatStringLegacy(dest, size, format, args);
+}

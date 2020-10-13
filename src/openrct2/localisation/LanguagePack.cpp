@@ -539,28 +539,28 @@ private:
         sb.Clear();
         while (reader->TryPeek(&codepoint) && !IsNewLine(codepoint))
         {
-            if (codepoint == '{')
-            {
-                uint32_t token;
-                bool isByte;
-                if (ParseToken(reader, &token, &isByte))
-                {
-                    if (isByte)
-                    {
-                        sb.Append(reinterpret_cast<const utf8*>(&token), 1);
-                    }
-                    else
-                    {
-                        sb.Append(static_cast<int32_t>(token));
-                    }
-                }
-                else
-                {
-                    // Syntax error or unknown token, ignore line entirely
-                    return;
-                }
-            }
-            else
+            // if (codepoint == '{')
+            // {
+            //     uint32_t token;
+            //     bool isByte;
+            //     if (ParseToken(reader, &token, &isByte))
+            //     {
+            //         if (isByte)
+            //         {
+            //             sb.Append(reinterpret_cast<const utf8*>(&token), 1);
+            //         }
+            //         else
+            //         {
+            //             sb.Append(static_cast<int32_t>(token));
+            //         }
+            //     }
+            //     else
+            //     {
+            //         // Syntax error or unknown token, ignore line entirely
+            //         return;
+            //     }
+            // }
+            // else
             {
                 reader->Skip();
                 sb.Append(codepoint);

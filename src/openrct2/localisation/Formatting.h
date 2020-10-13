@@ -64,6 +64,7 @@ namespace OpenRCT2
             bool eol() const;
         };
 
+        FmtString() = default;
         FmtString(std::string&& s);
         FmtString(std::string_view s);
         FmtString(const char* s);
@@ -76,6 +77,8 @@ namespace OpenRCT2
     template<typename T> void FormatArgument(std::stringstream& ss, FormatToken token, T arg);
 
     bool CanFormatToken(FormatToken t);
+    bool IsRealNameStringId(rct_string_id id);
+    void FormatRealName(std::stringstream& ss, rct_string_id id);
     FmtString GetFmtStringById(rct_string_id id);
     std::stringstream& GetThreadFormatStream();
     size_t CopyStringStreamToBuffer(char* buffer, size_t bufferLen, std::stringstream& ss);
@@ -110,9 +113,17 @@ namespace OpenRCT2
                 {
                     if constexpr (std::is_integral<TArg0>())
                     {
-                        auto subfmt = GetFmtStringById(static_cast<rct_string_id>(arg0));
-                        auto subit = subfmt.begin();
-                        stack.push(&subit);
+                        auto stringId = static_cast<rct_string_id>(arg0);
+                        if (IsRealNameStringId(stringId))
+                        {
+                            FormatRealName(ss, stringId);
+                        }
+                        else
+                        {
+                            auto subfmt = GetFmtStringById(stringId);
+                            auto subit = subfmt.begin();
+                            stack.push(&subit);
+                        }
                         FormatString(ss, stack, argN...);
                     }
                 }
@@ -143,6 +154,14 @@ namespace OpenRCT2
         auto& ss = GetThreadFormatStream();
         FormatString(ss, fmt, argN...);
         return ss.str();
+    }
+
+    template<typename... TArgs>
+    size_t FormatStringToBuffer(char* buffer, size_t bufferLen, const FmtString& fmt, TArgs&&... argN)
+    {
+        auto& ss = GetThreadFormatStream();
+        FormatString(ss, fmt, argN...);
+        return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 
     template<typename... TArgs> static void FormatStringId(std::stringstream& ss, rct_string_id id, TArgs&&... argN)

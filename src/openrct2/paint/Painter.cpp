@@ -19,6 +19,7 @@
 #include "../interface/Chat.h"
 #include "../interface/InteractiveConsole.h"
 #include "../localisation/FormatCodes.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
 #include "../paint/Paint.h"
 #include "../title/TitleScreen.h"
@@ -83,16 +84,10 @@ void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
 {
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
 
-    // Format string
-    utf8 buffer[64] = { 0 };
-    utf8* ch = buffer;
-    ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-    ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
-    ch = utf8_write_codepoint(ch, FORMAT_RED);
+    char buffer[64]{};
+    FormatStringToBuffer(buffer, sizeof(buffer), "{MEDIUMFONT}{OUTLINE}{RED}{STRING}", text);
 
-    snprintf(ch, 64 - (ch - buffer), "%s", text);
-
-    int32_t stringWidth = gfx_get_string_width(buffer);
+    auto stringWidth = gfx_get_string_width(buffer);
     screenCoords.x = screenCoords.x - stringWidth;
 
     if (((gCurrentTicks >> 1) & 0xF) > 4)
@@ -106,17 +101,10 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
 {
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
 
-    // Measure FPS
     MeasureFPS();
 
-    // Format string
-    utf8 buffer[64] = { 0 };
-    utf8* ch = buffer;
-    ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-    ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
-    ch = utf8_write_codepoint(ch, FORMAT_WHITE);
-
-    snprintf(ch, 64 - (ch - buffer), "%d", _currentFPS);
+    char buffer[64]{};
+    FormatStringToBuffer(buffer, sizeof(buffer), "{MEDIUMFONT}{OUTLINE}{WHITE}{INT32}", _currentFPS);
 
     // Draw Text
     int32_t stringWidth = gfx_get_string_width(buffer);

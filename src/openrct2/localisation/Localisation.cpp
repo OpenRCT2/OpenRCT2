@@ -1299,7 +1299,7 @@ std::string format_string(rct_string_id format, const void* args)
  * format (ax)
  * args (ecx)
  */
-void format_string(utf8* dest, size_t size, rct_string_id format, const void* args)
+void format_string_old(utf8* dest, size_t size, rct_string_id format, const void* args)
 {
 #ifdef DEBUG
     if (gDebugStringFormatting)
