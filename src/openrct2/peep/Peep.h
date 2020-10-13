@@ -703,7 +703,11 @@ struct Peep : SpriteBase
     uint32_t Id;
     money32 CashInPocket;
     money32 CashSpent;
-    int32_t TimeInPark;
+    union
+    {
+        int32_t ParkEntryTime;
+        int32_t HireDate;
+    };
     int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
     uint8_t PreviousRide;
     uint16_t PreviousRideTimeOut;
@@ -854,6 +858,8 @@ public:
     bool HasRidden(const Ride* ride) const;
     void SetHasRiddenRideType(int32_t rideType);
     bool HasRiddenRideType(int32_t rideType) const;
+    void SetParkEntryTime(int32_t entryTime);
+    int32_t GetParkEntryTime() const;
     int32_t HasFoodStandardFlag() const;
     int32_t HasFoodExtraFlag() const;
     bool HasDrinkStandardFlag() const;
@@ -927,6 +933,8 @@ public:
     bool DoPathFinding();
     uint8_t GetCostume() const;
     void SetCostume(uint8_t value);
+    void SetHireDate(int32_t hireDate);
+    int32_t GetHireDate() const;
 
     bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
 

@@ -217,7 +217,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(Id);
     COMPARE_FIELD(CashInPocket);
     COMPARE_FIELD(CashSpent);
-    COMPARE_FIELD(TimeInPark);
+    COMPARE_FIELD(ParkEntryTime);
     COMPARE_FIELD(RejoinQueueTimeout);
     COMPARE_FIELD(PreviousRide);
     COMPARE_FIELD(PreviousRideTimeOut);

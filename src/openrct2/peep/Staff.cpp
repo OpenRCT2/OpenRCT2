@@ -362,7 +362,7 @@ void Staff::ResetStats()
 {
     for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
-        peep->TimeInPark = gDateMonthsElapsed;
+        peep->SetHireDate(gDateMonthsElapsed);
         peep->StaffLawnsMown = 0;
         peep->StaffRidesFixed = 0;
         peep->StaffGardensWatered = 0;
@@ -1056,6 +1056,16 @@ void Staff::SetCostume(uint8_t value)
 {
     auto costume = static_cast<EntertainerCostume>(value);
     SpriteType = EntertainerCostumeToSprite(costume);
+}
+
+void Staff::SetHireDate(int32_t hireDate)
+{
+    HireDate = hireDate;
+}
+
+int32_t Staff::GetHireDate() const
+{
+    return HireDate;
 }
 
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)

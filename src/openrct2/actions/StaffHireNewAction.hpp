@@ -227,7 +227,7 @@ private:
             }
 
             // Staff uses this
-            newPeep->TimeInPark = gDateMonthsElapsed;
+            newPeep->AsStaff()->SetHireDate(gDateMonthsElapsed);
             newPeep->PathfindGoal.x = 0xFF;
             newPeep->PathfindGoal.y = 0xFF;
             newPeep->PathfindGoal.z = 0xFF;

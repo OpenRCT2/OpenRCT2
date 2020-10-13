@@ -1489,7 +1489,8 @@ private:
         dst->Id = src->id;
         dst->CashInPocket = src->cash_in_pocket;
         dst->CashSpent = src->cash_spent;
-        dst->TimeInPark = src->time_in_park;
+        // This doubles as staff hire date
+        dst->ParkEntryTime = src->park_entry_time;
 
         // This doubles as staff type
         dst->GuestNumRides = src->no_of_rides;
