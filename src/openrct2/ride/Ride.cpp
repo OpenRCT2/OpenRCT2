@@ -1768,7 +1768,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         auto rideEntranceExitRemove = RideEntranceExitRemoveAction(
             { tileElement.x, tileElement.y }, rideIndex, stationIndex, entranceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-        rideEntranceExitRemove.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
+        rideEntranceExitRemove.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
             gCurrentToolWidget.widget_index = entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE
                                                                                           : WC_RIDE_CONSTRUCTION__WIDX_EXIT;
             gRideEntranceExitPlaceType = entranceType;
@@ -3743,7 +3743,7 @@ money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t 
 {
     auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
     auto res = GameActions::Execute(&rideSetSetting);
-    return res->Error == GA_ERROR::OK ? 0 : MONEY32_UNDEFINED;
+    return res->Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
 }
 
 money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
@@ -3752,7 +3752,7 @@ money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, u
     rideSetSetting.SetFlags(flags);
     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
                                                : GameActions::QueryNested(&rideSetSetting);
-    return res->Error == GA_ERROR::OK ? 0 : MONEY32_UNDEFINED;
+    return res->Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
 }
 
 /**

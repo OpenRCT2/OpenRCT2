@@ -15,7 +15,7 @@
 #    include "../scripting/ScriptEngine.h"
 #    include "GameAction.h"
 
-DEFINE_GAME_ACTION(CustomAction, GAME_COMMAND_CUSTOM, GameActionResult)
+DEFINE_GAME_ACTION(CustomAction, GAME_COMMAND_CUSTOM, GameActions::Result)
 {
 private:
     std::string _id;
@@ -41,7 +41,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -50,13 +50,13 @@ public:
         stream << DS_TAG(_id) << DS_TAG(_json);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
         return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
         return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, true);

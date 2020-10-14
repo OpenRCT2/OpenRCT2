@@ -1056,7 +1056,7 @@ static bool TrackDesignPlaceSceneryElement(
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&smallSceneryPlace)
                                                            : GameActions::QueryNested(&smallSceneryPlace);
 
-                cost = res->Error == GA_ERROR::OK ? res->Cost : 0;
+                cost = res->Error == GameActions::Status::Ok ? res->Cost : 0;
                 break;
             }
             case OBJECT_TYPE_LARGE_SCENERY:
@@ -1196,7 +1196,7 @@ static bool TrackDesignPlaceSceneryElement(
                     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
                                                                : GameActions::QueryNested(&footpathPlaceAction);
                     // Ignore failures
-                    cost = res->Error == GA_ERROR::OK ? res->Cost : 0;
+                    cost = res->Error == GameActions::Status::Ok ? res->Cost : 0;
                 }
                 else
                 {
@@ -1343,7 +1343,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
                         auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord, coords.z }, false);
-                        cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+                        cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
                     }
                     else
                     {
@@ -1364,7 +1364,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, false);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
-                        cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+                        cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
                     }
                     if (cost != MONEY32_UNDEFINED)
                     {
@@ -1382,7 +1382,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
                     if (_trackDesignPlaceOperation == PTD_OPERATION_PLACE_QUERY)
                     {
                         auto res = RideEntranceExitPlaceAction::TrackPlaceQuery({ mapCoord, coords.z }, true);
-                        cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+                        cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
                     }
                     else
                     {
@@ -1403,7 +1403,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
                         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, true);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
-                        cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+                        cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
                     }
                     if (cost != MONEY32_UNDEFINED)
                     {
@@ -1440,7 +1440,7 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
                     mazePlace.SetFlags(flags);
                     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&mazePlace)
                                                                : GameActions::QueryNested(&mazePlace);
-                    cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+                    cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
                     break;
             }
 
@@ -1601,7 +1601,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
 
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&trackPlaceAction)
                                                            : GameActions::QueryNested(&trackPlaceAction);
-                money32 cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+                money32 cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
 
                 _trackDesignPlaceCost += cost;
                 if (cost == MONEY32_UNDEFINED)
@@ -1742,7 +1742,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
 
                         _trackDesignPlaceCost += res->Cost;
 
-                        if (res->Error != GA_ERROR::OK)
+                        if (res->Error != GameActions::Status::Ok)
                         {
                             _trackDesignPlaceCost = MONEY32_UNDEFINED;
                             return false;
@@ -1757,7 +1757,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                     newCoords.z += _trackPreviewOrigin.z;
 
                     auto res = RideEntranceExitPlaceAction::TrackPlaceQuery(newCoords, false);
-                    if (res->Error != GA_ERROR::OK)
+                    if (res->Error != GameActions::Status::Ok)
                     {
                         _trackDesignPlaceCost = MONEY32_UNDEFINED;
                         return false;
@@ -1863,7 +1863,7 @@ static money32 track_design_ride_create_command(int32_t type, int32_t subType, i
     const RideCreateGameActionResult* res = static_cast<RideCreateGameActionResult*>(r.get());
 
     // Callee's of this function expect MONEY32_UNDEFINED in case of failure.
-    if (res->Error != GA_ERROR::OK)
+    if (res->Error != GameActions::Status::Ok)
     {
         return MONEY32_UNDEFINED;
     }

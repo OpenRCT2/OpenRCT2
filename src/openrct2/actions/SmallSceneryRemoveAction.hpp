@@ -23,7 +23,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameActionResult)
+DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
@@ -59,19 +59,19 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
 
         if (!LocationValid(_loc))
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         rct_scenery_entry* entry = get_small_scenery_entry(_sceneryType);
         if (entry == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         res->Cost = entry->small_scenery.removal_price * 10;
@@ -85,7 +85,7 @@ public:
             {
                 if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_IS_TREE))
                 {
-                    res->Error = GA_ERROR::NO_CLEARANCE;
+                    res->Error = GameActions::Status::NoClearance;
                     res->ErrorTitle = STR_CANT_REMOVE_THIS;
                     res->ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
                     return res;
@@ -95,7 +95,7 @@ public:
             // Check if the land is owned
             if (!map_is_location_owned(_loc))
             {
-                res->Error = GA_ERROR::NO_CLEARANCE;
+                res->Error = GameActions::Status::NoClearance;
                 res->ErrorTitle = STR_CANT_REMOVE_THIS;
                 res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
                 return res;
@@ -105,20 +105,20 @@ public:
         TileElement* tileElement = FindSceneryElement();
         if (tileElement == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
 
         rct_scenery_entry* entry = get_small_scenery_entry(_sceneryType);
         if (entry == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         res->Cost = entry->small_scenery.removal_price * 10;
@@ -128,7 +128,7 @@ public:
         TileElement* tileElement = FindSceneryElement();
         if (tileElement == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         res->Position.z = tile_element_height(res->Position);

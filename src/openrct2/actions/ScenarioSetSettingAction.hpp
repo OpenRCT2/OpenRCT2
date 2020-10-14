@@ -45,7 +45,7 @@ enum class ScenarioSetSetting : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(ScenarioSetSettingAction, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, GameActionResult)
+DEFINE_GAME_ACTION(ScenarioSetSettingAction, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, GameActions::Result)
 {
 private:
     ScenarioSetSetting _setting{ ScenarioSetSetting::Count };
@@ -61,7 +61,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -71,18 +71,18 @@ public:
         stream << DS_TAG(_setting) << DS_TAG(_value);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_setting >= ScenarioSetSetting::Count)
         {
             log_error("Invalid setting: %u", _setting);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         switch (_setting)
         {
@@ -284,7 +284,7 @@ public:
                 break;
             default:
                 log_error("Invalid setting: %u", _setting);
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
                 break;
         }
         window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);

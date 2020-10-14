@@ -12,7 +12,7 @@
 #include "../world/Climate.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ClimateSetAction, GAME_COMMAND_SET_CLIMATE, GameActionResult)
+DEFINE_GAME_ACTION(ClimateSetAction, GAME_COMMAND_SET_CLIMATE, GameActions::Result)
 {
 private:
     ClimateType _climate{};
@@ -26,7 +26,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -36,22 +36,23 @@ public:
         stream << DS_TAG(_climate);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_climate >= ClimateType::Count)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_CLIMATE_ID, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_NONE);
         }
 
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         gClimate = ClimateType{ _climate };
 
         gfx_invalidate_screen();
 
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 };

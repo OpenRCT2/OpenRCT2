@@ -15,7 +15,7 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(WaterSetHeightAction, GAME_COMMAND_SET_WATER_HEIGHT, GameActionResult)
+DEFINE_GAME_ACTION(WaterSetHeightAction, GAME_COMMAND_SET_WATER_HEIGHT, GameActions::Result)
 {
 private:
     CoordsXY _coords;
@@ -41,7 +41,7 @@ public:
         stream << DS_TAG(_coords) << DS_TAG(_height);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto res = MakeResult();
         res->Expenditure = ExpenditureType::Landscaping;
@@ -50,25 +50,25 @@ public:
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
             && gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+            return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
         }
 
         rct_string_id errorMsg = CheckParameters();
         if (errorMsg != STR_NONE)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE, errorMsg);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, errorMsg);
         }
 
         if (!LocationValid(_coords))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
             if (!map_is_location_in_park(_coords))
             {
-                return MakeResult(GA_ERROR::DISALLOWED, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+                return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 
@@ -76,7 +76,7 @@ public:
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-            return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
+            return MakeResult(GameActions::Status::Unknown, STR_NONE);
         }
 
         int32_t zHigh = surfaceElement->GetBaseZ();
@@ -92,14 +92,14 @@ public:
             zLow = temp;
         }
 
-        if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2->Error != GA_ERROR::OK)
+        if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2->Error != GameActions::Status::Ok)
         {
             return MakeResult(
-                GA_ERROR::NO_CLEARANCE, STR_NONE, res2->ErrorMessage.GetStringId(), res2->ErrorMessageArgs.data());
+                GameActions::Status::NoClearance, STR_NONE, res2->ErrorMessage.GetStringId(), res2->ErrorMessageArgs.data());
         }
         if (surfaceElement->HasTrackThatNeedsWater())
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_NONE);
+            return MakeResult(GameActions::Status::Disallowed, STR_NONE);
         }
 
         res->Cost = 250;
@@ -107,7 +107,7 @@ public:
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto res = MakeResult();
         res->Expenditure = ExpenditureType::Landscaping;
@@ -122,7 +122,7 @@ public:
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
         }
 
         if (_height > surfaceElement->base_height)

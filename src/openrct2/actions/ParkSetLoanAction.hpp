@@ -18,7 +18,7 @@
 #include "../windows/Intent.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetLoanAction, GAME_COMMAND_SET_CURRENT_LOAN, GameActionResult)
+DEFINE_GAME_ACTION(ParkSetLoanAction, GAME_COMMAND_SET_CURRENT_LOAN, GameActions::Result)
 {
 private:
     money32 _value{ MONEY32_UNDEFINED };
@@ -32,7 +32,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -41,7 +41,7 @@ public:
         stream << DS_TAG(_value);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto currentLoan = gBankLoan;
         auto loanDifference = currentLoan - _value;
@@ -49,20 +49,22 @@ public:
         {
             if (_value > gMaxBankLoan)
             {
-                return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
+                return MakeResult(
+                    GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
             }
         }
         else
         {
             if (loanDifference > gCash)
             {
-                return MakeResult(GA_ERROR::INSUFFICIENT_FUNDS, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
+                return MakeResult(
+                    GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
             }
         }
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         gCash -= (gBankLoan - _value);
         gBankLoan = _value;

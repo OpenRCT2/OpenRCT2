@@ -224,9 +224,9 @@ static void window_track_place_update(rct_window* w)
             window_close(w);
 }
 
-static GameActionResult::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t flags)
+static GameActions::Result::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t flags)
 {
-    GameActionResult::Ptr res;
+    GameActions::Result::Ptr res;
     for (int32_t i = 0; i < 7; i++, loc.z += 8)
     {
         auto tdAction = TrackDesignAction(CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);
@@ -235,7 +235,7 @@ static GameActionResult::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uin
 
         // If successful dont keep trying.
         // If failure due to no money then increasing height only makes problem worse
-        if (res->Error == GA_ERROR::OK || res->Error == GA_ERROR::INSUFFICIENT_FUNDS)
+        if (res->Error == GameActions::Status::Ok || res->Error == GameActions::Status::InsufficientFunds)
         {
             return res;
         }
@@ -282,13 +282,13 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         window_track_place_clear_provisional();
         auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
 
-        if (res->Error == GA_ERROR::OK)
+        if (res->Error == GameActions::Status::Ok)
         {
             // Valid location found. Place the ghost at the location.
             auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
             tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* result) {
-                if (result->Error == GA_ERROR::OK)
+                if (result->Error == GameActions::Status::Ok)
                 {
                     _window_track_place_ride_index = result->rideIndex;
                     _windowTrackPlaceLastValid = trackLoc;
@@ -296,7 +296,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
                 }
             });
             res = GameActions::Execute(&tdAction);
-            cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+            cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
         }
     }
 
@@ -331,11 +331,11 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     CoordsXYZ trackLoc = { mapCoords, mapZ };
 
     auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
-    if (res->Error == GA_ERROR::OK)
+    if (res->Error == GameActions::Status::Ok)
     {
         auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
         tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* result) {
-            if (result->Error == GA_ERROR::OK)
+            if (result->Error == GameActions::Status::Ok)
             {
                 auto ride = get_ride(result->rideIndex);
                 if (ride != nullptr)
@@ -435,7 +435,7 @@ void TrackPlaceRestoreProvisional()
         auto tdAction = TrackDesignAction({ _windowTrackPlaceLastValid, _currentTrackPieceDirection }, *_trackDesign);
         tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         auto res = GameActions::Execute(&tdAction);
-        if (res->Error != GA_ERROR::OK)
+        if (res->Error != GameActions::Status::Ok)
         {
             _window_track_place_last_was_valid = false;
         }

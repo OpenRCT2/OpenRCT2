@@ -276,8 +276,8 @@ void window_player_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     }
     int32_t group = network_get_group_id(dropdownIndex);
     auto playerSetGroupAction = PlayerSetGroupAction(w->number, group);
-    playerSetGroupAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-        if (result->Error == GA_ERROR::OK)
+    playerSetGroupAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error == GameActions::Status::Ok)
         {
             w->Invalidate();
         }

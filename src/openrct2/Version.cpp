@@ -72,7 +72,7 @@ NewVersionInfo get_latest_version()
         try
         {
             res = Do(request);
-            if (res.status != Http::Status::OK)
+            if (res.status != Http::Status::Ok)
                 throw std::runtime_error("bad http status");
         }
         catch (std::exception& e)

@@ -13,25 +13,25 @@
 
 // Clang format is broken for small game actions
 // clang-format off
-DEFINE_GAME_ACTION(PauseToggleAction, GAME_COMMAND_TOGGLE_PAUSE, GameActionResult)
+DEFINE_GAME_ACTION(PauseToggleAction, GAME_COMMAND_TOGGLE_PAUSE, GameActions::Result)
 {
 public:
     PauseToggleAction() = default;
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         pause_toggle();
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 };
 // clang-format on

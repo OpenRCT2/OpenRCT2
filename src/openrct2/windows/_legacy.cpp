@@ -86,7 +86,7 @@ money32 place_provisional_track_piece(
         // This command must not be sent over the network
         auto res = GameActions::Execute(&trackPlaceAction);
         auto tpar = dynamic_cast<TrackPlaceActionResult*>(res.get());
-        result = ((tpar == nullptr) || (res->Error == GA_ERROR::OK)) ? res->Cost : MONEY32_UNDEFINED;
+        result = ((tpar == nullptr) || (res->Error == GameActions::Status::Ok)) ? res->Cost : MONEY32_UNDEFINED;
         if (result == MONEY32_UNDEFINED)
             return result;
 

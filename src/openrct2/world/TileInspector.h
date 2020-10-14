@@ -26,8 +26,12 @@ enum TILE_INSPECTOR_ELEMENT_TYPE
     TILE_INSPECTOR_ELEMENT_CORRUPT,
 };
 
-class GameActionResult;
-using GameActionResultPtr = std::unique_ptr<GameActionResult>;
+namespace GameActions
+{
+    class Result;
+}
+
+using GameActionResultPtr = std::unique_ptr<GameActions::Result>;
 GameActionResultPtr tile_inspector_insert_corrupt_at(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
 GameActionResultPtr tile_inspector_remove_element_at(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
 GameActionResultPtr tile_inspector_swap_elements_at(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting);

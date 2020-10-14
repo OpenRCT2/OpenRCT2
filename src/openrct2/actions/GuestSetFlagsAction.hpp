@@ -14,7 +14,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(GuestSetFlagsAction, GAME_COMMAND_GUEST_SET_FLAGS, GameActionResult)
+DEFINE_GAME_ACTION(GuestSetFlagsAction, GAME_COMMAND_GUEST_SET_FLAGS, GameActions::Result)
 {
 private:
     uint16_t _peepId{ SPRITE_INDEX_NULL };
@@ -30,7 +30,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -40,28 +40,28 @@ public:
         stream << DS_TAG(_peepId) << DS_TAG(_newFlags);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         Peep* peep = TryGetEntity<Peep>(_peepId);
         if (peep == nullptr)
         {
             log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS);
         }
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         Peep* peep = TryGetEntity<Peep>(_peepId);
         if (peep == nullptr)
         {
             log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS);
         }
 
         peep->PeepFlags = _newFlags;
 
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 };

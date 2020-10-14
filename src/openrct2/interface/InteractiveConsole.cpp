@@ -739,8 +739,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             if (gCash != money)
             {
                 auto setCheatAction = SetCheatAction(CheatType::SetMoney, money);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
-                    if (res->Error != GA_ERROR::OK)
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                    if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get money");
@@ -947,8 +947,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             if (gCheatsSandboxMode != (int_val[0] != 0))
             {
                 auto setCheatAction = SetCheatAction(CheatType::SandboxMode, int_val[0] != 0);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
-                    if (res->Error != GA_ERROR::OK)
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                    if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get cheat_sandbox_mode");
@@ -965,8 +965,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             if (gCheatsDisableClearanceChecks != (int_val[0] != 0))
             {
                 auto setCheatAction = SetCheatAction(CheatType::DisableClearanceChecks, int_val[0] != 0);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
-                    if (res->Error != GA_ERROR::OK)
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                    if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get cheat_disable_clearance_checks");
@@ -983,8 +983,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             if (gCheatsDisableSupportLimits != (int_val[0] != 0))
             {
                 auto setCheatAction = SetCheatAction(CheatType::DisableSupportLimits, int_val[0] != 0);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
-                    if (res->Error != GA_ERROR::OK)
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                    if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get cheat_disable_support_limits");

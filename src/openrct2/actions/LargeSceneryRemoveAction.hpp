@@ -23,7 +23,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LargeSceneryRemoveAction, GAME_COMMAND_REMOVE_LARGE_SCENERY, GameActionResult)
+DEFINE_GAME_ACTION(LargeSceneryRemoveAction, GAME_COMMAND_REMOVE_LARGE_SCENERY, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
@@ -56,9 +56,9 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_tileIndex);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
 
         const uint32_t flags = GetFlags();
 
@@ -73,7 +73,7 @@ public:
         if (tileElement == nullptr)
         {
             log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
@@ -99,13 +99,13 @@ public:
             {
                 if (!map_is_location_owned({ currentTile.x, currentTile.y, currentTile.z }))
                 {
-                    return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+                    return MakeResult(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
                 }
             }
 
             if (!LocationValid(currentTile))
             {
-                return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+                return MakeResult(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
             // Prevent duplicate costs when using the clear scenery tool that overlaps multiple large
             // scenery tile elements.
@@ -125,9 +125,9 @@ public:
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
 
         const uint32_t flags = GetFlags();
 
@@ -142,7 +142,7 @@ public:
         if (tileElement == nullptr)
         {
             log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         tile_element_remove_banner_entry(tileElement);
@@ -169,7 +169,7 @@ public:
             {
                 if (!map_is_location_owned({ currentTile.x, currentTile.y, currentTile.z }))
                 {
-                    return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+                    return MakeResult(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
                 }
             }
 

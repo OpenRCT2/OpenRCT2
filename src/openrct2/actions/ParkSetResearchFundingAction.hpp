@@ -18,7 +18,7 @@
 #include "../windows/Intent.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetResearchFundingAction, GAME_COMMAND_SET_RESEARCH_FUNDING, GameActionResult)
+DEFINE_GAME_ACTION(ParkSetResearchFundingAction, GAME_COMMAND_SET_RESEARCH_FUNDING, GameActions::Result)
 {
 private:
     // TODO change to std::optional when C++17
@@ -35,7 +35,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -44,16 +44,16 @@ public:
         stream << DS_TAG(_priorities) << DS_TAG(_fundingAmount);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_fundingAmount >= RESEARCH_FUNDING_COUNT)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         gResearchPriorities = _priorities;
         gResearchFundingLevel = _fundingAmount;

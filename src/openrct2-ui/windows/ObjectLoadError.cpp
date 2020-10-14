@@ -158,7 +158,7 @@ private:
             req.method = Http::Method::GET;
             req.url = url;
             Http::DoAsync(req, [this, entry, name](Http::Response response) {
-                if (response.status == Http::Status::OK)
+                if (response.status == Http::Status::Ok)
                 {
                     // Check that download operation hasn't been cancelled
                     if (_downloadingObjects)
@@ -208,7 +208,7 @@ private:
             req.method = Http::Method::GET;
             req.url = OPENRCT2_API_LEGACY_OBJECT_URL + name;
             Http::DoAsync(req, [this, entry, name](Http::Response response) {
-                if (response.status == Http::Status::OK)
+                if (response.status == Http::Status::Ok)
                 {
                     auto jresponse = Json::FromString(response.body);
                     if (jresponse.is_object())

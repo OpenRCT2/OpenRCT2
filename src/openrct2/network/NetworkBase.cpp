@@ -3482,7 +3482,7 @@ void network_chat_show_server_greeting()
     }
 }
 
-GameActionResult::Ptr network_set_player_group(
+GameActions::Result::Ptr network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
@@ -3490,22 +3490,23 @@ GameActionResult::Ptr network_set_player_group(
     NetworkGroup* fromgroup = gNetwork.GetGroupByID(actionPlayerId);
     if (player == nullptr)
     {
-        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS);
     }
 
     if (!gNetwork.GetGroupByID(groupId))
     {
-        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS);
     }
 
     if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
     {
-        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO);
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::InvalidParameters, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO);
     }
 
     if (groupId == 0 && fromgroup && fromgroup->Id != 0)
     {
-        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_SET_TO_THIS_GROUP);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_SET_TO_THIS_GROUP);
     }
 
     if (isExecuting)
@@ -3536,10 +3537,10 @@ GameActionResult::Ptr network_set_player_group(
         format_string(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
         network_append_server_log(log_msg);
     }
-    return std::make_unique<GameActionResult>();
+    return std::make_unique<GameActions::Result>();
 }
 
-GameActionResult::Ptr network_modify_groups(
+GameActions::Result::Ptr network_modify_groups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
     PermissionState permissionState, bool isExecuting)
 {
@@ -3552,7 +3553,7 @@ GameActionResult::Ptr network_modify_groups(
                 NetworkGroup* newgroup = gNetwork.AddGroup();
                 if (newgroup == nullptr)
                 {
-                    return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_DO_THIS);
+                    return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_CANT_DO_THIS);
                 }
             }
         }
@@ -3561,14 +3562,15 @@ GameActionResult::Ptr network_modify_groups(
         {
             if (groupId == 0)
             {
-                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
+                return std::make_unique<GameActions::Result>(
+                    GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
             }
             for (const auto& it : gNetwork.player_list)
             {
                 if ((it.get())->Group == groupId)
                 {
-                    return std::make_unique<GameActionResult>(
-                        GA_ERROR::DISALLOWED, STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO);
+                    return std::make_unique<GameActions::Result>(
+                        GameActions::Status::Disallowed, STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO);
                 }
             }
             if (isExecuting)
@@ -3581,7 +3583,8 @@ GameActionResult::Ptr network_modify_groups(
         {
             if (groupId == 0)
             { // cant change admin group permissions
-                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
+                return std::make_unique<GameActions::Result>(
+                    GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
             }
             NetworkGroup* mygroup = nullptr;
             NetworkPlayer* player = gNetwork.GetPlayerByID(actionPlayerId);
@@ -3591,8 +3594,8 @@ GameActionResult::Ptr network_modify_groups(
                 mygroup = gNetwork.GetGroupByID(player->Group);
                 if (mygroup == nullptr || !mygroup->CanPerformAction(networkPermission))
                 {
-                    return std::make_unique<GameActionResult>(
-                        GA_ERROR::DISALLOWED, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF);
+                    return std::make_unique<GameActions::Result>(
+                        GameActions::Status::Disallowed, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF);
                 }
             }
             if (isExecuting)
@@ -3629,13 +3632,13 @@ GameActionResult::Ptr network_modify_groups(
 
             if (strcmp(oldName, name.c_str()) == 0)
             {
-                return std::make_unique<GameActionResult>();
+                return std::make_unique<GameActions::Result>();
             }
 
             if (name.empty())
             {
-                return std::make_unique<GameActionResult>(
-                    GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_GROUP, STR_INVALID_GROUP_NAME);
+                return std::make_unique<GameActions::Result>(
+                    GameActions::Status::InvalidParameters, STR_CANT_RENAME_GROUP, STR_INVALID_GROUP_NAME);
             }
 
             if (isExecuting)
@@ -3651,7 +3654,7 @@ GameActionResult::Ptr network_modify_groups(
         {
             if (groupId == 0)
             {
-                return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_SET_TO_THIS_GROUP);
+                return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_CANT_SET_TO_THIS_GROUP);
             }
             if (isExecuting)
             {
@@ -3661,27 +3664,27 @@ GameActionResult::Ptr network_modify_groups(
         break;
         default:
             log_error("Invalid Modify Group Type: %u", static_cast<uint8_t>(type));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
     gNetwork.SaveGroups();
 
-    return std::make_unique<GameActionResult>();
+    return std::make_unique<GameActions::Result>();
 }
 
-GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
+GameActions::Result::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
 {
     NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
     if (player == nullptr)
     {
         // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too
         // early.
-        return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
     }
 
     if (player && player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
     {
-        return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_CANT_KICK_THE_HOST);
+        return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_CANT_KICK_THE_HOST);
     }
 
     if (isExecuting)
@@ -3696,7 +3699,7 @@ GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExe
             networkUserManager->Save();
         }
     }
-    return std::make_unique<GameActionResult>();
+    return std::make_unique<GameActions::Result>();
 }
 
 uint8_t network_get_default_group()
@@ -4109,20 +4112,20 @@ const char* network_get_group_name(uint32_t index)
     return "";
 };
 
-GameActionResult::Ptr network_set_player_group(
+GameActions::Result::Ptr network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
 {
-    return std::make_unique<GameActionResult>();
+    return std::make_unique<GameActions::Result>();
 }
-GameActionResult::Ptr network_modify_groups(
+GameActions::Result::Ptr network_modify_groups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
     PermissionState permissionState, bool isExecuting)
 {
-    return std::make_unique<GameActionResult>();
+    return std::make_unique<GameActions::Result>();
 }
-GameActionResult::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
+GameActions::Result::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
 {
-    return std::make_unique<GameActionResult>();
+    return std::make_unique<GameActions::Result>();
 }
 uint8_t network_get_default_group()
 {

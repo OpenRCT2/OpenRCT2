@@ -12,7 +12,7 @@
 #include "../network/network.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(PlayerKickAction, GAME_COMMAND_KICK_PLAYER, GameActionResult)
+DEFINE_GAME_ACTION(PlayerKickAction, GAME_COMMAND_KICK_PLAYER, GameActions::Result)
 {
 private:
     NetworkPlayerId_t _playerId{ -1 };
@@ -27,7 +27,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -36,12 +36,12 @@ public:
 
         stream << DS_TAG(_playerId);
     }
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return network_kick_player(_playerId, false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return network_kick_player(_playerId, true);
     }

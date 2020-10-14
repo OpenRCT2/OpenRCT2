@@ -186,8 +186,8 @@ static void window_new_campaign_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_START_BUTTON:
         {
             auto gameAction = ParkMarketingAction(w->campaign.campaign_type, w->campaign.RideId, w->campaign.no_weeks);
-            gameAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
-                if (result->Error == GA_ERROR::OK)
+            gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+                if (result->Error == GameActions::Status::Ok)
                 {
                     window_close_by_class(WC_NEW_CAMPAIGN);
                 }

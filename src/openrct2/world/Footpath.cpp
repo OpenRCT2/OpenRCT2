@@ -153,8 +153,8 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
     auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
-    cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
-    if (res->Error == GA_ERROR::OK)
+    cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
+    if (res->Error == GameActions::Status::Ok)
     {
         gFootpathProvisionalType = type;
         gFootpathProvisionalPosition = footpathLoc;
@@ -176,7 +176,7 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
 
     if (!scenery_tool_is_active())
     {
-        if (res->Error != GA_ERROR::OK)
+        if (res->Error != GameActions::Status::Ok)
         {
             // If we can't build this, don't show a virtual floor.
             virtual_floor_set_height(0);

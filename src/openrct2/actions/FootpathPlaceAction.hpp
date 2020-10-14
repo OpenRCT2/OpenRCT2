@@ -23,7 +23,7 @@
 #include "../world/Wall.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathPlaceAction, GAME_COMMAND_PLACE_PATH, GameActionResult)
+DEFINE_GAME_ACTION(FootpathPlaceAction, GAME_COMMAND_PLACE_PATH, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
@@ -61,9 +61,9 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_direction);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
         res->Position = _loc.ToTileCentre();
@@ -72,33 +72,33 @@ public:
 
         if (!LocationValid(_loc) || map_is_edge(_loc))
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (_slope & SLOPE_IS_IRREGULAR_FLAG)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_LAND_SLOPE_UNSUITABLE);
         }
 
         if (_loc.z < FootpathMinHeight)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_LOW);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_LOW);
         }
 
         if (_loc.z > FootpathMaxHeight)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_TOO_HIGH);
         }
 
         if (_direction != INVALID_DIRECTION && !direction_valid(_direction))
         {
             log_error("Direction invalid. direction = %u", _direction);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE);
         }
 
         footpath_provisional_remove();
@@ -113,9 +113,9 @@ public:
         }
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
         res->Position = _loc.ToTileCentre();
@@ -158,7 +158,7 @@ public:
     }
 
 private:
-    GameActionResult::Ptr ElementUpdateQuery(PathElement * pathElement, GameActionResult::Ptr res) const
+    GameActions::Result::Ptr ElementUpdateQuery(PathElement * pathElement, GameActions::Result::Ptr res) const
     {
         const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
         const bool newPathIsQueue = ((_type >> 7) == 1);
@@ -169,12 +169,12 @@ private:
 
         if (GetFlags() & GAME_COMMAND_FLAG_GHOST && !pathElement->IsGhost())
         {
-            return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_BUILD_FOOTPATH_HERE);
+            return MakeResult(GameActions::Status::Unknown, STR_CANT_BUILD_FOOTPATH_HERE);
         }
         return res;
     }
 
-    GameActionResult::Ptr ElementUpdateExecute(PathElement * pathElement, GameActionResult::Ptr res) const
+    GameActions::Result::Ptr ElementUpdateExecute(PathElement * pathElement, GameActions::Result::Ptr res) const
     {
         const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
         const bool newPathIsQueue = ((_type >> 7) == 1);
@@ -222,13 +222,13 @@ private:
         return res;
     }
 
-    GameActionResult::Ptr ElementInsertQuery(GameActionResult::Ptr res) const
+    GameActions::Result::Ptr ElementInsertQuery(GameActions::Result::Ptr res) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
         if (!map_check_free_elements_and_reorganise(1))
         {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_BUILD_FOOTPATH_HERE);
+            return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_BUILD_FOOTPATH_HERE);
         }
 
         res->Cost = MONEY(12, 00);
@@ -262,19 +262,20 @@ private:
             && !map_can_construct_with_clear_at(
                 { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost, crossingMode))
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(
+                GameActions::Status::NoClearance, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
         }
 
         gFootpathGroundFlags = gMapGroundFlags;
         if (!gCheatsDisableClearanceChecks && (gMapGroundFlags & ELEMENT_IS_UNDERWATER))
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_BUILD_FOOTPATH_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
 
         auto surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE);
         }
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
@@ -286,7 +287,7 @@ private:
         return res;
     }
 
-    GameActionResult::Ptr ElementInsertExecute(GameActionResult::Ptr res) const
+    GameActions::Result::Ptr ElementInsertExecute(GameActions::Result::Ptr res) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
@@ -327,7 +328,8 @@ private:
                 { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
                 &res->Cost, crossingMode))
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(
+                GameActions::Status::NoClearance, STR_CANT_BUILD_FOOTPATH_HERE, gGameCommandErrorText, gCommonFormatArgs);
         }
 
         gFootpathGroundFlags = gMapGroundFlags;
@@ -335,7 +337,7 @@ private:
         auto surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE);
         }
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);

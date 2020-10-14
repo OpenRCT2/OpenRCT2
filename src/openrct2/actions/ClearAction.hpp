@@ -36,7 +36,7 @@ namespace CLEARABLE_ITEMS
     constexpr ClearableItems SCENERY_FOOTPATH = 1 << 2;
 } // namespace CLEARABLE_ITEMS
 
-DEFINE_GAME_ACTION(ClearAction, GAME_COMMAND_CLEAR_SCENERY, GameActionResult)
+DEFINE_GAME_ACTION(ClearAction, GAME_COMMAND_CLEAR_SCENERY, GameActions::Result)
 {
 private:
     MapRange _range;
@@ -57,18 +57,18 @@ public:
         stream << DS_TAG(_range) << DS_TAG(_itemsToClear);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr CreateResult() const
+    GameActions::Result::Ptr CreateResult() const
     {
         auto result = MakeResult();
         result->ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
@@ -82,12 +82,12 @@ private:
         return result;
     }
 
-    GameActionResult::Ptr QueryExecute(bool executing) const
+    GameActions::Result::Ptr QueryExecute(bool executing) const
     {
         auto result = CreateResult();
 
         auto noValidTiles = true;
-        auto error = GA_ERROR::OK;
+        auto error = GameActions::Status::Ok;
         rct_string_id errorMessage = STR_NONE;
         money32 totalCost = 0;
 
@@ -111,7 +111,7 @@ private:
                 }
                 else
                 {
-                    error = GA_ERROR::NOT_OWNED;
+                    error = GameActions::Status::NotOwned;
                     errorMessage = STR_LAND_NOT_OWNED_BY_PARK;
                 }
             }
@@ -161,7 +161,7 @@ private:
                             auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)
                                                  : GameActions::QueryNested(&footpathRemoveAction);
 
-                            if (res->Error == GA_ERROR::OK)
+                            if (res->Error == GameActions::Status::Ok)
                             {
                                 totalCost += res->Cost;
                                 tileEdited = executing;
@@ -179,7 +179,7 @@ private:
                             auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
                                                  : GameActions::QueryNested(&removeSceneryAction);
 
-                            if (res->Error == GA_ERROR::OK)
+                            if (res->Error == GameActions::Status::Ok)
                             {
                                 totalCost += res->Cost;
                                 tileEdited = executing;
@@ -196,7 +196,7 @@ private:
                             auto res = executing ? GameActions::ExecuteNested(&wallRemoveAction)
                                                  : GameActions::QueryNested(&wallRemoveAction);
 
-                            if (res->Error == GA_ERROR::OK)
+                            if (res->Error == GameActions::Status::Ok)
                             {
                                 totalCost += res->Cost;
                                 tileEdited = executing;
@@ -214,7 +214,7 @@ private:
                             auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
                                                  : GameActions::QueryNested(&removeSceneryAction);
 
-                            if (res->Error == GA_ERROR::OK)
+                            if (res->Error == GameActions::Status::Ok)
                             {
                                 totalCost += res->Cost;
                                 tileEdited = executing;
