@@ -8,7 +8,9 @@
  *****************************************************************************/
 
 #include "../config/Config.h"
+#include "../core/String.hpp"
 #include "../interface/Colour.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Paint.h"
@@ -18,6 +20,8 @@
 
 #include <algorithm>
 #include <mutex>
+
+using namespace OpenRCT2;
 
 struct rct_draw_scroll_text
 {
@@ -38,9 +42,9 @@ static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
 
 static void scrolling_text_set_bitmap_for_sprite(
-    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
+    std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
 static void scrolling_text_set_bitmap_for_ttf(
-    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
+    std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour);
 
 void scrolling_text_initialise_bitmaps()
 {
@@ -1490,105 +1494,98 @@ int32_t scrolling_text_setup(
 }
 
 static void scrolling_text_set_bitmap_for_sprite(
-    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
+    std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
     auto characterColour = colour;
+    auto fmt = FmtString(text);
 
-    utf8* ch = text;
-    while (true)
+    // Repeat string a maximum of four times (eliminates possibility of infinite loop)
+    for (auto i = 0; i < 4; i++)
     {
-        uint32_t codepoint = utf8_get_next(ch, const_cast<const utf8**>(&ch));
-
-        // If at the end of the string loop back to the start
-        if (codepoint == 0)
+        for (const auto& token : fmt)
         {
-            ch = text;
-            continue;
-        }
-
-        // Set any change in colour
-        if (codepoint <= FORMAT_COLOUR_CODE_END && codepoint >= FORMAT_COLOUR_CODE_START)
-        {
-            codepoint -= FORMAT_COLOUR_CODE_START;
-            const rct_g1_element* g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
-            if (g1 != nullptr)
+            if (token.IsLiteral())
             {
-                characterColour = g1->offset[codepoint * 4];
-            }
-            continue;
-        }
-
-        // If another type of control character ignore
-        if (codepoint < 32)
-            continue;
-
-        int32_t characterWidth = font_sprite_get_codepoint_width(FONT_SPRITE_BASE_TINY, codepoint);
-        uint8_t* characterBitmap = font_sprite_get_codepoint_bitmap(codepoint);
-        for (; characterWidth != 0; characterWidth--, characterBitmap++)
-        {
-            // Skip any non-displayed columns
-            if (scroll != 0)
-            {
-                scroll--;
-                continue;
-            }
-
-            int16_t scrollPosition = *scrollPositionOffsets;
-            if (scrollPosition == -1)
-                return;
-            if (scrollPosition > -1)
-            {
-                uint8_t* dst = &bitmap[scrollPosition];
-                for (uint8_t char_bitmap = *characterBitmap; char_bitmap != 0; char_bitmap >>= 1)
+                CodepointView codepoints(token.text);
+                for (auto codepoint : codepoints)
                 {
-                    if (char_bitmap & 1)
-                        *dst = characterColour;
+                    auto characterWidth = font_sprite_get_codepoint_width(FONT_SPRITE_BASE_TINY, codepoint);
+                    auto characterBitmap = font_sprite_get_codepoint_bitmap(codepoint);
+                    for (; characterWidth != 0; characterWidth--, characterBitmap++)
+                    {
+                        // Skip any non-displayed columns
+                        if (scroll != 0)
+                        {
+                            scroll--;
+                            continue;
+                        }
 
-                    // Jump to next row
-                    dst += 64;
+                        int16_t scrollPosition = *scrollPositionOffsets;
+                        if (scrollPosition == -1)
+                            return;
+
+                        if (scrollPosition > -1)
+                        {
+                            auto dst = &bitmap[scrollPosition];
+                            for (uint8_t char_bitmap = *characterBitmap; char_bitmap != 0; char_bitmap >>= 1)
+                            {
+                                if (char_bitmap & 1)
+                                    *dst = characterColour;
+
+                                // Jump to next row
+                                dst += 64;
+                            }
+                        }
+                        scrollPositionOffsets++;
+                    }
                 }
             }
-            scrollPositionOffsets++;
+            else if (token.kind <= FORMAT_COLOUR_CODE_END && token.kind >= FORMAT_COLOUR_CODE_START)
+            {
+                auto g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
+                if (g1 != nullptr)
+                {
+                    auto colourIndex = token.kind - FORMAT_COLOUR_CODE_START;
+                    characterColour = g1->offset[colourIndex * 4];
+                }
+            }
         }
     }
 }
 
 static void scrolling_text_set_bitmap_for_ttf(
-    utf8* text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
+    std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
 #ifndef NO_TTF
-    TTFFontDescriptor* fontDesc = ttf_get_font_from_sprite_base(FONT_SPRITE_BASE_TINY);
+    auto fontDesc = ttf_get_font_from_sprite_base(FONT_SPRITE_BASE_TINY);
     if (fontDesc->font == nullptr)
     {
         scrolling_text_set_bitmap_for_sprite(text, scroll, bitmap, scrollPositionOffsets, colour);
         return;
     }
 
-    utf8* dstCh = text;
-    utf8* ch = text;
-    int32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&ch))) != 0)
+    thread_local std::string ttfBuffer;
+    ttfBuffer.clear();
+
+    auto fmt = FmtString(text);
+    for (const auto& token : fmt)
     {
-        if (utf8_is_format_code(codepoint))
+        if (token.IsLiteral())
         {
-            if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END)
+            ttfBuffer.append(token.text);
+        }
+        else if (token.kind >= FORMAT_COLOUR_CODE_START && token.kind <= FORMAT_COLOUR_CODE_END)
+        {
+            auto g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
+            if (g1 != nullptr)
             {
-                codepoint -= FORMAT_COLOUR_CODE_START;
-                auto g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
-                if (g1 != nullptr)
-                {
-                    colour = g1->offset[codepoint * 4];
-                }
+                auto colourIndex = token.kind - FORMAT_COLOUR_CODE_START;
+                colour = g1->offset[colourIndex * 4];
             }
         }
-        else
-        {
-            dstCh = utf8_write_codepoint(dstCh, codepoint);
-        }
     }
-    *dstCh = 0;
 
-    TTFSurface* surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
+    auto surface = ttf_surface_cache_get_or_add(fontDesc->font, ttfBuffer.c_str());
     if (surface == nullptr)
     {
         return;

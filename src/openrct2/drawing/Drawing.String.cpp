@@ -9,6 +9,7 @@
 
 #include "../common.h"
 #include "../config/Config.h"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Formatting.h"
@@ -22,81 +23,6 @@
 #include <algorithm>
 
 using namespace OpenRCT2;
-
-class CodepointView
-{
-private:
-    std::string_view _str;
-
-public:
-    class iterator
-    {
-    private:
-        std::string_view _str;
-        size_t _index;
-
-    public:
-        iterator(std::string_view str, size_t index)
-            : _str(str)
-            , _index(index)
-        {
-        }
-
-        bool operator==(const iterator& rhs) const
-        {
-            return _index == rhs._index;
-        }
-        bool operator!=(const iterator& rhs) const
-        {
-            return _index != rhs._index;
-        }
-        const char32_t operator*() const
-        {
-            return utf8_get_next(&_str[_index], nullptr);
-        }
-        iterator& operator++()
-        {
-            if (_index < _str.size())
-            {
-                const utf8* nextch;
-                utf8_get_next(&_str[_index], &nextch);
-                _index = nextch - _str.data();
-            }
-            return *this;
-        }
-        iterator operator++(int)
-        {
-            auto result = *this;
-            if (_index < _str.size())
-            {
-                const utf8* nextch;
-                utf8_get_next(&_str[_index], &nextch);
-                _index = nextch - _str.data();
-            }
-            return result;
-        }
-
-        size_t GetIndex() const
-        {
-            return _index;
-        }
-    };
-
-    CodepointView(std::string_view str)
-        : _str(str)
-    {
-    }
-
-    iterator begin() const
-    {
-        return iterator(_str, 0);
-    }
-
-    iterator end() const
-    {
-        return iterator(_str, _str.size());
-    }
-};
 
 enum : uint32_t
 {

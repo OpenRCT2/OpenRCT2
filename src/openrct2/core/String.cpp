@@ -784,3 +784,8 @@ namespace String
         return false;
     }
 } // namespace String
+
+char32_t CodepointView::iterator::GetNextCodepoint(const char* ch, const char** next)
+{
+    return utf8_get_next(ch, next);
+}

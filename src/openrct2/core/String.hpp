@@ -118,3 +118,80 @@ namespace String
     bool ContainsColourCode(const std::string& string);
 
 } // namespace String
+
+class CodepointView
+{
+private:
+    std::string_view _str;
+
+public:
+    class iterator
+    {
+    private:
+        std::string_view _str;
+        size_t _index;
+
+    public:
+        iterator(std::string_view str, size_t index)
+            : _str(str)
+            , _index(index)
+        {
+        }
+
+        bool operator==(const iterator& rhs) const
+        {
+            return _index == rhs._index;
+        }
+        bool operator!=(const iterator& rhs) const
+        {
+            return _index != rhs._index;
+        }
+        const char32_t operator*() const
+        {
+            return GetNextCodepoint(&_str[_index], nullptr);
+        }
+        iterator& operator++()
+        {
+            if (_index < _str.size())
+            {
+                const utf8* nextch;
+                GetNextCodepoint(&_str[_index], &nextch);
+                _index = nextch - _str.data();
+            }
+            return *this;
+        }
+        iterator operator++(int)
+        {
+            auto result = *this;
+            if (_index < _str.size())
+            {
+                const utf8* nextch;
+                GetNextCodepoint(&_str[_index], &nextch);
+                _index = nextch - _str.data();
+            }
+            return result;
+        }
+
+        size_t GetIndex() const
+        {
+            return _index;
+        }
+
+        static char32_t GetNextCodepoint(const char* ch, const char** next);
+    };
+
+    CodepointView(std::string_view str)
+        : _str(str)
+    {
+    }
+
+    iterator begin() const
+    {
+        return iterator(_str, 0);
+    }
+
+    iterator end() const
+    {
+        return iterator(_str, _str.size());
+    }
+};
