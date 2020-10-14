@@ -2078,7 +2078,7 @@ enum
     STR_CHEAT_LARGE_TRAM_GUESTS = 2765,
     STR_CHEAT_WIN_SCENARIO = 2766,
     STR_CHEAT_FREEZE_WEATHER = 2767,
-    STR_CHEAT_UNFREEZE_WEATHER = 2768,
+    // STR_CHEAT_UNFREEZE_WEATHER = 2768,
     STR_CHEAT_OPEN_PARK = 2769,
     STR_CHEAT_CLOSE_PARK = 2770,
     // STR_2771    :Slower Gamespeed
@@ -3897,6 +3897,7 @@ enum
 
     STR_CHEATS_MENU_OBJECTIVE_OPTIONS = 6393,
     STR_CHEAT_OBJECTIVE_GROUP = 6394,
+    STR_CHEAT_MAINTENANCE_GROUP = 6395,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

@@ -1967,7 +1967,7 @@ STR_2763    :???
 STR_2765    :Large Tram
 STR_2766    :Win scenario
 STR_2767    :Freeze weather
-STR_2768    :Unfreeze weather
+STR_2768    :<not used anymore>
 STR_2769    :Open Park
 STR_2770    :Close Park
 STR_2773    :Windowed
@@ -3652,6 +3652,7 @@ STR_6391    :Please select your RCT2 directory
 STR_6392    :Could not find {STRING} at this path.
 STR_6393    :Objective Selection
 STR_6394    :Objective
+STR_6395    :Maintenance
 
 #############
 # Scenarios #
