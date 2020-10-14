@@ -66,16 +66,13 @@ static int32_t FormatTextForTooltip(const OpenRCT2String& message)
 
 void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
 {
-    rct_window* w;
-    int32_t width, height;
-
-    w = window_find_by_class(WC_ERROR);
+    auto* w = window_find_by_class(WC_ERROR);
     if (w != nullptr)
         return;
 
     int32_t textWidth = FormatTextForTooltip(message);
-    width = textWidth + 3;
-    height = ((_tooltipNumLines + 1) * font_get_line_height(FONT_SPRITE_BASE_MEDIUM)) + 4;
+    int32_t width = textWidth + 3;
+    int32_t height = ((_tooltipNumLines + 1) * font_get_line_height(FONT_SPRITE_BASE_MEDIUM)) + 4;
     window_tooltip_widgets[WIDX_BACKGROUND].right = width;
     window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
