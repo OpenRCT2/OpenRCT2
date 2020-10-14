@@ -131,9 +131,8 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
     WIDX_OPEN_CLOSE_PARK,
     WIDX_CREATE_DUCKS,
-    WIDX_PARK_PARAMETERS,
-    WIDX_REMOVE_DUCKS,
     WIDX_OWN_ALL_LAND,
+    WIDX_REMOVE_DUCKS,
     WIDX_FORCE_PARK_RATING,
     WIDX_PARK_RATING_SPINNER,
     WIDX_INCREASE_PARK_RATING,
@@ -260,11 +259,10 @@ static rct_widget window_cheats_misc_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
     MakeWidget        ({  5,  48}, {238, 169},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
-    MakeWidget        ({ 11,  69}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
-    MakeWidget        ({ 11,  90}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP               ), // Create ducks
-    MakeWidget        ({127,  69}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_PARK_PARAMETERS,       STR_CHEAT_PARK_PARAMETERS_TIP      ), // Park parameters
-    MakeWidget        ({127,  90}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP               ), // Remove ducks
-    MakeWidget        ({ 11, 111}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
+    MakeWidget        ({ 11,  62}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
+    MakeWidget        ({ 11,  83}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP               ), // Create ducks
+    MakeWidget        ({127,  62}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
+    MakeWidget        ({127,  83}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP               ), // Remove ducks
     MakeWidget        ({ 11, 153}, CHEAT_BUTTON, WWT_CHECKBOX, WindowColour::Secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
     MakeSpinnerWidgets({126, 155}, {111,  12},   WWT_SPINNER,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
     MakeWidget        ({ 11, 174}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
@@ -452,7 +450,6 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_NEVERENDING_MARKETING) |
     (1ULL << WIDX_STAFF_SPEED) |
     (1ULL << WIDX_STAFF_SPEED_DROPDOWN_BUTTON) |
-    (1ULL << WIDX_PARK_PARAMETERS) |
     (1ULL << WIDX_FORCE_PARK_RATING) |
     (1ULL << WIDX_INCREASE_PARK_RATING) |
     (1ULL << WIDX_DECREASE_PARK_RATING),
@@ -861,9 +858,6 @@ static void window_cheats_misc_mouseup(rct_window* w, rct_widgetindex widgetInde
             break;
         case WIDX_NEVERENDING_MARKETING:
             CheatsSet(CheatType::NeverEndingMarketing, !gCheatsNeverendingMarketing);
-            break;
-        case WIDX_PARK_PARAMETERS:
-            context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
             break;
         case WIDX_FORCE_PARK_RATING:
             if (get_forced_park_rating() >= 0)
