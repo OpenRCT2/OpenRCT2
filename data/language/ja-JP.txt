@@ -1293,7 +1293,7 @@ STR_1920    :貸金を返済することはできません！
 STR_1921    :{SMALLFONT}{BLACK}新しいゲームを始める
 STR_1922    :{SMALLFONT}{BLACK}ゲームを再開する
 STR_1924    :{SMALLFONT}{BLACK}終了
-STR_1925    :ここに人を置けない…
+STR_1925    :ゲストはここに置けません…
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID}は壊れています。
 STR_1928    :{RED}{STRINGID}がクラッシュしました！
@@ -3492,9 +3492,9 @@ STR_6218    :OpenRCT2オフィシャル
 STR_6219    :歩道の問題表示の切り替え
 STR_6220    :使用可能にする
 STR_6221    :{SMALLFONT}{BLACK}これはライドの既知の入口または出口の位置が現在選択されているタイルに設定されます。 1つの駅で使用できる入口と出口の場所は1つだけです。
-STR_6222    :Can't place guest entry point here…
-STR_6223    :Must be outside park boundaries!
-STR_6224    :{STRING} placed a guest entry point.
+STR_6222    :ゲストのスポーンポイントはここに置けません…
+STR_6223    :公園の境界の外にある必要があります！
+STR_6224    :{STRING}がゲストのスポーンポイントはここに置きました。
 STR_6225    :OpenGLレンダラーではサポートされていません
 STR_6226    :シナリオの早期完了を有効にする
 STR_6227    :{SMALLFONT}{BLACK}すべてのシナリオの目標が目標日の前に達成されたときに、シナリオの完了をトリガーします。

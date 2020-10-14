@@ -3647,7 +3647,7 @@ STR_6386    :Blizardo
 STR_6387    :Ne eblas malaltigi elementon ĉi tie…
 STR_6388    :Ne eblas altigi elementon ĉi tie…
 STR_6389    :Nevalida malbaro
-STR_6390    :OpenRCT bezonas dosierojn de la origina RollerCoaster Tycoon 2 por funkcii. Bonvolu elekti la dosierujon, kie vi instalis RollerCoaster Tycoon 2.
+STR_6390    :OpenRCT2 bezonas dosierojn de la origina RollerCoaster Tycoon 2 por funkcii. Bonvolu elekti la dosierujon, kie vi instalis RollerCoaster Tycoon 2.
 STR_6391    :Bonvolu elekti vian dosierujon de RCT2
 STR_6392    :Ne eblis trovi je {STRING} ĉe tiu ĉi dosierindiko.
 STR_6393    :Cela Selektado
