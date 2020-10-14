@@ -217,16 +217,16 @@ public:
         if (RCT2RideTypeNeedsConversion(td->type))
         {
             std::scoped_lock<std::mutex> lock(_objectLookupMutex);
-            auto* rawObject = object_repository_load_object(&td->vehicle_object);
+            auto rawObject = object_repository_load_object(&td->vehicle_object);
             if (rawObject != nullptr)
             {
                 const auto* rideEntry = static_cast<const rct_ride_entry*>(
-                    static_cast<RideObject*>(rawObject)->GetLegacyData());
+                    static_cast<RideObject*>(rawObject.get())->GetLegacyData());
                 if (rideEntry != nullptr)
                 {
                     td->type = RCT2RideTypeToOpenRCT2RideType(td->type, rideEntry);
                 }
-                object_delete(rawObject);
+                rawObject->Unload();
             }
         }
     }

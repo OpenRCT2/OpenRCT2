@@ -553,7 +553,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];
 
-    void* object = object_manager_get_loaded_object(entry);
+    auto* object = object_manager_get_loaded_object(entry);
     if (object != nullptr)
     {
         rct_drawpixelinfo clipDPI;
@@ -562,7 +562,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
         int32_t height = widget->height() - 1;
         if (clip_drawpixelinfo(&clipDPI, dpi, screenPos, width, height))
         {
-            object_draw_preview(object, &clipDPI, width, height);
+            object->DrawPreview(&clipDPI, width, height);
         }
     }
 

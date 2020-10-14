@@ -44,8 +44,8 @@ struct IObjectManager
 
 std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository);
 
-void* object_manager_get_loaded_object_by_index(size_t index);
-void* object_manager_get_loaded_object(const rct_object_entry* entry);
+Object* object_manager_get_loaded_object_by_index(size_t index);
+Object* object_manager_get_loaded_object(const rct_object_entry* entry);
 ObjectEntryIndex object_manager_get_loaded_object_entry_index(const void* loadedObject);
 void* object_manager_load_object(const rct_object_entry* entry);
 void object_manager_unload_objects(const std::vector<rct_object_entry>& entries);
