@@ -20,9 +20,41 @@
 
 namespace OpenRCT2
 {
-    FmtString::token::token(FormatToken k, std::string_view s)
+    static std::optional<int32_t> ParseNumericToken(std::string_view s)
+    {
+        if (s.size() >= 3 && s.size() <= 5 && s[0] == '{' && s[s.size() - 1] == '}')
+        {
+            char buffer[8]{};
+            std::memcpy(buffer, s.data() + 1, s.size() - 2);
+            return std::atoi(buffer);
+        }
+        return std::nullopt;
+    }
+
+    static std::optional<int32_t> ParseNumericToken(std::string_view str, size_t& i)
+    {
+        if (i < str.size() && str[i] == '{')
+        {
+            auto parameterStart = i;
+            do
+            {
+                i++;
+            } while (i < str.size() && str[i] != '}');
+            if (i < str.size() && str[i] == '}')
+            {
+                i++;
+            }
+
+            auto paramter = str.substr(parameterStart, i - parameterStart);
+            return ParseNumericToken(paramter);
+        }
+        return std::nullopt;
+    }
+
+    FmtString::token::token(FormatToken k, std::string_view s, uint32_t p)
         : kind(k)
         , text(s)
+        , parameter(p)
     {
     }
 
@@ -50,12 +82,45 @@ namespace OpenRCT2
         if (str[i] == '{' && i + 1 < str.size() && str[i + 1] != '{')
         {
             // Move to end brace
+            auto startIndex = i;
             do
             {
                 i++;
             } while (i < str.size() && str[i] != '}');
             if (i < str.size() && str[i] == '}')
+            {
                 i++;
+
+                auto inner = str.substr(startIndex + 1, i - startIndex - 2);
+                if (inner == "MOVE_X")
+                {
+                    uint32_t p = 0;
+                    auto p0 = ParseNumericToken(str, i);
+                    if (p0)
+                    {
+                        p = *p0;
+                    }
+                    current = token(FORMAT_MOVE_X, str.substr(startIndex, i - startIndex), p);
+                    return;
+                }
+                else if (inner == "INLINE_SPRITE")
+                {
+                    uint32_t p = 0;
+                    auto p0 = ParseNumericToken(str, i);
+                    auto p1 = ParseNumericToken(str, i);
+                    auto p2 = ParseNumericToken(str, i);
+                    auto p3 = ParseNumericToken(str, i);
+                    if (p0 && p1 && p2 && p3)
+                    {
+                        p |= (*p0);
+                        p |= (*p1) << 8;
+                        p |= (*p2) << 16;
+                        p |= (*p3) << 24;
+                    }
+                    current = token(FORMAT_INLINE_SPRITE, str.substr(startIndex, i - startIndex), p);
+                    return;
+                }
+            }
         }
         else
         {

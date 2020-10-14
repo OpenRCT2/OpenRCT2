@@ -677,33 +677,7 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
     switch (token.kind)
     {
         case FORMAT_MOVE_X:
-            // info->x = info->startX + static_cast<uint8_t>(*nextCh++);
-            break;
-        case FORMAT_ADJUST_PALETTE:
-        {
-            // auto paletteMapId = static_cast<colour_t>(*nextCh++);
-            // auto paletteMap = GetPaletteMapForColour(paletteMapId);
-            // if (paletteMap)
-            // {
-            //     uint32_t c = (*paletteMap)[249] + 256;
-            //     if (!(info->flags & TEXT_DRAW_FLAG_OUTLINE))
-            //     {
-            //         c &= 0xFF;
-            //     }
-            //     info->palette[1] = c & 0xFF;
-            //     info->palette[2] = (c >> 8) & 0xFF;
-            //
-            //     // Adjust the text palette
-            //     info->palette[3] = (*paletteMap)[247];
-            //     info->palette[4] = (*paletteMap)[248];
-            //     info->palette[5] = (*paletteMap)[250];
-            //     info->palette[6] = (*paletteMap)[251];
-            // }
-            break;
-        }
-        case FORMAT_3:
-        case FORMAT_4:
-            // nextCh++;
+            info->x = info->startX + token.parameter;
             break;
         case FORMAT_NEWLINE:
             info->x = info->startX;
@@ -746,37 +720,24 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
             colour_char_window(gCurrentWindowColours[2], &flags, info->palette);
             break;
         }
-        case FORMAT_16:
+        case FORMAT_INLINE_SPRITE:
+        {
+            auto g1 = gfx_get_g1_element(token.parameter & 0x7FFFF);
+            if (g1 != nullptr)
+            {
+                if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
+                {
+                    gfx_draw_sprite(dpi, token.parameter, { info->x, info->y }, 0);
+                }
+                info->x += g1->width;
+            }
             break;
-        // case FORMAT_INLINE_SPRITE:
-        // {
-        //     uint32_t imageId;
-        //     std::memcpy(&imageId, nextCh, sizeof(uint32_t));
-        //     const rct_g1_element* g1 = gfx_get_g1_element(imageId & 0x7FFFF);
-        //     if (g1 != nullptr)
-        //     {
-        //         if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
-        //         {
-        //             gfx_draw_sprite(dpi, imageId, { info->x, info->y }, 0);
-        //         }
-        //         info->x += g1->width;
-        //     }
-        //     nextCh += 4;
-        //     break;
-        // }
+        }
         default:
             if (token.kind >= FORMAT_COLOUR_CODE_START && token.kind <= FORMAT_COLOUR_CODE_END)
             {
                 uint16_t flags = info->flags;
                 colour_char(token.kind - FORMAT_COLOUR_CODE_START, &flags, info->palette);
-            }
-            else if (token.kind <= 0x16)
-            { // case 0x11? FORMAT_NEW_LINE_X_Y
-              // nextCh += 2;
-            }
-            else
-            {
-                // nextCh += 4; // never happens?
             }
             break;
     }

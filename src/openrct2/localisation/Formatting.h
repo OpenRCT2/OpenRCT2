@@ -37,9 +37,10 @@ namespace OpenRCT2
         {
             FormatToken kind{};
             std::string_view text;
+            uint32_t parameter{};
 
             token() = default;
-            token(FormatToken k, std::string_view s);
+            token(FormatToken k, std::string_view s, uint32_t p = 0);
             bool IsLiteral() const;
         };
 
