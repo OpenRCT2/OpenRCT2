@@ -15,7 +15,6 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../Version.h"
-#include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
@@ -133,10 +132,6 @@ void TitleScreen::Load()
     CreateWindows();
     TitleInitialise();
     OpenRCT2::Audio::PlayTitleMusic();
-    if (gConfigSound.audio_focus)
-    {
-        Mixer_SetVolume(0);
-    }
 
     if (gOpenRCT2ShowChangelog)
     {

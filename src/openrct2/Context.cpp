@@ -26,6 +26,7 @@
 #include "Version.h"
 #include "actions/GameAction.h"
 #include "audio/AudioContext.h"
+#include "audio/AudioMixer.h"
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/Console.hpp"
@@ -770,6 +771,8 @@ namespace OpenRCT2
                     title_load();
                     break;
                 case StartupAction::Title:
+                    if (gConfigSound.audio_focus)
+                        Mixer_SetVolume(0);
                     title_load();
                     break;
                 case StartupAction::Open:
