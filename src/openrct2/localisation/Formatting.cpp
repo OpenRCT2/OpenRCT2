@@ -545,6 +545,17 @@ namespace OpenRCT2
                     ss << arg.c_str();
                 }
                 break;
+            case FORMAT_SPRITE:
+                if constexpr (std::is_integral<T>())
+                {
+                    auto idx = static_cast<uint32_t>(arg);
+                    ss << "{INLINE_SPRITE}";
+                    ss << "{" << ((idx >> 0) & 0xFF) << "}";
+                    ss << "{" << ((idx >> 8) & 0xFF) << "}";
+                    ss << "{" << ((idx >> 16) & 0xFF) << "}";
+                    ss << "{" << ((idx >> 24) & 0xFF) << "}";
+                }
+                break;
         }
     }
 
@@ -555,7 +566,7 @@ namespace OpenRCT2
 
     bool CanFormatToken(FormatToken t)
     {
-        return t == FORMAT_COMMA1DP16 || (t >= FORMAT_COMMA32 && t <= FORMAT_LENGTH);
+        return t == FORMAT_COMMA1DP16 || (t >= FORMAT_ARGUMENT_CODE_START && t <= FORMAT_ARGUMENT_CODE_END);
     }
 
     bool IsRealNameStringId(rct_string_id id)
@@ -676,7 +687,7 @@ namespace OpenRCT2
         return value;
     }
 
-    static void BuildAnyArgListFromLegacyArgBuffer(const FmtString& fmt, std::vector<FormatArg_t>& anyArgs, const void* args)
+    static void BuildAnyArgListFromLegacyArgBuffer(const FmtString& fmt, std::vector<FormatArg_t>& anyArgs, const void*& args)
     {
         for (const auto& t : fmt)
         {
@@ -687,6 +698,7 @@ namespace OpenRCT2
                 case FORMAT_COMMA2DP32:
                 case FORMAT_CURRENCY2DP:
                 case FORMAT_CURRENCY:
+                case FORMAT_SPRITE:
                     anyArgs.push_back(ReadFromArgs<int32_t>(args));
                     break;
                 case FORMAT_COMMA16:
