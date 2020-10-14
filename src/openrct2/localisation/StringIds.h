@@ -3138,8 +3138,8 @@ enum
     STR_RAIN = STR_SUNNY + 3,
     STR_HEAVY_RAIN = STR_SUNNY + 4,
     STR_THUNDERSTORM = STR_SUNNY + 5,
-    STR_FORCE_WEATHER = 5725,
-    STR_FORCE_WEATHER_TOOLTIP = 5726,
+    STR_CHANGE_WEATHER = 5725,
+    STR_CHANGE_WEATHER_TOOLTIP = 5726,
     STR_SCALING_QUALITY = 5727,
     STR_SCALING_QUALITY_LINEAR = 5731,
     STR_OPTIONS_RENDERING_TIP = 5734,
@@ -3896,6 +3896,7 @@ enum
     STR_COULD_NOT_FIND_AT_PATH = 6392,
 
     STR_CHEATS_MENU_OBJECTIVE_OPTIONS = 6393,
+    STR_CHEAT_OBJECTIVE_GROUP = 6394,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

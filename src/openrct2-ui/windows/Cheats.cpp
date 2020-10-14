@@ -142,9 +142,9 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_WIN_SCENARIO,
     WIDX_HAVE_FUN,
     WIDX_WEATHER_GROUP,
-    WIDX_FREEZE_WEATHER,
     WIDX_WEATHER,
     WIDX_WEATHER_DROPDOWN_BUTTON,
+    WIDX_FREEZE_WEATHER,
     WIDX_STAFF_GROUP,
     WIDX_CLEAR_GRASS,
     WIDX_MOWED_GRASS,
@@ -264,16 +264,16 @@ static rct_widget window_cheats_misc_widgets[] =
     MakeWidget        ({ 11,  83}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP               ), // Create ducks
     MakeWidget        ({127,  62}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
     MakeWidget        ({127,  83}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP               ), // Remove ducks
-    MakeWidget        ({  5, 112}, {238,  75},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
+    MakeWidget        ({  5, 112}, {238,  75},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_OBJECTIVE_GROUP                                           ), // Objective group
     MakeWidget        ({ 11, 127}, CHEAT_CHECK,  WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
     MakeWidget        ({ 11, 141}, CHEAT_BUTTON, WWT_CHECKBOX, WindowColour::Secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
     MakeSpinnerWidgets({126, 142}, {111,  14},   WWT_SPINNER,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
     MakeWidget        ({ 11, 162}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
     MakeWidget        ({127, 162}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
-    MakeWidget        ({  5, 221}, {238,  64},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_WEATHER_GROUP                                             ), // Weather group
-    MakeWidget        ({ 11, 237}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP       ), // Freeze weather
-    MakeWidget        ({126, 258}, {111,  14},   WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                        STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
-    MakeWidget        ({225, 259}, { 11,  12},   WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,              STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
+    MakeWidget        ({  5, 190}, {238,  50},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_WEATHER_GROUP                                             ), // Weather group
+    MakeWidget        ({126, 204}, {111,  14},   WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                        STR_CHANGE_WEATHER_TOOLTIP         ), // Force weather
+    MakeWidget        ({225, 205}, { 11,  12},   WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP         ), // Force weather
+    MakeWidget        ({ 11, 222}, CHEAT_CHECK,  WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP       ), // Freeze weather
     MakeWidget        ({  5, 300}, {238, 132},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
     MakeWidget        ({ 11, 321}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
     MakeWidget        ({127, 321}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
@@ -1050,7 +1050,7 @@ static void window_cheats_invalidate(rct_window* w)
             w->widgets[WIDX_OPEN_CLOSE_PARK].text = (gParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
                                                                                         : STR_CHEAT_OPEN_PARK;
             widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
-            w->widgets[WIDX_FREEZE_WEATHER].text = gCheatsFreezeWeather ? STR_CHEAT_UNFREEZE_WEATHER : STR_CHEAT_FREEZE_WEATHER;
+            widget_set_checkbox_value(w, WIDX_FREEZE_WEATHER, gCheatsFreezeWeather);
             widget_set_checkbox_value(w, WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
             widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
             break;
@@ -1143,13 +1143,21 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
         gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 408 });
-        gfx_draw_string_left(dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 261 });
-        auto ft = Formatter();
-        ft.Add<int32_t>(_parkRatingSpinnerValue);
 
-        auto& widget = w->widgets[WIDX_PARK_RATING_SPINNER];
-        DrawTextBasic(
-            dpi, w->windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 1 }, STR_FORMAT_INTEGER, ft, w->colours[1]);
+        {
+            auto& widget = w->widgets[WIDX_WEATHER];
+            gfx_draw_string_left(
+                dpi, STR_CHANGE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL - 3, widget.top + 1 });
+        }
+
+        {
+            auto ft = Formatter();
+            ft.Add<int32_t>(_parkRatingSpinnerValue);
+
+            auto& widget = w->widgets[WIDX_PARK_RATING_SPINNER];
+            DrawTextBasic(
+                dpi, w->windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, w->colours[1]);
+        }
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
     {

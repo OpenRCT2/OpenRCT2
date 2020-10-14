@@ -3010,8 +3010,8 @@ STR_5721    :Cloudy
 STR_5722    :Rain
 STR_5723    :Heavy Rain
 STR_5724    :Thunderstorm
-STR_5725    :{BLACK}Force weather:
-STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
+STR_5725    :{BLACK}Change weather to:
+STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in the park
 STR_5727    :Scaling quality:
 STR_5731    :Linear
 # tooltip for tab in options window
@@ -3651,6 +3651,7 @@ STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in or
 STR_6391    :Please select your RCT2 directory
 STR_6392    :Could not find {STRING} at this path.
 STR_6393    :Objective Selection
+STR_6394    :Objective
 
 #############
 # Scenarios #
