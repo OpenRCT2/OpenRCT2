@@ -69,7 +69,7 @@ namespace HybridRC
             { (SPR_G2_HYBRID_TRACK_BRAKE + 1), (SPR_G2_HYBRID_TRACK_BLOCK_BRAKE + 1), SPR_STATION_BASE_A_NW_SE },
         };
 
-        if (tileElement->AsTrack()->GetType() == TrackElemType::EndStation)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
         {
             sub_98197C_rotated(
                 session, direction, imageIds[direction][1] | GetTrackColour(session), 0, 0, 32, 20, 1, height, 0, 6,
