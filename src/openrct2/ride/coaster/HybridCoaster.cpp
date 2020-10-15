@@ -25,14 +25,6 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-// Dynamic glitches
-// Steep to gentle/gentle to steep - sprite splitting issue requiring manual fix
-
-// Glitches present on original (fixing optional)
-// Sloped turns
-// Steep to vertical
-// Helixes (check height of bounding box but probably a sprite mask issue)
-
 namespace HybridRC
 {
     static uint32_t GetTrackColour(paint_session* session)
@@ -10010,7 +10002,6 @@ namespace HybridRC
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 
-    /** rct2: 0x008ADA44 */
     static void TrackOnRidePhoto(
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
@@ -10026,7 +10017,6 @@ namespace HybridRC
         paint_util_set_general_support_height(session, height + 48, 0x20);
     }
 
-    /** rct2: 0x008ADED4 */
     static void TrackFlatTo60DegUpLongBase(
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
@@ -10165,7 +10155,6 @@ namespace HybridRC
         }
     }
 
-    /** rct2: 0x008ADEE4 */
     static void Track60DegUpToFlatLongBase(
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
@@ -10304,7 +10293,6 @@ namespace HybridRC
         }
     }
 
-    /** rct2: 0x008ADEF4 */
     static void TrackFlatTo60DegDownLongBase(
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
@@ -10312,7 +10300,6 @@ namespace HybridRC
         Track60DegUpToFlatLongBase(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);
     }
 
-    /** rct2: 0x008ADF04 */
     static void Track60DegDownToFlatLongBase(
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
