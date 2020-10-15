@@ -79,7 +79,11 @@ namespace OpenRCT2
             return;
         }
 
-        if (str[i] == '{' && i + 1 < str.size() && str[i + 1] != '{')
+        if (str[i] == '\n' || str[i] == '\r')
+        {
+            i++;
+        }
+        else if (str[i] == '{' && i + 1 < str.size() && str[i + 1] != '{')
         {
             // Move to end brace
             auto startIndex = i;
@@ -127,7 +131,7 @@ namespace OpenRCT2
             do
             {
                 i++;
-            } while (i < str.size() && str[i] != '{');
+            } while (i < str.size() && str[i] != '{' && str[i] != '\n' && str[i] != '\r');
         }
         current = CreateToken(i - index);
     }
@@ -149,6 +153,10 @@ namespace OpenRCT2
         {
             auto kind = format_get_code(sztoken.substr(1, len - 2));
             return token(kind, sztoken);
+        }
+        else if (sztoken == "\n" || sztoken == "\r")
+        {
+            return token(FORMAT_NEWLINE, sztoken);
         }
         return token(0, sztoken);
     }
@@ -566,6 +574,8 @@ namespace OpenRCT2
 
     bool CanFormatToken(FormatToken t)
     {
+        if (t == FORMAT_PUSH16 || t == FORMAT_POP16)
+            return false;
         return t == FORMAT_COMMA1DP16 || (t >= FORMAT_ARGUMENT_CODE_START && t <= FORMAT_ARGUMENT_CODE_END);
     }
 
@@ -656,7 +666,7 @@ namespace OpenRCT2
                 }
                 argIndex++;
             }
-            else
+            else if (token.kind != FORMAT_PUSH16 && token.kind != FORMAT_POP16)
             {
                 ss << token.text;
             }

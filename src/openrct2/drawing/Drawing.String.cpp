@@ -41,30 +41,34 @@ static int32_t ttf_get_string_width(std::string_view text);
  *
  *  rct2: 0x006C23B1
  */
-int32_t gfx_get_string_width_new_lined(utf8* text)
+int32_t gfx_get_string_width_new_lined(std::string_view text)
 {
-    utf8* ch = text;
-    utf8* firstCh = text;
-    utf8* nextCh;
-    utf8 backup;
-    int32_t codepoint;
+    thread_local std::string buffer;
+    buffer.clear();
 
-    int32_t maxWidth = 0;
-    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
+    std::optional<int32_t> maxWidth;
+    FmtString fmt(text);
+    for (const auto& token : fmt)
     {
-        if (codepoint == FORMAT_NEWLINE || codepoint == FORMAT_NEWLINE_SMALLER)
+        if (token.kind == FORMAT_NEWLINE || token.kind == FORMAT_NEWLINE_SMALLER)
         {
-            backup = *nextCh;
-            *nextCh = 0;
-            maxWidth = std::max(maxWidth, gfx_get_string_width(firstCh));
-            *nextCh = backup;
-            firstCh = nextCh;
+            auto width = gfx_get_string_width(buffer);
+            if (!maxWidth || maxWidth > width)
+            {
+                maxWidth = width;
+            }
+            buffer.clear();
         }
-        ch = nextCh;
+        else
+        {
+            buffer.append(token.text);
+        }
     }
-    maxWidth = std::max(maxWidth, gfx_get_string_width(firstCh));
-
-    return maxWidth;
+    if (!maxWidth)
+    {
+        maxWidth = gfx_get_string_width(buffer);
+    }
+    return *maxWidth;
 }
 
 /**
@@ -87,65 +91,62 @@ int32_t gfx_get_string_width(std::string_view text)
  */
 int32_t gfx_clip_string(utf8* text, int32_t width)
 {
-    int32_t clippedWidth;
-
     if (width < 6)
     {
         *text = 0;
         return 0;
     }
 
-    clippedWidth = gfx_get_string_width(text);
+    // If width of the full string is less than allowed width then we don't need to clip
+    auto clippedWidth = gfx_get_string_width(text);
     if (clippedWidth <= width)
     {
         return clippedWidth;
     }
 
-    utf8 backup[4];
-    utf8* ch = text;
-    utf8* nextCh = text;
-    utf8* clipCh = text;
-    int32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
+    // Append each character 1 by 1 with an ellipsis on the end until width is exceeded
+    thread_local std::string buffer;
+    buffer.clear();
+
+    size_t bestLength = 0;
+    int32_t bestWidth = 0;
+
+    FmtString fmt(text);
+    for (const auto& token : fmt)
     {
-        if (utf8_is_format_code(codepoint))
+        CodepointView codepoints(token.text);
+        for (auto codepoint : codepoints)
         {
-            ch = nextCh;
-            ch += utf8_get_format_code_arg_length(codepoint);
-            continue;
-        }
+            // Add the ellipsis before checking the width
+            buffer.append("...");
 
-        for (int32_t i = 0; i < 4; i++)
-        {
-            backup[i] = nextCh[i];
-        };
-        for (int32_t i = 0; i < 3; i++)
-        {
-            nextCh[i] = '.';
-        }
-        nextCh[3] = 0;
-
-        int32_t queryWidth = gfx_get_string_width(text);
-        if (queryWidth < width)
-        {
-            clipCh = nextCh;
-            clippedWidth = queryWidth;
-        }
-        else
-        {
-            for (int32_t i = 0; i < 3; i++)
+            auto currentWidth = gfx_get_string_width(text);
+            if (currentWidth < width)
             {
-                clipCh[i] = '.';
-            }
-            clipCh[3] = 0;
-            return clippedWidth;
-        }
+                bestLength = buffer.size();
+                bestWidth = currentWidth;
 
-        for (int32_t i = 0; i < 4; i++)
-        {
-            nextCh[i] = backup[i];
-        };
-        ch = nextCh;
+                // Trim the ellipsis
+                buffer.resize(bestLength - 3);
+            }
+            else
+            {
+                // Width exceeded, rollback to best length and put ellipsis back
+                buffer.resize(bestLength);
+                for (auto i = static_cast<int32_t>(bestLength) - 1; i >= 0 && i >= bestLength - 3; i--)
+                {
+                    buffer[bestLength - i] = '.';
+                }
+
+                // Copy buffer back to input text buffer
+                std::strcpy(text, buffer.c_str());
+                return bestWidth;
+            }
+
+            char cb[8]{};
+            utf8_write_codepoint(cb, codepoint);
+            buffer.append(cb);
+        }
     }
     return gfx_get_string_width(text);
 }
@@ -182,7 +183,9 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
             CodepointView codepoints(token.text);
             for (auto codepoint : codepoints)
             {
-                buffer.push_back(codepoint);
+                char cb[8]{};
+                utf8_write_codepoint(cb, codepoint);
+                buffer.append(cb);
 
                 auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex]);
                 if (lineWidth <= width || splitIndex == NULL_INDEX)
