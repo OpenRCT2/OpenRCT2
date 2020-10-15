@@ -1041,6 +1041,7 @@ static void window_options_rendering_invalidate(rct_window* w)
     else
     {
         w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+        gConfigGeneral.enable_light_fx = false;
     }
 
     widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
@@ -1052,6 +1053,7 @@ static void window_options_rendering_invalidate(rct_window* w)
     else
     {
         w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+        gConfigGeneral.enable_light_fx_for_vehicles = false;
     }
 
     widget_set_checkbox_value(
