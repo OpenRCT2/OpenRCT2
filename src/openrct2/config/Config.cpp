@@ -187,16 +187,9 @@ namespace Config
 
             // Default config setting is false until the games canvas can be separated from the effect
             model->day_night_cycle = reader->GetBoolean("day_night_cycle", false);
-            if (model->drawing_engine != DrawingEngine::Software)
-            {
-                model->enable_light_fx = reader->GetBoolean("enable_light_fx", false);
-                model->enable_light_fx_for_vehicles = reader->GetBoolean("enable_light_fx_for_vehicles", false);
-            }
-            else
-            {
-                model->enable_light_fx = false;
-                model->enable_light_fx_for_vehicles = false;
-            }
+            const bool isHardware = model->drawing_engine != DrawingEngine::Software;
+            model->enable_light_fx = isHardware && reader->GetBoolean("enable_light_fx", false);
+            model->enable_light_fx_for_vehicles = isHardware && reader->GetBoolean("enable_light_fx_for_vehicles", false);
             model->upper_case_banners = reader->GetBoolean("upper_case_banners", false);
             model->disable_lightning_effect = reader->GetBoolean("disable_lightning_effect", false);
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
