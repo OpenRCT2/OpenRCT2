@@ -24,6 +24,7 @@
 #        error Breakpad support not implemented yet for this platform
 #    endif
 
+#    include "../Context.h"
 #    include "../Game.h"
 #    include "../OpenRCT2.h"
 #    include "../Version.h"
@@ -33,8 +34,10 @@
 #    include "../core/String.hpp"
 #    include "../interface/Screenshot.h"
 #    include "../localisation/Language.h"
+#    include "../object/ObjectManager.h"
 #    include "../rct2/S6Exporter.h"
 #    include "../scenario/Scenario.h"
+#    include "../util/SawyerCoding.h"
 #    include "../util/Util.h"
 #    include "platform.h"
 
@@ -168,6 +171,18 @@ static bool OnCrash(
     try
     {
         auto exporter = std::make_unique<S6Exporter>();
+
+        // Make sure the save is using the current viewport settings.
+        viewport_set_saved_view();
+
+        // Disable RLE encoding for better compression.
+        gUseRLE = false;
+
+        // Export all loaded objects to avoid having custom objects missing in the reports.
+        auto ctx = OpenRCT2::GetContext();
+        auto& objManager = ctx->GetObjectManager();
+        exporter->ExportObjectsList = objManager.GetPackableObjects();
+
         exporter->Export();
         exporter->SaveGame(saveFilePathUTF8.c_str());
         savedGameDumped = true;
