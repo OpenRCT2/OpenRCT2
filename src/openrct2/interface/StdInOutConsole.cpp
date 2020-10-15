@@ -108,17 +108,17 @@ void StdInOutConsole::Close()
     openrct2_finish();
 }
 
-void StdInOutConsole::WriteLine(const std::string& s, uint32_t colourFormat)
+void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
 {
     std::string formatBegin;
-    if (colourFormat != FORMAT_WINDOW_COLOUR_2)
+    if (colourFormat != FormatToken::ColourWindow2)
     {
         switch (colourFormat)
         {
-            case FORMAT_RED:
+            case FormatToken::ColourRed:
                 formatBegin = "\033[31m";
                 break;
-            case FORMAT_YELLOW:
+            case FormatToken::ColourYellow:
                 formatBegin = "\033[33m";
                 break;
         }

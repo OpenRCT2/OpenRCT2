@@ -771,18 +771,6 @@ namespace String
         return res;
 #endif
     }
-
-    bool ContainsColourCode(const std::string& string)
-    {
-        for (unsigned char c : string)
-        {
-            if (c >= FORMAT_COLOUR_CODE_START && c <= FORMAT_COLOUR_CODE_END)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 } // namespace String
 
 char32_t CodepointView::iterator::GetNextCodepoint(const char* ch, const char** next)

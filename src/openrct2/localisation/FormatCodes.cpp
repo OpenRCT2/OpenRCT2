@@ -9,90 +9,174 @@
 
 #include "FormatCodes.h"
 
-#include "../common.h"
-#include "../core/String.hpp"
-#include "Localisation.h"
-
-#include <iterator>
-
-#pragma region Format codes
-
-struct format_code_token
-{
-    uint32_t code;
-    const char* token;
-};
+#include <unordered_map>
 
 // clang-format off
-static constexpr const format_code_token format_code_tokens[] = {
-    { FORMAT_MOVE_X,                    "MOVE_X"                },
-    { FORMAT_ADJUST_PALETTE,            "ADJUST_PALETTE"        },
-    { FORMAT_NEWLINE,                   "NEWLINE"               },
-    { FORMAT_NEWLINE_SMALLER,           "NEWLINE_SMALLER"       },
-    { FORMAT_TINYFONT,                  "TINYFONT"              },
-    { FORMAT_BIGFONT,                   "BIGFONT"               },
-    { FORMAT_MEDIUMFONT,                "MEDIUMFONT"            },
-    { FORMAT_SMALLFONT,                 "SMALLFONT"             },
-    { FORMAT_OUTLINE,                   "OUTLINE"               },
-    { FORMAT_OUTLINE_OFF,               "OUTLINE_OFF"           },
-    { FORMAT_WINDOW_COLOUR_1,           "WINDOW_COLOUR_1"       },
-    { FORMAT_WINDOW_COLOUR_2,           "WINDOW_COLOUR_2"       },
-    { FORMAT_WINDOW_COLOUR_3,           "WINDOW_COLOUR_3"       },
-    { FORMAT_NEWLINE_X_Y,               "NEWLINE_X_Y"           },
-    { FORMAT_INLINE_SPRITE,             "INLINE_SPRITE"         },
-    { FORMAT_COMMA32,                   "COMMA32"               },
-    { FORMAT_INT32,                     "INT32"                 },
-    { FORMAT_COMMA2DP32,                "COMMA2DP32"            },
-    { FORMAT_COMMA16,                   "COMMA16"               },
-    { FORMAT_UINT16,                    "UINT16"                },
-    { FORMAT_CURRENCY2DP,               "CURRENCY2DP"           },
-    { FORMAT_CURRENCY,                  "CURRENCY"              },
-    { FORMAT_STRINGID,                  "STRINGID"              },
-    { FORMAT_STRINGID2,                 "STRINGID2"             },
-    { FORMAT_STRING,                    "STRING"                },
-    { FORMAT_MONTHYEAR,                 "MONTHYEAR"             },
-    { FORMAT_MONTH,                     "MONTH"                 },
-    { FORMAT_VELOCITY,                  "VELOCITY"              },
-    { FORMAT_POP16,                     "POP16"                 },
-    { FORMAT_PUSH16,                    "PUSH16"                },
-    { FORMAT_DURATION,                  "DURATION"              },
-    { FORMAT_REALTIME,                  "REALTIME"              },
-    { FORMAT_LENGTH,                    "LENGTH"                },
-    { FORMAT_SPRITE,                    "SPRITE"                },
-    { FORMAT_BLACK,                     "BLACK"                 },
-    { FORMAT_GREY,                      "GREY"                  },
-    { FORMAT_WHITE,                     "WHITE"                 },
-    { FORMAT_RED,                       "RED"                   },
-    { FORMAT_GREEN,                     "GREEN"                 },
-    { FORMAT_YELLOW,                    "YELLOW"                },
-    { FORMAT_TOPAZ,                     "TOPAZ"                 },
-    { FORMAT_CELADON,                   "CELADON"               },
-    { FORMAT_BABYBLUE,                  "BABYBLUE"              },
-    { FORMAT_PALELAVENDER,              "PALELAVENDER"          },
-    { FORMAT_PALEGOLD,                  "PALEGOLD"              },
-    { FORMAT_LIGHTPINK,                 "LIGHTPINK"             },
-    { FORMAT_PEARLAQUA,                 "PEARLAQUA"             },
-    { FORMAT_PALESILVER,                "PALESILVER"            },
-    { FORMAT_COMMA1DP16,                "COMMA1DP16"            }
+static const std::unordered_map<std::string_view, FormatToken> FormatTokenMap = {
+    { "MOVE_X",               FormatToken::Move,                },
+    { "NEWLINE",              FormatToken::Newline,             },
+    { "NEWLINE_SMALLER",      FormatToken::NewlineSmall,        },
+    { "TINYFONT",             FormatToken::FontTiny,            },
+    { "BIGFONT",              FormatToken::FontBig,             },
+    { "MEDIUMFONT",           FormatToken::FontMedium,          },
+    { "SMALLFONT",            FormatToken::FontSmall,           },
+    { "OUTLINE",              FormatToken::OutlineEnable,       },
+    { "OUTLINE_OFF",          FormatToken::OutlineDisable,      },
+    { "WINDOW_COLOUR_1",      FormatToken::ColourWindow1,       },
+    { "WINDOW_COLOUR_2",      FormatToken::ColourWindow2,       },
+    { "WINDOW_COLOUR_3",      FormatToken::ColourWindow3,       },
+    { "INLINE_SPRITE",        FormatToken::InlineSprite,        },
+    { "COMMA32",              FormatToken::Comma32,             },
+    { "INT32",                FormatToken::Int32,               },
+    { "COMMA1DP16",           FormatToken::Comma1dp16,          },
+    { "COMMA2DP32",           FormatToken::Comma2dp32,          },
+    { "COMMA16",              FormatToken::Comma16,             },
+    { "UINT16",               FormatToken::Uint16,              },
+    { "CURRENCY2DP",          FormatToken::Currency2dp,         },
+    { "CURRENCY",             FormatToken::Currency,            },
+    { "STRINGID",             FormatToken::StringId,            },
+    { "STRING",               FormatToken::String,              },
+    { "MONTHYEAR",            FormatToken::MonthYear,           },
+    { "MONTH",                FormatToken::Month,               },
+    { "VELOCITY",             FormatToken::Velocity,            },
+    { "POP16",                FormatToken::Pop16,               },
+    { "PUSH16",               FormatToken::Push16,              },
+    { "DURATION",             FormatToken::DurationShort,       },
+    { "REALTIME",             FormatToken::DurationLong,        },
+    { "LENGTH",               FormatToken::Length,              },
+    { "SPRITE",               FormatToken::Sprite,              },
+    { "BLACK",                FormatToken::ColourBlack,         },
+    { "GREY",                 FormatToken::ColourGrey,          },
+    { "WHITE",                FormatToken::ColourWhite,         },
+    { "RED",                  FormatToken::ColourRed,           },
+    { "GREEN",                FormatToken::ColourGreen,         },
+    { "YELLOW",               FormatToken::ColourYellow,        },
+    { "TOPAZ",                FormatToken::ColourTopaz,         },
+    { "CELADON",              FormatToken::ColourCeladon,       },
+    { "BABYBLUE",             FormatToken::ColourBabyBlue,      },
+    { "PALELAVENDER",         FormatToken::ColourPaleLavender,  },
+    { "PALEGOLD",             FormatToken::ColourPaleGold,      },
+    { "LIGHTPINK",            FormatToken::ColourLightPink,     },
+    { "PEARLAQUA",            FormatToken::ColourPearlAqua,     },
+    { "PALESILVER",           FormatToken::ColourPaleSilver,    },
 };
 // clang-format on
 
-uint32_t format_get_code(std::string_view token)
+FormatToken FormatTokenFromString(std::string_view token)
 {
-    auto result = std::find_if(std::begin(format_code_tokens), std::end(format_code_tokens), [token](auto& fct) {
-        return String::Equals(token, fct.token, true);
-    });
-    return result != std::end(format_code_tokens) ? result->code : 0;
+    auto result = FormatTokenMap.find(token);
+    return result != std::end(FormatTokenMap) ? result->second : FormatToken::Unknown;
 }
 
-const char* format_get_token(uint32_t code)
+std::string_view FormatTokenToString(FormatToken token)
 {
-    for (uint32_t i = 0; i < std::size(format_code_tokens); i++)
+    for (const auto& t : FormatTokenMap)
     {
-        if (code == format_code_tokens[i].code)
-            return format_code_tokens[i].token;
+        if (t.second == token)
+        {
+            return t.first;
+        }
     }
-    return nullptr;
+    return {};
+}
+
+bool FormatTokenTakesArgument(FormatToken token)
+{
+    switch (token)
+    {
+        case FormatToken::Comma32:
+        case FormatToken::Int32:
+        case FormatToken::Comma1dp16:
+        case FormatToken::Comma2dp32:
+        case FormatToken::Comma16:
+        case FormatToken::Uint16:
+        case FormatToken::Currency2dp:
+        case FormatToken::Currency:
+        case FormatToken::StringId:
+        case FormatToken::String:
+        case FormatToken::MonthYear:
+        case FormatToken::Month:
+        case FormatToken::Velocity:
+        case FormatToken::DurationShort:
+        case FormatToken::DurationLong:
+        case FormatToken::Length:
+        case FormatToken::Sprite:
+            return true;
+    }
+    return false;
+}
+
+bool FormatTokenIsColour(FormatToken token)
+{
+    switch (token)
+    {
+        case FormatToken::ColourBlack:
+        case FormatToken::ColourGrey:
+        case FormatToken::ColourWhite:
+        case FormatToken::ColourRed:
+        case FormatToken::ColourGreen:
+        case FormatToken::ColourYellow:
+        case FormatToken::ColourTopaz:
+        case FormatToken::ColourCeladon:
+        case FormatToken::ColourBabyBlue:
+        case FormatToken::ColourPaleLavender:
+        case FormatToken::ColourPaleGold:
+        case FormatToken::ColourLightPink:
+        case FormatToken::ColourPearlAqua:
+        case FormatToken::ColourPaleSilver:
+            return true;
+    }
+    return false;
+}
+
+size_t FormatTokenGetTextColourIndex(FormatToken token)
+{
+    switch (token)
+    {
+        case FormatToken::ColourBlack:
+            return 0;
+        case FormatToken::ColourGrey:
+            return 1;
+        case FormatToken::ColourWhite:
+            return 2;
+        case FormatToken::ColourRed:
+            return 3;
+        case FormatToken::ColourGreen:
+            return 4;
+        case FormatToken::ColourYellow:
+            return 5;
+        case FormatToken::ColourTopaz:
+            return 6;
+        case FormatToken::ColourCeladon:
+            return 7;
+        case FormatToken::ColourBabyBlue:
+            return 8;
+        case FormatToken::ColourPaleLavender:
+            return 9;
+        case FormatToken::ColourPaleGold:
+            return 10;
+        case FormatToken::ColourLightPink:
+            return 11;
+        case FormatToken::ColourPearlAqua:
+            return 12;
+        case FormatToken::ColourPaleSilver:
+            return 13;
+    }
+    return 0;
+}
+
+FormatToken FormatTokenFromTextColour(size_t textColour)
+{
+    static constexpr const FormatToken tokens[] = {
+        FormatToken::ColourBlack,        FormatToken::ColourGrey,       FormatToken::ColourWhite,
+        FormatToken::ColourRed,          FormatToken::ColourGreen,      FormatToken::ColourYellow,
+        FormatToken::ColourTopaz,        FormatToken::ColourCeladon,    FormatToken::ColourBabyBlue,
+        FormatToken::ColourPaleLavender, FormatToken::ColourPaleGold,   FormatToken::ColourLightPink,
+        FormatToken::ColourPearlAqua,    FormatToken::ColourPaleSilver,
+    };
+    if (textColour > std::size(tokens))
+        return FormatToken::ColourBlack;
+    return tokens[textColour];
 }
 
 bool utf8_should_use_sprite_for_codepoint(char32_t codepoint)
@@ -119,5 +203,3 @@ bool utf8_should_use_sprite_for_codepoint(char32_t codepoint)
             return false;
     }
 }
-
-#pragma endregion

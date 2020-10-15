@@ -199,13 +199,13 @@ void InGameConsole::Toggle()
     }
 }
 
-void InGameConsole::WriteLine(const std::string& input, uint32_t colourFormat)
+void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat)
 {
     // Include text colour format only for special cases
     // The draw function handles the default text colour differently
-    utf8 colourCodepoint[4]{};
-    if (colourFormat != FORMAT_WINDOW_COLOUR_2)
-        utf8_write_codepoint(colourCodepoint, colourFormat);
+    auto colourCodepoint = "";
+    if (colourFormat != FormatToken::ColourWindow2)
+        colourCodepoint = "{";
 
     std::string line;
     std::size_t splitPos = 0;
@@ -254,9 +254,6 @@ void InGameConsole::Update()
                 }
             }
         }
-
-        // Remove unwanted characters in console input
-        utf8_remove_format_codes(_consoleCurrentLine, false);
     }
 
     // Flash the caret

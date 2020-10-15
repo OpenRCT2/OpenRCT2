@@ -695,23 +695,18 @@ NetworkGroup* NetworkBase::GetGroupByID(uint8_t id)
 
 const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
 {
-    static char formatted[1024];
-    char* lineCh = formatted;
-    formatted[0] = 0;
+    static std::string formatted;
+    formatted.clear();
+    formatted += "{OUTLINE}";
     if (fromplayer)
     {
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
-        safe_strcpy(lineCh, static_cast<const char*>(fromplayer->Name.c_str()), sizeof(formatted) - (lineCh - formatted));
-        safe_strcat(lineCh, ": ", sizeof(formatted) - (lineCh - formatted));
-        lineCh = strchr(lineCh, '\0');
+        formatted += "{BABYBLUE}";
+        formatted += fromplayer->Name;
+        formatted += ": ";
     }
-    lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-    lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
-    char* ptrtext = lineCh;
-    safe_strcpy(lineCh, text, 800);
-    utf8_remove_format_codes(ptrtext, true);
-    return formatted;
+    formatted += "{WHITE}";
+    formatted += text;
+    return formatted.c_str();
 }
 
 void NetworkBase::SendPacketToClients(const NetworkPacket& packet, bool front, bool gameCmd)
@@ -1092,7 +1087,6 @@ void NetworkBase::AppendLog(std::ostream& fs, const std::string& s)
         if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0)
         {
             String::Append(buffer, sizeof(buffer), s.c_str());
-            utf8_remove_formatting(buffer, false);
             String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
             fs.write(buffer, strlen(buffer));

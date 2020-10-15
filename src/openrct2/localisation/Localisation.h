@@ -19,15 +19,10 @@
 
 #include <string>
 
-bool utf8_is_format_code(char32_t codepoint);
-bool utf8_is_colour_code(char32_t codepoint);
 bool utf8_should_use_sprite_for_codepoint(char32_t codepoint);
-int32_t utf8_get_format_code_arg_length(char32_t codepoint);
-void utf8_remove_formatting(utf8* string, bool allowColours);
 
 std::string format_string(rct_string_id format, const void* args);
 void format_string(char* dest, size_t size, rct_string_id format, const void* args);
-void format_string_raw(char* dest, size_t size, const char* src, const void* args);
 void format_string_to_upper(char* dest, size_t size, rct_string_id format, const void* args);
 void generate_string_file();
 
@@ -43,7 +38,6 @@ void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytesPerSec);
 
 utf8* get_string_end(const utf8* text);
 size_t get_string_size(const utf8* text);
-int32_t get_string_length(const utf8* text);
 
 // The maximum number of characters allowed for string/money conversions (anything above will risk integer overflow issues)
 #define MONEY_STRING_MAXLENGTH 14

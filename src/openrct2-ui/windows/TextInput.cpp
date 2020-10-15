@@ -85,7 +85,6 @@ void window_text_input_open(
     if (existing_text != STR_NONE)
         format_string(buffer, maxLength, existing_text, &existing_args);
 
-    utf8_remove_format_codes(buffer, false);
     window_text_input_raw_open(call_w, call_widget, title, description, buffer, maxLength);
 }
 

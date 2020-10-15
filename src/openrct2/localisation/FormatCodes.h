@@ -13,91 +13,74 @@
 
 #include <string_view>
 
-uint32_t format_get_code(std::string_view token);
-const char* format_get_token(uint32_t code);
-
-enum
+enum class FormatToken
 {
-    // Font format codes
+    Unknown,
+    Literal,
 
-    // The next byte specifies the X coordinate
-    FORMAT_MOVE_X = 1,
-    // The next byte specifies the palette
-    FORMAT_ADJUST_PALETTE,
+    Newline,
+    NewlineSmall,
 
-    FORMAT_3,
-    FORMAT_4,
+    // With parameters
+    Move,
+    InlineSprite,
 
-    // Moves to the next line
-    FORMAT_NEWLINE = 5,
-    // Moves less than NEWLINE
-    FORMAT_NEWLINE_SMALLER,
+    // With arguments
+    Comma32,
+    Int32,
+    Comma1dp16,
+    Comma2dp32,
+    Comma16,
+    Uint16,
+    Currency2dp,
+    Currency,
+    StringId,
+    String,
+    MonthYear,
+    Month,
+    Velocity,
+    DurationShort,
+    DurationLong,
+    Length,
+    Sprite,
+    Pop16,
+    Push16,
 
-    FORMAT_TINYFONT,
-    FORMAT_BIGFONT,
-    FORMAT_MEDIUMFONT,
-    FORMAT_SMALLFONT,
+    // Colours
+    ColourWindow1,
+    ColourWindow2,
+    ColourWindow3,
+    ColourBlack,
+    ColourGrey,
+    ColourWhite,
+    ColourRed,
+    ColourGreen,
+    ColourYellow,
+    ColourTopaz,
+    ColourCeladon,
+    ColourBabyBlue,
+    ColourPaleLavender,
+    ColourPaleGold,
+    ColourLightPink,
+    ColourPearlAqua,
+    ColourPaleSilver,
 
-    FORMAT_OUTLINE,
-    FORMAT_OUTLINE_OFF,
+    // Fonts
+    FontTiny,
+    FontSmall,
+    FontMedium,
+    FontBig,
 
-    // Changes the colour of the text to a predefined window colour.
-    FORMAT_WINDOW_COLOUR_1,
-    FORMAT_WINDOW_COLOUR_2,
-    FORMAT_WINDOW_COLOUR_3,
-
-    FORMAT_16,
-
-    // The next 2 bytes specify the X and Y coordinates
-    FORMAT_NEWLINE_X_Y = 17,
-
-    // The next 4 bytes specify the sprite
-    FORMAT_INLINE_SPRITE = 23,
-
-    // Argument format codes
-    FORMAT_ARGUMENT_CODE_START = 123, // 'z' == 122 or 0x7A
-    FORMAT_COMMA32 = 123,
-    FORMAT_INT32,
-    FORMAT_COMMA2DP32,
-    FORMAT_COMMA16,
-    FORMAT_UINT16,
-    FORMAT_CURRENCY2DP,
-    FORMAT_CURRENCY,
-    FORMAT_STRINGID,
-    FORMAT_STRINGID2,
-    FORMAT_STRING,
-    FORMAT_MONTHYEAR,
-    FORMAT_MONTH,
-    FORMAT_VELOCITY,
-    FORMAT_POP16,
-    FORMAT_PUSH16,
-    FORMAT_DURATION,
-    FORMAT_REALTIME,
-    FORMAT_LENGTH,
-    FORMAT_SPRITE,
-    FORMAT_ARGUMENT_CODE_END = FORMAT_SPRITE,
-
-    // Colour format codes
-    FORMAT_COLOUR_CODE_START = 142,
-    FORMAT_BLACK = 142,
-    FORMAT_GREY,
-    FORMAT_WHITE,
-    FORMAT_RED,
-    FORMAT_GREEN,
-    FORMAT_YELLOW,
-    FORMAT_TOPAZ,
-    FORMAT_CELADON,
-    FORMAT_BABYBLUE,
-    FORMAT_PALELAVENDER,
-    FORMAT_PALEGOLD,
-    FORMAT_LIGHTPINK,
-    FORMAT_PEARLAQUA,
-    FORMAT_PALESILVER,
-    FORMAT_COLOUR_CODE_END = FORMAT_PALESILVER,
-
-    // Format codes that need suitable Unicode allocations
-    FORMAT_COMMA1DP16 = 20004
+    OutlineEnable,
+    OutlineDisable,
 };
+
+FormatToken FormatTokenFromString(std::string_view token);
+std::string_view FormatTokenToString(FormatToken token);
+bool FormatTokenTakesArgument(FormatToken token);
+bool FormatTokenIsColour(FormatToken token);
+size_t FormatTokenGetTextColourIndex(FormatToken token);
+FormatToken FormatTokenFromTextColour(size_t textColour);
 
 constexpr uint8_t CS_SPRITE_FONT_OFFSET = 32;
 

@@ -236,13 +236,6 @@ static void window_changelog_process_changelog_text(const std::string& text)
     while ((pos = text.find("\n", prev)) != std::string::npos)
     {
         std::string line = text.substr(prev, pos - prev);
-        for (char* ch = line.data(); *ch != '\0'; ch++)
-        {
-            if (utf8_is_format_code(*ch))
-            {
-                *ch = FORMAT_OUTLINE_OFF;
-            }
-        }
         _changelogLines.push_back(line);
         prev = pos + 1;
     }

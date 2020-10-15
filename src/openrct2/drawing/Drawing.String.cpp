@@ -50,7 +50,7 @@ int32_t gfx_get_string_width_new_lined(std::string_view text)
     FmtString fmt(text);
     for (const auto& token : fmt)
     {
-        if (token.kind == FORMAT_NEWLINE || token.kind == FORMAT_NEWLINE_SMALLER)
+        if (token.kind == FormatToken::Newline || token.kind == FormatToken::NewlineSmall)
         {
             auto width = gfx_get_string_width(buffer);
             if (!maxWidth || maxWidth > width)
@@ -222,7 +222,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
                 }
             }
         }
-        else if (token.kind == FORMAT_NEWLINE)
+        else if (token.kind == FormatToken::Newline)
         {
             buffer.push_back('\0');
 
@@ -352,13 +352,12 @@ int32_t string_get_height_raw(char* buffer)
     else if (fontBase == FONT_SPRITE_BASE_TINY)
         height += 6;
 
-    char* ch = buffer;
-    while (*ch != 0)
+    FmtString fmt(buffer);
+    for (const auto& token : fmt)
     {
-        char c = *ch++;
-        switch (c)
+        switch (token.kind)
         {
-            case FORMAT_NEWLINE:
+            case FormatToken::Newline:
                 if (fontBase == FONT_SPRITE_BASE_SMALL || fontBase == FONT_SPRITE_BASE_MEDIUM)
                 {
                     height += 10;
@@ -371,7 +370,7 @@ int32_t string_get_height_raw(char* buffer)
                 }
                 height += 18;
                 break;
-            case FORMAT_NEWLINE_SMALLER:
+            case FormatToken::NewlineSmall:
                 if (fontBase == FONT_SPRITE_BASE_SMALL || fontBase == FONT_SPRITE_BASE_MEDIUM)
                 {
                     height += 5;
@@ -384,33 +383,17 @@ int32_t string_get_height_raw(char* buffer)
                 }
                 height += 9;
                 break;
-            case FORMAT_TINYFONT:
+            case FormatToken::FontTiny:
                 fontBase = FONT_SPRITE_BASE_TINY;
                 break;
-            case FORMAT_MEDIUMFONT:
+            case FormatToken::FontMedium:
                 fontBase = FONT_SPRITE_BASE_MEDIUM;
                 break;
-            case FORMAT_SMALLFONT:
+            case FormatToken::FontSmall:
                 fontBase = FONT_SPRITE_BASE_SMALL;
-                break;
-            default:
-                if (c >= 32)
-                    continue;
-                if (c <= 4)
-                {
-                    ch++;
-                    continue;
-                }
-                if (c <= 16)
-                    continue;
-                ch += 2;
-                if (c <= 22)
-                    continue;
-                ch += 2;
                 break;
         }
     }
-
     return height;
 }
 
@@ -452,21 +435,27 @@ void gfx_draw_string_centred_wrapped_partial(
     {
         int32_t halfWidth = gfx_get_string_width(buffer) / 2;
 
-        utf8* ch = buffer;
-        utf8* nextCh;
-        int32_t codepoint;
-        while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
+        FmtString fmt(buffer);
+        for (const auto& token : fmt)
         {
-            if (!utf8_is_format_code(codepoint))
+            bool doubleBreak = false;
+            if (token.IsLiteral())
             {
-                numCharactersDrawn++;
-                if (numCharactersDrawn > numCharactersToDraw)
+                CodepointView codepoints(token.text);
+                for (auto it = codepoints.begin(); it != codepoints.end(); it++)
                 {
-                    *ch = 0;
-                    break;
+                    numCharactersDrawn++;
+                    if (numCharactersDrawn > numCharactersToDraw)
+                    {
+                        auto ch = const_cast<char*>(&token.text[it.GetIndex()]);
+                        *ch = '\0';
+                        doubleBreak = true;
+                        break;
+                    }
                 }
             }
-            ch = nextCh;
+            if (doubleBreak)
+                break;
         }
 
         screenCoords = { coords.x - halfWidth, lineY };
@@ -679,51 +668,51 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
 {
     switch (token.kind)
     {
-        case FORMAT_MOVE_X:
+        case FormatToken::Move:
             info->x = info->startX + token.parameter;
             break;
-        case FORMAT_NEWLINE:
+        case FormatToken::Newline:
             info->x = info->startX;
             info->y += font_get_line_height(info->font_sprite_base);
             break;
-        case FORMAT_NEWLINE_SMALLER:
+        case FormatToken::NewlineSmall:
             info->x = info->startX;
             info->y += font_get_line_height_small(info->font_sprite_base);
             break;
-        case FORMAT_TINYFONT:
+        case FormatToken::FontTiny:
             info->font_sprite_base = FONT_SPRITE_BASE_TINY;
             break;
-        case FORMAT_SMALLFONT:
+        case FormatToken::FontSmall:
             info->font_sprite_base = FONT_SPRITE_BASE_SMALL;
             break;
-        case FORMAT_MEDIUMFONT:
+        case FormatToken::FontMedium:
             info->font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
             break;
-        case FORMAT_OUTLINE:
+        case FormatToken::OutlineEnable:
             info->flags |= TEXT_DRAW_FLAG_OUTLINE;
             break;
-        case FORMAT_OUTLINE_OFF:
+        case FormatToken::OutlineDisable:
             info->flags &= ~TEXT_DRAW_FLAG_OUTLINE;
             break;
-        case FORMAT_WINDOW_COLOUR_1:
+        case FormatToken::ColourWindow1:
         {
             uint16_t flags = info->flags;
             colour_char_window(gCurrentWindowColours[0], &flags, info->palette);
             break;
         }
-        case FORMAT_WINDOW_COLOUR_2:
+        case FormatToken::ColourWindow2:
         {
             uint16_t flags = info->flags;
             colour_char_window(gCurrentWindowColours[1], &flags, info->palette);
             break;
         }
-        case FORMAT_WINDOW_COLOUR_3:
+        case FormatToken::ColourWindow3:
         {
             uint16_t flags = info->flags;
             colour_char_window(gCurrentWindowColours[2], &flags, info->palette);
             break;
         }
-        case FORMAT_INLINE_SPRITE:
+        case FormatToken::InlineSprite:
         {
             auto g1 = gfx_get_g1_element(token.parameter & 0x7FFFF);
             if (g1 != nullptr)
@@ -737,10 +726,11 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
             break;
         }
         default:
-            if (token.kind >= FORMAT_COLOUR_CODE_START && token.kind <= FORMAT_COLOUR_CODE_END)
+            if (FormatTokenIsColour(token.kind))
             {
                 uint16_t flags = info->flags;
-                colour_char(token.kind - FORMAT_COLOUR_CODE_START, &flags, info->palette);
+                auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
+                colour_char(static_cast<uint8_t>(colourIndex), &flags, info->palette);
             }
             break;
     }

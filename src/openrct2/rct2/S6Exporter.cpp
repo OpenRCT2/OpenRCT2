@@ -1371,7 +1371,7 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
         if (!(src.flags & BANNER_FLAG_IS_WALL) && !(src.flags & BANNER_FLAG_IS_LARGE_SCENERY))
         {
             char codeBuffer[32]{};
-            utf8_write_codepoint(codeBuffer, FORMAT_COLOUR_CODE_START + src.text_colour);
+            utf8_write_codepoint(codeBuffer, 142 + src.text_colour);
             bannerText = codeBuffer + bannerText;
         }
 

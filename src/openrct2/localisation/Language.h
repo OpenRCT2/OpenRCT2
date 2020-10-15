@@ -98,7 +98,6 @@ bool language_open(int32_t id);
 uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr);
 int32_t utf8_insert_codepoint(utf8* dst, uint32_t codepoint);
 bool utf8_is_codepoint_start(const utf8* text);
-void utf8_remove_format_codes(utf8* text, bool allowcolours);
 int32_t utf8_get_codepoint_length(char32_t codepoint);
 int32_t utf8_length(const utf8* text);
 
@@ -107,8 +106,6 @@ std::string utf8_to_rct2(const std::string_view& src);
 bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_string_id* outStringIds);
 void language_free_object_string(rct_string_id stringId);
 rct_string_id language_allocate_object_string(const std::string& target);
-std::string language_convert_string_to_tokens(const std::string_view& s);
-std::string language_convert_string(const std::string_view& s);
 
 constexpr utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
 {

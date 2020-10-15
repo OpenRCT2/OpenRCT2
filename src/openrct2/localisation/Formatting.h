@@ -23,7 +23,6 @@
 
 namespace OpenRCT2
 {
-    using FormatToken = uint32_t;
     using FormatArg_t = std::variant<uint16_t, int32_t, const char*>;
 
     class FmtString
@@ -77,7 +76,6 @@ namespace OpenRCT2
 
     template<typename T> void FormatArgument(std::stringstream& ss, FormatToken token, T arg);
 
-    bool CanFormatToken(FormatToken t);
     bool IsRealNameStringId(rct_string_id id);
     void FormatRealName(std::stringstream& ss, rct_string_id id);
     FmtString GetFmtStringById(rct_string_id id);
@@ -92,7 +90,7 @@ namespace OpenRCT2
             while (!it.eol())
             {
                 const auto& token = *it++;
-                if (!CanFormatToken(token.kind))
+                if (!FormatTokenTakesArgument(token.kind))
                 {
                     ss << token.text;
                 }
@@ -110,7 +108,7 @@ namespace OpenRCT2
             while (!it.eol())
             {
                 const auto& token = *it++;
-                if (token.kind == FORMAT_STRINGID || token.kind == FORMAT_STRINGID2)
+                if (token.kind == FormatToken::StringId)
                 {
                     if constexpr (std::is_integral<TArg0>())
                     {
@@ -128,7 +126,7 @@ namespace OpenRCT2
                         FormatString(ss, stack, argN...);
                     }
                 }
-                else if (CanFormatToken(token.kind))
+                else if (FormatTokenTakesArgument(token.kind))
                 {
                     FormatArgument(ss, token.kind, arg0);
                     return FormatString(ss, stack, argN...);

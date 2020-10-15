@@ -1267,7 +1267,7 @@ std::string OpenRCT2::Scripting::Stringify(const DukValue& val)
 std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
 {
     if (value.type() == DukValue::Type::STRING)
-        return language_convert_string(value.as_string());
+        return value.as_string();
     return {};
 }
 

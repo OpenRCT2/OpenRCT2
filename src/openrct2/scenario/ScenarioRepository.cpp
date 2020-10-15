@@ -261,7 +261,7 @@ private:
                     rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
                     // If the name or the details contain a colour code, they might be in UTF-8 already.
                     // This is caused by a bug that was in OpenRCT2 for 3 years.
-                    if (!String::ContainsColourCode(info.name) && !String::ContainsColourCode(info.details))
+                    if (!IsLikelyUtf8(info.name) && !IsLikelyUtf8(info.details))
                     {
                         rct2_to_utf8_self(info.name, sizeof(info.name));
                         rct2_to_utf8_self(info.details, sizeof(info.details));
@@ -279,6 +279,18 @@ private:
         catch (const std::exception&)
         {
             Console::Error::WriteLine("Unable to read scenario: '%s'", path.c_str());
+        }
+        return false;
+    }
+
+    static bool IsLikelyUtf8(const std::string_view s)
+    {
+        for (auto c : s)
+        {
+            if (static_cast<uint8_t>(c) >= 128)
+            {
+                return true;
+            }
         }
         return false;
     }

@@ -1540,12 +1540,12 @@ static void scrolling_text_set_bitmap_for_sprite(
                     }
                 }
             }
-            else if (token.kind <= FORMAT_COLOUR_CODE_END && token.kind >= FORMAT_COLOUR_CODE_START)
+            else if (FormatTokenIsColour(token.kind))
             {
                 auto g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
                 if (g1 != nullptr)
                 {
-                    auto colourIndex = token.kind - FORMAT_COLOUR_CODE_START;
+                    auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
                     characterColour = g1->offset[colourIndex * 4];
                 }
             }
@@ -1574,12 +1574,12 @@ static void scrolling_text_set_bitmap_for_ttf(
         {
             ttfBuffer.append(token.text);
         }
-        else if (token.kind >= FORMAT_COLOUR_CODE_START && token.kind <= FORMAT_COLOUR_CODE_END)
+        else if (FormatTokenIsColour(token.kind))
         {
             auto g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
             if (g1 != nullptr)
             {
-                auto colourIndex = token.kind - FORMAT_COLOUR_CODE_START;
+                auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
                 colour = g1->offset[colourIndex * 4];
             }
         }

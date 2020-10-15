@@ -111,12 +111,6 @@ namespace String
      * Returns an uppercased version of a UTF-8 string.
      */
     std::string ToUpper(const std::string_view& src);
-
-    /**
-     * Returns true if the string contains an RCT2 colour code.
-     */
-    bool ContainsColourCode(const std::string& string);
-
 } // namespace String
 
 class CodepointView

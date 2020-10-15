@@ -60,7 +60,7 @@ namespace OpenRCT2
 
     bool FmtString::token::IsLiteral() const
     {
-        return kind == 0;
+        return kind == FormatToken::Literal;
     }
 
     FmtString::iterator::iterator(std::string_view s, size_t i)
@@ -104,7 +104,7 @@ namespace OpenRCT2
                     {
                         p = *p0;
                     }
-                    current = token(FORMAT_MOVE_X, str.substr(startIndex, i - startIndex), p);
+                    current = token(FormatToken::Move, str.substr(startIndex, i - startIndex), p);
                     return;
                 }
                 else if (inner == "INLINE_SPRITE")
@@ -121,7 +121,7 @@ namespace OpenRCT2
                         p |= (*p2) << 16;
                         p |= (*p3) << 24;
                     }
-                    current = token(FORMAT_INLINE_SPRITE, str.substr(startIndex, i - startIndex), p);
+                    current = token(FormatToken::InlineSprite, str.substr(startIndex, i - startIndex), p);
                     return;
                 }
             }
@@ -151,14 +151,14 @@ namespace OpenRCT2
         std::string_view sztoken = str.substr(index, len);
         if (sztoken.size() >= 2 && sztoken[0] == '{' && sztoken[1] != '{')
         {
-            auto kind = format_get_code(sztoken.substr(1, len - 2));
+            auto kind = FormatTokenFromString(sztoken.substr(1, len - 2));
             return token(kind, sztoken);
         }
         else if (sztoken == "\n" || sztoken == "\r")
         {
-            return token(FORMAT_NEWLINE, sztoken);
+            return token(FormatToken::Newline, sztoken);
         }
-        return token(0, sztoken);
+        return token(FormatToken::Literal, sztoken);
     }
 
     const FmtString::token* FmtString::iterator::operator->() const
@@ -433,21 +433,21 @@ namespace OpenRCT2
     {
         switch (token)
         {
-            case FORMAT_UINT16:
-            case FORMAT_INT32:
+            case FormatToken::Uint16:
+            case FormatToken::Int32:
                 if constexpr (std::is_integral<T>())
                 {
                     FormatNumber<0, false>(ss, arg);
                 }
                 break;
-            case FORMAT_COMMA16:
-            case FORMAT_COMMA32:
+            case FormatToken::Comma16:
+            case FormatToken::Comma32:
                 if constexpr (std::is_integral<T>())
                 {
                     FormatNumber<0, true>(ss, arg);
                 }
                 break;
-            case FORMAT_COMMA1DP16:
+            case FormatToken::Comma1dp16:
                 if constexpr (std::is_integral<T>())
                 {
                     FormatNumber<1, true>(ss, arg);
@@ -457,7 +457,7 @@ namespace OpenRCT2
                     FormatNumber<1, true>(ss, std::round(arg * 10));
                 }
                 break;
-            case FORMAT_COMMA2DP32:
+            case FormatToken::Comma2dp32:
                 if constexpr (std::is_integral<T>())
                 {
                     FormatNumber<2, true>(ss, arg);
@@ -467,19 +467,19 @@ namespace OpenRCT2
                     FormatNumber<2, true>(ss, std::round(arg * 100));
                 }
                 break;
-            case FORMAT_CURRENCY2DP:
+            case FormatToken::Currency2dp:
                 if constexpr (std::is_integral<T>())
                 {
                     FormatCurrency<2, true>(ss, arg);
                 }
                 break;
-            case FORMAT_CURRENCY:
+            case FormatToken::Currency:
                 if constexpr (std::is_integral<T>())
                 {
                     FormatCurrency<0, true>(ss, arg);
                 }
                 break;
-            case FORMAT_VELOCITY:
+            case FormatToken::Velocity:
                 if constexpr (std::is_integral<T>())
                 {
                     switch (gConfigGeneral.measurement_format)
@@ -497,19 +497,19 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case FORMAT_DURATION:
+            case FormatToken::DurationShort:
                 if constexpr (std::is_integral<T>())
                 {
                     FormatMinutesSeconds(ss, arg);
                 }
                 break;
-            case FORMAT_REALTIME:
+            case FormatToken::DurationLong:
                 if constexpr (std::is_integral<T>())
                 {
                     FormatHoursMinutes(ss, arg);
                 }
                 break;
-            case FORMAT_LENGTH:
+            case FormatToken::Length:
                 if constexpr (std::is_integral<T>())
                 {
                     switch (gConfigGeneral.measurement_format)
@@ -525,7 +525,7 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case FORMAT_MONTHYEAR:
+            case FormatToken::MonthYear:
                 if constexpr (std::is_integral<T>())
                 {
                     auto month = date_get_month(arg);
@@ -533,7 +533,7 @@ namespace OpenRCT2
                     FormatStringId(ss, STR_DATE_FORMAT_MY, month, year);
                 }
                 break;
-            case FORMAT_MONTH:
+            case FormatToken::Month:
                 if constexpr (std::is_integral<T>())
                 {
                     auto szMonth = language_get_string(DateGameMonthNames[date_get_month(arg)]);
@@ -543,7 +543,7 @@ namespace OpenRCT2
                     }
                 }
                 break;
-            case FORMAT_STRING:
+            case FormatToken::String:
                 if constexpr (std::is_same<T, const char*>())
                 {
                     ss << arg;
@@ -553,7 +553,7 @@ namespace OpenRCT2
                     ss << arg.c_str();
                 }
                 break;
-            case FORMAT_SPRITE:
+            case FormatToken::Sprite:
                 if constexpr (std::is_integral<T>())
                 {
                     auto idx = static_cast<uint32_t>(arg);
@@ -567,17 +567,10 @@ namespace OpenRCT2
         }
     }
 
-    template void FormatArgument(std::stringstream&, uint32_t, uint16_t);
-    template void FormatArgument(std::stringstream&, uint32_t, int16_t);
-    template void FormatArgument(std::stringstream&, uint32_t, int32_t);
-    template void FormatArgument(std::stringstream&, uint32_t, const char*);
-
-    bool CanFormatToken(FormatToken t)
-    {
-        if (t == FORMAT_PUSH16 || t == FORMAT_POP16)
-            return false;
-        return t == FORMAT_COMMA1DP16 || (t >= FORMAT_ARGUMENT_CODE_START && t <= FORMAT_ARGUMENT_CODE_END);
-    }
+    template void FormatArgument(std::stringstream&, FormatToken, uint16_t);
+    template void FormatArgument(std::stringstream&, FormatToken, int16_t);
+    template void FormatArgument(std::stringstream&, FormatToken, int32_t);
+    template void FormatArgument(std::stringstream&, FormatToken, const char*);
 
     bool IsRealNameStringId(rct_string_id id)
     {
@@ -635,7 +628,7 @@ namespace OpenRCT2
     {
         for (const auto& token : fmt)
         {
-            if (token.kind == FORMAT_STRINGID || token.kind == FORMAT_STRINGID2)
+            if (token.kind == FormatToken::StringId)
             {
                 if (argIndex < args.size())
                 {
@@ -658,7 +651,7 @@ namespace OpenRCT2
                     argIndex++;
                 }
             }
-            else if (CanFormatToken(token.kind))
+            else if (FormatTokenTakesArgument(token.kind))
             {
                 if (argIndex < args.size())
                 {
@@ -666,7 +659,7 @@ namespace OpenRCT2
                 }
                 argIndex++;
             }
-            else if (token.kind != FORMAT_PUSH16 && token.kind != FORMAT_POP16)
+            else if (token.kind != FormatToken::Push16 && token.kind != FormatToken::Pop16)
             {
                 ss << token.text;
             }
@@ -703,42 +696,41 @@ namespace OpenRCT2
         {
             switch (t.kind)
             {
-                case FORMAT_COMMA32:
-                case FORMAT_INT32:
-                case FORMAT_COMMA2DP32:
-                case FORMAT_CURRENCY2DP:
-                case FORMAT_CURRENCY:
-                case FORMAT_SPRITE:
+                case FormatToken::Comma32:
+                case FormatToken::Int32:
+                case FormatToken::Comma2dp32:
+                case FormatToken::Currency2dp:
+                case FormatToken::Currency:
+                case FormatToken::Sprite:
                     anyArgs.push_back(ReadFromArgs<int32_t>(args));
                     break;
-                case FORMAT_COMMA16:
-                case FORMAT_UINT16:
-                case FORMAT_MONTHYEAR:
-                case FORMAT_MONTH:
-                case FORMAT_VELOCITY:
-                case FORMAT_DURATION:
-                case FORMAT_REALTIME:
-                case FORMAT_LENGTH:
+                case FormatToken::Comma16:
+                case FormatToken::Uint16:
+                case FormatToken::MonthYear:
+                case FormatToken::Month:
+                case FormatToken::Velocity:
+                case FormatToken::DurationShort:
+                case FormatToken::DurationLong:
+                case FormatToken::Length:
                     anyArgs.push_back(ReadFromArgs<uint16_t>(args));
                     break;
-                case FORMAT_STRINGID:
-                case FORMAT_STRINGID2:
+                case FormatToken::StringId:
                 {
                     auto stringId = ReadFromArgs<rct_string_id>(args);
                     anyArgs.push_back(stringId);
                     BuildAnyArgListFromLegacyArgBuffer(GetFmtStringById(stringId), anyArgs, args);
                     break;
                 }
-                case FORMAT_STRING:
+                case FormatToken::String:
                 {
                     auto sz = ReadFromArgs<const char*>(args);
                     anyArgs.push_back(sz);
                     break;
                 }
-                case FORMAT_POP16:
+                case FormatToken::Pop16:
                     args = reinterpret_cast<const char*>(reinterpret_cast<uintptr_t>(args) + 2);
                     break;
-                case FORMAT_PUSH16:
+                case FormatToken::Push16:
                     args = reinterpret_cast<const char*>(reinterpret_cast<uintptr_t>(args) - 2);
                     break;
             }

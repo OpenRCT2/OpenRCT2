@@ -19,7 +19,6 @@ void NetworkPlayer::SetName(const std::string& name)
 {
     // 36 == 31 + strlen(" #255");
     Name = name.substr(0, 36);
-    utf8_remove_format_codes(static_cast<utf8*>(Name.data()), false);
 }
 
 void NetworkPlayer::Read(NetworkPacket& packet)

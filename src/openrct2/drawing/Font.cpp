@@ -240,7 +240,7 @@ void font_sprite_initialise_characters()
             int32_t width = 0;
             if (g1 != nullptr)
             {
-                if (glyphIndex < (FORMAT_ARGUMENT_CODE_START - 32) || glyphIndex >= (FORMAT_COLOUR_CODE_END - 32))
+                if (glyphIndex < 91 || glyphIndex >= 109)
                 {
                     width = (g1->width + 2 * g1->x_offset) - 1;
                 }

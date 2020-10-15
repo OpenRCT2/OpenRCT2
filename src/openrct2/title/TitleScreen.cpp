@@ -429,17 +429,13 @@ bool title_is_previewing_sequence()
 
 void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
 {
-    utf8 buffer[256];
-
-    // Write format codes
-    utf8* ch = buffer;
-    ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-    ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
-    ch = utf8_write_codepoint(ch, FORMAT_WHITE);
+    thread_local std::string buffer;
+    buffer.clear();
+    buffer.assign("{MEDIUMFONT}{OUTLINE}{WHITE}");
 
     // Write name and version information
-    openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, screenCoords + ScreenCoordsXY(5, 5 - 13));
+    buffer += gVersionInfoFull;
+    gfx_draw_string(dpi, buffer.c_str(), COLOUR_BLACK, screenCoords + ScreenCoordsXY(5, 5 - 13));
 
     // Invalidate screen area
     int16_t width = static_cast<int16_t>(gfx_get_string_width(buffer));
@@ -447,6 +443,9 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
         { screenCoords, screenCoords + ScreenCoordsXY{ width, 30 } }); // 30 is an arbitrary height to catch both strings
 
     // Write platform information
-    snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, screenCoords + ScreenCoordsXY(5, 5));
+    buffer.assign(OPENRCT2_PLATFORM);
+    buffer.append(" (");
+    buffer.append(OPENRCT2_ARCHITECTURE);
+    buffer.append(")");
+    gfx_draw_string(dpi, buffer.c_str(), COLOUR_BLACK, screenCoords + ScreenCoordsXY(5, 5));
 }

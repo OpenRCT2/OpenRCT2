@@ -187,6 +187,18 @@ public:
         return false;
     }
 
+    static bool IsLikelyUtf8(const std::string_view s)
+    {
+        for (auto c : s)
+        {
+            if (static_cast<uint8_t>(c) >= 128)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     void Import() override
     {
         Initialise();
@@ -195,15 +207,7 @@ public:
         gS6Info = _s6.info;
 
         // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
-        // This is hard to detect. Therefore, consider invalid characters like colour codes as a sign the text is in UTF-8.
-        bool alreadyInUTF8 = false;
-
-        if (String::ContainsColourCode(_s6.info.name) || String::ContainsColourCode(_s6.info.details))
-        {
-            alreadyInUTF8 = true;
-        }
-
-        if (!alreadyInUTF8)
+        if (!IsLikelyUtf8(_s6.info.name) && !IsLikelyUtf8(_s6.info.details))
         {
             auto temp = rct2_to_utf8(_s6.info.name, RCT2_LANGUAGE_ID_ENGLISH_UK);
             safe_strcpy(gS6Info.name, temp.data(), sizeof(gS6Info.name));
@@ -1668,7 +1672,6 @@ public:
         const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
         std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
         auto asUtf8 = rct2_to_utf8(originalStringView, RCT2_LANGUAGE_ID_ENGLISH_UK);
-        utf8_remove_format_codes(asUtf8.data(), /*allow colour*/ false);
         return asUtf8.data();
     }
 
