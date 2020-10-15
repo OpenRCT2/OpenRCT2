@@ -354,7 +354,7 @@ static void window_land_rights_tool_update_land_rights(const ScreenCoordsXY& scr
                                                        : LandBuyRightSetting::BuyConstructionRights);
     auto res = GameActions::Query(&landBuyRightsAction);
 
-    _landRightsCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+    _landRightsCost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
 }
 
 /**

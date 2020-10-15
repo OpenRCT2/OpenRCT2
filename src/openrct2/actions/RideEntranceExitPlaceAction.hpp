@@ -18,7 +18,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideEntranceExitPlaceAction, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, GameActionResult)
+DEFINE_GAME_ACTION(RideEntranceExitPlaceAction, GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT, GameActions::Result)
 {
 private:
     CoordsXY _loc;
@@ -61,36 +61,36 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_direction) << DS_TAG(_rideIndex) << DS_TAG(_stationNum) << DS_TAG(_isExit);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto errorTitle = _isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                   : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
         if (!map_check_free_elements_and_reorganise(1))
         {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, errorTitle);
+            return MakeResult(GameActions::Status::NoFreeElements, errorTitle);
         }
 
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %d", static_cast<int32_t>(_rideIndex));
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
+            return MakeResult(GameActions::Status::InvalidParameters, errorTitle);
         }
 
         if (_stationNum >= MAX_STATIONS)
         {
             log_warning("Invalid station number for ride. stationNum: %u", _stationNum);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
+            return MakeResult(GameActions::Status::InvalidParameters, errorTitle);
         }
 
         if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
         {
-            return MakeResult(GA_ERROR::NOT_CLOSED, errorTitle, STR_MUST_BE_CLOSED_FIRST);
+            return MakeResult(GameActions::Status::NotClosed, errorTitle, STR_MUST_BE_CLOSED_FIRST);
         }
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
+            return MakeResult(GameActions::Status::Disallowed, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
         }
 
         const auto location = _isExit ? ride_get_exit_location(ride, _stationNum)
@@ -102,7 +102,7 @@ public:
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = GameActions::QueryNested(&rideEntranceExitRemove);
-            if (result->Error != GA_ERROR::OK)
+            if (result->Error != GameActions::Status::Ok)
             {
                 return result;
             }
@@ -111,7 +111,7 @@ public:
         auto z = ride->stations[_stationNum].GetBaseZ();
         if (!LocationValid(_loc) || (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z })))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
+            return MakeResult(GameActions::Status::NotOwned, errorTitle);
         }
 
         auto clear_z = z + (_isExit ? RideExitHeight : RideEntranceHeight);
@@ -120,17 +120,17 @@ public:
                 { _loc, z, clear_z }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags(), &cost,
                 CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(GameActions::Status::NoClearance, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
         }
 
         if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
+            return MakeResult(GameActions::Status::Disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
         if (z > MaxRideEntranceOrExitHeight)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_TOO_HIGH);
+            return MakeResult(GameActions::Status::Disallowed, errorTitle, STR_TOO_HIGH);
         }
 
         auto res = MakeResult();
@@ -139,7 +139,7 @@ public:
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         // Remember when in unknown station num mode rideIndex is unknown and z is set
         // When in known station num mode rideIndex is known and z is unknown
@@ -149,7 +149,7 @@ public:
         if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %d", static_cast<int32_t>(_rideIndex));
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
+            return MakeResult(GameActions::Status::InvalidParameters, errorTitle);
         }
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
@@ -166,7 +166,7 @@ public:
             rideEntranceExitRemove.SetFlags(GetFlags());
 
             auto result = GameActions::ExecuteNested(&rideEntranceExitRemove);
-            if (result->Error != GA_ERROR::OK)
+            if (result->Error != GameActions::Status::Ok)
             {
                 return result;
             }
@@ -185,7 +185,7 @@ public:
                 { _loc, z, clear_z }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, GetFlags() | GAME_COMMAND_FLAG_APPLY,
                 &cost, CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(GameActions::Status::NoClearance, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
         }
 
         auto res = MakeResult();
@@ -234,18 +234,18 @@ public:
         return res;
     }
 
-    static GameActionResult::Ptr TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit)
+    static GameActions::Result::Ptr TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit)
     {
         auto errorTitle = isExit ? STR_CANT_BUILD_MOVE_EXIT_FOR_THIS_RIDE_ATTRACTION
                                  : STR_CANT_BUILD_MOVE_ENTRANCE_FOR_THIS_RIDE_ATTRACTION;
         if (!map_check_free_elements_and_reorganise(1))
         {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, errorTitle);
+            return MakeResult(GameActions::Status::NoFreeElements, errorTitle);
         }
 
         if (!gCheatsSandboxMode && !map_is_location_owned(loc))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
+            return MakeResult(GameActions::Status::NotOwned, errorTitle);
         }
 
         int16_t baseZ = loc.z;
@@ -254,17 +254,17 @@ public:
         if (!map_can_construct_with_clear_at(
                 { loc, baseZ, clearZ }, &map_place_non_scenery_clear_func, { 0b1111, 0 }, 0, &cost, CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(GameActions::Status::NoClearance, errorTitle, gGameCommandErrorText, gCommonFormatArgs);
         }
 
         if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
+            return MakeResult(GameActions::Status::Disallowed, errorTitle, STR_RIDE_CANT_BUILD_THIS_UNDERWATER);
         }
 
         if (baseZ > MaxRideEntranceOrExitHeight)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, errorTitle, STR_TOO_HIGH);
+            return MakeResult(GameActions::Status::Disallowed, errorTitle, STR_TOO_HIGH);
         }
         auto res = MakeResult();
         res->Position = { loc.ToTileCentre(), tile_element_height(loc) };

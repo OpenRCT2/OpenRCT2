@@ -33,7 +33,7 @@ enum class LandBuyRightSetting : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(LandBuyRightsAction, GAME_COMMAND_BUY_LAND_RIGHTS, GameActionResult)
+DEFINE_GAME_ACTION(LandBuyRightsAction, GAME_COMMAND_BUY_LAND_RIGHTS, GameActions::Result)
 {
 private:
     MapRange _range;
@@ -68,18 +68,18 @@ public:
         stream << DS_TAG(_range) << DS_TAG(_setting);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool isExecuting) const
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
     {
         auto res = MakeResult();
 
@@ -107,7 +107,7 @@ private:
                 if (!LocationValid({ x, y }))
                     continue;
                 auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
-                if (result->Error == GA_ERROR::OK)
+                if (result->Error == GameActions::Status::Ok)
                 {
                     res->Cost += result->Cost;
                 }
@@ -120,19 +120,19 @@ private:
         return res;
     }
 
-    GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
+    GameActions::Result::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
     {
         if (_setting >= LandBuyRightSetting::Count)
         {
             log_warning("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, _ErrorTitles[0], STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
         }
 
         SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, _ErrorTitles[EnumValue(_setting)], STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, _ErrorTitles[EnumValue(_setting)], STR_NONE);
         }
 
         auto res = MakeResult();
@@ -147,7 +147,7 @@ private:
                 if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) != 0
                     || (surfaceElement->GetOwnership() & OWNERSHIP_AVAILABLE) == 0)
                 {
-                    return MakeResult(GA_ERROR::NOT_OWNED, _ErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
+                    return MakeResult(GameActions::Status::NotOwned, _ErrorTitles[EnumValue(_setting)], STR_LAND_NOT_FOR_SALE);
                 }
                 if (isExecuting)
                 {
@@ -167,7 +167,7 @@ private:
                     || (surfaceElement->GetOwnership() & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) == 0)
                 {
                     return MakeResult(
-                        GA_ERROR::NOT_OWNED, _ErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
+                        GameActions::Status::NotOwned, _ErrorTitles[EnumValue(_setting)], STR_CONSTRUCTION_RIGHTS_NOT_FOR_SALE);
                 }
 
                 if (isExecuting)
@@ -181,7 +181,7 @@ private:
 
             default:
                 log_warning("Tried calling buy land rights with an incorrect setting. setting = %u", _setting);
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, _ErrorTitles[0], STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, _ErrorTitles[0], STR_NONE);
         }
     }
 };

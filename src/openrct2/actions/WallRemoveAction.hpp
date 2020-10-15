@@ -19,7 +19,7 @@
 #include "../world/Wall.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(WallRemoveAction, GAME_COMMAND_REMOVE_WALL, GameActionResult)
+DEFINE_GAME_ACTION(WallRemoveAction, GAME_COMMAND_REMOVE_WALL, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
@@ -43,38 +43,39 @@ public:
         stream << DS_TAG(_loc);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
 
         if (!LocationValid(_loc))
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
         if (!isGhost && !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(_loc))
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::NotOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         TileElement* wallElement = GetFirstWallElementAt(_loc, isGhost);
         if (wallElement == nullptr)
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         res->Cost = 0;
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
 
@@ -83,8 +84,8 @@ public:
         TileElement* wallElement = GetFirstWallElementAt(_loc, isGhost);
         if (wallElement == nullptr)
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         res->Position.x = _loc.x + 16;

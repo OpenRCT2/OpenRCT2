@@ -22,7 +22,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetNameAction, GAME_COMMAND_SET_STAFF_NAME, GameActionResult)
+DEFINE_GAME_ACTION(StaffSetNameAction, GAME_COMMAND_SET_STAFF_NAME, GameActions::Result)
 {
 private:
     uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
@@ -38,7 +38,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -48,44 +48,44 @@ public:
         stream << DS_TAG(_spriteIndex) << DS_TAG(_name);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_spriteIndex >= MAX_SPRITES)
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
         auto staff = TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto staff = TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
         auto curName = staff->GetName();
         if (curName == _name)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::OK, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Ok, STR_NONE);
         }
 
         if (!staff->SetName(_name))
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_NAME_GUEST, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
         gfx_invalidate_screen();
@@ -93,7 +93,7 @@ public:
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
         context_broadcast_intent(&intent);
 
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         res->Position.x = staff->x;
         res->Position.y = staff->y;
         res->Position.z = staff->z;

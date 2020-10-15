@@ -25,7 +25,7 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LandLowerAction, GAME_COMMAND_LOWER_LAND, GameActionResult)
+DEFINE_GAME_ACTION(LandLowerAction, GAME_COMMAND_LOWER_LAND, GameActions::Result)
 {
 private:
     CoordsXY _coords;
@@ -53,18 +53,18 @@ public:
         stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool isExecuting) const
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
     {
         auto res = MakeResult();
         size_t tableRow = _selectionType;
@@ -133,7 +133,7 @@ private:
                 landSetHeightAction.SetFlags(GetFlags());
                 auto result = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
                                           : GameActions::QueryNested(&landSetHeightAction);
-                if (result->Error == GA_ERROR::OK)
+                if (result->Error == GameActions::Status::Ok)
                 {
                     res->Cost += result->Cost;
                 }
@@ -147,8 +147,8 @@ private:
 
         if (!withinOwnership)
         {
-            GameActionResult::Ptr ownerShipResult = std::make_unique<GameActionResult>(
-                GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
+            GameActions::Result::Ptr ownerShipResult = std::make_unique<GameActions::Result>(
+                GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
             ownerShipResult->ErrorTitle = STR_CANT_LOWER_LAND_HERE;
             return ownerShipResult;
         }

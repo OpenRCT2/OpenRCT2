@@ -373,8 +373,8 @@ static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& scr
         entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex, gRideEntranceExitPlaceStationIndex,
         gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-    rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-        if (result->Error != GA_ERROR::OK)
+    rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error != GameActions::Status::Ok)
             return;
 
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);

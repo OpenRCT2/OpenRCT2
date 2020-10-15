@@ -35,15 +35,15 @@ static constexpr const PeepSpriteType spriteTypes[] = {
     PeepSpriteType::EntertainerPanda,
 };
 
-class StaffHireNewActionResult final : public GameActionResult
+class StaffHireNewActionResult final : public GameActions::Result
 {
 public:
     StaffHireNewActionResult()
-        : GameActionResult(GA_ERROR::OK, STR_CANT_HIRE_NEW_STAFF)
+        : GameActions::Result(GameActions::Status::Ok, STR_CANT_HIRE_NEW_STAFF)
     {
     }
-    StaffHireNewActionResult(GA_ERROR error, rct_string_id message)
-        : GameActionResult(error, STR_CANT_HIRE_NEW_STAFF, message)
+    StaffHireNewActionResult(GameActions::Status error, rct_string_id message)
+        : GameActions::Result(error, STR_CANT_HIRE_NEW_STAFF, message)
     {
     }
 
@@ -70,7 +70,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -80,18 +80,18 @@ public:
         stream << DS_TAG(_autoPosition) << DS_TAG(_staffType) << DS_TAG(_entertainerType) << DS_TAG(_staffOrders);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool execute) const
+    GameActions::Result::Ptr QueryExecute(bool execute) const
     {
         auto res = std::make_unique<StaffHireNewActionResult>();
 
@@ -102,12 +102,12 @@ private:
             // Invalid staff type.
             log_error("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
 
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         if (GetEntityListCount(EntityListId::Free) < 400)
         {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
+            return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
         if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
@@ -117,7 +117,7 @@ private:
                 // Invalid entertainer costume
                 log_error("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
             }
 
             uint32_t availableCostumes = staff_get_available_entertainer_costumes();
@@ -126,7 +126,7 @@ private:
                 // Entertainer costume unavailable
                 log_error("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
             }
         }
 
@@ -141,14 +141,14 @@ private:
         if (staffIndex == STAFF_MAX_COUNT)
         {
             // Too many staff members exist already.
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_STAFF_IN_GAME);
+            return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_STAFF_IN_GAME);
         }
 
         Peep* newPeep = &(create_sprite(SPRITE_IDENTIFIER_PEEP)->peep);
         if (newPeep == nullptr)
         {
             // Too many peeps exist already.
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
+            return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
         if (execute == false)

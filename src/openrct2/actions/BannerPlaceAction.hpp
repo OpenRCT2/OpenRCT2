@@ -15,7 +15,7 @@
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BannerPlaceAction, GAME_COMMAND_PLACE_BANNER, GameActionResult)
+DEFINE_GAME_ACTION(BannerPlaceAction, GAME_COMMAND_PLACE_BANNER, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
@@ -53,7 +53,7 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_bannerType) << DS_TAG(_bannerIndex) << DS_TAG(_primaryColour);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto res = MakeResult();
         res->Position.x = _loc.x + 16;
@@ -65,57 +65,58 @@ public:
         if (!map_check_free_elements_and_reorganise(1))
         {
             log_error("No free map elements.");
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
         }
 
         if (!LocationValid(_loc))
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
 
         auto pathElement = GetValidPathElement();
 
         if (pathElement == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
+            return MakeResult(
+                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
         }
 
         if (!map_can_build_at(_loc))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         auto baseHeight = _loc.z + PATH_HEIGHT_STEP;
         BannerElement* existingBannerElement = map_get_banner_element_at({ _loc.x, _loc.y, baseHeight }, _loc.direction);
         if (existingBannerElement != nullptr)
         {
-            return MakeResult(GA_ERROR::ITEM_ALREADY_PLACED, STR_CANT_POSITION_THIS_HERE, STR_BANNER_SIGN_IN_THE_WAY);
+            return MakeResult(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, STR_BANNER_SIGN_IN_THE_WAY);
         }
 
         if (_bannerIndex == BANNER_INDEX_NULL || _bannerIndex >= MAX_BANNERS)
         {
             log_error("Invalid banner index, bannerIndex = %u", _bannerIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
 
         auto banner = GetBanner(_bannerIndex);
         if (!banner->IsNull())
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
 
         rct_scenery_entry* bannerEntry = get_banner_entry(_bannerType);
         if (bannerEntry == nullptr)
         {
             log_error("Invalid banner object type. bannerType = ", _bannerType);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
         res->Cost = bannerEntry->banner.price;
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto res = MakeResult();
         res->Position.x = _loc.x + 16;
@@ -127,27 +128,27 @@ public:
         if (!map_check_free_elements_and_reorganise(1))
         {
             log_error("No free map elements.");
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE);
         }
 
         if (_bannerIndex == BANNER_INDEX_NULL || _bannerIndex >= MAX_BANNERS)
         {
             log_error("Invalid banner index, bannerIndex = %u", _bannerIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
 
         rct_scenery_entry* bannerEntry = get_banner_entry(_bannerType);
         if (bannerEntry == nullptr)
         {
             log_error("Invalid banner object type. bannerType = ", _bannerType);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
 
         auto banner = GetBanner(_bannerIndex);
         if (!banner->IsNull())
         {
             log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
 
         TileElement* newTileElement = tile_element_insert({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);

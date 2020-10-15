@@ -1684,7 +1684,7 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
 
 static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result)
 {
-    if (result->Error != GA_ERROR::OK)
+    if (result->Error != GameActions::Status::Ok)
     {
         window_ride_construction_update_active_elements();
         return;
@@ -1728,7 +1728,7 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
 
 static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, const TrackPlaceActionResult* result)
 {
-    if (result->Error != GA_ERROR::OK)
+    if (result->Error != GameActions::Status::Ok)
     {
         window_ride_construction_update_active_elements();
         return;
@@ -1801,7 +1801,7 @@ static void window_ride_construction_construct(rct_window* w)
     }
     auto res = GameActions::Execute(&trackPlaceAction);
     // Used by some functions
-    if (res->Error != GA_ERROR::OK)
+    if (res->Error != GameActions::Status::Ok)
     {
         if (auto error = res->ErrorMessage.AsStringId())
             gGameCommandErrorText = *error;
@@ -1815,7 +1815,7 @@ static void window_ride_construction_construct(rct_window* w)
         _trackPlaceCost = res->Cost;
     }
 
-    if (res->Error != GA_ERROR::OK)
+    if (res->Error != GameActions::Status::Ok)
     {
         return;
     }
@@ -1929,8 +1929,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         _currentTrackPieceType, 0,
         { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, _currentTrackPieceDirection });
 
-    trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-        if (result->Error != GA_ERROR::OK)
+    trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error != GameActions::Status::Ok)
         {
             window_ride_construction_update_active_elements();
         }
@@ -3413,7 +3413,7 @@ static void ride_construction_set_brakes_speed(int32_t brakesSpeed)
         auto trackSetBrakeSpeed = TrackSetBrakeSpeedAction(
             _currentTrackBegin, tileElement->AsTrack()->GetTrackType(), brakesSpeed);
         trackSetBrakeSpeed.SetCallback(
-            [](const GameAction* ga, const GameActionResult* result) { window_ride_construction_update_active_elements(); });
+            [](const GameAction* ga, const GameActions::Result* result) { window_ride_construction_update_active_elements(); });
         GameActions::Execute(&trackSetBrakeSpeed);
         return;
     }
@@ -3884,8 +3884,8 @@ static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& scree
         entranceOrExitCoords, direction_reverse(gRideEntranceExitPlaceDirection), gRideEntranceExitPlaceRideIndex,
         gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-    rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-        if (result->Error != GA_ERROR::OK)
+    rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error != GameActions::Status::Ok)
             return;
 
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);

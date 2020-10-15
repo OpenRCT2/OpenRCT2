@@ -851,8 +851,8 @@ namespace OpenRCT2
                 GameAction* action = command.action.get();
                 action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
 
-                GameActionResult::Ptr result = GameActions::Execute(action);
-                if (result->Error == GA_ERROR::OK)
+                GameActions::Result::Ptr result = GameActions::Execute(action);
+                if (result->Error == GameActions::Status::Ok)
                 {
                     isPositionValid = true;
                 }

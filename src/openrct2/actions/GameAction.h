@@ -21,45 +21,6 @@
 #include <memory>
 #include <utility>
 
-/**
- * Common error codes for game actions.
- */
-enum class GA_ERROR : uint16_t
-{
-    OK,
-    INVALID_PARAMETERS,
-    DISALLOWED,
-    GAME_PAUSED,
-    INSUFFICIENT_FUNDS,
-    NOT_IN_EDITOR_MODE,
-
-    NOT_OWNED,
-    TOO_LOW,
-    TOO_HIGH,
-    NO_CLEARANCE,
-    ITEM_ALREADY_PLACED,
-
-    NOT_CLOSED,
-    BROKEN,
-
-    NO_FREE_ELEMENTS,
-
-    UNKNOWN = UINT16_MAX,
-};
-
-namespace GA_FLAGS
-{
-    constexpr uint16_t ALLOW_WHILE_PAUSED = 1 << 0;
-    constexpr uint16_t CLIENT_ONLY = 1 << 1;
-    constexpr uint16_t EDITOR_ONLY = 1 << 2;
-} // namespace GA_FLAGS
-
-#ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
-#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
-#endif
-
 class StringVariant
 {
 private:
@@ -113,38 +74,81 @@ public:
     }
 };
 
-/**
- * Represents the result of a game action query or execution.
- */
-class GameActionResult
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
+
+namespace GameActions
 {
-public:
-    using Ptr = std::unique_ptr<GameActionResult>;
+    /**
+     * Common error codes for game actions.
+     */
+    enum class Status : uint16_t
+    {
+        Ok,
+        InvalidParameters,
+        Disallowed,
+        GamePaused,
+        InsufficientFunds,
+        NotInEditorMode,
 
-    GA_ERROR Error = GA_ERROR::OK;
-    StringVariant ErrorTitle;
-    StringVariant ErrorMessage;
-    std::array<uint8_t, 32> ErrorMessageArgs;
-    CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
-    money32 Cost = 0;
-    ExpenditureType Expenditure = ExpenditureType::Count;
+        NotOwned,
+        TooLow,
+        TooHigh,
+        NoClearance,
+        ItemAlreadyPlaced,
 
-    GameActionResult() = default;
-    GameActionResult(GA_ERROR error, rct_string_id message);
-    GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message);
-    GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t* args);
-    GameActionResult(const GameActionResult&) = delete;
-    virtual ~GameActionResult(){};
+        NotClosed,
+        Broken,
 
-    std::string GetErrorTitle() const;
-    std::string GetErrorMessage() const;
-};
+        NoFreeElements,
 
-class ConstructClearResult final : public GameActionResult
-{
-public:
-    uint8_t GroundFlags{ 0 };
-};
+        Unknown = UINT16_MAX,
+    };
+
+    namespace Flags
+    {
+        constexpr uint16_t AllowWhilePaused = 1 << 0;
+        constexpr uint16_t ClientOnly = 1 << 1;
+        constexpr uint16_t EditorOnly = 1 << 2;
+    } // namespace Flags
+
+    /**
+     * Represents the result of a game action query or execution.
+     */
+    class Result
+    {
+    public:
+        using Ptr = std::unique_ptr<GameActions::Result>;
+
+        GameActions::Status Error = GameActions::Status::Ok;
+        StringVariant ErrorTitle;
+        StringVariant ErrorMessage;
+        std::array<uint8_t, 32> ErrorMessageArgs;
+        CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
+        money32 Cost = 0;
+        ExpenditureType Expenditure = ExpenditureType::Count;
+
+        Result() = default;
+        Result(GameActions::Status error, rct_string_id message);
+        Result(GameActions::Status error, rct_string_id title, rct_string_id message);
+        Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args);
+        Result(const GameActions::Result&) = delete;
+        virtual ~Result(){};
+
+        std::string GetErrorTitle() const;
+        std::string GetErrorMessage() const;
+    };
+
+    class ConstructClearResult final : public Result
+    {
+    public:
+        uint8_t GroundFlags{ 0 };
+    };
+
+} // namespace GameActions
 
 /**
  *
@@ -205,7 +209,7 @@ struct GameAction
 {
 public:
     using Ptr = std::unique_ptr<GameAction>;
-    using Callback_t = std::function<void(const struct GameAction*, const GameActionResult*)>;
+    using Callback_t = std::function<void(const struct GameAction*, const GameActions::Result*)>;
 
 private:
     uint32_t const _type;
@@ -240,7 +244,7 @@ public:
     }
 
     /**
-     * Gets the GA_FLAGS flags that are enabled for this game action.
+     * Gets the GameActions::Flags flags that are enabled for this game action.
      */
     virtual uint16_t GetActionFlags() const
     {
@@ -249,12 +253,12 @@ public:
 
         if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || (GetFlags() & GAME_COMMAND_FLAG_NO_SPEND) != 0)
         {
-            flags |= GA_FLAGS::CLIENT_ONLY;
+            flags |= GameActions::Flags::ClientOnly;
         }
 
         if (GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED)
         {
-            flags |= GA_FLAGS::ALLOW_WHILE_PAUSED;
+            flags |= GameActions::Flags::AllowWhilePaused;
         }
 
         return flags;
@@ -321,12 +325,12 @@ public:
     /**
      * Query the result of the game action without changing the game state.
      */
-    virtual GameActionResult::Ptr Query() const abstract;
+    virtual GameActions::Result::Ptr Query() const abstract;
 
     /**
      * Apply the game action and change the game state.
      */
-    virtual GameActionResult::Ptr Execute() const abstract;
+    virtual GameActions::Result::Ptr Execute() const abstract;
 
     bool LocationValid(const CoordsXY& coords) const;
 };
@@ -358,7 +362,7 @@ public:
 
     void SetCallback(std::function<void(const struct GameAction*, const TResultType*)> typedCallback)
     {
-        GameAction::SetCallback([typedCallback](const GameAction* ga, const GameActionResult* result) {
+        GameAction::SetCallback([typedCallback](const GameAction* ga, const GameActions::Result* result) {
             typedCallback(ga, static_cast<const TResultType*>(result));
         });
     }
@@ -370,10 +374,10 @@ protected:
     }
 };
 
-using GameActionFactory = GameAction* (*)();
-
 namespace GameActions
 {
+    using GameActionFactory = GameAction* (*)();
+
     void Initialize();
     void Register();
     bool IsValidId(uint32_t id);
@@ -395,12 +399,12 @@ namespace GameActions
     GameAction::Ptr Clone(const GameAction* action);
 
     // This should be used if a round trip is to be expected.
-    GameActionResult::Ptr Query(const GameAction* action);
-    GameActionResult::Ptr Execute(const GameAction* action);
+    GameActions::Result::Ptr Query(const GameAction* action);
+    GameActions::Result::Ptr Execute(const GameAction* action);
 
     // This should be used from within game actions.
-    GameActionResult::Ptr QueryNested(const GameAction* action);
-    GameActionResult::Ptr ExecuteNested(const GameAction* action);
+    GameActions::Result::Ptr QueryNested(const GameAction* action);
+    GameActions::Result::Ptr ExecuteNested(const GameAction* action);
 
     GameActionFactory Register(uint32_t id, GameActionFactory action);
 

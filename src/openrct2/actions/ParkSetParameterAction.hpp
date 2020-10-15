@@ -23,7 +23,7 @@ enum class ParkParameter : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(ParkSetParameterAction, GAME_COMMAND_SET_PARK_OPEN, GameActionResult)
+DEFINE_GAME_ACTION(ParkSetParameterAction, GAME_COMMAND_SET_PARK_OPEN, GameActions::Result)
 {
 private:
     ParkParameter _parameter{ ParkParameter::Count };
@@ -41,7 +41,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -50,11 +50,11 @@ public:
         stream << DS_TAG(_parameter) << DS_TAG(_value);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_parameter >= ParkParameter::Count)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         auto res = MakeResult();
@@ -62,7 +62,7 @@ public:
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         switch (_parameter)
         {
@@ -85,7 +85,7 @@ public:
                 window_invalidate_by_class(WC_RIDE);
                 break;
             default:
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
                 break;
         }
 

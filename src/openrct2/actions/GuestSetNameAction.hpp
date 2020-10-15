@@ -21,7 +21,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(GuestSetNameAction, GAME_COMMAND_SET_GUEST_NAME, GameActionResult)
+DEFINE_GAME_ACTION(GuestSetNameAction, GAME_COMMAND_SET_GUEST_NAME, GameActions::Result)
 {
 private:
     uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
@@ -53,7 +53,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -63,41 +63,41 @@ public:
         stream << DS_TAG(_spriteIndex) << DS_TAG(_name);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_spriteIndex >= MAX_SPRITES)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
         auto guest = TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto guest = TryGetEntity<Guest>(_spriteIndex);
         if (guest == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
         auto curName = guest->GetName();
         if (curName == _name)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::OK, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Ok, STR_NONE);
         }
 
         if (!guest->SetName(_name))
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_NAME_GUEST, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
         // Easter egg functions are for guests only
@@ -108,7 +108,7 @@ public:
         auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
         context_broadcast_intent(&intent);
 
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         res->Position.x = guest->x;
         res->Position.y = guest->y;
         res->Position.z = guest->z;

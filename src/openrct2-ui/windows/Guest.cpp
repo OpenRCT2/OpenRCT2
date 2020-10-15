@@ -587,8 +587,8 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             CoordsXYZ nullLoc{};
             nullLoc.setNull();
             PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
-            pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActionResult* result) {
-                if (result->Error != GA_ERROR::OK)
+            pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
+                if (result->Error != GameActions::Status::Ok)
                     return;
                 rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
                 if (wind)
@@ -1188,8 +1188,8 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     PeepPickupAction pickupAction{
         PeepPickupType::Place, w->number, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
     };
-    pickupAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
-        if (result->Error != GA_ERROR::OK)
+    pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error != GameActions::Status::Ok)
             return;
         tool_cancel();
         gPickupPeepImage = UINT32_MAX;

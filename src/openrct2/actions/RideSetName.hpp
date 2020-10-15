@@ -22,7 +22,7 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideSetNameAction, GAME_COMMAND_SET_RIDE_NAME, GameActionResult)
+DEFINE_GAME_ACTION(RideSetNameAction, GAME_COMMAND_SET_RIDE_NAME, GameActions::Result)
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
@@ -44,7 +44,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -54,31 +54,33 @@ public:
         stream << DS_TAG(_rideIndex) << DS_TAG(_name);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
         }
 
         if (!_name.empty() && Ride::NameExists(_name, ride->id))
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERROR_EXISTING_NAME);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERROR_EXISTING_NAME);
         }
 
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
         }
 
         if (_name.empty())
@@ -99,7 +101,7 @@ public:
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         auto location = ride->overall_view.ToTileCentre();
         res->Position = { location, tile_element_height(location) };
 

@@ -132,7 +132,7 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
 
     auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
     hireStaffAction.SetCallback([=](const GameAction*, const StaffHireNewActionResult* res) -> void {
-        if (res->Error != GA_ERROR::OK)
+        if (res->Error != GameActions::Status::Ok)
             return;
 
         // Open window for new staff.
@@ -143,7 +143,7 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
     });
 
     auto res = GameActions::Execute(&hireStaffAction);
-    return res->Error == GA_ERROR::OK;
+    return res->Error == GameActions::Status::Ok;
 }
 
 /**

@@ -2252,7 +2252,7 @@ static void window_ride_main_dropdown(rct_window* w, rct_widgetindex widgetIndex
                 if (rideType < RIDE_TYPE_COUNT)
                 {
                     auto rideSetSetting = RideSetSettingAction(w->number, RideSetSetting::RideType, rideType);
-                    rideSetSetting.SetCallback([](const GameAction* ga, const GameActionResult* result) {
+                    rideSetSetting.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                         // Reset ghost track if ride construction window is open, prevents a crash
                         // Will get set to the correct Alternative variable during set_default_next_piece.
                         // TODO: Rework construction window to prevent the need for this.

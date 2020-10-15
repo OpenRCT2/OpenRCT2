@@ -22,7 +22,7 @@
 #include "../world/Wall.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathPlaceFromTrackAction, GAME_COMMAND_PLACE_PATH_FROM_TRACK, GameActionResult)
+DEFINE_GAME_ACTION(FootpathPlaceFromTrackAction, GAME_COMMAND_PLACE_PATH_FROM_TRACK, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
@@ -52,9 +52,9 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_edges);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
         res->Position = _loc.ToTileCentre();
@@ -64,30 +64,31 @@ public:
         if (!LocationValid(_loc) || map_is_edge(_loc))
         {
             return MakeResult(
-                GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+                GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(
+                GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (_loc.z < FootpathMinHeight)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
+            return MakeResult(GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
         }
 
         if (_loc.z > FootpathMaxHeight)
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
+            return MakeResult(GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
         }
 
         return ElementInsertQuery(std::move(res));
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
         res->Position = _loc.ToTileCentre();
@@ -106,13 +107,13 @@ public:
     }
 
 private:
-    GameActionResult::Ptr ElementInsertQuery(GameActionResult::Ptr res) const
+    GameActions::Result::Ptr ElementInsertQuery(GameActions::Result::Ptr res) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
         if (!map_check_free_elements_and_reorganise(1))
         {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
+            return MakeResult(GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
         }
 
         res->Cost = MONEY(12, 00);
@@ -147,7 +148,7 @@ private:
                 { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost, crossingMode))
         {
             return MakeResult(
-                GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
+                GameActions::Status::NoClearance, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
                 gCommonFormatArgs);
         }
 
@@ -155,13 +156,14 @@ private:
         if (!gCheatsDisableClearanceChecks && (gMapGroundFlags & ELEMENT_IS_UNDERWATER))
         {
             return MakeResult(
-                GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+                GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
+                STR_CANT_BUILD_THIS_UNDERWATER);
         }
 
         auto surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
         }
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
@@ -173,7 +175,7 @@ private:
         return res;
     }
 
-    GameActionResult::Ptr ElementInsertExecute(GameActionResult::Ptr res) const
+    GameActions::Result::Ptr ElementInsertExecute(GameActions::Result::Ptr res) const
     {
         bool entrancePath = false, entranceIsSamePath = false;
 
@@ -215,7 +217,7 @@ private:
                 &res->Cost, crossingMode))
         {
             return MakeResult(
-                GA_ERROR::NO_CLEARANCE, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
+                GameActions::Status::NoClearance, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText,
                 gCommonFormatArgs);
         }
 
@@ -224,7 +226,7 @@ private:
         auto surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
         }
         int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
         res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);

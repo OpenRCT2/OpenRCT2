@@ -15,7 +15,7 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkEntranceRemoveAction, GAME_COMMAND_REMOVE_PARK_ENTRANCE, GameActionResult)
+DEFINE_GAME_ACTION(ParkEntranceRemoveAction, GAME_COMMAND_REMOVE_PARK_ENTRANCE, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
@@ -30,7 +30,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::EDITOR_ONLY;
+        return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -40,11 +40,11 @@ public:
         stream << DS_TAG(_loc);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
         {
-            return MakeResult(GA_ERROR::NOT_IN_EDITOR_MODE, STR_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::NotInEditorMode, STR_CANT_REMOVE_THIS);
         }
 
         auto res = MakeResult();
@@ -56,12 +56,12 @@ public:
         if (!LocationValid(_loc) || entranceIndex == -1)
         {
             log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
         }
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto res = MakeResult();
         res->Expenditure = ExpenditureType::LandPurchase;
@@ -72,7 +72,7 @@ public:
         if (entranceIndex == -1)
         {
             log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
         }
 
         auto direction = (gParkEntrances[entranceIndex].direction - 1) & 3;

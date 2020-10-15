@@ -19,7 +19,7 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(PlacePeepSpawnAction, GAME_COMMAND_PLACE_PEEP_SPAWN, GameActionResult)
+DEFINE_GAME_ACTION(PlacePeepSpawnAction, GAME_COMMAND_PLACE_PEEP_SPAWN, GameActions::Result)
 {
 private:
     CoordsXYZD _location;
@@ -33,7 +33,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameActionBase::GetActionFlags() | GA_FLAGS::EDITOR_ONLY | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -43,56 +43,59 @@ public:
         stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::NOT_IN_EDITOR_MODE, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
 
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = _location;
 
         if (!map_check_free_elements_and_reorganise(3))
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::NoFreeElements, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
 
         if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16)
             || _location.y >= (gMapSizeUnits - 16))
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         // Verify footpath exists at location, and retrieve coordinates
         auto pathElement = map_get_path_element_at(TileCoordsXYZ{ _location });
         if (pathElement == nullptr)
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
         }
 
         // Verify location is unowned
         auto surfaceMapElement = map_get_surface_element_at(_location);
         if (surfaceMapElement == nullptr)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
         if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE,
+                STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
         }
 
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = _location;
 

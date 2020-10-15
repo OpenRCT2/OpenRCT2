@@ -12,7 +12,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BalloonPressAction, GAME_COMMAND_BALLOON_PRESS, GameActionResult)
+DEFINE_GAME_ACTION(BalloonPressAction, GAME_COMMAND_BALLOON_PRESS, GameActions::Result)
 {
     uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
 
@@ -34,24 +34,24 @@ public:
         stream << DS_TAG(_spriteIndex);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto balloon = TryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)
         {
             log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto balloon = TryGetEntity<Balloon>(_spriteIndex);
         if (balloon == nullptr)
         {
             log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         balloon->Press();

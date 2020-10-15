@@ -36,7 +36,7 @@
 #include "ParkSetLoanAction.hpp"
 #include "ParkSetParameterAction.hpp"
 
-DEFINE_GAME_ACTION(SetCheatAction, GAME_COMMAND_CHEAT, GameActionResult)
+DEFINE_GAME_ACTION(SetCheatAction, GAME_COMMAND_CHEAT, GameActions::Result)
 {
     using ParametersRange = std::pair<std::pair<int32_t, int32_t>, std::pair<int32_t, int32_t>>;
 
@@ -63,7 +63,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -72,28 +72,28 @@ public:
         stream << DS_TAG(_cheatType) << DS_TAG(_param1) << DS_TAG(_param2);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (static_cast<uint32_t>(_cheatType) >= static_cast<uint32_t>(CheatType::Count))
         {
-            MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         ParametersRange validRange = GetParameterRange(static_cast<CheatType>(_cheatType.id));
 
         if (_param1 < validRange.first.first || _param1 > validRange.first.second)
         {
-            MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
         if (_param2 < validRange.second.first || _param2 > validRange.second.second)
         {
-            MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         switch (static_cast<CheatType>(_cheatType.id))
         {
@@ -252,7 +252,7 @@ public:
             default:
             {
                 log_error("Unabled cheat: %d", _cheatType.id);
-                MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
             }
             break;
         }

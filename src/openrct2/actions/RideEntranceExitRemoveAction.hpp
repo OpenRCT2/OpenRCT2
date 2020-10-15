@@ -14,7 +14,7 @@
 #include "../world/Entrance.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideEntranceExitRemoveAction, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, GameActionResult)
+DEFINE_GAME_ACTION(RideEntranceExitRemoveAction, GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT, GameActions::Result)
 {
 private:
     CoordsXY _loc;
@@ -53,28 +53,28 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_rideIndex) << DS_TAG(_stationNum) << DS_TAG(_isExit);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid ride id %d for entrance/exit removal", static_cast<int32_t>(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_MUST_BE_CLOSED_FIRST);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_MUST_BE_CLOSED_FIRST);
         }
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NOT_ALLOWED_TO_MODIFY_STATION);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NOT_ALLOWED_TO_MODIFY_STATION);
         }
 
         if (!LocationValid(_loc))
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         bool found = false;
@@ -115,19 +115,19 @@ public:
             log_warning(
                 "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y,
                 static_cast<int32_t>(_rideIndex), _stationNum);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid ride id %d for entrance/exit removal", static_cast<int32_t>(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
@@ -175,7 +175,7 @@ public:
             log_warning(
                 "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y,
                 static_cast<int32_t>(_rideIndex), _stationNum);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         auto res = MakeResult();

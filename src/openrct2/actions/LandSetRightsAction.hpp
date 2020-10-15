@@ -36,7 +36,7 @@ enum class LandSetRightSetting : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(LandSetRightsAction, GAME_COMMAND_SET_LAND_OWNERSHIP, GameActionResult)
+DEFINE_GAME_ACTION(LandSetRightsAction, GAME_COMMAND_SET_LAND_OWNERSHIP, GameActions::Result)
 {
 private:
     MapRange _range;
@@ -62,7 +62,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::EDITOR_ONLY;
+        return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -72,18 +72,18 @@ public:
         stream << DS_TAG(_range) << DS_TAG(_setting) << DS_TAG(_ownership);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool isExecuting) const
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
     {
         auto res = MakeResult();
 
@@ -105,7 +105,7 @@ private:
 
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
         {
-            return MakeResult(GA_ERROR::NOT_IN_EDITOR_MODE, STR_NONE, STR_LAND_NOT_FOR_SALE);
+            return MakeResult(GameActions::Status::NotInEditorMode, STR_NONE, STR_LAND_NOT_FOR_SALE);
         }
 
         // Game command modified to accept selection size
@@ -116,7 +116,7 @@ private:
                 if (!LocationValid({ x, y }))
                     continue;
                 auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
-                if (result->Error == GA_ERROR::OK)
+                if (result->Error == GameActions::Status::Ok)
                 {
                     res->Cost += result->Cost;
                 }
@@ -131,13 +131,13 @@ private:
         return res;
     }
 
-    GameActionResult::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
+    GameActions::Result::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
     {
         SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
         if (surfaceElement == nullptr)
         {
             log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
         }
 
         auto res = MakeResult();
@@ -230,7 +230,7 @@ private:
             }
             default:
                 log_warning("Tried calling set land rights with an incorrect setting. setting = %u", _setting);
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
         }
     }
 };

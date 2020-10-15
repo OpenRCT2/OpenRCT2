@@ -22,7 +22,7 @@
 
 #include <iterator>
 
-DEFINE_GAME_ACTION(ParkMarketingAction, GAME_COMMAND_START_MARKETING_CAMPAIGN, GameActionResult)
+DEFINE_GAME_ACTION(ParkMarketingAction, GAME_COMMAND_START_MARKETING_CAMPAIGN, GameActions::Result)
 {
 private:
     int32_t _type{};
@@ -40,7 +40,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -49,22 +49,23 @@ public:
         stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_START_MARKETING_CAMPAIGN);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN);
         }
         if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
         {
             return MakeResult(
-                GA_ERROR::DISALLOWED, STR_CANT_START_MARKETING_CAMPAIGN, STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
+                GameActions::Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN,
+                STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
         }
 
         return CreateResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         MarketingCampaign campaign{};
         campaign.Type = _type;
@@ -88,7 +89,7 @@ public:
     }
 
 private:
-    GameActionResult::Ptr CreateResult() const
+    GameActions::Result::Ptr CreateResult() const
     {
         auto result = MakeResult();
         result->ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;

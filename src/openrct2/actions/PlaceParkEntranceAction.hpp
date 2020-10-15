@@ -22,7 +22,7 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(PlaceParkEntranceAction, GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActionResult)
+DEFINE_GAME_ACTION(PlaceParkEntranceAction, GAME_COMMAND_PLACE_PARK_ENTRANCE, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
@@ -36,7 +36,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameActionBase::GetActionFlags() | GA_FLAGS::EDITOR_ONLY;
+        return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -46,34 +46,35 @@ public:
         stream << DS_TAG(_loc);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::NOT_IN_EDITOR_MODE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::NotInEditorMode, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
         }
 
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = { _loc.x, _loc.y, _loc.z };
 
         if (!map_check_free_elements_and_reorganise(3))
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::NoFreeElements, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
         }
 
         if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32)
             || _loc.y >= (gMapSizeUnits - 32))
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
         }
 
         if (gParkEntrances.size() >= MAX_PARK_ENTRANCES)
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
 
         auto zLow = _loc.z;
@@ -91,10 +92,11 @@ public:
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
-            if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2->Error != GA_ERROR::OK)
+            if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 });
+                res2->Error != GameActions::Status::Ok)
             {
-                return std::make_unique<GameActionResult>(
-                    GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, res2->ErrorMessage.GetStringId(),
+                return std::make_unique<GameActions::Result>(
+                    GameActions::Status::NoClearance, STR_CANT_BUILD_PARK_ENTRANCE_HERE, res2->ErrorMessage.GetStringId(),
                     res2->ErrorMessageArgs.data());
             }
 
@@ -102,17 +104,17 @@ public:
             EntranceElement* entranceElement = map_get_park_entrance_element_at(entranceLoc, false);
             if (entranceElement != nullptr)
             {
-                return std::make_unique<GameActionResult>(
-                    GA_ERROR::ITEM_ALREADY_PLACED, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
+                return std::make_unique<GameActions::Result>(
+                    GameActions::Status::ItemAlreadyPlaced, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
             }
         }
 
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = CoordsXYZ{ _loc.x, _loc.y, _loc.z };
 

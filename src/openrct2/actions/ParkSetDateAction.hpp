@@ -18,7 +18,7 @@
 #include "../windows/Intent.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetDateAction, GAME_COMMAND_SET_DATE, GameActionResult)
+DEFINE_GAME_ACTION(ParkSetDateAction, GAME_COMMAND_SET_DATE, GameActions::Result)
 {
 private:
     int32_t _year{};
@@ -36,7 +36,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -45,17 +45,17 @@ public:
         stream << DS_TAG(_year) << DS_TAG(_month) << DS_TAG(_day);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_year <= 0 || _year > MAX_YEAR || _month <= 0 || _month > MONTH_COUNT || _day <= 0 || _day > 31)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         date_set(_year, _month, _day);
         return MakeResult();

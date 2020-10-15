@@ -29,7 +29,7 @@
 
 using namespace OpenRCT2;
 
-DEFINE_GAME_ACTION(RideDemolishAction, GAME_COMMAND_DEMOLISH_RIDE, GameActionResult)
+DEFINE_GAME_ACTION(RideDemolishAction, GAME_COMMAND_DEMOLISH_RIDE, GameActions::Result)
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
@@ -61,44 +61,45 @@ public:
         stream << DS_TAG(_rideIndex) << DS_TAG(_modifyType);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
         if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
             && _modifyType == RIDE_MODIFY_DEMOLISH)
         {
-            return std::make_unique<GameActionResult>(
-                GA_ERROR::NO_CLEARANCE, STR_CANT_DEMOLISH_RIDE,
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::NoClearance, STR_CANT_DEMOLISH_RIDE,
                 STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
         }
 
-        GameActionResult::Ptr result = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr result = std::make_unique<GameActions::Result>();
 
         if (_modifyType == RIDE_MODIFY_RENEW)
         {
             if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
             {
-                return std::make_unique<GameActionResult>(
-                    GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
+                return std::make_unique<GameActions::Result>(
+                    GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
             }
 
             if (ride->num_riders > 0)
             {
-                return std::make_unique<GameActionResult>(
-                    GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
+                return std::make_unique<GameActions::Result>(
+                    GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
             }
 
             if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
                 || RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
             {
-                return std::make_unique<GameActionResult>(
-                    GA_ERROR::DISALLOWED, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
+                return std::make_unique<GameActions::Result>(
+                    GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
             }
 
             result->ErrorTitle = STR_CANT_REFURBISH_RIDE;
@@ -108,13 +109,14 @@ public:
         return result;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
         switch (_modifyType)
@@ -125,11 +127,11 @@ public:
                 return RefurbishRide(ride);
         }
 
-        return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DO_THIS);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS);
     }
 
 private:
-    GameActionResult::Ptr DemolishRide(Ride * ride) const
+    GameActions::Result::Ptr DemolishRide(Ride * ride) const
     {
         money32 refundPrice = DemolishTracks();
 
@@ -240,7 +242,7 @@ private:
 
         MarketingCancelCampaignsForRide(_rideIndex);
 
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         res->Expenditure = ExpenditureType::RideConstruction;
         res->Cost = refundPrice;
 
@@ -280,7 +282,7 @@ private:
         setMazeTrack.SetFlags(GetFlags());
 
         auto execRes = GameActions::ExecuteNested(&setMazeTrack);
-        if (execRes->Error == GA_ERROR::OK)
+        if (execRes->Error == GameActions::Status::Ok)
         {
             return execRes->Cost;
         }
@@ -317,7 +319,7 @@ private:
 
                 auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
 
-                if (removRes->Error != GA_ERROR::OK)
+                if (removRes->Error != GameActions::Status::Ok)
                 {
                     tile_element_remove(it.element);
                 }
@@ -354,9 +356,9 @@ private:
         return refundPrice;
     }
 
-    GameActionResult::Ptr RefurbishRide(Ride * ride) const
+    GameActions::Result::Ptr RefurbishRide(Ride * ride) const
     {
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         res->Expenditure = ExpenditureType::RideConstruction;
         res->Cost = GetRefurbishPrice(ride);
 

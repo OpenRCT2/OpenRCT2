@@ -15,7 +15,7 @@
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BannerRemoveAction, GAME_COMMAND_REMOVE_BANNER, GameActionResult)
+DEFINE_GAME_ACTION(BannerRemoveAction, GAME_COMMAND_REMOVE_BANNER, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
@@ -44,7 +44,7 @@ public:
         stream << DS_TAG(_loc);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto res = MakeResult();
         res->Expenditure = ExpenditureType::Landscaping;
@@ -55,7 +55,7 @@ public:
 
         if (!LocationValid(_loc) || !map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::NotOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         BannerElement* bannerElement = GetBannerElementAt();
@@ -63,20 +63,20 @@ public:
         {
             log_error(
                 "Invalid banner location, x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
         }
 
         if (bannerElement->GetIndex() >= MAX_BANNERS || bannerElement->GetIndex() == BANNER_INDEX_NULL)
         {
             log_error("Invalid banner index. index = ", bannerElement->GetIndex());
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
         }
 
         auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
             log_error("Invalid banner index. index = ", bannerElement->GetIndex());
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
         }
 
         rct_scenery_entry* bannerEntry = get_banner_entry(banner->type);
@@ -88,7 +88,7 @@ public:
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto res = MakeResult();
         res->Expenditure = ExpenditureType::Landscaping;
@@ -102,20 +102,20 @@ public:
         {
             log_error(
                 "Invalid banner location, x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z, _loc.direction);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
         }
 
         if (bannerElement->GetIndex() >= MAX_BANNERS || bannerElement->GetIndex() == BANNER_INDEX_NULL)
         {
             log_error("Invalid banner index. index = ", bannerElement->GetIndex());
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
         }
 
         auto banner = bannerElement->GetBanner();
         if (banner == nullptr)
         {
             log_error("Invalid banner index. index = ", bannerElement->GetIndex());
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS);
         }
 
         rct_scenery_entry* bannerEntry = get_banner_entry(banner->type);

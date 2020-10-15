@@ -16,7 +16,7 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SetParkEntranceFeeAction, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActionResult)
+DEFINE_GAME_ACTION(SetParkEntranceFeeAction, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActions::Result)
 {
 private:
     money16 _fee{ MONEY16_UNDEFINED };
@@ -30,7 +30,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -40,25 +40,25 @@ public:
         stream << DS_TAG(_fee);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
         bool forceFreeEntry = !park_entry_price_unlocked();
         if (noMoney || forceFreeEntry)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_NONE);
         }
         if (_fee < MONEY_FREE || _fee > MAX_ENTRANCE_FEE)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
         }
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         gParkEntranceFee = _fee;
         window_invalidate_by_class(WC_PARK_INFORMATION);
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 };

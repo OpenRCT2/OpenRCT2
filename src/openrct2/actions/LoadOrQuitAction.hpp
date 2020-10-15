@@ -19,7 +19,7 @@ enum class LoadOrQuitModes : uint8_t
     CloseSavePrompt
 };
 
-DEFINE_GAME_ACTION(LoadOrQuitAction, GAME_COMMAND_LOAD_OR_QUIT, GameActionResult)
+DEFINE_GAME_ACTION(LoadOrQuitAction, GAME_COMMAND_LOAD_OR_QUIT, GameActions::Result)
 {
 private:
     LoadOrQuitModes _mode{};
@@ -35,7 +35,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::CLIENT_ONLY | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::ClientOnly | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -45,12 +45,12 @@ public:
         stream << DS_TAG(_mode) << DS_TAG(_savePromptMode);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto mode = static_cast<LoadOrQuitModes>(_mode);
         switch (mode)
@@ -66,6 +66,6 @@ public:
                 game_load_or_quit_no_save_prompt();
                 break;
         }
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 };

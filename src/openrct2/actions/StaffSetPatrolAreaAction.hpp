@@ -15,7 +15,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetPatrolAreaAction, GAME_COMMAND_SET_STAFF_PATROL, GameActionResult)
+DEFINE_GAME_ACTION(StaffSetPatrolAreaAction, GAME_COMMAND_SET_STAFF_PATROL, GameActions::Result)
 {
 private:
     uint16_t _spriteId{ SPRITE_INDEX_NULL };
@@ -31,7 +31,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -40,36 +40,36 @@ public:
         stream << DS_TAG(_spriteId) << DS_TAG(_loc);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_spriteId >= MAX_SPRITES)
         {
             log_error("Invalid spriteId. spriteId = %u", _spriteId);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         if (!LocationValid(_loc))
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         auto staff = TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             log_error("Invalid spriteId. spriteId = %u", _spriteId);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto staff = TryGetEntity<Staff>(_spriteId);
         if (staff == nullptr)
         {
             log_error("Invalid spriteId. spriteId = %u", _spriteId);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         int32_t patrolOffset = staff->StaffId * STAFF_PATROL_AREA_SIZE;

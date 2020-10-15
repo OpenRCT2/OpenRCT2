@@ -185,7 +185,7 @@ private:
         request.header["Content-Type"] = "application/json";
 
         Http::DoAsync(request, [&](Http::Response response) -> void {
-            if (response.status != Http::Status::OK)
+            if (response.status != Http::Status::Ok)
             {
                 Console::WriteLine("Unable to connect to master server");
                 return;
@@ -209,7 +209,7 @@ private:
 
         _lastHeartbeatTime = platform_get_ticks();
         Http::DoAsync(request, [&](Http::Response response) -> void {
-            if (response.status != Http::Status::OK)
+            if (response.status != Http::Status::Ok)
             {
                 Console::WriteLine("Unable to connect to master server");
                 return;
