@@ -129,15 +129,55 @@ namespace HybridRC
     {
         if (tileElement->AsTrack()->HasChain())
         {
-            sub_98197C_rotated(
-                session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + direction + 12), 0, 0, 32, 20,
-                3, height, 0, 6, height);
+            switch (direction)
+            {
+            case 0:
+                sub_98197C_rotated(
+                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 12), 0, 0, 32,
+                    20, 3, height, 0, 6, height);
+                break;
+            case 1:
+                session->WoodenSupportsPrependTo = sub_98197C_rotated(
+                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 13), 0, 0, 2,
+                    24, 93, height, 28, 4, height - 16);
+                break;
+            case 2:
+                session->WoodenSupportsPrependTo = sub_98197C_rotated(
+                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 14), 0, 0, 2,
+                    24, 93, height, 28, 4, height - 16);
+                break;
+            case 3:
+                sub_98197C_rotated(
+                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + 15), 0, 0, 32,
+                    20, 3, height, 0, 6, height);
+                break;
+            }
         }
         else
         {
-            sub_98197C_rotated(
-                session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_STEEP + direction + 12), 0, 0, 32, 20, 3,
-                height, 0, 6, height);
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 12), 0, 0, 32, 20, 3,
+                        height, 0, 6, height);
+                    break;
+                case 1:
+                    session->WoodenSupportsPrependTo = sub_98197C_rotated(
+                        session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 13), 0, 0, 2, 24, 93,
+                        height, 28, 4, height - 16);
+                    break;
+                case 2:
+                    session->WoodenSupportsPrependTo = sub_98197C_rotated(
+                        session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 14), 0, 0, 2, 24, 93,
+                        height, 28, 4, height - 16);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_STEEP + 15), 0, 0, 32, 20, 3,
+                        height, 0, 6, height);
+                    break;
+            }
         }
         wooden_a_supports_paint_setup(
             session, direction & 1, 21 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -427,9 +467,29 @@ namespace HybridRC
         switch (trackSequence)
         {
             case 0:
-                sub_98197C_rotated(
-                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + direction + 8), 0, 0, 2, 20,
-                    31, height, 4, 6, height + 8);
+                switch (direction)
+                {
+                    case 0:
+                        sub_98197C_rotated(
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 8), 0, 0, 2,
+                            20, 31, height, 4, 6, height + 8);
+                        break;
+                    case 1:
+                        sub_98197C_rotated(
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 9), 0, 0, 2,
+                            20, 31, height, 24, 6, height + 8);
+                        break;
+                    case 2:
+                        sub_98197C_rotated(
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 10), 0, 0, 2,
+                            20, 31, height, 24, 6, height + 8);
+                        break;
+                    case 3:
+                        sub_98197C_rotated(
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 11), 0, 0, 2,
+                            20, 31, height, 4, 6, height + 8);
+                        break;
+                }
                 paint_util_set_vertical_tunnel(session, height + 32);
                 paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -453,9 +513,29 @@ namespace HybridRC
         switch (trackSequence)
         {
             case 0:
-                sub_98197C_rotated(
-                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + direction), 0, 0, 32, 20, 3,
-                    height, 0, 6, height);
+                switch (direction)
+                {
+                    case 0:
+                        sub_98197C_rotated(
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 0), 0, 0, 32,
+                            20, 3, height, 0, 6, height);
+                        break;
+                    case 1:
+                        sub_98197C_rotated(
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 1), 0, 0, 2,
+                            20, 55, height, 24, 6, height);
+                        break;
+                    case 2:
+                        sub_98197C_rotated(
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 2), 0, 0, 2,
+                            20, 55, height, 24, 6, height);
+                        break;
+                    case 3:
+                        sub_98197C_rotated(
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 3), 0, 0, 32,
+                            20, 3, height, 0, 6, height);
+                        break;
+                }
                 wooden_a_supports_paint_setup(
                     session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 if (direction == 0 || direction == 3)
@@ -482,9 +562,29 @@ namespace HybridRC
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
     {
-        sub_98197C_rotated(
-            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + direction + 4), 0, 0, 32, 20, 3,
-            height, 0, 6, height + 8);
+        switch (direction)
+        {
+            case 0:
+                sub_98197C_rotated(
+                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 4), 0, 0, 32, 20, 3,
+                    height, 0, 6, height + 8);
+                break;
+            case 1:
+                sub_98197C_rotated(
+                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 5), 0, 0, 2, 20, 31,
+                    height, 24, 6, height + 8);
+                break;
+            case 2:
+                sub_98197C_rotated(
+                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 6), 0, 0, 2, 20, 31,
+                    height, 24, 6, height + 8);
+                break;
+            case 3:
+                sub_98197C_rotated(
+                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + 7), 0, 0, 32, 20, 3,
+                    height, 0, 6, height + 8);
+                break;
+        }
         switch (direction)
         {
             case 1:
@@ -10008,7 +10108,7 @@ namespace HybridRC
     {
         sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
         sub_98197C_rotated(
-            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_FLAT + direction), 0, 0, 32, 20, 0, height, 0, 6,
+            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_FLAT + (direction & 1)), 0, 0, 32, 20, 0, height, 0, 6,
             height + 3);
         track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
