@@ -1256,10 +1256,9 @@ void window_guest_stats_update(rct_window* w)
  *
  *  rct2: 0x0066ECC1
  *
- *  ebp: colour, contains flag BAR_BLINK for blinking
  */
 static void window_guest_stats_bars_paint(
-    int32_t value, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour)
+    int32_t value, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blink_flag)
 {
     if (font_get_line_height(gCurrentFontSpriteBase) > 10)
     {
@@ -1267,9 +1266,6 @@ static void window_guest_stats_bars_paint(
     }
 
     gfx_fill_rect_inset(dpi, x + 61, y + 1, x + 61 + 121, y + 9, w->colours[1], INSET_RECT_F_30);
-
-    int32_t blink_flag = colour & BAR_BLINK;
-    colour &= ~BAR_BLINK;
 
     if (!blink_flag || game_is_paused() || (gCurrentRealTimeTicks & 8) == 0)
     {
@@ -1317,26 +1313,20 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t happiness = peep->Happiness;
     if (happiness < 10)
         happiness = 10;
-    int32_t ebp = COLOUR_BRIGHT_GREEN;
-    if (happiness < 50)
-    {
-        ebp |= BAR_BLINK;
-    }
-    window_guest_stats_bars_paint(happiness, screenCoords.x, screenCoords.y, w, dpi, ebp);
+    int32_t barColour = COLOUR_BRIGHT_GREEN;
+    bool barBlink = (happiness < 50) ? true : false;
+    window_guest_stats_bars_paint(happiness, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Energy
     screenCoords.y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_ENERGY_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
     int32_t energy = ((peep->Energy - PEEP_MIN_ENERGY) * 255) / (PEEP_MAX_ENERGY - PEEP_MIN_ENERGY);
-    ebp = COLOUR_BRIGHT_GREEN;
-    if (energy < 50)
-    {
-        ebp |= BAR_BLINK;
-    }
+    barColour = COLOUR_BRIGHT_GREEN;
+    barBlink = (energy < 50) ? true : false;
     if (energy < 10)
         energy = 10;
-    window_guest_stats_bars_paint(energy, screenCoords.x, screenCoords.y, w, dpi, ebp);
+    window_guest_stats_bars_paint(energy, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Hunger
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1353,12 +1343,9 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     hunger /= 32;
     hunger = 0xFF & ~hunger;
 
-    ebp = COLOUR_BRIGHT_RED;
-    if (hunger > 170)
-    {
-        ebp |= BAR_BLINK;
-    }
-    window_guest_stats_bars_paint(hunger, screenCoords.x, screenCoords.y, w, dpi, ebp);
+    barColour = COLOUR_BRIGHT_RED;
+    barBlink = (hunger > 170) ? true : false;
+    window_guest_stats_bars_paint(hunger, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Thirst
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1375,12 +1362,9 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     thirst /= 32;
     thirst = 0xFF & ~thirst;
 
-    ebp = COLOUR_BRIGHT_RED;
-    if (thirst > 170)
-    {
-        ebp |= BAR_BLINK;
-    }
-    window_guest_stats_bars_paint(thirst, screenCoords.x, screenCoords.y, w, dpi, ebp);
+    barColour = COLOUR_BRIGHT_RED;
+    barBlink = (thirst > 170) ? true : false;
+    window_guest_stats_bars_paint(thirst, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Nausea
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1393,12 +1377,9 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     nausea *= 36;
     nausea /= 32;
 
-    ebp = COLOUR_BRIGHT_RED;
-    if (nausea > 120)
-    {
-        ebp |= BAR_BLINK;
-    }
-    window_guest_stats_bars_paint(nausea, screenCoords.x, screenCoords.y, w, dpi, ebp);
+    barColour = COLOUR_BRIGHT_RED;
+    barBlink = (nausea > 120) ? true : false;
+    window_guest_stats_bars_paint(nausea, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Toilet
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1414,23 +1395,18 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     toilet *= 45;
     toilet /= 32;
 
-    ebp = COLOUR_BRIGHT_RED;
-    if (toilet > 160)
-    {
-        ebp |= BAR_BLINK;
-    }
-    window_guest_stats_bars_paint(toilet, screenCoords.x, screenCoords.y, w, dpi, ebp);
+    barColour = COLOUR_BRIGHT_RED;
+    barBlink = (toilet > 160) ? true : false;
+    window_guest_stats_bars_paint(toilet, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Time in park
     screenCoords.y += LIST_ROW_HEIGHT + 1;
     int32_t guestEntryTime = peep->GetParkEntryTime();
     if (guestEntryTime != -1)
     {
-        int32_t eax = gScenarioTicks;
-        eax -= guestEntryTime;
-        eax >>= 11;
+        int32_t timeInPark = (gScenarioTicks - guestEntryTime) >> 11;
         auto ft = Formatter();
-        ft.Add<uint16_t>(eax & 0xFFFF);
+        ft.Add<uint16_t>(timeInPark & 0xFFFF);
         gfx_draw_string_left(dpi, STR_GUEST_STAT_TIME_IN_PARK, ft.Data(), COLOUR_BLACK, screenCoords);
     }
 
