@@ -101,7 +101,6 @@ CoordsXYZ _currentTrackBegin;
 uint8_t _currentTrackPieceDirection;
 track_type_t _currentTrackPieceType;
 uint8_t _currentTrackSelectionFlags;
-int8_t _rideConstructionArrowPulseTime;
 uint8_t _currentTrackSlopeEnd;
 uint8_t _currentTrackBankEnd;
 uint8_t _currentTrackLiftHill;
@@ -1373,13 +1372,16 @@ void ride_construction_invalidate_current_track()
         case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
         case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
         case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
+        case RIDE_CONSTRUCTION_STATE_FRONT:
+        case RIDE_CONSTRUCTION_STATE_BACK:
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
             {
                 map_invalidate_tile_full(_currentTrackBegin.ToTileStart());
-                gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             }
             ride_construction_remove_ghosts();
             break;
+        case RIDE_CONSTRUCTION_STATE_PLACE:
+        case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
         default:
             if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_ARROW)
             {
@@ -1611,6 +1613,12 @@ void ride_select_next_section()
                 // Set next element's height.
                 virtual_floor_set_height(tileElement->GetBaseZ());
             }
+
+            _currentTrackBegin = *newCoords;
+            _currentTrackPieceDirection = tileElement->GetDirection();
+            _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
+            _currentTrackSelectionFlags = 0;
+            window_ride_construction_update_active_elements();
         }
         else
         {
@@ -1619,18 +1627,9 @@ void ride_select_next_section()
             _currentTrackPieceDirection = direction;
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            _rideConstructionArrowPulseTime = 0;
             ride_construction_set_default_next_piece();
             window_ride_construction_update_active_elements();
-            return;
         }
-
-        _currentTrackBegin = *newCoords;
-        _currentTrackPieceDirection = tileElement->GetDirection();
-        _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
-        _currentTrackSelectionFlags = 0;
-        _rideConstructionArrowPulseTime = 0;
-        window_ride_construction_update_active_elements();
     }
     else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
@@ -1673,7 +1672,6 @@ void ride_select_previous_section()
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            _rideConstructionArrowPulseTime = 0;
             if (!scenery_tool_is_active())
             {
                 // Set previous element's height.
@@ -1690,7 +1688,6 @@ void ride_select_previous_section()
             _currentTrackPieceDirection = trackBeginEnd.end_direction;
             _currentTrackPieceType = tileElement->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            _rideConstructionArrowPulseTime = 0;
             ride_construction_set_default_next_piece();
             window_ride_construction_update_active_elements();
         }
@@ -1799,7 +1796,6 @@ static bool ride_modify_maze(const CoordsXYE& tileElement)
             _currentTrackBegin.y = tileElement.y;
             _currentTrackBegin.z = trackElement->GetBaseZ();
             _currentTrackSelectionFlags = 0;
-            _rideConstructionArrowPulseTime = 0;
 
             auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
             context_broadcast_intent(&intent);
@@ -1880,7 +1876,6 @@ bool ride_modify(CoordsXYE* input)
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags = 0;
-    _rideConstructionArrowPulseTime = 0;
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
     {
@@ -1900,7 +1895,6 @@ bool ride_modify(CoordsXYE* input)
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags = 0;
-    _rideConstructionArrowPulseTime = 0;
 
     ride_select_previous_section();
 
@@ -1911,7 +1905,6 @@ bool ride_modify(CoordsXYE* input)
         _currentTrackPieceDirection = direction;
         _currentTrackPieceType = type;
         _currentTrackSelectionFlags = 0;
-        _rideConstructionArrowPulseTime = 0;
     }
 
     window_ride_construction_update_active_elements();
@@ -1958,7 +1951,6 @@ int32_t ride_initialise_construction_window(Ride* ride)
     _currentTrackPieceDirection = 0;
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_PLACE;
     _currentTrackSelectionFlags = 0;
-    _rideConstructionArrowPulseTime = 0;
 
     window_ride_construction_update_active_elements();
     return 1;
@@ -6260,7 +6252,6 @@ bool ride_select_backwards_from_front()
             _currentTrackPieceDirection = trackBeginEnd.begin_direction;
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            _rideConstructionArrowPulseTime = 0;
             return true;
         }
     }
@@ -6286,7 +6277,6 @@ bool ride_select_forwards_from_back()
             _currentTrackPieceDirection = next_track.element->GetDirection();
             _currentTrackPieceType = next_track.element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
-            _rideConstructionArrowPulseTime = 0;
             return true;
         }
     }
