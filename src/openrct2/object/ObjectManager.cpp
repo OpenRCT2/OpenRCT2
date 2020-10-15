@@ -344,7 +344,7 @@ private:
         return result;
     }
 
-    void SetNewLoadedObjectList(std::vector<std::unique_ptr<Object>> newLoadedObjects)
+    void SetNewLoadedObjectList(std::vector<std::unique_ptr<Object>>&& newLoadedObjects)
     {
         if (newLoadedObjects.empty())
         {
@@ -588,26 +588,41 @@ private:
         // Read objects
         std::mutex commonMutex;
         ParallelFor(requiredObjects, [this, &commonMutex, requiredObjects, &objects, &badObjects, &loadedObjects](size_t i) {
-            auto ori = requiredObjects[i];
+            auto requiredObject = requiredObjects[i];
             std::unique_ptr<Object> object;
-            if (ori != nullptr)
+            if (requiredObject != nullptr)
             {
-                auto loadedObject = ori->LoadedObject;
+                auto loadedObject = requiredObject->LoadedObject;
                 if (loadedObject == nullptr)
                 {
-                    object = _objectRepository.LoadObject(ori);
+                    // Object requires to be loaded, if the object successfully loads it will register it
+                    // as a loaded object otherwise placed into the badObjects list.
+                    object = _objectRepository.LoadObject(requiredObject);
+                    std::lock_guard<std::mutex> guard(commonMutex);
                     if (object == nullptr)
                     {
-                        std::lock_guard<std::mutex> guard(commonMutex);
-                        badObjects.push_back(ori->ObjectEntry);
-                        ReportObjectLoadProblem(&ori->ObjectEntry);
+                        badObjects.push_back(requiredObject->ObjectEntry);
+                        ReportObjectLoadProblem(&requiredObject->ObjectEntry);
                     }
                     else
                     {
-                        std::lock_guard<std::mutex> guard(commonMutex);
                         loadedObjects.push_back(object.get());
                         // Connect the ori to the registered object
-                        _objectRepository.RegisterLoadedObject(ori, object.get());
+                        _objectRepository.RegisterLoadedObject(requiredObject, object.get());
+                    }
+                }
+                else
+                {
+                    // The object is already loaded, given that the new list will be used as the next loaded object list,
+                    // we can move the element out safely. This is required as the resulting list must contain all loaded
+                    // objects and not just the newly loaded ones.
+                    std::lock_guard<std::mutex> guard(commonMutex);
+                    auto it = std::find_if(_loadedObjects.begin(), _loadedObjects.end(), [loadedObject](const auto& obj) {
+                        return obj.get() == loadedObject;
+                    });
+                    if (it != _loadedObjects.end())
+                    {
+                        object = std::move(*it);
                     }
                 }
             }
