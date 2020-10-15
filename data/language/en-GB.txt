@@ -1959,15 +1959,14 @@ STR_2749    :My new scenario
 STR_2750    :Move all items to top
 STR_2751    :Move all items to bottom
 STR_2752    :Clear grass
-STR_2753    :Mowed grass
+STR_2753    :Mow grass
 STR_2754    :Water plants
 STR_2755    :Fix vandalism
 STR_2756    :Remove litter
 STR_2763    :???
 STR_2765    :Large Tram
 STR_2766    :Win scenario
-STR_2767    :Freeze weather
-STR_2768    :<not used anymore>
+STR_2767    :Disable weather changes
 STR_2769    :Open Park
 STR_2770    :Close Park
 STR_2773    :Windowed
@@ -2692,8 +2691,6 @@ STR_5365    :{BLACK}Staff speed:
 STR_5366    :Normal
 STR_5367    :Fast
 STR_5368    :Reset crash status
-STR_5369    :<not used anymore>
-STR_5370    :<not used anymore>
 STR_5371    :Object selection
 STR_5372    :Invert right mouse dragging
 STR_5373    :Name {STRINGID}
@@ -3131,7 +3128,6 @@ STR_5846    :{SMALLFONT}{BLACK}Set how often OpenRCT2 automatically saves
 STR_5847    :{SMALLFONT}{BLACK}Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
 STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
 STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
-STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built rides
 STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
 STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off

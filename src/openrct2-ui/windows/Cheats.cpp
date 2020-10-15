@@ -278,7 +278,7 @@ static rct_widget window_cheats_misc_widgets[] =
     MakeWidget        ({225, 205}, { 11,  12},   WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP         ), // Force weather
     MakeWidget        ({ 11, 222}, CHEAT_CHECK,  WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP       ), // Freeze weather
 
-    MakeWidget        ({  5, 244}, {238,  99},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
+    MakeWidget        ({  5, 244}, {238,  99},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_MAINTENANCE_GROUP                                         ), // Maintenance group
     MakeWidget        ({ 11, 259}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
     MakeWidget        ({127, 259}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
     MakeWidget        ({ 11, 280}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
