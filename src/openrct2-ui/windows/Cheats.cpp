@@ -268,8 +268,8 @@ static rct_widget window_cheats_misc_widgets[] =
 
     MakeWidget        ({  5, 112}, {238,  75},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_OBJECTIVE_GROUP                                           ), // Objective group
     MakeWidget        ({ 11, 127}, CHEAT_CHECK,  WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
-    MakeWidget        ({ 11, 141}, CHEAT_BUTTON, WWT_CHECKBOX, WindowColour::Secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
-    MakeSpinnerWidgets({126, 142}, {111,  14},   WWT_SPINNER,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
+    MakeWidget        ({ 11, 144}, {281,  12},   WWT_CHECKBOX, WindowColour::Secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
+    MakeSpinnerWidgets({156, 142}, { 81,  14},   WWT_SPINNER,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
     MakeWidget        ({ 11, 162}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
     MakeWidget        ({127, 162}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
 
