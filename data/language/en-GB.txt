@@ -1964,11 +1964,11 @@ STR_2754    :Water plants
 STR_2755    :Fix vandalism
 STR_2756    :Remove litter
 STR_2763    :???
-STR_2765    :Large Tram
+STR_2765    :Large tram
 STR_2766    :Win scenario
 STR_2767    :Disable weather changes
-STR_2769    :Open Park
-STR_2770    :Close Park
+STR_2769    :Open park
+STR_2770    :Close park
 STR_2773    :Windowed
 STR_2774    :Fullscreen
 STR_2775    :Fullscreen (borderless window)
@@ -3584,8 +3584,8 @@ STR_6327    :Transparent background for giant screenshots
 STR_6328    :{SMALLFONT}{BLACK}With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Downloading [{STRING}] from {STRING} ({COMMA16} / {COMMA16})
-STR_6331    :Create Ducks
-STR_6332    :Remove Ducks
+STR_6331    :Create ducks
+STR_6332    :Remove ducks
 STR_6333    :Increase scale factor
 STR_6334    :Decrease scale factor
 STR_6335    :Tile Inspector: Insert corrupt element
