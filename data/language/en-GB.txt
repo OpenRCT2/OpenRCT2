@@ -1959,17 +1959,16 @@ STR_2749    :My new scenario
 STR_2750    :Move all items to top
 STR_2751    :Move all items to bottom
 STR_2752    :Clear grass
-STR_2753    :Mowed grass
+STR_2753    :Mow grass
 STR_2754    :Water plants
 STR_2755    :Fix vandalism
 STR_2756    :Remove litter
 STR_2763    :???
-STR_2765    :Large Tram
+STR_2765    :Large tram
 STR_2766    :Win scenario
-STR_2767    :Freeze weather
-STR_2768    :Unfreeze weather
-STR_2769    :Open Park
-STR_2770    :Close Park
+STR_2767    :Disable weather changes
+STR_2769    :Open park
+STR_2770    :Close park
 STR_2773    :Windowed
 STR_2774    :Fullscreen
 STR_2775    :Fullscreen (borderless window)
@@ -2692,8 +2691,6 @@ STR_5365    :{BLACK}Staff speed:
 STR_5366    :Normal
 STR_5367    :Fast
 STR_5368    :Reset crash status
-STR_5369    :Park parameters…
-STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
 STR_5371    :Object selection
 STR_5372    :Invert right mouse dragging
 STR_5373    :Name {STRINGID}
@@ -3010,8 +3007,8 @@ STR_5721    :Cloudy
 STR_5722    :Rain
 STR_5723    :Heavy Rain
 STR_5724    :Thunderstorm
-STR_5725    :{BLACK}Force weather:
-STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
+STR_5725    :{BLACK}Change weather to:
+STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in the park
 STR_5727    :Scaling quality:
 STR_5731    :Linear
 # tooltip for tab in options window
@@ -3131,7 +3128,6 @@ STR_5846    :{SMALLFONT}{BLACK}Set how often OpenRCT2 automatically saves
 STR_5847    :{SMALLFONT}{BLACK}Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
 STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
 STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
-STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built rides
 STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
 STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off
@@ -3151,7 +3147,7 @@ STR_5867    :{WINDOW_COLOUR_2}Provider Name: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Provider E-mail: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Provider Website: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Show server information
-STR_5871    :Plants don't age
+STR_5871    :Disable plants withering
 STR_5872    :{SMALLFONT}{BLACK}Disable plant ageing such that they don't wilt.
 STR_5873    :Allow chain lifts on all track pieces
 STR_5874    :{SMALLFONT}{BLACK}Allows any piece of track to be made into a chain lift
@@ -3588,8 +3584,8 @@ STR_6327    :Transparent background for giant screenshots
 STR_6328    :{SMALLFONT}{BLACK}With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Downloading [{STRING}] from {STRING} ({COMMA16} / {COMMA16})
-STR_6331    :Create Ducks
-STR_6332    :Remove Ducks
+STR_6331    :Create ducks
+STR_6332    :Remove ducks
 STR_6333    :Increase scale factor
 STR_6334    :Decrease scale factor
 STR_6335    :Tile Inspector: Insert corrupt element
@@ -3651,6 +3647,8 @@ STR_6390    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in or
 STR_6391    :Please select your RCT2 directory
 STR_6392    :Could not find {STRING} at this path.
 STR_6393    :Objective Selection
+STR_6394    :Objective
+STR_6395    :Maintenance
 
 #############
 # Scenarios #
