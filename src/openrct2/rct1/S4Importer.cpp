@@ -2407,25 +2407,25 @@ private:
         uint8_t activeResearchTypes = 0;
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_ROLLERCOASTER);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Rollercoaster);
         }
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_THRILL_RIDES)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_THRILL);
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_WATER);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Thrill);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Water);
         }
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_GENTLE_TRANSPORT_RIDES)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_GENTLE);
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_TRANSPORT);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Gentle);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Transport);
         }
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SHOPS)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_SHOP);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Shop);
         }
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Group);
         }
         gResearchPriorities = activeResearchTypes;
         gResearchFundingLevel = _s4.research_level;
@@ -2663,7 +2663,7 @@ private:
             {
                 dst->entryIndex = entryIndex;
                 dst->type = Research::EntryType::Scenery;
-                dst->category = RESEARCH_CATEGORY_SCENERY_GROUP;
+                dst->category = EnumToFlag(ResearchCategory::Group);
                 dst->flags = 0;
             }
         }
