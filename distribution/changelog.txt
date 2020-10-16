@@ -6,6 +6,7 @@
 - Feature: [#13096] Add Esperanto translation.
 - Feature: [#13164] Add 'Objective options' to Cheats menu.
 - Change: [#9568] Change lift sounds of Reverser Roller Coaster and Compact Inverted Coaster to better fitting ones.
+- Change: [#13160] The lay-out of the Park Cheats tab has been improved.
 - Fix: [#1324] Last track piece map selection still visible when placing ride entrance or exit (original bug).
 - Fix: [#3200] Close Construction window upon selecting vehicle page.
 - Fix: [#4041] Garbled park option on scenario editor with custom theme.
