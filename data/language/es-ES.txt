@@ -94,6 +94,7 @@ STR_0089    :Mini Montaña Rusa
 STR_0090    :Trenes Mineros
 STR_0091    :Atracc. Desconocida (59)
 STR_0092    :Montaña Rusa Impulso MLI
+STR_0093    :Montaña Rusa Híbrida 
 STR_0512    :Una montaña rusa pequeña de acero con una subida en espiral y vagones con asientos en línea.
 STR_0513    :Una montaña rusa en el que los pasajeros permanecen de pie.
 STR_0514    :Los vagones suspendidos bajo los raíles se balancean hacia los lados en las curvas.
@@ -173,6 +174,7 @@ STR_0598    :Los vagones de la montaña rusa invertida aceleran saliendo del and
 STR_0599    :Una montaña rusa compacta con vagones individuales y caídas y giros suaves.
 STR_0600    :Trenes mineros autopropulsados corren a lo largo de una vía enredada.
 STR_0602    :Los vagones se aceleran por los motores lineales de inducción
+STR_0603    :Una montaña rusa estilo de madera con vías de acero, lo que le permite caídas empinadas e inversiones.
 STR_0767    :Visitante {INT32}
 STR_0768    :Manita {INT32}
 STR_0769    :Mecánico {INT32}
@@ -3652,6 +3654,10 @@ STR_6386    :Tormenta de nieve
 STR_6387    :No se puede bajar el elemento aquí…
 STR_6388    :No se puede subir el elemento aquí…
 STR_6389    :Espacio inválido
+STR_6390    :OpenRCT2 necesita los archivos originales del juego RollerCoaster Tycoon 2 para poder funcionar. Por favor selecciona el directorio donde tienes instalado el RollerCoaster Tycoon 2.
+STR_6391    :Elige tu directorio de RCT2.
+STR_6392    :No se pudo encontrar {STRING} en esta ruta.
+STR_6393    :Selección de Objetivo.
 
 ##############
 # Escenarios #
