@@ -284,7 +284,7 @@ static rct_widget window_cheats_misc_widgets[] =
     MakeWidget        ({ 11, 280}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
     MakeWidget        ({127, 280}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
     MakeWidget        ({ 11, 301}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
-    MakeWidget        ({ 11, 322}, CHEAT_BUTTON, WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
+    MakeWidget        ({ 11, 322}, CHEAT_CHECK,  WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
 
     MakeWidget        ({  5, 347}, {238,  35},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
     MakeWidget        ({126, 361}, {111,  14},   WWT_DROPDOWN, WindowColour::Secondary                                                                      ), // Staff speed
