@@ -534,6 +534,7 @@ static void window_ride_vehicle_resize(rct_window *w);
 static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void window_ride_vehicle_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_ride_vehicle_update(rct_window *w);
+static OpenRCT2String window_ride_vehicle_tooltip(rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback);
 static void window_ride_vehicle_invalidate(rct_window *w);
 static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_ride_vehicle_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
@@ -636,6 +637,7 @@ static rct_window_event_list window_ride_vehicle_events([](auto& events)
     events.mouse_down = &window_ride_vehicle_mousedown;
     events.dropdown = &window_ride_vehicle_dropdown;
     events.update = &window_ride_vehicle_update;
+    events.tooltip = &window_ride_vehicle_tooltip;
     events.invalidate = &window_ride_vehicle_invalidate;
     events.paint = &window_ride_vehicle_paint;
     events.scroll_paint = &window_ride_vehicle_scrollpaint;
@@ -2777,6 +2779,56 @@ static void window_ride_vehicle_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_2);
 }
 
+static OpenRCT2String window_ride_vehicle_tooltip(
+    rct_window* const w, const rct_widgetindex widgetIndex, rct_string_id fallback)
+{
+    auto ride = get_ride(w->number);
+    if (ride == nullptr)
+        return { STR_NONE, {} };
+
+    switch (widgetIndex)
+    {
+        case WIDX_VEHICLE_TRAINS:
+        case WIDX_VEHICLE_TRAINS_DECREASE:
+        case WIDX_VEHICLE_TRAINS_INCREASE:
+        {
+            auto ft = Formatter();
+            ft.Increment(12);
+
+            RIDE_COMPONENT_TYPE vehicleType = RideTypeDescriptors[ride->type].NameConvention.vehicle;
+            rct_string_id stringId = RideComponentNames[vehicleType].count;
+            if (ride->max_trains > 1)
+            {
+                stringId = RideComponentNames[vehicleType].count_plural;
+            }
+            ft.Add<rct_string_id>(stringId);
+            ft.Add<uint16_t>(ride->max_trains);
+            return { fallback, ft };
+        }
+        case WIDX_VEHICLE_CARS_PER_TRAIN:
+        case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
+        case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
+        {
+            auto rideEntry = ride->GetRideEntry();
+            if (rideEntry == nullptr)
+                return { STR_NONE, {} };
+
+            auto ft = Formatter();
+            ft.Increment(16);
+            ft.Add<uint16_t>(std::max(1, ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars);
+
+            rct_string_id stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].singular;
+            if ((ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars > 1)
+            {
+                stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].plural;
+            }
+            ft.Add<rct_string_id>(stringId);
+            return { fallback, ft };
+        }
+    }
+    return { fallback, {} };
+}
+
 /**
  *
  *  rct2: 0x006B222C
@@ -2851,21 +2903,8 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     ft.Add<rct_string_id>(stringId);
     ft.Add<uint16_t>(ride->num_vehicles);
 
-    stringId = RideComponentNames[vehicleType].count;
-    if (ride->max_trains > 1)
-    {
-        stringId = RideComponentNames[vehicleType].count_plural;
-    }
-    ft.Add<rct_string_id>(stringId);
-    ft.Add<uint16_t>(ride->max_trains);
-    ft.Add<uint16_t>(std::max(1, ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars);
+    ft.Increment(8);
 
-    stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].singular;
-    if ((ride->min_max_cars_per_train & 0xF) - rideEntry->zero_cars > 1)
-    {
-        stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].plural;
-    }
-    ft.Add<rct_string_id>(stringId);
     ride->FormatNameTo(ft);
 
     window_ride_anchor_border_widgets(w);

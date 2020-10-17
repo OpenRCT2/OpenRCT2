@@ -83,8 +83,7 @@ extern widget_ref gPressedWidget;
 
 extern uint16_t gTooltipTimeout;
 extern widget_ref gTooltipWidget;
-extern int32_t gTooltipCursorX;
-extern int32_t gTooltipCursorY;
+extern ScreenCoordsXY gTooltipCursor;
 
 extern TOOL_IDX gCurrentToolId;
 extern widget_ref gCurrentToolWidget;

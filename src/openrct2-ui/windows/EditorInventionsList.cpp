@@ -686,9 +686,6 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
 static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
 {
     char buffer[256], *ptr;
-    int32_t stringWidth;
-    rct_window* w;
-
     window_close_by_class(WC_EDITOR_INVENTION_LIST_DRAG);
     _editorInventionsListDraggedItem = *researchItem;
     rct_string_id stringId = researchItem->GetName();
@@ -710,16 +707,15 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
         format_string(ptr, 256, stringId, nullptr);
     }
 
-    stringWidth = gfx_get_string_width(buffer);
+    auto stringWidth = gfx_get_string_width(buffer);
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
-    w = window_create(
-        ScreenCoordsXY(gTooltipCursorX - (stringWidth / 2), gTooltipCursorY - 7), stringWidth, 14,
-        &window_editor_inventions_list_drag_events, WC_EDITOR_INVENTION_LIST_DRAG,
-        WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
+    auto* w = window_create(
+        gTooltipCursor - ScreenCoordsXY{ stringWidth / 2, 7 }, stringWidth, 14, &window_editor_inventions_list_drag_events,
+        WC_EDITOR_INVENTION_LIST_DRAG, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     w->widgets = window_editor_inventions_list_drag_widgets;
     w->colours[1] = COLOUR_WHITE;
-    input_window_position_begin(w, 0, ScreenCoordsXY(gTooltipCursorX, gTooltipCursorY));
+    input_window_position_begin(w, 0, gTooltipCursor);
 }
 
 /**
