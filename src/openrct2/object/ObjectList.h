@@ -21,4 +21,3 @@ void get_type_entry_index(size_t index, uint8_t* outObjectType, ObjectEntryIndex
 const rct_object_entry* get_loaded_object_entry(size_t index);
 void* get_loaded_object_chunk(size_t index);
 uint8_t object_entry_get_type(const rct_object_entry* objectEntry);
-ObjectSourceGame object_entry_get_source_game_legacy(const rct_object_entry* objectEntry);
