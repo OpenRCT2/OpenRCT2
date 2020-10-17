@@ -519,7 +519,7 @@ bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool resea
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto tmpItem = ResearchItem(
-            Research::EntryType::Scenery, entryIndex, RIDE_TYPE_NULL, RESEARCH_CATEGORY_SCENERY_GROUP, 0);
+            Research::EntryType::Scenery, entryIndex, RIDE_TYPE_NULL, EnumToFlag(ResearchCategory::Group), 0);
         research_insert(tmpItem, researched);
         return true;
     }
