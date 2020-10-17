@@ -167,20 +167,20 @@ namespace ObjectFactory
     static std::unique_ptr<Object> CreateObjectFromJson(
         IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever);
 
-    static uint8_t ParseSourceGame(const std::string& s)
+    static ObjectSourceGame ParseSourceGame(const std::string& s)
     {
-        static const std::unordered_map<std::string, OBJECT_SOURCE_GAME> LookupTable{
-            { "rct1", OBJECT_SOURCE_RCT1 },
-            { "rct1aa", OBJECT_SOURCE_ADDED_ATTRACTIONS },
-            { "rct1ll", OBJECT_SOURCE_LOOPY_LANDSCAPES },
-            { "rct2", OBJECT_SOURCE_RCT2 },
-            { "rct2ww", OBJECT_SOURCE_WACKY_WORLDS },
-            { "rct2tt", OBJECT_SOURCE_TIME_TWISTER },
-            { "official", OBJECT_SOURCE_OPENRCT2_OFFICIAL },
-            { "custom", OBJECT_SOURCE_CUSTOM },
+        static const std::unordered_map<std::string, ObjectSourceGame> LookupTable{
+            { "rct1", ObjectSourceGame::RCT1 },
+            { "rct1aa", ObjectSourceGame::AddedAttractions },
+            { "rct1ll", ObjectSourceGame::LoopyLandscapes },
+            { "rct2", ObjectSourceGame::RCT2 },
+            { "rct2ww", ObjectSourceGame::WackyWorlds },
+            { "rct2tt", ObjectSourceGame::TimeTwister },
+            { "official", ObjectSourceGame::OpenRCT2Official },
+            { "custom", ObjectSourceGame::Custom },
         };
         auto result = LookupTable.find(s);
-        return (result != LookupTable.end()) ? result->second : OBJECT_SOURCE_CUSTOM;
+        return (result != LookupTable.end()) ? result->second : ObjectSourceGame::Custom;
     }
 
     static void ReadObjectLegacy(Object& object, IReadObjectContext* context, OpenRCT2::IStream* stream)
@@ -400,7 +400,7 @@ namespace ObjectFactory
         auto sourceGames = jRoot["sourceGame"];
         if (sourceGames.is_array() || sourceGames.is_string())
         {
-            std::vector<uint8_t> sourceGameVector;
+            std::vector<ObjectSourceGame> sourceGameVector;
             for (const auto& jSourceGame : sourceGames)
             {
                 sourceGameVector.push_back(ParseSourceGame(Json::GetString(jSourceGame)));
@@ -412,18 +412,18 @@ namespace ObjectFactory
             else
             {
                 log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
-                result.SetSourceGames({ OBJECT_SOURCE_CUSTOM });
+                result.SetSourceGames({ ObjectSourceGame::Custom });
             }
         }
         // >90% of objects are custom, so allow omitting the parameter without displaying an error.
         else if (sourceGames.is_null())
         {
-            result.SetSourceGames({ OBJECT_SOURCE_CUSTOM });
+            result.SetSourceGames({ ObjectSourceGame::Custom });
         }
         else
         {
             log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
-            result.SetSourceGames({ OBJECT_SOURCE_CUSTOM });
+            result.SetSourceGames({ ObjectSourceGame::Custom });
         }
     }
 

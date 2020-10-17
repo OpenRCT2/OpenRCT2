@@ -41,7 +41,7 @@ struct ObjectRepositoryItem
     std::string Path;
     std::string Name;
     std::vector<std::string> Authors;
-    std::vector<uint8_t> Sources;
+    std::vector<ObjectSourceGame> Sources;
     Object* LoadedObject{};
     struct
     {
@@ -54,12 +54,12 @@ struct ObjectRepositoryItem
         std::vector<rct_object_entry> Entries;
     } SceneryGroupInfo;
 
-    OBJECT_SOURCE_GAME GetFirstSourceGame() const
+    ObjectSourceGame GetFirstSourceGame() const
     {
         if (Sources.empty())
-            return OBJECT_SOURCE_CUSTOM;
+            return ObjectSourceGame::Custom;
         else
-            return static_cast<OBJECT_SOURCE_GAME>(Sources[0]);
+            return static_cast<ObjectSourceGame>(Sources[0]);
     }
 };
 

@@ -52,8 +52,8 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     if (item != nullptr)
     {
         auto sourceGame = item->GetFirstSourceGame();
-        if (sourceGame == OBJECT_SOURCE_WACKY_WORLDS || sourceGame == OBJECT_SOURCE_TIME_TWISTER
-            || sourceGame == OBJECT_SOURCE_CUSTOM)
+        if (sourceGame == ObjectSourceGame::WackyWorlds || sourceGame == ObjectSourceGame::TimeTwister
+            || sourceGame == ObjectSourceGame::Custom)
         {
             auto scgPathX = Object::GetScgPathXHeader();
             SetPrimarySceneryGroup(&scgPathX);

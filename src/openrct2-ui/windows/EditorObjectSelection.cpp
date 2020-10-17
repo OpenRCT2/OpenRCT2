@@ -1433,24 +1433,24 @@ static bool filter_string(const ObjectRepositoryItem* item)
     return inName || inRideType || inPath;
 }
 
-static bool sources_match(uint8_t source)
+static bool sources_match(ObjectSourceGame source)
 {
     // clang-format off
-    return (_FILTER_RCT1 && source == OBJECT_SOURCE_RCT1) ||
-           (_FILTER_AA && source == OBJECT_SOURCE_ADDED_ATTRACTIONS) ||
-           (_FILTER_LL && source == OBJECT_SOURCE_LOOPY_LANDSCAPES) ||
-           (_FILTER_RCT2 && source == OBJECT_SOURCE_RCT2) ||
-           (_FILTER_WW && source == OBJECT_SOURCE_WACKY_WORLDS) ||
-           (_FILTER_TT && source == OBJECT_SOURCE_TIME_TWISTER) ||
-           (_FILTER_OO && source == OBJECT_SOURCE_OPENRCT2_OFFICIAL) ||
+    return (_FILTER_RCT1 && source == ObjectSourceGame::RCT1) ||
+           (_FILTER_AA && source == ObjectSourceGame::AddedAttractions) ||
+           (_FILTER_LL && source == ObjectSourceGame::LoopyLandscapes) ||
+           (_FILTER_RCT2 && source == ObjectSourceGame::RCT2) ||
+           (_FILTER_WW && source == ObjectSourceGame::WackyWorlds) ||
+           (_FILTER_TT && source == ObjectSourceGame::TimeTwister) ||
+           (_FILTER_OO && source == ObjectSourceGame::OpenRCT2Official) ||
            (_FILTER_CUSTOM &&
-            source != OBJECT_SOURCE_RCT1 &&
-            source != OBJECT_SOURCE_ADDED_ATTRACTIONS &&
-            source != OBJECT_SOURCE_LOOPY_LANDSCAPES &&
-            source != OBJECT_SOURCE_RCT2 &&
-            source != OBJECT_SOURCE_WACKY_WORLDS &&
-            source != OBJECT_SOURCE_TIME_TWISTER &&
-            source != OBJECT_SOURCE_OPENRCT2_OFFICIAL);
+            source != ObjectSourceGame::RCT1 &&
+            source != ObjectSourceGame::AddedAttractions &&
+            source != ObjectSourceGame::LoopyLandscapes &&
+            source != ObjectSourceGame::RCT2 &&
+            source != ObjectSourceGame::WackyWorlds &&
+            source != ObjectSourceGame::TimeTwister &&
+            source != ObjectSourceGame::OpenRCT2Official);
     // clang-format on
 }
 

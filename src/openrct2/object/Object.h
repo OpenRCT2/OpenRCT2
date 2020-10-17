@@ -59,16 +59,16 @@ enum OBJECT_SELECTION_FLAGS
 
 #define OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED 0
 
-enum OBJECT_SOURCE_GAME
+enum class ObjectSourceGame : uint8_t
 {
-    OBJECT_SOURCE_CUSTOM,
-    OBJECT_SOURCE_WACKY_WORLDS,
-    OBJECT_SOURCE_TIME_TWISTER,
-    OBJECT_SOURCE_OPENRCT2_OFFICIAL,
-    OBJECT_SOURCE_RCT1,
-    OBJECT_SOURCE_ADDED_ATTRACTIONS,
-    OBJECT_SOURCE_LOOPY_LANDSCAPES,
-    OBJECT_SOURCE_RCT2 = 8
+    Custom,
+    WackyWorlds,
+    TimeTwister,
+    OpenRCT2Official,
+    RCT1,
+    AddedAttractions,
+    LoopyLandscapes,
+    RCT2 = 8
 };
 
 #pragma pack(push, 1)
@@ -179,7 +179,7 @@ private:
     rct_object_entry _objectEntry{};
     StringTable _stringTable;
     ImageTable _imageTable;
-    std::vector<uint8_t> _sourceGames;
+    std::vector<ObjectSourceGame> _sourceGames;
     std::vector<std::string> _authors;
     bool _isJsonObject{};
 
@@ -269,8 +269,8 @@ public:
     virtual void SetRepositoryItem(ObjectRepositoryItem* /*item*/) const
     {
     }
-    std::vector<uint8_t> GetSourceGames();
-    void SetSourceGames(const std::vector<uint8_t>& sourceGames);
+    std::vector<ObjectSourceGame> GetSourceGames();
+    void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
     const std::vector<std::string>& GetAuthors() const;
     void SetAuthors(const std::vector<std::string>&& authors);

@@ -100,12 +100,12 @@ rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint
     return header;
 }
 
-std::vector<uint8_t> Object::GetSourceGames()
+std::vector<ObjectSourceGame> Object::GetSourceGames()
 {
     return _sourceGames;
 }
 
-void Object::SetSourceGames(const std::vector<uint8_t>& sourceGames)
+void Object::SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames)
 {
     _sourceGames = sourceGames;
 }

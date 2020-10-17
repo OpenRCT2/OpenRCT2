@@ -178,7 +178,7 @@ protected:
         for (size_t i = 0; i < sourceLength; i++)
         {
             auto value = stream->ReadValue<uint8_t>();
-            item.Sources.push_back(value);
+            item.Sources.push_back(static_cast<ObjectSourceGame>(value));
         }
 
         auto authorsLength = stream->ReadValue<uint8_t>();
@@ -671,10 +671,10 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
 
     switch (object->GetFirstSourceGame())
     {
-        case OBJECT_SOURCE_RCT2:
-        case OBJECT_SOURCE_WACKY_WORLDS:
-        case OBJECT_SOURCE_TIME_TWISTER:
-        case OBJECT_SOURCE_OPENRCT2_OFFICIAL:
+        case ObjectSourceGame::RCT2:
+        case ObjectSourceGame::WackyWorlds:
+        case ObjectSourceGame::TimeTwister:
+        case ObjectSourceGame::OpenRCT2Official:
             return false;
         default:
             return true;

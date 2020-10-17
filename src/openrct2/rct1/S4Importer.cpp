@@ -1930,7 +1930,7 @@ private:
         for (const auto objectName : objectNames)
         {
             rct_object_entry entry{};
-            entry.flags = ((OBJECT_SOURCE_RCT2 << 4) & 0xF0) | (objectType & 0x0F);
+            entry.flags = ((static_cast<uint8_t>(ObjectSourceGame::RCT2) << 4) & 0xF0) | (objectType & 0x0F);
             entry.SetName(objectName);
             entries.push_back(entry);
         }
