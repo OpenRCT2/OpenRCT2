@@ -1967,7 +1967,6 @@ STR_2763    :???
 STR_2765    :Grote groep
 STR_2766    :Win scenario
 STR_2767    :Weer vastzetten
-STR_2768    :Weer vrijgeven
 STR_2769    :Park openen
 STR_2770    :Park sluiten
 STR_2773    :Venster
@@ -2707,8 +2706,6 @@ STR_5365    :{BLACK}Snelh. werknemers:
 STR_5366    :Normaal
 STR_5367    :Snel
 STR_5368    :Crashstatus weg
-STR_5369    :Parkparameters…
-STR_5370    :{SMALLFONT}{BLACK}Klik op deze knop om park-{NEWLINE}parameters zoals verboden,{NEWLINE}bezoekersgenerering en geld{NEWLINE}aan te passen.
 STR_5371    :Objectselectie
 STR_5372    :Sleeprichting van rechtermuisknop omkeren
 STR_5373    :Naam {STRINGID}
@@ -3148,7 +3145,6 @@ STR_5846    :{SMALLFONT}{BLACK}Stelt in hoe vaak OpenRCT2 automatisch een back-u
 STR_5847    :{SMALLFONT}{BLACK}Stelt in welke titelpresentatie er wordt gebruikt. {NEWLINE}Titelpresentaties uit RCT1 en RCT2 vereisen dat je de gebruikte scenario's hebt geïmporteerd.
 STR_5848    :{SMALLFONT}{BLACK}Eigen titelpresentaties maken en beheren.
 STR_5849    :{SMALLFONT}{BLACK}Nieuwe werknemers automatisch plaatsen.
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Stelt het standaardinspectie-interval voor nieuwe attracties in.
 STR_5853    :{SMALLFONT}{BLACK}Geluidseffecten in-/uitschakelen.
 STR_5854    :{SMALLFONT}{BLACK}Attractiemuziek in-/uitschakelen.

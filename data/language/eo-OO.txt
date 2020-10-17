@@ -1967,7 +1967,6 @@ STR_2763    :???
 STR_2765    :Granda Tramo
 STR_2766    :Gajni scenaron
 STR_2767    :Fiksi veteron
-STR_2768    :Malfiksi veteron
 STR_2769    :Malfermi Parkon
 STR_2770    :Fermi Parkon
 STR_2773    :En fenestro
@@ -2692,8 +2691,6 @@ STR_5365    :{BLACK}Rapideco de dungitaro:
 STR_5366    :Normala
 STR_5367    :Rapida
 STR_5368    :Restarigi staton de akcidentoj
-STR_5369    :Parametroj de parko…
-STR_5370    :{SMALLFONT}{BLACK}Alklaku ĉi tiun butonon por redakti parametrojn{NEWLINE}de parko, kiel limoj,{NEWLINE}generado de gastoj, kaj mono.
 STR_5371    :Elektaro de objektoj
 STR_5372    :Inversigi konduton de trenadoj per dekstra musobutono
 STR_5373    :Nomo {STRINGID}
@@ -3131,7 +3128,6 @@ STR_5846    :{SMALLFONT}{BLACK}Agordi kiom ofte OpenRCT2 aŭtomate konservas
 STR_5847    :{SMALLFONT}{BLACK}Elekti parksinsekvon uzatan sur la titola ekrano.{NEWLINE}Titolsinsekvoj de RCT1/2 bezonas importitajn scenarojn funkcii
 STR_5848    :{SMALLFONT}{BLACK}Krei kaj administri proprajn titolsinsekvojn
 STR_5849    :{SMALLFONT}{BLACK}Aŭtomate meti{NEWLINE}nove dungitajn dungitojn
-STR_5850    :<ne uzita plu>
 STR_5851    :{SMALLFONT}{BLACK}Agordas la defaŭltan inspektan intervalon{NEWLINE}por novkonstruitaj atrakcioj
 STR_5853    :{SMALLFONT}{BLACK}Baskuligi sonefektojn
 STR_5854    :{SMALLFONT}{BLACK}Baskuligi muziko de atrakcio

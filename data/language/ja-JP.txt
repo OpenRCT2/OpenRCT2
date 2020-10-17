@@ -1966,7 +1966,6 @@ STR_2763    :???
 STR_2765    :たくさん人を招く
 STR_2766    :シナリオを勝つ
 STR_2767    :天気を停める
-STR_2768    :天気を停めない
 STR_2769    :閉園する
 STR_2770    :開園する
 STR_2773    :ウィンドウ付き
@@ -2693,8 +2692,6 @@ STR_5365    :{BLACK}スタッフのスピード:
 STR_5366    :普通
 STR_5367    :速い
 STR_5368    :Reset crash status
-STR_5369    :Park parameters…
-STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
 STR_5371    :オブジェクト選定
 STR_5372    :Invert right mouse dragging
 STR_5373    :名前 {STRINGID}
@@ -3133,7 +3130,6 @@ STR_5846    :{SMALLFONT}{BLACK}Set often OpenRCT2 automatically saves
 STR_5847    :{SMALLFONT}{BLACK}Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
 STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
 STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built rides
 STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
 STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off

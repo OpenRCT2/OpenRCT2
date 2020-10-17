@@ -1964,12 +1964,11 @@ STR_2754    :Regar plantas
 STR_2755    :Consertar vandalismo
 STR_2756    :Remover vômito
 STR_2763    :???
-STR_2765    :Leva de Visitantes
+STR_2765    :Leva de visitantes
 STR_2766    :Ganhar cenário
-STR_2767    :Congelar clima
-STR_2768    :Descongelar clima
-STR_2769    :Abrir o Parque
-STR_2770    :Fechar o Parque
+STR_2767    :Desativar mudanças de clima
+STR_2769    :Abrir parque
+STR_2770    :Fechar parque
 STR_2773    :Janela
 STR_2774    :Tela Cheia
 STR_2775    :Tela Cheia Sem Borda
@@ -2692,8 +2691,6 @@ STR_5365    :{BLACK}Vel. dos funcionários:
 STR_5366    :Normal
 STR_5367    :Rápido
 STR_5368    :Redefinir status de acidente
-STR_5369    :Parâmetros do parque…
-STR_5370    :{SMALLFONT}{BLACK}Clique nesse botão para modificar os parâmetros {NEWLINE}do parque com restrições,{NEWLINE}geração de visitantes e dinheiro.
 STR_5371    :Seleção de Objetos
 STR_5372    :Inverter seleção do botão direito do mouse
 STR_5373    :Nome {STRINGID}
@@ -3011,7 +3008,7 @@ STR_5721    :Nublado
 STR_5722    :Chuva
 STR_5723    :Chuva Forte
 STR_5724    :Tempestade
-STR_5725    :{BLACK}Forçar clima:
+STR_5725    :{BLACK}Mudar clima para:
 STR_5726    :{SMALLFONT}{BLACK}Define o clima atual no parque
 STR_5727    :Qualidade da escala:
 STR_5731    :Linear
@@ -3132,7 +3129,6 @@ STR_5846    :{SMALLFONT}{BLACK}Define a frequência que o OpenRCT2 salva automat
 STR_5847    :{SMALLFONT}{BLACK}Seleciona a sequência de parque usada na tela inicial.{NEWLINE}Sequências da tela inicial do RCT1/2 requer a importação dos cenários para funcionar
 STR_5848    :{SMALLFONT}{BLACK}Cria ou gerencia sequências de títulos personalizadas
 STR_5849    :{SMALLFONT}{BLACK}Posiciona automaticamente{NEWLINE}novos funcionários contratados
-STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Define o intervalo de inspeção padrão{NEWLINE}nas novas atrações construídas
 STR_5853    :{SMALLFONT}{BLACK}Liga/Desliga os efeitos sonoros
 STR_5854    :{SMALLFONT}{BLACK}Liga/Desliga música da atração
@@ -3152,7 +3148,7 @@ STR_5867    :{WINDOW_COLOUR_2}Nome do Provedor: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mail do Provedor: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Website do Provedor: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Mostra informações do servidor
-STR_5871    :Plantas não envelhecem
+STR_5871    :Desativar envelhecimento de plantas
 STR_5872    :{SMALLFONT}{BLACK}Desabilita o envelhecimento das plantas para que elas não murchem.
 STR_5873    :Permitir corrente de elevação em todas{NEWLINE}as peças de pista
 STR_5874    :{SMALLFONT}{BLACK}Permite que qualquer parte da pista tenha corrente de elevação
@@ -3597,8 +3593,8 @@ STR_6327    :Fundo transparente para capturas de tela gigantes
 STR_6328    :{SMALLFONT}{BLACK}Com essa opção habilitada, capturas de tela gigantes terão fundo transparente em vez da cor preta padrão.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Baixando [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
-STR_6331    :Criar Patos
-STR_6332    :Remover Patos
+STR_6331    :Criar patos
+STR_6332    :Remover patos
 STR_6333    :Aumentar fator de escala
 STR_6334    :Diminuir fator de escala
 STR_6335    :Inspetor de azulejo: Inserir elemento corrupto
@@ -3660,6 +3656,8 @@ STR_6390    :OpenRCT2 precisa de arquivos do RollerCoaster Tycoon 2 original par
 STR_6391    :Por favor selecione seu diretório do RCT2.
 STR_6392    :Não foi encontrado {STRING} nesse caminho.
 STR_6393    :Seleção de Objetivo
+STR_6394    :Objetivo
+STR_6395    :Manutenção
 
 #############
 # Scenarios #

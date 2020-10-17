@@ -1973,7 +1973,6 @@ STR_2763    :???
 STR_2765    :Large Tram
 STR_2766    :Voita skenaario
 STR_2767    :Jäädytä ilmasto
-STR_2768    :Sulata ilmasto
 STR_2769    :Avaa puisto
 STR_2770    :Sulje puisto
 STR_2773    :Ikkunoitu
@@ -2718,8 +2717,6 @@ STR_5365    :{BLACK}Henkilökunnan nopeus:
 STR_5366    :Normaali
 STR_5367    :Nopea
 STR_5368    :Reset crash status
-STR_5369    :Puiston määritteet…
-STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
 STR_5371    :Object Selection
 STR_5372    :Invert right mouse dragging
 STR_5373    :Nimi {STRINGID}

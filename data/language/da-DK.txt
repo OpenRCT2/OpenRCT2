@@ -1971,7 +1971,6 @@ STR_2763    :???
 STR_2765    :Stor sporvogn
 STR_2766    :Vind Scenarie
 STR_2767    :Fastlås vejret
-STR_2768    :Lås vejret op
 STR_2769    :Åben Park
 STR_2770    :Luk Park
 STR_2773    :Vinduestilstand
@@ -2715,8 +2714,6 @@ STR_5365    :{BLACK}Personale hastighed:
 STR_5366    :Normal
 STR_5367    :Hurtig
 STR_5368    :Nulstil nedbruds-status
-STR_5369    :Park parametre…
-STR_5370    :{SMALLFONT}{BLACK}Klik på denne knap for at modificere {NEWLINE}parametre som begrænsninger,{NEWLINE}gæstegenerering og penge.
 STR_5371    :Objekt udvælgelse
 STR_5372    :Omvendt højre muse træk
 STR_5373    :Navn {STRINGID}
@@ -3158,7 +3155,6 @@ STR_5846    :{SMALLFONT}{BLACK}Sæt hvor tit OpenRCT2 gemmer automatisk
 STR_5847    :{SMALLFONT}{BLACK}Vælg park sekvens for titelskærmen.{NEWLINE}Titel sekvens fra RCT1/2 kræver importerede scenarier for at fungere
 STR_5848    :{SMALLFONT}{BLACK}Opret og administrer brugerdefinerede titel sekvenser
 STR_5849    :{SMALLFONT}{BLACK}Placer automatisk{NEWLINE}nyansatte medarbejdere
-STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Sæt standard vedligeholdelses interval{NEWLINE}på nybyggede forlystelser
 STR_5853    :{SMALLFONT}{BLACK}Slå lydeffekter til/fra
 STR_5854    :{SMALLFONT}{BLACK}Slå forlystelses musik til/fra

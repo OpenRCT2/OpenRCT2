@@ -1965,7 +1965,6 @@ STR_2763    :???
 STR_2765    :Çok müşteri getir
 STR_2766    :Senaryoyu kazan
 STR_2767    :Havayı dondur
-STR_2768    :Havayı dondurma
 STR_2769    :Parkı aç
 STR_2770    :Parkı kapat
 STR_2773    :Pencere modu
@@ -2707,8 +2706,6 @@ STR_5365    :{BLACK}Işci hızı:
 STR_5366    :Normal
 STR_5367    :Hızlı
 STR_5368    :Arıza raporunu sil
-STR_5369    :Park ayarları…
-STR_5370    :{SMALLFONT}{BLACK}Sadece senaryo editöründe mevcut olan park ayarları penceresini gösteriniz ve değiştiriniz
 STR_5371    :Alet/Dükkan/Cisim seçenekleri
 STR_5372    :Sağ mouse tuşu ile ekran kaydırmasını ters çevir
 STR_5373    :Dosya ismi {STRINGID}
@@ -3147,7 +3144,6 @@ STR_5846    :{SMALLFONT}{BLACK}Oyunun hangi ara ile otomatik kaydedileceğini se
 STR_5847    :{SMALLFONT}{BLACK}Ana ekrandaki arka planda görüntülünen başlık dizisi seçenekleri{NEWLINE}RCT1 veya RCT2 başlık dizilerini kullanmak isterseniz, ilk önce başlık dizisinde kullanılan senaryoları OpenRCT2'ye yüklemeniz gereklidir
 STR_5848    :{SMALLFONT}{BLACK}Başlık dizisi değiştiriniz veya oluşturunuz
 STR_5849    :{SMALLFONT}{BLACK}Yeni işciler otomatikman{NEWLINE}bir yere yerleştiriliyor
-STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Yeni inşa edilen aletlere{NEWLINE}otomatikman seçdiğiniz kontrol süreci ayarlanıyor
 STR_5853    :{SMALLFONT}{BLACK}Ses efektlerini aç/kapat
 STR_5854    :{SMALLFONT}{BLACK}Alet müziklerini aç/kapat

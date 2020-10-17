@@ -1965,7 +1965,6 @@ STR_2763    :???
 STR_2765    :Przypływ gości
 STR_2766    :Wygraj scenariusz
 STR_2767    :Zablokuj klimat
-STR_2768    :Odblokuj klimat
 STR_2769    :Otwórz park
 STR_2770    :Zamknij park
 STR_2773    :Okno
@@ -2690,8 +2689,6 @@ STR_5365    :{BLACK}Szybkość personelu:
 STR_5366    :Normalnie
 STR_5367    :Szybko
 STR_5368    :Zresetuj status wypadku
-STR_5369    :Parametry parku…
-STR_5370    :{SMALLFONT}{BLACK}Kliknij aby modyfikować ustawienia{NEWLINE}parku, takie jak ograniczenia,{NEWLINE}generowanie gości i pieniądze.
 STR_5371    :Wybór obiektu
 STR_5372    :Odwrócone przesuwanie prawym przyciskiem myszy
 STR_5373    :Nazwa {STRINGID}
@@ -3129,7 +3126,6 @@ STR_5846    :{SMALLFONT}{BLACK}Ustaw częstotliwość zapisy gry OpenRCT2
 STR_5847    :{SMALLFONT}{BLACK}Wybierz sekwencje parków na ekran tytułowy.{NEWLINE}Sekwencje tytułowe z RCT1/2 wymagają zaimportowanych odpowiednich scenariuszy
 STR_5848    :{SMALLFONT}{BLACK}Twórz i zarządzaj sekwencjami tytułowymi
 STR_5849    :{SMALLFONT}{BLACK}Automatycznie rozlokuj{NEWLINE}nowo zatrudniony personel
-STR_5850    :{SMALLFONT}{BLACK}Nowo zatrudniony dozorca domyślnie {NEWLINE}kosi trawę (zaszłość RCT1)
 STR_5851    :{SMALLFONT}{BLACK}Ustaw domyślną częstotliwość inspekcji{NEWLINE}na nowych atrakcjach
 STR_5853    :{SMALLFONT}{BLACK}Przełącznik włączania/wyłączania efektów dźwiękowych
 STR_5854    :{SMALLFONT}{BLACK}Przełącznik włączania/wyłączania dźwięków na atrakcjach

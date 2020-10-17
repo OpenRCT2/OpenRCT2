@@ -1971,7 +1971,6 @@ STR_2763    :???
 STR_2765    :손님 많이 부르기
 STR_2766    :시나리오 클리어
 STR_2767    :날씨 고정
-STR_2768    :날씨 고정 해제
 STR_2769    :공원 열기
 STR_2770    :공원 닫기
 STR_2773    :창 모드
@@ -2698,8 +2697,6 @@ STR_5365    :{BLACK}직원 속력:
 STR_5366    :보통
 STR_5367    :빠름
 STR_5368    :충돌 이력 제거
-STR_5369    :공원 설정…
-STR_5370    :{SMALLFONT}{BLACK}제한, 손님 생성, 재정 등의 공원과 관련된 설정을 수정하려면 이 버튼을 클릭하세요.
 STR_5371    :오브젝트 선택
 STR_5372    :마우스 오른쪽 드래그 시 좌우 반전
 STR_5373    :이름 {STRINGID}
@@ -3140,7 +3137,6 @@ STR_5846    :{SMALLFONT}{BLACK}OpenRCT2의 자동 저장 빈도를 설정합니�
 STR_5847    :{SMALLFONT}{BLACK}타이틀 스크린에서 사용할 공원 시퀀스를 선택합니다. RCT1/2의 타이틀 시퀀스를 사용하기 위해서는 특정 시나리오가 필요합니다.
 STR_5848    :{SMALLFONT}{BLACK}사용자 타이틀 시퀀스를 생성하고 관리합니다.
 STR_5849    :{SMALLFONT}{BLACK}새로 고용한 직원을 자동으로 보도 위에 놓습니다.
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}새로 만든 놀이기구에 기본적으로 설정할 점검 간격을 설정합니다.
 STR_5853    :{SMALLFONT}{BLACK}효과음 켜기/끄기
 STR_5854    :{SMALLFONT}{BLACK}놀이기구 음악 켜기/끄기

@@ -1969,7 +1969,6 @@ STR_2763    :???
 STR_2765    :Große Straßenbahn
 STR_2766    :Szenario gewinnen
 STR_2767    :Wetter einfrieren
-STR_2768    :Wetter fortsetzen
 STR_2769    :Park öffnen
 STR_2770    :Park schließen
 STR_2773    :Fenstermodus
@@ -2695,8 +2694,6 @@ STR_5365    :{BLACK}Personalgeschw.:
 STR_5366    :Normal
 STR_5367    :Schnell
 STR_5368    :Unfallstatus entf.
-STR_5369    :Parkparameter…
-STR_5370    :{SMALLFONT}{BLACK}Klicken Sie diese Schaltfläche um Parkparameter, wie Einschränkungen, Besuchergenerierung und Geld,{NEWLINE}zu bearbeiten
 STR_5371    :Objektauswahl
 STR_5372    :Ziehen mit rechter Maustaste umkehren
 STR_5373    :Name {STRINGID}
@@ -3134,7 +3131,6 @@ STR_5846    :{SMALLFONT}{BLACK}Auswählen, wie oft OpenRCT2{NEWLINE}automatisch 
 STR_5847    :{SMALLFONT}{BLACK}Die auf dem Titelbildschirm angezeigte Parksequenz auswählen. Titelsequenzen von RCT1/2 benötigen importierte Szenarien, um zu funktionieren
 STR_5848    :{SMALLFONT}{BLACK}Benutzerdefinierte Titelsequenzen{NEWLINE}erstellen und verwalten
 STR_5849    :{SMALLFONT}{BLACK}Personal wird nach dem Einstellen automatisch platziert
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Stellt die für neu gebaute Attraktionen standardmäßige Inspektionszeit ein
 STR_5853    :{SMALLFONT}{BLACK}Soundeffekte aktivieren/deaktivieren
 STR_5854    :{SMALLFONT}{BLACK}Attraktionsmusik aktivieren/deaktivieren

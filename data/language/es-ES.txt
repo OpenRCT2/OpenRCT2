@@ -1968,7 +1968,6 @@ STR_2763    :???
 STR_2765    :Grupo de visitantes
 STR_2766    :Ganar escenario
 STR_2767    :Mantener clima
-STR_2768    :Clima cambiante
 STR_2769    :Abrir parque
 STR_2770    :Cerrar parque
 STR_2773    :Ventana
@@ -2702,8 +2701,6 @@ STR_5365    :{BLACK}Velocidad empleados:
 STR_5366    :Normal
 STR_5367    :Rápida
 STR_5368    :Reiniciar Accidentes
-STR_5369    :Parámetros parque…
-STR_5370    :{SMALLFONT}{BLACK}Modificar parámetros como restricciones, afluencia de visitantes y dinero.
 STR_5371    :Selección de Objetos
 STR_5372    :Invertir desplazamiento del clic derecho
 STR_5373    :Nombre {STRINGID}
@@ -3147,7 +3144,6 @@ STR_5846    :{SMALLFONT}{BLACK}Establece con cuanta frecuencia OpenRCT2 guarda l
 STR_5847    :{SMALLFONT}{BLACK}Selecciona la secuencia del parque usada en el menú principal. Secuencias de RCT1/RCT2 requieren la importación de los escenarios para funcionar.
 STR_5848    :{SMALLFONT}{BLACK}Crea o modifica las secuencias del menú principal.
 STR_5849    :{SMALLFONT}{BLACK}Colocar automáticamente los nuevos empleados contratados.
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Establece el tiempo de inspección por defecto en las atracciones nuevas.
 STR_5853    :{SMALLFONT}{BLACK}Habilitar/Deshabilitar efectos de sonido.
 STR_5854    :{SMALLFONT}{BLACK}Habilitar/Deshabilitar músicas de atracciones.

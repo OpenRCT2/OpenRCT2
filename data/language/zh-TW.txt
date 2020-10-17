@@ -1969,7 +1969,6 @@ STR_2763    :???
 STR_2765    :添加超多遊客到訪
 STR_2766    :贏得此劇情
 STR_2767    :靜止天氣
-STR_2768    :不再靜止天氣
 STR_2769    :開放樂園
 STR_2770    :關閉樂園
 STR_2773    :視窗化
@@ -2710,8 +2709,6 @@ STR_5365    :{BLACK}員工行走速度:
 STR_5366    :正常
 STR_5367    :快速
 STR_5368    :重設毀壞狀態
-STR_5369    :樂園參數…
-STR_5370    :{SMALLFONT}{BLACK}按此來修改樂園參數{NEWLINE}例如關於限制, 生成遊客{NEWLINE}及金錢的選項
 STR_5371    :選取物件
 STR_5372    :滑鼠左鍵拖拉
 STR_5373    :名稱 {STRINGID}
@@ -3152,7 +3149,6 @@ STR_5846    :{SMALLFONT}{BLACK}設置OpenRCT2自動儲存的時隔
 STR_5847    :{SMALLFONT}{BLACK}選擇主選單動畫. 夢幻遊樂園1((RCT1)或模擬樂園(RCT2)需要導入相關的劇情才能使用
 STR_5848    :{SMALLFONT}{BLACK}建立及管理自訂的主選單動畫
 STR_5849    :{SMALLFONT}{BLACK}自動放置新僱用的員工
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}設置新建設的遊樂設施{NEWLINE}的預設檢查時隔
 STR_5853    :{SMALLFONT}{BLACK}啟用/禁用音效
 STR_5854    :{SMALLFONT}{BLACK}啟用/禁用音樂

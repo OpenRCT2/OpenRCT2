@@ -1974,7 +1974,6 @@ STR_2763    :???
 STR_2765    :添加超多游客到访
 STR_2766    :完成剧情目标
 STR_2767    :冻结天气
-STR_2768    :解除冻结天气
 STR_2769    :开放游乐园
 STR_2770    :关闭游乐园
 STR_2773    :窗口
@@ -2708,8 +2707,6 @@ STR_5365    :{BLACK}雇员速度:
 STR_5366    :正常
 STR_5367    :快速
 STR_5368    :复位故障状态
-STR_5369    :乐园参数…
-STR_5370    :{SMALLFONT}{BLACK}点击修改乐园参数{NEWLINE}例如关于限制，生成游客{NEWLINE}及金钱的选项。
 STR_5371    :选取对象
 STR_5372    :拖拽时反转鼠标右键
 STR_5373    :名称 {STRINGID}
@@ -3151,7 +3148,6 @@ STR_5846    :{SMALLFONT}{BLACK}设置自动保存的频率
 STR_5847    :{SMALLFONT}{BLACK}选择主菜单界面使用的游乐园动画. 过山车大亨1/2的主菜单动画需要导入响应的文件
 STR_5848    :{SMALLFONT}{BLACK}创建并管理自定义主菜单动画
 STR_5849    :{SMALLFONT}{BLACK}自动放置新雇佣的员工
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}设置新建游乐设施的默认检查的时间间隔
 STR_5853    :{SMALLFONT}{BLACK}开启/关闭音效
 STR_5854    :{SMALLFONT}{BLACK}开启/关闭游乐设施音乐

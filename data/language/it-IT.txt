@@ -1969,7 +1969,6 @@ STR_2763    :???
 STR_2765    :Trenino lungo
 STR_2766    :Vinci scenario
 STR_2767    :Blocca il clima
-STR_2768    :Sblocca il clima
 STR_2769    :Apri parco
 STR_2770    :Chiudi parco
 STR_2773    :In finestra
@@ -2699,8 +2698,6 @@ STR_5365    :{BLACK}Velocità personale:
 STR_5366    :Normale
 STR_5367    :Veloce
 STR_5368    :Reset stato incidenti
-STR_5369    :Parametri parco…
-STR_5370    :{SMALLFONT}{BLACK}Clicca questo pulsante per modificare il parco{NEWLINE}parametri come restrizione,{NEWLINE}generazione visitatori e soldi.
 STR_5371    :Selezione oggetti
 STR_5372    :Inverti direzione trascinamento con clic destro
 STR_5373    :Nome {STRINGID}

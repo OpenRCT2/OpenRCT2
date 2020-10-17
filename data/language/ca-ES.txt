@@ -1968,7 +1968,6 @@ STR_2763    :???
 STR_2765    :Molts visitants
 STR_2766    :Objectiu
 STR_2767    :Mantén l'actual estat meteorològic
-STR_2768    :Estableix una meteorologia canviant
 STR_2769    :Obre el parc
 STR_2770    :Tanca el parc
 STR_2773    :Finestra
@@ -2697,8 +2696,6 @@ STR_5365    :{BLACK}Velocitat dels empleats:
 STR_5366    :Normal
 STR_5367    :Ràpida
 STR_5368    :Esborra historial d'accidents
-STR_5369    :Paràmetres del parc…
-STR_5370    :{SMALLFONT}{BLACK}Feu clic en aquest botó per modificar{NEWLINE}els paràmetres del mapa com ara restriccions,{NEWLINE}generació dels visitants finances.
 STR_5371    :Selecció d'objectes
 STR_5372    :Inverteix el desplaçament amb el ratolí
 STR_5373    :Nom {STRINGID}
@@ -3140,7 +3137,6 @@ STR_5846    :{SMALLFONT}{BLACK}Estableix el període de desades automàtiques de
 STR_5847    :{SMALLFONT}{BLACK}Seleccioneu la seqüència de parcs que s'usarà al menú principal.{NEWLINE}Les seqüències del RCT1/2 necessitaran que s'importin els escenaris corresponents.
 STR_5848    :{SMALLFONT}{BLACK}Crea i organitza les seqüències del menú principal.
 STR_5849    :{SMALLFONT}{BLACK}Coloca automàticament{NEWLINE}els empleats acabats de contractar.
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Estableix l'interval de revisió per defecte{NEWLINE}per a les atraccions noves.
 STR_5853    :{SMALLFONT}{BLACK}Activa/Desactiva els efectes de so.
 STR_5854    :{SMALLFONT}{BLACK}Activa/Desactiva la música de les atraccions.

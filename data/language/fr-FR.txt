@@ -1970,7 +1970,6 @@ STR_2763    :???
 STR_2765    :Grand tram
 STR_2766    :Gagner
 STR_2767    :Bloquer météo
-STR_2768    :Débloquer météo
 STR_2769    :Ouvrir le parc
 STR_2770    :Fermer le parc
 STR_2773    :Fenêtré
@@ -2699,8 +2698,6 @@ STR_5365    :{BLACK}Vitesse du personnel :
 STR_5366    :Normal
 STR_5367    :Rapide
 STR_5368    :Réinit. accidents
-STR_5369    :Param. du parc…
-STR_5370    :{SMALLFONT}{BLACK}Cliquez ce bouton pour modifier les paramètres du parc comme les restrictions, la génération de visiteurs et l'argent.
 STR_5371    :Sélection d'objets
 STR_5372    :Inverser le déplacement du clic droit
 STR_5373    :Nom {STRINGID}
@@ -3142,7 +3139,6 @@ STR_5846    :{SMALLFONT}{BLACK}Définit la fréquence de la sauvegarde automatiq
 STR_5847    :{SMALLFONT}{BLACK}Sélectionne la séquence de parcs utilisée dans le menu principal. Les séquences titre de RCT1/2 requièrent des scénarios importés pour fonctionner
 STR_5848    :{SMALLFONT}{BLACK}Créer et gérer des séquences titre personnalisées
 STR_5849    :{SMALLFONT}{BLACK}Placer automatiquement les nouveaux employés
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Définit le délai d'inspection par défaut sur les nouvelles attractions
 STR_5853    :{SMALLFONT}{BLACK}Active/désactive les effets sonores
 STR_5854    :{SMALLFONT}{BLACK}Active/désactive les musiques des attractions

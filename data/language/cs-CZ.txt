@@ -1970,7 +1970,6 @@ STR_2763    :???
 STR_2765    :Plná tramvaj
 STR_2766    :Vyhrát scénář
 STR_2767    :Zakázat změny počasí
-STR_2768    :Povolit změny počasí
 STR_2769    :Otevřít park
 STR_2770    :Zavřít park
 STR_2773    :V okně
@@ -2709,8 +2708,6 @@ STR_5365    :{BLACK}Rychlost personálu:
 STR_5366    :Normální
 STR_5367    :Vysoká
 STR_5368    :Vymazat havárii
-STR_5369    :Parametry parku…
-STR_5370    :{SMALLFONT}{BLACK}Klikněte na toto tlačítko pro   {NEWLINE}úpravy parametrů jako omezení parku,{NEWLINE} generování návštěvníků a peněz.
 STR_5371    :Výběr objektů
 STR_5372    :Obrátit směr posouvání pohledu pravým tlačítkem
 STR_5373    :Název {STRINGID}
@@ -3150,7 +3147,6 @@ STR_5846    :{SMALLFONT}{BLACK}Nastavení frekvence automatického ukládání h
 STR_5847    :{SMALLFONT}{BLACK}Vyberte ukázky parků na hlavní obrazovce. Ukázky parků z her RCT1/2 vyžadují importované scénáře
 STR_5848    :{SMALLFONT}{BLACK}Vytvořit a spravovat vlastní ukázky parků pro hlavní obrazovku
 STR_5849    :{SMALLFONT}{BLACK}Automaticky umisťovat{NEWLINE}nově najatý personál
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Nastaví výchozí interval inspekcí{NEWLINE}na nově postavených atrakcích
 STR_5853    :{SMALLFONT}{BLACK}Povolit/zakázat zvukové efekty
 STR_5854    :{SMALLFONT}{BLACK}Povolit/zakázat hudbu atrakcí
