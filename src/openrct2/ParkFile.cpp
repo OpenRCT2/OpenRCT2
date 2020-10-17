@@ -219,15 +219,16 @@ namespace OpenRCT2
 
                 ReadWriteStringTable(cs, gScenarioDetails, "en-GB");
 
-                cs.ReadWriteAs<uint8_t, uint32_t>(gScenarioObjectiveType);
-                cs.ReadWriteAs<uint8_t, uint16_t>(gScenarioObjectiveYear);       // year
-                cs.ReadWriteAs<uint16_t, uint32_t>(gScenarioObjectiveNumGuests); // guests
-                cs.Write<uint16_t>(600);                                         // rating
-                cs.ReadWriteAs<money32, uint16_t>(gScenarioObjectiveCurrency);   // excitement
-                cs.ReadWriteAs<uint16_t, uint32_t>(gScenarioObjectiveNumGuests); // length
-                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // park value
-                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // ride profit
-                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // shop profit
+                //                cs.ReadWriteAs<uint8_t, uint32_t>(gScenarioObjectiveType);
+                //                cs.ReadWriteAs<uint8_t, uint16_t>(gScenarioObjectiveYear);       // year
+                //                cs.ReadWriteAs<uint16_t, uint32_t>(gScenarioObjectiveNumGuests); // guests
+                //                cs.Write<uint16_t>(600);                                         // rating
+                //                cs.ReadWriteAs<money32, uint16_t>(gScenarioObjectiveCurrency);   // excitement
+                //                cs.ReadWriteAs<uint16_t, uint32_t>(gScenarioObjectiveNumGuests); // length
+                //                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // park value
+                //                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // ride profit
+                //                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // shop profit
+                cs.ReadWrite<Objective>(gScenarioObjective);
 
                 cs.ReadWrite(gScenarioParkRatingWarningDays);
 
@@ -843,7 +844,7 @@ namespace OpenRCT2
             cs.ReadWrite(entity.vehicle_type);
             cs.ReadWrite(entity.colours);
             cs.ReadWrite(entity.track_progress);
-            if (ride != nullptr && ride->mode == RIDE_MODE_BOAT_HIRE && entity.status == Vehicle::Status::TravellingBoat)
+            if (ride != nullptr && ride->mode == RideMode::BoatHire && entity.status == Vehicle::Status::TravellingBoat)
             {
                 cs.ReadWrite(entity.BoatLocation);
             }
@@ -968,7 +969,8 @@ namespace OpenRCT2
             cs.ReadWrite(entity.Id);
             cs.ReadWrite(entity.CashInPocket);
             cs.ReadWrite(entity.CashSpent);
-            cs.ReadWrite(entity.TimeInPark);
+            // Includes HireDate
+            cs.ReadWrite(entity.ParkEntryTime);
             cs.ReadWrite(entity.RejoinQueueTimeout);
             cs.ReadWrite(entity.PreviousRide);
             cs.ReadWrite(entity.PreviousRideTimeOut);
@@ -1114,7 +1116,7 @@ namespace OpenRCT2
             uint16_t numGuestsHeadingsForPark = 0;
             for (auto peep : EntityList<Peep>(EntityListId::Peep))
             {
-                if (peep->State == PEEP_STATE_ENTERING_PARK)
+                if (peep->State == PeepState::EnteringPark)
                 {
                     numGuestsHeadingsForPark++;
                 }

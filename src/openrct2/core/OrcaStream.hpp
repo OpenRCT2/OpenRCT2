@@ -70,13 +70,13 @@ namespace OpenRCT2
             if (mode == Mode::READING)
             {
                 std::ifstream fs(std::string(path).c_str(), std::ios::binary);
-                fs.read((char*)&_header, sizeof(_header));
+                fs.read(reinterpret_cast<char*>(&_header), sizeof(_header));
 
                 _chunks.clear();
                 for (uint32_t i = 0; i < _header.NumChunks; i++)
                 {
                     ChunkEntry entry;
-                    fs.read((char*)&entry, sizeof(entry));
+                    fs.read(reinterpret_cast<char*>(&entry), sizeof(entry));
                     _chunks.push_back(entry);
                 }
 
@@ -113,7 +113,7 @@ namespace OpenRCT2
                 const void* uncompressedData = _buffer.GetData();
                 const uint64_t uncompressedSize = _buffer.GetLength();
 
-                _header.NumChunks = (uint32_t)_chunks.size();
+                _header.NumChunks = static_cast<uint32_t>(_chunks.size());
                 _header.UncompressedSize = uncompressedSize;
                 _header.Sha1 = Crypt::SHA1(uncompressedData, uncompressedSize);
 
@@ -121,14 +121,14 @@ namespace OpenRCT2
 
                 // Write header
                 fs.seekp(0);
-                fs.write((const char*)&_header, sizeof(_header));
+                fs.write(reinterpret_cast<const char*>(&_header), sizeof(_header));
                 for (const auto& chunk : _chunks)
                 {
-                    fs.write((const char*)&chunk, sizeof(chunk));
+                    fs.write(reinterpret_cast<const char*>(&chunk), sizeof(chunk));
                 }
 
                 // Write chunk data
-                fs.write((const char*)uncompressedData, uncompressedSize);
+                fs.write(reinterpret_cast<const char*>(uncompressedData), uncompressedSize);
             }
         }
 
@@ -169,7 +169,7 @@ namespace OpenRCT2
                 _currentChunk.Length = 0;
                 ChunkStream stream(_buffer, _mode);
                 f(stream);
-                _currentChunk.Length = (uint64_t)_buffer.GetPosition() - _currentChunk.Offset;
+                _currentChunk.Length = static_cast<uint64_t>(_buffer.GetPosition()) - _currentChunk.Offset;
                 _chunks.push_back(_currentChunk);
                 return true;
             }
@@ -235,7 +235,7 @@ namespace OpenRCT2
 
             template<typename T> void ReadWrite(T& v)
             {
-                ReadWrite((void*)&v, sizeof(T));
+                ReadWrite(const_cast<void*>(reinterpret_cast<const void*>(&v)), sizeof(T));
             }
 
             template<typename TMem, typename TSave> void ReadWriteAs(TMem& v)
@@ -245,7 +245,7 @@ namespace OpenRCT2
                 {
                     sv = v;
                 }
-                ReadWrite((void*)&sv, sizeof(TSave));
+                ReadWrite(reinterpret_cast<void*>(&sv), sizeof(TSave));
                 if (_mode == Mode::READING)
                 {
                     v = static_cast<TMem>(sv);
@@ -446,7 +446,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    auto lastElSize = (size_t)_buffer.GetPosition() - arrayState.LastPos;
+                    auto lastElSize = static_cast<size_t>(_buffer.GetPosition()) - arrayState.LastPos;
                     if (arrayState.Count == 0)
                     {
                         // Set array element size based on first element size
@@ -472,14 +472,14 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    auto backupPos = _buffer.GetPosition();
-                    if ((size_t)backupPos != (size_t)arrayState.StartPos + 8 && arrayState.Count == 0)
+                    size_t backupPos = _buffer.GetPosition();
+                    if (backupPos != static_cast<size_t>(arrayState.StartPos) + 8 && arrayState.Count == 0)
                     {
                         throw std::runtime_error("Array data was written but no elements were added.");
                     }
                     _buffer.SetPosition(arrayState.StartPos);
-                    Write((uint32_t)arrayState.Count);
-                    Write((uint32_t)arrayState.ElementSize);
+                    Write(static_cast<uint32_t>(arrayState.Count));
+                    Write(static_cast<uint32_t>(arrayState.ElementSize));
                     _buffer.SetPosition(backupPos);
                 }
                 _arrayStack.pop();
