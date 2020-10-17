@@ -1088,7 +1088,7 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (gTextBoxFrameNo <= 15)
     {
         colour = ColourMapA[w->colours[1]].mid_light;
-        auto y = topLeft.x + (widget->height() - 1);
+        auto y = topLeft.y + (widget->height() - 1);
         gfx_fill_rect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
     }
 }
