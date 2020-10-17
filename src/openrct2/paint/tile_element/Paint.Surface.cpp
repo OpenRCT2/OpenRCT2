@@ -1288,45 +1288,44 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         std::memcpy(session->RightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
     }
 
-    if (tileElement->AsSurface()->GetWaterHeight() > 0)
+    const uint16_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
+    const bool waterGetsClipped = (session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (waterHeight > gClipHeight * COORDS_Z_STEP);
+
+    if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
     {
         // loc_6615A9: (water height)
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
 
         const uint16_t localHeight = height + 16;
-        const uint16_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
 
-        if (!gTrackDesignSaveMode)
+        session->WaterHeight = waterHeight;
+
+        int32_t image_offset = 0;
+        if (waterHeight <= localHeight)
         {
-            session->WaterHeight = waterHeight;
+            image_offset = byte_97B740[surfaceShape & 0xF];
+        }
 
-            int32_t image_offset = 0;
-            if (waterHeight <= localHeight)
-            {
-                image_offset = byte_97B740[surfaceShape & 0xF];
-            }
+        const int32_t image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
+            | PALETTE_WATER << 19;
+        sub_98196C(session, image_id, 0, 0, 32, 32, -1, waterHeight);
 
-            const int32_t image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
-                | PALETTE_WATER << 19;
-            sub_98196C(session, image_id, 0, 0, 32, 32, -1, waterHeight);
+        paint_attach_to_previous_ps(session, SPR_WATER_OVERLAY + image_offset, 0, 0);
 
-            paint_attach_to_previous_ps(session, SPR_WATER_OVERLAY + image_offset, 0, 0);
+        if (!(session->ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
+        {
+            // This wasn't in the original, but the code depended on globals that were only set in a different conditional
+            const uint32_t edgeStyle = tileElement->AsSurface()->GetEdgeStyle();
+            // end new code
 
-            if (!(session->ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
-            {
-                // This wasn't in the original, but the code depended on globals that were only set in a different conditional
-                const uint32_t edgeStyle = tileElement->AsSurface()->GetEdgeStyle();
-                // end new code
-
-                viewport_surface_draw_water_side_bottom(
-                    session, EDGE_BOTTOMLEFT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
-                viewport_surface_draw_water_side_bottom(
-                    session, EDGE_BOTTOMRIGHT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
-                viewport_surface_draw_water_side_top(
-                    session, EDGE_TOPLEFT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
-                viewport_surface_draw_water_side_top(
-                    session, EDGE_TOPRIGHT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
-            }
+            viewport_surface_draw_water_side_bottom(
+                session, EDGE_BOTTOMLEFT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
+            viewport_surface_draw_water_side_bottom(
+                session, EDGE_BOTTOMRIGHT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
+            viewport_surface_draw_water_side_top(
+                session, EDGE_TOPLEFT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
+            viewport_surface_draw_water_side_top(
+                session, EDGE_TOPRIGHT, waterHeight, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
         }
     }
 
