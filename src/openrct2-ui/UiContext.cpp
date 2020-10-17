@@ -678,8 +678,13 @@ private:
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
-        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
 
+        // Fix #4022: Force Mac to windowed to avoid cursor offset on launch issue
+#ifdef __MACOSX__
+        gConfigGeneral.fullscreen_mode = static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::WINDOWED);
+#else
+        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
+#endif
         TriggerResize();
     }
 

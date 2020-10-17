@@ -9,6 +9,7 @@
 - Change: [#13160] The lay-out of the Park Cheats tab has been improved.
 - Fix: [#1324] Last track piece map selection still visible when placing ride entrance or exit (original bug).
 - Fix: [#3200] Close Construction window upon selecting vehicle page.
+- Fix: [#4022] Fix Mac cursor offset on launch
 - Fix: [#4041] Garbled park option on scenario editor with custom theme.
 - Fix: [#5178] Lighting effects cannot be disabled in software mode
 - Fix: [#5904] Empty errors on tile inspector base height change.
