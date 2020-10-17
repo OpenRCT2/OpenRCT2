@@ -270,23 +270,23 @@ public:
         LoadObject("#ORCT2SN");
     }
 
-    static rct_string_id GetObjectSourceGameString(const uint8_t sourceGame)
+    static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)
     {
         switch (sourceGame)
         {
-            case OBJECT_SOURCE_RCT1:
+            case ObjectSourceGame::RCT1:
                 return STR_SCENARIO_CATEGORY_RCT1;
-            case OBJECT_SOURCE_ADDED_ATTRACTIONS:
+            case ObjectSourceGame::AddedAttractions:
                 return STR_SCENARIO_CATEGORY_RCT1_AA;
-            case OBJECT_SOURCE_LOOPY_LANDSCAPES:
+            case ObjectSourceGame::LoopyLandscapes:
                 return STR_SCENARIO_CATEGORY_RCT1_LL;
-            case OBJECT_SOURCE_RCT2:
+            case ObjectSourceGame::RCT2:
                 return STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
-            case OBJECT_SOURCE_WACKY_WORLDS:
+            case ObjectSourceGame::WackyWorlds:
                 return STR_OBJECT_FILTER_WW;
-            case OBJECT_SOURCE_TIME_TWISTER:
+            case ObjectSourceGame::TimeTwister:
                 return STR_OBJECT_FILTER_TT;
-            case OBJECT_SOURCE_OPENRCT2_OFFICIAL:
+            case ObjectSourceGame::OpenRCT2Official:
                 return STR_OBJECT_FILTER_OPENRCT2_OFFICIAL;
             default:
                 return STR_OBJECT_FILTER_CUSTOM;
@@ -774,7 +774,7 @@ void object_manager_unload_all_objects()
     objectManager.UnloadAll();
 }
 
-rct_string_id object_manager_get_source_game_string(const uint8_t sourceGame)
+rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame)
 {
     return ObjectManager::GetObjectSourceGameString(sourceGame);
 }

@@ -69,9 +69,9 @@ bool object_entry_is_empty(const rct_object_entry* entry)
     return false;
 }
 
-uint8_t object_entry_get_source_game_legacy(const rct_object_entry* objectEntry)
+ObjectSourceGame object_entry_get_source_game_legacy(const rct_object_entry* objectEntry)
 {
-    return (objectEntry->flags & 0xF0) >> 4;
+    return static_cast<ObjectSourceGame>((objectEntry->flags & 0xF0) >> 4);
 }
 
 /**
