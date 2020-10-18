@@ -562,7 +562,11 @@ namespace OpenRCT2
                 else
                 {
                     auto fs = FileStream(path, FILE_MODE_OPEN);
-                    return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
+                    if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail))
+                    {
+                        throw std::runtime_error("Failed to load park");
+                    }
+                    return true;
                 }
             }
             catch (const std::exception& e)
