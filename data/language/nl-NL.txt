@@ -3024,7 +3024,7 @@ STR_5721    :Bewolkt
 STR_5722    :Regen
 STR_5723    :Flinke regen
 STR_5724    :Onweer
-STR_5725    :{BLACK}Weer forceren:
+STR_5725    :{BLACK}Weer veranderen:
 STR_5726    :{SMALLFONT}{BLACK}Stelt het huidige weer in het park in
 STR_5727    :Opschaalkwaliteit:
 STR_5728    :Dit vereist ‘weergave door hardware’
@@ -3672,6 +3672,8 @@ STR_6390    :OpenRCT2 heeft bestanden van een RollerCoaster Tycoon 2-installatie
 STR_6391    :Selecteer je RCT2-map
 STR_6392    :Kon het bestand {STRING} niet vinden in dit pad.
 STR_6393    :Doelselectie
+STR_6394    :Doel
+STR_6395    :Onderhoud
 
 #############
 # Scenarios #

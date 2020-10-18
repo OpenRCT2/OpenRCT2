@@ -1959,16 +1959,16 @@ STR_2749    :Mia nova scenaro
 STR_2750    :Movi ĉiujn aferojn supren
 STR_2751    :Movi ĉiujn aferojn malsupren
 STR_2752    :Vakigi herbon
-STR_2753    :Falĉita herbon
+STR_2753    :Falĉi herbon
 STR_2754    :Akvumi kreskaĵojn
 STR_2755    :Ripari vandalaĵojn
 STR_2756    :Forigi rubon
 STR_2763    :???
-STR_2765    :Granda Tramo
+STR_2765    :Granda tramo
 STR_2766    :Gajni scenaron
-STR_2767    :Fiksi veteron
-STR_2769    :Malfermi Parkon
-STR_2770    :Fermi Parkon
+STR_2767    :Malŝalti veterajn ŝanĝojn
+STR_2769    :Malfermi parkon
+STR_2770    :Fermi parkon
 STR_2773    :En fenestro
 STR_2774    :Plena ekrano
 STR_2775    :Plena ekrano (sen bordoj)
@@ -3007,8 +3007,8 @@ STR_5721    :Nuba
 STR_5722    :Pluvo
 STR_5723    :Pluvego
 STR_5724    :Fulmotondro
-STR_5725    :{BLACK}Devigi veteron:
-STR_5726    :{SMALLFONT}{BLACK}Agordas la nunan veteron en parko
+STR_5725    :{BLACK}Ŝanĝi veteron al:
+STR_5726    :{SMALLFONT}{BLACK}Agordas la nunan veteron en la parko
 STR_5727    :Kvalito de skalado:
 STR_5731    :Lineara
 # tooltip for tab in options window
@@ -3147,7 +3147,7 @@ STR_5867    :{WINDOW_COLOUR_2}Nomo de Provizanto: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Retpoŝtadreso de Provizanto: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Retejo de Provizanto: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Montri servilajn informojn
-STR_5871    :Plantoj ne maljuniĝas
+STR_5871    :Malŝalti velkadon de plantoj
 STR_5872    :{SMALLFONT}{BLACK}Malŝalti plantan maljuniĝon tiel, ke ili ne velkas.
 STR_5873    :Permesi ĉenliftojn sur ĉiuj trakeroj
 STR_5874    :{SMALLFONT}{BLACK}Permesas ĉian trakeron fariĝi ĉenlifto
@@ -3584,8 +3584,8 @@ STR_6327    :Transvidebla fono por gigantaj ekranokopioj
 STR_6328    :{SMALLFONT}{BLACK}Kun ĉi tiu opcio ŝaltita, gigantaj ekranokopioj havos transvideblan fonon anstataŭ la defaŭlta nigra koloro.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Elŝutas [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
-STR_6331    :Krei Anasojn
-STR_6332    :Forigi Anasojn
+STR_6331    :Krei anasojn
+STR_6332    :Forigi anasojn
 STR_6333    :Pliigi skalfaktoron
 STR_6334    :Malpliigi skalfaktoron
 STR_6335    :Inspektilo de Kahelo: Enmeti eron koruptitan
@@ -3647,6 +3647,8 @@ STR_6390    :OpenRCT2 bezonas dosierojn de la origina RollerCoaster Tycoon 2 por
 STR_6391    :Bonvolu elekti vian dosierujon de RCT2
 STR_6392    :Ne eblis trovi je {STRING} ĉe tiu ĉi dosierindiko.
 STR_6393    :Cela Selektado
+STR_6394    :Celo
+STR_6395    :Prizorgado
 
 #############
 # Scenarios #

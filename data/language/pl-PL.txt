@@ -94,6 +94,7 @@ STR_0089    :Mini kolejka górska
 STR_0090    :Kolejka kopalniana
 STR_0091    :Nieznana atrakcja (59)
 STR_0092    :LIM Launched Roller Coaster
+STR_0093    :Kolejka hybrydowa
 STR_0512    :Kolejka górska ze spiralnym podjazdem i łagodnymi pokręconymi zjazdami
 STR_0513    :Kolejka górska z pętlą, klienci jadą w niej na stojąco
 STR_0514    :Wagony podczepione są pod tor kolejki górskiej i bujają się na zakrętach
@@ -173,6 +174,7 @@ STR_0598    :Odwrócona kolejka górska, której wagoniki są rozpędzane na sta
 STR_0599    :Kolejka górska z indywidualnymi pojazdami i łagodnymi zakręcanymi zjazdami
 STR_0600    :Zasilane kopalniane wagoniki jeżdżące przez łagodne i pokręcone tory
 STR_0602    :Kolejka górska, której wagoniki są rozpędzane na stacji liniowymi silnikami indukcyjnymi, aby pokonać zakręcone inwersje
+STR_0603    :Drewniana kolejka górska ze stalowymi torami pozwalającymi na strome zjazdy i inwersje
 STR_0767    :Gość {INT32}
 STR_0768    :Dozorca {INT32}
 STR_0769    :Mechanik {INT32}

@@ -1968,7 +1968,7 @@ STR_2756    :Müll beseitigen
 STR_2763    :???
 STR_2765    :Große Straßenbahn
 STR_2766    :Szenario gewinnen
-STR_2767    :Wetter einfrieren
+STR_2767    :Wetteränderungen deaktivieren
 STR_2769    :Park öffnen
 STR_2770    :Park schließen
 STR_2773    :Fenstermodus
@@ -3011,7 +3011,7 @@ STR_5721    :Bewölkt
 STR_5722    :Regen
 STR_5723    :Starker Regen
 STR_5724    :Gewitter
-STR_5725    :{BLACK}Wetter erzwingen:
+STR_5725    :{BLACK}Wetter setzen:
 STR_5726    :{SMALLFONT}{BLACK}Stellt das aktuelle Wetter im Park ein
 STR_5727    :Skalierungsqualität:
 STR_5728    :Setzt Anzeige durch Hardware voraus
@@ -3150,7 +3150,7 @@ STR_5867    :{WINDOW_COLOUR_2}Providername: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Provider-E-Mail-Adresse: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Providerwebseite: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Informationen zum Server anzeigen
-STR_5871    :Pflanzen altern nicht
+STR_5871    :Pflanzenverwelkung deaktivieren
 STR_5872    :{SMALLFONT}{BLACK}Deaktiviert das Altern von Pflanzen,{NEWLINE}sodass sie nicht verwelken
 STR_5873    :Kettenlifte auf allen Streckenst. erlauben
 STR_5874    :{SMALLFONT}{BLACK}Erlaubt es jedes Streckenstück{NEWLINE}als Kettenlift zu verwenden
@@ -3657,6 +3657,8 @@ STR_6390    :OpenRCT2 benötigt Dateien vom Originalspiel RollerCoaster Tycoon 2
 STR_6391    :Bitte RCT2-Verzeichnis wählen
 STR_6392    :Konnte {STRING} an diesem Pfad nicht finden.
 STR_6393    :Zielauswahl
+STR_6394    :Ziel
+STR_6395    :Pflege
 
 #############
 # Scenarios #

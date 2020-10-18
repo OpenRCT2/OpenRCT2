@@ -1959,7 +1959,7 @@ STR_2749    :Mi nuevo escenario
 STR_2750    :Mover todo hacia arriba
 STR_2751    :Mover todo hacia abajo
 STR_2752    :Limpiar césped
-STR_2753    :Cortar césped
+STR_2753    :Césped cortado
 STR_2754    :Regar plantas
 STR_2755    :Arreglar mobiliario
 STR_2756    :Vaciar papeleras
@@ -1967,7 +1967,7 @@ STR_2756    :Vaciar papeleras
 STR_2763    :???
 STR_2765    :Grupo de visitantes
 STR_2766    :Ganar escenario
-STR_2767    :Mantener clima
+STR_2767    :Deshabilitar cambio climático
 STR_2769    :Abrir parque
 STR_2770    :Cerrar parque
 STR_2773    :Ventana
@@ -3021,7 +3021,7 @@ STR_5721    :Nublado
 STR_5722    :Lluvia ligera
 STR_5723    :Lluvia
 STR_5724    :Tormenta
-STR_5725    :{BLACK}Forzar clima:
+STR_5725    :{BLACK}Cambiar clima a:
 STR_5726    :{SMALLFONT}{BLACK}Establecer el clima actual en el parque
 STR_5727    :Calidad de escalado:
 STR_5728    :Requiere Renderizado por Hardware
@@ -3654,6 +3654,8 @@ STR_6390    :OpenRCT2 necesita los archivos originales del juego RollerCoaster T
 STR_6391    :Elige tu directorio de RCT2.
 STR_6392    :No se pudo encontrar {STRING} en esta ruta.
 STR_6393    :Selección de Objetivo.
+STR_6394    :Objetivo
+STR_6395    :Mantenimiento
 
 ##############
 # Escenarios #
