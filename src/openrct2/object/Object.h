@@ -106,6 +106,11 @@ struct rct_object_entry
     }
 
     std::optional<uint8_t> GetSceneryType() const;
+
+    ObjectSourceGame GetSourceGame() const
+    {
+        return static_cast<ObjectSourceGame>((flags & 0xF0) >> 4);
+    }
 };
 assert_struct_size(rct_object_entry, 0x10);
 

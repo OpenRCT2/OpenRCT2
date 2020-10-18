@@ -230,7 +230,7 @@ namespace ObjectFactory
                 {
                     throw std::runtime_error("Object has errors");
                 }
-                result->SetSourceGames({ object_entry_get_source_game_legacy(&entry) });
+                result->SetSourceGames({ entry.GetSourceGame() });
             }
         }
         catch (const std::exception& e)
@@ -262,7 +262,7 @@ namespace ObjectFactory
             }
             else
             {
-                result->SetSourceGames({ object_entry_get_source_game_legacy(entry) });
+                result->SetSourceGames({ entry->GetSourceGame() });
             }
         }
         return result;

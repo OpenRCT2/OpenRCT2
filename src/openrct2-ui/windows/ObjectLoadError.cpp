@@ -580,8 +580,7 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
         gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, screenCoords);
 
         // ... source game ...
-        rct_string_id sourceStringId = object_manager_get_source_game_string(
-            object_entry_get_source_game_legacy(&_invalid_entries[i]));
+        rct_string_id sourceStringId = object_manager_get_source_game_string(_invalid_entries[i].GetSourceGame());
         gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, { SOURCE_COL_LEFT - 3, screenCoords.y });
 
         // ... and type
