@@ -1017,6 +1017,7 @@ uint8_t RideObject::ParseRideType(const std::string& s)
         { "mini_rc", RIDE_TYPE_MINI_ROLLER_COASTER },
         { "mine_ride", RIDE_TYPE_MINE_RIDE },
         { "lim_launched_rc", RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER },
+        { "hybrid_rc", RIDE_TYPE_HYBRID_COASTER },
     };
     auto result = LookupTable.find(s);
     return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_TYPE_NULL);

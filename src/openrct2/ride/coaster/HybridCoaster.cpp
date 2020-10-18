@@ -25,14 +25,6 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
-// Dynamic glitches
-// Steep to gentle/gentle to steep - sprite splitting issue requiring manual fix
-
-// Glitches present on original (fixing optional)
-// Sloped turns
-// Steep to vertical
-// Helixes (check height of bounding box but probably a sprite mask issue)
-
 namespace HybridRC
 {
     static uint32_t GetTrackColour(paint_session* session)
@@ -77,7 +69,7 @@ namespace HybridRC
             { (SPR_G2_HYBRID_TRACK_BRAKE + 1), (SPR_G2_HYBRID_TRACK_BLOCK_BRAKE + 1), SPR_STATION_BASE_A_NW_SE },
         };
 
-        if (tileElement->AsTrack()->GetType() == TrackElemType::EndStation)
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
         {
             sub_98197C_rotated(
                 session, direction, imageIds[direction][1] | GetTrackColour(session), 0, 0, 32, 20, 1, height, 0, 6,
@@ -135,18 +127,43 @@ namespace HybridRC
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
     {
-        if (tileElement->AsTrack()->HasChain())
+        const CoordsXYZ boundBoxOffsets[4] = {
+            { 0, 6, height },
+            { 28, 4, height - 16 },
+            { 28, 4, height - 16 },
+            { 0, 6, height },
+        };
+        static const CoordsXYZ boundBoxLengths[4] = {
+            { 32, 20, 3 },
+            { 2, 24, 93 },
+            { 2, 24, 93 },
+            { 32, 20, 3 },
+        };
+        static const uint32_t imageIds[2][4] = {
+            {
+                SPR_G2_HYBRID_LIFT_TRACK_STEEP + 12,
+                SPR_G2_HYBRID_LIFT_TRACK_STEEP + 13,
+                SPR_G2_HYBRID_LIFT_TRACK_STEEP + 14,
+                SPR_G2_HYBRID_LIFT_TRACK_STEEP + 15,
+            },
+            {
+                SPR_G2_HYBRID_TRACK_STEEP + 12,
+                SPR_G2_HYBRID_TRACK_STEEP + 13,
+                SPR_G2_HYBRID_TRACK_STEEP + 14,
+                SPR_G2_HYBRID_TRACK_STEEP + 15,
+            },
+        };
+
+        auto* ps = sub_98197C_rotated(
+            session, direction, GetTrackColour(session) | imageIds[tileElement->AsTrack()->HasChain() ? 0 : 1][direction], 0, 0,
+            boundBoxLengths[direction].x, boundBoxLengths[direction].y, boundBoxLengths[direction].z, height,
+            boundBoxOffsets[direction].x, boundBoxOffsets[direction].y, boundBoxOffsets[direction].z);
+
+        if (direction == 1 || direction == 2)
         {
-            sub_98197C_rotated(
-                session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_LIFT_TRACK_STEEP + direction + 12), 0, 0, 32, 20,
-                3, height, 0, 6, height);
+            session->WoodenSupportsPrependTo = ps;
         }
-        else
-        {
-            sub_98197C_rotated(
-                session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_STEEP + direction + 12), 0, 0, 32, 20, 3,
-                height, 0, 6, height);
-        }
+
         wooden_a_supports_paint_setup(
             session, direction & 1, 21 + direction, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         if (direction == 0 || direction == 3)
@@ -432,12 +449,31 @@ namespace HybridRC
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
     {
+        const CoordsXYZ boundBoxOffsets[4] = {
+            { 4, 6, height + 8 },
+            { 24, 6, height + 8 },
+            { 24, 6, height + 8 },
+            { 4, 6, height + 8 },
+        };
+        static const CoordsXYZ boundBoxLengths[4] = {
+            { 2, 20, 31 },
+            { 2, 20, 31 },
+            { 2, 20, 31 },
+            { 2, 20, 31 },
+        };
+        static const uint32_t imageIds[4] = {
+            SPR_G2_HYBRID_TRACK_VERTICAL + 8,
+            SPR_G2_HYBRID_TRACK_VERTICAL + 9,
+            SPR_G2_HYBRID_TRACK_VERTICAL + 10,
+            SPR_G2_HYBRID_TRACK_VERTICAL + 11,
+        };
         switch (trackSequence)
         {
             case 0:
                 sub_98197C_rotated(
-                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + direction + 8), 0, 0, 2, 20,
-                    31, height, 4, 6, height + 8);
+                    session, direction, GetTrackColour(session) | imageIds[direction], 0, 0, boundBoxLengths[direction].x,
+                    boundBoxLengths[direction].y, boundBoxLengths[direction].z, height, boundBoxOffsets[direction].x,
+                    boundBoxOffsets[direction].y, boundBoxOffsets[direction].z);
                 paint_util_set_vertical_tunnel(session, height + 32);
                 paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
                 paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -458,12 +494,32 @@ namespace HybridRC
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
     {
+        const CoordsXYZ boundBoxOffsets[4] = {
+            { 0, 6, height },
+            { 24, 6, height },
+            { 24, 6, height },
+            { 0, 6, height },
+        };
+        static const CoordsXYZ boundBoxLengths[4] = {
+            { 32, 20, 3 },
+            { 2, 20, 55 },
+            { 2, 20, 55 },
+            { 32, 20, 3 },
+        };
+        static const uint32_t imageIds[4] = {
+            SPR_G2_HYBRID_TRACK_VERTICAL + 0,
+            SPR_G2_HYBRID_TRACK_VERTICAL + 1,
+            SPR_G2_HYBRID_TRACK_VERTICAL + 2,
+            SPR_G2_HYBRID_TRACK_VERTICAL + 3,
+        };
+
         switch (trackSequence)
         {
             case 0:
                 sub_98197C_rotated(
-                    session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + direction), 0, 0, 32, 20, 3,
-                    height, 0, 6, height);
+                    session, direction, GetTrackColour(session) | imageIds[direction], 0, 0, boundBoxLengths[direction].x,
+                    boundBoxLengths[direction].y, boundBoxLengths[direction].z, height, boundBoxOffsets[direction].x,
+                    boundBoxOffsets[direction].y, boundBoxOffsets[direction].z);
                 wooden_a_supports_paint_setup(
                     session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 if (direction == 0 || direction == 3)
@@ -490,9 +546,29 @@ namespace HybridRC
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
     {
+        const CoordsXYZ boundBoxOffsets[4] = {
+            { 0, 6, height + 8 },
+            { 24, 6, height + 8 },
+            { 24, 6, height + 8 },
+            { 0, 6, height + 8 },
+        };
+        static const CoordsXYZ boundBoxLengths[4] = {
+            { 32, 20, 3 },
+            { 2, 20, 31 },
+            { 2, 20, 31 },
+            { 32, 20, 3 },
+        };
+        static const uint32_t imageIds[4] = {
+            SPR_G2_HYBRID_TRACK_VERTICAL + 4,
+            SPR_G2_HYBRID_TRACK_VERTICAL + 5,
+            SPR_G2_HYBRID_TRACK_VERTICAL + 6,
+            SPR_G2_HYBRID_TRACK_VERTICAL + 7,
+        };
+
         sub_98197C_rotated(
-            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_VERTICAL + direction + 4), 0, 0, 32, 20, 3,
-            height, 0, 6, height + 8);
+            session, direction, GetTrackColour(session) | imageIds[direction], 0, 0, boundBoxLengths[direction].x,
+            boundBoxLengths[direction].y, boundBoxLengths[direction].z, height, boundBoxOffsets[direction].x,
+            boundBoxOffsets[direction].y, boundBoxOffsets[direction].z);
         switch (direction)
         {
             case 1:
@@ -10010,15 +10086,14 @@ namespace HybridRC
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 
-    /** rct2: 0x008ADA44 */
     static void TrackOnRidePhoto(
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
     {
         sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
         sub_98197C_rotated(
-            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_FLAT + direction), 0, 0, 32, 20, 0, height, 0, 6,
-            height + 3);
+            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_FLAT + (direction & 1)), 0, 0, 32, 20, 0, height,
+            0, 6, height + 3);
         track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -10026,7 +10101,6 @@ namespace HybridRC
         paint_util_set_general_support_height(session, height + 48, 0x20);
     }
 
-    /** rct2: 0x008ADED4 */
     static void TrackFlatTo60DegUpLongBase(
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
@@ -10165,7 +10239,6 @@ namespace HybridRC
         }
     }
 
-    /** rct2: 0x008ADEE4 */
     static void Track60DegUpToFlatLongBase(
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
@@ -10304,7 +10377,6 @@ namespace HybridRC
         }
     }
 
-    /** rct2: 0x008ADEF4 */
     static void TrackFlatTo60DegDownLongBase(
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
@@ -10312,7 +10384,6 @@ namespace HybridRC
         Track60DegUpToFlatLongBase(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);
     }
 
-    /** rct2: 0x008ADF04 */
     static void Track60DegDownToFlatLongBase(
         paint_session* session, uint16_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TileElement* tileElement)
