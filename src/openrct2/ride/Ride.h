@@ -1061,6 +1061,7 @@ extern CoordsXYZ _currentTrackBegin;
 extern uint8_t _currentTrackPieceDirection;
 extern track_type_t _currentTrackPieceType;
 extern uint8_t _currentTrackSelectionFlags;
+extern uint32_t _rideConstructionNextArrowPulse;
 extern uint8_t _currentTrackSlopeEnd;
 extern uint8_t _currentTrackBankEnd;
 extern uint8_t _currentTrackLiftHill;

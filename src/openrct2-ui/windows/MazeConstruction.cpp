@@ -148,6 +148,7 @@ static void window_maze_construction_close(rct_window* w)
 
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     // In order to cancel the yellow arrow correctly the
     // selection tool should be cancelled.
@@ -502,6 +503,9 @@ static void window_maze_construction_construct(int32_t direction)
 {
     int32_t x, y, z, flags, mode;
 
+    _currentTrackSelectionFlags = 0;
+    _rideConstructionNextArrowPulse = 0;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     ride_construction_invalidate_current_track();
 
     x = _currentTrackBegin.x + (CoordsDirectionDelta[direction].x / 2);
