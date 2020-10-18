@@ -686,19 +686,19 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     size_t autosavesCount = 0;
     size_t numAutosavesToDelete = 0;
 
-    utf8 filter[MAX_PATH];
+    auto environment = GetContext()->GetPlatformEnvironment();
+    auto folderDirectory = environment->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE);
+    char const* fileFilter = "autosave_*.sv6";
     if (processLandscapeFolder)
     {
-        platform_get_user_directory(filter, "landscape", sizeof(filter));
-        safe_strcat_path(filter, "autosave", sizeof(filter));
-        safe_strcat_path(filter, "autosave_*.sc6", sizeof(filter));
+        folderDirectory = environment->GetDirectoryPath(DIRBASE::USER, DIRID::LANDSCAPE);
+        fileFilter = "autosave_*.sc6";
     }
-    else
-    {
-        platform_get_user_directory(filter, "save", sizeof(filter));
-        safe_strcat_path(filter, "autosave", sizeof(filter));
-        safe_strcat_path(filter, "autosave_*.sv6", sizeof(filter));
-    }
+
+    utf8 filter[MAX_PATH];
+    safe_strcpy(filter, folderDirectory.c_str(), sizeof(filter));
+    safe_strcat_path(filter, "autosave", sizeof(filter));
+    safe_strcat_path(filter, fileFilter, sizeof(filter));
 
     // At first, count how many autosaves there are
     {
@@ -723,14 +723,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
             autosaveFiles[i].resize(MAX_PATH, 0);
             if (scanner->Next())
             {
-                if (processLandscapeFolder)
-                {
-                    platform_get_user_directory(autosaveFiles[i].data(), "landscape", sizeof(utf8) * MAX_PATH);
-                }
-                else
-                {
-                    platform_get_user_directory(autosaveFiles[i].data(), "save", sizeof(utf8) * MAX_PATH);
-                }
+                platform_get_user_directory(autosaveFiles[i].data(), folderDirectory.c_str(), sizeof(utf8) * MAX_PATH);
                 safe_strcat_path(autosaveFiles[i].data(), "autosave", sizeof(utf8) * MAX_PATH);
                 safe_strcat_path(autosaveFiles[i].data(), scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
             }
