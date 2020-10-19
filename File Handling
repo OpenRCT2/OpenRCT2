@@ -1,0 +1,25 @@
+#include <iostream>
+#include<fstream>
+using namespace std;
+
+int main()
+{
+    cout << "PROGRAME FOR THE FILE HANDLING" << endl;
+    cout<<"GIVE YOUR INTRO"<<endl;
+    char ch[100];
+    ofstream read("xyz.txt");
+    cin.getline(ch,100);
+    read<<ch;
+    cout<<"reading process done in file handling\n\n\n";
+    read.close();
+
+    cout<<"WRITING PROCESS IN C++"<<endl;
+    char ch1[100];
+    ifstream write("xyz.txt");
+    write.getline(ch1,100);
+    cout<<"file content :"<<ch1<<endl;
+    cout<<"WRITE PROGRAME DONE IN FILE HANDLING"<<endl;
+     write.close();
+    return 0;
+}
+
