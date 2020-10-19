@@ -3649,6 +3649,7 @@ STR_6392    :Could not find {STRING} at this path.
 STR_6393    :Objective Selection
 STR_6394    :Objective
 STR_6395    :Maintenance
+STR_6396    :Disable Screensaver lock
 
 #############
 # Scenarios #

@@ -3899,6 +3899,7 @@ enum
     STR_CHEAT_OBJECTIVE_GROUP = 6394,
     STR_CHEAT_MAINTENANCE_GROUP = 6395,
 
+    STR_ENABLE_SCREENSAVER = 6396,
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

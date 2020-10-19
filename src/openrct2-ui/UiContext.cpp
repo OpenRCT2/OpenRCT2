@@ -669,6 +669,8 @@ private:
             SDLException::Throw("SDL_CreateWindow(...)");
         }
 
+        gConfigGeneral.enable_screen_saver?SDL_EnableScreenSaver():SDL_DisableScreenSaver();
+
         SDL_SetWindowMinimumSize(_window, 720, 480);
         SetCursorTrap(gConfigGeneral.trap_cursor);
         _platformUiContext->SetWindowIcon(_window);

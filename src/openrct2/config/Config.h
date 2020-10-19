@@ -42,6 +42,7 @@ struct GeneralConfiguration
     bool show_fps;
     bool multithreading;
     bool minimize_fullscreen_focus_loss;
+    bool enable_screen_saver;
 
     // Map rendering
     bool landscape_smoothing;

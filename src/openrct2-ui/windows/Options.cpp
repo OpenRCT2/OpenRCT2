@@ -88,6 +88,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_MULTITHREADING_CHECKBOX,
     WIDX_USE_VSYNC_CHECKBOX,
     WIDX_MINIMIZE_FOCUS_LOSS,
+    WIDX_ENABLE_SCREEN_SAVER,
 
     // Rendering
     WIDX_RENDERING_GROUP = WIDX_PAGE_START,
@@ -221,6 +222,7 @@ static rct_widget window_options_display_widgets[] = {
     MakeWidget        ({155, 176}, {136,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
     MakeWidget        ({ 11, 176}, {143,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
     MakeWidget        ({ 11, 191}, {280,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+    MakeWidget        ({ 11, 206}, {280,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_ENABLE_SCREENSAVER,                STR_ENABLE_SCREENSAVER                   ), // Enable screensaver
     { WIDGETS_END },
 };
 
@@ -449,6 +451,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_MULTITHREADING_CHECKBOX) |
     (1 << WIDX_MINIMIZE_FOCUS_LOSS) |
     (1 << WIDX_STEAM_OVERLAY_PAUSE) |
+    (1 << WIDX_ENABLE_SCREEN_SAVER) |
     (1 << WIDX_SCALE) |
     (1 << WIDX_SCALE_UP) |
     (1 << WIDX_SCALE_DOWN) |
@@ -633,6 +636,11 @@ static void window_options_display_mouseup(rct_window* w, rct_widgetindex widget
             break;
         case WIDX_STEAM_OVERLAY_PAUSE:
             gConfigGeneral.steam_overlay_pause ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_ENABLE_SCREEN_SAVER:
+            gConfigGeneral.enable_screen_saver ^= 1;
             config_save_default();
             w->Invalidate();
             break;
@@ -857,6 +865,7 @@ static void window_options_display_invalidate(rct_window* w)
     widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
     widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
     widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
+    widget_set_checkbox_value(w, WIDX_ENABLE_SCREEN_SAVER, gConfigGeneral.enable_screen_saver);
 
     // Dropdown captions for straightforward strings.
     window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];

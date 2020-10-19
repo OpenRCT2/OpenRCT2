@@ -184,6 +184,7 @@ namespace Config
             model->invert_viewport_drag = reader->GetBoolean("invert_viewport_drag", false);
             model->load_save_sort = reader->GetInt32("load_save_sort", SORT_NAME_ASCENDING);
             model->minimize_fullscreen_focus_loss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
+            model->enable_screen_saver = reader->GetBoolean("enable_screen_saver", false);
 
             // Default config setting is false until the games canvas can be separated from the effect
             model->day_night_cycle = reader->GetBoolean("day_night_cycle", false);
@@ -263,6 +264,7 @@ namespace Config
         writer->WriteBoolean("invert_viewport_drag", model->invert_viewport_drag);
         writer->WriteInt32("load_save_sort", model->load_save_sort);
         writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimize_fullscreen_focus_loss);
+        writer->WriteBoolean("enable_screen_saver",model->enable_screen_saver);
         writer->WriteBoolean("day_night_cycle", model->day_night_cycle);
         writer->WriteBoolean("enable_light_fx", model->enable_light_fx);
         writer->WriteBoolean("enable_light_fx_for_vehicles", model->enable_light_fx_for_vehicles);
