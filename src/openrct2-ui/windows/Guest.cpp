@@ -1258,7 +1258,7 @@ void window_guest_stats_update(rct_window* w)
  *
  */
 static void window_guest_stats_bars_paint(
-    int32_t value, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blink_flag)
+    int32_t value, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blinkFlag)
 {
     if (font_get_line_height(gCurrentFontSpriteBase) > 10)
     {
@@ -1267,7 +1267,7 @@ static void window_guest_stats_bars_paint(
 
     gfx_fill_rect_inset(dpi, x + 61, y + 1, x + 61 + 121, y + 9, w->colours[1], INSET_RECT_F_30);
 
-    if (!blink_flag || game_is_paused() || (gCurrentRealTimeTicks & 8) == 0)
+    if (!blinkFlag || game_is_paused() || (gCurrentRealTimeTicks & 8) == 0)
     {
         value *= 118;
         value >>= 8;
@@ -1277,6 +1277,16 @@ static void window_guest_stats_bars_paint(
 
         gfx_fill_rect_inset(dpi, x + 63, y + 2, x + 63 + value - 1, y + 8, colour, 0);
     }
+}
+
+/**
+ * Takes a guest stat value (scaled to currMax) and adjusts it to be scaled out of 255.
+ * Then clamp the value to between newMin and 255.
+ */
+static int32_t NormalizeGuestStatValue(int32_t value, int32_t currMax, int32_t newMin)
+{
+    int32_t newValue = (value * 255) / currMax;
+    return std::clamp(newValue, newMin, 255);
 }
 
 /**
@@ -1310,93 +1320,56 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Happiness
     gfx_draw_string_left(dpi, STR_GUEST_STAT_HAPPINESS_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-    int32_t happiness = peep->Happiness;
-    if (happiness < 10)
-        happiness = 10;
+    int32_t happiness = NormalizeGuestStatValue(peep->Happiness, PEEP_MAX_HAPPINESS, 10);
     int32_t barColour = COLOUR_BRIGHT_GREEN;
-    bool barBlink = (happiness < 50) ? true : false;
+    bool barBlink = happiness < 50;
     window_guest_stats_bars_paint(happiness, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Energy
     screenCoords.y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_ENERGY_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-    int32_t energy = ((peep->Energy - PEEP_MIN_ENERGY) * 255) / (PEEP_MAX_ENERGY - PEEP_MIN_ENERGY);
+    int32_t energy = NormalizeGuestStatValue(peep->Energy - PEEP_MIN_ENERGY, PEEP_MAX_ENERGY - PEEP_MIN_ENERGY, 10);
     barColour = COLOUR_BRIGHT_GREEN;
-    barBlink = (energy < 50) ? true : false;
-    if (energy < 10)
-        energy = 10;
+    barBlink = energy < 50;
     window_guest_stats_bars_paint(energy, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Hunger
     screenCoords.y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_HUNGER_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-    int32_t hunger = peep->Hunger;
-    if (hunger > 190)
-        hunger = 190;
-
-    hunger -= 32;
-    if (hunger < 0)
-        hunger = 0;
-    hunger *= 51;
-    hunger /= 32;
-    hunger = 0xFF & ~hunger;
-
+    int32_t hunger = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
+    hunger = 255 - hunger; // the bar should be longer when peep->Hunger is low
     barColour = COLOUR_BRIGHT_RED;
-    barBlink = (hunger > 170) ? true : false;
+    barBlink = hunger > 170;
     window_guest_stats_bars_paint(hunger, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Thirst
     screenCoords.y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_THIRST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-    int32_t thirst = peep->Thirst;
-    if (thirst > 190)
-        thirst = 190;
-
-    thirst -= 32;
-    if (thirst < 0)
-        thirst = 0;
-    thirst *= 51;
-    thirst /= 32;
-    thirst = 0xFF & ~thirst;
-
+    int32_t thirst = NormalizeGuestStatValue(peep->Thirst - 32, 158, 0);
+    thirst = 255 - thirst; // the bar should be longer when peep->Thirst is low
     barColour = COLOUR_BRIGHT_RED;
-    barBlink = (thirst > 170) ? true : false;
+    barBlink = thirst > 170;
     window_guest_stats_bars_paint(thirst, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Nausea
     screenCoords.y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-    int32_t nausea = peep->Nausea - 32;
-
-    if (nausea < 0)
-        nausea = 0;
-    nausea *= 36;
-    nausea /= 32;
-
+    int32_t nausea = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
     barColour = COLOUR_BRIGHT_RED;
-    barBlink = (nausea > 120) ? true : false;
+    barBlink = nausea > 120;
     window_guest_stats_bars_paint(nausea, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Toilet
     screenCoords.y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_TOILET_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-    int32_t toilet = peep->Toilet - 32;
-    if (toilet > 210)
-        toilet = 210;
-
-    toilet -= 32;
-    if (toilet < 0)
-        toilet = 0;
-    toilet *= 45;
-    toilet /= 32;
-
+    int32_t toilet = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
     barColour = COLOUR_BRIGHT_RED;
-    barBlink = (toilet > 160) ? true : false;
+    barBlink = toilet > 160;
     window_guest_stats_bars_paint(toilet, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
 
     // Time in park
