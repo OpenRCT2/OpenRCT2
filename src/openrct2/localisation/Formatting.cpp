@@ -16,6 +16,7 @@
 #include "Localisation.h"
 #include "StringIds.h"
 
+#include <cmath>
 #include <cstdint>
 
 namespace OpenRCT2
@@ -237,13 +238,13 @@ namespace OpenRCT2
         return result;
     }
 
-    std::string_view GetDigitSeperator()
+    static std::string_view GetDigitSeperator()
     {
         auto sz = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
         return sz != nullptr ? sz : std::string_view();
     }
 
-    std::string_view GetDecimalSeperator()
+    static std::string_view GetDecimalSeperator()
     {
         auto sz = language_get_string(STR_LOCALE_DECIMAL_POINT);
         return sz != nullptr ? sz : std::string_view();
@@ -275,7 +276,7 @@ namespace OpenRCT2
     template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatNumber(std::stringstream& ss, T value)
     {
         char buffer[32];
-        int32_t i = 0;
+        size_t i = 0;
 
         size_t num;
         if (value < 0)
@@ -294,7 +295,7 @@ namespace OpenRCT2
         {
             while (num != 0 && i < sizeof(buffer) && i < TDecimalPlace)
             {
-                buffer[i++] = (char)('0' + (num % 10));
+                buffer[i++] = static_cast<char>('0' + (num % 10));
                 num /= 10;
             }
 
@@ -303,7 +304,7 @@ namespace OpenRCT2
         }
 
         // Whole digits
-        auto digitSep = GetDigitSeperator();
+        [[maybe_unused]] auto digitSep = GetDigitSeperator();
         size_t groupLen = 0;
         do
         {
@@ -315,7 +316,7 @@ namespace OpenRCT2
                     AppendSeperator(buffer, i, digitSep);
                 }
             }
-            buffer[i++] = (char)('0' + (num % 10));
+            buffer[i++] = static_cast<char>('0' + (num % 10));
             num /= 10;
             if constexpr (TDigitSep)
             {
@@ -324,7 +325,7 @@ namespace OpenRCT2
         } while (num != 0 && i < sizeof(buffer));
 
         // Finally reverse append the string
-        for (int32_t j = i - 1; j >= 0; j--)
+        for (int32_t j = static_cast<int32_t>(i - 1); j >= 0; j--)
         {
             ss << buffer[j];
         }
@@ -433,7 +434,7 @@ namespace OpenRCT2
     {
         switch (token)
         {
-            case FormatToken::Uint16:
+            case FormatToken::UInt16:
             case FormatToken::Int32:
                 if constexpr (std::is_integral<T>())
                 {
@@ -564,6 +565,8 @@ namespace OpenRCT2
                     ss << "{" << ((idx >> 24) & 0xFF) << "}";
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -603,7 +606,7 @@ namespace OpenRCT2
         return stringLen;
     }
 
-    void FormatArgumentAny(std::stringstream& ss, FormatToken token, const FormatArg_t& value)
+    static void FormatArgumentAny(std::stringstream& ss, FormatToken token, const FormatArg_t& value)
     {
         if (std::holds_alternative<uint16_t>(value))
         {
@@ -705,7 +708,7 @@ namespace OpenRCT2
                     anyArgs.push_back(ReadFromArgs<int32_t>(args));
                     break;
                 case FormatToken::Comma16:
-                case FormatToken::Uint16:
+                case FormatToken::UInt16:
                 case FormatToken::MonthYear:
                 case FormatToken::Month:
                 case FormatToken::Velocity:
@@ -732,6 +735,8 @@ namespace OpenRCT2
                     break;
                 case FormatToken::Push16:
                     args = reinterpret_cast<const char*>(reinterpret_cast<uintptr_t>(args) - 2);
+                    break;
+                default:
                     break;
             }
         }

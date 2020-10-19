@@ -19,8 +19,6 @@
 
 #include <string>
 
-bool utf8_should_use_sprite_for_codepoint(char32_t codepoint);
-
 std::string format_string(rct_string_id format, const void* args);
 void format_string(char* dest, size_t size, rct_string_id format, const void* args);
 void format_string_to_upper(char* dest, size_t size, rct_string_id format, const void* args);

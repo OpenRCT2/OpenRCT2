@@ -140,7 +140,7 @@ public:
         {
             return _index != rhs._index;
         }
-        const char32_t operator*() const
+        char32_t operator*() const
         {
             return GetNextCodepoint(&_str[_index], nullptr);
         }

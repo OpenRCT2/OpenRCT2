@@ -89,11 +89,12 @@ namespace OpenRCT2
             auto& it = *stack.top();
             while (!it.eol())
             {
-                const auto& token = *it++;
+                const auto& token = *it;
                 if (!FormatTokenTakesArgument(token.kind))
                 {
                     ss << token.text;
                 }
+                it++;
             }
             stack.pop();
         }

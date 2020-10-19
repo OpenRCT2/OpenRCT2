@@ -121,6 +121,8 @@ void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
             case FormatToken::ColourYellow:
                 formatBegin = "\033[33m";
                 break;
+            default:
+                break;
         }
     }
 

@@ -39,7 +39,7 @@ TEST_F(FmtStringTests, iteration)
         actual += String::StdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
     }
 
-    ASSERT_EQ("[142:{BLACK}][0:Guests: ][124:{INT32}]", actual);
+    ASSERT_EQ("[28:{BLACK}][1:Guests: ][7:{INT32}]", actual);
 }
 
 TEST_F(FmtStringTests, without_format_tokens)
@@ -287,7 +287,7 @@ TEST_F(FormattingTests, to_fixed_buffer)
     char buffer[16];
     std::memset(buffer, '\xFF', sizeof(buffer));
     auto len = FormatStringId(buffer, 8, STR_GUEST_X, 123);
-    ASSERT_EQ(len, 9);
+    ASSERT_EQ(len, 9U);
     ASSERT_STREQ("Guest 1", buffer);
 
     // Ensure rest of the buffer was not overwritten
@@ -306,6 +306,6 @@ TEST_F(FormattingTests, using_legacy_buffer_args)
 
     char buffer[32]{};
     auto len = FormatStringLegacy(buffer, sizeof(buffer), STR_QUEUING_FOR, ft.Data());
-    ASSERT_EQ(len, 23);
+    ASSERT_EQ(len, 23U);
     ASSERT_STREQ("Queuing for Boat Hire 2", buffer);
 }

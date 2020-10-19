@@ -31,7 +31,7 @@ enum class FormatToken
     Comma1dp16,
     Comma2dp32,
     Comma16,
-    Uint16,
+    UInt16,
     Currency2dp,
     Currency,
     StringId,

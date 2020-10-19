@@ -31,7 +31,7 @@ static const std::unordered_map<std::string_view, FormatToken> FormatTokenMap = 
     { "COMMA1DP16",           FormatToken::Comma1dp16,          },
     { "COMMA2DP32",           FormatToken::Comma2dp32,          },
     { "COMMA16",              FormatToken::Comma16,             },
-    { "UINT16",               FormatToken::Uint16,              },
+    { "UINT16",               FormatToken::UInt16,              },
     { "CURRENCY2DP",          FormatToken::Currency2dp,         },
     { "CURRENCY",             FormatToken::Currency,            },
     { "STRINGID",             FormatToken::StringId,            },
@@ -89,7 +89,7 @@ bool FormatTokenTakesArgument(FormatToken token)
         case FormatToken::Comma1dp16:
         case FormatToken::Comma2dp32:
         case FormatToken::Comma16:
-        case FormatToken::Uint16:
+        case FormatToken::UInt16:
         case FormatToken::Currency2dp:
         case FormatToken::Currency:
         case FormatToken::StringId:
@@ -102,8 +102,9 @@ bool FormatTokenTakesArgument(FormatToken token)
         case FormatToken::Length:
         case FormatToken::Sprite:
             return true;
+        default:
+            return false;
     }
-    return false;
 }
 
 bool FormatTokenIsColour(FormatToken token)
@@ -125,8 +126,9 @@ bool FormatTokenIsColour(FormatToken token)
         case FormatToken::ColourPearlAqua:
         case FormatToken::ColourPaleSilver:
             return true;
+        default:
+            return false;
     }
-    return false;
 }
 
 size_t FormatTokenGetTextColourIndex(FormatToken token)
@@ -161,8 +163,9 @@ size_t FormatTokenGetTextColourIndex(FormatToken token)
             return 12;
         case FormatToken::ColourPaleSilver:
             return 13;
+        default:
+            return 0;
     }
-    return 0;
 }
 
 FormatToken FormatTokenFromTextColour(size_t textColour)
@@ -177,29 +180,4 @@ FormatToken FormatTokenFromTextColour(size_t textColour)
     if (textColour > std::size(tokens))
         return FormatToken::ColourBlack;
     return tokens[textColour];
-}
-
-bool utf8_should_use_sprite_for_codepoint(char32_t codepoint)
-{
-    switch (codepoint)
-    {
-        case UnicodeChar::up:
-        case UnicodeChar::down:
-        case UnicodeChar::leftguillemet:
-        case UnicodeChar::tick:
-        case UnicodeChar::cross:
-        case UnicodeChar::right:
-        case UnicodeChar::rightguillemet:
-        case UnicodeChar::small_up:
-        case UnicodeChar::small_down:
-        case UnicodeChar::left:
-        case UnicodeChar::quote_open:
-        case UnicodeChar::quote_close:
-        case UnicodeChar::german_quote_open:
-        case UnicodeChar::plus:
-        case UnicodeChar::minus:
-            return true;
-        default:
-            return false;
-    }
 }

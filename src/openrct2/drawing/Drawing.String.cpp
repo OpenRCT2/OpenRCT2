@@ -133,7 +133,7 @@ int32_t gfx_clip_string(utf8* text, int32_t width)
             {
                 // Width exceeded, rollback to best length and put ellipsis back
                 buffer.resize(bestLength);
-                for (auto i = static_cast<int32_t>(bestLength) - 1; i >= 0 && i >= bestLength - 3; i--)
+                for (auto i = static_cast<int32_t>(bestLength) - 1; i >= 0 && i >= static_cast<int32_t>(bestLength) - 3; i--)
                 {
                     buffer[bestLength - i] = '.';
                 }
@@ -391,6 +391,8 @@ int32_t string_get_height_raw(char* buffer)
                 break;
             case FormatToken::FontSmall:
                 fontBase = FONT_SPRITE_BASE_SMALL;
+                break;
+            default:
                 break;
         }
     }
@@ -736,6 +738,31 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
     }
 }
 
+static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
+{
+    switch (codepoint)
+    {
+        case UnicodeChar::up:
+        case UnicodeChar::down:
+        case UnicodeChar::leftguillemet:
+        case UnicodeChar::tick:
+        case UnicodeChar::cross:
+        case UnicodeChar::right:
+        case UnicodeChar::rightguillemet:
+        case UnicodeChar::small_up:
+        case UnicodeChar::small_down:
+        case UnicodeChar::left:
+        case UnicodeChar::quote_open:
+        case UnicodeChar::quote_close:
+        case UnicodeChar::german_quote_open:
+        case UnicodeChar::plus:
+        case UnicodeChar::minus:
+            return true;
+        default:
+            return false;
+    }
+}
+
 static void ttf_process_string_literal(rct_drawpixelinfo* dpi, const std::string_view text, text_draw_info* info)
 {
 #ifndef NO_TTF
@@ -748,6 +775,7 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, const std::string
     {
         ttf_draw_string_raw_sprite(dpi, text, info);
     }
+#ifndef NO_TTF
     else
     {
         CodepointView codepoints(text);
@@ -755,7 +783,7 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, const std::string
         for (auto it = codepoints.begin(); it != codepoints.end(); it++)
         {
             auto codepoint = *it;
-            if (utf8_should_use_sprite_for_codepoint(codepoint))
+            if (ShouldUseSpriteForCodepoint(codepoint))
             {
                 auto index = it.GetIndex();
                 auto ttfLen = index - ttfRunIndex;
@@ -771,6 +799,7 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, const std::string
             }
         }
     }
+#endif // NO_TTF
 }
 
 static void ttf_process_string(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
