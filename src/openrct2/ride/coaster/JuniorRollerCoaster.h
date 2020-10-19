@@ -13,13 +13,6 @@
 #include "../../common.h"
 #include "../../paint/tile_element/Paint.TileElement.h"
 
-// enum JUNIOR_RC_CHAINTYPE
-// {
-//     JUNIOR_RC_CHAIN_NONE,
-//     JUNIOR_RC_CHAIN_FRICTION_WHEELS,
-//     JUNIOR_RC_CHAIN_CHAIN_LIFT,
-// };
-
 enum class JuniorRcChainType : uint8_t
 {
     None,
