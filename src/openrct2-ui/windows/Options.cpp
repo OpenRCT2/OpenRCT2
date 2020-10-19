@@ -206,7 +206,7 @@ static constexpr const int32_t WH = 332;
 
 static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    MakeWidget        ({  5,  53}, {300, 155}, WWT_GROUPBOX, WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
+    MakeWidget        ({  5,  53}, {300, 170}, WWT_GROUPBOX, WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
     MakeWidget        ({155,  68}, {145,  12}, WWT_DROPDOWN, WindowColour::Secondary                                                                                  ), // Fullscreen
     MakeWidget        ({288,  69}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
     MakeWidget        ({155,  83}, {145,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ), // Resolution
