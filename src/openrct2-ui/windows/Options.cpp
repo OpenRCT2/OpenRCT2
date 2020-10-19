@@ -88,7 +88,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_MULTITHREADING_CHECKBOX,
     WIDX_USE_VSYNC_CHECKBOX,
     WIDX_MINIMIZE_FOCUS_LOSS,
-    WIDX_ENABLE_SCREEN_SAVER,
+    WIDX_DISABLE_SCREENSAVER_LOCK,
 
     // Rendering
     WIDX_RENDERING_GROUP = WIDX_PAGE_START,
@@ -451,7 +451,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_MULTITHREADING_CHECKBOX) |
     (1 << WIDX_MINIMIZE_FOCUS_LOSS) |
     (1 << WIDX_STEAM_OVERLAY_PAUSE) |
-    (1 << WIDX_ENABLE_SCREEN_SAVER) |
+    (1 << WIDX_DISABLE_SCREENSAVER_LOCK) |
     (1 << WIDX_SCALE) |
     (1 << WIDX_SCALE_UP) |
     (1 << WIDX_SCALE_DOWN) |
@@ -639,8 +639,8 @@ static void window_options_display_mouseup(rct_window* w, rct_widgetindex widget
             config_save_default();
             w->Invalidate();
             break;
-        case WIDX_ENABLE_SCREEN_SAVER:
-            gConfigGeneral.enable_screen_saver ^= 1;
+        case WIDX_DISABLE_SCREENSAVER_LOCK:
+            gConfigGeneral.disable_screensaver_lock ^= 1;
             config_save_default();
             w->Invalidate();
             break;
@@ -865,7 +865,7 @@ static void window_options_display_invalidate(rct_window* w)
     widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
     widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
     widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
-    widget_set_checkbox_value(w, WIDX_ENABLE_SCREEN_SAVER, gConfigGeneral.enable_screen_saver);
+    widget_set_checkbox_value(w, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver_lock);
 
     // Dropdown captions for straightforward strings.
     window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];

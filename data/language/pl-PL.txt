@@ -3647,7 +3647,6 @@ STR_6390    :Do działania OpenRCT2 wymaga plików z orginalnego RollerCoaster T
 STR_6391    :Wybierz katalog z RCT2
 STR_6392    :Nie można znaleźć {STRING} w tej ścieżce
 STR_6393    :Wybór celu
-STR_6396    :Wyłącz blokadę wygaszacza ekranu
 
 #############
 # Scenarios #
