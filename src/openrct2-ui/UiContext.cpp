@@ -669,7 +669,7 @@ private:
             SDLException::Throw("SDL_CreateWindow(...)");
         }
 
-        gConfigGeneral.disable_screensaver_lock ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
+        disable_screensaver_lock();
 
         SDL_SetWindowMinimumSize(_window, 720, 480);
         SetCursorTrap(gConfigGeneral.trap_cursor);
