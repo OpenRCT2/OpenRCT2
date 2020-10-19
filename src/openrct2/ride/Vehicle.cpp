@@ -5275,7 +5275,6 @@ void Vehicle::KillPassengers(Ride* curRide)
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
             context_broadcast_intent(&intent);
         }
-        curRide->num_riders--;
         peep_sprite_remove(curPeep);
     }
 
