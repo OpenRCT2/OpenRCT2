@@ -82,11 +82,11 @@ namespace OpenRCT2
     std::stringstream& GetThreadFormatStream();
     size_t CopyStringStreamToBuffer(char* buffer, size_t bufferLen, std::stringstream& ss);
 
-    inline void FormatString(std::stringstream& ss, std::stack<FmtString::iterator*> stack)
+    inline void FormatString(std::stringstream& ss, std::stack<FmtString::iterator>& stack)
     {
         while (!stack.empty())
         {
-            auto& it = *stack.top();
+            auto& it = stack.top();
             while (!it.eol())
             {
                 const auto& token = *it;
@@ -101,14 +101,14 @@ namespace OpenRCT2
     }
 
     template<typename TArg0, typename... TArgs>
-    static void FormatString(std::stringstream& ss, std::stack<FmtString::iterator*> stack, TArg0 arg0, TArgs&&... argN)
+    static void FormatString(std::stringstream& ss, std::stack<FmtString::iterator>& stack, TArg0 arg0, TArgs&&... argN)
     {
         while (!stack.empty())
         {
-            auto& it = *stack.top();
+            auto& it = stack.top();
             while (!it.eol())
             {
-                const auto& token = *it++;
+                auto token = *it++;
                 if (token.kind == FormatToken::StringId)
                 {
                     if constexpr (std::is_integral<TArg0>())
@@ -117,14 +117,15 @@ namespace OpenRCT2
                         if (IsRealNameStringId(stringId))
                         {
                             FormatRealName(ss, stringId);
+                            return FormatString(ss, stack, argN...);
                         }
                         else
                         {
                             auto subfmt = GetFmtStringById(stringId);
                             auto subit = subfmt.begin();
-                            stack.push(&subit);
+                            stack.push(subit);
+                            return FormatString(ss, stack, argN...);
                         }
-                        FormatString(ss, stack, argN...);
                     }
                 }
                 else if (FormatTokenTakesArgument(token.kind))
@@ -143,9 +144,8 @@ namespace OpenRCT2
 
     template<typename... TArgs> static void FormatString(std::stringstream& ss, const FmtString& fmt, TArgs&&... argN)
     {
-        auto it = fmt.begin();
-        std::stack<FmtString::iterator*> stack;
-        stack.push(&it);
+        std::stack<FmtString::iterator> stack;
+        stack.push(fmt.begin());
         FormatString(ss, stack, argN...);
     }
 
