@@ -11,6 +11,7 @@
 
 #include "Theme.h"
 
+#include <SDL.h>
 #include <algorithm>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -535,6 +536,11 @@ void window_all_wheel_input()
             }
         }
     }
+}
+
+void ApplyScreenSaverLockSetting()
+{
+    gConfigGeneral.disable_screensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
 }
 
 /**
