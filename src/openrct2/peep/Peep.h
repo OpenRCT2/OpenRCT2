@@ -277,10 +277,10 @@ enum class PeepRideSubState : uint8_t
     LeaveShop = 21
 };
 
-enum PeepUsingBinSubState
+enum class PeepUsingBinSubState : uint8_t
 {
-    PEEP_USING_BIN_WALKING_TO_BIN = 0,
-    PEEP_USING_BIN_GOING_BACK,
+    WalkingToBin = 0,
+    GoingBack,
 };
 
 enum class PeepActionType : uint8_t
@@ -623,6 +623,7 @@ struct Peep : SpriteBase
         uint8_t SubState;
         PeepSittingSubState SittingSubState;
         PeepRideSubState RideSubState;
+        PeepUsingBinSubState UsingBinSubState;
     };
     PeepSpriteType SpriteType;
     PeepType AssignedPeepType;
