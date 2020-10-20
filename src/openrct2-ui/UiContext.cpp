@@ -669,7 +669,7 @@ private:
             SDLException::Throw("SDL_CreateWindow(...)");
         }
 
-        ToggleScreenSaverLock();
+        ApplyScreenSaverLockSetting();
 
         SDL_SetWindowMinimumSize(_window, 720, 480);
         SetCursorTrap(gConfigGeneral.trap_cursor);

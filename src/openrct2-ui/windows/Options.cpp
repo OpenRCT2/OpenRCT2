@@ -641,7 +641,7 @@ static void window_options_display_mouseup(rct_window* w, rct_widgetindex widget
             break;
         case WIDX_DISABLE_SCREENSAVER_LOCK:
             gConfigGeneral.disable_screensaver ^= 1;
-            ToggleScreenSaverLock();
+            ApplyScreenSaverLockSetting();
             config_save_default();
             w->Invalidate();
             break;

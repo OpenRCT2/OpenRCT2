@@ -537,7 +537,8 @@ void window_all_wheel_input()
         }
     }
 }
-void ToggleScreenSaverLock()
+
+void ApplyScreenSaverLockSetting()
 {
     gConfigGeneral.disable_screensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
 }
