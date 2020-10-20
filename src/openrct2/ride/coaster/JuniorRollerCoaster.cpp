@@ -1624,8 +1624,7 @@ void junior_rc_paint_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JuniorRcChainType chainType)
 {
-    uint32_t imageId = junior_rc_track_pieces_flat[static_cast<uint8_t>(chainType)][direction]
-        | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = junior_rc_track_pieces_flat[EnumValue(chainType)][direction] | session->TrackColours[SCHEME_TRACK];
     sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 
@@ -1703,8 +1702,7 @@ void junior_rc_paint_track_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JuniorRcChainType chainType)
 {
-    uint32_t imageId = junior_rc_track_pieces_25_deg_up[static_cast<uint8_t>(chainType)][direction]
-        | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = junior_rc_track_pieces_25_deg_up[EnumValue(chainType)][direction] | session->TrackColours[SCHEME_TRACK];
     sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
 
     int8_t tunnelHeights[4] = { -8, 8, 8, -8 };
@@ -1726,7 +1724,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JuniorRcChainType chainType)
 {
-    uint32_t imageId = junior_rc_track_pieces_flat_to_25_deg_up[static_cast<uint8_t>(chainType)][direction]
+    uint32_t imageId = junior_rc_track_pieces_flat_to_25_deg_up[EnumValue(chainType)][direction]
         | session->TrackColours[SCHEME_TRACK];
 
     sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
@@ -1755,7 +1753,7 @@ void junior_rc_paint_track_25_deg_up_to_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, uint16_t height,
     const TileElement* tileElement, JuniorRcChainType chainType)
 {
-    uint32_t imageId = junior_rc_track_pieces_25_deg_up_to_flat[static_cast<uint8_t>(chainType)][direction]
+    uint32_t imageId = junior_rc_track_pieces_25_deg_up_to_flat[EnumValue(chainType)][direction]
         | session->TrackColours[SCHEME_TRACK];
     sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
 
@@ -2511,7 +2509,7 @@ void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[static_cast<uint8_t>(chainType)],
+        junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[EnumValue(chainType)],
         junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets, defaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
     uint8_t supportSpecial[4] = { 8, 8, 8, 3 };
@@ -2591,8 +2589,8 @@ void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[static_cast<uint8_t>(chainType)],
-        defaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths, nullptr);
+        junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[EnumValue(chainType)], defaultRightQuarterTurn5TilesOffsets,
+        defaultRightQuarterTurn5TilesBoundLengths, nullptr);
 
     uint8_t supportSpecial[4] = { 11, 8, 8, 7 };
     switch (trackSequence)
@@ -3078,14 +3076,14 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(
     switch (trackSequence)
     {
         case 0:
-            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[static_cast<uint8_t>(chainType)][direction][0]
+            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[EnumValue(chainType)][direction][0]
                 | session->TrackColours[SCHEME_TRACK];
             offset = defaultRightQuarterTurn3TilesOffsets[direction][0];
             boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][0];
             boundsOffset = offset;
             break;
         case 3:
-            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[static_cast<uint8_t>(chainType)][direction][1]
+            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[EnumValue(chainType)][direction][1]
                 | session->TrackColours[SCHEME_TRACK];
             offset = defaultRightQuarterTurn3TilesOffsets[direction][2];
             boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][2];
@@ -3157,16 +3155,14 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(
     switch (trackSequence)
     {
         case 0:
-            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[static_cast<uint8_t>(chainType)][direction]
-                                                                                   [0]
+            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[EnumValue(chainType)][direction][0]
                 | session->TrackColours[SCHEME_TRACK];
             offset = defaultRightQuarterTurn3TilesOffsets[direction][0];
             boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][0];
             boundsOffset = offset;
             break;
         case 3:
-            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[static_cast<uint8_t>(chainType)][direction]
-                                                                                   [1]
+            imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[EnumValue(chainType)][direction][1]
                 | session->TrackColours[SCHEME_TRACK];
             offset = defaultRightQuarterTurn3TilesOffsets[direction][2];
             boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][2];
@@ -4202,8 +4198,7 @@ void junior_rc_paint_track_diag_flat(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        junior_rc_track_pieces_diag_flat[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4223,8 +4218,7 @@ void junior_rc_paint_track_diag_25_deg_up(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_up[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        junior_rc_track_pieces_diag_25_deg_up[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -4244,8 +4238,8 @@ void junior_rc_paint_track_diag_flat_to_25_deg_up(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat_to_25_deg_up[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        junior_rc_track_pieces_diag_flat_to_25_deg_up[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -4268,8 +4262,8 @@ void junior_rc_paint_track_diag_flat_to_60_deg_up(
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat_to_60_deg_up[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        junior_rc_track_pieces_diag_flat_to_60_deg_up[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -4289,8 +4283,8 @@ void junior_rc_paint_track_diag_25_deg_up_to_flat(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_up_to_flat[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        junior_rc_track_pieces_diag_25_deg_up_to_flat[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -4313,8 +4307,8 @@ void junior_rc_paint_track_diag_60_deg_up_to_flat(
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_60_deg_up_to_flat[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        junior_rc_track_pieces_diag_60_deg_up_to_flat[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -4334,8 +4328,8 @@ void junior_rc_paint_track_diag_25_deg_down(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_down[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        junior_rc_track_pieces_diag_25_deg_down[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -4355,8 +4349,8 @@ void junior_rc_paint_track_diag_flat_to_25_deg_down(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat_to_25_deg_down[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        junior_rc_track_pieces_diag_flat_to_25_deg_down[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -4379,8 +4373,8 @@ void junior_rc_paint_track_diag_flat_to_60_deg_down(
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_flat_to_60_deg_down[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        junior_rc_track_pieces_diag_flat_to_60_deg_down[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -4400,8 +4394,8 @@ void junior_rc_paint_track_diag_25_deg_down_to_flat(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_down_to_flat[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        junior_rc_track_pieces_diag_25_deg_down_to_flat[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -4424,8 +4418,8 @@ void junior_rc_paint_track_diag_60_deg_down_to_flat(
 
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_60_deg_down_to_flat[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        junior_rc_track_pieces_diag_60_deg_down_to_flat[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -4969,7 +4963,7 @@ void junior_rc_paint_track_60_deg_up(
 {
     uint32_t image_id = session->TrackColours[SCHEME_TRACK];
 
-    image_id |= junior_rc_track_pieces_60_deg_up[static_cast<uint8_t>(chainType)][direction];
+    image_id |= junior_rc_track_pieces_60_deg_up[EnumValue(chainType)][direction];
 
     sub_98197C(
         session, image_id, static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].x),
@@ -5045,7 +5039,7 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
 {
     uint32_t image_id = session->TrackColours[SCHEME_TRACK];
 
-    image_id |= junior_rc_track_pieces_25_deg_up_to_60_deg_up[static_cast<uint8_t>(chainType)][direction][0];
+    image_id |= junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][0];
 
     sub_98197C(
         session, image_id, static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].x),
@@ -5056,11 +5050,11 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(
         junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0].x,
         junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0].y, height);
 
-    if (junior_rc_track_pieces_25_deg_up_to_60_deg_up[static_cast<uint8_t>(chainType)][direction][1] != 0)
+    if (junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][1] != 0)
     {
         image_id = session->TrackColours[SCHEME_TRACK];
 
-        image_id |= junior_rc_track_pieces_25_deg_up_to_60_deg_up[static_cast<uint8_t>(chainType)][direction][1];
+        image_id |= junior_rc_track_pieces_25_deg_up_to_60_deg_up[EnumValue(chainType)][direction][1];
 
         sub_98197C(
             session, image_id, static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].x),
@@ -5124,7 +5118,7 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
 {
     uint32_t image_id = session->TrackColours[SCHEME_TRACK];
 
-    image_id |= junior_rc_track_pieces_60_deg_up_to_25_deg_up[static_cast<uint8_t>(chainType)][direction][0];
+    image_id |= junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][0];
 
     sub_98197C(
         session, image_id, static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].x),
@@ -5135,11 +5129,11 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(
         junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0].x,
         junior_rc_25_deg_up_to_60_deg_up_bound_offsets[direction][0].y, height);
 
-    if (junior_rc_track_pieces_60_deg_up_to_25_deg_up[static_cast<uint8_t>(chainType)][direction][1] != 0)
+    if (junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][1] != 0)
     {
         image_id = session->TrackColours[SCHEME_TRACK];
 
-        image_id |= junior_rc_track_pieces_60_deg_up_to_25_deg_up[static_cast<uint8_t>(chainType)][direction][1];
+        image_id |= junior_rc_track_pieces_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction][1];
 
         sub_98197C(
             session, image_id, static_cast<int8_t>(junior_rc_60_deg_up_tile_offsets[direction].x),
@@ -5202,8 +5196,7 @@ void junior_rc_paint_track_diag_60_deg_up(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_60_deg_up[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
-        nullptr);
+        junior_rc_track_pieces_diag_60_deg_up[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
     {
@@ -5223,8 +5216,8 @@ void junior_rc_paint_track_diag_60_deg_down(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_60_deg_down[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
-        defaultDiagBoundLengths, nullptr);
+        junior_rc_track_pieces_diag_60_deg_down[EnumValue(chainType)], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
 
     if (trackSequence == 3)
     {
@@ -5244,7 +5237,7 @@ void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
+        junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[EnumValue(chainType)], defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
@@ -5267,7 +5260,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
     {
         sub_98197C(
             session,
-            junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[static_cast<uint8_t>(chainType)][direction]
+            junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[EnumValue(chainType)][direction]
                 | session->TrackColours[SCHEME_TRACK],
             -16, -16, 16, 16, 1, height, 0, 0, height);
     }
@@ -5275,7 +5268,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(
     {
         track_paint_util_diag_tiles_paint(
             session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-            junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
+            junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[EnumValue(chainType)], defaultDiagTileOffsets,
             defaultDiagBoundLengths, nullptr);
     }
 
@@ -5299,7 +5292,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
     {
         sub_98197C(
             session,
-            junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[static_cast<uint8_t>(chainType)][direction]
+            junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[EnumValue(chainType)][direction]
                 | session->TrackColours[SCHEME_TRACK],
             -16, -16, 16, 16, 1, height, 0, 0, height);
     }
@@ -5307,7 +5300,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(
     {
         track_paint_util_diag_tiles_paint(
             session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-            junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
+            junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[EnumValue(chainType)], defaultDiagTileOffsets,
             defaultDiagBoundLengths, nullptr);
     }
 
@@ -5329,7 +5322,7 @@ void junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(
 {
     track_paint_util_diag_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[static_cast<uint8_t>(chainType)], defaultDiagTileOffsets,
+        junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[EnumValue(chainType)], defaultDiagTileOffsets,
         defaultDiagBoundLengths, nullptr);
 
     if (trackSequence == 3)
