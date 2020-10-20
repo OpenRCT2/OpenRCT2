@@ -5849,9 +5849,9 @@ void Guest::UpdateWatching()
  */
 void Guest::UpdateUsingBin()
 {
-    switch (SubState)
+    switch (UsingBinSubState)
     {
-        case PEEP_USING_BIN_WALKING_TO_BIN:
+        case PeepUsingBinSubState::WalkingToBin:
         {
             if (!CheckForPath())
                 return;
@@ -5860,11 +5860,11 @@ void Guest::UpdateUsingBin()
             PerformNextAction(pathingResult);
             if (pathingResult & PATHING_DESTINATION_REACHED)
             {
-                SubState = PEEP_USING_BIN_GOING_BACK;
+                UsingBinSubState = PeepUsingBinSubState::GoingBack;
             }
             break;
         }
-        case PEEP_USING_BIN_GOING_BACK:
+        case PeepUsingBinSubState::GoingBack:
         {
             if (Action != PeepActionType::None2)
             {
@@ -6201,7 +6201,7 @@ bool Guest::UpdateWalkingFindBin()
     peep->Var37 = chosen_edge;
 
     peep->SetState(PeepState::UsingBin);
-    peep->SubState = PEEP_USING_BIN_WALKING_TO_BIN;
+    peep->UsingBinSubState = PeepUsingBinSubState::WalkingToBin;
 
     int32_t binX = (peep->x & 0xFFE0) + BinUseOffsets[peep->Var37 & 0x3].x;
     int32_t binY = (peep->y & 0xFFE0) + BinUseOffsets[peep->Var37 & 0x3].y;
