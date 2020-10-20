@@ -222,7 +222,7 @@ static rct_widget window_options_display_widgets[] = {
     MakeWidget        ({155, 176}, {136,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
     MakeWidget        ({ 11, 176}, {143,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
     MakeWidget        ({ 11, 191}, {280,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
-    MakeWidget        ({ 11, 206}, {280,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_ENABLE_SCREENSAVER,                STR_ENABLE_SCREENSAVER                   ), // Enable screensaver
+    MakeWidget        ({ 11, 206}, {280,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_ENABLE_SCREENSAVER,                STR_ENABLE_SCREENSAVER_TIP                   ), // Enable screensaver
     { WIDGETS_END },
 };
 
@@ -640,8 +640,8 @@ static void window_options_display_mouseup(rct_window* w, rct_widgetindex widget
             w->Invalidate();
             break;
         case WIDX_DISABLE_SCREENSAVER_LOCK:
-            gConfigGeneral.disable_screensaver_lock ^= 1;
-            disable_screensaver_lock();
+            gConfigGeneral.disable_screensaver ^= 1;
+            ToggleScreensaverLock();
             config_save_default();
             w->Invalidate();
             break;
@@ -866,7 +866,7 @@ static void window_options_display_invalidate(rct_window* w)
     widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
     widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
     widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
-    widget_set_checkbox_value(w, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver_lock);
+    widget_set_checkbox_value(w, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
 
     // Dropdown captions for straightforward strings.
     window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];

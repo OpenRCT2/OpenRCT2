@@ -11,6 +11,7 @@
 
 #include "Theme.h"
 
+#include <SDL.h>
 #include <algorithm>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -23,7 +24,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/world/Sprite.h>
-#include <SDL.h>
 
 using namespace OpenRCT2;
 
@@ -537,10 +537,10 @@ void window_all_wheel_input()
         }
     }
 }
-void disable_screensaver_lock()
+void ToggleScreensaverLock()
 {
-    gConfigGeneral.disable_screensaver_lock ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
-    log_info("SDL_IsScreenSaverEnabled()=%s",static_cast<int>(SDL_IsScreenSaverEnabled())?"true":"false");
+    gConfigGeneral.disable_screensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
+    log_info("SDL_IsScreenSaverEnabled()=%s", static_cast<int>(SDL_IsScreenSaverEnabled()) ? "true" : "false");
 }
 
 /**
@@ -653,4 +653,3 @@ void invalidate_all_windows_after_input()
         window_event_resize_call(w);
     });
 }
-
