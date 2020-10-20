@@ -686,7 +686,7 @@ public:
                 }
             }
 
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN)
+            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
                 if (trackBlock->index == 0)
                 {

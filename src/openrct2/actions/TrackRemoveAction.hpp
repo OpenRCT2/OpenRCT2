@@ -428,7 +428,8 @@ public:
 
             cost += (_support_height / 2) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice;
 
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
+            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && !(tileElement->Flags & TILE_ELEMENT_FLAG_GHOST)
+                && (tileElement->AsTrack()->GetSequenceIndex() == 0))
             {
                 if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, GAME_COMMAND_FLAG_APPLY))
                 {
