@@ -537,10 +537,9 @@ void window_all_wheel_input()
         }
     }
 }
-void ToggleScreensaverLock()
+void ToggleScreenSaverLock()
 {
     gConfigGeneral.disable_screensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
-    log_info("SDL_IsScreenSaverEnabled()=%s", static_cast<int>(SDL_IsScreenSaverEnabled()) ? "true" : "false");
 }
 
 /**

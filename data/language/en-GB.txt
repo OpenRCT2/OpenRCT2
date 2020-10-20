@@ -3650,7 +3650,7 @@ STR_6393    :Objective Selection
 STR_6394    :Objective
 STR_6395    :Maintenance
 STR_6396    :Disable screensaver
-STR_6397    :{SMALLFONT}{BLACK}Disables screensaver{NEWLINE}If checked screensaver will be inhibited.
+STR_6397    :{SMALLFONT}{BLACK}If checked, screensaver functionality will be inhibited while OpenRCT2 is running.
 
 #############
 # Scenarios #
