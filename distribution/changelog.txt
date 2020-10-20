@@ -11,6 +11,7 @@
 - Fix: [#3200] Close Construction window upon selecting vehicle page.
 - Fix: [#4022] Fix Mac cursor offset on launch
 - Fix: [#4041] Garbled park option on scenario editor with custom theme.
+- Fix: [#4865] Offer an option to disable inhibiting the monitor power.
 - Fix: [#5178] Lighting effects cannot be disabled in software mode
 - Fix: [#5904] Empty errors on tile inspector base height change.
 - Fix: [#6086] Cannot install existing track design with another name.
