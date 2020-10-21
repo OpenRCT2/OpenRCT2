@@ -604,6 +604,16 @@ public:
         _platformUiContext->ShowMessageBox(_window, message);
     }
 
+    bool HasMenuSupport() override
+    {
+        return _platformUiContext->HasMenuSupport();
+    }
+
+    int32_t ShowMenuDialog(const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+    {
+        return _platformUiContext->ShowMenuDialog(options, title, text);
+    }
+
     void OpenFolder(const std::string& path) override
     {
         _platformUiContext->OpenFolder(path);

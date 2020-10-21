@@ -3905,6 +3905,16 @@ enum
 
     STR_NEEDS_RCT2_FILES_MANUAL = 6399,
 
+    STR_OWN_ON_GOG = 6400,
+    STR_INSTALLED_ON_HDD = 6401,
+    STR_OPENRCT2_SETUP = 6402,
+    STR_WHICH_APPLIES_BEST = 6403,
+    STR_PLEASE_SELECT_GOG_INSTALLER = 6404,
+    STR_SELECT_GOG_INSTALLER = 6405,
+    STR_GOG_INSTALLER = 6406,
+    STR_THIS_WILL_TAKE_A_FEW_MINUTES = 6407,
+    STR_INSTALL_INNOEXTRACT = 6408,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

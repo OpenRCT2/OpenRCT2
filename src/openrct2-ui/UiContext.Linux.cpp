@@ -16,6 +16,7 @@
 #    include <openrct2/common.h>
 #    include <openrct2/core/Path.hpp>
 #    include <openrct2/core/String.hpp>
+#    include <openrct2/core/StringBuilder.h>
 #    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/platform/Platform2.h>
 #    include <openrct2/ui/UiContext.h>
@@ -254,6 +255,74 @@ namespace OpenRCT2::Ui
         {
             std::string dummy;
             return GetDialogApp(&dummy) != DIALOG_TYPE::NONE;
+        }
+
+        bool HasMenuSupport() override
+        {
+            std::string executablePath;
+            DIALOG_TYPE dtype = GetDialogApp(&executablePath);
+            return dtype != DIALOG_TYPE::NONE;
+        }
+
+        int32_t ShowMenuDialog(
+            const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+        {
+            std::string executablePath;
+            DIALOG_TYPE dtype = GetDialogApp(&executablePath);
+
+            size_t longest_string = 0;
+            for (const auto& option : options)
+            {
+                if (option.size() > longest_string)
+                {
+                    longest_string = option.size();
+                }
+            }
+
+            // zenity and kdialog don't support automatic scaling, this is an approximation
+            int width = (longest_string + 1) * 8;
+            int height = (options.size() + 1) * 8;
+
+            switch (dtype)
+            {
+                case DIALOG_TYPE::ZENITY:
+                {
+                    auto sb = StringBuilder();
+                    sb.Append(reinterpret_cast<utf8*>(
+                        String::Format("zenity --list --column '' --width=%d --height=%d", width, height)));
+                    for (const auto& option : options)
+                    {
+                        sb.Append(reinterpret_cast<utf8*>(String::Format(" '%s'", option.c_str())));
+                    }
+                    sb.Append(
+                        reinterpret_cast<utf8*>(String::Format(" --title '%s' --text '%s'", title.c_str(), text.c_str())));
+
+                    std::string buff;
+                    Platform::Execute(sb.GetBuffer(), &buff);
+                    return std::find(options.begin(), options.end(), buff) - options.begin();
+                }
+                case DIALOG_TYPE::KDIALOG:
+                {
+                    auto sb = StringBuilder();
+                    sb.Append(reinterpret_cast<utf8*>(
+                        String::Format("kdialog --geometry %dx%d --title '%s' --menu ", width, height, title.c_str())));
+                    sb.Append(reinterpret_cast<utf8*>(String::Format(" '%s'", text.c_str())));
+                    for (const auto& option : options)
+                    {
+                        sb.Append(reinterpret_cast<utf8*>(String::Format(" '%s' '%s'", option.c_str(), option.c_str())));
+                    }
+
+                    std::string buff;
+                    Platform::Execute(sb.GetBuffer(), &buff);
+                    return std::find(options.begin(), options.end(), buff) - options.begin();
+                }
+                default:
+                {
+                    break;
+                }
+            }
+
+            return options.size();
         }
 
     private:

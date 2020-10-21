@@ -12,6 +12,7 @@ Homepage: https://openrct2.io/
 Vcs-Browser: https://github.com/OpenRCT2/OpenRCT2
 Vcs-Git: https://github.com/OpenRCT2/OpenRCT2
 Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: innoextract
 Description: An open source re-implementation of Roller Coaster Tycoon 2.
  An open source clone of RollerCoaster Tycoon 2 built by decompiling the
  original game one bit at a time.

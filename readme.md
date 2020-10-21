@@ -116,6 +116,7 @@ The program can also be built as a command line program using CMake. This type o
 - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
 - duktape (unless scripting is disabled)
 - cmake
+- innoextract (optional runtime dependency; used for GOG installer extraction during setup)
 
 Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#required-packages-general for more information about installing the packages.
 

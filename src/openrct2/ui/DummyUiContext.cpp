@@ -90,6 +90,16 @@ namespace OpenRCT2::Ui
         void ShowMessageBox(const std::string& /*message*/) override
         {
         }
+        bool HasMenuSupport() override
+        {
+            return false;
+        }
+
+        int32_t ShowMenuDialog(
+            const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+        {
+            return options.size();
+        }
         void OpenFolder(const std::string& /*path*/) override
         {
         }
