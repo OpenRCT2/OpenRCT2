@@ -196,7 +196,7 @@ static void ride_ratings_update_state_2()
 {
     const ride_id_t rideIndex = gRideRatingsCalcData.CurrentRide;
     auto ride = get_ride(rideIndex);
-    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
+    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED || ride->type >= RIDE_TYPE_COUNT)
     {
         gRideRatingsCalcData.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;

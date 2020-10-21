@@ -1286,9 +1286,12 @@ static rct_window* window_ride_open(Ride* ride)
  */
 rct_window* window_ride_main_open(Ride* ride)
 {
-    rct_window* w;
+    if (ride->type >= RIDE_TYPE_COUNT)
+    {
+        return nullptr;
+    }
 
-    w = window_bring_to_front_by_number(WC_RIDE, ride->id);
+    rct_window* w = window_bring_to_front_by_number(WC_RIDE, ride->id);
     if (w == nullptr)
     {
         w = window_ride_open(ride);
@@ -1323,6 +1326,9 @@ rct_window* window_ride_main_open(Ride* ride)
  */
 static rct_window* window_ride_open_station(Ride* ride, StationIndex stationIndex)
 {
+    if (ride->type >= RIDE_TYPE_COUNT)
+        return nullptr;
+
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
         return window_ride_main_open(ride);
 
