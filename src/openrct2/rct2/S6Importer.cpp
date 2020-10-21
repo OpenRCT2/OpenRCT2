@@ -464,6 +464,7 @@ public:
         game_convert_strings_to_utf8();
         map_count_remaining_land_rights();
         determine_ride_entrance_and_exit_locations();
+        RemoveBadRideTypes();
 
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         park.Name = GetUserString(_s6.park_name);
@@ -1685,6 +1686,20 @@ public:
         }
 
         return result;
+    }
+
+    void RemoveBadRideTypes()
+    {
+        for (ride_id_t i = 0; i < RIDE_ID_NULL; ++i)
+        {
+            auto* ride = get_ride(i);
+            if (ride->type < RIDE_TYPE_COUNT)
+            {
+                continue;
+            }
+
+            ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+        }
     }
 };
 
