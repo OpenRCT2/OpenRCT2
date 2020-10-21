@@ -427,6 +427,20 @@ void game_convert_strings_to_rct2(rct_s6_data* s6)
     }
 }
 
+static void RemoveBadRideTypes()
+{
+    for (ride_id_t i = 0; i < RIDE_ID_NULL; ++i)
+    {
+        auto* ride = get_ride(i);
+        if (ride == nullptr || ride->type < RIDE_TYPE_COUNT)
+        {
+            continue;
+        }
+        reset_sprite_spatial_index();
+        ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+    }
+}
+
 // OpenRCT2 workaround to recalculate some values which are saved redundantly in the save to fix corrupted files.
 // For example recalculate guest count by looking at all the guests instead of trusting the value in the file.
 void game_fix_save_vars()
@@ -540,6 +554,8 @@ void game_fix_save_vars()
 
     // Fix gParkEntrance locations for which the tile_element no longer exists
     fix_park_entrance_locations();
+
+    RemoveBadRideTypes();
 }
 
 void game_load_init()
