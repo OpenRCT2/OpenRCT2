@@ -169,17 +169,17 @@ static void large_scenery_sign_paint_line(
         int32_t image_id = (textImage + glyph_offset + glyph_type) | textColour;
         if (direction == 3)
         {
-            paint_attach_to_previous_ps(session, image_id, x_offset, -div_to_minus_infinity(acc, 2));
+            PaintAttachToPreviousPS(session, image_id, x_offset, -div_to_minus_infinity(acc, 2));
         }
         else
         {
             if (text->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
             {
-                paint_attach_to_previous_ps(session, image_id, x_offset, div_to_minus_infinity(acc, 2));
+                PaintAttachToPreviousPS(session, image_id, x_offset, div_to_minus_infinity(acc, 2));
             }
             else
             {
-                paint_attach_to_previous_attach(session, image_id, x_offset, div_to_minus_infinity(acc, 2));
+                PaintAttachToPreviousAttach(session, image_id, x_offset, div_to_minus_infinity(acc, 2));
             }
         }
         x_offset += large_scenery_sign_get_glyph(text, codepoint)->width;

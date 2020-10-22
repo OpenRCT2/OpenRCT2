@@ -50,13 +50,12 @@ bool gShowDirtyVisuals;
 bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 
-static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
-static void paint_ps_image_with_bounding_boxes(
-    rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
-static void paint_ps_image(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
-static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags);
+static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
+static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
+static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
+static uint32_t PaintPSColourifyImage(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags);
 
-static void paint_session_add_ps_to_quadrant(paint_session* session, paint_struct* ps, int32_t positionHash)
+static void PaintSessionAddPSToQuadrant(paint_session* session, paint_struct* ps, int32_t positionHash)
 {
     uint32_t paintQuadrantIndex = std::clamp(positionHash / 32, 0, MAX_PAINT_QUADRANTS - 1);
     ps->quadrant_index = paintQuadrantIndex;
@@ -159,7 +158,7 @@ static paint_struct* sub_9819_c(
  *
  *  rct2: 0x0068B6C2
  */
-void paint_session_generate(paint_session* session)
+void PaintSessionGenerate(paint_session* session)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
     LocationXY16 mapTile = { static_cast<int16_t>(dpi->x & 0xFFE0), static_cast<int16_t>((dpi->y - 16) & 0xFFE0) };
@@ -268,12 +267,12 @@ void paint_session_generate(paint_session* session)
 }
 
 template<uint8_t>
-static bool check_bounding_box(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
+static bool CheckBoundingBox(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
 {
     return false;
 }
 
-template<> bool check_bounding_box<0>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
+template<> bool CheckBoundingBox<0>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
 {
     if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end >= currentBBox.x
         && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x < currentBBox.x_end))
@@ -283,7 +282,7 @@ template<> bool check_bounding_box<0>(const paint_struct_bound_box& initialBBox,
     return false;
 }
 
-template<> bool check_bounding_box<1>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
+template<> bool CheckBoundingBox<1>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
 {
     if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end >= currentBBox.y && initialBBox.x_end < currentBBox.x
         && !(initialBBox.z < currentBBox.z_end && initialBBox.y < currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
@@ -293,7 +292,7 @@ template<> bool check_bounding_box<1>(const paint_struct_bound_box& initialBBox,
     return false;
 }
 
-template<> bool check_bounding_box<2>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
+template<> bool CheckBoundingBox<2>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
 {
     if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end < currentBBox.x
         && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x >= currentBBox.x_end))
@@ -303,7 +302,7 @@ template<> bool check_bounding_box<2>(const paint_struct_bound_box& initialBBox,
     return false;
 }
 
-template<> bool check_bounding_box<3>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
+template<> bool CheckBoundingBox<3>(const paint_struct_bound_box& initialBBox, const paint_struct_bound_box& currentBBox)
 {
     if (initialBBox.z_end >= currentBBox.z && initialBBox.y_end < currentBBox.y && initialBBox.x_end >= currentBBox.x
         && !(initialBBox.z < currentBBox.z_end && initialBBox.y >= currentBBox.y_end && initialBBox.x < currentBBox.x_end))
@@ -314,7 +313,7 @@ template<> bool check_bounding_box<3>(const paint_struct_bound_box& initialBBox,
 }
 
 template<uint8_t _TRotation>
-static paint_struct* paint_arrange_structs_helper_rotation(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag)
+static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag)
 {
     paint_struct* ps;
     paint_struct* ps_temp;
@@ -383,7 +382,7 @@ static paint_struct* paint_arrange_structs_helper_rotation(paint_struct* ps_next
 
             const paint_struct_bound_box& currentBBox = ps_next->bounds;
 
-            const bool compareResult = check_bounding_box<_TRotation>(initialBBox, currentBBox);
+            const bool compareResult = CheckBoundingBox<_TRotation>(initialBBox, currentBBox);
 
             if (compareResult)
             {
@@ -399,18 +398,18 @@ static paint_struct* paint_arrange_structs_helper_rotation(paint_struct* ps_next
     }
 }
 
-static paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation)
+static paint_struct* PaintArrangeStructsHelper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation)
 {
     switch (rotation)
     {
         case 0:
-            return paint_arrange_structs_helper_rotation<0>(ps_next, quadrantIndex, flag);
+            return PaintArrangeStructsHelperRotation<0>(ps_next, quadrantIndex, flag);
         case 1:
-            return paint_arrange_structs_helper_rotation<1>(ps_next, quadrantIndex, flag);
+            return PaintArrangeStructsHelperRotation<1>(ps_next, quadrantIndex, flag);
         case 2:
-            return paint_arrange_structs_helper_rotation<2>(ps_next, quadrantIndex, flag);
+            return PaintArrangeStructsHelperRotation<2>(ps_next, quadrantIndex, flag);
         case 3:
-            return paint_arrange_structs_helper_rotation<3>(ps_next, quadrantIndex, flag);
+            return PaintArrangeStructsHelperRotation<3>(ps_next, quadrantIndex, flag);
     }
     return nullptr;
 }
@@ -419,7 +418,7 @@ static paint_struct* paint_arrange_structs_helper(paint_struct* ps_next, uint16_
  *
  *  rct2: 0x00688217
  */
-void paint_session_arrange(paint_session* session)
+void PaintSessionArrange(paint_session* session)
 {
     paint_struct* psHead = &session->PaintHead;
 
@@ -444,18 +443,18 @@ void paint_session_arrange(paint_session* session)
             }
         } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
-        paint_struct* ps_cache = paint_arrange_structs_helper(
+        paint_struct* ps_cache = PaintArrangeStructsHelper(
             psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT, session->CurrentRotation);
 
         quadrantIndex = session->QuadrantBackIndex;
         while (++quadrantIndex < session->QuadrantFrontIndex)
         {
-            ps_cache = paint_arrange_structs_helper(ps_cache, quadrantIndex & 0xFFFF, 0, session->CurrentRotation);
+            ps_cache = PaintArrangeStructsHelper(ps_cache, quadrantIndex & 0xFFFF, 0, session->CurrentRotation);
         }
     }
 }
 
-static void paint_draw_struct(paint_session* session, paint_struct* ps)
+static void PaintDrawStruct(paint_session* session, paint_struct* ps)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
 
@@ -476,23 +475,23 @@ static void paint_draw_struct(paint_session* session, paint_struct* ps)
         }
     }
 
-    uint32_t imageId = paint_ps_colourify_image(ps->image_id, ps->sprite_type, session->ViewFlags);
+    uint32_t imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, session->ViewFlags);
     if (gPaintBoundingBoxes && dpi->zoom_level == 0)
     {
-        paint_ps_image_with_bounding_boxes(dpi, ps, imageId, x, y);
+        PaintPSImageWithBoundingBoxes(dpi, ps, imageId, x, y);
     }
     else
     {
-        paint_ps_image(dpi, ps, imageId, x, y);
+        PaintPSImage(dpi, ps, imageId, x, y);
     }
 
     if (ps->children != nullptr)
     {
-        paint_draw_struct(session, ps->children);
+        PaintDrawStruct(session, ps->children);
     }
     else
     {
-        paint_attached_ps(dpi, ps, session->ViewFlags);
+        PaintAttachedPS(dpi, ps, session->ViewFlags);
     }
 }
 
@@ -500,13 +499,13 @@ static void paint_draw_struct(paint_session* session, paint_struct* ps)
  *
  *  rct2: 0x00688485
  */
-void paint_draw_structs(paint_session* session)
+void PaintDrawStructs(paint_session* session)
 {
     paint_struct* ps = &session->PaintHead;
 
     for (ps = ps->next_quadrant_ps; ps;)
     {
-        paint_draw_struct(session, ps);
+        PaintDrawStruct(session, ps);
 
         ps = ps->next_quadrant_ps;
     }
@@ -517,14 +516,14 @@ void paint_draw_structs(paint_session* session)
  *  rct2: 0x00688596
  *  Part of 0x688485
  */
-static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags)
+static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags)
 {
     attached_paint_struct* attached_ps = ps->attached_ps;
     for (; attached_ps; attached_ps = attached_ps->next)
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 
-        uint32_t imageId = paint_ps_colourify_image(attached_ps->image_id, ps->sprite_type, viewFlags);
+        uint32_t imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
         {
             gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->colour_image_id);
@@ -536,7 +535,7 @@ static void paint_attached_ps(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t
     }
 }
 
-static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y)
+static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y)
 {
     const uint8_t colour = BoundBoxDebugColours[ps->sprite_type];
     const uint8_t rotation = get_current_rotation();
@@ -612,7 +611,7 @@ static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo* dpi, paint_str
     gfx_draw_line(dpi, { screenCoordBackTop, screenCoordLeftTop }, colour);
     gfx_draw_line(dpi, { screenCoordBackTop, screenCoordRightTop }, colour);
 
-    paint_ps_image(dpi, ps, imageId, x, y);
+    PaintPSImage(dpi, ps, imageId, x, y);
 
     // vertical front
     gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordFrontBottom }, colour);
@@ -622,7 +621,7 @@ static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo* dpi, paint_str
     gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
 }
 
-static void paint_ps_image(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y)
+static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y)
 {
     if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
     {
@@ -632,7 +631,7 @@ static void paint_ps_image(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t im
     gfx_draw_sprite(dpi, imageId, { x, y }, ps->tertiary_colour);
 }
 
-static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags)
+static uint32_t PaintPSColourifyImage(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags)
 {
     constexpr uint32_t primaryColour = COLOUR_BRIGHT_YELLOW;
     constexpr uint32_t secondaryColour = COLOUR_GREY;
@@ -681,12 +680,12 @@ static uint32_t paint_ps_colourify_image(uint32_t imageId, uint8_t spriteType, u
     return imageId;
 }
 
-paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
+paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
     return GetContext()->GetPainter()->CreateSession(dpi, viewFlags);
 }
 
-void paint_session_free([[maybe_unused]] paint_session* session)
+void PaintSessionFree([[maybe_unused]] paint_session* session)
 {
     GetContext()->GetPainter()->ReleaseSession(session);
 }
@@ -711,7 +710,7 @@ paint_struct* sub_98196C(
     assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
 
     session->LastRootPS = nullptr;
-    session->UnkF1AD2C = nullptr;
+    session->LastAttachedPS = nullptr;
 
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
     {
@@ -830,7 +829,7 @@ paint_struct* sub_98196C(
             positionHash = coord_3d.x - coord_3d.y + 0x2000;
             break;
     }
-    paint_session_add_ps_to_quadrant(session, ps, positionHash);
+    PaintSessionAddPSToQuadrant(session, ps, positionHash);
 
     session->NextFreePaintStruct++;
 
@@ -859,7 +858,7 @@ paint_struct* sub_98197C(
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     session->LastRootPS = nullptr;
-    session->UnkF1AD2C = nullptr;
+    session->LastAttachedPS = nullptr;
 
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
     CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
@@ -889,7 +888,7 @@ paint_struct* sub_98197C(
     }
 
     int32_t positionHash = attach.x + attach.y;
-    paint_session_add_ps_to_quadrant(session, ps, positionHash);
+    PaintSessionAddPSToQuadrant(session, ps, positionHash);
 
     session->NextFreePaintStruct++;
     return ps;
@@ -920,7 +919,7 @@ paint_struct* sub_98198C(
     assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
 
     session->LastRootPS = nullptr;
-    session->UnkF1AD2C = nullptr;
+    session->LastAttachedPS = nullptr;
 
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
     CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
@@ -999,11 +998,11 @@ paint_struct* sub_98199C(
  * @param y (cx)
  * @return (!CF) success
  */
-bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
+bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
 {
-    if (session->UnkF1AD2C == nullptr)
+    if (session->LastAttachedPS == nullptr)
     {
-        return paint_attach_to_previous_ps(session, image_id, x, y);
+        return PaintAttachToPreviousPS(session, image_id, x, y);
     }
 
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
@@ -1016,12 +1015,12 @@ bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, 
     ps->y = y;
     ps->flags = 0;
 
-    attached_paint_struct* ebx = session->UnkF1AD2C;
+    attached_paint_struct* previousAttachedPS = session->LastAttachedPS;
 
     ps->next = nullptr;
-    ebx->next = ps;
+    previousAttachedPS->next = ps;
 
-    session->UnkF1AD2C = ps;
+    session->LastAttachedPS = ps;
 
     session->NextFreePaintStruct++;
 
@@ -1036,7 +1035,7 @@ bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, 
  * @param y (cx)
  * @return (!CF) success
  */
-bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
+bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
     {
@@ -1062,7 +1061,7 @@ bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, int1
 
     ps->next = oldFirstAttached;
 
-    session->UnkF1AD2C = ps;
+    session->LastAttachedPS = ps;
 
     return true;
 }
@@ -1077,7 +1076,7 @@ bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, int1
  * @param y_offsets (di)
  * @param rotation (ebp)
  */
-void paint_floating_money_effect(
+void PaintFloatingMoneyEffect(
     paint_session* session, money32 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x,
     uint32_t rotation)
 {
@@ -1122,7 +1121,7 @@ void paint_floating_money_effect(
  *
  *  rct2: 0x006860C3
  */
-void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
+void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
 {
     do
     {

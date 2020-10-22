@@ -305,11 +305,11 @@ void lightfx_prepare_light_list()
                     dpi.zoom_level = _current_view_zoom_front;
                     dpi.width = 1;
 
-                    paint_session* session = paint_session_alloc(&dpi, w->viewport->flags);
-                    paint_session_generate(session);
-                    paint_session_arrange(session);
+                    paint_session* session = PaintSessionAlloc(&dpi, w->viewport->flags);
+                    PaintSessionGenerate(session);
+                    PaintSessionArrange(session);
                     auto info = set_interaction_info_from_paint_session(session, VIEWPORT_INTERACTION_MASK_NONE);
-                    paint_session_free(session);
+                    PaintSessionFree(session);
 
                     //  log_warning("[%i, %i]", dpi->x, dpi->y);
 

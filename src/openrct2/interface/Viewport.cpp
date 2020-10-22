@@ -857,12 +857,12 @@ static void record_session(const paint_session* session, std::vector<paint_sessi
 
 static void viewport_fill_column(paint_session* session, std::vector<paint_session>* recorded_sessions, size_t record_index)
 {
-    paint_session_generate(session);
+    PaintSessionGenerate(session);
     if (recorded_sessions != nullptr)
     {
         record_session(session, recorded_sessions, record_index);
     }
-    paint_session_arrange(session);
+    PaintSessionArrange(session);
 }
 
 static void viewport_paint_column(paint_session* session)
@@ -880,7 +880,7 @@ static void viewport_paint_column(paint_session* session)
         gfx_clear(&session->DPI, colour);
     }
 
-    paint_draw_structs(session);
+    PaintDrawStructs(session);
 
     if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
         && !(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
@@ -890,10 +890,10 @@ static void viewport_paint_column(paint_session* session)
 
     if (session->PSStringHead != nullptr)
     {
-        paint_draw_money_structs(&session->DPI, session->PSStringHead);
+        PaintDrawMoneyStructs(&session->DPI, session->PSStringHead);
     }
 
-    paint_session_free(session);
+    PaintSessionFree(session);
 }
 
 /**
@@ -970,7 +970,7 @@ void viewport_paint(
     // Splits the area into 32 pixel columns and renders them
     for (x = alignedX; x < rightBorder; x += 32, index++)
     {
-        paint_session* session = paint_session_alloc(&dpi1, viewFlags);
+        paint_session* session = PaintSessionAlloc(&dpi1, viewFlags);
         columns.push_back(session);
 
         rct_drawpixelinfo& dpi2 = session->DPI;
@@ -1676,11 +1676,11 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
         dpi.zoom_level = myviewport->zoom;
         dpi.width = 1;
 
-        paint_session* session = paint_session_alloc(&dpi, myviewport->flags);
-        paint_session_generate(session);
-        paint_session_arrange(session);
+        paint_session* session = PaintSessionAlloc(&dpi, myviewport->flags);
+        PaintSessionGenerate(session);
+        PaintSessionArrange(session);
         info = set_interaction_info_from_paint_session(session, flags & 0xFFFF);
-        paint_session_free(session);
+        PaintSessionFree(session);
     }
     return info;
 }

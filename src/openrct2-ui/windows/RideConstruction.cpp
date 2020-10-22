@@ -2389,7 +2389,7 @@ static void sub_6CBCE2(
     rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
     const CoordsXY& originCoords, int32_t originZ)
 {
-    paint_session* session = paint_session_alloc(dpi, 0);
+    paint_session* session = PaintSessionAlloc(dpi, 0);
     trackDirection &= 3;
 
     auto ride = get_ride(rideIndex);
@@ -2469,9 +2469,9 @@ static void sub_6CBCE2(
     gMapSize = preserveMapSize;
     gMapSizeMaxXY = preserveMapSizeMaxXY;
 
-    paint_session_arrange(session);
-    paint_draw_structs(session);
-    paint_session_free(session);
+    PaintSessionArrange(session);
+    PaintDrawStructs(session);
+    PaintSessionFree(session);
 }
 
 /**
