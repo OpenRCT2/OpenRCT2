@@ -443,7 +443,6 @@ static uint8_t _currentlyShowingBrakeOrBoosterSpeed;
 static bool _boosterTrackSelected;
 
 static uint32_t _currentDisabledSpecialTrackPieces;
-static uint32_t _rideConstructionNextArrowPulse = 0;
 
 static void window_ride_construction_construct(rct_window* w);
 static void window_ride_construction_mouseup_demolish(rct_window* w);
@@ -583,6 +582,7 @@ static void window_ride_construction_close(rct_window* w)
 
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     // In order to cancel the yellow arrow correctly the
     // selection tool should be cancelled. Don't do a tool cancel if
@@ -1711,6 +1711,8 @@ static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, c
             _currentTrackPieceType = next_track.element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
+            _rideConstructionNextArrowPulse = 0;
+            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             ride_select_next_section();
         }
         else
@@ -1754,6 +1756,8 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
             _currentTrackPieceType = trackBeginEnd.begin_element->AsTrack()->GetTrackType();
             _currentTrackSelectionFlags = 0;
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;
+            _rideConstructionNextArrowPulse = 0;
+            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
             ride_select_previous_section();
         }
         else

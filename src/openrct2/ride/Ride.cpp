@@ -101,6 +101,7 @@ CoordsXYZ _currentTrackBegin;
 uint8_t _currentTrackPieceDirection;
 track_type_t _currentTrackPieceType;
 uint8_t _currentTrackSelectionFlags;
+uint32_t _rideConstructionNextArrowPulse = 0;
 uint8_t _currentTrackSlopeEnd;
 uint8_t _currentTrackBankEnd;
 uint8_t _currentTrackLiftHill;
@@ -1633,6 +1634,8 @@ void ride_select_next_section()
     }
     else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
+        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+
         if (ride_select_forwards_from_back())
         {
             window_ride_construction_update_active_elements();
@@ -1694,6 +1697,8 @@ void ride_select_previous_section()
     }
     else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT)
     {
+        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+
         if (ride_select_backwards_from_front())
         {
             window_ride_construction_update_active_elements();
@@ -1796,6 +1801,8 @@ static bool ride_modify_maze(const CoordsXYE& tileElement)
             _currentTrackBegin.y = tileElement.y;
             _currentTrackBegin.z = trackElement->GetBaseZ();
             _currentTrackSelectionFlags = 0;
+            _rideConstructionNextArrowPulse = 0;
+            gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
             auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
             context_broadcast_intent(&intent);
@@ -1876,6 +1883,8 @@ bool ride_modify(CoordsXYE* input)
     _currentTrackPieceDirection = direction;
     _currentTrackPieceType = type;
     _currentTrackSelectionFlags = 0;
+    _rideConstructionNextArrowPulse = 0;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
     {
