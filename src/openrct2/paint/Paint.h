@@ -169,6 +169,43 @@ struct paint_session
     uint8_t Unk141E9DB;
     uint16_t WaterHeight;
     uint32_t TrackColours[4];
+
+    constexpr bool NoPaintStructsAvailable() noexcept
+    {
+        return NextFreePaintStruct >= EndOfPaintStructArray;
+    }
+
+    constexpr paint_struct* AllocateRootPaintEntry(paint_struct&& entry) noexcept
+    {
+        NextFreePaintStruct->basic = entry;
+        LastRootPS = &NextFreePaintStruct->basic;
+        NextFreePaintStruct++;
+        return LastRootPS;
+    }
+
+    constexpr attached_paint_struct* AllocateAttachedPaintEntry(attached_paint_struct&& entry) noexcept
+    {
+        NextFreePaintStruct->attached = entry;
+        LastAttachedPS = &NextFreePaintStruct->attached;
+        NextFreePaintStruct++;
+        return LastAttachedPS;
+    }
+
+    constexpr paint_string_struct* AllocatePaintString(paint_string_struct&& entry) noexcept
+    {
+        NextFreePaintStruct->string = entry;
+        if (LastPSString == nullptr)
+        {
+            PSStringHead = &NextFreePaintStruct->string;
+        }
+        else
+        {
+            LastPSString->next = &NextFreePaintStruct->string;
+        }
+        LastPSString = &NextFreePaintStruct->string;
+        NextFreePaintStruct++;
+        return LastPSString;
+    }
 };
 
 extern paint_session gPaintSession;
