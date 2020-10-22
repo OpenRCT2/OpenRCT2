@@ -55,8 +55,28 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
 static uint32_t PaintPSColourifyImage(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags);
 
-static void PaintSessionAddPSToQuadrant(paint_session* session, paint_struct* ps, int32_t positionHash)
+static constexpr int32_t CalculatePositionHash(const paint_struct& ps, uint8_t rotation)
 {
+    auto pos = CoordsXY{ static_cast<int16_t>(ps.bounds.x), static_cast<int16_t>(ps.bounds.y) }.Rotate(rotation);
+    switch (rotation)
+    {
+        case 0:
+            break;
+        case 1:
+        case 3:
+            pos.x += 0x2000;
+            break;
+        case 2:
+            pos.x += 0x4000;
+            break;
+    }
+
+    return pos.x + pos.y;
+}
+
+static void PaintSessionAddPSToQuadrant(paint_session* session, paint_struct* ps)
+{
+    auto positionHash = CalculatePositionHash(*ps, session->CurrentRotation);
     uint32_t paintQuadrantIndex = std::clamp(positionHash / 32, 0, MAX_PAINT_QUADRANTS - 1);
     ps->quadrant_index = paintQuadrantIndex;
     ps->next_quadrant_ps = session->Quadrants[paintQuadrantIndex];
@@ -812,24 +832,7 @@ paint_struct* sub_98196C(
     ps.tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session->CurrentlyDrawnItem));
 
     auto* psPtr = session->AllocateRootPaintEntry(std::move(ps));
-
-    int32_t positionHash = 0;
-    switch (session->CurrentRotation)
-    {
-        case 0:
-            positionHash = coord_3d.y + coord_3d.x;
-            break;
-        case 1:
-            positionHash = coord_3d.y - coord_3d.x + 0x2000;
-            break;
-        case 2:
-            positionHash = -(coord_3d.y + coord_3d.x) + 0x4000;
-            break;
-        case 3:
-            positionHash = coord_3d.x - coord_3d.y + 0x2000;
-            break;
-    }
-    PaintSessionAddPSToQuadrant(session, psPtr, positionHash);
+    PaintSessionAddPSToQuadrant(session, psPtr);
 
     return psPtr;
 }
@@ -869,24 +872,8 @@ paint_struct* sub_98197C(
     }
 
     auto* ps = session->AllocateRootPaintEntry(std::move(*newPS));
+    PaintSessionAddPSToQuadrant(session, ps);
 
-    auto attach = CoordsXY{ static_cast<int16_t>(ps->bounds.x), static_cast<int16_t>(ps->bounds.y) }.Rotate(
-        session->CurrentRotation);
-    switch (session->CurrentRotation)
-    {
-        case 0:
-            break;
-        case 1:
-        case 3:
-            attach.x += 0x2000;
-            break;
-        case 2:
-            attach.x += 0x4000;
-            break;
-    }
-
-    int32_t positionHash = attach.x + attach.y;
-    PaintSessionAddPSToQuadrant(session, ps, positionHash);
     return ps;
 }
 
