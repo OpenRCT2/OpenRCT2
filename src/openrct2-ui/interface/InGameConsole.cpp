@@ -290,11 +290,12 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     Invalidate();
 
     // Give console area a translucent effect.
-    gfx_filter_rect(dpi, { { _consoleLeft, _consoleTop }, { _consoleRight, _consoleBottom } }, PALETTE_51);
+    gfx_filter_rect(dpi, { { _consoleLeft, _consoleTop }, { _consoleRight, _consoleBottom } }, FilterPaletteID::Palette51);
 
     // Make input area more opaque.
     gfx_filter_rect(
-        dpi, { { _consoleLeft, _consoleBottom - lineHeight - 10 }, { _consoleRight, _consoleBottom - 1 } }, PALETTE_51);
+        dpi, { { _consoleLeft, _consoleBottom - lineHeight - 10 }, { _consoleRight, _consoleBottom - 1 } },
+        FilterPaletteID::Palette51);
 
     // Paint background colour.
     uint8_t backgroundColour = ThemeGetColour(WC_CONSOLE, 0);

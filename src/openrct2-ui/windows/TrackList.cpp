@@ -709,7 +709,8 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
         {
             // Highlight
             gfx_filter_rect(
-                dpi, screenCoords.x, screenCoords.y, w->width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
+                dpi, screenCoords.x, screenCoords.y, w->width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
+                FilterPaletteID::PaletteDarken1);
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
         }
         else
@@ -733,7 +734,7 @@ static void window_track_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                 // Highlight
                 gfx_filter_rect(
                     dpi, screenCoords.x, screenCoords.y, w->width, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1,
-                    PALETTE_DARKEN_1);
+                    FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
             else

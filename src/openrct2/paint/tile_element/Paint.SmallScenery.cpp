@@ -12,6 +12,7 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Date.h"
 #include "../../ride/TrackDesign.h"
+#include "../../util/Util.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/SmallScenery.h"
@@ -49,7 +50,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     {
         if (!track_design_save_contains_tile_element(tileElement))
         {
-            baseImageid = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
+            baseImageid = SPRITE_ID_PALETTE_COLOUR_1(static_cast<int>(FilterPaletteID::Palette46));
         }
     }
     if (tileElement->IsGhost())
@@ -165,8 +166,8 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         {
             // Draw translucent overlay:
             // TODO: Name palette entries
-            int32_t image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[sceneryElement->GetPrimaryColour()] << 19)
-                + 0x40000004;
+            int32_t image_id = (baseImageid & 0x7FFFF)
+                + (static_cast<int>(GlassPaletteIds[sceneryElement->GetPrimaryColour()]) << 19) + 0x40000004;
             PaintAddImageAsChild(
                 session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                 boxoffset.y, boxoffset.z);

@@ -103,7 +103,7 @@ public:
 
     void Clear(uint8_t paletteIndex) override;
     void FillRect(uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
-    void FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
+    void FilterRect(FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
     void DrawLine(uint32_t colour, int32_t x1, int32_t y1, int32_t x2, int32_t y2) override;
     void DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) override;
     void DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) override;
@@ -582,7 +582,7 @@ void OpenGLDrawingContext::FillRect(uint32_t colour, int32_t left, int32_t top, 
     }
 }
 
-void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void OpenGLDrawingContext::FilterRect(FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     left += _offsetX;
     top += _offsetY;
@@ -709,8 +709,8 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
     bool special = false;
     if (image & IMAGE_TYPE_REMAP_2_PLUS)
     {
-        palettes.x = TextureCache::PaletteToY((image >> 19) & 0x1F);
-        palettes.y = TextureCache::PaletteToY((image >> 24) & 0x1F);
+        palettes.x = TextureCache::PaletteToY(static_cast<FilterPaletteID>((image >> 19) & 0x1F));
+        palettes.y = TextureCache::PaletteToY(static_cast<FilterPaletteID>((image >> 24) & 0x1F));
         if (image & IMAGE_TYPE_REMAP)
         {
             paletteCount = 2;
@@ -718,15 +718,15 @@ void OpenGLDrawingContext::DrawSprite(uint32_t image, int32_t x, int32_t y, uint
         else
         {
             paletteCount = 3;
-            palettes.z = TextureCache::PaletteToY(tertiaryColour & 0xFF);
+            palettes.z = TextureCache::PaletteToY(static_cast<FilterPaletteID>(tertiaryColour & 0xFF));
         }
     }
     else if ((image & IMAGE_TYPE_REMAP) || (image & IMAGE_TYPE_TRANSPARENT))
     {
         paletteCount = 1;
-        uint32_t palette = (image >> 19) & 0xFF;
+        FilterPaletteID palette = static_cast<FilterPaletteID>((image >> 19) & 0xFF);
         palettes.x = TextureCache::PaletteToY(palette);
-        if (palette == PALETTE_WATER)
+        if (palette == FilterPaletteID::PaletteWater)
         {
             special = true;
         }

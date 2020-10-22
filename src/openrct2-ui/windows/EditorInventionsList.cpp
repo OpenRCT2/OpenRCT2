@@ -609,7 +609,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
                 bottom = itemY;
             }
 
-            gfx_filter_rect(dpi, 0, top, boxWidth, bottom, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, top, boxWidth, bottom, FilterPaletteID::PaletteDarken1);
         }
 
         if (researchItem.Equals(&_editorInventionsListDraggedItem))

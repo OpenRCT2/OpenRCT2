@@ -233,6 +233,6 @@ static void window_title_menu_invalidate(rct_window* w)
 
 static void window_title_menu_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    gfx_filter_rect(dpi, _filterRect, PALETTE_51);
+    gfx_filter_rect(dpi, _filterRect, FilterPaletteID::Palette51);
     WindowDrawWidgets(w, dpi);
 }

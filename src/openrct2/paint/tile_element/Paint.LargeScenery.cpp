@@ -242,7 +242,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     {
         if (!track_design_save_contains_tile_element(tileElement))
         {
-            sequenceNum = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
+            sequenceNum = SPRITE_ID_PALETTE_COLOUR_1(static_cast<int>(FilterPaletteID::Palette46));
             image_id &= 0x7FFFF;
             dword_F4387C = sequenceNum;
             image_id |= dword_F4387C;

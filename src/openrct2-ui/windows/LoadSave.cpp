@@ -756,7 +756,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (i == w->selected_list_item)
         {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT, FilterPaletteID::PaletteDarken1);
         }
         // display a marker next to the currently loaded game file
         if (_listItems[i].loaded)

@@ -183,7 +183,7 @@ void TextureCache::GeneratePaletteTexture()
 
     for (int i = 0; i < PALETTE_TO_G1_OFFSET_COUNT; ++i)
     {
-        GLint y = PaletteToY(i);
+        GLint y = PaletteToY(static_cast<FilterPaletteID>(i));
 
         auto g1Index = GetPaletteG1Index(i);
         if (g1Index)
@@ -369,9 +369,9 @@ GLuint TextureCache::GetPaletteTexture()
     return _paletteTexture;
 }
 
-GLint TextureCache::PaletteToY(uint32_t palette)
+GLint TextureCache::PaletteToY(FilterPaletteID palette)
 {
-    return palette > PALETTE_WATER ? palette + 5 : palette + 1;
+    return palette > FilterPaletteID::PaletteWater ? static_cast<int>(palette) + 5 : static_cast<int>(palette) + 1;
 }
 
 #endif /* DISABLE_OPENGL */

@@ -334,7 +334,7 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 t = w->windowPos.y + 2 + (cell_y * _dropdown_item_height);
                 r = l + _dropdown_item_width - 1;
                 b = t + _dropdown_item_height - 1;
-                gfx_filter_rect(dpi, l, t, r, b, PALETTE_DARKEN_3);
+                gfx_filter_rect(dpi, l, t, r, b, FilterPaletteID::PaletteDarken3);
             }
 
             item = gDropdownItemsFormat[i];
