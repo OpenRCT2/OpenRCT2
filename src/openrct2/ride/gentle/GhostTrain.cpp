@@ -134,7 +134,7 @@ static void paint_ghost_train_track_flat(
 {
     uint32_t imageId = ghost_train_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 
@@ -154,10 +154,10 @@ static void paint_ghost_train_track_25_deg_up(
     const TileElement* tileElement)
 {
     uint32_t imageId = ghost_train_track_pieces_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     imageId = ghost_train_track_pieces_25_deg_up[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 23, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 23, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -191,10 +191,10 @@ static void paint_ghost_train_track_flat_to_25_deg_up(
     const TileElement* tileElement)
 {
     uint32_t imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -227,10 +227,10 @@ static void paint_ghost_train_track_25_deg_up_to_flat_shared(
     const TileElement* tileElement)
 {
     uint32_t imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -322,10 +322,10 @@ static void paint_ghost_train_station(
     };
 
     imageId = imageIds[direction] | session->TrackColours[SCHEME_MISC];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 28, 3, height - 2, 0, 2, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 28, 3, height - 2, 0, 2, height);
 
     imageId = ghost_train_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
-    sub_98199C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 0, height);
+    PaintAddImageAsChildRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 0, height);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -423,7 +423,7 @@ static void paint_ghost_train_track_spinning_tunnel(
 {
     uint32_t imageId = ghost_train_track_pieces_spinning_tunnel_track[direction] | session->TrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 28, 20, 3, height, 2, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 28, 20, 3, height, 2, 6, height);
 
     track_paint_util_spinning_tunnel_paint(session, 3, height, direction);
 
@@ -442,7 +442,7 @@ static void paint_ghost_train_track_brakes(
 {
     uint32_t imageId = ghost_train_track_pieces_brakes[direction] | session->TrackColours[SCHEME_TRACK];
 
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 

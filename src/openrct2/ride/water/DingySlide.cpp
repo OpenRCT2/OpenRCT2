@@ -370,10 +370,10 @@ static void dinghy_slide_track_flat(
 
     uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[isChained][direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -398,7 +398,7 @@ static void dinghy_slide_track_station(
         { SPR_DINGHY_SLIDE_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
     };
 
-    sub_98197C_rotated(
+    PaintAddImageAsParentRotated(
         session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
         height + 3);
     sub_98196C_rotated(
@@ -438,10 +438,10 @@ static void dinghy_slide_track_25_deg_up(
 
     uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[isChained][direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 50, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 50, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -474,10 +474,10 @@ static void dinghy_slide_track_60_deg_up(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -519,10 +519,10 @@ static void dinghy_slide_track_flat_to_25_deg_up(
 
     uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[isChained][direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 42, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 42, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -555,10 +555,10 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -591,10 +591,10 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -636,10 +636,10 @@ static void dinghy_slide_track_25_deg_up_to_flat(
 
     uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[isChained][direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[isChained][direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 34, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 34, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -868,16 +868,16 @@ static void dinghy_slide_track_s_bend_left(
     switch (trackSequence)
     {
         case 0:
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
             if (direction == 0 || direction == 1)
             {
                 metal_a_supports_paint_setup(
@@ -892,8 +892,8 @@ static void dinghy_slide_track_s_bend_left(
             break;
         case 2:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
             if (direction == 2 || direction == 3)
             {
                 metal_a_supports_paint_setup(
@@ -907,8 +907,8 @@ static void dinghy_slide_track_s_bend_left(
                 0xFFFF, 0);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -963,16 +963,16 @@ static void dinghy_slide_track_s_bend_right(
     switch (trackSequence)
     {
         case 0:
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
             if (direction == 0 || direction == 1)
             {
                 metal_a_supports_paint_setup(
@@ -986,8 +986,8 @@ static void dinghy_slide_track_s_bend_right(
             break;
         case 2:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
             if (direction == 2 || direction == 3)
             {
                 metal_a_supports_paint_setup(
@@ -1000,8 +1000,8 @@ static void dinghy_slide_track_s_bend_right(
                 0xFFFF, 0);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -1127,10 +1127,10 @@ static void dinghy_slide_track_flat_covered(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -1156,10 +1156,10 @@ static void dinghy_slide_track_25_deg_up_covered(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 50, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 50, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -1192,10 +1192,10 @@ static void dinghy_slide_track_60_deg_up_covered(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -1228,10 +1228,10 @@ static void dinghy_slide_track_flat_to_25_deg_up_covered(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 42, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 42, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -1264,10 +1264,10 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up_covered(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -1300,10 +1300,10 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up_covered(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -1336,10 +1336,10 @@ static void dinghy_slide_track_25_deg_up_to_flat_covered(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
     imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 34, height, 0, 27, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 34, height, 0, 27, height);
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -1563,16 +1563,16 @@ static void dinghy_slide_track_s_bend_left_covered(
     switch (trackSequence)
     {
         case 0:
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
             if (direction == 0 || direction == 1)
             {
                 metal_a_supports_paint_setup(
@@ -1587,8 +1587,8 @@ static void dinghy_slide_track_s_bend_left_covered(
             break;
         case 2:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
             if (direction == 2 || direction == 3)
             {
                 metal_a_supports_paint_setup(
@@ -1602,8 +1602,8 @@ static void dinghy_slide_track_s_bend_left_covered(
                 0xFFFF, 0);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -1658,16 +1658,16 @@ static void dinghy_slide_track_s_bend_right_covered(
     switch (trackSequence)
     {
         case 0:
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
             break;
         case 1:
             bboy = (direction == 2 || direction == 3) ? 0 : 6;
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
             if (direction == 0 || direction == 1)
             {
                 metal_a_supports_paint_setup(
@@ -1681,8 +1681,8 @@ static void dinghy_slide_track_s_bend_right_covered(
             break;
         case 2:
             bboy = (direction == 0 || direction == 1) ? 0 : 6;
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
             if (direction == 2 || direction == 3)
             {
                 metal_a_supports_paint_setup(
@@ -1695,8 +1695,8 @@ static void dinghy_slide_track_s_bend_right_covered(
                 0xFFFF, 0);
             break;
         case 3:
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
-            sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+            PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);

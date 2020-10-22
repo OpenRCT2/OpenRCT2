@@ -189,7 +189,7 @@ static void air_powered_vertical_rc_track_flat(
     };
 
     uint32_t imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
@@ -210,10 +210,10 @@ static void air_powered_vertical_rc_track_station(
         { SPR_AIR_POWERED_VERTICAL_RC_STATION_NW_SE, SPR_STATION_BASE_B_NW_SE },
     };
 
-    sub_98197C_rotated(
+    PaintAddImageAsParentRotated(
         session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height - 2, 0, 2,
         height);
-    sub_98199C_rotated(
+    PaintAddImageAsChildRotated(
         session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
         height);
 
@@ -334,12 +334,12 @@ static void air_powered_vertical_rc_track_flat_to_left_bank(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     if (direction == 0 || direction == 1)
     {
         imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
     }
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -363,12 +363,12 @@ static void air_powered_vertical_rc_track_flat_to_right_bank(
     };
 
     uint32_t imageId = imageIds[direction][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
 
     if (direction == 2 || direction == 3)
     {
         imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
     }
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -517,11 +517,11 @@ static void air_powered_vertical_rc_track_left_bank(
     uint32_t imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 1)
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
     }
     else
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     }
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -551,7 +551,7 @@ static void air_powered_vertical_rc_track_brakes(
     };
 
     uint32_t imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
@@ -662,8 +662,8 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
     {
         case 0:
             bbHeight = bbHeights12[trackSequence];
-            sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
-            sub_98199C_rotated(session, direction, trackImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
+            PaintAddImageAsParentRotated(session, direction, supportsImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
+            PaintAddImageAsChildRotated(session, direction, trackImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
 
             wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
@@ -679,14 +679,14 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
             {
                 bbHeight = bbHeights03[trackSequence];
 
-                sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-                sub_98199C_rotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+                PaintAddImageAsParentRotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+                PaintAddImageAsChildRotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
             }
             else
             {
                 bbHeight = bbHeights12[trackSequence];
-                sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-                sub_98199C_rotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+                PaintAddImageAsParentRotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+                PaintAddImageAsChildRotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
             }
 
             wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -703,14 +703,14 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
             if (isDirection03)
             {
                 bbHeight = bbHeights03[trackSequence];
-                sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-                sub_98199C_rotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+                PaintAddImageAsParentRotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+                PaintAddImageAsChildRotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
             }
             else
             {
                 bbHeight = bbHeights12[trackSequence];
-                sub_98197C_rotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
-                sub_98199C_rotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+                PaintAddImageAsParentRotated(session, direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
+                PaintAddImageAsChildRotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
             }
 
             wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -731,11 +731,11 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
                     floorImageId = SPR_FLOOR_PLANKS | session->TrackColours[SCHEME_SUPPORTS];
                 }
                 PaintAddImageAsParent(session, floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
-                sub_98199C_rotated(session, direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
+                PaintAddImageAsChildRotated(session, direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
             }
             else
             {
-                sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
+                PaintAddImageAsParentRotated(session, direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
             }
             paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
             paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
@@ -743,13 +743,13 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
         case 6:
             if (isDirection03)
             {
-                sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
-                sub_98199C_rotated(session, direction, trackImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
+                PaintAddImageAsParentRotated(session, direction, supportsImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
+                PaintAddImageAsChildRotated(session, direction, trackImageId, 0, 0, 5, 20, 79, height, 0, 6, height + 128);
             }
             else
             {
-                sub_98197C_rotated(session, direction, trackImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
-                sub_98199C_rotated(session, direction, supportsImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
+                PaintAddImageAsParentRotated(session, direction, trackImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
+                PaintAddImageAsChildRotated(session, direction, supportsImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
             }
             wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
@@ -777,17 +777,17 @@ static void air_powered_vertical_rc_track_vertical_up(
     {
         case 0:
             imageId = imageIds[direction][0] | air_powered_vertical_rc_get_support_colour(session);
-            sub_98197C_rotated(session, direction, imageId, 0, 0, 26, 26, 79, height, 3, 3, height);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 26, 26, 79, height, 3, 3, height);
             break;
         case 1:
             imageId = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
             if (direction == 0 || direction == 3)
             {
-                sub_98197C_rotated(session, direction, imageId, 0, 0, 2, 20, 79, height, 0, 6, height);
+                PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 2, 20, 79, height, 0, 6, height);
             }
             else
             {
-                sub_98197C_rotated(session, direction, imageId, 0, 0, 2, 20, 79, height, 30, 6, height);
+                PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 2, 20, 79, height, 30, 6, height);
             }
 
             paint_util_set_vertical_tunnel(session, height + 80);
@@ -828,24 +828,24 @@ static void air_powered_vertical_rc_track_vertical_top(
             imageIdT = imageIds[direction][1] | session->TrackColours[SCHEME_TRACK];
             if (direction == 0)
             {
-                sub_98197C_rotated(session, direction, imageIdS, 0, 0, 32, 20, 15, height, 0, 6, height);
-                sub_98199C_rotated(session, direction, imageIdT, 0, 0, 31, 20, 15, height, 1, 6, height);
+                PaintAddImageAsParentRotated(session, direction, imageIdS, 0, 0, 32, 20, 15, height, 0, 6, height);
+                PaintAddImageAsChildRotated(session, direction, imageIdT, 0, 0, 31, 20, 15, height, 1, 6, height);
             }
             else
             {
-                sub_98197C_rotated(session, direction, imageIdS, 0, 0, 5, 20, 1, height, 24, 6, height);
-                sub_98199C_rotated(session, direction, imageIdT, 0, 0, 5, 20, 1, height, 24, 6, height);
+                PaintAddImageAsParentRotated(session, direction, imageIdS, 0, 0, 5, 20, 1, height, 24, 6, height);
+                PaintAddImageAsChildRotated(session, direction, imageIdT, 0, 0, 5, 20, 1, height, 24, 6, height);
             }
             break;
         case 1:
             imageIdT = imageIds[direction][2] | session->TrackColours[SCHEME_TRACK];
             if (direction == 0)
             {
-                sub_98197C_rotated(session, direction, imageIdT, 0, 0, 2, 20, 15, height, 0, 6, height);
+                PaintAddImageAsParentRotated(session, direction, imageIdT, 0, 0, 2, 20, 15, height, 0, 6, height);
             }
             else
             {
-                sub_98197C_rotated(session, direction, imageIdT, 0, 0, 2, 20, 1, height, 33, 6, height);
+                PaintAddImageAsParentRotated(session, direction, imageIdT, 0, 0, 2, 20, 1, height, 33, 6, height);
             }
             paint_util_set_vertical_tunnel(session, height + 80);
             break;
@@ -853,11 +853,11 @@ static void air_powered_vertical_rc_track_vertical_top(
             imageIdT = imageIds[direction][3] | session->TrackColours[SCHEME_TRACK];
             if (direction == 0)
             {
-                sub_98197C_rotated(session, direction, imageIdT, 0, 0, 2, 20, 1, height, 33, 6, height);
+                PaintAddImageAsParentRotated(session, direction, imageIdT, 0, 0, 2, 20, 1, height, 33, 6, height);
             }
             else
             {
-                sub_98197C_rotated(session, direction, imageIdT, 0, 0, 2, 20, 15, height, 0, 6, height);
+                PaintAddImageAsParentRotated(session, direction, imageIdT, 0, 0, 2, 20, 15, height, 0, 6, height);
             }
             paint_util_set_vertical_tunnel(session, height + 80);
             break;
@@ -866,13 +866,13 @@ static void air_powered_vertical_rc_track_vertical_top(
             imageIdT = imageIds[direction][5] | session->TrackColours[SCHEME_TRACK];
             if (direction == 0)
             {
-                sub_98197C_rotated(session, direction, imageIdS, 0, 0, 5, 20, 1, height, 24, 6, height);
-                sub_98199C_rotated(session, direction, imageIdT, 0, 0, 5, 20, 1, height, 24, 6, height);
+                PaintAddImageAsParentRotated(session, direction, imageIdS, 0, 0, 5, 20, 1, height, 24, 6, height);
+                PaintAddImageAsChildRotated(session, direction, imageIdT, 0, 0, 5, 20, 1, height, 24, 6, height);
             }
             else
             {
-                sub_98197C_rotated(session, direction, imageIdS, 0, 0, 32, 20, 15, height, 0, 6, height);
-                sub_98199C_rotated(session, direction, imageIdT, 0, 0, 32, 20, 15, height, 0, 6, height);
+                PaintAddImageAsParentRotated(session, direction, imageIdS, 0, 0, 32, 20, 15, height, 0, 6, height);
+                PaintAddImageAsChildRotated(session, direction, imageIdT, 0, 0, 32, 20, 15, height, 0, 6, height);
             }
             break;
     }

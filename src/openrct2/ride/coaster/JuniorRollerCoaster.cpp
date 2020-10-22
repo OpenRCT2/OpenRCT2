@@ -5684,7 +5684,7 @@ static void junior_rc_track_on_ride_photo(
                 session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK, 8, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
-            sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
             break;
         case 1:
             sub_98196C_rotated(
@@ -5693,7 +5693,7 @@ static void junior_rc_track_on_ride_photo(
                 session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK_ALT, 7, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
-            sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
             break;
         case 2:
             sub_98196C_rotated(
@@ -5702,7 +5702,7 @@ static void junior_rc_track_on_ride_photo(
                 session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK, 8, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
-            sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
             break;
         case 3:
             sub_98196C_rotated(
@@ -5711,7 +5711,7 @@ static void junior_rc_track_on_ride_photo(
                 session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK_ALT, 7, 6, height + photoCameraOffset, session->TrackColours[SCHEME_SUPPORTS]);
-            sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
             break;
     }
     track_paint_util_onride_photo_paint(session, direction, height + 3 + photoCameraOffset, tileElement);

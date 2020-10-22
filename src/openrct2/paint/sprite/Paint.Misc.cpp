@@ -142,7 +142,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
 
             auto bb = isAntiClockwise ? antiClockWiseBoundingBoxes : clockWiseBoundingBoxes;
 
-            sub_98197C_rotated(session, ebx, imageId, 0, 0, 32, 1, 3, height, bb[ebx & 1].x, bb[ebx & 1].y, height);
+            PaintAddImageAsParentRotated(session, ebx, imageId, 0, 0, 32, 1, 3, height, bb[ebx & 1].x, bb[ebx & 1].y, height);
             break;
         }
 

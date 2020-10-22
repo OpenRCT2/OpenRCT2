@@ -55,13 +55,13 @@ static void reverser_rc_track_flat(
         {
             case 0:
             case 2:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21520, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 1:
             case 3:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21521, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
@@ -73,13 +73,13 @@ static void reverser_rc_track_flat(
         {
             case 0:
             case 2:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21504, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 1:
             case 3:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21505, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
@@ -101,9 +101,9 @@ static void reverser_rc_track_station(
         { 21507, SPR_STATION_BASE_A_NW_SE },
     };
 
-    sub_98197C_rotated(
+    PaintAddImageAsParentRotated(
         session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 27, 2, height, 0, 2, height);
-    sub_98199C_rotated(
+    PaintAddImageAsChildRotated(
         session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 27, 2, height, 0, 2,
         height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
@@ -123,22 +123,22 @@ static void reverser_rc_track_25_deg_up(
         switch (direction)
         {
             case 0:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21530, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 1:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21531, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 2:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21532, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 3:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21533, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
@@ -149,22 +149,22 @@ static void reverser_rc_track_25_deg_up(
         switch (direction)
         {
             case 0:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21516, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 1:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21517, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 2:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21518, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 3:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21519, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
@@ -192,22 +192,22 @@ static void reverser_rc_track_flat_to_25_deg_up(
         switch (direction)
         {
             case 0:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21522, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 1, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 1:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21523, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 2, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 2:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21524, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 3, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 3:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21525, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 4, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
@@ -218,22 +218,22 @@ static void reverser_rc_track_flat_to_25_deg_up(
         switch (direction)
         {
             case 0:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21508, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 1, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 1:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21509, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 2, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 2:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21510, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 3, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 3:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21511, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 4, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
@@ -261,22 +261,22 @@ static void reverser_rc_track_25_deg_up_to_flat(
         switch (direction)
         {
             case 0:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21526, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 5, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 1:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21527, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 6, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 2:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21528, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 7, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 3:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21529, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 8, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
@@ -287,22 +287,22 @@ static void reverser_rc_track_25_deg_up_to_flat(
         switch (direction)
         {
             case 0:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21512, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 5, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 1:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21513, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 6, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 2:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21514, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 0, 7, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
             case 3:
-                sub_98197C_rotated(
+                PaintAddImageAsParentRotated(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 21515, 0, 0, 32, 27, 2, height, 0, 2, height);
                 wooden_a_supports_paint_setup(session, 1, 8, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                 break;
@@ -545,22 +545,22 @@ static void reverser_rc_track_s_bend_left(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21566, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21570, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21569, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21573, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -576,22 +576,22 @@ static void reverser_rc_track_s_bend_left(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21567, 0, 0, 32, 26, 2, height, 0, 0, height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21571, 0, 0, 32, 26, 2, height, 0, 0, height);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21568, 0, 0, 32, 26, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21572, 0, 0, 32, 26, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -607,22 +607,22 @@ static void reverser_rc_track_s_bend_left(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21568, 0, 0, 32, 26, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21572, 0, 0, 32, 26, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21567, 0, 0, 32, 26, 2, height, 0, 0, height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21571, 0, 0, 32, 26, 2, height, 0, 0, height);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -638,22 +638,22 @@ static void reverser_rc_track_s_bend_left(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21569, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21573, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21566, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21570, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -684,22 +684,22 @@ static void reverser_rc_track_s_bend_right(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21574, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21578, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21577, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21581, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -715,22 +715,22 @@ static void reverser_rc_track_s_bend_right(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21575, 0, 0, 32, 26, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21579, 0, 0, 32, 26, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21576, 0, 0, 32, 26, 2, height, 0, 0, height);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21580, 0, 0, 32, 26, 2, height, 0, 0, height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -746,22 +746,22 @@ static void reverser_rc_track_s_bend_right(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21576, 0, 0, 32, 26, 2, height, 0, 0, height);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21580, 0, 0, 32, 26, 2, height, 0, 0, height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21575, 0, 0, 32, 26, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21579, 0, 0, 32, 26, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -777,22 +777,22 @@ static void reverser_rc_track_s_bend_right(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21577, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21581, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21574, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21578, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -823,22 +823,22 @@ static void reverser_rc_track_left_quarter_turn_3(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21559, 0, 0, 32, 20, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21562, 0, 0, 32, 20, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21565, 0, 0, 32, 20, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21556, 0, 0, 32, 20, 2, height, 0, 6, height);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -857,21 +857,21 @@ static void reverser_rc_track_left_quarter_turn_3(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21558, 0, 0, 16, 16, 2, height, 16, 0,
                         height);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21561, 0, 0, 16, 16, 2, height, 0, 0, height);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21564, 0, 0, 16, 16, 2, height, 0, 16,
                         height);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21555, 0, 0, 16, 16, 2, height, 16, 16,
                         height);
                     break;
@@ -884,22 +884,22 @@ static void reverser_rc_track_left_quarter_turn_3(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21557, 0, 0, 20, 32, 2, height, 6, 0, height);
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21560, 0, 0, 20, 32, 2, height, 6, 0, height);
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21563, 0, 0, 20, 32, 2, height, 6, 0, height);
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21554, 0, 0, 20, 32, 2, height, 6, 0, height);
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -937,13 +937,13 @@ static void reverser_rc_track_brakes(
     {
         case 0:
         case 2:
-            sub_98197C_rotated(
+            PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 21506, 0, 0, 32, 27, 2, height, 0, 2, height);
             wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
         case 1:
         case 3:
-            sub_98197C_rotated(
+            PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 21507, 0, 0, 32, 27, 2, height, 0, 2, height);
             wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
             break;
@@ -964,22 +964,22 @@ static void reverser_rc_track_left_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21582, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21588, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21594, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21600, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -995,22 +995,22 @@ static void reverser_rc_track_left_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21585, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21591, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21597, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21603, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1022,22 +1022,22 @@ static void reverser_rc_track_left_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21586, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21592, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21598, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21604, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1049,22 +1049,22 @@ static void reverser_rc_track_left_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21587, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21593, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21599, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21605, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1076,22 +1076,22 @@ static void reverser_rc_track_left_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21583, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21589, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21595, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21601, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1103,22 +1103,22 @@ static void reverser_rc_track_left_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21584, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21590, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21596, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21602, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1149,22 +1149,22 @@ static void reverser_rc_track_right_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21596, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21602, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21584, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21590, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1180,22 +1180,22 @@ static void reverser_rc_track_right_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21599, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21605, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21587, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21593, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1207,22 +1207,22 @@ static void reverser_rc_track_right_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21598, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21604, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21586, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21592, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1234,22 +1234,22 @@ static void reverser_rc_track_right_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21597, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21603, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21585, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21591, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1261,22 +1261,22 @@ static void reverser_rc_track_right_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21595, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21601, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21583, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21589, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
@@ -1288,22 +1288,22 @@ static void reverser_rc_track_right_reverser(
             switch (direction)
             {
                 case 0:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21594, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21600, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21582, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98197C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21588, 0, 0, 32, 27, 2, height, 0, 2, height);
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
