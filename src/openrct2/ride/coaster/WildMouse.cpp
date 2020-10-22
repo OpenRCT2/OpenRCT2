@@ -733,16 +733,16 @@ static void wild_mouse_track_left_quarter_turn_1(
     switch (direction)
     {
         case 0:
-            sub_98197C(session, imageId, 0, 0, 26, 24, 2, height, 6, 2, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 26, 24, 2, height, 6, 2, height);
             break;
         case 1:
             sub_98196C(session, imageId, 0, 0, 26, 26, 2, height);
             break;
         case 2:
-            sub_98197C(session, imageId, 0, 0, 24, 26, 2, height, 2, 6, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 24, 26, 2, height, 2, 6, height);
             break;
         case 3:
-            sub_98197C(session, imageId, 0, 0, 24, 24, 2, height, 6, 6, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 24, 24, 2, height, 6, 6, height);
             break;
     }
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session->TrackColours[SCHEME_SUPPORTS]);

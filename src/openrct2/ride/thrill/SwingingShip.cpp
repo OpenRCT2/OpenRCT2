@@ -106,12 +106,12 @@ static void paint_swinging_ship_structure(
     swinging_ship_bound_box bounds = swinging_ship_data[direction];
 
     imageId = swinging_ship_frame_sprites[(direction & 1)][0] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C(
+    PaintAddImageAsParent(
         session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
         height);
 
     imageId = baseImageId | imageColourFlags;
-    sub_98199C(
+    PaintAddImageAsChild(
         session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
         height);
 
@@ -132,7 +132,7 @@ static void paint_swinging_ship_structure(
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
                 vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
             imageId = (baseImageId + frameNum) | imageColourFlags;
-            sub_98199C(
+            PaintAddImageAsChild(
                 session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,
                 bounds.offset_y, height);
 
@@ -147,7 +147,7 @@ static void paint_swinging_ship_structure(
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
                 vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
             imageId = (baseImageId + frameNum) | imageColourFlags;
-            sub_98199C(
+            PaintAddImageAsChild(
                 session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,
                 bounds.offset_y, height);
 
@@ -157,7 +157,7 @@ static void paint_swinging_ship_structure(
     }
 
     imageId = swinging_ship_frame_sprites[(direction & 1)][1] | session->TrackColours[SCHEME_TRACK];
-    sub_98199C(
+    PaintAddImageAsChild(
         session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x, bounds.offset_y,
         height);
 
@@ -217,7 +217,7 @@ static void paint_swinging_ship(
                 imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE)
                     | session->TrackColours[SCHEME_TRACK];
             }
-            sub_98199C(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height + 9);
+            PaintAddImageAsChild(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height + 9);
 
             imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE)
                 | session->TrackColours[SCHEME_TRACK];
@@ -262,7 +262,7 @@ static void paint_swinging_ship(
                 imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE)
                     | session->TrackColours[SCHEME_TRACK];
             }
-            sub_98199C(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height + 9);
+            PaintAddImageAsChild(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height + 9);
 
             imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE)
                 | session->TrackColours[SCHEME_TRACK];

@@ -571,13 +571,13 @@ static void wooden_wild_mouse_track_left_quarter_turn_1(
     switch (direction)
     {
         case 0:
-            sub_98197C(session, imageId, 6, 0, 26, 24, 1, height, 6, 2, height);
+            PaintAddImageAsParent(session, imageId, 6, 0, 26, 24, 1, height, 6, 2, height);
             break;
         case 1:
             sub_98196C(session, imageId, 0, 0, 26, 26, 1, height);
             break;
         case 2:
-            sub_98197C(session, imageId, 0, 6, 24, 26, 1, height, 2, 6, height);
+            PaintAddImageAsParent(session, imageId, 0, 6, 24, 26, 1, height, 2, 6, height);
             break;
         case 3:
             sub_98196C(session, imageId, 6, 6, 24, 24, 1, height);

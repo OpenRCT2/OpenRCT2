@@ -154,7 +154,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     }
     if (!(scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
     {
-        sub_98197C(
+        PaintAddImageAsParent(
             session, baseImageid, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
             boxoffset.y, boxoffset.z);
     }
@@ -167,7 +167,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
             // TODO: Name palette entries
             int32_t image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[sceneryElement->GetPrimaryColour()] << 19)
                 + 0x40000004;
-            sub_98199C(
+            PaintAddImageAsChild(
                 session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                 boxoffset.y, boxoffset.z);
         }
@@ -187,7 +187,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
@@ -199,7 +199,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
 
@@ -208,7 +208,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
 
@@ -217,7 +217,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
@@ -246,7 +246,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
 
@@ -260,7 +260,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
@@ -276,7 +276,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
@@ -321,13 +321,13 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 }
                 if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED))
                 {
-                    sub_98197C(
+                    PaintAddImageAsParent(
                         session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                         boxoffset.y, boxoffset.z);
                 }
                 else
                 {
-                    sub_98199C(
+                    PaintAddImageAsChild(
                         session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                         boxoffset.y, boxoffset.z);
                 }

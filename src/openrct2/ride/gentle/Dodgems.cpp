@@ -47,7 +47,7 @@ static void paint_dodgems(
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     uint32_t imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
-    sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
+    PaintAddImageAsParent(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
 
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)

@@ -39,10 +39,10 @@ static void paint_lift_cage(paint_session* session, int8_t index, uint32_t colou
     uint32_t imageId;
 
     imageId = lift_cage_sprites[1 + index][0] | colourFlags;
-    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 2, 2, height);
+    PaintAddImageAsParent(session, imageId, 0, 0, 2, 2, 30, height, 2, 2, height);
 
     imageId = lift_cage_sprites[1 + index][1] | colourFlags;
-    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 28, 28, height);
+    PaintAddImageAsParent(session, imageId, 0, 0, 2, 2, 30, height, 28, 28, height);
 }
 
 /** rct2: 0x0076C6CC */
@@ -75,7 +75,7 @@ static void paint_lift_base(
     int32_t edges = edges_3x3[trackSequence];
 
     uint32_t imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
-    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
+    PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)

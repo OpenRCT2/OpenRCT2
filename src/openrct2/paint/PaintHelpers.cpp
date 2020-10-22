@@ -34,13 +34,13 @@ paint_struct* sub_98197C_rotated(
 {
     if (direction & 1)
     {
-        return sub_98197C(
+        return PaintAddImageAsParent(
             session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
             bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
     }
     else
     {
-        return sub_98197C(
+        return PaintAddImageAsParent(
             session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
             bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
     }
@@ -53,13 +53,13 @@ paint_struct* sub_98199C_rotated(
 {
     if (direction & 1)
     {
-        return sub_98199C(
+        return PaintAddImageAsChild(
             session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
             bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
     }
     else
     {
-        return sub_98199C(
+        return PaintAddImageAsChild(
             session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
             bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
     }

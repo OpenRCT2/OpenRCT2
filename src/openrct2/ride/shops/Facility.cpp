@@ -51,18 +51,18 @@ static void facility_paint_setup(
     {
         uint32_t foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS)
             | session->TrackColours[SCHEME_3];
-        sub_98197C(
+        PaintAddImageAsParent(
             session, foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2,
             height);
 
         // Door image or base
-        sub_98199C(
+        PaintAddImageAsChild(
             session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height);
     }
     else
     {
         // Door image or base
-        sub_98197C(
+        PaintAddImageAsParent(
             session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height);
     }
 
@@ -70,12 +70,12 @@ static void facility_paint_setup(
     if (direction == 1)
     {
         imageId += 2;
-        sub_98197C(session, imageId, 0, 0, 2, 28, 29, height, 28, 2, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 2, 28, 29, height, 28, 2, height);
     }
     else if (direction == 2)
     {
         imageId += 4;
-        sub_98197C(session, imageId, 0, 0, 28, 2, 29, height, 2, 28, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 28, 2, 29, height, 2, 28, height);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

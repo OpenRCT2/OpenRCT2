@@ -91,12 +91,12 @@ static void paint_ferris_wheel_structure(
     ferris_wheel_bound_box boundBox = ferris_wheel_data[direction];
 
     imageId = (22150 + (direction & 1) * 2) | session->TrackColours[SCHEME_TRACK];
-    sub_98197C(
+    PaintAddImageAsParent(
         session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
         boundBox.offset_y, height);
 
     imageId = (baseImageId + direction * 8 + imageOffset) | imageColourFlags;
-    sub_98199C(
+    PaintAddImageAsChild(
         session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
         boundBox.offset_y, height);
 
@@ -113,14 +113,14 @@ static void paint_ferris_wheel_structure(
             int32_t frameNum = (vehicle->vehicle_sprite_type + i * 4) % 128;
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
             imageId = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
-            sub_98199C(
+            PaintAddImageAsChild(
                 session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
                 boundBox.offset_y, height);
         }
     }
 
     imageId = (22150 + (direction & 1) * 2 + 1) | session->TrackColours[SCHEME_TRACK];
-    sub_98199C(
+    PaintAddImageAsChild(
         session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
         boundBox.offset_y, height);
 
@@ -160,23 +160,23 @@ static void paint_ferris_wheel(
         if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session->MapPosition, tileElement, ride, rotation))
         {
             imageId = SPR_FENCE_ROPE_NW | colourFlags;
-            sub_98199C(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2);
+            PaintAddImageAsChild(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2);
         }
         if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, session->MapPosition, tileElement, ride, rotation))
         {
             imageId = SPR_FENCE_ROPE_NE | colourFlags;
-            sub_98199C(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2);
+            PaintAddImageAsChild(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2);
         }
         if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, session->MapPosition, tileElement, ride, rotation))
         {
             // Bound box is slightly different from track_paint_util_paint_fences
             imageId = SPR_FENCE_ROPE_SE | colourFlags;
-            sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3);
+            PaintAddImageAsParent(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3);
         }
         if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session->MapPosition, tileElement, ride, rotation))
         {
             imageId = SPR_FENCE_ROPE_SW | colourFlags;
-            sub_98197C(session, imageId, 0, 0, 1, 32, 7, height, 30, 0, height + 2);
+            PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 7, height, 30, 0, height + 2);
         }
     }
 

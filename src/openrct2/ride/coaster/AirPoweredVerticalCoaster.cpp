@@ -438,13 +438,13 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(
     {
         uint32_t imageId = SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_NW_SW_PART_4
             | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
     }
     else if (direction == 3 && trackSequence == 0)
     {
         uint32_t imageId = SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0
             | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height);
     }
 
     track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
@@ -730,7 +730,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(
                 {
                     floorImageId = SPR_FLOOR_PLANKS | session->TrackColours[SCHEME_SUPPORTS];
                 }
-                sub_98197C(session, floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
+                PaintAddImageAsParent(session, floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
                 sub_98199C_rotated(session, direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
             }
             else
@@ -914,13 +914,13 @@ static void air_powered_vertical_rc_track_booster(
     if (direction & 1)
     {
         uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | colour;
-        sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
         uint32_t imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | colour;
-        sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 

@@ -729,7 +729,7 @@ paint_struct* sub_98196C(
     assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
     assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
 
-    session->LastRootPS = nullptr;
+    session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
 
     if (session->NoPaintStructsAvailable())
@@ -853,12 +853,12 @@ paint_struct* sub_98196C(
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
  */
 // Track Pieces, Shops.
-paint_struct* sub_98197C(
+paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
-    session->LastRootPS = nullptr;
+    session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
 
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
@@ -892,8 +892,9 @@ paint_struct* sub_98197C(
  * @param bound_box_offset_y (0x009DEA54)
  * @param bound_box_offset_z (0x009DEA56)
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
+ * Creates a paint struct but does not allocate to a paint quadrant. Result cannot be ignored!
  */
-paint_struct* sub_98198C(
+[[nodiscard]] paint_struct* PaintAddImageAsOrphan(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
@@ -901,7 +902,7 @@ paint_struct* sub_98198C(
     assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
     assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
 
-    session->LastRootPS = nullptr;
+    session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
 
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
@@ -931,14 +932,15 @@ paint_struct* sub_98198C(
  * @param bound_box_offset_y (0x009DEA54)
  * @param bound_box_offset_z (0x009DEA56)
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
+ * If there is no parent paint struct then image is added as a parent
  */
-paint_struct* sub_98199C(
+paint_struct* PaintAddImageAsChild(
     paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset)
 {
-    if (session->LastRootPS == nullptr)
+    if (session->LastPS == nullptr)
     {
-        return sub_98197C(
+        return PaintAddImageAsParent(
             session, image_id, offset.x, offset.y, boundBoxLength.x, boundBoxLength.y, boundBoxLength.z, offset.z,
             boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
     }
@@ -950,20 +952,20 @@ paint_struct* sub_98199C(
         return nullptr;
     }
 
-    paint_struct* old_ps = session->LastRootPS;
+    paint_struct* parentPS = session->LastPS;
     auto ps = session->AllocateRootPaintEntry(std::move(*newPS));
-    old_ps->children = ps;
+    parentPS->children = ps;
     return ps;
 }
 
-paint_struct* sub_98199C(
+paint_struct* PaintAddImageAsChild(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
     assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
-    return sub_98199C(
+    return PaintAddImageAsChild(
         session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
         { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
 }
@@ -1021,7 +1023,7 @@ bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int16_t 
     ps.y = y;
     ps.flags = 0;
 
-    paint_struct* masterPs = session->LastRootPS;
+    paint_struct* masterPs = session->LastPS;
     if (masterPs == nullptr)
     {
         return false;

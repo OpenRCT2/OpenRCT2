@@ -58,7 +58,7 @@ static void paint_haunted_house_structure(
 
     uint32_t imageId = (baseImageId + direction) | session->TrackColours[SCHEME_MISC];
     haunted_house_bound_box boundBox = haunted_house_data[part];
-    sub_98197C(
+    PaintAddImageAsParent(
         session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
         boundBox.offset_y, height);
 
@@ -81,7 +81,7 @@ static void paint_haunted_house_structure(
                 break;
         }
         imageId = imageId | session->TrackColours[SCHEME_MISC];
-        sub_98199C(
+        PaintAddImageAsChild(
             session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
             boundBox.offset_y, height);
     }

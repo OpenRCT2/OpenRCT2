@@ -424,10 +424,10 @@ static void wooden_rc_track_paint_bb(paint_session* session, const sprite_bb_2* 
     uint32_t imageId = bb->sprite_id_a | wooden_rc_get_track_colour(session);
     uint32_t railsImageId = bb->sprite_id_b | wooden_rc_get_rails_colour(session);
 
-    sub_98197C(
+    PaintAddImageAsParent(
         session, imageId, static_cast<int8_t>(bb->offset.x), static_cast<int8_t>(bb->offset.y), bb->bb_size.x, bb->bb_size.y,
         static_cast<int8_t>(bb->bb_size.z), height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z);
-    sub_98199C(
+    PaintAddImageAsChild(
         session, railsImageId, static_cast<int8_t>(bb->offset.x), static_cast<int8_t>(bb->offset.y), bb->bb_size.x,
         bb->bb_size.y, static_cast<int8_t>(bb->bb_size.z), height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y,
         height + bb->bb_offset.z);
