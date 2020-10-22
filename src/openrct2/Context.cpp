@@ -680,6 +680,11 @@ namespace OpenRCT2
                 ft.Add<uint16_t>(e.Flag);
                 windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE, ft);
             }
+            catch (const UnsupportedRideTypeException&)
+            {
+                auto windowManager = _uiContext->GetWindowManager();
+                windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, STR_NONE, {});
+            }
             catch (const std::exception& e)
             {
                 Console::Error::WriteLine(e.what());
