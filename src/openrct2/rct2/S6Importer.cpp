@@ -523,6 +523,12 @@ public:
                 rideType = RCT2RideTypeToOpenRCT2RideType(src->type, rideEntry);
             }
         }
+
+        if (rideType >= RIDE_TYPE_COUNT)
+        {
+            log_error("Invalid ride type for a ride in this save.");
+            throw UnsupportedRideTypeException(rideType);
+        }
         dst->type = rideType;
         dst->subtype = subtype;
         // pad_002;
@@ -1726,6 +1732,10 @@ void load_from_sv6(const char* path)
     {
         log_error("Error loading: %s", loadError.what());
         show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
+    }
+    catch (const UnsupportedRideTypeException&)
+    {
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES);
     }
     catch (const std::exception&)
     {
