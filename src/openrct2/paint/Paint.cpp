@@ -86,83 +86,92 @@ static void PaintSessionAddPSToQuadrant(paint_session* session, paint_struct* ps
     session->QuadrantFrontIndex = std::max(session->QuadrantFrontIndex, paintQuadrantIndex);
 }
 
+static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const rct_g1_element& g1, const rct_drawpixelinfo& dpi)
+{
+    int32_t left = imagePos.x + g1.x_offset;
+    int32_t bottom = imagePos.y + g1.y_offset;
+
+    int32_t right = left + g1.width;
+    int32_t top = bottom + g1.height;
+
+    if (right <= dpi.x)
+        return false;
+    if (top <= dpi.y)
+        return false;
+    if (left >= dpi.x + dpi.width)
+        return false;
+    if (bottom >= dpi.y + dpi.height)
+        return false;
+    return true;
+}
+
+static constexpr CoordsXYZ RotateBoundBoxSize(const CoordsXYZ& bbSize, const uint8_t rotation)
+{
+    auto output = bbSize;
+    // This probably rotates the variables so they're relative to rotation 0.
+    switch (rotation)
+    {
+        case 0:
+            output.x--;
+            output.y--;
+            output = { output.Rotate(0), output.z };
+            break;
+        case 1:
+            output.x--;
+            output = { output.Rotate(3), output.z };
+            break;
+        case 2:
+            output = { output.Rotate(2), output.z };
+            break;
+        case 3:
+            output.y--;
+            output = { output.Rotate(1), output.z };
+            break;
+    }
+    return output;
+}
+
 /**
  * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
  */
 static std::optional<paint_struct> sub_9819_c(
-    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, CoordsXYZ boundBoxSize, CoordsXYZ boundBoxOffset)
+    paint_session* session, const uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    const CoordsXYZ& boundBoxOffset)
 {
     if (session->NoPaintStructsAvailable())
         return std::nullopt;
-    auto g1 = gfx_get_g1_element(image_id & 0x7FFFF);
+
+    auto* const g1 = gfx_get_g1_element(image_id & 0x7FFFF);
     if (g1 == nullptr)
     {
         return std::nullopt;
     }
 
-    paint_struct ps;
-    ps.image_id = image_id;
-
-    uint8_t swappedRotation = (session->CurrentRotation * 3) % 4; // swaps 1 and 3
+    const uint8_t swappedRotation = (session->CurrentRotation * 3) % 4; // swaps 1 and 3
     auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z };
+    swappedRotCoord += session->SpritePosition;
 
-    swappedRotCoord.x += session->SpritePosition.x;
-    swappedRotCoord.y += session->SpritePosition.y;
+    const auto imagePos = translate_3d_to_2d_with_z(session->CurrentRotation, swappedRotCoord);
 
-    auto screenCoords = translate_3d_to_2d_with_z(session->CurrentRotation, swappedRotCoord);
-
-    ps.x = screenCoords.x;
-    ps.y = screenCoords.y;
-
-    int32_t left = screenCoords.x + g1->x_offset;
-    int32_t bottom = screenCoords.y + g1->y_offset;
-
-    int32_t right = left + g1->width;
-    int32_t top = bottom + g1->height;
-
-    rct_drawpixelinfo* dpi = &session->DPI;
-
-    if (right <= dpi->x)
-        return std::nullopt;
-    if (top <= dpi->y)
-        return std::nullopt;
-    if (left >= dpi->x + dpi->width)
-        return std::nullopt;
-    if (bottom >= dpi->y + dpi->height)
-        return std::nullopt;
-
-    // This probably rotates the variables so they're relative to rotation 0.
-    switch (session->CurrentRotation)
+    if (!ImageWithinDPI(imagePos, *g1, session->DPI))
     {
-        case 0:
-            boundBoxSize.x--;
-            boundBoxSize.y--;
-            boundBoxOffset = { boundBoxOffset.Rotate(0), boundBoxOffset.z };
-            boundBoxSize = { boundBoxSize.Rotate(0), boundBoxSize.z };
-            break;
-        case 1:
-            boundBoxSize.x--;
-            boundBoxOffset = { boundBoxOffset.Rotate(3), boundBoxOffset.z };
-            boundBoxSize = { boundBoxSize.Rotate(3), boundBoxSize.z };
-            break;
-        case 2:
-            boundBoxSize = { boundBoxSize.Rotate(2), boundBoxSize.z };
-            boundBoxOffset = { boundBoxOffset.Rotate(2), boundBoxOffset.z };
-            break;
-        case 3:
-            boundBoxSize.y--;
-            boundBoxSize = { boundBoxSize.Rotate(1), boundBoxSize.z };
-            boundBoxOffset = { boundBoxOffset.Rotate(1), boundBoxOffset.z };
-            break;
+        return std::nullopt;
     }
 
-    ps.bounds.x_end = boundBoxSize.x + boundBoxOffset.x + session->SpritePosition.x;
-    ps.bounds.z = boundBoxOffset.z;
-    ps.bounds.z_end = boundBoxOffset.z + boundBoxSize.z;
-    ps.bounds.y_end = boundBoxSize.y + boundBoxOffset.y + session->SpritePosition.y;
+    const auto rotBoundBoxOffset = CoordsXYZ{ boundBoxOffset.Rotate(swappedRotation), boundBoxOffset.z };
+    const auto rotBoundBoxSize = RotateBoundBoxSize(boundBoxSize, session->CurrentRotation);
+
+    paint_struct ps;
+    ps.image_id = image_id;
+    ps.x = imagePos.x;
+    ps.y = imagePos.y;
+    ps.bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session->SpritePosition.x;
+    ps.bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session->SpritePosition.y;
+    ps.bounds.z_end = rotBoundBoxSize.z + rotBoundBoxOffset.z;
+    ps.bounds.x = rotBoundBoxOffset.x + session->SpritePosition.x;
+    ps.bounds.y = rotBoundBoxOffset.y + session->SpritePosition.y;
+    ps.bounds.z = rotBoundBoxOffset.z;
     ps.flags = 0;
-    ps.bounds.x = boundBoxOffset.x + session->SpritePosition.x;
-    ps.bounds.y = boundBoxOffset.y + session->SpritePosition.y;
     ps.attached_ps = nullptr;
     ps.children = nullptr;
     ps.sprite_type = session->InteractionType;
@@ -746,83 +755,40 @@ paint_struct* sub_98196C(
     paint_struct ps;
     ps.image_id = image_id;
 
-    CoordsXYZ coord_3d = {
-        x_offset, // ax
-        y_offset, // cx
+    const CoordsXYZ offset = {
+        x_offset,
+        y_offset,
         z_offset,
     };
 
-    CoordsXYZ boundBox = {
-        bound_box_length_x, // di
-        bound_box_length_y, // si
+    const CoordsXYZ boundBoxSize = {
+        bound_box_length_x,
+        bound_box_length_y,
         bound_box_length_z,
     };
 
-    switch (session->CurrentRotation)
+    uint8_t swappedRotation = (session->CurrentRotation * 3) % 4; // swaps 1 and 3
+    auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z };
+    swappedRotCoord += session->SpritePosition;
+
+    const auto imagePos = translate_3d_to_2d_with_z(session->CurrentRotation, swappedRotCoord);
+
+    if (!ImageWithinDPI(imagePos, *g1Element, session->DPI))
     {
-        case 0:
-            coord_3d = CoordsXYZ{ coord_3d.Rotate(TILE_ELEMENT_DIRECTION_WEST), coord_3d.z };
-
-            boundBox.x--;
-            boundBox.y--;
-            boundBox = { boundBox.Rotate(TILE_ELEMENT_DIRECTION_WEST), boundBox.z };
-            break;
-
-        case 1:
-            coord_3d = CoordsXYZ{ coord_3d.Rotate(TILE_ELEMENT_DIRECTION_SOUTH), coord_3d.z };
-
-            boundBox.x--;
-            boundBox = { boundBox.Rotate(TILE_ELEMENT_DIRECTION_SOUTH), boundBox.z };
-            break;
-
-        case 2:
-            coord_3d = CoordsXYZ{ coord_3d.Rotate(TILE_ELEMENT_DIRECTION_EAST), coord_3d.z };
-            boundBox = { boundBox.Rotate(TILE_ELEMENT_DIRECTION_EAST), boundBox.z };
-            break;
-
-        case 3:
-            coord_3d = CoordsXYZ{ coord_3d.Rotate(TILE_ELEMENT_DIRECTION_NORTH), coord_3d.z };
-
-            boundBox.y--;
-            boundBox = { boundBox.Rotate(TILE_ELEMENT_DIRECTION_NORTH), boundBox.z };
-            break;
+        return nullptr;
     }
 
-    coord_3d.x += session->SpritePosition.x;
-    coord_3d.y += session->SpritePosition.y;
+    const auto rotBoundBoxSize = RotateBoundBoxSize(boundBoxSize, session->CurrentRotation);
 
-    ps.bounds.x_end = coord_3d.x + boundBox.x;
-    ps.bounds.y_end = coord_3d.y + boundBox.y;
-
-    // TODO: check whether this is right. edx is ((bound_box_length_z + z_offset) << 16 | z_offset)
-    ps.bounds.z = coord_3d.z;
-    ps.bounds.z_end = (boundBox.z + coord_3d.z);
-
-    auto map = translate_3d_to_2d_with_z(session->CurrentRotation, coord_3d);
-
-    ps.x = map.x;
-    ps.y = map.y;
-
-    int16_t left = map.x + g1Element->x_offset;
-    int16_t bottom = map.y + g1Element->y_offset;
-
-    int16_t right = left + g1Element->width;
-    int16_t top = bottom + g1Element->height;
-
-    rct_drawpixelinfo* dpi = &session->DPI;
-
-    if (right <= dpi->x)
-        return nullptr;
-    if (top <= dpi->y)
-        return nullptr;
-    if (left >= (dpi->x + dpi->width))
-        return nullptr;
-    if (bottom >= (dpi->y + dpi->height))
-        return nullptr;
-
+    ps.x = imagePos.x;
+    ps.y = imagePos.y;
+    ps.bounds.x_end = swappedRotCoord.x + rotBoundBoxSize.x;
+    ps.bounds.y_end = swappedRotCoord.y + rotBoundBoxSize.y;
+    ps.bounds.z_end = swappedRotCoord.z + rotBoundBoxSize.z;
+    ps.bounds.x = swappedRotCoord.x;
+    ps.bounds.y = swappedRotCoord.y;
+    ps.bounds.z = swappedRotCoord.z;
     ps.flags = 0;
-    ps.bounds.x = coord_3d.x;
-    ps.bounds.y = coord_3d.y;
     ps.attached_ps = nullptr;
     ps.children = nullptr;
     ps.sprite_type = session->InteractionType;
