@@ -120,7 +120,7 @@ int32_t gfx_clip_string(utf8* text, int32_t width)
             // Add the ellipsis before checking the width
             buffer.append("...");
 
-            auto currentWidth = gfx_get_string_width(text);
+            auto currentWidth = gfx_get_string_width(buffer);
             if (currentWidth < width)
             {
                 bestLength = buffer.size();
@@ -135,7 +135,7 @@ int32_t gfx_clip_string(utf8* text, int32_t width)
                 buffer.resize(bestLength);
                 for (auto i = static_cast<int32_t>(bestLength) - 1; i >= 0 && i >= static_cast<int32_t>(bestLength) - 3; i--)
                 {
-                    buffer[bestLength - i] = '.';
+                    buffer[i] = '.';
                 }
 
                 // Copy buffer back to input text buffer
@@ -172,6 +172,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
 
     size_t currentLineIndex = 0;
     size_t splitIndex = NULL_INDEX;
+    size_t bestSplitIndex = NULL_INDEX;
     size_t numLines = 0;
     int32_t maxWidth = 0;
 
@@ -188,7 +189,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
                 buffer.append(cb);
 
                 auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex]);
-                if (lineWidth <= width || splitIndex == NULL_INDEX)
+                if (lineWidth <= width || (splitIndex == NULL_INDEX && bestSplitIndex == NULL_INDEX))
                 {
                     if (codepoint == ' ')
                     {
@@ -198,12 +199,16 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
                     else if (splitIndex == NULL_INDEX)
                     {
                         // Mark line split here (this is after first character of line)
-                        splitIndex = buffer.size();
+                        bestSplitIndex = buffer.size();
                     }
                 }
                 else
                 {
                     // Insert new line before current word
+                    if (splitIndex == NULL_INDEX)
+                    {
+                        splitIndex = bestSplitIndex;
+                    }
                     buffer.insert(buffer.begin() + splitIndex, '\0');
 
                     // Recalculate the line length after splitting
@@ -213,6 +218,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
 
                     currentLineIndex = splitIndex + 1;
                     splitIndex = NULL_INDEX;
+                    bestSplitIndex = NULL_INDEX;
 
                     // Trim the beginning of the new line
                     while (buffer[currentLineIndex] == ' ')
@@ -229,7 +235,10 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
             auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex]);
             maxWidth = std::max(maxWidth, lineWidth);
             numLines++;
-            splitIndex = buffer.size();
+
+            currentLineIndex = buffer.size();
+            splitIndex = NULL_INDEX;
+            bestSplitIndex = NULL_INDEX;
         }
         else
         {
@@ -779,24 +788,37 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, const std::string
     else
     {
         CodepointView codepoints(text);
-        size_t ttfRunIndex = 0;
+        std::optional<size_t> ttfRunIndex;
         for (auto it = codepoints.begin(); it != codepoints.end(); it++)
         {
             auto codepoint = *it;
             if (ShouldUseSpriteForCodepoint(codepoint))
             {
-                auto index = it.GetIndex();
-                auto ttfLen = index - ttfRunIndex;
-                if (ttfLen > 0)
+                if (ttfRunIndex)
                 {
                     // Draw the TTF run
-                    ttf_draw_string_raw_ttf(dpi, text.substr(ttfRunIndex, ttfLen), info);
+                    auto len = it.GetIndex() - *ttfRunIndex;
+                    ttf_draw_string_raw_ttf(dpi, text.substr(*ttfRunIndex, len), info);
+                    ttfRunIndex = std::nullopt;
                 }
-                ttfRunIndex = index;
 
                 // Draw the sprite font glyph
                 ttf_draw_character_sprite(dpi, codepoint, info);
             }
+            else
+            {
+                if (!ttfRunIndex)
+                {
+                    ttfRunIndex = it.GetIndex();
+                }
+            }
+        }
+
+        if (ttfRunIndex)
+        {
+            // Final TTF run
+            auto len = text.size() - *ttfRunIndex;
+            ttf_draw_string_raw_ttf(dpi, text.substr(*ttfRunIndex, len), info);
         }
     }
 #endif // NO_TTF
