@@ -731,13 +731,8 @@ void PaintSessionFree([[maybe_unused]] paint_session* session)
  * @param z_offset (dx)
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
  */
-paint_struct* sub_98196C(
-    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
+paint_struct* sub_98196C(paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
-    assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
-    assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
-
     session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
 
@@ -752,21 +747,6 @@ paint_struct* sub_98196C(
         return nullptr;
     }
 
-    paint_struct ps;
-    ps.image_id = image_id;
-
-    const CoordsXYZ offset = {
-        x_offset,
-        y_offset,
-        z_offset,
-    };
-
-    const CoordsXYZ boundBoxSize = {
-        bound_box_length_x,
-        bound_box_length_y,
-        bound_box_length_z,
-    };
-
     uint8_t swappedRotation = (session->CurrentRotation * 3) % 4; // swaps 1 and 3
     auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z };
     swappedRotCoord += session->SpritePosition;
@@ -780,6 +760,8 @@ paint_struct* sub_98196C(
 
     const auto rotBoundBoxSize = RotateBoundBoxSize(boundBoxSize, session->CurrentRotation);
 
+    paint_struct ps;
+    ps.image_id = image_id;
     ps.x = imagePos.x;
     ps.y = imagePos.y;
     ps.bounds.x_end = swappedRotCoord.x + rotBoundBoxSize.x;
@@ -801,6 +783,14 @@ paint_struct* sub_98196C(
     PaintSessionAddPSToQuadrant(session, psPtr);
 
     return psPtr;
+}
+
+paint_struct* sub_98196C(
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
+{
+    return sub_98196C(
+        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z });
 }
 
 /**
