@@ -1959,14 +1959,14 @@ STR_2749    :Mój nowy scenariusz
 STR_2750    :Przenieś wszystkie do góry
 STR_2751    :Przenieś wszystkie na dół
 STR_2752    :Czysta trawa
-STR_2753    :Skoszona trawa
+STR_2753    :Koś trawę
 STR_2754    :Podlej kwiaty
 STR_2755    :Usuń wandalizm
 STR_2756    :Usuń śmieci
 STR_2763    :???
 STR_2765    :Przypływ gości
 STR_2766    :Wygraj scenariusz
-STR_2767    :Zablokuj klimat
+STR_2767    :Zablokuj zmiany pogody
 STR_2769    :Otwórz park
 STR_2770    :Zamknij park
 STR_2773    :Okno
@@ -3007,7 +3007,7 @@ STR_5721    :Pochmurnie
 STR_5722    :Deszczowo
 STR_5723    :Duży deszcz
 STR_5724    :Burza
-STR_5725    :{BLACK}Wymuś pogodę:
+STR_5725    :{BLACK}Zmień pogodę na:
 STR_5726    :{SMALLFONT}{BLACK}Ustawia aktualną pogodę w parku
 STR_5727    :Jakość skalowania
 STR_5731    :Liniowa
@@ -3147,7 +3147,7 @@ STR_5867    :{WINDOW_COLOUR_2}Nazwa hostującego: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mail hostującego: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Strona hostującego: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Pokaż informacje o serwerze
-STR_5871    :Kwiaty się nie starzeją
+STR_5871    :Wyłącz starzenie się kwiatów
 STR_5872    :{SMALLFONT}{BLACK}Kwiaty się nie starzeją, nie usychają, nie trzeba ich wymieniać
 STR_5873    :Zezwól na wyciągarkę na wszystkich typach torów
 STR_5874    :{SMALLFONT}{BLACK}Zezwól aby przy każdym typie torów można było użyć wyciągarkę
@@ -3647,6 +3647,8 @@ STR_6390    :Do działania OpenRCT2 wymaga plików z orginalnego RollerCoaster T
 STR_6391    :Wybierz katalog z RCT2
 STR_6392    :Nie można znaleźć {STRING} w tej ścieżce
 STR_6393    :Wybór celu
+STR_6394    :Cel
+STR_6395    :Utrzymanie
 
 #############
 # Scenarios #

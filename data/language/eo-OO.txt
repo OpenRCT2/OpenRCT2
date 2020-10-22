@@ -382,8 +382,8 @@ STR_0996    :Tuta vido
 STR_0997    :{SMALLFONT}{BLACK}Elekti vidon
 STR_0998    :Ne eblas konstrui pli da stacioj por ĉi tiu atrakcio
 STR_0999    :Ĝi bezonas staciplatformon
-STR_1000    :La trako ne estas kompleta cirkvito
-STR_1001    :La trako ne taŭgas tian trajnon
+STR_1000    :Trako ne estas kompleta cirkvito
+STR_1001    :Trako ne taŭgas por tia trajno
 STR_1002    :Ne eblas malfermi {POP16}{POP16}{POP16}{STRINGID}…
 STR_1003    :Ne eblas elprovi {POP16}{POP16}{POP16}{STRINGID}…
 STR_1004    :Ne eblas fermi {POP16}{POP16}{POP16}{STRINGID}…
@@ -408,7 +408,7 @@ STR_1022    :Po {POP16}{POP16}{POP16}{COMMA16} ĉaro por trajno
 STR_1023    :Po {POP16}{POP16}{POP16}{COMMA16} ĉaroj por trajno
 STR_1024    :Po {COMMA16} ĉaro por trajno
 STR_1025    :Po {COMMA16} ĉaroj por trajno
-STR_1026    :La staciplatformo estas tro longa!
+STR_1026    :Staciplatformo estas tro longa!
 STR_1027    :{SMALLFONT}{BLACK}Trovi ĉi tion en Ĉefa Vido
 STR_1028    :Ekster bordoj de mapo!
 STR_1029    :Ne eblas konstrui ĉi tion kaj subakve kaj superakve!
@@ -851,8 +851,8 @@ STR_1465    :Kreska Helico (granda)
 STR_1466    :Malkreska Helico (malgranda)
 STR_1467    :Malkreska Helico (granda)
 STR_1468    :Dungitaro
-STR_1469    :La atrakcio devas havi staciojn por ĝiaj komencejo kaj finejo
-STR_1470    :La stacio ne estas sufiĉe longa
+STR_1469    :Atrakcio devas havi staciojn por ĝiaj komencejo kaj finejo
+STR_1470    :Stacio ne estas sufiĉe longa
 STR_1471    :{WINDOW_COLOUR_2}Rapideco:
 STR_1472    :{SMALLFONT}{BLACK}Rapideco de ĉi tiu atrakcio
 STR_1473    :{WINDOW_COLOUR_2}Pritakso de eksciteco: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -1207,7 +1207,7 @@ STR_1830    :Longeco de atendovico
 STR_1831    :Daŭro de vicatendado
 STR_1832    :Fidindo
 STR_1833    :Periodo de nefunkciado
-STR_1834    :La plej ŝatataj de tiom da gastoj
+STR_1834    :Plej ŝatataj de tiom da gastoj
 STR_1835    :Populareco: Nekonata
 STR_1836    :Populareco: {COMMA16}%
 STR_1837    :Kontento: Nekonata
@@ -1289,7 +1289,7 @@ STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Prunto:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Ne eblas prunti pli da monoj!
-STR_1919    :La monosumo ne sufiĉas!
+STR_1919    :Ne sufiĉas mono disponebla!
 STR_1920    :Ne eblas repagi prunton!
 STR_1921    :{SMALLFONT}{BLACK}Komenci novan ludon
 STR_1922    :{SMALLFONT}{BLACK}Daŭrigi ludi konservitan ludon
@@ -2140,7 +2140,7 @@ STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Ne eblas ŝargi dosieron…
-STR_3011    :La doserio enhavas nevalidajn datumojn
+STR_3011    :Doserio enhavas nevalidajn datumojn
 STR_3012    :Albatiĝantaj-aŭtetoj-taktaj-stilo
 STR_3013    :Foirejo-orgena stilo
 STR_3014    :Roma-fanfara stilo
@@ -3643,12 +3643,14 @@ STR_6386    :Blizardo
 STR_6387    :Ne eblas malaltigi elementon ĉi tie…
 STR_6388    :Ne eblas altigi elementon ĉi tie…
 STR_6389    :Nevalida malbaro
-STR_6390    :OpenRCT2 bezonas dosierojn de la origina RollerCoaster Tycoon 2 por funkcii. Bonvolu elekti la dosierujon, kie vi instalis RollerCoaster Tycoon 2.
+STR_6390    :OpenRCT2 bezonas dosierojn de la origina RollerCoaster Tycoon 2 por funkcii. Bonvolu elekti la dosierujon, kie vi instalis je RollerCoaster Tycoon 2.
 STR_6391    :Bonvolu elekti vian dosierujon de RCT2
 STR_6392    :Ne eblis trovi je {STRING} ĉe tiu ĉi dosierindiko.
 STR_6393    :Cela Selektado
 STR_6394    :Celo
 STR_6395    :Prizorgado
+STR_6396    :Malŝalti ekrankurtenon kaj energiŝparan de ekrano
+STR_6397    :{SMALLFONT}{BLACK}Se elektita, ekrankurteno kaj aliaj energiŝparaj funkcioj estos malebligitaj dum OpenRCT2 funkcias.
 
 #############
 # Scenarios #
