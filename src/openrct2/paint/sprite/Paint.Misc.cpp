@@ -55,7 +55,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             if (moneyEffect == nullptr)
                 return;
             auto [stringId, value] = moneyEffect->GetStringId();
-            paint_floating_money_effect(
+            PaintFloatingMoneyEffect(
                 session, value, stringId, moneyEffect->y, moneyEffect->z,
                 const_cast<int8_t*>(&money_wave[moneyEffect->Wiggle % 22]), moneyEffect->OffsetX, session->CurrentRotation);
             break;

@@ -148,7 +148,7 @@ struct paint_session
     paint_entry* NextFreePaintStruct;
     CoordsXY SpritePosition;
     paint_struct* LastRootPS;
-    attached_paint_struct* UnkF1AD2C;
+    attached_paint_struct* LastAttachedPS;
     ViewportInteractionItem InteractionType;
     uint8_t CurrentRotation;
     support_height SupportSegments[9];
@@ -218,18 +218,18 @@ paint_struct* sub_98199C_rotated(
 
 void paint_util_push_tunnel_rotated(paint_session* session, uint8_t direction, uint16_t height, uint8_t type);
 
-bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, int16_t x, int16_t y);
-bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, int16_t x, int16_t y);
-void paint_floating_money_effect(
+bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int16_t x, int16_t y);
+bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int16_t x, int16_t y);
+void PaintFloatingMoneyEffect(
     paint_session* session, money32 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x,
     uint32_t rotation);
 
-paint_session* paint_session_alloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
-void paint_session_free(paint_session* session);
-void paint_session_generate(paint_session* session);
-void paint_session_arrange(paint_session* session);
-void paint_draw_structs(paint_session* session);
-void paint_draw_money_structs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
+paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
+void PaintSessionFree(paint_session* session);
+void PaintSessionGenerate(paint_session* session);
+void PaintSessionArrange(paint_session* session);
+void PaintDrawStructs(paint_session* session);
+void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
 
 // TESTING
 #ifdef __TESTPAINT__

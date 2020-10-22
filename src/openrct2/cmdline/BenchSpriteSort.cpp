@@ -147,7 +147,7 @@ static void BM_paint_session_arrange(benchmark::State& state, const std::vector<
         state.PauseTiming();
         std::copy_n(local_s, std::size(sessions), sessions.begin());
         state.ResumeTiming();
-        paint_session_arrange(&sessions[0]);
+        PaintSessionArrange(&sessions[0]);
         benchmark::DoNotOptimize(sessions);
     }
     state.SetItemsProcessed(state.iterations() * std::size(sessions));
