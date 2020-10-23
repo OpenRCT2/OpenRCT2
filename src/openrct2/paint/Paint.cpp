@@ -134,7 +134,7 @@ static constexpr CoordsXYZ RotateBoundBoxSize(const CoordsXYZ& bbSize, const uin
 /**
  * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
  */
-static std::optional<paint_struct> sub_9819_c(
+static std::optional<paint_struct> CreateNormalPaintStruct(
     paint_session* session, const uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset)
 {
@@ -773,14 +773,14 @@ paint_struct* PaintAddImageAsParent(
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
     CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
     CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
-    auto newPS = sub_9819_c(session, image_id, offset, boundBoxSize, boundBoxOffset);
+    auto newPS = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
 
     if (!newPS.has_value())
     {
         return nullptr;
     }
 
-    auto* ps = session->AllocateRootPaintEntry(std::move(*newPS));
+    auto* ps = session->AllocateNormalPaintEntry(std::move(*newPS));
     PaintSessionAddPSToQuadrant(session, ps);
 
     return ps;
@@ -817,13 +817,13 @@ paint_struct* PaintAddImageAsParent(
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
     CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
     CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
-    auto ps = sub_9819_c(session, image_id, offset, boundBoxSize, boundBoxOffset);
+    auto ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
 
     if (!ps.has_value())
     {
         return nullptr;
     }
-    return session->AllocateRootPaintEntry(std::move(*ps));
+    return session->AllocateNormalPaintEntry(std::move(*ps));
 }
 
 /**
@@ -854,7 +854,7 @@ paint_struct* PaintAddImageAsChild(
             boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
     }
 
-    auto newPS = sub_9819_c(session, image_id, offset, boundBoxLength, boundBoxOffset);
+    auto newPS = CreateNormalPaintStruct(session, image_id, offset, boundBoxLength, boundBoxOffset);
 
     if (!newPS.has_value())
     {
@@ -862,7 +862,7 @@ paint_struct* PaintAddImageAsChild(
     }
 
     paint_struct* parentPS = session->LastPS;
-    auto ps = session->AllocateRootPaintEntry(std::move(*newPS));
+    auto ps = session->AllocateNormalPaintEntry(std::move(*newPS));
     parentPS->children = ps;
     return ps;
 }
@@ -985,7 +985,7 @@ void PaintFloatingMoneyEffect(
     ps.x = coord.x + offset_x;
     ps.y = coord.y;
 
-    session->AllocatePaintString(std::move(ps));
+    session->AllocateStringPaintEntry(std::move(ps));
 }
 
 /**
