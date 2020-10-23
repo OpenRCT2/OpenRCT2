@@ -921,7 +921,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
                 patrolAreaBaseZ += 16;
             }
 
-            sub_98196C(session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, patrolAreaBaseZ + 2);
+            PaintAddImageAsParent(session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, patrolAreaBaseZ + 2);
         }
     }
 
@@ -935,7 +935,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         uint32_t imageId = (SPR_HEIGHT_MARKER_BASE + heightMarkerBaseZ / 16) | COLOUR_GREY << 19 | IMAGE_TYPE_REMAP;
         imageId += get_height_marker_offset();
         imageId -= gMapBaseZ;
-        sub_98196C(session, imageId, 16, 16, 1, 1, 0, heightMarkerBaseZ);
+        PaintAddImageAsParent(session, imageId, 16, 16, 1, 1, 0, heightMarkerBaseZ);
     }
 
     PathSurfaceEntry* footpathEntry = tile_element->AsPath()->GetSurfaceEntry();

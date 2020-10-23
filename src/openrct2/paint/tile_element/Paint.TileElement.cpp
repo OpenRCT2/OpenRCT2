@@ -125,7 +125,7 @@ static void blank_tiles_paint(paint_session* session, int32_t x, int32_t y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-    sub_98196C(session, SPR_BLANK_TILE, 0, 0, 32, 32, -1, 16);
+    PaintAddImageAsParent(session, SPR_BLANK_TILE, 0, 0, 32, 32, -1, 16);
 }
 
 bool gShowSupportSegmentHeights = false;

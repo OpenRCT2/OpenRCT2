@@ -142,17 +142,17 @@ static void paint_swinging_inverter_ship(
         }
 
         imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98196C(session, imageId, 0, 0, 32, 32, 1, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
 
         switch (direction)
         {
             case 0:
                 imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_TRACK];
-                sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + 9);
+                PaintAddImageAsParent(session, imageId, 0, 24, 32, 8, 1, height + 9);
                 break;
             case 1:
                 imageId = SPR_STATION_PLATFORM_NW_SE | session->TrackColours[SCHEME_TRACK];
-                sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + 9);
+                PaintAddImageAsParent(session, imageId, 24, 0, 8, 32, 1, height + 9);
                 break;
             case 2:
                 imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_TRACK];

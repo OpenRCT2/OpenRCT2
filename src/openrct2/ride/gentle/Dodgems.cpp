@@ -30,7 +30,7 @@ static constexpr const uint32_t dodgems_fence_sprites[] = { SPR_DODGEMS_FENCE_TO
 static void paint_dodgems_roof(paint_session* session, int32_t height, int32_t offset)
 {
     uint32_t image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | session->TrackColours[SCHEME_TRACK];
-    sub_98196C(session, image_id, 0, 0, 32, 32, 2, height);
+    PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, 2, height);
 
     image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (PALETTE_DARKEN_3 << 19) | IMAGE_TYPE_TRANSPARENT;
     PaintAttachToPreviousPS(session, image_id, 0, 0);

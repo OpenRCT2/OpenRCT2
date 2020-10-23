@@ -54,7 +54,7 @@ static void maze_paint_setup(
     uint32_t rotation = session->CurrentRotation;
     // draw ground
     int32_t image_id = SPR_TERRAIN_DIRT | session->TrackColours[SCHEME_MISC];
-    sub_98196C(session, image_id, 0, 0, 32, 32, 0, height);
+    PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, 0, height);
 
     wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
 

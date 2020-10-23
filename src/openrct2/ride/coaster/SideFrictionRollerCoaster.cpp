@@ -449,7 +449,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21727, 0, 2, 32, 27, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21747, 0, 2, 32, 27, 0, height, 0, 2,
@@ -457,7 +457,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21732, 0, 2, 32, 27, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21752, 0, 2, 32, 27, 0, height, 0, 2,
@@ -465,7 +465,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21737, 0, 2, 32, 32, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21757, 0, 2, 32, 32, 0, height, 0, 2,
@@ -473,7 +473,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21722, 0, 2, 32, 32, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21742, 0, 2, 32, 32, 0, height, 0, 2,
@@ -497,7 +497,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21726, 0, 0, 32, 16, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21746, 0, 0, 32, 16, 0, height, 0, 0,
@@ -505,7 +505,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21731, 0, 0, 32, 16, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21751, 0, 0, 32, 16, 0, height, 0, 0,
@@ -513,7 +513,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21736, 0, 16, 32, 16, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21756, 0, 16, 32, 16, 0, height, 0, 16,
@@ -521,7 +521,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21721, 0, 16, 32, 16, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21741, 0, 16, 32, 16, 0, height, 0, 16,
@@ -540,7 +540,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21725, 0, 16, 16, 16, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21745, 0, 16, 16, 16, 0, height, 0, 16,
@@ -548,7 +548,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21730, 16, 16, 16, 16, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21750, 16, 16, 16, 16, 0, height, 16, 16,
@@ -556,7 +556,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21735, 16, 0, 16, 16, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21755, 16, 0, 16, 16, 0, height, 16, 0,
@@ -564,7 +564,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21720, 0, 0, 16, 16, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21740, 0, 0, 16, 16, 0, height, 0, 0,
@@ -589,7 +589,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21724, 16, 0, 16, 34, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21744, 16, 0, 16, 34, 0, height, 16, 0,
@@ -597,7 +597,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21729, 0, 0, 16, 32, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21749, 0, 0, 16, 32, 0, height, 0, 0,
@@ -605,7 +605,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21734, 0, 0, 16, 32, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21754, 0, 0, 16, 32, 0, height, 0, 0,
@@ -613,7 +613,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21719, 16, 0, 16, 32, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21739, 16, 0, 16, 32, 0, height, 16, 0,
@@ -632,7 +632,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21723, 2, 0, 32, 32, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21743, 2, 0, 32, 32, 0, height, 2, 0,
@@ -640,7 +640,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21728, 2, 0, 27, 32, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21748, 2, 0, 27, 32, 0, height, 2, 0,
@@ -648,7 +648,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21733, 2, 0, 27, 32, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21753, 2, 0, 27, 32, 0, height, 2, 0,
@@ -656,7 +656,7 @@ static void side_friction_rc_track_left_quarter_turn_5(
                     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21718, 2, 0, 32, 32, 2, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 21738, 2, 0, 32, 32, 0, height, 2, 0,

@@ -152,11 +152,11 @@ static void paint_car_ride_track_flat(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 1, height);
+        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 1, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 1, height);
+        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 1, height);
     }
 
     if (direction == 0 || direction == 2)
@@ -426,13 +426,13 @@ static void paint_car_ride_track_left_quarter_turn_1_tile(
             PaintAddImageAsParent(session, imageId, 6, 0, 26, 24, 1, height, 6, 2, height);
             break;
         case 1:
-            sub_98196C(session, imageId, 0, 0, 26, 26, 1, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 26, 26, 1, height);
             break;
         case 2:
             PaintAddImageAsParent(session, imageId, 0, 6, 24, 26, 1, height, 2, 6, height);
             break;
         case 3:
-            sub_98196C(session, imageId, 6, 6, 24, 24, 1, height);
+            PaintAddImageAsParent(session, imageId, 6, 6, 24, 24, 1, height);
             break;
     }
 
@@ -461,11 +461,11 @@ static void paint_car_ride_track_spinning_tunnel(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 1, height);
+        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 1, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 1, height);
+        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 1, height);
     }
 
     track_paint_util_spinning_tunnel_paint(session, 1, height, direction);
@@ -679,11 +679,11 @@ static void paint_car_ride_track_log_bumps(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 1, height);
+        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 1, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 1, height);
+        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 1, height);
     }
 
     if (direction == 0 || direction == 2)

@@ -426,11 +426,11 @@ static void paint_monorail_track_flat(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height);
+        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height);
+        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 3, height);
     }
 
     if (direction == 0 || direction == 2)
@@ -515,11 +515,11 @@ static void paint_monorail_track_25_deg_up(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height);
+        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height);
+        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 3, height);
     }
 
     switch (direction)
@@ -557,11 +557,11 @@ static void paint_monorail_track_flat_to_25_deg_up(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height);
+        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height);
+        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 3, height);
     }
 
     switch (direction)
@@ -599,11 +599,11 @@ static void paint_monorail_track_25_deg_up_to_flat(
 
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height);
+        PaintAddImageAsParent(session, imageId, 0, 6, 32, 20, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height);
+        PaintAddImageAsParent(session, imageId, 6, 0, 20, 32, 3, height);
     }
 
     switch (direction)
@@ -758,12 +758,12 @@ static void paint_monorail_track_s_bend_left(
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(
+        PaintAddImageAsParent(
             session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 3, height);
     }
     else
     {
-        sub_98196C(
+        PaintAddImageAsParent(
             session, imageId, static_cast<int8_t>(offset.y), static_cast<int8_t>(offset.x), bounds.y, bounds.x, 3, height);
     }
 
@@ -864,12 +864,12 @@ static void paint_monorail_track_s_bend_right(
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(
+        PaintAddImageAsParent(
             session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 3, height);
     }
     else
     {
-        sub_98196C(
+        PaintAddImageAsParent(
             session, imageId, static_cast<int8_t>(offset.y), static_cast<int8_t>(offset.x), bounds.y, bounds.x, 3, height);
     }
 

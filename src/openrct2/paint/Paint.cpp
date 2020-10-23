@@ -731,65 +731,18 @@ void PaintSessionFree([[maybe_unused]] paint_session* session)
  * @param z_offset (dx)
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
  */
-paint_struct* sub_98196C(paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
+paint_struct* PaintAddImageAsParent(
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
-    session->LastPS = nullptr;
-    session->LastAttachedPS = nullptr;
-
-    if (session->NoPaintStructsAvailable())
-    {
-        return nullptr;
-    }
-
-    auto g1Element = gfx_get_g1_element(image_id & 0x7FFFF);
-    if (g1Element == nullptr)
-    {
-        return nullptr;
-    }
-
-    uint8_t swappedRotation = (session->CurrentRotation * 3) % 4; // swaps 1 and 3
-    auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z };
-    swappedRotCoord += session->SpritePosition;
-
-    const auto imagePos = translate_3d_to_2d_with_z(session->CurrentRotation, swappedRotCoord);
-
-    if (!ImageWithinDPI(imagePos, *g1Element, session->DPI))
-    {
-        return nullptr;
-    }
-
-    const auto rotBoundBoxSize = RotateBoundBoxSize(boundBoxSize, session->CurrentRotation);
-
-    paint_struct ps;
-    ps.image_id = image_id;
-    ps.x = imagePos.x;
-    ps.y = imagePos.y;
-    ps.bounds.x_end = swappedRotCoord.x + rotBoundBoxSize.x;
-    ps.bounds.y_end = swappedRotCoord.y + rotBoundBoxSize.y;
-    ps.bounds.z_end = swappedRotCoord.z + rotBoundBoxSize.z;
-    ps.bounds.x = swappedRotCoord.x;
-    ps.bounds.y = swappedRotCoord.y;
-    ps.bounds.z = swappedRotCoord.z;
-    ps.flags = 0;
-    ps.attached_ps = nullptr;
-    ps.children = nullptr;
-    ps.sprite_type = session->InteractionType;
-    ps.var_29 = 0;
-    ps.map_x = session->MapPosition.x;
-    ps.map_y = session->MapPosition.y;
-    ps.tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session->CurrentlyDrawnItem));
-
-    auto* psPtr = session->AllocateRootPaintEntry(std::move(ps));
-    PaintSessionAddPSToQuadrant(session, psPtr);
-
-    return psPtr;
+    return PaintAddImageAsParent(
+        session, image_id, offset.x, offset.y, boundBoxSize.x, boundBoxSize.y, boundBoxSize.z, offset.z, 0, 0, 0);
 }
 
-paint_struct* sub_98196C(
+paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
 {
-    return sub_98196C(
+    return PaintAddImageAsParent(
         session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z });
 }
 

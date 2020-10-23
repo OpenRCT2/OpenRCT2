@@ -79,7 +79,7 @@ void bolliger_mabillard_track_station(
             session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
             height + 3);
     }
-    sub_98196C_rotated(
+    PaintAddImageAsParentRotated(
         session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(
         session, direction, height, session->TrackColours[SCHEME_SUPPORTS], supportType);
@@ -1367,11 +1367,11 @@ void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17345, 0, 0, 32, 16, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17350, 0, 0, 32, 16, 3, height);
                     break;
                 case 2:
@@ -1411,7 +1411,7 @@ void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
                         height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17361, 0, 0, 16, 16, 3, height);
                     break;
             }
@@ -1431,11 +1431,11 @@ void bolliger_mabillard_track_left_quarter_turn_5_25_deg_up(
                         height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17352, 0, 0, 16, 32, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17357, 0, 0, 16, 32, 3, height);
                     break;
                 case 3:
@@ -1540,11 +1540,11 @@ void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
                         height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17335, 0, 0, 32, 16, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17340, 0, 0, 32, 16, 3, height);
                     break;
             }
@@ -1559,7 +1559,7 @@ void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17326, 0, 0, 16, 16, 3, height);
                     break;
                 case 1:
@@ -1594,11 +1594,11 @@ void bolliger_mabillard_track_right_quarter_turn_5_25_deg_up(
                         height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17332, 0, 0, 16, 32, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17337, 0, 0, 16, 32, 3, height);
                     break;
                 case 3:
@@ -1708,12 +1708,12 @@ void bolliger_mabillard_track_s_bend_left(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17309, 0, 0, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17313, 0, 0, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -1745,12 +1745,12 @@ void bolliger_mabillard_track_s_bend_left(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17314, 0, 0, 32, 26, 3, height, 0, 6, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17309, 0, 0, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17313, 0, 0, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -1848,11 +1848,11 @@ void bolliger_mabillard_track_s_bend_right(
                     metal_a_supports_paint_setup(session, supportType, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17318, 0, 0, 32, 26, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17322, 0, 0, 32, 26, 3, height);
                     break;
             }
@@ -1867,11 +1867,11 @@ void bolliger_mabillard_track_s_bend_right(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17318, 0, 0, 32, 26, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17322, 0, 0, 32, 26, 3, height);
                     break;
                 case 2:
@@ -1939,22 +1939,22 @@ void bolliger_mabillard_track_left_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17594, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17602, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17601, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17609, 0, 6, 32, 20, 7, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -1974,22 +1974,22 @@ void bolliger_mabillard_track_left_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17595, 0, 0, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 20, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17603, 0, 14, 32, 2, 63, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 11, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17600, 0, 6, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 16, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17608, 0, 6, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 10, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -2033,19 +2033,19 @@ void bolliger_mabillard_track_left_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17597, 0, 0, 32, 16, 3, height + 32);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17605, 0, 0, 32, 16, 3, height + 32);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17598, 0, 16, 32, 16, 3, height + 32);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17606, 0, 16, 32, 16, 3, height + 32);
                     break;
             }
@@ -2066,19 +2066,19 @@ void bolliger_mabillard_track_left_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17598, 0, 16, 32, 16, 3, height + 32);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17606, 0, 16, 32, 16, 3, height + 32);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17597, 0, 0, 32, 16, 3, height + 32);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17605, 0, 0, 32, 16, 3, height + 32);
                     break;
             }
@@ -2121,22 +2121,22 @@ void bolliger_mabillard_track_left_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17600, 0, 6, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 16, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17608, 0, 6, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 10, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17595, 0, 0, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 20, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17603, 0, 14, 32, 2, 63, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 11, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -2152,22 +2152,22 @@ void bolliger_mabillard_track_left_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17601, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17609, 0, 6, 32, 20, 7, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17594, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17602, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -2201,19 +2201,19 @@ void bolliger_mabillard_track_right_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17625, 0, 6, 32, 20, 7, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17617, 0, 6, 32, 20, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17618, 0, 6, 32, 20, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17610, 0, 6, 32, 20, 3, height);
                     break;
             }
@@ -2228,22 +2228,22 @@ void bolliger_mabillard_track_right_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17624, 0, 6, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17616, 0, 6, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 16, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17619, 0, 14, 32, 2, 63, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 10, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17611, 0, 0, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 20, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -2280,19 +2280,19 @@ void bolliger_mabillard_track_right_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17622, 0, 16, 32, 16, 3, height + 32);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17614, 0, 16, 32, 16, 3, height + 32);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17621, 0, 0, 32, 16, 3, height + 32);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17613, 0, 0, 32, 16, 3, height + 32);
                     break;
             }
@@ -2308,19 +2308,19 @@ void bolliger_mabillard_track_right_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17621, 0, 0, 32, 16, 3, height + 32);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17613, 0, 0, 32, 16, 3, height + 32);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17622, 0, 16, 32, 16, 3, height + 32);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17614, 0, 16, 32, 16, 3, height + 32);
                     break;
             }
@@ -2356,22 +2356,22 @@ void bolliger_mabillard_track_right_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17619, 0, 14, 32, 2, 63, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 10, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17611, 0, 0, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 20, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17624, 0, 6, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17616, 0, 6, 32, 26, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 16, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -2382,19 +2382,19 @@ void bolliger_mabillard_track_right_vertical_loop(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17618, 0, 6, 32, 20, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17610, 0, 6, 32, 20, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17625, 0, 6, 32, 20, 7, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17617, 0, 6, 32, 20, 3, height);
                     break;
             }
@@ -2656,19 +2656,19 @@ void bolliger_mabillard_track_left_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17375, 0, 6, 32, 20, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17377, 0, 6, 32, 20, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17379, 0, 6, 32, 20, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17373, 0, 6, 32, 20, 3, height);
                     break;
             }
@@ -2691,19 +2691,19 @@ void bolliger_mabillard_track_left_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17374, 6, 0, 20, 32, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17376, 6, 0, 20, 32, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17378, 6, 0, 20, 32, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17372, 6, 0, 20, 32, 3, height);
                     break;
             }
@@ -2734,19 +2734,19 @@ void bolliger_mabillard_track_right_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17364, 0, 6, 32, 20, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17366, 0, 6, 32, 20, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17368, 0, 6, 32, 20, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17370, 0, 6, 32, 20, 3, height);
                     break;
             }
@@ -2769,22 +2769,22 @@ void bolliger_mabillard_track_right_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17365, 6, 0, 20, 32, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17367, 6, 0, 20, 32, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17369, 6, 0, 20, 32, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 10, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17371, 6, 0, 20, 32, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -4203,28 +4203,28 @@ void bolliger_mabillard_track_on_ride_photo(
     switch (direction)
     {
         case 0:
-            sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
             metal_a_supports_paint_setup(session, supportType, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(session, supportType, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 17146, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             break;
         case 1:
-            sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
             metal_a_supports_paint_setup(session, supportType, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(session, supportType, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 17147, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             break;
         case 2:
-            sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
             metal_a_supports_paint_setup(session, supportType, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(session, supportType, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 17146, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             break;
         case 3:
-            sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
             metal_a_supports_paint_setup(session, supportType, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(session, supportType, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             PaintAddImageAsParentRotated(
@@ -8507,22 +8507,22 @@ void bolliger_mabillard_track_left_bank_to_left_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17725, 0, 6, 32, 20, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17727, 0, 6, 32, 20, 3, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17731, 0, 6, 32, 1, 26, height, 0, 27,
                         height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17729, 0, 6, 32, 20, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17723, 0, 6, 32, 20, 3, height);
                     break;
             }
@@ -8545,19 +8545,19 @@ void bolliger_mabillard_track_left_bank_to_left_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17724, 6, 0, 20, 32, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17726, 6, 0, 20, 32, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17728, 6, 0, 20, 32, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17722, 6, 0, 20, 32, 3, height);
                     break;
             }
@@ -8588,22 +8588,22 @@ void bolliger_mabillard_track_right_bank_to_right_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17714, 0, 6, 32, 20, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17716, 0, 6, 32, 20, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17718, 0, 6, 32, 20, 3, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17730, 0, 6, 32, 1, 26, height, 0, 27,
                         height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17720, 0, 6, 32, 20, 3, height);
                     break;
             }
@@ -8626,22 +8626,22 @@ void bolliger_mabillard_track_right_bank_to_right_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17715, 6, 0, 20, 32, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17717, 6, 0, 20, 32, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17719, 6, 0, 20, 32, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17721, 6, 0, 20, 32, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -8672,22 +8672,22 @@ void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down_to_left_bank(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17717, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17719, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17721, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17715, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -8710,22 +8710,22 @@ void bolliger_mabillard_track_left_quarter_turn_3_25_deg_down_to_left_bank(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17716, 6, 0, 20, 32, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17718, 6, 0, 20, 32, 3, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17730, 6, 0, 1, 32, 26, height, 27, 0,
                         height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17720, 6, 0, 20, 32, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17714, 6, 0, 20, 32, 3, height);
                     break;
             }
@@ -8756,19 +8756,19 @@ void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down_to_right_bank(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17722, 0, 6, 32, 20, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17724, 0, 6, 32, 20, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17726, 0, 6, 32, 20, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17728, 0, 6, 32, 20, 3, height);
                     break;
             }
@@ -8791,22 +8791,22 @@ void bolliger_mabillard_track_right_quarter_turn_3_25_deg_down_to_right_bank(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17723, 6, 0, 20, 32, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17725, 6, 0, 20, 32, 3, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17727, 6, 0, 20, 32, 3, height);
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17731, 6, 0, 1, 32, 26, height, 27, 0,
                         height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17729, 6, 0, 20, 32, 3, height);
                     break;
             }
@@ -8864,7 +8864,7 @@ void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 18025, 0, 6, 32, 20, 3, height);
                     break;
                 case 1:
@@ -8873,11 +8873,11 @@ void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(
                         height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 18029, 0, 6, 32, 20, 3, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 18023, 0, 6, 32, 20, 3, height);
                     break;
             }
@@ -8900,7 +8900,7 @@ void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 18024, 6, 0, 20, 32, 3, height);
                     break;
                 case 1:
@@ -8914,7 +8914,7 @@ void bolliger_mabillard_track_left_banked_quarter_turn_3_25_deg_up(
                         height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 18022, 6, 0, 20, 32, 3, height);
                     break;
             }
@@ -8945,11 +8945,11 @@ void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 18014, 0, 6, 32, 20, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 18016, 0, 6, 32, 20, 3, height);
                     break;
                 case 2:
@@ -8958,7 +8958,7 @@ void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(
                         height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 18020, 0, 6, 32, 20, 3, height);
                     break;
             }
@@ -8981,7 +8981,7 @@ void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 18015, 6, 0, 20, 32, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -8998,7 +8998,7 @@ void bolliger_mabillard_track_right_banked_quarter_turn_3_25_deg_up(
                     metal_a_supports_paint_setup(session, supportType, 4, 10, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 18021, 6, 0, 20, 32, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -9080,7 +9080,7 @@ void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17979, 0, 0, 32, 16, 3, height);
                     break;
                 case 1:
@@ -9125,7 +9125,7 @@ void bolliger_mabillard_track_left_banked_quarter_turn_5_25_deg_up(
                         height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17995, 0, 0, 16, 16, 3, height);
                     break;
             }
@@ -9264,7 +9264,7 @@ void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(
                         height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17974, 0, 0, 32, 16, 3, height);
                     break;
             }
@@ -9279,7 +9279,7 @@ void bolliger_mabillard_track_right_banked_quarter_turn_5_25_deg_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17960, 0, 0, 16, 16, 3, height);
                     break;
                 case 1:
@@ -10312,19 +10312,19 @@ void bolliger_mabillard_track_half_loop_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17626, 0, 6, 32, 20, 3, height);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17634, 0, 6, 32, 20, 11, height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17633, 0, 6, 32, 20, 9, height);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17641, 0, 6, 32, 20, 7, height);
                     break;
             }
@@ -10358,7 +10358,7 @@ void bolliger_mabillard_track_half_loop_up(
                     metal_a_supports_paint_setup(session, supportType, 4, 16, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17640, 0, 6, 32, 20, 3, height);
                     metal_a_supports_paint_setup(session, supportType, 4, 16, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -10370,7 +10370,7 @@ void bolliger_mabillard_track_half_loop_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17628, 16, 0, 2, 16, 119, height);
                     break;
                 case 1:
@@ -10379,7 +10379,7 @@ void bolliger_mabillard_track_half_loop_up(
                         height);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17631, 10, 16, 4, 12, 119, height);
                     break;
                 case 3:
@@ -10399,19 +10399,19 @@ void bolliger_mabillard_track_half_loop_up(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17629, 0, 0, 32, 16, 3, height + 32);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17637, 0, 0, 32, 16, 3, height + 32);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17630, 0, 16, 32, 12, 3, height + 32);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17638, 0, 16, 32, 12, 3, height + 32);
                     break;
             }

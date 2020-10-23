@@ -348,11 +348,11 @@ static void suspended_monorail_track_left_quarter_turn_5(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25875, 0, 0, 32, 16, 3, height + 32);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25880, 0, 0, 32, 16, 3, height + 32);
                     break;
                 case 2:
@@ -392,7 +392,7 @@ static void suspended_monorail_track_left_quarter_turn_5(
                         height + 32);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25869, 0, 0, 16, 16, 3, height + 32);
                     break;
             }
@@ -412,11 +412,11 @@ static void suspended_monorail_track_left_quarter_turn_5(
                         height + 32);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25878, 0, 0, 16, 32, 3, height + 32);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25883, 0, 0, 16, 32, 3, height + 32);
                     break;
                 case 3:
@@ -533,11 +533,11 @@ static void suspended_monorail_track_s_bend_left(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25920, 0, 0, 32, 26, 3, height + 32);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25924, 0, 0, 32, 26, 3, height + 32);
                     break;
                 case 2:
@@ -585,11 +585,11 @@ static void suspended_monorail_track_s_bend_left(
                         height + 32);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25920, 0, 0, 32, 26, 3, height + 32);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25924, 0, 0, 32, 26, 3, height + 32);
                     break;
             }
@@ -714,11 +714,11 @@ static void suspended_monorail_track_s_bend_right(
                         height + 32);
                     break;
                 case 2:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25929, 0, 0, 32, 26, 3, height + 32);
                     break;
                 case 3:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25933, 0, 0, 32, 26, 3, height + 32);
                     break;
             }
@@ -746,11 +746,11 @@ static void suspended_monorail_track_s_bend_right(
             switch (direction)
             {
                 case 0:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25929, 0, 0, 32, 26, 3, height + 32);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25933, 0, 0, 32, 26, 3, height + 32);
                     break;
                 case 2:
@@ -884,7 +884,7 @@ static void suspended_monorail_track_left_quarter_turn_3(
                         height + 32);
                     break;
                 case 1:
-                    sub_98196C_rotated(
+                    PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 25862, 0, 0, 16, 16, 3, height + 32);
                     break;
                 case 2:

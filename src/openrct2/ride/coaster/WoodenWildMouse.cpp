@@ -134,7 +134,7 @@ static void wooden_wild_mouse_track_flat(
     };
 
     uint32_t imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
-    sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(
@@ -574,13 +574,13 @@ static void wooden_wild_mouse_track_left_quarter_turn_1(
             PaintAddImageAsParent(session, imageId, 6, 0, 26, 24, 1, height, 6, 2, height);
             break;
         case 1:
-            sub_98196C(session, imageId, 0, 0, 26, 26, 1, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 26, 26, 1, height);
             break;
         case 2:
             PaintAddImageAsParent(session, imageId, 0, 6, 24, 26, 1, height, 2, 6, height);
             break;
         case 3:
-            sub_98196C(session, imageId, 6, 6, 24, 24, 1, height);
+            PaintAddImageAsParent(session, imageId, 6, 6, 24, 24, 1, height);
             break;
     }
     wooden_a_supports_paint_setup(session, supportType[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);

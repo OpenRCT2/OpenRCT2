@@ -589,7 +589,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
     {
         int32_t part = trackSequence == 0 ? 0 : 1;
         const sprite_bb* sbb = &imageIds[direction][part];
-        sub_98196C(
+        PaintAddImageAsParent(
             session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], static_cast<int8_t>(sbb->offset.x),
             static_cast<int8_t>(sbb->offset.y), sbb->bb_size.x, sbb->bb_size.y, static_cast<int8_t>(sbb->bb_size.z),
             height + static_cast<int8_t>(sbb->offset.z));
@@ -658,7 +658,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
     {
         int32_t part = trackSequence == 0 ? 0 : 1;
         const sprite_bb* sbb = &imageIds[direction][part];
-        sub_98196C(
+        PaintAddImageAsParent(
             session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], static_cast<int8_t>(sbb->offset.x),
             static_cast<int8_t>(sbb->offset.y), sbb->bb_size.x, sbb->bb_size.y, static_cast<int8_t>(sbb->bb_size.z),
             height + static_cast<int8_t>(sbb->offset.z));
@@ -736,7 +736,7 @@ static void wild_mouse_track_left_quarter_turn_1(
             PaintAddImageAsParent(session, imageId, 0, 0, 26, 24, 2, height, 6, 2, height);
             break;
         case 1:
-            sub_98196C(session, imageId, 0, 0, 26, 26, 2, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 26, 26, 2, height);
             break;
         case 2:
             PaintAddImageAsParent(session, imageId, 0, 0, 24, 26, 2, height, 2, 6, height);
