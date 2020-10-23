@@ -4099,23 +4099,6 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :Base Block
-
-[TTRFTL02]
-STR_NAME    :Roof
-
-[TTRFTL03]
-STR_NAME    :Roof
-
-[TTRFTL04]
-STR_NAME    :Roof
-
-[TTRFTL07]
-STR_NAME    :Roof
-
-[TTRFTL08]
-STR_NAME    :Roof
 
 [TTPIRF02]
 STR_NAME    :Roof
@@ -4134,9 +4117,6 @@ STR_NAME    :Roof
 
 [TTPIRF08]
 STR_NAME    :Roof
-
-[MG-PRAR]
-STR_NAME    :Wall with Passageway
 
 [TTRFWD01]
 STR_NAME    :Roof
@@ -4472,3 +4452,11 @@ STR_DTLS    :A large annual music festival takes place on your land. Build a hip
 STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
 STR_PARK    :Rock 'n' Roll Revival
 STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock 'n' roll makeover and turn the place into a successful venue.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Panda World
+STR_PARK    :Panda World
+STR_DTLS    :Add more rides and attract more people to this panda-themed park
