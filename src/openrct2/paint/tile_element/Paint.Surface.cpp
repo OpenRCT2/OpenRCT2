@@ -647,7 +647,8 @@ static void viewport_surface_draw_tile_side_bottom(
         if (curHeight != cornerHeight1 && curHeight != cornerHeight2)
         {
             uint32_t image_id = base_image_id + image_offset;
-            PaintAddImageAsParent(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * COORDS_Z_PER_TINY_Z);
+            PaintAddImageAsParent(
+                session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * COORDS_Z_PER_TINY_Z);
             curHeight++;
         }
     }
@@ -671,7 +672,8 @@ static void viewport_surface_draw_tile_side_bottom(
             }
 
             const uint32_t image_id = base_image_id + image_offset;
-            PaintAddImageAsParent(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * COORDS_Z_PER_TINY_Z);
+            PaintAddImageAsParent(
+                session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * COORDS_Z_PER_TINY_Z);
 
             return;
         }
@@ -686,7 +688,8 @@ static void viewport_surface_draw_tile_side_bottom(
 
             if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
-                PaintAddImageAsParent(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * COORDS_Z_PER_TINY_Z);
+                PaintAddImageAsParent(
+                    session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * COORDS_Z_PER_TINY_Z);
 
                 curHeight++;
                 continue;
@@ -863,7 +866,8 @@ static void viewport_surface_draw_tile_side_top(
         if (cur_height != cornerHeight1 && cur_height != cornerHeight2)
         {
             const uint32_t image_id = base_image_id + image_offset;
-            PaintAddImageAsParent(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * COORDS_Z_PER_TINY_Z);
+            PaintAddImageAsParent(
+                session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * COORDS_Z_PER_TINY_Z);
             cur_height++;
         }
     }
@@ -878,7 +882,8 @@ static void viewport_surface_draw_tile_side_top(
 
     while (cur_height < cornerHeight1 && cur_height < neighbourCornerHeight1)
     {
-        PaintAddImageAsParent(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * COORDS_Z_PER_TINY_Z);
+        PaintAddImageAsParent(
+            session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * COORDS_Z_PER_TINY_Z);
         cur_height++;
     }
 

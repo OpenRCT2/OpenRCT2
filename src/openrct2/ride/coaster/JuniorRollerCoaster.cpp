@@ -5646,13 +5646,15 @@ static void junior_rc_booster_paint_setup(
 {
     if (direction & 1)
     {
-        PaintAddImageAsParent(session, SPR_JUNIOR_RC_BOOSTER_NE_SW | session->TrackColours[SCHEME_TRACK], 0, 0, 20, 32, 1, height);
+        PaintAddImageAsParent(
+            session, SPR_JUNIOR_RC_BOOSTER_NE_SW | session->TrackColours[SCHEME_TRACK], 0, 0, 20, 32, 1, height);
 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else
     {
-        PaintAddImageAsParent(session, SPR_JUNIOR_RC_BOOSTER_NW_SE | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height);
+        PaintAddImageAsParent(
+            session, SPR_JUNIOR_RC_BOOSTER_NW_SE | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height);
 
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }

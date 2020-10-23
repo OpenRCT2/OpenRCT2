@@ -431,13 +431,15 @@ static void sub_6A4101(
         uint32_t imageId = (direction << 1) + base_image_id + 28;
 
         // Draw pole in the back
-        PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
+        PaintAddImageAsParent(
+            session, imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
 
         // Draw pole in the front and banner
         boundBoxOffsets.x = BannerBoundBoxes[direction][1].x;
         boundBoxOffsets.y = BannerBoundBoxes[direction][1].y;
         imageId++;
-        PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
+        PaintAddImageAsParent(
+            session, imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
 
         direction--;
         // If text shown
@@ -921,7 +923,8 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
                 patrolAreaBaseZ += 16;
             }
 
-            PaintAddImageAsParent(session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, patrolAreaBaseZ + 2);
+            PaintAddImageAsParent(
+                session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, patrolAreaBaseZ + 2);
         }
     }
 

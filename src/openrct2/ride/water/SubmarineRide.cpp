@@ -68,7 +68,8 @@ void vehicle_visual_submarine(
     }
 
     image_id = (baseImage_id + 1) | imageFlags;
-    ps = PaintAddImageAsParent(session, image_id, 0, 0, bb.length_x, bb.length_y, 2, z, bb.offset_x, bb.offset_y, bb.offset_z + z - 10);
+    ps = PaintAddImageAsParent(
+        session, image_id, 0, 0, bb.length_x, bb.length_y, 2, z, bb.offset_x, bb.offset_y, bb.offset_z + z - 10);
     if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;

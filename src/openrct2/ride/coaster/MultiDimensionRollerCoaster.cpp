@@ -4913,7 +4913,8 @@ static void multi_dimension_rc_track_on_ride_photo(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -4922,7 +4923,8 @@ static void multi_dimension_rc_track_on_ride_photo(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 15806, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -4931,7 +4933,8 @@ static void multi_dimension_rc_track_on_ride_photo(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 15807, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -4940,7 +4943,8 @@ static void multi_dimension_rc_track_on_ride_photo(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 15806, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -4959,7 +4963,8 @@ static void multi_dimension_rc_track_on_ride_photo(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -4969,7 +4974,8 @@ static void multi_dimension_rc_track_on_ride_photo(
                     height + 24);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -4979,7 +4985,8 @@ static void multi_dimension_rc_track_on_ride_photo(
                     height + 24);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -4989,7 +4996,8 @@ static void multi_dimension_rc_track_on_ride_photo(
                     height + 24);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(

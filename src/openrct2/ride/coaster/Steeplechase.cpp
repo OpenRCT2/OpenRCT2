@@ -30,13 +30,15 @@ static void steeplechase_track_flat(
         {
             case 0:
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28635, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28635, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28636, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28636, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
@@ -48,13 +50,15 @@ static void steeplechase_track_flat(
         {
             case 0:
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28633, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28633, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28634, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28634, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
@@ -100,22 +104,26 @@ static void steeplechase_track_25_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28649, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28649, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28655, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28655, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28651, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28651, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28656, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28656, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
@@ -126,22 +134,26 @@ static void steeplechase_track_25_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28637, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28637, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28643, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28643, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28639, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28639, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28644, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28644, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
@@ -170,22 +182,26 @@ static void steeplechase_track_flat_to_25_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28650, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28650, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28657, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28657, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28652, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28652, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28658, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28658, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
@@ -196,22 +212,26 @@ static void steeplechase_track_flat_to_25_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28638, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28638, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28645, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28645, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28640, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28640, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28646, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28646, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
@@ -240,22 +260,26 @@ static void steeplechase_track_25_deg_up_to_flat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28654, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28654, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28660, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28660, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28653, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28653, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 5, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28659, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28659, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 5, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
@@ -266,22 +290,26 @@ static void steeplechase_track_25_deg_up_to_flat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28642, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28642, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28648, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28648, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28641, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28641, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK, 4, 5, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28647, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 28647, 0, 6, 32, 20, 3, height);
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_STICK_ALT, 4, 5, height, session->TrackColours[SCHEME_SUPPORTS]);
                 break;
@@ -934,12 +962,14 @@ static void steeplechase_track_brakes(
     {
         case 0:
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28635, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 28635, 0, 6, 32, 20, 3, height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28636, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 28636, 0, 6, 32, 20, 3, height);
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
@@ -2288,12 +2318,14 @@ static void steeplechase_track_block_brakes(
     {
         case 0:
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28635, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 28635, 0, 6, 32, 20, 3, height);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 28636, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 28636, 0, 6, 32, 20, 3, height);
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_STICK_ALT, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;

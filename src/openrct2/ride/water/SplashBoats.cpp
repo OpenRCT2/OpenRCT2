@@ -505,7 +505,8 @@ static void paint_splash_boats_track_60_deg_up(
     uint32_t imageId = SplashBoats60DegUpImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = SplashBoats60DegUpFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
 
-    session->WoodenSupportsPrependTo = PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    session->WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+        session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
     PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 1, 98, height, 0, 27, height);
 
     wooden_a_supports_paint_setup(
@@ -580,7 +581,8 @@ static void paint_splash_boats_track_25_deg_up_to_60_deg_up(
     uint32_t imageId = SplashBoats25DegUpTo60DegUpImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = SplashBoats25DegUpTo60DegUpFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
 
-    session->WoodenSupportsPrependTo = PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    session->WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+        session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
     PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
     wooden_a_supports_paint_setup(
@@ -605,7 +607,8 @@ static void paint_splash_boats_track_60_deg_up_to_25_deg_up(
     uint32_t imageId = SplashBoats60DegUpTo25DegUpImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32_t frontImageId = SplashBoats60DegUpTo25DegUpFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
 
-    session->WoodenSupportsPrependTo = PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
+    session->WoodenSupportsPrependTo = PaintAddImageAsParentRotated(
+        session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
     PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
 
     wooden_a_supports_paint_setup(

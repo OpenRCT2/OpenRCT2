@@ -89,7 +89,8 @@ static void top_spin_paint_vehicle(
     image_id += rideEntry->vehicles[0].base_image_id;
     // Left back bottom support
     image_id += 572;
-    PaintAddImageAsParent(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+    PaintAddImageAsParent(
+        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
@@ -110,7 +111,8 @@ static void top_spin_paint_vehicle(
     // Left hand arm
     image_id += 380;
 
-    PaintAddImageAsChild(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+    PaintAddImageAsChild(
+        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     uint32_t seatImageId;
 
@@ -220,7 +222,8 @@ static void top_spin_paint_vehicle(
     // Right hand arm
     image_id += 476;
 
-    PaintAddImageAsChild(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+    PaintAddImageAsChild(
+        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
@@ -233,7 +236,8 @@ static void top_spin_paint_vehicle(
     // Right back bottom support
     image_id += 573;
 
-    PaintAddImageAsChild(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+    PaintAddImageAsChild(
+        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     session->CurrentlyDrawnItem = curTileElement;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;

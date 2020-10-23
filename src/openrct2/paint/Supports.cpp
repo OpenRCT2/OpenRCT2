@@ -742,7 +742,8 @@ bool wooden_b_supports_paint_setup(
         }
         else
         {
-            PaintAddImageAsParent(session, WoodenSupportImageIds[supportType].flat | imageColourFlags, 0, 0, 32, 32, 0, baseHeight - 2);
+            PaintAddImageAsParent(
+                session, WoodenSupportImageIds[supportType].flat | imageColourFlags, 0, 0, 32, 32, 0, baseHeight - 2);
             _9E32B1 = true;
         }
     }
@@ -999,7 +1000,8 @@ bool metal_a_supports_paint_setup(
         image_id += z - 1;
         image_id |= imageColourFlags;
 
-        PaintAddImageAsParent(session, image_id, xOffset, yOffset, 0, 0, 0, height, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
+        PaintAddImageAsParent(
+            session, image_id, xOffset, yOffset, 0, 0, 0, height, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
 
         height += z;
     }
@@ -1292,7 +1294,8 @@ bool path_a_supports_paint_setup(
         {
             uint32_t imageId = (supportType * 24) + railingEntry->bridge_image + 22;
 
-            PaintAddImageAsParent(session, imageId | imageColourFlags, 0, 0, 32, 32, ((heightSteps == 2) ? 23 : 28), baseHeight);
+            PaintAddImageAsParent(
+                session, imageId | imageColourFlags, 0, 0, 32, 32, ((heightSteps == 2) ? 23 : 28), baseHeight);
             heightSteps -= 2;
             baseHeight += 32;
             hasSupports = true;

@@ -29,16 +29,20 @@ static void stand_up_rc_track_flat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25383, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25383, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25384, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25384, 0, 6, 32, 20, 3, height);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25453, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25453, 0, 6, 32, 20, 3, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25454, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25454, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -52,11 +56,13 @@ static void stand_up_rc_track_flat(
         {
             case 0:
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25229, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25229, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25230, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25230, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -113,16 +119,20 @@ static void stand_up_rc_track_25_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25385, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25385, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25397, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25397, 0, 6, 32, 20, 3, height);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25389, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25389, 0, 6, 32, 20, 3, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25399, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25399, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -135,16 +145,20 @@ static void stand_up_rc_track_25_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25231, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25231, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25243, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25243, 0, 6, 32, 20, 3, height);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25235, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25235, 0, 6, 32, 20, 3, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25245, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25245, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -175,7 +189,8 @@ static void stand_up_rc_track_60_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25386, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25386, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -186,7 +201,8 @@ static void stand_up_rc_track_60_deg_up(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 25390, 0, 6, 1, 10, 75, height, 29, 10, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25400, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25400, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -199,7 +215,8 @@ static void stand_up_rc_track_60_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25232, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25232, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -210,7 +227,8 @@ static void stand_up_rc_track_60_deg_up(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 25236, 0, 6, 1, 10, 75, height, 29, 10, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25246, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25246, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -241,16 +259,20 @@ static void stand_up_rc_track_flat_to_25_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25387, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25387, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25401, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25401, 0, 6, 32, 20, 3, height);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25391, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25391, 0, 6, 32, 20, 3, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25403, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25403, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -263,16 +285,20 @@ static void stand_up_rc_track_flat_to_25_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25233, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25233, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25247, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25247, 0, 6, 32, 20, 3, height);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25237, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25237, 0, 6, 32, 20, 3, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25249, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25249, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -303,7 +329,8 @@ static void stand_up_rc_track_25_deg_up_to_60_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25388, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25388, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -318,7 +345,8 @@ static void stand_up_rc_track_25_deg_up_to_60_deg_up(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 25392, 0, 6, 32, 2, 43, height, 0, 4, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25404, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25404, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -331,7 +359,8 @@ static void stand_up_rc_track_25_deg_up_to_60_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25234, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25234, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -346,7 +375,8 @@ static void stand_up_rc_track_25_deg_up_to_60_deg_up(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 25238, 0, 6, 32, 2, 43, height, 0, 4, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25250, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25250, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -377,7 +407,8 @@ static void stand_up_rc_track_60_deg_up_to_25_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25396, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25396, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -392,7 +423,8 @@ static void stand_up_rc_track_60_deg_up_to_25_deg_up(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 25394, 0, 6, 32, 2, 43, height, 0, 4, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25406, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25406, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -405,7 +437,8 @@ static void stand_up_rc_track_60_deg_up_to_25_deg_up(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25242, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25242, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
@@ -420,7 +453,8 @@ static void stand_up_rc_track_60_deg_up_to_25_deg_up(
                     session, direction, session->TrackColours[SCHEME_TRACK] | 25240, 0, 6, 32, 2, 43, height, 0, 4, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25252, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25252, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -451,16 +485,20 @@ static void stand_up_rc_track_25_deg_up_to_flat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25395, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25395, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25407, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25407, 0, 6, 32, 20, 3, height);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25393, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25393, 0, 6, 32, 20, 3, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25405, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25405, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -473,16 +511,20 @@ static void stand_up_rc_track_25_deg_up_to_flat(
         switch (direction)
         {
             case 0:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25241, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25241, 0, 6, 32, 20, 3, height);
                 break;
             case 1:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25253, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25253, 0, 6, 32, 20, 3, height);
                 break;
             case 2:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25239, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25239, 0, 6, 32, 20, 3, height);
                 break;
             case 3:
-                PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25251, 0, 6, 32, 20, 3, height);
+                PaintAddImageAsParentRotated(
+                    session, direction, session->TrackColours[SCHEME_TRACK] | 25251, 0, 6, 32, 20, 3, height);
                 break;
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -725,16 +767,20 @@ static void stand_up_rc_track_flat_to_left_bank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25281, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25281, 0, 6, 32, 20, 3, height);
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25286, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25286, 0, 6, 32, 20, 3, height);
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25280, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25280, 0, 6, 32, 20, 3, height);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25283, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25283, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -755,16 +801,20 @@ static void stand_up_rc_track_flat_to_right_bank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25279, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25279, 0, 6, 32, 20, 3, height);
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25284, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25284, 0, 6, 32, 20, 3, height);
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25282, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25282, 0, 6, 32, 20, 3, height);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25285, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25285, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -785,16 +835,20 @@ static void stand_up_rc_track_left_bank_to_flat(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25282, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25282, 0, 6, 32, 20, 3, height);
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25285, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25285, 0, 6, 32, 20, 3, height);
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25279, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25279, 0, 6, 32, 20, 3, height);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25284, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25284, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -815,16 +869,20 @@ static void stand_up_rc_track_right_bank_to_flat(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25280, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25280, 0, 6, 32, 20, 3, height);
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25283, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25283, 0, 6, 32, 20, 3, height);
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25281, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25281, 0, 6, 32, 20, 3, height);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25286, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25286, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -1028,16 +1086,20 @@ static void stand_up_rc_track_left_bank_to_25_deg_up(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25315, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25315, 0, 6, 32, 20, 3, height);
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25316, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25316, 0, 6, 32, 20, 3, height);
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25317, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25317, 0, 6, 32, 20, 3, height);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25318, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25318, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -1065,16 +1127,20 @@ static void stand_up_rc_track_right_bank_to_25_deg_up(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25319, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25319, 0, 6, 32, 20, 3, height);
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25320, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25320, 0, 6, 32, 20, 3, height);
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25321, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25321, 0, 6, 32, 20, 3, height);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25322, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25322, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -1102,16 +1168,20 @@ static void stand_up_rc_track_25_deg_up_to_left_bank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25311, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25311, 0, 6, 32, 20, 3, height);
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25312, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25312, 0, 6, 32, 20, 3, height);
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25313, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25313, 0, 6, 32, 20, 3, height);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25314, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25314, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -1139,16 +1209,20 @@ static void stand_up_rc_track_25_deg_up_to_right_bank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25307, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25307, 0, 6, 32, 20, 3, height);
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25308, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25308, 0, 6, 32, 20, 3, height);
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25309, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25309, 0, 6, 32, 20, 3, height);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25310, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25310, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -1208,16 +1282,20 @@ static void stand_up_rc_track_left_bank(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25323, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25323, 0, 6, 32, 20, 3, height);
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25324, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25324, 0, 6, 32, 20, 3, height);
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25325, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25325, 0, 6, 32, 20, 3, height);
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25326, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25326, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -4682,11 +4760,13 @@ static void stand_up_rc_track_brakes(
     {
         case 0:
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25569, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25569, 0, 6, 32, 20, 3, height);
             break;
         case 1:
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25570, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25570, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -8338,11 +8418,13 @@ static void stand_up_rc_track_block_brakes(
     {
         case 0:
         case 2:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25571, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25571, 0, 6, 32, 20, 3, height);
             break;
         case 1:
         case 3:
-            PaintAddImageAsParentRotated(session, direction, session->TrackColours[SCHEME_TRACK] | 25572, 0, 6, 32, 20, 3, height);
+            PaintAddImageAsParentRotated(
+                session, direction, session->TrackColours[SCHEME_TRACK] | 25572, 0, 6, 32, 20, 3, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
