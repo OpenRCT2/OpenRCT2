@@ -146,7 +146,7 @@ enum class ResearchCategory : uint8_t
     Thrill,
     Water,
     Shop,
-    Group
+    SceneryGroup
 };
 
 extern uint8_t gResearchFundingLevel;

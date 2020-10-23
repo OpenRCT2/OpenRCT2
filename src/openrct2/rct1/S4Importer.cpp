@@ -2425,7 +2425,7 @@ private:
         }
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING)
         {
-            activeResearchTypes |= EnumToFlag(ResearchCategory::Group);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::SceneryGroup);
         }
         gResearchPriorities = activeResearchTypes;
         gResearchFundingLevel = _s4.research_level;
@@ -2663,7 +2663,7 @@ private:
             {
                 dst->entryIndex = entryIndex;
                 dst->type = Research::EntryType::Scenery;
-                dst->category = EnumToFlag(ResearchCategory::Group);
+                dst->category = EnumValue(ResearchCategory::SceneryGroup);
                 dst->flags = 0;
             }
         }
