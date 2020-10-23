@@ -272,7 +272,7 @@ public:
         gResearchProgressStage = _s6.research_progress_stage;
         if (_s6.last_researched_item_subject != RCT12_RESEARCHED_ITEMS_SEPARATOR)
             gResearchLastItem = ResearchItem(
-                RCT12ResearchItem{ _s6.last_researched_item_subject, EnumToFlag(ResearchCategory::Transport) });
+                RCT12ResearchItem{ _s6.last_researched_item_subject, EnumValue(ResearchCategory::Transport) });
         else
             gResearchLastItem = std::nullopt;
         // pad_01357CF8

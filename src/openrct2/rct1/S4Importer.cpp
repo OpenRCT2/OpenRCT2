@@ -2663,7 +2663,7 @@ private:
             {
                 dst->entryIndex = entryIndex;
                 dst->type = Research::EntryType::Scenery;
-                dst->category = EnumToFlag(ResearchCategory::Group);
+                dst->category = EnumValue(ResearchCategory::Group);
                 dst->flags = 0;
             }
         }
