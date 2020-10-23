@@ -735,7 +735,8 @@ paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
     return PaintAddImageAsParent(
-        session, image_id, offset.x, offset.y, boundBoxSize.x, boundBoxSize.y, boundBoxSize.z, offset.z, 0, 0, 0);
+        session, image_id, offset.x, offset.y, boundBoxSize.x, boundBoxSize.y, boundBoxSize.z, offset.z, offset.x, offset.y,
+        offset.z);
 }
 
 paint_struct* PaintAddImageAsParent(
