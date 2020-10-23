@@ -286,7 +286,7 @@ void Park::Initialise()
 
     gResearchPriorities = EnumsToFlags(
         ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,
-        ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::Group);
+        ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
     gGuestInitialCash = MONEY(50, 00);
