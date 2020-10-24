@@ -699,13 +699,17 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
     {
         case RIDE_TYPE_OBSERVATION_TOWER:
             lightfx_add_3d_light(
-                vehicleID, 0x0000 | EnumValue(LightFxLightQualifier::Sprite), vehicle->x, vehicle->y + 16, vehicle->z, LightType::Spot3);
+                vehicleID, 0x0000 | EnumValue(LightFxLightQualifier::Sprite), vehicle->x, vehicle->y + 16, vehicle->z,
+                LightType::Spot3);
             lightfx_add_3d_light(
-                vehicleID, 0x0100 | EnumValue(LightFxLightQualifier::Sprite), vehicle->x + 16, vehicle->y, vehicle->z, LightType::Spot3);
+                vehicleID, 0x0100 | EnumValue(LightFxLightQualifier::Sprite), vehicle->x + 16, vehicle->y, vehicle->z,
+                LightType::Spot3);
             lightfx_add_3d_light(
-                vehicleID, 0x0200 | EnumValue(LightFxLightQualifier::Sprite), vehicle->x - 16, vehicle->y, vehicle->z, LightType::Spot3);
+                vehicleID, 0x0200 | EnumValue(LightFxLightQualifier::Sprite), vehicle->x - 16, vehicle->y, vehicle->z,
+                LightType::Spot3);
             lightfx_add_3d_light(
-                vehicleID, 0x0300 | EnumValue(LightFxLightQualifier::Sprite), vehicle->x, vehicle->y - 16, vehicle->z, LightType::Spot3);
+                vehicleID, 0x0300 | EnumValue(LightFxLightQualifier::Sprite), vehicle->x, vehicle->y - 16, vehicle->z,
+                LightType::Spot3);
             break;
         case RIDE_TYPE_MINE_TRAIN_COASTER:
         case RIDE_TYPE_GHOST_TRAIN:
@@ -714,8 +718,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
                 place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
                 place_y -= offsetLookup[(vehicle->sprite_direction + 8) % 32] * 2;
                 lightfx_add_3d_light(
-                    vehicleID, 0x0000 | EnumValue(LightFxLightQualifier::Sprite), place_x, place_y, place_z,
-                    LightType::Spot3);
+                    vehicleID, 0x0000 | EnumValue(LightFxLightQualifier::Sprite), place_x, place_y, place_z, LightType::Spot3);
             }
             break;
         case RIDE_TYPE_CHAIRLIFT:
@@ -746,19 +749,17 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
             place_x -= offsetLookup[(vehicle_draw->sprite_direction + 0) % 32];
             place_y -= offsetLookup[(vehicle_draw->sprite_direction + 8) % 32];
             lightfx_add_3d_light(
-                vehicleID, 0x0000 | EnumValue(LightFxLightQualifier::Sprite), place_x, place_y, place_z,
-                LightType::Spot2);
+                vehicleID, 0x0000 | EnumValue(LightFxLightQualifier::Sprite), place_x, place_y, place_z, LightType::Spot2);
             place_x -= offsetLookup[(vehicle_draw->sprite_direction + 0) % 32];
             place_y -= offsetLookup[(vehicle_draw->sprite_direction + 8) % 32];
             lightfx_add_3d_light(
-                vehicleID, 0x0100 | EnumValue(LightFxLightQualifier::Sprite), place_x, place_y, place_z,
-                LightType::Spot2);
+                vehicleID, 0x0100 | EnumValue(LightFxLightQualifier::Sprite), place_x, place_y, place_z, LightType::Spot2);
             break;
         }
         case RIDE_TYPE_MONORAIL:
             lightfx_add_3d_light(
-                vehicleID, 0x0000 | EnumValue(LightFxLightQualifier::Sprite), vehicle->x, vehicle->y,
-                vehicle->z + 12, LightType::Spot2);
+                vehicleID, 0x0000 | EnumValue(LightFxLightQualifier::Sprite), vehicle->x, vehicle->y, vehicle->z + 12,
+                LightType::Spot2);
             if (vehicle == vehicle->TrainHead())
             {
                 place_x -= offsetLookup[(vehicle->sprite_direction + 0) % 32] * 2;
