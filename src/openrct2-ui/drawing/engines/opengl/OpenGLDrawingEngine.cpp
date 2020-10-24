@@ -963,7 +963,7 @@ void OpenGLDrawingContext::FlushRectangles()
         return;
 
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasesTexture());
-    OpenGLAPI::SetTexture(1, GL_TEXTURE_RECTANGLE, _textureCache->GetPaletteTexture());
+    OpenGLAPI::SetTexture(1, GL_TEXTURE_2D, _textureCache->GetPaletteTexture());
 
     _drawRectShader->Use();
     _drawRectShader->SetInstances(_commandBuffers.rects);
@@ -997,7 +997,7 @@ void OpenGLDrawingContext::HandleTransparency()
         }
 
         OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasesTexture());
-        OpenGLAPI::SetTexture(1, GL_TEXTURE_RECTANGLE, _textureCache->GetPaletteTexture());
+        OpenGLAPI::SetTexture(1, GL_TEXTURE_2D, _textureCache->GetPaletteTexture());
 
         _drawRectShader->Use();
         _drawRectShader->DrawInstances();

@@ -15,6 +15,7 @@
 - Fix: [#5178] Lighting effects cannot be disabled in software mode
 - Fix: [#5904] Empty errors on tile inspector base height change.
 - Fix: [#6086] Cannot install existing track design with another name.
+- Fix: [#6614, #8623] Colours are distorted when using OpenGL with Intel integrated graphics drivers.
 - Fix: [#7443] Construction arrows pulse at irregular intervals.
 - Fix: [#7518] Water isn't cut down by view clipping tool.
 - Fix: [#7748] Tooltips would not timeout for normal UI elements.
