@@ -35,7 +35,7 @@ enum class CurrencyType : uint8_t
 
     Custom, // Custom currency
 
-    End // Last item
+    Count // Last item
 };
 
 enum class CurrencyAffix
@@ -61,7 +61,7 @@ struct currency_descriptor
 };
 
 // List of currency formats
-extern currency_descriptor CurrencyDescriptors[static_cast<uint8_t>(CurrencyType::End)];
+extern currency_descriptor CurrencyDescriptors[static_cast<uint8_t>(CurrencyType::Count)];
 
 /**
  * Loads custom currency saved parameters into {@link CurrencyDescriptors}'

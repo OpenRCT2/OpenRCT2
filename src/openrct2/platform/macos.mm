@@ -113,7 +113,7 @@ uint16_t platform_get_locale_language()
     }
 }
 
-uint8_t platform_get_locale_currency()
+CurrencyType platform_get_locale_currency()
 {
     @autoreleasepool
     {
