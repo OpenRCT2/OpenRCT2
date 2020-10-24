@@ -34,10 +34,10 @@ enum class LightType : uint8_t
     Spot3 = 11,
 };
 
-enum LIGHTFX_LIGHT_QUALIFIER
+enum class LightFxLightQualifier : uint16_t
 {
-    LIGHTFX_LIGHT_QUALIFIER_SPRITE = 0x1,
-    LIGHTFX_LIGHT_QUALIFIER_MAP = 0x2
+    Sprite = 0x1,
+    Map = 0x2
 };
 
 constexpr uint8_t GetLightTypeSize(LightType type)
