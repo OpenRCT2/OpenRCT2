@@ -469,7 +469,7 @@ void research_populate_list_random()
         {
             if (rideType != RIDE_TYPE_NULL)
             {
-                ResearchCategory category = static_cast<ResearchCategory>(RideTypeDescriptors[rideType].Category);
+                ResearchCategory category = RideTypeDescriptors[rideType].GetResearchCategory();
                 research_insert_ride_entry(rideType, i, category, researched);
             }
         }
@@ -508,7 +508,7 @@ void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
     {
         if (rideType != RIDE_TYPE_NULL)
         {
-            ResearchCategory category = static_cast<ResearchCategory>(RideTypeDescriptors[rideType].Category);
+            ResearchCategory category = RideTypeDescriptors[rideType].GetResearchCategory();
             research_insert_ride_entry(rideType, entryIndex, category, researched);
         }
     }

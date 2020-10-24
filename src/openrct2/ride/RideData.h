@@ -29,6 +29,8 @@
 #include "Track.h"
 #include "TrackPaint.h"
 
+enum class ResearchCategory : uint8_t;
+
 using ride_ratings_calculation = void (*)(Ride* ride);
 struct RideComponentName
 {
@@ -176,6 +178,7 @@ struct RideTypeDescriptor
     bool HasFlag(uint64_t flag) const;
     uint64_t GetAvailableTrackPieces() const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
+    ResearchCategory GetResearchCategory() const;
 };
 
 #ifdef _WIN32

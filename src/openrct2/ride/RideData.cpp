@@ -23,6 +23,7 @@
 #include "../audio/audio.h"
 #include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
+#include "../management/Research.h"
 #include "../sprites.h"
 #include "Ride.h"
 #include "ShopItem.h"
@@ -328,4 +329,27 @@ uint64_t RideTypeDescriptor::GetAvailableTrackPieces() const
 bool RideTypeDescriptor::SupportsTrackPiece(const uint64_t trackPiece) const
 {
     return GetAvailableTrackPieces() & (1ULL << trackPiece);
+}
+
+ResearchCategory RideTypeDescriptor::GetResearchCategory() const
+{
+    switch (Category)
+    {
+        case RIDE_CATEGORY_TRANSPORT:
+            return ResearchCategory::Transport;
+        case RIDE_CATEGORY_GENTLE:
+            return ResearchCategory::Gentle;
+        case RIDE_CATEGORY_ROLLERCOASTER:
+            return ResearchCategory::Rollercoaster;
+        case RIDE_CATEGORY_THRILL:
+            return ResearchCategory::Thrill;
+        case RIDE_CATEGORY_WATER:
+            return ResearchCategory::Water;
+        case RIDE_CATEGORY_SHOP:
+            return ResearchCategory::Shop;
+        case RIDE_CATEGORY_NONE:
+            break;
+    }
+    log_error("Cannot get Research Category of invalid RideCategory");
+    return ResearchCategory::Transport;
 }

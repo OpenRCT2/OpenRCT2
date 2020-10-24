@@ -2632,7 +2632,7 @@ private:
                     dst->baseRideType = rideType;
                     dst->type = Research::EntryType::Ride;
                     dst->flags = 0;
-                    dst->category = static_cast<ResearchCategory>(RideTypeDescriptors[rideType].Category);
+                    dst->category = RideTypeDescriptors[rideType].GetResearchCategory();
                 }
             }
         }
@@ -2651,7 +2651,7 @@ private:
                     dst->baseRideType = rideType;
                     dst->type = Research::EntryType::Ride;
                     dst->flags = 0;
-                    dst->category = static_cast<ResearchCategory>(RideTypeDescriptors[rideType].Category);
+                    dst->category = RideTypeDescriptors[rideType].GetResearchCategory();
                 }
             }
         }
