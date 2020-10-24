@@ -890,6 +890,52 @@ bool ResearchItem::Exists() const
     return false;
 }
 
+rct_string_id ResearchItem::GetCategoryInventionString() const
+{
+    switch (category)
+    {
+        case ResearchCategory::Transport:
+            return STR_RESEARCH_NEW_TRANSPORT_RIDES;
+        case ResearchCategory::Gentle:
+            return STR_RESEARCH_NEW_GENTLE_RIDES;
+        case ResearchCategory::Rollercoaster:
+            return STR_RESEARCH_NEW_ROLLER_COASTERS;
+        case ResearchCategory::Thrill:
+            return STR_RESEARCH_NEW_THRILL_RIDES;
+        case ResearchCategory::Water:
+            return STR_RESEARCH_NEW_WATER_RIDES;
+        case ResearchCategory::Shop:
+            return STR_RESEARCH_NEW_SHOPS_AND_STALLS;
+        case ResearchCategory::SceneryGroup:
+            return STR_RESEARCH_NEW_SCENERY_AND_THEMING;
+    }
+    log_error("Unsupported category invention string");
+    return STR_NONE;
+}
+
+rct_string_id ResearchItem::GetCategoryName() const
+{
+    switch (category)
+    {
+        case ResearchCategory::Transport:
+            return STR_RESEARCH_CATEGORY_TRANSPORT;
+        case ResearchCategory::Gentle:
+            return STR_RESEARCH_CATEGORY_GENTLE;
+        case ResearchCategory::Rollercoaster:
+            return STR_RESEARCH_CATEGORY_ROLLERCOASTER;
+        case ResearchCategory::Thrill:
+            return STR_RESEARCH_CATEGORY_THRILL;
+        case ResearchCategory::Water:
+            return STR_RESEARCH_CATEGORY_WATER;
+        case ResearchCategory::Shop:
+            return STR_RESEARCH_CATEGORY_SHOP;
+        case ResearchCategory::SceneryGroup:
+            return STR_RESEARCH_CATEGORY_SCENERY_GROUP;
+    }
+    log_error("Unsupported category name");
+    return STR_NONE;
+}
+
 static std::bitset<RIDE_TYPE_COUNT> _seenRideType = {};
 
 static void research_update_first_of_type(ResearchItem* researchItem)

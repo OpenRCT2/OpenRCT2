@@ -164,16 +164,6 @@ static uint32_t window_research_page_enabled_widgets[] = {
 
 const int32_t window_research_tab_animation_loops[] = { 16, 16 };
 
-static constexpr const rct_string_id ResearchCategoryNames[] = {
-    STR_RESEARCH_CATEGORY_TRANSPORT,
-    STR_RESEARCH_CATEGORY_GENTLE,
-    STR_RESEARCH_CATEGORY_ROLLERCOASTER,
-    STR_RESEARCH_CATEGORY_THRILL,
-    STR_RESEARCH_CATEGORY_WATER,
-    STR_RESEARCH_CATEGORY_SHOP,
-    STR_RESEARCH_CATEGORY_SCENERY_GROUP,
-};
-
 static constexpr const rct_string_id ResearchStageNames[] = {
     STR_RESEARCH_STAGE_INITIAL_RESEARCH,
     STR_RESEARCH_STAGE_DESIGNING,
@@ -329,7 +319,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         rct_string_id label = STR_RESEARCH_TYPE_LABEL;
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH)
         {
-            strings[0] = ResearchCategoryNames[EnumValue(gResearchNextItem->category)];
+            strings[0] = gResearchNextItem->GetCategoryName();
             if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING)
             {
                 strings[0] = gResearchNextItem->GetName();
