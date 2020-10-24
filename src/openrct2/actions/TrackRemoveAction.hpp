@@ -456,40 +456,43 @@ public:
             }
         }
 
-        switch (trackType)
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            case TrackElemType::OnRidePhoto:
-                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
-                break;
-            case TrackElemType::CableLiftHill:
-                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
-                break;
-            case TrackElemType::BlockBrakes:
-                ride->num_block_brakes--;
-                if (ride->num_block_brakes == 0)
-                {
-                    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                    ride->mode = RideMode::ContinuousCircuit;
-                    if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
-                    {
-                        ride->mode = RideMode::PoweredLaunch;
-                    }
-                }
-                break;
-        }
-
-        switch (trackType)
-        {
-            case TrackElemType::Up25ToFlat:
-            case TrackElemType::Up60ToFlat:
-            case TrackElemType::DiagUp25ToFlat:
-            case TrackElemType::DiagUp60ToFlat:
-                if (!isLiftHill)
+            switch (trackType)
+            {
+                case TrackElemType::OnRidePhoto:
+                    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                     break;
-                [[fallthrough]];
-            case TrackElemType::CableLiftHill:
-                ride->num_block_brakes--;
-                break;
+                case TrackElemType::CableLiftHill:
+                    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
+                    break;
+                case TrackElemType::BlockBrakes:
+                    ride->num_block_brakes--;
+                    if (ride->num_block_brakes == 0)
+                    {
+                        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
+                        ride->mode = RideMode::ContinuousCircuit;
+                        if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
+                        {
+                            ride->mode = RideMode::PoweredLaunch;
+                        }
+                    }
+                    break;
+            }
+
+            switch (trackType)
+            {
+                case TrackElemType::Up25ToFlat:
+                case TrackElemType::Up60ToFlat:
+                case TrackElemType::DiagUp25ToFlat:
+                case TrackElemType::DiagUp60ToFlat:
+                    if (!isLiftHill)
+                        break;
+                    [[fallthrough]];
+                case TrackElemType::CableLiftHill:
+                    ride->num_block_brakes--;
+                    break;
+            }
         }
 
         money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
