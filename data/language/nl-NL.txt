@@ -4423,14 +4423,6 @@ STR_DESC    :Een steiger waarvan bezoekers het water in kunnen om een stukje te 
 STR_CPTY    :1 bezoeker per ‘boot’
 # End of Boat Ride / Bootverhuur
 
-# Junior Roller Coaster / Juniorachtbaan
-#OCC
-[ZPANDA]
-STR_NAME    :Pandatreinen
-STR_DESC    :Achtbaantrein met kleine karretjes in de vorm van een panda.
-STR_CPTY    :1 passagier per karretje
-# End of Junior Roller Coaster / Juniorachtbaan
-
 # Space rings / Ruimteringen
 #CC
 [RIDE7MKY]
@@ -4481,33 +4473,9 @@ STR_DESC    :Een kiosk waar bezoekers kaarten van het park en paraplu's kunnen k
 
 # End of Information Kiosks
 
-#########
-# Water #
-#########
-
-#OCC
-[WTRPINK]
-STR_NAME    :Roze water
-
-#################################
-# Scenery groups / Decorgroepen #
-#################################
-
-#OCC
-[SCGPANDA]
-STR_NAME    :Pandathema
-
 #################
 # Small objects #
 #################
-
-## Start OCC
-[BIGPANDA]
-STR_NAME    :Reuzenpanda
-
-[PANDAGR]
-STR_NAME    :Bamboescheuten
-## End OCC
 
 ## Start CC
 # TT Glass Roofs
@@ -4519,22 +4487,6 @@ STR_NAME    :Glazen dak
 
 [TTRFGL03]
 STR_NAME    :Glazen dak
-
-# TT Red tile roofs with stucco
-[TTRFTL02]
-STR_NAME    :Dak
-
-[TTRFTL03]
-STR_NAME    :Dak
-
-[TTRFTL04]
-STR_NAME    :Dak
-
-[TTRFTL07]
-STR_NAME    :Dak
-
-[TTRFTL08]
-STR_NAME    :Dak
 
 ## TT Pirate roofs and eaves
 [TTPIRF02]
@@ -4589,10 +4541,6 @@ STR_NAME    :Dak
 [TTRFWD08]
 STR_NAME    :Dak
 
-# Brick base block
-[XXBBBR01]
-STR_NAME    :Basisblok
-
 [ACWW33]
 STR_NAME    :Muur van houten palen
 
@@ -4601,20 +4549,4 @@ STR_NAME    :Hek van houten palen
 
 ## End CC
 
-
-#########
-# Walls #
-#########
-
-#CC
-[MG-PRAR]
-STR_NAME    :Muur met doorgang
-
-##################
-# Path additions #
-##################
-
-#OCC
-[LITTERPA]
-STR_NAME    :Vuilnisbak in pandavorm
 
