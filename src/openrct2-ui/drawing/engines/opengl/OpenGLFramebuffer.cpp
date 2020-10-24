@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -72,7 +72,7 @@ OpenGLFramebuffer::~OpenGLFramebuffer()
 void OpenGLFramebuffer::Bind() const
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _id);
-    glViewport(0, 0, (GLsizei)_width, (GLsizei)_height);
+    glViewport(0, 0, static_cast<GLsizei>(_width), static_cast<GLsizei>(_height));
 }
 
 void OpenGLFramebuffer::BindDraw() const

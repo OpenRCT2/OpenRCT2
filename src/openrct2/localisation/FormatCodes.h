@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -134,6 +134,7 @@ namespace CSChar
     constexpr char32_t c_acute = 0xDE;
     constexpr char32_t e_ogonek = 0xE6;
     constexpr char32_t n_acute = 0xF0;
+    constexpr char32_t o_circumflex = 0xF4;
     constexpr char32_t l_stroke = 0xF7;
     constexpr char32_t s_acute = 0xF8;
     constexpr char32_t z_acute = 0xFE;
@@ -144,6 +145,8 @@ namespace CSChar
 namespace UnicodeChar
 {
     // Latin alphabet
+    constexpr char32_t j = 0x6A;
+    constexpr char32_t l = 0x6C;
     constexpr char32_t ae_uc = 0xC6;
     constexpr char32_t o_stroke_uc = 0xD8;
     constexpr char32_t y_acute_uc = 0xDD;
@@ -156,6 +159,8 @@ namespace UnicodeChar
     constexpr char32_t a_ogonek = 0x105;
     constexpr char32_t c_acute_uc = 0x106;
     constexpr char32_t c_acute = 0x107;
+    constexpr char32_t c_circumflex_uc = 0x108;
+    constexpr char32_t c_circumflex = 0x109;
     constexpr char32_t c_caron_uc = 0x10C;
     constexpr char32_t c_caron = 0x10D;
     constexpr char32_t d_caron_uc = 0x10E;
@@ -164,28 +169,39 @@ namespace UnicodeChar
     constexpr char32_t e_ogonek = 0x119;
     constexpr char32_t e_caron_uc = 0x11A;
     constexpr char32_t e_caron = 0x11B;
+    constexpr char32_t g_circumflex_uc = 0x11C;
+    constexpr char32_t g_circumflex = 0x11D;
     constexpr char32_t g_breve_uc = 0x11E;
     constexpr char32_t g_breve = 0x11F;
+    constexpr char32_t h_circumflex_uc = 0x124;
+    constexpr char32_t h_circumflex = 0x125;
     constexpr char32_t i_with_dot_uc = 0x130;
     constexpr char32_t i_without_dot = 0x131;
+    constexpr char32_t j_circumflex_uc = 0x134;
+    constexpr char32_t j_circumflex = 0x135;
     constexpr char32_t l_stroke_uc = 0x141;
     constexpr char32_t l_stroke = 0x142;
     constexpr char32_t n_acute_uc = 0x143;
     constexpr char32_t n_acute = 0x144;
     constexpr char32_t n_caron_uc = 0x147;
     constexpr char32_t n_caron = 0x148;
+    constexpr char32_t o_macron = 0x14D;
     constexpr char32_t o_double_acute_uc = 0x150;
     constexpr char32_t o_double_acute = 0x151;
     constexpr char32_t r_caron_uc = 0x158;
     constexpr char32_t r_caron = 0x159;
     constexpr char32_t s_acute_uc = 0x15A;
     constexpr char32_t s_acute = 0x15B;
+    constexpr char32_t s_circumflex_uc = 0x15C;
+    constexpr char32_t s_circumflex = 0x15D;
     constexpr char32_t s_cedilla_uc = 0x15E;
     constexpr char32_t s_cedilla = 0x15F;
     constexpr char32_t s_caron_uc = 0x160;
     constexpr char32_t s_caron = 0x161;
     constexpr char32_t t_caron_uc = 0x164;
     constexpr char32_t t_caron = 0x165;
+    constexpr char32_t u_breve_uc = 0x16C;
+    constexpr char32_t u_breve = 0x16D;
     constexpr char32_t u_ring_uc = 0x16E;
     constexpr char32_t u_ring = 0x16F;
     constexpr char32_t u_double_acute_uc = 0x170;

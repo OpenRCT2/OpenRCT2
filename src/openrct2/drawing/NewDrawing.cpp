@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,8 +16,11 @@
 #include "../localisation/StringIds.h"
 #include "../paint/Painter.h"
 #include "../ui/UiContext.h"
+#include "../world/Location.hpp"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
+
+#include <cmath>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -84,7 +87,7 @@ void drawing_engine_resize()
     }
 }
 
-void drawing_engine_set_palette(const rct_palette_entry* colours)
+void drawing_engine_set_palette(const GamePalette& colours)
 {
     auto context = GetContext();
     if (context != nullptr)
@@ -155,12 +158,12 @@ void drawing_engine_set_vsync(bool vsync)
     }
 }
 
-void gfx_set_dirty_blocks(int16_t left, int16_t top, int16_t right, int16_t bottom)
+void gfx_set_dirty_blocks(const ScreenRect& rect)
 {
     auto drawingEngine = GetDrawingEngine();
     if (drawingEngine != nullptr)
     {
-        drawingEngine->Invalidate(left, top, right, bottom);
+        drawingEngine->Invalidate(rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
     }
 }
 
@@ -178,74 +181,113 @@ void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
     }
 }
 
-void gfx_fill_rect(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t colour)
+void gfx_fill_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->FillRect(colour, left, top, right, bottom);
+        dc->FillRect(colour, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
     }
 }
 
 void gfx_filter_rect(
     rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FILTER_PALETTE_ID palette)
 {
-    auto drawingEngine = dpi->DrawingEngine;
-    if (drawingEngine != nullptr)
-    {
-        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->FilterRect(palette, left, top, right, bottom);
-    }
+    gfx_filter_rect(dpi, { left, top, right, bottom }, palette);
 }
 
-void gfx_draw_line(rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour)
+void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FILTER_PALETTE_ID palette)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawLine(colour, x1, y1, x2, y2);
+        dc->FilterRect(palette, rect.GetLeft(), rect.GetTop(), rect.GetRight(), rect.GetBottom());
     }
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint32_t tertiary_colour)
+void gfx_draw_line(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawSprite(image, x, y, tertiary_colour);
+        dc->DrawLine(colour, line.GetX1(), line.GetY1(), line.GetX2(), line.GetY2());
     }
 }
 
-void FASTCALL gfx_draw_glpyh(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint8_t* palette)
+void gfx_draw_dashed_line(
+    rct_drawpixelinfo* dpi, const ScreenLine& screenLine, const int32_t dashedLineSegmentLength, const int32_t color)
+{
+    assert(dashedLineSegmentLength > 0);
+
+    const auto drawingEngine = dpi->DrawingEngine;
+    if (drawingEngine != nullptr)
+    {
+        constexpr int32_t precisionFactor = 1000;
+
+        const int32_t dashedLineLength = std::hypot(
+            screenLine.GetX2() - screenLine.GetX1(), screenLine.GetY2() - screenLine.GetY1());
+        const int32_t lineSegmentCount = dashedLineLength / dashedLineSegmentLength / 2;
+        if (lineSegmentCount == 0)
+        {
+            return;
+        }
+
+        const int32_t lineXDist = std::abs(screenLine.GetX2() - screenLine.GetX1());
+        const int32_t lineYDist = std::abs(screenLine.GetY2() - screenLine.GetY1());
+        const int32_t dxPrecise = precisionFactor * lineXDist / lineSegmentCount / 2;
+        const int32_t dyPrecise = precisionFactor * lineYDist / lineSegmentCount / 2;
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
+
+        for (int32_t i = 0, x, y; i < lineSegmentCount; ++i)
+        {
+            x = screenLine.GetX1() + dxPrecise * i * 2 / precisionFactor;
+            y = screenLine.GetY1() + dyPrecise * i * 2 / precisionFactor;
+            dc->DrawLine(color, x, y, x + dxPrecise / precisionFactor, y + dyPrecise / precisionFactor);
+        }
+    }
+}
+
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint32_t tertiary_colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawGlyph(image, x, y, palette);
+        dc->DrawSprite(image, coords.x, coords.y, tertiary_colour);
     }
 }
 
-void FASTCALL gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t maskImage, int32_t colourImage)
+void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawSpriteRawMasked(x, y, maskImage, colourImage);
+        dc->DrawGlyph(image, coords.x, coords.y, paletteMap);
     }
 }
 
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, int32_t x, int32_t y, uint8_t colour)
+void FASTCALL
+    gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t maskImage, int32_t colourImage)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawSpriteSolid(image, x, y, colour);
+        dc->DrawSpriteRawMasked(coords.x, coords.y, maskImage, colourImage);
+    }
+}
+
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint8_t colour)
+{
+    auto drawingEngine = dpi->DrawingEngine;
+    if (drawingEngine != nullptr)
+    {
+        IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
+        dc->DrawSpriteSolid(image, coords.x, coords.y, colour);
     }
 }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,10 +33,10 @@ CoordsXYZD gParkEntranceGhostPosition = { 0, 0, 0, 0 };
 std::vector<CoordsXYZD> gParkEntrances;
 
 CoordsXYZD gRideEntranceExitGhostPosition;
-uint8_t gRideEntranceExitGhostStationIndex;
+StationIndex gRideEntranceExitGhostStationIndex;
 
 static money32 RideEntranceExitPlaceGhost(
-    ride_id_t rideIndex, const CoordsXY& entranceExitCoords, uint8_t direction, uint8_t placeType, uint8_t stationNum)
+    ride_id_t rideIndex, const CoordsXY& entranceExitCoords, Direction direction, uint8_t placeType, StationIndex stationNum)
 {
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
         entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
@@ -108,7 +108,7 @@ void ride_entrance_exit_remove_ghost()
  *  rct2: 0x006CA28C
  */
 money32 ride_entrance_exit_place_ghost(
-    Ride* ride, const CoordsXY& entranceExitCoords, int32_t direction, int32_t placeType, int32_t stationNum)
+    Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum)
 {
     ride_construction_remove_ghosts();
     money32 result = RideEntranceExitPlaceGhost(ride->id, entranceExitCoords, direction, placeType, stationNum);
@@ -119,7 +119,7 @@ money32 ride_entrance_exit_place_ghost(
         gRideEntranceExitGhostPosition.x = entranceExitCoords.x;
         gRideEntranceExitGhostPosition.y = entranceExitCoords.y;
         gRideEntranceExitGhostPosition.direction = direction;
-        gRideEntranceExitGhostStationIndex = stationNum & 0xFF;
+        gRideEntranceExitGhostStationIndex = stationNum;
     }
     return result;
 }

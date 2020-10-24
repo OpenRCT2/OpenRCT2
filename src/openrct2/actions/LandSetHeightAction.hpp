@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -186,6 +186,11 @@ public:
 private:
     rct_string_id CheckParameters() const
     {
+        if (!LocationValid(_coords))
+        {
+            return STR_OFF_EDGE_OF_MAP;
+        }
+
         if (_coords.x > gMapSizeMaxXY || _coords.y > gMapSizeMaxXY)
         {
             return STR_OFF_EDGE_OF_MAP;
@@ -292,7 +297,7 @@ private:
                         int32_t maxHeight = rideEntry->max_height;
                         if (maxHeight == 0)
                         {
-                            maxHeight = RideData5[ride->type].max_height;
+                            maxHeight = RideTypeDescriptors[ride->type].Heights.MaxHeight;
                         }
                         int32_t zDelta = tileElement->clearance_height - _height;
                         if (zDelta >= 0 && zDelta / 2 > maxHeight)

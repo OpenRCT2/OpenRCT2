@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,7 +15,7 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
-#include "ObjectJsonHelpers.h"
+#include "../world/Location.hpp"
 
 void TerrainSurfaceObject::Load()
 {
@@ -54,42 +54,64 @@ void TerrainSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, in
         imageId |= SPRITE_ID_PALETTE_COLOUR_1(Colour);
     }
 
+    ScreenCoordsXY screenCoords{};
     int32_t x0 = 0;
-    int32_t y = -16;
+    screenCoords.y = -16;
     for (int32_t i = 0; i < 8; i++)
     {
-        int32_t x = x0;
+        screenCoords.x = x0;
         if (i % 2 == 0)
         {
-            x -= 32;
+            screenCoords.x -= 32;
         }
         for (int32_t j = 0; j < 4; j++)
         {
-            gfx_draw_sprite(dpi, imageId, x, y, 0);
-            x += 64;
+            gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+            screenCoords.x += 64;
         }
-        y += 16;
+        screenCoords.y += 16;
     }
 }
 
-void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
-    Colour = ObjectJsonHelpers::ParseColour(ObjectJsonHelpers::GetString(properties, "colour"), 255);
-    Rotations = ObjectJsonHelpers::GetInteger(properties, "rotations", 1);
-    Price = ObjectJsonHelpers::GetInteger(properties, "price", 0);
-    Flags = ObjectJsonHelpers::GetFlags<TERRAIN_SURFACE_FLAGS>(
-        properties,
-        { { "smoothWithSelf", TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_SELF },
-          { "smoothWithOther", TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_OTHER },
-          { "canGrow", TERRAIN_SURFACE_FLAGS::CAN_GROW } });
+    Guard::Assert(root.is_object(), "TerrainSurfaceObject::ReadJson expects parameter root to be object");
 
-    auto jDefault = json_object_get(root, "default");
-    if (json_is_object(jDefault))
+    auto properties = root["properties"];
+
+    if (properties.is_object())
     {
-        DefaultEntry = ObjectJsonHelpers::GetInteger(properties, "normal");
-        DefaultGridEntry = ObjectJsonHelpers::GetInteger(properties, "grid");
-        DefaultUndergroundEntry = ObjectJsonHelpers::GetInteger(properties, "underground");
+        Colour = Colour::FromString(Json::GetString(properties["colour"]), 255);
+        Rotations = Json::GetNumber<int8_t>(properties["rotations"], 1);
+        Price = Json::GetNumber<money32>(properties["price"]);
+        Flags = Json::GetFlags<TERRAIN_SURFACE_FLAGS>(
+            properties,
+            { { "smoothWithSelf", TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_SELF },
+              { "smoothWithOther", TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_OTHER },
+              { "canGrow", TERRAIN_SURFACE_FLAGS::CAN_GROW } });
+
+        for (auto& el : properties["special"])
+        {
+            if (el.is_object())
+            {
+                SpecialEntry entry;
+                entry.Index = Json::GetNumber<uint32_t>(el["index"]);
+                entry.Length = Json::GetNumber<int32_t>(el["length"], -1);
+                entry.Rotation = Json::GetNumber<int32_t>(el["rotation"], -1);
+                entry.Variation = Json::GetNumber<int32_t>(el["variation"], -1);
+                entry.Grid = Json::GetBoolean(el["grid"]);
+                entry.Underground = Json::GetBoolean(el["underground"]);
+                SpecialEntries.push_back(std::move(entry));
+            }
+        }
+    }
+
+    auto jDefault = root["default"];
+    if (jDefault.is_object())
+    {
+        DefaultEntry = Json::GetNumber<uint32_t>(jDefault["normal"]);
+        DefaultGridEntry = Json::GetNumber<uint32_t>(jDefault["grid"]);
+        DefaultUndergroundEntry = Json::GetNumber<uint32_t>(jDefault["underground"]);
     }
     else
     {
@@ -98,26 +120,7 @@ void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, const json_t* r
         DefaultUndergroundEntry = 2;
     }
 
-    auto jSpecialArray = json_object_get(properties, "special");
-    if (json_is_array(jSpecialArray))
-    {
-        size_t i;
-        json_t* el;
-        json_array_foreach(jSpecialArray, i, el)
-        {
-            SpecialEntry entry;
-            entry.Index = ObjectJsonHelpers::GetInteger(el, "index");
-            entry.Length = ObjectJsonHelpers::GetInteger(el, "length", -1);
-            entry.Rotation = ObjectJsonHelpers::GetInteger(el, "rotation", -1);
-            entry.Variation = ObjectJsonHelpers::GetInteger(el, "variation", -1);
-            entry.Grid = ObjectJsonHelpers::GetBoolean(el, "grid");
-            entry.Underground = ObjectJsonHelpers::GetBoolean(el, "underground");
-            SpecialEntries.push_back(std::move(entry));
-        }
-    }
-
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    PopulateTablesFromJson(context, root);
 }
 
 uint32_t TerrainSurfaceObject::GetImageId(

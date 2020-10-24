@@ -1,7 +1,7 @@
 # Contributing to OpenRCT2
 Any contribution to OpenRCT2 is welcome and valued. Contributions can be in the form of bug reports, translation or code
 additions / changes. Please read this document to learn how to contribute as effectively as possible. If you have any
-questions or concerns, please ask in the [gitter](https://gitter.im/OpenRCT2/OpenRCT2) chat room.
+questions or concerns, please ask in the [Discord chat](https://discordapp.com/invite/fsEwSWs).
 
 # Reporting bugs
 To report a bug, ensure you have a GitHub account. Search the issues page to see if the bug has already been reported.
@@ -27,15 +27,7 @@ Translation is managed in a separate repository, [OpenRCT2/Localisation](https:/
 You will find more information there.
 
 # Contributing code
-## Steps
-1. First, ensure you have a GitHub account and [fork](https://help.github.com/articles/fork-a-repo/) the OpenRCT2 repository.
-2. Create a new branch from develop (unless you are contributing to another) and commit your changes to that.
-3. Submit a new [pull request](https://help.github.com/articles/using-pull-requests/).
-4. Wait for other users to test and review your changes.
-
-## Credits
-If you are contributing to OpenRCT2, please add your name to ```./contributors.md``` so that you can be credited for your
-work outside and inside the game.
+Please read [How To Contribute](https://github.com/OpenRCT2/OpenRCT2/wiki/How-To-Contribute)
 
 ## Code hints
 ### Adding new strings

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -161,7 +161,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 
     bool partOfVirtualFloor = false;
 #ifndef __TESTPAINT__
-    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF)
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
         partOfVirtualFloor = virtual_floor_tile_is_floor(session->MapPosition);
     }
@@ -213,7 +213,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     uint16_t max_height = 0;
     do
     {
-        max_height = std::max(max_height, (uint16_t)element->GetClearanceZ());
+        max_height = std::max(max_height, static_cast<uint16_t>(element->GetClearanceZ()));
     } while (!(element++)->IsLastForTile());
 
     element--;
@@ -330,7 +330,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     } while (!(tile_element++)->IsLastForTile());
 
 #ifndef __TESTPAINT__
-    if (gConfigGeneral.virtual_floor_style != VIRTUAL_FLOOR_STYLE_OFF && partOfVirtualFloor)
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off && partOfVirtualFloor)
     {
         virtual_floor_paint(session);
     }
@@ -452,4 +452,10 @@ uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation)
     temp = rol8(temp, rotation * 2);
 
     return (segments & 0xFF00) | temp;
+}
+
+bool PaintShouldShowHeightMarkers(const paint_session* session, const uint32_t viewportFlag)
+{
+    auto dpi = &session->DPI;
+    return (session->ViewFlags & viewportFlag) && (dpi->zoom_level <= 0);
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,7 +45,7 @@ money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc)
 #pragma region SetParkEntranceFeeAction
 void park_set_entrance_fee(money32 fee)
 {
-    auto gameAction = SetParkEntranceFeeAction((money16)fee);
+    auto gameAction = SetParkEntranceFeeAction(static_cast<money16>(fee));
     GameActions::Execute(&gameAction);
 }
 #pragma endregion
@@ -55,13 +55,13 @@ void park_set_entrance_fee(money32 fee)
  *
  *  rct2: 0x006B4800
  */
-void ride_construct_new(ride_list_item listItem)
+void ride_construct_new(RideSelection listItem)
 {
-    int32_t rideEntryIndex = ride_get_entry_index(listItem.type, listItem.entry_index);
-    int32_t colour1 = ride_get_random_colour_preset_index(listItem.type);
+    int32_t rideEntryIndex = ride_get_entry_index(listItem.Type, listItem.EntryIndex);
+    int32_t colour1 = ride_get_random_colour_preset_index(listItem.Type);
     int32_t colour2 = ride_get_unused_preset_vehicle_colour(rideEntryIndex);
 
-    auto gameAction = RideCreateAction(listItem.type, listItem.entry_index, colour1, colour2);
+    auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2);
 
     gameAction.SetCallback([](const GameAction* ga, const RideCreateGameActionResult* result) {
         if (result->Error != GA_ERROR::OK)
@@ -140,8 +140,14 @@ money32 maze_set_track(
 
     // NOTE: ride_construction_tooldown_construct requires them to be set.
     // Refactor result type once theres no C code referencing this function.
-    gGameCommandErrorText = res->ErrorMessage;
-    gGameCommandErrorTitle = res->ErrorTitle;
+    if (auto title = res->ErrorTitle.AsStringId())
+        gGameCommandErrorTitle = *title;
+    else
+        gGameCommandErrorTitle = STR_NONE;
+    if (auto message = res->ErrorMessage.AsStringId())
+        gGameCommandErrorText = *message;
+    else
+        gGameCommandErrorText = STR_NONE;
 
     if (res->Error != GA_ERROR::OK)
     {

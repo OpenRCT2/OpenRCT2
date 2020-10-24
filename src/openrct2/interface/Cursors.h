@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -43,6 +43,11 @@ enum CURSOR_ID
     CURSOR_HAND_CLOSED,
     CURSOR_COUNT,
 };
+
+namespace Cursor
+{
+    uint8_t FromString(const std::string& s, uint8_t defaultValue);
+}
 
 namespace OpenRCT2::Ui
 {

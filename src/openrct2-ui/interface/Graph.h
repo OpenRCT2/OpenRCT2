@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 
 void graph_draw_uint8_t(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count, int32_t baseX, int32_t baseY);
 void graph_draw_money32(
-    rct_drawpixelinfo* dpi, money32* history, int32_t count, int32_t baseX, int32_t baseY, int32_t modifier, int32_t offset);
+    rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const int32_t baseX, const int32_t baseY,
+    const int32_t modifier, const int32_t offset);
 
 #endif

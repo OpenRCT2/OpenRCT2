@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -95,7 +95,6 @@ const char* language_get_string(rct_string_id id);
 bool language_open(int32_t id);
 
 uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr);
-utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint);
 int32_t utf8_insert_codepoint(utf8* dst, uint32_t codepoint);
 bool utf8_is_codepoint_start(const utf8* text);
 void utf8_remove_format_codes(utf8* text, bool allowcolours);
@@ -106,7 +105,38 @@ std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId)
 std::string utf8_to_rct2(const std::string_view& src);
 bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_string_id* outStringIds);
 void language_free_object_string(rct_string_id stringId);
-rct_string_id language_get_object_override_string_id(const char* identifier, uint8_t index);
 rct_string_id language_allocate_object_string(const std::string& target);
+std::string language_convert_string_to_tokens(const std::string_view& s);
+std::string language_convert_string(const std::string_view& s);
+
+constexpr utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
+{
+    if (codepoint <= 0x7F)
+    {
+        dst[0] = static_cast<utf8>(codepoint);
+        return dst + 1;
+    }
+    else if (codepoint <= 0x7FF)
+    {
+        dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
+        dst[1] = 0x80 | (codepoint & 0x3F);
+        return dst + 2;
+    }
+    else if (codepoint <= 0xFFFF)
+    {
+        dst[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
+        dst[1] = 0x80 | ((codepoint >> 6) & 0x3F);
+        dst[2] = 0x80 | (codepoint & 0x3F);
+        return dst + 3;
+    }
+    else
+    {
+        dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
+        dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
+        dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
+        dst[3] = 0x80 | (codepoint & 0x3F);
+        return dst + 4;
+    }
+}
 
 #endif

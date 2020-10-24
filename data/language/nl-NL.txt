@@ -1128,8 +1128,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Kan de tijdslimiet voor deze attractie niet aanpassen…
 STR_1752    :{SMALLFONT}{BLACK}Toon een lijst van individuele bezoekers in het park
 STR_1753    :{SMALLFONT}{BLACK}Toon een samengevatte lijst van bezoekers in het park
-STR_1754    :{BLACK}{COMMA16} bezoekers
-STR_1755    :{BLACK}{COMMA16} bezoeker
+STR_1754    :{BLACK}{COMMA32} bezoekers
+STR_1755    :{BLACK}{COMMA32} bezoeker
 STR_1756    :{WINDOW_COLOUR_2}Toegangsprijs:
 STR_1757    :{WINDOW_COLOUR_2}Betrouwbaarheid: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Bouwmodus
@@ -1187,7 +1187,7 @@ STR_1813    :Overige objecten
 STR_1814    :Acties
 STR_1815    :Gedachten
 STR_1816    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de bezoekerslijst wilt zien
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle bezoekers
 STR_1819    :{WINDOW_COLOUR_2}Alle bezoekers (samengevat)
 STR_1820    :{WINDOW_COLOUR_2}Bezoekers met de volgende status: {STRINGID}
@@ -1216,9 +1216,9 @@ STR_1842    :Favoriete attractie van: {COMMA16} bezoeker
 STR_1843    :Favoriete attractie van: {COMMA16} bezoekers
 STR_1844    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de attractielijst wilt zien
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} bezoekers
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} bezoekers
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} bezoekers
+STR_1846    :{COMMA32} bezoekers
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} bezoekers
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} bezoekers
 STR_1849    :{WINDOW_COLOUR_2}Draai muziek
 STR_1850    :{SMALLFONT}{BLACK}Selecteer of er in deze attractie muziek moet worden gedraaid
 STR_1851    :{WINDOW_COLOUR_2}Bedrijfskosten: {BLACK}{CURRENCY2DP} per uur
@@ -1523,7 +1523,7 @@ STR_2160    :Koekjes
 STR_2161    :Lege kommen
 STR_2162    :Lege drinkkartons
 STR_2163    :Lege sapbekers
-STR_2164    :gebraden worsten
+STR_2164    :Gebraden worsten
 STR_2165    :Lege kommen
 STR_2169    :een krakeling
 STR_2170    :warme chocolademelk
@@ -1576,7 +1576,7 @@ STR_2219    :{RED}{COMMA16} personen zijn om het leven gekomen bij een ongeluk i
 STR_2220    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Parkwaardering: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Bezoekers in park: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Bezoekers in park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Contant: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Contant: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Parkwaarde: {BLACK}{CURRENCY}
@@ -1941,8 +1941,8 @@ STR_2728    :{UINT16}h {UINT16}m
 STR_2729    :{UINT16}h {UINT16}m
 STR_2730    :{UINT16}h {UINT16}m
 STR_2731    :{UINT16}h {UINT16}m
-STR_2732    :{COMMA16} ft
-STR_2733    :{COMMA16} m
+STR_2732    :{COMMA32} ft
+STR_2733    :{COMMA32} m
 STR_2734    :{COMMA16} mph
 STR_2735    :{COMMA16} km/h
 STR_2736    :{MONTH}, jaar {COMMA16}
@@ -1976,7 +1976,7 @@ STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
 STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Kijkvenster {COMMA16}
 STR_2780    :Extra kijkvenster
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Sneltoets wijzigen
@@ -2434,7 +2434,7 @@ STR_3329    :Parkingang nog niet gebouwd
 STR_3330    :Park moet land bezitten
 STR_3331    :Pad van de parkingang naar de rand van de kaart is incompleet of te complex; het pad mag maar één vakje breed zijn en moet zo min mogelijk kruisingen en bochten bevatten
 STR_3332    :Parkingang staat achterstevoren of heeft geen pad naar de rand van de kaart
-STR_3333    :Plug-inobjecten meeleveren in opgeslagen spellen
+STR_3333    :Niet-standaard objecten meeleveren in opgeslagen spellen
 STR_3334    :{SMALLFONT}{BLACK}Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario's moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
 STR_3335    :Baanontwerper - Attractietypes en -voertuigen selecteren
 STR_3336    :Baanontwerpbeheer - Attractietype selecteren
@@ -2536,19 +2536,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, jaar {POP16}{COMMA16}
 STR_5161    :Datumnotatie:
 STR_5162    :Dag/maand/jaar
 STR_5163    :Maand/dag/jaar
-STR_5164    :Twitch-kanaalnaam
-STR_5165    :Bezoekers namen van volgers geven
-STR_5166    :{SMALLFONT}{BLACK}Geeft bezoekers namen van gebruikers die het Twitch-kanaal volgen.
-STR_5167    :Bez. met Twitch-volgersnamen volgen in berichtengeb.
-STR_5168    :{SMALLFONT}{BLACK}Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-volgers zijn genoemd.
-STR_5169    :Bez. namen van gebruikers in de Twitch-chat geven
-STR_5170    :{SMALLFONT}{BLACK}Geeft bezoekers namen van gebruikers in de Twitch-chat.
-STR_5171    :Bez. met Twitch-chatnamen volgen in berichtengebied
-STR_5172    :{SMALLFONT}{BLACK}Zet het bezoekersvolgsysteem aan voor bezoekers die naar Twitch-chatters zijn genoemd.
-STR_5173    :Twitch-chat als nieuws weergeven
-STR_5174    :{SMALLFONT}{BLACK}Zal chatberichten op Twitch die beginnen met !news in het berichtengebied tonen.
-STR_5175    :Voer de naam van je Twitch-kanaal in
-STR_5176    :Twitch-integratie inschakelen
 STR_5177    :Schermmodus:
 STR_5178    :{SMALLFONT}{BLACK}Cheats voor financiën
 STR_5179    :{SMALLFONT}{BLACK}Cheats voor bezoekers
@@ -2643,7 +2630,6 @@ STR_5267    :{SMALLFONT}{BLACK}Landinstellingen
 STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Bediening en interface
 STR_5270    :{SMALLFONT}{BLACK}Overig
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Klein decor
 STR_5273    :{SMALLFONT}{BLACK}Groot decor
 STR_5274    :{SMALLFONT}{BLACK}Voetpaden
@@ -2687,26 +2673,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debugginghulpmiddelen
 STR_5312    :Console tonen
 STR_5313    :Vakinspecteur tonen
 STR_5314    :Vakinspecteur
-STR_5315    :Gras
-STR_5316    :Zand
-STR_5317    :Aarde
-STR_5318    :Steen
-STR_5319    :Buitenaards
-STR_5320    :Schaakbord
-STR_5321    :Kluiten gras
-STR_5322    :IJs
-STR_5323    :Raster (rood)
-STR_5324    :Raster (geel)
-STR_5325    :Raster (blauw)
-STR_5326    :Raster (groen)
-STR_5327    :Raster (donker)
-STR_5328    :Raster (licht)
-STR_5329    :Schaakbord (omgekeerd)
-STR_5330    :Ondergronds zicht
-STR_5331    :Steen
-STR_5332    :Houten palen (rood)
-STR_5333    :Houten palen (zwart)
-STR_5334    :IJs
 STR_5335    :Attractie-ingang
 STR_5336    :Attractie-uitgang
 STR_5337    :Parkingang
@@ -2925,7 +2891,7 @@ STR_5554    :{SMALLFONT}{BLACK}Overgangen met omringend land gladstrijken
 STR_5555    :Voertuigen van andere baantypen tonen
 STR_5556    :{SMALLFONT}{BLACK}Speler verwijderen
 STR_5557    :Verbinding behouden na desynchronisatie (multiplayer)
-STR_5558    :Om deze instelling van kracht te laten worden is een herstart vereist.
+STR_5558    :Deze instelling wordt pas van kracht nadat je OpenRCT2 opnieuw hebt gestart.
 STR_5559    :Elke 10 min. inspect.
 STR_5560    :{SMALLFONT}{BLACK}Stelt het inspectieinterval van alle attracties in op ‘Elke 10 minuten’.
 STR_5561    :Kon taal niet laden
@@ -3182,7 +3148,6 @@ STR_5848    :{SMALLFONT}{BLACK}Eigen titelpresentaties maken en beheren.
 STR_5849    :{SMALLFONT}{BLACK}Nieuwe werknemers automatisch plaatsen.
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Stelt het standaardinspectie-interval voor nieuwe attracties in.
-STR_5852    :{SMALLFONT}{BLACK}Stelt de naam van het Twitch.tv-kanaal in waarmee moet worden geïntegreerd.
 STR_5853    :{SMALLFONT}{BLACK}Geluidseffecten in-/uitschakelen.
 STR_5854    :{SMALLFONT}{BLACK}Attractiemuziek in-/uitschakelen.
 STR_5855    :{SMALLFONT}{BLACK}Stelt in of er volledig scherm, een randloos venster of een regulier venster moet worden gebruikt.
@@ -3366,8 +3331,8 @@ STR_6033    :Locatie RCT1-bestanden:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Selecteer de map waar je RCT1-bestanden staan
 STR_6036    :{SMALLFONT}{BLACK}Wissen
-STR_6037    :Selecteer een geldige RCT1-map.
-STR_6038    :{SMALLFONT}{BLACK}Als je RCT1 hebt, stel dan hier het pad in om gebruik te maken van de scenario's, baanontwerpen en graphics.
+STR_6037    :De geselecteerde map bevat geen geldige RollerCoaster Tycoon 1-installatie.
+STR_6038    :{SMALLFONT}{BLACK}Als je RollerCoaster Tycoon 1 hebt, stel dan hier het pad in om gebruik te maken van de scenario's, baanontwerpen en graphics.
 STR_6039    :{SMALLFONT}{BLACK}Snel afbreken
 STR_6040    :Scenario-opties bewerken
 STR_6041    :{BLACK}Er zijn geen monteurs ingehuurd!
@@ -3533,17 +3498,6 @@ STR_6200    :Datum resetten
 STR_6201    :{MONTH}
 STR_6202    :Stijl hulpraster:
 STR_6203    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal er een hulpraster worden weergegeven als je CTRL of SHIFT ingedrukt houdt, om het plaatsen van elementen gemakkelijker te maken.
-STR_6204    :Stenen
-STR_6205    :IJzer
-STR_6206    :Wit stucwerk
-STR_6207    :Geel stucwerk
-STR_6208    :Rood stucwerk
-STR_6209    :Paars stucwerk
-STR_6210    :Groen stucwerk
-STR_6211    :Gele zandsteen
-STR_6212    :Grijze zandsteen
-STR_6213    :Wolkenkrabber A
-STR_6214    :Wolkenkrabber B
 STR_6215    :Bouw
 STR_6216    :Bedrijf
 STR_6217    :Beschikbaarheid attr./baanonderdelen
@@ -3581,9 +3535,6 @@ STR_6248    :{WINDOW_COLOUR_1}Wil je {STRINGID} renoveren voor {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Wil je {STRINGID} renoveren?
 STR_6250    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} volledig wilt afbreken? Je krijgt er {CURRENCY} voor terug.
 STR_6251    :Attractie is nog niet leeg
-STR_6252    :Twitch-API-URL
-STR_6253    :{SMALLFONT}{BLACK}Voer de URL van de Twitch-integratie-API in. Vereist voor het inschakelen van Twitch-integratie.
-STR_6254    :URL van de Twitch-integratie-API:
 STR_6255    :URL is niet geldig
 STR_6256    :Renderingeffecten
 STR_6257    :Glas (doorschijnend)
@@ -3692,6 +3643,30 @@ STR_6359    :{POP16}{POP16}Pagina {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Belichtingseffecten op attracties (experimenteel)
 STR_6362    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zullen de voertuigen van attracties die een baan hebben 's nachts verlicht worden.
+STR_6363    :Tekst is naar het klembord gekopieerd.
+STR_6364    :{RED}{COMMA16} persoon is om het leven gekomen bij een ongeluk in {STRINGID}
+STR_6365    :Slachtoffers bij ongelukken in attracties
+STR_6366    :Vastgelopen of afgeslagen voertuigen
+STR_6367    :{WINDOW_COLOUR_2}Animatieframe:
+STR_6368    :Om compatibiliteitsredenen wordt het afgeraden om OpenRCT2 te draaien via Wine. OpenRCT2 heeft eigen versies voor macOS, Linux, FreeBSD en OpenBSD.
+STR_6369    :Sta bouwen van attracties op ongeldige hoogtes toe
+STR_6370    :{SMALLFONT}{BLACK}Maakt het mogelijk om attracties te bouwen op “tussenhoogtes”.
+STR_6371    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar het bestand “csg1i.dat” ontbreekt. Dit bestand moet je van de CD van RollerCoaster Tycoon 1 naar de “Data”-map van de RollerCoaster Tycoon 1-installatie op je harde schijf kopiëren.
+STR_6372    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar deze versie is niet bruikbaar. OpenRCT2 vereist een installatie van Loopy Landscapes or RCT Deluxe om de grafische assets van  RollerCoaster Tycoon 1 te kunnen gebruiken.
+STR_6373    :Hoogtecontroles in- of uitschakelen
+STR_6374    :H
+STR_6375    :Onbekende attractie
+STR_6376    :{WINDOW_COLOUR_2}Voertuig:{NEWLINE}{BLACK}{STRINGID} voor {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID} voor {STRINGID}
+STR_6378    :Objectenlijst ophalen: {INT32} / {INT32}
+STR_6379    :Ongeldige gegevens ontvangen
+STR_6380    :Update beschikbaar!
+STR_6381    :Meepraten op de OpenRCT2-Discord
+STR_6382    :Er is een nieuwe versie van OpenRCT2 beschikbaar: {STRING}
+STR_6383    :Downloadpagina openen
+STR_6384    :Sneeuw
+STR_6385    :Zware sneeuw
+STR_6386    :Sneeuwstorm
 
 #############
 # Scenarios #

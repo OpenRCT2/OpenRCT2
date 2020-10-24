@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -174,6 +174,13 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 case SDLK_RIGHT:
                     CursorRight();
                     console.RefreshCaret();
+                    break;
+                case SDLK_c:
+                    if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && _session.Length)
+                    {
+                        SDL_SetClipboardText(_session.Buffer);
+                        context_show_error(STR_COPY_INPUT_TO_CLIPBOARD, STR_NONE, {});
+                    }
                     break;
                 case SDLK_v:
                     if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && SDL_HasClipboardText())

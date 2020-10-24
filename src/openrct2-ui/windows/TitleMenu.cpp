@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,14 +27,20 @@ enum {
     WIDX_START_NEW_GAME,
     WIDX_CONTINUE_SAVED_GAME,
     WIDX_MULTIPLAYER,
-    WIDX_GAME_TOOLS
+    WIDX_GAME_TOOLS,
+    WIDX_NEW_VERSION,
 };
 
+static ScreenRect _filterRect;
+static constexpr ScreenSize MenuButtonDims = { 82, 82 };
+static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
+
 static rct_widget window_title_menu_widgets[] = {
-    { WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_NEW_GAME,        STR_START_NEW_GAME_TIP          },
-    { WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_LOAD_GAME,       STR_CONTINUE_SAVED_GAME_TIP     },
-    { WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_G2_MENU_MULTIPLAYER,  STR_SHOW_MULTIPLAYER_TIP        },
-    { WWT_IMGBTN, 2, 0, 0, 0, 81, SPR_MENU_TOOLBOX,         STR_GAME_TOOLS_TIP              },
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
+    MakeWidget({0,                       0}, UpdateButtonDims, WWT_EMPTY,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
     { WIDGETS_END },
 };
 
@@ -42,6 +48,7 @@ static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex
 static void window_title_menu_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
 static void window_title_menu_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, int32_t *cursorId);
+static void window_title_menu_invalidate(rct_window *w);
 static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_title_menu_events = {
@@ -70,7 +77,7 @@ static rct_window_event_list window_title_menu_events = {
     nullptr,
     window_title_menu_cursor,
     nullptr,
-    nullptr,
+    window_title_menu_invalidate,
     window_title_menu_paint,
     nullptr
 };
@@ -84,9 +91,11 @@ rct_window* window_title_menu_open()
 {
     rct_window* window;
 
+    const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
     window = window_create(
-        ScreenCoordsXY(0, context_get_height() - 154), 0, 100, &window_title_menu_events, WC_TITLE_MENU,
+        ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &window_title_menu_events, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
+
     window->widgets = window_title_menu_widgets;
     window->enabled_widgets
         = ((1 << WIDX_START_NEW_GAME) | (1 << WIDX_CONTINUE_SAVED_GAME) |
@@ -97,14 +106,14 @@ rct_window* window_title_menu_open()
 
     rct_widgetindex i = 0;
     int32_t x = 0;
-    for (rct_widget* widget = window->widgets; widget->type != WWT_LAST; widget++)
+    for (rct_widget* widget = window->widgets; widget != &window->widgets[WIDX_NEW_VERSION]; widget++)
     {
         if (widget_is_enabled(window, i))
         {
             widget->left = x;
-            widget->right = x + 81;
+            widget->right = x + MenuButtonDims.width - 1;
 
-            x += 82;
+            x += MenuButtonDims.width;
         }
         else
         {
@@ -113,7 +122,9 @@ rct_window* window_title_menu_open()
         i++;
     }
     window->width = x;
+    window->widgets[WIDX_NEW_VERSION].right = window->width;
     window->windowPos.x = (context_get_width() - window->width) / 2;
+    window->colours[1] = TRANSLUCENT(COLOUR_LIGHT_ORANGE);
 
     window_init_scroll_widgets(window);
 
@@ -123,6 +134,7 @@ rct_window* window_title_menu_open()
 static void window_title_menu_scenarioselect_callback(const utf8* path)
 {
     context_load_park_from_file(path);
+    game_load_scripts();
 }
 
 static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex)
@@ -171,6 +183,9 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
                 context_open_window(WC_SERVER_LIST);
             }
             break;
+        case WIDX_NEW_VERSION:
+            context_open_window_view(WV_NEW_VERSION_INFO);
+            break;
     }
 }
 
@@ -184,8 +199,8 @@ static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetInd
         gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
         gDropdownItemsFormat[4] = STR_OPEN_USER_CONTENT_FOLDER;
         window_dropdown_show_text(
-            w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->bottom - widget->top + 1,
-            TRANSLUCENT(w->colours[0]), DROPDOWN_FLAG_STAY_OPEN, 5);
+            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, TRANSLUCENT(w->colours[0]),
+            DROPDOWN_FLAG_STAY_OPEN, 5);
     }
 }
 
@@ -208,11 +223,13 @@ static void window_title_menu_dropdown(rct_window* w, rct_widgetindex widgetInde
                 Editor::LoadTrackManager();
                 break;
             case 4:
+            {
                 auto context = OpenRCT2::GetContext();
                 auto env = context->GetPlatformEnvironment();
                 auto uiContext = context->GetUiContext();
                 uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER));
                 break;
+            }
         }
     }
 }
@@ -223,8 +240,20 @@ static void window_title_menu_cursor(
     gTooltipTimeout = 2000;
 }
 
+static void window_title_menu_invalidate(rct_window* w)
+{
+    _filterRect = { w->windowPos.x, w->windowPos.y + UpdateButtonDims.height, w->windowPos.x + w->width - 1,
+                    w->windowPos.y + MenuButtonDims.height + UpdateButtonDims.height - 1 };
+    if (OpenRCT2::GetContext()->HasNewVersionInfo())
+    {
+        w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
+        w->widgets[WIDX_NEW_VERSION].type = WWT_BUTTON;
+        _filterRect.Point1.y = w->windowPos.y;
+    }
+}
+
 static void window_title_menu_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    gfx_filter_rect(dpi, w->windowPos.x, w->windowPos.y, w->windowPos.x + w->width - 1, w->windowPos.y + 82 - 1, PALETTE_51);
+    gfx_filter_rect(dpi, _filterRect, PALETTE_51);
     window_draw_widgets(w, dpi);
 }

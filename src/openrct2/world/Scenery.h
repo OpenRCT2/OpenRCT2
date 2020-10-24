@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,20 +23,17 @@
 #pragma pack(push, 1)
 struct rct_small_scenery_entry
 {
-    uint32_t flags;           // 0x06
-    uint8_t height;           // 0x0A
-    uint8_t tool_id;          // 0x0B
-    int16_t price;            // 0x0C
-    int16_t removal_price;    // 0x0E
-    uint8_t* frame_offsets;   // 0x10
-    uint16_t animation_delay; // 0x14
-    uint16_t animation_mask;  // 0x16
-    uint16_t num_frames;      // 0x18
-    uint8_t scenery_tab_id;   // 0x1A
+    uint32_t flags;                  // 0x06
+    uint8_t height;                  // 0x0A
+    uint8_t tool_id;                 // 0x0B
+    int16_t price;                   // 0x0C
+    int16_t removal_price;           // 0x0E
+    uint8_t* frame_offsets;          // 0x10
+    uint16_t animation_delay;        // 0x14
+    uint16_t animation_mask;         // 0x16
+    uint16_t num_frames;             // 0x18
+    ObjectEntryIndex scenery_tab_id; // 0x1A
 };
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_small_scenery_entry, 21);
-#endif
 
 struct rct_large_scenery_tile
 {
@@ -83,19 +80,16 @@ enum LARGE_SCENERY_TEXT_FLAGS
 
 struct rct_large_scenery_entry
 {
-    uint8_t tool_id;               // 0x06
-    uint8_t flags;                 // 0x07
-    int16_t price;                 // 0x08
-    int16_t removal_price;         // 0x0A
-    rct_large_scenery_tile* tiles; // 0x0C
-    uint8_t scenery_tab_id;        // 0x10
-    uint8_t scrolling_mode;        // 0x11
-    rct_large_scenery_text* text;  // 0x12
-    uint32_t text_image;           // 0x16
+    uint8_t tool_id;
+    uint8_t flags;
+    int16_t price;
+    int16_t removal_price;
+    rct_large_scenery_tile* tiles;
+    ObjectEntryIndex scenery_tab_id;
+    uint8_t scrolling_mode;
+    rct_large_scenery_text* text;
+    uint32_t text_image;
 };
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_large_scenery_entry, 20);
-#endif
 
 enum LARGE_SCENERY_FLAGS
 {
@@ -108,15 +102,14 @@ enum LARGE_SCENERY_FLAGS
 
 struct rct_wall_scenery_entry
 {
-    uint8_t tool_id;        // 0x06
-    uint8_t flags;          // 0x07
-    uint8_t height;         // 0x08
-    uint8_t flags2;         // 0x09
-    int16_t price;          // 0x0A
-    uint8_t scenery_tab_id; // 0x0C
-    uint8_t scrolling_mode; // 0x0D 0xFF if no scrolling
+    uint8_t tool_id;
+    uint8_t flags;
+    uint8_t height;
+    uint8_t flags2;
+    int16_t price;
+    ObjectEntryIndex scenery_tab_id;
+    uint8_t scrolling_mode;
 };
-assert_struct_size(rct_wall_scenery_entry, 8);
 
 enum WALL_SCENERY_FLAGS
 {
@@ -141,22 +134,20 @@ enum WALL_SCENERY_2_FLAGS
 
 struct rct_path_bit_scenery_entry
 {
-    uint16_t flags;         // 0x06
-    uint8_t draw_type;      // 0x08
-    uint8_t tool_id;        // 0x09
-    int16_t price;          // 0x0A
-    uint8_t scenery_tab_id; // 0x0C
+    uint16_t flags;                  // 0x06
+    uint8_t draw_type;               // 0x08
+    uint8_t tool_id;                 // 0x09
+    int16_t price;                   // 0x0A
+    ObjectEntryIndex scenery_tab_id; // 0x0C
 };
-assert_struct_size(rct_path_bit_scenery_entry, 7);
 
 struct rct_banner_scenery_entry
 {
-    uint8_t scrolling_mode; // 0x06
-    uint8_t flags;          // 0x07
-    int16_t price;          // 0x08
-    uint8_t scenery_tab_id; // 0x0A
+    uint8_t scrolling_mode;          // 0x06
+    uint8_t flags;                   // 0x07
+    int16_t price;                   // 0x08
+    ObjectEntryIndex scenery_tab_id; // 0x0A
 };
-assert_struct_size(rct_banner_scenery_entry, 5);
 
 struct rct_scenery_entry
 {
@@ -171,9 +162,6 @@ struct rct_scenery_entry
         rct_banner_scenery_entry banner;
     };
 };
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_scenery_entry, 6 + 21);
-#endif
 
 #pragma pack(pop)
 
@@ -269,10 +257,10 @@ void scenery_update_tile(const CoordsXY& sceneryPos);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 
-rct_scenery_entry* get_wall_entry(int32_t entryIndex);
-rct_scenery_entry* get_banner_entry(int32_t entryIndex);
-rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex);
-rct_scenery_group_entry* get_scenery_group_entry(int32_t entryIndex);
+rct_scenery_entry* get_wall_entry(ObjectEntryIndex entryIndex);
+rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex);
+rct_scenery_entry* get_footpath_item_entry(ObjectEntryIndex entryIndex);
+rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex);
 
 int32_t wall_entry_get_door_sound(const rct_scenery_entry* wallEntry);
 

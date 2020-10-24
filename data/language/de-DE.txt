@@ -28,7 +28,7 @@ STR_0023    :Spiralgleitbahn
 STR_0024    :Go-Karts
 STR_0025    :Wildwasserbahn
 STR_0026    :Stromschnellen
-STR_0027    :Autoskooter
+STR_0027    :Autoscooter
 STR_0028    :Piratenschiff
 STR_0029    :Schwingendes Überkopfschiff
 STR_0030    :Imbissstand
@@ -41,7 +41,7 @@ STR_0036    :Stand
 STR_0037    :Kiosk
 STR_0038    :Toiletten
 STR_0039    :Riesenrad
-STR_0040    :Bewegungssimluator
+STR_0040    :Bewegungssimulator
 STR_0041    :3D-Kino
 STR_0042    :Top Spin
 STR_0043    :Weltraumringe
@@ -119,7 +119,7 @@ STR_0533    :
 STR_0534    :Die Gäste fahren auf einer Asphaltstrecke Rennen gegeneinander
 STR_0535    :Boote fahren in einem Wasserkanal und rutschen steile Gefälle herunter, damit die Fahrgäste unten nass werden
 STR_0536    :Runde Boote gleiten durch einen breiten Wasserkanal, zischen durch Wasserfälle und schäumende Stromschnellen
-STR_0537    :Die Gäste kollidieren miteinander in selbstgesteuerten Autoskootern
+STR_0537    :Die Gäste kollidieren miteinander in selbstgesteuerten Autoscootern
 STR_0538    :
 STR_0539    :
 STR_0540    :
@@ -133,7 +133,7 @@ STR_0550    :
 STR_0551    :
 STR_0552    :
 STR_0553    :
-STR_0554    :Der Wagen wird mit Hilfe von linearen Induktionsmotoren aus der Station entlang einer langen, ebenen Bahn beschleunigt und dann vertikal nach oben geschossen, von wo er wieder im freien Fall zur Station zurückzukehrt
+STR_0554    :Der Wagen wird mit Hilfe von linearen Induktionsmotoren aus der Station entlang einer langen, ebenen Bahn beschleunigt und dann vertikal nach oben geschossen, von wo er wieder im freien Fall zur Station zurückkehrt
 STR_0555    :Die Besucher fahren in einem Aufzug einen Turm hinauf oder hinab, um in ein anderes Stockwerk zu gelangen
 STR_0556    :Besonders breite Wagen fallen eine vollständige Vertikale herunter - das ultimative Erlebnis des freien Falls
 STR_0557    :
@@ -454,7 +454,7 @@ STR_1070    :Einzelfahrt pro Eintritt
 STR_1071    :Unbegrenzte Fahrten pro Eintritt
 STR_1072    :Labyrinthmodus
 STR_1073    :Rennmodus
-STR_1074    :Autoskooter-Modus
+STR_1074    :Autoscooter-Modus
 STR_1075    :Schwingmodus
 STR_1076    :Ladenmodus
 STR_1077    :Rotationsmodus
@@ -978,7 +978,7 @@ STR_1594    :{SMALLFONT}„Diese Wonton-Suppe von {STRINGID} ist ihr Geld wert�
 STR_1595    :{SMALLFONT}„Diese Fleischklößchensuppe von {STRINGID} ist ihr Geld wert“
 STR_1596    :{SMALLFONT}„Dieser Fruchtsaft von {STRINGID} ist sein Geld wert“
 STR_1597    :{SMALLFONT}„Diese Sojamilch von {STRINGID} ist ihr Geld wert“
-STR_1598    :{SMALLFONT}„Diese Sujongkwa von {STRINGID} ist ihr Geld wert“
+STR_1598    :{SMALLFONT}„Diese Sujeonggwa von {STRINGID} ist ihr Geld wert“
 STR_1599    :{SMALLFONT}„Dieses Sandwich von {STRINGID} ist sein Geld wert“
 STR_1600    :{SMALLFONT}„Dieser Keks von {STRINGID} ist sein Geld wert“
 STR_1601    :
@@ -1010,7 +1010,7 @@ STR_1626    :{SMALLFONT}„Ich bezahle nicht so viel für eine Wonton-Suppe von 
 STR_1627    :{SMALLFONT}„Ich bezahle nicht so viel für eine Fleischklößchensuppe von {STRINGID}“
 STR_1628    :{SMALLFONT}„Ich bezahle nicht so viel für einen Fruchtsaft von {STRINGID}“
 STR_1629    :{SMALLFONT}„Ich bezahle nicht so viel für Sojamilch von {STRINGID}“
-STR_1630    :{SMALLFONT}„Ich bezahle nicht so viel für Sujongkwa von {STRINGID}“
+STR_1630    :{SMALLFONT}„Ich bezahle nicht so viel für Sujeonggwa von {STRINGID}“
 STR_1631    :{SMALLFONT}„Ich bezahle nicht so viel für ein Sandwich von {STRINGID}“
 STR_1632    :{SMALLFONT}„Ich bezahle nicht so viel für einen Keks von {STRINGID}“
 STR_1633    :
@@ -1130,8 +1130,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Zeitlimit für Fahrt kann nicht geändert werden...
 STR_1752    :{SMALLFONT}{BLACK}Liste einzelner Parkbesucher anzeigen
 STR_1753    :{SMALLFONT}{BLACK}Gesamtliste von Parkbesuchern anzeigen
-STR_1754    :{BLACK}{COMMA16} Besucher
-STR_1755    :{BLACK}{COMMA16} Besucher
+STR_1754    :{BLACK}{COMMA32} Besucher
+STR_1755    :{BLACK}{COMMA32} Besucher
 STR_1756    :{WINDOW_COLOUR_2}Eintrittspreis:
 STR_1757    :{WINDOW_COLOUR_2}Zuverlässigkeit: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Baumodus
@@ -1189,7 +1189,7 @@ STR_1813    :Verschiedene Objekte
 STR_1814    :Aktionen
 STR_1815    :Gedanken
 STR_1816    :{SMALLFONT}{BLACK}Informationsart auswählen, die{NEWLINE}in Besucherliste angezeigt{NEWLINE}werden soll
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle Besucher
 STR_1819    :{WINDOW_COLOUR_2}Alle Besucher (zusammengefasst)
 STR_1820    :{WINDOW_COLOUR_2}Besucher {STRINGID}
@@ -1218,9 +1218,9 @@ STR_1842    :Favorit von: {COMMA16} Besucher
 STR_1843    :Favorit von: {COMMA16} Besuchern
 STR_1844    :{SMALLFONT}{BLACK}Informationsart auswählen, die{NEWLINE}in Attraktionsliste angezeigt{NEWLINE}werden soll
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} Besucher
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} Besucher
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} Besucher
+STR_1846    :{COMMA32} Besucher
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} Besucher
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} Besucher
 STR_1849    :{WINDOW_COLOUR_2}Musikwiedergabe
 STR_1850    :{SMALLFONT}{BLACK}Auswählen, ob Musik für diese{NEWLINE}Bahn abgespielt werden soll
 STR_1851    :{WINDOW_COLOUR_2}Betriebskosten: {BLACK}{CURRENCY2DP} pro Stunde
@@ -1498,7 +1498,7 @@ STR_2132    :Wonton-Suppe
 STR_2133    :Fleischklößchensuppe
 STR_2134    :Fruchtsaft
 STR_2135    :Sojamilch
-STR_2136    :Sujongkwa
+STR_2136    :Sujeonggwa
 STR_2137    :Sandwich
 STR_2138    :Keks
 STR_2139    :Leere Schüssel
@@ -1517,7 +1517,7 @@ STR_2154    :Wonton-Suppe
 STR_2155    :Fleischklößchensuppe
 STR_2156    :Fruchtsäfte
 STR_2157    :Sojamilch
-STR_2158    :Sujongkwa
+STR_2158    :Sujeonggwa
 STR_2159    :Sandwiches
 STR_2160    :Kekse
 STR_2161    :Leere Schüsseln
@@ -1536,7 +1536,7 @@ STR_2176    :Wonton-Suppe
 STR_2177    :Fleischklößchensuppe
 STR_2178    :ein Fruchtsaft
 STR_2179    :Sojamilch
-STR_2180    :Sujongkwa
+STR_2180    :Sujeonggwa
 STR_2181    :ein Sandwich
 STR_2182    :ein Keks
 STR_2183    :eine leere Schüssel
@@ -1555,7 +1555,7 @@ STR_2198    :Wonton-Suppe
 STR_2199    :Fleischklößchensuppe
 STR_2200    :Fruchtsaft
 STR_2201    :Sojamilch
-STR_2202    :Sujongkwa
+STR_2202    :Sujeonggwa
 STR_2203    :Sandwich
 STR_2204    :Keks
 STR_2205    :Leere Schüssel
@@ -1572,11 +1572,11 @@ STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
 STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} bei {STRINGID} ist noch nicht zu {STRINGID} zurückgekehrt!{NEWLINE}Überprüfen Sie, ob es steckengeblieben ist oder angehalten hat
-STR_2219    :{RED}{COMMA16} Menschen sind in einem Unfall bei {STRINGID} gestorben
+STR_2219    :{RED}{COMMA16} Menschen sind bei einem Unfall in {STRINGID} gestorben
 STR_2220    :{WINDOW_COLOUR_2}Parkbewertung: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Parkbewertung: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Besucher im Park: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Besucher im Park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Kontostand: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Kontostand: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Verkehrswert: {BLACK}{CURRENCY}
@@ -1942,8 +1942,8 @@ STR_2728    :{UINT16}Stunde:{UINT16}Min.
 STR_2729    :{UINT16}Stunde:{UINT16}Min.
 STR_2730    :{UINT16}Stunden:{UINT16}Min.
 STR_2731    :{UINT16}Stunden:{UINT16}Min.
-STR_2732    :{COMMA16}ft
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}ft
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Jahr {COMMA16}
@@ -1979,7 +1979,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Ansichtsfenster {COMMA16}
 STR_2780    :Zusatz-Ansichtsfenster
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :UMSCHALT + 
 STR_2783    :STRG + 
 STR_2784    :Tastaturkürzel ändern
@@ -2142,7 +2142,7 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Datei kann nicht geladen werden...
 STR_3011    :Datei enthält ungültige Daten
-STR_3012    :Autoskooter-Beat-Stil
+STR_3012    :Autoscooter-Beat-Stil
 STR_3013    :Jahrmarktsorgelstil
 STR_3014    :Römischer Fanfarenstil
 STR_3015    :Orientstil
@@ -2425,8 +2425,8 @@ STR_3329    :Parkeingang noch nicht gebaut
 STR_3330    :Park muss Gelände besitzen
 STR_3331    :Fußweg vom Parkeingang zum Kartenrand entweder nicht vollständig oder zu komplex - Fußweg darf nicht zu breit sein und sollte so wenige Kreuzungen und Biegungen wie möglich aufweisen
 STR_3332    :Parkeingang liegt verkehrt herum oder besitzt keinen Fußweg zum Kartenrand
-STR_3333    :Zusatzobjekte bei gespeich. Spielen exportieren
-STR_3334    :{SMALLFONT}{BLACK}Wählen Sie aus, ob zusätzliche Plugin-Objektdaten (Zusatzdaten, die nicht zum Hauptprodukt gehören) in Spielständen oder Szenariodateien gespeichert werden sollen, damit jemand, der nicht über die zusätzlichen Objektdaten verfügt, die gespeicherten Daten laden kann
+STR_3333    :Benutzerobjekte bei gespeich. Spielen exportieren
+STR_3334    :{SMALLFONT}{BLACK}Bitte wählen Sie aus, ob zusätzliche benutzerdefinierte Objektdaten (Zusatzdaten, die nicht zum Hauptprodukt gehören) in Spielständen oder Szenariodateien gespeichert werden sollen, damit jemand, der nicht über die zusätzlichen Objektdaten verfügt, die gespeicherten Daten laden kann
 STR_3335    :Streckenentwurf-Designer - Bahnarten & Fahrzeuge auswählen
 STR_3336    :Streckenentwurf-Manager - Bahnart auswählen
 STR_3338    :{BLACK}Eigenes Layout entwerfen
@@ -2524,19 +2524,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Jahr {POP16}{COMMA16}
 STR_5161    :Datumsformat:
 STR_5162    :Tag/Monat/Jahr
 STR_5163    :Monat/Tag/Jahr
-STR_5164    :Twitch-Kanalname
-STR_5165    :Parkbesucher nach Followern benennen
-STR_5166    :{SMALLFONT}{BLACK}Benennt die Parkbesucher nach den{NEWLINE}Followern des Twitch-Kanals
-STR_5167    :Überwache Follower-Parkbesucher
-STR_5168    :{SMALLFONT}{BLACK}Überwachungsinformationen zu Parkbesuchern, die nach Twitch-Followern benannt sind, einschalten - (Bei eingeschalteter Überwachung werden Besucheraktivitäten im Nachrichtenbereich angezeigt)
-STR_5169    :Parkbesucher nach Twitch-Chatbenutzern benennen
-STR_5170    :{SMALLFONT}{BLACK}Benennt die Parkbesucher nach Twitch-Chatbenutzern
-STR_5171    :Überwache Chat-Parkbesucher
-STR_5172    :{SMALLFONT}{BLACK}Überwachungsinformationen zu Parkbesuchern, die nach Twitch-Chatbenutzern benannt sind, einschalten - (Bei eingeschalteter Überwachung werden Besucheraktivitäten im Nachrichtenbereich angezeigt)
-STR_5173    :Erhalte Twitch-Chat als Spielnachrichten
-STR_5174    :{SMALLFONT}{BLACK}Benutzt Twitch-Chatnachrichten, welchen !news vorangestellt ist, für Spielbenachrichtigungen
-STR_5175    :Namen Ihres Twitch-Kanals eingeben:
-STR_5176    :Twitch-Integration aktivieren
 STR_5177    :Bildschirmmodus:
 STR_5178    :{SMALLFONT}{BLACK}Cheats für Finanzen anzeigen
 STR_5179    :{SMALLFONT}{BLACK}Cheats für Parkbesucher anzeigen
@@ -2631,7 +2618,6 @@ STR_5267    :{SMALLFONT}{BLACK}Sprache und Einheiten
 STR_5268    :{SMALLFONT}{BLACK}Audio
 STR_5269    :{SMALLFONT}{BLACK}Bedienung und Oberfläche
 STR_5270    :{SMALLFONT}{BLACK}Sonstiges
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Kleine Szenerie
 STR_5273    :{SMALLFONT}{BLACK}Große Szenerie
 STR_5274    :{SMALLFONT}{BLACK}Fußwege
@@ -2675,26 +2661,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debugging-Tools
 STR_5312    :Konsole anzeigen
 STR_5313    :Kachelinspektor anzeigen
 STR_5314    :Kachelinspektor
-STR_5315    :Gras
-STR_5316    :Sand
-STR_5317    :Erde
-STR_5318    :Gestein
-STR_5319    :Mars
-STR_5320    :Schachbrett
-STR_5321    :Grasklumpen
-STR_5322    :Eis
-STR_5323    :Gitter (rot)
-STR_5324    :Gitter (gelb)
-STR_5325    :Gitter (blau)
-STR_5326    :Gitter (grün)
-STR_5327    :Sand (dunkel)
-STR_5328    :Sand (hell)
-STR_5329    :Schachbrett (invertiert)
-STR_5330    :Untergrundansicht
-STR_5331    :Gestein
-STR_5332    :Holz (rot)
-STR_5333    :Holz (schwarz)
-STR_5334    :Eis
 STR_5335    :Attraktionseingang
 STR_5336    :Attraktionsausgang
 STR_5337    :Parkeingang
@@ -2913,7 +2879,7 @@ STR_5554    :{SMALLFONT}{BLACK}Gebirgswerkzeug aktivieren
 STR_5555    :Fahrzeuge anderer Streckentyp. anzeigen
 STR_5556    :{SMALLFONT}{BLACK}Spieler entfernen
 STR_5557    :Nach Desync. verbunden bleiben (Mehrspieler)
-STR_5558    :Damit diese Einstellung wirksam wird, ist ein Neustart erforderlich
+STR_5558    :Diese Einstellung wird erst nach einem Neustart von OpenRCT2 aktiv
 STR_5559    :10 Min. Inspektionen
 STR_5560    :{SMALLFONT}{BLACK}Setzt die Inspektionszeit aller Bahnen{NEWLINE}auf „Alle 10 Minuten“
 STR_5561    :Sprache konnte nicht geladen werden
@@ -2946,7 +2912,7 @@ STR_5587    :{SMALLFONT}{BLACK}Läden und Stände werden nach dem{NEWLINE}Bauen 
 STR_5588    :{SMALLFONT}{BLACK}Mit anderen Spielern spielen
 STR_5589    :Benachrichtigungseinstellungen
 STR_5590    :Parkauszeichnungen
-STR_5591    :Marketingkampage wurde beendet
+STR_5591    :Marketingkampagne wurde beendet
 STR_5592    :Parkwarnungen
 STR_5593    :Parkbewertungswarnungen
 STR_5594    :Attraktion ist ausgefallen
@@ -2956,7 +2922,7 @@ STR_5597    :Attraktion / Szenerie erforscht
 STR_5598    :Besucherwarnungen
 STR_5599    :Besucher hat sich verirrt
 STR_5600    :Besucher hat den Park verlassen
-STR_5601    :Besucher steht für eine Attraktion schlange
+STR_5601    :Besucher steht für eine Attraktion Schlange
 STR_5602    :Besucher ist auf einer Attraktion
 STR_5603    :Besucher hat eine Attraktion verlassen
 STR_5604    :Besucher hat einen Gegenstand gekauft
@@ -3168,7 +3134,6 @@ STR_5848    :{SMALLFONT}{BLACK}Benutzerdefinierte Titelsequenzen{NEWLINE}erstell
 STR_5849    :{SMALLFONT}{BLACK}Personal wird nach dem Einstellen automatisch platziert
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Stellt die für neu gebaute Attraktionen standardmäßige Inspektionszeit ein
-STR_5852    :{SMALLFONT}{BLACK}Den Namen des TwitchTV-Kanals einstellen, der für die Twitch-Integration{NEWLINE}benutzt wird
 STR_5853    :{SMALLFONT}{BLACK}Soundeffekte aktivieren/deaktivieren
 STR_5854    :{SMALLFONT}{BLACK}Attraktionsmusik aktivieren/deaktivieren
 STR_5855    :{SMALLFONT}{BLACK}Fenstermodus, Vollbild oder{NEWLINE}randlose Anzeige einstellen
@@ -3289,7 +3254,7 @@ STR_5970    :{WINDOW_COLOUR_2}Eingangs-ID: {BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}Ausgangs-ID: {BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}Attraktions-ID: {BLACK}{COMMA16}
 STR_5973    :An nächsten heften
-STR_5974    :{SMALLFONT}{BLACK}Ändert die Basis- und lichte Höhe, sodass{NEWLINE}sie der des nächsten Elements auf der aktuellen Kachel entspricht entspricht
+STR_5974    :{SMALLFONT}{BLACK}Ändert die Basis- und lichte Höhe, sodass{NEWLINE}sie der des nächsten Elements auf der aktuellen Kachel entspricht
 STR_5975    :Steigung:
 STR_5976    :Flach
 STR_5977    :Rechte Seite hoch
@@ -3352,7 +3317,7 @@ STR_6033    :Pfad zur RCT1-Installation:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Bitte wählen Sie ein RCT1-Verzeichnis
 STR_6036    :{SMALLFONT}{BLACK}Leeren
-STR_6037    :Bitte wählen Sie ein valides RCT1-Verzeichnis
+STR_6037    :Das gewählte Verzeichnis enthält keine gültige „RollerCoaster Tycoon 1“-Installation.
 STR_6038    :{SMALLFONT}{BLACK}Falls Sie RCT1 installiert haben, setzen Sie diese Option zum Laden von Scenarios, Musik, usw. 
 STR_6039    :{SMALLFONT}{BLACK}Schnellabriss
 STR_6040    :Bearbeite Szenariooptionen
@@ -3480,7 +3445,7 @@ STR_6162    :Rotierende Wilde Maus
 STR_6163    :Mausförmige Wagen rasen um enge Kurven und kurze Gefälle herunter, wobei sie sich sanft drehen, um die Fahrgäste zu desorientieren
 STR_6164    :{WHITE}❌
 STR_6165    :Vertikale Synchr.
-STR_6166    :{SMALLFONT}{BLACK}Synchronisiert die angezeigten Frames mit der Bildwiederholrate des Monitors, dies verhindert Screen Tearing
+STR_6166    :{SMALLFONT}{BLACK}Synchronisiert die angezeigten Frames mit der Bildwiederholrate des Monitors, dies verhindert Screen-Tearing
 STR_6167    :{SMALLFONT}{BLACK}Erweitert
 STR_6168    :Titelsequenz
 STR_6169    :Szenarioauswahl
@@ -3518,17 +3483,6 @@ STR_6200    :Datum zurücksetzen
 STR_6201    :{MONTH}
 STR_6202    :Stil des virtuellen Bodens:
 STR_6203    :{SMALLFONT}{BLACK}Um vertikales Platzieren von Elementen zu vereinfachen, wird ein virtueller Boden eingeblendet, wenn Strg oder Shift gehalten wird
-STR_6204    :Ziegelstein
-STR_6205    :Eisen
-STR_6206    :Grauer Stuck
-STR_6207    :Gelber Stuck
-STR_6208    :Roter Stuck
-STR_6209    :Violetter Stuck
-STR_6210    :Grüner Stuck
-STR_6211    :Brauner Sandstein
-STR_6212    :Grauer Sandstein
-STR_6213    :Wolkenkratzer A
-STR_6214    :Wolkenkratzer B
 STR_6215    :Konstruktion
 STR_6216    :Betrieb
 STR_6217    :Bahn- / Streckenverfügbarkeit
@@ -3566,9 +3520,6 @@ STR_6248    :{WINDOW_COLOUR_1}Wollen Sie {STRINGID} für {CURRENCY} sanieren?
 STR_6249    :{WINDOW_COLOUR_1}Wollen Sie {STRINGID} sanieren?
 STR_6250    :{WINDOW_COLOUR_1}Wollen Sie {STRINGID} wirklich komplett abreißen und dafür {CURRENCY} erhalten?
 STR_6251    :Attraktion ist noch nicht leer
-STR_6252    :Twitch-API-URL
-STR_6253    :{SMALLFONT}{BLACK}Geben Sie die URL der Twitch-Integrations-API an. Benötigt, um die Twitch-Integration zu aktivieren.
-STR_6254    :URL der Twitch-Integrations-API:
 STR_6255    :URL ist nicht gültig
 STR_6256    :Rendereffekte
 STR_6257    :Gläsern (durchsichtig)
@@ -3675,6 +3626,32 @@ STR_6357    :{SMALLFONT}{BLACK}Entfernt alle Enten aus der Karte
 STR_6358    :Seite {UINT16}
 STR_6359    :{POP16}{POP16}Seite {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Lichteffekte an Fahrgeschäften aktivieren (experimentell)
+STR_6362    :{SMALLFONT}{BLACK}Falls aktiviert, werden Fahrzeuge für Streckenfahrgeschäfte in der Nacht leuchten.
+STR_6363    :Text in die Zwischenablage kopiert
+STR_6364    :{RED}{COMMA16} Person starb bei einem Unfall auf {STRINGID}
+STR_6365    :Opfer von Fahrgeschäften
+STR_6366    :Feststeckende Fahrzeuge
+STR_6367    :{WINDOW_COLOUR_2}Animations-Frame:
+STR_6368    :Aus Kompabilitätsgründen wird es nicht empfohlen, OpenRCT2 mit Wine auszuführen. OpenRCT2 funktioniert auf macOS, Linux, FreeBSD und OpenBSD.
+STR_6369    :Streckenbau an ungültigen Höhen erlauben
+STR_6370    :{SMALLFONT}{BLACK}Erlaubt Platzierung von Streckenteilen an beliebigen Höhenintervallen
+STR_6371    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber die „csg1i.dat“-Datei fehlt. Diese Datei muss von der „RollerCoaster Tycoon 1“-CD zum „Data“-Verzeichnis der „RollerCoaster Tycoon 1“-Installation auf Ihrem Datenträger kopiert werden.
+STR_6372    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber diese Version ist ungeeignet. OpenRCT2 benötigt eine „Loopy Landscapes“- oder eine „RCT Deluxe“-Installation, um die „RollerCoaster Tycoon 1“-Mediendaten benutzen zu können.
+STR_6373    :Abstandsüberprüfungen umschalten
+STR_6374    :A
+STR_6375    :Unbekannte Attraktion
+STR_6376    :{WINDOW_COLOUR_2}Fahrzeug:{NEWLINE}{BLACK}{STRINGID} für {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID} für {STRINGID}
+STR_6378    :Objektliste empfangen: {INT32}/{INT32}
+STR_6379    :Ungültige Daten empfangen
+STR_6380    :Update verfügbar!
+STR_6381    :Tritt OpenRCT2-Discord bei!
+STR_6382    :Eine neuere Version von OpenRCT2 ist verfügbar: {STRING}!
+STR_6383    :Downloadseite öffnen
+STR_6384    :Schnee
+STR_6385    :Starker Schneefall
+STR_6386    :Schneesturm
 
 #############
 # Scenarios #

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -65,8 +65,8 @@ namespace OpenRCT2::Ui
             void* processHandle = dlopen(nullptr, RTLD_NOW);
             if (processHandle != nullptr)
             {
-                dummy* p = ((dummy*)processHandle)->ptr;
-                lmap* pl = (lmap*)p->ptr;
+                dummy* p = (static_cast<dummy*>(processHandle))->ptr;
+                lmap* pl = reinterpret_cast<lmap*>(p->ptr);
                 while (pl != nullptr)
                 {
                     if (strstr(pl->path, "gameoverlayrenderer.so") != nullptr)
@@ -116,6 +116,12 @@ namespace OpenRCT2::Ui
         void OpenFolder(const std::string& path) override
         {
             std::string cmd = String::Format("xdg-open %s", EscapePathForShell(path).c_str());
+            Execute(cmd);
+        }
+
+        void OpenURL(const std::string& url) override
+        {
+            std::string cmd = String::Format("xdg-open %s", url.c_str());
             Execute(cmd);
         }
 
@@ -357,7 +363,7 @@ namespace OpenRCT2::Ui
                     }
                     else if (isalpha(c))
                     {
-                        filtersb << '[' << (char)tolower(c) << (char)toupper(c) << ']';
+                        filtersb << '[' << static_cast<char>(tolower(c)) << static_cast<char>(toupper(c)) << ']';
                     }
                     else
                     {

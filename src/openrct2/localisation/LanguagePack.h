@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,8 +12,9 @@
 #include "../common.h"
 
 #include <string>
+#include <string_view>
 
-interface ILanguagePack
+struct ILanguagePack
 {
     virtual ~ILanguagePack() = default;
 
@@ -23,7 +24,7 @@ interface ILanguagePack
     virtual void RemoveString(rct_string_id stringId) abstract;
     virtual void SetString(rct_string_id stringId, const std::string& str) abstract;
     virtual const utf8* GetString(rct_string_id stringId) const abstract;
-    virtual rct_string_id GetObjectOverrideStringId(const char* objectIdentifier, uint8_t index) abstract;
+    virtual rct_string_id GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) abstract;
     virtual rct_string_id GetScenarioOverrideStringId(const utf8* scenarioFilename, uint8_t index) abstract;
 };
 

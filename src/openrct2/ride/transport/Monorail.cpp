@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -435,11 +435,11 @@ static void paint_monorail_track_flat(
 
     if (direction == 0 || direction == 2)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -482,11 +482,11 @@ static void paint_monorail_station(
 
     if (direction == 0 || direction == 2)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (direction == 0 || direction == 2)
@@ -525,16 +525,16 @@ static void paint_monorail_track_25_deg_up(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_7);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_7);
             break;
     }
 
@@ -567,16 +567,16 @@ static void paint_monorail_track_flat_to_25_deg_up(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
-            paint_util_push_tunnel_right(session, height, TUNNEL_8);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
             break;
         case 2:
-            paint_util_push_tunnel_left(session, height, TUNNEL_8);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
 
@@ -609,7 +609,7 @@ static void paint_monorail_track_25_deg_up_to_flat(
     switch (direction)
     {
         case 0:
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
         case 1:
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
@@ -618,7 +618,7 @@ static void paint_monorail_track_25_deg_up_to_flat(
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
             break;
         case 3:
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
     }
 
@@ -676,22 +676,22 @@ static void paint_monorail_track_right_quarter_turn_5_tiles(
 
     if (direction == 0 && trackSequence == 0)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (direction == 0 && trackSequence == 6)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (direction == 1 && trackSequence == 6)
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     if (direction == 3 && trackSequence == 0)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     int32_t blockedSegments = 0;
@@ -758,18 +758,20 @@ static void paint_monorail_track_s_bend_left(
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 3, height);
+        sub_98196C(
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, (int8_t)offset.y, (int8_t)offset.x, bounds.y, bounds.x, 3, height);
+        sub_98196C(
+            session, imageId, static_cast<int8_t>(offset.y), static_cast<int8_t>(offset.x), bounds.y, bounds.x, 3, height);
     }
 
     if (direction == 0 || direction == 2)
     {
         if (trackSequence == 0)
         {
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
         }
 
         switch (trackSequence)
@@ -792,7 +794,7 @@ static void paint_monorail_track_s_bend_left(
     {
         if (trackSequence == 3)
         {
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
         }
 
         switch (trackSequence)
@@ -862,18 +864,20 @@ static void paint_monorail_track_s_bend_right(
     CoordsXY bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
-        sub_98196C(session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, 3, height);
+        sub_98196C(
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 3, height);
     }
     else
     {
-        sub_98196C(session, imageId, (int8_t)offset.y, (int8_t)offset.x, bounds.y, bounds.x, 3, height);
+        sub_98196C(
+            session, imageId, static_cast<int8_t>(offset.y), static_cast<int8_t>(offset.x), bounds.y, bounds.x, 3, height);
     }
 
     if (direction == 0 || direction == 2)
     {
         if (trackSequence == 0)
         {
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
         }
 
         switch (trackSequence)
@@ -896,7 +900,7 @@ static void paint_monorail_track_s_bend_right(
     {
         if (trackSequence == 3)
         {
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
         }
 
         switch (trackSequence)
@@ -946,7 +950,7 @@ static void paint_monorail_track_right_quarter_turn_3_tiles(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         monorail_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
         defaultRightQuarterTurn3TilesBoundLengths, nullptr);
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
+    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_SQUARE_FLAT);
 
     switch (trackSequence)
     {
@@ -1322,7 +1326,7 @@ static void paint_monorail_track_diag_25_deg_down_to_flat(
 /**
  * rct2: 0x008ADF34
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_monorail(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_monorail(int32_t trackType)
 {
     switch (trackType)
     {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,7 @@
 
 #include "../common.h"
 #include "../interface/Colour.h"
+#include "../world/Location.hpp"
 #include "Drawing.h"
 
 /**
@@ -23,9 +24,12 @@
  * colour (ebp)
  * flags (si)
  */
-void gfx_fill_rect_inset(
-    rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom, int32_t colour, uint8_t flags)
+void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags)
 {
+    const auto leftTop = ScreenCoordsXY{ rect.GetLeft(), rect.GetTop() };
+    const auto leftBottom = ScreenCoordsXY{ rect.GetLeft(), rect.GetBottom() };
+    const auto rightTop = ScreenCoordsXY{ rect.GetRight(), rect.GetTop() };
+    const auto rightBottom = ScreenCoordsXY{ rect.GetRight(), rect.GetBottom() };
     if (colour & (COLOUR_FLAG_TRANSLUCENT | COLOUR_FLAG_8))
     {
         translucent_window_palette palette;
@@ -43,32 +47,33 @@ void gfx_fill_rect_inset(
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
         {
-            gfx_filter_rect(dpi, left, top, right, bottom, palette.base);
+            gfx_filter_rect(dpi, rect, palette.base);
         }
         else if (flags & INSET_RECT_FLAG_BORDER_INSET)
         {
             // Draw outline of box
-            gfx_filter_rect(dpi, left, top, left, bottom, palette.highlight);
-            gfx_filter_rect(dpi, left, top, right, top, palette.highlight);
-            gfx_filter_rect(dpi, right, top, right, bottom, palette.shadow);
-            gfx_filter_rect(dpi, left, bottom, right, bottom, palette.shadow);
+            gfx_filter_rect(dpi, { leftTop, leftBottom }, palette.highlight);
+            gfx_filter_rect(dpi, { leftTop, rightTop }, palette.highlight);
+            gfx_filter_rect(dpi, { rightTop, rightBottom }, palette.shadow);
+            gfx_filter_rect(dpi, { leftBottom, rightBottom }, palette.shadow);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
-                gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, palette.base);
+                gfx_filter_rect(dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, palette.base);
             }
         }
         else
         {
             // Draw outline of box
-            gfx_filter_rect(dpi, left, top, left, bottom, palette.shadow);
-            gfx_filter_rect(dpi, left, top, right, top, palette.shadow);
-            gfx_filter_rect(dpi, right, top, right, bottom, palette.highlight);
-            gfx_filter_rect(dpi, left, bottom, right, bottom, palette.highlight);
+            gfx_filter_rect(dpi, { leftTop, leftBottom }, palette.shadow);
+            gfx_filter_rect(dpi, { leftTop, rightTop }, palette.shadow);
+            gfx_filter_rect(dpi, { rightTop, rightBottom }, palette.highlight);
+            gfx_filter_rect(dpi, { leftBottom, rightBottom }, palette.highlight);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
-                gfx_filter_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, palette.base);
+                gfx_filter_rect(
+                    dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, { rightBottom - ScreenCoordsXY{ 1, 1 } } }, palette.base);
             }
         }
     }
@@ -90,15 +95,15 @@ void gfx_fill_rect_inset(
 
         if (flags & INSET_RECT_FLAG_BORDER_NONE)
         {
-            gfx_fill_rect(dpi, left, top, right, bottom, fill);
+            gfx_fill_rect(dpi, rect, fill);
         }
         else if (flags & INSET_RECT_FLAG_BORDER_INSET)
         {
             // Draw outline of box
-            gfx_fill_rect(dpi, left, top, left, bottom, shadow);
-            gfx_fill_rect(dpi, left + 1, top, right, top, shadow);
-            gfx_fill_rect(dpi, right, top + 1, right, bottom - 1, hilight);
-            gfx_fill_rect(dpi, left + 1, bottom, right, bottom, hilight);
+            gfx_fill_rect(dpi, { leftTop, leftBottom }, shadow);
+            gfx_fill_rect(dpi, { leftTop + ScreenCoordsXY{ 1, 0 }, rightTop }, shadow);
+            gfx_fill_rect(dpi, { rightTop + ScreenCoordsXY{ 0, 1 }, rightBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
+            gfx_fill_rect(dpi, { leftBottom + ScreenCoordsXY{ 1, 0 }, rightBottom }, hilight);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
@@ -113,16 +118,16 @@ void gfx_fill_rect_inset(
                         fill = ColourMapA[colour].lighter;
                     }
                 }
-                gfx_fill_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, fill);
+                gfx_fill_rect(dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
             }
         }
         else
         {
             // Draw outline of box
-            gfx_fill_rect(dpi, left, top, left, bottom - 1, hilight);
-            gfx_fill_rect(dpi, left + 1, top, right - 1, top, hilight);
-            gfx_fill_rect(dpi, right, top, right, bottom - 1, shadow);
-            gfx_fill_rect(dpi, left, bottom, right, bottom, shadow);
+            gfx_fill_rect(dpi, { leftTop, leftBottom - ScreenCoordsXY{ 0, 1 } }, hilight);
+            gfx_fill_rect(dpi, { leftTop + ScreenCoordsXY{ 1, 0 }, rightTop - ScreenCoordsXY{ 1, 0 } }, hilight);
+            gfx_fill_rect(dpi, { rightTop, rightBottom - ScreenCoordsXY{ 0, 1 } }, shadow);
+            gfx_fill_rect(dpi, { leftBottom, rightBottom }, shadow);
 
             if (!(flags & INSET_RECT_FLAG_FILL_NONE))
             {
@@ -130,8 +135,14 @@ void gfx_fill_rect_inset(
                 {
                     fill = ColourMapA[COLOUR_BLACK].light;
                 }
-                gfx_fill_rect(dpi, left + 1, top + 1, right - 1, bottom - 1, fill);
+                gfx_fill_rect(dpi, { leftTop + ScreenCoordsXY{ 1, 1 }, rightBottom - ScreenCoordsXY{ 1, 1 } }, fill);
             }
         }
     }
+}
+
+void gfx_fill_rect_inset(
+    rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom, int32_t colour, uint8_t flags)
+{
+    gfx_fill_rect_inset(dpi, { left, top, right, bottom }, colour, flags);
 }

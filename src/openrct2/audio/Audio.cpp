@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,7 +46,7 @@ bool gGameSoundsOff = false;
 int32_t gVolumeAdjustZoom = 0;
 
 void* gTitleMusicChannel = nullptr;
-void* gRainSoundChannel = nullptr;
+void* gWeatherSoundChannel = nullptr;
 
 rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
 rct_ride_music_params gRideMusicParamsList[AUDIO_MAX_RIDE_MUSIC];
@@ -169,7 +169,7 @@ void audio_populate_devices()
     devices.insert(devices.begin(), defaultDevice);
 #endif
 
-    gAudioDeviceCount = (int32_t)devices.size();
+    gAudioDeviceCount = static_cast<int32_t>(devices.size());
     gAudioDevices = Memory::AllocateArray<audio_device>(gAudioDeviceCount);
     for (int32_t i = 0; i < gAudioDeviceCount; i++)
     {
@@ -220,7 +220,7 @@ static AudioParams audio_get_params_from_location(SoundId soundId, const CoordsX
         {
             int16_t vx = pos2.x - viewport->viewPos.x;
             int16_t vy = pos2.y - viewport->viewPos.y;
-            params.pan = viewport->pos.x + (vx >> viewport->zoom);
+            params.pan = viewport->pos.x + (vx / viewport->zoom);
             params.volume = SoundVolumeAdjust[static_cast<uint8_t>(soundId)]
                 + ((-1024 * viewport->zoom - 1) * (1 << volumeDown)) + 1;
 
@@ -253,7 +253,7 @@ void audio_play_sound(SoundId soundId, int32_t volume, int32_t pan)
 
 void audio_start_title_music()
 {
-    if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || gIntroState != INTRO_STATE_NONE)
+    if (gGameSoundsOff || !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) || gIntroState != IntroState::None)
     {
         audio_stop_title_music();
         return;
@@ -283,7 +283,7 @@ void audio_start_title_music()
     gTitleMusicChannel = Mixer_Play_Music(pathId, MIXER_LOOP_INFINITE, true);
     if (gTitleMusicChannel != nullptr)
     {
-        Mixer_Channel_SetGroup(gTitleMusicChannel, MIXER_GROUP_TITLE_MUSIC);
+        Mixer_Channel_SetGroup(gTitleMusicChannel, OpenRCT2::Audio::MixerGroup::TitleMusic);
     }
 }
 
@@ -308,7 +308,7 @@ void audio_stop_all_music_and_sounds()
     audio_stop_vehicle_sounds();
     audio_stop_ride_music();
     peep_stop_crowd_noise();
-    audio_stop_rain_sound();
+    audio_stop_weather_sound();
 }
 
 void audio_stop_title_music()
@@ -320,12 +320,12 @@ void audio_stop_title_music()
     }
 }
 
-void audio_stop_rain_sound()
+void audio_stop_weather_sound()
 {
-    if (gRainSoundChannel != nullptr)
+    if (gWeatherSoundChannel != nullptr)
     {
-        Mixer_Stop_Channel(gRainSoundChannel);
-        gRainSoundChannel = nullptr;
+        Mixer_Stop_Channel(gWeatherSoundChannel);
+        gWeatherSoundChannel = nullptr;
     }
 }
 
@@ -341,7 +341,7 @@ void audio_init_ride_sounds_and_info()
         {
             try
             {
-                auto fs = FileStream(path, FILE_MODE_OPEN);
+                auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
                 uint32_t head = fs.ReadValue<uint32_t>();
                 if (head == 0x78787878)
                 {
@@ -381,7 +381,7 @@ void audio_close()
     peep_stop_crowd_noise();
     audio_stop_title_music();
     audio_stop_ride_music();
-    audio_stop_rain_sound();
+    audio_stop_weather_sound();
     gAudioCurrentDevice = -1;
 }
 
@@ -407,7 +407,7 @@ void audio_pause_sounds()
     audio_stop_vehicle_sounds();
     audio_stop_ride_music();
     peep_stop_crowd_noise();
-    audio_stop_rain_sound();
+    audio_stop_weather_sound();
 }
 
 void audio_unpause_sounds()
@@ -427,13 +427,13 @@ void audio_stop_vehicle_sounds()
         if (vehicleSound.id != SOUND_ID_NULL)
         {
             vehicleSound.id = SOUND_ID_NULL;
-            if (vehicleSound.sound1_id != SoundId::Null)
+            if (vehicleSound.TrackSound.Id != SoundId::Null)
             {
-                Mixer_Stop_Channel(vehicleSound.sound1_channel);
+                Mixer_Stop_Channel(vehicleSound.TrackSound.Channel);
             }
-            if (vehicleSound.sound2_id != SoundId::Null)
+            if (vehicleSound.OtherSound.Id != SoundId::Null)
             {
-                Mixer_Stop_Channel(vehicleSound.sound2_channel);
+                Mixer_Stop_Channel(vehicleSound.OtherSound.Channel);
             }
         }
     }

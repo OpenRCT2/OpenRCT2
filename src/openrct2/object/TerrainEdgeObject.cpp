@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,6 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
-#include "ObjectJsonHelpers.h"
 
 void TerrainEdgeObject::Load()
 {
@@ -37,19 +36,24 @@ void TerrainEdgeObject::Unload()
 
 void TerrainEdgeObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     uint32_t imageId = BaseImageId;
-    gfx_draw_sprite(dpi, imageId + 5, x + 8, y - 8, 0);
-    gfx_draw_sprite(dpi, imageId + 5, x + 8, y + 8, 0);
+    gfx_draw_sprite(dpi, imageId + 5, screenCoords + ScreenCoordsXY{ 8, -8 }, 0);
+    gfx_draw_sprite(dpi, imageId + 5, screenCoords + ScreenCoordsXY{ 8, 8 }, 0);
 }
 
-void TerrainEdgeObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    // auto properties = json_object_get(root, "properties");
+    Guard::Assert(root.is_object(), "TerrainEdgeObject::ReadJson expects parameter root to be object");
 
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    auto properties = root["properties"];
+
+    if (properties.is_object())
+    {
+        HasDoors = Json::GetBoolean(properties["hasDoors"]);
+    }
+
+    PopulateTablesFromJson(context, root);
     NumImagesLoaded = GetImageTable().GetCount();
 }

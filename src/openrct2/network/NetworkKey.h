@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,7 +18,10 @@
 #    include <string>
 #    include <vector>
 
-interface IStream;
+namespace OpenRCT2
+{
+    struct IStream;
+}
 
 namespace Crypt
 {
@@ -31,10 +34,10 @@ public:
     NetworkKey();
     ~NetworkKey();
     bool Generate();
-    bool LoadPrivate(IStream* stream);
-    bool LoadPublic(IStream* stream);
-    bool SavePrivate(IStream* stream);
-    bool SavePublic(IStream* stream);
+    bool LoadPrivate(OpenRCT2::IStream* stream);
+    bool LoadPublic(OpenRCT2::IStream* stream);
+    bool SavePrivate(OpenRCT2::IStream* stream);
+    bool SavePublic(OpenRCT2::IStream* stream);
     std::string PublicKeyString();
     std::string PublicKeyHash();
     void Unload();

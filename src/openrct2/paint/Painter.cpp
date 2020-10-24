@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,7 +37,7 @@ Painter::Painter(const std::shared_ptr<IUiContext>& uiContext)
 void Painter::Paint(IDrawingEngine& de)
 {
     auto dpi = de.GetDrawingPixelInfo();
-    if (gIntroState != INTRO_STATE_NONE)
+    if (gIntroState != IntroState::None)
     {
         intro_draw(dpi);
     }
@@ -50,13 +50,13 @@ void Painter::Paint(IDrawingEngine& de)
 
         if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !title_should_hide_version_info())
         {
-            DrawOpenRCT2(dpi, 0, _uiContext->GetHeight() - 20);
+            DrawOpenRCT2(dpi, { 0, _uiContext->GetHeight() - 20 });
         }
 
         gfx_draw_pickedup_peep(dpi);
         gfx_invalidate_pickedup_peep();
 
-        de.PaintRain();
+        de.PaintWeather();
     }
 
     auto* replayManager = GetContext()->GetReplayManager();
@@ -64,7 +64,7 @@ void Painter::Paint(IDrawingEngine& de)
 
     if (replayManager->IsReplaying())
         text = "Replaying...";
-    else if (replayManager->IsRecording())
+    else if (replayManager->ShouldDisplayNotice())
         text = "Recording...";
     else if (replayManager->IsNormalising())
         text = "Normalising...";
@@ -81,8 +81,7 @@ void Painter::Paint(IDrawingEngine& de)
 
 void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
 {
-    int32_t x = _uiContext->GetWidth() / 2;
-    int32_t y = _uiContext->GetHeight() - 44;
+    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
 
     // Format string
     utf8 buffer[64] = { 0 };
@@ -94,19 +93,18 @@ void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
     snprintf(ch, 64 - (ch - buffer), "%s", text);
 
     int32_t stringWidth = gfx_get_string_width(buffer);
-    x = x - stringWidth;
+    screenCoords.x = screenCoords.x - stringWidth;
 
     if (((gCurrentTicks >> 1) & 0xF) > 4)
-        gfx_draw_string(dpi, buffer, COLOUR_SATURATED_RED, x, y);
+        gfx_draw_string(dpi, buffer, COLOUR_SATURATED_RED, screenCoords);
 
     // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks(x, y, x + stringWidth, y + 16);
+    gfx_set_dirty_blocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
 }
 
 void Painter::PaintFPS(rct_drawpixelinfo* dpi)
 {
-    int32_t x = _uiContext->GetWidth() / 2;
-    int32_t y = 2;
+    ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
 
     // Measure FPS
     MeasureFPS();
@@ -122,11 +120,11 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
 
     // Draw Text
     int32_t stringWidth = gfx_get_string_width(buffer);
-    x = x - (stringWidth / 2);
-    gfx_draw_string(dpi, buffer, 0, x, y);
+    screenCoords.x = screenCoords.x - (stringWidth / 2);
+    gfx_draw_string(dpi, buffer, 0, screenCoords);
 
     // Make area dirty so the text doesn't get drawn over the last
-    gfx_set_dirty_blocks(x - 16, y - 4, gLastDrawStringX + 16, 16);
+    gfx_set_dirty_blocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { gLastDrawStringX + 16, 16 } });
 }
 
 void Painter::MeasureFPS()

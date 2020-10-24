@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -62,7 +62,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
         }
 
-        if (_location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16)
+        if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16)
             || _location.y >= (gMapSizeUnits - 16))
         {
             return std::make_unique<GameActionResult>(
@@ -98,24 +98,44 @@ public:
         res->Expenditure = ExpenditureType::LandPurchase;
         res->Position = _location;
 
-        // If we have reached our max peep spawns, remove the oldest spawns
-        while (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
-        {
-            auto oldestSpawn = gPeepSpawns.begin();
-            gPeepSpawns.erase(oldestSpawn);
-            map_invalidate_tile_full(*oldestSpawn);
-        }
-
         // Shift the spawn point to the edge of the tile
         auto spawnPos = CoordsXY{ _location.ToTileCentre() }
             + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
 
-        // Set peep spawn
         PeepSpawn spawn;
         spawn.x = spawnPos.x;
         spawn.y = spawnPos.y;
         spawn.z = _location.z;
         spawn.direction = _location.direction;
+
+        // When attempting to place a peep spawn on a tile that already contains it,
+        // remove that peep spawn instead.
+        if (!gPeepSpawns.empty())
+        {
+            // When searching for existing spawns, ignore the direction.
+            auto foundSpawn = std::find_if(gPeepSpawns.begin(), gPeepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
+                {
+                    return existingSpawn.ToTileStart() == spawn.ToTileStart();
+                }
+            });
+
+            if (foundSpawn != std::end(gPeepSpawns))
+            {
+                gPeepSpawns.erase(foundSpawn);
+                map_invalidate_tile_full(spawn);
+                return res;
+            }
+        }
+
+        // If we have reached our max peep spawns, remove the oldest spawns
+        while (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
+        {
+            PeepSpawn oldestSpawn = *gPeepSpawns.begin();
+            gPeepSpawns.erase(gPeepSpawns.begin());
+            map_invalidate_tile_full(oldestSpawn);
+        }
+
+        // Set peep spawn
         gPeepSpawns.push_back(spawn);
 
         // Invalidate tile

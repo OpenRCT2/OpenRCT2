@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,12 +15,13 @@
 #    include "../PlatformEnvironment.h"
 #    include "../config/Config.h"
 #    include "../core/FileStream.hpp"
+#    include "../core/Guard.hpp"
 #    include "../core/Http.h"
 #    include "../core/Json.hpp"
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../platform/platform.h"
+#    include "../platform/Platform2.h"
 #    include "Socket.h"
 #    include "network.h"
 
@@ -35,75 +36,77 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
     const auto& a = *this;
     const auto& b = other;
 
-    // Order by favourite
-    if (a.favourite != b.favourite)
+    if (a.Favourite != b.Favourite)
     {
-        return a.favourite ? -1 : 1;
+        return a.Favourite ? -1 : 1;
     }
 
-    // Order by local
-    if (a.local != b.local)
+    if (a.Local != b.Local)
     {
-        return a.local ? -1 : 1;
+        return a.Local ? -1 : 1;
     }
 
-    // Then by version
-    bool serverACompatible = a.version == network_get_version();
-    bool serverBCompatible = b.version == network_get_version();
+    bool serverACompatible = a.Version == network_get_version();
+    bool serverBCompatible = b.Version == network_get_version();
     if (serverACompatible != serverBCompatible)
     {
         return serverACompatible ? -1 : 1;
     }
 
-    // Then by password protection
-    if (a.requiresPassword != b.requiresPassword)
+    if (a.RequiresPassword != b.RequiresPassword)
     {
-        return a.requiresPassword ? 1 : -1;
+        return a.RequiresPassword ? 1 : -1;
     }
 
-    // Then by number of players
-    if (a.players != b.players)
+    if (a.Players != b.Players)
     {
-        return a.players > b.players ? -1 : 1;
+        return a.Players > b.Players ? -1 : 1;
     }
 
-    // Then by name
-    return String::Compare(a.name, b.name, true);
+    return String::Compare(a.Name, b.Name, true);
 }
 
 bool ServerListEntry::IsVersionValid() const
 {
-    return version.empty() || version == network_get_version();
+    return Version.empty() || Version == network_get_version();
 }
 
-std::optional<ServerListEntry> ServerListEntry::FromJson(const json_t* server)
+std::optional<ServerListEntry> ServerListEntry::FromJson(json_t& server)
 {
-    auto port = json_object_get(server, "port");
-    auto name = json_object_get(server, "name");
-    auto description = json_object_get(server, "description");
-    auto requiresPassword = json_object_get(server, "requiresPassword");
-    auto version = json_object_get(server, "version");
-    auto players = json_object_get(server, "players");
-    auto maxPlayers = json_object_get(server, "maxPlayers");
-    auto ip = json_object_get(server, "ip");
-    auto ip4 = json_object_get(ip, "v4");
-    auto addressIp = json_array_get(ip4, 0);
+    Guard::Assert(server.is_object(), "ServerListEntry::FromJson expects parameter server to be object");
 
-    if (name == nullptr || version == nullptr)
+    const auto port = Json::GetNumber<int32_t>(server["port"]);
+    const auto name = Json::GetString(server["name"]);
+    const auto description = Json::GetString(server["description"]);
+    const auto requiresPassword = Json::GetBoolean(server["requiresPassword"]);
+    const auto version = Json::GetString(server["version"]);
+    const auto players = Json::GetNumber<uint8_t>(server["players"]);
+    const auto maxPlayers = Json::GetNumber<uint8_t>(server["maxPlayers"]);
+    std::string ip;
+    // if server["ip"] or server["ip"]["v4"] are values, this will throw an exception, so check first
+    if (server["ip"].is_object() && server["ip"]["v4"].is_array())
+    {
+        ip = Json::GetString(server["ip"]["v4"][0]);
+    }
+
+    if (name.empty() || version.empty())
     {
         log_verbose("Cowardly refusing to add server without name or version specified.");
-        return {};
+
+        return std::nullopt;
     }
     else
     {
         ServerListEntry entry;
-        entry.address = String::StdFormat("%s:%d", json_string_value(addressIp), (int32_t)json_integer_value(port));
-        entry.name = (name == nullptr ? "" : json_string_value(name));
-        entry.description = (description == nullptr ? "" : json_string_value(description));
-        entry.version = json_string_value(version);
-        entry.requiresPassword = json_is_true(requiresPassword);
-        entry.players = (uint8_t)json_integer_value(players);
-        entry.maxplayers = (uint8_t)json_integer_value(maxPlayers);
+
+        entry.Address = ip + ":" + std::to_string(port);
+        entry.Name = name;
+        entry.Description = description;
+        entry.Version = version;
+        entry.RequiresPassword = requiresPassword;
+        entry.Players = players;
+        entry.MaxPlayers = maxPlayers;
+
         return entry;
     }
 }
@@ -114,9 +117,9 @@ void ServerList::Sort()
         std::unique(
             _serverEntries.begin(), _serverEntries.end(),
             [](const ServerListEntry& a, const ServerListEntry& b) {
-                if (a.favourite == b.favourite)
+                if (a.Favourite == b.Favourite)
                 {
-                    return String::Equals(a.address, b.address, true);
+                    return String::Equals(a.Address, b.Address, true);
                 }
                 return false;
             }),
@@ -161,21 +164,21 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
     {
         auto env = GetContext()->GetPlatformEnvironment();
         auto path = env->GetFilePath(PATHID::NETWORK_SERVERS);
-        if (platform_file_exists(path.c_str()))
+        if (Platform::FileExists(path))
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             auto numEntries = fs.ReadValue<uint32_t>();
             for (size_t i = 0; i < numEntries; i++)
             {
                 ServerListEntry serverInfo;
-                serverInfo.address = fs.ReadStdString();
-                serverInfo.name = fs.ReadStdString();
-                serverInfo.requiresPassword = false;
-                serverInfo.description = fs.ReadStdString();
-                serverInfo.version = "";
-                serverInfo.favourite = true;
-                serverInfo.players = 0;
-                serverInfo.maxplayers = 0;
+                serverInfo.Address = fs.ReadStdString();
+                serverInfo.Name = fs.ReadStdString();
+                serverInfo.RequiresPassword = false;
+                serverInfo.Description = fs.ReadStdString();
+                serverInfo.Version = "";
+                serverInfo.Favourite = true;
+                serverInfo.Players = 0;
+                serverInfo.MaxPlayers = 0;
                 entries.push_back(std::move(serverInfo));
             }
         }
@@ -192,7 +195,7 @@ void ServerList::ReadAndAddFavourites()
 {
     _serverEntries.erase(
         std::remove_if(
-            _serverEntries.begin(), _serverEntries.end(), [](const ServerListEntry& entry) { return entry.favourite; }),
+            _serverEntries.begin(), _serverEntries.end(), [](const ServerListEntry& entry) { return entry.Favourite; }),
         _serverEntries.end());
     auto entries = ReadFavourites();
     AddRange(entries);
@@ -204,7 +207,7 @@ void ServerList::WriteFavourites() const
     std::vector<ServerListEntry> favouriteServers;
     std::copy_if(
         _serverEntries.begin(), _serverEntries.end(), std::back_inserter(favouriteServers),
-        [](const ServerListEntry& entry) { return entry.favourite; });
+        [](const ServerListEntry& entry) { return entry.Favourite; });
     WriteFavourites(favouriteServers);
 }
 
@@ -219,12 +222,12 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries) co
     try
     {
         auto fs = FileStream(path, FILE_MODE_WRITE);
-        fs.WriteValue<uint32_t>((uint32_t)entries.size());
+        fs.WriteValue<uint32_t>(static_cast<uint32_t>(entries.size()));
         for (const auto& entry : entries)
         {
-            fs.WriteString(entry.address);
-            fs.WriteString(entry.name);
-            fs.WriteString(entry.description);
+            fs.WriteString(entry.Address);
+            fs.WriteString(entry.Name);
+            fs.WriteString(entry.Description);
         }
         return true;
     }
@@ -262,26 +265,23 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
                 size_t recievedLen{};
                 std::unique_ptr<INetworkEndpoint> endpoint;
                 auto p = udpSocket->ReceiveData(buffer, sizeof(buffer) - 1, &recievedLen, &endpoint);
-                if (p == NETWORK_READPACKET_SUCCESS)
+                if (p == NetworkReadPacket::Success)
                 {
                     auto sender = endpoint->GetHostname();
                     log_verbose("Received %zu bytes back from %s", recievedLen, sender.c_str());
                     auto jinfo = Json::FromString(std::string_view(buffer));
 
-                    auto ip4 = json_array();
-                    json_array_append_new(ip4, json_string(sender.c_str()));
-                    auto ip = json_object();
-                    json_object_set_new(ip, "v4", ip4);
-                    json_object_set_new(jinfo, "ip", ip);
-
-                    auto entry = ServerListEntry::FromJson(jinfo);
-                    if (entry.has_value())
+                    if (jinfo.is_object())
                     {
-                        (*entry).local = true;
-                        entries.push_back(*entry);
-                    }
+                        jinfo["ip"] = { { "v4", { sender } } };
 
-                    json_decref(jinfo);
+                        auto entry = ServerListEntry::FromJson(jinfo);
+                        if (entry.has_value())
+                        {
+                            (*entry).Local = true;
+                            entries.push_back(*entry);
+                        }
+                    }
                 }
             }
             catch (const std::exception& e)
@@ -346,7 +346,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
     request.method = Http::Method::GET;
     request.header["Accept"] = "application/json";
     Http::DoAsync(request, [p](Http::Response& response) -> void {
-        json_t* root{};
+        json_t root;
         try
         {
             if (response.status != Http::Status::OK)
@@ -355,46 +355,46 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
             }
 
             root = Json::FromString(response.body);
-            auto jsonStatus = json_object_get(root, "status");
-            if (!json_is_number(jsonStatus))
+            if (root.is_object())
             {
-                throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_NUMBER);
-            }
-
-            auto status = (int32_t)json_integer_value(jsonStatus);
-            if (status != 200)
-            {
-                throw MasterServerException(STR_SERVER_LIST_MASTER_SERVER_FAILED);
-            }
-
-            auto jServers = json_object_get(root, "servers");
-            if (!json_is_array(jServers))
-            {
-                throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_ARRAY);
-            }
-
-            std::vector<ServerListEntry> entries;
-            auto count = json_array_size(jServers);
-            for (size_t i = 0; i < count; i++)
-            {
-                auto jServer = json_array_get(jServers, i);
-                if (json_is_object(jServer))
+                auto jsonStatus = root["status"];
+                if (!jsonStatus.is_number_integer())
                 {
-                    auto entry = ServerListEntry::FromJson(jServer);
-                    if (entry.has_value())
+                    throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_NUMBER);
+                }
+
+                auto status = Json::GetNumber<int32_t>(jsonStatus);
+                if (status != 200)
+                {
+                    throw MasterServerException(STR_SERVER_LIST_MASTER_SERVER_FAILED);
+                }
+
+                auto jServers = root["servers"];
+                if (!jServers.is_array())
+                {
+                    throw MasterServerException(STR_SERVER_LIST_INVALID_RESPONSE_JSON_ARRAY);
+                }
+
+                std::vector<ServerListEntry> entries;
+                for (auto& jServer : jServers)
+                {
+                    if (jServer.is_object())
                     {
-                        entries.push_back(*entry);
+                        auto entry = ServerListEntry::FromJson(jServer);
+                        if (entry.has_value())
+                        {
+                            entries.push_back(*entry);
+                        }
                     }
                 }
-            }
 
-            p->set_value(entries);
+                p->set_value(entries);
+            }
         }
         catch (...)
         {
             p->set_exception(std::current_exception());
         }
-        json_decref(root);
     });
     return f;
 #    endif
@@ -403,7 +403,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
 uint32_t ServerList::GetTotalPlayerCount() const
 {
     return std::accumulate(_serverEntries.begin(), _serverEntries.end(), 0, [](uint32_t acc, const ServerListEntry& entry) {
-        return acc + entry.players;
+        return acc + entry.Players;
     });
 }
 

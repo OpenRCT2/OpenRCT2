@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,19 +45,21 @@ enum
     TUNNEL_0 = 0,
     TUNNEL_1 = 1,
     TUNNEL_2 = 2,
-    TUNNEL_3 = 3,
-    TUNNEL_4 = 4,
-    TUNNEL_5 = 5,
-    TUNNEL_6 = 6,
-    TUNNEL_7 = 7,
-    TUNNEL_8 = 8,
-    TUNNEL_9 = 9,
-    TUNNEL_10 = 0x0A,
-    TUNNEL_11 = 0x0B,
+    TUNNEL_INVERTED_3 = 3,
+    TUNNEL_INVERTED_4 = 4,
+    TUNNEL_INVERTED_5 = 5,
+    TUNNEL_SQUARE_FLAT = 6,
+    TUNNEL_SQUARE_7 = 7,
+    TUNNEL_SQUARE_8 = 8,
+    TUNNEL_SQUARE_INVERTED_9 = 9,
+    TUNNEL_PATH_AND_MINI_GOLF = 0x0A,
+    TUNNEL_PATH_11 = 0x0B,
     TUNNEL_12 = 0x0C,
     TUNNEL_13 = 0x0D,
     TUNNEL_14 = 0x0E,
     TUNNEL_15 = 0x0F,
+    REGULAR_TUNNEL_TYPE_COUNT,
+
     // Ghost train doors
     TUNNEL_DOORS_0 = 16,
     TUNNEL_DOORS_1 = 17,
@@ -108,5 +110,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
 void fence_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement);
 void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement);
 void track_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tileElement);
+
+bool PaintShouldShowHeightMarkers(const paint_session* session, const uint32_t viewportFlag);
 
 #endif

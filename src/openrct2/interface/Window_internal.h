@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,6 +55,7 @@ struct rct_window
         scenery_variables scenery;
         track_list_variables track_list;
         error_variables error;
+        void* custom_info;
     };
     int16_t page;
     union
@@ -79,10 +80,7 @@ struct rct_window
         ResearchItem* research_item;
         rct_object_entry* object_entry;
         const scenario_index_entry* highlighted_scenario;
-        struct
-        {
-            uint16_t var_496;
-        };
+        uint16_t var_496;
     };
     int16_t selected_tab;
     int16_t var_4AE;
@@ -93,7 +91,7 @@ struct rct_window
     uint8_t visibility;
     uint16_t viewport_smart_follow_sprite; // Handles setting viewport target sprite etc
 
-    void SetLocation(int32_t x, int32_t y, int32_t z);
+    void SetLocation(const CoordsXYZ& coords);
     void ScrollToViewport();
     void Invalidate();
 };

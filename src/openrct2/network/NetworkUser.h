@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,9 +10,9 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/Json.hpp"
 #include "../core/Nullable.hpp"
 
-#include <jansson.h>
 #include <map>
 #include <string>
 
@@ -24,10 +24,20 @@ public:
     Nullable<uint8_t> GroupId;
     bool Remove;
 
-    static NetworkUser* FromJson(json_t* json);
+    /**
+     * Creates a NetworkUser object from a JSON object
+     * @param jsonData Must be a JSON node of type object
+     * @return Pointer to a new NetworkUser object
+     * @note jsonData is deliberately left non-const: json_t behaviour changes when const
+     */
+    static NetworkUser* FromJson(json_t& jsonData);
 
-    json_t* ToJson() const;
-    json_t* ToJson(json_t* json) const;
+    /**
+     * Serialise a NetworkUser object into a JSON object
+     *
+     * @return JSON representation of the NetworkUser object
+     */
+    json_t ToJson() const;
 };
 
 class NetworkUserManager final

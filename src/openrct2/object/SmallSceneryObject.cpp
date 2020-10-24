@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,25 +19,24 @@
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
-#include "ObjectJsonHelpers.h"
 
 #include <algorithm>
 
-void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(6, STREAM_SEEK_CURRENT);
+    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.small_scenery.flags = stream->ReadValue<uint32_t>();
     _legacyType.small_scenery.height = stream->ReadValue<uint8_t>();
     _legacyType.small_scenery.tool_id = stream->ReadValue<uint8_t>();
     _legacyType.small_scenery.price = stream->ReadValue<int16_t>();
     _legacyType.small_scenery.removal_price = stream->ReadValue<int16_t>();
-    stream->Seek(4, STREAM_SEEK_CURRENT);
+    stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.small_scenery.animation_delay = stream->ReadValue<uint16_t>();
     _legacyType.small_scenery.animation_mask = stream->ReadValue<uint16_t>();
     _legacyType.small_scenery.num_frames = stream->ReadValue<uint16_t>();
     _legacyType.small_scenery.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);
@@ -107,17 +106,16 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
         }
     }
 
-    int32_t x = width / 2;
-    int32_t y = (height / 2) + (_legacyType.small_scenery.height / 2);
-    y = std::min(y, height - 16);
+    auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + (_legacyType.small_scenery.height / 2) };
+    screenCoords.y = std::min(screenCoords.y, height - 16);
 
     if ((scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_FULL_TILE))
         && (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_VOFFSET_CENTRE)))
     {
-        y -= 12;
+        screenCoords.y -= 12;
     }
 
-    gfx_draw_sprite(dpi, imageId, x, y, 0);
+    gfx_draw_sprite(dpi, imageId, screenCoords, 0);
 
     if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_GLASS))
     {
@@ -126,7 +124,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
         {
             imageId |= 0x92000000;
         }
-        gfx_draw_sprite(dpi, imageId, x, y, 0);
+        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
     }
 
     if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_ANIMATED_FG))
@@ -136,11 +134,11 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
         {
             imageId |= 0x92000000;
         }
-        gfx_draw_sprite(dpi, imageId, x, y, 0);
+        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
     }
 }
 
-std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(IStream* stream)
+std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(OpenRCT2::IStream* stream)
 {
     uint8_t frameOffset;
     auto data = std::vector<uint8_t>();
@@ -156,14 +154,14 @@ std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(IStream* stream)
 // clang-format off
 void SmallSceneryObject::PerformFixes()
 {
-    std::string identifier = GetIdentifier();
+    auto identifier = GetLegacyIdentifier();
     static const rct_object_entry scgWalls = Object::GetScgWallsHeader();
 
     // ToonTowner's base blocks. Make them allow supports on top and put them in the Walls and Roofs group.
-    if (String::Equals(identifier, "XXBBCL01") ||
-        String::Equals(identifier, "XXBBMD01") ||
-        String::Equals(identifier, "XXBBBR01") ||
-        String::Equals(identifier, "ARBASE2 "))
+    if (identifier == "XXBBCL01" ||
+        identifier == "XXBBMD01" ||
+        identifier == "XXBBBR01" ||
+        identifier == "ARBASE2 ")
     {
         SetPrimarySceneryGroup(&scgWalls);
 
@@ -171,48 +169,48 @@ void SmallSceneryObject::PerformFixes()
     }
 
     // ToonTowner's regular roofs. Put them in the Walls and Roofs group.
-    if (String::Equals(identifier, "TTRFTL02") ||
-        String::Equals(identifier, "TTRFTL03") ||
-        String::Equals(identifier, "TTRFTL04") ||
-        String::Equals(identifier, "TTRFTL07") ||
-        String::Equals(identifier, "TTRFTL08"))
+    if (identifier == "TTRFTL02" ||
+        identifier == "TTRFTL03" ||
+        identifier == "TTRFTL04" ||
+        identifier == "TTRFTL07" ||
+        identifier == "TTRFTL08")
     {
         SetPrimarySceneryGroup(&scgWalls);
     }
 
     // ToonTowner's Pirate roofs. Make them show up in the Pirate Theming.
-    if (String::Equals(identifier, "TTPIRF02") ||
-        String::Equals(identifier, "TTPIRF03") ||
-        String::Equals(identifier, "TTPIRF04") ||
-        String::Equals(identifier, "TTPIRF05") ||
-        String::Equals(identifier, "TTPIRF07") ||
-        String::Equals(identifier, "TTPIRF08") ||
-        String::Equals(identifier, "TTPRF09 ") ||
-        String::Equals(identifier, "TTPRF10 ") ||
-        String::Equals(identifier, "TTPRF11 "))
+    if (identifier == "TTPIRF02" ||
+        identifier == "TTPIRF03" ||
+        identifier == "TTPIRF04" ||
+        identifier == "TTPIRF05" ||
+        identifier == "TTPIRF07" ||
+        identifier == "TTPIRF08" ||
+        identifier == "TTPRF09 " ||
+        identifier == "TTPRF10 " ||
+        identifier == "TTPRF11 ")
     {
         static const rct_object_entry scgPirat = GetScgPiratHeader();
         SetPrimarySceneryGroup(&scgPirat);
     }
 
     // ToonTowner's wooden roofs. Make them show up in the Mine Theming.
-    if (String::Equals(identifier, "TTRFWD01") ||
-        String::Equals(identifier, "TTRFWD02") ||
-        String::Equals(identifier, "TTRFWD03") ||
-        String::Equals(identifier, "TTRFWD04") ||
-        String::Equals(identifier, "TTRFWD05") ||
-        String::Equals(identifier, "TTRFWD06") ||
-        String::Equals(identifier, "TTRFWD07") ||
-        String::Equals(identifier, "TTRFWD08"))
+    if (identifier == "TTRFWD01" ||
+        identifier == "TTRFWD02" ||
+        identifier == "TTRFWD03" ||
+        identifier == "TTRFWD04" ||
+        identifier == "TTRFWD05" ||
+        identifier == "TTRFWD06" ||
+        identifier == "TTRFWD07" ||
+        identifier == "TTRFWD08")
     {
         static const rct_object_entry scgMine = GetScgMineHeader();
         SetPrimarySceneryGroup(&scgMine);
     }
 
     // ToonTowner's glass roofs. Make them show up in the Abstract Theming.
-    if (String::Equals(identifier, "TTRFGL01") ||
-        String::Equals(identifier, "TTRFGL02") ||
-        String::Equals(identifier, "TTRFGL03"))
+    if (identifier == "TTRFGL01" ||
+        identifier == "TTRFGL02" ||
+        identifier == "TTRFGL03")
     {
         static const rct_object_entry scgAbstr = GetScgAbstrHeader();
         SetPrimarySceneryGroup(&scgAbstr);
@@ -235,96 +233,97 @@ rct_object_entry SmallSceneryObject::GetScgAbstrHeader()
     return Object::CreateHeader("SCGABSTR", 207140231, 932253451);
 }
 
-void SmallSceneryObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
+    Guard::Assert(root.is_object(), "SmallSceneryObject::ReadJson expects parameter root to be object");
 
-    _legacyType.small_scenery.height = json_integer_value(json_object_get(properties, "height"));
-    _legacyType.small_scenery.tool_id = ObjectJsonHelpers::ParseCursor(
-        ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
-    _legacyType.small_scenery.price = json_integer_value(json_object_get(properties, "price"));
-    _legacyType.small_scenery.removal_price = json_integer_value(json_object_get(properties, "removalPrice"));
-    _legacyType.small_scenery.animation_delay = json_integer_value(json_object_get(properties, "animationDelay"));
-    _legacyType.small_scenery.animation_mask = json_integer_value(json_object_get(properties, "animationMask"));
-    _legacyType.small_scenery.num_frames = json_integer_value(json_object_get(properties, "numFrames"));
+    auto properties = root["properties"];
 
-    // Flags
-    _legacyType.small_scenery.flags = ObjectJsonHelpers::GetFlags<uint32_t>(
-        properties,
-        {
-            { "SMALL_SCENERY_FLAG_VOFFSET_CENTRE", SMALL_SCENERY_FLAG_VOFFSET_CENTRE },
-            { "requiresFlatSurface", SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE },
-            { "isRotatable", SMALL_SCENERY_FLAG_ROTATABLE },
-            { "isAnimated", SMALL_SCENERY_FLAG_ANIMATED },
-            { "canWither", SMALL_SCENERY_FLAG_CAN_WITHER },
-            { "canBeWatered", SMALL_SCENERY_FLAG_CAN_BE_WATERED },
-            { "hasOverlayImage", SMALL_SCENERY_FLAG_ANIMATED_FG },
-            { "hasGlass", SMALL_SCENERY_FLAG_HAS_GLASS },
-            { "hasPrimaryColour", SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
-            { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 },
-            { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 },
-            { "isClock", SMALL_SCENERY_FLAG_IS_CLOCK },
-            { "SMALL_SCENERY_FLAG_SWAMP_GOO", SMALL_SCENERY_FLAG_SWAMP_GOO },
-            { "SMALL_SCENERY_FLAG17", SMALL_SCENERY_FLAG17 },
-            { "isStackable", SMALL_SCENERY_FLAG_STACKABLE },
-            { "prohibitWalls", SMALL_SCENERY_FLAG_NO_WALLS },
-            { "hasSecondaryColour", SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
-            { "hasNoSupports", SMALL_SCENERY_FLAG_NO_SUPPORTS },
-            { "SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED", SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED },
-            { "SMALL_SCENERY_FLAG_COG", SMALL_SCENERY_FLAG_COG },
-            { "allowSupportsAbove", SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP },
-            { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
-            { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 },
-            { "isTree", SMALL_SCENERY_FLAG_IS_TREE },
-        });
-
-    // Determine shape flags from a shape string
-    auto shape = ObjectJsonHelpers::GetString(properties, "shape");
-    if (!shape.empty())
+    if (properties.is_object())
     {
-        auto quarters = shape.substr(0, 3);
-        if (quarters == "2/4")
-        {
-            _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_FULL_TILE | SMALL_SCENERY_FLAG_HALF_SPACE;
-        }
-        else if (quarters == "3/4")
-        {
-            _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_FULL_TILE | SMALL_SCENERY_FLAG_THREE_QUARTERS;
-        }
-        else if (quarters == "4/4")
-        {
-            _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_FULL_TILE;
-        }
-        if (shape.size() >= 5)
-        {
-            if ((shape.substr(3) == "+D"))
+        _legacyType.small_scenery.height = Json::GetNumber<uint8_t>(properties["height"]);
+        _legacyType.small_scenery.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CURSOR_STATUE_DOWN);
+        _legacyType.small_scenery.price = Json::GetNumber<uint16_t>(properties["price"]);
+        _legacyType.small_scenery.removal_price = Json::GetNumber<uint16_t>(properties["removalPrice"]);
+        _legacyType.small_scenery.animation_delay = Json::GetNumber<uint16_t>(properties["animationDelay"]);
+        _legacyType.small_scenery.animation_mask = Json::GetNumber<uint16_t>(properties["animationMask"]);
+        _legacyType.small_scenery.num_frames = Json::GetNumber<uint16_t>(properties["numFrames"]);
+
+        _legacyType.small_scenery.flags = Json::GetFlags<uint32_t>(
+            properties,
             {
-                _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_DIAGONAL;
+                { "SMALL_SCENERY_FLAG_VOFFSET_CENTRE", SMALL_SCENERY_FLAG_VOFFSET_CENTRE },
+                { "requiresFlatSurface", SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE },
+                { "isRotatable", SMALL_SCENERY_FLAG_ROTATABLE },
+                { "isAnimated", SMALL_SCENERY_FLAG_ANIMATED },
+                { "canWither", SMALL_SCENERY_FLAG_CAN_WITHER },
+                { "canBeWatered", SMALL_SCENERY_FLAG_CAN_BE_WATERED },
+                { "hasOverlayImage", SMALL_SCENERY_FLAG_ANIMATED_FG },
+                { "hasGlass", SMALL_SCENERY_FLAG_HAS_GLASS },
+                { "hasPrimaryColour", SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
+                { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 },
+                { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 },
+                { "isClock", SMALL_SCENERY_FLAG_IS_CLOCK },
+                { "SMALL_SCENERY_FLAG_SWAMP_GOO", SMALL_SCENERY_FLAG_SWAMP_GOO },
+                { "SMALL_SCENERY_FLAG17", SMALL_SCENERY_FLAG17 },
+                { "isStackable", SMALL_SCENERY_FLAG_STACKABLE },
+                { "prohibitWalls", SMALL_SCENERY_FLAG_NO_WALLS },
+                { "hasSecondaryColour", SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
+                { "hasNoSupports", SMALL_SCENERY_FLAG_NO_SUPPORTS },
+                { "SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED", SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED },
+                { "SMALL_SCENERY_FLAG_COG", SMALL_SCENERY_FLAG_COG },
+                { "allowSupportsAbove", SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP },
+                { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
+                { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 },
+                { "isTree", SMALL_SCENERY_FLAG_IS_TREE },
+            });
+
+        // Determine shape flags from a shape string
+        auto shape = Json::GetString(properties["shape"]);
+        if (!shape.empty())
+        {
+            auto quarters = shape.substr(0, 3);
+            if (quarters == "2/4")
+            {
+                _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_FULL_TILE | SMALL_SCENERY_FLAG_HALF_SPACE;
+            }
+            else if (quarters == "3/4")
+            {
+                _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_FULL_TILE | SMALL_SCENERY_FLAG_THREE_QUARTERS;
+            }
+            else if (quarters == "4/4")
+            {
+                _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_FULL_TILE;
+            }
+            if (shape.size() >= 5)
+            {
+                if ((shape.substr(3) == "+D"))
+                {
+                    _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_DIAGONAL;
+                }
             }
         }
+
+        auto jFrameOffsets = properties["frameOffsets"];
+        if (jFrameOffsets.is_array())
+        {
+            _frameOffsets = ReadJsonFrameOffsets(jFrameOffsets);
+            _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS;
+        }
+
+        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
     }
 
-    auto jFrameOffsets = json_object_get(properties, "frameOffsets");
-    if (jFrameOffsets != nullptr)
-    {
-        _frameOffsets = ReadJsonFrameOffsets(jFrameOffsets);
-        _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS;
-    }
-
-    SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
-
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    PopulateTablesFromJson(context, root);
 }
 
-std::vector<uint8_t> SmallSceneryObject::ReadJsonFrameOffsets(const json_t* jFrameOffsets)
+std::vector<uint8_t> SmallSceneryObject::ReadJsonFrameOffsets(json_t& jFrameOffsets)
 {
     std::vector<uint8_t> offsets;
-    size_t index;
-    const json_t* jOffset;
-    json_array_foreach(jFrameOffsets, index, jOffset)
+
+    for (auto& jOffset : jFrameOffsets)
     {
-        offsets.push_back(json_integer_value(jOffset));
+        offsets.push_back(Json::GetNumber<uint8_t>(jOffset));
     }
     return offsets;
 }

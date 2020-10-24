@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,7 @@
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
 #include "../world/ScenerySelection.h"
+#include "ZoomLevel.hpp"
 
 #include <functional>
 #include <limits>
@@ -63,6 +64,16 @@ struct widget_identifier
 
 extern widget_identifier gCurrentTextBox;
 
+using WidgetFlags = uint32_t;
+namespace WIDGET_FLAGS
+{
+    const WidgetFlags TEXT_IS_STRING = 1 << 0;
+    const WidgetFlags IS_ENABLED = 1 << 1;
+    const WidgetFlags IS_PRESSED = 1 << 2;
+    const WidgetFlags IS_DISABLED = 1 << 3;
+    const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
+} // namespace WIDGET_FLAGS
+
 /**
  * Widget structure
  * size: 0x10
@@ -83,6 +94,38 @@ struct rct_widget
         utf8* string;
     };
     rct_string_id tooltip; // 0x0E
+
+    // New properties
+    WidgetFlags flags{};
+    utf8* sztooltip{};
+
+    int16_t width() const
+    {
+        return right - left;
+    }
+
+    int16_t height() const
+    {
+        return bottom - top;
+    }
+
+    int16_t midX() const
+    {
+        return (left + right) / 2;
+    }
+
+    int16_t midY() const
+    {
+        return (top + bottom) / 2;
+    }
+
+    int16_t textTop() const
+    {
+        if (height() >= 10)
+            return std::max<int32_t>(top, top + (height() / 2) - 5);
+        else
+            return top - 1;
+    }
 };
 
 /**
@@ -97,7 +140,7 @@ struct rct_viewport
     int16_t view_width;
     int16_t view_height;
     uint32_t flags;
-    uint8_t zoom;
+    ZoomLevel zoom;
     uint8_t var_11;
     uint8_t visibility; // VISIBILITY_CACHE
 };
@@ -204,14 +247,18 @@ struct campaign_variables
 {
     int16_t campaign_type;
     int16_t no_weeks; // 0x482
-    uint16_t ride_id; // 0x484
+    union
+    {
+        ride_id_t RideId;            // 0x484
+        ObjectEntryIndex ShopItemId; // 0x484
+    };
     uint32_t pad_486;
 };
 
 struct new_ride_variables
 {
-    int16_t selected_ride_id;    // 0x480
-    int16_t highlighted_ride_id; // 0x482
+    RideSelection SelectedRide;    // 0x480
+    RideSelection HighlightedRide; // 0x482
     uint16_t pad_484;
     uint16_t pad_486;
     uint16_t selected_ride_countdown; // 488
@@ -442,6 +489,7 @@ enum
     WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR = 222,
     WC_CHAT = 223,
     WC_CONSOLE = 224,
+    WC_CUSTOM = 225,
 
     WC_NULL = 255,
 };
@@ -458,6 +506,8 @@ enum
     WV_NETWORK_PASSWORD,
     WV_EDITOR_BOTTOM_TOOLBAR,
     WV_EDITOR_MAIN,
+    WV_CHANGELOG,
+    WV_NEW_VERSION_INFO,
 };
 
 enum
@@ -492,18 +542,18 @@ enum
 #define WC_SCENERY__WIDX_SCENERY_TAB_1 4
 #define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON 25
 #define WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON 30
-#define WC_PEEP__WIDX_PATROL 11
+#define WC_PEEP__WIDX_PATROL 10
 #define WC_PEEP__WIDX_ACTION_LBL 13
 #define WC_PEEP__WIDX_PICKUP 14
 #define WC_TRACK_DESIGN_LIST__WIDX_ROTATE 8
 #define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE 3
 #define WC_MAP__WIDX_ROTATE_90 20
 #define WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 21
-#define WC_STAFF__WIDX_PICKUP 10
+#define WC_STAFF__WIDX_PICKUP 9
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE 14
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_CORRUPT 10
-#define WC_TILE_INSPECTOR__WIDX_BUTTON_COPY 16
-#define WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE 17
+#define WC_TILE_INSPECTOR__WIDX_BUTTON_COPY 17
+#define WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE 16
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE 11
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP 12
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN 13
@@ -583,12 +633,12 @@ enum VISIBILITY_CACHE
     VC_COVERED
 };
 
-enum GUEST_LIST_FILTER_TYPE
+enum class GuestListFilterType : int32_t
 {
-    GLFT_GUESTS_ON_RIDE,
-    GLFT_GUESTS_IN_QUEUE,
-    GLFT_GUESTS_THINKING_ABOUT_RIDE,
-    GLFT_GUESTS_THINKING_X,
+    GuestsOnRide,
+    GuestsInQueue,
+    GuestsThinkingAboutRide,
+    GuestsThinkingX,
 };
 
 enum TOOL_IDX
@@ -669,12 +719,13 @@ void window_push_others_below(rct_window* w1);
 
 rct_window* window_get_main();
 
-void window_scroll_to_location(rct_window* w, int32_t x, int32_t y, int32_t z);
+void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords);
 void window_rotate_camera(rct_window* w, int32_t direction);
 void window_viewport_get_map_coords_by_cursor(
     rct_window* w, int16_t* map_x, int16_t* map_y, int16_t* offset_x, int16_t* offset_y);
 void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int16_t map_y, int16_t offset_x, int16_t offset_y);
-void window_zoom_set(rct_window* w, int32_t zoomLevel, bool atCursor);
+void window_check_all_valid_zoom();
+void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor);
 void window_zoom_in(rct_window* w, bool atCursor);
 void window_zoom_out(rct_window* w, bool atCursor);
 void main_window_zoom(bool zoomIn, bool atCursor);
@@ -784,11 +835,11 @@ void window_follow_sprite(rct_window* w, size_t spriteIndex);
 void window_unfollow_sprite(rct_window* w);
 
 bool window_ride_construction_update_state(
-    int32_t* trackType, int32_t* trackDirection, ride_id_t* rideIndex, int32_t* _liftHillAndAlternativeState, int32_t* x,
-    int32_t* y, int32_t* z, int32_t* properties);
+    int32_t* trackType, int32_t* trackDirection, ride_id_t* rideIndex, int32_t* _liftHillAndAlternativeState,
+    CoordsXYZ* trackPos, int32_t* properties);
 money32 place_provisional_track_piece(
-    ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, int32_t x, int32_t y,
-    int32_t z);
+    ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
+    const CoordsXYZ& trackPos);
 
 extern uint64_t _enabledRidePieces;
 extern uint8_t _rideConstructionState2;

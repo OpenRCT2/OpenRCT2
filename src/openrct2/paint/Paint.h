@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "../world/Location.hpp"
 
 struct TileElement;
+enum ViewportInteractionItem : uint8_t;
 
 #pragma pack(push, 1)
 /* size 0x12 */
@@ -27,8 +28,8 @@ struct attached_paint_struct
         // If masked image_id is masked_id
         uint32_t colour_image_id;
     };
-    uint16_t x;    // 0x08
-    uint16_t y;    // 0x0A
+    int16_t x;     // 0x08
+    int16_t y;     // 0x0A
     uint8_t flags; // 0x0C
     uint8_t pad_0D;
     attached_paint_struct* next; // 0x0E
@@ -66,15 +67,15 @@ struct paint_struct
         uint32_t colour_image_id; // 0x04
     };
     paint_struct_bound_box bounds; // 0x08
-    uint16_t x;                    // 0x14
-    uint16_t y;                    // 0x16
+    int16_t x;                     // 0x14
+    int16_t y;                     // 0x16
     uint16_t quadrant_index;
     uint8_t flags;
     uint8_t quadrant_flags;
     attached_paint_struct* attached_ps; // 0x1C
     paint_struct* children;
-    paint_struct* next_quadrant_ps; // 0x24
-    uint8_t sprite_type;            // 0x28
+    paint_struct* next_quadrant_ps;      // 0x24
+    ViewportInteractionItem sprite_type; // 0x28
     uint8_t var_29;
     uint16_t pad_2A;
     uint16_t map_x;           // 0x2C
@@ -86,19 +87,15 @@ struct paint_struct
 assert_struct_size(paint_struct, 0x34);
 #endif
 
-/* size 0x1E */
 struct paint_string_struct
 {
     rct_string_id string_id;   // 0x00
     paint_string_struct* next; // 0x02
-    uint16_t x;                // 0x06
-    uint16_t y;                // 0x08
+    int32_t x;                 // 0x06
+    int32_t y;                 // 0x08
     uint32_t args[4];          // 0x0A
     uint8_t* y_offsets;        // 0x1A
 };
-#ifdef PLATFORM_32BIT
-assert_struct_size(paint_string_struct, 0x1e);
-#endif
 #pragma pack(pop)
 
 union paint_entry
@@ -152,7 +149,7 @@ struct paint_session
     CoordsXY SpritePosition;
     paint_struct* LastRootPS;
     attached_paint_struct* UnkF1AD2C;
-    uint8_t InteractionType;
+    ViewportInteractionItem InteractionType;
     uint8_t CurrentRotation;
     support_height SupportSegments[9];
     support_height Support;
@@ -203,6 +200,9 @@ paint_struct* sub_98199C(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
+paint_struct* sub_98199C(
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    const CoordsXYZ& boundBoxOffset);
 
 paint_struct* sub_98196C_rotated(
     paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
@@ -218,8 +218,8 @@ paint_struct* sub_98199C_rotated(
 
 void paint_util_push_tunnel_rotated(paint_session* session, uint8_t direction, uint16_t height, uint8_t type);
 
-bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, uint16_t x, uint16_t y);
-bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, uint16_t x, uint16_t y);
+bool paint_attach_to_previous_attach(paint_session* session, uint32_t image_id, int16_t x, int16_t y);
+bool paint_attach_to_previous_ps(paint_session* session, uint32_t image_id, int16_t x, int16_t y);
 void paint_floating_money_effect(
     paint_session* session, money32 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x,
     uint32_t rotation);

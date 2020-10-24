@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,16 +59,16 @@ static void fence_paint_door(
         paint_struct* ps;
 
         ps = sub_98197C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsR1.x, boundsR1.y, (int8_t)boundsR1.z, offset.z,
-            boundsR1_.x, boundsR1_.y, boundsR1_.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsR1.x, boundsR1.y,
+            static_cast<int8_t>(boundsR1.z), offset.z, boundsR1_.x, boundsR1_.y, boundsR1_.z);
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
         }
 
         ps = sub_98197C(
-            session, imageId + 1, (int8_t)offset.x, (int8_t)offset.y, boundsR2.x, boundsR2.y, (int8_t)boundsR2.z, offset.z,
-            boundsR2_.x, boundsR2_.y, boundsR2_.z);
+            session, imageId + 1, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsR2.x, boundsR2.y,
+            static_cast<int8_t>(boundsR2.z), offset.z, boundsR2_.x, boundsR2_.y, boundsR2_.z);
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
@@ -79,16 +79,16 @@ static void fence_paint_door(
         paint_struct* ps;
 
         ps = sub_98197C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, boundsL1.x, boundsL1.y, (int8_t)boundsL1.z, offset.z,
-            boundsL1_.x, boundsL1_.y, boundsL1_.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsL1.x, boundsL1.y,
+            static_cast<int8_t>(boundsL1.z), offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z);
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
         }
 
         ps = sub_98199C(
-            session, imageId + 1, (int8_t)offset.x, (int8_t)offset.y, boundsL1.x, boundsL1.y, (int8_t)boundsL1.z, offset.z,
-            boundsL1_.x, boundsL1_.y, boundsL1_.z);
+            session, imageId + 1, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), boundsL1.x, boundsL1.y,
+            static_cast<int8_t>(boundsL1.z), offset.z, boundsL1_.x, boundsL1_.y, boundsL1_.z);
         if (ps != nullptr)
         {
             ps->tertiary_colour = tertiaryColour;
@@ -117,14 +117,14 @@ static void fence_paint_wall(
         }
 
         sub_98197C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, (int8_t)bounds.z, offset.z,
-            boundsOffset.x, boundsOffset.y, boundsOffset.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y,
+            static_cast<int8_t>(bounds.z), offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z);
         if (dword_141F710 == 0)
         {
             imageId = baseImageId + dword_141F718;
             sub_98199C(
-                session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, (int8_t)bounds.z, offset.z,
-                boundsOffset.x, boundsOffset.y, boundsOffset.z);
+                session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y,
+                static_cast<int8_t>(bounds.z), offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z);
         }
     }
     else
@@ -140,8 +140,8 @@ static void fence_paint_wall(
         }
 
         paint_struct* paint = sub_98197C(
-            session, imageId, (int8_t)offset.x, (int8_t)offset.y, bounds.x, bounds.y, (int8_t)bounds.z, offset.z,
-            boundsOffset.x, boundsOffset.y, boundsOffset.z);
+            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y,
+            static_cast<int8_t>(bounds.z), offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z);
         if (paint != nullptr)
         {
             paint->tertiary_colour = tertiaryColour;
@@ -418,18 +418,24 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     }
     if (direction == 0)
     {
-        secondaryColour = ColourMapA[secondaryColour].light;
+        secondaryColour = ColourMapA[secondaryColour].mid_dark;
     }
     else
     {
-        secondaryColour = ColourMapA[secondaryColour].mid_dark;
+        secondaryColour = ColourMapA[secondaryColour].light;
     }
 
     uint16_t scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
+    if (scrollingMode >= MAX_SCROLLING_TEXT_MODES)
+    {
+        return;
+    }
+
     auto banner = tile_element->AsWall()->GetBanner();
     if (banner != nullptr && !banner->IsNull())
     {
-        banner->FormatTextTo(gCommonFormatArgs);
+        auto ft = Formatter::Common();
+        banner->FormatTextTo(ft);
         utf8 signString[256];
         if (gConfigGeneral.upper_case_banners)
         {
@@ -446,7 +452,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
         uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
         sub_98199C(
-            session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, scroll, scrollingMode, secondaryColour), 0, 0, 1, 1,
-            13, height + 8, boundsOffset.x, boundsOffset.y, boundsOffset.z);
+            session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollingMode, secondaryColour), 0, 0,
+            1, 1, 13, height + 8, boundsOffset.x, boundsOffset.y, boundsOffset.z);
     }
 }

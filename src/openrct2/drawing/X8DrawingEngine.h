@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,7 @@ namespace OpenRCT2
 {
     namespace Ui
     {
-        interface IUiContext;
+        struct IUiContext;
     } // namespace Ui
 
     namespace Drawing
@@ -35,27 +35,29 @@ namespace OpenRCT2
             uint8_t* Blocks;
         };
 
-        class X8RainDrawer final : public IRainDrawer
+        class X8WeatherDrawer final : public IWeatherDrawer
         {
         private:
-            struct RainPixel
+            struct WeatherPixel
             {
                 uint32_t Position;
                 uint8_t Colour;
             };
 
-            static constexpr uint32_t MaxRainPixels = 0xFFFE;
+            static constexpr uint32_t MaxWeatherPixels = 0xFFFE;
 
-            size_t _rainPixelsCapacity = MaxRainPixels;
-            uint32_t _rainPixelsCount = 0;
-            RainPixel* _rainPixels = nullptr;
+            size_t _weatherPixelsCapacity = MaxWeatherPixels;
+            uint32_t _weatherPixelsCount = 0;
+            WeatherPixel* _weatherPixels = nullptr;
             rct_drawpixelinfo* _screenDPI = nullptr;
 
         public:
-            X8RainDrawer();
-            ~X8RainDrawer();
+            X8WeatherDrawer();
+            ~X8WeatherDrawer();
             void SetDPI(rct_drawpixelinfo* dpi);
-            void Draw(int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart) override;
+            void Draw(
+                int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+                const uint8_t* weatherpattern) override;
             void Restore();
         };
 
@@ -80,23 +82,32 @@ namespace OpenRCT2
             bool _lastLightFXenabled = false;
 #endif
 
-            X8RainDrawer _rainDrawer;
+            X8WeatherDrawer _weatherDrawer;
             X8DrawingContext* _drawingContext;
 
         public:
             explicit X8DrawingEngine(const std::shared_ptr<Ui::IUiContext>& uiContext);
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
             ~X8DrawingEngine() override;
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic pop
+#endif
 
             void Initialise() override;
             void Resize(uint32_t width, uint32_t height) override;
-            void SetPalette(const rct_palette_entry* palette) override;
+            void SetPalette(const GamePalette& palette) override;
             void SetVSync(bool vsync) override;
             void Invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom) override;
             void BeginDraw() override;
             void EndDraw() override;
             void PaintWindows() override;
             void UpdateWindows() override;
-            void PaintRain() override;
+            void PaintWeather() override;
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
             std::string Screenshot() override;
             IDrawingContext* GetDrawingContext(rct_drawpixelinfo* dpi) override;
@@ -114,6 +125,7 @@ namespace OpenRCT2
             void ConfigureDirtyGrid();
             static void ResetWindowVisbilities();
             void DrawAllDirtyBlocks();
+            uint32_t GetNumDirtyRows(const uint32_t x, const uint32_t y, const uint32_t columns);
             void DrawDirtyBlocks(uint32_t x, uint32_t y, uint32_t columns, uint32_t rows);
         };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
@@ -138,7 +150,7 @@ namespace OpenRCT2
             void DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) override;
             void DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) override;
             void DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour) override;
-            void DrawGlyph(uint32_t image, int32_t x, int32_t y, uint8_t* palette) override;
+            void DrawGlyph(uint32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
 
             void SetDPI(rct_drawpixelinfo* dpi);
         };

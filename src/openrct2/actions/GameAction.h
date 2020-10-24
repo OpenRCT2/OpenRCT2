@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -60,6 +60,59 @@ namespace GA_FLAGS
 #    pragma GCC diagnostic ignored "-Wsuggest-final-types"
 #endif
 
+class StringVariant
+{
+private:
+    rct_string_id StringId = STR_NONE;
+    std::string String;
+
+public:
+    StringVariant() = default;
+
+    StringVariant(rct_string_id stringId)
+        : StringId(stringId)
+    {
+    }
+
+    StringVariant(const std::string& s)
+        : String(s)
+    {
+    }
+
+    StringVariant(std::string&& s)
+        : String(s)
+    {
+    }
+
+    StringVariant(const char* s)
+        : String(s)
+    {
+    }
+
+    const std::string* AsString() const
+    {
+        if (!String.empty())
+        {
+            return &String;
+        }
+        return {};
+    }
+
+    const rct_string_id* AsStringId() const
+    {
+        if (String.empty())
+        {
+            return &StringId;
+        }
+        return {};
+    }
+
+    rct_string_id GetStringId() const
+    {
+        return String.empty() ? StringId : STR_NONE;
+    }
+};
+
 /**
  * Represents the result of a game action query or execution.
  */
@@ -69,8 +122,8 @@ public:
     using Ptr = std::unique_ptr<GameActionResult>;
 
     GA_ERROR Error = GA_ERROR::OK;
-    rct_string_id ErrorTitle = STR_NONE;
-    rct_string_id ErrorMessage = STR_NONE;
+    StringVariant ErrorTitle;
+    StringVariant ErrorMessage;
     std::array<uint8_t, 32> ErrorMessageArgs;
     CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
     money32 Cost = 0;
@@ -82,6 +135,70 @@ public:
     GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t* args);
     GameActionResult(const GameActionResult&) = delete;
     virtual ~GameActionResult(){};
+
+    std::string GetErrorTitle() const;
+    std::string GetErrorMessage() const;
+};
+
+class ConstructClearResult final : public GameActionResult
+{
+public:
+    uint8_t GroundFlags{ 0 };
+};
+
+/**
+ *
+ */
+class GameActionParameterVisitor
+{
+public:
+    virtual ~GameActionParameterVisitor() = default;
+
+    virtual void Visit(const std::string_view& name, bool& param)
+    {
+    }
+
+    virtual void Visit(const std::string_view& name, int32_t& param)
+    {
+    }
+
+    virtual void Visit(const std::string_view& name, std::string& param)
+    {
+    }
+
+    void Visit(CoordsXY& param)
+    {
+        Visit("x", param.x);
+        Visit("y", param.y);
+    }
+
+    void Visit(CoordsXYZ& param)
+    {
+        Visit("x", param.x);
+        Visit("y", param.y);
+        Visit("z", param.z);
+    }
+
+    void Visit(CoordsXYZD& param)
+    {
+        Visit("x", param.x);
+        Visit("y", param.y);
+        Visit("z", param.z);
+        Visit("direction", param.direction);
+    }
+
+    template<typename T> void Visit(const std::string_view& name, T& param)
+    {
+        static_assert(std::is_arithmetic_v<T> || std::is_enum_v<T>, "Not an arithmetic type");
+        auto value = static_cast<int32_t>(param);
+        Visit(name, value);
+        param = static_cast<T>(value);
+    }
+
+    template<typename T, size_t _TypeID> void Visit(const std::string_view& name, NetworkObjectId_t<T, _TypeID>& param)
+    {
+        Visit(name, param.id);
+    }
 };
 
 struct GameAction
@@ -107,6 +224,10 @@ public:
     virtual ~GameAction() = default;
 
     virtual const char* GetName() const = 0;
+
+    virtual void AcceptParameters(GameActionParameterVisitor&)
+    {
+    }
 
     NetworkPlayerId_t GetPlayer() const
     {
@@ -206,6 +327,8 @@ public:
      * Apply the game action and change the game state.
      */
     virtual GameActionResult::Ptr Execute() const abstract;
+
+    bool LocationValid(const CoordsXY& coords) const;
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
@@ -297,7 +420,7 @@ namespace GameActions
             return #cls;                                                         \
         }                                                                        \
     };                                                                           \
-    struct cls : public GameActionBase<id, res>
+    struct cls final : public GameActionBase<id, res>
     // clang-format on
 
 } // namespace GameActions

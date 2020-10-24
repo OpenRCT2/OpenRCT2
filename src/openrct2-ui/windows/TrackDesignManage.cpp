@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,6 +16,10 @@
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/util/Util.h>
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
+static constexpr const int32_t WH = 44;
+static constexpr const int32_t WW = 250;
+
 #pragma region Widgets
 
 // clang-format off
@@ -31,20 +35,16 @@ enum {
 };
 
 static rct_widget window_track_manage_widgets[] = {
-    { WWT_FRAME,            0,  0,      249,    0,      43,     STR_NONE,                   STR_NONE                },
-    { WWT_CAPTION,          0,  1,      248,    1,      14,     STR_STRING,                     STR_WINDOW_TITLE_TIP    },
-    { WWT_CLOSEBOX,         0,  237,    247,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP    },
-    { WWT_BUTTON,           0,  10,     119,    24,     35,     STR_TRACK_MANAGE_RENAME,    STR_NONE                },
-    { WWT_BUTTON,           0,  130,    239,    24,     35,     STR_TRACK_MANAGE_DELETE,    STR_NONE                },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget({ 10, 24}, {110, 12}, WWT_BUTTON, WindowColour::Primary, STR_TRACK_MANAGE_RENAME),
+    MakeWidget({130, 24}, {110, 12}, WWT_BUTTON, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
     { WIDGETS_END }
 };
 
 static rct_widget window_track_delete_prompt_widgets[] = {
-    { WWT_FRAME,            0,  0,      249,    0,      73,     STR_NONE,                   STR_NONE                },
-    { WWT_CAPTION,          0,  1,      248,    1,      14,     STR_DELETE_FILE,            STR_WINDOW_TITLE_TIP    },
-    { WWT_CLOSEBOX,         0,  237,    247,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP    },
-    { WWT_BUTTON,           0,  10,     119,    54,     65,     STR_TRACK_MANAGE_DELETE,    STR_NONE                },
-    { WWT_BUTTON,           0,  130,    239,    54,     65,     STR_CANCEL,                 STR_NONE                },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget({ 10, 54}, {110, 12}, WWT_BUTTON, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
+    MakeWidget({130, 54}, {110, 12}, WWT_BUTTON, WindowColour::Primary, STR_CANCEL             ),
     { WIDGETS_END }
 };
 
@@ -205,13 +205,13 @@ static void window_track_manage_textinput(rct_window* w, rct_widgetindex widgetI
 
     if (str_is_null_or_empty(text))
     {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE, {});
         return;
     }
 
     if (!filename_valid_characters(text))
     {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS);
+        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS, {});
         return;
     }
 
@@ -223,7 +223,7 @@ static void window_track_manage_textinput(rct_window* w, rct_widgetindex widgetI
     }
     else
     {
-        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED);
+        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED, {});
     }
 }
 
@@ -233,7 +233,7 @@ static void window_track_manage_textinput(rct_window* w, rct_widgetindex widgetI
  */
 static void window_track_manage_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    set_format_arg(0, char*, _trackDesignFileReference->name);
+    Formatter::Common().Add<char*>(_trackDesignFileReference->name);
     window_draw_widgets(w, dpi);
 }
 
@@ -277,7 +277,7 @@ static void window_track_delete_prompt_mouseup(rct_window* w, rct_widgetindex wi
             }
             else
             {
-                context_show_error(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED);
+                context_show_error(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED, {});
             }
             break;
     }
@@ -292,7 +292,7 @@ static void window_track_delete_prompt_paint(rct_window* w, rct_drawpixelinfo* d
     window_draw_widgets(w, dpi);
 
     gfx_draw_string_centred_wrapped(
-        dpi, &_trackDesignFileReference->name, w->windowPos.x + 125, w->windowPos.y + 28, 246,
+        dpi, &_trackDesignFileReference->name, { w->windowPos.x + 125, w->windowPos.y + 28 }, 246,
         STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, COLOUR_BLACK);
 }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,9 +36,9 @@ uint8_t platform_get_locale_currency()
     return platform_get_currency_value(NULL);
 }
 
-uint8_t platform_get_locale_measurement_format()
+MeasurementFormat platform_get_locale_measurement_format()
 {
-    return MEASUREMENT_FORMAT_METRIC;
+    return MeasurementFormat::Metric;
 }
 
 float platform_get_default_scale()

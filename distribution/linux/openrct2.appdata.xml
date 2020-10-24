@@ -63,4 +63,33 @@
     <content_attribute id="money-purchasing">none</content_attribute>
     <content_attribute id="money-gambling">none</content_attribute>
   </content_rating>
+  <releases>
+      <release version="0.3.1" date="2020-09-27">
+        <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.3.1</url>
+      </release>
+      <release version="0.3.0" date="2020-08-15">
+        <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.3.0</url>
+      </release>
+      <release version="0.2.6" date="2020-04-17">
+        <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.2.6</url>
+      </release>
+      <release version="0.2.5" date="2020-03-24">
+        <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.2.5</url>
+      </release>
+      <release version="0.2.4" date="2019-10-28">
+        <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.2.4</url>
+      </release>
+      <release version="0.2.3" date="2019-07-10">
+        <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.2.3</url>
+      </release>
+      <release version="0.2.2" date="2019-03-13">
+        <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.2.2</url>
+      </release>
+      <release version="0.2.1" date="2018-08-26">
+        <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.2.1</url>
+      </release>
+      <release version="0.2.0" date="2018-06-10">
+        <url>https://github.com/OpenRCT2/OpenRCT2/releases/tag/v0.2.0</url>
+      </release>
+  </releases>
 </component>

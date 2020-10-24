@@ -9,11 +9,9 @@ option(DISABLE_OPENGL "Disable OpenGL support.")
 
 # Third party libraries
 if (MSVC)
-    find_package(jansson REQUIRED)
     find_package(SDL2 REQUIRED)
     find_library(SPEEX_LDFLAGS libspeexdsp)
 else ()
-    PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.5)
     PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
     PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
 endif ()
@@ -64,7 +62,8 @@ endif ()
 # Includes
 target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
                                               ${SPEEX_INCLUDE_DIRS})
-target_include_directories(${PROJECT} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS})
+target_include_directories(${PROJECT} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS}
+                                                     "${CMAKE_CURRENT_LIST_DIR}/../thirdparty")
 
 # Compiler flags
 if (WIN32)

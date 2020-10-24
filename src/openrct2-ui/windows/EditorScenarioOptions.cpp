@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,6 +27,15 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
+
+static constexpr const int32_t WW_FINANCIAL = 280;
+static constexpr const int32_t WH_FINANCIAL = 149;
+
+static constexpr const int32_t WW_GUESTS = 380;
+static constexpr const int32_t WH_GUESTS = 149;
+
+static constexpr const int32_t WW_PARK = 400;
+static constexpr const int32_t WH_PARK = 200;
 
 #pragma region Widgets
 
@@ -109,62 +118,53 @@ enum {
 };
 
 static rct_widget window_editor_scenario_options_financial_widgets[] = {
-    { WWT_FRAME,            0,  0,      279,    0,      148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_FINANCIAL,         STR_WINDOW_TITLE_TIP                        },
-    { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
-    { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_PARK_TIP               },
-
-    { WWT_CHECKBOX,         1,  8,      271,    48,     59,     STR_MAKE_PARK_NO_MONEY,                 STR_MAKE_PARK_NO_MONEY_TIP                  },
-      SPINNER_WIDGETS      (1,  168,    267,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  168,    267,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  168,    267,    99,     110,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  168,    237,    116,    127,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  8,      271,    133,    144,    STR_FORBID_MARKETING,                   STR_FORBID_MARKETING_TIP                    },
+    WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
+    MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WWT_RESIZE,   WindowColour::Secondary                                                            ),
+    MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+    MakeTab           ({ 34,  17},                                                                                          STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+    MakeTab           ({ 65,  17},                                                                                          STR_SCENARIO_OPTIONS_PARK_TIP     ),
+    MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
+    MakeSpinnerWidgets({168,  65}, {              100,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168,  82}, {              100,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168,  99}, {              100,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168, 116}, {               70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_scenario_options_guests_widgets[] = {
-    { WWT_FRAME,            0,  0,      279,    0,      148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_GUESTS,            STR_WINDOW_TITLE_TIP                        },
-    { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
-    { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_PARK_TIP               },
-
-      SPINNER_WIDGETS      (1,  268,    337,    48,     59,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  268,    337,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  268,    337,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  268,    337,    99,     110,    STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-    { WWT_CHECKBOX,         1,  8,      371,    116,    127,    STR_GUESTS_PREFER_LESS_INTENSE_RIDES,   STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP    },
-    { WWT_CHECKBOX,         1,  8,      371,    133,    144,    STR_GUESTS_PREFER_MORE_INTENSE_RIDES,   STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP    },
+    WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
+    MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WWT_RESIZE,   WindowColour::Secondary),
+    MakeRemapWidget   ({  3,  17}, {            31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
+    MakeRemapWidget   ({ 34,  17}, {            31,  30}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP         ),
+    MakeRemapWidget   ({ 65,  17}, {            31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP           ),
+    MakeSpinnerWidgets({268,  48}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  65}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  82}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  99}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
+    MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_scenario_options_park_widgets[] = {
-    { WWT_FRAME,            0,  0,      279,    0,      148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_CAPTION,          0,  1,      278,    1,      14,     STR_SCENARIO_OPTIONS_PARK,              STR_WINDOW_TITLE_TIP                        },
-    { WWT_CLOSEBOX,         0,  267,    277,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                        },
-    { WWT_RESIZE,           1,  0,      279,    43,     148,    STR_NONE,                               STR_NONE                                    },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_FINANCIAL_TIP          },
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_GUESTS_TIP             },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,             STR_SCENARIO_OPTIONS_PARK_TIP               },
-
-      SPINNER_WIDGETS      (1,  188,    257,    48,     59,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-      SPINNER_WIDGETS      (1,  188,    257,    65,     76,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-    { WWT_DROPDOWN,         1,  8,      217,    82,     93,     STR_NONE,                               STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP          },
-    { WWT_BUTTON,           1,  206,    216,    83,     92,     STR_DROPDOWN_GLYPH,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP          },
-      SPINNER_WIDGETS      (1,  328,    394,    82,     93,     STR_NONE,                               STR_NONE                                    ), // NB: 3 widgets
-    { WWT_DROPDOWN,         1,  188,    394,    99,     110,    STR_NONE,                               STR_SELECT_CLIMATE_TIP                      },
-    { WWT_BUTTON,           1,  383,    393,    100,    109,    STR_DROPDOWN_GLYPH,                     STR_SELECT_CLIMATE_TIP                      },
-    { WWT_CHECKBOX,         1,  8,      391,    116,    127,    STR_FORBID_TREE_REMOVAL,                STR_FORBID_TREE_REMOVAL_TIP                 },
-    { WWT_CHECKBOX,         1,  8,      391,    133,    144,    STR_FORBID_LANDSCAPE_CHANGES,           STR_FORBID_LANDSCAPE_CHANGES_TIP            },
-    { WWT_CHECKBOX,         1,  8,      391,    150,    161,    STR_FORBID_HIGH_CONSTRUCTION,           STR_FORBID_HIGH_CONSTRUCTION_TIP            },
-    { WWT_CHECKBOX,         1,  8,      391,    167,    178,    STR_HARD_PARK_RATING,                   STR_HARD_PARK_RATING_TIP                    },
-    { WWT_CHECKBOX,         1,  8,      391,    184,    195,    STR_HARD_GUEST_GENERATION,              STR_HARD_GUEST_GENERATION_TIP               },
+    WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
+    MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WWT_RESIZE,   WindowColour::Secondary                                                                  ),
+    MakeRemapWidget   ({  3,  17}, {          31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+    MakeRemapWidget   ({ 34,  17}, {          31,  30}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+    MakeRemapWidget   ({ 65,  17}, {          31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_PARK_TIP     ),
+    MakeSpinnerWidgets({188,  48}, {          70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+    MakeSpinnerWidgets({188,  65}, {          70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+    MakeWidget        ({  8,  82}, {         210,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+    MakeWidget        ({206,  83}, {          11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+    MakeSpinnerWidgets({328,  82}, {          67,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+    MakeWidget        ({188,  99}, {         207,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                     STR_SELECT_CLIMATE_TIP            ),
+    MakeWidget        ({383, 100}, {          11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
+    MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
+    MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
+    MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
+    MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
+    MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
     { WIDGETS_END }
 };
 
@@ -438,7 +438,7 @@ static void window_editor_scenario_options_draw_tab_images(rct_window* w, rct_dr
     if (w->page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
         spriteIndex += (w->frame_no / 2) % 8;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
+    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
 
     // Tab 2
     widget = &w->widgets[WIDX_TAB_2];
@@ -446,12 +446,12 @@ static void window_editor_scenario_options_draw_tab_images(rct_window* w, rct_dr
     if (w->page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
         spriteIndex += (w->frame_no / 4) % 8;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
+    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
 
     // Tab 3
     widget = &w->widgets[WIDX_TAB_3];
     spriteIndex = SPR_TAB_PARK;
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos.x + widget->left, w->windowPos.y + widget->top, 0);
+    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
 }
 
 /**
@@ -540,16 +540,15 @@ static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
 
     dropdownWidget = &w->widgets[WIDX_CLIMATE];
 
-    for (i = 0; i < CLIMATE_COUNT; i++)
+    for (i = 0; i < static_cast<uint8_t>(ClimateType::Count); i++)
     {
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[i] = ClimateNames[i];
     }
     window_dropdown_show_text_custom_width(
-        w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
-        dropdownWidget->bottom - dropdownWidget->top + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, CLIMATE_COUNT,
-        dropdownWidget->right - dropdownWidget->left - 3);
-    dropdown_set_checked(gClimate, true);
+        { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
+        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, static_cast<uint8_t>(ClimateType::Count), dropdownWidget->width() - 3);
+    dropdown_set_checked(static_cast<uint8_t>(gClimate), true);
 }
 
 /**
@@ -569,7 +568,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_CASH, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_CASH, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -582,7 +581,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_CASH, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_CASH, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -595,7 +594,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -608,7 +607,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -621,7 +620,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -634,7 +633,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -647,7 +646,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -660,7 +659,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -740,55 +739,51 @@ static void window_editor_scenario_options_financial_invalidate(rct_window* w)
  */
 static void window_editor_scenario_options_financial_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y;
+    ScreenCoordsXY screenCoords{};
 
     window_draw_widgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
     if (w->widgets[WIDX_INITIAL_CASH].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + 8;
-        y = w->windowPos.y + w->widgets[WIDX_INITIAL_CASH].top;
-        gfx_draw_string_left(dpi, STR_INIT_CASH_LABEL, nullptr, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INITIAL_CASH].top };
+        gfx_draw_string_left(dpi, STR_INIT_CASH_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-        x = w->windowPos.x + w->widgets[WIDX_INITIAL_CASH].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_INITIAL_CASH].top;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gInitialCash, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_INITIAL_CASH].left + 1, w->widgets[WIDX_INITIAL_CASH].top };
+        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gInitialCash, COLOUR_BLACK, screenCoords);
     }
 
     if (w->widgets[WIDX_INITIAL_LOAN].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + 8;
-        y = w->windowPos.y + w->widgets[WIDX_INITIAL_LOAN].top;
-        gfx_draw_string_left(dpi, STR_INIT_LOAN_LABEL, nullptr, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INITIAL_LOAN].top };
+        gfx_draw_string_left(dpi, STR_INIT_LOAN_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-        x = w->windowPos.x + w->widgets[WIDX_INITIAL_LOAN].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_INITIAL_LOAN].top;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gBankLoan, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_INITIAL_LOAN].left + 1, w->widgets[WIDX_INITIAL_LOAN].top };
+        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gBankLoan, COLOUR_BLACK, screenCoords);
     }
 
     if (w->widgets[WIDX_MAXIMUM_LOAN].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + 8;
-        y = w->windowPos.y + w->widgets[WIDX_MAXIMUM_LOAN].top;
-        gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, nullptr, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_MAXIMUM_LOAN].top };
+        gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-        x = w->windowPos.x + w->widgets[WIDX_MAXIMUM_LOAN].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_MAXIMUM_LOAN].top;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_MAXIMUM_LOAN].left + 1, w->widgets[WIDX_MAXIMUM_LOAN].top };
+        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan, COLOUR_BLACK, screenCoords);
     }
 
     if (w->widgets[WIDX_INTEREST_RATE].type != WWT_EMPTY)
     {
-        x = w->windowPos.x + 8;
-        y = w->windowPos.y + w->widgets[WIDX_INTEREST_RATE].top;
-        gfx_draw_string_left(dpi, STR_INTEREST_RATE_LABEL, nullptr, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INTEREST_RATE].top };
+        gfx_draw_string_left(dpi, STR_INTEREST_RATE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
-        x = w->windowPos.x + w->widgets[WIDX_INTEREST_RATE].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_INTEREST_RATE].top;
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_INTEREST_RATE].left + 1, w->widgets[WIDX_INTEREST_RATE].top };
 
-        int16_t interestRate = std::clamp<int16_t>((int16_t)gBankLoanInterestRate, INT16_MIN, INT16_MAX);
-        gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, COLOUR_BLACK, x, y);
+        int16_t interestRate = std::clamp<int16_t>(static_cast<int16_t>(gBankLoanInterestRate), INT16_MIN, INT16_MAX);
+        gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, COLOUR_BLACK, screenCoords);
     }
 }
 
@@ -857,7 +852,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -870,7 +865,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -883,7 +878,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -896,7 +891,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -909,7 +904,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -922,7 +917,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -935,7 +930,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -948,7 +943,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1020,7 +1015,8 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
  */
 static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y, arg;
+    int32_t arg;
+    ScreenCoordsXY screenCoords{};
 
     window_draw_widgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
@@ -1028,49 +1024,45 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
     if (w->widgets[WIDX_CASH_PER_GUEST].type != WWT_EMPTY)
     {
         // Cash per guest label
-        x = w->windowPos.x + 8;
-        y = w->windowPos.y + w->widgets[WIDX_CASH_PER_GUEST].top;
-        gfx_draw_string_left(dpi, STR_CASH_PER_GUEST_LABEL, nullptr, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CASH_PER_GUEST].top };
+        gfx_draw_string_left(dpi, STR_CASH_PER_GUEST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
         // Cash per guest value
-        x = w->windowPos.x + w->widgets[WIDX_CASH_PER_GUEST].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_CASH_PER_GUEST].top;
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_CASH_PER_GUEST].left + 1, w->widgets[WIDX_CASH_PER_GUEST].top };
         arg = gGuestInitialCash;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
     }
 
     // Guest initial happiness label
-    x = w->windowPos.x + 8;
-    y = w->windowPos.y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top;
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_HAPPINESS, nullptr, COLOUR_BLACK, x, y);
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
+    gfx_draw_string_left(dpi, STR_GUEST_INIT_HAPPINESS, nullptr, COLOUR_BLACK, screenCoords);
 
     // Guest initial happiness value
-    x = w->windowPos.x + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1;
-    y = w->windowPos.y + w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top;
+    screenCoords = w->windowPos
+        + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
     arg = (gGuestInitialHappiness * 100) / 255;
-    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
 
     // Guest initial hunger label
-    x = w->windowPos.x + 8;
-    y = w->windowPos.y + w->widgets[WIDX_GUEST_INITIAL_HUNGER].top;
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_HUNGER, nullptr, COLOUR_BLACK, x, y);
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_HUNGER].top };
+    gfx_draw_string_left(dpi, STR_GUEST_INIT_HUNGER, nullptr, COLOUR_BLACK, screenCoords);
 
     // Guest initial hunger value
-    x = w->windowPos.x + w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1;
-    y = w->windowPos.y + w->widgets[WIDX_GUEST_INITIAL_HUNGER].top;
+    screenCoords = w->windowPos
+        + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1, w->widgets[WIDX_GUEST_INITIAL_HUNGER].top };
     arg = ((255 - gGuestInitialHunger) * 100) / 255;
-    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
 
     // Guest initial thirst label
-    x = w->windowPos.x + 8;
-    y = w->windowPos.y + w->widgets[WIDX_GUEST_INITIAL_THIRST].top;
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_THIRST, nullptr, COLOUR_BLACK, x, y);
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_THIRST].top };
+    gfx_draw_string_left(dpi, STR_GUEST_INIT_THIRST, nullptr, COLOUR_BLACK, screenCoords);
 
     // Guest initial thirst value
-    x = w->windowPos.x + w->widgets[WIDX_GUEST_INITIAL_THIRST].left + 1;
-    y = w->windowPos.y + w->widgets[WIDX_GUEST_INITIAL_THIRST].top;
+    screenCoords = w->windowPos
+        + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_THIRST].left + 1, w->widgets[WIDX_GUEST_INITIAL_THIRST].top };
     arg = ((255 - gGuestInitialThirst) * 100) / 255;
-    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
+    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
 }
 
 #pragma endregion
@@ -1165,7 +1157,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1178,7 +1170,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1191,7 +1183,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1204,7 +1196,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1217,7 +1209,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1230,7 +1222,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             }
             else
             {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             w->Invalidate();
             break;
@@ -1245,9 +1237,8 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             gDropdownItemsArgs[2] = STR_PAID_ENTRY_PAID_RIDES;
 
             window_dropdown_show_text_custom_width(
-                w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top,
-                dropdownWidget->bottom - dropdownWidget->top - 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3,
-                dropdownWidget->right - dropdownWidget->left - 3);
+                { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
+                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3, dropdownWidget->width() - 3);
 
             if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
                 dropdown_set_checked(2, true);
@@ -1284,9 +1275,9 @@ static void window_editor_scenario_options_park_dropdown(rct_window* w, rct_widg
             break;
         }
         case WIDX_CLIMATE_DROPDOWN:
-            if (gClimate != (uint8_t)dropdownIndex)
+            if (static_cast<uint8_t>(gClimate) != static_cast<uint8_t>(dropdownIndex))
             {
-                auto gameAction = ClimateSetAction(dropdownIndex);
+                auto gameAction = ClimateSetAction(ClimateType{ static_cast<uint8_t>(dropdownIndex) });
                 GameActions::Execute(&gameAction);
             }
             break;
@@ -1384,7 +1375,8 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
  */
 static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y, arg;
+    int32_t arg;
+    ScreenCoordsXY screenCoords{};
     rct_string_id stringId;
 
     window_draw_widgets(w, dpi);
@@ -1393,37 +1385,35 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
     if (w->widgets[WIDX_LAND_COST].type != WWT_EMPTY)
     {
         // Cost to buy land label
-        x = w->windowPos.x + 8;
-        y = w->windowPos.y + w->widgets[WIDX_LAND_COST].top;
-        gfx_draw_string_left(dpi, STR_LAND_COST_LABEL, nullptr, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_LAND_COST].top };
+        gfx_draw_string_left(dpi, STR_LAND_COST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
         // Cost to buy land value
-        x = w->windowPos.x + w->widgets[WIDX_LAND_COST].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_LAND_COST].top;
+        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LAND_COST].left + 1, w->widgets[WIDX_LAND_COST].top };
         arg = gLandPrice;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
     }
 
     if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WWT_EMPTY)
     {
         // Cost to buy construction rights label
-        x = w->windowPos.x + 8;
-        y = w->windowPos.y + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top;
-        gfx_draw_string_left(dpi, STR_RIGHTS_COST_LABEL, nullptr, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top };
+        gfx_draw_string_left(dpi, STR_RIGHTS_COST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
         // Cost to buy construction rights value
-        x = w->windowPos.x + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top;
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1,
+                              w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top };
         arg = gConstructionRightsPrice;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
     }
 
     if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WWT_EMPTY)
     {
         // Pay for park or rides label
-        x = w->windowPos.x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top;
-        gfx_draw_string_left(dpi, STR_FREE_PARK_ENTER, nullptr, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].left + 1, w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top };
+        gfx_draw_string_left(dpi, STR_FREE_PARK_ENTER, nullptr, COLOUR_BLACK, screenCoords);
 
         // Pay for park and/or rides value
         if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
@@ -1433,33 +1423,30 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         else
             stringId = STR_PAY_PARK_ENTER;
 
-        gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
     }
 
     if (w->widgets[WIDX_ENTRY_PRICE].type != WWT_EMPTY)
     {
         // Entry price label
-        x = w->windowPos.x + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].right + 8;
-        y = w->windowPos.y + w->widgets[WIDX_ENTRY_PRICE].top;
-        gfx_draw_string_left(dpi, STR_ENTRY_PRICE_LABEL, nullptr, COLOUR_BLACK, x, y);
+        screenCoords = w->windowPos
+            + ScreenCoordsXY{ w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].right + 8, w->widgets[WIDX_ENTRY_PRICE].top };
+        gfx_draw_string_left(dpi, STR_ENTRY_PRICE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
         // Entry price value
-        x = w->windowPos.x + w->widgets[WIDX_ENTRY_PRICE].left + 1;
-        y = w->windowPos.y + w->widgets[WIDX_ENTRY_PRICE].top;
+        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_ENTRY_PRICE].left + 1, w->widgets[WIDX_ENTRY_PRICE].top };
         arg = gParkEntranceFee;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, x, y);
+        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
     }
 
     // Climate label
-    x = w->windowPos.x + 8;
-    y = w->windowPos.y + w->widgets[WIDX_CLIMATE].top;
-    gfx_draw_string_left(dpi, STR_CLIMATE_LABEL, nullptr, COLOUR_BLACK, x, y);
+    screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CLIMATE].top };
+    gfx_draw_string_left(dpi, STR_CLIMATE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
 
     // Climate value
-    x = w->windowPos.x + w->widgets[WIDX_CLIMATE].left + 1;
-    y = w->windowPos.y + w->widgets[WIDX_CLIMATE].top;
-    stringId = ClimateNames[gClimate];
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
+    screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CLIMATE].left + 1, w->widgets[WIDX_CLIMATE].top };
+    stringId = ClimateNames[static_cast<uint8_t>(gClimate)];
+    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
 }
 
 #pragma endregion

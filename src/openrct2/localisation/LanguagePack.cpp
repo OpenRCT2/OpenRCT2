@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
+#include "../core/RTL.h"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
 #include "../core/StringReader.hpp"
@@ -21,14 +22,6 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#ifndef _WIN32
-#    include <unicode/ubidi.h>
-#    include <unicode/unistr.h>
-#    include <unicode/ushape.h>
-#    include <unicode/ustring.h>
-#    include <unicode/utf.h>
-#    include <unicode/utypes.h>
-#endif
 
 // Don't try to load more than language files that exceed 64 MiB
 constexpr uint64_t MAX_LANGUAGE_SIZE = 64 * 1024 * 1024;
@@ -77,9 +70,9 @@ public:
         utf8* fileData = nullptr;
         try
         {
-            FileStream fs = FileStream(path, FILE_MODE_OPEN);
+            OpenRCT2::FileStream fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
 
-            size_t fileLength = (size_t)fs.GetLength();
+            size_t fileLength = static_cast<size_t>(fs.GetLength());
             if (fileLength > MAX_LANGUAGE_SIZE)
             {
                 throw IOException("Language file too large.");
@@ -132,12 +125,12 @@ public:
 
     uint32_t GetCount() const override
     {
-        return (uint32_t)_strings.size();
+        return static_cast<uint32_t>(_strings.size());
     }
 
     void RemoveString(rct_string_id stringId) override
     {
-        if (_strings.size() >= (size_t)stringId)
+        if (_strings.size() >= static_cast<size_t>(stringId))
         {
             _strings[stringId] = std::string();
         }
@@ -145,7 +138,7 @@ public:
 
     void SetString(rct_string_id stringId, const std::string& str) override
     {
-        if (_strings.size() >= (size_t)stringId)
+        if (_strings.size() >= static_cast<size_t>(stringId))
         {
             _strings[stringId] = str;
         }
@@ -159,7 +152,8 @@ public:
             int32_t ooIndex = offset / ScenarioOverrideMaxStringCount;
             int32_t ooStringIndex = offset % ScenarioOverrideMaxStringCount;
 
-            if (_scenarioOverrides.size() > (size_t)ooIndex && !_scenarioOverrides[ooIndex].strings[ooStringIndex].empty())
+            if (_scenarioOverrides.size() > static_cast<size_t>(ooIndex)
+                && !_scenarioOverrides[ooIndex].strings[ooStringIndex].empty())
             {
                 return _scenarioOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
@@ -174,7 +168,8 @@ public:
             int32_t ooIndex = offset / ObjectOverrideMaxStringCount;
             int32_t ooStringIndex = offset % ObjectOverrideMaxStringCount;
 
-            if (_objectOverrides.size() > (size_t)ooIndex && !_objectOverrides[ooIndex].strings[ooStringIndex].empty())
+            if (_objectOverrides.size() > static_cast<size_t>(ooIndex)
+                && !_objectOverrides[ooIndex].strings[ooStringIndex].empty())
             {
                 return _objectOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
@@ -185,7 +180,7 @@ public:
         }
         else
         {
-            if ((_strings.size() > (size_t)stringId) && !_strings[stringId].empty())
+            if ((_strings.size() > static_cast<size_t>(stringId)) && !_strings[stringId].empty())
             {
                 return _strings[stringId].c_str();
             }
@@ -196,15 +191,14 @@ public:
         }
     }
 
-    rct_string_id GetObjectOverrideStringId(const char* objectIdentifier, uint8_t index) override
+    rct_string_id GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) override
     {
-        Guard::ArgumentNotNull(objectIdentifier);
         Guard::Assert(index < ObjectOverrideMaxStringCount);
 
         int32_t ooIndex = 0;
         for (const ObjectOverride& objectOverride : _objectOverrides)
         {
-            if (strncmp(objectOverride.name, objectIdentifier, 8) == 0)
+            if (std::string_view(objectOverride.name, 8) == legacyIdentifier)
             {
                 if (objectOverride.strings[index].empty())
                 {
@@ -553,11 +547,11 @@ private:
                 {
                     if (isByte)
                     {
-                        sb.Append((const utf8*)&token, 1);
+                        sb.Append(reinterpret_cast<const utf8*>(&token), 1);
                     }
                     else
                     {
-                        sb.Append((int32_t)token);
+                        sb.Append(static_cast<int32_t>(token));
                     }
                 }
                 else
@@ -587,7 +581,7 @@ private:
         if (_currentGroup.empty())
         {
             // Make sure the list is big enough to contain this string id
-            if ((size_t)stringId >= _strings.size())
+            if (static_cast<size_t>(stringId) >= _strings.size())
             {
                 _strings.resize(stringId + 1);
             }
@@ -645,37 +639,6 @@ private:
         }
 
         return true;
-    }
-
-    std::string FixRTL(std::string& input)
-    {
-#ifdef _WIN32
-        return input;
-#else
-        UErrorCode err = (UErrorCode)0;
-        // Force a hard left-to-right at the beginning (will mess up mixed strings' word order otherwise)
-        std::string text2 = std::string(u8"\xE2\x80\xAA") + input;
-
-        icu::UnicodeString ustr = icu::UnicodeString::fromUTF8(icu::StringPiece(text2));
-
-        int32_t length = ustr.length();
-        icu::UnicodeString reordered;
-        icu::UnicodeString shaped;
-        UBiDi* bidi = ubidi_openSized(length, 0, &err);
-        // UBIDI_DEFAULT_LTR preserves formatting codes.
-        ubidi_setPara(bidi, ustr.getBuffer(), length, UBIDI_DEFAULT_LTR, nullptr, &err);
-        ubidi_writeReordered(bidi, reordered.getBuffer(length), length, UBIDI_DO_MIRRORING | UBIDI_REMOVE_BIDI_CONTROLS, &err);
-        ubidi_close(bidi);
-        reordered.releaseBuffer(length);
-        u_shapeArabic(
-            reordered.getBuffer(), length, shaped.getBuffer(length), length,
-            U_SHAPE_LETTERS_SHAPE | U_SHAPE_LENGTH_FIXED_SPACES_NEAR | U_SHAPE_TEXT_DIRECTION_VISUAL_LTR, &err);
-        shaped.releaseBuffer(length);
-
-        std::string cppstring;
-        shaped.toUTF8String(cppstring);
-        return cppstring;
-#endif
     }
 };
 

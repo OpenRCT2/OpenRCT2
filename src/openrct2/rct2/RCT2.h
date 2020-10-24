@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,11 +10,13 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/FileSystem.hpp"
 #include "../object/Object.h"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
 #include "../ride/Vehicle.h"
-#include "../world/Location.hpp"
+
+#include <vector>
 
 constexpr const uint8_t RCT2_MAX_STAFF = 200;
 constexpr const uint8_t RCT2_MAX_BANNERS_IN_PARK = 250;
@@ -48,6 +50,9 @@ constexpr const uint8_t RCT2_MAX_SCENERY_GROUP_OBJECTS = 19;
 constexpr const uint8_t RCT2_MAX_PARK_ENTRANCE_OBJECTS = 1;
 constexpr const uint8_t RCT2_MAX_WATER_OBJECTS = 1;
 constexpr const uint8_t RCT2_MAX_SCENARIO_TEXT_OBJECTS = 1;
+constexpr const uint8_t RCT2_RIDE_TYPE_COUNT = 91;
+
+constexpr const rct_string_id RCT2_RIDE_STRING_START = 2;
 
 // clang-format off
 constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
@@ -103,7 +108,7 @@ struct rct2_ride
     uint8_t type; // 0x000
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
-    uint8_t subtype;                                             // 0x001
+    RCT12ObjectEntryIndex subtype;                               // 0x001
     uint16_t pad_002;                                            // 0x002
     uint8_t mode;                                                // 0x004
     uint8_t colour_scheme_type;                                  // 0x005
@@ -217,7 +222,7 @@ struct rct2_ride
     uint8_t chairlift_bullwheel_z[2];                   // 0x13E
     union
     {
-        rating_tuple ratings; // 0x140
+        RatingTuple ratings; // 0x140
         struct
         {
             ride_rating excitement; // 0x140
@@ -346,7 +351,7 @@ assert_struct_size(rct_td6_scenery_element, 0x16);
 struct rct_track_td6
 {
     uint8_t type; // 0x00
-    uint8_t vehicle_type;
+    RCT12ObjectEntryIndex vehicle_type;
     union
     {
         // After loading the track this is converted to
@@ -483,12 +488,12 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     uint16_t var_44;
     uint16_t mass;         // 0x46
     uint16_t update_flags; // 0x48
-    uint8_t swing_sprite;
+    uint8_t SwingSprite;
     uint8_t current_station; // 0x4B
     union
     {
-        int16_t swinging_car_var_0; // 0x4C
-        int16_t current_time;       // 0x4C
+        int16_t SwingPosition; // 0x4C
+        int16_t current_time;  // 0x4C
         struct
         {
             int8_t ferris_wheel_var_0; // 0x4C
@@ -497,7 +502,7 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     };
     union
     {
-        int16_t var_4E;
+        int16_t SwingSpeed;
         int16_t crash_z; // 0x4E
     };
     uint8_t status;                  // 0x50
@@ -760,3 +765,8 @@ struct RCT2RideRatingCalculationData
 assert_struct_size(RCT2RideRatingCalculationData, 76);
 
 #pragma pack(pop)
+
+std::vector<uint8_t> DecryptSea(const fs::path& path);
+ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
+bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
+uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,16 +18,24 @@
 #include <openrct2/actions/TrackDesignAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
+#include <openrct2/ui/UiContext.h>
+#include <openrct2/ui/WindowManager.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 #include <vector>
 
+using namespace OpenRCT2;
+
+static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
+static constexpr const int32_t WH = 124;
+static constexpr const int32_t WW = 200;
 constexpr int16_t TRACK_MINI_PREVIEW_WIDTH = 168;
 constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
 constexpr uint16_t TRACK_MINI_PREVIEW_SIZE = TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT;
@@ -53,13 +61,11 @@ enum {
 validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
 static rct_widget window_track_place_widgets[] = {
-    { WWT_FRAME,            0,  0,      199,    0,      123,    0xFFFFFFFF,                     STR_NONE                                    },
-    { WWT_CAPTION,          0,  1,      198,    1,      14,     STR_STRING,                     STR_WINDOW_TITLE_TIP                        },
-    { WWT_CLOSEBOX,         0,  187,    197,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP                        },
-    { WWT_FLATBTN,          0,  173,    196,    83,     106,    SPR_ROTATE_ARROW,               STR_ROTATE_90_TIP                           },
-    { WWT_FLATBTN,          0,  173,    196,    59,     82,     SPR_MIRROR_ARROW,               STR_MIRROR_IMAGE_TIP                        },
-    { WWT_BUTTON,           0,  4,      195,    109,    120,    STR_SELECT_A_DIFFERENT_DESIGN,  STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP  },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                     STR_NONE                                    },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget({173,  83}, { 24, 24}, WWT_FLATBTN, WindowColour::Primary, SPR_ROTATE_ARROW,              STR_ROTATE_90_TIP                         ),
+    MakeWidget({173,  59}, { 24, 24}, WWT_FLATBTN, WindowColour::Primary, SPR_MIRROR_ARROW,              STR_MIRROR_IMAGE_TIP                      ),
+    MakeWidget({  4, 109}, {192, 12}, WWT_BUTTON,  WindowColour::Primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
+    MakeWidget({  0,   0}, {  1,  1}, WWT_EMPTY,   WindowColour::Primary),
     { WIDGETS_END },
 };
 
@@ -106,14 +112,11 @@ static rct_window_event_list window_track_place_events = {
 // clang-format on
 
 static std::vector<uint8_t> _window_track_place_mini_preview;
-static int16_t _window_track_place_last_x;
-static int16_t _window_track_place_last_y;
+static CoordsXY _windowTrackPlaceLast;
 
 static uint8_t _window_track_place_ride_index;
 static bool _window_track_place_last_was_valid;
-static int16_t _window_track_place_last_valid_x;
-static int16_t _window_track_place_last_valid_y;
-static int16_t _window_track_place_last_valid_z;
+static CoordsXYZ _windowTrackPlaceLastValid;
 static money32 _window_track_place_last_cost;
 
 static std::unique_ptr<TrackDesign> _trackDesign;
@@ -124,7 +127,7 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc);
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(TrackDesign* td6);
 static void window_track_place_draw_mini_preview_track(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY min, CoordsXY max);
+    TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max);
 static void window_track_place_draw_mini_preview_maze(
     TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max);
 static ScreenCoordsXY draw_mini_preview_get_pixel_position(const CoordsXY& location);
@@ -166,7 +169,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
     window_push_others_right(w);
     show_gridlines();
     _window_track_place_last_cost = MONEY32_UNDEFINED;
-    _window_track_place_last_x = -1;
+    _windowTrackPlaceLast.setNull();
     _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
 
     window_track_place_clear_mini_preview();
@@ -207,22 +210,22 @@ static void window_track_place_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_track_place_clear_provisional();
             _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
             w->Invalidate();
-            _window_track_place_last_x = -1;
+            _windowTrackPlaceLast.setNull();
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_MIRROR:
             track_design_mirror(_trackDesign.get());
             _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
             w->Invalidate();
-            _window_track_place_last_x = -1;
+            _windowTrackPlaceLast.setNull();
             window_track_place_draw_mini_preview(_trackDesign.get());
             break;
         case WIDX_SELECT_DIFFERENT_DESIGN:
             window_close(w);
 
             auto intent = Intent(WC_TRACK_DESIGN_LIST);
-            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.type);
-            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.entry_index);
+            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.Type);
+            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.EntryIndex);
             context_open_intent(&intent);
             break;
     }
@@ -280,10 +283,9 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     }
 
     // Check if tool map position has changed since last update
-    if (mapCoords.x == _window_track_place_last_x && mapCoords.y == _window_track_place_last_y)
+    if (mapCoords == _windowTrackPlaceLast)
     {
-        place_virtual_track(
-            _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), mapCoords.x, mapCoords.y, 0);
+        place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), { mapCoords, 0 });
         return;
     }
 
@@ -307,9 +309,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
                 if (result->Error == GA_ERROR::OK)
                 {
                     _window_track_place_ride_index = result->rideIndex;
-                    _window_track_place_last_valid_x = trackLoc.x;
-                    _window_track_place_last_valid_y = trackLoc.y;
-                    _window_track_place_last_valid_z = trackLoc.z;
+                    _windowTrackPlaceLastValid = trackLoc;
                     _window_track_place_last_was_valid = true;
                 }
             });
@@ -318,16 +318,14 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         }
     }
 
-    _window_track_place_last_x = trackLoc.x;
-    _window_track_place_last_y = trackLoc.y;
+    _windowTrackPlaceLast = trackLoc;
     if (cost != _window_track_place_last_cost)
     {
         _window_track_place_last_cost = cost;
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    place_virtual_track(
-        _trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), trackLoc.x, trackLoc.y, trackLoc.z);
+    place_virtual_track(_trackDesign.get(), PTD_OPERATION_DRAW_OUTLINES, true, GetOrAllocateRide(0), trackLoc);
 }
 
 /**
@@ -391,8 +389,9 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
 
     // Unable to build track
     audio_play_sound_at_location(SoundId::Error, trackLoc);
-    std::copy(res->ErrorMessageArgs.begin(), res->ErrorMessageArgs.end(), gCommonFormatArgs);
-    context_show_error(res->ErrorTitle, res->ErrorMessage);
+
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->ShowError(res->GetErrorTitle(), res->GetErrorMessage());
 }
 
 /**
@@ -429,9 +428,7 @@ static void window_track_place_clear_provisional()
         auto ride = get_ride(_window_track_place_ride_index);
         if (ride != nullptr)
         {
-            place_virtual_track(
-                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _window_track_place_last_valid_x,
-                _window_track_place_last_valid_y, _window_track_place_last_valid_z);
+            place_virtual_track(_trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _windowTrackPlaceLastValid);
             _window_track_place_last_was_valid = false;
         }
     }
@@ -444,9 +441,7 @@ void TrackPlaceClearProvisionalTemporarily()
         auto ride = get_ride(_window_track_place_ride_index);
         if (ride != nullptr)
         {
-            place_virtual_track(
-                _trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _window_track_place_last_valid_x,
-                _window_track_place_last_valid_y, _window_track_place_last_valid_z);
+            place_virtual_track(_trackDesign.get(), PTD_OPERATION_REMOVE_GHOST, true, ride, _windowTrackPlaceLastValid);
         }
     }
 }
@@ -455,10 +450,7 @@ void TrackPlaceRestoreProvisional()
 {
     if (_window_track_place_last_was_valid)
     {
-        auto tdAction = TrackDesignAction(
-            { _window_track_place_last_valid_x, _window_track_place_last_valid_y, _window_track_place_last_valid_z,
-              _currentTrackPieceDirection },
-            *_trackDesign);
+        auto tdAction = TrackDesignAction({ _windowTrackPlaceLastValid, _currentTrackPieceDirection }, *_trackDesign);
         tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         auto res = GameActions::Execute(&tdAction);
         if (res->Error != GA_ERROR::OK)
@@ -494,7 +486,7 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc)
     if (surfaceElement->GetWaterHeight() > 0)
         z = std::max(z, surfaceElement->GetWaterHeight());
 
-    return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), loc.x, loc.y, z);
+    return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), { loc, z });
 }
 
 /**
@@ -503,26 +495,27 @@ static int32_t window_track_place_get_base_z(const CoordsXY& loc)
  */
 static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    set_format_arg(0, char*, _trackDesign->name.c_str());
+    auto ft = Formatter::Common();
+    ft.Add<char*>(_trackDesign->name.c_str());
     window_draw_widgets(w, dpi);
 
     // Draw mini tile preview
     rct_drawpixelinfo clippedDpi;
-    if (clip_drawpixelinfo(&clippedDpi, dpi, w->windowPos.x + 4, w->windowPos.y + 18, 168, 78))
+    if (clip_drawpixelinfo(&clippedDpi, dpi, w->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
     {
         rct_g1_element g1temp = {};
         g1temp.offset = _window_track_place_mini_preview.data();
         g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
         g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
         gfx_set_g1_element(SPR_TEMP, &g1temp);
-        gfx_draw_sprite(&clippedDpi, SPR_TEMP | SPRITE_ID_PALETTE_COLOUR_1(NOT_TRANSLUCENT(w->colours[0])), 0, 0, 0);
+        gfx_draw_sprite(&clippedDpi, SPR_TEMP | SPRITE_ID_PALETTE_COLOUR_1(NOT_TRANSLUCENT(w->colours[0])), { 0, 0 }, 0);
     }
 
     // Price
     if (_window_track_place_last_cost != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         gfx_draw_string_centred(
-            dpi, STR_COST_LABEL, w->windowPos.x + 88, w->windowPos.y + 94, COLOUR_BLACK, &_window_track_place_last_cost);
+            dpi, STR_COST_LABEL, w->windowPos + ScreenCoordsXY{ 88, 94 }, COLOUR_BLACK, &_window_track_place_last_cost);
     }
 }
 
@@ -558,12 +551,14 @@ static void window_track_place_draw_mini_preview(TrackDesign* td6)
 }
 
 static void window_track_place_draw_mini_preview_track(
-    TrackDesign* td6, int32_t pass, CoordsXY origin, CoordsXY min, CoordsXY max)
+    TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
 {
-    uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
+    const uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 
     const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
                                                                                                           : FlatRideTrackBlocks;
+    CoordsXY curTrackStart = origin;
+    uint8_t curTrackRotation = rotation;
     for (const auto& trackElement : td6->track_elements)
     {
         int32_t trackType = trackElement.type;
@@ -576,7 +571,7 @@ static void window_track_place_draw_mini_preview_track(
         const rct_preview_track* trackBlock = trackBlockArray[trackType];
         while (trackBlock->index != 255)
         {
-            auto rotatedAndOffsetTrackBlock = origin + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(rotation);
+            auto rotatedAndOffsetTrackBlock = curTrackStart + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(curTrackRotation);
 
             if (pass == 0)
             {
@@ -592,7 +587,7 @@ static void window_track_place_draw_mini_preview_track(
                 {
                     uint8_t* pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
-                    auto bits = trackBlock->var_08.Rotate(rotation & 3).GetBaseQuarterOccupied();
+                    auto bits = trackBlock->var_08.Rotate(curTrackRotation & 3).GetBaseQuarterOccupied();
 
                     // Station track is a lighter colour
                     uint8_t colour = (TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
@@ -616,20 +611,19 @@ static void window_track_place_draw_mini_preview_track(
         }
 
         // Change rotation and next position based on track curvature
-        rotation &= 3;
+        curTrackRotation &= 3;
         const rct_track_coordinates* track_coordinate = &TrackCoordinates[trackType];
 
-        trackType *= 10;
-        auto rotatedAndOfffsetTrack = origin + CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(rotation);
-        rotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
-        rotation &= 3;
+        curTrackStart += CoordsXY{ track_coordinate->x, track_coordinate->y }.Rotate(curTrackRotation);
+        curTrackRotation += track_coordinate->rotation_end - track_coordinate->rotation_begin;
+        curTrackRotation &= 3;
         if (track_coordinate->rotation_end & 4)
         {
-            rotation |= 4;
+            curTrackRotation |= 4;
         }
-        if (!(rotation & 4))
+        if (!(curTrackRotation & 4))
         {
-            origin = rotatedAndOfffsetTrack + CoordsDirectionDelta[rotation];
+            curTrackStart += CoordsDirectionDelta[curTrackRotation];
         }
     }
 

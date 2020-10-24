@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,7 +23,7 @@ enum {
 };
 
 static rct_widget window_error_widgets[] = {
-    { WWT_IMGBTN, 0, 0, 199, 0, 41, 0xFFFFFFFF, STR_NONE },
+    MakeWidget({0, 0}, {200, 42}, WWT_IMGBTN, WindowColour::Primary),
     { WIDGETS_END }
 };
 
@@ -62,7 +62,7 @@ static rct_window_event_list window_error_events = {
 };
 // clang-format on
 
-static char _window_error_text[512];
+static std::string _window_error_text;
 static uint16_t _window_error_num_lines;
 
 /**
@@ -72,32 +72,40 @@ static uint16_t _window_error_num_lines;
  * bx: title
  * dx: message
  */
-rct_window* window_error_open(rct_string_id title, rct_string_id message)
+rct_window* window_error_open(rct_string_id title, rct_string_id message, const Formatter& args)
 {
-    utf8* dst;
+    auto titlez = format_string(title, args.Data());
+    auto messagez = format_string(message, args.Data());
+    return window_error_open(titlez, messagez);
+}
+
+rct_window* window_error_open(const std::string_view& title, const std::string_view& message)
+{
     int32_t numLines, fontHeight, width, height, maxY;
     rct_window* w;
 
     window_close_by_class(WC_ERROR);
-    dst = _window_error_text;
+    auto& buffer = _window_error_text;
+    buffer.clear();
 
     // Format the title
-    dst = utf8_write_codepoint(dst, FORMAT_BLACK);
-    if (title != STR_NONE)
     {
-        format_string(dst, 512 - (dst - _window_error_text), title, gCommonFormatArgs);
-        dst = get_string_end(dst);
+        char temp[8]{};
+        utf8_write_codepoint(temp, FORMAT_BLACK);
+        buffer.append(temp);
     }
+    buffer.append(title);
 
     // Format the message
-    if (message != STR_NONE)
+    if (!message.empty())
     {
-        dst = utf8_write_codepoint(dst, FORMAT_NEWLINE);
-        format_string(dst, 512 - (dst - _window_error_text), message, gCommonFormatArgs);
-        dst = get_string_end(dst);
+        char temp[8]{};
+        utf8_write_codepoint(temp, FORMAT_NEWLINE);
+        buffer.append(temp);
+        buffer.append(message);
     }
 
-    log_verbose("show error, %s", _window_error_text + 1);
+    log_verbose("show error, %s", buffer.c_str() + 1);
 
     // Don't do unnecessary work in headless. Also saves checking if cursor state is null.
     if (gOpenRCT2Headless)
@@ -106,15 +114,15 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message)
     }
 
     // Check if there is any text to display
-    if (dst == _window_error_text + 1)
+    if (buffer.size() <= 1)
         return nullptr;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    width = gfx_get_string_width_new_lined(_window_error_text);
-    width = std::min(196, width);
+    width = gfx_get_string_width_new_lined(buffer.data());
+    width = std::clamp(width, 64, 196);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_wrap_string(_window_error_text, width + 1, &numLines, &fontHeight);
+    gfx_wrap_string(buffer.data(), width + 1, &numLines, &fontHeight);
 
     _window_error_num_lines = numLines;
     width = width + 3;
@@ -186,5 +194,5 @@ static void window_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     l = w->windowPos.x + (w->width + 1) / 2 - 1;
     t = w->windowPos.y + 1;
-    draw_string_centred_raw(dpi, l, t, _window_error_num_lines, _window_error_text);
+    draw_string_centred_raw(dpi, { l, t }, _window_error_num_lines, _window_error_text.data());
 }

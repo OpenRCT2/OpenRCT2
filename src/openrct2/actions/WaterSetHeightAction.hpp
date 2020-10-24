@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -61,6 +61,11 @@ public:
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE, errorMsg);
         }
 
+        if (!LocationValid(_coords))
+        {
+            return MakeResult(GA_ERROR::NOT_OWNED, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+        }
+
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
             if (!map_is_location_in_park(_coords))
@@ -89,9 +94,10 @@ public:
             zLow = temp;
         }
 
-        if (!map_can_construct_at({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }))
+        if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2->Error != GA_ERROR::OK)
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, STR_NONE, gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(
+                GA_ERROR::NO_CLEARANCE, STR_NONE, res2->ErrorMessage.GetStringId(), res2->ErrorMessageArgs.data());
         }
         if (surfaceElement->HasTrackThatNeedsWater())
         {

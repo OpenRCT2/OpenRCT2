@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,13 +10,14 @@
 #pragma once
 
 #include "../common.h"
-#include "../world/Location.hpp"
 
-enum VirtualFloorStyles
+struct CoordsXY;
+
+enum class VirtualFloorStyles : int32_t
 {
-    VIRTUAL_FLOOR_STYLE_OFF,
-    VIRTUAL_FLOOR_STYLE_CLEAR,
-    VIRTUAL_FLOOR_STYLE_GLASSY
+    Off,
+    Clear,
+    Glassy
 };
 
 struct paint_session;

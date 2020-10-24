@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,15 +16,15 @@
 #include "scenario/Scenario.h"
 #include "util/SawyerCoding.h"
 
-static bool TryClassifyAsS6(IStream* stream, ClassifiedFileInfo* result);
-static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result);
-static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
+static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 
 bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result)
 {
     try
     {
-        auto fs = FileStream(path, FILE_MODE_OPEN);
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
         return TryClassifyFile(&fs, result);
     }
     catch (const std::exception&)
@@ -33,7 +33,7 @@ bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result)
     }
 }
 
-bool TryClassifyFile(IStream* stream, ClassifiedFileInfo* result)
+bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
 {
     // TODO Currently track designs get classified as SC4s because they use the
     //      same checksum algorithm. The only way after to tell the difference
@@ -61,7 +61,7 @@ bool TryClassifyFile(IStream* stream, ClassifiedFileInfo* result)
     return false;
 }
 
-static bool TryClassifyAsS6(IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();
@@ -89,13 +89,13 @@ static bool TryClassifyAsS6(IStream* stream, ClassifiedFileInfo* result)
     return success;
 }
 
-static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();
     try
     {
-        size_t dataLength = (size_t)stream->GetLength();
+        size_t dataLength = static_cast<size_t>(stream->GetLength());
         auto deleter_lambda = [dataLength](uint8_t* ptr) { Memory::FreeArray(ptr, dataLength); };
         std::unique_ptr<uint8_t, decltype(deleter_lambda)> data(stream->ReadArray<uint8_t>(dataLength), deleter_lambda);
         stream->SetPosition(originalPosition);
@@ -126,13 +126,13 @@ static bool TryClassifyAsS4(IStream* stream, ClassifiedFileInfo* result)
     return success;
 }
 
-static bool TryClassifyAsTD4_TD6(IStream* stream, ClassifiedFileInfo* result)
+static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* result)
 {
     bool success = false;
     uint64_t originalPosition = stream->GetPosition();
     try
     {
-        size_t dataLength = (size_t)stream->GetLength();
+        size_t dataLength = static_cast<size_t>(stream->GetLength());
         auto deleter_lambda = [dataLength](uint8_t* ptr) { Memory::FreeArray(ptr, dataLength); };
         std::unique_ptr<uint8_t, decltype(deleter_lambda)> data(stream->ReadArray<uint8_t>(dataLength), deleter_lambda);
         stream->SetPosition(originalPosition);

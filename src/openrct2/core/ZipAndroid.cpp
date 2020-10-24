@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -59,7 +59,7 @@ public:
         jclass zipClass = env->GetObjectClass(_zip);
         jmethodID fileCountMethod = env->GetMethodID(zipClass, "getNumFiles", "()I");
 
-        return (size_t)env->CallIntMethod(_zip, fileCountMethod);
+        return static_cast<size_t>(env->CallIntMethod(_zip, fileCountMethod));
     }
 
     std::string GetFileName(size_t index) const override
@@ -163,7 +163,7 @@ JNIEXPORT jlong JNICALL Java_io_openrct2_ZipArchive_allocBytes(JNIEnv* env, jcla
 
     env->ReleaseByteArrayElements(input, bufferPtr, 0);
 
-    return (uintptr_t)data;
+    return reinterpret_cast<uintptr_t>(data);
 }
 
 #endif // __ANDROID__

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -56,7 +56,7 @@ DEFINE_GAME_ACTION(SmallSceneryPlaceAction, GAME_COMMAND_PLACE_SCENERY, SmallSce
 private:
     CoordsXYZD _loc;
     uint8_t _quadrant;
-    uint16_t _sceneryType;
+    ObjectEntryIndex _sceneryType;
     uint8_t _primaryColour;
     uint8_t _secondaryColour;
 
@@ -64,13 +64,22 @@ public:
     SmallSceneryPlaceAction() = default;
 
     SmallSceneryPlaceAction(
-        const CoordsXYZD& loc, uint8_t quadrant, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+        const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
         : _loc(loc)
         , _quadrant(quadrant)
         , _sceneryType(sceneryType)
         , _primaryColour(primaryColour)
         , _secondaryColour(secondaryColour)
     {
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("quadrant", _quadrant);
+        visitor.Visit("object", _sceneryType);
+        visitor.Visit("primaryColour", _primaryColour);
+        visitor.Visit("secondaryColour", _secondaryColour);
     }
 
     uint32_t GetCooldownTime() const override
@@ -121,6 +130,11 @@ public:
         if (!map_check_free_elements_and_reorganise(1))
         {
             return std::make_unique<SmallSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
+        }
+
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::INVALID_PARAMETERS);
         }
 
         if (!byte_9D8150 && (_loc.x > gMapSizeMaxXY || _loc.y > gMapSizeMaxXY))

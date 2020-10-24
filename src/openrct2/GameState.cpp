@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,6 +26,7 @@
 #include "peep/Staff.h"
 #include "platform/Platform2.h"
 #include "scenario/Scenario.h"
+#include "scripting/ScriptEngine.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequencePlayer.h"
 #include "ui/UiContext.h"
@@ -38,6 +39,7 @@
 #include <algorithm>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Scripting;
 
 GameState::GameState()
 {
@@ -59,8 +61,8 @@ void GameState::InitAll(int32_t mapSize)
     reset_sprite_list();
     staff_reset_modes();
     date_reset();
-    climate_reset(CLIMATE_COOL_AND_WET);
-    news_item_init_queue();
+    climate_reset(ClimateType::CoolAndWet);
+    News::InitQueue();
 
     gInMapInitCode = false;
 
@@ -110,7 +112,7 @@ void GameState::Update()
     network_update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NETWORK_AUTH_OK)
+        && network_get_authstatus() == NetworkAuth::Ok)
     {
         numUpdates = std::clamp<uint32_t>(network_get_server_tick() - gCurrentTicks, 0, 10);
     }
@@ -163,7 +165,7 @@ void GameState::Update()
         UpdateLogic();
         if (gGameSpeed == 1)
         {
-            if (input_get_state() == INPUT_STATE_RESET || input_get_state() == INPUT_STATE_NORMAL)
+            if (input_get_state() == InputState::Reset || input_get_state() == InputState::Normal)
             {
                 if (input_test_flag(INPUT_FLAG_VIEWPORT_SCROLLING))
                 {
@@ -267,8 +269,14 @@ void GameState::UpdateLogic()
         }
     }
 
+#ifdef ENABLE_SCRIPTING
+    // Stash the current day number before updating the date so that we
+    // know if the day number changes on this tick.
+    auto day = _date.GetDay();
+#endif
+
     date_update();
-    _date = Date(gDateMonthTicks, gDateMonthTicks);
+    _date = Date(static_cast<uint32_t>(gDateMonthsElapsed), gDateMonthTicks);
 
     scenario_update();
     climate_update();
@@ -290,7 +298,7 @@ void GameState::UpdateLogic()
     research_update();
     ride_ratings_update_all();
     ride_measurements_update();
-    news_item_update_current();
+    News::UpdateCurrentItem();
 
     map_animation_invalidate_all();
     vehicle_sounds_update();
@@ -315,6 +323,16 @@ void GameState::UpdateLogic()
     gCurrentTicks++;
     gScenarioTicks++;
     gSavedAge++;
+
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
+
+    if (day != _date.GetDay())
+    {
+        hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
+    }
+#endif
 }
 
 void GameState::CreateStateSnapshot()

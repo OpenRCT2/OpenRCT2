@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,8 +13,8 @@
 #include "../ride/Ride.h"
 #include "Map.h"
 
-#define DECRYPT_MONEY(money) ((money32)rol32((money) ^ 0xF4EC9621, 13))
-#define ENCRYPT_MONEY(money) ((money32)(ror32((money), 13) ^ 0xF4EC9621))
+#define DECRYPT_MONEY(money) (static_cast<money32>(rol32((money) ^ 0xF4EC9621, 13)))
+#define ENCRYPT_MONEY(money) (static_cast<money32>(ror32((money), 13) ^ 0xF4EC9621))
 
 #define MAX_ENTRANCE_FEE MONEY(200, 00)
 
@@ -106,7 +106,7 @@ extern int16_t gParkRatingCasualtyPenalty;
 extern uint8_t gParkRatingHistory[32];
 extern uint8_t gGuestsInParkHistory[32];
 extern int32_t _guestGenerationProbability;
-extern int32_t _suggestedGuestMaximum;
+extern uint32_t _suggestedGuestMaximum;
 
 void set_forced_park_rating(int32_t rating);
 int32_t get_forced_park_rating();

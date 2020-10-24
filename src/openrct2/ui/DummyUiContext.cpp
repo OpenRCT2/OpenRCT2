@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../config/Config.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "UiContext.h"
 #include "WindowManager.h"
@@ -24,6 +25,9 @@ namespace OpenRCT2::Ui
         IWindowManager* const _windowManager = CreateDummyWindowManager();
 
     public:
+        void Initialise() override
+        {
+        }
         void Update() override
         {
         }
@@ -52,9 +56,9 @@ namespace OpenRCT2::Ui
         {
             return 0;
         }
-        int32_t GetScaleQuality() override
+        ScaleQuality GetScaleQuality() override
         {
-            return 0;
+            return ScaleQuality::NearestNeighbour;
         }
         void SetFullscreenMode(FULLSCREEN_MODE /*mode*/) override
         {
@@ -87,6 +91,9 @@ namespace OpenRCT2::Ui
         {
         }
         void OpenFolder(const std::string& /*path*/) override
+        {
+        }
+        void OpenURL(const std::string& /*url*/) override
         {
         }
         std::string ShowFileDialog(const FileDialogDesc& /*desc*/) override
@@ -152,7 +159,7 @@ namespace OpenRCT2::Ui
         {
             return std::make_shared<X8DrawingEngineFactory>();
         }
-        void DrawRainAnimation(IRainDrawer* rainDrawer, rct_drawpixelinfo* dpi, DrawRainFunc drawFunc) override
+        void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, rct_drawpixelinfo* dpi, DrawWeatherFunc drawFunc) override
         {
         }
 

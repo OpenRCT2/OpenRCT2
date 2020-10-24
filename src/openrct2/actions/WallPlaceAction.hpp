@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,7 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
-#include "../ride/RideGroupManager.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
@@ -21,6 +21,7 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
+#include "../world/Wall.h"
 #include "GameAction.h"
 
 class WallPlaceActionResult final : public GameActionResult
@@ -52,7 +53,7 @@ public:
 DEFINE_GAME_ACTION(WallPlaceAction, GAME_COMMAND_PLACE_WALL, WallPlaceActionResult)
 {
 private:
-    int32_t _wallType{ -1 };
+    ObjectEntryIndex _wallType{ OBJECT_ENTRY_INDEX_NULL };
     CoordsXYZ _loc;
     Direction _edge{ INVALID_DIRECTION };
     int32_t _primaryColour{ COLOUR_BLACK };
@@ -64,7 +65,7 @@ public:
     WallPlaceAction() = default;
 
     WallPlaceAction(
-        int32_t wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
+        ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
         int32_t tertiaryColour)
         : _wallType(wallType)
         , _loc(loc)
@@ -83,6 +84,23 @@ public:
         }
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("object", _wallType);
+        visitor.Visit("edge", _edge);
+        visitor.Visit("primaryColour", _primaryColour);
+        visitor.Visit("secondaryColour", _secondaryColour);
+        visitor.Visit("tertiaryColour", _tertiaryColour);
+        rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_wallType);
+        if (sceneryEntry != nullptr)
+        {
+            if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+            {
+                _bannerId = create_new_banner(0);
+            }
+        }
+    }
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags();
@@ -109,6 +127,11 @@ public:
         if (_loc.z == 0)
         {
             res->Position.z = tile_element_height(res->Position);
+        }
+
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::NOT_OWNED);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY)
@@ -150,7 +173,7 @@ public:
             targetHeight = surfaceElement->GetBaseZ();
 
             uint8_t slope = surfaceElement->GetSlope();
-            edgeSlope = EdgeSlopes[slope][_edge & 3];
+            edgeSlope = LandSlopeToWallSlope[slope][_edge & 3];
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {
                 targetHeight += 16;
@@ -259,7 +282,7 @@ public:
             }
 
             auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
+            if (!banner->IsNull())
             {
                 log_error("No free banners available");
                 return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
@@ -324,7 +347,7 @@ public:
             targetHeight = surfaceElement->GetBaseZ();
 
             uint8_t slope = surfaceElement->GetSlope();
-            edgeSlope = EdgeSlopes[slope][_edge & 3];
+            edgeSlope = LandSlopeToWallSlope[slope][_edge & 3];
             if (edgeSlope & EDGE_SLOPE_ELEVATED)
             {
                 targetHeight += 16;
@@ -339,36 +362,6 @@ public:
         {
             log_error("Wall Type not found %d", _wallType);
             return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS);
-        }
-
-        if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
-        {
-            if (_bannerId == BANNER_INDEX_NULL)
-            {
-                log_error("Banner Index not specified.");
-                return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
-            }
-
-            auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
-            {
-                log_error("No free banners available");
-                return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
-            }
-
-            banner->text = {};
-            banner->colour = COLOUR_WHITE;
-            banner->text_colour = COLOUR_WHITE;
-            banner->flags = BANNER_FLAG_IS_WALL;
-            banner->type = 0;
-            banner->position = TileCoordsXY(_loc);
-
-            ride_id_t rideIndex = banner_get_closest_ride_index(targetLoc);
-            if (rideIndex != RIDE_ID_NULL)
-            {
-                banner->ride_index = rideIndex;
-                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
-            }
         }
 
         uint8_t clearanceHeight = targetHeight / COORDS_Z_STEP;
@@ -392,6 +385,37 @@ public:
         {
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TILE_ELEMENT_LIMIT_REACHED);
         }
+
+        if (wallEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+        {
+            if (_bannerId == BANNER_INDEX_NULL)
+            {
+                log_error("Banner Index not specified.");
+                return std::make_unique<WallPlaceActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_MANY_BANNERS_IN_GAME);
+            }
+
+            auto banner = GetBanner(_bannerId);
+            if (!banner->IsNull())
+            {
+                log_error("No free banners available");
+                return std::make_unique<WallPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
+            }
+
+            banner->text = {};
+            banner->colour = COLOUR_WHITE;
+            banner->text_colour = COLOUR_WHITE;
+            banner->flags = BANNER_FLAG_IS_WALL;
+            banner->type = 0; // Banner must be deleted after this point in an early return
+            banner->position = TileCoordsXY(_loc);
+
+            ride_id_t rideIndex = banner_get_closest_ride_index(targetLoc);
+            if (rideIndex != RIDE_ID_NULL)
+            {
+                banner->ride_index = rideIndex;
+                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            }
+        }
+
         TileElement* tileElement = tile_element_insert(targetLoc, 0b0000);
         assert(tileElement != nullptr);
 
@@ -401,8 +425,7 @@ public:
         WallElement* wallElement = tileElement->AsWall();
         wallElement->clearance_height = clearanceHeight;
         wallElement->SetDirection(_edge);
-        // TODO: Normalise the edge slope code.
-        wallElement->SetSlope(edgeSlope >> 6);
+        wallElement->SetSlope(edgeSlope);
 
         wallElement->SetPrimaryColour(_primaryColour);
         wallElement->SetSecondaryColour(_secondaryColour);
@@ -436,59 +459,6 @@ public:
     }
 
 private:
-#pragma region Edge Slopes Table
-
-    // clang-format off
-    enum EDGE_SLOPE
-    {
-        EDGE_SLOPE_ELEVATED     = (1 << 0), // 0x01
-        EDGE_SLOPE_UPWARDS      = (1 << 6), // 0x40
-        EDGE_SLOPE_DOWNWARDS    = (1 << 7), // 0x80
-
-        EDGE_SLOPE_UPWARDS_ELEVATED     = EDGE_SLOPE_UPWARDS | EDGE_SLOPE_ELEVATED,
-        EDGE_SLOPE_DOWNWARDS_ELEVATED   = EDGE_SLOPE_DOWNWARDS | EDGE_SLOPE_ELEVATED,
-    };
-
-    /** rct2: 0x009A3FEC */
-    static constexpr const uint8_t EdgeSlopes[][4] = {
-    //  Top right                        Bottom right                   Bottom left                       Top left
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0                             },
-        { 0,                             0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS          },
-        { 0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS          },
-        { EDGE_SLOPE_DOWNWARDS,          0,                             0,                             EDGE_SLOPE_UPWARDS            },
-        { EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS            },
-        { EDGE_SLOPE_DOWNWARDS,          0,                             EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED           },
-        { EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED           },
-        { EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          0,                             0                             },
-        { EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS,          0                             },
-        { EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_DOWNWARDS          },
-        { EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS          },
-        { EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS,          0,                             EDGE_SLOPE_UPWARDS            },
-        { EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS            },
-        { EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_ELEVATED           },
-        { EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED,           EDGE_SLOPE_ELEVATED           },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_UPWARDS_ELEVATED,   EDGE_SLOPE_DOWNWARDS_ELEVATED },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { 0,                             0,                             0,                             0                             },
-        { EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_UPWARDS_ELEVATED,   EDGE_SLOPE_DOWNWARDS_ELEVATED, EDGE_SLOPE_DOWNWARDS          },
-        { 0,                             0,                             0,                             0                             },
-        { EDGE_SLOPE_UPWARDS_ELEVATED,   EDGE_SLOPE_DOWNWARDS_ELEVATED, EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS            },
-        { EDGE_SLOPE_DOWNWARDS_ELEVATED, EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_UPWARDS_ELEVATED   },
-        { 0,                             0,                             0,                             0                             },
-    };
-    // clang-format on
-
-#pragma endregion
-
     /**
      *
      *  rct2: 0x006E5CBA
@@ -515,24 +485,7 @@ private:
             return false;
         }
 
-        if (RideGroupManager::RideTypeHasRideGroups(ride->type))
-        {
-            auto rideEntry = get_ride_entry(ride->subtype);
-            if (rideEntry == nullptr)
-            {
-                return false;
-            }
-            auto rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
-            if (rideGroup == nullptr)
-            {
-                return false;
-            }
-            if (!(rideGroup->Flags & RIDE_GROUP_FLAG_ALLOW_DOORS_ON_TRACK))
-            {
-                return false;
-            }
-        }
-        else if (!(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK))
+        if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK))
         {
             return false;
         }

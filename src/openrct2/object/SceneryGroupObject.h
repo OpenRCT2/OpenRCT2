@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,8 @@
 #include <vector>
 
 struct ObjectRepositoryItem;
+
+enum class EntertainerCostume : uint8_t;
 
 class SceneryGroupObject final : public Object
 {
@@ -32,9 +34,9 @@ public:
     {
         return &_legacyType;
     }
-    void ReadJson(IReadObjectContext* context, const json_t* root) override;
+    void ReadJson(IReadObjectContext* context, json_t& root) override;
 
-    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
     void Load() override;
     void Unload() override;
     void UpdateEntryIndexes();
@@ -44,8 +46,8 @@ public:
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
 private:
-    static std::vector<rct_object_entry> ReadItems(IStream* stream);
-    static uint32_t ReadJsonEntertainerCostumes(const json_t* jCostumes);
-    static uint32_t ParseEntertainerCostume(const std::string& s);
-    static std::vector<rct_object_entry> ReadJsonEntries(const json_t* jEntries);
+    static std::vector<rct_object_entry> ReadItems(OpenRCT2::IStream* stream);
+    static uint32_t ReadJsonEntertainerCostumes(json_t& jCostumes);
+    static EntertainerCostume ParseEntertainerCostume(const std::string& s);
+    static std::vector<rct_object_entry> ReadJsonEntries(json_t& jEntries);
 };

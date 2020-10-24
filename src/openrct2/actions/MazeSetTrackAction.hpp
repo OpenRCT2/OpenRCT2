@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -67,6 +67,14 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("mode", _mode);
+        visitor.Visit("isInitialPlacement", _initialPlacement);
+    }
+
     void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
@@ -93,7 +101,7 @@ public:
             return res;
         }
 
-        if (!map_is_location_owned(_loc) && !gCheatsSandboxMode)
+        if (!LocationValid(_loc) || (!map_is_location_owned(_loc) && !gCheatsSandboxMode))
         {
             res->Error = GA_ERROR::NOT_OWNED;
             res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -116,7 +124,7 @@ public:
         {
             heightDifference /= COORDS_Z_PER_TINY_Z;
 
-            if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height)
+            if (heightDifference > RideTypeDescriptors[RIDE_TYPE_MAZE].Heights.MaxHeight)
             {
                 res->Error = GA_ERROR::TOO_HIGH;
                 res->ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
@@ -133,20 +141,22 @@ public:
                 res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
                 return res;
             }
-
-            if (!map_can_construct_at({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 }))
+            auto constructResult = MapCanConstructAt({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 });
+            if (constructResult->Error != GA_ERROR::OK)
             {
-                return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
+                return MakeResult(
+                    GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), constructResult->ErrorMessage.GetStringId(),
+                    constructResult->ErrorMessageArgs.data());
             }
 
-            if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
+            if (constructResult->GroundFlags & ELEMENT_IS_UNDERWATER)
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;
                 res->ErrorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
                 return res;
             }
 
-            if (gMapGroundFlags & ELEMENT_IS_UNDERGROUND)
+            if (constructResult->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
                 res->Error = GA_ERROR::NO_CLEARANCE;
                 res->ErrorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
@@ -161,7 +171,7 @@ public:
                 return res;
             }
 
-            money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+            money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;
 
             return res;
@@ -203,7 +213,7 @@ public:
         auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
         if (tileElement == nullptr)
         {
-            money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+            money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
             res->Cost = price / 2 * 10;
 
             auto startLoc = _loc.ToTileStart();

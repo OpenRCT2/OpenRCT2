@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -124,7 +124,7 @@ int32_t Mixer_Channel_SetOffset(void* channel, uint64_t offset)
     return static_cast<IAudioChannel*>(channel)->SetOffset(offset);
 }
 
-void Mixer_Channel_SetGroup(void* channel, int32_t group)
+void Mixer_Channel_SetGroup(void* channel, MixerGroup group)
 {
     static_cast<IAudioChannel*>(channel)->SetGroup(group);
 }
@@ -161,7 +161,7 @@ void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming)
     }
     if (channel != nullptr)
     {
-        channel->SetGroup(MIXER_GROUP_RIDE_MUSIC);
+        channel->SetGroup(MixerGroup::RideMusic);
     }
     return channel;
 }
@@ -173,15 +173,15 @@ void Mixer_SetVolume(float volume)
 
 int32_t DStoMixerVolume(int32_t volume)
 {
-    return (int32_t)(MIXER_VOLUME_MAX * (std::pow(10.0f, (float)volume / 2000)));
+    return static_cast<int32_t>(MIXER_VOLUME_MAX * (std::pow(10.0f, static_cast<float>(volume) / 2000)));
 }
 
 float DStoMixerPan(int32_t pan)
 {
-    return (((float)pan + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2;
+    return ((static_cast<float>(pan) + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2;
 }
 
 double DStoMixerRate(int32_t frequency)
 {
-    return (double)frequency / 22050;
+    return static_cast<double>(frequency) / 22050;
 }

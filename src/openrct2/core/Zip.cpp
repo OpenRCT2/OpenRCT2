@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -84,7 +84,7 @@ public:
             auto zipFile = zip_fopen_index(_zip, index, 0);
             if (zipFile != nullptr)
             {
-                result.resize((size_t)dataSize);
+                result.resize(static_cast<size_t>(dataSize));
                 uint64_t readBytes = zip_fread(zipFile, result.data(), dataSize);
                 if (readBytes != dataSize)
                 {

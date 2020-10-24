@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -99,7 +99,7 @@ static std::string Encode(const std::string_view& src)
         }
         else if (codepoint <= std::numeric_limits<uint16_t>::max())
         {
-            dst.push_back((char)(uint8_t)0xFF);
+            dst.push_back(static_cast<char>(static_cast<uint8_t>(0xFF)));
             dst.push_back((codepoint >> 8) & 0xFF);
             dst.push_back(codepoint & 0xFF);
         }

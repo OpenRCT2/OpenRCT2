@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,7 +40,7 @@
 #include <algorithm>
 #include <unordered_map>
 
-interface IFileDataRetriever
+struct IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
     virtual std::vector<uint8_t> GetData(const std::string_view& path) const abstract;
@@ -87,7 +87,7 @@ private:
     IObjectRepository& _objectRepository;
     const IFileDataRetriever* _fileDataRetriever;
 
-    std::string _objectName;
+    std::string _identifier;
     bool _loadImages;
     std::string _basePath;
     bool _wasWarning = false;
@@ -104,13 +104,18 @@ public:
     }
 
     ReadObjectContext(
-        IObjectRepository& objectRepository, const std::string& objectName, bool loadImages,
+        IObjectRepository& objectRepository, const std::string& identifier, bool loadImages,
         const IFileDataRetriever* fileDataRetriever)
         : _objectRepository(objectRepository)
         , _fileDataRetriever(fileDataRetriever)
-        , _objectName(objectName)
+        , _identifier(identifier)
         , _loadImages(loadImages)
     {
+    }
+
+    std::string_view GetObjectIdentifier() override
+    {
+        return _identifier;
     }
 
     IObjectRepository& GetObjectRepository() override
@@ -138,7 +143,7 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Warning (%d): %s", _objectName.c_str(), code, text);
+            Console::Error::WriteLine("[%s] Warning (%d): %s", _identifier.c_str(), code, text);
         }
     }
 
@@ -148,15 +153,19 @@ public:
 
         if (!String::IsNullOrEmpty(text))
         {
-            Console::Error::WriteLine("[%s] Error (%d): %s", _objectName.c_str(), code, text);
+            Console::Error::WriteLine("[%s] Error (%d): %s", _identifier.c_str(), code, text);
         }
     }
 };
 
 namespace ObjectFactory
 {
+    /**
+     * @param jRoot Must be JSON node of type object
+     * @note jRoot is deliberately left non-const: json_t behaviour changes when const
+     */
     static Object* CreateObjectFromJson(
-        IObjectRepository& objectRepository, const json_t* jRoot, const IFileDataRetriever* fileRetriever);
+        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever);
 
     static uint8_t ParseSourceGame(const std::string& s)
     {
@@ -174,7 +183,7 @@ namespace ObjectFactory
         return (result != LookupTable.end()) ? result->second : OBJECT_SOURCE_CUSTOM;
     }
 
-    static void ReadObjectLegacy(Object* object, IReadObjectContext* context, IStream* stream)
+    static void ReadObjectLegacy(Object* object, IReadObjectContext* context, OpenRCT2::IStream* stream)
     {
         try
         {
@@ -198,7 +207,7 @@ namespace ObjectFactory
         Object* result = nullptr;
         try
         {
-            auto fs = FileStream(path, FILE_MODE_OPEN);
+            auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
             auto chunkReader = SawyerChunkReader(&fs);
 
             rct_object_entry entry = fs.ReadValue<rct_object_entry>();
@@ -214,7 +223,7 @@ namespace ObjectFactory
                 auto chunk = chunkReader.ReadChunk();
                 log_verbose("  size: %zu", chunk->GetLength());
 
-                auto chunkStream = MemoryStream(chunk->GetData(), chunk->GetLength());
+                auto chunkStream = OpenRCT2::MemoryStream(chunk->GetData(), chunk->GetLength());
                 auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
                 ReadObjectLegacy(result, &readContext, &chunkStream);
                 if (readContext.WasError())
@@ -246,7 +255,7 @@ namespace ObjectFactory
             object_entry_get_name_fixed(objectName, sizeof(objectName), entry);
 
             auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
-            auto chunkStream = MemoryStream(data, dataSize);
+            auto chunkStream = OpenRCT2::MemoryStream(data, dataSize);
             ReadObjectLegacy(result, &readContext, &chunkStream);
 
             if (readContext.WasError())
@@ -358,16 +367,16 @@ namespace ObjectFactory
                 throw std::runtime_error("Unable to open object.json.");
             }
 
-            json_error_t jsonLoadError;
-            auto jRoot = json_loadb((const char*)jsonBytes.data(), jsonBytes.size(), 0, &jsonLoadError);
-            if (jRoot == nullptr)
+            json_t jRoot = Json::FromVector(jsonBytes);
+
+            Object* obj = nullptr;
+
+            if (jRoot.is_object())
             {
-                throw JsonException(&jsonLoadError);
+                auto fileDataRetriever = ZipDataRetriever(*archive);
+                obj = CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
             }
 
-            auto fileDataRetriever = ZipDataRetriever(*archive);
-            Object* obj = CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
-            json_decref(jRoot);
             return obj;
         }
         catch (const std::exception& e)
@@ -387,74 +396,78 @@ namespace ObjectFactory
         Object* result = nullptr;
         try
         {
-            auto jRoot = Json::ReadFromFile(path.c_str());
+            json_t jRoot = Json::ReadFromFile(path.c_str());
             auto fileDataRetriever = FileSystemDataRetriever(Path::GetDirectory(path));
             result = CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
-            json_decref(jRoot);
         }
         catch (const std::runtime_error& err)
         {
             Console::Error::WriteLine("Unable to open or read '%s': %s", path.c_str(), err.what());
-
-            delete result;
-            result = nullptr;
         }
+
         return result;
     }
 
-    Object* CreateObjectFromJson(
-        IObjectRepository& objectRepository, const json_t* jRoot, const IFileDataRetriever* fileRetriever)
+    Object* CreateObjectFromJson(IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever)
     {
+        Guard::Assert(jRoot.is_object(), "ObjectFactory::CreateObjectFromJson expects parameter jRoot to be object");
+
         log_verbose("CreateObjectFromJson(...)");
 
         Object* result = nullptr;
-        auto jObjectType = json_object_get(jRoot, "objectType");
-        if (json_is_string(jObjectType))
+
+        auto objectType = ParseObjectType(Json::GetString(jRoot["objectType"]));
+        if (objectType != 0xFF)
         {
-            auto objectType = ParseObjectType(json_string_value(jObjectType));
-            if (objectType != 0xFF)
+            auto id = Json::GetString(jRoot["id"]);
+
+            rct_object_entry entry = {};
+            auto originalId = Json::GetString(jRoot["originalId"]);
+            auto originalName = originalId;
+            if (originalId.length() == 8 + 1 + 8 + 1 + 8)
             {
-                auto id = json_string_value(json_object_get(jRoot, "id"));
+                entry.flags = std::stoul(originalId.substr(0, 8), nullptr, 16);
+                originalName = originalId.substr(9, 8);
+                entry.checksum = std::stoul(originalId.substr(18, 8), nullptr, 16);
+            }
+            auto minLength = std::min<size_t>(8, originalName.length());
+            std::memcpy(entry.name, originalName.c_str(), minLength);
 
-                rct_object_entry entry = {};
-                auto originalId = String::ToStd(json_string_value(json_object_get(jRoot, "originalId")));
-                auto originalName = originalId;
-                if (originalId.length() == 8 + 1 + 8 + 1 + 8)
-                {
-                    entry.flags = std::stoul(originalId.substr(0, 8), nullptr, 16);
-                    originalName = originalId.substr(9, 8);
-                    entry.checksum = std::stoul(originalId.substr(18, 8), nullptr, 16);
-                }
-                auto minLength = std::min<size_t>(8, originalName.length());
-                std::memcpy(entry.name, originalName.c_str(), minLength);
+            result = CreateObject(entry);
+            result->SetIdentifier(id);
+            result->MarkAsJsonObject();
+            auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2NoGraphics, fileRetriever);
+            result->ReadJson(&readContext, jRoot);
+            if (readContext.WasError())
+            {
+                throw std::runtime_error("Object has errors");
+            }
 
-                result = CreateObject(entry);
-                auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2NoGraphics, fileRetriever);
-                result->ReadJson(&readContext, jRoot);
-                if (readContext.WasError())
+            auto jAuthors = jRoot["authors"];
+            std::vector<std::string> authorVector;
+            for (const auto& jAuthor : jAuthors)
+            {
+                if (jAuthor.is_string())
                 {
-                    throw std::runtime_error("Object has errors");
+                    authorVector.emplace_back(Json::GetString(jAuthor));
                 }
-                auto sourceGames = json_object_get(jRoot, "sourceGame");
-                if (json_is_array(sourceGames))
+            }
+            result->SetAuthors(std::move(authorVector));
+
+            auto sourceGames = jRoot["sourceGame"];
+            if (sourceGames.is_array() || sourceGames.is_string())
+            {
+                std::vector<uint8_t> sourceGameVector;
+                for (const auto& jSourceGame : sourceGames)
                 {
-                    std::vector<uint8_t> sourceGameVector;
-                    for (size_t j = 0; j < json_array_size(sourceGames); j++)
-                    {
-                        sourceGameVector.push_back(ParseSourceGame(json_string_value(json_array_get(sourceGames, j))));
-                    }
-                    result->SetSourceGames(sourceGameVector);
+                    sourceGameVector.push_back(ParseSourceGame(Json::GetString(jSourceGame)));
                 }
-                else if (json_is_string(sourceGames))
-                {
-                    auto sourceGame = json_string_value(sourceGames);
-                    result->SetSourceGames({ ParseSourceGame(sourceGame) });
-                }
-                else
-                {
-                    log_error("Object %s has an incorrect sourceGame parameter.", id);
-                    result->SetSourceGames({ OBJECT_SOURCE_CUSTOM });
-                }
+                result->SetSourceGames(sourceGameVector);
+            }
+            else
+            {
+                log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
+                result->SetSourceGames({ OBJECT_SOURCE_CUSTOM });
             }
         }
         return result;

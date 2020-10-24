@@ -3,21 +3,39 @@ on: [push, pull_request]
 env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
-  OPENRCT2_VERSION: 0.2.5
+  BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
+  OPENRCT2_VERSION: 0.3.1
 jobs:
+  lint-commit:
+    name: Lint Commit Message
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Lint Commit Messages
+        uses: wagoid/commitlint-github-action@v1
+        with:
+          configFile: .commitlint.json
   check-code-formatting:
     name: Check code formatting
     runs-on: ubuntu-latest
     container:
-      image: openrct2/openrct2-build:0.2.4-format
+      image: openrct2/openrct2-build:0.3.0-format
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Run clang-format
+        shell: sh
         run: scripts/check-code-formatting
   windows:
     name: Windows
     runs-on: windows-latest
+    needs: [check-code-formatting]
     strategy:
       fail-fast: false
       matrix:
@@ -39,10 +57,10 @@ jobs:
           build-symbols
           build-installer -i
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2-preview
         with:
           name: "OpenRCT2-Windows-${{ matrix.platform }}"
-          path: artifacts
+          path: artifacts/*
       - name: Run Tests
         shell: bash
         run: . scripts/setenv -q && run-tests
@@ -54,14 +72,16 @@ jobs:
               upload-build artifacts/openrct2-portable-*.zip "windows-portable-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
               upload-build artifacts/openrct2-installer-*.exe "windows-installer-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
               upload-build artifacts/openrct2-symbols-*.zip "windows-symbols-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+              upload-backtrace-symbols artifacts/openrct2-symbols-*.zip
           else
               echo 'Not going to push build'
           fi
   windows-mingw:
     name: Windows (win32) using mingw
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-mingw
+      image: openrct2/openrct2-build:0.3.0-mingw
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -69,41 +89,63 @@ jobs:
         run: |
           sudo su
           mkdir bin && cd bin
-          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DDISABLE_IPO=on -DFORCE32=on -DBUILD_SHARED_LIBS=ON
+          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DDISABLE_IPO=on -DFORCE32=on -DBUILD_SHARED_LIBS=ON -DENABLE_SCRIPTING=OFF
           ninja -k0
+  windows-mingw-nt51:
+    name: Windows (win32, WinNT5.1) using mingw
+    runs-on: ubuntu-latest
+    needs: [check-code-formatting]
+    container:
+      image: openrct2/openrct2-build:0.3.0-mingw
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build OpenRCT2
+        run: |
+          sudo su
+          mkdir bin && cd bin
+          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DDISABLE_IPO=on -DDISABLE_HTTP=Off -DFORCE32=on -DENABLE_SCRIPTING=ON -DCMAKE_CXX_FLAGS="-Wno-error=cast-function-type -Wno-error=unused-function" -DSTATIC=on -DMINGW_TARGET_NT5_1=ON
+          ninja -k0
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: "OpenRCT2-NT5.1"
+          path: bin/openrct2.exe
   macos:
     name: macOS
     runs-on: macos-latest
+    needs: [check-code-formatting]
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Build OpenRCT2
         run: |
           . scripts/setenv
-          xcodebuild
+          xcodebuild -configuration Release
           mkdir -p artifacts
           mv build/Release/OpenRCT2.app artifacts
+          echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
+          cd artifacts
+          zip -rq openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2-preview
         with:
           name: "OpenRCT2-macOS"
-          path: artifacts
+          path: artifacts/openrct2-macos.zip
       - name: Upload artifacts (openrct2.org)
         run: |
           . scripts/setenv
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-              echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
-              cd artifacts
-              zip -rq openrct2-macos.zip OpenRCT2.app
-              upload-build openrct2-macos.zip macos $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+              upload-build artifacts/openrct2-macos.zip macos $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
               echo 'Not going to push build'
           fi
   linux-portable:
     name: Linux (x64, portable)
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic
+      image: openrct2/openrct2-build:0.3.0-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -112,7 +154,7 @@ jobs:
         run: . scripts/setenv && get-discord-rpc
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DCMAKE_CXX_FLAGS="-g -gz"
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
       - name: Build artifacts
         shell: bash
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-x86_64.tar.gz bin/install/usr
@@ -136,8 +178,9 @@ jobs:
   linux-portable-32:
     name: Linux (i686, portable)
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic32
+      image: openrct2/openrct2-build:0.3.0-bionic32
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -148,7 +191,7 @@ jobs:
         shell: bash
         env:
           TESTPAINT: true
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DCMAKE_CXX_FLAGS="-m32 -gz"
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -gz"
       - name: Build artifacts
         shell: bash
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-i686.tar.gz bin/install/usr
@@ -175,8 +218,9 @@ jobs:
   linux-appimage:
     name: Linux (x64, AppImage)
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic
+      image: openrct2/openrct2-build:0.3.0-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -185,7 +229,7 @@ jobs:
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON
+        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=off
       - name: Build AppImage
         shell: bash
         run: . scripts/setenv -q && build-appimage
@@ -194,8 +238,21 @@ jobs:
         with:
           name: OpenRCT2-AppImage
           path: artifacts
+  linux-flathub-beta:
+    name: Linux (Flathub beta channel)
+    if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send dispatch event to OpenRCT2 Flathub repository
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.OPENRCT2_FLATHUB_TOKEN }}
+          repository: flathub/io.openrct2.OpenRCT2
+          event-type: openrct2_develop_push
+          client-payload: '{ "commit": "${{ github.sha }}" }'
   linux-docker:
     name: Linux (docker)
+    needs: [check-code-formatting]
     if: github.repository == 'OpenRCT2/OpenRCT2'
     runs-on: ubuntu-latest
     steps:
@@ -219,19 +276,21 @@ jobs:
   linux-clang:
     name: Linux (Debug, [http, network, OpenGL] disabled) using clang
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-bionic
+      image: openrct2/openrct2-build:0.3.0-bionic
     steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP_TWITCH=ON -DDISABLE_OPENGL=ON
+        run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_OPENGL=ON
   android:
     name: Android
     runs-on: ubuntu-latest
+    needs: [check-code-formatting]
     container:
-      image: openrct2/openrct2-build:0.2.4-android
+      image: openrct2/openrct2-build:0.3.0-android
     steps:
       - name: Checkout
         uses: actions/checkout@v1

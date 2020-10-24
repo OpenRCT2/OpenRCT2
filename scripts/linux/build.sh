@@ -30,19 +30,19 @@ pushd build
 	if [[ $TARGET == "docker64" ]]
 	then
 		# CMAKE and MAKE opts from environment
-		docker run $ci_env -e CCACHE_DIR=/ccache -v $HOME/.ccache:/ccache -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:64bit-only bash -c "export PATH=/usr/lib/ccache/bin:\$PATH LD_PRELOAD=/usr/lib/libSegFault.so && ccache --show-stats > ccache_before && cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all install $OPENRCT_MAKE_OPTS && ccache --show-stats > ccache_after && ( diff -U100 ccache_before ccache_after || true ) && ./openrct2-cli scan-objects && ctest --output-on-failure && cd .. && bash <(curl -s https://codecov.io/bash) 2>\&1 | grep -v \"has arcs\""
+		docker run $ci_env -e CCACHE_DIR=/ccache -v $HOME/.ccache:/ccache -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:64bit-only bash -c "export PATH=/usr/lib/ccache/bin:\$PATH LD_PRELOAD=/usr/lib/libSegFault.so && ccache --show-stats > ccache_before && cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all install $OPENRCT2_MAKE_OPTS && ccache --show-stats > ccache_after && ( diff -U100 ccache_before ccache_after || true ) && ./openrct2-cli scan-objects && ctest --output-on-failure && cd .. && bash <(curl -s https://codecov.io/bash) 2>\&1 | grep -v \"has arcs\""
 	elif [[ $TARGET == "ubuntu_i686" ]]
 	then
 		# CMAKE and MAKE opts from environment
-		docker run $ci_env -e CCACHE_DIR=/ccache -v $HOME/.ccache:/ccache -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_i686 bash -c "export PATH=/usr/lib/ccache:\$PATH && ccache --show-stats > ccache_before && cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all testpaint install $OPENRCT_MAKE_OPTS && ccache --show-stats > ccache_after && ( diff -U100 ccache_before ccache_after || true ) && LD_PRELOAD=/lib/i386-linux-gnu/libSegFault.so ./openrct2-cli scan-objects && LD_PRELOAD=/lib/i386-linux-gnu/libSegFault.so ctest --output-on-failure && ( LD_PRELOAD=/lib/i386-linux-gnu/libSegFault.so ./testpaint --quiet ||  if [[ \$? -eq 1 ]] ; then echo Allowing failed tests to pass ; else echo here ; false; fi ) && cd .. && bash <(curl -s https://codecov.io/bash)"
+		docker run $ci_env -e CCACHE_DIR=/ccache -v $HOME/.ccache:/ccache -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_i686 bash -c "export PATH=/usr/lib/ccache:\$PATH && ccache --show-stats > ccache_before && cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all testpaint install $OPENRCT2_MAKE_OPTS && ccache --show-stats > ccache_after && ( diff -U100 ccache_before ccache_after || true ) && LD_PRELOAD=/lib/i386-linux-gnu/libSegFault.so ./openrct2-cli scan-objects && LD_PRELOAD=/lib/i386-linux-gnu/libSegFault.so ctest --output-on-failure && ( LD_PRELOAD=/lib/i386-linux-gnu/libSegFault.so ./testpaint --quiet ||  if [[ \$? -eq 1 ]] ; then echo Allowing failed tests to pass ; else echo here ; false; fi ) && cd .. && bash <(curl -s https://codecov.io/bash)"
 	elif [[ $TARGET == "ubuntu_amd64" ]]
 	then
 		# CMAKE and MAKE opts from environment
-		docker run $ci_env -e CCACHE_DIR=/ccache -v $HOME/.ccache:/ccache -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_amd64 bash -c "export PATH=/usr/lib/ccache:\$PATH LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so && ccache --show-stats > ccache_before && cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS install && ccache --show-stats > ccache_after && ( diff -U100 ccache_before ccache_after || true ) && ./openrct2-cli scan-objects && ctest --output-on-failure && cd .. && bash <(curl -s https://codecov.io/bash)"
+		docker run $ci_env -e CCACHE_DIR=/ccache -v $HOME/.ccache:/ccache -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_amd64 bash -c "export PATH=/usr/lib/ccache:\$PATH LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so && ccache --show-stats > ccache_before && cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT2_MAKE_OPTS install && ccache --show-stats > ccache_after && ( diff -U100 ccache_before ccache_after || true ) && ./openrct2-cli scan-objects && ctest --output-on-failure && cd .. && bash <(curl -s https://codecov.io/bash)"
 	elif [[ $TARGET == "windows" ]]
 	then
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:mingw-arch bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS"
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:mingw-arch bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT2_MAKE_OPTS"
 	else
 		echo "Unkown target $TARGET"
 		exit 1

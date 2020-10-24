@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,8 +16,9 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Sprite.h>
 
-constexpr int32_t WW = 200;
-constexpr int32_t WH = 100;
+static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
+static constexpr const int32_t WW = 200;
+static constexpr const int32_t WH = 100;
 
 // clang-format off
 enum WINDOW_STAFF_FIRE_WIDGET_IDX {
@@ -30,11 +31,9 @@ enum WINDOW_STAFF_FIRE_WIDGET_IDX {
 
 // 0x9AFB4C
 static rct_widget window_staff_fire_widgets[] = {
-    { WWT_FRAME,            0,  0,          WW - 1,     0,          WH - 1,     STR_NONE,               STR_NONE },
-    { WWT_CAPTION,          0,  1,          WW - 2,     1,          14,         STR_SACK_STAFF,         STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  WW-13,      WW - 3,     2,          13,         STR_CLOSE_X_WHITE,       STR_CLOSE_WINDOW_TIP },
-    { WWT_BUTTON,           0,  10,         94,         WH - 20,    WH - 9,     STR_YES,                STR_NONE },
-    { WWT_BUTTON,           0,  WW - 95,    WW - 11,    WH - 20,    WH - 9,     STR_SAVE_PROMPT_CANCEL, STR_NONE },
+    WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
+    MakeWidget({     10, WH - 20}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_YES               ),
+    MakeWidget({WW - 95, WH - 20}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     { WIDGETS_END }
 };
 
@@ -72,17 +71,17 @@ static rct_window_event_list window_staff_fire_events = {
     window_staff_fire_paint,
     nullptr
 };
-//clang-format on
-
+// clang-format on
 
 /** Based off of rct2: 0x6C0A77 */
 rct_window* window_staff_fire_prompt_open(Peep* peep)
 {
-    rct_window * w;
+    rct_window* w;
 
     // Check if the confirm window already exists.
     w = window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index);
-    if (w != nullptr) {
+    if (w != nullptr)
+    {
         return w;
     }
 
@@ -97,40 +96,38 @@ rct_window* window_staff_fire_prompt_open(Peep* peep)
     return w;
 }
 
-
 /**
-*
-*  rct2: 0x006C0B40
-*/
-static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+ *
+ *  rct2: 0x006C0B40
+ */
+static void window_staff_fire_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex){
-    case WIDX_YES:
+    switch (widgetIndex)
     {
-        auto staffFireAction = StaffFireAction(w->number);
-        GameActions::Execute(&staffFireAction);
-        break;
-    }
-    case WIDX_CANCEL:
-    case WIDX_CLOSE:
-        window_close(w);
+        case WIDX_YES:
+        {
+            auto staffFireAction = StaffFireAction(w->number);
+            GameActions::Execute(&staffFireAction);
+            break;
+        }
+        case WIDX_CANCEL:
+        case WIDX_CLOSE:
+            window_close(w);
     }
 }
 
 /**
-*
-*  rct2: 0x006C0AF2
-*/
-static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi)
+ *
+ *  rct2: 0x006C0AF2
+ */
+static void window_staff_fire_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
 
-    Peep* peep = &get_sprite(w->number)->peep;
+    Peep* peep = GetEntity<Peep>(w->number);
+    auto ft = Formatter::Common();
+    peep->FormatNameTo(ft);
 
-    peep->FormatNameTo(gCommonFormatArgs);
-
-    int32_t x = w->windowPos.x + WW / 2;
-    int32_t y = w->windowPos.y + (WH / 2) - 3;
-
-    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_FIRE_STAFF_ID, COLOUR_BLACK);
+    ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
+    gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, WW - 4, STR_FIRE_STAFF_ID, COLOUR_BLACK);
 }

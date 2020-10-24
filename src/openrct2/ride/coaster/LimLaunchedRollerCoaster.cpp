@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,7 +47,7 @@ static void lim_launched_rc_track_station(
         session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station(session, rideIndex, direction, height, tileElement);
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -655,10 +655,10 @@ static void lim_launched_rc_track_left_twist_down_to_up(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height - 32, TUNNEL_3);
+                    paint_util_push_tunnel_right(session, height - 32, TUNNEL_INVERTED_3);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height - 32, TUNNEL_3);
+                    paint_util_push_tunnel_left(session, height - 32, TUNNEL_INVERTED_3);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -792,10 +792,10 @@ static void lim_launched_rc_track_right_twist_down_to_up(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height + 32, TUNNEL_3);
+                    paint_util_push_tunnel_right(session, height + 32, TUNNEL_INVERTED_3);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height + 32, TUNNEL_3);
+                    paint_util_push_tunnel_left(session, height + 32, TUNNEL_INVERTED_3);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -847,7 +847,7 @@ static void lim_launched_rc_track_left_twist_up_to_down(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 32, TUNNEL_3);
+                paint_util_push_tunnel_rotated(session, direction, height - 32, TUNNEL_INVERTED_3);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
@@ -984,7 +984,7 @@ static void lim_launched_rc_track_right_twist_up_to_down(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 32, TUNNEL_3);
+                paint_util_push_tunnel_rotated(session, direction, height + 32, TUNNEL_INVERTED_3);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
@@ -1777,7 +1777,7 @@ static void lim_launched_rc_track_right_quarter_turn_1_90_deg_down(
         session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int32_t trackType)
 {
     switch (trackType)
     {
@@ -1911,7 +1911,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int32_t trackType,
         case TRACK_ELEM_FLAT_TO_RIGHT_BANKED_25_DEG_DOWN:
         case TRACK_ELEM_LEFT_BANKED_25_DEG_DOWN_TO_FLAT:
         case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
-            return get_track_paint_function_looping_rc(trackType, direction);
+            return get_track_paint_function_looping_rc(trackType);
 
         case TRACK_ELEM_END_STATION:
         case TRACK_ELEM_BEGIN_STATION:

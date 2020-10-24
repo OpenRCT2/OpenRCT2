@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,6 +30,13 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("mazeEntry", _mazeEntry);
+    }
+
     void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
@@ -56,7 +63,7 @@ public:
             return res;
         }
 
-        if (!map_is_location_owned(_loc) && !gCheatsSandboxMode)
+        if (!LocationValid(_loc) || (!map_is_location_owned(_loc) && !gCheatsSandboxMode))
         {
             res->Error = GA_ERROR::NOT_OWNED;
             res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
@@ -79,7 +86,7 @@ public:
         {
             heightDifference /= COORDS_Z_PER_TINY_Z;
 
-            if (heightDifference > RideData5[RIDE_TYPE_MAZE].max_height)
+            if (heightDifference > RideTypeDescriptors[RIDE_TYPE_MAZE].Heights.MaxHeight)
             {
                 res->Error = GA_ERROR::TOO_HIGH;
                 res->ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
@@ -93,7 +100,7 @@ public:
                 { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
                 GetFlags(), &clearCost, CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
         }
 
         if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
@@ -118,7 +125,7 @@ public:
             return res;
         }
 
-        money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
         res->Cost = clearCost + price / 2 * 10;
 
         return res;
@@ -162,10 +169,10 @@ public:
                 { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
                 GetFlags() | GAME_COMMAND_FLAG_APPLY, &clearCost, CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
         }
 
-        money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
         res->Cost = clearCost + price / 2 * 10;
 
         auto startLoc = _loc.ToTileStart();
@@ -173,7 +180,7 @@ public:
         auto tileElement = tile_element_insert(_loc, 0b1111);
         assert(tileElement != nullptr);
 
-        tileElement->SetClearanceZ(clearanceHeight + MAZE_CLEARANCE_HEIGHT);
+        tileElement->SetClearanceZ(clearanceHeight);
         tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
         tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);

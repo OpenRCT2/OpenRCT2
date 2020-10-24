@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,6 +24,7 @@
 #include <vector>
 
 struct rct_drawpixelinfo;
+struct PaletteMap;
 
 struct GlyphId
 {
@@ -105,7 +106,7 @@ public:
         _freeSlots.resize(_cols * _rows);
         for (size_t i = 0; i < _freeSlots.size(); i++)
         {
-            _freeSlots[i] = (GLuint)i;
+            _freeSlots[i] = static_cast<GLuint>(i);
         }
     }
 
@@ -146,7 +147,7 @@ public:
 
     [[nodiscard]] int32_t GetFreeSlots() const
     {
-        return (int32_t)_freeSlots.size();
+        return static_cast<int32_t>(_freeSlots.size());
     }
 
     static int32_t CalculateImageSizeOrder(int32_t actualWidth, int32_t actualHeight)
@@ -158,7 +159,7 @@ public:
             actualSize = TEXTURE_CACHE_SMALLEST_SLOT;
         }
 
-        return (int32_t)ceil(log2f((float)actualSize));
+        return static_cast<int32_t>(ceil(log2f(static_cast<float>(actualSize))));
     }
 
 private:
@@ -178,10 +179,10 @@ private:
     [[nodiscard]] vec4 NormalizeCoordinates(const ivec4& coords) const
     {
         return vec4{
-            coords.x / (float)_atlasWidth,
-            coords.y / (float)_atlasHeight,
-            coords.z / (float)_atlasWidth,
-            coords.w / (float)_atlasHeight,
+            coords.x / static_cast<float>(_atlasWidth),
+            coords.y / static_cast<float>(_atlasHeight),
+            coords.z / static_cast<float>(_atlasWidth),
+            coords.w / static_cast<float>(_atlasHeight),
         };
     }
 };
@@ -218,7 +219,7 @@ public:
     ~TextureCache();
     void InvalidateImage(uint32_t image);
     BasicTextureInfo GetOrLoadImageTexture(uint32_t image);
-    BasicTextureInfo GetOrLoadGlyphTexture(uint32_t image, uint8_t* palette);
+    BasicTextureInfo GetOrLoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap);
 
     GLuint GetAtlasesTexture();
     GLuint GetPaletteTexture();
@@ -229,10 +230,10 @@ private:
     void GeneratePaletteTexture();
     void EnlargeAtlasesTexture(GLuint newEntries);
     AtlasTextureInfo LoadImageTexture(uint32_t image);
-    AtlasTextureInfo LoadGlyphTexture(uint32_t image, uint8_t* palette);
+    AtlasTextureInfo LoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap);
     AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
     static rct_drawpixelinfo GetImageAsDPI(uint32_t image, uint32_t tertiaryColour);
-    static rct_drawpixelinfo GetGlyphAsDPI(uint32_t image, uint8_t* palette);
+    static rct_drawpixelinfo GetGlyphAsDPI(uint32_t image, const PaletteMap& paletteMap);
     void FreeTextures();
 
     static rct_drawpixelinfo CreateDPI(int32_t width, int32_t height);

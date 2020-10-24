@@ -44,7 +44,7 @@ STR_0039    :Óriáskerék
 STR_0040    :Mozgásszimulátor
 STR_0041    :3D mozi
 STR_0042    :Top Spin
-STR_0043    :Űrgyűrűk 
+STR_0043    :Űrgyűrűk
 STR_0044    :Fordított szabadeséses hullámvasút
 STR_0045    :Lift
 STR_0046    :Függőleges esésű hullámvasút
@@ -148,6 +148,7 @@ STR_0565    :Egy egyszerű, kizárólag enyhe lejtőkre és fordulókra képes f
 STR_0566    :Különálló hullámvasút-kocsik száguldanak egy szoros, cikcakkos alaprajzú, éles kanyarokat és rövid meredek eséseket tartalmazó pályán
 STR_0567    :A pálya mindkét oldalán felfüggesztett ülésekben ülve az utasok bukfencezve forognak, miközben meredek eséseken és különböző fordítókon haladnak át
 STR_0569    :A pálya alatti speciális rögzítőhámokban utazva az utasok megtapasztalhatják a repülés élményét, ahogy szelik a levegőt
+STR_0571    :Kör alakú autók forognak körbe-körbe, miközben a cikkcakkos fa pályán haladnak
 STR_0573    :Motoros, helikopter formájú kocsik haladnak egy acélpályán, a pedálozó utasok irányításával
 STR_0578    :A kocsik egy abroncsokkal körbefogott, meredek esésekkel és palástorsókkal teli pálya mentén haladnak
 STR_0579    :Egy enyhe minigolf-játék
@@ -1122,8 +1123,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Nem változtatható meg a játék időkorlátja...
 STR_1752    :{SMALLFONT}{BLACK}A park egyedi vendégeinek listázása
 STR_1753    :{SMALLFONT}{BLACK}A park vendégeinek összegző listázása
-STR_1754    :{BLACK}{COMMA16} vendég
-STR_1755    :{BLACK}{COMMA16} vendég
+STR_1754    :{BLACK}{COMMA32} vendég
+STR_1755    :{BLACK}{COMMA32} vendég
 STR_1756    :{WINDOW_COLOUR_2}Belépési díj:
 STR_1757    :{WINDOW_COLOUR_2}Megbízhatóság: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Építő mód
@@ -1181,7 +1182,7 @@ STR_1813    :Egyéb objektumok
 STR_1814    :Tevékenységek
 STR_1815    :Gondolatok
 STR_1816    :{SMALLFONT}{BLACK}A vendéglistában megjelenítendő információtípus kiválasztása
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Minden vendég
 STR_1819    :{WINDOW_COLOUR_2}Minden vendég (összegezve)
 STR_1820    :{WINDOW_COLOUR_2}{STRINGID}
@@ -1210,9 +1211,9 @@ STR_1842    :Kedvence: {COMMA16} vendégnek
 STR_1843    :Kedvence: {COMMA16} vendégnek
 STR_1844    :{SMALLFONT}{BLACK}A játékok/épületek listájában megjelenített információtípus kiválasztása
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} vendég
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} vendég
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} vendég
+STR_1846    :{COMMA32} vendég
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} vendég
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} vendég
 STR_1849    :{WINDOW_COLOUR_2}Zene játszása
 STR_1850    :{SMALLFONT}{BLACK}Válaszd ki, hogy legyen-e zene ezen a játékon
 STR_1851    :{WINDOW_COLOUR_2}Üzemeltetési költség: {BLACK}{CURRENCY2DP} óránként
@@ -1568,7 +1569,7 @@ STR_2219    :{RED}{STRINGID} balesete közben {COMMA16} ember meghalt
 STR_2220    :{WINDOW_COLOUR_2}Park értékelése: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park értékelése: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Vendégek a parkban: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Vendégek a parkban: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Pénz: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Pénz: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Park értéke: {BLACK}{CURRENCY}
@@ -1933,8 +1934,8 @@ STR_2728    :{UINT16} óra {UINT16} perc
 STR_2729    :{UINT16} óra {UINT16} perc
 STR_2730    :{UINT16} óra {UINT16} perc
 STR_2731    :{UINT16} óra {UINT16} perc
-STR_2732    :{COMMA16} láb
-STR_2733    :{COMMA16} m
+STR_2732    :{COMMA32} láb
+STR_2733    :{COMMA32} m
 STR_2734    :{COMMA16} mph
 STR_2735    :{COMMA16} km/h
 STR_2736    :{POP16}{COMMA16}. év {PUSH16}{PUSH16}{MONTH} 
@@ -1952,7 +1953,7 @@ STR_2751    :Összes tétel áthelyezése alulra
 STR_2752    :Gyommentesítés
 STR_2753    :Fű lenyírása
 STR_2754    :Növények öntözése
-STR_2755    :Vandalizm. helyreáll.
+STR_2755    :Rongálások javítása
 STR_2756    :Szemét eltávolítása
 STR_2763    :???
 STR_2765    :Nagy villamos
@@ -1970,7 +1971,7 @@ STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Látkép {COMMA16}
 STR_2780    :Extra látkép
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Gyorsbillentyűk beállítása
@@ -2334,6 +2335,10 @@ STR_3252    :A maximum kölcsön összege nem növelhető tovább!
 STR_3253    :A maximum kölcsön összege nem csökkenthető tovább!
 STR_3254    :A kamatláb nem növelhető tovább!
 STR_3255    :A kamatláb nem csökkenthető tovább!
+STR_3256    :A vendégek a kevésbé intenzív játékokat részesítik előnyben
+STR_3257    :{SMALLFONT}{BLACK}Válaszd ki, hogy a vendégek általában csak a kevésbé intenzív játékokat részesítsék előnyben
+STR_3258    :A vendégek az intenzívebb játékokat részesítik előnyben
+STR_3259    :{SMALLFONT}{BLACK}Válaszd ki, hogy a vendégek általában csak a intenzívebb játékokat részesítsék előnyben
 STR_3260    :{WINDOW_COLOUR_2}Készpénz/vendég (átlagosan):
 STR_3261    :{WINDOW_COLOUR_2}Vendégek kezdeti boldogsága:
 STR_3262    :{WINDOW_COLOUR_2}Vendégek kezdeti éhsége:
@@ -2343,6 +2348,14 @@ STR_3265    :Nem csökkenthető jobban!
 STR_3266    :{SMALLFONT}{BLACK}Válaszd ki a park belépőjének és játékainak fizetési módját
 STR_3267    :Fák eltávolításának tiltása
 STR_3268    :{SMALLFONT}{BLACK}A magas fák eltávolításának tiltása
+STR_3269    :Tájváltoztatás tiltása
+STR_3270    :{SMALLFONT}{BLACK}Minden tájváltoztatás tiltott
+STR_3271    :Magas építkezés tiltása
+STR_3272    :{SMALLFONT}{BLACK}Minden magas építkezés tiltása
+STR_3273    :A park értékelését nehezebb növelni és megtartani
+STR_3274    :{SMALLFONT}{BLACK}A park értékelése jelentsen nagyobb kihívást
+STR_3275    :A vendégeket nehezebb bevonzani
+STR_3276    :{SMALLFONT}{BLACK}Legyen nehezebb bevonzani a vendégeket a parkba
 STR_3277    :{WINDOW_COLOUR_2}Földvásárlás költsége:
 STR_3278    :{WINDOW_COLOUR_2}Építési jogok vásárlási költsége:
 STR_3279    :Ingyenes parkbelépő / Fizetős játékok
@@ -2396,8 +2409,10 @@ STR_3329    :Még nem épült parkbejárat
 STR_3330    :A parknak birtokolnia kell némi földet
 STR_3331    :A park bejáratától a térkép széléig vezető út nem teljes, vagy túl bonyolult - Az út egyszeres szélességű kell, hogy legyen, a lehető legkevesebb elágazással és kanyarral
 STR_3332    :A parkbejárat rossz irányba néz, vagy nem vezet tőle út a térkép széléig
-STR_3333    :Plug-in objektumok exportálása a mentett játékokkal
-STR_3334    :{SMALLFONT}{BLACK} Válaszd ki, hogy mentésre kerüljenek-e szükséges hozzáadott plug-in objektumok adatai (a játékhoz nem mellékelt kiegészítő adatok) a mentett játékok vagy pályák fájlaiban, hogy azok is betölthessék őket, akik nem rendelkeznek a hozzáadott objektumok adataival
+STR_3333    :Egyedi objektumok exportálása a mentett játékokkal
+STR_3334    :{SMALLFONT}{BLACK} Válaszd ki, hogy mentésre kerüljenek-e szükséges hozzáadott egyedi objektumok adatai (a játékhoz nem mellékelt kiegészítő adatok) a mentett játékok vagy pályák fájlaiban, hogy azok is betölthessék őket, akik nem rendelkeznek a hozzáadott objektumok adataival
+STR_3335    :Játéktervező - Válaszd ki a játék típusát és a járműveket
+STR_3336    :Játékterv-kezelő - Válaszd ki a játék típusát
 STR_3338    :{BLACK}Egyedi tervezés
 STR_3339    :{BLACK}{COMMA16} terv érhető el, vagy egyedi tervezés
 STR_3340    :{BLACK}{COMMA16} terv érhető el, vagy egyedi tervezés
@@ -2498,19 +2513,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID} {POP16}{COMMA16}. év
 STR_5161    :Dátumformátum:
 STR_5162    :nap/hónap/év
 STR_5163    :hónap/nap/év
-STR_5164    :Twitch csatorna neve
-STR_5165    :Vendégek követők utáni elnevezése
-STR_5166    :{SMALLFONT}{BLACK}A vendégek a csatorna Twitch követői{NEWLINE}után kapják a nevüket
-STR_5167    :Követőkről elnevezett vendégek követése
-STR_5168    :{SMALLFONT}{BLACK}A csatorna Twitch követőiről elnevezett vendégek követési információinak bekapcsolása
-STR_5169    :Vendégek Twitch chat résztvevők utáni elnevezése
-STR_5170    :{SMALLFONT}{BLACK}A vendégek Twitch chat résztvevők utáni elnevezése
-STR_5171    :Chat résztvevőkről elnevezett vendégek követése
-STR_5172    :{SMALLFONT}{BLACK}A Twitch chat résztvevőiről elnevezett vendégek követési információinak bekapcsolása
-STR_5173    :Twitch chat hírként történő megjelenítése
-STR_5174    :{SMALLFONT}{BLACK}A !news előtagú Twitch chat üzenetek játékbeli üzenetként történő használata
-STR_5175    :Add meg a Twitch csatornád nevét
-STR_5176    :Twitch integráció engedélyezése
 STR_5177    :Képernyőmód:
 STR_5178    :{SMALLFONT}{BLACK}Pénzügyi csalások
 STR_5179    :{SMALLFONT}{BLACK}Vendég-csalások
@@ -2605,7 +2607,6 @@ STR_5267    :{SMALLFONT}{BLACK}Kultúra és egységek
 STR_5268    :{SMALLFONT}{BLACK}Hang
 STR_5269    :{SMALLFONT}{BLACK}Irányítás és felhasználói felület
 STR_5270    :{SMALLFONT}{BLACK}Egyéb
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Kis díszletek
 STR_5273    :{SMALLFONT}{BLACK}Nagy díszletek
 STR_5274    :{SMALLFONT}{BLACK}Út
@@ -2648,32 +2649,12 @@ STR_5311    :{SMALLFONT}{BLACK}Hibakereső eszközök
 STR_5312    :Konzol
 STR_5313    :Mezővizsgáló
 STR_5314    :Mezővizsgáló
-STR_5315    :Fű
-STR_5316    :Homok
-STR_5317    :Föld
-STR_5318    :Kavics
-STR_5319    :Marsi
-STR_5320    :Sakktábla
-STR_5321    :Fűcsomók
-STR_5322    :Jég
-STR_5323    :Rács (piros)
-STR_5324    :Rács (sárga)
-STR_5325    :Rács (kék)
-STR_5326    :Rács (zöld)
-STR_5327    :Homok (sötét)
-STR_5328    :Homok (világos)
-STR_5329    :Sakktábla (fordított)
-STR_5330    :Földalatti nézet
-STR_5331    :Kavics
-STR_5332    :Fa (piros)
-STR_5333    :Fa (fekete)
-STR_5334    :Jég
 STR_5335    :Játék bejárata
 STR_5336    :Játék kijárata
 STR_5337    :Park bejárata
 STR_5338    :Elem típusa
 STR_5339    :{SMALLFONT}{BLACK}Alapmagasság
-STR_5340    :{SMALLFONT}{BLACK}Felszín feletti magasság
+STR_5340    :{SMALLFONT}{BLACK}Űrszelvénymagasság
 STR_5343    :Alkalmazottak automatikus lerakása
 STR_5344    :Változási napló
 STR_5345    :Pénzügyi csalások
@@ -2696,7 +2677,7 @@ STR_5361    :Minden vendég kapjon:
 STR_5362    :{BLACK}A vendégek preferált játékintenzitása:
 STR_5363    :Több mint 1
 STR_5364    :Kevesebb mint 15
-STR_5365    :{BLACK}Személyzet gyors.:
+STR_5365    :{BLACK}Dolgozók sebessége:
 STR_5366    :Normál
 STR_5367    :Gyors
 STR_5368    :Ütközés törlése
@@ -2784,7 +2765,7 @@ STR_5452    :Eszköztárak megjelenítése be/ki
 STR_5453    :Másik játék választása
 STR_5454    :Korlátlan FPS
 STR_5455    :Homokozó mód be
-STR_5456    :Távolság-ellenőrzés ki
+STR_5456    :Űrszelvény-ellenőrzés ki
 STR_5457    :Állványzatlimitek ki
 STR_5458    :Forgatás órajárás szerint
 STR_5459    :Forgatás órajárással ellentétesen
@@ -2881,9 +2862,10 @@ STR_5551    :év/nap/hónap
 STR_5552    :{POP16}{POP16}{COMMA16}. év {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Játék megállítása, ha a Steam Átfedés nyitva van
 STR_5554    :{SMALLFONT}{BLACK}A hegy-eszköz bekapcsolása
+STR_5555    :Más pályatípusok járműveinek mutatása
 STR_5556    :{SMALLFONT}{BLACK}Játékos kirúgása
 STR_5557    :Kapcsolat fenntartása hiba esetén (többjátékos mód)
-STR_5558    :A beállítás érvénybe lépéséhez újraindítás szükséges
+STR_5558    :A beállítás érvénybe lépéséhez az OpenRCT2 újraindítása szükséges
 STR_5559    :10 perces ellenőrzés
 STR_5560    :{SMALLFONT}{BLACK}Az ellenőrzési időt „minden 10. percben”-re állítja az összes játékon
 STR_5561    :A nyelv betöltése sikertelen
@@ -2932,6 +2914,15 @@ STR_5604    :A vendég vett valamit
 STR_5605    :A vendég használt egy létesítményt
 STR_5606    :A vendég meghalt
 STR_5607    :{SMALLFONT}{BLACK}A kiválasztott térképelem kényszerített eltávolítása.
+STR_5608    :AM
+STR_5609    :ŰM
+STR_5610    :{SMALLFONT}{BLACK}A jelenleg kiválasztott térképelem eltávolítása. Erővel távolítja el, így nem kapsz/veszítesz pénzt. Óvatosan használd.
+STR_5611    :S
+STR_5612    :{SMALLFONT}{BLACK}Szellem zászló
+STR_5613    :T
+STR_5614    :{SMALLFONT}{BLACK}Törött zászló
+STR_5615    :U
+STR_5616    :{SMALLFONT}{BLACK}Utolsó elem a mezőn zászló
 STR_5617    :{SMALLFONT}{BLACK}A kiválasztott elem felfelé mozgatása.
 STR_5618    :{SMALLFONT}{BLACK}A kiválasztott elem lefelé mozgatása.
 STR_5619    :RollerCoaster Tycoon
@@ -3104,7 +3095,12 @@ STR_5823    :{SMALLFONT}{BLACK}Nagybetűs megjelenítés a hirdetőtáblákon (R
 STR_5824    :{SMALLFONT}{BLACK}A viharok alatti villámhatás{NEWLINE}kikapcsolása
 STR_5825    :{SMALLFONT}{BLACK}Az egérmutató maradjon az ablakon belül
 STR_5826    :{SMALLFONT}{BLACK}A látkép jobb egeres húzásának invertálása
+STR_5830    :{SMALLFONT}{BLACK}A játék által használt nyelv megváltoztatása
+STR_5831    :{SMALLFONT}{BLACK}A hőmérséklet kijelzéséhez{NEWLINE}használt mértékegység megváltoztatása.
+STR_5833    :{SMALLFONT}{BLACK}A játék által használt dátumformátum megváltoztatása
+STR_5834    :{SMALLFONT}{BLACK}Az OpenRCT2 által használt hangeszköz kiválasztása
 STR_5835    :{SMALLFONT}{BLACK}A játék némítása, ha az ablak elveszti a fókuszt
+STR_5836    :{SMALLFONT}{BLACK}A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha az RCT1 játékmappájából a 'data/css17.dat'-ot átmásolod az RCT2 mappán belül a 'data/css50.dat'-ba, vagy megadod az RCT1 útvonalát az Egyéb fülön.
 STR_5838    :{SMALLFONT}{BLACK}Külön gomb a pénzügyi ablak számára az eszköztáron
 STR_5839    :{SMALLFONT}{BLACK}Külön gomb a kutatás-fejlesztés ablak számára az eszköztáron
 STR_5840    :{SMALLFONT}{BLACK}Külön gomb a csalások ablak számára az eszköztáron
@@ -3114,7 +3110,6 @@ STR_5844    :{SMALLFONT}{BLACK}Tartsa fenn a kapcsolatot a többjátékos{NEWLIN
 STR_5845    :{SMALLFONT}{BLACK}Hozzáadja a hibakereső{NEWLINE}eszközök gombját az eszköztárhoz.{NEWLINE}Engedélyezi a fejlesztői konzol gyorsbillentyűjét
 STR_5849    :{SMALLFONT}{BLACK}Az újonnan felvett alkalmazottak{NEWLINE}automatikus lerakása
 STR_5850    :<már nincs használatban>
-STR_5852    :{SMALLFONT}{BLACK}A Twitch integrációhoz használni kívánt TwitchTV csatorna nevének megadása
 STR_5853    :{SMALLFONT}{BLACK}A hanghatások be- és kikapcsolása
 STR_5854    :{SMALLFONT}{BLACK}A játékok zenéjének be- és kikapcsolása
 STR_5855    :{SMALLFONT}{BLACK}Váltás a hagyományos teljes képernyős,{NEWLINE}keret nélküli teljes képernyős és az{NEWLINE}ablakos megjelenítési módok között
@@ -3128,12 +3123,15 @@ STR_5862    :Ismeretlen játékosok blokkolása.
 STR_5863    :{SMALLFONT}{BLACK}Csak az ismert kulcsokkal rendelkező játékosok csatlakozhassanak.
 STR_5864    :Ehhez a szerverhez csak fehérlistás játékosok csatlakozhatnak.
 STR_5865    :Chat előzmények naplózása
+STR_5866    :{SMALLFONT}{BLACK}Minden chat előzményt naplóz a felhasználói mappádban lévő fájlokba.
 STR_5867    :{WINDOW_COLOUR_2}Szolgáltató neve: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Szolgáltató e-mail címe: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Szolgáltató weboldala: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Szerver információ
 STR_5871    :Nem öregedő növények
 STR_5872    :{SMALLFONT}{BLACK}A növények öregedésének kikapcsolása, hogy ne hervadjanak el
+STR_5873    :Minden pályarész lehet láncos felvonó
+STR_5874    :{SMALLFONT}{BLACK}Lehetővé teszi, hogy bármelyik pályarészből lehessen láncos felvonót csinálni
 STR_5875    :Grafikus motor:
 STR_5876    :{SMALLFONT}{BLACK}A játék grafikus megjelenítő motorja.
 STR_5877    :Szoftveres
@@ -3155,7 +3153,12 @@ STR_5892    :{SMALLFONT}{BLACK}Vissza az alapértelmezett mappába
 STR_5893    :Árfolyam
 STR_5894    :Írd be az árfolyamot
 STR_5895    :Terv mentése
+STR_5896    :Pálya mentése sikertelen!
+STR_5900    :Eredeti rajzolókód használata
+STR_5901    :Szegmensek magasságának mutatása
+STR_5902    :Határolókeretek mutatása
 STR_5904    :Dátum visszaállítása
+STR_5905    :{SMALLFONT}{BLACK}Térképgeneráló eszköz, amely automatikusan létrehoz egy egyedi tájat
 STR_5906    :Nagyítás a mutató helyzetére 
 STR_5907    :{SMALLFONT}{BLACK}Ha be van kapcsolva, a nagyítás képernyő közepe helyett a mutatóra közelít
 STR_5910    :Alkalmazás
@@ -3203,11 +3206,17 @@ STR_5951    :{WINDOW_COLOUR_2}Pályaelem ID: {BLACK}{COMMA16}
 STR_5952    :{WINDOW_COLOUR_2}Sorszám: {BLACK}{COMMA16}
 STR_5953    :{SMALLFONT}{BLACK}A jelenlegi mező térképelemeinek alapmagasság szerinti rendezése.
 STR_5954    :{WINDOW_COLOUR_2}Díszlet kora: {BLACK}{COMMA16}
+STR_5955    :{WINDOW_COLOUR_2}Kvadráns helyzet: {BLACK}{STRINGID}
 STR_5956    :Délnyugat
 STR_5957    :Északnyugat
 STR_5958    :Északkelet
 STR_5959    :Délkelet
+STR_5960    :{WINDOW_COLOUR_2}Kvadráns helyzet:
+STR_5961    :{WINDOW_COLOUR_2}Belépési index: {BLACK}{COMMA16}
 STR_5962    :{WINDOW_COLOUR_2}Ütközésérzékelés:
+STR_5963    :{WINDOW_COLOUR_2}Megemelt sarkok:
+STR_5964    :{WINDOW_COLOUR_2}Átlós
+STR_5965    :{WINDOW_COLOUR_2}Bejárat típusa: {BLACK}{STRINGID}
 STR_5966    :{WINDOW_COLOUR_2}Parkbejárat része: {BLACK}{STRINGID}
 STR_5967    :Középső
 STR_5968    :Bal
@@ -3215,6 +3224,12 @@ STR_5969    :Jobb
 STR_5970    :{WINDOW_COLOUR_2}Bejárat ID: {BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}Kijárat ID: {BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}Játék ID: {BLACK}{COMMA16}
+STR_5973    :Következőhöz erősítés
+STR_5974    :{SMALLFONT}{BLACK}Megváltoztatja az alap- és az űrszelvénymagasságot, hogy megegyezzen a jelenlegi mező következő elemével. Ez megkönnyíti az építkezést ezen a mezőn
+STR_5975    :Elhajlás:
+STR_5976    :Egyenes
+STR_5977    :Jobbról felfelé
+STR_5978    :Balról felfelé
 STR_5979    :{WINDOW_COLOUR_2}Fal típusa: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}Hirdetőtábla szövege: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}Nem hirdetőtábla
@@ -3273,7 +3288,7 @@ STR_6033    :Az RCT1 telepítési útvonala:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Kérlek válaszd ki az RCT1 mappádat
 STR_6036    :{SMALLFONT}{BLACK}Törlés
-STR_6037    :Kérlek válassz egy érvényes RCT1 mappát
+STR_6037    :A kiválasztott könyvtár nem tartalmaz érvényes RollerCoaster Tycoon 1 telepítést.
 STR_6038    :{SMALLFONT}{BLACK}Ha az RCT1 telepítve van, itt add meg a mappája helyét, hogy betölthesd a pályákat, zenét stb.
 STR_6039    :{SMALLFONT}{BLACK}Játék/épület gyors lerombolása
 STR_6040    :Pályabeállítások módosítása
@@ -3348,6 +3363,7 @@ STR_6108    :Acél csavaró
 STR_6109    :Hiper-csavaró
 STR_6110    :Kezdő hullámvasút
 STR_6111    :Klasszikus mini hullámvasút
+STR_6118    :Egy szelíd hullámvasút azok számára, akikben még nincs meg a bátorság, ahhoz, hogy szembenézzenek a nagyobbakkal
 STR_6119    :Ez a hullámvasút olcsó és könnyen építhető, de csak korlátozott magasságig
 STR_6120    :{BABYBLUE}Új jármű érhető el {STRINGID} számára:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Kiterjeszti a park által birtokolt területet egészen a térkép széléig
@@ -3381,6 +3397,7 @@ STR_6150    :Érvénytelen válasz a főszervertől (nincs JSON-szám)
 STR_6151    :A főszerver nem tudja listázni a szervereket
 STR_6152    :Érvénytelen válasz a főszervertől (nincs JSON-tömb)
 STR_6153    :Fizetős parkbelépő / Fizetős játékok
+STR_6154    :Biztonsági okokból nem javasolt az OpenRCT2 emelt jogosultságokkal történő futtatása.
 STR_6155    :Se a KDialog, se a Zenity nincs telepítve. Kérlek telepítsd valamelyiket, vagy konfiguráld a parancssorból.
 STR_6156    :A név le van foglalva
 STR_6157    :Konzol
@@ -3389,6 +3406,7 @@ STR_6159    :Sima legközelebbi szomszéd
 STR_6160    :{WINDOW_COLOUR_2}Rendelkezésre álló járművek: {BLACK}{STRING}
 STR_6161    :Rácsok megjelenítése be/ki
 STR_6162    :Forgó vad egér
+STR_6163    :Egér alakú kocsik száguldanak éles kanyarokon és rövid eséseken keresztül, miközben szelíden forognak, hogy összezavarják az utasokat
 STR_6164    :{WHITE}❌
 STR_6165    :Vertikális szinkron
 STR_6166    :{SMALLFONT}{BLACK}A megjelenített képkockákat a kijelző frissítési gyakoriságához igazítja, így megakadályozza a kép szétcsúszását.
@@ -3415,6 +3433,7 @@ STR_6186    :Nincs sprite kiválasztva
 STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Hányás
 STR_6189    :Kacsa
+STR_6190    :{SMALLFONT}{BLACK}Nem választhatsz ki sprite-ot, amíg a főcímképernyő aktív.
 STR_6191    :Felület
 STR_6192    :Fal
 STR_6193    :{COMMA16} vendég
@@ -3427,17 +3446,7 @@ STR_6199    :Dátum beállítása
 STR_6200    :Dátum visszaállítása
 STR_6201    :{MONTH}
 STR_6202    :Virtuális padló stílusa:
-STR_6204    :Tégla
-STR_6205    :Vas
-STR_6206    :Szürke díszvakolat
-STR_6207    :Sárga díszvakolat
-STR_6208    :Piros díszvakolat
-STR_6209    :Lila díszvakolat
-STR_6210    :Zöld díszvakolat
-STR_6211    :Barna homokkő
-STR_6212    :Szürke homokkő
-STR_6213    :Felhőkarcoló A
-STR_6214    :Felhőkarcoló B
+STR_6203    :{SMALLFONT}{BLACK}Ha be van kapcsolva, egy virtuális padló lesz megjelenítve a Ctrl vagy a Shift lenyomásával, hogy megkönnyítse az elemek vertikális elhelyezését.
 STR_6215    :Építkezés
 STR_6216    :Működés
 STR_6217    :Játék / pálya elérhetősége
@@ -3475,9 +3484,6 @@ STR_6248    :{WINDOW_COLOUR_1}Biztos, hogy fel akarod újítani ezt: {STRINGID}?
 STR_6249    :{WINDOW_COLOUR_1}Biztos, hogy fel akarod újítani ezt: {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Biztos, hogy le akarod rombolni ezt: {STRINGID}? A visszatérítés összege: {CURRENCY}
 STR_6251    :A játék még nem üres
-STR_6252    :Twitch API URL-je
-STR_6253    :{SMALLFONT}{BLACK}A Twitch integrációs API URL-jének megadása. Szükséges a Twitch integráció használatához.
-STR_6254    :A Twitch integrációs API URL-je:
 STR_6255    :Érvénytelen URL
 STR_6256    :Megjelenítési hatások
 STR_6257    :Üveges (áttetsző)
@@ -3586,6 +3592,31 @@ STR_6359    :{POP16}{POP16}{UINT16}. oldal
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Fényhatások a játékokon (kísérleti)
 STR_6362    :{SMALLFONT}{BLACK}Ha be van kapcsolva, a pályával rendlekező játékokon a járművek éjjel ki lesznek világítva.
+STR_6363    :A szöveg a vágólapra másolva
+STR_6364    :{RED}{STRINGID} balesete közben {COMMA16} ember meghalt
+STR_6365    :Játékok áldozatai
+STR_6366    :Beragadt vagy elakadt járművek
+STR_6367    :{WINDOW_COLOUR_2}Animációs képkocka:
+STR_6368    :Kompatibilitási okok miatt nem javasolt az OpenRCT2 Wine-al történő futtatása. Az OpenRCT2 natív macOS, Linux, FreeBSD és OpenBSD támogatással rendelkezik.
+STR_6369    :Pályaépítés érvénytelen magasságokban
+STR_6370    :{SMALLFONT}{BLACK}Lehetővé teszi, hogy bármely köztes magasságban lehessen pályarészeket elhelyezni
+STR_6371    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de a „csg1i.dat” fájl hiányzik. Ezt a fájlt át kell másolni a RollerCoaster Tycoon 1 CD-ről a merevlemezedre telepített RollerCoaster Tycoon 1 „Data” mappájába.
+STR_6372    :A kiválasztott könyvtárban van egy telepített egy RollerCoaster Tycoon 1, de ez a verzió nem megfelelő. Az OpenRCT2-nek egy Loopy Landscapes, vagy RCT Deluxe telepítésre van szüksége a RollerCoaster Tycoon 1 fájljainak használatához.
+STR_6373    :Űrszelvény-ellenőrzés be/ki
+STR_6374    :Ű
+STR_6375    :Ismeretlen játék
+STR_6376    :{WINDOW_COLOUR_2}Jármű egy játékhoz:{NEWLINE}{BLACK}{STRINGID} a(z) {STRINGID} számára
+STR_6377    :{WINDOW_COLOUR_2}Típus: {BLACK}{STRINGID} a(z) {STRINGID} számára
+STR_6378    :Objektumlista fogadása: {INT32} / {INT32}
+STR_6379    :Érvénytelen adatok érkeztek
+STR_6380    :Frissítés érhető el!
+STR_6381    :Csatlakozz az OpenRCT2 Discord-hoz!
+STR_6382    :Újabb OpenRCT2 kiadás érhető el: {STRING}!
+STR_6383    :A letöltési oldal megnyitása
+STR_6384    :Havazás
+STR_6385    :Erős havazás
+STR_6386    :Hóvihar
+
 
 #############
 # Scenarios #

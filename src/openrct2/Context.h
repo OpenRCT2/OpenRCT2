@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,16 +15,20 @@
 #include <memory>
 #include <string>
 
-interface IObjectManager;
-interface IObjectRepository;
-interface IScenarioRepository;
-interface IStream;
-interface ITrackDesignRepository;
-interface IGameStateSnapshots;
+struct IObjectManager;
+struct IObjectRepository;
+struct IScenarioRepository;
+namespace OpenRCT2
+{
+    struct IStream;
+}
+struct ITrackDesignRepository;
+struct IGameStateSnapshots;
 
 class Intent;
 struct rct_window;
 using rct_windowclass = uint8_t;
+struct NewVersionInfo;
 
 struct CursorState
 {
@@ -67,17 +71,17 @@ namespace OpenRCT2
 {
     class GameState;
 
-    interface IPlatformEnvironment;
-    interface IReplayManager;
+    struct IPlatformEnvironment;
+    struct IReplayManager;
 
     namespace Audio
     {
-        interface IAudioContext;
+        struct IAudioContext;
     }
 
     namespace Drawing
     {
-        interface IDrawingEngine;
+        struct IDrawingEngine;
     }
 
     namespace Localisation
@@ -85,20 +89,25 @@ namespace OpenRCT2
         class LocalisationService;
     }
 
+    namespace Scripting
+    {
+        class ScriptEngine;
+    }
+
     namespace Ui
     {
-        interface IUiContext;
+        struct IUiContext;
     }
 
     namespace Paint
     {
-        interface Painter;
+        struct Painter;
     }
 
     /**
      * Represents an instance of OpenRCT2 and can be used to get various services.
      */
-    interface IContext
+    struct IContext
     {
         virtual ~IContext() = default;
 
@@ -109,6 +118,9 @@ namespace OpenRCT2
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual IObjectManager& GetObjectManager() abstract;
         virtual IObjectRepository& GetObjectRepository() abstract;
+#ifdef ENABLE_SCRIPTING
+        virtual Scripting::ScriptEngine& GetScriptEngine() abstract;
+#endif
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;
@@ -123,12 +135,14 @@ namespace OpenRCT2
         virtual void InitialiseDrawingEngine() abstract;
         virtual void DisposeDrawingEngine() abstract;
         virtual bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail = false) abstract;
-        virtual bool LoadParkFromStream(IStream * stream, const std::string& path, bool loadTitleScreenFirstOnFail = false)
-            abstract;
+        virtual bool LoadParkFromStream(
+            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false) abstract;
         virtual void WriteLine(const std::string& s) abstract;
         virtual void Finish() abstract;
         virtual void Quit() abstract;
 
+        virtual bool HasNewVersionInfo() const abstract;
+        virtual const NewVersionInfo* GetNewVersionInfo() const abstract;
         /**
          * This is deprecated, use IPlatformEnvironment.
          */
@@ -238,14 +252,13 @@ void context_set_cursor_trap(bool value);
 rct_window* context_open_window(rct_windowclass wc);
 rct_window* context_open_detail_window(uint8_t type, int32_t id);
 rct_window* context_open_window_view(uint8_t view);
-rct_window* context_show_error(rct_string_id title, rct_string_id message);
+rct_window* context_show_error(rct_string_id title, rct_string_id message, const class Formatter& args);
 rct_window* context_open_intent(Intent* intent);
 void context_broadcast_intent(Intent* intent);
 void context_force_close_window_by_class(rct_windowclass wc);
 void context_update_map_tooltip();
 void context_handle_input();
 void context_input_handle_keyboard(bool isTitle);
-bool context_read_bmp(void** outPixels, uint32_t* outWidth, uint32_t* outHeight, const utf8* path);
 void context_quit();
 const utf8* context_get_path_legacy(int32_t pathId);
 bool context_load_park_from_file(const utf8* path);

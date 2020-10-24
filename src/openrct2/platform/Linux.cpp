@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -123,7 +123,7 @@ uint8_t platform_get_locale_currency()
     return platform_get_currency_value(lc->int_curr_symbol);
 }
 
-uint8_t platform_get_locale_measurement_format()
+MeasurementFormat platform_get_locale_measurement_format()
 {
 // LC_MEASUREMENT is GNU specific.
 #    ifdef LC_MEASUREMENT
@@ -137,10 +137,10 @@ uint8_t platform_get_locale_measurement_format()
         // using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
         if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0))
         {
-            return MEASUREMENT_FORMAT_IMPERIAL;
+            return MeasurementFormat::Imperial;
         }
     }
-    return MEASUREMENT_FORMAT_METRIC;
+    return MeasurementFormat::Metric;
 }
 
 bool platform_get_steam_path(utf8* outPath, size_t outSize)
@@ -204,7 +204,7 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
         return false;
     }
 
-    FcPattern* pat = FcNameParse((const FcChar8*)font->font_name);
+    FcPattern* pat = FcNameParse(reinterpret_cast<const FcChar8*>(font->font_name));
 
     FcConfigSubstitute(config, pat, FcMatchPattern);
     FcDefaultSubstitute(pat);
@@ -224,7 +224,7 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
         // and instead rely on exact matches on the fonts predefined for each font family.
         FcChar8* matched_font_face = nullptr;
         if (FcPatternGetString(match, FC_FULLNAME, 0, &matched_font_face) == FcResultMatch
-            && strcmp(font->font_name, (const char*)matched_font_face) != 0)
+            && strcmp(font->font_name, reinterpret_cast<const char*>(matched_font_face)) != 0)
         {
             log_verbose("FontConfig provided substitute font %s -- disregarding.", matched_font_face);
             is_substitute = true;
@@ -234,7 +234,7 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
         if (!is_substitute && FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
         {
             found = true;
-            safe_strcpy(buffer, (utf8*)filename, size);
+            safe_strcpy(buffer, reinterpret_cast<utf8*>(filename), size);
             log_verbose("FontConfig provided font %s", filename);
         }
 

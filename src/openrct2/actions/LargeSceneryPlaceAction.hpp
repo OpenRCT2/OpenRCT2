@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -48,7 +48,7 @@ DEFINE_GAME_ACTION(LargeSceneryPlaceAction, GAME_COMMAND_PLACE_LARGE_SCENERY, La
 {
 private:
     CoordsXYZD _loc;
-    uint8_t _sceneryType{ std::numeric_limits<uint8_t>::max() };
+    ObjectEntryIndex _sceneryType{ OBJECT_ENTRY_INDEX_NULL };
     uint8_t _primaryColour;
     uint8_t _secondaryColour;
     BannerIndex _bannerId{ BANNER_INDEX_NULL };
@@ -56,12 +56,28 @@ private:
 public:
     LargeSceneryPlaceAction() = default;
 
-    LargeSceneryPlaceAction(const CoordsXYZD& loc, uint8_t sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+    LargeSceneryPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
         : _loc(loc)
         , _sceneryType(sceneryType)
         , _primaryColour(primaryColour)
         , _secondaryColour(secondaryColour)
     {
+        rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_sceneryType);
+        if (sceneryEntry != nullptr)
+        {
+            if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+            {
+                _bannerId = create_new_banner(0);
+            }
+        }
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("object", _sceneryType);
+        visitor.Visit("primaryColour", _primaryColour);
+        visitor.Visit("secondaryColour", _secondaryColour);
         rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_sceneryType);
         if (sceneryEntry != nullptr)
         {
@@ -138,7 +154,7 @@ public:
             }
 
             auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
+            if (!banner->IsNull())
             {
                 log_error("No free banners available");
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
@@ -188,7 +204,7 @@ public:
 
             res->GroundFlags = tempSceneryGroundFlags;
 
-            if (curTile.x >= gMapSizeUnits || curTile.y >= gMapSizeUnits)
+            if (!LocationValid(curTile) || curTile.x >= gMapSizeUnits || curTile.y >= gMapSizeUnits)
             {
                 return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::DISALLOWED, STR_OFF_EDGE_OF_MAP);
             }
@@ -211,6 +227,7 @@ public:
     {
         auto res = std::make_unique<LargeSceneryPlaceActionResult>();
         res->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        res->Expenditure = ExpenditureType::Landscaping;
 
         int16_t surfaceHeight = tile_element_height(_loc);
         res->Position.x = _loc.x + 16;
@@ -242,36 +259,6 @@ public:
         }
 
         res->Position.z = maxHeight;
-
-        if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
-        {
-            if (_bannerId == BANNER_INDEX_NULL)
-            {
-                log_error("No free banners available");
-                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_BANNERS_IN_GAME);
-            }
-
-            auto banner = GetBanner(_bannerId);
-            if (banner->type != BANNER_NULL)
-            {
-                log_error("No free banners available");
-                return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
-            }
-
-            banner->text = {};
-            banner->colour = 2;
-            banner->text_colour = 2;
-            banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
-            banner->type = 0;
-            banner->position = TileCoordsXY(_loc);
-
-            ride_id_t rideIndex = banner_get_closest_ride_index({ _loc, maxHeight });
-            if (rideIndex != RIDE_ID_NULL)
-            {
-                banner->ride_index = rideIndex;
-                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
-            }
-        }
 
         if (!map_check_free_elements_and_reorganise(totalNumTiles))
         {
@@ -325,6 +312,37 @@ public:
                 res->tileElement = newTileElement;
             }
             map_invalidate_tile_full(curTile);
+        }
+
+        // Allocate banner after all tiles to ensure banner id doesn't need to be freed.
+        if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+        {
+            if (_bannerId == BANNER_INDEX_NULL)
+            {
+                log_error("No free banners available");
+                return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_BANNERS_IN_GAME);
+            }
+
+            auto banner = GetBanner(_bannerId);
+            if (!banner->IsNull())
+            {
+                log_error("No free banners available");
+                return std::make_unique<LargeSceneryPlaceActionResult>(GA_ERROR::NO_FREE_ELEMENTS);
+            }
+
+            banner->text = {};
+            banner->colour = 2;
+            banner->text_colour = 2;
+            banner->flags = BANNER_FLAG_IS_LARGE_SCENERY;
+            banner->type = 0;
+            banner->position = TileCoordsXY(_loc);
+
+            ride_id_t rideIndex = banner_get_closest_ride_index({ _loc, maxHeight });
+            if (rideIndex != RIDE_ID_NULL)
+            {
+                banner->ride_index = rideIndex;
+                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            }
         }
 
         // Force ride construction to recheck area

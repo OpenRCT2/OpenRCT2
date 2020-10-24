@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,6 +27,11 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags();
@@ -48,7 +53,7 @@ public:
         res->Position.z = _loc.z;
         res->ErrorTitle = STR_CANT_REMOVE_THIS;
 
-        if (!map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
+        if (!LocationValid(_loc) || !map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }

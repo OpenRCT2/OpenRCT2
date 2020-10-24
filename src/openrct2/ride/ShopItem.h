@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,6 +10,8 @@
 #pragma once
 
 #include "../common.h"
+
+using ShopItemIndex = uint8_t;
 
 struct Ride;
 
@@ -88,15 +90,26 @@ struct ShopItemDescriptor
     money8 DefaultPrice;
     uint32_t Image;
     ShopItemStrings Naming;
+    uint16_t Flags;
+
+    bool HasFlag(const uint16_t flag) const;
+    bool IsFood() const;
+    bool IsDrink() const;
+    bool IsFoodOrDrink() const;
+    bool IsSouvenir() const;
+    bool IsPhoto() const;
+};
+
+enum
+{
+    SHOP_ITEM_FLAG_IS_FOOD = (1 << 0),
+    SHOP_ITEM_FLAG_IS_DRINK = (1 << 1),
+    SHOP_ITEM_FLAG_IS_SOUVENIR = (1 << 2),
+    SHOP_ITEM_FLAG_IS_PHOTO = (1 << 3),
 };
 
 extern const ShopItemDescriptor ShopItems[SHOP_ITEM_COUNT];
 extern uint64_t gSamePriceThroughoutPark;
 
-money32 shop_item_get_common_price(Ride* forRide, int32_t shopItem);
-bool shop_item_is_photo(int32_t shopItem);
-bool shop_item_has_common_price(int32_t shopItem);
-bool shop_item_is_food_or_drink(int32_t shopItem);
-bool shop_item_is_food(int32_t shopItem);
-bool shop_item_is_drink(int32_t shopItem);
-bool shop_item_is_souvenir(int32_t shopItem);
+money32 shop_item_get_common_price(Ride* forRide, const int32_t shopItem);
+bool shop_item_has_common_price(const int32_t shopItem);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -20,6 +20,7 @@
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/world/Location.hpp>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Input;
@@ -85,7 +86,7 @@ KeyboardShortcuts::~KeyboardShortcuts()
 
 void KeyboardShortcuts::Reset()
 {
-    for (size_t i = 0; i < SHORTCUT_COUNT; i++)
+    for (size_t i = 0; i < ShortcutsCount; i++)
     {
         _keys[i] = DefaultKeys[i];
     }
@@ -105,8 +106,8 @@ bool KeyboardShortcuts::Load()
             if (version == KeyboardShortcuts::CURRENT_FILE_VERSION)
             {
                 int32_t numShortcutsInFile = (fs.GetLength() - sizeof(uint16_t)) / sizeof(uint16_t);
-                int32_t numShortcutsToRead = std::min<int32_t>(SHORTCUT_COUNT, numShortcutsInFile);
-                for (int32_t i = 0; i < numShortcutsToRead; i++)
+                auto numShortcutsToRead = std::min<size_t>(ShortcutsCount, numShortcutsInFile);
+                for (size_t i = 0; i < numShortcutsToRead; i++)
                 {
                     _keys[i] = fs.ReadValue<uint16_t>();
                 }
@@ -129,7 +130,7 @@ bool KeyboardShortcuts::Save()
         std::string path = _env->GetFilePath(PATHID::CONFIG_KEYBOARD);
         auto fs = FileStream(path, FILE_MODE_WRITE);
         fs.WriteValue<uint16_t>(KeyboardShortcuts::CURRENT_FILE_VERSION);
-        for (int32_t i = 0; i < SHORTCUT_COUNT; i++)
+        for (size_t i = 0; i < ShortcutsCount; i++)
         {
             fs.WriteValue<uint16_t>(_keys[i]);
         }
@@ -145,27 +146,27 @@ bool KeyboardShortcuts::Save()
 void KeyboardShortcuts::Set(int32_t key)
 {
     // Unmap shortcut that already uses this key
-    int32_t shortcut = GetFromKey(key);
-    if (shortcut != SHORTCUT_UNDEFINED)
+    auto shortcut = GetFromKey(key);
+    if (shortcut != Input::Shortcut::Undefined)
     {
-        _keys[shortcut] = SHORTCUT_UNDEFINED;
+        _keys[static_cast<size_t>(shortcut)] = static_cast<uint16_t>(Input::ScanCodeUndefined);
     }
 
     // Map shortcut to this key
-    _keys[gKeyboardShortcutChangeId] = key;
+    _keys[static_cast<size_t>(gKeyboardShortcutChangeId)] = key;
     Save();
 }
 
-int32_t KeyboardShortcuts::GetFromKey(int32_t key)
+Shortcut KeyboardShortcuts::GetFromKey(int32_t key)
 {
-    for (int32_t i = 0; i < SHORTCUT_COUNT; i++)
+    for (size_t i = 0; i < ShortcutsCount; i++)
     {
         if (key == _keys[i])
         {
-            return i;
+            return static_cast<Shortcut>(i);
         }
     }
-    return SHORTCUT_UNDEFINED;
+    return Input::Shortcut::Undefined;
 }
 
 std::string KeyboardShortcuts::GetShortcutString(int32_t shortcut) const
@@ -173,7 +174,7 @@ std::string KeyboardShortcuts::GetShortcutString(int32_t shortcut) const
     utf8 buffer[256] = { 0 };
     utf8 formatBuffer[256] = { 0 };
     uint16_t shortcutKey = _keys[shortcut];
-    if (shortcutKey == SHORTCUT_UNDEFINED)
+    if (shortcutKey == Input::ScanCodeUndefined)
         return std::string();
     if (shortcutKey & SHIFT)
     {
@@ -218,40 +219,42 @@ std::string KeyboardShortcuts::GetShortcutString(int32_t shortcut) const
 ScreenCoordsXY KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState) const
 {
     ScreenCoordsXY screenCoords;
-    for (int32_t shortcutId = SHORTCUT_SCROLL_MAP_UP; shortcutId <= SHORTCUT_SCROLL_MAP_RIGHT; shortcutId++)
+    for (int32_t shortcutId = static_cast<int32_t>(Input::Shortcut::ScrollMapUp);
+         shortcutId <= static_cast<int32_t>(Input::Shortcut::ScrollMapRight); shortcutId++)
     {
         uint16_t shortcutKey = _keys[shortcutId];
         uint8_t scancode = shortcutKey & 0xFF;
 
-        if (shortcutKey == 0xFFFF)
+        if (shortcutKey == Input::ScanCodeUndefined)
             continue;
         if (!keysState[scancode])
             continue;
 
         // Check if SHIFT is either set in the shortcut key and currently pressed,
         // or not set in the shortcut key and not currently pressed (in other words: check if they match).
-        if ((bool)(shortcutKey & SHIFT) != (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]))
+        if (static_cast<bool>(shortcutKey & SHIFT) != (keysState[SDL_SCANCODE_LSHIFT] || keysState[SDL_SCANCODE_RSHIFT]))
             continue;
-        if ((bool)(shortcutKey & CTRL) != (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL]))
+        if (static_cast<bool>(shortcutKey & CTRL) != (keysState[SDL_SCANCODE_LCTRL] || keysState[SDL_SCANCODE_RCTRL]))
             continue;
-        if ((bool)(shortcutKey & ALT) != (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT]))
+        if (static_cast<bool>(shortcutKey & ALT) != (keysState[SDL_SCANCODE_LALT] || keysState[SDL_SCANCODE_RALT]))
             continue;
 #ifdef __MACOSX__
-        if ((bool)(shortcutKey & CMD) != (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]))
+        if (static_cast<bool>(shortcutKey & CMD) != (keysState[SDL_SCANCODE_LGUI] || keysState[SDL_SCANCODE_RGUI]))
             continue;
 #endif
-        switch (shortcutId)
+        auto convertedShortcut = static_cast<Input::Shortcut>(shortcutId);
+        switch (convertedShortcut)
         {
-            case SHORTCUT_SCROLL_MAP_UP:
+            case Input::Shortcut::ScrollMapUp:
                 screenCoords.y = -1;
                 break;
-            case SHORTCUT_SCROLL_MAP_LEFT:
+            case Input::Shortcut::ScrollMapLeft:
                 screenCoords.x = -1;
                 break;
-            case SHORTCUT_SCROLL_MAP_DOWN:
+            case Input::Shortcut::ScrollMapDown:
                 screenCoords.y = 1;
                 break;
-            case SHORTCUT_SCROLL_MAP_RIGHT:
+            case Input::Shortcut::ScrollMapRight:
                 screenCoords.x = 1;
                 break;
             default:
@@ -281,7 +284,7 @@ void keyboard_shortcuts_set(int32_t key)
     return _instance->Set(key);
 }
 
-int32_t keyboard_shortcuts_get_from_key(int32_t key)
+Shortcut keyboard_shortcuts_get_from_key(int32_t key)
 {
     return _instance->GetFromKey(key);
 }
@@ -298,7 +301,7 @@ ScreenCoordsXY get_keyboard_map_scroll(const uint8_t* keysState)
 }
 
 // Default keyboard shortcuts
-const uint16_t KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] = {
+const uint16_t KeyboardShortcuts::DefaultKeys[Input::ShortcutsCount] = {
     SDL_SCANCODE_BACKSPACE,                   // SHORTCUT_CLOSE_TOP_MOST_WINDOW
     SHIFT | SDL_SCANCODE_BACKSPACE,           // SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS
     SDL_SCANCODE_ESCAPE,                      // SHORTCUT_CANCEL_CONSTRUCTION_MODE
@@ -342,13 +345,13 @@ const uint16_t KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] = {
     SDL_SCANCODE_RIGHT,                       // SHORTCUT_SCROLL_MAP_RIGHT
     SDL_SCANCODE_C,                           // SHORTCUT_OPEN_CHAT_WINDOW
     PLATFORM_MODIFIER | SDL_SCANCODE_F10,     // SHORTCUT_QUICK_SAVE_GAME
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_SHOW_OPTIONS
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_MUTE_SOUND
+    Input::ScanCodeUndefined,                 // SHORTCUT_SHOW_OPTIONS
+    Input::ScanCodeUndefined,                 // SHORTCUT_MUTE_SOUND
     ALT | SDL_SCANCODE_RETURN,                // SHORTCUT_WINDOWED_MODE_TOGGLE
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_SHOW_MULTIPLAYER
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_PAINT_ORIGINAL_TOGGLE
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_DEBUG_PAINT_TOGGLE
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_SEE_THROUGH_PATHS_TOGGLE
+    Input::ScanCodeUndefined,                 // SHORTCUT_SHOW_MULTIPLAYER
+    Input::ScanCodeUndefined,                 // SHORTCUT_PAINT_ORIGINAL_TOGGLE
+    Input::ScanCodeUndefined,                 // SHORTCUT_DEBUG_PAINT_TOGGLE
+    Input::ScanCodeUndefined,                 // SHORTCUT_SEE_THROUGH_PATHS_TOGGLE
     SDL_SCANCODE_KP_4,                        // SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT
     SDL_SCANCODE_KP_6,                        // SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT
     SDL_SCANCODE_KP_5,                        // SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT
@@ -364,11 +367,12 @@ const uint16_t KeyboardShortcuts::DefaultKeys[SHORTCUT_COUNT] = {
     PLATFORM_MODIFIER | SDL_SCANCODE_L,       // SHORTCUT_LOAD_GAME
     SDL_SCANCODE_B,                           // SHORTCUT_CLEAR_SCENERY
     SDL_SCANCODE_7,                           // SHORTCUT_GRIDLINES_DISPLAY_TOGGLE
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_VIEW_CLIPPING
+    Input::ScanCodeUndefined,                 // SHORTCUT_VIEW_CLIPPING
     SDL_SCANCODE_I,                           // SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_TILE_INSPECTOR
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_ADVANCE_TO_NEXT_TICK
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_SCENERY_PICKER
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_SCALE_UP
-    SHORTCUT_UNDEFINED,                       // SHORTCUT_SCALE_DOWN
+    Input::ScanCodeUndefined,                 // SHORTCUT_TILE_INSPECTOR
+    Input::ScanCodeUndefined,                 // SHORTCUT_ADVANCE_TO_NEXT_TICK
+    Input::ScanCodeUndefined,                 // SHORTCUT_SCENERY_PICKER
+    Input::ScanCodeUndefined,                 // SHORTCUT_SCALE_UP
+    Input::ScanCodeUndefined,                 // SHORTCUT_SCALE_DOWN
+    Input::ScanCodeUndefined,                 // SHORTCUT_TOGGLE_CLEARANCE_CHECKS
 };

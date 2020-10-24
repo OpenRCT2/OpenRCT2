@@ -1,5 +1,5 @@
-Last updated:    2020-03-24
-Release version: 0.2.4
+Last updated:    2020-09-27
+Release version: 0.3.1
 ------------------------------------------------------------------------
 
 
@@ -30,7 +30,7 @@ includes some 3rd party software under different licenses. See the section
 ---- ----------
 The easiest way to contact the OpenRCT2 team is by submitting issues on GitHub
 (https://github.com/OpenRCT2/OpenRCT2) in the form of questions or bug reports.
-You can also chat with us on gitter (https://gitter.im/OpenRCT2/OpenRCT2).
+You can also chat with us on Discord (https://discordapp.com/invite/fsEwSWs).
 
 2.1) Reporting bugs
 ---- --------------
@@ -55,7 +55,7 @@ following information in your bug report:
  * Bug details, including instructions how to reproduce it
  * Platform (Windows, Linux, FreeBSD, ...) and compiler (including version) if
    you compiled OpenRCT2 yourself.
- * The processor architecture of your OS (32 bits Windows, 64 bits Windows,
+ * The processor architecture of your OS (x86 Windows, x86-64 Windows,
    Android on an ARM, Linux on a PowerPC, ...)
  * The language and culture your operating system is using.
  * Attach a saved game *and* a screenshot if possible
@@ -66,8 +66,8 @@ following information in your bug report:
 
 3.0) Supported platforms
 ---- -------------------
-OpenRCT2 is currently supported on Windows 7 and above, many distributions of
-Linux, macOS 10.9 or higher, Android, FreeBSD and OpenBSD. OpenRCT2 will only work on
+OpenRCT2 is currently supported on Windows Vista and above, many distributions of
+Linux, macOS 10.13 or higher, Android, FreeBSD and OpenBSD. OpenRCT2 will only work on
 little-endian architectures.
 Further instructions can be found on GitHub.
 
@@ -141,12 +141,14 @@ OpenRCT2 is licensed under the GNU General Public Licence version 3.0. For
 the complete licence text, see the file 'licence.txt'. This licence applies
 to all files in this distribution, except as noted below.
 
-Jansson          | MIT licence.
+dukglue          | MIT licence.
+duktape          | MIT licence.
 libcURL          | MIT (or Modified BSD-style) licence.
 libicu           | Unicode licence.
-libspeex         | BSD-style licence.
 libpng           | libpng licence.
+libspeex         | BSD-style licence.
 libzip           | BSD 3 clause licence.
+nlohmann-json    | MIT licence.
 OpenSSL          | OpenSSL Licence
 SDL2             | zlib licence.
 zlib             | zlib licence.

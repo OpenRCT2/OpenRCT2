@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../object/ObjectManager.h"
+#include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../scenario/Scenario.h"
 #include "Location.hpp"
@@ -21,9 +22,21 @@ uint32_t SurfaceElement::GetSurfaceStyle() const
     return SurfaceStyle;
 }
 
+TerrainSurfaceObject* SurfaceElement::GetSurfaceStyleObject() const
+{
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, GetSurfaceStyle()));
+}
+
 uint32_t SurfaceElement::GetEdgeStyle() const
 {
     return EdgeStyle;
+}
+
+TerrainEdgeObject* SurfaceElement::GetEdgeStyleObject() const
+{
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, GetEdgeStyle()));
 }
 
 void SurfaceElement::SetSurfaceStyle(uint32_t newStyle)
@@ -126,7 +139,7 @@ void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
         clearZ += LAND_HEIGHT_STEP;
 
     // Check objects above grass
-    TileElement* tileElementAbove = (TileElement*)this;
+    TileElement* tileElementAbove = reinterpret_cast<TileElement*>(this);
     for (;;)
     {
         if (tileElementAbove->IsLastForTile())

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,12 +11,17 @@
 
 #include "../common.h"
 
+#include <memory>
 #include <string>
 
-interface IStream;
+namespace OpenRCT2
+{
+    struct IStream;
+}
+
 template<typename T> struct IConfigEnum;
 
-interface IIniReader
+struct IIniReader
 {
     virtual ~IIniReader() = default;
 
@@ -24,6 +29,7 @@ interface IIniReader
 
     virtual bool GetBoolean(const std::string& name, bool defaultValue) const abstract;
     virtual int32_t GetInt32(const std::string& name, int32_t defaultValue) const abstract;
+    virtual int64_t GetInt64(const std::string& name, int64_t defaultValue) const abstract;
     virtual float GetFloat(const std::string& name, float defaultValue) const abstract;
     virtual std::string GetString(const std::string& name, const std::string& defaultValue) const abstract;
     virtual bool TryGetString(const std::string& name, std::string* outValue) const abstract;
@@ -42,5 +48,5 @@ interface IIniReader
     utf8* GetCString(const std::string& name, const utf8* defaultValue) const;
 };
 
-IIniReader* CreateIniReader(IStream* stream);
-IIniReader* CreateDefaultIniReader();
+std::unique_ptr<IIniReader> CreateIniReader(OpenRCT2::IStream* stream);
+std::unique_ptr<IIniReader> CreateDefaultIniReader();

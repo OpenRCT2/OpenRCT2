@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -27,12 +27,12 @@ DEFINE_GAME_ACTION(FootpathPlaceFromTrackAction, GAME_COMMAND_PLACE_PATH_FROM_TR
 private:
     CoordsXYZ _loc;
     uint8_t _slope;
-    uint8_t _type;
+    ObjectEntryIndex _type;
     uint8_t _edges;
 
 public:
     FootpathPlaceFromTrackAction() = default;
-    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, uint8_t type, uint8_t edges)
+    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges)
         : _loc(loc)
         , _slope(slope)
         , _type(type)
@@ -61,7 +61,7 @@ public:
 
         gFootpathGroundFlags = 0;
 
-        if (map_is_edge(_loc))
+        if (!LocationValid(_loc) || map_is_edge(_loc))
         {
             return MakeResult(
                 GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);

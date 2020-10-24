@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,10 +28,10 @@ constexpr auto PATH_CLEARANCE = 4 * COORDS_Z_STEP;
 #define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
 
 using PathSurfaceIndex = uint16_t;
-constexpr PathSurfaceIndex PATH_SURFACE_INDEX_NULL = (PathSurfaceIndex)-1;
+constexpr PathSurfaceIndex PATH_SURFACE_INDEX_NULL = static_cast<PathSurfaceIndex>(-1);
 
 using PathRailingsIndex = uint8_t;
-constexpr PathRailingsIndex PATH_RAILINGS_INDEX_NULL = (PathRailingsIndex)-1;
+constexpr PathRailingsIndex PATH_RAILINGS_INDEX_NULL = static_cast<PathRailingsIndex>(-1);
 
 enum class RailingEntrySupportType : uint8_t
 {
@@ -151,6 +151,13 @@ enum
     FOOTPATH_CONNECTION_NW = (1 << 7),
 };
 
+enum
+{
+    FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_QUEUES = (1 << 0),
+    FOOTPATH_CONNECTED_MAP_EDGE_UNOWN = (1 << 5),
+    FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY = (1 << 7)
+};
+
 extern uint8_t gFootpathProvisionalFlags;
 extern CoordsXYZ gFootpathProvisionalPosition;
 extern uint8_t gFootpathProvisionalType;
@@ -171,8 +178,6 @@ extern const CoordsXY BinUseOffsets[NumOrthogonalDirections];
 extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];
 
 TileElement* map_get_footpath_element(const CoordsXYZ& coords);
-struct PathElement;
-PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope);
 void footpath_interrupt_peeps(const CoordsXYZ& footpathPos);
 money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags);
 money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int32_t slope);

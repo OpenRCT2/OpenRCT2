@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,7 +17,69 @@
 #include "../platform/platform.h"
 #include "../sprites.h"
 #include "../util/Util.h"
+#include "../world/Location.hpp"
 #include "../world/Water.h"
+
+#include <cstring>
+
+const PaletteMap& PaletteMap::GetDefault()
+{
+    static bool initialised = false;
+    static uint8_t data[256];
+    static PaletteMap defaultMap(data);
+    if (!initialised)
+    {
+        for (size_t i = 0; i < sizeof(data); i++)
+        {
+            data[i] = static_cast<uint8_t>(i);
+        }
+    }
+    return defaultMap;
+}
+
+uint8_t& PaletteMap::operator[](size_t index)
+{
+    assert(index < _dataLength);
+
+    // Provide safety in release builds
+    if (index >= _dataLength)
+    {
+        static uint8_t dummy;
+        return dummy;
+    }
+
+    return _data[index];
+}
+
+uint8_t PaletteMap::operator[](size_t index) const
+{
+    assert(index < _dataLength);
+
+    // Provide safety in release builds
+    if (index >= _dataLength)
+    {
+        return 0;
+    }
+
+    return _data[index];
+}
+
+uint8_t PaletteMap::Blend(uint8_t src, uint8_t dst) const
+{
+    // src = 0 would be transparent so there is no blend palette for that, hence (src - 1)
+    assert(src != 0 && (src - 1) < _numMaps);
+    assert(dst < _mapLength);
+    auto idx = ((src - 1) * 256) + dst;
+    return (*this)[idx];
+}
+
+void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, size_t length)
+{
+    auto maxLength = std::min(_mapLength - srcIndex, _mapLength - dstIndex);
+    assert(length <= maxLength);
+    auto copyLength = std::min(length, maxLength);
+    std::memcpy(&_data[dstIndex], &src._data[srcIndex], copyLength);
+}
 
 // HACK These were originally passed back through registers
 thread_local int32_t gLastDrawStringX;
@@ -268,7 +330,7 @@ const FILTER_PALETTE_ID GlassPaletteIds[COLOUR_COUNT] = {
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
-const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
+static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
     SPR_PALETTE_BLACK,
     SPR_PALETTE_GREY,
     SPR_PALETTE_WHITE,
@@ -516,14 +578,14 @@ void mask_init()
     }
 }
 
-void gfx_draw_pixel(rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t colour)
+void gfx_draw_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t colour)
 {
-    gfx_fill_rect(dpi, x, y, x, y, colour);
+    gfx_fill_rect(dpi, { coords, coords }, colour);
 }
 
-void gfx_filter_pixel(rct_drawpixelinfo* dpi, int32_t x, int32_t y, FILTER_PALETTE_ID palette)
+void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FILTER_PALETTE_ID palette)
 {
-    gfx_filter_rect(dpi, x, y, x, y, palette);
+    gfx_filter_rect(dpi, { coords, coords }, palette);
 }
 
 /**
@@ -565,13 +627,13 @@ void load_palette()
         return;
     }
 
-    auto water_type = (rct_water_type*)object_entry_get_chunk(OBJECT_TYPE_WATER, 0);
+    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(OBJECT_TYPE_WATER, 0));
 
     uint32_t palette = 0x5FC;
 
     if (water_type != nullptr)
     {
-        openrct2_assert(water_type->image_id != (uint32_t)-1, "Failed to load water palette");
+        openrct2_assert(water_type->image_id != 0xFFFFFFFF, "Failed to load water palette");
         palette = water_type->image_id;
     }
 
@@ -601,7 +663,7 @@ void load_palette()
  */
 void gfx_invalidate_screen()
 {
-    gfx_set_dirty_blocks(0, 0, context_get_width(), context_get_height());
+    gfx_set_dirty_blocks({ { 0, 0 }, { context_get_width(), context_get_height() } });
 }
 
 /*
@@ -613,19 +675,20 @@ void gfx_invalidate_screen()
  * height (dx)
  * drawpixelinfo (edi)
  */
-bool clip_drawpixelinfo(rct_drawpixelinfo* dst, rct_drawpixelinfo* src, int32_t x, int32_t y, int32_t width, int32_t height)
+bool clip_drawpixelinfo(
+    rct_drawpixelinfo* dst, rct_drawpixelinfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height)
 {
-    int32_t right = x + width;
-    int32_t bottom = y + height;
+    int32_t right = coords.x + width;
+    int32_t bottom = coords.y + height;
 
     *dst = *src;
     dst->zoom_level = 0;
 
-    if (x > dst->x)
+    if (coords.x > dst->x)
     {
-        uint16_t clippedFromLeft = x - dst->x;
+        uint16_t clippedFromLeft = coords.x - dst->x;
         dst->width -= clippedFromLeft;
-        dst->x = x;
+        dst->x = coords.x;
         dst->pitch += clippedFromLeft;
         dst->bits += clippedFromLeft;
     }
@@ -637,11 +700,11 @@ bool clip_drawpixelinfo(rct_drawpixelinfo* dst, rct_drawpixelinfo* src, int32_t 
         dst->pitch += stickOutWidth;
     }
 
-    if (y > dst->y)
+    if (coords.y > dst->y)
     {
-        uint16_t clippedFromTop = y - dst->y;
+        uint16_t clippedFromTop = coords.y - dst->y;
         dst->height -= clippedFromTop;
-        dst->y = y;
+        dst->y = coords.y;
         uint32_t bitsPlus = (dst->pitch + dst->width) * clippedFromTop;
         dst->bits += bitsPlus;
     }
@@ -654,8 +717,8 @@ bool clip_drawpixelinfo(rct_drawpixelinfo* dst, rct_drawpixelinfo* src, int32_t 
 
     if (dst->width > 0 && dst->height > 0)
     {
-        dst->x -= x;
-        dst->y -= y;
+        dst->x -= coords.x;
+        dst->y -= coords.y;
         return true;
     }
 
@@ -674,7 +737,7 @@ void gfx_invalidate_pickedup_peep()
             int32_t top = gPickupPeepY + g1->y_offset;
             int32_t right = left + g1->width;
             int32_t bottom = top + g1->height;
-            gfx_set_dirty_blocks(left, top, right, bottom);
+            gfx_set_dirty_blocks({ { left, top }, { right, bottom } });
         }
     }
 }
@@ -683,6 +746,51 @@ void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi)
 {
     if (gPickupPeepImage != UINT32_MAX)
     {
-        gfx_draw_sprite(dpi, gPickupPeepImage, gPickupPeepX, gPickupPeepY, 0);
+        gfx_draw_sprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY }, 0);
     }
+}
+
+std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId)
+{
+    if (paletteId < std::size(palette_to_g1_offset))
+    {
+        return palette_to_g1_offset[paletteId];
+    }
+    return std::nullopt;
+}
+
+std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId)
+{
+    auto g1Index = GetPaletteG1Index(paletteId);
+    if (g1Index)
+    {
+        auto g1 = gfx_get_g1_element(*g1Index);
+        if (g1 != nullptr)
+        {
+            return PaletteMap(g1->offset, g1->height, g1->width);
+        }
+    }
+    return std::nullopt;
+}
+
+size_t rct_drawpixelinfo::GetBytesPerRow() const
+{
+    return static_cast<size_t>(width) + pitch;
+}
+
+uint8_t* rct_drawpixelinfo::GetBitsOffset(const ScreenCoordsXY& pos) const
+{
+    return bits + pos.x + (pos.y * GetBytesPerRow());
+}
+
+rct_drawpixelinfo rct_drawpixelinfo::Crop(const ScreenCoordsXY& pos, const ScreenSize& size) const
+{
+    rct_drawpixelinfo result = *this;
+    result.bits = GetBitsOffset(pos);
+    result.x = static_cast<int16_t>(pos.x);
+    result.y = static_cast<int16_t>(pos.y);
+    result.width = static_cast<int16_t>(size.width);
+    result.height = static_cast<int16_t>(size.height);
+    result.pitch = static_cast<int16_t>(width + pitch - size.width);
+    return result;
 }

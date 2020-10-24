@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -318,7 +318,7 @@ static void water_rc_track_diag_60_deg_down_to_25_deg_down(
         session, rideIndex, trackSequence, direction, height, tileElement, JUNIOR_RC_CHAIN_NONE);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int32_t trackType)
 {
     switch (trackType)
     {
@@ -461,24 +461,36 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(int32_t trackType, int32_
         case TRACK_ELEM_DIAG_RIGHT_BANK:
         case TRACK_ELEM_BLOCK_BRAKES:
         case TRACK_ELEM_BOOSTER:
-            return get_track_paint_function_junior_rc(trackType, direction);
+            return get_track_paint_function_junior_rc(trackType);
 
         //////////////////////////////////////////////////////
         // Use River Rafts
         //////////////////////////////////////////////////////
         case TRACK_ELEM_FLAT_COVERED:
-            return get_track_paint_function_splash_boats(TRACK_ELEM_FLAT, direction);
+            return get_track_paint_function_splash_boats(TRACK_ELEM_FLAT);
         case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES_COVERED:
-            return get_track_paint_function_splash_boats(TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES, direction);
+            return get_track_paint_function_splash_boats(TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES);
         case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED:
-            return get_track_paint_function_splash_boats(TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES, direction);
+            return get_track_paint_function_splash_boats(TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES);
         case TRACK_ELEM_S_BEND_LEFT_COVERED:
-            return get_track_paint_function_splash_boats(TRACK_ELEM_S_BEND_LEFT, direction);
+            return get_track_paint_function_splash_boats(TRACK_ELEM_S_BEND_LEFT);
         case TRACK_ELEM_S_BEND_RIGHT_COVERED:
-            return get_track_paint_function_splash_boats(TRACK_ELEM_S_BEND_RIGHT, direction);
+            return get_track_paint_function_splash_boats(TRACK_ELEM_S_BEND_RIGHT);
+        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_FLAT_TO_25_DEG_DOWN);
+        case TRACK_ELEM_25_DEG_DOWN_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_25_DEG_DOWN);
+        case TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_25_DEG_DOWN_TO_60_DEG_DOWN);
+        case TRACK_ELEM_60_DEG_DOWN_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_60_DEG_DOWN);
+        case TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_60_DEG_DOWN_TO_25_DEG_DOWN);
+        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT_COVERED:
+            return get_track_paint_function_splash_boats(TRACK_ELEM_25_DEG_DOWN_TO_FLAT);
 
         case TRACK_ELEM_ON_RIDE_PHOTO:
-            return get_track_paint_function_junior_rc(trackType, direction);
+            return get_track_paint_function_junior_rc(trackType);
     }
     return nullptr;
 }

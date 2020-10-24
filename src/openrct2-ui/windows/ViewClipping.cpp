@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -45,20 +45,20 @@ static DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
 
 #pragma region Widgets
 
-constexpr int32_t WW = 180;
-constexpr int32_t WH = 155;
+static constexpr const rct_string_id WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
+static constexpr const int32_t WW = 180;
+static constexpr const int32_t WH = 155;
 
 static rct_widget window_view_clipping_widgets[] = {
-    { WWT_FRAME,        0,  0,          WW - 1,     0,      WH - 1,     STR_NONE,                               STR_NONE }, // panel / background
-    { WWT_CAPTION,      0,  1,          WW - 2,     1,      14,         STR_VIEW_CLIPPING_TITLE,                STR_WINDOW_TITLE_TIP }, // title bar
-    { WWT_CLOSEBOX,     0,  WW - 13,    WW - 3,     2,      13,         STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP }, // close x button
-    { WWT_CHECKBOX,     0,  11,         WW - 11,    19,     29,         STR_VIEW_CLIPPING_HEIGHT_ENABLE,        STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP }, // clip enable/disable check box
-    { WWT_GROUPBOX,     0,  5,          WW - 6,     36,     83,         STR_VIEW_CLIPPING_VERTICAL_CLIPPING,    STR_NONE },
-      SPINNER_WIDGETS  (0,  90,         WW - 12,    51,     62,         STR_NONE,                               STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
-    { WWT_SCROLL,       0,  11,         WW - 12,    66,     78,         SCROLL_HORIZONTAL,                      STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP }, // clip height scrollbar
-    { WWT_GROUPBOX,     0,  5,          WW - 6,     90,     WH - 6,     STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING,  STR_NONE },
-    { WWT_BUTTON,       0,  11,         WW - 12,    105,    121,        STR_VIEW_CLIPPING_SELECT_AREA,          STR_NONE }, // selector
-    { WWT_BUTTON,       0,  11,         WW - 12,    126,    143,        STR_VIEW_CLIPPING_CLEAR_SELECTION,      STR_NONE }, // clear
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget        ({     11,  19}, {    159,  11}, WWT_CHECKBOX, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
+    MakeWidget        ({      5,  36}, {WW - 10,  48}, WWT_GROUPBOX, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
+    MakeSpinnerWidgets({     90,  51}, {     79,  12}, WWT_SPINNER,  WindowColour::Primary, STR_NONE,                              STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
+    MakeWidget        ({     11,  66}, {    158,  13}, WWT_SCROLL,   WindowColour::Primary, SCROLL_HORIZONTAL,                     STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP  ), // clip height scrollbar
+    MakeWidget        ({      5,  90}, {WW - 10,  60}, WWT_GROUPBOX, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                       ),
+    MakeWidget        ({     11, 105}, {    158,  17}, WWT_BUTTON,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
+    MakeWidget        ({     11, 126}, {    158,  18}, WWT_BUTTON,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
+
     { WIDGETS_END }
 };
 
@@ -127,9 +127,8 @@ static void window_view_clipping_set_clipheight(rct_window* w, const uint8_t cli
 {
     gClipHeight = clipheight;
     rct_widget* widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
-    const float clip_height_ratio = (float)gClipHeight / 255;
-    w->scrolls[0].h_left = (int16_t)std::ceil(
-        clip_height_ratio * (w->scrolls[0].h_right - ((widget->right - widget->left) - 1)));
+    const float clip_height_ratio = static_cast<float>(gClipHeight) / 255;
+    w->scrolls[0].h_left = static_cast<int16_t>(std::ceil(clip_height_ratio * (w->scrolls[0].h_right - (widget->width() - 1))));
 }
 
 rct_window* window_view_clipping_open()
@@ -285,8 +284,9 @@ static void window_view_clipping_update(rct_window* w)
 {
     const rct_widget* const widget = &window_view_clipping_widgets[WIDX_CLIP_HEIGHT_SLIDER];
     const rct_scroll* const scroll = &w->scrolls[0];
-    const int16_t scroll_width = widget->right - widget->left - 1;
-    const uint8_t clip_height = (uint8_t)(((float)scroll->h_left / (scroll->h_right - scroll_width)) * 255);
+    const int16_t scroll_width = widget->width() - 1;
+    const uint8_t clip_height = static_cast<uint8_t>(
+        (static_cast<float>(scroll->h_left) / (scroll->h_right - scroll_width)) * 255);
     if (clip_height != gClipHeight)
     {
         gClipHeight = clip_height;
@@ -396,22 +396,22 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_draw_widgets(w, dpi);
 
     // Clip height value
-    int32_t x = w->windowPos.x + 8;
-    int32_t y = w->windowPos.y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
-    gfx_draw_string_left(dpi, STR_VIEW_CLIPPING_HEIGHT_VALUE, nullptr, w->colours[0], x, y);
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
+    gfx_draw_string_left(dpi, STR_VIEW_CLIPPING_HEIGHT_VALUE, nullptr, w->colours[0], screenCoords);
 
-    x = w->windowPos.x + w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1;
-    y = w->windowPos.y + w->widgets[WIDX_CLIP_HEIGHT_VALUE].top;
+    screenCoords = w->windowPos
+        + ScreenCoordsXY{ w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1, w->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
 
     fixed16_1dp clipHeightValueInUnits;
     fixed32_2dp clipHeightValueInMeters;
     fixed16_1dp clipHeightValueInFeet;
-    int32_t clipHeightRawValue = (int32_t)gClipHeight;
+    int32_t clipHeightRawValue = static_cast<int32_t>(gClipHeight);
     switch (gClipHeightDisplayType)
     {
         case DISPLAY_TYPE::DISPLAY_RAW:
         default:
-            gfx_draw_string_left(dpi, STR_FORMAT_INTEGER, &clipHeightRawValue, w->colours[0], x, y); // Printing the raw value.
+            gfx_draw_string_left(
+                dpi, STR_FORMAT_INTEGER, &clipHeightRawValue, w->colours[0], screenCoords); // Printing the raw value.
             break;
 
         case DISPLAY_TYPE::DISPLAY_UNITS:
@@ -419,10 +419,10 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
             if (gConfigGeneral.show_height_as_units == 1)
             {
                 // Height label is Units.
-                clipHeightValueInUnits = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0));
+                clipHeightValueInUnits = static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0));
                 gfx_draw_string_left(
-                    dpi, STR_UNIT1DP_NO_SUFFIX, &clipHeightValueInUnits, w->colours[0], x,
-                    y); // Printing the value in Height Units.
+                    dpi, STR_UNIT1DP_NO_SUFFIX, &clipHeightValueInUnits, w->colours[0],
+                    screenCoords); // Printing the value in Height Units.
             }
             else
             {
@@ -430,15 +430,17 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 // Print the value in the configured measurement units.
                 switch (gConfigGeneral.measurement_format)
                 {
-                    case MEASUREMENT_FORMAT_METRIC:
-                    case MEASUREMENT_FORMAT_SI:
-                        clipHeightValueInMeters = (fixed32_2dp)(FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50));
-                        gfx_draw_string_left(dpi, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[0], x, y);
+                    case MeasurementFormat::Metric:
+                    case MeasurementFormat::SI:
+                        clipHeightValueInMeters = static_cast<fixed32_2dp>(
+                            FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50));
+                        gfx_draw_string_left(
+                            dpi, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[0], screenCoords);
                         break;
-                    case MEASUREMENT_FORMAT_IMPERIAL:
-                    default:
-                        clipHeightValueInFeet = (fixed16_1dp)(FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0));
-                        gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[0], x, y);
+                    case MeasurementFormat::Imperial:
+                        clipHeightValueInFeet = static_cast<fixed16_1dp>(
+                            FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0));
+                        gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[0], screenCoords);
                         break;
                 }
             }

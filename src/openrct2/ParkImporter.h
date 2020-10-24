@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,35 +10,29 @@
 #pragma once
 
 #include "common.h"
-#include "object/Object.h"
-
-enum PARK_LOAD_ERROR
-{
-    PARK_LOAD_ERROR_OK,
-    PARK_LOAD_ERROR_MISSING_OBJECTS,
-    PARK_LOAD_ERROR_INVALID_EXTENSION,
-    PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG,
-    PARK_LOAD_ERROR_UNKNOWN = 255
-};
-
 #include "core/String.hpp"
+#include "object/Object.h"
 
 #include <memory>
 #include <string>
 #include <vector>
 
-interface IObjectManager;
-interface IObjectRepository;
-interface IStream;
+struct IObjectManager;
+struct IObjectRepository;
+namespace OpenRCT2
+{
+    struct IStream;
+}
+
 struct scenario_index_entry;
 
 struct ParkLoadResult final
 {
 public:
-    std::vector<rct_object_entry> const RequiredObjects;
+    std::vector<rct_object_entry> RequiredObjects;
 
     explicit ParkLoadResult(std::vector<rct_object_entry>&& requiredObjects)
-        : RequiredObjects(requiredObjects)
+        : RequiredObjects(std::move(requiredObjects))
     {
     }
 };
@@ -46,7 +40,7 @@ public:
 /**
  * Interface to import scenarios and saved games.
  */
-interface IParkImporter
+struct IParkImporter
 {
 public:
     virtual ~IParkImporter() = default;
@@ -55,10 +49,10 @@ public:
     virtual ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) abstract;
     virtual ParkLoadResult LoadScenario(const utf8* path, bool skipObjectCheck = false) abstract;
     virtual ParkLoadResult LoadFromStream(
-        IStream * stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) abstract;
+        OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) abstract;
 
     virtual void Import() abstract;
-    virtual bool GetDetails(scenario_index_entry * dst) abstract;
+    virtual bool GetDetails(scenario_index_entry* dst) abstract;
 };
 
 namespace ParkImporter

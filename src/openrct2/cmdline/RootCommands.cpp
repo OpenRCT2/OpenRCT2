@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,7 +21,7 @@
 #include "../network/network.h"
 #include "../object/ObjectRepository.h"
 #include "../platform/Crash.h"
-#include "../platform/platform.h"
+#include "../platform/Platform2.h"
 #include "CommandLine.hpp"
 
 #include <ctime>
@@ -54,7 +54,7 @@ static bool _verbose = false;
 static bool _headless = false;
 static utf8* _password = nullptr;
 static utf8* _userDataPath = nullptr;
-static utf8* _openrctDataPath = nullptr;
+static utf8* _openrct2DataPath = nullptr;
 static utf8* _rct1DataPath = nullptr;
 static utf8* _rct2DataPath = nullptr;
 static bool _silentBreakpad = false;
@@ -62,22 +62,22 @@ static bool _silentBreakpad = false;
 // clang-format off
 static constexpr const CommandLineOptionDefinition StandardOptions[]
 {
-    { CMDLINE_TYPE_SWITCH,  &_help,            'h', "help",              "show this help message and exit"                            },
-    { CMDLINE_TYPE_SWITCH,  &_version,         'v', "version",           "show version information and exit"                          },
-    { CMDLINE_TYPE_SWITCH,  &_noInstall,       'n', "no-install",        "do not install scenario if passed"                          },
-    { CMDLINE_TYPE_SWITCH,  &_all,             'a', "all",               "show help for all commands"                                 },
-    { CMDLINE_TYPE_SWITCH,  &_about,           NAC, "about",             "show information about " OPENRCT2_NAME                      },
-    { CMDLINE_TYPE_SWITCH,  &_verbose,         NAC, "verbose",           "log verbose messages"                                       },
-    { CMDLINE_TYPE_SWITCH,  &_headless,        NAC, "headless",          "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
-#ifndef DISABLE_NETWORK
-    { CMDLINE_TYPE_INTEGER, &_port,            NAC, "port",              "port to use for hosting or joining a server"                },
-    { CMDLINE_TYPE_STRING,  &_address,         NAC, "address",           "address to listen on when hosting a server"                 },
-#endif
-    { CMDLINE_TYPE_STRING,  &_password,        NAC, "password",          "password needed to join the server"                         },
-    { CMDLINE_TYPE_STRING,  &_userDataPath,    NAC, "user-data-path",    "path to the user data directory (containing config.ini)"    },
-    { CMDLINE_TYPE_STRING,  &_openrctDataPath, NAC, "openrct-data-path", "path to the OpenRCT2 data directory (containing languages)" },
-    { CMDLINE_TYPE_STRING,  &_rct1DataPath,    NAC, "rct1-data-path",    "path to the RollerCoaster Tycoon 1 data directory (containing data/csg1.dat)" },
-    { CMDLINE_TYPE_STRING,  &_rct2DataPath,    NAC, "rct2-data-path",    "path to the RollerCoaster Tycoon 2 data directory (containing data/g1.dat)" },
+    { CMDLINE_TYPE_SWITCH,  &_help,             'h', "help",               "show this help message and exit"                            },
+    { CMDLINE_TYPE_SWITCH,  &_version,          'v', "version",            "show version information and exit"                          },
+    { CMDLINE_TYPE_SWITCH,  &_noInstall,        'n', "no-install",         "do not install scenario if passed"                          },
+    { CMDLINE_TYPE_SWITCH,  &_all,              'a', "all",                "show help for all commands"                                 },
+    { CMDLINE_TYPE_SWITCH,  &_about,            NAC, "about",              "show information about " OPENRCT2_NAME                      },
+    { CMDLINE_TYPE_SWITCH,  &_verbose,          NAC, "verbose",            "log verbose messages"                                       },
+    { CMDLINE_TYPE_SWITCH,  &_headless,         NAC, "headless",           "run " OPENRCT2_NAME " headless" IMPLIES_SILENT_BREAKPAD     },
+#ifndef DISABLE_NETWORK                                                    
+    { CMDLINE_TYPE_INTEGER, &_port,             NAC, "port",               "port to use for hosting or joining a server"                },
+    { CMDLINE_TYPE_STRING,  &_address,          NAC, "address",            "address to listen on when hosting a server"                 },
+#endif                                                                     
+    { CMDLINE_TYPE_STRING,  &_password,         NAC, "password",           "password needed to join the server"                         },
+    { CMDLINE_TYPE_STRING,  &_userDataPath,     NAC, "user-data-path",     "path to the user data directory (containing config.ini)"    },
+    { CMDLINE_TYPE_STRING,  &_openrct2DataPath, NAC, "openrct2-data-path", "path to the OpenRCT2 data directory (containing languages)" },
+    { CMDLINE_TYPE_STRING,  &_rct1DataPath,     NAC, "rct1-data-path",     "path to the RollerCoaster Tycoon 1 data directory (containing data/csg1.dat)" },
+    { CMDLINE_TYPE_STRING,  &_rct2DataPath,     NAC, "rct2-data-path",     "path to the RollerCoaster Tycoon 2 data directory (containing data/g1.dat)" },
 #ifdef USE_BREAKPAD
     { CMDLINE_TYPE_SWITCH,  &_silentBreakpad,  NAC, "silent-breakpad",   "make breakpad crash reporting silent"                       },
 #endif // USE_BREAKPAD
@@ -172,7 +172,7 @@ exitcode_t CommandLine::HandleCommandDefault()
     {
         if (_verbose)
         {
-            _log_levels[DIAGNOSTIC_LEVEL_VERBOSE] = true;
+            _log_levels[static_cast<uint8_t>(DiagnosticLevel::Verbose)] = true;
             PrintLaunchInformation();
         }
 
@@ -204,12 +204,12 @@ exitcode_t CommandLine::HandleCommandDefault()
         Memory::Free(_userDataPath);
     }
 
-    if (_openrctDataPath != nullptr)
+    if (_openrct2DataPath != nullptr)
     {
         utf8 absolutePath[MAX_PATH]{};
-        Path::GetAbsolute(absolutePath, std::size(absolutePath), _openrctDataPath);
-        String::Set(gCustomOpenrctDataPath, std::size(gCustomOpenrctDataPath), absolutePath);
-        Memory::Free(_openrctDataPath);
+        Path::GetAbsolute(absolutePath, std::size(absolutePath), _openrct2DataPath);
+        String::Set(gCustomOpenRCT2DataPath, std::size(gCustomOpenRCT2DataPath), absolutePath);
+        Memory::Free(_openrct2DataPath);
     }
 
     if (_rct1DataPath != nullptr)
@@ -245,7 +245,7 @@ exitcode_t HandleNoCommand(CommandLineArgEnumerator* enumerator)
     if (enumerator->TryPopString(&parkUri) && parkUri[0] != '-')
     {
         String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
-        gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
+        gOpenRCT2StartupAction = StartupAction::Open;
     }
 
     return EXITCODE_CONTINUE;
@@ -267,7 +267,7 @@ exitcode_t HandleCommandEdit(CommandLineArgEnumerator* enumerator)
     }
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
-    gOpenRCT2StartupAction = STARTUP_ACTION_EDIT;
+    gOpenRCT2StartupAction = StartupAction::Edit;
     return EXITCODE_CONTINUE;
 }
 
@@ -279,7 +279,7 @@ exitcode_t HandleCommandIntro([[maybe_unused]] CommandLineArgEnumerator* enumera
         return result;
     }
 
-    gOpenRCT2StartupAction = STARTUP_ACTION_INTRO;
+    gOpenRCT2StartupAction = StartupAction::Intro;
     return EXITCODE_CONTINUE;
 }
 
@@ -300,7 +300,7 @@ exitcode_t HandleCommandHost(CommandLineArgEnumerator* enumerator)
         return EXITCODE_FAIL;
     }
 
-    gOpenRCT2StartupAction = STARTUP_ACTION_OPEN;
+    gOpenRCT2StartupAction = StartupAction::Open;
     String::Set(gOpenRCT2StartupActionPath, sizeof(gOpenRCT2StartupActionPath), parkUri);
 
     gNetworkStart = NETWORK_MODE_SERVER;
@@ -367,7 +367,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     String::Set(pathG1Check, sizeof(pathG1Check), path);
     Path::Append(pathG1Check, sizeof(pathG1Check), "Data");
     Path::Append(pathG1Check, sizeof(pathG1Check), "g1.dat");
-    if (!platform_file_exists(pathG1Check))
+    if (!Platform::FileExists(pathG1Check))
     {
         Console::Error::WriteLine("RCT2 path not valid.");
         Console::Error::WriteLine("Unable to find %s.", pathG1Check);
@@ -423,11 +423,11 @@ static exitcode_t HandleCommandRegisterShell([[maybe_unused]] CommandLineArgEnum
 
     if (!_removeShell)
     {
-        platform_setup_file_associations();
+        Platform::SetUpFileAssociations();
     }
     else
     {
-        platform_remove_file_associations();
+        Platform::RemoveFileAssociations();
     }
     return EXITCODE_OK;
 }

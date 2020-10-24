@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -101,13 +101,8 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     scrollingMode += direction;
 
-    // We need to get the text colour code into the beginning of the string, so use a temporary buffer
-    char colouredBannerText[32]{};
-    utf8_write_codepoint(colouredBannerText, FORMAT_COLOUR_CODE_START + banner->text_colour);
-
-    set_format_arg(0, rct_string_id, STR_STRING_STRINGID);
-    set_format_arg(2, const char*, &colouredBannerText);
-    banner->FormatTextTo(gCommonFormatArgs + 2 + sizeof(const char*));
+    auto ft = Formatter::Common();
+    banner->FormatTextTo(ft, /*addColour*/ true);
 
     if (gConfigGeneral.upper_case_banners)
     {
@@ -123,6 +118,6 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     uint16_t string_width = gfx_get_string_width(gCommonStringFormatBuffer);
     uint16_t scroll = (gCurrentTicks / 2) % string_width;
-    auto scrollIndex = scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, scroll, scrollingMode, COLOUR_BLACK);
+    auto scrollIndex = scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
     sub_98199C(session, scrollIndex, 0, 0, 1, 1, 0x15, height + 22, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
 }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,27 +18,16 @@
 
 static constexpr const CoordsXY _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }, { -1, 1 }, { -1, -1 } };
 
-bool rct_sprite::IsMoneyEffect()
+template<> bool SpriteBase::Is<MoneyEffect>() const
 {
-    return this->money_effect.sprite_identifier == SPRITE_IDENTIFIER_MISC
-        && this->money_effect.type == SPRITE_MISC_MONEY_EFFECT;
-}
-
-MoneyEffect* rct_sprite::AsMoneyEffect()
-{
-    MoneyEffect* result = nullptr;
-    if (IsMoneyEffect())
-    {
-        result = (MoneyEffect*)this;
-    }
-    return result;
+    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_MONEY_EFFECT;
 }
 
 /**
  *
  *  rct2: 0x0067351F
  */
-void MoneyEffect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool vertical)
+void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool vertical)
 {
     if (value == MONEY(0, 00))
         return;
@@ -47,16 +36,16 @@ void MoneyEffect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool 
     if (moneyEffect == nullptr)
         return;
 
-    moneyEffect->value = value;
-    moneyEffect->vertical = (vertical ? 1 : 0);
+    moneyEffect->Value = value;
+    moneyEffect->Vertical = (vertical ? 1 : 0);
     moneyEffect->sprite_width = 64;
     moneyEffect->sprite_height_negative = 20;
     moneyEffect->sprite_height_positive = 30;
     moneyEffect->sprite_identifier = SPRITE_IDENTIFIER_MISC;
-    sprite_move(x, y, z, moneyEffect);
+    moneyEffect->MoveTo(effectPos);
     moneyEffect->type = SPRITE_MISC_MONEY_EFFECT;
-    moneyEffect->num_movements = 0;
-    moneyEffect->move_delay = 0;
+    moneyEffect->NumMovements = 0;
+    moneyEffect->MoveDelay = 0;
 
     int16_t offsetX = 0;
     if (!gOpenRCT2NoGraphics)
@@ -67,16 +56,17 @@ void MoneyEffect::CreateAt(money32 value, int32_t x, int32_t y, int32_t z, bool 
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         offsetX = -(gfx_get_string_width(buffer) / 2);
     }
-    moneyEffect->offset_x = offsetX;
-    moneyEffect->wiggle = 0;
+    moneyEffect->OffsetX = offsetX;
+    moneyEffect->Wiggle = 0;
 }
 
 /**
  *
  *  rct2: 0x0069C5D0
  */
-void MoneyEffect::Create(money32 value, CoordsXYZ loc)
+void MoneyEffect::Create(money32 value, const CoordsXYZ& loc)
 {
+    auto offsetLoc = loc;
     if (loc.isNull())
     {
         // If game actions return no valid location of the action we can not use the screen
@@ -97,10 +87,10 @@ void MoneyEffect::Create(money32 value, CoordsXYZ loc)
         if (!mapPositionXY)
             return;
 
-        loc = { *mapPositionXY, tile_element_height(*mapPositionXY) };
+        offsetLoc = { *mapPositionXY, tile_element_height(*mapPositionXY) };
     }
-    loc.z += 10;
-    CreateAt(-value, loc.x, loc.y, loc.z, false);
+    offsetLoc.z += 10;
+    CreateAt(-value, offsetLoc, false);
 }
 
 /**
@@ -109,15 +99,15 @@ void MoneyEffect::Create(money32 value, CoordsXYZ loc)
  */
 void MoneyEffect::Update()
 {
-    invalidate_sprite_2(this);
-    wiggle++;
-    if (wiggle >= 22)
+    Invalidate2();
+    Wiggle++;
+    if (Wiggle >= 22)
     {
-        wiggle = 0;
+        Wiggle = 0;
     }
 
-    move_delay++;
-    if (move_delay < 2)
+    MoveDelay++;
+    if (MoveDelay < 2)
     {
         return;
     }
@@ -125,19 +115,19 @@ void MoneyEffect::Update()
     int32_t newX = x;
     int32_t newY = y;
     int32_t newZ = z;
-    move_delay = 0;
+    MoveDelay = 0;
 
-    if (vertical)
+    if (Vertical)
     {
         newZ += 1;
     }
     newY += _moneyEffectMoveOffset[get_current_rotation()].y;
     newX += _moneyEffectMoveOffset[get_current_rotation()].x;
 
-    sprite_move(newX, newY, newZ, this);
+    MoveTo({ newX, newY, newZ });
 
-    num_movements++;
-    if (num_movements < 55)
+    NumMovements++;
+    if (NumMovements < 55)
     {
         return;
     }
@@ -147,11 +137,11 @@ void MoneyEffect::Update()
 
 std::pair<rct_string_id, money32> MoneyEffect::GetStringId() const
 {
-    rct_string_id spentStringId = vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
-    rct_string_id receiveStringId = vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
+    rct_string_id spentStringId = Vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
+    rct_string_id receiveStringId = Vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
     rct_string_id stringId = receiveStringId;
-    money32 outValue = value;
-    if (value < 0)
+    money32 outValue = Value;
+    if (Value < 0)
     {
         outValue *= -1;
         stringId = spentStringId;

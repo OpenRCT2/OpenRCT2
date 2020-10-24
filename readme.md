@@ -10,12 +10,12 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 ### Download
 | Latest release | Latest development build |
 |----------------|--------------------------|
-| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.2.5-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.2.5+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.3.1-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.3.1+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
 ### Chat
-You only need a [GitHub](https://github.com/), [GitLab](https://gitlab.com), or [Twitter](https://twitter.com) account to access these channels.
+Chat takes place on Discord. You will need to create a Discord account if you don't yet have one.
 
 If you want to help *make* the game, join the developer channel.
 
@@ -25,8 +25,8 @@ If you want to help translate the game to your language, please stop by the Loca
 
 | Language | Non Developer | Developer | Localisation |
 |----------|---------------|-----------|--------------|
-| English | [![Gitter](https://img.shields.io/badge/gitter-general-blue.svg)](https://gitter.im/OpenRCT2/OpenRCT2/non-dev) | [![Gitter](https://img.shields.io/badge/gitter-development-yellowgreen.svg)](https://gitter.im/OpenRCT2/OpenRCT2) | [![Gitter](https://img.shields.io/badge/gitter-localisation-green.svg)](https://gitter.im/OpenRCT2/Localisation) |
-| Nederlands | [![Gitter](https://img.shields.io/badge/gitter-general-blue.svg)](https://gitter.im/OpenRCT2/OpenRCT2/Nederlands) | | |
+| English | [![Discord](https://img.shields.io/badge/discord-general-blue.svg)](https://discord.gg/ZXZd8D8) | [![Discord](https://img.shields.io/badge/discord-development-yellowgreen.svg)](https://discord.gg/fsEwSWs) | [![Discord](https://img.shields.io/badge/discord-localisation-green.svg)](https://discord.gg/sxnrvX9) |
+| Nederlands | [![Discord](https://img.shields.io/badge/discord-general-blue.svg)](https://discord.gg/cQYSXzW) | | |
 
 ---
 
@@ -63,6 +63,10 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 
 [OpenRCT2.org](https://openrct2.org/downloads) offers precompiled builds and installers of the latest master and the develop branch. There is also a cross platform [Launcher](https://github.com/LRFLEW/OpenRCT2Launcher/releases) available that will automatically update your build of the game so that you always have the latest version.
 
+[Flathub](https://flathub.org/) offers flatpaks for Linux distributions that support this application distribution system:
+* [Latest stable release](https://flathub.org/repo/appstream/io.openrct2.OpenRCT2.flatpakref)
+* [Latest development build](https://flathub.org/beta-repo/appstream/io.openrct2.OpenRCT2.flatpakref)
+
 Some Linux distributions offer native packages already. These packages are usually third-party, but we're trying to resolve issues they are facing.
 * ArchLinux AUR: [openrct2-git](https://aur.archlinux.org/packages/openrct2-git) and [openrct2](https://aur.archlinux.org/packages/openrct2)
 * Ubuntu PPA: [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (nightly builds)
@@ -72,7 +76,8 @@ Some Linux distributions offer native packages already. These packages are usual
 * Fedora 28 i386/amd64: [openrct2](https://copr.fedorainfracloud.org/coprs/nauticalnexus/openrct2/)
 
 Some \*BSD operating systems offer native packages. These packages are usually third-party, but we're trying to resolve issues they are facing.
-* OpenBSD: [games/openrct2](http://openports.se/games/openrct2)
+* FreeBSD: [games/openrct2](https://www.freshports.org/games/openrct2)
+* OpenBSD: [games/openrct2](https://openports.se/games/openrct2)
 
 ---
 
@@ -104,12 +109,15 @@ The program can also be built as a command line program using CMake. This type o
 - libpng (>= 1.2)
 - speexdsp (only for UI client)
 - curl (only if building with http support)
-- jansson (>= 2.5)
+- nlohmann-json (>= 3.6.0)
 - openssl (>= 1.0; only if building with multiplayer support)
 - icu (>= 59.0)
 - zlib
 - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
+- duktape (unless scripting is disabled)
 - cmake
+
+Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#required-packages-general for more information about installing the packages.
 
 ---
 
@@ -140,7 +148,7 @@ The recommended way of building OpenRCT2 for macOS is with Xcode. The Xcode buil
 #### CMake:
 A command line version of OpenRCT2 can be built using CMake. This type of build requires you to provide the dependencies yourself. The supported method of doing this is with [Homebrew](http://brew.sh). Once you have Homebrew installed, you can download all the required libraries with this command:
 ```
-brew install cmake openssl jansson libpng sdl2 speexdsp libzip freetype pkg-config
+brew install cmake duktape freetype icu4c libpng libzip nlohmann-json openssl pkg-config sdl2 speexdsp
 ```
 
 Once you have the dependencies installed, you can build the project using CMake using the following commands:
@@ -153,8 +161,10 @@ ln -s ../data data
 ```
 Then you can run the game by running `./openrct2`.
 
+Detailed instructions can be found on [Building OpenRCT2 on macOS using CMake](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-macOS-using-CMake).
+
 ### Linux:
-The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#mac--linux), then:
+The standard CMake build procedure is to install the [required libraries](https://github.com/OpenRCT2/OpenRCT2#linux), then:
 ```
 mkdir build
 cd build
@@ -165,7 +175,7 @@ DESTDIR=. make install # the install target creates all the necessary files in p
 
 You can also use Ninja in place of Make, if you prefer, see Wiki for details.
 
-Detailed instructions can be found on our [wiki](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
+Detailed instructions can be found on [Building OpenRCT2 on Linux](https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux).
 
 ---
 
@@ -178,19 +188,19 @@ Please read our [contributing guidelines](https://github.com/OpenRCT2/OpenRCT2/b
 A list of bugs can be found on the [issue tracker](https://github.com/OpenRCT2/OpenRCT2/issues). Feel free to work on any bug and submit a pull request to the develop branch with the fix. Mentioning that you intend to fix a bug on the issue will prevent other people from trying as well.
 
 ## 4.2 New features
-Please talk to the OpenRCT2 team first before starting to develop a new feature. We may already have plans or reasons against it, therefore contacting us will allow us to help you or prevent you from wasting any time. You can talk to us via gitter, see links at the top of this page.
+Please talk to the OpenRCT2 team first before starting to develop a new feature. We may already have plans for or reasons against something that you'd like to work on. Therefore contacting us will allow us to help you or prevent you from wasting any time. You can talk to us via Discord, see links at the top of this page.
 
 ## 4.3 Translation
-You can translate the game into other languages by editing the language files in ```data/language``` directory. Please join discussions and submit pull requests to [OpenRCT2/Localisation](https://github.com/OpenRCT2/Localisation).
+You can translate the game into other languages by editing the language files in ```data/language``` directory. Please join discussions in the [#localisation channel on Discord](https://discordapp.com/invite/sxnrvX9) and submit pull requests to [OpenRCT2/Localisation](https://github.com/OpenRCT2/Localisation).
 
 ## 4.4 Graphics
-You can help create new graphics for the game by visiting the [OpenGraphics project](https://gitter.im/OpenRCT2/OpenGraphics). 3D modellers needed!
+You can help create new graphics for the game by visiting the [OpenGraphics project](https://github.com/OpenRCT2/OpenGraphics). 3D modellers needed!
 
 ## 4.5 Audio
-You can help create the music and sound effects for the game, drop by [the OpenMusic chat](https://gitter.im/OpenRCT2/OpenMusic) to find out more.
+You can help create the music and sound effects for the game. Check out the OpenMusic repository and drop by our [#open-sound-and-music channel on Discord](https://discord.gg/9y8WbcX) to find out more.
 
 ## 4.6 Scenarios
-We also need need scenarios to distribute with the game, when the time comes. For that, we need talented scenario makers! Come chat with us [over here](https://gitter.im/PFCKrutonium/OpenRCT2-OpenScenarios)!
+We would also like to distribute additional scenarios with the game, when the time comes. For that, we need talented scenario makers! Check out the [OpenScenarios repository](https://github.com/PFCKrutonium/OpenRCT2-OpenScenarios).
 
 ---
 

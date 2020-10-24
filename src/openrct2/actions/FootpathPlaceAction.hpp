@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Park.h"
+#include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 #include "GameAction.h"
@@ -27,17 +28,25 @@ DEFINE_GAME_ACTION(FootpathPlaceAction, GAME_COMMAND_PLACE_PATH, GameActionResul
 private:
     CoordsXYZ _loc;
     uint8_t _slope;
-    uint8_t _type;
+    ObjectEntryIndex _type;
     Direction _direction = INVALID_DIRECTION;
 
 public:
     FootpathPlaceAction() = default;
-    FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, uint8_t type, Direction direction = INVALID_DIRECTION)
+    FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, Direction direction = INVALID_DIRECTION)
         : _loc(loc)
         , _slope(slope)
         , _type(type)
         , _direction(direction)
     {
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("object", _type);
+        visitor.Visit("direction", _direction);
+        visitor.Visit("slope", _slope);
     }
 
     uint16_t GetActionFlags() const override
@@ -61,7 +70,7 @@ public:
 
         gFootpathGroundFlags = 0;
 
-        if (map_is_edge(_loc))
+        if (!LocationValid(_loc) || map_is_edge(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_FOOTPATH_HERE, STR_OFF_EDGE_OF_MAP);
         }
@@ -129,7 +138,7 @@ public:
                 auto zLow = _loc.z;
                 auto zHigh = zLow + PATH_CLEARANCE;
                 wall_remove_intersecting_walls(
-                    { _loc, zLow, zHigh + (_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 16 : 0 },
+                    { _loc, zLow, zHigh + ((_slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) ? 16 : 0) },
                     direction_reverse(_direction));
                 wall_remove_intersecting_walls(
                     { _loc.x - CoordsDirectionDelta[_direction].x, _loc.y - CoordsDirectionDelta[_direction].y, zLow, zHigh },
@@ -182,16 +191,32 @@ private:
         }
 
         pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
-        if (_type & FOOTPATH_ELEMENT_INSERT_QUEUE)
+        bool isQueue = _type & FOOTPATH_ELEMENT_INSERT_QUEUE;
+        pathElement->SetIsQueue(isQueue);
+
+        rct_scenery_entry* elem = pathElement->GetAdditionEntry();
+        if (elem != nullptr)
         {
-            pathElement->SetIsQueue(true);
+            if (isQueue)
+            {
+                // remove any addition that isn't a TV or a lamp
+                if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0
+                    && (elem->path_bit.flags & PATH_BIT_FLAG_LAMP) == 0)
+                {
+                    pathElement->SetIsBroken(false);
+                    pathElement->SetAddition(0);
+                }
+            }
+            else
+            {
+                // remove all TVs
+                if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) != 0)
+                {
+                    pathElement->SetIsBroken(false);
+                    pathElement->SetAddition(0);
+                }
+            }
         }
-        else
-        {
-            pathElement->SetIsQueue(false);
-        }
-        pathElement->SetAddition(0);
-        pathElement->SetIsBroken(false);
 
         RemoveIntersectingWalls(pathElement);
         return res;

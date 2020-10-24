@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -13,7 +13,7 @@
 
 #include <string_view>
 
-interface IObjectRepository;
+struct IObjectRepository;
 class Object;
 struct rct_object_entry;
 

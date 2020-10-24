@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,14 +46,14 @@ void scrolling_text_initialise_bitmaps()
 {
     uint8_t drawingSurface[64];
     rct_drawpixelinfo dpi;
-    dpi.bits = (uint8_t*)&drawingSurface;
+    dpi.bits = reinterpret_cast<uint8_t*>(&drawingSurface);
     dpi.width = 8;
     dpi.height = 8;
 
     for (int32_t i = 0; i < FONT_SPRITE_GLYPH_COUNT; i++)
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
-        gfx_draw_sprite_software(&dpi, ImageId::FromUInt32(SPR_CHAR_START + FONT_SPRITE_BASE_TINY + i), -1, 0);
+        gfx_draw_sprite_software(&dpi, ImageId::FromUInt32(SPR_CHAR_START + FONT_SPRITE_BASE_TINY + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -75,7 +75,7 @@ void scrolling_text_initialise_bitmaps()
     {
         std::fill_n(drawingSurface, sizeof(drawingSurface), 0x00);
         gfx_draw_sprite_software(
-            &dpi, ImageId::FromUInt32(SPR_G2_CHAR_BEGIN + (FONT_SIZE_TINY * SPR_G2_GLYPH_COUNT) + i), -1, 0);
+            &dpi, ImageId::FromUInt32(SPR_G2_CHAR_BEGIN + (FONT_SIZE_TINY * SPR_G2_GLYPH_COUNT) + i), { -1, 0 });
 
         for (int32_t x = 0; x < 8; x++)
         {
@@ -128,7 +128,7 @@ static uint8_t* font_sprite_get_codepoint_bitmap(int32_t codepoint)
 }
 
 static int32_t scrolling_text_get_matching_or_oldest(
-    rct_string_id stringId, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
+    rct_string_id stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     uint32_t oldestId = 0xFFFFFFFF;
     int32_t scrollIndex = -1;
@@ -143,7 +143,7 @@ static int32_t scrolling_text_get_matching_or_oldest(
 
         // If exact match return the matching index
         if (scrollText->string_id == stringId
-            && std::memcmp(scrollText->string_args, gCommonFormatArgs, sizeof(scrollText->string_args)) == 0
+            && std::memcmp(scrollText->string_args, ft.Buf(), sizeof(scrollText->string_args)) == 0
             && scrollText->colour == colour && scrollText->position == scroll && scrollText->mode == scrollingMode)
         {
             scrollText->id = _drawSCrollNextIndex;
@@ -1442,7 +1442,7 @@ void scrolling_text_invalidate()
 }
 
 int32_t scrolling_text_setup(
-    paint_session* session, rct_string_id stringId, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
+    paint_session* session, rct_string_id stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
 
@@ -1450,19 +1450,19 @@ int32_t scrolling_text_setup(
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    if (dpi->zoom_level != 0)
+    if (dpi->zoom_level > 0)
         return SPR_SCROLLING_TEXT_DEFAULT;
 
     _drawSCrollNextIndex++;
-
-    int32_t scrollIndex = scrolling_text_get_matching_or_oldest(stringId, scroll, scrollingMode, colour);
+    ft.Rewind();
+    int32_t scrollIndex = scrolling_text_get_matching_or_oldest(stringId, ft, scroll, scrollingMode, colour);
     if (scrollIndex >= SPR_SCROLLING_TEXT_START)
         return scrollIndex;
 
     // Setup scrolling text
     auto scrollText = &_drawScrollTextList[scrollIndex];
     scrollText->string_id = stringId;
-    std::memcpy(scrollText->string_args, gCommonFormatArgs, sizeof(scrollText->string_args));
+    std::memcpy(scrollText->string_args, ft.Buf(), sizeof(scrollText->string_args));
     scrollText->colour = colour;
     scrollText->position = scroll;
     scrollText->mode = scrollingMode;
@@ -1497,7 +1497,7 @@ static void scrolling_text_set_bitmap_for_sprite(
     utf8* ch = text;
     while (true)
     {
-        uint32_t codepoint = utf8_get_next(ch, (const utf8**)&ch);
+        uint32_t codepoint = utf8_get_next(ch, const_cast<const utf8**>(&ch));
 
         // If at the end of the string loop back to the start
         if (codepoint == 0)
@@ -1567,7 +1567,7 @@ static void scrolling_text_set_bitmap_for_ttf(
     utf8* dstCh = text;
     utf8* ch = text;
     int32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, (const utf8**)&ch)) != 0)
+    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&ch))) != 0)
     {
         if (utf8_is_format_code(codepoint))
         {
@@ -1596,7 +1596,7 @@ static void scrolling_text_set_bitmap_for_ttf(
 
     int32_t pitch = surface->pitch;
     int32_t width = surface->w;
-    auto src = (const uint8_t*)surface->pixels;
+    auto src = static_cast<const uint8_t*>(surface->pixels);
 
     // Pitch offset
     src += 2 * pitch;

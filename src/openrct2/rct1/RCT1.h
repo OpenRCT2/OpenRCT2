@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,6 +28,7 @@ constexpr const uint8_t RCT1_RESEARCH_FLAGS_SEPARATOR = 0xFF;
 constexpr const uint16_t RCT1_MAX_ANIMATED_OBJECTS = 1000;
 constexpr const uint8_t RCT1_MAX_BANNERS = 100;
 constexpr int32_t RCT1_COORDS_Z_STEP = 4;
+constexpr const uint32_t RCT1_NUM_LL_CSG_ENTRIES = 69917;
 
 struct ParkLoadResult;
 
@@ -142,7 +143,7 @@ struct rct1_ride
     uint8_t chairlift_bullwheel_z[2];         // 0x0EE
     union
     {
-        rating_tuple ratings;
+        RatingTuple ratings;
         struct
         {
             ride_rating excitement; // 0x0F0
@@ -266,19 +267,19 @@ struct rct1_vehicle : RCT12SpriteBase
     uint16_t var_44;
     uint16_t mass;         // 0x46
     uint16_t update_flags; // 0x48
-    uint8_t swing_sprite;
+    uint8_t SwingSprite;
     uint8_t current_station; // 0x4B
     union
     {
-        int16_t swinging_car_var_0; // 0x4C
-        int16_t current_time;       // 0x4C
+        int16_t SwingPosition; // 0x4C
+        int16_t current_time;  // 0x4C
         struct
         {
             int8_t ferris_wheel_var_0; // 0x4C
             int8_t ferris_wheel_var_1; // 0x4D
         };
     };
-    int16_t var_4E;
+    int16_t SwingSpeed;
     uint8_t status;                  // 0x50
     uint8_t sub_state;               // 0x51
     uint16_t peep[32];               // 0x52
@@ -500,7 +501,7 @@ enum RCT1_PEEP_SPRITE_TYPE
     RCT1_PEEP_SPRITE_TYPE_HEAD_DOWN = 23,
     RCT1_PEEP_SPRITE_TYPE_NAUSEOUS = 24,
     RCT1_PEEP_SPRITE_TYPE_VERY_NAUSEOUS = 25,
-    RCT1_PEEP_SPRITE_TYPE_REQUIRE_BATHROOM = 26,
+    RCT1_PEEP_SPRITE_TYPE_REQUIRE_TOILET = 26,
     RCT1_PEEP_SPRITE_TYPE_HAT = 27,
     RCT1_PEEP_SPRITE_TYPE_BURGER = 28,
     RCT1_PEEP_SPRITE_TYPE_TENTACLE = 29,
@@ -671,8 +672,8 @@ struct rct1_s4
     uint32_t game_time_counter;
     rct1_ride rides[RCT12_MAX_RIDES_IN_PARK];
     uint16_t unk_game_time_counter;
-    uint16_t view_x;
-    uint16_t view_y;
+    int16_t view_x;
+    int16_t view_y;
     uint8_t view_zoom;
     uint8_t view_rotation;
     RCT12MapAnimation map_animations[RCT1_MAX_ANIMATED_OBJECTS];
@@ -1055,19 +1056,58 @@ enum
 
 enum
 {
+    RCT1_WALL_TYPE_MESH_FENCE = 0,
+    RCT1_WALL_TYPE_MESH_FENCE_WITH_GATE = 1,
+    RCT1_WALL_TYPE_ROMAN = 2,
+    RCT1_WALL_TYPE_EGYPTIAN = 3,
+    RCT1_WALL_TYPE_HEDGE = 4,
+    RCT1_WALL_TYPE_HEDGE_WITH_GATE = 5,
+    RCT1_WALL_TYPE_BLUE_PLAYING_CARDS = 6,
+    RCT1_WALL_TYPE_RED_PLAYING_CARDS = 7,
+    RCT1_WALL_TYPE_WHITE_RAILING = 8,
+    RCT1_WALL_TYPE_WHITE_RAILING_WITH_GATE = 9,
+    RCT1_WALL_TYPE_MARTIAN = 10,
     RCT1_WALL_TYPE_GLASS_SMOOTH = 11,
-    RCT1_WALL_TYPE_GLASS_PANELS = 22,
     RCT1_WALL_TYPE_WOODEN_PANEL_FENCE = 12,
     RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE = 13,
+    RCT1_WALL_TYPE_WOODEN_POST_FENCE = 14,
+    RCT1_WALL_TYPE_RED_WOODEN_POST_FENCE = 15,
+    RCT1_WALL_TYPE_BARBED_WIRE = 16,
+    RCT1_WALL_TYPE_BARBED_WIRE_WITH_GATE = 17,
+    RCT1_WALL_TYPE_PRIMITIVE_TALL_WOOD_FENCE = 18,
+    RCT1_WALL_TYPE_PRIMITIVE_SHORT_WOOD_FENCE = 19,
+    RCT1_WALL_TYPE_IRON_RAILING = 20,
+    RCT1_WALL_TYPE_IRON_RAILING_WITH_GATE = 21,
+    RCT1_WALL_TYPE_GLASS_PANELS = 22,
+    RCT1_WALL_TYPE_BONE_FENCE = 23,
+    RCT1_WALL_TYPE_BRICK = 24,
+    RCT1_WALL_TYPE_BRICK_WITH_GATE = 25,
     RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE = 26,
     RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE = 27,
+    RCT1_WALL_TYPE_STONE = 28,
+    RCT1_WALL_TYPE_STONE_WITH_GATE = 29,
+    RCT1_WALL_TYPE_WOODEN_FENCE = 30,
+    RCT1_WALL_TYPE_JUNGLE = 31,
+    RCT1_WALL_TYPE_CONIFER_HEDGE = 32,
+    RCT1_WALL_TYPE_CONIFER_HEDGE_WITH_GATE = 33,
+    RCT1_WALL_TYPE_SMALL_BROWN_CASTLE = 34,
     RCT1_WALL_TYPE_SMALL_GREY_CASTLE = 35,
-    RCT1_WALL_TYPE_LARGE_CREY_CASTLE = 42,
-    RCT1_WALL_TYPE_LARGE_CREY_CASTLE_CROSS = 43,
-    RCT1_WALL_TYPE_LARGE_CREY_CASTLE_GATE = 44,
-    RCT1_WALL_TYPE_LARGE_CREY_CASTLE_WINDOW = 45,
-    RCT1_WALL_TYPE_MEDIUM_CREY_CASTLE = 46,
+    RCT1_WALL_TYPE_ROMAN_COLUMN = 36,
+    RCT1_WALL_TYPE_LARGE_BROWN_CASTLE = 37,
+    RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_CROSS = 38,
+    RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_GATE = 39,
+    RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_WINDOW = 40,
+    RCT1_WALL_TYPE_MEDIUM_BROWN_CASTLE = 41,
+    RCT1_WALL_TYPE_LARGE_GREY_CASTLE = 42,
+    RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS = 43,
+    RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE = 44,
+    RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW = 45,
+    RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE = 46,
+    RCT1_WALL_TYPE_CREEPY = 47,
+    RCT1_WALL_TYPE_CREEPY_GATE = 48,
+    RCT1_WALL_TYPE_BARBED_WIRE_WITH_SNOW = 49,
     RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW = 50,
+    RCT1_WALL_TYPE_WOODEN_POST_FENCE_WITH_SNOW = 51,
 };
 
 enum
@@ -1220,6 +1260,8 @@ enum
     RCT1_SCENERY_GEOMETRIC_SCULPTURE_3 = 168, // TGE3
     RCT1_SCENERY_GEOMETRIC_SCULPTURE_4 = 170, // TGE4
     RCT1_SCENERY_GEOMETRIC_SCULPTURE_5 = 171, // TGE5
+
+    RCT1_SCENERY_SMALL_RED_GARDENS = 176, // TG19
 };
 
 enum

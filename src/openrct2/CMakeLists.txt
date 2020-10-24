@@ -8,6 +8,11 @@ endif ()
 file(GLOB_RECURSE OPENRCT2_CORE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.cpp")
 file(GLOB_RECURSE OPENRCT2_CORE_HEADERS "${CMAKE_CURRENT_LIST_DIR}/*.h"
                                         "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
+list(REMOVE_ITEM OPENRCT2_CORE_HEADERS
+    "${CMAKE_CURRENT_LIST_DIR}/thirdparty/filesystem.hpp"
+    "${CMAKE_CURRENT_LIST_DIR}/thirdparty/linenoise.hpp"
+)
+
 if (APPLE)
     file(GLOB_RECURSE OPENRCT2_CORE_MM_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.mm")
     set_source_files_properties(${OPENRCT2_CORE_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
@@ -18,14 +23,14 @@ set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 
 # GCC / Clang likes us to pass the -lstdc++fs flag to link C++17 filesystem implementation.
-if (NOT MINGW)
+if (NOT MINGW AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
     if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         target_link_libraries(${PROJECT_NAME} stdc++fs)
     endif()
 endif()
 
 if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
-    if (WIN32)
+    if (WIN32 AND NOT MINGW_TARGET_NT5_1)
         target_link_libraries(${PROJECT_NAME} bcrypt)
     else ()
         if (APPLE)
@@ -50,7 +55,7 @@ if (NOT DISABLE_NETWORK AND WIN32)
 endif ()
 
 if (NOT DISABLE_HTTP)
-    if (WIN32)
+    if (WIN32 AND NOT MINGW_TARGET_NT5_1)
         target_link_libraries(${PROJECT_NAME} winhttp)
     else ()
         PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
@@ -95,17 +100,24 @@ if (NOT DISABLE_GOOGLE_BENCHMARK)
     endif ()
 endif ()
 
+if (ENABLE_SCRIPTING)
+    find_package(duktape CONFIG REQUIRED)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${DUKTAPE_INCLUDE_DIRS})
+    if (STATIC)
+        target_link_libraries(${PROJECT_NAME} ${DUKTAPE_LIBRARY} ${DUKTAPE_STATIC_LIBRARY})
+    else ()
+        target_link_libraries(${PROJECT_NAME} ${DUKTAPE_LIBRARY})
+    endif ()
+endif ()
+
 # Third party libraries
 if (MSVC)
-    find_package(jansson CONFIG REQUIRED)
-    set(JANSSON_LIBRARIES "jansson::jansson")
     find_package(png 1.6 REQUIRED)
     find_package(zlib REQUIRED)
 
     find_path(LIBZIP_INCLUDE_DIRS zip.h)
     find_library(LIBZIP_LIBRARIES zip)
 else ()
-    PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.5)
     PKG_CHECK_MODULES(LIBZIP REQUIRED libzip>=1.0)
     PKG_CHECK_MODULES(ZLIB REQUIRED zlib)
 
@@ -122,20 +134,22 @@ else ()
 endif ()
 
 if (STATIC)
-    target_link_libraries(${PROJECT_NAME} ${JANSSON_STATIC_LIBRARIES}
+    target_link_libraries(${PROJECT_NAME}
                                      ${PNG_STATIC_LIBRARIES}
                                      ${ZLIB_STATIC_LIBRARIES}
                                      ${LIBZIP_STATIC_LIBRARIES})
 else ()
-    target_link_libraries(${PROJECT_NAME} ${JANSSON_LIBRARIES}
+    target_link_libraries(${PROJECT_NAME}
                                      ${PNG_LIBRARIES}
                                      ${ZLIB_LIBRARIES}
                                      ${LIBZIP_LIBRARIES})
 endif ()
 
 if (MINGW)
-    # Hardcode libraries used by libzip on mingw
-    target_link_libraries(${PROJECT_NAME} crypto ws2_32)
+    # Hardcode libraries used on mingw
+    target_link_libraries(${PROJECT_NAME} crypto ws2_32 tasn1 unistring iconv p11-kit hogweed gmp nettle)
+    # Link in libssp
+    target_link_libraries(${PROJECT_NAME} -fstack-protector-strong)
 endif()
 
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
@@ -160,13 +174,6 @@ if (NOT MINGW AND NOT MSVC)
     endif ()
 endif ()
 
-if (NOT APPLE AND NOT MINGW AND NOT MSVC)
-    # This is ugly hack to work around https://bugs.launchpad.net/ubuntu/+source/gcc-5/+bug/1568899.
-    # Once C++17 is enabled (and thus old compilers are no longer supported, this needs to be gone.
-    # We cannot simply detect the _compiler_ version, as the bug exists with the C++ _library_
-    target_link_libraries(${PROJECT_NAME} gcc_s gcc)
-endif ()
-
 if (NOT DISABLE_TTF)
     if (STATIC)
         target_link_libraries(${PROJECT_NAME} ${FREETYPE_STATIC_LIBRARIES})
@@ -181,6 +188,10 @@ if (NOT DISABLE_TTF)
             target_link_libraries(${PROJECT_NAME} ${FONTCONFIG_LIBRARIES})
         endif ()
     endif ()
+
+    if (${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
+        target_link_libraries(${PROJECT_NAME} -L${OPENBSD_X11BASE}/lib)
+    endif ()
 endif ()
 
 if (HAVE_DISCORD_RPC)
@@ -189,9 +200,9 @@ endif()
 
 # Includes
 target_include_directories(${PROJECT_NAME} PRIVATE ${LIBZIP_INCLUDE_DIRS})
-target_include_directories(${PROJECT_NAME} PUBLIC ${JANSSON_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PNG_INCLUDE_DIRS}
-                                              ${ZLIB_INCLUDE_DIRS})
+                                                   ${ZLIB_INCLUDE_DIRS})
+include_directories(${PROJECT_NAME} SYSTEM ${CMAKE_CURRENT_LIST_DIR}/../thirdparty)
 
 # To avoid unnecessary rebuilds set the current branch and
 # short sha1 only for the two files that use these

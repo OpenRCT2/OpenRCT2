@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,7 +16,10 @@
 #ifdef _WIN32
 
 // Windows.h needs to be included first
+// clang-format off
 #    include <windows.h>
+#    include <shellapi.h>
+// clang-format on
 
 // Then the rest
 #    include "../OpenRCT2.h"
@@ -27,6 +30,7 @@
 #    include "../localisation/Language.h"
 #    include "../rct2/RCT2.h"
 #    include "../util/Util.h"
+#    include "Platform2.h"
 #    include "platform.h"
 
 #    include <algorithm>
@@ -54,47 +58,6 @@
 #        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
 #    endif
 
-static HMODULE _dllModule = nullptr;
-
-static HMODULE plaform_get_dll_module()
-{
-    if (_dllModule == nullptr)
-    {
-        _dllModule = GetModuleHandle(nullptr);
-    }
-    return _dllModule;
-}
-
-void platform_get_date_local(rct2_date* out_date)
-{
-    assert(out_date != nullptr);
-    SYSTEMTIME systime;
-
-    GetLocalTime(&systime);
-    out_date->day = systime.wDay;
-    out_date->month = systime.wMonth;
-    out_date->year = systime.wYear;
-    out_date->day_of_week = systime.wDayOfWeek;
-}
-
-void platform_get_time_local(rct2_time* out_time)
-{
-    assert(out_time != nullptr);
-    SYSTEMTIME systime;
-    GetLocalTime(&systime);
-    out_time->hour = systime.wHour;
-    out_time->minute = systime.wMinute;
-    out_time->second = systime.wSecond;
-}
-
-bool platform_file_exists(const utf8* path)
-{
-    auto wPath = String::ToWideChar(path);
-    DWORD result = GetFileAttributesW(wPath.c_str());
-    DWORD error = GetLastError();
-    return !(result == INVALID_FILE_ATTRIBUTES && (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND));
-}
-
 bool platform_directory_exists(const utf8* path)
 {
     auto wPath = String::ToWideChar(path);
@@ -108,20 +71,7 @@ bool platform_original_game_data_exists(const utf8* path)
     safe_strcpy(checkPath, path, MAX_PATH);
     safe_strcat_path(checkPath, "Data", MAX_PATH);
     safe_strcat_path(checkPath, "g1.dat", MAX_PATH);
-    return platform_file_exists(checkPath);
-}
-
-bool platform_original_rct1_data_exists(const utf8* path)
-{
-    char checkPath[MAX_PATH];
-    char checkPath2[MAX_PATH];
-    safe_strcpy(checkPath, path, MAX_PATH);
-    safe_strcpy(checkPath2, path, MAX_PATH);
-    safe_strcat_path(checkPath, "Data", MAX_PATH);
-    safe_strcat_path(checkPath2, "Data", MAX_PATH);
-    safe_strcat_path(checkPath, "csg1.dat", MAX_PATH);
-    safe_strcat_path(checkPath2, "csg1.1", MAX_PATH);
-    return platform_file_exists(checkPath) || platform_file_exists(checkPath2);
+    return Platform::FileExists(checkPath);
 }
 
 bool platform_ensure_directory_exists(const utf8* path)
@@ -222,8 +172,8 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
         return false;
     }
 
-    wSteamPath = (wchar_t*)malloc(size);
-    result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, (LPBYTE)wSteamPath, &size);
+    wSteamPath = reinterpret_cast<wchar_t*>(malloc(size));
+    result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, reinterpret_cast<LPBYTE>(wSteamPath), &size);
     if (result == ERROR_SUCCESS)
     {
         auto utf8SteamPath = String::ToUtf8(wSteamPath);
@@ -263,7 +213,7 @@ uint16_t platform_get_locale_language()
 {
     CHAR langCode[4];
 
-    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SABBREVLANGNAME, (LPSTR)&langCode, sizeof(langCode)) == 0)
+    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SABBREVLANGNAME, reinterpret_cast<LPSTR>(&langCode), sizeof(langCode)) == 0)
     {
         return LANGUAGE_UNDEFINED;
     }
@@ -350,7 +300,7 @@ time_t platform_file_get_modified_time(const utf8* path)
 uint8_t platform_get_locale_currency()
 {
     CHAR currCode[4];
-    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SINTLSYMBOL, (LPSTR)&currCode, sizeof(currCode)) == 0)
+    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SINTLSYMBOL, reinterpret_cast<LPSTR>(&currCode), sizeof(currCode)) == 0)
     {
         return platform_get_currency_value(nullptr);
     }
@@ -358,42 +308,46 @@ uint8_t platform_get_locale_currency()
     return platform_get_currency_value(currCode);
 }
 
-uint8_t platform_get_locale_measurement_format()
+MeasurementFormat platform_get_locale_measurement_format()
 {
     UINT measurement_system;
     if (GetLocaleInfo(
-            LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, (LPSTR)&measurement_system, sizeof(measurement_system))
+            LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPSTR>(&measurement_system),
+            sizeof(measurement_system))
         == 0)
     {
-        return MEASUREMENT_FORMAT_METRIC;
+        return MeasurementFormat::Metric;
     }
 
     switch (measurement_system)
     {
         case 1:
-            return MEASUREMENT_FORMAT_IMPERIAL;
+            return MeasurementFormat::Imperial;
         case 0:
         default:
-            return MEASUREMENT_FORMAT_METRIC;
+            return MeasurementFormat::Metric;
     }
 }
 
-uint8_t platform_get_locale_temperature_format()
+TemperatureUnit platform_get_locale_temperature_format()
 {
     UINT fahrenheit;
 
     // GetLocaleInfo will set fahrenheit to 1 if the locale on this computer
     // uses the United States measurement system or 0 otherwise.
-    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, (LPSTR)&fahrenheit, sizeof(fahrenheit)) == 0)
+    if (GetLocaleInfo(
+            LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPSTR>(&fahrenheit),
+            sizeof(fahrenheit))
+        == 0)
     {
         // Assume celsius by default if function call fails
-        return TEMPERATURE_FORMAT_C;
+        return TemperatureUnit::Celsius;
     }
 
     if (fahrenheit)
-        return TEMPERATURE_FORMAT_F;
+        return TemperatureUnit::Fahrenheit;
     else
-        return TEMPERATURE_FORMAT_C;
+        return TemperatureUnit::Celsius;
 }
 
 uint8_t platform_get_locale_date_format()
@@ -401,7 +355,7 @@ uint8_t platform_get_locale_date_format()
 #    if _WIN32_WINNT >= 0x0600
     // Retrieve short date format, eg "MM/dd/yyyy"
     wchar_t dateFormat[20];
-    if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, (int)std::size(dateFormat)) == 0)
+    if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, static_cast<int>(std::size(dateFormat))) == 0)
     {
         return DATE_FORMAT_DAY_MONTH_YEAR;
     }
@@ -415,8 +369,8 @@ uint8_t platform_get_locale_date_format()
     wchar_t first[sizeof(dateFormat)];
     wchar_t second[sizeof(dateFormat)];
     if (swscanf_s(
-            dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, (uint32_t)std::size(first), second,
-            (uint32_t)std::size(second))
+            dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, static_cast<uint32_t>(std::size(first)), second,
+            static_cast<uint32_t>(std::size(second)))
         != 2)
     {
         return DATE_FORMAT_DAY_MONTH_YEAR;
@@ -496,7 +450,8 @@ std::string platform_get_absolute_path(const utf8* relativePath, const utf8* bas
 
         auto pathToResolveW = String::ToWideChar(pathToResolve);
         wchar_t fullPathW[MAX_PATH]{};
-        auto fullPathLen = GetFullPathNameW(pathToResolveW.c_str(), (DWORD)std::size(fullPathW), fullPathW, nullptr);
+        auto fullPathLen = GetFullPathNameW(
+            pathToResolveW.c_str(), static_cast<DWORD>(std::size(fullPathW)), fullPathW, nullptr);
         if (fullPathLen != 0)
         {
             result = String::ToUtf8(fullPathW);
@@ -510,7 +465,8 @@ datetime64 platform_get_datetime_now_utc()
     // Get file time
     FILETIME fileTime;
     GetSystemTimeAsFileTime(&fileTime);
-    uint64_t fileTime64 = ((uint64_t)fileTime.dwHighDateTime << 32ULL) | ((uint64_t)fileTime.dwLowDateTime);
+    uint64_t fileTime64 = (static_cast<uint64_t>(fileTime.dwHighDateTime) << 32ULL)
+        | (static_cast<uint64_t>(fileTime.dwLowDateTime));
 
     // File time starts from: 1601-01-01T00:00:00Z
     // Convert to start from: 0001-01-01T00:00:00Z
@@ -551,153 +507,11 @@ bool platform_process_is_elevated()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// File association setup
+// URI protocol association setup
 ///////////////////////////////////////////////////////////////////////////////
 
 #    define SOFTWARE_CLASSES L"Software\\Classes"
 #    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
-
-static std::wstring get_progIdName(const std::string_view& extension)
-{
-    auto progIdName = std::string(OPENRCT2_NAME) + std::string(extension);
-    auto progIdNameW = String::ToWideChar(progIdName);
-    return progIdNameW;
-}
-
-static bool windows_setup_file_association(
-    const utf8* extension, const utf8* fileTypeText, const utf8* commandText, const utf8* commandArgs, const uint32_t iconIndex)
-{
-    wchar_t exePathW[MAX_PATH];
-    wchar_t dllPathW[MAX_PATH];
-
-    [[maybe_unused]] int32_t printResult;
-
-    GetModuleFileNameW(nullptr, exePathW, (DWORD)std::size(exePathW));
-    GetModuleFileNameW(plaform_get_dll_module(), dllPathW, (DWORD)std::size(dllPathW));
-
-    auto extensionW = String::ToWideChar(extension);
-    auto fileTypeTextW = String::ToWideChar(fileTypeText);
-    auto commandTextW = String::ToWideChar(commandText);
-    auto commandArgsW = String::ToWideChar(commandArgs);
-    auto progIdNameW = get_progIdName(extension);
-
-    bool result = false;
-    HKEY hKey = nullptr;
-    HKEY hRootKey = nullptr;
-
-    // [HKEY_CURRENT_USER\Software\Classes]
-    if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) != ERROR_SUCCESS)
-    {
-        goto fail;
-    }
-
-    // [hRootKey\.ext]
-    if (RegSetValueW(hRootKey, extensionW.c_str(), REG_SZ, progIdNameW.c_str(), 0) != ERROR_SUCCESS)
-    {
-        goto fail;
-    }
-
-    if (RegCreateKeyW(hRootKey, progIdNameW.c_str(), &hKey) != ERROR_SUCCESS)
-    {
-        goto fail;
-    }
-
-    // [hRootKey\OpenRCT2.ext]
-    if (RegSetValueW(hKey, nullptr, REG_SZ, fileTypeTextW.c_str(), 0) != ERROR_SUCCESS)
-    {
-        goto fail;
-    }
-    // [hRootKey\OpenRCT2.ext\DefaultIcon]
-    wchar_t szIconW[MAX_PATH];
-    printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
-    assert(printResult >= 0);
-    if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS)
-    {
-        goto fail;
-    }
-
-    // [hRootKey\OpenRCT2.sv6\shell]
-    if (RegSetValueW(hKey, L"shell", REG_SZ, L"open", 0) != ERROR_SUCCESS)
-    {
-        goto fail;
-    }
-
-    // [hRootKey\OpenRCT2.sv6\shell\open]
-    if (RegSetValueW(hKey, L"shell\\open", REG_SZ, commandTextW.c_str(), 0) != ERROR_SUCCESS)
-    {
-        goto fail;
-    }
-
-    // [hRootKey\OpenRCT2.sv6\shell\open\command]
-    wchar_t szCommandW[MAX_PATH];
-    printResult = swprintf_s(szCommandW, MAX_PATH, L"\"%s\" %s", exePathW, commandArgsW.c_str());
-    assert(printResult >= 0);
-    if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS)
-    {
-        goto fail;
-    }
-
-    result = true;
-fail:
-    RegCloseKey(hKey);
-    RegCloseKey(hRootKey);
-    return result;
-}
-
-static void windows_remove_file_association(const utf8* extension)
-{
-#    if _WIN32_WINNT >= 0x0600
-    // [HKEY_CURRENT_USER\Software\Classes]
-    HKEY hRootKey;
-    if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
-    {
-        // [hRootKey\.ext]
-        RegDeleteTreeA(hRootKey, extension);
-
-        // [hRootKey\OpenRCT2.ext]
-        auto progIdName = get_progIdName(extension);
-        RegDeleteTreeW(hRootKey, progIdName.c_str());
-
-        RegCloseKey(hRootKey);
-    }
-#    endif
-}
-
-void platform_setup_file_associations()
-{
-    // Setup file extensions
-    windows_setup_file_association(".sc4", "RCT1 Scenario (.sc4)", "Play", "\"%1\"", 0);
-    windows_setup_file_association(".sc6", "RCT2 Scenario (.sc6)", "Play", "\"%1\"", 0);
-    windows_setup_file_association(".sv4", "RCT1 Saved Game (.sc4)", "Play", "\"%1\"", 0);
-    windows_setup_file_association(".sv6", "RCT2 Saved Game (.sv6)", "Play", "\"%1\"", 0);
-    windows_setup_file_association(".sv7", "RCT Modified Saved Game (.sv7)", "Play", "\"%1\"", 0);
-    windows_setup_file_association(".td4", "RCT1 Track Design (.td4)", "Install", "\"%1\"", 0);
-    windows_setup_file_association(".td6", "RCT2 Track Design (.td6)", "Install", "\"%1\"", 0);
-
-    // Refresh explorer
-    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
-}
-
-void platform_remove_file_associations()
-{
-    // Remove file extensions
-    windows_remove_file_association(".sc4");
-    windows_remove_file_association(".sc6");
-    windows_remove_file_association(".sv4");
-    windows_remove_file_association(".sv6");
-    windows_remove_file_association(".sv7");
-    windows_remove_file_association(".td4");
-    windows_remove_file_association(".td6");
-
-    // Refresh explorer
-    SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-///////////////////////////////////////////////////////////////////////////////
-// URI protocol association setup
-///////////////////////////////////////////////////////////////////////////////
 
 bool platform_setup_uri_protocol()
 {

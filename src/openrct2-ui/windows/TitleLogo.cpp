@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,16 +14,26 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-// clang-format off
+static constexpr const int32_t WW = 232;
+static constexpr const int32_t WH = 136;
+
+enum
+{
+    WIDX_LOGO
+};
+
 static rct_widget window_title_logo_widgets[] = {
+    MakeWidget({ 0, 0 }, { WW + 1, WH + 1 }, WWT_IMGBTN, WindowColour::Primary),
     { WIDGETS_END },
 };
 
-static void window_title_logo_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi);
 
+// clang-format off
 static rct_window_event_list window_title_logo_events = {
     nullptr,
-    nullptr,
+    window_title_menu_mouseup,
     nullptr,
     nullptr,
     nullptr,
@@ -60,14 +70,25 @@ static rct_window_event_list window_title_logo_events = {
 rct_window* window_title_logo_open()
 {
     rct_window* window = window_create(
-        ScreenCoordsXY(0, 0), 232, 136, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
+        ScreenCoordsXY(0, 0), WW, WH, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_logo_widgets;
     window_init_scroll_widgets(window);
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);
     window->colours[1] = TRANSLUCENT(COLOUR_GREY);
     window->colours[2] = TRANSLUCENT(COLOUR_GREY);
+    window->enabled_widgets = (1 << WIDX_LOGO);
 
     return window;
+}
+
+static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    switch (widgetIndex)
+    {
+        case WIDX_LOGO:
+            window_about_open();
+            break;
+    }
 }
 
 /**
@@ -76,8 +97,7 @@ rct_window* window_title_logo_open()
  */
 static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x = 2;
-    int32_t y = 2;
-    gfx_draw_sprite(dpi, SPR_G2_LOGO, w->windowPos.x + x, w->windowPos.y + y, 0);
-    gfx_draw_sprite(dpi, SPR_G2_TITLE, w->windowPos.x + x + 104, w->windowPos.y + y + 18, 0);
+    auto screenCoords = w->windowPos + ScreenCoordsXY{ 2, 2 };
+    gfx_draw_sprite(dpi, SPR_G2_LOGO, screenCoords, 0);
+    gfx_draw_sprite(dpi, SPR_G2_TITLE, screenCoords + ScreenCoordsXY{ 104, 18 }, 0);
 }

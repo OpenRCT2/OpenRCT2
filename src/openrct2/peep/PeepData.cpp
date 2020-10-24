@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1114,43 +1114,43 @@ static constexpr const uint8_t PeepSpriteImage_VeryNauseous_34_sequence[] = { 0,
 static constexpr const uint8_t PeepSpriteImage_VeryNauseous_35_sequence[] = { 0, 1, 2, 2, 2, 2, 3, 4, 5, 5, 5, 5, 4 };
 static constexpr const uint8_t PeepSpriteImage_VeryNauseous_36_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11, 12, 11, 12, 11, 12, 11, 12, 11, 11, 11, 11, 11, 13, 14, 15 };
 
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_00_sequence[] = { 0, 1, 2, 3, 4, 5 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_01_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_02_sequence[] = { 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_03_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8, 9, 10 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_04_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_05_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_06_sequence[] = { 0, 1, 2, 3, 4, 5 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_07_sequence[] = { 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_08_sequence[] = { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_09_sequence[] = { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_10_sequence[] = { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_11_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_12_sequence[] = { 0, 1, 2, 3, 4, 5 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_13_sequence[] = { 0, 1, 2, 3, 4, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_14_sequence[] = { 8, 8, 9, 9, 10, 10, 9, 9, 8, 8, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 13, 13, 8, 8, 9, 9, 8, 8 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_15_sequence[] = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_16_sequence[] = { 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_17_sequence[] = { 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 5, 6, 7 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_18_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 15, 16, 15, 14, 14, 14, 14, 14, 14, 17, 18, 18, 18, 18, 18, 18, 18, 17, 14, 14, 14, 14, 19, 20, 20, 20, 19, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 15, 16, 15, 14, 14, 14, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_19_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 14, 14, 14, 14, 14, 19, 20, 20, 20, 19, 14, 14, 14, 14, 14, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_20_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 9, 8, 14, 15, 15, 15, 16, 17, 17, 17, 14, 11, 12, 13, 12, 13, 12, 11, 9, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_21_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_22_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 18, 19, 20, 21, 22, 21, 20, 21, 22, 21, 20, 21, 22, 20, 21, 22, 21, 20, 19, 18, 0, 0, 23, 24, 25, 26, 27, 28, 28, 26, 24, 29, 30, 31, 32, 31, 30, 31, 32, 31, 30, 31, 32, 31, 30, 29, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_23_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_24_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 18, 19, 20, 21, 22, 21, 20, 21, 22, 21, 20, 21, 22, 20, 19, 18, 0, 0, 23, 24, 25, 26, 27, 28, 28, 26, 24, 0, 0, 0, 0, 0, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_25_sequence[] = { 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_26_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_27_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11, 12, 11, 10, 10, 10, 13, 14, 14, 14, 13, 10, 10, 10, 11, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_28_sequence[] = { 0, 1, 2, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_29_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_30_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 5, 4, 5, 6, 5, 4, 5, 6, 5, 4, 5, 6, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_31_sequence[] = { 0, 1, 2, 3, 4, 5, 5, 5, 5, 6, 7, 6, 5, 5, 5, 5, 5, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_32_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_33_sequence[] = { 0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_34_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 15, 14, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 15, 14, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 7, 6, 5, 4, 3, 2, 1, 0 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_35_sequence[] = { 0, 1, 2, 2, 2, 2, 3, 4, 5, 5, 5, 5, 4 };
-static constexpr const uint8_t PeepSpriteImage_RequireBathroom_36_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11, 12, 11, 12, 11, 12, 11, 12, 11, 11, 11, 11, 11, 13, 14, 15 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_00_sequence[] = { 0, 1, 2, 3, 4, 5 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_01_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_02_sequence[] = { 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_03_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8, 9, 10 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_04_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_05_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_06_sequence[] = { 0, 1, 2, 3, 4, 5 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_07_sequence[] = { 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_08_sequence[] = { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_09_sequence[] = { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_10_sequence[] = { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_11_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_12_sequence[] = { 0, 1, 2, 3, 4, 5 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_13_sequence[] = { 0, 1, 2, 3, 4, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_14_sequence[] = { 8, 8, 9, 9, 10, 10, 9, 9, 8, 8, 11, 12, 13, 14, 15, 15, 15, 15, 15, 15, 15, 15, 15, 14, 14, 13, 13, 8, 8, 9, 9, 8, 8 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_15_sequence[] = { 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_16_sequence[] = { 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_17_sequence[] = { 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 1, 2, 3, 4, 3, 2, 1, 0, 5, 6, 7 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_18_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 15, 16, 15, 14, 14, 14, 14, 14, 14, 17, 18, 18, 18, 18, 18, 18, 18, 17, 14, 14, 14, 14, 19, 20, 20, 20, 19, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 15, 16, 15, 14, 14, 14, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_19_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 15, 16, 15, 14, 14, 14, 14, 14, 14, 19, 20, 20, 20, 19, 14, 14, 14, 14, 14, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_20_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 9, 8, 14, 15, 15, 15, 16, 17, 17, 17, 14, 11, 12, 13, 12, 13, 12, 11, 9, 10, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_21_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_22_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 18, 19, 20, 21, 22, 21, 20, 21, 22, 21, 20, 21, 22, 20, 21, 22, 21, 20, 19, 18, 0, 0, 23, 24, 25, 26, 27, 28, 28, 26, 24, 29, 30, 31, 32, 31, 30, 31, 32, 31, 30, 31, 32, 31, 30, 29, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_23_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 16, 17, 18, 19, 18, 17, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_24_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 18, 19, 20, 21, 22, 21, 20, 21, 22, 21, 20, 21, 22, 20, 19, 18, 0, 0, 23, 24, 25, 26, 27, 28, 28, 26, 24, 0, 0, 0, 0, 0, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_25_sequence[] = { 0, 1, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_26_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_27_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 11, 12, 11, 10, 10, 10, 13, 14, 14, 14, 13, 10, 10, 10, 11, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_28_sequence[] = { 0, 1, 2, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 4, 4, 3, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_29_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_30_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 5, 4, 5, 6, 5, 4, 5, 6, 5, 4, 5, 6, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_31_sequence[] = { 0, 1, 2, 3, 4, 5, 5, 5, 5, 6, 7, 6, 5, 5, 5, 5, 5, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_32_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 6, 7, 8, 7, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_33_sequence[] = { 0, 1, 2, 3, 4, 4, 4, 4, 4, 4, 4, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_34_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 15, 14, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 14, 15, 16, 16, 15, 14, 8, 9, 10, 11, 12, 13, 8, 9, 10, 11, 12, 13, 7, 6, 5, 4, 3, 2, 1, 0 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_35_sequence[] = { 0, 1, 2, 2, 2, 2, 3, 4, 5, 5, 5, 5, 4 };
+static constexpr const uint8_t PeepSpriteImage_RequireToilet_36_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 11, 12, 11, 12, 11, 12, 11, 12, 11, 11, 11, 11, 11, 13, 14, 15 };
 
 static constexpr const uint8_t PeepSpriteImage_Hat_00_sequence[] = { 0, 1, 2, 3, 4, 5 };
 static constexpr const uint8_t PeepSpriteImage_Hat_01_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8 };
@@ -2997,44 +2997,44 @@ static constexpr const rct_peep_animation PeepSpriteImage_VeryNauseous[] = {
     { 7181,  std::size(PeepSpriteImage_VeryNauseous_36_sequence), PeepSpriteImage_VeryNauseous_36_sequence },
 };
 
-static constexpr const rct_peep_animation PeepSpriteImage_RequireBathroom[] = {
-    { 6537,  std::size(PeepSpriteImage_RequireBathroom_00_sequence), PeepSpriteImage_RequireBathroom_00_sequence },
-    { 6585,  std::size(PeepSpriteImage_RequireBathroom_01_sequence), PeepSpriteImage_RequireBathroom_01_sequence },
-    { 6621,  std::size(PeepSpriteImage_RequireBathroom_02_sequence), PeepSpriteImage_RequireBathroom_02_sequence },
-    { 6653,  std::size(PeepSpriteImage_RequireBathroom_03_sequence), PeepSpriteImage_RequireBathroom_03_sequence },
-    { 6697,  std::size(PeepSpriteImage_RequireBathroom_04_sequence), PeepSpriteImage_RequireBathroom_04_sequence },
-    { 6757,  std::size(PeepSpriteImage_RequireBathroom_05_sequence), PeepSpriteImage_RequireBathroom_05_sequence },
-    { 6561,  std::size(PeepSpriteImage_RequireBathroom_06_sequence), PeepSpriteImage_RequireBathroom_06_sequence },
-    { 6625,  std::size(PeepSpriteImage_RequireBathroom_07_sequence), PeepSpriteImage_RequireBathroom_07_sequence },
-    { 6629,  std::size(PeepSpriteImage_RequireBathroom_08_sequence), PeepSpriteImage_RequireBathroom_08_sequence },
-    { 6637,  std::size(PeepSpriteImage_RequireBathroom_09_sequence), PeepSpriteImage_RequireBathroom_09_sequence },
-    { 6645,  std::size(PeepSpriteImage_RequireBathroom_10_sequence), PeepSpriteImage_RequireBathroom_10_sequence },
-    { 6813,  std::size(PeepSpriteImage_RequireBathroom_11_sequence), PeepSpriteImage_RequireBathroom_11_sequence },
-    { 11301, std::size(PeepSpriteImage_RequireBathroom_12_sequence), PeepSpriteImage_RequireBathroom_12_sequence },
-    { 6825,  std::size(PeepSpriteImage_RequireBathroom_13_sequence), PeepSpriteImage_RequireBathroom_13_sequence },
-    { 6845,  std::size(PeepSpriteImage_RequireBathroom_14_sequence), PeepSpriteImage_RequireBathroom_14_sequence },
-    { 6909,  std::size(PeepSpriteImage_RequireBathroom_15_sequence), PeepSpriteImage_RequireBathroom_15_sequence },
-    { 11325, std::size(PeepSpriteImage_RequireBathroom_16_sequence), PeepSpriteImage_RequireBathroom_16_sequence },
-    { 6957,  std::size(PeepSpriteImage_RequireBathroom_17_sequence), PeepSpriteImage_RequireBathroom_17_sequence },
-    { 11513, std::size(PeepSpriteImage_RequireBathroom_18_sequence), PeepSpriteImage_RequireBathroom_18_sequence },
-    { 11513, std::size(PeepSpriteImage_RequireBathroom_19_sequence), PeepSpriteImage_RequireBathroom_19_sequence },
-    { 11597, std::size(PeepSpriteImage_RequireBathroom_20_sequence), PeepSpriteImage_RequireBathroom_20_sequence },
-    { 11669, std::size(PeepSpriteImage_RequireBathroom_21_sequence), PeepSpriteImage_RequireBathroom_21_sequence },
-    { 11669, std::size(PeepSpriteImage_RequireBathroom_22_sequence), PeepSpriteImage_RequireBathroom_22_sequence },
-    { 11801, std::size(PeepSpriteImage_RequireBathroom_23_sequence), PeepSpriteImage_RequireBathroom_23_sequence },
-    { 11669, std::size(PeepSpriteImage_RequireBathroom_24_sequence), PeepSpriteImage_RequireBathroom_24_sequence },
-    { 11377, std::size(PeepSpriteImage_RequireBathroom_25_sequence), PeepSpriteImage_RequireBathroom_25_sequence },
-    { 6989,  std::size(PeepSpriteImage_RequireBathroom_26_sequence), PeepSpriteImage_RequireBathroom_26_sequence },
-    { 7041,  std::size(PeepSpriteImage_RequireBathroom_27_sequence), PeepSpriteImage_RequireBathroom_27_sequence },
-    { 7101,  std::size(PeepSpriteImage_RequireBathroom_28_sequence), PeepSpriteImage_RequireBathroom_28_sequence },
-    { 11401, std::size(PeepSpriteImage_RequireBathroom_29_sequence), PeepSpriteImage_RequireBathroom_29_sequence },
-    { 7121,  std::size(PeepSpriteImage_RequireBathroom_30_sequence), PeepSpriteImage_RequireBathroom_30_sequence },
-    { 7149,  std::size(PeepSpriteImage_RequireBathroom_31_sequence), PeepSpriteImage_RequireBathroom_31_sequence },
-    { 7249,  std::size(PeepSpriteImage_RequireBathroom_32_sequence), PeepSpriteImage_RequireBathroom_32_sequence },
-    { 7309,  std::size(PeepSpriteImage_RequireBathroom_33_sequence), PeepSpriteImage_RequireBathroom_33_sequence },
-    { 7329,  std::size(PeepSpriteImage_RequireBathroom_34_sequence), PeepSpriteImage_RequireBathroom_34_sequence },
-    { 7285,  std::size(PeepSpriteImage_RequireBathroom_35_sequence), PeepSpriteImage_RequireBathroom_35_sequence },
-    { 7181,  std::size(PeepSpriteImage_RequireBathroom_36_sequence), PeepSpriteImage_RequireBathroom_36_sequence },
+static constexpr const rct_peep_animation PeepSpriteImage_RequireToilet[] = {
+    { 6537,  std::size(PeepSpriteImage_RequireToilet_00_sequence), PeepSpriteImage_RequireToilet_00_sequence },
+    { 6585,  std::size(PeepSpriteImage_RequireToilet_01_sequence), PeepSpriteImage_RequireToilet_01_sequence },
+    { 6621,  std::size(PeepSpriteImage_RequireToilet_02_sequence), PeepSpriteImage_RequireToilet_02_sequence },
+    { 6653,  std::size(PeepSpriteImage_RequireToilet_03_sequence), PeepSpriteImage_RequireToilet_03_sequence },
+    { 6697,  std::size(PeepSpriteImage_RequireToilet_04_sequence), PeepSpriteImage_RequireToilet_04_sequence },
+    { 6757,  std::size(PeepSpriteImage_RequireToilet_05_sequence), PeepSpriteImage_RequireToilet_05_sequence },
+    { 6561,  std::size(PeepSpriteImage_RequireToilet_06_sequence), PeepSpriteImage_RequireToilet_06_sequence },
+    { 6625,  std::size(PeepSpriteImage_RequireToilet_07_sequence), PeepSpriteImage_RequireToilet_07_sequence },
+    { 6629,  std::size(PeepSpriteImage_RequireToilet_08_sequence), PeepSpriteImage_RequireToilet_08_sequence },
+    { 6637,  std::size(PeepSpriteImage_RequireToilet_09_sequence), PeepSpriteImage_RequireToilet_09_sequence },
+    { 6645,  std::size(PeepSpriteImage_RequireToilet_10_sequence), PeepSpriteImage_RequireToilet_10_sequence },
+    { 6813,  std::size(PeepSpriteImage_RequireToilet_11_sequence), PeepSpriteImage_RequireToilet_11_sequence },
+    { 11301, std::size(PeepSpriteImage_RequireToilet_12_sequence), PeepSpriteImage_RequireToilet_12_sequence },
+    { 6825,  std::size(PeepSpriteImage_RequireToilet_13_sequence), PeepSpriteImage_RequireToilet_13_sequence },
+    { 6845,  std::size(PeepSpriteImage_RequireToilet_14_sequence), PeepSpriteImage_RequireToilet_14_sequence },
+    { 6909,  std::size(PeepSpriteImage_RequireToilet_15_sequence), PeepSpriteImage_RequireToilet_15_sequence },
+    { 11325, std::size(PeepSpriteImage_RequireToilet_16_sequence), PeepSpriteImage_RequireToilet_16_sequence },
+    { 6957,  std::size(PeepSpriteImage_RequireToilet_17_sequence), PeepSpriteImage_RequireToilet_17_sequence },
+    { 11513, std::size(PeepSpriteImage_RequireToilet_18_sequence), PeepSpriteImage_RequireToilet_18_sequence },
+    { 11513, std::size(PeepSpriteImage_RequireToilet_19_sequence), PeepSpriteImage_RequireToilet_19_sequence },
+    { 11597, std::size(PeepSpriteImage_RequireToilet_20_sequence), PeepSpriteImage_RequireToilet_20_sequence },
+    { 11669, std::size(PeepSpriteImage_RequireToilet_21_sequence), PeepSpriteImage_RequireToilet_21_sequence },
+    { 11669, std::size(PeepSpriteImage_RequireToilet_22_sequence), PeepSpriteImage_RequireToilet_22_sequence },
+    { 11801, std::size(PeepSpriteImage_RequireToilet_23_sequence), PeepSpriteImage_RequireToilet_23_sequence },
+    { 11669, std::size(PeepSpriteImage_RequireToilet_24_sequence), PeepSpriteImage_RequireToilet_24_sequence },
+    { 11377, std::size(PeepSpriteImage_RequireToilet_25_sequence), PeepSpriteImage_RequireToilet_25_sequence },
+    { 6989,  std::size(PeepSpriteImage_RequireToilet_26_sequence), PeepSpriteImage_RequireToilet_26_sequence },
+    { 7041,  std::size(PeepSpriteImage_RequireToilet_27_sequence), PeepSpriteImage_RequireToilet_27_sequence },
+    { 7101,  std::size(PeepSpriteImage_RequireToilet_28_sequence), PeepSpriteImage_RequireToilet_28_sequence },
+    { 11401, std::size(PeepSpriteImage_RequireToilet_29_sequence), PeepSpriteImage_RequireToilet_29_sequence },
+    { 7121,  std::size(PeepSpriteImage_RequireToilet_30_sequence), PeepSpriteImage_RequireToilet_30_sequence },
+    { 7149,  std::size(PeepSpriteImage_RequireToilet_31_sequence), PeepSpriteImage_RequireToilet_31_sequence },
+    { 7249,  std::size(PeepSpriteImage_RequireToilet_32_sequence), PeepSpriteImage_RequireToilet_32_sequence },
+    { 7309,  std::size(PeepSpriteImage_RequireToilet_33_sequence), PeepSpriteImage_RequireToilet_33_sequence },
+    { 7329,  std::size(PeepSpriteImage_RequireToilet_34_sequence), PeepSpriteImage_RequireToilet_34_sequence },
+    { 7285,  std::size(PeepSpriteImage_RequireToilet_35_sequence), PeepSpriteImage_RequireToilet_35_sequence },
+    { 7181,  std::size(PeepSpriteImage_RequireToilet_36_sequence), PeepSpriteImage_RequireToilet_36_sequence },
 };
 
 static constexpr const rct_peep_animation PeepSpriteImage_Hat[] = {
@@ -5430,7 +5430,7 @@ rct_peep_animation_entry g_peep_animation_entries[] =
     { PeepSpriteImage_HeadDown, PeepSpriteBounds_Normal },
     { PeepSpriteImage_Nauseous, PeepSpriteBounds_Normal },
     { PeepSpriteImage_VeryNauseous, PeepSpriteBounds_Normal },
-    { PeepSpriteImage_RequireBathroom, PeepSpriteBounds_Normal },
+    { PeepSpriteImage_RequireToilet, PeepSpriteBounds_Normal },
     { PeepSpriteImage_Hat, PeepSpriteBounds_Hat },
     { PeepSpriteImage_HotDog, PeepSpriteBounds_HotDog },
     { PeepSpriteImage_Tentacle, PeepSpriteBounds_Tentacle },

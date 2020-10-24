@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,15 +14,13 @@
 
 DEFINE_GAME_ACTION(ClimateSetAction, GAME_COMMAND_SET_CLIMATE, GameActionResult)
 {
-    using climate_t = decltype(gClimate);
-
 private:
-    climate_t _climate;
+    uint8_t _climate;
 
 public:
     ClimateSetAction() = default;
-    ClimateSetAction(climate_t climate)
-        : _climate(climate)
+    ClimateSetAction(ClimateType climate)
+        : _climate(static_cast<uint8_t>(climate))
     {
     }
 
@@ -40,7 +38,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_climate >= CLIMATE_COUNT)
+        if (_climate >= static_cast<uint8_t>(ClimateType::Count))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_CLIMATE_ID, STR_NONE);
         }
@@ -50,7 +48,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        gClimate = _climate;
+        gClimate = ClimateType{ _climate };
 
         gfx_invalidate_screen();
 

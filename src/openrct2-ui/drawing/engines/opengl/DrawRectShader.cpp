@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,26 +41,39 @@ DrawRectShader::DrawRectShader()
 
     glBindVertexArray(_vao);
 
-    glVertexAttribPointer(vVertMat + 0, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, mat[0]));
-    glVertexAttribPointer(vVertMat + 1, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, mat[1]));
-    glVertexAttribPointer(vVertMat + 2, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, mat[2]));
-    glVertexAttribPointer(vVertMat + 3, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, mat[3]));
-    glVertexAttribPointer(vVertVec, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, vec));
+    glVertexAttribPointer(
+        vVertMat + 0, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, mat[0])));
+    glVertexAttribPointer(
+        vVertMat + 1, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, mat[1])));
+    glVertexAttribPointer(
+        vVertMat + 2, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, mat[2])));
+    glVertexAttribPointer(
+        vVertMat + 3, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, mat[3])));
+    glVertexAttribPointer(vVertVec, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, vec)));
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
-    glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawRectCommand), (void*)offsetof(DrawRectCommand, clip));
+    glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, clip)));
     glVertexAttribIPointer(
-        vTexColourAtlas, 1, GL_INT, sizeof(DrawRectCommand), (void*)offsetof(DrawRectCommand, texColourAtlas));
+        vTexColourAtlas, 1, GL_INT, sizeof(DrawRectCommand),
+        reinterpret_cast<void*>(offsetof(DrawRectCommand, texColourAtlas)));
     glVertexAttribPointer(
-        vTexColourBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawRectCommand), (void*)offsetof(DrawRectCommand, texColourBounds));
-    glVertexAttribIPointer(vTexMaskAtlas, 1, GL_INT, sizeof(DrawRectCommand), (void*)offsetof(DrawRectCommand, texMaskAtlas));
+        vTexColourBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawRectCommand),
+        reinterpret_cast<void*>(offsetof(DrawRectCommand, texColourBounds)));
+    glVertexAttribIPointer(
+        vTexMaskAtlas, 1, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, texMaskAtlas)));
     glVertexAttribPointer(
-        vTexMaskBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawRectCommand), (void*)offsetof(DrawRectCommand, texMaskBounds));
-    glVertexAttribIPointer(vPalettes, 3, GL_INT, sizeof(DrawRectCommand), (void*)offsetof(DrawRectCommand, palettes));
-    glVertexAttribIPointer(vFlags, 1, GL_INT, sizeof(DrawRectCommand), (void*)offsetof(DrawRectCommand, flags));
-    glVertexAttribIPointer(vColour, 1, GL_UNSIGNED_INT, sizeof(DrawRectCommand), (void*)offsetof(DrawRectCommand, colour));
-    glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawRectCommand), (void*)offsetof(DrawRectCommand, bounds));
-    glVertexAttribIPointer(vDepth, 1, GL_INT, sizeof(DrawRectCommand), (void*)offsetof(DrawRectCommand, depth));
+        vTexMaskBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawRectCommand),
+        reinterpret_cast<void*>(offsetof(DrawRectCommand, texMaskBounds)));
+    glVertexAttribIPointer(
+        vPalettes, 3, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, palettes)));
+    glVertexAttribIPointer(
+        vFlags, 1, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, flags)));
+    glVertexAttribIPointer(
+        vColour, 1, GL_UNSIGNED_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, colour)));
+    glVertexAttribIPointer(
+        vBounds, 4, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, bounds)));
+    glVertexAttribIPointer(
+        vDepth, 1, GL_INT, sizeof(DrawRectCommand), reinterpret_cast<void*>(offsetof(DrawRectCommand, depth)));
 
     glEnableVertexAttribArray(vVertMat + 0);
     glEnableVertexAttribArray(vVertMat + 1);
@@ -152,7 +165,7 @@ void DrawRectShader::SetInstances(const RectCommandBatch& instances)
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
     glBufferData(GL_ARRAY_BUFFER, sizeof(DrawRectCommand) * instances.size(), instances.data(), GL_STREAM_DRAW);
 
-    _instanceCount = (GLsizei)instances.size();
+    _instanceCount = static_cast<GLsizei>(instances.size());
 }
 
 void DrawRectShader::DrawInstances()

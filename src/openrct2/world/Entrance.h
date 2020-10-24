@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,10 +40,13 @@ extern CoordsXYZD gParkEntranceGhostPosition;
 
 constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
 
+using ParkEntranceIndex = uint8_t;
+constexpr const ParkEntranceIndex PARK_ENTRANCE_INDEX_NULL = 255;
+
 extern std::vector<CoordsXYZD> gParkEntrances;
 
 extern CoordsXYZD gRideEntranceExitGhostPosition;
-extern uint8_t gRideEntranceExitGhostStationIndex;
+extern StationIndex gRideEntranceExitGhostStationIndex;
 
 void park_entrance_remove_ghost();
 money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc);

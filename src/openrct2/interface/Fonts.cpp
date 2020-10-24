@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -79,15 +79,15 @@ TTFFontSetDescriptor TTFFontNanum = { {
 } };
 
 TTFFontSetDescriptor TTFFontArial = { {
-    { "arial.ttf", "Arial",  9, 0, -1,  9, HINTING_THRESHOLD_LOW, nullptr },
-    { "arial.ttf", "Arial", 10, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
-    { "arial.ttf", "Arial", 11, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 10, 0, -1,  9, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontArialUnicode = { {
-    { "arialuni.ttf", "Arial Unicode MS",  9, 0, -1,  9, HINTING_THRESHOLD_LOW, nullptr },
-    { "arialuni.ttf", "Arial Unicode MS", 10, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
-    { "arialuni.ttf", "Arial Unicode MS", 11, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arialuni.ttf", "Arial Unicode MS", 10, 0, -1,  9, HINTING_THRESHOLD_LOW, nullptr },
+    { "arialuni.ttf", "Arial Unicode MS", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arialuni.ttf", "Arial Unicode MS", 12, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontMicroHei = { {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -120,7 +120,7 @@ const rct_string_id PeepThoughts[] = {
     STR_PEEP_THOUGHT_TYPE_TIRED,
     STR_PEEP_THOUGHT_TYPE_HUNGRY,
     STR_PEEP_THOUGHT_TYPE_THIRSTY,
-    STR_PEEP_THOUGHT_TYPE_BATHROOM,
+    STR_PEEP_THOUGHT_TYPE_TOILET,
     STR_PEEP_THOUGHT_TYPE_CANT_FIND,
     STR_PEEP_THOUGHT_TYPE_NOT_PAYING,
     STR_PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING,
@@ -370,7 +370,9 @@ static void format_append_string(char** dest, size_t* size, const utf8* string)
 {
     if ((*size) == 0)
         return;
-    size_t length = strlen(string);
+    if (string == nullptr)
+        return;
+    size_t length = strnlen(string, *size);
     if (length < (*size))
     {
         std::memcpy((*dest), string, length);
@@ -802,7 +804,7 @@ static void format_currency(char** dest, size_t* size, int64_t value)
 
     // Currency symbol
     const utf8* symbol = currencyDesc->symbol_unicode;
-    uint8_t affix = currencyDesc->affix_unicode;
+    CurrencyAffix affix = currencyDesc->affix_unicode;
     if (!font_supports_string(symbol, FONT_SIZE_MEDIUM))
     {
         symbol = currencyDesc->symbol_ascii;
@@ -810,7 +812,7 @@ static void format_currency(char** dest, size_t* size, int64_t value)
     }
 
     // Prefix
-    if (affix == CURRENCY_PREFIX)
+    if (affix == CurrencyAffix::Prefix)
         format_append_string(dest, size, symbol);
     if ((*size) == 0)
         return;
@@ -820,7 +822,7 @@ static void format_currency(char** dest, size_t* size, int64_t value)
         return;
 
     // Currency symbol suffix
-    if (affix == CURRENCY_SUFFIX)
+    if (affix == CurrencyAffix::Suffix)
         format_append_string(dest, size, symbol);
 }
 
@@ -843,7 +845,7 @@ static void format_currency_2dp(char** dest, size_t* size, int64_t value)
 
     // Currency symbol
     const utf8* symbol = currencyDesc->symbol_unicode;
-    uint8_t affix = currencyDesc->affix_unicode;
+    CurrencyAffix affix = currencyDesc->affix_unicode;
     if (!font_supports_string(symbol, FONT_SIZE_MEDIUM))
     {
         symbol = currencyDesc->symbol_ascii;
@@ -851,7 +853,7 @@ static void format_currency_2dp(char** dest, size_t* size, int64_t value)
     }
 
     // Prefix
-    if (affix == CURRENCY_PREFIX)
+    if (affix == CurrencyAffix::Prefix)
         format_append_string(dest, size, symbol);
     if ((*size) == 0)
         return;
@@ -869,7 +871,7 @@ static void format_currency_2dp(char** dest, size_t* size, int64_t value)
         return;
 
     // Currency symbol suffix
-    if (affix == CURRENCY_SUFFIX)
+    if (affix == CurrencyAffix::Suffix)
         format_append_string(dest, size, symbol);
 }
 
@@ -877,44 +879,44 @@ static void format_date(char** dest, size_t* size, uint16_t value)
 {
     uint16_t args[] = { static_cast<uint16_t>(date_get_month(value)), static_cast<uint16_t>(date_get_year(value) + 1) };
     uint16_t* argsRef = args;
-    format_string_part(dest, size, STR_DATE_FORMAT_MY, (char**)&argsRef);
+    format_string_part(dest, size, STR_DATE_FORMAT_MY, reinterpret_cast<char**>(&argsRef));
 }
 
-static void format_length(char** dest, size_t* size, int16_t value)
+static void format_length(char** dest, size_t* size, int32_t value)
 {
     rct_string_id stringId = STR_UNIT_SUFFIX_METRES;
 
-    if (gConfigGeneral.measurement_format == MEASUREMENT_FORMAT_IMPERIAL)
+    if (gConfigGeneral.measurement_format == MeasurementFormat::Imperial)
     {
         value = metres_to_feet(value);
         stringId = STR_UNIT_SUFFIX_FEET;
     }
 
-    int16_t* argRef = &value;
-    format_string_part(dest, size, stringId, (char**)&argRef);
+    int32_t* argRef = &value;
+    format_string_part(dest, size, stringId, reinterpret_cast<char**>(&argRef));
 }
 
 static void format_velocity(char** dest, size_t* size, uint16_t value)
 {
-    rct_string_id stringId;
+    rct_string_id stringId = STR_NONE;
 
     switch (gConfigGeneral.measurement_format)
     {
-        default:
+        case MeasurementFormat::Imperial:
             stringId = STR_UNIT_SUFFIX_MILES_PER_HOUR;
             break;
-        case MEASUREMENT_FORMAT_METRIC:
+        case MeasurementFormat::Metric:
             value = mph_to_kmph(value);
             stringId = STR_UNIT_SUFFIX_KILOMETRES_PER_HOUR;
             break;
-        case MEASUREMENT_FORMAT_SI:
+        case MeasurementFormat::SI:
             value = mph_to_dmps(value);
             stringId = STR_UNIT_SUFFIX_METRES_PER_SECOND;
             break;
     }
 
     uint16_t* argRef = &value;
-    format_string_part(dest, size, stringId, (char**)&argRef);
+    format_string_part(dest, size, stringId, reinterpret_cast<char**>(&argRef));
 }
 
 static constexpr const rct_string_id DurationFormats[][2] = {
@@ -950,7 +952,7 @@ static void format_duration(char** dest, size_t* size, uint16_t value)
 
     rct_string_id stringId = DurationFormats[minuteIndex][secondsIndex];
 
-    format_string_part(dest, size, stringId, (char**)&argsRef);
+    format_string_part(dest, size, stringId, reinterpret_cast<char**>(&argsRef));
 }
 
 static constexpr const rct_string_id RealtimeFormats[][2] = {
@@ -986,7 +988,7 @@ static void format_realtime(char** dest, size_t* size, uint16_t value)
 
     rct_string_id stringId = RealtimeFormats[hourIndex][minuteIndex];
 
-    format_string_part(dest, size, stringId, (char**)&argsRef);
+    format_string_part(dest, size, stringId, reinterpret_cast<char**>(&argsRef));
 }
 
 static void format_string_code(uint32_t format_code, char** dest, size_t* size, char** args)
@@ -1078,7 +1080,7 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_string_part(dest, size, (rct_string_id)value, args);
+            format_string_part(dest, size, static_cast<rct_string_id>(value), args);
             break;
         case FORMAT_STRING:
             // Pop argument
@@ -1086,21 +1088,22 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             *args += sizeof(uintptr_t);
 
             if (value != 0)
-                format_append_string(dest, size, (char*)value);
+                format_append_string(dest, size, reinterpret_cast<char*>(value));
             break;
         case FORMAT_MONTHYEAR:
             // Pop argument
             std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_date(dest, size, (uint16_t)value);
+            format_date(dest, size, static_cast<uint16_t>(value));
             break;
         case FORMAT_MONTH:
             // Pop argument
             std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_append_string(dest, size, language_get_string(DateGameMonthNames[date_get_month((int32_t)value)]));
+            format_append_string(
+                dest, size, language_get_string(DateGameMonthNames[date_get_month(static_cast<int32_t>(value))]));
             break;
         case FORMAT_VELOCITY:
             // Pop argument
@@ -1108,7 +1111,7 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             value = temp16;
             *args += 2;
 
-            format_velocity(dest, size, (uint16_t)value);
+            format_velocity(dest, size, static_cast<uint16_t>(value));
             break;
         case FORMAT_POP16:
             *args += 2;
@@ -1121,22 +1124,21 @@ static void format_string_code(uint32_t format_code, char** dest, size_t* size, 
             std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_duration(dest, size, (uint16_t)value);
+            format_duration(dest, size, static_cast<uint16_t>(value));
             break;
         case FORMAT_REALTIME:
             // Pop argument
             std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_realtime(dest, size, (uint16_t)value);
+            format_realtime(dest, size, static_cast<uint16_t>(value));
             break;
         case FORMAT_LENGTH:
             // Pop argument
-            std::memcpy(&temp16, *args, sizeof(int16_t));
-            value = temp16;
+            std::memcpy(&value, *args, sizeof(uint16_t));
             *args += 2;
 
-            format_length(dest, size, (int16_t)value);
+            format_length(dest, size, static_cast<uint16_t>(value));
             break;
         case FORMAT_SPRITE:
             // Pop argument
@@ -1209,7 +1211,7 @@ static void format_string_part_from_raw(utf8** dest, size_t* size, const utf8* s
         }
         else
         {
-            size_t codepointLength = (size_t)utf8_get_codepoint_length(code);
+            size_t codepointLength = static_cast<size_t>(utf8_get_codepoint_length(code));
             format_handle_overflow(codepointLength);
             if (*size > codepointLength)
             {
@@ -1316,7 +1318,7 @@ void format_string(utf8* dest, size_t size, rct_string_id format, const void* ar
 
     utf8* end = dest;
     size_t left = size;
-    format_string_part(&end, &left, format, (char**)&args);
+    format_string_part(&end, &left, format, reinterpret_cast<char**>(const_cast<void**>(&args)));
     if (left == 0)
     {
         // Replace last character with null terminator
@@ -1351,7 +1353,7 @@ void format_string_raw(utf8* dest, size_t size, const utf8* src, const void* arg
 
     utf8* end = dest;
     size_t left = size;
-    format_string_part_from_raw(&end, &left, src, (char**)&args);
+    format_string_part_from_raw(&end, &left, src, reinterpret_cast<char**>(const_cast<void**>(&args)));
     if (left == 0)
     {
         // Replace last character with null terminator

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,7 +53,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if ((size_t)_type >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
+        if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_START_MARKETING_CAMPAIGN);
         }

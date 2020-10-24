@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -22,9 +22,6 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/common.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Guard.hpp>
-#include <openrct2/localisation/Localisation.h>
-#include <openrct2/platform/platform.h>
 #include <speex/speex_resampler.h>
 #include <vector>
 
@@ -57,7 +54,7 @@ namespace OpenRCT2::Audio
             _nullSource = AudioSource::CreateNull();
         }
 
-        ~AudioMixerImpl()
+        ~AudioMixerImpl() override
         {
             Close();
             delete _nullSource;
@@ -74,7 +71,7 @@ namespace OpenRCT2::Audio
             want.samples = 2048;
             want.callback = [](void* arg, uint8_t* dst, int32_t length) -> void {
                 auto mixer = static_cast<AudioMixerImpl*>(arg);
-                mixer->GetNextAudioChunk(dst, (size_t)length);
+                mixer->GetNextAudioChunk(dst, static_cast<size_t>(length));
             };
             want.userdata = this;
 
@@ -167,7 +164,7 @@ namespace OpenRCT2::Audio
                 IAudioSource* source = _musicSources[pathId];
                 if (source == nullptr)
                 {
-                    const utf8* path = context_get_path_legacy((int32_t)pathId);
+                    const utf8* path = context_get_path_legacy(static_cast<int32_t>(pathId));
                     source = AudioSource::CreateMemoryFromWAV(path, &_format);
                     if (source == nullptr)
                     {
@@ -222,8 +219,8 @@ namespace OpenRCT2::Audio
             while (it != _channels.end())
             {
                 auto channel = *it;
-                int32_t group = channel->GetGroup();
-                if ((group != MIXER_GROUP_SOUND || gConfigSound.sound_enabled) && gConfigSound.master_sound_enabled
+                MixerGroup group = channel->GetGroup();
+                if ((group != MixerGroup::Sound || gConfigSound.sound_enabled) && gConfigSound.master_sound_enabled
                     && gConfigSound.master_volume != 0)
                 {
                     MixChannel(channel, dst, length);
@@ -246,19 +243,19 @@ namespace OpenRCT2::Audio
             if (_settingSoundVolume != gConfigSound.sound_volume)
             {
                 _settingSoundVolume = gConfigSound.sound_volume;
-                _adjustSoundVolume = powf(_settingSoundVolume / 100.f, 10.f / 6.f);
+                _adjustSoundVolume = powf(static_cast<float>(_settingSoundVolume) / 100.f, 10.f / 6.f);
             }
             if (_settingMusicVolume != gConfigSound.ride_music_volume)
             {
                 _settingMusicVolume = gConfigSound.ride_music_volume;
-                _adjustMusicVolume = powf(_settingMusicVolume / 100.f, 10.f / 6.f);
+                _adjustMusicVolume = powf(static_cast<float>(_settingMusicVolume) / 100.f, 10.f / 6.f);
             }
         }
 
         void MixChannel(ISDLAudioChannel* channel, uint8_t* data, size_t length)
         {
             int32_t byteRate = _format.GetByteRate();
-            int32_t numSamples = (int32_t)(length / byteRate);
+            auto numSamples = static_cast<int32_t>(length / byteRate);
             double rate = 1;
             if (_format.format == AUDIO_S16SYS)
             {
@@ -283,8 +280,8 @@ namespace OpenRCT2::Audio
             }
 
             // Read raw PCM from channel
-            int32_t readSamples = (int32_t)(numSamples * rate);
-            size_t readLength = (size_t)(readSamples / cvt.len_ratio) * byteRate;
+            int32_t readSamples = numSamples * rate;
+            auto readLength = static_cast<size_t>(readSamples / cvt.len_ratio) * byteRate;
             _channelBuffer.resize(readLength);
             size_t bytesRead = channel->Read(_channelBuffer.data(), readLength);
 
@@ -312,7 +309,7 @@ namespace OpenRCT2::Audio
             // Apply effects
             if (rate != 1)
             {
-                int32_t inRate = (int32_t)(bufferLen / byteRate);
+                auto inRate = static_cast<int32_t>(bufferLen / byteRate);
                 int32_t outRate = numSamples;
                 if (bytesRead != readLength)
                 {
@@ -320,7 +317,8 @@ namespace OpenRCT2::Audio
                     outRate = _format.freq * (1 / rate);
                 }
                 _effectBuffer.resize(length);
-                bufferLen = ApplyResample(channel, buffer, (int32_t)(bufferLen / byteRate), numSamples, inRate, outRate);
+                bufferLen = ApplyResample(
+                    channel, buffer, static_cast<int32_t>(bufferLen / byteRate), numSamples, inRate, outRate);
                 buffer = _effectBuffer.data();
             }
 
@@ -330,7 +328,8 @@ namespace OpenRCT2::Audio
 
             // Finally mix on to destination buffer
             size_t dstLength = std::min(length, bufferLen);
-            SDL_MixAudioFormat(data, (const uint8_t*)buffer, _format.format, (uint32_t)dstLength, mixVolume);
+            SDL_MixAudioFormat(
+                data, static_cast<const uint8_t*>(buffer), _format.format, static_cast<uint32_t>(dstLength), mixVolume);
 
             channel->UpdateOldVolume();
         }
@@ -357,7 +356,8 @@ namespace OpenRCT2::Audio
             uint32_t inLen = srcSamples;
             uint32_t outLen = dstSamples;
             speex_resampler_process_interleaved_int(
-                resampler, (const spx_int16_t*)srcBuffer, &inLen, (spx_int16_t*)_effectBuffer.data(), &outLen);
+                resampler, static_cast<const spx_int16_t*>(srcBuffer), &inLen,
+                reinterpret_cast<spx_int16_t*>(_effectBuffer.data()), &outLen);
 
             return outLen * byteRate;
         }
@@ -369,10 +369,10 @@ namespace OpenRCT2::Audio
                 switch (_format.format)
                 {
                     case AUDIO_S16SYS:
-                        EffectPanS16(channel, (int16_t*)buffer, (int32_t)(len / sampleSize));
+                        EffectPanS16(channel, static_cast<int16_t*>(buffer), static_cast<int32_t>(len / sampleSize));
                         break;
                     case AUDIO_U8:
-                        EffectPanU8(channel, (uint8_t*)buffer, (int32_t)(len / sampleSize));
+                        EffectPanU8(channel, static_cast<uint8_t*>(buffer), static_cast<int32_t>(len / sampleSize));
                         break;
                 }
             }
@@ -381,11 +381,12 @@ namespace OpenRCT2::Audio
         int32_t ApplyVolume(const IAudioChannel* channel, void* buffer, size_t len)
         {
             float volumeAdjust = _volume;
-            volumeAdjust *= gConfigSound.master_sound_enabled ? (gConfigSound.master_volume / 100.0f) : 0;
+            volumeAdjust *= gConfigSound.master_sound_enabled ? (static_cast<float>(gConfigSound.master_volume) / 100.0f)
+                                                              : 0.0f;
 
             switch (channel->GetGroup())
             {
-                case MIXER_GROUP_SOUND:
+                case MixerGroup::Sound:
                     volumeAdjust *= _adjustSoundVolume;
 
                     // Cap sound volume on title screen so music is more audible
@@ -394,33 +395,34 @@ namespace OpenRCT2::Audio
                         volumeAdjust = std::min(volumeAdjust, 0.75f);
                     }
                     break;
-                case MIXER_GROUP_RIDE_MUSIC:
+                case MixerGroup::RideMusic:
+                case MixerGroup::TitleMusic:
                     volumeAdjust *= _adjustMusicVolume;
                     break;
             }
 
-            int32_t startVolume = (int32_t)(channel->GetOldVolume() * volumeAdjust);
-            int32_t endVolume = (int32_t)(channel->GetVolume() * volumeAdjust);
+            int32_t startVolume = channel->GetOldVolume() * volumeAdjust;
+            int32_t endVolume = channel->GetVolume() * volumeAdjust;
             if (channel->IsStopping())
             {
                 endVolume = 0;
             }
 
-            int32_t mixVolume = (int32_t)(channel->GetVolume() * volumeAdjust);
+            int32_t mixVolume = channel->GetVolume() * volumeAdjust;
             if (startVolume != endVolume)
             {
                 // Set to max since we are adjusting the volume ourselves
                 mixVolume = MIXER_VOLUME_MAX;
 
                 // Fade between volume levels to smooth out sound and minimize clicks from sudden volume changes
-                int32_t fadeLength = (int32_t)len / _format.BytesPerSample();
+                int32_t fadeLength = static_cast<int32_t>(len) / _format.BytesPerSample();
                 switch (_format.format)
                 {
                     case AUDIO_S16SYS:
-                        EffectFadeS16((int16_t*)buffer, fadeLength, startVolume, endVolume);
+                        EffectFadeS16(static_cast<int16_t*>(buffer), fadeLength, startVolume, endVolume);
                         break;
                     case AUDIO_U8:
-                        EffectFadeU8((uint8_t*)buffer, fadeLength, startVolume, endVolume);
+                        EffectFadeU8(static_cast<uint8_t*>(buffer), fadeLength, startVolume, endVolume);
                         break;
                 }
             }
@@ -429,7 +431,7 @@ namespace OpenRCT2::Audio
 
         static void EffectPanS16(const IAudioChannel* channel, int16_t* data, int32_t length)
         {
-            const float dt = 1.0f / (length * 2);
+            const float dt = 1.0f / static_cast<float>(length * 2.0f);
             float volumeL = channel->GetOldVolumeL();
             float volumeR = channel->GetOldVolumeR();
             const float d_left = dt * (channel->GetVolumeL() - channel->GetOldVolumeL());
@@ -437,8 +439,8 @@ namespace OpenRCT2::Audio
 
             for (int32_t i = 0; i < length * 2; i += 2)
             {
-                data[i] = (int16_t)(data[i] * volumeL);
-                data[i + 1] = (int16_t)(data[i + 1] * volumeR);
+                data[i + 0] = static_cast<int16_t>(volumeL * static_cast<float>(data[i + 0]));
+                data[i + 1] = static_cast<int16_t>(volumeR * static_cast<float>(data[i + 1]));
                 volumeL += d_left;
                 volumeR += d_right;
             }
@@ -453,9 +455,9 @@ namespace OpenRCT2::Audio
 
             for (int32_t i = 0; i < length * 2; i += 2)
             {
-                float t = (float)i / (length * 2);
-                data[i] = (uint8_t)(data[i] * ((1.0 - t) * oldVolumeL + t * volumeL));
-                data[i + 1] = (uint8_t)(data[i + 1] * ((1.0 - t) * oldVolumeR + t * volumeR));
+                float t = static_cast<float>(i) / static_cast<float>(length * 2.0f);
+                data[i] = static_cast<uint8_t>(data[i] * ((1.0 - t) * oldVolumeL + t * volumeL));
+                data[i + 1] = static_cast<uint8_t>(data[i + 1] * ((1.0 - t) * oldVolumeR + t * volumeR));
             }
         }
 
@@ -463,12 +465,12 @@ namespace OpenRCT2::Audio
         {
             static_assert(SDL_MIX_MAXVOLUME == MIXER_VOLUME_MAX, "Max volume differs between OpenRCT2 and SDL2");
 
-            float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
-            float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
+            float startvolume_f = static_cast<float>(startvolume) / SDL_MIX_MAXVOLUME;
+            float endvolume_f = static_cast<float>(endvolume) / SDL_MIX_MAXVOLUME;
             for (int32_t i = 0; i < length; i++)
             {
-                float t = (float)i / length;
-                data[i] = (int16_t)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
+                float t = static_cast<float>(i) / length;
+                data[i] = static_cast<int16_t>(data[i] * ((1.0f - t) * startvolume_f + t * endvolume_f));
             }
         }
 
@@ -476,12 +478,12 @@ namespace OpenRCT2::Audio
         {
             static_assert(SDL_MIX_MAXVOLUME == MIXER_VOLUME_MAX, "Max volume differs between OpenRCT2 and SDL2");
 
-            float startvolume_f = (float)startvolume / SDL_MIX_MAXVOLUME;
-            float endvolume_f = (float)endvolume / SDL_MIX_MAXVOLUME;
+            float startvolume_f = static_cast<float>(startvolume) / SDL_MIX_MAXVOLUME;
+            float endvolume_f = static_cast<float>(endvolume) / SDL_MIX_MAXVOLUME;
             for (int32_t i = 0; i < length; i++)
             {
-                float t = (float)i / length;
-                data[i] = (uint8_t)(data[i] * ((1 - t) * startvolume_f + t * endvolume_f));
+                float t = static_cast<float>(i) / length;
+                data[i] = static_cast<uint8_t>(data[i] * ((1.0f - t) * startvolume_f + t * endvolume_f));
             }
         }
 
@@ -494,10 +496,10 @@ namespace OpenRCT2::Audio
             {
                 size_t reqConvertBufferCapacity = len * cvt->len_mult;
                 _convertBuffer.resize(reqConvertBufferCapacity);
-                std::copy_n((const uint8_t*)src, len, _convertBuffer.data());
+                std::copy_n(static_cast<const uint8_t*>(src), len, _convertBuffer.data());
 
-                cvt->len = (int32_t)len;
-                cvt->buf = (uint8_t*)_convertBuffer.data();
+                cvt->len = static_cast<int32_t>(len);
+                cvt->buf = static_cast<uint8_t*>(_convertBuffer.data());
                 if (SDL_ConvertAudio(cvt) >= 0)
                 {
                     result = true;

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -16,8 +16,8 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-constexpr int32_t WW = 200;
-constexpr int32_t WH = 100;
+static constexpr const int32_t WW = 200;
+static constexpr const int32_t WH = 100;
 
 static money32 _demolishRideCost;
 
@@ -33,20 +33,16 @@ enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
 
 // 0x009AEBA0
 static rct_widget window_ride_demolish_widgets[] = {
-    { WWT_FRAME,            0, 0,       WW - 1,     0,          WH - 1, STR_NONE,               STR_NONE },
-    { WWT_CAPTION,          0, 1,       WW - 2,     1,          14,     STR_DEMOLISH_RIDE,      STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0, WW - 13, WW - 3,     2,          13,     STR_CLOSE_X_WHITE,      STR_CLOSE_WINDOW_TIP },
-    { WWT_BUTTON,           0, 10,      94,         WH - 20,    WH - 9, STR_DEMOLISH,           STR_NONE },
-    { WWT_BUTTON,           0, WW - 95, WW - 11,    WH - 20,    WH - 9, STR_SAVE_PROMPT_CANCEL, STR_NONE },
+    WINDOW_SHIM_WHITE(STR_DEMOLISH_RIDE, WW, WH),
+    MakeWidget({     10, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_DEMOLISH          ),
+    MakeWidget({WW - 95, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     { WIDGETS_END }
 };
 
 static rct_widget window_ride_refurbish_widgets[] = {
-    { WWT_FRAME,            0, 0,       WW - 1,     0,          WH - 1, STR_NONE,               STR_NONE },
-    { WWT_CAPTION,          0, 1,       WW - 2,     1,          14,     STR_REFURBISH_RIDE,     STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0, WW - 13, WW - 3,     2,          13,     STR_CLOSE_X_WHITE,      STR_CLOSE_WINDOW_TIP },
-    { WWT_BUTTON,           0, 10,      94,         WH - 20,    WH - 9, STR_REFURBISH,          STR_NONE },
-    { WWT_BUTTON,           0, WW - 95, WW - 11,    WH - 20,    WH - 9, STR_SAVE_PROMPT_CANCEL, STR_NONE },
+    WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
+    MakeWidget({     10, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_REFURBISH         ),
+    MakeWidget({WW - 95, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     { WIDGETS_END }
 };
 
@@ -220,12 +216,12 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ride != nullptr)
     {
         auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID : STR_DEMOLISH_RIDE_ID_MONEY;
-        auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs);
-        set_format_arg(nameArgLen, money32, _demolishRideCost);
+        auto ft = Formatter::Common();
+        ride->FormatNameTo(ft);
+        ft.Add<money32>(_demolishRideCost);
 
-        int32_t x = w->windowPos.x + WW / 2;
-        int32_t y = w->windowPos.y + (WH / 2) - 3;
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, stringId, COLOUR_BLACK);
+        ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
+        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, WW - 4, stringId, COLOUR_BLACK);
     }
 }
 
@@ -237,11 +233,11 @@ static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ride != nullptr)
     {
         auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY : STR_REFURBISH_RIDE_ID_MONEY;
-        auto nameArgLen = ride->FormatNameTo(gCommonFormatArgs);
-        set_format_arg(nameArgLen, money32, _demolishRideCost / 2);
+        auto ft = Formatter::Common();
+        ride->FormatNameTo(ft);
+        ft.Add<money32>(_demolishRideCost / 2);
 
-        int32_t x = w->windowPos.x + WW / 2;
-        int32_t y = w->windowPos.y + (WH / 2) - 3;
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, stringId, COLOUR_BLACK);
+        ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
+        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, WW - 4, stringId, COLOUR_BLACK);
     }
 }

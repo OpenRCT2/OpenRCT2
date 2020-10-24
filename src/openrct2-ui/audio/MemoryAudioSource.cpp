@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -12,7 +12,6 @@
 
 #include <SDL.h>
 #include <algorithm>
-#include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/AudioSource.h>
 #include <openrct2/common.h>
 #include <vector>
@@ -37,17 +36,17 @@ namespace OpenRCT2::Audio
         }
 
     public:
-        ~MemoryAudioSource()
+        ~MemoryAudioSource() override
         {
             Unload();
         }
 
-        uint64_t GetLength() const override
+        [[nodiscard]] uint64_t GetLength() const override
         {
             return _length;
         }
 
-        AudioFormat GetFormat() const override
+        [[nodiscard]] AudioFormat GetFormat() const override
         {
             return _format;
         }
@@ -57,12 +56,12 @@ namespace OpenRCT2::Audio
             size_t bytesToRead = 0;
             if (offset < _length)
             {
-                bytesToRead = (size_t)std::min<uint64_t>(len, _length - offset);
+                bytesToRead = static_cast<size_t>(std::min<uint64_t>(len, _length - offset));
 
                 auto src = GetData();
                 if (src != nullptr)
                 {
-                    std::copy_n(src + offset, bytesToRead, (uint8_t*)dst);
+                    std::copy_n(src + offset, bytesToRead, reinterpret_cast<uint8_t*>(dst));
                 }
             }
             return bytesToRead;
@@ -126,7 +125,7 @@ namespace OpenRCT2::Audio
                     SDL_RWread(rw, &pcmSize, sizeof(pcmSize), 1);
                     _length = pcmSize;
 
-                    WaveFormatEx waveFormat;
+                    WaveFormatEx waveFormat{};
                     SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
                     _format.freq = waveFormat.frequency;
                     _format.format = AUDIO_S16LSB;
@@ -164,7 +163,7 @@ namespace OpenRCT2::Audio
                     auto src = GetData();
                     auto cvtBuffer = std::vector<uint8_t>(_length * cvt.len_mult);
                     std::copy_n(src, _length, cvtBuffer.data());
-                    cvt.len = (int32_t)_length;
+                    cvt.len = static_cast<int32_t>(_length);
                     cvt.buf = cvtBuffer.data();
                     if (SDL_ConvertAudio(&cvt) >= 0)
                     {

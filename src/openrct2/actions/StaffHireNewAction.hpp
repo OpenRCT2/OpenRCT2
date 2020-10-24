@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,15 +54,15 @@ DEFINE_GAME_ACTION(StaffHireNewAction, GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, Staff
 {
 private:
     bool _autoPosition = false;
-    uint8_t _staffType = STAFF_TYPE::STAFF_TYPE_COUNT;
-    uint8_t _entertainerType = ENTERTAINER_COSTUME::ENTERTAINER_COSTUME_COUNT;
+    uint8_t _staffType = static_cast<uint8_t>(StaffType::Count);
+    EntertainerCostume _entertainerType = EntertainerCostume::Count;
     uint32_t _staffOrders = 0;
 
 public:
     StaffHireNewAction() = default;
-    StaffHireNewAction(bool autoPosition, STAFF_TYPE staffType, ENTERTAINER_COSTUME entertainerType, uint32_t staffOrders)
+    StaffHireNewAction(bool autoPosition, StaffType staffType, EntertainerCostume entertainerType, uint32_t staffOrders)
         : _autoPosition(autoPosition)
-        , _staffType(staffType)
+        , _staffType(static_cast<uint8_t>(staffType))
         , _entertainerType(entertainerType)
         , _staffOrders(staffOrders)
     {
@@ -97,34 +97,34 @@ private:
 
         res->Expenditure = ExpenditureType::Wages;
 
-        if (_staffType >= STAFF_TYPE_COUNT)
+        if (_staffType >= static_cast<uint8_t>(StaffType::Count))
         {
             // Invalid staff type.
-            log_error("Tried to use invalid staff type: %u", (uint32_t)_staffType);
+            log_error("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
 
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        if (gSpriteListCount[SPRITE_LIST_FREE] < 400)
+        if (GetEntityListCount(EntityListId::Free) < 400)
         {
             return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
-        if (_staffType == STAFF_TYPE_ENTERTAINER)
+        if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
         {
-            if (_entertainerType >= ENTERTAINER_COSTUME_COUNT)
+            if (static_cast<uint8_t>(_entertainerType) >= static_cast<uint8_t>(EntertainerCostume::Count))
             {
                 // Invalid entertainer costume
-                log_error("Tried to use invalid entertainer type: %u", (uint32_t)_entertainerType);
+                log_error("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
             }
 
             uint32_t availableCostumes = staff_get_available_entertainer_costumes();
-            if (!(availableCostumes & (1 << _entertainerType)))
+            if (!(availableCostumes & (1 << static_cast<uint8_t>(_entertainerType))))
             {
                 // Entertainer costume unavailable
-                log_error("Tried to use unavailable entertainer type: %u", (uint32_t)_entertainerType);
+                log_error("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
                 return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
             }
@@ -134,7 +134,7 @@ private:
         int32_t staffIndex;
         for (staffIndex = 0; staffIndex < STAFF_MAX_COUNT; ++staffIndex)
         {
-            if (!(gStaffModes[staffIndex] & 1))
+            if (gStaffModes[staffIndex] == StaffMode::None)
                 break;
         }
 
@@ -158,41 +158,36 @@ private:
         }
         else
         {
-            move_sprite_to_list(newPeep, SPRITE_LIST_PEEP);
-
             newPeep->sprite_identifier = 1;
-            newPeep->window_invalidate_flags = 0;
-            newPeep->action = PEEP_ACTION_NONE_2;
-            newPeep->special_sprite = 0;
-            newPeep->action_sprite_image_offset = 0;
-            newPeep->no_action_frame_num = 0;
-            newPeep->action_sprite_type = PEEP_ACTION_SPRITE_TYPE_NONE;
-            newPeep->path_check_optimisation = 0;
-            newPeep->type = PEEP_TYPE_STAFF;
-            newPeep->outside_of_park = 0;
-            newPeep->peep_flags = 0;
-            newPeep->paid_to_enter = 0;
-            newPeep->paid_on_rides = 0;
-            newPeep->paid_on_food = 0;
-            newPeep->paid_on_souvenirs = 0;
-            newPeep->staff_orders = _staffOrders;
+            newPeep->WindowInvalidateFlags = 0;
+            newPeep->Action = PEEP_ACTION_NONE_2;
+            newPeep->SpecialSprite = 0;
+            newPeep->ActionSpriteImageOffset = 0;
+            newPeep->WalkingFrameNum = 0;
+            newPeep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
+            newPeep->PathCheckOptimisation = 0;
+            newPeep->AssignedPeepType = PeepType::Staff;
+            newPeep->OutsideOfPark = false;
+            newPeep->PeepFlags = 0;
+            newPeep->PaidToEnter = 0;
+            newPeep->PaidOnRides = 0;
+            newPeep->PaidOnFood = 0;
+            newPeep->PaidOnSouvenirs = 0;
+            newPeep->FavouriteRide = RIDE_ID_NULL;
+            newPeep->StaffOrders = _staffOrders;
 
-            uint16_t idSearchSpriteIndex;
-            Peep* idSearchPeep;
-
-            // We search for the first available id for a given staff type
+            // We search for the first available Id for a given staff type
             uint32_t newStaffId = 0;
             for (;;)
             {
                 bool found = false;
                 ++newStaffId;
-
-                FOR_ALL_STAFF (idSearchSpriteIndex, idSearchPeep)
+                for (auto searchPeep : EntityList<Staff>(EntityListId::Peep))
                 {
-                    if (idSearchPeep->staff_type != _staffType)
+                    if (static_cast<uint8_t>(searchPeep->AssignedStaffType) != _staffType)
                         continue;
 
-                    if (idSearchPeep->id == newStaffId)
+                    if (searchPeep->Id == newStaffId)
                     {
                         found = true;
                         break;
@@ -203,16 +198,16 @@ private:
                     break;
             }
 
-            newPeep->id = newStaffId;
-            newPeep->staff_type = _staffType;
+            newPeep->Id = newStaffId;
+            newPeep->AssignedStaffType = static_cast<StaffType>(_staffType);
 
             PeepSpriteType spriteType = spriteTypes[_staffType];
-            if (_staffType == STAFF_TYPE_ENTERTAINER)
+            if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
             {
-                spriteType = static_cast<PeepSpriteType>(PEEP_SPRITE_TYPE_ENTERTAINER_PANDA + _entertainerType);
+                spriteType = EntertainerCostumeToSprite(_entertainerType);
             }
-            newPeep->name = nullptr;
-            newPeep->sprite_type = spriteType;
+            newPeep->Name = nullptr;
+            newPeep->SpriteType = spriteType;
 
             const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[spriteType].sprite_bounds;
             newPeep->sprite_width = spriteBounds->sprite_width;
@@ -226,33 +221,30 @@ private:
             else
             {
                 // NOTE: This state is required for the window to act.
-                newPeep->state = PEEP_STATE_PICKED;
+                newPeep->State = PEEP_STATE_PICKED;
 
-                sprite_move(newPeep->x, newPeep->y, newPeep->z, newPeep);
-                invalidate_sprite_2(newPeep);
+                newPeep->MoveTo({ newPeep->x, newPeep->y, newPeep->z });
             }
 
             // Staff uses this
-            newPeep->time_in_park = gDateMonthsElapsed;
-            newPeep->pathfind_goal.x = 0xFF;
-            newPeep->pathfind_goal.y = 0xFF;
-            newPeep->pathfind_goal.z = 0xFF;
-            newPeep->pathfind_goal.direction = INVALID_DIRECTION;
+            newPeep->TimeInPark = gDateMonthsElapsed;
+            newPeep->PathfindGoal.x = 0xFF;
+            newPeep->PathfindGoal.y = 0xFF;
+            newPeep->PathfindGoal.z = 0xFF;
+            newPeep->PathfindGoal.direction = INVALID_DIRECTION;
 
-            uint8_t colour = staff_get_colour(_staffType);
-            newPeep->tshirt_colour = colour;
-            newPeep->trousers_colour = colour;
+            uint8_t colour = staff_get_colour(static_cast<StaffType>(_staffType));
+            newPeep->TshirtColour = colour;
+            newPeep->TrousersColour = colour;
 
             // Staff energy determines their walking speed
-            newPeep->energy = 0x60;
-            newPeep->energy_target = 0x60;
-            newPeep->staff_mowing_timeout = 0;
+            newPeep->Energy = 0x60;
+            newPeep->EnergyTarget = 0x60;
+            newPeep->StaffMowingTimeout = 0;
 
-            peep_update_name_sort(newPeep);
+            newPeep->StaffId = staffIndex;
 
-            newPeep->staff_id = staffIndex;
-
-            gStaffModes[staffIndex] = STAFF_MODE_WALK;
+            gStaffModes[staffIndex] = StaffMode::Walk;
 
             for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
             {
@@ -268,74 +260,87 @@ private:
     void AutoPositionNewStaff(Peep * newPeep) const
     {
         // Find a location to place new staff member
+        newPeep->State = PEEP_STATE_FALLING;
 
-        newPeep->state = PEEP_STATE_FALLING;
-
-        int16_t x, y, z;
         uint32_t count = 0;
-        uint16_t sprite_index;
-        Peep* guest = nullptr;
         PathElement* guest_tile = nullptr;
 
         // Count number of walking guests
-        FOR_ALL_GUESTS (sprite_index, guest)
         {
-            if (guest->state == PEEP_STATE_WALKING)
+            for (auto guest : EntityList<Guest>(EntityListId::Peep))
             {
-                // Check the walking guest's tile. Only count them if they're on a path tile.
-                guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
-                if (guest_tile != nullptr)
-                    ++count;
+                if (guest->State == PEEP_STATE_WALKING)
+                {
+                    // Check the walking guest's tile. Only count them if they're on a path tile.
+                    guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
+                    if (guest_tile != nullptr)
+                        ++count;
+                }
             }
         }
 
+        CoordsXYZ newLocation{};
         if (count > 0)
         {
             // Place staff at a random guest
             uint32_t rand = scenario_rand_max(count);
-            FOR_ALL_GUESTS (sprite_index, guest)
+            Guest* chosenGuest = nullptr;
+
+            for (auto guest : EntityList<Guest>(EntityListId::Peep))
             {
-                if (guest->state == PEEP_STATE_WALKING)
+                if (guest->State == PEEP_STATE_WALKING)
                 {
                     guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
                     if (guest_tile != nullptr)
                     {
                         if (rand == 0)
+                        {
+                            chosenGuest = guest;
                             break;
+                        }
                         --rand;
                     }
                 }
             }
 
-            x = guest->x;
-            y = guest->y;
-            z = guest->z;
+            if (chosenGuest != nullptr)
+            {
+                newLocation.x = chosenGuest->x;
+                newLocation.y = chosenGuest->y;
+                newLocation.z = chosenGuest->z;
+            }
+            else
+            {
+                // User must pick a location
+                newPeep->State = PEEP_STATE_PICKED;
+                newLocation.x = newPeep->x;
+                newLocation.y = newPeep->y;
+                newLocation.z = newPeep->z;
+            }
         }
         else
         {
             // No walking guests; pick random park entrance
             if (!gParkEntrances.empty())
             {
-                auto rand = scenario_rand_max((uint32_t)gParkEntrances.size());
+                auto rand = scenario_rand_max(static_cast<uint32_t>(gParkEntrances.size()));
                 const auto& entrance = gParkEntrances[rand];
                 auto dir = entrance.direction;
-                x = entrance.x;
-                y = entrance.y;
-                z = entrance.z;
-                x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
-                y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
+                newLocation = entrance;
+                // TODO: Replace with CoordsDirectionDelta
+                newLocation.x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
+                newLocation.y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
             }
             else
             {
                 // User must pick a location
-                newPeep->state = PEEP_STATE_PICKED;
-                x = newPeep->x;
-                y = newPeep->y;
-                z = newPeep->z;
+                newPeep->State = PEEP_STATE_PICKED;
+                newLocation.x = newPeep->x;
+                newLocation.y = newPeep->y;
+                newLocation.z = newPeep->z;
             }
         }
 
-        sprite_move(x, y, z + 16, newPeep);
-        invalidate_sprite_2(newPeep);
+        newPeep->MoveTo(newLocation + CoordsXYZ{ 0, 0, 16 });
     }
 };

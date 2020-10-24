@@ -9,6 +9,8 @@
 
 #include "Utils.hpp"
 
+#include "Data.h"
+
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
@@ -52,7 +54,7 @@ namespace Utils
             return false;
         }
 
-        if (newPaintGetter(trackType, 0) == nullptr)
+        if (newPaintGetter(trackType) == nullptr)
         {
             return false;
         }

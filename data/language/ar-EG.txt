@@ -1130,8 +1130,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Can't change time limit for ride...
 STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
 STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
-STR_1754    :{BLACK}{COMMA16} guests
-STR_1755    :{BLACK}{COMMA16} guest
+STR_1754    :{BLACK}{COMMA32} guests
+STR_1755    :{BLACK}{COMMA32} guest
 STR_1756    :{WINDOW_COLOUR_2}Admission price:
 STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Build mode
@@ -1189,7 +1189,7 @@ STR_1813    :Miscellaneous Objects
 STR_1814    :Actions
 STR_1815    :Thoughts
 STR_1816    :{SMALLFONT}{BLACK}Select information type to show in guest list
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}All guests
 STR_1819    :{WINDOW_COLOUR_2}All guests (summarised)
 STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
@@ -1218,9 +1218,9 @@ STR_1842    :Favourite of: {COMMA16} guest
 STR_1843    :Favourite of: {COMMA16} guests
 STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} guests
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guests
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guests
+STR_1846    :{COMMA32} guests
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} guests
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} guests
 STR_1849    :{WINDOW_COLOUR_2}Play music
 STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
 STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
@@ -1578,7 +1578,7 @@ STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park Rating: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Guests in park: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Guests in park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Cash: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
@@ -1943,8 +1943,8 @@ STR_2728    :{UINT16}hour:{UINT16}min
 STR_2729    :{UINT16}hour:{UINT16}mins
 STR_2730    :{UINT16}hours:{UINT16}min
 STR_2731    :{UINT16}hours:{UINT16}mins
-STR_2732    :{COMMA16}ft
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}ft
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Year {COMMA16}
@@ -1980,7 +1980,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT +
 STR_2783    :CTRL +
 STR_2784    :غير إختصار لوحة المفاتيح
@@ -2533,19 +2533,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Year {POP16}{COMMA16}
 STR_5161    :صيغة التاريخ:
 STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
-STR_5164    :Twitch Channel name
-STR_5165    :Name guests after followers
-STR_5166    :{SMALLFONT}{BLACK}Name guests after channel's{NEWLINE}Twitch followers
-STR_5167    :Track follower guests
-STR_5168    :{SMALLFONT}{BLACK}Enable tracking information for guests named after channel's Twitch followers
-STR_5169    :Name guests after people in Twitch chat
-STR_5170    :{SMALLFONT}{BLACK}Name guests after people in Twitch chat
-STR_5171    :Track chat guests
-STR_5172    :{SMALLFONT}{BLACK}Enable tracking information for guests named after Twitch chat participants
-STR_5173    :Pull Twitch chat as news
-STR_5174    :{SMALLFONT}{BLACK}Use Twitch chat messages preceded by !news for in game notifications
-STR_5175    :Input the name of your Twitch channel
-STR_5176    :Enable Twitch integration
 STR_5177    :Screen mode:
 STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
 STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
@@ -2640,7 +2627,6 @@ STR_5267    :{SMALLFONT}{BLACK}Culture and Units
 STR_5268    :{SMALLFONT}{BLACK}الصوت
 STR_5269    :{SMALLFONT}{BLACK}Controls and interface
 STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Small Scenery
 STR_5273    :{SMALLFONT}{BLACK}Large Scenery
 STR_5274    :{SMALLFONT}{BLACK}Footpath
@@ -2684,26 +2670,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug tools
 STR_5312    :أظهر الكونسول
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
-STR_5315    :عشب
-STR_5316    :رمل
-STR_5317    :تراب
-STR_5318    :صخر
-STR_5319    :Martian
-STR_5320    :Checkerboard
-STR_5321    :Grass clumps
-STR_5322    :ثلج
-STR_5323    :Grid (red)
-STR_5324    :Grid (yellow)
-STR_5325    :Grid (blue)
-STR_5326    :Grid (green)
-STR_5327    :Sand (dark)
-STR_5328    :Sand (light)
-STR_5329    :Checkerboard (inverted)
-STR_5330    :Underground view
-STR_5331    :صخر
-STR_5332    :خشب (أحمر)
-STR_5333    :خشب (أسمر)
-STR_5334    :ثلج
 STR_5335    :مدخل الرحلة
 STR_5336    :مخرج الرحلة
 STR_5337    :مدخل الحديقة
@@ -3181,7 +3147,6 @@ STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
 STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built rides
-STR_5852    :{SMALLFONT}{BLACK}Set the name of the TwitchTV channel that will be used for Twitch integration
 STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
 STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off
 STR_5855    :{SMALLFONT}{BLACK}Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
@@ -3532,17 +3497,6 @@ STR_6200    :إسترجاع التاريخ
 STR_6201    :{MONTH}
 STR_6202    :نمط الأرض الإفتراضية
 STR_6203    :{SMALLFONT}{BLACK}حينما يتم تفعيلة، سوف يتم إظهار أرضية إفتراضية لكل تساعدك في وضع الأشكال عمودياً بشكل صحيح.
-STR_6204    :حجر
-STR_6205    :حديد
-STR_6206    :جص رمادي
-STR_6207    :جص أصفر
-STR_6208    :جص أحمر
-STR_6209    :جص بنفسجي
-STR_6210    :جص أخضر
-STR_6211    :حجر رملي بني
-STR_6212    :حجر رملي رمادي
-STR_6213    :ناطحة السحاب أ
-STR_6214    :ناطحة السحاب ب
 STR_6215    :الإنشاء
 STR_6216    :العملية
 STR_6217    :توافرية المسار \الرحلة
@@ -3580,9 +3534,6 @@ STR_6248    :{WINDOW_COLOUR_1}هل تود تجديد {STRINGID} بقيمة {CURR
 STR_6249    :{WINDOW_COLOUR_1}هل تود تجديد {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}هل تود تدمير {STRINGID} بالكامل و إسترجاع {CURRENCY}?
 STR_6251    :الرحلة ليس ممتلئة بعد
-STR_6252    :رابط واجهة تطبيق تويتش
-STR_6253    :{SMALLFONT}{BLACK}وفر الرابط لواجهة تطبيق تويتش. مطلوبة من أجل .
-STR_6254    :الرابط لواجهة برمجة تطبيق تويتش:
 STR_6255    :رابط غير صالح
 STR_6260    :Show blocked tiles
 STR_6261    :أظهر المسارات الواسعة

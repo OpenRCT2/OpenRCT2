@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -113,7 +113,7 @@ private:
         money32 totalCost = 0;
 
         // check if we need to start at all
-        if (!map_is_location_valid(loc) || !map_is_location_valid({ loc.x + stepX, loc.y + stepY }))
+        if (!LocationValid(loc) || !LocationValid({ loc.x + stepX, loc.y + stepY }))
         {
             return 0;
         }
@@ -149,7 +149,7 @@ private:
             nextLoc.y += stepY;
             // check if we need to continue after raising the current tile
             // this needs to be checked before the tile is changed
-            if (!map_is_location_valid({ nextLoc.x + stepX, nextLoc.y + stepY }))
+            if (!LocationValid({ nextLoc.x + stepX, nextLoc.y + stepY }))
             {
                 shouldContinue &= ~0x3;
             }
@@ -265,7 +265,7 @@ private:
         }
 
         // check if we need to start at all
-        if (!map_is_location_valid(loc) || !map_is_location_valid({ loc.x + stepX, loc.y + stepY }))
+        if (!LocationValid(loc) || !LocationValid({ loc.x + stepX, loc.y + stepY }))
         {
             return 0;
         }
@@ -292,7 +292,7 @@ private:
             nextLoc.y += stepY;
             // check if we need to continue after raising the current tile
             // this needs to be checked before the tile is changed
-            if (!map_is_location_valid({ nextLoc.x + stepX, nextLoc.y + stepY }))
+            if (!LocationValid({ nextLoc.x + stepX, nextLoc.y + stepY }))
             {
                 shouldContinue = false;
             }
@@ -371,7 +371,7 @@ private:
                     if (surfaceElement != nullptr)
                     {
                         int32_t z = std::clamp(
-                            (uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 2)), minHeight, maxHeight);
                         res->Cost += SmoothLandRowByCorner(
                             isExecuting, { validRange.GetLeft(), validRange.GetTop() }, z, -32, -32, 0, 2);
                     }
@@ -381,7 +381,7 @@ private:
                     if (surfaceElement != nullptr)
                     {
                         int32_t z = std::clamp(
-                            (uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 3)), minHeight, maxHeight);
                         res->Cost += SmoothLandRowByCorner(
                             isExecuting, { validRange.GetLeft(), validRange.GetBottom() }, z, -32, 32, 1, 3);
                     }
@@ -391,7 +391,7 @@ private:
                     if (surfaceElement != nullptr)
                     {
                         int32_t z = std::clamp(
-                            (uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 0)), minHeight, maxHeight);
                         res->Cost += SmoothLandRowByCorner(
                             isExecuting, { validRange.GetRight(), validRange.GetBottom() }, z, 32, 32, 2, 0);
                     }
@@ -401,7 +401,7 @@ private:
                     if (surfaceElement != nullptr)
                     {
                         int32_t z = std::clamp(
-                            (uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 1)), minHeight, maxHeight);
                         res->Cost += SmoothLandRowByCorner(
                             isExecuting, { validRange.GetRight(), validRange.GetTop() }, z, 32, -32, 3, 1);
                     }
@@ -414,16 +414,20 @@ private:
                     auto surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetLeft(), y });
                     if (surfaceElement != nullptr)
                     {
-                        z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
-                        z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
+                        z1 = std::clamp(
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 3)), minHeight, maxHeight);
+                        z2 = std::clamp(
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 2)), minHeight, maxHeight);
                         res->Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetLeft(), y }, z1, z2, -32, 0, 0, 1, 3, 2);
                     }
 
                     surfaceElement = map_get_surface_element_at(CoordsXY{ validRange.GetRight(), y });
                     if (surfaceElement != nullptr)
                     {
-                        z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
-                        z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
+                        z1 = std::clamp(
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 1)), minHeight, maxHeight);
+                        z2 = std::clamp(
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 0)), minHeight, maxHeight);
                         res->Cost += SmoothLandRowByEdge(isExecuting, { validRange.GetRight(), y }, z1, z2, 32, 0, 2, 3, 1, 0);
                     }
                 }
@@ -433,16 +437,20 @@ private:
                     auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, validRange.GetTop() });
                     if (surfaceElement != nullptr)
                     {
-                        z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 1), minHeight, maxHeight);
-                        z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 2), minHeight, maxHeight);
+                        z1 = std::clamp(
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 1)), minHeight, maxHeight);
+                        z2 = std::clamp(
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 2)), minHeight, maxHeight);
                         res->Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetTop() }, z1, z2, 0, -32, 0, 3, 1, 2);
                     }
 
                     surfaceElement = map_get_surface_element_at(CoordsXY{ x, validRange.GetBottom() });
                     if (surfaceElement != nullptr)
                     {
-                        z1 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 0), minHeight, maxHeight);
-                        z2 = std::clamp((uint8_t)tile_element_get_corner_height(surfaceElement, 3), minHeight, maxHeight);
+                        z1 = std::clamp(
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 0)), minHeight, maxHeight);
+                        z2 = std::clamp(
+                            static_cast<uint8_t>(tile_element_get_corner_height(surfaceElement, 3)), minHeight, maxHeight);
                         res->Cost += SmoothLandRowByEdge(isExecuting, { x, validRange.GetBottom() }, z1, z2, 0, 32, 1, 2, 0, 3);
                     }
                 }
@@ -634,7 +642,7 @@ private:
             }
             default:
                 log_error("Invalid map selection %u", _selectionType);
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, res->ErrorTitle);
+                return MakeResult(GA_ERROR::INVALID_PARAMETERS, res->ErrorTitle.GetStringId());
         } // switch selectionType
 
         // Raise / lower the land tool selection area

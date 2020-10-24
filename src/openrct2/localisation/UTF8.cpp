@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -47,36 +47,6 @@ uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr)
     if (nextchar_ptr != nullptr)
         *nextchar_ptr = char_ptr + numBytes;
     return result;
-}
-
-utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
-{
-    if (codepoint <= 0x7F)
-    {
-        dst[0] = (utf8)codepoint;
-        return dst + 1;
-    }
-    else if (codepoint <= 0x7FF)
-    {
-        dst[0] = 0xC0 | ((codepoint >> 6) & 0x1F);
-        dst[1] = 0x80 | (codepoint & 0x3F);
-        return dst + 2;
-    }
-    else if (codepoint <= 0xFFFF)
-    {
-        dst[0] = 0xE0 | ((codepoint >> 12) & 0x0F);
-        dst[1] = 0x80 | ((codepoint >> 6) & 0x3F);
-        dst[2] = 0x80 | (codepoint & 0x3F);
-        return dst + 3;
-    }
-    else
-    {
-        dst[0] = 0xF0 | ((codepoint >> 18) & 0x07);
-        dst[1] = 0x80 | ((codepoint >> 12) & 0x3F);
-        dst[2] = 0x80 | ((codepoint >> 6) & 0x3F);
-        dst[3] = 0x80 | (codepoint & 0x3F);
-        return dst + 4;
-    }
 }
 
 /**
@@ -150,7 +120,7 @@ utf8* get_string_end(const utf8* text)
         int32_t argLength = utf8_get_format_code_arg_length(codepoint);
         ch += argLength;
     }
-    return (utf8*)(ch - 1);
+    return const_cast<utf8*>(ch - 1);
 }
 
 /**
@@ -209,7 +179,7 @@ void utf8_remove_formatting(utf8* string, bool allowColours)
 
     while (true)
     {
-        char32_t code = utf8_get_next(readPtr, (const utf8**)&readPtr);
+        char32_t code = utf8_get_next(readPtr, const_cast<const utf8**>(&readPtr));
 
         if (code == 0)
         {

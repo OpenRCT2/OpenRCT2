@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,7 +18,7 @@
 
 namespace OpenRCT2::Audio
 {
-    class AudioContext : public IAudioContext
+    class AudioContext final : public IAudioContext
     {
     private:
         IAudioMixer* _audioMixer = nullptr;
@@ -104,7 +104,7 @@ namespace OpenRCT2::Audio
         void StopCrowdSound() override
         {
         }
-        void StopRainSound() override
+        void StopWeatherSound() override
         {
         }
         void StopRideMusic() override

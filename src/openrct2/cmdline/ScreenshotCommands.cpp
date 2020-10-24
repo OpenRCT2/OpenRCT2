@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -41,7 +41,7 @@ const CommandLineCommand CommandLine::ScreenshotCommands[]
 
 static exitcode_t HandleScreenshot(CommandLineArgEnumerator* argEnumerator)
 {
-    const char** argv = (const char**)argEnumerator->GetArguments() + argEnumerator->GetIndex();
+    const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
     int32_t result = cmdline_for_screenshot(argv, argc, &_options);
     if (result < 0)

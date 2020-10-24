@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -26,6 +26,13 @@ public:
         , _trackType(trackType)
         , _brakeSpeed(brakeSpeed)
     {
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("trackType", _trackType);
+        visitor.Visit("brakeSpeed", _brakeSpeed);
     }
 
     uint16_t GetActionFlags() const override
@@ -58,6 +65,11 @@ private:
         res->Position.x += 16;
         res->Position.y += 16;
         res->Expenditure = ExpenditureType::RideConstruction;
+
+        if (!LocationValid(_loc))
+        {
+            return MakeResult(GA_ERROR::NOT_OWNED, STR_NONE);
+        }
 
         TileElement* tileElement = map_get_track_element_at_of_type(_loc, _trackType);
         if (tileElement == nullptr)

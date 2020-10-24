@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -54,4 +54,4 @@ enum
 };
 
 bool scenery_small_entry_has_flag(const rct_scenery_entry* sceneryEntry, uint32_t flags);
-rct_scenery_entry* get_small_scenery_entry(int32_t entryIndex);
+rct_scenery_entry* get_small_scenery_entry(ObjectEntryIndex entryIndex);

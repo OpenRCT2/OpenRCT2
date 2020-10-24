@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -65,7 +65,8 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_NONE);
         }
 
-        if (_loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32) || _loc.y >= (gMapSizeUnits - 32))
+        if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (gMapSizeUnits - 32)
+            || _loc.y >= (gMapSizeUnits - 32))
         {
             return std::make_unique<GameActionResult>(
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
@@ -77,8 +78,8 @@ public:
                 GA_ERROR::INVALID_PARAMETERS, STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
 
-        int8_t zLow = _loc.z;
-        int8_t zHigh = zLow + ParkEntranceHeight;
+        auto zLow = _loc.z;
+        auto zHigh = zLow + ParkEntranceHeight;
         CoordsXYZ entranceLoc = _loc;
         for (uint8_t index = 0; index < 3; index++)
         {
@@ -92,10 +93,11 @@ public:
                 entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
             }
 
-            if (!map_can_construct_at({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }))
+            if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2->Error != GA_ERROR::OK)
             {
                 return std::make_unique<GameActionResult>(
-                    GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, gGameCommandErrorText, gCommonFormatArgs);
+                    GA_ERROR::NO_CLEARANCE, STR_CANT_BUILD_PARK_ENTRANCE_HERE, res2->ErrorMessage.GetStringId(),
+                    res2->ErrorMessageArgs.data());
             }
 
             // Check that entrance element does not already exist at this location
@@ -123,8 +125,8 @@ public:
 
         gParkEntrances.push_back(parkEntrance);
 
-        int8_t zLow = _loc.z;
-        int8_t zHigh = zLow + ParkEntranceHeight;
+        auto zLow = _loc.z;
+        auto zHigh = zLow + ParkEntranceHeight;
         CoordsXY entranceLoc = { _loc.x, _loc.y };
         for (uint8_t index = 0; index < 3; index++)
         {

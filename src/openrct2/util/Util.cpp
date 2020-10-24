@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -64,8 +64,8 @@ bool filename_valid_characters(const utf8* filename)
 utf8* path_get_directory(const utf8* path)
 {
     // Find the last slash or backslash in the path
-    char* filename = (char*)strrchr(path, *PATH_SEPARATOR);
-    char* filename_posix = (char*)strrchr(path, '/');
+    char* filename = const_cast<char*>(strrchr(path, *PATH_SEPARATOR));
+    char* filename_posix = const_cast<char*>(strrchr(path, '/'));
     filename = filename < filename_posix ? filename_posix : filename;
 
     // If the path is invalid (e.g. just a file name), return NULL
@@ -83,8 +83,8 @@ utf8* path_get_directory(const utf8* path)
 const char* path_get_filename(const utf8* path)
 {
     // Find last slash or backslash in the path
-    char* filename = (char*)strrchr(path, *PATH_SEPARATOR);
-    char* filename_posix = (char*)strchr(path, '/');
+    char* filename = const_cast<char*>(strrchr(path, *PATH_SEPARATOR));
+    char* filename_posix = const_cast<char*>(strchr(path, '/'));
     filename = filename < filename_posix ? filename_posix : filename;
 
     // Checks if the path is valid (e.g. not just a file name)
@@ -108,11 +108,11 @@ const char* path_get_extension(const utf8* path)
     const char* filename = path_get_filename(path);
 
     // Try to find the most-right dot in the filename
-    char* extension = (char*)strrchr(filename, '.');
+    char* extension = const_cast<char*>(strrchr(filename, '.'));
 
     // When no dot was found, return a pointer to the null-terminator
     if (extension == nullptr)
-        extension = (char*)strrchr(filename, '\0');
+        extension = const_cast<char*>(strrchr(filename, '\0'));
 
     return extension;
 }
@@ -143,7 +143,7 @@ void path_append_extension(utf8* path, const utf8* newExtension, size_t size)
 void path_remove_extension(utf8* path)
 {
     // Find last dot in filename, and replace it with a null-terminator
-    char* lastDot = (char*)strrchr(path_get_filename(path), '.');
+    char* lastDot = const_cast<char*>(strrchr(path_get_filename(path), '.'));
     if (lastDot != nullptr)
         *lastDot = '\0';
     else
@@ -166,7 +166,7 @@ int32_t bitscanforward(int32_t source)
 {
 #if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
     DWORD i;
-    uint8_t success = _BitScanForward(&i, (uint32_t)source);
+    uint8_t success = _BitScanForward(&i, static_cast<uint32_t>(source));
     return success != 0 ? i : -1;
 #elif defined(__GNUC__)
     int32_t success = __builtin_ffs(source);
@@ -200,7 +200,7 @@ static bool cpuid_x86(uint32_t* cpuid_outdata, int32_t eax)
     int ret = __get_cpuid(eax, &cpuid_outdata[0], &cpuid_outdata[1], &cpuid_outdata[2], &cpuid_outdata[3]);
     return ret == 1;
 #    elif defined(OpenRCT2_CPUID_MSVC_X86)
-    __cpuid((int*)cpuid_outdata, (int)eax);
+    __cpuid(reinterpret_cast<int*>(cpuid_outdata), static_cast<int>(eax));
     return true;
 #    else
     return false;
@@ -323,37 +323,35 @@ int32_t strcicmp(char const* a, char const* b)
 // - Guest 100
 // - John v2.0
 // - John v2.1
-int32_t strlogicalcmp(char const* a, char const* b)
+int32_t strlogicalcmp(const char* s1, const char* s2)
 {
-    for (;; a++, b++)
+    for (;;)
     {
-        int32_t result = tolower(*a) - tolower(*b);
-        bool both_numeric = *a >= '0' && *a <= '9' && *b >= '0' && *b <= '9';
-        if (result != 0 || !*a || both_numeric)
-        { // difference found || end of string
-            if (both_numeric)
-            { // a and b both start with a number
-                // Get the numbers in the string at current positions
-                int32_t na = 0, nb = 0;
-                for (; *a >= '0' && *a <= '9'; a++)
-                {
-                    na *= 10;
-                    na += *a - '0';
-                }
-                for (; *b >= '0' && *b <= '9'; b++)
-                {
-                    nb *= 10;
-                    nb += *b - '0';
-                }
-                // In case the numbers are the same
-                if (na == nb)
-                    continue;
-                return na - nb;
-            }
+        if (*s2 == '\0')
+            return *s1 != '\0';
+        else if (*s1 == '\0')
+            return -1;
+        else if (!(isdigit(*s1) && isdigit(*s2)))
+        {
+            if (tolower(*s1) != tolower(*s2))
+                return tolower(*s1) - tolower(*s2);
             else
             {
-                return result;
+                ++s1;
+                ++s2;
             }
+        }
+        else
+        {
+            char *lim1, *lim2;
+            unsigned long n1 = strtoul(s1, &lim1, 10);
+            unsigned long n2 = strtoul(s2, &lim2, 10);
+            if (n1 > n2)
+                return 1;
+            else if (n1 < n2)
+                return -1;
+            s1 = lim1;
+            s2 = lim2;
         }
     }
 }
@@ -369,7 +367,7 @@ utf8* safe_strtrunc(utf8* text, size_t size)
     char* ch = text;
     char* last = text;
     uint32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, (const utf8**)&ch)) != 0)
+    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&ch))) != 0)
     {
         if (ch <= sourceLimit)
         {
@@ -487,7 +485,7 @@ char* strcasestr(const char* haystack, const char* needle)
 
     while (*p1 != 0 && *p2 != 0)
     {
-        if (tolower((unsigned char)*p1) == tolower((unsigned char)*p2))
+        if (tolower(static_cast<unsigned char>(*p1)) == tolower(static_cast<unsigned char>(*p2)))
         {
             if (r == nullptr)
                 r = p1;
@@ -499,7 +497,7 @@ char* strcasestr(const char* haystack, const char* needle)
             if (r != nullptr)
                 p1 = r + 1;
 
-            if (tolower((unsigned char)*p1) == tolower((unsigned char)*p2))
+            if (tolower(static_cast<unsigned char>(*p1)) == tolower(static_cast<unsigned char>(*p2)))
             {
                 r = p1;
                 p2++;
@@ -513,13 +511,14 @@ char* strcasestr(const char* haystack, const char* needle)
         p1++;
     }
 
-    return *p2 == 0 ? (char*)r : nullptr;
+    return *p2 == 0 ? const_cast<char*>(r) : nullptr;
 }
 #endif
 
 bool utf8_is_bom(const char* str)
 {
-    return str[0] == (char)(uint8_t)0xEF && str[1] == (char)(uint8_t)0xBB && str[2] == (char)(uint8_t)0xBF;
+    return str[0] == static_cast<char>(static_cast<uint8_t>(0xEF)) && str[1] == static_cast<char>(static_cast<uint8_t>(0xBB))
+        && str[2] == static_cast<char>(static_cast<uint8_t>(0xBF));
 }
 
 bool str_is_null_or_empty(const char* str)
@@ -548,23 +547,24 @@ constexpr int32_t MAX_ZLIB_REALLOC = 4 * 1024 * 1024;
 uint8_t* util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_size)
 {
     int32_t ret = Z_OK;
-    uLongf out_size = (uLong)*data_out_size;
+    uLongf out_size = static_cast<uLong>(*data_out_size);
     if (out_size == 0)
     {
         // Try to guesstimate the size needed for output data by applying the
         // same ratio it would take to compress data_in_size.
-        out_size = (uLong)data_in_size * (uLong)data_in_size / compressBound((uLong)data_in_size);
-        out_size = std::min((uLongf)MAX_ZLIB_REALLOC, out_size);
+        out_size = static_cast<uLong>(data_in_size) * static_cast<uLong>(data_in_size)
+            / compressBound(static_cast<uLong>(data_in_size));
+        out_size = std::min(static_cast<uLongf>(MAX_ZLIB_REALLOC), out_size);
     }
     uLongf buffer_size = out_size;
-    uint8_t* buffer = (uint8_t*)malloc(buffer_size);
+    uint8_t* buffer = static_cast<uint8_t*>(malloc(buffer_size));
     do
     {
         if (ret == Z_BUF_ERROR)
         {
             buffer_size *= 2;
             out_size = buffer_size;
-            buffer = (uint8_t*)realloc(buffer, buffer_size);
+            buffer = static_cast<uint8_t*>(realloc(buffer, buffer_size));
         }
         else if (ret == Z_STREAM_ERROR)
         {
@@ -578,9 +578,9 @@ uint8_t* util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_
             free(buffer);
             return nullptr;
         }
-        ret = uncompress(buffer, &out_size, data, (uLong)data_in_size);
+        ret = uncompress(buffer, &out_size, data, static_cast<uLong>(data_in_size));
     } while (ret != Z_OK);
-    buffer = (uint8_t*)realloc(buffer, out_size);
+    buffer = static_cast<uint8_t*>(realloc(buffer, out_size));
     *data_out_size = out_size;
     return buffer;
 }
@@ -589,34 +589,30 @@ uint8_t* util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_
  * @brief Deflates input using zlib
  * @param data Data to be compressed
  * @param data_in_size Size of data to be compressed
- * @param data_out_size Pointer to a variable where output size will be written
- * @return Returns a pointer to memory holding compressed data or NULL on failure.
- * @note It is caller's responsibility to free() the returned pointer once done with it.
+ * @return Returns an optional std::vector of bytes, which is equal to std::nullopt when deflate has failed
  */
-uint8_t* util_zlib_deflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size)
+std::optional<std::vector<uint8_t>> util_zlib_deflate(const uint8_t* data, size_t data_in_size)
 {
     int32_t ret = Z_OK;
-    uLongf out_size = (uLongf)*data_out_size;
-    uLong buffer_size = compressBound((uLong)data_in_size);
-    uint8_t* buffer = (uint8_t*)malloc(buffer_size);
+    uLongf out_size = 0;
+    uLong buffer_size = compressBound(static_cast<uLong>(data_in_size));
+    std::vector<uint8_t> buffer(buffer_size);
     do
     {
         if (ret == Z_BUF_ERROR)
         {
             buffer_size *= 2;
             out_size = buffer_size;
-            buffer = (uint8_t*)realloc(buffer, buffer_size);
+            buffer.resize(buffer_size);
         }
         else if (ret == Z_STREAM_ERROR)
         {
             log_error("Your build is shipped with broken zlib. Please use the official build.");
-            free(buffer);
-            return nullptr;
+            return std::nullopt;
         }
-        ret = compress(buffer, &out_size, data, (uLong)data_in_size);
+        ret = compress(buffer.data(), &out_size, data, static_cast<uLong>(data_in_size));
     } while (ret != Z_OK);
-    *data_out_size = out_size;
-    buffer = (uint8_t*)realloc(buffer, *data_out_size);
+    buffer.resize(out_size);
     return buffer;
 }
 
@@ -729,8 +725,8 @@ uint8_t lerp(uint8_t a, uint8_t b, float t)
         return b;
 
     int32_t range = b - a;
-    int32_t amount = (int32_t)(range * t);
-    return (uint8_t)(a + amount);
+    int32_t amount = static_cast<int32_t>(range * t);
+    return static_cast<uint8_t>(a + amount);
 }
 
 float flerp(float a, float b, float f)
@@ -751,7 +747,7 @@ uint8_t soft_light(uint8_t a, uint8_t b)
     {
         fr = (2 * fa * (1 - fb)) + (std::sqrt(fa) * ((2 * fb) - 1));
     }
-    return (uint8_t)(std::clamp(fr, 0.0f, 1.0f) * 255.0f);
+    return static_cast<uint8_t>(std::clamp(fr, 0.0f, 1.0f) * 255.0f);
 }
 
 /**

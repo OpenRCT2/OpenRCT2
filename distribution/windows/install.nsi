@@ -170,6 +170,12 @@ Section "!OpenRCT2" Section1
     File ..\..\contributors.md
     Push "$INSTDIR\contributors.md"
     Call unix2dos
+    File ..\scripting.md
+    Push "$INSTDIR\scripting.md"
+    Call unix2dos
+    File ..\openrct2.d.ts
+    Push "$INSTDIR\openrct2.d.ts"
+    Call unix2dos
 
     ; Copy executable
     File /oname=${OPENRCT2_EXE} ${BINARY_DIR}\${OPENRCT2_EXE}
@@ -240,6 +246,8 @@ Section "Uninstall"
     Delete "$INSTDIR\licence.txt"
     Delete "$INSTDIR\readme.txt"
     Delete "$INSTDIR\contributors.md"
+    Delete "$INSTDIR\scripting.md"
+    Delete "$INSTDIR\openrct2.d.ts"
     Delete "$INSTDIR\${OPENRCT2_EXE}"
     Delete "$INSTDIR\${OPENRCT2_COM}"
     Delete "$INSTDIR\INSTALL.LOG"
@@ -491,6 +499,7 @@ Function .onInit
     SectionSetFlags 0 17
 
 ShowWelcomeMessage:
+    IfSilent FinishCallback
     ReadRegStr $R8 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\OpenRCT2" "Version"
     IfErrors FinishCallback
 

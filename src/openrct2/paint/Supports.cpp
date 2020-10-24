@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -114,19 +114,19 @@ static constexpr const uint32_t _metalSupportTypeToCrossbeamImages[][8] = {
 
 /** rct2: 0x0097B142 */
 static constexpr const uint8_t supportTypeToHeight[] = {
-    6,
-    3,
-    3,
-    6,
-    3,
-    3,
-    6,
-    6,
-    6,
-    6,
-    4,
-    3,
-    6,
+    6, // METAL_SUPPORTS_TUBES
+    3, // METAL_SUPPORTS_FORK
+    3, // METAL_SUPPORTS_FORK_ALT
+    6, // METAL_SUPPORTS_BOXED
+    3, // METAL_SUPPORTS_STICK
+    3, // METAL_SUPPORTS_STICK_ALT
+    6, // METAL_SUPPORTS_THICK_CENTRED
+    6, // METAL_SUPPORTS_THICK
+    6, // METAL_SUPPORTS_THICK_ALT
+    6, // METAL_SUPPORTS_THICK_ALT_CENTRED
+    4, // METAL_SUPPORTS_TRUSS
+    3, // METAL_SUPPORTS_TUBES_INVERTED
+    6, // METAL_SUPPORTS_BOXED_COATED
 };
 
 struct metal_supports_images {
@@ -136,19 +136,19 @@ struct metal_supports_images {
 
 /** rct2: 0x0097B15C */
 static constexpr const metal_supports_images _97B15C[] = {
-    { 3243, 3209 },
-    { 3279, 3262 },
-    { 3298, 3262 },
-    { 3334, 3317 },
-    {    0, 3658 },
-    {    0, 3658 },
-    {    0, 3141 },
-    {    0, 3158 },
-    {    0, 3175 },
-    {    0, 3192 },
-    {    0, 3124 },
-    { 3243, 3209 },
-    { 3334, 3353 },
+    { 3243, 3209 }, // METAL_SUPPORTS_TUBES
+    { 3279, 3262 }, // METAL_SUPPORTS_FORK
+    { 3298, 3262 }, // METAL_SUPPORTS_FORK_ALT
+    { 3334, 3317 }, // METAL_SUPPORTS_BOXED
+    {    0, 3658 }, // METAL_SUPPORTS_STICK
+    {    0, 3658 }, // METAL_SUPPORTS_STICK_ALT
+    {    0, 3141 }, // METAL_SUPPORTS_THICK_CENTRED
+    {    0, 3158 }, // METAL_SUPPORTS_THICK
+    {    0, 3175 }, // METAL_SUPPORTS_THICK_ALT
+    {    0, 3192 }, // METAL_SUPPORTS_THICK_ALT_CENTRED
+    {    0, 3124 }, // METAL_SUPPORTS_TRUSS
+    { 3243, 3209 }, // METAL_SUPPORTS_TUBES_INVERTED
+    { 3334, 3353 }, // METAL_SUPPORTS_BOXED_COATED
 };
 
 /** rct2: 0x0097B190 */
@@ -371,7 +371,7 @@ bool wooden_a_supports_paint_setup(
 
     // Draw base support (usually shaped to the slope)
     int32_t slope = session->Support.slope;
-    if (slope & (1 << 5))
+    if (slope & SUPPORTS_SLOPE_5)
     {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
@@ -765,7 +765,7 @@ bool metal_a_supports_paint_setup(
         segment = newSegment;
     }
     int16_t si = height;
-    if (supportSegments[segment].slope & (1 << 5) || height - supportSegments[segment].height < 6
+    if (supportSegments[segment].slope & SUPPORTS_SLOPE_5 || height - supportSegments[segment].height < 6
         || _97B15C[supportType].base_id == 0)
     {
         height = supportSegments[segment].height;
@@ -881,10 +881,6 @@ bool metal_a_supports_paint_setup(
     }
 
     return true;
-
-    // int32_t eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
-    // RCT2_CALLFUNC_X(0x00663105, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-    // return eax & 0xFF;
 }
 
 /**

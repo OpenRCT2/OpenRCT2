@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,6 +19,7 @@
 #include "../management/Research.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
@@ -54,6 +55,14 @@ public:
         , _value(value)
         , _colour(colour)
     {
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("type", _type);
+        visitor.Visit("value", _value);
+        visitor.Visit("colour", _colour);
     }
 
     uint16_t GetActionFlags() const override

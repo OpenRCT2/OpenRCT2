@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,9 +39,11 @@ ApplyPaletteShader::ApplyPaletteShader()
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
-    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, position));
     glVertexAttribPointer(
-        vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, texturecoordinate));
+        vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, position)));
+    glVertexAttribPointer(
+        vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct),
+        reinterpret_cast<void*>(offsetof(VDStruct, texturecoordinate)));
 
     glEnableVertexAttribArray(vPosition);
     glEnableVertexAttribArray(vTextureCoordinate);
@@ -72,7 +74,7 @@ void ApplyPaletteShader::SetTexture(GLuint texture)
 
 void ApplyPaletteShader::SetPalette(const vec4* glPalette)
 {
-    glUniform4fv(uPalette, 256, (const GLfloat*)glPalette);
+    glUniform4fv(uPalette, 256, reinterpret_cast<const GLfloat*>(glPalette));
 }
 
 void ApplyPaletteShader::Draw()

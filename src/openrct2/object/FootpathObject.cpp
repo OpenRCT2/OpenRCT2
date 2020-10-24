@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,20 +10,20 @@
 #include "FootpathObject.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../world/Footpath.h"
-#include "ObjectJsonHelpers.h"
 
-void FootpathObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void FootpathObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(10, STREAM_SEEK_CURRENT);
+    stream->Seek(10, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.support_type = static_cast<RailingEntrySupportType>(stream->ReadValue<uint8_t>());
     _legacyType.flags = stream->ReadValue<uint8_t>();
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
-    stream->Seek(1, STREAM_SEEK_CURRENT);
+    stream->Seek(1, OpenRCT2::STREAM_SEEK_CURRENT);
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, ObjectStringID::NAME);
     GetImageTable().Read(context, stream);
 
     // Validate properties
@@ -70,10 +70,9 @@ void FootpathObject::Unload()
 
 void FootpathObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
-    gfx_draw_sprite(dpi, _pathSurfaceEntry.preview, x - 49, y - 17, 0);
-    gfx_draw_sprite(dpi, _queueEntry.preview, x + 4, y - 17, 0);
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
+    gfx_draw_sprite(dpi, _pathSurfaceEntry.preview, screenCoords - ScreenCoordsXY{ 49, 17 }, 0);
+    gfx_draw_sprite(dpi, _queueEntry.preview, screenCoords + ScreenCoordsXY{ 4, -17 }, 0);
 }
 
 static RailingEntrySupportType ParseSupportType(const std::string& s)
@@ -84,21 +83,25 @@ static RailingEntrySupportType ParseSupportType(const std::string& s)
         return RailingEntrySupportType::Box;
 }
 
-void FootpathObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void FootpathObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
-    _legacyType.support_type = ParseSupportType(ObjectJsonHelpers::GetString(json_object_get(properties, "supportType")));
-    _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
+    Guard::Assert(root.is_object(), "FootpathObject::ReadJson expects parameter root to be object");
 
-    // Flags
-    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
-        properties,
-        {
-            { "hasSupportImages", RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
-            { "hasElevatedPathImages", RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS },
-            { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR },
-        });
+    auto properties = root["properties"];
 
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    if (properties.is_object())
+    {
+        _legacyType.support_type = ParseSupportType(Json::GetString(properties["supportType"]));
+        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
+
+        _legacyType.flags = Json::GetFlags<uint8_t>(
+            properties,
+            {
+                { "hasSupportImages", RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
+                { "hasElevatedPathImages", RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS },
+                { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR },
+            });
+    }
+
+    PopulateTablesFromJson(context, root);
 }

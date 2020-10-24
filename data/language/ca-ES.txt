@@ -116,10 +116,10 @@ STR_0530    :Els vagons pengen d'un cable d'acer que recorren contínuament d'un
 STR_0531    :Muntanya russa compacta amb vies d'acer per la qual els vagons passen per tirabuixons i inversions.
 STR_0532    :El laberint està format per bardisses o murs de dos metres. Els visitants es mouen pels camins del laberint buscant la sortida. Només abandonaran l'atracció si aconsegueixen trobar la sortida!
 STR_0533    :Edifici de fusta amb una escala interior i un tobogan exterior que baixa en espiral pel que baixen els visitants amb estores.
-STR_0534    :Karts autopropulsats amb gasolina.
-STR_0535    :Bots amb forma de tronc circulen a través d'una via d'aigua. Quan passen per descensos pronunciats, esquitxen i deixen xops als passatgers.
+STR_0534    :Els passatgers competeixen entre ells amb karts en un circuit d'asfalt.
+STR_0535    :Els bots circulen per una via d'aigua, esquitxant els passatgers quan passen per descensos pronunciats.
 STR_0536    :Bots inflables circulars arrossegats per l'aigua a través d'un canal. Les cascades i els ràpids esquitxen i entusiasmen als passatgers.
-STR_0537    :Cotxes de xoc elèctrics que condueixen els passatgers.
+STR_0537    :Els passatgers condueixen cotxes de xoc elèctrics i xoquen entre ells.
 STR_0538    :Vaixell pirata enorme que es balanceja d'un costat a l'altre.
 STR_0539    :El vaixell està unit a un braç amb un contrapès a l'altre extrem. El vaixell es balanceja i arriba a fer una volta de 360°.
 STR_0540    :Un estand on els visitants poden comprar menjar.
@@ -158,7 +158,7 @@ STR_0578    :Els vagons circulen per anelles circulars, passant per baixades i g
 STR_0579    :Els visitants podran gaudir d'una tranquil·la partida de minigolf.
 STR_0580    :Muntanya russa gegant d'acer capaç de suaus baixades i pujades de més de 90 m.
 STR_0581    :Una anella de seients que puja per una torre alta mentre va rotant suaument, després cau en caiguda lliure i, al final, para delicadament usant frens magnètics.
-STR_0582    :Disposa de vehicles aerolliscadors autoconduïts.
+STR_0582    :Els passatgers condueixen lliurement aquests vehicles aerolliscadors.
 STR_0583    :Edifici format per habitacions deformades i passadissos angulars per desorientar la gent quan hi passa.
 STR_0584    :Bicicletes especials que es mouen per vies monorails gràcies al pedaleig dels passatgers.
 STR_0585    :Els passatgers seuen per parelles suspesos per sota de la via passant per tirabuixons i inversions.
@@ -1130,8 +1130,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :No es pot canviar el temps límit de l'atracció...
 STR_1752    :{SMALLFONT}{BLACK}Mostra una llista amb tots els visitants del parc
 STR_1753    :{SMALLFONT}{BLACK}Mostra una llista resumida dels visitants del parc
-STR_1754    :{BLACK}{COMMA16} visitants
-STR_1755    :{BLACK}{COMMA16} visitant
+STR_1754    :{BLACK}{COMMA32} visitants
+STR_1755    :{BLACK}{COMMA32} visitant
 STR_1756    :{WINDOW_COLOUR_2}Preu de l'entrada:
 STR_1757    :{WINDOW_COLOUR_2}Fiabilitat: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Mode construir
@@ -1189,7 +1189,7 @@ STR_1813    :Altres objectes
 STR_1814    :Accions
 STR_1815    :Pensaments
 STR_1816    :{SMALLFONT}{BLACK}Seleccioneu el tipus d'informació per mostrar en la llista de visitants
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tots els visitants
 STR_1819    :{WINDOW_COLOUR_2}Tots els visitants (resum)
 STR_1820    :{WINDOW_COLOUR_2}Visitants {STRINGID}
@@ -1218,9 +1218,9 @@ STR_1842    :Preferida de: {COMMA16} visitant
 STR_1843    :Preferida de: {COMMA16} visitants
 STR_1844    :{SMALLFONT}{BLACK}Seleccioneu el tipus d'informació per mostrar a la llista d'atraccions
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} visitants
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} visitants
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} visitants
+STR_1846    :{COMMA32} visitants
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} visitants
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} visitants
 STR_1849    :{WINDOW_COLOUR_2}Reprodueix música
 STR_1850    :{SMALLFONT}{BLACK}Trieu si aquesta atracció reproduirà música o no.
 STR_1851    :{WINDOW_COLOUR_2}Cost de funcionament: {BLACK}{CURRENCY2DP} per hora
@@ -1578,7 +1578,7 @@ STR_2219    :{RED}{COMMA16} persones han mort en l'accident de {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Valoració del parc: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Visitants del parc: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Visitants del parc: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Efectiu: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Efectiu: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{CURRENCY}
@@ -1943,8 +1943,8 @@ STR_2728    :{UINT16} h {UINT16} min
 STR_2729    :{UINT16} h {UINT16} min
 STR_2730    :{UINT16} h {UINT16} min
 STR_2731    :{UINT16} h {UINT16} min
-STR_2732    :{COMMA16} ft
-STR_2733    :{COMMA16} m
+STR_2732    :{COMMA32} ft
+STR_2733    :{COMMA32} m
 STR_2734    :{COMMA16} mph
 STR_2735    :{COMMA16} km/h
 STR_2736    :{MONTH}, any {COMMA16}
@@ -1980,7 +1980,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :Vista #{COMMA16}
 STR_2780    :Vista extra
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Canvia la drecera de teclat
@@ -2426,8 +2426,8 @@ STR_3329    :L'entrada al parc encara no s'ha construït.
 STR_3330    :El parc ha de disposar de terreny.
 STR_3331    :El camí de l'entrada al parc a la vora del mapa no els connecta o bé és massa complex. El camí ha de tenir només una casella d'amplada i ha de tenir pocs girs i cruïlles.
 STR_3332    :L'entrada al parc està a l'inrevés o bé no disposa de camí fins a la vora del mapa.
-STR_3333    :Exporta els complements a les desades
-STR_3334    :{SMALLFONT}{BLACK}Seleccioneu si cal desar els complements addicionals (els que no s'inclouen al producte principal) a les partides o escenaris desats, permetent que puguin ser carregats per algú que no disposi de les dades addicionals.
+STR_3333    :Exporta els objectes personalitzats amb les desades
+STR_3334    :{SMALLFONT}{BLACK}Seleccioneu si cal desar els objectes addicionals (dades que no s'inclouen al producte principal) a les partides o escenaris desats, permetent que puguin ser carregats per algú que no disposi dels objectes addicionals.
 STR_3335    :Dissenyador de circuits - Seleccioneu els vehicles i tipus d'atracció
 STR_3336    :Gestor dels dissenys de vies - Seleccioneu el tipus d'atracció
 STR_3338    :{BLACK}Recorregut personalitzat
@@ -2482,11 +2482,6 @@ STR_3390    :S'han seleccionat massa elements.
 STR_3437    :{SMALLFONT}{BLACK}Treu les decoracions d'una àrea del terreny.
 STR_3438    :No es poden treure totes les decoracions d'aquí...
 STR_3439    :Treu decoracions
-STR_3440    :Pàgina 1
-STR_3441    :Pàgina 2
-STR_3442    :Pàgina 3
-STR_3443    :Pàgina 4
-STR_3444    :Pàgina 5
 STR_3445    :Estableix l'àrea de patrullatge
 STR_3446    :Cancel·la l'àrea de patrullatge
 
@@ -2533,19 +2528,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, any {POP16}{COMMA16}
 STR_5161    :Format de la data:
 STR_5162    :Dia/Mes/Any
 STR_5163    :Mes/Dia/Any
-STR_5164    :Nom del canal Twitch
-STR_5165    :Usa els noms dels seguidors
-STR_5166    :{SMALLFONT}{BLACK}Posa el nom dels seguidors del canal Twitch als visitants del parc.
-STR_5167    :Vigila als seguidors
-STR_5168    :{SMALLFONT}{BLACK}Vigila i dóna informació rellevant de què fan els visitants que porten el nom d'algun seguidor del Twitch.
-STR_5169    :Usa els noms dels usuaris del xat
-STR_5170    :{SMALLFONT}{BLACK}Posa el nom dels usuaris del xat del Twitch als visitants del parc.
-STR_5171    :Vigila als usuaris del xat
-STR_5172    :{SMALLFONT}{BLACK}Vigila i dóna informació rellevant de què fan els visitants que porten el nom d'algun usuari del xat del Twitch.
-STR_5173    :Mostra el xat com a notícies
-STR_5174    :{SMALLFONT}{BLACK}Mostra els missatges del xat del Twitch precedits per «!news» per rebre les notificacions durant la partida.
-STR_5175    :Escriu el nom del canal Twitch
-STR_5176    :Activa la integració del Twitch
 STR_5177    :Mode de pantalla:
 STR_5178    :{SMALLFONT}{BLACK}Mostra les trampes financeres.
 STR_5179    :{SMALLFONT}{BLACK}Mostra les trampes per als visitants.
@@ -2640,7 +2622,6 @@ STR_5267    :{SMALLFONT}{BLACK}Idioma i unitats
 STR_5268    :{SMALLFONT}{BLACK}Música i so
 STR_5269    :{SMALLFONT}{BLACK}Controls i interfície
 STR_5270    :{SMALLFONT}{BLACK}Altres
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Decoració petita
 STR_5273    :{SMALLFONT}{BLACK}Decoració gran
 STR_5274    :{SMALLFONT}{BLACK}Camí
@@ -2684,26 +2665,6 @@ STR_5311    :{SMALLFONT}{BLACK}Eines de depuració
 STR_5312    :Mostra consola
 STR_5313    :Inspecciona la casella
 STR_5314    :Inspecció de casella
-STR_5315    :Gespa
-STR_5316    :Sorra
-STR_5317    :Terra
-STR_5318    :Roca
-STR_5319    :Marcià
-STR_5320    :Tauler d'escacs
-STR_5321    :Mates d'herba
-STR_5322    :Gel
-STR_5323    :Quadrícula (vermella)
-STR_5324    :Quadrícula (groga)
-STR_5325    :Quadrícula (blava)
-STR_5326    :Quadrícula (verda)
-STR_5327    :Sorra (fosca)
-STR_5328    :Sorra (clara)
-STR_5329    :Tauler d'escacs (invertit)
-STR_5330    :Vista subterrània
-STR_5331    :Roca
-STR_5332    :Fusta (vermella)
-STR_5333    :Fusta (negra)
-STR_5334    :Gel
 STR_5335    :Entrada de l'atracció
 STR_5336    :Sortida de l'atracció
 STR_5337    :Entrada del parc
@@ -2922,7 +2883,7 @@ STR_5554    :{SMALLFONT}{BLACK}Activa l'eina muntanya
 STR_5555    :Mostra els vehicles d'altres tipus de via
 STR_5556    :{SMALLFONT}{BLACK}Expulsa al jugador
 STR_5557    :Mantén la connexió després de la dessincronització (multijugador)
-STR_5558    :Cal reiniciar el joc perquè aquest canvi tingui efecte.
+STR_5558    :Aquest canvi s'aplicarà quan es reiniciï el joc.
 STR_5559    :Revisions cada 10 min
 STR_5560    :{SMALLFONT}{BLACK}Estableix revisions cada 10 minuts per totes les atraccions.
 STR_5561    :L'idioma no s'ha pogut carregar.
@@ -3095,7 +3056,7 @@ STR_5762    :Iuan xinès (CN¥)
 STR_5763    :Tots els arxius
 STR_5764    :Tipus d'atracció no vàlida
 STR_5765    :Per editar una atracció, cal que tingui un tipus vàlid.
-STR_5766    :<identificador de cadena disponible>
+STR_5766    :Fòrint hongarès (Ft)
 STR_5767    :Ingressos
 STR_5768    :Clients en total
 STR_5769    :Benefici total
@@ -3181,7 +3142,6 @@ STR_5848    :{SMALLFONT}{BLACK}Crea i organitza les seqüències del menú princ
 STR_5849    :{SMALLFONT}{BLACK}Coloca automàticament{NEWLINE}els empleats acabats de contractar.
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Estableix l'interval de revisió per defecte{NEWLINE}per a les atraccions noves.
-STR_5852    :{SMALLFONT}{BLACK}Estableix el nom del canal TwitchTV que s'ha d'usar per la integració del Twitch.
 STR_5853    :{SMALLFONT}{BLACK}Activa/Desactiva els efectes de so.
 STR_5854    :{SMALLFONT}{BLACK}Activa/Desactiva la música de les atraccions.
 STR_5855    :{SMALLFONT}{BLACK}Escolliu el mode de pantalla completa normal,{NEWLINE}pantalla completa sense vores o bé finestra.
@@ -3365,7 +3325,7 @@ STR_6033    :Camí de la instal·lació del RCT1:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Seleccioneu el camí d'instal·lació del RCT1
 STR_6036    :{SMALLFONT}{BLACK}Esborra
-STR_6037    :Seleccioneu una carpeta del RCT1 vàlida.
+STR_6037    :La carpeta seleccionada no conté una instal·lació del RCT1 vàlida.
 STR_6038    :{SMALLFONT}{BLACK}Si teniu instal·lat el RCT1, indiqueu a quina carpeta està per usar-ne els escenaris, la música, etc.
 STR_6039    :{SMALLFONT}{BLACK}Retirada ràpida d'atraccions
 STR_6040    :Opcions d'edició d'escenaris
@@ -3532,17 +3492,6 @@ STR_6200    :Restableix data
 STR_6201    :{MONTH}
 STR_6202    :Estil del terra virtual:
 STR_6203    :{SMALLFONT}{BLACK}Quan està activat, es dibuixarà un terra virtual mentre es prem Ctrl o Maj per facilitar el posicionament d'elements.
-STR_6204    :Maó
-STR_6205    :Ferro
-STR_6206    :Estuc gris
-STR_6207    :Estuc groc
-STR_6208    :Estuc vermell
-STR_6209    :Estuc morat
-STR_6210    :Estuc verd
-STR_6211    :Arenisca marró
-STR_6212    :Arenisca gris
-STR_6213    :Gratacel A
-STR_6214    :Gratacel B
 STR_6215    :Construcció
 STR_6216    :Funcionament
 STR_6217    :Disponibilitat d'atraccions i tipus de via
@@ -3580,9 +3529,6 @@ STR_6248    :{WINDOW_COLOUR_1}Voleu retocar {STRINGID} per {CURRENCY}?
 STR_6249    :{WINDOW_COLOUR_1}Voleu retocar {STRINGID}?
 STR_6250    :{WINDOW_COLOUR_1}Esteu segurs que voleu demolir completament {STRINGID} i recuperar {CURRENCY}?
 STR_6251    :Encara hi ha persones a l'atracció
-STR_6252    :URL de l'API del Twitch
-STR_6253    :{SMALLFONT}{BLACK}Doneu la URL de l'API d'integració del Twitch. Cal aquesta URL per tal d'activar la integració del Twitch.
-STR_6254    :URL de l'API d'integració del Twitch:
 STR_6255    :La URL no és vàlida
 STR_6256    :Efectes de renderitzat
 STR_6257    :Cristal·lí (translúcid)
@@ -3657,7 +3603,61 @@ STR_6325    :{SMALLFONT}{BLACK}Simula l'atracció
 STR_6326    :No es pot simular {POP16}{POP16}{POP16}{STRINGID}...
 STR_6327    :Fons transparent per captures de pantalla gegants
 STR_6328    :{SMALLFONT}{BLACK}Si s'activa, les captures de pantalla gegants tindran un fons transparent en lloc del color negre per defecte.
+STR_6329    :{STRING}{STRINGID}
+STR_6330    :S'està descarregant [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Crea ànecs
+STR_6332    :Treu els ànecs
+STR_6333    :Augmenta el factor d'escala
+STR_6334    :Redueix el factor d'escala
+STR_6335    :Inspecció de casella: Insereix un element corromput
+STR_6336    :Inspecció de casella: Copia l'element
+STR_6337    :Inspecció de casella: Enganxa l'element
+STR_6338    :Inspecció de casella: Esborra l'element
+STR_6339    :Inspecció de casella: Mou l'element amunt
+STR_6340    :Inspecció de casella: Mou l'element avall
+STR_6341    :Inspecció de casella: Augmenta la coordenada X
+STR_6342    :Inspecció de casella: Redueix la coordenada X
+STR_6343    :Inspecció de casella: Augmenta la coordenada Y
+STR_6344    :Inspecció de casella: Redueix la coordenada Y
+STR_6345    :Inspecció de casella: Augmenta l'alçada de l'element
+STR_6346    :Inspecció de casella: Redueix l'alçada de l'element
+STR_6347    :No es poden posar elements adicionals en camins en passos a nivell!
+STR_6348    :Treieu el pas de nivell abans!
+STR_6349    :Seqüència de títol aleatòria
+STR_6350    :Escampa
+STR_6351    :Eina d'escenari d'escampar
+STR_6352    :Densitat
+STR_6353    :{SMALLFONT}{BLACK}Densitat baixa
+STR_6354    :{SMALLFONT}{BLACK}Densitat mitjana
+STR_6355    :{SMALLFONT}{BLACK}Densitat alta
+STR_6356    :{SMALLFONT}{BLACK}Apareixeran ànecs si el parc té aigua.
+STR_6357    :{SMALLFONT}{BLACK}Treu tots els ànecs del mapa.
+STR_6358    :Pàgina {UINT16}
+STR_6359    :{POP16}{POP16}Pàgina {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6361    :Activa els efectes d'enllumenat de les atraccions (experimental)
+STR_6362    :{SMALLFONT}{BLACK}Si s'activa, els vehicles de les atraccions amb vies s'encendran durant la nit.
+STR_6363    :S'ha copiat el text al porta-retalls.
+STR_6364    :{RED}{COMMA16} persona ha mort en l'accident de {STRINGID}
+STR_6365    :Morts en atraccions
+STR_6366    :Vehicles parats o avariats
+STR_6367    :{WINDOW_COLOUR_2}Fotograma:
+STR_6368    :Per motius de compatibilitat, no es recomana executar l'OpenRCT2 amb el Wine. L'OpenRCT2 té versions natives per a macOS, Linux, FreeBSD i OpenBSD.
+STR_6369    :Permet la construcció de vies a alçades no vàlides
+STR_6370    :{SMALLFONT}{BLACK}Permet posar trossos de via en qualsevol alçada.
+STR_6371    :El camí conté una instal·lació del RollerCoaster Tycoon 1 installation, però el fitxer «csg1i.dat» no hi és. Aquest fitxer s'ha de copiar del CD del RollerCoaster Tycoon 1 a la carpeta «Data» de la instal·lació del RollerCoaster Tycoon 1 del vostre disc dur.
+STR_6372    :El camí conté una instal·lació del RollerCoaster Tycoon 1 installation, però la versió no és adequada. L'OpenRCT2 necessita una instal·lació del Loopy Landscapes o del RCT Deluxe per tal d'emprar-ne els recursos.
+STR_6373    :Commuta les comprovacions d'espai lliure
+STR_6374    :C
+STR_6375    :Atracció desconeguda
+STR_6376    :{WINDOW_COLOUR_2}Vehicle d'atracció:{NEWLINE}{BLACK}{STRINGID} per {STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}Tipus: {BLACK}{STRINGID} per {STRINGID}
+STR_6378    :S'està rebent la llista d'objectes: {INT32} / {INT32}
+STR_6379    :S'han rebut dades no vàlides.
+STR_6380    :Actualització disponible!
+STR_6381    :Uniu-vos al canal de l'OpenRCT2 de Discord!
+STR_6382    :Hi ha una versió nova de l'OpenRCT2 disponible: {STRING}!
+STR_6383    :Obre la pàgina de descàrrega
 
 #############
 # Scenarios #

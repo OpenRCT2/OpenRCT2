@@ -32,7 +32,6 @@ ExternalProject_Add(libs
 
     BUILD_BYPRODUCTS
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
-        ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}jansson${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}png16${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}SDL2-2.0${CMAKE_SHARED_LIBRARY_SUFFIX}
         ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_STATIC_LIBRARY_PREFIX}SDL2main${CMAKE_STATIC_LIBRARY_SUFFIX}
@@ -58,7 +57,6 @@ add_custom_command(TARGET libs POST_BUILD
 #    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/*.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libcrypto.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libfreetype.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libjansson.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libpng16.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libSDL2-2.0.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_BINARY_DIR}/libs/lib/libspeexdsp.so" ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
@@ -70,12 +68,6 @@ set_target_properties(freetype PROPERTIES IMPORTED_LOCATION
     ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}freetype${CMAKE_SHARED_LIBRARY_SUFFIX}
 )
 add_dependencies(freetype libs)
-
-add_library(jansson SHARED IMPORTED)
-set_target_properties(jansson PROPERTIES IMPORTED_LOCATION
-    ${CMAKE_BINARY_DIR}/libs/lib/${CMAKE_SHARED_LIBRARY_PREFIX}jansson${CMAKE_SHARED_LIBRARY_SUFFIX}
-)
-add_dependencies(jansson libs)
 
 add_library(png SHARED IMPORTED)
 set_target_properties(png PROPERTIES IMPORTED_LOCATION
@@ -139,7 +131,7 @@ include_directories("${CMAKE_BINARY_DIR}/libs/include/SDL2")
 # now build app's shared lib
 include_directories(./ndk_helper
                     ${ANDROID_NDK}/sources/android/cpufeatures)
-add_definitions(-DDISABLE_HTTP -DDISABLE_DISCORD_RPC -DDISABLE_HTTP_TWITCH -DDISABLE_NETWORK -DDISABLE_TWITCH -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
+add_definitions(-DDISABLE_HTTP -DDISABLE_DISCORD_RPC -DDISABLE_HTTP -DDISABLE_NETWORK -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
 
 # Fix SpeexDSP compilation
 add_definitions(-DHAVE_STDINT_H)
@@ -175,7 +167,7 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${ORCT2_ROOT}/src/openrct2-cli/*.hpp")
 
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
-target_link_libraries(openrct2 android stdc++ log dl z SDL2 png jansson icu icuuc icudata ssl crypto)
+target_link_libraries(openrct2 android stdc++ log dl z SDL2 png icu icuuc icudata ssl crypto)
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
 target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2main speexdsp)
@@ -183,5 +175,12 @@ target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2m
 add_executable(openrct2-cli ${OPENRCT2_CLI_SOURCES})
 target_link_libraries(openrct2-cli openrct2 android stdc++ GLESv1_CM GLESv2)
 
+target_include_directories(openrct2 SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 target_include_directories(openrct2-ui PRIVATE "${ORCT2_ROOT}/src")
+target_include_directories(openrct2-ui SYSTEM PRIVATE "${ORCT2_ROOT}/src/thirdparty")
 target_include_directories(openrct2-cli PRIVATE "${ORCT2_ROOT}/src")
+
+# Header-only nlohmann library is installed in CI images at /nlohmann.
+# To be tiny bit more specific, use '/nlohmann/../' instead of just '/'
+target_include_directories(openrct2 PRIVATE "/nlohmann/../")
+target_include_directories(openrct2-ui PRIVATE "/nlohmann/../")

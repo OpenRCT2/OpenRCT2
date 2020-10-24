@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,8 +36,8 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        rct_sprite* sprite = try_get_sprite(_spriteIndex);
-        if (sprite == nullptr || !sprite->IsBalloon())
+        auto balloon = TryGetEntity<Balloon>(_spriteIndex);
+        if (balloon == nullptr)
         {
             log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -47,14 +47,14 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_sprite* sprite = try_get_sprite(_spriteIndex);
-        if (sprite == nullptr || !sprite->IsBalloon())
+        auto balloon = TryGetEntity<Balloon>(_spriteIndex);
+        if (balloon == nullptr)
         {
             log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
-        sprite->AsBalloon()->Press();
+        balloon->Press();
 
         return MakeResult();
     }

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,24 +10,23 @@
 #include "AudioContext.h"
 #include "AudioFormat.h"
 
-#include <SDL.h>
 #include <algorithm>
 #include <cmath>
-#include <openrct2/audio/AudioChannel.h>
 #include <openrct2/audio/AudioSource.h>
-#include <openrct2/audio/audio.h>
 #include <openrct2/common.h>
 #include <speex/speex_resampler.h>
 
 namespace OpenRCT2::Audio
 {
-    class AudioChannelImpl : public ISDLAudioChannel
+    template<typename AudioSource_ = ISDLAudioSource> class AudioChannelImpl : public ISDLAudioChannel
     {
+        static_assert(std::is_base_of_v<IAudioSource, AudioSource_>);
+
     private:
-        ISDLAudioSource* _source = nullptr;
+        AudioSource_* _source = nullptr;
         SpeexResamplerState* _resampler = nullptr;
 
-        int32_t _group = MIXER_GROUP_SOUND;
+        MixerGroup _group = MixerGroup::Sound;
         double _rate = 0;
         uint64_t _offset = 0;
         int32_t _loop = 0;
@@ -66,12 +65,12 @@ namespace OpenRCT2::Audio
             }
         }
 
-        IAudioSource* GetSource() const override
+        [[nodiscard]] IAudioSource* GetSource() const override
         {
             return _source;
         }
 
-        SpeexResamplerState* GetResampler() const override
+        [[nodiscard]] SpeexResamplerState* GetResampler() const override
         {
             return _resampler;
         }
@@ -81,17 +80,17 @@ namespace OpenRCT2::Audio
             _resampler = value;
         }
 
-        int32_t GetGroup() const override
+        [[nodiscard]] MixerGroup GetGroup() const override
         {
             return _group;
         }
 
-        void SetGroup(int32_t group) override
+        void SetGroup(MixerGroup group) override
         {
             _group = group;
         }
 
-        double GetRate() const override
+        [[nodiscard]] double GetRate() const override
         {
             return _rate;
         }
@@ -101,7 +100,7 @@ namespace OpenRCT2::Audio
             _rate = std::max(0.001, rate);
         }
 
-        uint64_t GetOffset() const override
+        [[nodiscard]] uint64_t GetOffset() const override
         {
             return _offset;
         }
@@ -118,42 +117,42 @@ namespace OpenRCT2::Audio
             return false;
         }
 
-        virtual int32_t GetLoop() const override
+        [[nodiscard]] int32_t GetLoop() const override
         {
             return _loop;
         }
 
-        virtual void SetLoop(int32_t value) override
+        void SetLoop(int32_t value) override
         {
             _loop = value;
         }
 
-        int32_t GetVolume() const override
+        [[nodiscard]] int32_t GetVolume() const override
         {
             return _volume;
         }
 
-        float GetVolumeL() const override
+        [[nodiscard]] float GetVolumeL() const override
         {
             return _volume_l;
         }
 
-        float GetVolumeR() const override
+        [[nodiscard]] float GetVolumeR() const override
         {
             return _volume_r;
         }
 
-        float GetOldVolumeL() const override
+        [[nodiscard]] float GetOldVolumeL() const override
         {
             return _oldvolume_l;
         }
 
-        float GetOldVolumeR() const override
+        [[nodiscard]] float GetOldVolumeR() const override
         {
             return _oldvolume_r;
         }
 
-        int32_t GetOldVolume() const override
+        [[nodiscard]] int32_t GetOldVolume() const override
         {
             return _oldvolume;
         }
@@ -163,7 +162,7 @@ namespace OpenRCT2::Audio
             _volume = std::clamp(volume, 0, MIXER_VOLUME_MAX);
         }
 
-        float GetPan() const override
+        [[nodiscard]] float GetPan() const override
         {
             return _pan;
         }
@@ -176,16 +175,16 @@ namespace OpenRCT2::Audio
             if (_pan <= 0.5)
             {
                 _volume_l = 1.0;
-                _volume_r = (float)(1.0 / attenuation);
+                _volume_r = static_cast<float>(1.0 / attenuation);
             }
             else
             {
                 _volume_r = 1.0;
-                _volume_l = (float)(1.0 / attenuation);
+                _volume_l = static_cast<float>(1.0 / attenuation);
             }
         }
 
-        bool IsStopping() const override
+        [[nodiscard]] bool IsStopping() const override
         {
             return _stopping;
         }
@@ -195,7 +194,7 @@ namespace OpenRCT2::Audio
             _stopping = value;
         }
 
-        bool IsDone() const override
+        [[nodiscard]] bool IsDone() const override
         {
             return _done;
         }
@@ -205,7 +204,7 @@ namespace OpenRCT2::Audio
             _done = value;
         }
 
-        bool DeleteOnDone() const override
+        [[nodiscard]] bool DeleteOnDone() const override
         {
             return _deleteondone;
         }
@@ -220,14 +219,14 @@ namespace OpenRCT2::Audio
             _deletesourceondone = value;
         }
 
-        bool IsPlaying() const override
+        [[nodiscard]] bool IsPlaying() const override
         {
             return !_done;
         }
 
         void Play(IAudioSource* source, int32_t loop) override
         {
-            _source = static_cast<ISDLAudioSource*>(source);
+            _source = static_cast<AudioSource_*>(source);
             _loop = loop;
             _offset = 0;
             _done = false;
@@ -240,7 +239,7 @@ namespace OpenRCT2::Audio
             _oldvolume_r = _volume_r;
         }
 
-        AudioFormat GetFormat() const override
+        [[nodiscard]] AudioFormat GetFormat() const override
         {
             AudioFormat result = {};
             // The second check is there because NullAudioSource does not implement GetFormat. Avoid calling it.
@@ -260,7 +259,7 @@ namespace OpenRCT2::Audio
                 size_t readLen = _source->Read(dst, _offset, bytesToRead);
                 if (readLen > 0)
                 {
-                    dst = (void*)((uintptr_t)dst + readLen);
+                    dst = reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(dst) + readLen);
                     bytesToRead -= readLen;
                     bytesRead += readLen;
                     _offset += readLen;

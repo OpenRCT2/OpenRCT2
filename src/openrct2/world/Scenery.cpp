@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -121,7 +121,7 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    // Check map elements above, presumably to see if map element is blocked from rain
+    // Check map elements above, presumably to see if map element is blocked from weather
     TileElement* tileElementAbove = reinterpret_cast<TileElement*>(this);
     // Change from original: RCT2 only checked for the first three quadrants, which was very likely to be a bug.
     while (!(tileElementAbove->GetOccupiedQuadrants()))
@@ -229,50 +229,50 @@ void scenery_remove_ghost_tool_placement()
     }
 }
 
-rct_scenery_entry* get_wall_entry(int32_t entryIndex)
+rct_scenery_entry* get_wall_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_WALLS, entryIndex);
     if (obj != nullptr)
     {
-        result = (rct_scenery_entry*)obj->GetLegacyData();
+        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
     }
     return result;
 }
 
-rct_scenery_entry* get_banner_entry(int32_t entryIndex)
+rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_BANNERS, entryIndex);
     if (obj != nullptr)
     {
-        result = (rct_scenery_entry*)obj->GetLegacyData();
+        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
     }
     return result;
 }
 
-rct_scenery_entry* get_footpath_item_entry(int32_t entryIndex)
+rct_scenery_entry* get_footpath_item_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATH_BITS, entryIndex);
     if (obj != nullptr)
     {
-        result = (rct_scenery_entry*)obj->GetLegacyData();
+        result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
     }
     return result;
 }
 
-rct_scenery_group_entry* get_scenery_group_entry(int32_t entryIndex)
+rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_group_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_SCENERY_GROUP, entryIndex);
     if (obj != nullptr)
     {
-        result = (rct_scenery_group_entry*)obj->GetLegacyData();
+        result = static_cast<rct_scenery_group_entry*>(obj->GetLegacyData());
     }
     return result;
 }

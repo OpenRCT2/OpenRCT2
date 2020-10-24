@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -40,18 +40,16 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
     if (ride->num_stations == 0 || vehicleIndex < ride->num_vehicles)
     {
         rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
-        Vehicle* vehicle = nullptr;
 
         int32_t frameNum = direction;
 
         uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
-
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+        auto vehicle = GetEntity<Vehicle>(ride->vehicles[vehicleIndex]);
+        if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
         {
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-            vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
             session->CurrentlyDrawnItem = vehicle;
-            frameNum += (int8_t)vehicle->vehicle_sprite_type * 4;
+            frameNum += static_cast<int8_t>(vehicle->vehicle_sprite_type) * 4;
         }
 
         uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
@@ -71,10 +69,13 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
 
         if (vehicle != nullptr && vehicle->num_peeps > 0)
         {
-            Peep* rider = GET_PEEP(vehicle->peep[0]);
-            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->tshirt_colour, rider->trousers_colour);
-            imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
-            sub_98199C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
+            auto* rider = GetEntity<Guest>(vehicle->peep[0]);
+            if (rider != nullptr)
+            {
+                imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->TshirtColour, rider->TrousersColour);
+                imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
+                sub_98199C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
+            }
         }
     }
 
@@ -178,7 +179,7 @@ static void paint_space_rings(
 /**
  * rct2: 0x0x00767A40
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(int32_t trackType)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -28,16 +28,23 @@ DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameAc
 private:
     CoordsXYZ _loc;
     uint8_t _quadrant;
-    uint8_t _sceneryType;
+    ObjectEntryIndex _sceneryType;
 
 public:
     SmallSceneryRemoveAction() = default;
 
-    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, uint8_t sceneryType)
+    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType)
         : _loc(location)
         , _quadrant(quadrant)
         , _sceneryType(sceneryType)
     {
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("object", _sceneryType);
+        visitor.Visit("quadrant", _quadrant);
     }
 
     uint16_t GetActionFlags() const override
@@ -56,7 +63,7 @@ public:
     {
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
 
-        if (!map_is_location_valid(_loc))
+        if (!LocationValid(_loc))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }

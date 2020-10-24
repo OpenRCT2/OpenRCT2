@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -18,6 +18,7 @@
 #    include "network.h"
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
+constexpr size_t NetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.
 
 NetworkConnection::NetworkConnection()
 {
@@ -29,76 +30,98 @@ NetworkConnection::~NetworkConnection()
     delete[] _lastDisconnectReason;
 }
 
-int32_t NetworkConnection::ReadPacket()
+NetworkReadPacket NetworkConnection::ReadPacket()
 {
-    if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Size))
+    size_t bytesRead = 0;
+
+    // Read packet header.
+    auto& header = InboundPacket.Header;
+    if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Header))
     {
-        // read packet size
-        void* buffer = &((char*)&InboundPacket.Size)[InboundPacket.BytesTransferred];
-        size_t bufferLength = sizeof(InboundPacket.Size) - InboundPacket.BytesTransferred;
-        size_t readBytes;
-        NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
-        if (status != NETWORK_READPACKET_SUCCESS)
+        const size_t missingLength = sizeof(header) - InboundPacket.BytesTransferred;
+
+        uint8_t* buffer = reinterpret_cast<uint8_t*>(&InboundPacket.Header);
+
+        NetworkReadPacket status = Socket->ReceiveData(buffer, missingLength, &bytesRead);
+        if (status != NetworkReadPacket::Success)
         {
             return status;
         }
 
-        InboundPacket.BytesTransferred += readBytes;
-        if (InboundPacket.BytesTransferred == sizeof(InboundPacket.Size))
+        InboundPacket.BytesTransferred += bytesRead;
+        if (InboundPacket.BytesTransferred < sizeof(InboundPacket.Header))
         {
-            InboundPacket.Size = Convert::NetworkToHost(InboundPacket.Size);
-            if (InboundPacket.Size == 0) // Can't have a size 0 packet
-            {
-                return NETWORK_READPACKET_DISCONNECTED;
-            }
-            InboundPacket.Data->resize(InboundPacket.Size);
+            // If still not enough data for header, keep waiting.
+            return NetworkReadPacket::MoreData;
         }
+
+        // Normalise values.
+        header.Size = Convert::NetworkToHost(header.Size);
+        header.Id = ByteSwapBE(header.Id);
+
+        // NOTE: For compatibility reasons for the master server we need to remove sizeof(Header.Id) from the size.
+        // Previously the Id field was not part of the header rather part of the body.
+        header.Size -= sizeof(header.Id);
+
+        // Fall-through: Read rest of packet.
     }
-    else
+
+    // Read packet body.
     {
-        // read packet data
-        if (InboundPacket.Data->capacity() > 0)
+        const size_t missingLength = header.Size - (InboundPacket.BytesTransferred - sizeof(header));
+
+        uint8_t buffer[NetworkBufferSize];
+
+        if (missingLength > 0)
         {
-            void* buffer = &InboundPacket.GetData()[InboundPacket.BytesTransferred - sizeof(InboundPacket.Size)];
-            size_t bufferLength = sizeof(InboundPacket.Size) + InboundPacket.Size - InboundPacket.BytesTransferred;
-            size_t readBytes;
-            NETWORK_READPACKET status = Socket->ReceiveData(buffer, bufferLength, &readBytes);
-            if (status != NETWORK_READPACKET_SUCCESS)
+            NetworkReadPacket status = Socket->ReceiveData(buffer, std::min(missingLength, NetworkBufferSize), &bytesRead);
+            if (status != NetworkReadPacket::Success)
             {
                 return status;
             }
 
-            InboundPacket.BytesTransferred += readBytes;
+            InboundPacket.BytesTransferred += bytesRead;
+            InboundPacket.Write(buffer, bytesRead);
         }
-        if (InboundPacket.BytesTransferred == sizeof(InboundPacket.Size) + InboundPacket.Size)
+
+        if (InboundPacket.Data.size() == header.Size)
         {
+            // Received complete packet.
             _lastPacketTime = platform_get_ticks();
 
             RecordPacketStats(InboundPacket, false);
 
-            return NETWORK_READPACKET_SUCCESS;
+            return NetworkReadPacket::Success;
         }
     }
-    return NETWORK_READPACKET_MORE_DATA;
+
+    return NetworkReadPacket::MoreData;
 }
 
 bool NetworkConnection::SendPacket(NetworkPacket& packet)
 {
-    uint16_t sizen = Convert::HostToNetwork(packet.Size);
-    std::vector<uint8_t> tosend;
-    tosend.reserve(sizeof(sizen) + packet.Size);
-    tosend.insert(tosend.end(), (uint8_t*)&sizen, (uint8_t*)&sizen + sizeof(sizen));
-    tosend.insert(tosend.end(), packet.Data->begin(), packet.Data->end());
+    auto header = packet.Header;
 
-    const void* buffer = &tosend[packet.BytesTransferred];
-    size_t bufferSize = tosend.size() - packet.BytesTransferred;
-    size_t sent = Socket->SendData(buffer, bufferSize);
+    std::vector<uint8_t> buffer;
+    buffer.reserve(sizeof(header) + header.Size);
+
+    // NOTE: For compatibility reasons for the master server we need to add sizeof(Header.Id) to the size.
+    // Previously the Id field was not part of the header rather part of the body.
+    header.Size += sizeof(header.Id);
+    header.Size = Convert::HostToNetwork(header.Size);
+    header.Id = ByteSwapBE(header.Id);
+
+    buffer.insert(buffer.end(), reinterpret_cast<uint8_t*>(&header), reinterpret_cast<uint8_t*>(&header) + sizeof(header));
+    buffer.insert(buffer.end(), packet.Data.begin(), packet.Data.end());
+
+    size_t bufferSize = buffer.size() - packet.BytesTransferred;
+    size_t sent = Socket->SendData(buffer.data() + packet.BytesTransferred, bufferSize);
     if (sent > 0)
     {
         packet.BytesTransferred += sent;
     }
 
-    bool sendComplete = packet.BytesTransferred == tosend.size();
+    bool sendComplete = packet.BytesTransferred == buffer.size();
     if (sendComplete)
     {
         RecordPacketStats(packet, true);
@@ -106,15 +129,15 @@ bool NetworkConnection::SendPacket(NetworkPacket& packet)
     return sendComplete;
 }
 
-void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool front)
+void NetworkConnection::QueuePacket(NetworkPacket&& packet, bool front)
 {
-    if (AuthStatus == NETWORK_AUTH_OK || !packet->CommandRequiresAuth())
+    if (AuthStatus == NetworkAuth::Ok || !packet.CommandRequiresAuth())
     {
-        packet->Size = (uint16_t)packet->Data->size();
+        packet.Header.Size = static_cast<uint16_t>(packet.Data.size());
         if (front)
         {
             // If the first packet was already partially sent add new packet to second position
-            if (!_outboundPackets.empty() && _outboundPackets.front()->BytesTransferred > 0)
+            if (!_outboundPackets.empty() && _outboundPackets.front().BytesTransferred > 0)
             {
                 auto it = _outboundPackets.begin();
                 it++; // Second position
@@ -134,9 +157,9 @@ void NetworkConnection::QueuePacket(std::unique_ptr<NetworkPacket> packet, bool 
 
 void NetworkConnection::SendQueuedPackets()
 {
-    while (!_outboundPackets.empty() && SendPacket(*_outboundPackets.front()))
+    while (!_outboundPackets.empty() && SendPacket(_outboundPackets.front()))
     {
-        _outboundPackets.remove(_outboundPackets.front());
+        _outboundPackets.pop_front();
     }
 }
 
@@ -186,16 +209,19 @@ void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, v
 
 void NetworkConnection::RecordPacketStats(const NetworkPacket& packet, bool sending)
 {
-    uint32_t packetSize = (uint32_t)packet.BytesTransferred;
-    uint32_t trafficGroup = NETWORK_STATISTICS_GROUP_BASE;
+    uint32_t packetSize = static_cast<uint32_t>(packet.BytesTransferred);
+    uint32_t trafficGroup;
 
     switch (packet.GetCommand())
     {
-        case NETWORK_COMMAND_GAME_ACTION:
+        case NetworkCommand::GameAction:
             trafficGroup = NETWORK_STATISTICS_GROUP_COMMANDS;
             break;
-        case NETWORK_COMMAND_MAP:
+        case NetworkCommand::Map:
             trafficGroup = NETWORK_STATISTICS_GROUP_MAPDATA;
+            break;
+        default:
+            trafficGroup = NETWORK_STATISTICS_GROUP_BASE;
             break;
     }
 

@@ -36,7 +36,7 @@ jobs:
               git add .
               git config --global user.name "OpenRCT2 git bot"
               git config --global user.email "gitbot@openrct2.org"
-              git commit -m "Merge Localisation/master into OpenRCT2/develop."
+              git commit -m "Merge Localisation/master into OpenRCT2/develop"
               git push
               echo "Complete"
           else

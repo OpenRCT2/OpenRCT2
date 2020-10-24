@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,6 +14,8 @@
 
 #include <cstdio>
 #include <ctime>
+#include <optional>
+#include <vector>
 
 int32_t squaredmetres_to_squaredfeet(int32_t squaredMetres);
 int32_t metres_to_feet(int32_t metres);
@@ -52,7 +54,7 @@ bool str_is_null_or_empty(const char* str);
 
 uint32_t util_rand();
 
-uint8_t* util_zlib_deflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size);
+std::optional<std::vector<uint8_t>> util_zlib_deflate(const uint8_t* data, size_t data_in_size);
 uint8_t* util_zlib_inflate(uint8_t* data, size_t data_in_size, size_t* data_out_size);
 bool util_gzip_compress(FILE* source, FILE* dest);
 

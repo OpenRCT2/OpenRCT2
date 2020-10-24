@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -239,15 +239,16 @@ void vehicle_visual_river_rapids(
         image_id = (baseImage_id + ((peeps + 1) * 72))
             | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
         sub_98199C(
-            session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z);
+            session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
+            { bb->offset_x, bb->offset_y, bb->offset_z + z });
         if (vehicle->num_peeps > 2)
         {
             peeps = ((ecx / 8) + 2) & 3;
             image_id = (baseImage_id + ((peeps + 1) * 72))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
             sub_98199C(
-                session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y,
-                bb->offset_z + z);
+                session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
+                { bb->offset_x, bb->offset_y, bb->offset_z + z });
         }
         if (vehicle->num_peeps > 4)
         {
@@ -255,8 +256,8 @@ void vehicle_visual_river_rapids(
             image_id = (baseImage_id + ((peeps + 1) * 72))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
             sub_98199C(
-                session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y,
-                bb->offset_z + z);
+                session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
+                { bb->offset_x, bb->offset_y, bb->offset_z + z });
         }
         if (vehicle->num_peeps > 6)
         {
@@ -264,8 +265,8 @@ void vehicle_visual_river_rapids(
             image_id = (baseImage_id + ((peeps + 1) * 72))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
             sub_98199C(
-                session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y,
-                bb->offset_z + z);
+                session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
+                { bb->offset_x, bb->offset_y, bb->offset_z + z });
         }
     }
 
@@ -305,11 +306,11 @@ static void paint_river_rapids_track_flat(
 
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -344,7 +345,7 @@ static void paint_river_rapids_track_25_deg(
             sub_98197C(session, imageId, 0, 0, 32, 1, 34, height, 0, 27, height + 16);
 
             wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_7);
             break;
 
         case 1:
@@ -356,7 +357,7 @@ static void paint_river_rapids_track_25_deg(
             sub_98197C(session, imageId, 0, 0, 1, 32, 34, height, 27, 0, height + 16);
 
             wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
             break;
 
         case 2:
@@ -368,7 +369,7 @@ static void paint_river_rapids_track_25_deg(
             sub_98197C(session, imageId, 0, 0, 32, 1, 34, height, 0, 27, height + 16);
 
             wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
             break;
 
         case 3:
@@ -379,7 +380,7 @@ static void paint_river_rapids_track_25_deg(
             sub_98197C(session, imageId, 0, 0, 1, 32, 34, height, 27, 0, height + 16);
 
             wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_7);
             break;
     }
 
@@ -403,7 +404,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(
             sub_98197C(session, imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16);
 
             wooden_a_supports_paint_setup(session, 0, 5, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
 
         case 1:
@@ -438,7 +439,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(
             sub_98197C(session, imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16);
 
             wooden_a_supports_paint_setup(session, 1, 8, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_SQUARE_FLAT);
             break;
     }
 
@@ -462,7 +463,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(
             sub_98197C(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height + 16);
 
             wooden_a_supports_paint_setup(session, 0, 1, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 1:
@@ -474,7 +475,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(
             sub_98197C(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height + 16);
 
             wooden_a_supports_paint_setup(session, 1, 2, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            paint_util_push_tunnel_right(session, height, TUNNEL_8);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
             break;
 
         case 2:
@@ -486,7 +487,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(
             sub_98197C(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height + 16);
 
             wooden_a_supports_paint_setup(session, 0, 3, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            paint_util_push_tunnel_left(session, height, TUNNEL_8);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
             break;
 
         case 3:
@@ -497,7 +498,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(
             sub_98197C(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height + 16);
 
             wooden_a_supports_paint_setup(session, 1, 4, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
 
@@ -570,7 +571,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SW_NW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 2, 1, 7, height, 28, 27, height + 13);
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 1:
@@ -591,7 +592,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_NE_SE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 1, 2, 7, height, 27, 28, height + 13);
 
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 3:
@@ -601,8 +602,8 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SE_SW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 1, 1, 7, height, 28, 28, height + 13);
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
 
@@ -627,8 +628,8 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SW_SE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 1, 1, 7, height, 28, 28, height + 13);
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 1:
@@ -638,7 +639,7 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SE_NE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 2, 1, 7, height, 28, 27, height + 13);
 
-            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             break;
 
         case 2:
@@ -659,7 +660,7 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_NW_SW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 27, 2, height + 13);
 
-            paint_util_push_tunnel_right(session, height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
     }
 
@@ -684,7 +685,7 @@ static void paint_river_rapids_track_waterfall(
         sub_98197C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height);
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_BASE_NE_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height);
+        sub_98199C(session, imageId, { 0, 0, height }, { 24, 32, 11 }, { 4, 0, height });
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_TOP_NE_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 32, 27, height, 4, 0, height + 17);
@@ -694,7 +695,7 @@ static void paint_river_rapids_track_waterfall(
         sub_98197C(session, imageId, 0, 0, 1, 32, 27, height, 27, 0, height + 17);
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_SIDE_SW_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 1, 32, 27, height, 27, 0, height + 17);
+        sub_98199C(session, imageId, { 0, 0, height }, { 1, 32, 27 }, { 27, 0, height + 17 });
     }
     else
     {
@@ -703,7 +704,7 @@ static void paint_river_rapids_track_waterfall(
         sub_98197C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height);
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_BASE_NW_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height);
+        sub_98199C(session, imageId, { 0, 0, height }, { 32, 24, 11 }, { 0, 4, height });
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_TOP_NW_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 1, 27, height, 0, 4, height + 17);
@@ -713,18 +714,18 @@ static void paint_river_rapids_track_waterfall(
         sub_98197C(session, imageId, 0, 0, 32, 1, 27, height, 0, 27, height + 17);
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_SIDE_SE_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 32, 1, 27, height, 0, 27, height + 17);
+        sub_98199C(session, imageId, { 0, 0, height }, { 32, 1, 27 }, { 0, 27, height + 17 });
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_9);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_9);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -761,11 +762,11 @@ static void paint_river_rapids_track_rapids(
 
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -798,7 +799,7 @@ static void paint_river_rapids_track_whirlpool(
         sub_98197C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height);
 
         imageId = (SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height);
+        sub_98199C(session, imageId, { 0, 0, height }, { 24, 32, 11 }, { 4, 0, height });
 
         imageId = (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE : SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW)
             | session->TrackColours[SCHEME_TRACK];
@@ -811,7 +812,7 @@ static void paint_river_rapids_track_whirlpool(
         sub_98197C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height);
 
         imageId = (SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum) | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height);
+        sub_98199C(session, imageId, { 0, 0, height }, { 32, 24, 11 }, { 0, 4, height });
 
         imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW)
             | session->TrackColours[SCHEME_TRACK];
@@ -822,11 +823,11 @@ static void paint_river_rapids_track_whirlpool(
 
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -836,7 +837,7 @@ static void paint_river_rapids_track_whirlpool(
 /**
  * rct2: 0x0075745C
  **/
-TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_river_rapids(int32_t trackType)
 {
     switch (trackType)
     {

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -57,6 +57,49 @@ void colours_init_maps()
     }
 }
 
+namespace Colour
+{
+    colour_t FromString(const std::string_view& s, colour_t defaultValue)
+    {
+        static const std::unordered_map<std::string_view, colour_t> LookupTable{
+            { "black", COLOUR_BLACK },
+            { "grey", COLOUR_GREY },
+            { "white", COLOUR_WHITE },
+            { "dark_purple", COLOUR_DARK_PURPLE },
+            { "light_purple", COLOUR_LIGHT_PURPLE },
+            { "bright_purple", COLOUR_BRIGHT_PURPLE },
+            { "dark_blue", COLOUR_DARK_BLUE },
+            { "light_blue", COLOUR_LIGHT_BLUE },
+            { "icy_blue", COLOUR_ICY_BLUE },
+            { "teal", COLOUR_TEAL },
+            { "aquamarine", COLOUR_AQUAMARINE },
+            { "saturated_green", COLOUR_SATURATED_GREEN },
+            { "dark_green", COLOUR_DARK_GREEN },
+            { "moss_green", COLOUR_MOSS_GREEN },
+            { "bright_green", COLOUR_BRIGHT_GREEN },
+            { "olive_green", COLOUR_OLIVE_GREEN },
+            { "dark_olive_green", COLOUR_DARK_OLIVE_GREEN },
+            { "bright_yellow", COLOUR_BRIGHT_YELLOW },
+            { "yellow", COLOUR_YELLOW },
+            { "dark_yellow", COLOUR_DARK_YELLOW },
+            { "light_orange", COLOUR_LIGHT_ORANGE },
+            { "dark_orange", COLOUR_DARK_ORANGE },
+            { "light_brown", COLOUR_LIGHT_BROWN },
+            { "saturated_brown", COLOUR_SATURATED_BROWN },
+            { "dark_brown", COLOUR_DARK_BROWN },
+            { "salmon_pink", COLOUR_SALMON_PINK },
+            { "bordeaux_red", COLOUR_BORDEAUX_RED },
+            { "saturated_red", COLOUR_SATURATED_RED },
+            { "bright_red", COLOUR_BRIGHT_RED },
+            { "dark_pink", COLOUR_DARK_PINK },
+            { "bright_pink", COLOUR_BRIGHT_PINK },
+            { "light_pink", COLOUR_LIGHT_PINK },
+        };
+        auto result = LookupTable.find(s);
+        return (result != LookupTable.end()) ? result->second : defaultValue;
+    }
+} // namespace Colour
+
 #ifndef NO_TTF
 static uint8_t BlendColourMap[PALETTE_COUNT][PALETTE_COUNT] = { 0 };
 
@@ -67,8 +110,8 @@ static uint8_t findClosestPaletteIndex(uint8_t red, uint8_t green, uint8_t blue)
 
     for (int i = PALETTE_INDEX_0; i < PALETTE_INDEX_230; i++)
     {
-        const int32_t distance = std::pow(gPalette[i].red - red, 2) + std::pow(gPalette[i].green - green, 2)
-            + std::pow(gPalette[i].blue - blue, 2);
+        const int32_t distance = std::pow(gPalette[i].Red - red, 2) + std::pow(gPalette[i].Green - green, 2)
+            + std::pow(gPalette[i].Blue - blue, 2);
 
         if (distance < closestDistance)
         {
@@ -90,9 +133,9 @@ uint8_t blendColours(const uint8_t paletteIndex1, const uint8_t paletteIndex2)
         return BlendColourMap[cMin][cMax];
     }
 
-    uint8_t red = (gPalette[cMin].red + gPalette[cMax].red) / 2;
-    uint8_t green = (gPalette[cMin].green + gPalette[cMax].green) / 2;
-    uint8_t blue = (gPalette[cMin].blue + gPalette[cMax].blue) / 2;
+    uint8_t red = (gPalette[cMin].Red + gPalette[cMax].Red) / 2;
+    uint8_t green = (gPalette[cMin].Green + gPalette[cMax].Green) / 2;
+    uint8_t blue = (gPalette[cMin].Blue + gPalette[cMax].Blue) / 2;
 
     BlendColourMap[cMin][cMax] = findClosestPaletteIndex(red, green, blue);
     return BlendColourMap[cMin][cMax];

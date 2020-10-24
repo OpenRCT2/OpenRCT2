@@ -172,7 +172,7 @@ STR_0593    :매달린 탑승객 좌석이 있는 회전 휠에 타서, 처음�
 STR_0598    :뒤집힌 롤러코스터 차량이 탑승장을 나서 가속하여 높이 솟은 수직 트랙으로 솟아오르고, 다시 탑승장으로 후진하여 반대편의 수직 트랙을 향해 다시 솟아오릅니다.
 STR_0599    :각각의 차량이 부드럽게 꼬인 채로 낙하하는 알찬 구성의 롤러코스터입니다.
 STR_0600    :부드럽게 꼬인 트랙 구조를 따라 이동하는 탄광 차량입니다.
-STR_0602    :롤러코스터 차량은 탑승장에서 선형 유도 모터에 의해 가속하여 트랙을 돌만한 속도까지 올라갑니다.
+STR_0602    :롤러코스터 차량은 탑승장에서 선형 유도 모터에 의해 가속하여 트랙을 돌만한 속력까지 올라갑니다.
 STR_0767    :손님 {INT32}
 STR_0768    :미화원 {INT32}
 STR_0769    :정비기술자 {INT32}
@@ -510,7 +510,7 @@ STR_1125    :운행 중
 STR_1126    :정지하는 중
 STR_1127    :승객 하차 중
 STR_1128    :블록 브레이크에 의해 정지함
-STR_1129    :모든 차량을 같은 색으로
+STR_1129    :모든 차량이 같은 색
 STR_1130    :{STRINGID}마다 다른 색
 STR_1131    :차량마다 다른 색
 STR_1132    :차량 {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
@@ -710,8 +710,8 @@ STR_1325    :{COMMA16} 코스
 STR_1326    :코스 {COMMA16}
 STR_1327    :{SMALLFONT}{BLACK}오브젝트를 90° 회전시킵니다
 STR_1328    :평지가 필요합니다
-STR_1329    :{WINDOW_COLOUR_2}발진 속도:
-STR_1330    :{SMALLFONT}{BLACK}탑승장 출발 최대 속도
+STR_1329    :{WINDOW_COLOUR_2}발진 속력:
+STR_1330    :{SMALLFONT}{BLACK}탑승장 출발 최대 속력
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
@@ -743,7 +743,7 @@ STR_1358    :{WINDOW_COLOUR_2}총 '무중력' 시간: {BLACK}{COMMA2DP32}초
 STR_1359    :{WINDOW_COLOUR_2}대기 시간: {BLACK}{COMMA16}분
 STR_1360    :{WINDOW_COLOUR_2}대기 시간: {BLACK}{COMMA16}분
 STR_1361    :속력을 바꿀 수 없습니다...
-STR_1362    :발진 속도를 바꿀 수 없습니다...
+STR_1362    :발진 속력을 바꿀 수 없습니다...
 STR_1363    :지지대가 버틸 수 있는 최대 높이입니다!
 STR_1364    :위 트랙의 지지대를 더 늘릴 수 없습니다!
 STR_1365    :인라인 트위스트 (왼쪽)
@@ -1056,7 +1056,7 @@ STR_1672    :브레이크
 STR_1673    :회전 컨트롤 전환 트랙
 STR_1674    :브레이크 속력
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}브레이크의 제한 속도를 설정하세요
+STR_1676    :{SMALLFONT}{BLACK}브레이크의 제한 속력을 설정하세요
 STR_1677    :{WINDOW_COLOUR_2}인기도: {BLACK}알 수 없음
 STR_1678    :{WINDOW_COLOUR_2}인기도: {BLACK}{COMMA16}%
 STR_1679    :나선 상승 (왼쪽)
@@ -1131,8 +1131,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :놀이기구의 탑승 시간을 변경할 수 없습니다...
 STR_1752    :{SMALLFONT}{BLACK}공원에 있는 손님의 모든 명단을 보여줍니다
 STR_1753    :{SMALLFONT}{BLACK}공원에 있는 손님을 항목별로 묶어서 보여줍니다
-STR_1754    :{BLACK}{COMMA16} 손님
-STR_1755    :{BLACK}{COMMA16} 손님
+STR_1754    :{BLACK}{COMMA32} 손님
+STR_1755    :{BLACK}{COMMA32} 손님
 STR_1756    :{WINDOW_COLOUR_2}입장료:
 STR_1757    :{WINDOW_COLOUR_2}신뢰도: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}건설 모드
@@ -1190,7 +1190,7 @@ STR_1813    :기타 오브젝트
 STR_1814    :행동
 STR_1815    :생각
 STR_1816    :{SMALLFONT}{BLACK}손님 목록에서 보여줄 정보의 종류를 선택하세요
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}모든 손님
 STR_1819    :{WINDOW_COLOUR_2}모든 손님 (항목별 분류)
 STR_1820    :{WINDOW_COLOUR_2}{STRINGID} 손님
@@ -1219,9 +1219,9 @@ STR_1842    :좋아하는 손님 수: {COMMA16}명
 STR_1843    :좋아하는 손님 수: {COMMA16}명
 STR_1844    :{SMALLFONT}{BLACK}놀이기구/시설 목록에서 보여줄 정보를 선택하세요
 STR_1845    :{MONTHYEAR}
-STR_1846    :손님 {COMMA16}명
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}손님 {COMMA16}명
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}손님 {COMMA16}명
+STR_1846    :손님 {COMMA32}명
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}손님 {COMMA32}명
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}손님 {COMMA32}명
 STR_1849    :{WINDOW_COLOUR_2}음악 재생
 STR_1850    :{SMALLFONT}{BLACK}이 놀이기구에 배경음악을 재생할지를 선택합니다
 STR_1851    :{WINDOW_COLOUR_2}유지비: {BLACK}시간당 {CURRENCY2DP}
@@ -1245,8 +1245,8 @@ STR_1868    :회전 수를 변경할 수 없습니다...
 STR_1869    :{WINDOW_COLOUR_2}회전 수:
 STR_1870    :{SMALLFONT}{BLACK}회전 수를 설정합니다
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}수익: 시간당 {BLACK}{CURRENCY2DP}
-STR_1874    :{WINDOW_COLOUR_2}순익: 시간당 {BLACK}{CURRENCY2DP}
+STR_1873    :{WINDOW_COLOUR_2}수익: {BLACK}시간당 {CURRENCY2DP}
+STR_1874    :{WINDOW_COLOUR_2}순익: {BLACK}시간당 {CURRENCY2DP}
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}놀이기구 점검
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}놀이기구 수리
@@ -1579,7 +1579,7 @@ STR_2219    :{RED}{COMMA16}명의 손님이 {STRINGID} 사고로 사망하였습
 STR_2220    :{WINDOW_COLOUR_2}공원 등급: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}공원 등급: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}공원에 있는 손님 수: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}공원에 있는 손님 수: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}재정: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}재정: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}공원 가치: {BLACK}{CURRENCY}
@@ -1853,13 +1853,13 @@ STR_2512    :물 편집
 STR_2513    :풍경 제작
 STR_2514    :보도 건설
 STR_2515    :새 놀이기구 건설
-STR_2516    :재정 정보를 보여줍니다
-STR_2517    :개발 정보를 보여줍니다
-STR_2518    :놀이기구 목록을 보여줍니다
-STR_2519    :공원 정보를 보여줍니다
-STR_2520    :손님 목록을 보여줍니다
-STR_2521    :직원 목록을 보여줍니다
-STR_2522    :최근 메시지를 보여줍니다
+STR_2516    :재정 정보 보기
+STR_2517    :개발 정보 보기
+STR_2518    :놀이기구 목록 보기
+STR_2519    :공원 정보 보기
+STR_2520    :손님 목록 보기
+STR_2521    :직원 목록 보기
+STR_2522    :최근 메시지 보기
 STR_2523    :지도 보기
 STR_2524    :스크린 샷
 STR_2533    :백스페이스
@@ -1944,8 +1944,8 @@ STR_2728    :{UINT16}시간 {UINT16}분
 STR_2729    :{UINT16}시간 {UINT16}분
 STR_2730    :{UINT16}시간 {UINT16}분
 STR_2731    :{UINT16}시간 {UINT16}분
-STR_2732    :{COMMA16}피트
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}피트
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{POP16}{COMMA16}년 {PUSH16}{PUSH16}{MONTH}
@@ -1981,7 +1981,7 @@ STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
 STR_2779    :외부화면 #{COMMA16}
 STR_2780    :추가 외부화면
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{195}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :키보드 단축키 변경
@@ -2211,7 +2211,7 @@ STR_3091    :이 섹션을 제거할 수 없습니다!
 STR_3092    :이 놀이기구의 탑승장을 옮기거나 편집할 수 없습니다!
 STR_3093    :{WINDOW_COLOUR_2}가장 좋아하는 것: {BLACK}{STRINGID}
 STR_3094    :없음
-STR_3095    :{WINDOW_COLOUR_2}리프트 힐 체인 속도:
+STR_3095    :{WINDOW_COLOUR_2}리프트 힐 체인 속력:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}리프트 힐 체인 속력을 선택하세요
 STR_3099    :{SMALLFONT}{BLACK}색을 선택하세요
@@ -2428,7 +2428,7 @@ STR_3330    :공원이 소유한 땅이 하나도 없습니다
 STR_3331    :공원 입구에서 지도 가장자리로 이어지는 길이 이어지지 않았거나 너무 복잡합니다. 1칸 너비의 길을 코너나 교차로가 최대한 없도록 하여 만들어야 합니다.
 STR_3332    :공원 입구가 잘못된 방향을 향하고 있거나 지도 가장자리로 가는 길이 없습니다
 STR_3333    :게임 저장시 사용한 오브젝트를 같이 포함하여 저장
-STR_3334    :{SMALLFONT}{BLACK}필요한 경우 내장된 오브젝트(기본 오브젝트가 아닌 사용자가 추가한 오브젝트)를 게임 저장 파일이나 시나리오 파일 내부에 함께 저장합니다. 이러면 그 추가 오브젝트를 갖고 있지 않은 다른 사람이 이 파일을 불러올 때 자동으로 그 오브젝트를 설치하게 됩니다. 다만 게임 저장 파일 용량이 늘어납니다
+STR_3334    :{SMALLFONT}{BLACK}필요한 경우 커스텀 오브젝트(기본 오브젝트가 아닌 사용자가 추가한 오브젝트)를 게임 저장 파일이나 시나리오 파일 내부에 함께 저장합니다. 이러면 추가 오브젝트를 갖고 있지 않은 다른 사람이 이 파일을 불러올 때 자동으로 그 오브젝트를 설치하게 됩니다. 다만 게임 저장 파일 용량이 늘어납니다
 STR_3335    :트랙 디자이너 - 놀이기구 종류 & 차량을 선택하세요
 STR_3336    :트랙 디자인 관리자 - 놀이기구 종류를 선택하세요
 STR_3338    :{BLACK}커스텀 디자인 구조
@@ -2527,19 +2527,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}{COMMA16}년
 STR_5161    :날짜 형식:
 STR_5162    :일/월/년
 STR_5163    :월/일/년
-STR_5164    :트위치 채널 이름
-STR_5165    :손님 이름을 팔로워 이름을 따서 붙이기
-STR_5166    :{SMALLFONT}{BLACK}트위치 채널의 팔로워 이름을 따서 손님 이름으로 사용합니다
-STR_5167    :팔로워 손님 추적
-STR_5168    :{SMALLFONT}{BLACK}채널의 트위치 팔로워 이름을 딴 손님을 추적합니다
-STR_5169    :손님 이름을 트위치 채팅 접속자 이름을 따서 붙이기
-STR_5170    :{SMALLFONT}{BLACK}트위치 채팅의 접속자 이름을 따서 손님 이름으로 사용합니다
-STR_5171    :채팅 인원 추적
-STR_5172    :{SMALLFONT}{BLACK}트위치 채팅에 참여하고 있는 사람들의 이름을 딴 손님의 행적을 추적합니다
-STR_5173    :트위치 채팅 내용을 뉴스로 전송
-STR_5174    :{SMALLFONT}{BLACK}트위치의 채팅 메시지를 !news를 이용하여 게임 메시지로 알려줍니다
-STR_5175    :트위치 채널 이름 입력
-STR_5176    :트위치 통합 허용
 STR_5177    :전체 화면 모드:
 STR_5178    :{SMALLFONT}{BLACK}재정 치트를 보여줍니다
 STR_5179    :{SMALLFONT}{BLACK}손님 치트를 보여줍니다
@@ -2634,7 +2621,6 @@ STR_5267    :{SMALLFONT}{BLACK}문화와 단위
 STR_5268    :{SMALLFONT}{BLACK}오디오
 STR_5269    :{SMALLFONT}{BLACK}제어 및 인터페이스
 STR_5270    :{SMALLFONT}{BLACK}기타
-STR_5271    :{SMALLFONT}{BLACK}트위치
 STR_5272    :{SMALLFONT}{BLACK}소형 조형물
 STR_5273    :{SMALLFONT}{BLACK}대형 조형물
 STR_5274    :{SMALLFONT}{BLACK}보도
@@ -2678,26 +2664,6 @@ STR_5311    :{SMALLFONT}{BLACK}디버그 도구
 STR_5312    :콘솔 보이기
 STR_5313    :칸 조사 창 열기
 STR_5314    :칸 조사 창
-STR_5315    :잔디
-STR_5316    :모래
-STR_5317    :진흙
-STR_5318    :바위
-STR_5319    :화성
-STR_5320    :체스판
-STR_5321    :자란 잔디
-STR_5322    :눈
-STR_5323    :격자 (빨강)
-STR_5324    :격자 (노랑)
-STR_5325    :격자 (파랑)
-STR_5326    :격자 (처럭)
-STR_5327    :모래 (어두움)
-STR_5328    :모래 (밝음)
-STR_5329    :체스판 (반전)
-STR_5330    :지하 시야
-STR_5331    :바위
-STR_5332    :나무 (붉은색)
-STR_5333    :나무 (검은색)
-STR_5334    :눈
 STR_5335    :놀이기구 입구
 STR_5336    :놀이기구 출구
 STR_5337    :공원 입구
@@ -2726,7 +2692,7 @@ STR_5361    :모든 손님에게 다음 물건 주기:
 STR_5362    :{BLACK}손님들의 선호 격렬도 설정:
 STR_5363    :1 이상
 STR_5364    :15 이하
-STR_5365    :{BLACK}직원 속도:
+STR_5365    :{BLACK}직원 속력:
 STR_5366    :보통
 STR_5367    :빠름
 STR_5368    :충돌 이력 제거
@@ -2916,7 +2882,7 @@ STR_5554    :{SMALLFONT}{BLACK}산 만들기 도구 사용
 STR_5555    :다른 종류의 놀이기구 차량을 보여줌
 STR_5556    :플레이어 추방
 STR_5557    :비동기화 이후에 계속 접속 (멀티플레이)
-STR_5558    :이 설정을 적용하기 위해서는 재시작해야합니다
+STR_5558    :이 설정을 적용하기 위해서는 게임을 재시작해야 합니다
 STR_5559    :점검 시간 10분으로
 STR_5560    :{SMALLFONT}{BLACK}모든 놀이기구의 점검 시간을 '매 10분마다'로 설정합니다
 STR_5561    :언어 파일을 불러오는 데 실패하였습니다
@@ -3150,7 +3116,7 @@ STR_5824    :{SMALLFONT}{BLACK}폭풍이 칠 때 번개가 치는 효과를 끕�
 STR_5825    :{SMALLFONT}{BLACK}마우스 커서를 화면 밖으로 나가지 못하게 만듭니다.
 STR_5826    :{SMALLFONT}{BLACK}게임 화면에서 마우스 오른쪽 클릭으로 드래그할 때의 방향을 반대로 바꿉니다.
 STR_5827    :{SMALLFONT}{BLACK}GUI에서 사용할 색상 조합을 설정합니다.
-STR_5828    :{SMALLFONT}{BLACK}거리, 속도 등에서 사용할 거리 단위를 설정합니다.
+STR_5828    :{SMALLFONT}{BLACK}거리, 속력 등에서 사용할 거리 단위를 설정합니다.
 STR_5829    :{SMALLFONT}{BLACK}화폐 단위를 변경합니다. 단순히 표기 방식만 변경되고, 환율은 아직 적용되지 않습니다.
 STR_5830    :{SMALLFONT}{BLACK}사용할 언어를 설정합니다.
 STR_5831    :{SMALLFONT}{BLACK}사용할 온도 단위를 설정합니다.
@@ -3174,11 +3140,10 @@ STR_5848    :{SMALLFONT}{BLACK}사용자 타이틀 시퀀스를 생성하고 관
 STR_5849    :{SMALLFONT}{BLACK}새로 고용한 직원을 자동으로 보도 위에 놓습니다.
 STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}새로 만든 놀이기구에 기본적으로 설정할 점검 간격을 설정합니다.
-STR_5852    :{SMALLFONT}{BLACK}트위치 통합에 사용할 트위치TV 채널 명을 설정합니다.
 STR_5853    :{SMALLFONT}{BLACK}효과음 켜기/끄기
 STR_5854    :{SMALLFONT}{BLACK}놀이기구 음악 켜기/끄기
-STR_5855    :{SMALLFONT}{BLACK}전체화면, 창 모드, 전체화면 (창모드) 중에서 선택합니다.
-STR_5856    :{SMALLFONT}{BLACK}전체화면에서 사용할 게임 해상도를 설정합니다.
+STR_5855    :{SMALLFONT}{BLACK}전체 화면, 창 모드, 전체 화면 (창 모드) 중에서 선택합니다.
+STR_5856    :{SMALLFONT}{BLACK}전체 화면에서 사용할 게임 해상도를 설정합니다.
 STR_5857    :{SMALLFONT}{BLACK}게임 설정
 STR_5858    :{SMALLFONT}{BLACK}CPU 대신 GPU를 이용하여 화면을 표시합니다. 스크린 캡처 소프트웨어의 호환성을 향상시켜줍니다. 약간의 속도 저하가 발생할 수 있습니다.
 STR_5859    :{SMALLFONT}{BLACK}시각적으로 더 부드러운 게임 플레이를 위해 프레임 제한을 해제합니다. 설정을 끄면 게임이 40 FPS로 실행됩니다.
@@ -3358,7 +3323,7 @@ STR_6033    :RCT1 설치 경로:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :RCT1이 설치된 폴더를 선택하세요
 STR_6036    :{SMALLFONT}{BLACK}초기화
-STR_6037    :RCT1이 설치된 폴더를 올바르게 선택해주세요
+STR_6037    :선택한 폴더에는 RollerCoaster Tycoon 1이 올바르게 설치되어 있지 않습니다.
 STR_6038    :{SMALLFONT}{BLACK}RCT1을 설치했다면, 이 설정을 이용해서 시나리오나 음악 등을 불러오기 위해 RCT1이 설치된 폴더를 지정하세요.
 STR_6039    :{SMALLFONT}{BLACK}빠른 놀이기구 파괴
 STR_6040    :시나리오 설정 편집
@@ -3434,7 +3399,7 @@ STR_6109    :하이퍼 트위스터
 STR_6110    :주니어 롤러코스터
 STR_6111    :클래식 미니 롤러코스터
 STR_6112    :나선 트랙과 루프를 통과하는 알찬 구성의 철제 트랙 롤러코스터입니다.
-STR_6113    :큰 낙하, 높은 속도, 그리고 무릎 안전바만 있는 편안한 차량을 가진 높고 뒤집어질 수 없는 롤러코스터입니다.
+STR_6113    :큰 낙하, 높은 속력, 그리고 무릎 안전바만 있는 편안한 차량을 가진 높고 뒤집어질 수 없는 롤러코스터입니다.
 STR_6114    :정해진 트랙을 따라 천천히 움직이는 놀이기구입니다.
 STR_6115    :급경사를 오를 수 있는 거대한 4 x 4 트럭 차량입니다.
 STR_6116    :여러 가지 반전 트랙을 통과하면서 부드러운 강철 트랙을 따라서 활강하는, 폭이 넓은 롤러코스터입니다.
@@ -3466,8 +3431,8 @@ STR_6141    :RCT1 하단 툴바
 STR_6142    :{WINDOW_COLOUR_2}트랙 이름: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}놀이기구 종류: {BLACK}{STRINGID}
 STR_6144    :시각적 업데이트 표시
-STR_6145    :{SMALLFONT}{BLACK}부스터 속도 제한 설정
-STR_6146    :모든 표시 가능한 트랙 조각 사용
+STR_6145    :{SMALLFONT}{BLACK}부스터 속력 제한 설정
+STR_6146    :모든 표현 가능한 트랙 조각 사용
 STR_6147    :{SMALLFONT}{BLACK}놀이기구 건설 창에서 해당 놀이기구가 지원하는지의 여부와 관계없이, 그 놀이기구에서 사용할 수 있는 모든 트랙 조각의 사용을 허용합니다.
 STR_6148    :마스터 서버에 접속 중...
 STR_6149    :마스터 서버에 접속할 수 없습니다
@@ -3484,7 +3449,7 @@ STR_6159    :부드러운 최대인접 픽셀
 STR_6160    :{WINDOW_COLOUR_2}사용할 수 있는 차량: {BLACK}{STRING}
 STR_6161    :땅에 격자선 표시
 STR_6162    :회전 와일드 마우스
-STR_6163    :급격한 코너와 짧은 낙하를 지나면서 속도를 내고, 차량의 부드러운 회전이 탑승객의 방향 감각을 잃게 만드는 쥐 모양의 차량
+STR_6163    :급격한 코너와 짧은 낙하를 지나면서 속력을 내고, 차량의 부드러운 회전이 탑승객의 방향 감각을 잃게 만드는 쥐 모양의 차량
 STR_6164    :{WHITE}❌
 STR_6165    :수직 동기화 사용
 STR_6166    :{SMALLFONT}{BLACK}게임에 표시되는 각 프레임을 모니터의 갱신 주기에 동기화하여 갈라짐 현상을 방지합니다.
@@ -3525,17 +3490,6 @@ STR_6200    :날짜 초기화
 STR_6201    :{MONTH}
 STR_6202    :가상 지면 표시
 STR_6203    :{SMALLFONT}{BLACK}이 설정을 켜면, Ctrl이나 Shift 키를 누르고 있을 때 오브젝트의 수직 설치에 도움이 되는 가상 지면을 표시합니다.
-STR_6204    :벽돌
-STR_6205    :철
-STR_6206    :회색 절벽
-STR_6207    :노란 절벽
-STR_6208    :빨간 절벽
-STR_6209    :보라색 절벽
-STR_6210    :초록색 절벽
-STR_6211    :갈색 사암
-STR_6212    :회색 사암
-STR_6213    :마천루 A
-STR_6214    :마천루 B
 STR_6215    :건설
 STR_6216    :운영 및 운행
 STR_6217    :놀이기구 / 트랙 관련 기능
@@ -3573,9 +3527,6 @@ STR_6248    :{WINDOW_COLOUR_1}{STRINGID} 놀이기구를 {CURRENCY}에 재단장
 STR_6249    :{WINDOW_COLOUR_1}{STRINGID} 놀이기구를 재단장하시겠습니까?
 STR_6250    :{WINDOW_COLOUR_1}{STRINGID} 놀이기구를 완전히 파괴하고 {CURRENCY}만큼을 회수하시겠습니까?
 STR_6251    :놀이기구에 아직 손님이 남아있습니다
-STR_6252    :트위치 API URL
-STR_6253    :{SMALLFONT}{BLACK}트위치 통합 API의 URL을 지정합니다. 트위치 통합 기능을 사용하려면 이 항목을 입력해야 합니다.
-STR_6254    :트위치 통합 API의 URL:
 STR_6255    :URL이 올바르지 않습니다
 STR_6256    :렌더링 효과
 STR_6257    :반투명하게
@@ -3684,6 +3635,30 @@ STR_6359    :{POP16}{POP16}{UINT16}쪽
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :차량 조명 효과 (실험적 기능)
 STR_6362    :{SMALLFONT}{BLACK}이 설정을 켜면, 밤에 트랙형 놀이기구의 차량에 조명이 들어옵니다.
+STR_6363    :텍스트를 클립보드에 복사하였습니다
+STR_6364    :{RED}{COMMA16}명의 손님이 {STRINGID} 사고로 사망하였습니다!
+STR_6365    :놀이기구 사상자
+STR_6366    :끼거나 움직이지 않는 놀이기구
+STR_6367    :{WINDOW_COLOUR_2}애니메이션 프레임:
+STR_6368    :호환성의 이유로, OpenRCT2를 Wine에서 실행하는 것을 권장하지 않습니다. OpenRCT2는 macOS, Linux, FreeBSD, OpenBSD에서 실행하는 것을 기본적으로 지원합니다.
+STR_6369    :올바르지 않은 높이에 트랙 짓기 허용
+STR_6370    :{SMALLFONT}{BLACK}어떤 높이에나 트랙 조각을 놓을 수 있게 됩니다
+STR_6371    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, "csg1i.dat" 파일이 존재하지 않습니다. RollerCoaster Tycoon 1 CD 안의 "Data" 폴더에서 이 파일을 복사해서 RollerCoaster Tycoon 1을 설치한 하드 디스크 위치에 복사해야 합니다.
+STR_6372    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, 버전이 알맞지 않습니다. RollerCoaster Tycoon 1의 에셋을 사용하려면 OpenRCT2는 루피 랜드스케이프나 RCT 디럭스가 필요합니다.
+STR_6373    :겹쳐짓기 켜기/끄기
+STR_6374    :겹
+STR_6375    :알 수 없는 놀이기구
+STR_6376    :{WINDOW_COLOUR_2}놀이기구 차량:{NEWLINE}{BLACK}{POP16}{STRINGID}의 {PUSH16}{PUSH16}{STRINGID}
+STR_6377    :{WINDOW_COLOUR_2}유형: {BLACK}{POP16}{STRINGID}의 {PUSH16}{PUSH16}{STRINGID}
+STR_6378    :오브젝트 목록 수신 중: {INT32} / {INT32}
+STR_6379    :올바르지 않은 데이터 수신
+STR_6380    :업데이트 사용 가능!
+STR_6381    :OpenRCT2 디스코드에 참여하세요!
+STR_6382    :OpenRCT2 새 버전이 나왔습니다!: {STRING}
+STR_6383    :다운로드 페이지 열기
+STR_6384    :눈
+STR_6385    :폭설
+STR_6386    :눈보라
 
 #############
 # Scenarios #
@@ -3763,7 +3738,7 @@ STR_DTLS    :비밀스런 숲 속 언덕에 처음부터 놀이공원을 건설�
 <Pacific Pyramids>
 STR_SCNR    :Pacific Pyramids
 STR_PARK    :평화로운 피라미드
-STR_DTLS    :이집트 유적 관광지를 번창한 놀이공원으로 바꿔 보세요.
+STR_DTLS    :이집트 유적 관광지를 번창한 놀이공원으로 바꿔보세요.
 
 <Crumbly Woods>
 STR_SCNR    :Crumbly Woods

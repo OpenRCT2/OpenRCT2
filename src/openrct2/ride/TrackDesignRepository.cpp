@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,8 +21,8 @@
 #include "../core/String.hpp"
 #include "../localisation/LocalisationService.h"
 #include "../object/ObjectRepository.h"
-#include "../object/RideObject.h"
-#include "RideGroupManager.h"
+#include "../ride/RideData.h"
+#include "../util/Util.h"
 #include "TrackDesign.h"
 
 #include <algorithm>
@@ -57,7 +57,7 @@ class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444954; // TIDX
-    static constexpr uint16_t VERSION = 2;
+    static constexpr uint16_t VERSION = 3;
     static constexpr auto PATTERN = "*.td4;*.td6";
 
 public:
@@ -166,7 +166,7 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !RideGroupManager::RideTypeIsIndependent(rideType))
+                if (ori == nullptr || !RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                     entryIsNotSeparate = true;
             }
 
@@ -175,31 +175,6 @@ public:
                 count++;
             }
         }
-        return count;
-    }
-
-    size_t GetCountForRideGroup(uint8_t rideType, const RideGroup* rideGroup) const override
-    {
-        size_t count = 0;
-        const auto& repo = GetContext()->GetObjectRepository();
-
-        for (const auto& item : _items)
-        {
-            if (item.RideType != rideType)
-            {
-                continue;
-            }
-
-            const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
-            uint8_t rideGroupIndex = (ori != nullptr) ? ori->RideInfo.RideGroupIndex : 0;
-            const RideGroup* itemRideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
-
-            if (itemRideGroup != nullptr && itemRideGroup->Equals(rideGroup))
-            {
-                count++;
-            }
-        }
-
         return count;
     }
 
@@ -225,39 +200,11 @@ public:
             {
                 const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
 
-                if (ori == nullptr || !RideGroupManager::RideTypeIsIndependent(rideType))
+                if (ori == nullptr || !RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                     entryIsNotSeparate = true;
             }
 
             if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
-            {
-                track_design_file_ref ref;
-                ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
-                ref.path = String::Duplicate(item.Path);
-                refs.push_back(ref);
-            }
-        }
-
-        return refs;
-    }
-
-    std::vector<track_design_file_ref> GetItemsForRideGroup(uint8_t rideType, const RideGroup* rideGroup) const override
-    {
-        std::vector<track_design_file_ref> refs;
-        const auto& repo = GetContext()->GetObjectRepository();
-
-        for (const auto& item : _items)
-        {
-            if (item.RideType != rideType)
-            {
-                continue;
-            }
-
-            const ObjectRepositoryItem* ori = repo.FindObject(item.ObjectEntry.c_str());
-            uint8_t rideGroupIndex = (ori != nullptr) ? ori->RideInfo.RideGroupIndex : 0;
-            const RideGroup* itemRideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
-
-            if (itemRideGroup != nullptr && itemRideGroup->Equals(rideGroup))
             {
                 track_design_file_ref ref;
                 ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
@@ -352,7 +299,7 @@ private:
             {
                 return a.RideType < b.RideType;
             }
-            return String::Compare(a.Name, b.Name) < 0;
+            return strlogicalcmp(a.Name.c_str(), b.Name.c_str()) < 0;
         });
     }
 

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,7 +38,6 @@ struct mapgen_settings
 
 void mapgen_generate_blank(mapgen_settings* settings);
 void mapgen_generate(mapgen_settings* settings);
-void mapgen_generate_custom_simplex(mapgen_settings* settings);
 bool mapgen_load_heightmap(const utf8* path);
 void mapgen_unload_heightmap();
 void mapgen_generate_from_heightmap(mapgen_settings* settings);

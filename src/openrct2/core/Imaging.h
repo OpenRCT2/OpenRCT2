@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,15 +19,6 @@
 #include <vector>
 
 struct rct_drawpixelinfo;
-struct rct_palette;
-
-struct PaletteBGRA
-{
-    uint8_t Blue{};
-    uint8_t Green{};
-    uint8_t Red{};
-    uint8_t Alpha{};
-};
 
 enum class IMAGE_FORMAT
 {
@@ -47,7 +38,7 @@ struct Image
 
     // Data
     std::vector<uint8_t> Pixels;
-    std::unique_ptr<rct_palette> Palette;
+    std::unique_ptr<GamePalette> Palette;
     uint32_t Stride{};
 };
 

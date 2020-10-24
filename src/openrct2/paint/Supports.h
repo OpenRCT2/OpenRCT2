@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -46,6 +46,11 @@ enum
     METAL_SUPPORTS_TUBES_INVERTED, // Used by inverted rcs like the flying, lay-down, compact inverted. Mostly the same as
                                    // METAL_SUPPORTS_TUBES, but with a thinner crossbeam.
     METAL_SUPPORTS_BOXED_COATED // Does not seem to be used in RCT2, but it was used in RCT1 for one of the path support types.
+};
+
+enum
+{
+    SUPPORTS_SLOPE_5 = 1 << 5
 };
 
 #endif

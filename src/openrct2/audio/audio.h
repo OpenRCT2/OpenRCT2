@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -55,20 +55,21 @@ struct rct_ride_music_params
     uint16_t frequency;
 };
 
+struct Sound
+{
+    SoundId Id;
+    int16_t Volume;
+    int16_t Pan;
+    uint16_t Frequency;
+    void* Channel;
+};
+
 struct rct_vehicle_sound
 {
     uint16_t id;
     int16_t volume;
-    SoundId sound1_id;
-    int16_t sound1_volume;
-    int16_t sound1_pan;
-    uint16_t sound1_freq;
-    SoundId sound2_id;
-    int16_t sound2_volume;
-    int16_t sound2_pan;
-    uint16_t sound2_freq;
-    void* sound1_channel;
-    void* sound2_channel;
+    Sound TrackSound;
+    Sound OtherSound;
 };
 
 struct rct_vehicle_sound_params
@@ -160,7 +161,7 @@ extern bool gGameSoundsOff;
 extern int32_t gVolumeAdjustZoom;
 
 extern void* gTitleMusicChannel;
-extern void* gRainSoundChannel;
+extern void* gWeatherSoundChannel;
 
 extern rct_ride_music gRideMusicList[AUDIO_MAX_RIDE_MUSIC];
 extern rct_ride_music_info gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS];
@@ -219,9 +220,9 @@ void audio_populate_devices();
  */
 void audio_start_title_music();
 /**
- * Stops the rain sound effect from playing.
+ * Stops the weather sound effect from playing.
  */
-void audio_stop_rain_sound();
+void audio_stop_weather_sound();
 /**
  * Stops ride music from playing.
  * rct2: 0x006BCA9F

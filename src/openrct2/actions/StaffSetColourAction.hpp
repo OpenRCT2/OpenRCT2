@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,8 +30,8 @@ public:
     StaffSetColourAction()
     {
     }
-    StaffSetColourAction(uint8_t staffType, uint8_t colour)
-        : _staffType(staffType)
+    StaffSetColourAction(StaffType staffType, uint8_t colour)
+        : _staffType(static_cast<uint8_t>(staffType))
         , _colour(colour)
     {
     }
@@ -49,7 +49,8 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_staffType != STAFF_TYPE_HANDYMAN && _staffType != STAFF_TYPE_MECHANIC && _staffType != STAFF_TYPE_SECURITY)
+        auto staffType = static_cast<StaffType>(_staffType);
+        if (staffType != StaffType::Handyman && staffType != StaffType::Mechanic && staffType != StaffType::Security)
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
@@ -59,20 +60,18 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         // Update global uniform colour property
-        if (!staff_set_colour(_staffType, _colour))
+        if (!staff_set_colour(static_cast<StaffType>(_staffType), _colour))
         {
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
         // Update each staff member's uniform
-        int32_t spriteIndex;
-        Peep* peep;
-        FOR_ALL_PEEPS (spriteIndex, peep)
+        for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
-            if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == _staffType)
+            if (peep->AssignedStaffType == static_cast<StaffType>(_staffType))
             {
-                peep->tshirt_colour = _colour;
-                peep->trousers_colour = _colour;
+                peep->TshirtColour = _colour;
+                peep->TrousersColour = _colour;
             }
         }
 

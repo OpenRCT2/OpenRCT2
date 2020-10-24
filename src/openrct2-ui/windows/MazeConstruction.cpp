@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,11 +17,16 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 
 #pragma region Widgets
+
+static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr const int32_t WH = 200;
+static constexpr const int32_t WW = 166;
 
 // clang-format off
 enum {
@@ -42,39 +47,37 @@ enum {
 };
 
 static rct_widget window_maze_construction_widgets[] = {
-    { WWT_FRAME,            0,  0,      165,    0,      199,    0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_CAPTION,          0,  1,      164,    1,      14,     STR_RIDE_CONSTRUCTION_WINDOW_TITLE, STR_WINDOW_TITLE_TIP                                    },
-    { WWT_CLOSEBOX,         0,  153,    163,    2,      13,     STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP                                    },
-    { WWT_GROUPBOX,         0,  3,      162,    17,     71,     STR_RIDE_CONSTRUCTION_MODE,         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_FLATBTN,          1,  35,     66,     29,     60,     SPR_MAZE_CONSTRUCTION_BUILD,        STR_RIDE_CONSTRUCTION_BUILD_MODE                        },
-    { WWT_FLATBTN,          1,  67,     98,     29,     60,     SPR_MAZE_CONSTRUCTION_MOVE,         STR_RIDE_CONSTRUCTION_MOVE_MODE                         },
-    { WWT_FLATBTN,          1,  99,     130,    29,     60,     SPR_MAZE_CONSTRUCTION_FILL_IN,      STR_RIDE_CONSTRUCTION_FILL_IN_MODE                      },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_GROUPBOX,         0,  3,      162,    80,     166,    STR_RIDE_CONSTRUCTION_BUILD,        STR_NONE                                                },
-    { WWT_FLATBTN,          1,  83,     127,    96,     124,    SPR_CONSTRUCTION_DIRECTION_NE,      STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP  },
-    { WWT_FLATBTN,          1,  83,     127,    125,    153,    SPR_CONSTRUCTION_DIRECTION_SE,      STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP  },
-    { WWT_FLATBTN,          1,  38,     82,     125,    153,    SPR_CONSTRUCTION_DIRECTION_SW,      STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP  },
-    { WWT_FLATBTN,          1,  38,     82,     96,     124,    SPR_CONSTRUCTION_DIRECTION_NW,      STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP  },
-    { WWT_GROUPBOX,         0,  3,      162,    168,    195,    0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_BUTTON,           1,  9,      78,     178,    189,    STR_RIDE_CONSTRUCTION_ENTRANCE,     STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                      },
-    { WWT_BUTTON,           1,  87,     156,    178,    189,    STR_RIDE_CONSTRUCTION_EXIT,         STR_RIDE_CONSTRUCTION_EXIT_TIP                          },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget({ 3,  17}, {160, 55}, WWT_GROUPBOX, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_MODE                                                            ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({35,  29}, { 32, 32}, WWT_FLATBTN,  WindowColour::Secondary, SPR_MAZE_CONSTRUCTION_BUILD,    STR_RIDE_CONSTRUCTION_BUILD_MODE                      ),
+    MakeWidget({67,  29}, { 32, 32}, WWT_FLATBTN,  WindowColour::Secondary, SPR_MAZE_CONSTRUCTION_MOVE,     STR_RIDE_CONSTRUCTION_MOVE_MODE                       ),
+    MakeWidget({99,  29}, { 32, 32}, WWT_FLATBTN,  WindowColour::Secondary, SPR_MAZE_CONSTRUCTION_FILL_IN,  STR_RIDE_CONSTRUCTION_FILL_IN_MODE                    ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 3,  80}, {160, 87}, WWT_GROUPBOX, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_BUILD                                                           ),
+    MakeWidget({83,  96}, { 45, 29}, WWT_FLATBTN,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_NE,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+    MakeWidget({83, 125}, { 45, 29}, WWT_FLATBTN,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_SE,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+    MakeWidget({38, 125}, { 45, 29}, WWT_FLATBTN,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_SW,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+    MakeWidget({38,  96}, { 45, 29}, WWT_FLATBTN,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_NW,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+    MakeWidget({ 3, 168}, {160, 28}, WWT_GROUPBOX, WindowColour::Primary                                                                                          ),
+    MakeWidget({ 9, 178}, { 70, 12}, WWT_BUTTON,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_ENTRANCE, STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                    ),
+    MakeWidget({87, 178}, { 70, 12}, WWT_BUTTON,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_EXIT,     STR_RIDE_CONSTRUCTION_EXIT_TIP                        ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
     { WIDGETS_END }
 };
 
@@ -195,7 +198,7 @@ static void window_maze_construction_entrance_mouseup(rct_window* w, rct_widgeti
         return;
 
     gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
-    gRideEntranceExitPlaceRideIndex = (uint8_t)w->number;
+    gRideEntranceExitPlaceRideIndex = static_cast<uint8_t>(w->number);
     gRideEntranceExitPlaceStationIndex = 0;
     input_set_flag(INPUT_FLAG_6, true);
 
@@ -423,13 +426,16 @@ static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex wid
 static void window_maze_construction_invalidate(rct_window* w)
 {
     auto ride = get_ride(_currentRideIndex);
+    auto ft = Formatter::Common();
     if (ride != nullptr)
     {
-        ride->FormatNameTo(gCommonFormatArgs + 4);
+        ft.Increment(4);
+        ride->FormatNameTo(ft);
     }
     else
     {
-        set_format_arg(4, rct_string_id, STR_NONE);
+        ft.Increment(4);
+        ft.Add<rct_string_id>(STR_NONE);
     }
 }
 

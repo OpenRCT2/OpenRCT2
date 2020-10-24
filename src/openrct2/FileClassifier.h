@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -25,7 +25,10 @@ enum
 
 #include <string>
 
-interface IStream;
+namespace OpenRCT2
+{
+    struct IStream;
+}
 
 enum class FILE_TYPE
 {
@@ -44,6 +47,6 @@ struct ClassifiedFileInfo
 
 #define FILE_TYPE_S4_CUTOFF 2
 bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result);
-bool TryClassifyFile(IStream* stream, ClassifiedFileInfo* result);
+bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 
 uint32_t get_file_extension_type(const utf8* path);

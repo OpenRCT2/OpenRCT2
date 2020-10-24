@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -23,6 +23,10 @@
 
 using namespace OpenRCT2;
 
+static constexpr const rct_string_id WINDOW_TITLE = STR_LAND;
+static constexpr const int32_t WH = 160;
+static constexpr const int32_t WW = 98;
+
 // clang-format off
 enum WINDOW_LAND_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -38,19 +42,14 @@ enum WINDOW_LAND_WIDGET_IDX {
 };
 
 static rct_widget window_land_widgets[] = {
-    { WWT_FRAME,    0,  0,  97, 0,  159,        0xFFFFFFFF,                             STR_NONE },                     // panel / background
-    { WWT_CAPTION,  0,  1,  96, 1,  14,         STR_LAND,                               STR_WINDOW_TITLE_TIP },         // title bar
-    { WWT_CLOSEBOX, 0,  85, 95, 2,  13,         STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },         // close x button
-
-    { WWT_FLATBTN,  1,  19, 42, 19, 42,         SPR_RIDE_CONSTRUCTION_SLOPE_UP,         STR_ENABLE_MOUNTAIN_TOOL_TIP }, // mountain mode
-    { WWT_FLATBTN,  1,  55, 78, 19, 42,         SPR_PAINTBRUSH,                         STR_DISABLE_ELEVATION },        // paint mode
-
-    { WWT_IMGBTN,   0,  27, 70, 48, 79,         SPR_LAND_TOOL_SIZE_0,                   STR_NONE },                     // preview box
-    { WWT_TRNBTN,   1,  28, 43, 49, 64,         IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,    STR_ADJUST_SMALLER_LAND_TIP },  // decrement size
-    { WWT_TRNBTN,   1,  54, 69, 63, 78,         IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,    STR_ADJUST_LARGER_LAND_TIP },   // increment size
-
-    { WWT_FLATBTN,  1,  2,  48, 106,    141,    0xFFFFFFFF,                             STR_CHANGE_BASE_LAND_TIP },     // floor texture
-    { WWT_FLATBTN,  1,  49, 95, 106,    141,    0xFFFFFFFF,                             STR_CHANGE_VERTICAL_LAND_TIP }, // wall texture
+    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    MakeWidget     ({19,  19}, {24, 24}, WWT_FLATBTN, WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_UP, STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
+    MakeWidget     ({55,  19}, {24, 24}, WWT_FLATBTN, WindowColour::Secondary, SPR_PAINTBRUSH,                 STR_DISABLE_ELEVATION),        // paint mode
+    MakeWidget     ({27,  48}, {44, 32}, WWT_IMGBTN,  WindowColour::Primary  , SPR_LAND_TOOL_SIZE_0,           STR_NONE),                     // preview box
+    MakeRemapWidget({28,  49}, {16, 16}, WWT_TRNBTN,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,         STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
+    MakeRemapWidget({54,  63}, {16, 16}, WWT_TRNBTN,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,         STR_ADJUST_LARGER_LAND_TIP),   // increment size
+    MakeWidget     ({ 2, 106}, {47, 36}, WWT_FLATBTN, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_BASE_LAND_TIP),     // floor texture
+    MakeWidget     ({49, 106}, {47, 36}, WWT_FLATBTN, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_VERTICAL_LAND_TIP), // wall texture
     { WIDGETS_END },
 };
 
@@ -121,8 +120,8 @@ rct_window* window_land_open()
     window_push_others_below(window);
 
     gLandToolSize = 1;
-    gLandToolTerrainSurface = 255;
-    gLandToolTerrainEdge = 255;
+    gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
+    gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
     gLandMountainMode = false;
     gLandPaintMode = false;
     _selectedFloorTexture = TERRAIN_GRASS;
@@ -223,7 +222,7 @@ static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
 
             if (gLandToolTerrainSurface == type)
             {
-                gLandToolTerrainSurface = 255;
+                gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;
             }
             else
             {
@@ -240,7 +239,7 @@ static void window_land_dropdown(rct_window* w, rct_widgetindex widgetIndex, int
 
             if (gLandToolTerrainEdge == type)
             {
-                gLandToolTerrainEdge = 255;
+                gLandToolTerrainEdge = OBJECT_ENTRY_INDEX_NULL;
             }
             else
             {
@@ -294,8 +293,8 @@ static void window_land_update(rct_window* w)
  */
 static void window_land_invalidate(rct_window* w)
 {
-    auto surfaceImage = (uint32_t)SPR_NONE;
-    auto edgeImage = (uint32_t)SPR_NONE;
+    auto surfaceImage = static_cast<uint32_t>(SPR_NONE);
+    auto edgeImage = static_cast<uint32_t>(SPR_NONE);
 
     auto& objManager = GetContext()->GetObjectManager();
     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -316,9 +315,9 @@ static void window_land_invalidate(rct_window* w)
     }
 
     w->pressed_widgets = (1 << WIDX_PREVIEW);
-    if (gLandToolTerrainSurface != 255)
+    if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
         w->pressed_widgets |= (1 << WIDX_FLOOR);
-    if (gLandToolTerrainEdge != 255)
+    if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
         w->pressed_widgets |= (1 << WIDX_WALL);
     if (gLandMountainMode)
         w->pressed_widgets |= (1 << WIDX_MOUNTAINMODE);
@@ -337,7 +336,8 @@ static void window_land_invalidate(rct_window* w)
  */
 static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t x, y, numTiles;
+    ScreenCoordsXY screenCoords;
+    int32_t numTiles;
     money32 price;
     rct_widget* previewWidget = &window_land_widgets[WIDX_PREVIEW];
 
@@ -346,39 +346,37 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        x = w->windowPos.x + (previewWidget->left + previewWidget->right) / 2;
-        y = w->windowPos.y + (previewWidget->top + previewWidget->bottom) / 2;
-        gfx_draw_string_centred(dpi, STR_LAND_TOOL_SIZE_VALUE, x, y - 2, COLOUR_BLACK, &gLandToolSize);
+        screenCoords = { w->windowPos.x + previewWidget->midX(), w->windowPos.y + previewWidget->midY() };
+        gfx_draw_string_centred(
+            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
     }
     else if (gLandMountainMode)
     {
-        x = w->windowPos.x + previewWidget->left;
-        y = w->windowPos.y + previewWidget->top;
+        screenCoords = { w->windowPos.x + previewWidget->left, w->windowPos.y + previewWidget->top };
         int32_t sprite = gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD;
-        gfx_draw_sprite(dpi, sprite, x, y, 0);
+        gfx_draw_sprite(dpi, sprite, screenCoords, 0);
         widget_draw(dpi, w, WIDX_DECREMENT);
         widget_draw(dpi, w, WIDX_INCREMENT);
     }
 
-    x = w->windowPos.x + (previewWidget->left + previewWidget->right) / 2;
-    y = w->windowPos.y + previewWidget->bottom + 5;
+    screenCoords = { w->windowPos.x + previewWidget->midX(), w->windowPos.y + previewWidget->bottom + 5 };
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Draw raise cost amount
         if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
-            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolRaiseCost);
-        y += 10;
+            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gLandToolRaiseCost);
+        screenCoords.y += 10;
 
         // Draw lower cost amount
         if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
-            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, x, y, COLOUR_BLACK, &gLandToolLowerCost);
-        y += 50;
+            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gLandToolLowerCost);
+        screenCoords.y += 50;
 
         // Draw paint price
         numTiles = gLandToolSize * gLandToolSize;
         price = 0;
-        if (gLandToolTerrainSurface != 255)
+        if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -389,13 +387,14 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
 
-        if (gLandToolTerrainEdge != 255)
+        if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
             price += numTiles * 100;
 
         if (price != 0)
         {
-            set_format_arg(0, money32, price);
-            gfx_draw_string_centred(dpi, STR_COST_AMOUNT, x, y, COLOUR_BLACK, gCommonFormatArgs);
+            auto ft = Formatter::Common();
+            ft.Add<money32>(price);
+            gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, gCommonFormatArgs);
         }
     }
 }

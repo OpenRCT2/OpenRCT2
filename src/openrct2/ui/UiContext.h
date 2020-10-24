@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,29 +11,30 @@
 
 #include "../Context.h"
 #include "../common.h"
+#include "../config/Config.h"
 #include "../interface/Cursors.h"
-#include "../world/Location.hpp"
 
 #include <memory>
 #include <string>
 #include <vector>
 
+struct ScreenCoordsXY;
 struct rct_drawpixelinfo;
-interface ITitleSequencePlayer;
+struct ITitleSequencePlayer;
 
 namespace OpenRCT2
 {
     namespace Drawing
     {
-        interface IDrawingEngineFactory;
-        interface IRainDrawer;
-        using DrawRainFunc = void (*)(
-            OpenRCT2::Drawing::IRainDrawer* rainDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
+        struct IDrawingEngineFactory;
+        struct IWeatherDrawer;
+        using DrawWeatherFunc = void (*)(
+            OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height);
     } // namespace Drawing
 
     namespace Ui
     {
-        interface IWindowManager;
+        struct IWindowManager;
 
         enum class FULLSCREEN_MODE
         {
@@ -87,12 +88,13 @@ namespace OpenRCT2
         /**
          * Represents the window or screen that OpenRCT2 is presented on.
          */
-        interface IUiContext
+        struct IUiContext
         {
             virtual ~IUiContext() = default;
 
+            virtual void Initialise() abstract;
             virtual void Update() abstract;
-            virtual void Draw(rct_drawpixelinfo * dpi) abstract;
+            virtual void Draw(rct_drawpixelinfo* dpi) abstract;
 
             // Window
             virtual void CreateWindow() abstract;
@@ -101,7 +103,7 @@ namespace OpenRCT2
             virtual void* GetWindow() abstract;
             virtual int32_t GetWidth() abstract;
             virtual int32_t GetHeight() abstract;
-            virtual int32_t GetScaleQuality() abstract;
+            virtual ScaleQuality GetScaleQuality() abstract;
             virtual void SetFullscreenMode(FULLSCREEN_MODE mode) abstract;
             virtual const std::vector<Resolution>& GetFullscreenResolutions() abstract;
             virtual bool HasFocus() abstract;
@@ -112,6 +114,7 @@ namespace OpenRCT2
 
             virtual void ShowMessageBox(const std::string& message) abstract;
             virtual void OpenFolder(const std::string& path) abstract;
+            virtual void OpenURL(const std::string& url) abstract;
             virtual std::string ShowFileDialog(const FileDialogDesc& desc) abstract;
             virtual std::string ShowDirectoryDialog(const std::string& title) abstract;
 
@@ -130,13 +133,13 @@ namespace OpenRCT2
 
             // Drawing
             virtual std::shared_ptr<Drawing::IDrawingEngineFactory> GetDrawingEngineFactory() abstract;
-            virtual void DrawRainAnimation(
-                OpenRCT2::Drawing::IRainDrawer * rainDrawer, rct_drawpixelinfo * dpi, OpenRCT2::Drawing::DrawRainFunc drawFunc)
-                abstract;
+            virtual void DrawWeatherAnimation(
+                OpenRCT2::Drawing::IWeatherDrawer* weatherDrawer, rct_drawpixelinfo* dpi,
+                OpenRCT2::Drawing::DrawWeatherFunc drawFunc) abstract;
 
             // Text input
             virtual bool IsTextInputActive() abstract;
-            virtual TextInputSession* StartTextInput(utf8 * buffer, size_t bufferSize) abstract;
+            virtual TextInputSession* StartTextInput(utf8* buffer, size_t bufferSize) abstract;
             virtual void StopTextInput() abstract;
 
             // In-game UI

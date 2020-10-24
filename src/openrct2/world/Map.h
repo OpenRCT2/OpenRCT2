@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,12 +33,10 @@ constexpr const int32_t MINIMUM_LAND_HEIGHT_BIG = MINIMUM_LAND_HEIGHT * COORDS_Z
 
 #define MAP_MINIMUM_X_Y (-MAXIMUM_MAP_SIZE_TECHNICAL)
 
-#define MAX_TILE_ELEMENTS 196096 // 0x30000
+constexpr const uint32_t MAX_TILE_ELEMENTS_WITH_SPARE_ROOM = 0x30000;
+constexpr const uint32_t MAX_TILE_ELEMENTS = MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - 512;
 #define MAX_TILE_TILE_ELEMENT_POINTERS (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL)
 #define MAX_PEEP_SPAWNS 2
-#define PEEP_SPAWN_UNDEFINED 0xFFFF
-
-#define TILE_ELEMENT_LARGE_TYPE_MASK 0x3FF
 
 #define TILE_UNDEFINED_TILE_ELEMENT NULL
 
@@ -119,7 +117,7 @@ extern uint8_t gMapSelectArrowDirection;
 
 extern uint8_t gMapGroundFlags;
 
-extern TileElement gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
+extern TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
 extern TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 extern std::vector<CoordsXY> gMapSelectionTiles;
@@ -159,6 +157,7 @@ BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t dir
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords);
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc);
 WallElement* map_get_wall_element_at(const CoordsXYZD& wallCoords);
+WallElement* map_get_wall_element_at(const CoordsXYRangedZ& coords);
 SmallSceneryElement* map_get_small_scenery_element_at(const CoordsXYZ& sceneryCoords, int32_t type, uint8_t quadrant);
 EntranceElement* map_get_park_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost);
 EntranceElement* map_get_ride_entrance_element_at(const CoordsXYZ& entranceCoords, bool ghost);
@@ -186,6 +185,9 @@ void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(int32_t num_elements);
 TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants);
 
+class GameActionResult;
+class ConstructClearResult;
+
 using CLEAR_FUNC = int32_t (*)(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
 
 int32_t map_place_non_scenery_clear_func(TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price);
@@ -193,6 +195,9 @@ int32_t map_place_scenery_clear_func(TileElement** tile_element, const CoordsXY&
 bool map_can_construct_with_clear_at(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, money32* price,
     uint8_t crossingMode);
+std::unique_ptr<ConstructClearResult> MapCanConstructWithClearAt(
+    const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode);
+std::unique_ptr<ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl);
 
 struct tile_element_iterator
@@ -252,7 +257,6 @@ TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_
 TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex);
 
 bool map_is_location_at_edge(const CoordsXY& loc);
-class GameActionResult;
 void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& res);
 
 uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos);

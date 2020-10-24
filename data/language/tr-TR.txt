@@ -1129,8 +1129,8 @@ STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DUR
 STR_1751    :Aletin süresi değiştirilemiyor...
 STR_1752    :{SMALLFONT}{BLACK}Müşteriler listesi
 STR_1753    :{SMALLFONT}{BLACK}Toplam müşteri listesi
-STR_1754    :{BLACK}{COMMA16} Müşteri
-STR_1755    :{BLACK}{COMMA16} Müşteri
+STR_1754    :{BLACK}{COMMA32} Müşteri
+STR_1755    :{BLACK}{COMMA32} Müşteri
 STR_1756    :{WINDOW_COLOUR_2}Giriş ücreti:
 STR_1757    :{WINDOW_COLOUR_2}Güvenilirlik: {MOVE_X}{255}{BLACK}%{COMMA16}
 STR_1758    :{SMALLFONT}{BLACK}Inşa modu
@@ -1188,7 +1188,7 @@ STR_1813    :Diğer cisimler
 STR_1814    :Yaptıkları
 STR_1815    :Düşünceleri
 STR_1816    :{SMALLFONT}{BLACK}Müşteri bilgisinde{NEWLINE}görmek istediğiniz{NEWLINE}bilgizi seçiniz
-STR_1817    :({COMMA16})
+STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tüm müşteriler
 STR_1819    :{WINDOW_COLOUR_2}Tüm müşteriler (özetli)
 STR_1820    :{WINDOW_COLOUR_2}Müşteri {STRINGID}
@@ -1217,9 +1217,9 @@ STR_1842    :{COMMA16} kişinin favorisi
 STR_1843    :{COMMA16} kişinin favorisi
 STR_1844    :{SMALLFONT}{BLACK}Informationsart auswÃ¤hlen, die{NEWLINE}in Attraktionsliste angezeigt{NEWLINE}werden soll
 STR_1845    :{MONTHYEAR}
-STR_1846    :{COMMA16} müşteri
-STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} müşteri
-STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} müşteri
+STR_1846    :{COMMA32} müşteri
+STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} müşteri
+STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} müşteri
 STR_1849    :{WINDOW_COLOUR_2}Müziği aç/kapat
 STR_1850    :{SMALLFONT}{BLACK}Bu alet için müziği{NEWLINE}seçiniz
 STR_1851    :{WINDOW_COLOUR_2}Işletme maliyeti:{BLACK} saatde {CURRENCY2DP} 
@@ -1575,7 +1575,7 @@ STR_2219    :{RED}{STRINGID} aletinde {COMMA16} kişi canını kayıp etti
 STR_2220    :{WINDOW_COLOUR_2}Park değerlendirmesi: {BLACK}{COMMA16}
 STR_2221    :{SMALLFONT}{BLACK}Park değerlendirmesi: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
-STR_2223    :{WINDOW_COLOUR_2}Parkdaki müşteri sayısı: {BLACK}{COMMA16}
+STR_2223    :{WINDOW_COLOUR_2}Parkdaki müşteri sayısı: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Para: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Para: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Park değeri: {BLACK}{CURRENCY}
@@ -1940,8 +1940,8 @@ STR_2728    :{UINT16}sa:{UINT16}dk
 STR_2729    :{UINT16}sa:{UINT16}dk
 STR_2730    :{UINT16}sa:{UINT16}dk
 STR_2731    :{UINT16}sa:{UINT16}dk
-STR_2732    :{COMMA16}ft
-STR_2733    :{COMMA16}m
+STR_2732    :{COMMA32}ft
+STR_2733    :{COMMA32}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH}, Yıl {COMMA16}
@@ -1977,7 +1977,7 @@ STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Görüntü alanı #{COMMA16}
 STR_2780    :Ekstra görüntü alanı
 # End of new strings
-STR_2781    :{STRINGID}:{MOVE_X}{255}{STRINGID}
+STR_2781    :{STRINGID}:
 STR_2782    :SHIFT + 
 STR_2783    :CTRL + 
 STR_2784    :Tuş ayarını değiştiriniz
@@ -2298,7 +2298,6 @@ STR_3190    :Yol eklentileri
 STR_3191    :Dekorasyon temaları
 STR_3192    :Park girişi tarzı
 STR_3193    :Su tarzı
-STR_3194    :Senaryo açıklaması
 STR_3195    :Araştırma listesi
 STR_3196    :{WINDOW_COLOUR_2}Tür: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Başdan araştırılmış ve mevcut olanlar:
@@ -2539,19 +2538,6 @@ STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Yıl {POP16}{COMMA16}
 STR_5161    :Tarih formatı:
 STR_5162    :Gün/Ay/Yıl
 STR_5163    :Ay/Gün/Yıl
-STR_5164    :Twitch kanal ismi
-STR_5165    :Müşterilere takipçilernizin isimlerini ver
-STR_5166    :{SMALLFONT}{BLACK}Oyundaki müşterilere Twitch'de sizi takip edenlerin isimleri veriliyor
-STR_5167    :Takipçi müşterileri takip et
-STR_5168    :{SMALLFONT}{BLACK}Bu ayar ile Twitch takipçi ismi taşıyan müşteriler üzeri bilgi alıyorsunuz
-STR_5169    :Müşterilere Twitch Chat'de bulunanların isimlerini ver
-STR_5170    :{SMALLFONT}{BLACK}Oyundaki müşterilere Twitch Chat'de bulunan kişilerin isimleri veriliyor
-STR_5171    :Sohbet müşterilerini takip 
-STR_5172    :{SMALLFONT}{BLACK}Bu ayar ile Twitch Chat ismi taşıyan müşteriler üzeri bilgi alıyorsunuz
-STR_5173    :Twitch Chat'den gelen mesajları oyuna aktar
-STR_5174    :{SMALLFONT}{BLACK}Twitch Chat üzeri aldığınız mesajları oyunda bildirme olarak alınız
-STR_5175    :Twitch Kanal isminizi giriniz
-STR_5176    :Twitch bağlantısını aç/kapat
 STR_5177    :Ekran modu:
 STR_5178    :{SMALLFONT}{BLACK}Finansal hileleri göster
 STR_5179    :{SMALLFONT}{BLACK}Müşteri hilelerni göster
@@ -2646,7 +2632,6 @@ STR_5267    :{SMALLFONT}{BLACK}Dil ve birimler
 STR_5268    :{SMALLFONT}{BLACK}Ses
 STR_5269    :{SMALLFONT}{BLACK}Tuş ayarları ve arayüz
 STR_5270    :{SMALLFONT}{BLACK}Diğer
-STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}Küçük dekorasyonlar
 STR_5273    :{SMALLFONT}{BLACK}Büyük dekorasyonlar
 STR_5274    :{SMALLFONT}{BLACK}Yollar
@@ -2690,26 +2675,6 @@ STR_5311    :{SMALLFONT}{BLACK}Debug araçları
 STR_5312    :Konsolu göster
 STR_5313    :Zemin denetçisini göster
 STR_5314    :Zemin denetçisi
-STR_5315    :Çim
-STR_5316    :Kum
-STR_5317    :Çamur
-STR_5318    :Taş
-STR_5319    :Marslı
-STR_5320    :Dama tahtası
-STR_5321    :Çim kümeleri
-STR_5322    :Buz
-STR_5323    :Izgara (kırmızı)
-STR_5324    :Izgara (sarı)
-STR_5325    :Izgara (mor)
-STR_5326    :Izgara (yeşil)
-STR_5327    :Kum (kara)
-STR_5328    :Kum (açık)
-STR_5329    :Dama Tahtası (ters çevrilmiş)
-STR_5330    :Yeraltı veya iç görünüm
-STR_5331    :Taş
-STR_5332    :Ahşap (kırmızı)
-STR_5333    :Ahşap (siyah)
-STR_5334    :Buz
 STR_5335    :Alet girişi
 STR_5336    :Alet çıkışı
 STR_5337    :Park girişi
@@ -3184,7 +3149,6 @@ STR_5848    :{SMALLFONT}{BLACK}Başlık dizisi değiştiriniz veya oluşturunuz
 STR_5849    :{SMALLFONT}{BLACK}Yeni işciler otomatikman{NEWLINE}bir yere yerleştiriliyor
 STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Yeni inşa edilen aletlere{NEWLINE}otomatikman seçdiğiniz kontrol süreci ayarlanıyor
-STR_5852    :{SMALLFONT}{BLACK}Twitch bağlantısı için kullanılacak Twitch hesap adınızı giriniz
 STR_5853    :{SMALLFONT}{BLACK}Ses efektlerini aç/kapat
 STR_5854    :{SMALLFONT}{BLACK}Alet müziklerini aç/kapat
 STR_5855    :{SMALLFONT}{BLACK}Ekran modunu seçiniz
@@ -3535,17 +3499,6 @@ STR_6200    :Tarihi sıfırla
 STR_6201    :{MONTH}
 STR_6202    :Sanal zemin türü:
 STR_6203    :{SMALLFONT}{BLACK}Birşey inşa etdiğinizde Crtl veya Shift tuşunu basılı tuttuğunuz zaman inşayı kolaylaştırmak için saydam veya yarı saydam bir sanal zemin görüntülenecekdir
-STR_6204    :Tuğla
-STR_6205    :Demir
-STR_6206    :Gri sıva
-STR_6207    :Sarı sıva
-STR_6208    :Kırmızı sıva
-STR_6209    :Mor sıva
-STR_6210    :Yeşil sıva
-STR_6211    :Kahverengi kumtaşı
-STR_6212    :Gri kumtaşı
-STR_6213    :Gökdelen 1
-STR_6214    :Gökdelen 2
 STR_6215    :Inşa
 STR_6216    :Işletme
 STR_6217    :Alet/Ray
@@ -3583,9 +3536,6 @@ STR_6248    :{WINDOW_COLOUR_1}{STRINGID} aletini {CURRENCY} için yenilemek iste
 STR_6249    :{WINDOW_COLOUR_1}{STRINGID} aletini yenilemek istiyormusunuz?
 STR_6250    :{WINDOW_COLOUR_1}{STRINGID} aletini {CURRENCY} geri ödeme ile silmek istediğinizden eminmisiniz?
 STR_6251    :Alet henüz boş değil
-STR_6252    :Twitch API adresi
-STR_6253    :{SMALLFONT}{BLACK}Twitch kullanımı için bağlamak istediğiniz Twitch kanalının adresini buraya giriniz
-STR_6254    :Twitch bağlantısı adresi:
 STR_6255    :Adres geçerli değil
 STR_6256    :Rendering seçenekleri
 STR_6257    :Yarı saydam

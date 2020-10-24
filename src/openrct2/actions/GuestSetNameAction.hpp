@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,6 +37,22 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("peep", _spriteIndex);
+        visitor.Visit("name", _name);
+    }
+
+    uint16_t GetSpriteIndex() const
+    {
+        return _spriteIndex;
+    }
+
+    std::string GetGuestName() const
+    {
+        return _name;
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
@@ -56,8 +72,8 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
-        auto peep = GET_PEEP(_spriteIndex);
-        if (peep->type != PEEP_TYPE_GUEST)
+        auto guest = TryGetEntity<Guest>(_spriteIndex);
+        if (guest == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
@@ -68,33 +84,26 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        auto peep = GET_PEEP(_spriteIndex);
-        if (peep->type != PEEP_TYPE_GUEST)
+        auto guest = TryGetEntity<Guest>(_spriteIndex);
+        if (guest == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
-        auto curName = peep->GetName();
+        auto curName = guest->GetName();
         if (curName == _name)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::OK, STR_NONE);
         }
 
-        if (!peep->SetName(_name))
+        if (!guest->SetName(_name))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_NAME_GUEST, STR_NONE);
         }
 
-        peep_update_name_sort(peep);
-
         // Easter egg functions are for guests only
-        Guest* guest = peep->AsGuest();
-
-        if (guest != nullptr)
-        {
-            guest->HandleEasterEggName();
-        }
+        guest->HandleEasterEggName();
 
         gfx_invalidate_screen();
 
@@ -102,9 +111,9 @@ public:
         context_broadcast_intent(&intent);
 
         auto res = std::make_unique<GameActionResult>();
-        res->Position.x = peep->x;
-        res->Position.y = peep->y;
-        res->Position.z = peep->z;
+        res->Position.x = guest->x;
+        res->Position.y = guest->y;
+        res->Position.z = guest->z;
         return res;
     }
 };

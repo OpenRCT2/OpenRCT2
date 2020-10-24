@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,7 +36,7 @@ enum
     DATE_FORMAT_YEAR_DAY_MONTH
 };
 
-struct openrct_timeofday
+struct openrct2_timeofday
 {
     uint8_t second;
     uint8_t minute;
@@ -48,9 +48,9 @@ extern const rct_string_id DateFormatStringIds[];
 extern const rct_string_id DateFormatStringFormatIds[];
 
 extern uint16_t gDateMonthTicks;
-extern uint16_t gDateMonthsElapsed;
+extern int32_t gDateMonthsElapsed;
 
-extern openrct_timeofday gRealTimeOfDay;
+extern openrct2_timeofday gRealTimeOfDay;
 
 int32_t date_get_month(int32_t months);
 int32_t date_get_year(int32_t months);

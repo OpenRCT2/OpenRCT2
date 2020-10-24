@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,16 +39,23 @@ DrawLineShader::DrawLineShader()
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
-    glVertexAttribPointer(vVertMat + 0, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, mat[0]));
-    glVertexAttribPointer(vVertMat + 1, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, mat[1]));
-    glVertexAttribPointer(vVertMat + 2, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, mat[2]));
-    glVertexAttribPointer(vVertMat + 3, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*)offsetof(VDStruct, mat[3]));
+    glVertexAttribPointer(
+        vVertMat + 0, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, mat[0])));
+    glVertexAttribPointer(
+        vVertMat + 1, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, mat[1])));
+    glVertexAttribPointer(
+        vVertMat + 2, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, mat[2])));
+    glVertexAttribPointer(
+        vVertMat + 3, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), reinterpret_cast<void*>(offsetof(VDStruct, mat[3])));
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
-    glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawLineCommand), (void*)offsetof(DrawLineCommand, clip));
-    glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawLineCommand), (void*)offsetof(DrawLineCommand, bounds));
-    glVertexAttribIPointer(vColour, 1, GL_UNSIGNED_INT, sizeof(DrawLineCommand), (void*)offsetof(DrawLineCommand, colour));
-    glVertexAttribIPointer(vDepth, 1, GL_INT, sizeof(DrawLineCommand), (void*)offsetof(DrawLineCommand, depth));
+    glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawLineCommand), reinterpret_cast<void*>(offsetof(DrawLineCommand, clip)));
+    glVertexAttribIPointer(
+        vBounds, 4, GL_INT, sizeof(DrawLineCommand), reinterpret_cast<void*>(offsetof(DrawLineCommand, bounds)));
+    glVertexAttribIPointer(
+        vColour, 1, GL_UNSIGNED_INT, sizeof(DrawLineCommand), reinterpret_cast<void*>(offsetof(DrawLineCommand, colour)));
+    glVertexAttribIPointer(
+        vDepth, 1, GL_INT, sizeof(DrawLineCommand), reinterpret_cast<void*>(offsetof(DrawLineCommand, depth)));
 
     glEnableVertexAttribArray(vVertMat + 0);
     glEnableVertexAttribArray(vVertMat + 1);
@@ -98,7 +105,7 @@ void DrawLineShader::DrawInstances(const LineCommandBatch& instances)
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
     glBufferData(GL_ARRAY_BUFFER, sizeof(DrawLineCommand) * instances.size(), instances.data(), GL_STREAM_DRAW);
 
-    glDrawArraysInstanced(GL_LINES, 0, 2, (GLsizei)instances.size());
+    glDrawArraysInstanced(GL_LINES, 0, 2, static_cast<GLsizei>(instances.size()));
 }
 
 #endif /* DISABLE_OPENGL */

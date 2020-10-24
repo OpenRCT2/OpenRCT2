@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -10,23 +10,24 @@
 #pragma once
 
 #include "../common.h"
+#include "AudioMixer.h"
 
 namespace OpenRCT2::Audio
 {
-    interface IAudioSource;
+    struct IAudioSource;
 
     /**
      * Represents an audio channel that represents an audio source
      * and a number of properties such as volume, pan and loop information.
      */
-    interface IAudioChannel
+    struct IAudioChannel
     {
         virtual ~IAudioChannel() = default;
 
         virtual IAudioSource* GetSource() const abstract;
 
-        virtual int32_t GetGroup() const abstract;
-        virtual void SetGroup(int32_t group) abstract;
+        virtual MixerGroup GetGroup() const abstract;
+        virtual void SetGroup(MixerGroup group) abstract;
 
         virtual double GetRate() const abstract;
         virtual void SetRate(double rate) abstract;
@@ -61,7 +62,7 @@ namespace OpenRCT2::Audio
 
         virtual bool IsPlaying() const abstract;
 
-        virtual void Play(IAudioSource * source, int32_t loop = 0) abstract;
+        virtual void Play(IAudioSource* source, int32_t loop = 0) abstract;
         virtual void UpdateOldVolume() abstract;
 
         virtual size_t Read(void* dst, size_t len) abstract;

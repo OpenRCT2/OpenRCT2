@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,8 +11,10 @@
 
 #include "common.h"
 
+#include <string>
+
 #define OPENRCT2_NAME "OpenRCT2"
-#define OPENRCT2_VERSION "0.2.5"
+#define OPENRCT2_VERSION "0.3.1"
 
 #if defined(__amd64__) || defined(_M_AMD64)
 #    define OPENRCT2_ARCHITECTURE "x86-64"
@@ -77,3 +79,13 @@
 #endif
 
 extern const char gVersionInfoFull[];
+extern const char gVersionInfoTag[];
+struct NewVersionInfo
+{
+    std::string tag;
+    std::string name;
+    std::string changelog;
+    std::string url;
+};
+
+NewVersionInfo get_latest_version();

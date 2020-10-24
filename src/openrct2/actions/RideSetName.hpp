@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -36,6 +36,12 @@ public:
         : _rideIndex(rideIndex)
         , _name(name)
     {
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("name", _name);
     }
 
     uint16_t GetActionFlags() const override
@@ -91,6 +97,7 @@ public:
 
         // Refresh windows that display ride name
         auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_CAMPAIGN_RIDE_LIST));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 

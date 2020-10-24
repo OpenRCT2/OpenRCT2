@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -53,7 +53,7 @@ public:
         res->ErrorTitle = STR_CANT_REMOVE_THIS;
 
         auto entranceIndex = park_entrance_get_index(_loc);
-        if (entranceIndex == -1)
+        if (!LocationValid(_loc) || entranceIndex == -1)
         {
             log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_THIS);

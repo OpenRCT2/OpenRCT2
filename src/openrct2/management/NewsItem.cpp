@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -21,29 +21,24 @@
 #include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../world/Location.hpp"
 #include "../world/Sprite.h"
 
-NewsItem gNewsItems[MAX_NEWS_ITEMS];
+News::ItemQueues gNewsItems;
 
-/** rct2: 0x0097BE7C */
-const uint8_t news_type_properties[] = {
-    0,                                              // NEWS_ITEM_NULL
-    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // NEWS_ITEM_RIDE
-    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // NEWS_ITEM_PEEP_ON_RIDE
-    NEWS_TYPE_HAS_LOCATION | NEWS_TYPE_HAS_SUBJECT, // NEWS_ITEM_PEEP
-    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_MONEY
-    NEWS_TYPE_HAS_LOCATION,                         // NEWS_ITEM_BLANK
-    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_RESEARCH
-    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_PEEPS
-    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_AWARD
-    NEWS_TYPE_HAS_SUBJECT,                          // NEWS_ITEM_GRAPH
-};
-
-static int32_t news_item_get_new_history_slot();
-
-bool news_item_is_valid_idx(int32_t index)
+News::Item& News::ItemQueues::Current()
 {
-    if (index >= MAX_NEWS_ITEMS)
+    return Recent.front();
+}
+
+const News::Item& News::ItemQueues::Current() const
+{
+    return Recent.front();
+}
+
+bool News::IsValidIndex(int32_t index)
+{
+    if (index >= News::MaxItems)
     {
         log_error("Tried to get news item past MAX_NEWS.");
         return false;
@@ -51,11 +46,34 @@ bool news_item_is_valid_idx(int32_t index)
     return true;
 }
 
-NewsItem* news_item_get(int32_t index)
+News::Item* News::GetItem(int32_t index)
 {
-    if (news_item_is_valid_idx(index))
+    return gNewsItems.At(index);
+}
+
+News::Item& News::ItemQueues::operator[](size_t index)
+{
+    return const_cast<News::Item&>(const_cast<const News::ItemQueues&>(*this)[index]);
+}
+
+const News::Item& News::ItemQueues::operator[](size_t index) const
+{
+    if (index < Recent.capacity())
+        return Recent[index];
+    else
+        return Archived[index - Recent.capacity()];
+}
+
+News::Item* News::ItemQueues::At(int32_t index)
+{
+    return const_cast<News::Item*>(const_cast<const News::ItemQueues&>(*this).At(index));
+}
+
+const News::Item* News::ItemQueues::At(int32_t index) const
+{
+    if (News::IsValidIndex(index))
     {
-        return &gNewsItems[index];
+        return &(*this)[index];
     }
     else
     {
@@ -63,25 +81,30 @@ NewsItem* news_item_get(int32_t index)
     }
 }
 
-bool news_item_is_empty(int32_t index)
+bool News::IsQueueEmpty()
 {
-    NewsItem* news = news_item_get(index);
-    return news != nullptr && news->Type == NEWS_ITEM_NULL;
+    return gNewsItems.IsEmpty();
 }
 
-bool news_item_is_queue_empty()
+bool News::ItemQueues::IsEmpty() const
 {
-    return news_item_is_empty(0);
+    return Recent.empty();
 }
 
 /**
  *
  *  rct2: 0x0066DF32
  */
-void news_item_init_queue()
+void News::ItemQueues::Clear()
 {
-    news_item_get(0)->Type = NEWS_ITEM_NULL;
-    news_item_get(11)->Type = NEWS_ITEM_NULL;
+    Recent.clear();
+    Archived.clear();
+}
+
+void News::InitQueue()
+{
+    gNewsItems.Clear();
+    assert(gNewsItems.IsEmpty());
 
     // Throttles for warning types (PEEP_*_WARNING)
     for (auto& warningThrottle : gPeepWarningThrottle)
@@ -93,10 +116,14 @@ void news_item_init_queue()
     context_broadcast_intent(&intent);
 }
 
-static void news_item_tick_current()
+uint16_t News::ItemQueues::IncrementTicks()
 {
-    int32_t ticks;
-    ticks = ++news_item_get(0)->Ticks;
+    return ++Current().Ticks;
+}
+
+static void TickCurrent()
+{
+    int32_t ticks = gNewsItems.IncrementTicks();
     // Only play news item sound when in normal playing mode
     if (ticks == 1 && (gScreenFlags == SCREEN_FLAGS_PLAYING))
     {
@@ -105,100 +132,67 @@ static void news_item_tick_current()
     }
 }
 
-static bool news_item_is_current_old()
+int32_t News::ItemQueues::RemoveTime() const
 {
-    int32_t remove_time = 320;
-    if (!news_item_is_empty(5) && !news_item_is_empty(4) && !news_item_is_empty(3) && !news_item_is_empty(2))
+    if (!Recent[5].IsEmpty() && !Recent[4].IsEmpty() && !Recent[3].IsEmpty() && !Recent[2].IsEmpty())
     {
-        remove_time = 256;
+        return 256;
     }
+    return 320;
+}
 
-    return news_item_get(0)->Ticks >= remove_time;
+bool News::ItemQueues::CurrentShouldBeArchived() const
+{
+    return Current().Ticks >= RemoveTime();
 }
 
 /**
  *
  *  rct2: 0x0066E252
  */
-void news_item_update_current()
+void News::UpdateCurrentItem()
 {
     // Check if there is a current news item
-    if (news_item_is_queue_empty())
+    if (gNewsItems.IsEmpty())
         return;
 
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
     context_broadcast_intent(&intent);
 
     // Update the current news item
-    news_item_tick_current();
+    TickCurrent();
 
     // Removal of current news item
-    if (news_item_is_current_old())
-        news_item_close_current();
+    if (gNewsItems.CurrentShouldBeArchived())
+        gNewsItems.ArchiveCurrent();
 }
 
 /**
  *
  *  rct2: 0x0066E377
  */
-void news_item_close_current()
+void News::CloseCurrentItem()
 {
-    int32_t i;
-    NewsItem* newsItems = gNewsItems;
+    gNewsItems.ArchiveCurrent();
+}
 
+void News::ItemQueues::ArchiveCurrent()
+{
     // Check if there is a current message
-    if (news_item_is_queue_empty())
+    if (IsEmpty())
         return;
 
-    // Find an available history news item slot for current message
-    i = news_item_get_new_history_slot();
-
-    // Set the history news item slot to the current news item
-    newsItems[i] = newsItems[0];
-
-    // Set the end of the end of the history list
-    if (i < MAX_NEWS_ITEMS - 1)
-        newsItems[i + 1].Type = NEWS_ITEM_NULL;
+    Archived.push_back(Current());
 
     // Invalidate the news window
     window_invalidate_by_class(WC_RECENT_NEWS);
 
     // Dequeue the current news item, shift news up
-    for (i = 0; i < 10; i++)
-    {
-        newsItems[i] = newsItems[i + 1];
-    }
-    newsItems[10].Type = NEWS_ITEM_NULL;
+    Recent.pop_front();
 
     // Invalidate current news item bar
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
     context_broadcast_intent(&intent);
-}
-
-static void news_item_shift_history_up()
-{
-    const int32_t history_idx = 11;
-    NewsItem* history_start = news_item_get(history_idx);
-    const size_t count = sizeof(NewsItem) * (MAX_NEWS_ITEMS - 1 - history_idx);
-    memmove(history_start, history_start + 1, count);
-}
-
-/**
- * Finds a spare history slot or replaces an existing one if there are no spare
- * slots available.
- */
-static int32_t news_item_get_new_history_slot()
-{
-    // Find an available history news item slot
-    for (int32_t i = 11; i < MAX_NEWS_ITEMS; i++)
-    {
-        if (news_item_is_empty(i))
-            return i;
-    }
-
-    // Dequeue the first history news item, shift history up
-    news_item_shift_history_up();
-    return MAX_NEWS_ITEMS - 1;
 }
 
 /**
@@ -207,13 +201,13 @@ static int32_t news_item_get_new_history_slot()
  *
  *  rct2: 0x0066BA74
  */
-std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t subject)
+std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t subject)
 {
     std::optional<CoordsXYZ> subjectLoc{ std::nullopt };
 
     switch (type)
     {
-        case NEWS_ITEM_RIDE:
+        case News::ItemType::Ride:
         {
             Ride* ride = get_ride(subject);
             if (ride == nullptr || ride->overall_view.isNull())
@@ -224,21 +218,24 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             subjectLoc = CoordsXYZ{ rideViewCentre, tile_element_height(rideViewCentre) };
             break;
         }
-        case NEWS_ITEM_PEEP_ON_RIDE:
+        case News::ItemType::PeepOnRide:
         {
-            Peep* peep = GET_PEEP(subject);
+            auto peep = TryGetEntity<Peep>(subject);
+            if (peep == nullptr)
+                break;
+
             subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
             if (subjectLoc->x != LOCATION_NULL)
                 break;
 
-            if (peep->state != 3 && peep->state != 7)
+            if (peep->State != PEEP_STATE_ON_RIDE && peep->State != PEEP_STATE_ENTERING_RIDE)
             {
                 subjectLoc = std::nullopt;
                 break;
             }
 
             // Find which ride peep is on
-            Ride* ride = get_ride(peep->current_ride);
+            Ride* ride = get_ride(peep->CurrentRide);
             if (ride == nullptr || !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
             {
                 subjectLoc = std::nullopt;
@@ -246,25 +243,36 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
             }
 
             // Find the first car of the train peep is on
-            Vehicle* vehicle = GET_VEHICLE(ride->vehicles[peep->current_train]);
+            auto sprite = TryGetEntity<Vehicle>(ride->vehicles[peep->CurrentTrain]);
             // Find the actual car peep is on
-            for (int32_t i = 0; i < peep->current_car; i++)
+            for (int32_t i = 0; i < peep->CurrentCar && sprite != nullptr; i++)
             {
-                vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+                sprite = TryGetEntity<Vehicle>(sprite->next_vehicle_on_train);
             }
-            subjectLoc = CoordsXYZ{ vehicle->x, vehicle->y, vehicle->z };
+            if (sprite != nullptr)
+            {
+                subjectLoc = CoordsXYZ{ sprite->x, sprite->y, sprite->z };
+            }
             break;
         }
-        case NEWS_ITEM_PEEP:
+        case News::ItemType::Peep:
         {
-            Peep* peep = GET_PEEP(subject);
-            subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
+            auto peep = TryGetEntity<Peep>(subject);
+            if (peep != nullptr)
+            {
+                subjectLoc = CoordsXYZ{ peep->x, peep->y, peep->z };
+            }
             break;
         }
-        case NEWS_ITEM_BLANK:
+        case News::ItemType::Blank:
         {
-            auto subjectXY = CoordsXY{ subject & 0xFFFF, subject >> 16 };
-            subjectLoc = CoordsXYZ{ subjectXY, tile_element_height(subjectXY) };
+            auto subjectUnsigned = static_cast<uint32_t>(subject);
+            auto subjectXY = CoordsXY{ static_cast<int16_t>(subjectUnsigned & 0xFFFF),
+                                       static_cast<int16_t>(subjectUnsigned >> 16) };
+            if (!subjectXY.isNull())
+            {
+                subjectLoc = CoordsXYZ{ subjectXY, tile_element_height(subjectXY) };
+            }
             break;
         }
         default:
@@ -273,50 +281,47 @@ std::optional<CoordsXYZ> news_item_get_subject_location(int32_t type, int32_t su
     return subjectLoc;
 }
 
+News::Item* News::ItemQueues::FirstOpenOrNewSlot()
+{
+    for (auto emptySlots = Recent.capacity() - Recent.size(); emptySlots < 2; ++emptySlots)
+    {
+        ArchiveCurrent();
+    }
+
+    auto res = Recent.end();
+    // The for loop above guarantees there is always an extra element to use
+    assert(Recent.capacity() - Recent.size() >= 2);
+    auto newsItem = res + 1;
+    newsItem->Type = News::ItemType::Null;
+
+    return &*res;
+}
+
 /**
  *
  *  rct2: 0x0066DF55
  */
-NewsItem* news_item_add_to_queue(uint8_t type, rct_string_id string_id, uint32_t assoc)
+News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc, const Formatter& formatter)
 {
     utf8 buffer[256];
-    void* args = gCommonFormatArgs;
 
     // overflows possible?
-    format_string(buffer, 256, string_id, args);
-    return news_item_add_to_queue_raw(type, buffer, assoc);
+    format_string(buffer, 256, string_id, formatter.Data());
+    return News::AddItemToQueue(type, buffer, assoc);
 }
 
-NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t assoc)
+News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc)
 {
-    NewsItem* newsItem = gNewsItems;
-
-    // Find first open slot
-    while (newsItem->Type != NEWS_ITEM_NULL)
-    {
-        if (newsItem + 1 >= &gNewsItems[10])
-            news_item_close_current();
-        else
-            newsItem++;
-    }
-
-    // Now we have found an item slot to place the new news in
+    News::Item* newsItem = gNewsItems.FirstOpenOrNewSlot();
     newsItem->Type = type;
     newsItem->Flags = 0;
     newsItem->Assoc = assoc;
     newsItem->Ticks = 0;
-    newsItem->MonthYear = gDateMonthsElapsed;
+    newsItem->MonthYear = static_cast<uint16_t>(gDateMonthsElapsed);
     newsItem->Day = ((days_in_month[date_get_month(newsItem->MonthYear)] * gDateMonthTicks) >> 16) + 1;
     safe_strcpy(newsItem->Text, text, sizeof(newsItem->Text));
 
-    NewsItem* res = newsItem;
-
-    // Blatant disregard for what happens on the last element.
-    // TODO: Change this when we implement the queue ourselves.
-    newsItem++;
-    newsItem->Type = NEWS_ITEM_NULL;
-
-    return res;
+    return newsItem;
 }
 
 /**
@@ -325,37 +330,36 @@ NewsItem* news_item_add_to_queue_raw(uint8_t type, const utf8* text, uint32_t as
  *  rct2: 0x0066EBE6
  *
  */
-void news_item_open_subject(int32_t type, int32_t subject)
+void News::OpenSubject(News::ItemType type, int32_t subject)
 {
-    Peep* peep;
-    rct_window* window;
-
     switch (type)
     {
-        case NEWS_ITEM_RIDE:
+        case News::ItemType::Ride:
         {
             auto intent = Intent(WC_RIDE);
             intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
             context_open_intent(&intent);
             break;
         }
-        case NEWS_ITEM_PEEP_ON_RIDE:
-        case NEWS_ITEM_PEEP:
+        case News::ItemType::PeepOnRide:
+        case News::ItemType::Peep:
         {
-            peep = GET_PEEP(subject);
-
-            auto intent = Intent(WC_PEEP);
-            intent.putExtra(INTENT_EXTRA_PEEP, peep);
-            context_open_intent(&intent);
+            auto peep = TryGetEntity<Peep>(subject);
+            if (peep != nullptr)
+            {
+                auto intent = Intent(WC_PEEP);
+                intent.putExtra(INTENT_EXTRA_PEEP, peep);
+                context_open_intent(&intent);
+            }
             break;
         }
-        case NEWS_ITEM_MONEY:
+        case News::ItemType::Money:
             context_open_window(WC_FINANCES);
             break;
-        case NEWS_ITEM_RESEARCH:
+        case News::ItemType::Research:
         {
-            auto item = ResearchItem(subject, 0);
-            if (item.type == RESEARCH_ENTRY_TYPE_RIDE)
+            auto item = ResearchItem(subject, 0, 0);
+            if (item.type == Research::EntryType::Ride)
             {
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);
                 intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.baseRideType);
@@ -365,7 +369,7 @@ void news_item_open_subject(int32_t type, int32_t subject)
             }
 
             // Check if window is already open
-            window = window_bring_to_front_by_class(WC_SCENERY);
+            auto window = window_bring_to_front_by_class(WC_SCENERY);
             if (window == nullptr)
             {
                 window = window_find_by_class(WC_TOP_TOOLBAR);
@@ -386,19 +390,23 @@ void news_item_open_subject(int32_t type, int32_t subject)
                 window_event_mouse_down_call(window, WC_SCENERY__WIDX_SCENERY_TAB_1 + subject);
             break;
         }
-        case NEWS_ITEM_PEEPS:
+        case News::ItemType::Peeps:
         {
             auto intent = Intent(WC_GUEST_LIST);
-            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_THINKING_X);
+            intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, static_cast<int32_t>(GuestListFilterType::GuestsThinkingX));
             intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
             context_open_intent(&intent);
             break;
         }
-        case NEWS_ITEM_AWARD:
+        case News::ItemType::Award:
             context_open_window_view(WV_PARK_AWARDS);
             break;
-        case NEWS_ITEM_GRAPH:
+        case News::ItemType::Graph:
             context_open_window_view(WV_PARK_RATING);
+            break;
+        case News::ItemType::Null:
+        case News::ItemType::Blank:
+        case News::ItemType::Count:
             break;
     }
 }
@@ -407,62 +415,49 @@ void news_item_open_subject(int32_t type, int32_t subject)
  *
  *  rct2: 0x0066E407
  */
-void news_item_disable_news(uint8_t type, uint32_t assoc)
+void News::DisableNewsItems(News::ItemType type, uint32_t assoc)
 {
     // TODO: write test invalidating windows
-    for (int32_t i = 0; i < 11; i++)
-    {
-        if (!news_item_is_empty(i))
+    gNewsItems.ForeachRecentNews([type, assoc](auto& newsItem) {
+        if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
-            NewsItem* const newsItem = news_item_get(i);
-            if (type == newsItem->Type && assoc == newsItem->Assoc)
+            newsItem.SetFlags(News::ItemFlags::HasButton);
+            if (&newsItem == &gNewsItems.Current())
             {
-                newsItem->Flags |= NEWS_FLAG_HAS_BUTTON;
-                if (i == 0)
-                {
-                    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
-                    context_broadcast_intent(&intent);
-                }
+                auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+                context_broadcast_intent(&intent);
             }
         }
-        else
-        {
-            break;
-        }
-    }
+    });
 
-    for (int32_t i = 11; i < MAX_NEWS_ITEMS; i++)
-    {
-        if (!news_item_is_empty(i))
+    gNewsItems.ForeachArchivedNews([type, assoc](auto& newsItem) {
+        if (type == newsItem.Type && assoc == newsItem.Assoc)
         {
-            NewsItem* const newsItem = news_item_get(i);
-            if (type == newsItem->Type && assoc == newsItem->Assoc)
-            {
-                newsItem->Flags |= NEWS_FLAG_HAS_BUTTON;
-                window_invalidate_by_class(WC_RECENT_NEWS);
-            }
+            newsItem.SetFlags(News::ItemFlags::HasButton);
+            window_invalidate_by_class(WC_RECENT_NEWS);
         }
-        else
-        {
-            break;
-        }
-    }
+    });
 }
 
-void news_item_add_to_queue_custom(NewsItem* newNewsItem)
+void News::AddItemToQueue(News::Item* newNewsItem)
 {
-    NewsItem* newsItem = gNewsItems;
-
-    // Find first open slot
-    while (newsItem->Type != NEWS_ITEM_NULL)
-    {
-        if (newsItem + 1 >= &gNewsItems[10])
-            news_item_close_current();
-        else
-            newsItem++;
-    }
-
+    News::Item* newsItem = gNewsItems.FirstOpenOrNewSlot();
     *newsItem = *newNewsItem;
-    newsItem++;
-    newsItem->Type = NEWS_ITEM_NULL;
+}
+
+void News::RemoveItem(int32_t index)
+{
+    if (index < 0 || index >= News::MaxItems)
+        return;
+
+    // News item is already null, no need to remove it
+    if (gNewsItems[index].Type == News::ItemType::Null)
+        return;
+
+    size_t newsBoundary = index < News::ItemHistoryStart ? News::ItemHistoryStart : News::MaxItems;
+    for (size_t i = index; i < newsBoundary - 1; i++)
+    {
+        gNewsItems[i] = gNewsItems[i + 1];
+    }
+    gNewsItems[newsBoundary - 1].Type = News::ItemType::Null;
 }

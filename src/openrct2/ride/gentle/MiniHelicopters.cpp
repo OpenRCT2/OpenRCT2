@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -33,7 +33,7 @@ static void paint_mini_helicopters_track_station(
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
     else if (direction == 1 || direction == 3)
     {
@@ -45,7 +45,7 @@ static void paint_mini_helicopters_track_station(
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
 
     track_paint_util_draw_station(session, rideIndex, direction, height, tileElement);
@@ -303,7 +303,7 @@ static void paint_mini_helicopters_track_right_quarter_turn_1_tile(
 /**
  * rct2: 0x0081F268
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(int32_t trackType)
 {
     switch (trackType)
     {

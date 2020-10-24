@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -24,19 +24,29 @@ private:
     CoordsXY _loc;
     Direction _direction;
     NetworkRideId_t _rideIndex;
-    uint8_t _stationNum;
+    StationIndex _stationNum;
     bool _isExit;
 
 public:
     RideEntranceExitPlaceAction() = default;
 
-    RideEntranceExitPlaceAction(const CoordsXY& loc, Direction direction, ride_id_t rideIndex, uint8_t stationNum, bool isExit)
+    RideEntranceExitPlaceAction(
+        const CoordsXY& loc, Direction direction, ride_id_t rideIndex, StationIndex stationNum, bool isExit)
         : _loc(loc)
         , _direction(direction)
         , _rideIndex(rideIndex)
         , _stationNum(stationNum)
         , _isExit(isExit)
     {
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit(_loc);
+        visitor.Visit("direction", _direction);
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("station", _stationNum);
+        visitor.Visit("isExit", _isExit);
     }
 
     uint16_t GetActionFlags() const override
@@ -63,7 +73,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid game command for ride %d", (int32_t)_rideIndex);
+            log_warning("Invalid game command for ride %d", static_cast<int32_t>(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
         }
 
@@ -99,7 +109,7 @@ public:
         }
 
         auto z = ride->stations[_stationNum].GetBaseZ();
-        if (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z }))
+        if (!LocationValid(_loc) || (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z })))
         {
             return MakeResult(GA_ERROR::NOT_OWNED, errorTitle);
         }
@@ -138,7 +148,7 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            log_warning("Invalid game command for ride %d", (int32_t)_rideIndex);
+            log_warning("Invalid game command for ride %d", static_cast<int32_t>(_rideIndex));
             return MakeResult(GA_ERROR::INVALID_PARAMETERS, errorTitle);
         }
 
@@ -198,13 +208,11 @@ public:
 
         if (_isExit)
         {
-            ride_set_exit_location(
-                ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, (uint8_t)tileElement->GetDirection() }));
+            ride_set_exit_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, tileElement->GetDirection() }));
         }
         else
         {
-            ride_set_entrance_location(
-                ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, (uint8_t)tileElement->GetDirection() }));
+            ride_set_entrance_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, tileElement->GetDirection() }));
             ride->stations[_stationNum].LastPeepInQueue = SPRITE_INDEX_NULL;
             ride->stations[_stationNum].QueueLength = 0;
 

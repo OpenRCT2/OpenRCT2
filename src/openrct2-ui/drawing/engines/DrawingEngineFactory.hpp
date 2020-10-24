@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -19,7 +19,7 @@ namespace OpenRCT2
     {
         using namespace OpenRCT2::Drawing;
 
-        interface IUiContext;
+        struct IUiContext;
 
         std::unique_ptr<IDrawingEngine> CreateSoftwareDrawingEngine(const std::shared_ptr<IUiContext>& uiContext);
         std::unique_ptr<IDrawingEngine> CreateHardwareDisplayDrawingEngine(const std::shared_ptr<IUiContext>& uiContext);
@@ -33,7 +33,7 @@ namespace OpenRCT2
             std::unique_ptr<IDrawingEngine> Create(
                 DRAWING_ENGINE_TYPE type, const std::shared_ptr<IUiContext>& uiContext) override
             {
-                switch ((int32_t)type)
+                switch (static_cast<int32_t>(type))
                 {
                     case DRAWING_ENGINE_SOFTWARE:
                         return CreateSoftwareDrawingEngine(uiContext);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -39,6 +39,13 @@ public:
         , _price(price)
         , _primaryPrice(primaryPrice)
     {
+    }
+
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("ride", _rideIndex);
+        visitor.Visit("price", _price);
+        visitor.Visit("isPrimaryPrice", _primaryPrice);
     }
 
     uint16_t GetActionFlags() const override
@@ -105,10 +112,10 @@ public:
             shopItem = SHOP_ITEM_ADMISSION;
             if (ride->type != RIDE_TYPE_TOILETS)
             {
-                shopItem = rideEntry->shop_item;
+                shopItem = rideEntry->shop_item[0];
                 if (shopItem == SHOP_ITEM_NONE)
                 {
-                    ride->price = _price;
+                    ride->price[0] = _price;
                     window_invalidate_by_class(WC_RIDE);
                     return res;
                 }
@@ -116,20 +123,20 @@ public:
             // Check same price in park flags
             if (!shop_item_has_common_price(shopItem))
             {
-                ride->price = _price;
+                ride->price[0] = _price;
                 window_invalidate_by_class(WC_RIDE);
                 return res;
             }
         }
         else
         {
-            shopItem = rideEntry->shop_item_secondary;
+            shopItem = rideEntry->shop_item[1];
             if (shopItem == SHOP_ITEM_NONE)
             {
-                shopItem = RidePhotoItems[ride->type];
+                shopItem = RideTypeDescriptors[ride->type].PhotoItem;
                 if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
                 {
-                    ride->price_secondary = _price;
+                    ride->price[1] = _price;
                     window_invalidate_by_class(WC_RIDE);
                     return res;
                 }
@@ -137,7 +144,7 @@ public:
             // Check same price in park flags
             if (!shop_item_has_common_price(shopItem))
             {
-                ride->price_secondary = _price;
+                ride->price[1] = _price;
                 window_invalidate_by_class(WC_RIDE);
                 return res;
             }
@@ -158,29 +165,29 @@ private:
             auto rideEntry = get_ride_entry(ride.subtype);
             if (ride.type == RIDE_TYPE_TOILETS && shopItem == SHOP_ITEM_ADMISSION)
             {
-                if (ride.price != _price)
+                if (ride.price[0] != _price)
                 {
-                    ride.price = _price;
+                    ride.price[0] = _price;
                     invalidate = true;
                 }
             }
-            else if (rideEntry != nullptr && rideEntry->shop_item == shopItem)
+            else if (rideEntry != nullptr && rideEntry->shop_item[0] == shopItem)
             {
-                if (ride.price != _price)
+                if (ride.price[0] != _price)
                 {
-                    ride.price = _price;
+                    ride.price[0] = _price;
                     invalidate = true;
                 }
             }
             if (rideEntry != nullptr)
             {
                 // If the shop item is the same or an on-ride photo
-                if (rideEntry->shop_item_secondary == shopItem
-                    || (rideEntry->shop_item_secondary == SHOP_ITEM_NONE && shop_item_is_photo(shopItem)))
+                if (rideEntry->shop_item[1] == shopItem
+                    || (rideEntry->shop_item[1] == SHOP_ITEM_NONE && ShopItems[shopItem].IsPhoto()))
                 {
-                    if (ride.price_secondary != _price)
+                    if (ride.price[1] != _price)
                     {
-                        ride.price_secondary = _price;
+                        ride.price[1] = _price;
                         invalidate = true;
                     }
                 }

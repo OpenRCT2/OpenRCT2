@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -83,7 +83,7 @@ static void facility_paint_setup(
 }
 
 /* 0x00762D44 */
-TRACK_PAINT_FUNCTION get_track_paint_function_facility(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_facility(int32_t trackType)
 {
     switch (trackType)
     {

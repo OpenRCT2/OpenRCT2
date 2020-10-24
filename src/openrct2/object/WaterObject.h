@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -30,14 +30,14 @@ public:
         return &_legacyType;
     }
 
-    void ReadJson(IReadObjectContext* context, const json_t* root) override;
-    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+    void ReadJson(IReadObjectContext* context, json_t& root) override;
+    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
     void Load() override;
     void Unload() override;
 
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 
 private:
-    void ReadJsonPalette(const json_t* jPalette);
+    void ReadJsonPalette(json_t& jPalette);
     uint32_t ParseColour(const std::string& s) const;
 };

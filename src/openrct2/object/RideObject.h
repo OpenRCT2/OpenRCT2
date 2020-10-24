@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../ride/Ride.h"
 #include "Object.h"
 
@@ -33,8 +35,8 @@ public:
         return &_legacyType;
     }
 
-    void ReadJson(IReadObjectContext* context, const json_t* root) override;
-    void ReadLegacy(IReadObjectContext* context, IStream* stream) override;
+    void ReadJson(IReadObjectContext* context, json_t& root) override;
+    void ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream) override;
     void Load() override;
     void Unload() override;
 
@@ -46,13 +48,13 @@ public:
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
 private:
-    void ReadLegacyVehicle(IReadObjectContext* context, IStream* stream, rct_ride_entry_vehicle* vehicle);
+    void ReadLegacyVehicle(IReadObjectContext* context, OpenRCT2::IStream* stream, rct_ride_entry_vehicle* vehicle);
 
-    void ReadJsonVehicleInfo(IReadObjectContext* context, const json_t* properties);
-    std::vector<rct_ride_entry_vehicle> ReadJsonCars(const json_t* jCars);
-    rct_ride_entry_vehicle ReadJsonCar(const json_t* jCar);
-    vehicle_colour_preset_list ReadJsonCarColours(const json_t* jCarColours);
-    std::vector<vehicle_colour> ReadJsonColourConfiguration(const json_t* jColourConfig);
+    void ReadJsonVehicleInfo(IReadObjectContext* context, json_t& properties);
+    std::vector<rct_ride_entry_vehicle> ReadJsonCars(json_t& jCars);
+    rct_ride_entry_vehicle ReadJsonCar(json_t& jCar);
+    vehicle_colour_preset_list ReadJsonCarColours(json_t& jCarColours);
+    std::vector<vehicle_colour> ReadJsonColourConfiguration(json_t& jColourConfig);
 
     static uint8_t CalculateNumVerticalFrames(const rct_ride_entry_vehicle* vehicleEntry);
     static uint8_t CalculateNumHorizontalFrames(const rct_ride_entry_vehicle* vehicleEntry);

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -75,7 +75,7 @@ static void flying_rc_track_flat(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             }
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -127,7 +127,7 @@ static void flying_rc_track_flat(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session->TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 }
@@ -184,7 +184,7 @@ static void flying_rc_track_station(
         track_paint_util_draw_station_2(session, rideIndex, direction, height, tileElement, 9, 11);
     }
 
-    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -196,24 +196,49 @@ static void flying_rc_track_25_deg_up(
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
-        switch (direction)
+        if (tileElement->AsTrack()->HasChain())
         {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17204, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17205, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17206, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17207, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17498, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17499, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17500, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17501, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+            }
+        }
+        else
+        {
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17204, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17205, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17206, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17207, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+            }
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
         {
@@ -222,11 +247,11 @@ static void flying_rc_track_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -314,11 +339,11 @@ static void flying_rc_track_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 56, 0x20);
     }
@@ -357,11 +382,11 @@ static void flying_rc_track_60_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -394,11 +419,11 @@ static void flying_rc_track_60_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -413,24 +438,49 @@ static void flying_rc_track_flat_to_25_deg_up(
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
-        switch (direction)
+        if (tileElement->AsTrack()->HasChain())
         {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17196, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17197, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17198, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17199, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17490, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17491, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17492, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17493, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+            }
+        }
+        else
+        {
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17196, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17197, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17198, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17199, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+            }
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
         {
@@ -439,11 +489,11 @@ static void flying_rc_track_flat_to_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -531,11 +581,11 @@ static void flying_rc_track_flat_to_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 48, 0x20);
     }
@@ -578,11 +628,11 @@ static void flying_rc_track_25_deg_up_to_60_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -621,11 +671,11 @@ static void flying_rc_track_25_deg_up_to_60_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -670,11 +720,11 @@ static void flying_rc_track_60_deg_up_to_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -739,11 +789,11 @@ static void flying_rc_track_60_deg_up_to_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 72, 0x20);
     }
@@ -756,24 +806,49 @@ static void flying_rc_track_25_deg_up_to_flat(
 {
     if (!tileElement->AsTrack()->IsInverted())
     {
-        switch (direction)
+        if (tileElement->AsTrack()->HasChain())
         {
-            case 0:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17200, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 1:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17201, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 2:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17202, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 3:
-                sub_98197C_rotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 17203, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17494, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17495, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17496, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17497, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+            }
+        }
+        else
+        {
+            switch (direction)
+            {
+                case 0:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17200, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 1:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17201, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 2:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17202, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+                case 3:
+                    sub_98197C_rotated(
+                        session, direction, session->TrackColours[SCHEME_TRACK] | 17203, 0, 0, 32, 20, 3, height, 0, 6, height);
+                    break;
+            }
         }
         if (track_paint_util_should_paint_supports(session->MapPosition))
         {
@@ -782,7 +857,7 @@ static void flying_rc_track_25_deg_up_to_flat(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -874,7 +949,7 @@ static void flying_rc_track_25_deg_up_to_flat(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -969,7 +1044,7 @@ static void flying_rc_track_left_quarter_turn_5(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -1102,10 +1177,10 @@ static void flying_rc_track_left_quarter_turn_5(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -1153,7 +1228,7 @@ static void flying_rc_track_left_quarter_turn_5(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
@@ -1289,10 +1364,10 @@ static void flying_rc_track_left_quarter_turn_5(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1345,7 +1420,7 @@ static void flying_rc_track_flat_to_left_bank(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1386,7 +1461,7 @@ static void flying_rc_track_flat_to_left_bank(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session->TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 }
@@ -1426,7 +1501,7 @@ static void flying_rc_track_flat_to_right_bank(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1467,7 +1542,7 @@ static void flying_rc_track_flat_to_right_bank(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session->TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 }
@@ -1507,7 +1582,7 @@ static void flying_rc_track_left_bank_to_flat(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1548,7 +1623,7 @@ static void flying_rc_track_left_bank_to_flat(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session->TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 }
@@ -1588,7 +1663,7 @@ static void flying_rc_track_right_bank_to_flat(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1629,7 +1704,7 @@ static void flying_rc_track_right_bank_to_flat(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session->TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 }
@@ -1674,7 +1749,7 @@ static void flying_rc_track_banked_left_quarter_turn_5(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -1810,10 +1885,10 @@ static void flying_rc_track_banked_left_quarter_turn_5(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -1861,7 +1936,7 @@ static void flying_rc_track_banked_left_quarter_turn_5(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
@@ -1992,10 +2067,10 @@ static void flying_rc_track_banked_left_quarter_turn_5(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -2050,11 +2125,11 @@ static void flying_rc_track_left_bank_to_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2115,11 +2190,11 @@ static void flying_rc_track_left_bank_to_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 48, 0x20);
     }
@@ -2162,11 +2237,11 @@ static void flying_rc_track_right_bank_to_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2227,11 +2302,11 @@ static void flying_rc_track_right_bank_to_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 48, 0x20);
     }
@@ -2274,7 +2349,7 @@ static void flying_rc_track_25_deg_up_to_left_bank(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -2339,7 +2414,7 @@ static void flying_rc_track_25_deg_up_to_left_bank(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -2386,7 +2461,7 @@ static void flying_rc_track_25_deg_up_to_right_bank(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -2451,7 +2526,7 @@ static void flying_rc_track_25_deg_up_to_right_bank(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -2524,7 +2599,7 @@ static void flying_rc_track_left_bank(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -2565,7 +2640,7 @@ static void flying_rc_track_left_bank(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session->TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 }
@@ -2615,7 +2690,7 @@ static void flying_rc_track_left_quarter_turn_5_25_deg_up(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -2743,10 +2818,10 @@ static void flying_rc_track_left_quarter_turn_5_25_deg_up(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -2790,7 +2865,7 @@ static void flying_rc_track_left_quarter_turn_5_25_deg_up(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
@@ -2910,10 +2985,10 @@ static void flying_rc_track_left_quarter_turn_5_25_deg_up(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 72, 0x20);
@@ -2959,7 +3034,7 @@ static void flying_rc_track_right_quarter_turn_5_25_deg_up(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -3087,10 +3162,10 @@ static void flying_rc_track_right_quarter_turn_5_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -3134,7 +3209,7 @@ static void flying_rc_track_right_quarter_turn_5_25_deg_up(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
@@ -3254,10 +3329,10 @@ static void flying_rc_track_right_quarter_turn_5_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 72, 0x20);
@@ -3321,7 +3396,7 @@ static void flying_rc_track_s_bend_left(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -3423,10 +3498,10 @@ static void flying_rc_track_s_bend_left(
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -3473,7 +3548,7 @@ static void flying_rc_track_s_bend_left(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
@@ -3599,10 +3674,10 @@ static void flying_rc_track_s_bend_left(
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -3648,7 +3723,7 @@ static void flying_rc_track_s_bend_right(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -3750,10 +3825,10 @@ static void flying_rc_track_s_bend_right(
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -3800,7 +3875,7 @@ static void flying_rc_track_s_bend_right(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
@@ -3926,10 +4001,10 @@ static void flying_rc_track_s_bend_right(
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -3975,7 +4050,7 @@ static void flying_rc_track_left_quarter_turn_3(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -4043,10 +4118,10 @@ static void flying_rc_track_left_quarter_turn_3(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -4094,7 +4169,7 @@ static void flying_rc_track_left_quarter_turn_3(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
@@ -4165,10 +4240,10 @@ static void flying_rc_track_left_quarter_turn_3(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -4226,7 +4301,7 @@ static void flying_rc_track_left_quarter_turn_3_bank(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -4297,10 +4372,10 @@ static void flying_rc_track_left_quarter_turn_3_bank(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -4348,7 +4423,7 @@ static void flying_rc_track_left_quarter_turn_3_bank(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
@@ -4419,10 +4494,10 @@ static void flying_rc_track_left_quarter_turn_3_bank(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -4473,7 +4548,7 @@ static void flying_rc_track_left_quarter_turn_3_25_deg_up(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -4511,10 +4586,10 @@ static void flying_rc_track_left_quarter_turn_3_25_deg_up(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -4558,7 +4633,7 @@ static void flying_rc_track_left_quarter_turn_3_25_deg_up(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
@@ -4599,10 +4674,10 @@ static void flying_rc_track_left_quarter_turn_3_25_deg_up(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 72, 0x20);
@@ -4644,7 +4719,7 @@ static void flying_rc_track_right_quarter_turn_3_25_deg_up(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -4688,10 +4763,10 @@ static void flying_rc_track_right_quarter_turn_3_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -4735,7 +4810,7 @@ static void flying_rc_track_right_quarter_turn_3_25_deg_up(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_general_support_height(session, height + 72, 0x20);
                 break;
@@ -4776,10 +4851,10 @@ static void flying_rc_track_right_quarter_turn_3_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 72, 0x20);
@@ -4841,7 +4916,7 @@ static void flying_rc_track_left_half_banked_helix_up_small(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
@@ -4908,10 +4983,10 @@ static void flying_rc_track_left_half_banked_helix_up_small(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -4948,10 +5023,10 @@ static void flying_rc_track_left_half_banked_helix_up_small(
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -5018,7 +5093,7 @@ static void flying_rc_track_left_half_banked_helix_up_small(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
@@ -5063,7 +5138,7 @@ static void flying_rc_track_right_half_banked_helix_up_small(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
@@ -5130,10 +5205,10 @@ static void flying_rc_track_right_half_banked_helix_up_small(
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -5170,10 +5245,10 @@ static void flying_rc_track_right_half_banked_helix_up_small(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -5240,7 +5315,7 @@ static void flying_rc_track_right_half_banked_helix_up_small(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
@@ -5315,7 +5390,7 @@ static void flying_rc_track_left_half_banked_helix_up_large(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
@@ -5444,10 +5519,10 @@ static void flying_rc_track_left_half_banked_helix_up_large(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -5484,10 +5559,10 @@ static void flying_rc_track_left_half_banked_helix_up_large(
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -5616,7 +5691,7 @@ static void flying_rc_track_left_half_banked_helix_up_large(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
@@ -5661,7 +5736,7 @@ static void flying_rc_track_right_half_banked_helix_up_large(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction),
@@ -5790,10 +5865,10 @@ static void flying_rc_track_right_half_banked_helix_up_large(
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -5830,10 +5905,10 @@ static void flying_rc_track_right_half_banked_helix_up_large(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -5962,7 +6037,7 @@ static void flying_rc_track_right_half_banked_helix_up_large(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction),
@@ -6080,7 +6155,7 @@ static void flying_rc_track_left_quarter_turn_1_60_deg_up(
         }
     }
 
-    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_7, +56, TUNNEL_8);
+    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 104, 0x20);
 }
@@ -6162,7 +6237,7 @@ static void flying_rc_track_right_quarter_turn_1_60_deg_up(
                 break;
         }
     }
-    track_paint_util_right_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_7, +56, TUNNEL_8);
+    track_paint_util_right_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 104, 0x20);
 }
@@ -6208,7 +6283,7 @@ static void flying_rc_track_brakes(
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -6239,7 +6314,7 @@ static void flying_rc_track_brakes(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session->TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 }
@@ -6300,7 +6375,7 @@ static void flying_rc_track_left_quarter_banked_helix_large_up(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -6434,10 +6509,10 @@ static void flying_rc_track_left_quarter_banked_helix_large_up(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height + 16, TUNNEL_9);
+                    paint_util_push_tunnel_right(session, height + 16, TUNNEL_SQUARE_INVERTED_9);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height + 16, TUNNEL_9);
+                    paint_util_push_tunnel_left(session, height + 16, TUNNEL_SQUARE_INVERTED_9);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -6485,7 +6560,7 @@ static void flying_rc_track_right_quarter_banked_helix_large_up(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -6619,10 +6694,10 @@ static void flying_rc_track_right_quarter_banked_helix_large_up(
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height + 16, TUNNEL_9);
+                    paint_util_push_tunnel_right(session, height + 16, TUNNEL_SQUARE_INVERTED_9);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height + 16, TUNNEL_9);
+                    paint_util_push_tunnel_left(session, height + 16, TUNNEL_SQUARE_INVERTED_9);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -6670,7 +6745,7 @@ static void flying_rc_track_left_quarter_banked_helix_large_down(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_9);
+                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_SQUARE_INVERTED_9);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -6804,10 +6879,10 @@ static void flying_rc_track_left_quarter_banked_helix_large_down(
             switch (direction)
             {
                 case 2:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
                 case 3:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -6855,7 +6930,7 @@ static void flying_rc_track_right_quarter_banked_helix_large_down(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_9);
+                paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_SQUARE_INVERTED_9);
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
             break;
@@ -6989,10 +7064,10 @@ static void flying_rc_track_right_quarter_banked_helix_large_down(
             switch (direction)
             {
                 case 0:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
                 case 1:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_9);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
                     break;
             }
             paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -7033,11 +7108,11 @@ static void flying_rc_track_25_deg_up_left_banked(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7096,11 +7171,11 @@ static void flying_rc_track_25_deg_up_left_banked(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 72, 0x20);
     }
@@ -7139,11 +7214,11 @@ static void flying_rc_track_25_deg_up_right_banked(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7202,11 +7277,11 @@ static void flying_rc_track_25_deg_up_right_banked(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 72, 0x20);
     }
@@ -7259,7 +7334,7 @@ static void flying_rc_track_on_ride_photo(
                 break;
         }
         track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
     }
@@ -7309,7 +7384,7 @@ static void flying_rc_track_on_ride_photo(
                 break;
         }
         track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 64, 0x20);
     }
@@ -7368,7 +7443,7 @@ static void flying_rc_track_left_eighth_to_diag(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7518,7 +7593,7 @@ static void flying_rc_track_left_eighth_to_diag(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
@@ -7682,7 +7757,7 @@ static void flying_rc_track_right_eighth_to_diag(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7832,7 +7907,7 @@ static void flying_rc_track_right_eighth_to_diag(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
@@ -8014,7 +8089,7 @@ static void flying_rc_track_left_eighth_bank_to_diag(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -8165,7 +8240,7 @@ static void flying_rc_track_left_eighth_bank_to_diag(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
@@ -8329,7 +8404,7 @@ static void flying_rc_track_right_eighth_bank_to_diag(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -8480,7 +8555,7 @@ static void flying_rc_track_right_eighth_bank_to_diag(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
                 }
                 paint_util_set_general_support_height(session, height + 32, 0x20);
                 break;
@@ -14293,7 +14368,7 @@ static void flying_rc_track_left_flyer_twist_up(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height - 5, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session,
@@ -14363,10 +14438,10 @@ static void flying_rc_track_left_flyer_twist_up(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -14405,7 +14480,7 @@ static void flying_rc_track_right_flyer_twist_up(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height - 5, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session,
@@ -14473,10 +14548,10 @@ static void flying_rc_track_right_flyer_twist_up(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -14523,7 +14598,7 @@ static void flying_rc_track_left_flyer_twist_down(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
@@ -14580,10 +14655,10 @@ static void flying_rc_track_left_flyer_twist_down(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -14634,7 +14709,7 @@ static void flying_rc_track_right_flyer_twist_down(
 
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_general_support_height(session, height + 32, 0x20);
             break;
@@ -14690,10 +14765,10 @@ static void flying_rc_track_right_flyer_twist_down(
             switch (direction)
             {
                 case 1:
-                    paint_util_push_tunnel_right(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
                     break;
                 case 2:
-                    paint_util_push_tunnel_left(session, height, TUNNEL_6);
+                    paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
                     break;
             }
             paint_util_set_segment_support_height(
@@ -14737,7 +14812,7 @@ static void flying_rc_track_flyer_half_loop_up(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -14827,7 +14902,7 @@ static void flying_rc_track_flyer_half_loop_up(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -14865,7 +14940,7 @@ static void flying_rc_track_flyer_half_loop_down(
             }
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -14957,7 +15032,7 @@ static void flying_rc_track_flyer_half_loop_down(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
             if (direction == 0 || direction == 3)
             {
-                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
             }
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -14988,7 +15063,7 @@ static void flying_rc_track_block_brakes(
         }
         metal_a_supports_paint_setup(
             session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -15019,7 +15094,7 @@ static void flying_rc_track_block_brakes(
                 session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height + 39, session->TrackColours[SCHEME_SUPPORTS]);
         }
 
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_general_support_height(session, height + 32, 0x20);
     }
 }
@@ -15058,7 +15133,7 @@ static void flying_rc_track_left_banked_quarter_turn_3_25_deg_up(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -15098,10 +15173,10 @@ static void flying_rc_track_left_banked_quarter_turn_3_25_deg_up(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -15145,7 +15220,7 @@ static void flying_rc_track_left_banked_quarter_turn_3_25_deg_up(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_general_support_height(session, height + 88, 0x20);
                 break;
@@ -15186,10 +15261,10 @@ static void flying_rc_track_left_banked_quarter_turn_3_25_deg_up(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 88, 0x20);
@@ -15232,7 +15307,7 @@ static void flying_rc_track_right_banked_quarter_turn_3_25_deg_up(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -15278,10 +15353,10 @@ static void flying_rc_track_right_banked_quarter_turn_3_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -15325,7 +15400,7 @@ static void flying_rc_track_right_banked_quarter_turn_3_25_deg_up(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_general_support_height(session, height + 88, 0x20);
                 break;
@@ -15366,10 +15441,10 @@ static void flying_rc_track_right_banked_quarter_turn_3_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 88, 0x20);
@@ -15435,7 +15510,7 @@ static void flying_rc_track_left_banked_quarter_turn_5_25_deg_up(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -15566,10 +15641,10 @@ static void flying_rc_track_left_banked_quarter_turn_5_25_deg_up(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -15613,7 +15688,7 @@ static void flying_rc_track_left_banked_quarter_turn_5_25_deg_up(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_general_support_height(session, height + 88, 0x20);
                 break;
@@ -15733,10 +15808,10 @@ static void flying_rc_track_left_banked_quarter_turn_5_25_deg_up(
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 88, 0x20);
@@ -15782,7 +15857,7 @@ static void flying_rc_track_right_banked_quarter_turn_5_25_deg_up(
                     session, METAL_SUPPORTS_TUBES_INVERTED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -15913,10 +15988,10 @@ static void flying_rc_track_right_banked_quarter_turn_5_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -15960,7 +16035,7 @@ static void flying_rc_track_right_banked_quarter_turn_5_25_deg_up(
 
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
                 }
                 paint_util_set_general_support_height(session, height + 88, 0x20);
                 break;
@@ -16080,10 +16155,10 @@ static void flying_rc_track_right_banked_quarter_turn_5_25_deg_up(
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
                         break;
                 }
                 paint_util_set_general_support_height(session, height + 88, 0x20);
@@ -16147,11 +16222,11 @@ static void flying_rc_track_25_deg_up_to_left_banked_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -16210,11 +16285,11 @@ static void flying_rc_track_25_deg_up_to_left_banked_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 72, 0x20);
     }
@@ -16255,11 +16330,11 @@ static void flying_rc_track_25_deg_up_to_right_banked_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -16318,11 +16393,11 @@ static void flying_rc_track_25_deg_up_to_right_banked_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 72, 0x20);
     }
@@ -16363,11 +16438,11 @@ static void flying_rc_track_left_banked_25_deg_up_to_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -16426,11 +16501,11 @@ static void flying_rc_track_left_banked_25_deg_up_to_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 72, 0x20);
     }
@@ -16471,11 +16546,11 @@ static void flying_rc_track_right_banked_25_deg_up_to_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -16534,11 +16609,11 @@ static void flying_rc_track_right_banked_25_deg_up_to_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 72, 0x20);
     }
@@ -16613,11 +16688,11 @@ static void flying_rc_track_left_banked_flat_to_left_banked_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -16676,11 +16751,11 @@ static void flying_rc_track_left_banked_flat_to_left_banked_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 64, 0x20);
     }
@@ -16719,11 +16794,11 @@ static void flying_rc_track_right_banked_flat_to_right_banked_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -16782,11 +16857,11 @@ static void flying_rc_track_right_banked_flat_to_right_banked_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 64, 0x20);
     }
@@ -16825,11 +16900,11 @@ static void flying_rc_track_left_banked_25_deg_up_to_left_banked_flat(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -16888,7 +16963,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_left_banked_flat(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -16931,7 +17006,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_right_banked_flat(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -16994,7 +17069,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_right_banked_flat(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -17075,11 +17150,11 @@ static void flying_rc_track_flat_to_left_banked_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -17138,11 +17213,11 @@ static void flying_rc_track_flat_to_left_banked_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 64, 0x20);
     }
@@ -17183,11 +17258,11 @@ static void flying_rc_track_flat_to_right_banked_25_deg_up(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -17246,11 +17321,11 @@ static void flying_rc_track_flat_to_right_banked_25_deg_up(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
         }
         paint_util_set_general_support_height(session, height + 64, 0x20);
     }
@@ -17291,7 +17366,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_flat(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -17354,7 +17429,7 @@ static void flying_rc_track_left_banked_25_deg_up_to_flat(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -17399,7 +17474,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_flat(
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -17462,7 +17537,7 @@ static void flying_rc_track_right_banked_25_deg_up_to_flat(
 
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
         }
         else
         {
@@ -17504,7 +17579,7 @@ static void flying_rc_track_right_banked_25_deg_down_to_flat(
     flying_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
-TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_flying_rc(int32_t trackType)
 {
     switch (trackType)
     {

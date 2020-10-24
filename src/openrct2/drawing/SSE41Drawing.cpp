@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -29,25 +29,25 @@ void mask_sse4_1(
             int32_t dstStep = yy * (dstWrap + 32);
 
             // first half
-            const __m128i colour1 = _mm_lddqu_si128((const __m128i*)(colourSrc + colourStep));
-            const __m128i mask1 = _mm_lddqu_si128((const __m128i*)(maskSrc + maskStep));
-            const __m128i dest1 = _mm_lddqu_si128((const __m128i*)(dst + dstStep));
+            const __m128i colour1 = _mm_lddqu_si128(reinterpret_cast<const __m128i*>(colourSrc + colourStep));
+            const __m128i mask1 = _mm_lddqu_si128(reinterpret_cast<const __m128i*>(maskSrc + maskStep));
+            const __m128i dest1 = _mm_lddqu_si128(reinterpret_cast<const __m128i*>(dst + dstStep));
             const __m128i mc1 = _mm_and_si128(colour1, mask1);
             const __m128i saturate1 = _mm_cmpeq_epi8(mc1, zero128);
             // _mm_blendv_epi8 is SSE4.1
             const __m128i blended1 = _mm_blendv_epi8(mc1, dest1, saturate1);
 
             // second half
-            const __m128i colour2 = _mm_lddqu_si128((const __m128i*)(colourSrc + 16 + colourStep));
-            const __m128i mask2 = _mm_lddqu_si128((const __m128i*)(maskSrc + 16 + maskStep));
-            const __m128i dest2 = _mm_lddqu_si128((const __m128i*)(dst + 16 + dstStep));
+            const __m128i colour2 = _mm_lddqu_si128(reinterpret_cast<const __m128i*>(colourSrc + 16 + colourStep));
+            const __m128i mask2 = _mm_lddqu_si128(reinterpret_cast<const __m128i*>(maskSrc + 16 + maskStep));
+            const __m128i dest2 = _mm_lddqu_si128(reinterpret_cast<const __m128i*>(dst + 16 + dstStep));
             const __m128i mc2 = _mm_and_si128(colour2, mask2);
             const __m128i saturate2 = _mm_cmpeq_epi8(mc2, zero128);
             // _mm_blendv_epi8 is SSE4.1
             const __m128i blended2 = _mm_blendv_epi8(mc2, dest2, saturate2);
 
-            _mm_storeu_si128((__m128i*)(dst + dstStep), blended1);
-            _mm_storeu_si128((__m128i*)(dst + 16 + dstStep), blended2);
+            _mm_storeu_si128(reinterpret_cast<__m128i*>(dst + dstStep), blended1);
+            _mm_storeu_si128(reinterpret_cast<__m128i*>(dst + 16 + dstStep), blended2);
         }
     }
     else

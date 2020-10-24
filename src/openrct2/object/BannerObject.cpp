@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -14,19 +14,18 @@
 #include "../localisation/Language.h"
 #include "../object/Object.h"
 #include "../object/ObjectRepository.h"
-#include "ObjectJsonHelpers.h"
 #include "ObjectList.h"
 
-void BannerObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
+void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
-    stream->Seek(6, STREAM_SEEK_CURRENT);
+    stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.banner.scrolling_mode = stream->ReadValue<uint8_t>();
     _legacyType.banner.flags = stream->ReadValue<uint8_t>();
     _legacyType.banner.price = stream->ReadValue<int16_t>();
-    _legacyType.banner.scenery_tab_id = stream->ReadValue<uint8_t>();
-    stream->Seek(1, STREAM_SEEK_CURRENT);
+    _legacyType.banner.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
+    stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
 
-    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);
@@ -41,7 +40,7 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
     // Add banners to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
     // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
-    auto identifier = GetIdentifier();
+    auto identifier = GetLegacyIdentifier();
 
     auto& objectRepository = context->GetObjectRepository();
     auto item = objectRepository.FindObject(identifier);
@@ -75,28 +74,30 @@ void BannerObject::Unload()
 
 void BannerObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    int32_t x = width / 2;
-    int32_t y = height / 2;
+    auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
     uint32_t imageId = 0x20D00000 | _legacyType.image;
-    gfx_draw_sprite(dpi, imageId + 0, x - 12, y + 8, 0);
-    gfx_draw_sprite(dpi, imageId + 1, x - 12, y + 8, 0);
+    gfx_draw_sprite(dpi, imageId + 0, screenCoords + ScreenCoordsXY{ -12, 8 }, 0);
+    gfx_draw_sprite(dpi, imageId + 1, screenCoords + ScreenCoordsXY{ -12, 8 }, 0);
 }
 
-void BannerObject::ReadJson(IReadObjectContext* context, const json_t* root)
+void BannerObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    auto properties = json_object_get(root, "properties");
+    Guard::Assert(root.is_object(), "BannerObject::ReadJson expects parameter root to be object");
+    json_t properties = root["properties"];
 
-    _legacyType.banner.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
-    _legacyType.banner.price = json_integer_value(json_object_get(properties, "price"));
-    _legacyType.banner.flags = ObjectJsonHelpers::GetFlags<uint8_t>(
-        properties,
-        {
-            { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR },
-        });
+    if (properties.is_object())
+    {
+        _legacyType.banner.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
+        _legacyType.banner.price = Json::GetNumber<int16_t>(properties["price"]);
+        _legacyType.banner.flags = Json::GetFlags<uint8_t>(
+            properties,
+            {
+                { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR },
+            });
 
-    SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
+        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
+    }
 
-    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
-    ObjectJsonHelpers::LoadImages(context, root, GetImageTable());
+    PopulateTablesFromJson(context, root);
 }

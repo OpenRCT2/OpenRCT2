@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -17,6 +17,7 @@
 #include "input/KeyboardShortcuts.h"
 #include "interface/InGameConsole.h"
 #include "interface/Theme.h"
+#include "scripting/UiExtensions.h"
 #include "title/TitleSequencePlayer.h"
 
 #include <SDL.h>
@@ -38,14 +39,17 @@
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform2.h>
+#include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>
+#include <openrct2/world/Location.hpp>
 #include <vector>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::Input;
+using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
 
 #ifdef __MACOSX__
@@ -68,7 +72,7 @@ private:
     SDL_Window* _window = nullptr;
     int32_t _width = 0;
     int32_t _height = 0;
-    int32_t _scaleQuality = 0;
+    ScaleQuality _scaleQuality = ScaleQuality::NearestNeighbour;
 
     std::vector<Resolution> _fsResolutions;
 
@@ -115,6 +119,14 @@ public:
         delete _platformUiContext;
     }
 
+    void Initialise() override
+    {
+#ifdef ENABLE_SCRIPTING
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        UiScriptExtensions::Extend(scriptEngine);
+#endif
+    }
+
     void Update() override
     {
         _inGameConsole.Update();
@@ -143,7 +155,7 @@ public:
         return _height;
     }
 
-    int32_t GetScaleQuality() override
+    ScaleQuality GetScaleQuality() override
     {
         return _scaleQuality;
     }
@@ -151,7 +163,7 @@ public:
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
     {
         static constexpr const int32_t SDLFSFlags[] = { 0, SDL_WINDOW_FULLSCREEN, SDL_WINDOW_FULLSCREEN_DESKTOP };
-        uint32_t windowFlags = SDLFSFlags[(int32_t)mode];
+        uint32_t windowFlags = SDLFSFlags[static_cast<int32_t>(mode)];
 
         // HACK Changing window size when in fullscreen usually has no effect
         if (mode == FULLSCREEN_MODE::FULLSCREEN)
@@ -268,7 +280,7 @@ public:
         return std::make_shared<DrawingEngineFactory>();
     }
 
-    void DrawRainAnimation(IRainDrawer* rainDrawer, rct_drawpixelinfo* dpi, DrawRainFunc drawFunc) override
+    void DrawWeatherAnimation(IWeatherDrawer* weatherDrawer, rct_drawpixelinfo* dpi, DrawWeatherFunc drawFunc) override
     {
         int32_t left = dpi->x;
         int32_t right = left + dpi->width;
@@ -277,7 +289,7 @@ public:
 
         for (auto& w : g_window_list)
         {
-            DrawRainWindow(rainDrawer, w.get(), left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, w.get(), left, right, top, bottom, drawFunc);
         }
     }
 
@@ -499,7 +511,7 @@ public:
 
                         // Zoom gesture
                         constexpr int32_t tolerance = 128;
-                        int32_t gesturePixels = (int32_t)(_gestureRadius * _width);
+                        int32_t gesturePixels = static_cast<int32_t>(_gestureRadius * _width);
                         if (abs(gesturePixels) > tolerance)
                         {
                             _gestureRadius = 0;
@@ -535,15 +547,15 @@ public:
         _scaleQuality = gConfigGeneral.scale_quality;
         if (gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
-            _scaleQuality = SCALE_QUALITY_NN;
+            _scaleQuality = ScaleQuality::NearestNeighbour;
         }
 
-        int32_t scaleQuality = _scaleQuality;
-        if (_scaleQuality == SCALE_QUALITY_SMOOTH_NN)
+        ScaleQuality scaleQuality = _scaleQuality;
+        if (_scaleQuality == ScaleQuality::SmoothNearestNeighbour)
         {
-            scaleQuality = SCALE_QUALITY_LINEAR;
+            scaleQuality = ScaleQuality::Linear;
         }
-        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
+        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", static_cast<int32_t>(scaleQuality));
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
         int32_t width, height;
@@ -595,6 +607,11 @@ public:
     void OpenFolder(const std::string& path) override
     {
         _platformUiContext->OpenFolder(path);
+    }
+
+    void OpenURL(const std::string& url) override
+    {
+        _platformUiContext->OpenURL(url);
     }
 
     std::string ShowFileDialog(const FileDialogDesc& desc) override
@@ -661,7 +678,7 @@ private:
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
-        SetFullscreenMode((FULLSCREEN_MODE)gConfigGeneral.fullscreen_mode);
+        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
 
         TriggerResize();
     }
@@ -669,8 +686,8 @@ private:
     void OnResize(int32_t width, int32_t height)
     {
         // Scale the native window size to the game's canvas size
-        _width = (int32_t)(width / gConfigGeneral.window_scale);
-        _height = (int32_t)(height / gConfigGeneral.window_scale);
+        _width = static_cast<int32_t>(width / gConfigGeneral.window_scale);
+        _height = static_cast<int32_t>(height / gConfigGeneral.window_scale);
 
         drawing_engine_resize();
 
@@ -713,13 +730,13 @@ private:
 
         // Get resolutions
         auto resolutions = std::vector<Resolution>();
-        float desktopAspectRatio = (float)mode.w / mode.h;
+        float desktopAspectRatio = static_cast<float>(mode.w) / mode.h;
         for (int32_t i = 0; i < numDisplayModes; i++)
         {
             SDL_GetDisplayMode(displayIndex, i, &mode);
             if (mode.w > 0 && mode.h > 0)
             {
-                float aspectRatio = (float)mode.w / mode.h;
+                float aspectRatio = static_cast<float>(mode.w) / mode.h;
                 if (std::fabs(desktopAspectRatio - aspectRatio) < 0.1f)
                 {
                     resolutions.push_back({ mode.w, mode.h });
@@ -741,7 +758,7 @@ private:
         resolutions.erase(last, resolutions.end());
 
         // Update config fullscreen resolution if not set
-        if (gConfigGeneral.fullscreen_width == -1 || gConfigGeneral.fullscreen_height == -1)
+        if (!resolutions.empty() && (gConfigGeneral.fullscreen_width == -1 || gConfigGeneral.fullscreen_height == -1))
         {
             gConfigGeneral.fullscreen_width = resolutions.back().Width;
             gConfigGeneral.fullscreen_height = resolutions.back().Height;
@@ -780,9 +797,9 @@ private:
         return SDL_GetWindowFlags(_window);
     }
 
-    static void DrawRainWindow(
-        IRainDrawer* rainDrawer, rct_window* original_w, int16_t left, int16_t right, int16_t top, int16_t bottom,
-        DrawRainFunc drawFunc)
+    static void DrawWeatherWindow(
+        IWeatherDrawer* weatherDrawer, rct_window* original_w, int16_t left, int16_t right, int16_t top, int16_t bottom,
+        DrawWeatherFunc drawFunc)
     {
         rct_window* w{};
         auto itStart = window_get_iterator(original_w);
@@ -790,7 +807,7 @@ private:
         {
             if (it == g_window_list.end())
             {
-                // Loop ended, draw rain for original_w
+                // Loop ended, draw weather for original_w
                 auto vp = original_w->viewport;
                 if (vp != nullptr)
                 {
@@ -802,7 +819,7 @@ private:
                     {
                         auto width = right - left;
                         auto height = bottom - top;
-                        drawFunc(rainDrawer, left, top, width, height);
+                        drawFunc(weatherDrawer, left, top, width, height);
                     }
                 }
                 return;
@@ -824,39 +841,39 @@ private:
                 break;
             }
 
-            DrawRainWindow(rainDrawer, original_w, left, w->windowPos.x, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, w->windowPos.x, top, bottom, drawFunc);
 
             left = w->windowPos.x;
-            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
 
         int16_t w_right = RCT_WINDOW_RIGHT(w);
         if (right > w_right)
         {
-            DrawRainWindow(rainDrawer, original_w, left, w_right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, w_right, top, bottom, drawFunc);
 
             left = w_right;
-            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
 
         if (top < w->windowPos.y)
         {
-            DrawRainWindow(rainDrawer, original_w, left, right, top, w->windowPos.y, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, w->windowPos.y, drawFunc);
 
             top = w->windowPos.y;
-            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
 
         int16_t w_bottom = RCT_WINDOW_BOTTOM(w);
         if (bottom > w_bottom)
         {
-            DrawRainWindow(rainDrawer, original_w, left, right, top, w_bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, w_bottom, drawFunc);
 
             top = w_bottom;
-            DrawRainWindow(rainDrawer, original_w, left, right, top, bottom, drawFunc);
+            DrawWeatherWindow(weatherDrawer, original_w, left, right, top, bottom, drawFunc);
             return;
         }
     }

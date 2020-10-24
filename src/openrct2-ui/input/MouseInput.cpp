@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -181,7 +181,7 @@ static rct_mouse_data* get_mouse_input()
  */
 static void input_scroll_drag_begin(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex)
 {
-    _inputState = INPUT_STATE_SCROLL_RIGHT;
+    _inputState = InputState::ScrollRight;
     gInputDragLast = screenCoords;
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
@@ -208,7 +208,7 @@ static void input_scroll_drag_continue(const ScreenCoordsXY& screenCoords, rct_w
 
     if (scroll->flags & HSCROLLBAR_VISIBLE)
     {
-        int16_t size = widget->right - widget->left - 1;
+        int16_t size = widget->width() - 1;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             size -= 11;
         size = std::max(0, scroll->h_right - size);
@@ -217,7 +217,7 @@ static void input_scroll_drag_continue(const ScreenCoordsXY& screenCoords, rct_w
 
     if (scroll->flags & VSCROLLBAR_VISIBLE)
     {
-        int16_t size = widget->bottom - widget->top - 1;
+        int16_t size = widget->height() - 1;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             size -= 11;
         size = std::max(0, scroll->v_bottom - size);
@@ -243,7 +243,7 @@ static void input_scroll_right(const ScreenCoordsXY& screenCoords, int32_t state
     if (w == nullptr)
     {
         context_show_cursor();
-        _inputState = INPUT_STATE_RESET;
+        _inputState = InputState::Reset;
         return;
     }
 
@@ -258,7 +258,7 @@ static void input_scroll_right(const ScreenCoordsXY& screenCoords, int32_t state
             }
             break;
         case MOUSE_STATE_RIGHT_RELEASE:
-            _inputState = INPUT_STATE_RESET;
+            _inputState = InputState::Reset;
             context_show_cursor();
             break;
     }
@@ -281,10 +281,10 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
 
     switch (_inputState)
     {
-        case INPUT_STATE_RESET:
+        case InputState::Reset:
             window_tooltip_reset(screenCoords);
             // fall-through
-        case INPUT_STATE_NORMAL:
+        case InputState::Normal:
             switch (state)
             {
                 case MOUSE_STATE_RELEASED:
@@ -319,14 +319,14 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                     break;
             }
             break;
-        case INPUT_STATE_WIDGET_PRESSED:
+        case InputState::WidgetPressed:
             input_state_widget_pressed(screenCoords, state, widgetIndex, w, widget);
             break;
-        case INPUT_STATE_POSITIONING_WINDOW:
+        case InputState::PositioningWindow:
             w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
             if (w == nullptr)
             {
-                _inputState = INPUT_STATE_RESET;
+                _inputState = InputState::Reset;
             }
             else
             {
@@ -337,7 +337,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                 }
             }
             break;
-        case INPUT_STATE_VIEWPORT_RIGHT:
+        case InputState::ViewportRight:
             if (state == MOUSE_STATE_RELEASED)
             {
                 input_viewport_drag_continue();
@@ -352,14 +352,14 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                 }
             }
             break;
-        case INPUT_STATE_DROPDOWN_ACTIVE:
+        case InputState::DropdownActive:
             input_state_widget_pressed(screenCoords, state, widgetIndex, w, widget);
             break;
-        case INPUT_STATE_VIEWPORT_LEFT:
+        case InputState::ViewportLeft:
             w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
             if (w == nullptr)
             {
-                _inputState = INPUT_STATE_RESET;
+                _inputState = InputState::Reset;
                 break;
             }
 
@@ -368,7 +368,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                 case MOUSE_STATE_RELEASED:
                     if (w->viewport == nullptr)
                     {
-                        _inputState = INPUT_STATE_RESET;
+                        _inputState = InputState::Reset;
                         break;
                     }
 
@@ -387,7 +387,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                     window_event_tool_drag_call(w, gCurrentToolWidget.widget_index, screenCoords);
                     break;
                 case MOUSE_STATE_LEFT_RELEASE:
-                    _inputState = INPUT_STATE_RESET;
+                    _inputState = InputState::Reset;
                     if (_dragWidget.window_number == w->number)
                     {
                         if ((_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
@@ -407,7 +407,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                     break;
             }
             break;
-        case INPUT_STATE_SCROLL_LEFT:
+        case InputState::ScrollLeft:
             switch (state)
             {
                 case MOUSE_STATE_RELEASED:
@@ -418,11 +418,11 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                     break;
             }
             break;
-        case INPUT_STATE_RESIZING:
+        case InputState::Resizing:
             w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
             if (w == nullptr)
             {
-                _inputState = INPUT_STATE_RESET;
+                _inputState = InputState::Reset;
             }
             else
             {
@@ -436,7 +436,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
                 }
             }
             break;
-        case INPUT_STATE_SCROLL_RIGHT:
+        case InputState::ScrollRight:
             input_scroll_right(screenCoords, state);
             break;
     }
@@ -446,7 +446,7 @@ static void game_handle_input_mouse(const ScreenCoordsXY& screenCoords, int32_t 
 
 void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    _inputState = INPUT_STATE_POSITIONING_WINDOW;
+    _inputState = InputState::PositioningWindow;
     gInputDragLast = screenCoords - w->windowPos;
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
@@ -464,7 +464,7 @@ static void input_window_position_continue(
 
 static void input_window_position_end(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
-    _inputState = INPUT_STATE_NORMAL;
+    _inputState = InputState::Normal;
     gTooltipTimeout = 0;
     gTooltipWidget = _dragWidget;
     window_event_moved_call(w, screenCoords);
@@ -472,7 +472,7 @@ static void input_window_position_end(rct_window* w, const ScreenCoordsXY& scree
 
 static void input_window_resize_begin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    _inputState = INPUT_STATE_RESIZING;
+    _inputState = InputState::Resizing;
     gInputDragLast = screenCoords;
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
@@ -483,7 +483,7 @@ static void input_window_resize_begin(rct_window* w, rct_widgetindex widgetIndex
 
 static void input_window_resize_continue(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
-    if (screenCoords.y < (int32_t)context_get_height() - 2)
+    if (screenCoords.y < static_cast<int32_t>(context_get_height()) - 2)
     {
         auto differentialCoords = screenCoords - gInputDragLast;
         int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w->width;
@@ -495,7 +495,7 @@ static void input_window_resize_continue(rct_window* w, const ScreenCoordsXY& sc
 
 static void input_window_resize_end()
 {
-    _inputState = INPUT_STATE_NORMAL;
+    _inputState = InputState::Normal;
     gTooltipTimeout = 0;
     gTooltipWidget = _dragWidget;
 }
@@ -507,7 +507,7 @@ static void input_window_resize_end()
 static void input_viewport_drag_begin(rct_window* w)
 {
     w->flags &= ~WF_SCROLLING_TO_LOCATION;
-    _inputState = INPUT_STATE_VIEWPORT_RIGHT;
+    _inputState = InputState::ViewportRight;
     _dragWidget.window_classification = w->classification;
     _dragWidget.window_number = w->number;
     _ticksSinceDragStart = 0;
@@ -543,7 +543,7 @@ static void input_viewport_drag_continue()
     if (viewport == nullptr)
     {
         context_show_cursor();
-        _inputState = INPUT_STATE_RESET;
+        _inputState = InputState::Reset;
     }
     else if (differentialCoords.x != 0 || differentialCoords.y != 0)
     {
@@ -555,8 +555,8 @@ static void input_viewport_drag_continue()
             // As the user moved the mouse, don't interpret it as right click in any case.
             _ticksSinceDragStart = 1000;
 
-            differentialCoords.x *= 1 << (viewport->zoom + 1);
-            differentialCoords.y *= 1 << (viewport->zoom + 1);
+            differentialCoords.x = differentialCoords.x * (viewport->zoom + 1);
+            differentialCoords.y = differentialCoords.y * (viewport->zoom + 1);
             if (gConfigGeneral.invert_viewport_drag)
             {
                 w->savedViewPos -= differentialCoords;
@@ -580,7 +580,7 @@ static void input_viewport_drag_continue()
 
 static void input_viewport_drag_end()
 {
-    _inputState = INPUT_STATE_RESET;
+    _inputState = InputState::Reset;
     context_show_cursor();
 }
 
@@ -594,7 +594,7 @@ static void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, const
 
     widget = &w->widgets[widgetIndex];
 
-    _inputState = INPUT_STATE_SCROLL_LEFT;
+    _inputState = InputState::ScrollLeft;
     gPressedWidget.window_classification = w->classification;
     gPressedWidget.window_number = w->number;
     gPressedWidget.widget_index = widgetIndex;
@@ -618,14 +618,14 @@ static void input_scroll_begin(rct_window* w, rct_widgetindex widgetIndex, const
     rct_widget* widg = &w->widgets[widgetIndex];
     rct_scroll* scroll = &w->scrolls[scroll_id];
 
-    int32_t widget_width = widg->right - widg->left - 1;
+    int32_t widget_width = widg->width() - 1;
     if (scroll->flags & VSCROLLBAR_VISIBLE)
-        widget_width -= 11;
+        widget_width -= SCROLLBAR_WIDTH + 1;
     int32_t widget_content_width = std::max(scroll->h_right - widget_width, 0);
 
     int32_t widget_height = widg->bottom - widg->top - 1;
     if (scroll->flags & HSCROLLBAR_VISIBLE)
-        widget_height -= 11;
+        widget_height -= SCROLLBAR_WIDTH + 1;
     int32_t widget_content_height = std::max(scroll->v_bottom - widget_height, 0);
 
     switch (scroll_area)
@@ -723,7 +723,7 @@ static void input_scroll_continue(rct_window* w, rct_widgetindex widgetIndex, co
 
 static void input_scroll_end()
 {
-    _inputState = INPUT_STATE_RESET;
+    _inputState = InputState::Reset;
     invalidate_scroll();
 }
 
@@ -740,9 +740,9 @@ static void input_scroll_part_update_hthumb(rct_window* w, rct_widgetindex widge
         int32_t newLeft;
         newLeft = w->scrolls[scroll_id].h_right;
         newLeft *= x;
-        x = widget->right - widget->left - 21;
+        x = widget->width() - 21;
         if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
-            x -= 11;
+            x -= SCROLLBAR_WIDTH + 1;
         newLeft /= x;
         x = newLeft;
         w->scrolls[scroll_id].flags |= HSCROLLBAR_THUMB_PRESSED;
@@ -750,9 +750,9 @@ static void input_scroll_part_update_hthumb(rct_window* w, rct_widgetindex widge
         newLeft += x;
         if (newLeft < 0)
             newLeft = 0;
-        x = widget->right - widget->left - 1;
+        x = widget->width() - 1;
         if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
-            x -= 11;
+            x -= SCROLLBAR_WIDTH + 1;
         x *= -1;
         x += w->scrolls[scroll_id].h_right;
         if (x < 0)
@@ -779,9 +779,9 @@ static void input_scroll_part_update_vthumb(rct_window* w, rct_widgetindex widge
         int32_t newTop;
         newTop = w->scrolls[scroll_id].v_bottom;
         newTop *= y;
-        y = widget->bottom - widget->top - 21;
+        y = widget->height() - 21;
         if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
-            y -= 11;
+            y -= SCROLLBAR_WIDTH + 1;
         newTop /= y;
         y = newTop;
         w->scrolls[scroll_id].flags |= VSCROLLBAR_THUMB_PRESSED;
@@ -789,9 +789,9 @@ static void input_scroll_part_update_vthumb(rct_window* w, rct_widgetindex widge
         newTop += y;
         if (newTop < 0)
             newTop = 0;
-        y = widget->bottom - widget->top - 1;
+        y = widget->height() - 1;
         if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
-            y -= 11;
+            y -= SCROLLBAR_WIDTH + 1;
         y *= -1;
         y += w->scrolls[scroll_id].v_bottom;
         if (y < 0)
@@ -833,9 +833,9 @@ static void input_scroll_part_update_hright(rct_window* w, rct_widgetindex widge
     {
         w->scrolls[scroll_id].flags |= HSCROLLBAR_RIGHT_PRESSED;
         w->scrolls[scroll_id].h_left += 3;
-        int32_t newLeft = widget->right - widget->left - 1;
+        int32_t newLeft = widget->width() - 1;
         if (w->scrolls[scroll_id].flags & VSCROLLBAR_VISIBLE)
-            newLeft -= 11;
+            newLeft -= SCROLLBAR_WIDTH + 1;
         newLeft *= -1;
         newLeft += w->scrolls[scroll_id].h_right;
         if (newLeft < 0)
@@ -876,9 +876,9 @@ static void input_scroll_part_update_vbottom(rct_window* w, rct_widgetindex widg
     {
         w->scrolls[scroll_id].flags |= VSCROLLBAR_DOWN_PRESSED;
         w->scrolls[scroll_id].v_top += 3;
-        int32_t newTop = widget->bottom - widget->top - 1;
+        int32_t newTop = widget->height() - 1;
         if (w->scrolls[scroll_id].flags & HSCROLLBAR_VISIBLE)
-            newTop -= 11;
+            newTop -= SCROLLBAR_WIDTH + 1;
         newTop *= -1;
         newTop += w->scrolls[scroll_id].v_bottom;
         if (newTop < 0)
@@ -1029,7 +1029,7 @@ static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w,
                 input_window_resize_begin(w, widgetIndex, screenCoords);
             break;
         case WWT_VIEWPORT:
-            _inputState = INPUT_STATE_VIEWPORT_LEFT;
+            _inputState = InputState::ViewportLeft;
             gInputDragLast = screenCoords;
             _dragWidget.window_classification = windowClass;
             _dragWidget.window_number = windowNumber;
@@ -1052,14 +1052,14 @@ static void input_widget_left(const ScreenCoordsXY& screenCoords, rct_window* w,
         default:
             if (widget_is_enabled(w, widgetIndex) && !widget_is_disabled(w, widgetIndex))
             {
-                audio_play_sound(SoundId::Click1, 0, w->windowPos.x + ((widget->left + widget->right) / 2));
+                audio_play_sound(SoundId::Click1, 0, w->windowPos.x + widget->midX());
 
                 // Set new cursor down widget
                 gPressedWidget.window_classification = windowClass;
                 gPressedWidget.window_number = windowNumber;
                 gPressedWidget.widget_index = widgetIndex;
                 _inputFlags |= INPUT_FLAG_WIDGET_PRESSED;
-                _inputState = INPUT_STATE_WIDGET_PRESSED;
+                _inputState = InputState::WidgetPressed;
                 _clickRepeatTicks = 1;
 
                 widget_invalidate_by_number(windowClass, windowNumber, widgetIndex);
@@ -1082,7 +1082,8 @@ void process_mouse_over(const ScreenCoordsXY& screenCoords)
     int32_t cursorId;
 
     cursorId = CURSOR_ARROW;
-    set_map_tooltip_format_arg(0, rct_string_id, STR_NONE);
+    auto ft = Formatter::MapTooltip();
+    ft.Add<rct_string_id>(STR_NONE);
     window = window_find_from_point(screenCoords);
 
     if (window != nullptr)
@@ -1203,7 +1204,7 @@ void input_state_widget_pressed(
     rct_window* cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
     if (cursor_w == nullptr)
     {
-        _inputState = INPUT_STATE_RESET;
+        _inputState = InputState::Reset;
         return;
     }
 
@@ -1232,7 +1233,7 @@ void input_state_widget_pressed(
 
             if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
             {
-                if (_inputState == INPUT_STATE_DROPDOWN_ACTIVE)
+                if (_inputState == InputState::DropdownActive)
                 {
                     gDropdownHighlightedIndex = gDropdownDefaultIndex;
                     window_invalidate_by_class(WC_DROPDOWN);
@@ -1245,78 +1246,79 @@ void input_state_widget_pressed(
             return;
         case MOUSE_STATE_LEFT_RELEASE:
         case MOUSE_STATE_RIGHT_PRESS:
-            if (_inputState == INPUT_STATE_DROPDOWN_ACTIVE)
+            if (_inputState == InputState::DropdownActive)
             {
                 if (w)
                 {
                     auto wClass = w->classification;
                     auto wNumber = w->number;
                     int32_t dropdown_index = 0;
+                    bool dropdownCleanup = false;
 
                     if (w->classification == WC_DROPDOWN)
                     {
                         dropdown_index = dropdown_index_from_point(screenCoords, w);
-                        if (dropdown_index == -1)
-                        {
-                            goto dropdown_cleanup;
-                        }
-
-                        if (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index))
-                        {
-                            goto dropdown_cleanup;
-                        }
-
-                        if (gDropdownItemsFormat[dropdown_index] == DROPDOWN_SEPARATOR)
-                        {
-                            goto dropdown_cleanup;
-                        }
+                        dropdownCleanup = dropdown_index == -1
+                            || (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index))
+                            || gDropdownItemsFormat[dropdown_index] == DROPDOWN_SEPARATOR;
+                        w = nullptr; // To be closed right next
                     }
                     else
                     {
                         if (cursor_w_class != w->classification || cursor_w_number != w->number
                             || widgetIndex != cursor_widgetIndex)
-                            goto dropdown_cleanup;
-                        dropdown_index = -1;
-                        if (_inputFlags & INPUT_FLAG_DROPDOWN_STAY_OPEN)
                         {
-                            if (!(_inputFlags & INPUT_FLAG_DROPDOWN_MOUSE_UP))
+                            dropdownCleanup = true;
+                        }
+                        else
+                        {
+                            dropdown_index = -1;
+                            if (_inputFlags & INPUT_FLAG_DROPDOWN_STAY_OPEN)
                             {
-                                _inputFlags |= INPUT_FLAG_DROPDOWN_MOUSE_UP;
-                                return;
+                                if (!(_inputFlags & INPUT_FLAG_DROPDOWN_MOUSE_UP))
+                                {
+                                    _inputFlags |= INPUT_FLAG_DROPDOWN_MOUSE_UP;
+                                    return;
+                                }
                             }
                         }
                     }
 
                     window_close_by_class(WC_DROPDOWN);
-                    cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
-                    if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
+
+                    if (dropdownCleanup)
                     {
-                        _inputFlags &= ~INPUT_FLAG_WIDGET_PRESSED;
-                        widget_invalidate_by_number(cursor_w_class, cursor_w_number, cursor_widgetIndex);
+                        // Update w as it will be invalid after closing the dropdown window
+                        w = window_find_by_number(wClass, wNumber);
                     }
-
-                    _inputState = INPUT_STATE_NORMAL;
-                    gTooltipTimeout = 0;
-                    gTooltipWidget.widget_index = cursor_widgetIndex;
-                    gTooltipWidget.window_classification = cursor_w_class;
-                    gTooltipWidget.window_number = cursor_w_number;
-
-                    if (dropdown_index == -1)
+                    else
                     {
-                        if (!dropdown_is_disabled(gDropdownDefaultIndex))
+                        cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
+                        if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
                         {
-                            dropdown_index = gDropdownDefaultIndex;
+                            _inputFlags &= ~INPUT_FLAG_WIDGET_PRESSED;
+                            widget_invalidate_by_number(cursor_w_class, cursor_w_number, cursor_widgetIndex);
                         }
+
+                        _inputState = InputState::Normal;
+                        gTooltipTimeout = 0;
+                        gTooltipWidget.widget_index = cursor_widgetIndex;
+                        gTooltipWidget.window_classification = cursor_w_class;
+                        gTooltipWidget.window_number = cursor_w_number;
+
+                        if (dropdown_index == -1)
+                        {
+                            if (!dropdown_is_disabled(gDropdownDefaultIndex))
+                            {
+                                dropdown_index = gDropdownDefaultIndex;
+                            }
+                        }
+                        window_event_dropdown_call(cursor_w, cursor_widgetIndex, dropdown_index);
                     }
-                    window_event_dropdown_call(cursor_w, cursor_widgetIndex, dropdown_index);
-                dropdown_cleanup:
-                    window_close_by_class(WC_DROPDOWN);
-                    // Update w as it will be invalid after closing the dropdown window
-                    w = window_find_by_number(wClass, wNumber);
                 }
             }
 
-            _inputState = INPUT_STATE_NORMAL;
+            _inputState = InputState::Normal;
 
             if (state == MOUSE_STATE_RIGHT_PRESS)
             {
@@ -1333,7 +1335,7 @@ void input_state_widget_pressed(
                 break;
 
             {
-                int32_t mid_point_x = (widget->left + widget->right) / 2 + w->windowPos.x;
+                int32_t mid_point_x = widget->midX() + w->windowPos.x;
                 audio_play_sound(SoundId::Click2, 0, mid_point_x);
             }
             if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
@@ -1351,7 +1353,7 @@ void input_state_widget_pressed(
     }
 
     _clickRepeatTicks = 0;
-    if (_inputState != INPUT_STATE_DROPDOWN_ACTIVE)
+    if (_inputState != InputState::DropdownActive)
     {
         // Hold down widget and drag outside of area??
         if (_inputFlags & INPUT_FLAG_WIDGET_PRESSED)
@@ -1482,7 +1484,7 @@ static void input_update_tooltip(rct_window* w, rct_widgetindex widgetIndex, con
  */
 int32_t get_next_key()
 {
-    uint8_t* keysPressed = (uint8_t*)context_get_keys_pressed();
+    uint8_t* keysPressed = const_cast<uint8_t*>(context_get_keys_pressed());
     for (int32_t i = 0; i < 221; i++)
     {
         if (keysPressed[i])
@@ -1503,7 +1505,7 @@ int32_t get_next_key()
  */
 void set_cursor(uint8_t cursor_id)
 {
-    if (_inputState == INPUT_STATE_RESIZING)
+    if (_inputState == InputState::Resizing)
     {
         cursor_id = CURSOR_DIAGONAL_ARROWS;
     }
@@ -1591,8 +1593,9 @@ void input_scroll_viewport(const ScreenCoordsXY& scrollScreenCoords)
 
     const int32_t speed = gConfigGeneral.edge_scrolling_speed;
 
-    int32_t dx = scrollScreenCoords.x * (speed << viewport->zoom);
-    int32_t dy = scrollScreenCoords.y * (speed << viewport->zoom);
+    int32_t multiplier = speed * viewport->zoom;
+    int32_t dx = scrollScreenCoords.x * multiplier;
+    int32_t dy = scrollScreenCoords.y * multiplier;
 
     if (scrollScreenCoords.x != 0)
     {
@@ -1602,8 +1605,8 @@ void input_scroll_viewport(const ScreenCoordsXY& scrollScreenCoords)
         int32_t y = mainWindow->savedViewPos.y + viewport->view_height / 2;
         int32_t y_dy = mainWindow->savedViewPos.y + viewport->view_height / 2 + dy;
 
-        auto mapCoord = viewport_coord_to_map_coord(x, y, 0);
-        auto mapCoord_dy = viewport_coord_to_map_coord(x, y_dy, 0);
+        auto mapCoord = viewport_coord_to_map_coord({ x, y }, 0);
+        auto mapCoord_dy = viewport_coord_to_map_coord({ x, y_dy }, 0);
 
         // Check if we're crossing the boundary
         // Clamp to the map minimum value

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -71,13 +71,13 @@ static void paint_boat_hire_station(
 
     if (direction & 1)
     {
-        paint_util_push_tunnel_right(session, height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
             session, ride, stationObj, session->MapPosition, direction, height, tileElement, session->CurrentRotation);
     }
     else
     {
-        paint_util_push_tunnel_left(session, height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
             session, ride, stationObj, session->MapPosition, direction, height, tileElement, session->CurrentRotation);
     }
@@ -140,7 +140,7 @@ static void paint_boat_hire_track_right_quarter_turn_1_tile(
 /**
  * rct2: 0x008B0D60
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_boat_hire(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_boat_hire(int32_t trackType)
 {
     switch (trackType)
     {

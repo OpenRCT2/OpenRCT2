@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -37,13 +37,11 @@ static void paint_merry_go_round_structure(
     if (rideEntry == nullptr)
         return;
 
-    Vehicle* vehicle = nullptr;
     uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
-
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        vehicle = GET_VEHICLE(ride->vehicles[0]);
         session->CurrentlyDrawnItem = vehicle;
 
         if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
@@ -174,7 +172,7 @@ static void paint_merry_go_round(
 /**
  * rct2: 0x0076190C
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType, int32_t direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {
