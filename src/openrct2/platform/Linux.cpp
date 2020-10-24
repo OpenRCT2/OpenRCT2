@@ -109,7 +109,7 @@ uint16_t platform_get_locale_language()
     return LANGUAGE_ENGLISH_UK;
 }
 
-uint8_t platform_get_locale_currency()
+CurrencyFormat platform_get_locale_currency()
 {
     char* langstring = setlocale(LC_MONETARY, "");
 
