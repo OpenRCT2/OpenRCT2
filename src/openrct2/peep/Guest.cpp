@@ -1491,7 +1491,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     bool hasVoucher = false;
 
-    bool isRainingAndUmbrella = false;
+    bool isRainingAndUmbrella = shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining();
 
     if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
         && (VoucherShopItem == shopItem))
@@ -1547,10 +1547,9 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         return false;
     }
 
-    if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
+    if (isRainingAndUmbrella)
     {
-        // goto loc_69B119;  replaced by "else if" below
-        std::cout << "It's raining and I'm considering an umbrella\n";
+        // do nothing for now
     }
     else if ((shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
     {
@@ -1560,7 +1559,6 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             return false;
     }
 
-    // loc_69B119: replaced by "else" above
     if (!hasVoucher)
     {
         if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -1587,14 +1585,12 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         if (itemValue < price)
         {
             itemValue -= price;
-            if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
+            if (isRainingAndUmbrella)
             {
-                // goto loc_69B221; now using below variable to skip all the code
-                // until the place where loc_69B221 was
-                isRainingAndUmbrella = true;
+                // do nothing for now
             }
 
-            if (isRainingAndUmbrella == false)
+            if (!isRainingAndUmbrella)
             {
                 itemValue = -itemValue;
                 if (Happiness >= 128)
@@ -1614,7 +1610,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
                 }
             }
         }
-        else if (isRainingAndUmbrella == false)
+        else if (!isRainingAndUmbrella)
         {
             itemValue -= price;
             itemValue = std::max(8, itemValue);
@@ -1637,7 +1633,6 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         }
     }
 
-    // loc_69B221: replaced by "isRainingAndUmbrella" variable
     if (!hasVoucher)
     {
         if (gClimateCurrent.Temperature >= 21)
