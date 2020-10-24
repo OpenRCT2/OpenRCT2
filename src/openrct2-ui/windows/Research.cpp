@@ -329,7 +329,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         rct_string_id label = STR_RESEARCH_TYPE_LABEL;
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH)
         {
-            strings[0] = ResearchCategoryNames[gResearchNextItem->category];
+            strings[0] = ResearchCategoryNames[EnumValue(gResearchNextItem->category)];
             if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING)
             {
                 strings[0] = gResearchNextItem->GetName();

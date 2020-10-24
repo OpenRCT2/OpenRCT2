@@ -576,7 +576,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
 
     // Item category
     screenPos.x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
-    stringId = EditorInventionsResearchCategories[researchItem->category];
+    stringId = EditorInventionsResearchCategories[EnumValue(researchItem->category)];
     gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, COLOUR_BLACK, screenPos);
 }
 

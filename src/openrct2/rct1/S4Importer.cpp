@@ -2632,7 +2632,7 @@ private:
                     dst->baseRideType = rideType;
                     dst->type = Research::EntryType::Ride;
                     dst->flags = 0;
-                    dst->category = RideTypeDescriptors[rideType].Category;
+                    dst->category = static_cast<ResearchCategory>(RideTypeDescriptors[rideType].Category);
                 }
             }
         }
@@ -2651,7 +2651,7 @@ private:
                     dst->baseRideType = rideType;
                     dst->type = Research::EntryType::Ride;
                     dst->flags = 0;
-                    dst->category = RideTypeDescriptors[rideType].Category;
+                    dst->category = static_cast<ResearchCategory>(RideTypeDescriptors[rideType].Category);
                 }
             }
         }
@@ -2663,7 +2663,7 @@ private:
             {
                 dst->entryIndex = entryIndex;
                 dst->type = Research::EntryType::Scenery;
-                dst->category = EnumValue(ResearchCategory::SceneryGroup);
+                dst->category = ResearchCategory::SceneryGroup;
                 dst->flags = 0;
             }
         }

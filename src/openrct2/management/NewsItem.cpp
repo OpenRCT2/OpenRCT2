@@ -377,7 +377,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             break;
         case News::ItemType::Research:
         {
-            auto item = ResearchItem(subject, 0, 0);
+            auto item = ResearchItem(subject, ResearchCategory::Transport, 0);
             if (item.type == Research::EntryType::Ride)
             {
                 auto intent = Intent(INTENT_ACTION_NEW_RIDE_OF_TYPE);

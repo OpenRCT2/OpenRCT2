@@ -82,7 +82,7 @@ void research_update_uncompleted_types()
 
     for (auto const& researchItem : gResearchItemsUninvented)
     {
-        uncompletedResearchTypes |= (1 << researchItem.category);
+        uncompletedResearchTypes |= EnumToFlag(researchItem.category);
     }
 
     gResearchUncompletedCategories = uncompletedResearchTypes;
@@ -165,7 +165,7 @@ static void research_next_design()
                 return;
             }
         }
-        else if (ignoreActiveResearchTypes || (gResearchPriorities & (1 << researchItem.category)))
+        else if (ignoreActiveResearchTypes || (gResearchPriorities & EnumToFlag(researchItem.category)))
         {
             break;
         }
@@ -469,7 +469,7 @@ void research_populate_list_random()
         {
             if (rideType != RIDE_TYPE_NULL)
             {
-                uint8_t category = RideTypeDescriptors[rideType].Category;
+                ResearchCategory category = static_cast<ResearchCategory>(RideTypeDescriptors[rideType].Category);
                 research_insert_ride_entry(rideType, i, category, researched);
             }
         }
@@ -489,7 +489,7 @@ void research_populate_list_random()
     }
 }
 
-bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, uint8_t category, bool researched)
+bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched)
 {
     if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
@@ -508,7 +508,7 @@ void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
     {
         if (rideType != RIDE_TYPE_NULL)
         {
-            uint8_t category = RideTypeDescriptors[rideType].Category;
+            ResearchCategory category = static_cast<ResearchCategory>(RideTypeDescriptors[rideType].Category);
             research_insert_ride_entry(rideType, entryIndex, category, researched);
         }
     }
@@ -519,7 +519,7 @@ bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool resea
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto tmpItem = ResearchItem(
-            Research::EntryType::Scenery, entryIndex, RIDE_TYPE_NULL, EnumValue(ResearchCategory::SceneryGroup), 0);
+            Research::EntryType::Scenery, entryIndex, RIDE_TYPE_NULL, ResearchCategory::SceneryGroup, 0);
         research_insert(tmpItem, researched);
         return true;
     }

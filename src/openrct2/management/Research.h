@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
+#include "../util/Util.h"
 
 #include <optional>
 
@@ -33,6 +34,17 @@ enum
     RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED = (1 << 6),
 };
 
+enum class ResearchCategory : uint8_t
+{
+    Transport,
+    Gentle,
+    Rollercoaster,
+    Thrill,
+    Water,
+    Shop,
+    SceneryGroup
+};
+
 struct ResearchItem
 {
     union
@@ -46,7 +58,7 @@ struct ResearchItem
         };
     };
     uint8_t flags;
-    uint8_t category;
+    ResearchCategory category;
 
     bool IsNull() const;
     void SetNull();
@@ -56,14 +68,15 @@ struct ResearchItem
     rct_string_id GetName() const;
 
     ResearchItem() = default;
-    constexpr ResearchItem(uint32_t _rawValue, uint8_t _category, uint8_t _flags)
+    constexpr ResearchItem(uint32_t _rawValue, ResearchCategory _category, uint8_t _flags)
         : rawValue(_rawValue)
         , flags(_flags)
         , category(_category)
     {
     }
     ResearchItem(
-        Research::EntryType _type, ObjectEntryIndex _entryIndex, uint8_t _baseRideType, uint8_t _category, uint8_t _flags)
+        Research::EntryType _type, ObjectEntryIndex _entryIndex, uint8_t _baseRideType, ResearchCategory _category,
+        uint8_t _flags)
         : entryIndex(_entryIndex)
         , baseRideType(_baseRideType)
         , type(_type)
@@ -85,7 +98,7 @@ struct ResearchItem
             retItem.baseRideType = OpenRCT2RideTypeToRCT2RideType(baseRideType);
             retItem.type = static_cast<uint8_t>(type);
             retItem.flags = (flags & ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE);
-            retItem.category = category;
+            retItem.category = EnumValue(category);
         }
 
         return retItem;
@@ -98,7 +111,7 @@ struct ResearchItem
         {
             rawValue = 0;
             flags = 0;
-            category = 0;
+            category = ResearchCategory::Transport;
             SetNull();
         }
         else
@@ -109,7 +122,7 @@ struct ResearchItem
                                                 : oldResearchItem.baseRideType;
             type = Research::EntryType{ oldResearchItem.type };
             flags = oldResearchItem.flags;
-            category = oldResearchItem.category;
+            category = static_cast<ResearchCategory>(oldResearchItem.category);
         }
     }
 };
@@ -138,17 +151,6 @@ enum
     RESEARCH_STAGE_FINISHED_ALL
 };
 
-enum class ResearchCategory : uint8_t
-{
-    Transport,
-    Gentle,
-    Rollercoaster,
-    Thrill,
-    Water,
-    Shop,
-    SceneryGroup
-};
-
 extern uint8_t gResearchFundingLevel;
 extern uint8_t gResearchPriorities;
 extern uint16_t gResearchProgress;
@@ -173,7 +175,7 @@ void research_finish_item(ResearchItem* researchItem);
 void research_insert(ResearchItem item, bool researched);
 void research_remove(ResearchItem* researchItem);
 
-bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, uint8_t category, bool researched);
+bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
 void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
 bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
 
