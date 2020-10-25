@@ -723,7 +723,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
             autosaveFiles[i].resize(MAX_PATH, 0);
             if (scanner->Next())
             {
-                platform_get_user_directory(autosaveFiles[i].data(), folderDirectory.c_str(), sizeof(utf8) * MAX_PATH);
+                safe_strcpy(autosaveFiles[i].data(), folderDirectory.c_str(), sizeof(utf8) * MAX_PATH);
                 safe_strcat_path(autosaveFiles[i].data(), "autosave", sizeof(utf8) * MAX_PATH);
                 safe_strcat_path(autosaveFiles[i].data(), scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
             }
@@ -739,7 +739,10 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     for (size_t i = 0; numAutosavesToDelete > 0; i++, numAutosavesToDelete--)
     {
-        platform_file_delete(autosaveFiles[i].data());
+        if (!platform_file_delete(autosaveFiles[i].data()))
+        {
+            log_warning("Failed to delete autosave file: %s", autosaveFiles[i].data());
+        }
     }
 }
 
