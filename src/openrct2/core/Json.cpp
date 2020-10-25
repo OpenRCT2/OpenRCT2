@@ -9,7 +9,7 @@
 
 #include "Json.hpp"
 
-#include "FileStream.hpp"
+#include "FileStream.h"
 #include "Memory.hpp"
 #include "String.hpp"
 

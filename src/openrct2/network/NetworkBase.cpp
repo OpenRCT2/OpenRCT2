@@ -52,7 +52,7 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include "../actions/GameAction.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
-#    include "../core/FileStream.hpp"
+#    include "../core/FileStream.h"
 #    include "../core/MemoryStream.h"
 #    include "../core/Nullable.hpp"
 #    include "../core/Path.hpp"

@@ -31,7 +31,7 @@
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
-#include "core/FileStream.hpp"
+#include "core/FileStream.h"
 #include "core/Guard.hpp"
 #include "core/Http.h"
 #include "core/MemoryStream.h"

@@ -10,7 +10,7 @@
 #include "LanguagePack.h"
 
 #include "../common.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/RTL.h"
 #include "../core/String.hpp"

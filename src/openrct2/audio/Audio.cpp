@@ -14,7 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/File.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../interface/Viewport.h"

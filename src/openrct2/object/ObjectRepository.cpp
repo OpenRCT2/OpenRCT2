@@ -15,7 +15,7 @@
 #include "../config/Config.h"
 #include "../core/Console.hpp"
 #include "../core/FileIndex.hpp"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"

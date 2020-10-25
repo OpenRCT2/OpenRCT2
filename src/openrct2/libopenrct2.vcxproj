@@ -160,7 +160,7 @@
     <ClInclude Include="core\File.h" />
     <ClInclude Include="core\FileIndex.hpp" />
     <ClInclude Include="core\FileScanner.h" />
-    <ClInclude Include="core\FileStream.hpp" />
+    <ClInclude Include="core\FileStream.h" />
     <ClInclude Include="core\FileSystem.hpp" />
     <ClInclude Include="core\FileWatcher.h" />
     <ClInclude Include="core\Guard.hpp" />
@@ -489,6 +489,7 @@
     <ClCompile Include="core\Diagnostics.cpp" />
     <ClCompile Include="core\File.cpp" />
     <ClCompile Include="core\FileScanner.cpp" />
+    <ClCompile Include="core\FileStream.cpp" />
     <ClCompile Include="core\FileWatcher.cpp" />
     <ClCompile Include="core\Guard.cpp" />
     <ClCompile Include="core\Http.cURL.cpp" />

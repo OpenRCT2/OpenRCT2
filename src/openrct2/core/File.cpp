@@ -16,7 +16,7 @@
 #include "../platform/Platform2.h"
 #include "../util/Util.h"
 #include "File.h"
-#include "FileStream.hpp"
+#include "FileStream.h"
 #include "String.hpp"
 
 #include <fstream>

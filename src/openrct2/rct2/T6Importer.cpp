@@ -9,7 +9,7 @@
 
 #include "../TrackImporter.h"
 #include "../config/Config.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
