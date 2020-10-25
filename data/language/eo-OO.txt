@@ -4099,77 +4099,57 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :Bazobloko
-
-[TTRFTL02]
-STR_NAME    :Tagmento
-
-[TTRFTL03]
-STR_NAME    :Tagmento
-
-[TTRFTL04]
-STR_NAME    :Tagmento
-
-[TTRFTL07]
-STR_NAME    :Tagmento
-
-[TTRFTL08]
-STR_NAME    :Tagmento
 
 [TTPIRF02]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTPIRF03]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTPIRF04]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTPIRF05]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTPIRF07]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTPIRF08]
-STR_NAME    :Tagmento
-
-[MG-PRAR]
-STR_NAME    :Muro kun Koridoro
+STR_NAME    :Tegmento
 
 [TTRFWD01]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTRFWD02]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTRFWD03]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTRFWD04]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTRFWD05]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTRFWD06]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTRFWD07]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTRFWD08]
-STR_NAME    :Tagmento
+STR_NAME    :Tegmento
 
 [TTRFGL01]
-STR_NAME    :Vitra Tagmento
+STR_NAME    :Vitra Tegmento
 
 [TTRFGL02]
-STR_NAME    :Vitra Tagmento
+STR_NAME    :Vitra Tegmento
 
 [TTRFGL03]
-STR_NAME    :Vitra Tagmento
+STR_NAME    :Vitra Tegmento
 
 [ACWW33]
 STR_NAME    :Muro kun Lignaj Fostoj
@@ -4472,3 +4452,11 @@ STR_DTLS    :Granda jara muzikfestivalo okazas sur via tereno. Konstruu mojosan 
 STR_SCNR    :Rokenrolo - Rokenrolo
 STR_PARK    :La Revivigo de Rokenrolo
 STR_DTLS    :Ĉi tiu maljuniĝa amuzparko vidis pli bonajn tagojn. Helpu la posedanton doni al ĝi eksmodan rokenrolan renovigon kaj transformi la lokon en sukcesan ejon.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Pando-Mondo
+STR_PARK    :Pando-Mondo
+STR_DTLS    :Aldonu pli da atrakcioj kaj allogu pli da homoj al ĉi tiu pando-tema amuzparko

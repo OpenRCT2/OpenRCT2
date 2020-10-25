@@ -3659,6 +3659,8 @@ STR_6392    :Konnte {STRING} an diesem Pfad nicht finden.
 STR_6393    :Zielauswahl
 STR_6394    :Ziel
 STR_6395    :Pflege
+STR_6396    :Bildschirmschoner und -stromsparen deaktivieren
+STR_6397    :{SMALLFONT}{BLACK}Falls ausgewählt, werden der Bildschirmschoner und andere Bildschirmstromsparfunktionen blockiert, solange OpenRCT2 läuft.
 
 #############
 # Scenarios #
@@ -4395,3 +4397,11 @@ STR_DTLS    :Auf Ihrem Land findet jährlich ein großes Musikfestival statt. Ba
 STR_SCNR    :Rock´n´Roll - Rock´n´Roll
 STR_PARK    :Rock´n´Roll-Revival
 STR_DTLS    :Dieser Freizeitpark ist ein wenig in die Jahre gekommen. Helfen Sie dem Besitzer, ihm einen Rock´n´Roll-Anstrich zu geben und ihn zu einem beliebten Ausflugsziel zu machen.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Pandawelt
+STR_PARK    :Pandawelt
+STR_DTLS    :Bauen Sie weitere Fahrgeschäfte und ziehen Sie neue Gäste in diesem Park im Pandastil an
