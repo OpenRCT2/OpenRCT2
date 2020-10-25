@@ -167,7 +167,7 @@
     <ClInclude Include="core\Http.h" />
     <ClInclude Include="core\Imaging.h" />
     <ClInclude Include="core\IStream.hpp" />
-    <ClInclude Include="core\JobPool.hpp" />
+    <ClInclude Include="core\JobPool.h" />
     <ClInclude Include="core\Json.hpp" />
     <ClInclude Include="core\JsonFwd.hpp" />
     <ClInclude Include="core\Memory.hpp" />
@@ -496,6 +496,7 @@
     <ClCompile Include="core\Http.WinHttp.cpp" />
     <ClCompile Include="core\Imaging.cpp" />
     <ClCompile Include="core\IStream.cpp" />
+    <ClCompile Include="core\JobPool.cpp" />
     <ClCompile Include="core\Json.cpp" />
     <ClCompile Include="core\MemoryStream.cpp" />
     <ClCompile Include="core\Path.cpp" />
