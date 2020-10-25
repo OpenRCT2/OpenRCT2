@@ -64,7 +64,7 @@ struct GeneralConfiguration
     TemperatureUnit temperature_format;
     bool show_height_as_units;
     int32_t date_format;
-    int32_t currency_format;
+    CurrencyType currency_format;
     int32_t custom_currency_rate;
     CurrencyAffix custom_currency_affix;
     utf8* custom_currency_symbol;

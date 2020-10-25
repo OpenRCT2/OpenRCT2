@@ -51,25 +51,25 @@ namespace Config
         ConfigEnumEntry<MeasurementFormat>("SI", MeasurementFormat::SI),
     });
 
-    static const auto Enum_Currency = ConfigEnum<int32_t>({
-        ConfigEnumEntry<int32_t>("GBP", CURRENCY_POUNDS),
-        ConfigEnumEntry<int32_t>("USD", CURRENCY_DOLLARS),
-        ConfigEnumEntry<int32_t>("FRF", CURRENCY_FRANC),
-        ConfigEnumEntry<int32_t>("DEM", CURRENCY_DEUTSCHE_MARK),
-        ConfigEnumEntry<int32_t>("JPY", CURRENCY_YEN),
-        ConfigEnumEntry<int32_t>("ESP", CURRENCY_PESETA),
-        ConfigEnumEntry<int32_t>("ITL", CURRENCY_LIRA),
-        ConfigEnumEntry<int32_t>("NLG", CURRENCY_GUILDERS),
-        ConfigEnumEntry<int32_t>("SEK", CURRENCY_KRONA),
-        ConfigEnumEntry<int32_t>("EUR", CURRENCY_EUROS),
-        ConfigEnumEntry<int32_t>("KRW", CURRENCY_WON),
-        ConfigEnumEntry<int32_t>("RUB", CURRENCY_ROUBLE),
-        ConfigEnumEntry<int32_t>("CZK", CURRENCY_CZECH_KORUNA),
-        ConfigEnumEntry<int32_t>("HKD", CURRENCY_HKD),
-        ConfigEnumEntry<int32_t>("TWD", CURRENCY_TWD),
-        ConfigEnumEntry<int32_t>("CNY", CURRENCY_YUAN),
-        ConfigEnumEntry<int32_t>("HUF", CURRENCY_FORINT),
-        ConfigEnumEntry<int32_t>("CUSTOM", CURRENCY_CUSTOM),
+    static const auto Enum_Currency = ConfigEnum<CurrencyType>({
+        ConfigEnumEntry<CurrencyType>("GBP", CurrencyType::Pounds),
+        ConfigEnumEntry<CurrencyType>("USD", CurrencyType::Dollars),
+        ConfigEnumEntry<CurrencyType>("FRF", CurrencyType::Franc),
+        ConfigEnumEntry<CurrencyType>("DEM", CurrencyType::DeutscheMark),
+        ConfigEnumEntry<CurrencyType>("JPY", CurrencyType::Yen),
+        ConfigEnumEntry<CurrencyType>("ESP", CurrencyType::Peseta),
+        ConfigEnumEntry<CurrencyType>("ITL", CurrencyType::Lira),
+        ConfigEnumEntry<CurrencyType>("NLG", CurrencyType::Guilders),
+        ConfigEnumEntry<CurrencyType>("SEK", CurrencyType::Krona),
+        ConfigEnumEntry<CurrencyType>("EUR", CurrencyType::Euros),
+        ConfigEnumEntry<CurrencyType>("KRW", CurrencyType::Won),
+        ConfigEnumEntry<CurrencyType>("RUB", CurrencyType::Rouble),
+        ConfigEnumEntry<CurrencyType>("CZK", CurrencyType::CzechKoruna),
+        ConfigEnumEntry<CurrencyType>("HKD", CurrencyType::HKD),
+        ConfigEnumEntry<CurrencyType>("TWD", CurrencyType::TWD),
+        ConfigEnumEntry<CurrencyType>("CNY", CurrencyType::Yuan),
+        ConfigEnumEntry<CurrencyType>("HUF", CurrencyType::Forint),
+        ConfigEnumEntry<CurrencyType>("CUSTOM", CurrencyType::Custom),
     });
 
     static const auto Enum_CurrencySymbolAffix = ConfigEnum<CurrencyAffix>({
@@ -144,7 +144,8 @@ namespace Config
             model->autosave_frequency = reader->GetInt32("autosave", AUTOSAVE_EVERY_5MINUTES);
             model->autosave_amount = reader->GetInt32("autosave_amount", DEFAULT_NUM_AUTOSAVES_TO_KEEP);
             model->confirmation_prompt = reader->GetBoolean("confirmation_prompt", false);
-            model->currency_format = reader->GetEnum<int32_t>("currency_format", platform_get_locale_currency(), Enum_Currency);
+            model->currency_format = reader->GetEnum<CurrencyType>(
+                "currency_format", platform_get_locale_currency(), Enum_Currency);
             model->custom_currency_rate = reader->GetInt32("custom_currency_rate", 10);
             model->custom_currency_affix = reader->GetEnum<CurrencyAffix>(
                 "custom_currency_affix", CurrencyAffix::Suffix, Enum_CurrencySymbolAffix);
@@ -230,7 +231,7 @@ namespace Config
         writer->WriteInt32("autosave", model->autosave_frequency);
         writer->WriteInt32("autosave_amount", model->autosave_amount);
         writer->WriteBoolean("confirmation_prompt", model->confirmation_prompt);
-        writer->WriteEnum<int32_t>("currency_format", model->currency_format, Enum_Currency);
+        writer->WriteEnum<CurrencyType>("currency_format", model->currency_format, Enum_Currency);
         writer->WriteInt32("custom_currency_rate", model->custom_currency_rate);
         writer->WriteEnum<CurrencyAffix>("custom_currency_affix", model->custom_currency_affix, Enum_CurrencySymbolAffix);
         writer->WriteString("custom_currency_symbol", model->custom_currency_symbol);

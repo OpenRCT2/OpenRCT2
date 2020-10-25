@@ -1116,8 +1116,8 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
             break;
         case WIDX_CURRENCY_DROPDOWN:
         {
-            uint32_t num_items = CURRENCY_END + 1;             // All the currencies plus the separator
-            size_t num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
+            uint32_t num_items = EnumValue(CurrencyType::Count) + 1;             // All the currencies plus the separator
+            size_t num_ordinary_currencies = EnumValue(CurrencyType::Count) - 1; // All the currencies except custom currency
 
             for (size_t i = 0; i < num_ordinary_currencies; i++)
             {
@@ -1128,17 +1128,17 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
             gDropdownItemsFormat[num_ordinary_currencies] = DROPDOWN_SEPARATOR;
 
             gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[CURRENCY_CUSTOM].stringId;
+            gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId;
 
             window_options_show_dropdown(w, widget, num_items);
 
-            if (gConfigGeneral.currency_format == CURRENCY_CUSTOM)
+            if (gConfigGeneral.currency_format == CurrencyType::Custom)
             {
-                dropdown_set_checked(gConfigGeneral.currency_format + 1, true);
+                dropdown_set_checked(EnumValue(gConfigGeneral.currency_format) + 1, true);
             }
             else
             {
-                dropdown_set_checked(gConfigGeneral.currency_format, true);
+                dropdown_set_checked(EnumValue(gConfigGeneral.currency_format), true);
             }
             break;
         }
@@ -1204,14 +1204,14 @@ static void window_options_culture_dropdown(rct_window* w, rct_widgetindex widge
             window_options_update_height_markers();
             break;
         case WIDX_CURRENCY_DROPDOWN:
-            if (dropdownIndex == CURRENCY_CUSTOM + 1)
+            if (dropdownIndex == EnumValue(CurrencyType::Custom) + 1)
             { // Add 1 because the separator occupies a position
-                gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex) - 1;
+                gConfigGeneral.currency_format = static_cast<CurrencyType>(dropdownIndex - 1);
                 context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
             }
             else
             {
-                gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex);
+                gConfigGeneral.currency_format = static_cast<CurrencyType>(dropdownIndex);
             }
             config_save_default();
             gfx_invalidate_screen();
@@ -1276,7 +1276,8 @@ static void window_options_culture_invalidate(rct_window* w)
     ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
 
     // Currency: pounds, dollars, etc. (10 total)
-    window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
+    window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)]
+                                                             .stringId;
 
     // Distance: metric / imperial / si
     {
