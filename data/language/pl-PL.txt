@@ -554,7 +554,7 @@ STR_1168    :Opcje
 STR_1169    :(Brak)
 STR_1170    :{STRING}
 STR_1171    :{RED}Zamknięte - -
-STR_1172    :{YELLOW}{STRINGID} - - 
+STR_1172    :{YELLOW}{STRINGID}
 STR_1173    :{SMALLFONT}{BLACK}Budowa chodników
 STR_1174    :Baner blokuje
 STR_1175    :Nie można tego postawić na nierównej ścieżce
@@ -3649,6 +3649,8 @@ STR_6392    :Nie można znaleźć {STRING} w tej ścieżce
 STR_6393    :Wybór celu
 STR_6394    :Cel
 STR_6395    :Utrzymanie
+STR_6396    :Wyłącz wygaszacz ekranu i oszczędzanie energii monitora
+STR_6397    :{SMALLFONT}{BLACK}Jeśli zaznaczone, wygaszacz ekranu i inne funkcje oszczędzania ekranu zostaną wyłączone gdy OpenRCT2 jest uruchomione.
 
 #############
 # Scenarios #
@@ -4097,24 +4099,6 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :Base Block
-
-[TTRFTL02]
-STR_NAME    :Roof
-
-[TTRFTL03]
-STR_NAME    :Roof
-
-[TTRFTL04]
-STR_NAME    :Roof
-
-[TTRFTL07]
-STR_NAME    :Roof
-
-[TTRFTL08]
-STR_NAME    :Roof
-
 [TTPIRF02]
 STR_NAME    :Roof
 
@@ -4132,9 +4116,6 @@ STR_NAME    :Roof
 
 [TTPIRF08]
 STR_NAME    :Roof
-
-[MG-PRAR]
-STR_NAME    :Wall with Passageway
 
 [TTRFWD01]
 STR_NAME    :Roof
@@ -4470,3 +4451,11 @@ STR_DTLS    :Na twoim terenie odbywa się wielki doroczny festiwal muzyczny. Wyb
 STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
 STR_PARK    :Rock 'n' Roll Revival
 STR_DTLS    :Ten starzejący się lunapark ma najlepsze dni za sobą. Pomóż właścicielom nadać mu stylowy, rockandrollowy wygląd i przekształć to miejsce w dochodowe przedsięwzięcie.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Świat Pand
+STR_PARK    :Świat Pand
+STR_DTLS    :Dodaj nowe atrakcje i sprowadź więcej osób do tego parku o tematyce zbudowanej wokół pand.
