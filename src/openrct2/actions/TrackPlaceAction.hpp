@@ -18,6 +18,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
+#include "RideSetSetting.hpp"
 
 class TrackPlaceActionResult final : public GameActions::Result
 {
@@ -546,43 +547,51 @@ public:
 
             cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice) * 5;
 
-            invalidate_test_results(ride);
-            switch (_trackType)
+            if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
-                case TrackElemType::OnRidePhoto:
-                    ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
-                    break;
-                case TrackElemType::CableLiftHill:
-                    if (trackBlock->index != 0)
-                        break;
-                    ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
-                    ride->CableLiftLoc = mapLoc;
-                    break;
-                case TrackElemType::BlockBrakes:
-                    ride->num_block_brakes++;
-                    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
-
-                    ride->mode = RideMode::ContinuousCircuitBlockSectioned;
-                    if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
-                        ride->mode = RideMode::PoweredLaunchBlockSectioned;
-
-                    break;
-            }
-
-            if (trackBlock->index == 0)
-            {
+                invalidate_test_results(ride);
                 switch (_trackType)
                 {
-                    case TrackElemType::Up25ToFlat:
-                    case TrackElemType::Up60ToFlat:
-                    case TrackElemType::DiagUp25ToFlat:
-                    case TrackElemType::DiagUp60ToFlat:
-                        if (!(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED))
-                            break;
-                        [[fallthrough]];
-                    case TrackElemType::CableLiftHill:
-                        ride->num_block_brakes++;
+                    case TrackElemType::OnRidePhoto:
+                        ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                         break;
+                    case TrackElemType::CableLiftHill:
+                        if (trackBlock->index != 0)
+                            break;
+                        ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
+                        ride->CableLiftLoc = mapLoc;
+                        break;
+                    case TrackElemType::BlockBrakes:
+                    {
+                        ride->num_block_brakes++;
+                        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
+
+                        RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
+                        if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
+                            newMode = RideMode::PoweredLaunchBlockSectioned;
+
+                        auto rideSetSetting = RideSetSettingAction(
+                            ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                        GameActions::ExecuteNested(&rideSetSetting);
+                        break;
+                    }
+                }
+
+                if (trackBlock->index == 0)
+                {
+                    switch (_trackType)
+                    {
+                        case TrackElemType::Up25ToFlat:
+                        case TrackElemType::Up60ToFlat:
+                        case TrackElemType::DiagUp25ToFlat:
+                        case TrackElemType::DiagUp60ToFlat:
+                            if (!(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED))
+                                break;
+                            [[fallthrough]];
+                        case TrackElemType::CableLiftHill:
+                            ride->num_block_brakes++;
+                            break;
+                    }
                 }
             }
 
@@ -686,7 +695,7 @@ public:
                 }
             }
 
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN)
+            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
                 if (trackBlock->index == 0)
                 {
