@@ -74,7 +74,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 21;
+    static constexpr uint16_t VERSION = 22;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -111,6 +111,7 @@ public:
         if (object != nullptr)
         {
             ObjectRepositoryItem item = {};
+            item.Identifier = object->GetIdentifier();
             item.ObjectEntry = *object->GetObjectEntry();
             item.Path = path;
             item.Name = object->GetName();
@@ -125,6 +126,7 @@ public:
 protected:
     void Serialise(IStream* stream, const ObjectRepositoryItem& item) const override
     {
+        stream->WriteValue(item.Identifier);
         stream->WriteValue(item.ObjectEntry);
         stream->WriteString(item.Path);
         stream->WriteString(item.Name);
@@ -170,6 +172,7 @@ protected:
     {
         ObjectRepositoryItem item;
 
+        item.Identifier = stream->ReadStdString();
         item.ObjectEntry = stream->ReadValue<rct_object_entry>();
         item.Path = stream->ReadStdString();
         item.Name = stream->ReadStdString();

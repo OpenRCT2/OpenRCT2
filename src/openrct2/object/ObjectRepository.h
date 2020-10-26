@@ -37,6 +37,7 @@ struct rct_drawpixelinfo;
 struct ObjectRepositoryItem
 {
     size_t Id;
+    std::string Identifier; // e.g. rct2.c3d
     rct_object_entry ObjectEntry;
     std::string Path;
     std::string Name;
