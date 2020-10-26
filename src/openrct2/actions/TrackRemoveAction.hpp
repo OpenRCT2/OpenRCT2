@@ -18,6 +18,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
+#include "RideSetSetting.hpp"
 
 DEFINE_GAME_ACTION(TrackRemoveAction, GAME_COMMAND_REMOVE_TRACK, GameActions::Result)
 {
@@ -472,12 +473,17 @@ public:
                     if (ride->num_block_brakes == 0)
                     {
                         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                        ride->mode = RideMode::ContinuousCircuit;
+                        RideMode newMode = RideMode::ContinuousCircuit;
                         if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
                         {
-                            ride->mode = RideMode::PoweredLaunch;
+                            newMode = RideMode::PoweredLaunch;
                         }
+
+                        auto rideSetSetting = RideSetSettingAction(
+                            ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                        GameActions::ExecuteNested(&rideSetSetting);
                     }
+
                     break;
             }
 

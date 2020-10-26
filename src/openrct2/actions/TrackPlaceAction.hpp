@@ -18,6 +18,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
+#include "RideSetSetting.hpp"
 
 class TrackPlaceActionResult final : public GameActions::Result
 {
@@ -561,14 +562,19 @@ public:
                         ride->CableLiftLoc = mapLoc;
                         break;
                     case TrackElemType::BlockBrakes:
+                    {
                         ride->num_block_brakes++;
                         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
-                        ride->mode = RideMode::ContinuousCircuitBlockSectioned;
+                        RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
                         if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
-                            ride->mode = RideMode::PoweredLaunchBlockSectioned;
+                            newMode = RideMode::PoweredLaunchBlockSectioned;
 
+                        auto rideSetSetting = RideSetSettingAction(
+                            ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                        GameActions::ExecuteNested(&rideSetSetting);
                         break;
+                    }
                 }
 
                 if (trackBlock->index == 0)
