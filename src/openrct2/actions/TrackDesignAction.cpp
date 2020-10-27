@@ -174,7 +174,7 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
         return MakeResult(GameActions::Status::Disallowed, error_reason);
     }
 
-    if (entryIndex != 0xFF)
+    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto colour = ride_get_unused_preset_vehicle_colour(entryIndex);
         auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
