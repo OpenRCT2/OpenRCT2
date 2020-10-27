@@ -964,19 +964,19 @@ void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
     std::memset(dst, 0, sizeof(rct_sprite));
     switch (src->generic.sprite_identifier)
     {
-        case SPRITE_IDENTIFIER_NULL:
+        case SpriteIdentifier::Null:
             ExportSpriteCommonProperties(&dst->unknown, &src->generic);
             break;
-        case SPRITE_IDENTIFIER_VEHICLE:
+        case SpriteIdentifier::Vehicle:
             ExportSpriteVehicle(&dst->vehicle, &src->vehicle);
             break;
-        case SPRITE_IDENTIFIER_PEEP:
+        case SpriteIdentifier::Peep:
             ExportSpritePeep(&dst->peep, &src->peep);
             break;
-        case SPRITE_IDENTIFIER_MISC:
+        case SpriteIdentifier::Misc:
             ExportSpriteMisc(&dst->unknown, &src->generic);
             break;
-        case SPRITE_IDENTIFIER_LITTER:
+        case SpriteIdentifier::Litter:
             ExportSpriteLitter(&dst->litter, &src->litter);
             break;
         default:

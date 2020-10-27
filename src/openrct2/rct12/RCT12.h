@@ -72,6 +72,8 @@ constexpr const uint8_t RCT12_MAX_ELEMENT_HEIGHT = 255;
 
 constexpr const uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
 
+enum class SpriteIdentifier : uint8_t;
+
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
@@ -627,25 +629,25 @@ assert_struct_size(RCT12EightCarsCorruptElement15, 8);
 
 struct RCT12SpriteBase
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t type;                    // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08
-    uint8_t sprite_height_negative;  // 0x09
-    uint16_t sprite_index;           // 0x0A
-    uint16_t flags;                  // 0x0C
-    int16_t x;                       // 0x0E
-    int16_t y;                       // 0x10
-    int16_t z;                       // 0x12
-    uint8_t sprite_width;            // 0x14
-    uint8_t sprite_height_positive;  // 0x15
-    int16_t sprite_left;             // 0x16
-    int16_t sprite_top;              // 0x18
-    int16_t sprite_right;            // 0x1A
-    int16_t sprite_bottom;           // 0x1C
-    uint8_t sprite_direction;        // 0x1E
+    SpriteIdentifier sprite_identifier; // 0x00
+    uint8_t type;                       // 0x01
+    uint16_t next_in_quadrant;          // 0x02
+    uint16_t next;                      // 0x04
+    uint16_t previous;                  // 0x06
+    uint8_t linked_list_type_offset;    // 0x08
+    uint8_t sprite_height_negative;     // 0x09
+    uint16_t sprite_index;              // 0x0A
+    uint16_t flags;                     // 0x0C
+    int16_t x;                          // 0x0E
+    int16_t y;                          // 0x10
+    int16_t z;                          // 0x12
+    uint8_t sprite_width;               // 0x14
+    uint8_t sprite_height_positive;     // 0x15
+    int16_t sprite_left;                // 0x16
+    int16_t sprite_top;                 // 0x18
+    int16_t sprite_right;               // 0x1A
+    int16_t sprite_bottom;              // 0x1C
+    uint8_t sprite_direction;           // 0x1E
 };
 assert_struct_size(RCT12SpriteBase, 0x1F);
 

@@ -52,11 +52,11 @@ namespace OpenRCT2::Scripting
             {
                 switch (entity->sprite_identifier)
                 {
-                    case SPRITE_IDENTIFIER_VEHICLE:
+                    case SpriteIdentifier::Vehicle:
                         return "car";
-                    case SPRITE_IDENTIFIER_PEEP:
+                    case SpriteIdentifier::Peep:
                         return "peep";
-                    case SPRITE_IDENTIFIER_MISC:
+                    case SpriteIdentifier::Misc:
                         switch (entity->type)
                         {
                             case SPRITE_MISC_BALLOON:
@@ -65,7 +65,7 @@ namespace OpenRCT2::Scripting
                                 return "duck";
                         }
                         break;
-                    case SPRITE_IDENTIFIER_LITTER:
+                    case SpriteIdentifier::Litter:
                         return "litter";
                 }
             }
@@ -135,10 +135,10 @@ namespace OpenRCT2::Scripting
                 entity->Invalidate2();
                 switch (entity->sprite_identifier)
                 {
-                    case SPRITE_IDENTIFIER_VEHICLE:
+                    case SpriteIdentifier::Vehicle:
                         duk_error(ctx, DUK_ERR_ERROR, "Removing a vehicle is currently unsupported.");
                         break;
-                    case SPRITE_IDENTIFIER_PEEP:
+                    case SpriteIdentifier::Peep:
                     {
                         auto peep = static_cast<Peep*>(entity);
                         // We can't remove a single peep from a ride at the moment as this can cause complications with the
@@ -153,8 +153,8 @@ namespace OpenRCT2::Scripting
                         }
                         break;
                     }
-                    case SPRITE_IDENTIFIER_MISC:
-                    case SPRITE_IDENTIFIER_LITTER:
+                    case SpriteIdentifier::Misc:
+                    case SpriteIdentifier::Litter:
                         sprite_remove(entity);
                         break;
                 }

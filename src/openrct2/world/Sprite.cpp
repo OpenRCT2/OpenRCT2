@@ -60,22 +60,22 @@ template<> bool SpriteBase::Is<SpriteBase>() const
 
 template<> bool SpriteBase::Is<Litter>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_LITTER;
+    return sprite_identifier == SpriteIdentifier::Litter;
 }
 
 template<> bool SpriteBase::Is<SteamParticle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_STEAM_PARTICLE;
+    return sprite_identifier == SpriteIdentifier::Misc && type == SPRITE_MISC_STEAM_PARTICLE;
 }
 
 template<> bool SpriteBase::Is<ExplosionFlare>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_FLARE;
+    return sprite_identifier == SpriteIdentifier::Misc && type == SPRITE_MISC_EXPLOSION_FLARE;
 }
 
 template<> bool SpriteBase::Is<ExplosionCloud>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_CLOUD;
+    return sprite_identifier == SpriteIdentifier::Misc && type == SPRITE_MISC_EXPLOSION_CLOUD;
 }
 
 uint16_t GetEntityListCount(EntityListId list)
@@ -186,7 +186,7 @@ void reset_sprite_list()
             continue;
         }
 
-        spr->sprite_identifier = SPRITE_IDENTIFIER_NULL;
+        spr->sprite_identifier = SpriteIdentifier::Null;
         spr->sprite_index = i;
         spr->next = SPRITE_INDEX_NULL;
         spr->linked_list_index = EntityListId::Free;
@@ -222,7 +222,7 @@ void reset_sprite_spatial_index()
     for (size_t i = 0; i < MAX_SPRITES; i++)
     {
         auto* spr = GetEntity(i);
-        if (spr != nullptr && spr->sprite_identifier != SPRITE_IDENTIFIER_NULL)
+        if (spr != nullptr && spr->sprite_identifier != SpriteIdentifier::Null)
         {
             size_t index = GetSpatialIndexOffset(spr->x, spr->y);
             uint32_t nextSpriteId = gSpriteSpatialIndex[index];
@@ -276,8 +276,8 @@ rct_sprite_checksum sprite_checksum()
         {
             // TODO create a way to copy only the specific type
             auto sprite = GetEntity(i);
-            if (sprite != nullptr && sprite->sprite_identifier != SPRITE_IDENTIFIER_NULL
-                && sprite->sprite_identifier != SPRITE_IDENTIFIER_MISC)
+            if (sprite != nullptr && sprite->sprite_identifier != SpriteIdentifier::Null
+                && sprite->sprite_identifier != SpriteIdentifier::Misc)
             {
                 // Upconvert it to rct_sprite so that the full size is copied.
                 auto copy = *reinterpret_cast<rct_sprite*>(sprite);
@@ -289,7 +289,7 @@ rct_sprite_checksum sprite_checksum()
                 // Next in quadrant might be a misc sprite, set first non-misc sprite in quadrant.
                 while (auto* nextSprite = GetEntity(copy.generic.next_in_quadrant))
                 {
-                    if (nextSprite->sprite_identifier == SPRITE_IDENTIFIER_MISC)
+                    if (nextSprite->sprite_identifier == SpriteIdentifier::Misc)
                         copy.generic.next_in_quadrant = nextSprite->next_in_quadrant;
                     else
                         break;
@@ -346,7 +346,7 @@ static void sprite_reset(SpriteBase* sprite)
     sprite->next_in_quadrant = next_in_quadrant;
     sprite->previous = prev;
     sprite->sprite_index = sprite_index;
-    sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
+    sprite->sprite_identifier = SpriteIdentifier::Null;
 }
 
 /**
@@ -375,7 +375,7 @@ static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linkedListIndex)
+rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linkedListIndex)
 {
     if (GetEntityListCount(EntityListId::Free) == 0)
     {
@@ -420,21 +420,21 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linke
     return reinterpret_cast<rct_sprite*>(sprite);
 }
 
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
+rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier)
 {
     EntityListId linkedListIndex = EntityListId::Free;
     switch (spriteIdentifier)
     {
-        case SPRITE_IDENTIFIER_VEHICLE:
+        case SpriteIdentifier::Vehicle:
             linkedListIndex = EntityListId::Vehicle;
             break;
-        case SPRITE_IDENTIFIER_PEEP:
+        case SpriteIdentifier::Peep:
             linkedListIndex = EntityListId::Peep;
             break;
-        case SPRITE_IDENTIFIER_MISC:
+        case SpriteIdentifier::Misc:
             linkedListIndex = EntityListId::Misc;
             break;
-        case SPRITE_IDENTIFIER_LITTER:
+        case SpriteIdentifier::Litter:
             linkedListIndex = EntityListId::Litter;
             break;
         default:
@@ -549,13 +549,13 @@ void SteamParticle::Update()
  */
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
 {
-    SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
+    SpriteGeneric* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 44;
         sprite->sprite_height_negative = 32;
         sprite->sprite_height_positive = 34;
-        sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
         sprite->type = SPRITE_MISC_EXPLOSION_CLOUD;
         sprite->frame = 0;
@@ -582,13 +582,13 @@ void ExplosionCloud::Update()
  */
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
 {
-    SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
+    SpriteGeneric* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 25;
         sprite->sprite_height_negative = 85;
         sprite->sprite_height_positive = 8;
-        sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
         sprite->type = SPRITE_MISC_EXPLOSION_FLARE;
         sprite->frame = 0;
@@ -770,7 +770,7 @@ void sprite_remove(SpriteBase* sprite)
     }
 
     move_sprite_to_list(sprite, EntityListId::Free);
-    sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
+    sprite->sprite_identifier = SpriteIdentifier::Null;
     _spriteFlashingList[sprite->sprite_index] = false;
 
     SpriteSpatialRemove(sprite);
@@ -836,7 +836,7 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
         }
     }
 
-    Litter* litter = reinterpret_cast<Litter*>(create_sprite(SPRITE_IDENTIFIER_LITTER));
+    Litter* litter = reinterpret_cast<Litter*>(create_sprite(SpriteIdentifier::Litter));
     if (litter == nullptr)
         return;
 
@@ -844,7 +844,7 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
     litter->sprite_width = 6;
     litter->sprite_height_negative = 6;
     litter->sprite_height_positive = 3;
-    litter->sprite_identifier = SPRITE_IDENTIFIER_LITTER;
+    litter->sprite_identifier = SpriteIdentifier::Litter;
     litter->type = type;
     litter->MoveTo(offsetLitterPos);
     litter->Invalidate0();
@@ -910,8 +910,8 @@ static bool sprite_should_tween(SpriteBase* sprite)
 {
     switch (sprite->sprite_identifier)
     {
-        case SPRITE_IDENTIFIER_PEEP:
-        case SPRITE_IDENTIFIER_VEHICLE:
+        case SpriteIdentifier::Peep:
+        case SpriteIdentifier::Vehicle:
             return true;
     }
     return false;
@@ -1138,7 +1138,7 @@ int32_t fix_disjoint_sprites()
     for (uint16_t sprite_idx = 0; sprite_idx < MAX_SPRITES; sprite_idx++)
     {
         auto* spr = GetEntity(sprite_idx);
-        if (spr != nullptr && spr->sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        if (spr != nullptr && spr->sprite_identifier == SpriteIdentifier::Null)
         {
             openrct2_assert(null_list_tail != nullptr, "Null list is empty, yet found null sprites");
             spr->sprite_index = sprite_idx;

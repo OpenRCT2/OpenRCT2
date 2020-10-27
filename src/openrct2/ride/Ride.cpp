@@ -4371,12 +4371,12 @@ static Vehicle* vehicle_create_car(
         return nullptr;
 
     auto vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
-    auto vehicle = &create_sprite(SPRITE_IDENTIFIER_VEHICLE, carIndex == 0 ? EntityListId::TrainHead : EntityListId::Vehicle)
+    auto vehicle = &create_sprite(SpriteIdentifier::Vehicle, carIndex == 0 ? EntityListId::TrainHead : EntityListId::Vehicle)
                         ->vehicle;
     if (vehicle == nullptr)
         return nullptr;
 
-    vehicle->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
+    vehicle->sprite_identifier = SpriteIdentifier::Vehicle;
     vehicle->ride = rideIndex;
     vehicle->ride_subtype = ride->subtype;
 

@@ -1832,7 +1832,7 @@ void Staff::Tick128UpdateStaff()
 bool Staff::IsMechanic() const
 {
     return (
-        sprite_identifier == SPRITE_IDENTIFIER_PEEP && AssignedPeepType == PeepType::Staff
+        sprite_identifier == SpriteIdentifier::Peep && AssignedPeepType == PeepType::Staff
         && AssignedStaffType == StaffType::Mechanic);
 }
 

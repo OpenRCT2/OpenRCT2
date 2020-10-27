@@ -733,7 +733,7 @@ static const struct
 
 template<> bool SpriteBase::Is<Vehicle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
+    return sprite_identifier == SpriteIdentifier::Vehicle;
 }
 
 static bool vehicle_move_info_valid(VehicleTrackSubposition trackSubposition, int32_t typeAndDirection, int32_t offset)
@@ -7222,14 +7222,14 @@ static void steam_particle_create(const CoordsXYZ& coords)
     auto surfaceElement = map_get_surface_element_at(coords);
     if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
     {
-        SteamParticle* steam = &create_sprite(SPRITE_IDENTIFIER_MISC)->steam_particle;
+        SteamParticle* steam = &create_sprite(SpriteIdentifier::Misc)->steam_particle;
         if (steam == nullptr)
             return;
 
         steam->sprite_width = 20;
         steam->sprite_height_negative = 18;
         steam->sprite_height_positive = 16;
-        steam->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        steam->sprite_identifier = SpriteIdentifier::Misc;
         steam->type = SPRITE_MISC_STEAM_PARTICLE;
         steam->frame = 256;
         steam->time_to_move = 0;

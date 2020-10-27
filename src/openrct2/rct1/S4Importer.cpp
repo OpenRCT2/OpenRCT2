@@ -1127,7 +1127,7 @@ private:
         for (int i = 0; i < RCT1_MAX_SPRITES; i++)
         {
             spriteIndexMap[i] = SPRITE_INDEX_NULL;
-            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            if (_s4.sprites[i].unknown.sprite_identifier == SpriteIdentifier::Vehicle)
             {
                 rct1_vehicle* srcVehicle = &_s4.sprites[i].vehicle;
                 if (srcVehicle->x != LOCATION_NULL)
@@ -1136,7 +1136,7 @@ private:
                     auto isFirstCar = srcVehicle->type == static_cast<uint8_t>(Vehicle::Type::Head);
                     auto llt = isFirstCar ? EntityListId::TrainHead : EntityListId::Vehicle;
 
-                    Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SPRITE_IDENTIFIER_VEHICLE, llt));
+                    Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SpriteIdentifier::Vehicle, llt));
                     spriteIndexMap[i] = vehicle->sprite_index;
                     vehicles.push_back(vehicle);
 
@@ -1159,7 +1159,7 @@ private:
 
         uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
-        dst->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
+        dst->sprite_identifier = SpriteIdentifier::Vehicle;
         dst->ride = src->ride;
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
@@ -1341,10 +1341,10 @@ private:
         for (size_t i = 0; i < RCT1_MAX_SPRITES; i++)
         {
             spriteIndexMap[i] = SPRITE_INDEX_NULL;
-            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            if (_s4.sprites[i].unknown.sprite_identifier == SpriteIdentifier::Peep)
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
-                Peep* peep = reinterpret_cast<Peep*>(create_sprite(SPRITE_IDENTIFIER_PEEP));
+                Peep* peep = reinterpret_cast<Peep*>(create_sprite(SpriteIdentifier::Peep));
                 spriteIndexMap[i] = peep->sprite_index;
 
                 ImportPeep(peep, srcPeep);
@@ -1398,7 +1398,7 @@ private:
 
     void ImportPeep(Peep* dst, rct1_peep* src)
     {
-        dst->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
+        dst->sprite_identifier = SpriteIdentifier::Peep;
         // Peep vs. staff (including which kind)
         dst->SpriteType = RCT1::GetPeepSpriteType(src->sprite_type);
         dst->Action = static_cast<PeepActionType>(src->action);
@@ -1640,11 +1640,11 @@ private:
     {
         for (auto& sprite : _s4.sprites)
         {
-            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+            if (sprite.unknown.sprite_identifier == SpriteIdentifier::Litter)
             {
                 const auto* srcLitter = &sprite.litter;
 
-                Litter* litter = reinterpret_cast<Litter*>(create_sprite(SPRITE_IDENTIFIER_LITTER));
+                Litter* litter = reinterpret_cast<Litter*>(create_sprite(SpriteIdentifier::Litter));
                 litter->sprite_identifier = srcLitter->sprite_identifier;
                 litter->type = srcLitter->type;
 
@@ -1666,10 +1666,10 @@ private:
     {
         for (auto& sprite : _s4.sprites)
         {
-            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC)
+            if (sprite.unknown.sprite_identifier == SpriteIdentifier::Misc)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                SpriteGeneric* dst = reinterpret_cast<SpriteGeneric*>(create_sprite(SPRITE_IDENTIFIER_MISC));
+                SpriteGeneric* dst = reinterpret_cast<SpriteGeneric*>(create_sprite(SpriteIdentifier::Misc));
                 if (dst == nullptr)
                 {
                     log_warning("SV4 has too many misc entities. No more misc entities will be imported!");

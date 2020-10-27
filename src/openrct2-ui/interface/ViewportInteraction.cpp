@@ -87,7 +87,7 @@ InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenC
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
             switch (sprite->sprite_identifier)
             {
-                case SPRITE_IDENTIFIER_VEHICLE:
+                case SpriteIdentifier::Vehicle:
                 {
                     auto vehicle = sprite->As<Vehicle>();
                     if (vehicle != nullptr && vehicle->ride_subtype != RIDE_ENTRY_INDEX_NULL)
@@ -96,7 +96,7 @@ InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenC
                         info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
                 }
                 break;
-                case SPRITE_IDENTIFIER_PEEP:
+                case SpriteIdentifier::Peep:
                 {
                     auto peep = sprite->As<Peep>();
                     if (peep != nullptr)
@@ -173,21 +173,21 @@ bool viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
             auto entity = info.Entity;
             switch (entity->sprite_identifier)
             {
-                case SPRITE_IDENTIFIER_VEHICLE:
+                case SpriteIdentifier::Vehicle:
                 {
                     auto intent = Intent(WD_VEHICLE);
                     intent.putExtra(INTENT_EXTRA_VEHICLE, entity);
                     context_open_intent(&intent);
                     break;
                 }
-                case SPRITE_IDENTIFIER_PEEP:
+                case SpriteIdentifier::Peep:
                 {
                     auto intent = Intent(WC_PEEP);
                     intent.putExtra(INTENT_EXTRA_PEEP, entity);
                     context_open_intent(&intent);
                     break;
                 }
-                case SPRITE_IDENTIFIER_MISC:
+                case SpriteIdentifier::Misc:
                     if (game_is_not_paused())
                     {
                         switch (entity->type)
@@ -254,7 +254,7 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
         {
             auto sprite = info.Entity;
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->sprite_identifier != SPRITE_IDENTIFIER_VEHICLE)
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->sprite_identifier != SpriteIdentifier::Vehicle)
             {
                 info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
                 return info;
@@ -523,7 +523,7 @@ bool viewport_interaction_right_click(const ScreenCoordsXY& screenCoords)
         case VIEWPORT_INTERACTION_ITEM_SPRITE:
         {
             auto entity = info.Entity;
-            if (entity->sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+            if (entity->sprite_identifier == SpriteIdentifier::Vehicle)
             {
                 auto vehicle = entity->As<Vehicle>();
                 if (vehicle == nullptr)

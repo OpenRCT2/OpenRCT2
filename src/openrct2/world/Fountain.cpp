@@ -72,7 +72,7 @@ const uint8_t _fountainPatternFlags[] = {
 
 template<> bool SpriteBase::Is<JumpingFountain>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC
+    return sprite_identifier == SpriteIdentifier::Misc
         && (type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW || type == SPRITE_MISC_JUMPING_FOUNTAIN_WATER);
 }
 
@@ -128,7 +128,7 @@ void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newL
 void JumpingFountain::Create(
     const int32_t newType, const CoordsXYZ& newLoc, const int32_t direction, const int32_t newFlags, const int32_t iteration)
 {
-    auto* jumpingFountain = reinterpret_cast<JumpingFountain*>(create_sprite(SPRITE_IDENTIFIER_MISC));
+    auto* jumpingFountain = reinterpret_cast<JumpingFountain*>(create_sprite(SpriteIdentifier::Misc));
     if (jumpingFountain != nullptr)
     {
         jumpingFountain->Iteration = iteration;
@@ -137,7 +137,7 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_width = 33;
         jumpingFountain->sprite_height_negative = 36;
         jumpingFountain->sprite_height_positive = 12;
-        jumpingFountain->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        jumpingFountain->sprite_identifier = SpriteIdentifier::Misc;
         jumpingFountain->MoveTo(newLoc);
         jumpingFountain->type = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
                                                                       : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;

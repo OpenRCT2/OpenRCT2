@@ -1021,7 +1021,7 @@ public:
         uint16_t numRiders = 0;
         for (const auto& sprite : _s6.sprites)
         {
-            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            if (sprite.unknown.sprite_identifier == SpriteIdentifier::Peep)
             {
                 if (sprite.peep.current_ride == rideIndex
                     && (static_cast<PeepState>(sprite.peep.state) == PeepState::OnRide
@@ -1313,19 +1313,19 @@ public:
         std::memset(&dst->pad_00, 0, sizeof(rct_sprite));
         switch (src->unknown.sprite_identifier)
         {
-            case SPRITE_IDENTIFIER_NULL:
+            case SpriteIdentifier::Null:
                 ImportSpriteCommonProperties(reinterpret_cast<SpriteBase*>(dst), &src->unknown);
                 break;
-            case SPRITE_IDENTIFIER_VEHICLE:
+            case SpriteIdentifier::Vehicle:
                 ImportSpriteVehicle(&dst->vehicle, &src->vehicle);
                 break;
-            case SPRITE_IDENTIFIER_PEEP:
+            case SpriteIdentifier::Peep:
                 ImportSpritePeep(&dst->peep, &src->peep);
                 break;
-            case SPRITE_IDENTIFIER_MISC:
+            case SpriteIdentifier::Misc:
                 ImportSpriteMisc(&dst->generic, &src->unknown);
                 break;
-            case SPRITE_IDENTIFIER_LITTER:
+            case SpriteIdentifier::Litter:
                 ImportSpriteLitter(&dst->litter, &src->litter);
                 break;
             default:
