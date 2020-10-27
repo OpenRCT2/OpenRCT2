@@ -1133,7 +1133,7 @@ static void window_ride_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 static void window_ride_disable_tabs(rct_window* w)
 {
     uint32_t disabled_tabs = 0;
-    auto ride = get_ride(w->number & 0xFF);
+    auto ride = get_ride(w->number);
     if (ride == nullptr)
         return;
 
@@ -3816,7 +3816,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             num_items = 1;
             for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
             {
-                if (rideEntry->ride_type[j] != 0xFF)
+                if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
                     break;
             }
             gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
