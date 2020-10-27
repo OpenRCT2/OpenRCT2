@@ -109,6 +109,10 @@ InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenC
                     }
                 }
                 break;
+                case SpriteIdentifier::Misc:
+                case SpriteIdentifier::Litter:
+                case SpriteIdentifier::Null:
+                    break;
             }
             break;
         case VIEWPORT_INTERACTION_ITEM_RIDE:
@@ -209,6 +213,9 @@ bool viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
                             break;
                         }
                     }
+                    break;
+                case SpriteIdentifier::Litter:
+                case SpriteIdentifier::Null:
                     break;
             }
             return true;

@@ -443,6 +443,8 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
                         break;
                 }
                 break;
+            case SpriteIdentifier::Null:
+                break;
         }
     }
 }

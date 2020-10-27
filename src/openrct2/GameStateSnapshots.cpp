@@ -110,8 +110,10 @@ struct GameStateSnapshot_t
                             ds << reinterpret_cast<uint8_t(&)[sizeof(SteamParticle)]>(sprite.steam_particle);
                             break;
                     }
+                    break;
                 }
-                break;
+                case SpriteIdentifier::Null:
+                    break;
             }
         }
     }
@@ -520,6 +522,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                             CompareSpriteDataDuck(spriteBase.duck, spriteCmp.duck, changeData);
                             break;
                     }
+                    break;
+                case SpriteIdentifier::Null:
                     break;
             }
         }

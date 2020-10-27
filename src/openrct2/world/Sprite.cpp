@@ -913,6 +913,10 @@ static bool sprite_should_tween(SpriteBase* sprite)
         case SpriteIdentifier::Peep:
         case SpriteIdentifier::Vehicle:
             return true;
+        case SpriteIdentifier::Misc:
+        case SpriteIdentifier::Litter:
+        case SpriteIdentifier::Null:
+            return false;
     }
     return false;
 }

@@ -67,6 +67,8 @@ namespace OpenRCT2::Scripting
                         break;
                     case SpriteIdentifier::Litter:
                         return "litter";
+                    case SpriteIdentifier::Null:
+                        return "unknown";
                 }
             }
             return "unknown";
@@ -156,6 +158,8 @@ namespace OpenRCT2::Scripting
                     case SpriteIdentifier::Misc:
                     case SpriteIdentifier::Litter:
                         sprite_remove(entity);
+                        break;
+                    case SpriteIdentifier::Null:
                         break;
                 }
             }
