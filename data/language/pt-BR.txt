@@ -4099,24 +4099,6 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :Bloco de Base
-
-[TTRFTL02]
-STR_NAME    :Telhado
-
-[TTRFTL03]
-STR_NAME    :Telhado
-
-[TTRFTL04]
-STR_NAME    :Telhado
-
-[TTRFTL07]
-STR_NAME    :Telhado
-
-[TTRFTL08]
-STR_NAME    :Telhado
-
 [TTPIRF02]
 STR_NAME    :Telhado
 
@@ -4134,9 +4116,6 @@ STR_NAME    :Telhado
 
 [TTPIRF08]
 STR_NAME    :Telhado
-
-[MG-PRAR]
-STR_NAME    :Parede com Passagem
 
 [TTRFWD01]
 STR_NAME    :Telhado
@@ -4472,3 +4451,11 @@ STR_DTLS    :Um grande festival anual de música acontece em seu terreno. Constr
 STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
 STR_PARK    :Renascimento do Rock 'n' Roll
 STR_DTLS    :Este parque temático envelhecido já viu dias melhores. Ajude o dono dar uma aparência rock 'n' roll retrô e transforme o lugar em um local bem-sucedido.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Mundo Panda
+STR_PARK    :Mundo Panda
+STR_DTLS    :Adicione mais atrações e atraia mais pessoas a esse parque com temática panda
