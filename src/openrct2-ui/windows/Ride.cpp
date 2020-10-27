@@ -1376,7 +1376,7 @@ static rct_window* window_ride_open_station(Ride* ride, StationIndex stationInde
 rct_window* window_ride_open_track(TileElement* tileElement)
 {
     assert(tileElement != nullptr);
-    auto rideIndex = tile_element_get_ride_index(tileElement);
+    auto rideIndex = tileElement->GetRideIndex();
     if (rideIndex != RIDE_ID_NULL)
     {
         auto ride = get_ride(rideIndex);
