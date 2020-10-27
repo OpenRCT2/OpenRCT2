@@ -5175,7 +5175,7 @@ static void setup_scenery_selection(rct_window* w)
     while (tool_set(w, WIDX_BACKGROUND, TOOL_CROSSHAIR))
         ;
 
-    gTrackDesignSaveRideIndex = static_cast<uint8_t>(w->number);
+    gTrackDesignSaveRideIndex = w->number;
 
     track_design_save_init();
     gGamePaused |= GAME_PAUSED_SAVING_TRACK;
