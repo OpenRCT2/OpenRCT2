@@ -856,7 +856,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 break;
             default:
                 stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
-                arg = gScenarioObjective.Currency;
+                arg = gScenarioObjective.MinimumExcitement;
                 break;
         }
         gfx_draw_string_left(dpi, stringId, &arg, COLOUR_BLACK, screenCoords);
