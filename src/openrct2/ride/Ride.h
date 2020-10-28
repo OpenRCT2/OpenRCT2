@@ -407,6 +407,9 @@ public:
 
     void StopGuestsQueuing();
 
+    bool Open(int32_t goingToBeOpen, bool isApplying);
+    bool Test(int32_t newStatus, bool isApplying);
+
     RideMode GetDefaultMode() const;
 
     void SetColourPreset(uint8_t index);
@@ -1113,8 +1116,6 @@ void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index)
 void ride_measurements_update();
 void ride_breakdown_add_news_item(Ride* ride);
 Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
-bool ride_open(Ride* ride, int32_t goingToBeOpen, bool isApplying);
-bool ride_test(Ride* ride, int32_t status, bool isApplying);
 int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
 std::optional<CoordsXYZ> sub_6C683D(

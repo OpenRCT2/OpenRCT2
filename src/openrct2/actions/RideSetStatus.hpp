@@ -101,7 +101,7 @@ public:
             }
             else if (_status == RIDE_STATUS_TESTING || _status == RIDE_STATUS_SIMULATING)
             {
-                if (!ride_test(ride, _status, false))
+                if (!ride->Test(_status, false))
                 {
                     res->Error = GameActions::Status::Unknown;
                     res->ErrorMessage = gGameCommandErrorText;
@@ -110,7 +110,7 @@ public:
             }
             else if (_status == RIDE_STATUS_OPEN)
             {
-                if (!ride_open(ride, _status == RIDE_STATUS_OPEN, false))
+                if (!ride->Open(_status == RIDE_STATUS_OPEN, false))
                 {
                     res->Error = GameActions::Status::Unknown;
                     res->ErrorMessage = gGameCommandErrorText;
@@ -172,7 +172,7 @@ public:
                 ride_clear_for_construction(ride);
                 ride_remove_peeps(ride);
 
-                if (!ride_test(ride, _status, true))
+                if (!ride->Test(_status, true))
                 {
                     res->Error = GameActions::Status::Unknown;
                     res->ErrorMessage = gGameCommandErrorText;
@@ -213,14 +213,14 @@ public:
 
                 if (_status == RIDE_STATUS_TESTING)
                 {
-                    if (!ride_test(ride, _status, true))
+                    if (!ride->Test(_status, true))
                     {
                         res->Error = GameActions::Status::Unknown;
                         res->ErrorMessage = gGameCommandErrorText;
                         return res;
                     }
                 }
-                else if (!ride_open(ride, _status == RIDE_STATUS_OPEN, true))
+                else if (!ride->Open(_status == RIDE_STATUS_OPEN, true))
                 {
                     res->Error = GameActions::Status::Unknown;
                     res->ErrorMessage = gGameCommandErrorText;
