@@ -5116,14 +5116,14 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
     return nullptr;
 }
 
-int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
+bool ride_test(Ride* ride, int32_t status, bool isApplying)
 {
     CoordsXYE trackElement, problematicTrackElement = {};
 
     if (ride->type == RIDE_TYPE_NULL)
     {
         log_warning("Invalid ride type for ride %u", ride->id);
-        return 0;
+        return false;
     }
 
     if (status != RIDE_STATUS_SIMULATING)
@@ -5133,15 +5133,15 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
 
     StationIndex stationIndex = ride_mode_check_station_present(ride);
     if (stationIndex == STATION_INDEX_NULL)
-        return 0;
+        return false;
 
     if (!ride_mode_check_valid_station_numbers(ride))
-        return 0;
+        return false;
 
     if (status != RIDE_STATUS_SIMULATING && !ride_check_for_entrance_exit(ride->id))
     {
         loc_6B51C0(ride);
-        return 0;
+        return false;
     }
 
     if (status == RIDE_STATUS_OPEN && isApplying)
@@ -5159,7 +5159,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
     {
         // Maze is strange, station start is 0... investigation required
         if (ride->type != RIDE_TYPE_MAZE)
-            return 0;
+            return false;
     }
 
     if (ride->mode == RideMode::ContinuousCircuit || ride->IsBlockSectioned())
@@ -5169,7 +5169,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
@@ -5178,7 +5178,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         if (!ride_check_block_brakes(&trackElement, &problematicTrackElement))
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
@@ -5191,7 +5191,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
             if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return 0;
+                return false;
             }
         }
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
@@ -5200,7 +5200,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
             if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return 0;
+                return false;
             }
         }
     }
@@ -5210,21 +5210,21 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         if (!ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
             gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-            return 0;
+            return false;
         }
 
         gGameCommandErrorText = STR_STATION_NOT_LONG_ENOUGH;
         if (!ride_check_station_length(&trackElement, &problematicTrackElement))
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
 
         gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
         if (!ride_check_start_and_end_is_station(&trackElement))
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
@@ -5235,7 +5235,7 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
     {
         if (!ride_create_vehicles(ride, trackElement, isApplying))
         {
-            return 0;
+            return false;
         }
     }
 
@@ -5244,16 +5244,16 @@ int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying)
         && !(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
         if (!ride_create_cable_lift(ride->id, isApplying))
-            return 0;
+            return false;
     }
 
-    return 1;
+    return true;
 }
 /**
  *
  *  rct2: 0x006B4EEA
  */
-int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplying)
+bool ride_open(Ride* ride, int32_t goingToBeOpen, bool isApplying)
 {
     CoordsXYE trackElement, problematicTrackElement = {};
 
@@ -5267,15 +5267,15 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
 
     StationIndex stationIndex = ride_mode_check_station_present(ride);
     if (stationIndex == STATION_INDEX_NULL)
-        return 0;
+        return false;
 
     if (!ride_mode_check_valid_station_numbers(ride))
-        return 0;
+        return false;
 
     if (!ride_check_for_entrance_exit(ride->id))
     {
         loc_6B51C0(ride);
-        return 0;
+        return false;
     }
 
     if (goingToBeOpen && isApplying)
@@ -5293,7 +5293,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
     {
         // Maze is strange, station start is 0... investigation required
         if (ride->type != RIDE_TYPE_MAZE)
-            return 0;
+            return false;
     }
 
     if (ride->mode == RideMode::Race || ride->mode == RideMode::ContinuousCircuit || ride->IsBlockSectioned())
@@ -5302,7 +5302,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         {
             gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
@@ -5311,7 +5311,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         if (!ride_check_block_brakes(&trackElement, &problematicTrackElement))
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
@@ -5324,7 +5324,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
             if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return 0;
+                return false;
             }
         }
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
@@ -5333,7 +5333,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
             if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return 0;
+                return false;
             }
         }
     }
@@ -5343,21 +5343,21 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         if (!ride_find_track_gap(ride, &trackElement, &problematicTrackElement))
         {
             gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-            return 0;
+            return false;
         }
 
         gGameCommandErrorText = STR_STATION_NOT_LONG_ENOUGH;
         if (!ride_check_station_length(&trackElement, &problematicTrackElement))
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
 
         gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
         if (!ride_check_start_and_end_is_station(&trackElement))
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return 0;
+            return false;
         }
     }
 
@@ -5368,7 +5368,7 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
     {
         if (!ride_create_vehicles(ride, trackElement, isApplying))
         {
-            return 0;
+            return false;
         }
     }
 
@@ -5377,10 +5377,10 @@ int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplyin
         && !(ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
         if (!ride_create_cable_lift(ride->id, isApplying))
-            return 0;
+            return false;
     }
 
-    return 1;
+    return true;
 }
 
 /**
