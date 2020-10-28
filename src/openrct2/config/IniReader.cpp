@@ -12,7 +12,7 @@
 #include "../common.h"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
-#include "../core/StringBuilder.hpp"
+#include "../core/StringBuilder.h"
 
 #include <cctype>
 #include <initializer_list>

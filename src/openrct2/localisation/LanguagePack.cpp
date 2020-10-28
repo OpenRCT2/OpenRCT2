@@ -14,7 +14,7 @@
 #include "../core/Memory.hpp"
 #include "../core/RTL.h"
 #include "../core/String.hpp"
-#include "../core/StringBuilder.hpp"
+#include "../core/StringBuilder.h"
 #include "../core/StringReader.hpp"
 #include "Language.h"
 #include "Localisation.h"

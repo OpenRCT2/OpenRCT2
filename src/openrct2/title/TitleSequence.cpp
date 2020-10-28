@@ -20,7 +20,7 @@
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
-#include "../core/StringBuilder.hpp"
+#include "../core/StringBuilder.h"
 #include "../core/Zip.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
