@@ -94,7 +94,7 @@ BannerIndex tile_element_get_banner_index(TileElement* tileElement)
     {
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-            if (sceneryEntry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE)
+            if (sceneryEntry == nullptr || sceneryEntry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE)
                 return BANNER_INDEX_NULL;
 
             return tileElement->AsLargeScenery()->GetBannerIndex();
