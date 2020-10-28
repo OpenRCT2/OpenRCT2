@@ -854,6 +854,10 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 stringId = STR_WINDOW_OBJECTIVE_VALUE_LENGTH;
                 arg = gScenarioObjective.MinimumLength;
                 break;
+            case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+                stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
+                arg = gScenarioObjective.MinimumExcitement;
+                break;
             default:
                 stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
                 arg = gScenarioObjective.Currency;
