@@ -41,7 +41,7 @@
 - Fix: [#13222] Vehicle collision causes negative number of passengers (original bug).
 - Fix: [#13226, #7280] No error is shown when attempting to load a corrupted save.
 - Fix: [#13266] Plugin API: Deleting key of sharedStorage not working.
-- Fix: [#13278] Desync caused by to ghost tiles changing the ride mode.
+- Fix: [#13278] Desync caused by ghost tiles changing the ride mode.
 - Fix: [#13292] Impossible excitement rating requirements with finish building 5 coasters goal
 - Improved: [#13023] Made add_news_item console command last argument, assoc, optional.
 - Improved: [#13098] Improvements to the maze construction window user interface

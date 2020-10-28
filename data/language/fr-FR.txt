@@ -94,6 +94,7 @@ STR_0089    :Mini-montagnes russes
 STR_0090    :Mineur
 STR_0091    :Manège Inconnu (59)
 STR_0092    :Moteur à induction linéaire
+STR_0092    :Montagnes russes hybrides
 STR_0512    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0513    :Grand huit que les passagers parcourent debout
 STR_0514    :Des voitures suspendues sous la voie se balancent dans les virages des montagnes russes
@@ -173,6 +174,7 @@ STR_0598    :Les trains de montagnes russes à impulsion sont propulsés hors de
 STR_0599    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0600    :Train de mine à propulsion franchissant une voie régulière et alambiquée
 STR_0602    :Train de montagnes russes propulsé hors de la station par des moteurs à induction linéaire et fonçant dans des inversions renversantes
+STR_0603    :Train de montagnes russes en bois avec des rails en acier, permettant des grandes chutes et des inversions.
 STR_0767    :Visiteur {INT32}
 STR_0768    :Agent d'entretien {INT32}
 STR_0769    :Mécanicien {INT32}
@@ -1961,17 +1963,17 @@ STR_2749    :Mon nouveau scénario
 STR_2750    :Déplacer tous les éléments en haut
 STR_2751    :Déplacer tous les éléments en bas
 STR_2752    :Pelouse propre
-STR_2753    :Pelouse tondue
+STR_2753    :Tondre pelouse
 STR_2754    :Arroser plantes
 STR_2755    :Réparer vandalisme
 STR_2756    :Nettoyer déchets
 # New strings used in the cheats window previously these were ???
 STR_2763    :???
-STR_2765    :Grand tram
+STR_2765    :Grand Tram
 STR_2766    :Gagner
-STR_2767    :Bloquer météo
-STR_2769    :Ouvrir le parc
-STR_2770    :Fermer le parc
+STR_2767    :Bloquer changements météo
+STR_2769    :Ouvrir Parc
+STR_2770    :Fermer Parc
 STR_2773    :Fenêtré
 STR_2774    :Plein écran
 STR_2775    :Plein écran (ss. bordure)
@@ -3016,7 +3018,7 @@ STR_5721    :Nuageux
 STR_5722    :Pluie
 STR_5723    :Forte pluie
 STR_5724    :Orage
-STR_5725    :{BLACK}Forcer la météo :
+STR_5725    :{BLACK}Change la météo pour :
 STR_5726    :{SMALLFONT}{BLACK}Définit la météo actuelle dans le parc
 STR_5727    :Qual. de mise à l'échelle :
 STR_5728    :Requiert l'option d'affichage matériel
@@ -3158,7 +3160,7 @@ STR_5867    :{WINDOW_COLOUR_2}Nom du fournisseur : {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mail du fournisseur : {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Site web du fournisseur : {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Affiche les informations du serveur
-STR_5871    :Les plantes ne vieillissent pas
+STR_5871    :Désactiver vieillissement des plantes
 STR_5872    :{SMALLFONT}{BLACK}Désactive le vieillissement des plantes pour qu'elles ne fanent pas
 STR_5873    :Autoriser remontées à chaîne sur {NEWLINE}tous les éléments de voie
 STR_5874    :{SMALLFONT}{BLACK}Permet à tous les éléments de voie d'être équipés d'une remontée à chaîne
@@ -3603,8 +3605,8 @@ STR_6327    :Fond transparent pour les captures d'écran géantes
 STR_6328    :{SMALLFONT}{BLACK}Quand cette option est activée, les captures d'écran auront un fond transparent plutôt qu'un fond noir.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Téléchargement [{STRING}] depuis {STRING} ({COMMA16}/{COMMA16})
-STR_6331    :Créer des canards
-STR_6332    :Suppr. les canards
+STR_6331    :Créer Canards
+STR_6332    :Suppr. Canards
 STR_6333    :Augmenter l'échelle
 STR_6334    :Réduire l'échelle
 STR_6335    :Inspecteur de cases - Insérer un élément corrompu
@@ -3659,6 +3661,17 @@ STR_6383    :Ouvrir la page des téléchargements
 STR_6384    :Neige
 STR_6385    :Forte chute de neige
 STR_6386    :Blizzard
+STR_6387    :Impossible d'abaisser l'élément ici
+STR_6388    :Impossible d'élever l'élément ici
+STR_6389    :Permission invalide
+STR_6390    :OpenRCT2 a besoin des fichiers du jeu RollerCoaster Tycoon 2 original pour fonctionner. Veuillez sélectionner l'emplacement où RollerCoaster Tycoon 2 est installé.
+STR_6391    :Veuillez sélectionner votre installation de RCT2
+STR_6392    :Impossible de trouver {STRING} à cet emplacement.
+STR_6393    :Choix des objectifs
+STR_6394    :Objectif
+STR_6395    :Maintenance
+STR_6396    :Désactiver écran de veille et économie d'énergie pour moniteur
+STR_6397    :{SMALLFONT}{BLACK}Si coché, l'écran de veille et autres paramètres d'économie d'énergie pour moniteur seront désactivés pendant qu'OpenRCT2 tourne
 
 #############
 # Scenarios #
@@ -4396,32 +4409,19 @@ STR_SCNR    :Rock & Roll - Rock & Roll
 STR_PARK    :La renaissance du Rock & Roll
 STR_DTLS    :Ce parc sur le thème du Rock & Roll a connu son heure de gloire. Aidez son propriétaire à le réaménager et à lui donner un second souffle.
 
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Monde de Panda
+STR_PARK    :Monde de Panda
+STR_DTLS    :Ajoutez davantage d'attractions et attirez plus de visiteurs avec ce parc autour du thème du panda
+
 ###########
 # Scenery #
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :Bloc de base
-
-[TTRFTL02]
-STR_NAME    :Toit
-
-[TTRFTL03]
-STR_NAME    :Toit
-
-[TTRFTL04]
-STR_NAME    :Toit
-
-[TTRFTL07]
-STR_NAME    :Toit
-
-[TTRFTL08]
-STR_NAME    :Toit
-
-[TTPIRF02]
-STR_NAME    :Toit
-
 [TTPIRF03]
 STR_NAME    :Toit
 
@@ -4436,9 +4436,6 @@ STR_NAME    :Toit
 
 [TTPIRF08]
 STR_NAME    :Toit
-
-[MG-PRAR]
-STR_NAME    :Mur avec ouverture
 
 [TTRFWD01]
 STR_NAME    :Toit
