@@ -1522,17 +1522,16 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             return false;
     }
 
-    if ((shopItem == SHOP_ITEM_BALLOON) || (shopItem == SHOP_ITEM_ICE_CREAM) || (shopItem == SHOP_ITEM_CANDYFLOSS)
-        || (shopItem == SHOP_ITEM_SUNGLASSES))
+    if ((shopItem == SHOP_ITEM_BALLOON || shopItem == SHOP_ITEM_ICE_CREAM || shopItem == SHOP_ITEM_CANDYFLOSS
+         || shopItem == SHOP_ITEM_SUNGLASSES)
+        && climate_is_raining())
     {
-        if (climate_is_raining())
-            return false;
+        return false;
     }
 
-    if ((shopItem == SHOP_ITEM_SUNGLASSES) || (shopItem == SHOP_ITEM_ICE_CREAM))
+    if ((shopItem == SHOP_ITEM_SUNGLASSES || shopItem == SHOP_ITEM_ICE_CREAM) && gClimateCurrent.Temperature < 12)
     {
-        if (gClimateCurrent.Temperature < 12)
-            return false;
+        return false;
     }
 
     if (ShopItems[shopItem].IsFood() && (Hunger > 75))
@@ -1547,11 +1546,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         return false;
     }
 
-    if (isRainingAndUmbrella)
-    {
-        // do nothing for now
-    }
-    else if ((shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
+    if (!isRainingAndUmbrella && (shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
     {
         if (((scenario_rand() & 0x7F) + 0x73) > Happiness)
             return false;
@@ -1585,11 +1580,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         if (itemValue < price)
         {
             itemValue -= price;
-            if (isRainingAndUmbrella)
-            {
-                // do nothing for now
-            }
-
+           
             if (!isRainingAndUmbrella)
             {
                 itemValue = -itemValue;
@@ -1610,7 +1601,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
                 }
             }
         }
-        else // if (!isRainingAndUmbrella)
+        else
         {
             itemValue -= price;
             itemValue = std::max(8, itemValue);
