@@ -248,7 +248,7 @@ STR_0853    :{WINDOW_COLOUR_2}Som e músicas de Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Sons adicionais gravados por David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representação de Jacqui Lyons da Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Obrigado a:
-STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth e John Wardley
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -1867,7 +1867,7 @@ STR_2538    :Return
 STR_2543    :Alt/Menu
 STR_2544    :Pause
 STR_2545    :Caps Lock
-STR_2552    :Escape
+STR_2552    :Esc
 STR_2557    :Barra de Espaço
 STR_2558    :PgUp
 STR_2559    :PgDn
@@ -2060,14 +2060,14 @@ STR_2863    :Créditos das músicas
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) sem direitos autorais
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
 STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) sem direitos autorais
-STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
+STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Tradicional)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) sem direitos autorais
-STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
-STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Traditional)
-STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Traditional)
+STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Tradicional)
+STR_2870    :{WINDOW_COLOUR_2}Das Alpenhorn:   (Tradicional)
+STR_2871    :{WINDOW_COLOUR_2}The Blond Sailor:   (Tradicional)
 STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Suppe) sem direitos autorais
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) sem direitos autorais
-STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditional)
+STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Tradicional)
 STR_2875    :{WINDOW_COLOUR_2}Gravações originais (P) 1976 C.J.Mears Organization, usado com autorização
 STR_2876    :{WINDOW_COLOUR_2}Música Título - RollerCoaster Tycoon 2: (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) direitos autorais © Chris Sawyer
@@ -2094,7 +2094,7 @@ STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) direitos au
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2901    :{WINDOW_COLOUR_2}(Amostras Grátis de Spectrasonics "Liquid Grooves")
-STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, played by Peter James Adcock) recording © Chris Sawyer
+STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, executada por Peter James Adcock) gravada por © Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) direitos autorais © Chris Sawyer
@@ -2207,7 +2207,7 @@ STR_3090    :{SMALLFONT}{BLACK}Selecione o estilo de entrada, saída e estação
 STR_3091    :Você não tem permissão para remover esta seção!
 STR_3092    :Você não tem permissão para mover ou modificar a estação desta atração!
 STR_3093    :{WINDOW_COLOUR_2}Favorito: {BLACK}{STRINGID}
-STR_3094    :N/A
+STR_3094    :Indisponível
 STR_3095    :{WINDOW_COLOUR_2}Velocidade da Corrente:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_3097    :{SMALLFONT}{BLACK}Selecione a velocidade da corrente de elevação
@@ -2814,7 +2814,7 @@ STR_5492    :Opções de cenário
 STR_5493    :Enviar Mensagem
 STR_5495    :Lista de Jogadores
 STR_5496    :Jogador
-STR_5497    :Ping
+STR_5497    :Latência
 STR_5498    :Lista de Servidores
 STR_5499    :Nome do Jogador:
 STR_5500    :Adicionar Servidor
@@ -2961,7 +2961,7 @@ STR_5642    :Grupo
 STR_5643    :Adicionar Grupo
 STR_5644    :Remover Grupo
 STR_5645    :Bate-Papo
-STR_5646    :Terraform
+STR_5646    :Terraformar
 STR_5647    :Alternar Pausa
 STR_5648    :Definir Nível da Água
 STR_5649    :Criar Atração
@@ -2977,7 +2977,7 @@ STR_5658    :Financiamento do Parque
 STR_5659    :Expulsar Jogador
 STR_5660    :Modificar Grupos
 STR_5661    :Definir Grupo do Jogador
-STR_5662    :N/A
+STR_5662    :Indisponível
 STR_5663    :Limpar Paisagem
 STR_5664    :Trapaças
 STR_5665    :Alternar Conjunto de Cenário
@@ -3286,7 +3286,7 @@ STR_6007    :Altura de corte
 STR_6008    :{SMALLFONT}{BLACK}Clique para alternar o valor bruto<->valor em unidades de medida
 STR_6009    :{SMALLFONT}{BLACK}Selecione altura de corte
 STR_6010    :{COMMA2DP32}m
-STR_6011    :{COMMA1DP16}ft
+STR_6011    :{COMMA1DP16}pés
 STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}Visitantes pagarão apenas o ingresso para entrar no parque e serviços.{NEWLINE}Entrada das atrações são grátis.
 STR_6014    :{SMALLFONT}{BLACK}Visitantes pagarão apenas o ingresso para entrar nas atrações e serviços.{NEWLINE}Eles não pagarão nada para entrar no parque.
@@ -3558,7 +3558,7 @@ STR_6301    :{SMALLFONT}{BLACK}Copia o nome do objeto selecionado para a área d
 STR_6302    :{SMALLFONT}{BLACK}Copia toda a lista de objetos faltantes para a área de transferência.
 STR_6303    :Baixando objeto ({COMMA16} / {COMMA16}): [{STRING}]
 STR_6304    :Abrir seletor de cenário
-STR_6305    :Multithreading
+STR_6305    :Múltiplas threads
 STR_6306    :{SMALLFONT}{BLACK}Opção experimental que usa múltiplas threads para desenhar, pode causar instabilidade.
 STR_6307    :Esquema de cores: {BLACK}{STRINGID}
 STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
@@ -4351,7 +4351,7 @@ STR_DTLS    :Um velho parque caiu em ruínas. Você ganha uma concessão da Uni�
 
 <N. America - Extreme Hawaiian Island>
 STR_SCNR    :América do Norte - Longínqua Ilha Havaiana
-STR_PARK    :Wacky Waikiki
+STR_PARK    :Waikiki Maluca
 STR_DTLS    :As pessoas do Havaí estão entediadas de surfar e estão procurando por algo mais intenso. Você precisa construir um parque com isto em mente para manter a atração turística da área com classificação alta.
 
 <North America - Grand Canyon>
