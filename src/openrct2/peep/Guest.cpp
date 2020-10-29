@@ -1580,7 +1580,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         if (itemValue < price)
         {
             itemValue -= price;
-           
+
             if (!isRainingAndUmbrella)
             {
                 itemValue = -itemValue;
