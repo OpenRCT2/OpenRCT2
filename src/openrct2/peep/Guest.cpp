@@ -1548,9 +1548,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     if (!isRainingAndUmbrella && (shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
     {
-        if (((scenario_rand() & 0x7F) + 0x73) > Happiness)
-            return false;
-        else if (GuestNumRides < 3)
+        if (((scenario_rand() & 0x7F) + 0x73) > Happiness || GuestNumRides < 3)
             return false;
     }
 
@@ -1585,11 +1583,11 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             {
                 itemValue = -itemValue;
                 if (Happiness >= 128)
+                {
                     itemValue /= 2;
-
-                if (Happiness >= 180)
-                    itemValue /= 2;
-
+                    if (Happiness >= 180)
+                        itemValue /= 2;
+                }
                 if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
                 {
                     // "I'm not paying that much for x"
