@@ -1610,7 +1610,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
                 }
             }
         }
-        else if (!isRainingAndUmbrella)
+        else // if (!isRainingAndUmbrella)
         {
             itemValue -= price;
             itemValue = std::max(8, itemValue);
