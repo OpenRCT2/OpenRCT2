@@ -571,6 +571,7 @@ void game_load_init()
         GameActions::ClearQueue();
     }
     reset_sprite_spatial_index();
+    reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
