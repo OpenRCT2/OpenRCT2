@@ -3674,6 +3674,8 @@ STR_6392    :Kon het bestand {STRING} niet vinden in dit pad.
 STR_6393    :Doelselectie
 STR_6394    :Doel
 STR_6395    :Onderhoud
+STR_6396    :Schermbeveiliging en -energiebesparing uitschakelen
+STR_6397    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal (zolang OpenRCT2 loopt) de schermbeveiliging niet worden ingeschakeld en gaat het scherm ook niet na verloop van tijd op zwart.
 
 #############
 # Scenarios #
