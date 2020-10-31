@@ -956,6 +956,8 @@ struct VehicleTypeLabel
 static int32_t VehicleDropdownDataLanguage = LANGUAGE_UNDEFINED;
 static rct_ride_entry* VehicleDropdownRideType = nullptr;
 static bool VehicleDropdownExpanded = false;
+static bool VehicleDropdownIgnoreResearch = false;
+static std::vector<ResearchItem> VehicleDropdownInventions;
 static std::vector<VehicleTypeLabel> VehicleDropdownData;
 
 static void window_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
@@ -2086,11 +2088,22 @@ static void populate_vehicle_type_dropdown(Ride* ride)
         rideTypeIterator = ride->type;
         rideTypeIteratorMax = ride->type;
     }
+   
+    // Check if the list of researched items has changed
+    bool sameResearch = VehicleDropdownInventions.size() == gResearchItemsInvented.size() && std::equal(
+        VehicleDropdownInventions.begin(),
+        VehicleDropdownInventions.end(),
+        gResearchItemsInvented.begin(),
+        [](const ResearchItem& r1, const ResearchItem& r2) -> bool
+        {
+            return r1.Equals(&r2);
+        });
 
     // Don't repopulate the list if we just did.
     auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
     if (VehicleDropdownExpanded == selectionShouldBeExpanded && VehicleDropdownRideType == rideEntry
-        && VehicleDropdownDataLanguage == ls.GetCurrentLanguage())
+        && VehicleDropdownDataLanguage == ls.GetCurrentLanguage() && !sameResearch
+        && VehicleDropdownIgnoreResearch == gCheatsIgnoreResearchStatus)
         return;
 
     VehicleDropdownData.clear();
@@ -2124,6 +2137,8 @@ static void populate_vehicle_type_dropdown(Ride* ride)
     VehicleDropdownExpanded = selectionShouldBeExpanded;
     VehicleDropdownRideType = rideEntry;
     VehicleDropdownDataLanguage = ls.GetCurrentLanguage();
+    VehicleDropdownIgnoreResearch = gCheatsIgnoreResearchStatus;
+    VehicleDropdownInventions = gResearchItemsInvented;
 }
 
 static void window_ride_show_vehicle_type_dropdown(rct_window* w, rct_widget* widget)
