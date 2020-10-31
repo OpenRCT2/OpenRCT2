@@ -2090,14 +2090,9 @@ static void populate_vehicle_type_dropdown(Ride* ride)
     }
    
     // Check if the list of researched items has changed
-    bool sameResearch = VehicleDropdownInventions.size() == gResearchItemsInvented.size() && std::equal(
-        VehicleDropdownInventions.begin(),
-        VehicleDropdownInventions.end(),
-        gResearchItemsInvented.begin(),
-        [](const ResearchItem& r1, const ResearchItem& r2) -> bool
-        {
-            return r1.Equals(&r2);
-        });
+    bool sameResearch = VehicleDropdownInventions.size() == gResearchItemsInvented.size()
+        && std::equal(VehicleDropdownInventions.begin(), VehicleDropdownInventions.end(), gResearchItemsInvented.begin(),
+            [](const ResearchItem& r1, const ResearchItem& r2) -> bool { return r1.Equals(&r2); });
 
     // Don't repopulate the list if we just did.
     auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
