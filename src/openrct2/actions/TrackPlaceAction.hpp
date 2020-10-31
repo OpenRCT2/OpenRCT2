@@ -695,7 +695,10 @@ public:
                 }
             }
 
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+            // If the placed tile is a station modify station properties.
+            // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
+            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN
+                && !(ride->status == RIDE_STATUS_SIMULATING && GetFlags() & GAME_COMMAND_FLAG_GHOST))
             {
                 if (trackBlock->index == 0)
                 {
