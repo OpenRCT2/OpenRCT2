@@ -2102,7 +2102,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
     // Don't repopulate the list if we just did.
     auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
     if (VehicleDropdownExpanded == selectionShouldBeExpanded && VehicleDropdownRideType == rideEntry
-        && VehicleDropdownDataLanguage == ls.GetCurrentLanguage() && !sameResearch
+        && VehicleDropdownDataLanguage == ls.GetCurrentLanguage() && sameResearch
         && VehicleDropdownIgnoreResearch == gCheatsIgnoreResearchStatus)
         return;
 
