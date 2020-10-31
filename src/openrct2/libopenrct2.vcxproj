@@ -213,7 +213,7 @@
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
     <ClInclude Include="interface\Window_internal.h" />
-    <ClInclude Include="interface\ZoomLevel.hpp" />
+    <ClInclude Include="interface\ZoomLevel.h" />
     <ClInclude Include="Intro.h" />
     <ClInclude Include="localisation\ConversionTables.h" />
     <ClInclude Include="localisation\Currency.h" />
@@ -547,6 +547,7 @@
     <ClCompile Include="interface\Viewport.cpp" />
     <ClCompile Include="interface\Window.cpp" />
     <ClCompile Include="interface\Window_internal.cpp" />
+    <ClCompile Include="interface\ZoomLevel.cpp" />
     <ClCompile Include="Intro.cpp" />
     <ClCompile Include="localisation\ConversionTables.cpp" />
     <ClCompile Include="localisation\Convert.cpp" />

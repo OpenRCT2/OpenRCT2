@@ -12,7 +12,7 @@
 #include "../common.h"
 #include "../core/FileSystem.hpp"
 #include "../world/Location.hpp"
-#include "ZoomLevel.hpp"
+#include "ZoomLevel.h"
 
 #include <optional>
 #include <string>

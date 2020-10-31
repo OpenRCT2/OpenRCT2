@@ -15,7 +15,7 @@
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
 #include "../world/ScenerySelection.h"
-#include "ZoomLevel.hpp"
+#include "ZoomLevel.h"
 
 #include <functional>
 #include <limits>
