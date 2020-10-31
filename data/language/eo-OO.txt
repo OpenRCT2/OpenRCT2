@@ -2996,7 +2996,7 @@ STR_5711    :Entajpu novan nomon por ĉi tiu grupo:
 STR_5712    :Ne eblas modifi permeson, ke vi ne havas mem
 STR_5713    :Forpeli Ludanton
 STR_5714    :Montri fenestron de agordoj
-STR_5715    :Nova Ludon
+STR_5715    :Nova Ludo
 STR_5716    :Ne permesas en plurludanta reĝimo
 # For identifying client network version in server list window
 STR_5717    :Reta versio: {STRING}
@@ -4223,8 +4223,8 @@ STR_PARK    :Polvaj Verdejoj
 STR_DTLS    :Troviĝas proksime de aŭtovojo en dezerto, Polvaj Verdejoj estas okazo por disvolvi malgrandan golfejon al prospera amuzparko
 
 <Electric Fields>
-STR_SCNR    :Elektra Kampoj
-STR_PARK    :Elektra Kampoj
+STR_SCNR    :Elektraj Kampoj
+STR_PARK    :Elektraj Kampoj
 STR_DTLS    :Vi heredis malgrandan farmon, kaj via defio estas konstrui malgrandan amuzparkon inter la kampoj kaj aliaj farmokonstruaĵoj
 
 <Extreme Heights>
