@@ -24,6 +24,7 @@
 - Fix: [#10186] Placing multiple saved rides ignores design name (original bug).
 - Fix: [#12368] Desync due to ghost station pieces affecting changing ride settings.
 - Fix: [#12940] Windows cause issues with snow drawing.
+- Fix: [#12981] Heartline Twister Coaster (reverse car) does not appears during game.
 - Fix: [#13019] Simulated trains sometimes open construction window when they crash.
 - Fix: [#13021] Mowed grass and weeds don't show up in extra zoom levels.
 - Fix: [#13024] Console cursor does not correctly render at current cursor position.
