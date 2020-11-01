@@ -1869,7 +1869,7 @@ declare global {
 
         onClose?: () => void;
         onUpdate?: () => void;
-        tabChange?: () => void;
+        onTabChange?: () => void;
     }
 
     interface ImageAnimation {
