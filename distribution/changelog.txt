@@ -1,4 +1,3 @@
-=======
 0.3.2+ (in development)
 ------------------------------------------------------------------------
 - Fix: [#13334] Uninitialised variables in CustomTabDesc
