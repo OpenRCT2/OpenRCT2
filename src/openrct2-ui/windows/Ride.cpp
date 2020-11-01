@@ -2088,7 +2088,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
         rideTypeIterator = ride->type;
         rideTypeIteratorMax = ride->type;
     }
-   
+    
     // Check if the list of researched items has changed
     bool sameResearch = VehicleDropdownInventions.size() == gResearchItemsInvented.size()
         && std::equal(VehicleDropdownInventions.begin(), VehicleDropdownInventions.end(), gResearchItemsInvented.begin(),
