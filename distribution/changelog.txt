@@ -1,3 +1,7 @@
+0.3.2+ (in development)
+------------------------------------------------------------------------
+- Fix: [#13334] Uninitialised variables in CustomTabDesc
+
 0.3.2 (2020-11-01)
 ------------------------------------------------------------------------
 - Feature: [#12110] Add Hybrid Coaster (Rocky Mountain Construction I-Box) track type.
