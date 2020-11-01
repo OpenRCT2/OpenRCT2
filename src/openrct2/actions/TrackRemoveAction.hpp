@@ -138,6 +138,12 @@ public:
             log_warning("Ride not found. ride index = %d.", rideIndex);
             return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
+
+        if (ride->type >= RIDE_TYPE_COUNT)
+        {
+            log_warning("Ride type not found. ride type = %d.", ride->type);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+        }
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, trackType);
         trackBlock += tileElement->AsTrack()->GetSequenceIndex();
 

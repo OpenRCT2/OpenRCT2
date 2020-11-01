@@ -564,7 +564,7 @@ namespace OpenRCT2
                     auto fs = FileStream(path, FILE_MODE_OPEN);
                     if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail))
                     {
-                        throw std::runtime_error("Failed to load park");
+                        return false;
                     }
                     return true;
                 }
@@ -610,6 +610,11 @@ namespace OpenRCT2
                 }
 
                 auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+
+                // From this point onwards the currently loaded park will be corrupted if loading fails
+                // so reload the title screen if that happens.
+                loadTitleScreenFirstOnFail = true;
+
                 _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                 parkImporter->Import();
                 gScenarioSavePath = path;
@@ -663,6 +668,11 @@ namespace OpenRCT2
             }
             catch (const ObjectLoadException& e)
             {
+                // If loading the SV6 or SV4 failed return to the title screen if requested.
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
                 // The path needs to be duplicated as it's a const here
                 // which the window function doesn't like
                 auto intent = Intent(WC_OBJECT_LOAD_ERROR);
@@ -675,20 +685,34 @@ namespace OpenRCT2
             }
             catch (const UnsupportedRCTCFlagException& e)
             {
+                // If loading the SV6 or SV4 failed return to the title screen if requested.
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
                 auto windowManager = _uiContext->GetWindowManager();
                 auto ft = Formatter();
                 ft.Add<uint16_t>(e.Flag);
                 windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE, ft);
             }
+            catch (const UnsupportedRideTypeException&)
+            {
+                // If loading the SV6 or SV4 failed return to the title screen if requested.
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
+                auto windowManager = _uiContext->GetWindowManager();
+                windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, STR_NONE, {});
+            }
             catch (const std::exception& e)
             {
+                // If loading the SV6 or SV4 failed return to the title screen if requested.
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
                 Console::Error::WriteLine(e.what());
-            }
-
-            // If loading the SV6 or SV4 failed return to the title screen if requested.
-            if (loadTitleScreenFirstOnFail)
-            {
-                title_load();
             }
 
             return false;

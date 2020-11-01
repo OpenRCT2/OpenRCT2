@@ -3901,6 +3901,8 @@ enum
 
     STR_DISABLE_SCREENSAVER = 6396,
     STR_DISABLE_SCREENSAVER_TIP = 6397,
+
+    STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES = 6398,
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
