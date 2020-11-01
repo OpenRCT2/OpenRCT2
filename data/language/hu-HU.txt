@@ -94,6 +94,7 @@ STR_0089    :Mini hullámvasút
 STR_0090    :Bányavasút
 STR_0091    :Ismeretlen játék (59)
 STR_0092    :Aszinkronmotoros hullámvasút
+STR_0093    :Hibrid hullámvasút
 STR_0512    :Egy kompakt hullámvasút spirális felvonórésszel és sima, csavaros esésekkel
 STR_0513    :Egy átforduló hullámvasút, amelyen az utasok álló helyzetben utaznak
 STR_0514    :A hullámvasút pályája alatt felfüggesztett vonatok oldalt kilengenek a kanyarokban
@@ -162,6 +163,7 @@ STR_0591    :A tutaj alakú csónakok szelíden kanyarognak a folyó pályája m
 STR_0599    :Egy kompakt hullámvasút különálló kocsikkal és sima, csavaros esésekkel
 STR_0600    :Motoros bányavonatok futnak egy sima és csavaros pálya mentén
 STR_0602    :A hullámvasút vonatai aszinkronmotoros gyorsítással hagyják el az állomást, hogy átszáguldjanak a csavaros fordítókon
+STR_0603    :Egy fa stílusú hullámvasút acélpályával, meredek esésekkel és fordítókkal.
 STR_0767    :Vendég {INT32}
 STR_0768    :Mindenes {INT32}
 STR_0769    :Gépész {INT32}
@@ -3124,8 +3126,8 @@ STR_5867    :{WINDOW_COLOUR_2}Szolgáltató neve: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Szolgáltató e-mail címe: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Szolgáltató weboldala: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Szerver információ
-STR_5871    :Nem öregedő növények
-STR_5872    :{SMALLFONT}{BLACK}A növények öregedésének kikapcsolása, hogy ne hervadjanak el
+STR_5871    :Elszáradó növények ki
+STR_5872    :{SMALLFONT}{BLACK}A növények öregedésének kikapcsolása, hogy ne száradjanak el
 STR_5873    :Minden pályarész lehet láncos felvonó
 STR_5874    :{SMALLFONT}{BLACK}Lehetővé teszi, hogy bármelyik pályarészből lehessen láncos felvonót csinálni
 STR_5875    :Grafikus motor:
@@ -3612,6 +3614,17 @@ STR_6383    :A letöltési oldal megnyitása
 STR_6384    :Havazás
 STR_6385    :Erős havazás
 STR_6386    :Hóvihar
+STR_6387    :Nem süllyeszthető itt le az elem…
+STR_6388    :Nem emelhető itt meg az elem…
+STR_6389    :Érvénytelen űrszelvény
+STR_6390    :Az OpenRCT2 működéséhez szükség van az eredeti RollerCoaster Tycoon 2 fájljaira. Kérlek add meg a mappát, ahova telepítetted a RollerCoaster Tycoon 2-t.
+STR_6391    :Kérlek válaszd ki az RCT2 mappádat
+STR_6392    :A(z) {STRING} nem található ezen az útvonalon.
+STR_6393    :Cél kiválasztása
+STR_6394    :Cél
+STR_6395    :Karbantartás
+STR_6396    :Képernyővédő és a monitor energiagazdálkodása ki
+STR_6397    :{SMALLFONT}{BLACK}Ha ki van választva, szüneteltetve lesz a képernyővédő és a monitor egyéb energiagazdálkodásosi funkciói, amíg az OpenRCT2 fut.
 
 
 #############
@@ -4061,24 +4074,6 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :Alap blokk
-
-[TTRFTL02]
-STR_NAME    :Tető
-
-[TTRFTL03]
-STR_NAME    :Tető
-
-[TTRFTL04]
-STR_NAME    :Tető
-
-[TTRFTL07]
-STR_NAME    :Tető
-
-[TTRFTL08]
-STR_NAME    :Tető
-
 [TTPIRF02]
 STR_NAME    :Tető
 
@@ -4096,9 +4091,6 @@ STR_NAME    :Tető
 
 [TTPIRF08]
 STR_NAME    :Tető
-
-[MG-PRAR]
-STR_NAME    :Fal átjáróval
 
 [TTRFWD01]
 STR_NAME    :Tető
@@ -4152,3 +4144,11 @@ STR_NAME    :Fa sánckerítés
 ###############################################################################
 ## Time Twister Scenarios
 ###############################################################################
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Panda Világ
+STR_PARK    :Panda Világ
+STR_DTLS    :Szerezz be további játékokat, hogy több ember látogasson el ebbe a panda-témájú parkba

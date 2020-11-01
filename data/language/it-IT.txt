@@ -94,6 +94,7 @@ STR_0089    :Mini-ottovolante
 STR_0090    :Corsa nella miniera
 STR_0091    :Attrazione sconosciuta (59)
 STR_0092    :Ottovolante a lancio MIL
+STR_0093    :Ottovolante ibrido
 STR_0512    :Un ottovolante compatto con una salita a spirale e cadute fluide e tortuose.
 STR_0513    :Un ottovolante con giro della morte dove i passeggeri si trovano in una posizione eretta
 STR_0514    :I treni, sospesi sotto l'ottovolante, durante le curve oscillano lateralmente
@@ -173,6 +174,7 @@ STR_0598    :Treni dell'ottovolante invertito accelerano dalla stazione lungo un
 STR_0599    :Un ottovolante compatto con carrozze individuali e rapide curve in discesa
 STR_0600    :I treni della miniera motorizzati scorrono lungo un percorso fluido e pieno di curve
 STR_0602    :I treni dell'ottovolante sono spinti fuori dalla stazione tramite motori a induzione lineare per correre lungo avvitamenti e inversioni
+STR_0603    :Un ottovolante in legno con i binari in acciaio, in grado di avere ripide discese e inversioni.
 STR_0767    :Visitatore {INT32}
 STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
@@ -1966,9 +1968,9 @@ STR_2754    :Annaffia piante
 STR_2755    :Aggiusta vandalismi
 STR_2756    :Rimuovi spazzatura
 STR_2763    :???
-STR_2765    :Trenino lungo
+STR_2765    :Trenino di visitatori
 STR_2766    :Vinci scenario
-STR_2767    :Blocca il clima
+STR_2767    :Disattiva variazioni meteo
 STR_2769    :Apri parco
 STR_2770    :Chiudi parco
 STR_2773    :In finestra
@@ -3016,8 +3018,8 @@ STR_5721    :Nuvoloso
 STR_5722    :Piovoso
 STR_5723    :Fortemente piovoso
 STR_5724    :Temporale
-STR_5725    :{BLACK}Forza clima:
-STR_5726    :{SMALLFONT}{BLACK}Imposta il clima attuale nel parco
+STR_5725    :{BLACK}Cambia il meteo a:
+STR_5726    :{SMALLFONT}{BLACK}Imposta il meteo attuale nel parco
 STR_5727    :Qualità scala:
 STR_5728    :Richiede il rendering hardware
 STR_5729    :{SMALLFONT}{BLACK}Richiede il rendering hardware
@@ -3157,7 +3159,7 @@ STR_5867    :{WINDOW_COLOUR_2}Nome provider: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mail provider: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Sito provider: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Mostra le informazioni del server
-STR_5871    :Le piante non invecchiano
+STR_5871    :Disattiva appassimento piante
 STR_5872    :{SMALLFONT}{BLACK}Disabilità l'invecchiamento delle piante.
 STR_5873    :Permetti catena di traino su tutti i pezzi
 STR_5874    :{SMALLFONT}{BLACK}Permette di rendere qualsiasi pezzo del percorso una catena di traino
@@ -3660,6 +3662,18 @@ STR_6383    :Apri pagina download
 STR_6384    :Neve
 STR_6385    :Forte neve
 STR_6386    :Tormenta
+STR_6387    :Impossibile abbassare l'elemento qui…
+STR_6388    :Impossibile alzare l'elemento qui…
+STR_6389    :Margine non valido
+STR_6390    :Per funzionare, OpenRCT2 necessita di alcuni file originali di RollerCoaster Tycoon 2. Selezionare la cartella nella quale è installato RollerCoaster Tycoon 2.
+STR_6391    :Selezionare la cartella di RCT2
+STR_6392    :Impossibile trovare {STRING} in questo percorso.
+STR_6393    :Selezione obiettivo
+STR_6394    :Obiettivo
+STR_6395    :Manutenzione
+STR_6396    :Disattiva screensaver e risparmio energetico dello schermo
+STR_6397    :{SMALLFONT}{BLACK}Se attivato, le funzionalità di screensaver e di risparmio energetico dello schermo saranno disabilitate mentre OpenRCT2 è in esecuzione.
+
 
 #############
 # Scenarios #
@@ -4398,3 +4412,11 @@ STR_DTLS    :Un importante festival musicale si tiene ogni anno sulla tua propri
 STR_SCNR    :Rock & Roll - Rock & Roll
 STR_PARK    :La rinascita del Rock & Roll
 STR_DTLS    :Questo vecchio parco a tema ha vissuto tempi migliori. Aiuta il proprietario a ristrutturarlo in stile Rock & Roll e trasformalo in un luogo di successo.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Il Mondo dei Panda
+STR_PARK    :Il Mondo dei Panda
+STR_DTLS    :Aggiungi più attrazioni per attirare più visitatori in questo parco a tema sui panda.
