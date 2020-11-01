@@ -5496,20 +5496,6 @@ void Vehicle::UpdateCrash()
         }
     }
 }
-
-void Vehicle::screamSubFunction(Ride* curRide, OpenRCT2::Audio::SoundId screamId, uint8_t screamVolume)
-{
-    scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-    if (curRide->type < std::size(RideTypeDescriptors))
-    {
-        // Get lift hill sound
-        screamId = RideTypeDescriptors[curRide->type].LiftData.sound_id;
-        screamVolume = 243;
-        if (!(sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
-            screamId = OpenRCT2::Audio::SoundId::Null;
-    }
-}
-
 /**
  *
  *  rct2: 0x006D7888
@@ -5548,10 +5534,7 @@ void Vehicle::UpdateSound()
             if (!(gCurrentTicks & 0x7F))
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
-                {
-                    screamSubFunction(curRide, screamId, screamVolume);
-                    break;
-                }
+                    goto loc_6D7A97;
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
@@ -5570,10 +5553,7 @@ void Vehicle::UpdateSound()
             if (!(gCurrentTicks & 0x7F))
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
-                {
-                    screamSubFunction(curRide, screamId, screamVolume);
-                    break;
-                }
+                    goto loc_6D7A97;
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
@@ -5594,16 +5574,21 @@ void Vehicle::UpdateSound()
                 if (screamId == OpenRCT2::Audio::SoundId::NoScream)
                     screamId = OpenRCT2::Audio::SoundId::Null;
                 else if (screamId == OpenRCT2::Audio::SoundId::Null)
-                {
-                    screamSubFunction(curRide, screamId, screamVolume);
-                    break;
-                }
+                    goto loc_6D7A97;
                 break;
             }
 
-            screamSubFunction(curRide, screamId, screamVolume);
-
-    } // end switch
+        loc_6D7A97:
+            scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+            if (curRide->type < std::size(RideTypeDescriptors))
+            {
+                // Get lift hill sound
+                screamId = RideTypeDescriptors[curRide->type].LiftData.sound_id;
+                screamVolume = 243;
+                if (!(sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
+                    screamId = OpenRCT2::Audio::SoundId::Null;
+            }
+    }
 
     // Friction sound
     auto soundIdVolume = sub_6D7AC0(sound1_id, sound1_volume, frictionId, frictionVolume);

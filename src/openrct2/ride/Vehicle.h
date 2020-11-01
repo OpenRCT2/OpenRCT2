@@ -395,7 +395,6 @@ private:
     void UpdateShowingFilm();
     void UpdateDoingCircusShow();
     void UpdateCrossings() const;
-    void screamSubFunction(Ride*, OpenRCT2::Audio::SoundId, uint8_t);
     void UpdateSound();
     OpenRCT2::Audio::SoundId UpdateScreamSound();
     OpenRCT2::Audio::SoundId ProduceScreamSound(const int32_t totalNumPeeps);
