@@ -5523,8 +5523,8 @@ void Vehicle::UpdateSound()
     auto frictionId = OpenRCT2::Audio::SoundId::Null;
     // bh screamVolume should be set before hand
     SoundIdVolume screamSound = { OpenRCT2::Audio::SoundId::Null, 255 };
-    //auto screamId = OpenRCT2::Audio::SoundId::Null;
-    //uint8_t screamVolume = 255;
+    // auto screamId = OpenRCT2::Audio::SoundId::Null;
+    // uint8_t screamVolume = 255;
 
     auto curRide = GetRide();
     if (curRide == nullptr)
@@ -5577,7 +5577,7 @@ void Vehicle::UpdateSound()
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
-                    sub_6D7A97(curRide); // goto loc_6D7A97;
+                    screamSound = sub_6D7A97(curRide); // goto loc_6D7A97;
                     break;
                 }
 
@@ -5602,7 +5602,7 @@ void Vehicle::UpdateSound()
                     screamSound.id = OpenRCT2::Audio::SoundId::Null;
                 else if (screamSound.id == OpenRCT2::Audio::SoundId::Null)
                 {
-                    sub_6D7A97(curRide);//goto loc_6D7A97;
+                    screamSound = sub_6D7A97(curRide); // goto loc_6D7A97;
                     break;
                 }
                 break;
