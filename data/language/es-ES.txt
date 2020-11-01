@@ -3608,6 +3608,8 @@ STR_6327    :Fondo transparente para capturas de pantalla gigantes
 STR_6328    :{SMALLFONT}{BLACK}Con esta opción activada, las capturas gigantes tendrán un fondo transparente en vez del fondo negro por defecto.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Descargando [{STRING}] desde {STRING} ({COMMA16} / {COMMA16})
+STR_6331    :Crear patos
+STR_6332    :Remover patos
 STR_6333    :Incrementar factor de escala
 STR_6334    :Disminuir factor de escala
 STR_6335    :Inspector de cuadrícula: Insertar elemento corrupto
@@ -3639,11 +3641,24 @@ STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Habilitar efectos de luz en atracciones (experimental)
 STR_6362    :{SMALLFONT}{BLACK}Si está activado, vehículos para las atracciones con vias estarán iluminados de noche.
 STR_6363    :Copiar texto al portapapeles
+STR_6364    :{RED}{COMMA16} persona ha muerto en un accidente a bordo de {STRINGID}
+STR_6365    :Fallecimientos en la atracción
+STR_6366    :Vehiculos trabados o parados
+STR_6367    :{WINDOW_COLOUR_2}Cuadro de animación:
+STR_6368    :Por razones de compatibilidad, no se recomienda correr OpenRCT2 sobre Wine. OpenRCT2 tiene soporte nativo para macOS, Linux, FreeBSD y OpenBSD.
+STR_6369    :Permitir construir en alturas inválidas
+STR_6370    :{SMALLFONT}{BLACK}Permite construir rieles y piezas en cualquier intervalo de alturas
+STR_6371    :La ruta específicada contiene una instalación de RCT1, pero el archivo "csg1i.dat" no existe. Este archivo NECESITA ser copiado desde el CD de RollerCoaster Tycoon 1 CD a la carpeta “Data” dentro de RollerCoaster Tycoon 1 en tú disco duro.
+STR_6372    :La ruta específicada contiene una instalación de RCT1, pero esta version no es correcta. OpenRCT2 NECESITA una version de Loopy Landscapes ó RCT Deluxe para poder usar los archivos de Roller Coaster Tycoon 1.
 STR_6375    :Paseo Desconocido
 STR_6376    :{WINDOW_COLOUR_2}Paseo en vehículo:{NEWLINE}{BLACK}{STRINGID} para {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} para {STRINGID}
 STR_6378    :Recepción de lista de objetos: {INT32} / {INT32}
 STR_6379    :Se recibieron datos no válidos
+STR_6380    :¡Actualización disponible!
+STR_6381    :¡Unete al Discord de OpenRCT2!
+STR_6382    :¡Nueva version estable de OpenRCT2 disponible: {STRING}!
+STR_6383    :Abrir pagina de descargas
 STR_6384    :Nieve
 STR_6385    :Fuertes nevadas
 STR_6386    :Tormenta de nieve
@@ -3656,6 +3671,8 @@ STR_6392    :No se pudo encontrar {STRING} en esta ruta.
 STR_6393    :Selección de Objetivo.
 STR_6394    :Objetivo
 STR_6395    :Mantenimiento
+STR_6396    :Deshabilitar protector y ahorro de energía del monitor.
+STR_6397    :{SMALLFONT}{BLACK}Si está activado, el salvapantallas y otras funciones de ahorro de energía estarán inhabilitadas mientras OpenRCT2 esté abierto.
 
 ##############
 # Escenarios #
@@ -4394,3 +4411,11 @@ STR_DTLS    :En tus tierras se desarrolla todos los años un gran festival music
 STR_SCNR    :Rock & Roll - Rock & Roll
 STR_PARK    :La resurrección del Rock & Roll
 STR_DTLS    :Este antiguo parque temático ha visto tiempos mejores. Ayuda al propietario a darle un aspecto más rockanrolero y convierte el lugar en un negocio próspero.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Mundo Panda
+STR_PARK    :Mundo Panda
+STR_DTLS    :Añade mas atracciones y consigue mas visitantes en este parque pandatemático.
