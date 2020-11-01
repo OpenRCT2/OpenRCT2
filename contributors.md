@@ -7,7 +7,6 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Michael Steenbeek (Gymnasiast) - translation management
 * Michał Janiszewski (janisozaur)
 * Hielke Morsink (Broxzier)
-* Aaron van Geffen (AaronVanGeffen)
 * Matthias Moninger (ZehMatt)
 * Tulio Paschoalin Leao (tupaschoal)
 
@@ -16,6 +15,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Marijn van der Werf (marijnvdwerf)
 * (zsilencer)
 * Richard Jenkins (rwjuk)
+* Aaron van Geffen (AaronVanGeffen)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
