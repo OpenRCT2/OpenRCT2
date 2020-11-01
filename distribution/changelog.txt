@@ -1,6 +1,7 @@
 0.3.2+ (in development)
 ------------------------------------------------------------------------
 - Fix: [#13334] Uninitialised variables in CustomTabDesc
+- Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface
 
 0.3.2 (2020-11-01)
 ------------------------------------------------------------------------
